@@ -19,7 +19,7 @@ static int
 em_init()
 {
    printf("Module Music Init\n");
-
+  
    return 1;
 }
 

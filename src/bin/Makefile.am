@@ -10,26 +10,26 @@ bin_PROGRAMS = enna
 
 enna_SOURCES = \
 enna.c\
-enna_config.c\
-enna_util.c\
-enna_scanner.c\
-enna_box.c\
-enna_mainmenu.c\
-enna_background.c\
-enna_module.c
+config.c\
+utils.c\
+scanner.c\
+box.c\
+mainmenu.c\
+background.c\
+module.c
 
 enna_LDADD = @ENNA_LIBS@
 
 EXTRA_DIST= \
 enna.h\
 enna_inc.h\
-enna_config.h\
-enna_util.h\
-enna_scanner.h\
-enna_box.h\
-enna_mainmenu.h\
-enna_background.h\
-enna_module.h
+config.h\
+util.h\
+scanner.h\
+box.h\
+mainmenu.h\
+background.h\
+module.h
 
 
 
