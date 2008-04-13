@@ -1,6 +1,8 @@
 #ifndef _ENNA_SCANNER_H_
 #define _ENNA_SCANNER_H_
 
+#include "enna.h"
+
 typedef struct _Enna_Metadata Enna_Metadata;
 
 struct _Enna_Metadata

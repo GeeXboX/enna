@@ -10,7 +10,7 @@ bin_PROGRAMS = enna
 
 enna_SOURCES = \
 enna.c\
-config.c\
+enna_config.c\
 utils.c\
 scanner.c\
 box.c\
@@ -23,7 +23,7 @@ enna_LDADD = @ENNA_LIBS@
 EXTRA_DIST= \
 enna.h\
 enna_inc.h\
-config.h\
+enna_config.h\
 util.h\
 scanner.h\
 box.h\

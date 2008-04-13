@@ -30,7 +30,7 @@
  */
 
 #include "enna.h"
-#include "enna_util.h"
+#include "utils.h"
 
 
 EAPI char          *

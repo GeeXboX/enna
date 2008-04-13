@@ -24,6 +24,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <math.h>
+#include <lightmediascanner.h>
+#include <sqlite3.h>
+#include <musicbrainz/queries.h>
+#include <musicbrainz/mb_c.h>
 
 #include "enna_inc.h"
 

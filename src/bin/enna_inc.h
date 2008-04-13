@@ -4,8 +4,8 @@
 #include "config.h"
 
 #include "scanner.h"
-#include "config.h"
-#include "util.h"
+#include "enna_config.h"
+#include "utils.h"
 #include "box.h"
 #include "mainmenu.h"
 #include "background.h"

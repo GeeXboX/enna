@@ -31,24 +31,9 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <Ecore_File.h>
-#include <Ecore_Str.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <Evas.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <lightmediascanner.h>
-#include <sqlite3.h>
-#include <musicbrainz/queries.h>
-#include <musicbrainz/mb_c.h>
-
-#include "enna_scanner.h"
+#include "scanner.h"
 #include "enna.h"
-#include "enna_config.h"
-#include "enna_util.h"
+
 
 typedef struct _Enna_Scanner Enna_Scanner;
 

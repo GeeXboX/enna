@@ -32,7 +32,7 @@
 /* derived from e_icon */
 
 
-#include "enna_mainmenu.h"
+#include "mainmenu.h"
 #include "enna.h"
 
 #define SMART_NAME "enna_mainmenu"
@@ -92,7 +92,7 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
 		     void *data)
 {
    E_Smart_Item *si;
-   
+
    API_ENTRY return;
 
    si = (E_Smart_Item *) malloc(sizeof(E_Smart_Item));
@@ -102,7 +102,7 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
 			"enna/mainmenu/item");
    if (label)
      edje_object_part_text_set(si->o_base, "enna.text.label", label);
-   
+ 
    si->o_icon = icon;
    if (icon)
      {
@@ -134,7 +134,7 @@ _enna_mainmenu_smart_reconfigure(E_Smart_Data * sd)
    y = sd->y;
    w = sd->w;
    h = sd->h;
-  
+
    evas_object_move(sd->o_edje, x, y);
    evas_object_resize(sd->o_edje, w, h);
 

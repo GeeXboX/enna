@@ -29,7 +29,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "enna_background.h"
+#include "background.h"
 #include "enna.h"
 
 #define SMART_NAME "enna_background"

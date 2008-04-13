@@ -1,7 +1,7 @@
 /** @file enna_module.c */
 
 
-#include "enna_module.h"
+#include "module.h"
 #include "enna.h"
 
 static Evas_List *_enna_modules = NULL;
