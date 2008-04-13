@@ -71,8 +71,6 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
 {
    Enna               *enna;
    Evas_Event_Key_Down *ev;
-   enna_event          event = enna_event_none;
-   int                 i = 0;
 
    enna = (Enna *) data;
    ev = (Evas_Event_Key_Down *) event_info;
@@ -264,11 +262,6 @@ main(int arc, char **arv)
 
    if (!_enna_init(run_gl))
      return 0;
-
-   enna_event_init();
-
-   if (run_fullscreen)
-     enna_togle_fullscreen();
 
    ecore_main_loop_begin();
 
