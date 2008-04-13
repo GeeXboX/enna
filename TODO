@@ -1,0 +1,20 @@
+
+
+enna.c
+  -> Lecture des options ligne de commande
+  -> Chargement de la config
+  -> Initilisation de LIRC
+  -> Init evas/edje/ecore 
+  -> création fenêtre principale
+  -> Création du background
+  -> Chargement du théme 
+  -> Création Object menu principal Evas_Object *o_mainmenu
+  -> Création du WidgetsManager
+  -> En fonction de la config charger les widgets
+  -> Démarrage du thread scanner
+  -> Création du ContentManager : Evas_Object *o_content_manager
+  -> En fonction de la config peupler le o_mainmenu
+  -> Créer le menu Config
+  -> En fonction de la config créer et charger les modules
+  -> Afficher le permier module actif
+

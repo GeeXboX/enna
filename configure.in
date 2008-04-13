@@ -1,0 +1,148 @@
+# get rid of that stupid cache mechanism
+rm -f config.cache
+
+AC_INIT(enna, 0.3.0, www.digital-corner.org)
+AC_PREREQ(2.52)
+AC_CONFIG_SRCDIR(configure.in)
+AC_CANONICAL_BUILD
+AC_CANONICAL_HOST
+AC_ISC_POSIX
+
+AM_INIT_AUTOMAKE(1.6 dist-bzip2)
+AM_CONFIG_HEADER(config.h)
+
+AC_PROG_CC
+AM_PROG_CC_STDC
+AC_HEADER_STDC
+AC_C_CONST
+
+AC_PROG_LIBTOOL
+
+LIBS=""
+
+if test "x${exec_prefix}" = "xNONE"; then
+  if test "x${prefix}" = "xNONE"; then
+    bindir="${ac_default_prefix}/bin";
+  else
+    bindir="${prefix}/bin";
+  fi
+else
+  if test "x${prefix}" = "xNONE"; then
+    bindir="${ac_default_prefix}/bin";
+  else
+    bindir="${prefix}/bin";
+  fi
+fi
+
+if test "x${exec_prefix}" = "xNONE"; then
+  if test "x${prefix}" = "xNONE"; then
+    libdir="${ac_default_prefix}/lib";
+  else
+    libdir="${prefix}/lib";
+  fi
+else
+  if test "x${prefix}" = "xNONE"; then
+    libdir="${ac_default_prefix}/lib";
+  else
+    libdir="${prefix}/lib";
+  fi
+fi
+      
+
+dnl Set PACKAGE_BIN_DIR in config.h.
+if test "x${bindir}" = 'xNONE'; then
+  if test "x${prefix}" = "xNONE"; then
+    AC_DEFINE_UNQUOTED(PACKAGE_BIN_DIR, "${ac_default_prefix}/bin", [Installation Directory for User Executables])
+  else
+    AC_DEFINE_UNQUOTED(PACKAGE_BIN_DIR, "${prefix}/bin", [Installation Directory for User Executables])
+  fi
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_BIN_DIR, "${bindir}", [Installation Directory for User Executables])
+fi
+
+dnl Set PACKAGE_LIB_DIR in config.h.
+if test "x${libdir}" = 'xNONE'; then
+  if test "x${prefix}" = "xNONE"; then
+    AC_DEFINE_UNQUOTED(PACKAGE_LIB_DIR, "${ac_default_prefix}/lib", [Installation Directory for Libraries])
+  else
+    AC_DEFINE_UNQUOTED(PACKAGE_LIB_DIR, "${prefix}/lib", [Installation Directory for Libraries])
+  fi
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_LIB_DIR, "${libdir}", [Installation Directory for Libraries])
+fi
+
+PKG_CHECK_MODULES([EVAS], [evas >= 0.9.9],
+  [ ],
+  [ AC_MSG_ERROR(evas not found.) ]
+)
+
+PKG_CHECK_MODULES([EDJE], [edje],
+  [ ],
+  [ AC_MSG_ERROR(edje not found.) ]
+)
+
+PKG_CHECK_MODULES([ECORE], [ecore >= 0.9.9.40 ecore-evas ecore-txt ecore-file],
+  [ ],
+  [ AC_MSG_ERROR(ecore not found.) ]
+)
+
+PKG_CHECK_MODULES([EDBUS], [edbus >= 0.0.1],
+   [ ],
+   [ AC_MSG_ERROR(edbus not found.) ]
+)
+
+PKG_CHECK_MODULES([EMOTION], [emotion],
+   [ ],
+   [ AC_MSG_ERROR(emotion not found.) ]
+)
+
+PKG_CHECK_MODULES([SQLITE3], [sqlite3],
+  [ ],
+  [ AC_MSG_ERROR(sqlite3 not found.) ]
+)
+
+PKG_CHECK_MODULES([LIGHTMEDIASCANNER], [lightmediascanner >= 0.1],
+  [ ],
+  [ AC_MSG_ERROR(lightmediascanner not found.) ]
+)
+
+PKG_CHECK_MODULES([MUSICBRAINZ], [libmusicbrainz],
+  [ ],
+  [ AC_MSG_ERROR(Musicbrainz not found.) ]
+)
+
+HAVE_LIRC=no
+AC_CHECK_HEADER(lirc/lirc_client.h, HAVE_LIRC=yes)
+if test "x$HAVE_LIRC" = "xyes"; then
+  AC_DEFINE(HAVE_LIRC, 1, [Define if LIRC client lib is present])
+  lirc_libs=-llirc_client
+  AC_SUBST(lirc_libs)
+fi
+
+enna_cflags=$ECORE_CFLAGS" "$EVAS_CFLAGS" "$EDJE_CFLAGS" "$EMOTION_CFLAGS" "$EDBUS_CFLAGS" "$SQLITE3_CFLAGS" "$LIGHTMEDIASCANNER_CFLAGS" "$MUSICBRAINZ_CFLAGS 
+enna_libs=$EVAS_LIBS" "$ECORE_LIBS" "$EDJE_LIBS" "$EDBUS_LIBS" "$EMOTION_LIBS" "$LIGHTMEDIASCANNER_LIBS" "$SQLITE3_LIBS" "$MUSICBRAINZ_LIBS
+AC_SUBST(enna_cflags)
+AC_SUBST(enna_libs)
+
+
+AC_OUTPUT([
+Makefile
+src/Makefile
+src/bin/Makefile
+src/modules/Makefile
+src/modules/music/Makefile
+data/Makefile
+data/theme/Makefile
+data/theme/default/Makefile
+])
+
+echo
+echo "$PACKAGE $VERSION"
+echo
+echo "Optional Modules:"
+echo
+echo "  lirc client...................... : $HAVE_LIRC"
+echo
+echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
+echo
+
