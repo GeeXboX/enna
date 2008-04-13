@@ -1,6 +1,8 @@
 #ifndef _ENNA_CONFIG_H_
 #define _ENNA_CONFIG_H_
 
+
+
 typedef struct _Enna_Config Enna_Config;
 
 struct conf_pair

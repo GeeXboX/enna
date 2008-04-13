@@ -36,7 +36,7 @@
 
 
 #include "enna.h"
-#include "enna_box.h"
+#include "box.h"
 
 
 typedef struct _E_Smart_Data E_Smart_Data;
