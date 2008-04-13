@@ -3,11 +3,11 @@
 
 #include "config.h"
 
-#include "enna_scanner.h"
-#include "enna_config.h"
-#include "enna_util.h"
-#include "enna_box.h"
-#include "enna_mainmenu.h"
-#include "enna_background.h"
-#include "enna_module.h"
+#include "scanner.h"
+#include "config.h"
+#include "util.h"
+#include "box.h"
+#include "mainmenu.h"
+#include "background.h"
+#include "module.h"
 #endif
