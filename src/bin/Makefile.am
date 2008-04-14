@@ -20,6 +20,7 @@ module.c\
 registry.c
 
 enna_LDADD = @ENNA_LIBS@
+enna_LDFLAGS = -rdynamic
 
 EXTRA_DIST= \
 enna.h\
