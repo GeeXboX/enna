@@ -142,7 +142,6 @@ _enna_init(int run_gl)
 
 
 
-
 static void
 _create_gui()
 {
