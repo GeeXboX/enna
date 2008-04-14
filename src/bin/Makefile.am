@@ -16,7 +16,8 @@ scanner.c\
 box.c\
 mainmenu.c\
 background.c\
-module.c
+module.c\
+registry.c
 
 enna_LDADD = @ENNA_LIBS@
 
@@ -29,7 +30,8 @@ scanner.h\
 box.h\
 mainmenu.h\
 background.h\
-module.h
+module.h\
+registry.h
 
 
 

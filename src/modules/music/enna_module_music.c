@@ -19,7 +19,12 @@ static int
 em_init()
 {
    printf("Module Music Init\n");
-  
+
+   enna_registry_activity_add("music", 0, "Music", NULL, "icon/music");
+   enna_registry_activity_add("video", 1, "Video", NULL, "icon/video");
+   enna_registry_activity_add("music", 2, "Music", NULL, "icon/music");
+   enna_registry_activity_add("music", 3, "Music", NULL, "icon/music");
+
    return 1;
 }
 

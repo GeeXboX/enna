@@ -10,4 +10,6 @@
 #include "mainmenu.h"
 #include "background.h"
 #include "module.h"
+#include "registry.h"
+
 #endif

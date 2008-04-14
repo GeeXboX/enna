@@ -106,6 +106,7 @@ _enna_init(int run_gl)
 
    sprintf(tmp, "%s/.enna", enna->home);
 
+
    if (!ecore_file_exists(tmp))
      ecore_file_mkdir(tmp);
 

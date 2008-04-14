@@ -29,6 +29,8 @@
 #include <musicbrainz/queries.h>
 #include <musicbrainz/mb_c.h>
 
+
+
 #include "enna_inc.h"
 
 //#define ENNA_DEBUG0
@@ -38,6 +40,8 @@
 #ifndef PATH_MAX
 #define PATH_MAX 4096
 #endif
+
+
 
 #if ENNA_DEBUG == 2
 # define dbg(fmt,arg...) fprintf(stderr, "[Enna] [%s/%d] " fmt,__FILE__,__LINE__,##arg)
