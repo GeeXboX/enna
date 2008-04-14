@@ -12,6 +12,7 @@ collections
 {
 #include "enna_background.edc"
 #include "enna_mainmenu.edc"
+#include "icons.edc"
 
 group {
  name: "enna";

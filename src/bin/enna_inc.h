@@ -11,5 +11,6 @@
 #include "background.h"
 #include "module.h"
 #include "registry.h"
+#include "image.h"
 
 #endif

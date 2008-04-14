@@ -92,7 +92,7 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
 		     void *data)
 {
    E_Smart_Item *si;
-
+   Evas_Coord mw = 0, mh = 0;
    API_ENTRY return;
 
    si = (E_Smart_Item *) malloc(sizeof(E_Smart_Item));
@@ -101,28 +101,64 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
    edje_object_file_set(si->o_base, enna_config_theme_get(),
 			"enna/mainmenu/item");
    if (label)
-     edje_object_part_text_set(si->o_base, "enna.text.label", label);
- 
+       {
+           printf("label : %s\n", label);
+           edje_object_part_text_set(si->o_base, "enna.text.label", label);
+       }
+
    si->o_icon = icon;
    if (icon)
      {
 	edje_object_part_swallow(si->o_base, "enna.swallow.icon",
 				 si->o_icon);
+        evas_object_show(icon);
      }
     si->func = func;
     si->data = data;
     sd->items = evas_list_append(sd->items, si);
-
+    edje_object_size_min_calc(si->o_base, &mw, &mh);
+    edje_object_size_min_get(si->o_base, &mw, &mh);
     enna_box_pack_end(sd->o_box, si->o_base);
     enna_box_pack_options_set(si->o_base, 1, 1,	/* fill */
 			      1, 1,	/* expand */
 			      0.5, 0.5,	/* align */
-			      50, 50,	/* min */
+			      mw, mh,	/* min */
 			      99999, 9999	/* max */
 			      );
     evas_object_show(si->o_base);
 }
 
+EAPI void
+enna_mainmenu_load_from_registry(Evas_Object *obj)
+{
+    Evas_List *activities, *l;
+    API_ENTRY return;
+
+    activities = enna_registry_activities_get();
+
+    for (l = activities; l; l = l->next)
+        {
+            Enna_Registry_Activity *eact;
+            Evas_Object *icon = NULL;
+            eact = l->data;
+
+            if (eact->icon)
+                {
+                    printf("icon : %s\n",eact->icon);
+                    icon = edje_object_add(evas_object_evas_get(sd->o_edje));
+                    edje_object_file_set(icon, enna_config_theme_get(),
+                                         eact->icon);
+                }
+            else if (eact->icon_file)
+                {
+                    icon = enna_image_add(evas_object_evas_get(sd->o_edje));
+                    enna_image_file_set(icon, eact->icon_file);
+                }
+            printf("adding %s\n", eact->activity);
+            enna_mainmenu_append(obj, icon, eact->activity, NULL, NULL);
+        }
+
+}
 
 /* local subsystem globals */
 static void
@@ -168,13 +204,11 @@ _e_smart_add(Evas_Object * obj)
    E_Smart_Data       *sd;
    Evas_Object        *o;
    Evas               *e;
-   
-   
 
    sd = calloc(1, sizeof(E_Smart_Data));
    if (!sd)
       return;
-   
+
    e = evas_object_evas_get(obj);
 
    sd->o_edje = evas_object_image_add(e);
@@ -182,7 +216,7 @@ _e_smart_add(Evas_Object * obj)
    sd->y = 0;
    sd->w = 0;
    sd->h = 0;
-   
+
    sd->items = NULL;
 
    o = edje_object_add(e);
@@ -195,7 +229,7 @@ _e_smart_add(Evas_Object * obj)
    enna_box_homogenous_set(o, 1);
    enna_box_align_set(o, 0.0, 0.0);
    sd->o_box = o;
-   
+
    edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_box);
 
    evas_object_smart_member_add(sd->o_edje, obj);

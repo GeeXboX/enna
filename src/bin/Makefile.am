@@ -17,7 +17,8 @@ box.c\
 mainmenu.c\
 background.c\
 module.c\
-registry.c
+registry.c\
+image.c
 
 enna_LDADD = @ENNA_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -32,7 +33,8 @@ box.h\
 mainmenu.h\
 background.h\
 module.h\
-registry.h
+registry.h\
+image.h
 
 
 

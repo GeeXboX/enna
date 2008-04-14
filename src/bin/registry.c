@@ -3,7 +3,7 @@
 #include "enna.h"
 
 
-Evas_List *enna_registry = NULL;
+static Evas_List *enna_registry = NULL;
 
 EAPI void
 enna_registry_init(void)
@@ -160,6 +160,12 @@ enna_registry_activity_del(const char *path)
      }
    done:
    free(cat);
+}
+
+EAPI Evas_List *
+enna_registry_activities_get()
+{
+    return enna_registry;
 }
 
 /* EAPI void */

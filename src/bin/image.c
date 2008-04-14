@@ -31,9 +31,9 @@
 
 /* derived from e_icon */
 
-#include "enna_image.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include "enna.h"
+#include "image.h"
+
 
 #define SMART_NAME "enna_image"
 
