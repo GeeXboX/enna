@@ -21,7 +21,7 @@ EAPI Enna_Module_Api module_api =
     ENNA_MODULE_VERSION,
     "music"
 };
-
+/*
 EAPI Enna_Module_Class *class =
 {
     "music",
@@ -31,9 +31,9 @@ EAPI Enna_Module_Class *class =
         _class_shutdown,
         _class_show,
         _class_hide
-    };
+    }func;
 }
-
+*/
 void _class_init(int dummy)
 {
     enna_registry_activity_add("music", 0, "Music", NULL, "icon/music", NULL);
@@ -68,7 +68,7 @@ em_init(Enna_Module *em)
     em->mod = mod;
 
 
-    enna_module_class_register(em, class);
+    //enna_module_class_register(em, class);
 
     mod->menu = enna_list_add(em->evas);
 

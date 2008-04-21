@@ -24,7 +24,7 @@ struct _Enna_Module_Class
         void (*class_shutdown)(int dummy);
         void (*class_show)(int dummy);
         void (*class_hide)(int dummy);
-    }
+    };
 };
 
 struct _Enna_Module
