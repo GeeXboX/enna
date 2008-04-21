@@ -436,8 +436,8 @@ enna_scanner_init()
    /* Set charset to UTF-8 */
    scanner->charset = evas_stringshare_add("iso-8859-1");
    /* Set base path */
-   scanner->scan_path = enna_config_get_conf_value_or_default("music_module",
-							      "base_path", "/");
+   //scanner->scan_path = enna_config_get_conf_value_or_default("music_module",
+//							      "base_path", "/");
    /* Create lms, set params and start scann process */
    scanner->lms = lms_new(scanner->db_path);
    if (!scanner->lms)

@@ -92,13 +92,13 @@ enna_module_disable(Enna_Module *m)
  * @note Module music can be loaded like this : enna_module_open("music") this module in loaded from file /usr/lib/enna/modules/music.so
  */
 EAPI Enna_Module *
-enna_module_open(const char *name)
+enna_module_open(const char *name, Evas *evas)
 {
     const char *modpath;
     char module_name[4096];
     Ecore_Plugin *plugin;
     Enna_Module *m;
-    if (!name) return NULL;
+    if (!name || !evas) return NULL;
     m = malloc(sizeof(Enna_Module));
 
 
@@ -131,6 +131,7 @@ enna_module_open(const char *name)
             printf("Module \'%s\' loaded succesfull\n", m->api->name);
             m->enabled = 0;
             m->plugin = plugin;
+            m->evas = evas;
             _enna_modules = evas_list_append(_enna_modules, m);
             return m;
         }
@@ -140,3 +141,11 @@ enna_module_open(const char *name)
     return NULL;
 }
 
+EAPI int
+enna_module_class_register(Enna_Module *em, Enna_Module_Class *class)
+{
+
+    if (!em) return 0;
+    em->class = class;
+    return 1;
+}

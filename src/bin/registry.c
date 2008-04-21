@@ -106,7 +106,7 @@ enna_registry_init(void)
 /* } */
 
 EAPI void
-enna_registry_activity_add(const char *path, int pri, const char *label, const char *icon_file, const char *icon)
+enna_registry_activity_add(const char *path, int pri, const char *label, const char *icon_file, const char *icon, void (*func) (int dummy))
 {
    Enna_Registry_Activity *eact;
    Evas_List *l;
@@ -130,6 +130,7 @@ enna_registry_activity_add(const char *path, int pri, const char *label, const c
 	     return;
 	  }
      }
+   eact->func = func;
    enna_registry = evas_list_append(enna_registry, eact);
 }
 

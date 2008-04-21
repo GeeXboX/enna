@@ -172,7 +172,7 @@ _create_gui()
 				  EVAS_CALLBACK_KEY_DOWN,
 				  _event_bg_key_down_cb, enna);
    /* Create Modules */
-   em = enna_module_open("music");
+   em = enna_module_open("music", enna->evas);
    enna_module_enable(em);
 
    enna_mainmenu_load_from_registry(enna->o_mainmenu);

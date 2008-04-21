@@ -18,7 +18,8 @@ mainmenu.c\
 background.c\
 module.c\
 registry.c\
-image.c
+image.c\
+list.c
 
 enna_LDADD = @ENNA_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -34,7 +35,8 @@ mainmenu.h\
 background.h\
 module.h\
 registry.h\
-image.h
+image.h\
+list.h
 
 
 
