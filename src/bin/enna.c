@@ -175,8 +175,9 @@ _create_gui()
    em = enna_module_open("music", enna->evas);
    enna_module_enable(em);
 
-   enna_mainmenu_load_from_registry(enna->o_mainmenu);
-
+   enna_mainmenu_load_from_activities(enna->o_mainmenu);
+   enna_module_activity_init("music");
+   //enna_module_activity_go("music");
 
    ecore_evas_show(enna->ee);
 }

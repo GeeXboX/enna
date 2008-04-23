@@ -5,6 +5,7 @@
 #include "enna.h"
 
 static Evas_List *_enna_modules = NULL;
+static Evas_List *_enna_activities = NULL;
 static Ecore_Path_Group *path_group = NULL;
 
 /**
@@ -15,14 +16,14 @@ static Ecore_Path_Group *path_group = NULL;
 EAPI int
 enna_module_init(void)
 {
-    if (!path_group)
-        {
-            path_group = ecore_path_group_new();
-            ecore_path_group_add(path_group, PACKAGE_LIB_DIR"/enna/modules/");
-            return 1;
-        }
-
-    return 0;
+  if (!path_group)
+    {
+      path_group = ecore_path_group_new();
+      ecore_path_group_add(path_group, PACKAGE_LIB_DIR"/enna/modules/");
+      return 0;
+    }
+  
+  return -1;
 }
 
 /**
@@ -56,33 +57,35 @@ enna_module_shutdown(void)
             path_group = NULL;
         }
 
-    return 1;
+    return 0;
 }
 
 EAPI int
 enna_module_enable(Enna_Module *m)
 {
-    if (!m || m->enabled) return 1;
-    if (m->func.init)
-        {
-            m->func.init(m);
-            m->enabled = 1;
-            return 1;
-        }
-    return 0;
+  if (!m) return -1;
+  if(m->enabled) return 0;
+  if (m->func.init)
+    {
+      m->func.init(m);
+      m->enabled = 1;
+      return 0;
+    }
+  return -1;
 }
 
 EAPI int
 enna_module_disable(Enna_Module *m)
 {
-    if (!m || !m->enabled) return 1;
+    if (!m ) return -1;
+    if (!m->enabled) return 0;
     if (m->func.shutdown)
         {
             m->func.shutdown(m);
             m->enabled = 0;
-            return 1;
+            return 0;
         }
-    return 0;
+    return -1;
 }
 
 /**
@@ -141,11 +144,143 @@ enna_module_open(const char *name, Evas *evas)
     return NULL;
 }
 
+/**
+ * @brief Register new activity
+ * @param em enna module
+ * @return -1 if error occurs, 0 otherwise
+ */
 EAPI int
-enna_module_class_register(Enna_Module *em, Enna_Module_Class *class)
+enna_module_activity_add(Enna_Module *em, Enna_Module_Class *class)
 {
+  Evas_List *l; 
+  Enna_Module_Class *act;
 
-    if (!em) return 0;
-    em->class = class;
-    return 1;
+  if (!em || !class) return -1;
+  em->class = class;
+  for (l = _enna_activities; l; l = l->next)
+     {
+	act = l->data;
+	if (act->pri > class->pri)
+	  {
+	     _enna_activities = evas_list_prepend_relative_list(_enna_activities, class, l);
+	     return 0;
+	  }
+     }
+  _enna_activities = evas_list_append(_enna_activities, class);
+  return 0;
 }
+
+/**
+ * @brief Register new activity
+ * @param em enna module
+ * @return -1 if error occurs, 0 otherwise
+ */
+EAPI int
+enna_module_activity_del(char *name)
+{
+  Evas_List *l; 
+  Enna_Module_Class *act;
+
+  if (!name) return -1;
+
+  for (l = _enna_activities; l; l = l->next)
+     {
+	act = l->data;
+   	_enna_activities = evas_list_remove(_enna_activities, act);
+	return 0;
+     }
+  return -1;
+}
+
+
+/**
+ * @brief Get list of activities registred
+ * @return Evas_List of activities
+ */
+EAPI Evas_List *
+enna_module_activities_get()
+{
+  return _enna_activities;
+}
+
+
+EAPI int
+enna_module_activity_init(char *name)
+{
+  Evas_List *l; 
+  Enna_Module_Class *act;
+
+  if (!name) return -1;
+
+  for (l = _enna_activities; l; l = l->next)
+     {
+	act = l->data;
+	if (!strcmp(act->name, name))
+	  {
+              if (act->func.class_init)
+                  act->func.class_init(0);
+	  }
+     }
+  return 0;
+}
+
+EAPI int
+enna_module_activity_show(char *name)
+{
+  Evas_List *l; 
+  Enna_Module_Class *act;
+
+  if (!name) return -1;
+
+  for (l = _enna_activities; l; l = l->next)
+     {
+	act = l->data;
+	if (!strcmp(act->name, name))
+	  {
+	    if (act->func.class_show)
+	      act->func.class_show(0);
+	  }
+     }
+  return 0;
+}
+
+EAPI int
+enna_module_activity_shutdown(char *name)
+{
+  Evas_List *l; 
+  Enna_Module_Class *act;
+
+  if (!name) return -1;
+
+  for (l = _enna_activities; l; l = l->next)
+     {
+	act = l->data;
+	if (!strcmp(act->name, name))
+	  {
+	    if (act->func.class_shutdown)
+                act->func.class_shutdown(0);
+	  }
+     }
+  return 0;
+}
+
+EAPI int
+enna_module_activity_hide(char *name)
+{
+  Evas_List *l; 
+  Enna_Module_Class *act;
+
+  if (!name) return -1;
+
+  for (l = _enna_activities; l; l = l->next)
+     {
+	act = l->data;
+	if (!strcmp(act->name, name))
+	  {
+	    if (act->func.class_hide)
+	      act->func.class_hide(0);
+	  }
+     }
+  return 0;
+}
+

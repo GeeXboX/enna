@@ -1,6 +1,12 @@
+
 /* Interface */
 
 #include "enna.h"
+
+static void           _class_init(int dummy);
+static void           _class_shutdown(int dummy);
+static void           _class_show(int dummy);
+static void           _class_hide(int dummy);
 
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
@@ -21,25 +27,25 @@ EAPI Enna_Module_Api module_api =
     ENNA_MODULE_VERSION,
     "music"
 };
-/*
-EAPI Enna_Module_Class *class =
+
+static Enna_Module_Class class =
 {
     "music",
-    ENNA_MODULE_CLASS_ACTIVITY,
+    1,
+    "music",
+    NULL,
+    "icon/music",
     {
         _class_init,
         _class_shutdown,
         _class_show,
         _class_hide
-    }func;
-}
-*/
+    },
+};
+
 void _class_init(int dummy)
 {
-    enna_registry_activity_add("music", 0, "Music", NULL, "icon/music", NULL);
-    enna_registry_activity_add("video", 1, "Video", NULL, "icon/video", NULL);
-    enna_registry_activity_add("photos", 2, "Photos", NULL, "icon/music", NULL);
-    enna_registry_activity_add("config", 3, "Configuration", NULL, "icon/music", NULL);
+    printf("class init\n");
 }
 
 void _class_shutdown(int dummy)
@@ -69,10 +75,12 @@ em_init(Enna_Module *em)
 
 
     //enna_module_class_register(em, class);
-
+    enna_module_activity_add(mod->em, &class);
+    enna_module_activity_add(mod->em, &class);
+    enna_module_activity_add(mod->em, &class);
+    enna_module_activity_add(mod->em, &class);
     mod->menu = enna_list_add(em->evas);
 
-    
 
     return 1;
 }

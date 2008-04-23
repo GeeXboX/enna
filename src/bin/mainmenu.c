@@ -129,16 +129,16 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
 }
 
 EAPI void
-enna_mainmenu_load_from_registry(Evas_Object *obj)
+enna_mainmenu_load_from_activities(Evas_Object *obj)
 {
     Evas_List *activities, *l;
     API_ENTRY return;
 
-    activities = enna_registry_activities_get();
+    activities = enna_module_activities_get();
 
     for (l = activities; l; l = l->next)
         {
-            Enna_Registry_Activity *eact;
+            Enna_Module_Class *eact;
             Evas_Object *icon = NULL;
             eact = l->data;
 
@@ -154,8 +154,8 @@ enna_mainmenu_load_from_registry(Evas_Object *obj)
                     icon = enna_image_add(evas_object_evas_get(sd->o_edje));
                     enna_image_file_set(icon, eact->icon_file);
                 }
-            printf("adding %s\n", eact->activity);
-            enna_mainmenu_append(obj, icon, eact->activity, NULL, NULL);
+            printf("adding %s\n", eact->name);
+            enna_mainmenu_append(obj, icon, eact->name, NULL, NULL);
         }
 
 }

@@ -10,27 +10,30 @@ typedef struct _Enna_Module_Api Enna_Module_Api;
 typedef enum _ENNA_MODULE_CLASS_TYPE ENNA_MODULE_CLASS_TYPE;
 typedef struct _Enna_Module_Class Enna_Module_Class;
 
-enum
+enum ENNA_MODULE_CLASS_TYPE
 {
     ENNA_MODULE_CLASS_ACTIVITY
 };
 
 struct _Enna_Module_Class
 {
-    const char *name;
-    struct
-    {
-        void (*class_init)(int dummy);
-        void (*class_shutdown)(int dummy);
-        void (*class_show)(int dummy);
-        void (*class_hide)(int dummy);
-    };
+  const char *name;
+  int pri;
+  const char *label;
+  const char *icon_file;
+  const char *icon;
+  struct
+  {
+    void (*class_init)(int dummy);
+    void (*class_shutdown)(int dummy);
+    void (*class_show)(int dummy);
+    void (*class_hide)(int dummy);
+  }func;
 };
 
 struct _Enna_Module
 {
     const char *name;
-
     struct {
         void * (*init)        (Enna_Module *m);
         int    (*shutdown)    (Enna_Module *m);
@@ -41,7 +44,7 @@ struct _Enna_Module
     Ecore_Plugin *plugin;
     Evas *evas;
     void *mod;
-    void *class;
+    Enna_Module_Class *class;
 
 };
 
@@ -57,6 +60,6 @@ EAPI int          enna_module_shutdown(void);
 EAPI Enna_Module *enna_module_open(const char *name, Evas *evas);
 EAPI int          enna_module_enable(Enna_Module *m);
 EAPI int          enna_module_disable(Enna_Module *m);
-EAPI int          enna_module_class_register(Enna_Module *em,  Enna_Module_Class *class);
+EAPI int          enna_module_activity_add(Enna_Module *em, Enna_Module_Class *class);
 
 #endif

@@ -17,7 +17,6 @@ box.c\
 mainmenu.c\
 background.c\
 module.c\
-registry.c\
 image.c\
 list.c
 
@@ -34,7 +33,6 @@ box.h\
 mainmenu.h\
 background.h\
 module.h\
-registry.h\
 image.h\
 list.h
 
