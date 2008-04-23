@@ -84,6 +84,13 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
      {
 	ecore_main_loop_quit();
      }
+   else if (!strcmp(ev->key, "m"))
+     {
+	if (enna_mainmenu_visible(enna->o_mainmenu))
+	  enna_mainmenu_hide(enna->o_mainmenu);
+	else
+	  enna_mainmenu_show(enna->o_mainmenu);
+     }
 
 }
 
@@ -178,7 +185,7 @@ _create_gui()
    enna_mainmenu_load_from_activities(enna->o_mainmenu);
    enna_module_activity_init("music");
    //enna_module_activity_go("music");
-
+   enna_mainmenu_show(enna->o_mainmenu);
    ecore_evas_show(enna->ee);
 }
 
