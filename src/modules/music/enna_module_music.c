@@ -1,4 +1,3 @@
-
 /* Interface */
 
 #include "enna.h"
@@ -62,6 +61,15 @@ void _class_hide(int dummy)
     printf("Hide Music Module\n");
 }
 
+static void _crate_gui()
+{
+  Evas_Object *o;
+
+  o = edje_object_add(mod->em->evas);
+  edje_object_file_set(o, enna_theme_get(), "module/music");
+  enna_content_add("music", o);
+}
+
 /* Module interface */
 
 static int
@@ -80,7 +88,7 @@ em_init(Enna_Module *em)
     enna_module_activity_add(mod->em, &class);
     enna_module_activity_add(mod->em, &class);
     mod->menu = enna_list_add(em->evas);
-
+    
 
     return 1;
 }

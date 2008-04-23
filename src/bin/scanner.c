@@ -507,7 +507,7 @@ _metadata_print(Enna_Metadata * metadata)
 EAPI void
 enna_scanner_shutdown()
 {
-   lms_stop_processing(scanner->lms);
+  //lms_stop_processing(scanner->lms);
    //pthread_join(scanner->scanner_thread, NULL);   
    lms_free(scanner->lms);
    evas_stringshare_del(scanner->db_path);
