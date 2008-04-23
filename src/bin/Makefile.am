@@ -18,7 +18,8 @@ mainmenu.c\
 background.c\
 module.c\
 image.c\
-list.c
+list.c\
+content.c
 
 enna_LDADD = @ENNA_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -34,7 +35,8 @@ mainmenu.h\
 background.h\
 module.h\
 image.h\
-list.h
+list.h\
+content.h
 
 
 

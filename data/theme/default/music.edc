@@ -1,0 +1,13 @@
+ group {
+    name: "module/music";
+    parts {
+       part {
+          name: "bg";
+          type: RECT;
+          description {
+             state: "default" 0.0;
+             color: 255 0 255 128;
+          }
+       }
+    }
+ }

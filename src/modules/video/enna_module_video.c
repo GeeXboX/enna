@@ -10,30 +10,30 @@ static void           _class_hide(int dummy);
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
 
-typedef struct _Enna_Module_Music Enna_Module_Music;
+typedef struct _Enna_Module_Video Enna_Module_Video;
 
-struct _Enna_Module_Music
+struct _Enna_Module_Video
 {
     Evas *e;
     Evas_Object *o_edje;
     Enna_Module *em;
 };
 
-static Enna_Module_Music *mod;
+static Enna_Module_Video *mod;
 
 EAPI Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "music"
+    "video"
 };
 
 static Enna_Module_Class class =
 {
-    "music",
+    "video",
     1,
-    "music",
+    "video",
     NULL,
-    "icon/music",
+    "icon/video",
     {
         _class_init,
         _class_shutdown,
@@ -53,24 +53,23 @@ static void _class_shutdown(int dummy)
 
 static void _class_show(int dummy)
 {
-    printf("Show Music Module\n");
-    edje_object_signal_emit(mod->o_edje, "show", "enna");
+    printf("Show Video Module\n");
+    evas_object_signal_emit(mod->o_edje, "show", "enna");
 }
 
 static void _class_hide(int dummy)
 {
-    printf("Hide Music Module\n");
-    edje_object_signal_emit(mod->o_edje, "hide", "enna");
+    printf("Hide Video Module\n");
+    evas_object_signal_emit(mod->o_edje, "hide", "enna");
 }
 
 static void _create_gui()
 {
   Evas_Object *o;
 
-  printf("create gui\n");
-
   o = edje_object_add(mod->em->evas);
-  edje_object_file_set(o, enna_config_theme_get(), "module/music");
+  edje_object_file_set(o, enna_config_theme_get(), "module/video");
+
   mod->o_edje = o;
 }
 
@@ -81,15 +80,15 @@ static void _create_gui()
 static int
 em_init(Enna_Module *em)
 {
-    printf("Module Music Init\n");
+    printf("Module Video Init\n");
 
-    mod = calloc(1, sizeof(Enna_Module_Music));
+    mod = calloc(1, sizeof(Enna_Module_Video));
     mod->em = em;
     em->mod = mod;
 
     enna_module_activity_add(mod->em, &class);
     _create_gui();
-    enna_content_append("music", mod->o_edje);
+    //enna_content_add(mod->o_edje);
 
     return 1;
 }
@@ -99,11 +98,11 @@ static int
 em_shutdown(Enna_Module *em)
 {
 
-    Enna_Module_Music *mod;
+    Enna_Module_Video *mod;
 
     mod = em->mod;
 
-    printf("Module Music Shutdown\n");
+    printf("Module Video Shutdown\n");
 
     evas_object_del(mod->o_edje);
 

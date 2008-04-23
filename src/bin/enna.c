@@ -165,10 +165,11 @@ _create_gui()
    ecore_evas_resize(enna->ee, w, h);
    enna->o_edje = o;
 
+   /* Create Background Object */
    o = enna_background_add(enna->evas);
    edje_object_part_swallow(enna->o_edje, "enna.swallow.background", o);
    enna->o_background = o;
-
+   /* Create Mainmenu Object */
    o = enna_mainmenu_add(enna->evas);
    edje_object_part_swallow(enna->o_edje, "enna.swallow.mainmenu", o);
    enna->o_mainmenu = o;
@@ -178,13 +179,24 @@ _create_gui()
    evas_object_event_callback_add(enna->o_edje,
 				  EVAS_CALLBACK_KEY_DOWN,
 				  _event_bg_key_down_cb, enna);
+   /* Create Content Object */
+   o = enna_content_add(enna->evas);
+   edje_object_part_swallow(enna->o_edje, "enna.swallow.module", o);
+   enna->o_content = o;
+
    /* Create Modules */
    em = enna_module_open("music", enna->evas);
    enna_module_enable(em);
-
+   em = enna_module_open("video", enna->evas);
+   enna_module_enable(em);
+   /* Load mainmenu items */
    enna_mainmenu_load_from_activities(enna->o_mainmenu);
    enna_module_activity_init("music");
-   //enna_module_activity_go("music");
+   enna_module_activity_init("video");
+   /* Select content */
+   enna_content_select("music");
+
+
    enna_mainmenu_show(enna->o_mainmenu);
    ecore_evas_show(enna->ee);
 }

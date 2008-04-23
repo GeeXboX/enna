@@ -52,6 +52,7 @@ src/Makefile
 src/bin/Makefile
 src/modules/Makefile
 src/modules/music/Makefile
+src/modules/video/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
