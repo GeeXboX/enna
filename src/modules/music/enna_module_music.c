@@ -42,21 +42,21 @@ static Enna_Module_Class class =
     },
 };
 
-void _class_init(int dummy)
+static void _class_init(int dummy)
 {
     printf("class init\n");
 }
 
-void _class_shutdown(int dummy)
+static void _class_shutdown(int dummy)
 {
 }
 
-void _class_show(int dummy)
+static void _class_show(int dummy)
 {
     printf("Show Music Module\n");
 }
 
-void _class_hide(int dummy)
+static void _class_hide(int dummy)
 {
     printf("Hide Music Module\n");
 }
@@ -69,6 +69,8 @@ static void _crate_gui()
   edje_object_file_set(o, enna_theme_get(), "module/music");
   enna_content_add("music", o);
 }
+
+
 
 /* Module interface */
 
@@ -84,11 +86,6 @@ em_init(Enna_Module *em)
 
     //enna_module_class_register(em, class);
     enna_module_activity_add(mod->em, &class);
-    enna_module_activity_add(mod->em, &class);
-    enna_module_activity_add(mod->em, &class);
-    enna_module_activity_add(mod->em, &class);
-    mod->menu = enna_list_add(em->evas);
-    
 
     return 1;
 }

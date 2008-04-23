@@ -73,7 +73,7 @@ group {
          signal: "mainmenu,show";
          source:  "enna";
          action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
+         transition: DECELERATE 0.5;
          target: "enna.clip.mainmenu";
       }
       program {
@@ -81,7 +81,7 @@ group {
          signal: "mainmenu,hide";
          source:  "enna";
          action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
+         transition: ACCELERATE 0.5;
          target: "enna.clip.mainmenu";
       }
    }
