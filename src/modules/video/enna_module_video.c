@@ -54,26 +54,26 @@ static void _class_shutdown(int dummy)
 static void _class_show(int dummy)
 {
     printf("Show Video Module\n");
-    evas_object_signal_emit(mod->o_edje, "show", "enna");
+    edje_object_signal_emit(mod->o_edje, "show", "enna");
 }
 
 static void _class_hide(int dummy)
 {
     printf("Hide Video Module\n");
-    evas_object_signal_emit(mod->o_edje, "hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "hide", "enna");
 }
 
-static void _create_gui()
+static void
+_create_gui()
 {
-  Evas_Object *o;
+   Evas_Object *o;
+
+  printf("create video gui\n");
 
   o = edje_object_add(mod->em->evas);
   edje_object_file_set(o, enna_config_theme_get(), "module/video");
-
   mod->o_edje = o;
 }
-
-
 
 /* Module interface */
 
@@ -88,7 +88,7 @@ em_init(Enna_Module *em)
 
     enna_module_activity_add(mod->em, &class);
     _create_gui();
-    //enna_content_add(mod->o_edje);
+    enna_content_append("video", mod->o_edje);;
 
     return 1;
 }

@@ -8,6 +8,8 @@ EAPI void           enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, co
 					 void (*func) (void *data),
 					 void *data);
 EAPI void           enna_mainmenu_load_from_activities(Evas_Object *obj);
+EAPI void           enna_mainmenu_select_next(Evas_Object *obj);
+EAPI void           enna_mainmenu_select_nth(Evas_Object *obj, int nth);
 EAPI void           enna_mainmenu_show(Evas_Object *obj);
 EAPI void           enna_mainmenu_hide(Evas_Object *obj);
 EAPI unsigned char  enna_mainmenu_visible(Evas_Object *obj);

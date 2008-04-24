@@ -73,6 +73,7 @@ enna_content_append(const char *name, Evas_Object *content)
    for (l = _enna_contents; l; l = l ->next)
      {
 	Enna_Content_Element *e;
+	e = l->data;
 	if (!strcmp(e->name, name))
 	  return -1;
      }

@@ -67,7 +67,7 @@ static void _create_gui()
 {
   Evas_Object *o;
 
-  printf("create gui\n");
+  printf("create music gui\n");
 
   o = edje_object_add(mod->em->evas);
   edje_object_file_set(o, enna_config_theme_get(), "module/music");

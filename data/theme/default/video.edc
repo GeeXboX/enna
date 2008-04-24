@@ -1,5 +1,5 @@
  group {
-    name: "module/music";
+    name: "module/video";
     parts {
        part {
           name: "enna.clip.module";
@@ -21,7 +21,7 @@
           type: RECT;
           description {
              state: "default" 0.0;
-             color: 0 255 0 15;
+             color: 255 255 0 15;
           }
        }
     }

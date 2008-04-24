@@ -75,25 +75,35 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
    enna = (Enna *) data;
    ev = (Evas_Event_Key_Down *) event_info;
 
+   printf("Key pressed : %s\n", ev->key);
+
    if (!ev || !enna)
      return;
 
-
- 
    if (!strcmp(ev->key, "q"))
      {
 	ecore_main_loop_quit();
      }
-   else if (!strcmp(ev->key, "m"))
+   /* Mainmenu is visible => key left/right/up/down/enter are redirect to it */
+   else if (enna_mainmenu_visible(enna->o_mainmenu))
      {
-	if (enna_mainmenu_visible(enna->o_mainmenu))
-	  enna_mainmenu_hide(enna->o_mainmenu);
-	else
+	if (!strcmp(ev->key, "m"))
+	  enna_mainmenu_hide(enna->o_mainmenu); 
+	else if(!strcmp(ev->key, "n"))
+	  {
+	     enna_mainmenu_select_next(enna->o_mainmenu);
+	  }
+	else if (!strcmp(ev->key, "Return"))
+	  {
+	     enna_mainmenu_activate_nth(enna->o_mainmenu, enna_mainmenu_selected_get(enna->o_mainmenu));
+	  }
+     }
+   else
+     {
+	if (!strcmp(ev->key, "m"))
 	  enna_mainmenu_show(enna->o_mainmenu);
      }
-
 }
-
 /* Functions */
 
 static int
@@ -191,6 +201,8 @@ _create_gui()
    enna_module_enable(em);
    /* Load mainmenu items */
    enna_mainmenu_load_from_activities(enna->o_mainmenu);
+   enna_mainmenu_select_nth(enna->o_mainmenu, 0);
+
    enna_module_activity_init("music");
    enna_module_activity_init("video");
    /* Select content */

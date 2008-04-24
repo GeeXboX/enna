@@ -47,6 +47,7 @@ struct _E_Smart_Data
    Evas_Object        *o_edje;
    Evas_Object        *o_box;
    Evas_List          *items;
+   int                 selected;
    unsigned char       visible : 1;
 };
 
@@ -62,6 +63,7 @@ struct _E_Smart_Item
 };
 
 /* local subsystem functions */
+static void         _enna_mainmenu_activate_cb(void *data);
 static void         _enna_mainmenu_smart_reconfigure(E_Smart_Data * sd);
 static void         _enna_mainmenu_smart_init(void);
 static void         _e_smart_add(Evas_Object * obj);
@@ -141,33 +143,97 @@ enna_mainmenu_load_from_activities(Evas_Object *obj)
 
    for (l = activities; l; l = l->next)
      {
-	Enna_Module_Class *eact;
+	Enna_Module_Class *act;
 	Evas_Object *icon = NULL;
-	eact = l->data;
+	act = l->data;
 
-	if (eact->icon)
+	if (act->icon)
 	  {
-	     printf("icon : %s\n",eact->icon);
+	     printf("icon : %s\n",act->icon);
 	     icon = edje_object_add(evas_object_evas_get(sd->o_edje));
 	     edje_object_file_set(icon, enna_config_theme_get(),
-				  eact->icon);
+				  act->icon);
 	  }
-	else if (eact->icon_file)
+	else if (act->icon_file)
 	  {
 	     icon = enna_image_add(evas_object_evas_get(sd->o_edje));
-	     enna_image_file_set(icon, eact->icon_file);
+	     enna_image_file_set(icon, act->icon_file);
 	  }
-	printf("adding %s\n", eact->name);
-	enna_mainmenu_append(obj, icon, eact->name, NULL, NULL);
+	printf("adding %s\n", act->name);
+	enna_mainmenu_append(obj, icon, act->name, _enna_mainmenu_activate_cb, act);
      }
+
+}
+
+EAPI void
+enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
+{
+   E_Smart_Item *si;
+   API_ENTRY return;
+
+   si = evas_list_nth(sd->items, nth);
+   if (!si) return;
+   if (si->func)
+     si->func(si->data);
+   printf("activate : %d\n", nth);
+}
+
+EAPI int
+enna_mainmenu_selected_get(Evas_Object *obj)
+{
+   API_ENTRY return -1;
+   return sd->selected;
+}
+
+EAPI void
+enna_mainmenu_select_nth(Evas_Object *obj, int nth)
+{
+   Evas_List *l;
+   E_Smart_Item *new, *prev;
+
+   API_ENTRY return;
+
+
+   printf("select next : prev : %d\n", sd->selected);
+   prev = evas_list_nth(sd->items, sd->selected);
+
+   if (!prev)
+     return;
+
+   new = evas_list_nth(sd->items, nth);
+   if (!new) return;
+
+   sd->selected = nth;
+   edje_object_signal_emit(new->o_base, "enna,state,selected", "enna");
+   if (new != prev) edje_object_signal_emit(prev->o_base, "enna,state,unselected", "enna");
 
 }
 
 EAPI void
 enna_mainmenu_select_next(Evas_Object *obj)
 {
+   Evas_List *l;
+   E_Smart_Item *new, *prev;
+   int ns = 0;
+
    API_ENTRY return;
-   
+
+   ns = sd->selected;
+   prev = evas_list_nth(sd->items, ns);
+   if (!prev)
+     return;
+   ns++;
+   new = evas_list_nth(sd->items, ns);
+   if (!new)
+     {
+	ns = 0;
+	new = evas_list_nth(sd->items, ns);
+	if (!new) return;
+     }
+   sd->selected = ns;
+   edje_object_signal_emit(new->o_base, "enna,state,selected", "enna");
+   edje_object_signal_emit(prev->o_base, "enna,state,unselected", "enna");
+
 }
 
 EAPI void
@@ -193,7 +259,7 @@ enna_mainmenu_hide(Evas_Object *obj)
    edje_object_signal_emit(sd->o_edje, "mainmenu,hide", "enna");
 }
 
-EAPI unsigned char 
+EAPI unsigned char
 enna_mainmenu_visible(Evas_Object *obj)
 {
    API_ENTRY return 0;
@@ -201,6 +267,19 @@ enna_mainmenu_visible(Evas_Object *obj)
 }
 
 /* local subsystem globals */
+
+static void
+_enna_mainmenu_activate_cb(void *data)
+{
+   Enna_Module_Class *act;
+
+   if (!data) return;
+   act = data;
+   enna_content_select(act->name);
+
+}
+
+
 static void
 _enna_mainmenu_smart_reconfigure(E_Smart_Data * sd)
 {
@@ -259,6 +338,7 @@ _e_smart_add(Evas_Object * obj)
 
    sd->items = NULL;
    sd->visible = 0;
+   sd->selected = 0;
    o = edje_object_add(e);
    edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu");
    sd->o_edje = o;
@@ -267,7 +347,7 @@ _e_smart_add(Evas_Object * obj)
    o = enna_box_add(e);
    enna_box_orientation_set(o, 1);
    enna_box_homogenous_set(o, 1);
-   enna_box_align_set(o, 0.0, 0.0);
+   enna_box_align_set(o, 0.5, 0.5);
    sd->o_box = o;
 
    edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_box);
