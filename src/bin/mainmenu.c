@@ -173,8 +173,10 @@ enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
    si = evas_list_nth(sd->items, nth);
    if (!si) return;
    if (si->func)
-     si->func(si->data);
-   printf("activate : %d\n", nth);
+     {
+	si->func(si->data);
+	enna_mainmenu_hide(obj);
+     }
 }
 
 EAPI int
