@@ -19,7 +19,9 @@ background.c\
 module.c\
 image.c\
 list.c\
-content.c
+content.c\
+pan.c\
+scrollframe.c
 
 enna_LDADD = @ENNA_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -36,7 +38,9 @@ background.h\
 module.h\
 image.h\
 list.h\
-content.h
+content.h\
+pan.h\
+scrollframe.h
 
 
 

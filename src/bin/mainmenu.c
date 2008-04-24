@@ -54,7 +54,6 @@ struct _E_Smart_Data
 struct _E_Smart_Item
 {
    E_Smart_Data       *sd;
-   Evas_Object        *o_edje;
    Evas_Object        *o_base;
    Evas_Object        *o_icon;
    void                (*func) (void *data);
@@ -370,11 +369,10 @@ _e_smart_del(Evas_Object * obj)
      {
 	E_Smart_Item *si;
 	si = l->data;
-	evas_object_del(si->o_edje);
 	evas_object_del(si->o_base);
 	evas_object_del(si->o_icon);
-	free(si);
      }
+   evas_list_free(sd->items);
    evas_object_del(sd->o_edje);
    evas_object_del(sd->o_box);
    free(sd);

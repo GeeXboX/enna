@@ -55,16 +55,16 @@ enna_list_append(Evas_Object *obj, Evas_Object *icon, const char *label, int hea
    si = ENNA_NEW(Enna_List_Item, 1);
    si->sd = sd;
    si->o_base = edje_object_add(evas_object_evas_get(sd->o_smart));
-   
+   printf("enna list append\n");
    if (header) 
-     edje_object_file_set(si->o_base, "default/default.edj", 
-			     "e/widgets/ilist_header");
+     edje_object_file_set(si->o_base, enna_config_theme_get(), 
+			     "enna/list_header");
    else if (evas_list_count(sd->items) & 0x1)
-     edje_object_file_set(si->o_base, "default/default.edj",
-			     "e/widgets/ilist");
+     edje_object_file_set(si->o_base, enna_config_theme_get(),
+			     "enna/list");
    else
-     edje_object_file_set(si->o_base, "default/default.edj",
-			     "e/widgets/ilist");
+     edje_object_file_set(si->o_base, enna_config_theme_get(),
+			     "enna/list");
    if (label)
      edje_object_part_text_set(si->o_base, "e.text.label", label);
    si->o_icon = icon;
@@ -353,21 +353,33 @@ EAPI void
 enna_list_clear(Evas_Object *obj) 
 {
    API_ENTRY return;
-   //enna_list_freeze(obj);
+   enna_list_freeze(obj);
    while (sd->items) 
      {
 	Enna_List_Item *si;
-	
 	si = sd->items->data;
 	sd->items = evas_list_remove_list(sd->items, sd->items);
 	if (si->o_icon) evas_object_del(si->o_icon);
 	evas_object_del(si->o_base);
 	ENNA_FREE(si);
      }
-   //enna_list_thaw(obj);
+   enna_list_thaw(obj);
    sd->selected = -1;
 }
 
+EAPI void
+enna_list_freeze(Evas_Object *obj)
+{
+   API_ENTRY return;
+   enna_box_freeze(sd->o_box);
+}
+
+EAPI void
+enna_list_thaw(Evas_Object *obj)
+{
+   API_ENTRY return;
+   enna_box_thaw(sd->o_box);
+}
 
 /* SMART FUNCTIONS */
 static void 

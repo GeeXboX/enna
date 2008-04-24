@@ -16,6 +16,8 @@ collections
 #include "music.edc"
 #include "video.edc"
 #include "icons.edc"
+#include "list.edc"
+#include "scrollframe.edc"
 
    group {
       name: "enna";
@@ -37,7 +39,7 @@ collections
             name: "enna.swallow.module";
             type: SWALLOW;
             clip_to: "enna.clip.module";
-            mouse_events : 0;
+            mouse_events : 1;
             description{
                state: "default" 0.0;
                color:  255 255 255 255;

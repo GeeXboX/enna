@@ -26,6 +26,7 @@ EAPI void         enna_list_selected_set          (Evas_Object *obj, int n);
 EAPI int          enna_list_selected_get          (Evas_Object *obj);
 EAPI void         enna_list_icon_size_set         (Evas_Object *obj, Evas_Coord w, Evas_Coord h);
 EAPI void         enna_list_clear                 (Evas_Object *obj);
-
+EAPI void         enna_list_freeze                (Evas_Object *obj);
+EAPI void         enna_list_thaw                  (Evas_Object *obj);
 #endif
 
