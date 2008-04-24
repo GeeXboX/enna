@@ -61,5 +61,5 @@ EAPI Enna_Module *enna_module_open(const char *name, Evas *evas);
 EAPI int          enna_module_enable(Enna_Module *m);
 EAPI int          enna_module_disable(Enna_Module *m);
 EAPI int          enna_module_activity_add(Enna_Module *em, Enna_Module_Class *class);
-
+EAPI Evas_List   *enna_module_activities_get(void);
 #endif

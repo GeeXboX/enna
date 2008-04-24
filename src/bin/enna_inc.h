@@ -11,5 +11,6 @@
 #include "background.h"
 #include "module.h"
 #include "image.h"
+#include "content.h"
 
 #endif

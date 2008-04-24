@@ -198,7 +198,7 @@ enna_module_activity_del(char *name)
  * @return Evas_List of activities
  */
 EAPI Evas_List *
-enna_module_activities_get()
+enna_module_activities_get(void)
 {
   return _enna_activities;
 }

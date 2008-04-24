@@ -58,6 +58,7 @@ struct _E_Smart_Item
    Evas_Object        *o_icon;
    void                (*func) (void *data);
    void               *data;
+   unsigned char       selected : 1;
 };
 
 /* local subsystem functions */
@@ -116,6 +117,7 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
      }
    si->func = func;
    si->data = data;
+   si->selected = 0;
    sd->items = evas_list_append(sd->items, si);
    edje_object_size_min_calc(si->o_base, &mw, &mh);
    edje_object_size_min_get(si->o_base, &mw, &mh);
@@ -159,6 +161,13 @@ enna_mainmenu_load_from_activities(Evas_Object *obj)
 	enna_mainmenu_append(obj, icon, eact->name, NULL, NULL);
      }
 
+}
+
+EAPI void
+enna_mainmenu_select_next(Evas_Object *obj)
+{
+   API_ENTRY return;
+   
 }
 
 EAPI void
@@ -270,12 +279,24 @@ _e_smart_add(Evas_Object * obj)
 static void
 _e_smart_del(Evas_Object * obj)
 {
-   E_Smart_Data       *sd;
+   E_Smart_Data *sd;
+   Evas_List *l;
 
    sd = evas_object_smart_data_get(obj);
    if (!sd)
      return;
+
+   for (l = sd->items; l; l = l->next)
+     {
+	E_Smart_Item *si;
+	si = l->data;
+	evas_object_del(si->o_edje);
+	evas_object_del(si->o_base);
+	evas_object_del(si->o_icon);
+	free(si);
+     }
    evas_object_del(sd->o_edje);
+   evas_object_del(sd->o_box);
    free(sd);
 }
 
