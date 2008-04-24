@@ -81,7 +81,7 @@ enna_content_append(const char *name, Evas_Object *content)
    elem->name = evas_stringshare_add(name);
    elem->content = content;
    elem->selected = 0;
-   _enna_contents = evas_list_append(_enna_contents,elem); 
+   _enna_contents = evas_list_append(_enna_contents,elem);
    return 0;
 }
 

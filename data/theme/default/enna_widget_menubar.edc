@@ -1,7 +1,7 @@
 images {
  image: "menubar_background.png" COMP;
  image: "menubar_shadow.png" COMP;
-   
+
 }
 group {
  name: "enna/widget/menubar";
@@ -17,7 +17,7 @@ group {
       }
       part {
       name: "shadow";
-         
+
       clip_to: "enna.clip.menubar";
          description {
          state: "default" 0.0;

@@ -114,7 +114,7 @@ _e_smart_add(Evas_Object * obj)
    sd = calloc(1, sizeof(E_Smart_Data));
    if (!sd)
       return;
-   
+
    e = evas_object_evas_get(obj);
 
 
@@ -127,7 +127,7 @@ _e_smart_add(Evas_Object * obj)
    evas_object_color_set(sd->o_bg, 0, 0, 0, 255);
    evas_object_layer_set(sd->o_bg, 0);
    evas_object_show(sd->o_bg);
-   
+
    sd->o_edje = edje_object_add(e);
    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/background");
 
@@ -201,7 +201,7 @@ _e_smart_hide(Evas_Object * obj)
       return;
    evas_object_hide(sd->o_bg);
    evas_object_hide(sd->o_edje);
-   
+
 }
 
 static void

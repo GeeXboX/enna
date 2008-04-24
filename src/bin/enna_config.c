@@ -357,7 +357,7 @@ EAPI void
 enna_config_shutdown()
 {
    /* struct conf_section *s; */
-   
+
    /* ENNA_FREE_LIST(config.music_extensions,free); */
    /* ENNA_FREE_LIST(config.video_extensions,free); */
    /* ENNA_FREE_LIST(config.photo_extensions,free); */

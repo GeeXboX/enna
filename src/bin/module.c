@@ -22,7 +22,7 @@ enna_module_init(void)
       ecore_path_group_add(path_group, PACKAGE_LIB_DIR"/enna/modules/");
       return 0;
     }
-  
+
   return -1;
 }
 
@@ -152,7 +152,7 @@ enna_module_open(const char *name, Evas *evas)
 EAPI int
 enna_module_activity_add(Enna_Module *em, Enna_Module_Class *class)
 {
-  Evas_List *l; 
+  Evas_List *l;
   Enna_Module_Class *act;
 
   if (!em || !class) return -1;
@@ -178,7 +178,7 @@ enna_module_activity_add(Enna_Module *em, Enna_Module_Class *class)
 EAPI int
 enna_module_activity_del(char *name)
 {
-  Evas_List *l; 
+  Evas_List *l;
   Enna_Module_Class *act;
 
   if (!name) return -1;
@@ -207,7 +207,7 @@ enna_module_activities_get(void)
 EAPI int
 enna_module_activity_init(char *name)
 {
-  Evas_List *l; 
+  Evas_List *l;
   Enna_Module_Class *act;
 
   if (!name) return -1;
@@ -227,7 +227,7 @@ enna_module_activity_init(char *name)
 EAPI int
 enna_module_activity_show(char *name)
 {
-  Evas_List *l; 
+  Evas_List *l;
   Enna_Module_Class *act;
 
   if (!name) return -1;
@@ -247,7 +247,7 @@ enna_module_activity_show(char *name)
 EAPI int
 enna_module_activity_shutdown(char *name)
 {
-  Evas_List *l; 
+  Evas_List *l;
   Enna_Module_Class *act;
 
   if (!name) return -1;
@@ -267,7 +267,7 @@ enna_module_activity_shutdown(char *name)
 EAPI int
 enna_module_activity_hide(char *name)
 {
-  Evas_List *l; 
+  Evas_List *l;
   Enna_Module_Class *act;
 
   if (!name) return -1;

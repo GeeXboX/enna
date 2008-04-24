@@ -52,7 +52,7 @@ struct _Enna_Scanner
   int             fd_ev_write;
   Ecore_Fd_Handler *fd_ev_handler;
   pthread_t        scanner_thread;
-  
+
 };
 
 
@@ -68,9 +68,9 @@ static void _metadata_print(Enna_Metadata * metadata);
 
 static sqlite3 * _db_open(const char *filename)
 {
-     
+
    sqlite3 *db;
-   
+
     if (sqlite3_open(filename, &db) != SQLITE_OK) {
         dbg("ERROR: could not open DB \"%s\": %s\n",
                 filename, sqlite3_errmsg(db));
@@ -227,10 +227,10 @@ _cover_download(const char *artist, const char *album)
     * {
     * // Start at the top of the query and work our way down
     * mb_Select(o, MBS_Rewind);
-    * 
+    *
     * // Select the ith album
     * mb_Select1(o, MBS_SelectAlbum, 1);
-    * 
+    *
     * // Extract the album id from the ith track
     * mb_GetResultData(o, MBE_AlbumGetAlbumId, data, 256);
     * mb_GetIDFromURL(o, data, cd_info, 256);
@@ -331,13 +331,13 @@ _cover_download(const char *artist, const char *album)
       // Extract the amazon asin, if any
       if (!mb_GetResultData(o, MBE_AlbumGetAmazonAsin, asin, 256))
 	{
-	   
+
 	   mb_Delete(o);
 	   return 0;
 	}
       else
 	dbg("asin found : %s\n", asin);
-      
+
       mb_Select(o, MBS_Back);
 
    }
@@ -353,7 +353,7 @@ _cover_download(const char *artist, const char *album)
 
    sprintf(data, "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg", asin);
    dbg("data : %s\n", data);
-   
+
    sprintf(temp, "%s/.enna/covers/%s - %s.jpg", enna_util_user_home_get(), artist,
 	   album);
 
@@ -362,7 +362,7 @@ _cover_download(const char *artist, const char *album)
 }
 
 
-static void 
+static void
 * _scanner_thread(void *ptr)
 {
    Enna_Scanner *scanner;
@@ -371,8 +371,8 @@ static void
    sqlite3_stmt *stmt;
 
    scanner = (Enna_Scanner *) ptr;
- 
-   lms_check(scanner->lms, scanner->scan_path);  
+
+   lms_check(scanner->lms, scanner->scan_path);
    /*  Start Scan process */
    lms_process(scanner->lms, scanner->scan_path);
    /*  Scann process is done */
@@ -382,9 +382,9 @@ static void
 			                "WHERE audio_albums.artist_id=audio_artists.id;");
    if (!stmt)
      goto done;
-   
+
    while ( sqlite3_step ( stmt ) == SQLITE_ROW )
-    { 
+    {
        char *artist, *album, cover_filename[PATH_MAX];
        artist = (char*)sqlite3_column_text(stmt,0);
        album  = (char*)sqlite3_column_text(stmt,1);
@@ -445,11 +445,11 @@ enna_scanner_init()
 
    lms_set_commit_interval(scanner->lms, scanner->commit_interval);
    lms_set_slave_timeout(scanner->lms, scanner->slave_timeout);
-   
+
    lms_parser_find_and_add(scanner->lms, "id3lib");
    lms_parser_find_and_add(scanner->lms, "audio-dummy");
    lms_parser_find_and_add(scanner->lms, "ogg");
-   
+
    if (lms_charset_add(scanner->lms, scanner->charset) != 0)
      goto error;
    /*
@@ -477,9 +477,9 @@ enna_scanner_init()
    enna_scanner_audio_metadata_get("/media/serveur/Medias/Musique/Air/Moon Safari/01 - La femme d'argent.mp3");
    */
    return;
-   
 
- error: 
+
+ error:
    lms_free(scanner->lms);
    evas_stringshare_del(scanner->db_path);
    evas_stringshare_del(scanner->charset);
@@ -508,7 +508,7 @@ EAPI void
 enna_scanner_shutdown()
 {
   //lms_stop_processing(scanner->lms);
-   //pthread_join(scanner->scanner_thread, NULL);   
+   //pthread_join(scanner->scanner_thread, NULL);
    lms_free(scanner->lms);
    evas_stringshare_del(scanner->db_path);
    evas_stringshare_del(scanner->charset);
@@ -516,11 +516,11 @@ enna_scanner_shutdown()
 }
 
 EAPI int enna_scanner_nb_medias_get(int type)
-{    
+{
    int r, ret;
    sqlite3_stmt *stmt;
    int nb = 0;
-   
+
    stmt = _db_compile_stmt(scanner->db, "SELECT COUNT(*) FROM files");
    if (!stmt)
      return -1;
@@ -561,9 +561,9 @@ EAPI Enna_Metadata *enna_scanner_audio_metadata_get(const char *filename)
    int nb = 0;
    int id;
    Enna_Metadata *m;
-   
+
    m = malloc(sizeof(Enna_Metadata));
-   
+
    stmt = _db_compile_stmt(scanner->db, "SELECT files.id, "
                                        "files.path, "
                                        "audios.title, "
@@ -581,12 +581,12 @@ EAPI Enna_Metadata *enna_scanner_audio_metadata_get(const char *filename)
                                      "audio_genres "
                                 "WHERE files.id=audios.id AND "
                                       "audios.album_id=audio_albums.id AND "
-                                      "audios.genre_id=audio_genres.id AND " 
+                                      "audios.genre_id=audio_genres.id AND "
                                       "audio_albums.artist_id=audio_artists.id AND "
                                       "path like ?");
    if (!stmt)
      return NULL;
-   
+
    ret = _db_bind_blob(stmt, 1, filename, strlen(filename));
    if (ret != 0)
      goto done;
@@ -598,7 +598,7 @@ EAPI Enna_Metadata *enna_scanner_audio_metadata_get(const char *filename)
       ret = 1;
       goto done;
    }
- 
+
    id = sqlite3_column_int(stmt, 0);
    m->uri = (char*)sqlite3_column_blob(stmt, 1);
    m->title = (char*)sqlite3_column_blob(stmt, 2);
@@ -612,7 +612,7 @@ EAPI Enna_Metadata *enna_scanner_audio_metadata_get(const char *filename)
    _metadata_print(m);
 
    return m;
-   
+
 
  done:
    _db_reset_stmt(stmt);
@@ -625,7 +625,7 @@ EAPI int enna_scanner_audio_nb_albums_get()
    int r, ret;
    sqlite3_stmt *stmt;
    int nb = 0;
-   
+
    stmt = _db_compile_stmt(scanner->db, "SELECT COUNT(*) FROM audio_albums");
    if (!stmt)
      return -1;
@@ -648,7 +648,7 @@ EAPI int enna_scanner_audio_nb_artists_get()
    int r, ret;
    sqlite3_stmt *stmt;
    int nb = 0;
-   
+
    stmt = _db_compile_stmt(scanner->db, "SELECT COUNT(*) FROM audio_artists");
    if (!stmt)
      return -1;
@@ -671,7 +671,7 @@ EAPI int enna_scanner_audio_nb_genres_get()
    int r, ret;
    sqlite3_stmt *stmt;
    int nb = 0;
-   
+
    stmt = _db_compile_stmt(scanner->db, "SELECT COUNT(*) FROM audio_genres");
    if (!stmt)
      return -1;
@@ -695,16 +695,16 @@ EAPI Ecore_List *enna_scanner_audio_artists_list_get()
    int r, ret;
    sqlite3_stmt *stmt;
    Ecore_List *albums;
-   
- 
+
+
    stmt = _db_compile_stmt(scanner->db, "SELECT name FROM audio_artists;");
    if (!stmt)
      goto done;
-   
+
    albums = ecore_list_new();
    ecore_list_free_cb_set(albums, free);
    while ( sqlite3_step ( stmt ) == SQLITE_ROW )
-    { 
+    {
        char  *album;
        album  = (char*)sqlite3_column_text(stmt,0);
        if (album)
@@ -719,17 +719,17 @@ EAPI Ecore_List *enna_scanner_audio_artists_list_get()
 
 EAPI Ecore_List *enna_scanner_audio_albums_list_get()
 {
-   
+
 }
 
 EAPI Ecore_List *enna_scanner_audio_genres_list_get()
 {
-   
+
 }
 
 EAPI Ecore_List *enna_scanner_audio_albums_of_artist_list_get(const char *artist)
 {
-  
+
    void         *buf[1];
    int r, ret;
    sqlite3_stmt *stmt;
@@ -741,25 +741,25 @@ EAPI Ecore_List *enna_scanner_audio_albums_of_artist_list_get(const char *artist
 			                "AND audio_albums.artist_id=audio_artists.id;");
    if (!stmt)
      goto done;
-   
+
    ret = _db_bind_text(stmt, 1, artist, strlen(artist));
    if (ret != 0)
      goto done;
 
    albums = ecore_list_new();
    while ( sqlite3_step ( stmt ) == SQLITE_ROW )
-    { 
+    {
        char  *album;
        album  = (char*)sqlite3_column_text(stmt,0);
        if (album)
 	 ecore_list_append(albums, strdup(album));
-       
+
     }
    return albums;
 
  done:
    _db_reset_stmt(stmt);
-   return NULL; 
+   return NULL;
 
 }
 EAPI Ecore_List *enna_scanner_audio_tracks_of_album_list_get(const char *artist, const char *album)
@@ -778,7 +778,7 @@ EAPI Ecore_List *enna_scanner_audio_tracks_of_album_list_get(const char *artist,
 			                "AND audios.id=files.id;");
    if (!stmt)
      goto done;
-   
+
    ret = _db_bind_text(stmt, 1, artist, strlen(artist));
    if (ret != 0)
      goto done;
@@ -788,7 +788,7 @@ EAPI Ecore_List *enna_scanner_audio_tracks_of_album_list_get(const char *artist,
 
    tracks = ecore_list_new();
    while ( sqlite3_step ( stmt ) == SQLITE_ROW )
-    { 
+    {
        Enna_Metadata *m;
        m = malloc(sizeof(Enna_Metadata));
 
@@ -797,14 +797,14 @@ EAPI Ecore_List *enna_scanner_audio_tracks_of_album_list_get(const char *artist,
        m->track_nb =  sqlite3_column_int(stmt,2);
        if (m)
 	 ecore_list_append(tracks, m);
-       
+
     }
    return tracks;
 
  done:
    _db_reset_stmt(stmt);
    return NULL;
-   
+
 }
 
 

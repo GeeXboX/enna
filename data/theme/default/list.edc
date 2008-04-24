@@ -122,7 +122,7 @@ group {
    }
    programs {
 
-      program { name: "sel"; 
+      program { name: "sel";
 	    signal: "e,state,selected";
 	    source: "e";
 	    action: STATE_SET "selected" 0.0;
@@ -130,7 +130,7 @@ group {
 	    target: "bg";
 	    target: "fg";
 	 }
-	 program { name: "unsel"; 
+	 program { name: "unsel";
 	    signal: "e,state,unselected";
 	    source: "e";
 	    action: STATE_SET "default" 0.0;

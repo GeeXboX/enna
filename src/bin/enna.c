@@ -88,8 +88,8 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
    else if (enna_mainmenu_visible(enna->o_mainmenu))
      {
 	if (!strcmp(ev->key, "m"))
-	  enna_mainmenu_hide(enna->o_mainmenu); 
-	else if(!strcmp(ev->key, "n"))
+	  enna_mainmenu_hide(enna->o_mainmenu);
+	else if(!strcmp(ev->key, "Right"))
 	  {
 	     enna_mainmenu_select_next(enna->o_mainmenu);
 	  }

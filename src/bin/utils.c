@@ -55,10 +55,10 @@ enna_util_has_suffix(char *str, Evas_List * patterns)
 
    int i;
    char *tmp;
-   
+
    if (!patterns || !str || !str[0])
 	return 0;
-   
+
    for (l = patterns; l; l = evas_list_next(l))
      {
 	tmp = strdup(str);
