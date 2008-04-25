@@ -17,6 +17,7 @@ box.c\
 mainmenu.c\
 background.c\
 module.c\
+activity.c\
 image.c\
 list.c\
 content.c\
@@ -36,6 +37,7 @@ box.h\
 mainmenu.h\
 background.h\
 module.h\
+activity.h\
 image.h\
 list.h\
 content.h\

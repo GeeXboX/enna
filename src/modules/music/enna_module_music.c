@@ -29,7 +29,7 @@ EAPI Enna_Module_Api module_api =
     "music"
 };
 
-static Enna_Module_Class class =
+static Enna_Class_Activity class =
 {
     "music",
     1,
@@ -110,7 +110,7 @@ em_init(Enna_Module *em)
     mod->em = em;
     em->mod = mod;
 
-    enna_module_activity_add(mod->em, &class);
+    enna_activity_add(&class);
     _create_gui();
     enna_content_append("music", mod->o_edje);
 

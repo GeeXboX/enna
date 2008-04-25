@@ -119,12 +119,12 @@ enna_content_select(const char *name)
    if (prev)
      {
 	edje_object_part_unswallow(_content, prev->content);
-	enna_module_activity_hide(prev->name);
+	enna_activity_hide(prev->name);
      }
    if (new)
      {
 	edje_object_part_swallow(_content, "enna.swallow.content", new->content);
-	enna_module_activity_show(new->name);
+	enna_activity_show(new->name);
      }
 
    return 0;

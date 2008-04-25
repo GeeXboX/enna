@@ -10,6 +10,7 @@
 #include "mainmenu.h"
 #include "background.h"
 #include "module.h"
+#include "activity.h"
 #include "image.h"
 #include "content.h"
 #include "pan.h"

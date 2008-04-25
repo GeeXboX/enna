@@ -338,7 +338,7 @@ enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
 	Enna_List_Item *si;
 	Evas_Coord mw = 0, mh = 0;
 
-	si = l->data;e
+	si = l->data;
 	if (!si) continue;
 	if (!si->o_icon) continue;
 	edje_extern_object_min_size_set(si->o_icon, w, h);

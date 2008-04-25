@@ -138,11 +138,11 @@ enna_mainmenu_load_from_activities(Evas_Object *obj)
    Evas_List *activities, *l;
    API_ENTRY return;
 
-   activities = enna_module_activities_get();
+   activities = enna_activities_get();
 
    for (l = activities; l; l = l->next)
      {
-	Enna_Module_Class *act;
+	Enna_Class_Activity *act;
 	Evas_Object *icon = NULL;
 	act = l->data;
 
@@ -272,7 +272,7 @@ enna_mainmenu_visible(Evas_Object *obj)
 static void
 _enna_mainmenu_activate_cb(void *data)
 {
-   Enna_Module_Class *act;
+   Enna_Class_Activity *act;
 
    if (!data) return;
    act = data;

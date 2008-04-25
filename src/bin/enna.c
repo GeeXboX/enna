@@ -203,8 +203,8 @@ _create_gui()
    enna_mainmenu_load_from_activities(enna->o_mainmenu);
    enna_mainmenu_select_nth(enna->o_mainmenu, 0);
 
-   enna_module_activity_init("music");
-   enna_module_activity_init("video");
+   enna_activity_init("music");
+   enna_activity_init("video");
    /* Select content */
    enna_content_select("music");
 

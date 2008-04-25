@@ -27,7 +27,7 @@ EAPI Enna_Module_Api module_api =
     "video"
 };
 
-static Enna_Module_Class class =
+static Enna_Class_Activity class =
 {
     "video",
     1,
@@ -86,7 +86,7 @@ em_init(Enna_Module *em)
     mod->em = em;
     em->mod = mod;
 
-    enna_module_activity_add(mod->em, &class);
+    enna_activity_add(&class);
     _create_gui();
     enna_content_append("video", mod->o_edje);;
 
