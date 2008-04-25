@@ -19,8 +19,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = enna_module_localfiles.la
 
 enna_module_localfiles_la_SOURCES= \
-enna_module_localfiles.c \
-enna_module_localfiles.h
+enna_module_localfiles.c
 
 enna_module_localfiles_la_LIBADD = @ENNA_LIBS@
 enna_module_localfiles_la_LDFLAGS = -module -avoid-version

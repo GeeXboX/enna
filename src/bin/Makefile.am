@@ -31,7 +31,7 @@ EXTRA_DIST= \
 enna.h\
 enna_inc.h\
 enna_config.h\
-util.h\
+utils.h\
 scanner.h\
 box.h\
 mainmenu.h\
