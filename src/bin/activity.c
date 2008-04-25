@@ -16,15 +16,15 @@ enna_activity_add(Enna_Class_Activity *class)
   Enna_Class_Activity *act;
 
   if (!class) return -1;
-    for (l = _enna_activities; l; l = l->next)
-     {
-	act = l->data;
-	if (act->pri > class->pri)
-	  {
-	     _enna_activities = evas_list_prepend_relative_list(_enna_activities, class, l);
-	     return 0;
-	  }
-     }
+  for (l = _enna_activities; l; l = l->next)
+    {
+       act = l->data;
+       if (act->pri > class->pri)
+	 {
+	    _enna_activities = evas_list_prepend_relative_list(_enna_activities, class, l);
+	    return 0;
+	 }
+    }
   _enna_activities = evas_list_append(_enna_activities, class);
   return 0;
 }
@@ -141,4 +141,52 @@ enna_activity_hide(char *name)
 	  }
      }
   return 0;
+}
+
+EAPI int
+enna_activity_category_add(const char *name, Enna_Class_Filesystem *class)
+{
+   Enna_Class_Activity *act;
+   Evas_List *l, *l2;
+
+
+   if (!name || !class) return -1;
+   for (l = _enna_activities; l; l = l->next)
+     {
+	act = l->data;
+	if (!strcmp(act->name, name))
+	  {
+	     Enna_Class_Filesystem *cat;
+	     for (l2 = act->categories; l2; l2 = l2->next)
+	       {
+		  cat = l2->data;
+		  if (cat->pri > class->pri)
+		    {
+		       act->categories = evas_list_prepend_relative_list(act->categories, class, l2);
+		       return 0;
+		    }
+	       }
+	     act->categories = evas_list_append(act->categories, class);
+	     return 0;
+	  }
+     }
+   return -1;
+}
+
+EAPI Evas_List *enna_activity_categories_get(const char *name)
+{
+   Enna_Class_Activity *act;
+   Evas_List *l;
+
+   if (!name) return NULL;
+
+   for (l = _enna_activities; l; l = l->next)
+     {
+	act = l->data;
+	if (!strcmp(act->name, name))
+	  {
+	     return act->categories;
+	  }
+     }
+   return NULL;
 }

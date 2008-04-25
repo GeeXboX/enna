@@ -105,7 +105,6 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
 			"enna/mainmenu/item");
    if (label)
      {
-	printf("label : %s\n", label);
 	edje_object_part_text_set(si->o_base, "enna.text.label", label);
      }
 
@@ -148,7 +147,6 @@ enna_mainmenu_load_from_activities(Evas_Object *obj)
 
 	if (act->icon)
 	  {
-	     printf("icon : %s\n",act->icon);
 	     icon = edje_object_add(evas_object_evas_get(sd->o_edje));
 	     edje_object_file_set(icon, enna_config_theme_get(),
 				  act->icon);
@@ -158,7 +156,6 @@ enna_mainmenu_load_from_activities(Evas_Object *obj)
 	     icon = enna_image_add(evas_object_evas_get(sd->o_edje));
 	     enna_image_file_set(icon, act->icon_file);
 	  }
-	printf("adding %s\n", act->name);
 	enna_mainmenu_append(obj, icon, act->name, _enna_mainmenu_activate_cb, act);
      }
 
@@ -195,7 +192,6 @@ enna_mainmenu_select_nth(Evas_Object *obj, int nth)
    API_ENTRY return;
 
 
-   printf("select next : prev : %d\n", sd->selected);
    prev = evas_list_nth(sd->items, sd->selected);
 
    if (!prev)
@@ -245,7 +241,6 @@ enna_mainmenu_show(Evas_Object *obj)
 
    sd->visible = 1;
 
-   printf("mainmenu show\n");
    edje_object_signal_emit(sd->o_edje, "mainmenu,show", "enna");
 }
 
@@ -256,7 +251,6 @@ enna_mainmenu_hide(Evas_Object *obj)
    if (!sd->visible) return;
 
    sd->visible = 0;
-   printf("mainmenu hide\n");
    edje_object_signal_emit(sd->o_edje, "mainmenu,hide", "enna");
 }
 

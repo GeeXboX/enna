@@ -1,7 +1,7 @@
 /* Interface */
 
 #include "enna.h"
-
+static void           _create_gui();
 static void           _class_init(int dummy);
 static void           _class_shutdown(int dummy);
 static void           _class_show(int dummy);
@@ -42,11 +42,15 @@ static Enna_Class_Activity class =
         _class_show,
         _class_hide
     },
+    NULL
 };
+
+
 
 static void _class_init(int dummy)
 {
-    printf("class init\n");
+    _create_gui();
+    enna_content_append("music", mod->o_edje);
 }
 
 static void _class_shutdown(int dummy)
@@ -55,13 +59,11 @@ static void _class_shutdown(int dummy)
 
 static void _class_show(int dummy)
 {
-    printf("Show Music Module\n");
     edje_object_signal_emit(mod->o_edje, "show", "enna");
 }
 
 static void _class_hide(int dummy)
 {
-    printf("Hide Music Module\n");
     edje_object_signal_emit(mod->o_edje, "hide", "enna");
 }
 
@@ -70,7 +72,7 @@ static void _create_gui()
   Evas_Object *o;
   int i;
   Evas_Coord mw, mh;
-  printf("create music gui\n");
+  Evas_List *l, *categories;
 
   o = edje_object_add(mod->em->evas);
   edje_object_file_set(o, enna_config_theme_get(), "module/music");
@@ -83,12 +85,17 @@ static void _create_gui()
   o = enna_list_add(mod->em->evas);
   enna_scrollframe_child_set(mod->o_scroll, o);
   enna_list_icon_size_set(o, 64, 64);
-  for( i = 0; i < 50; i++)
+  categories = enna_activity_categories_get("music");
+  for( l = categories; l; l = l->next)
     {
        Evas_Object *icon;
+       Enna_Class_Filesystem *cat;
+
+       cat = l->data;
+
        icon = edje_object_add(mod->em->evas);
        edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
-       enna_list_append(o, icon, "Test", 0, NULL, NULL);
+       enna_list_append(o, icon, cat->label, 0, NULL, NULL);
     }
   enna_list_selected_set(o, 0);
   enna_list_min_size_get(o, &mw, &mh);;
@@ -104,15 +111,11 @@ static void _create_gui()
 static int
 em_init(Enna_Module *em)
 {
-    printf("Module Music Init\n");
-
     mod = calloc(1, sizeof(Enna_Module_Music));
     mod->em = em;
     em->mod = mod;
 
     enna_activity_add(&class);
-    _create_gui();
-    enna_content_append("music", mod->o_edje);
 
     return 1;
 }
@@ -125,9 +128,6 @@ em_shutdown(Enna_Module *em)
     Enna_Module_Music *mod;
 
     mod = em->mod;
-
-    printf("Module Music Shutdown\n");
-
     evas_object_del(mod->o_edje);
     evas_object_del(mod->o_scroll);
     evas_object_del(mod->o_list);

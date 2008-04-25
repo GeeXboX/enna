@@ -55,7 +55,6 @@ enna_list_append(Evas_Object *obj, Evas_Object *icon, const char *label, int hea
    si = ENNA_NEW(Enna_List_Item, 1);
    si->sd = sd;
    si->o_base = edje_object_add(evas_object_evas_get(sd->o_smart));
-   printf("enna list append\n");
    if (header)
      edje_object_file_set(si->o_base, enna_config_theme_get(),
 			     "enna/list_header");
@@ -84,7 +83,6 @@ enna_list_append(Evas_Object *obj, Evas_Object *icon, const char *label, int hea
    edje_object_size_min_calc(si->o_base, &mw, &mh);
    enna_box_freeze(sd->o_box);
    enna_box_pack_end(sd->o_box, si->o_base);
-   dbg("%d %d\n",mw, mh);
 
    enna_box_pack_options_set(si->o_base, 1, 1, 1, 1, 0.5, 0.5,
 			  mw, 48, 99999, 99999);

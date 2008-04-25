@@ -199,15 +199,18 @@ _create_gui()
    enna_module_enable(em);
    em = enna_module_open("video", enna->evas);
    enna_module_enable(em);
+   em = enna_module_open("localfiles", enna->evas);
+   enna_module_enable(em);
    /* Load mainmenu items */
-   enna_mainmenu_load_from_activities(enna->o_mainmenu);
-   enna_mainmenu_select_nth(enna->o_mainmenu, 0);
+
 
    enna_activity_init("music");
    enna_activity_init("video");
    /* Select content */
    enna_content_select("music");
 
+   enna_mainmenu_load_from_activities(enna->o_mainmenu);
+   enna_mainmenu_select_nth(enna->o_mainmenu, 0);
 
    enna_mainmenu_show(enna->o_mainmenu);
    ecore_evas_show(enna->ee);

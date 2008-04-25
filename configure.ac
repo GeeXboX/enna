@@ -1,25 +1,25 @@
 # get rid of that stupid cache mechanism
 rm -f config.cache
- 
+
 AC_INIT(enna, 0.3.0, www.digital-corner.org)
 AC_PREREQ(2.52)
 AC_CONFIG_SRCDIR(configure.ac)
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
 AC_ISC_POSIX
- 
+
 AM_INIT_AUTOMAKE(1.6 dist-bzip2)
 AM_CONFIG_HEADER(config.h)
- 
+
 define([AC_LIBTOOL_LANG_CXX_CONFIG], [:])dnl
 define([AC_LIBTOOL_LANG_F77_CONFIG], [:])dnl
 AC_PROG_LIBTOOL
- 
+
 AC_PROG_CC
 AM_PROG_CC_STDC
 AC_HEADER_STDC
 AC_C_CONST
- 
+
 PKG_CHECK_MODULES([ENNA],
   [
    eet >= 0.9.9
@@ -37,7 +37,7 @@ PKG_CHECK_MODULES([ENNA],
    libmusicbrainz
   ]
 )
- 
+
 HAVE_LIRC=no
 AC_CHECK_HEADER(lirc/lirc_client.h, HAVE_LIRC=yes)
 if test "x$HAVE_LIRC" = "xyes"; then
@@ -45,7 +45,7 @@ if test "x$HAVE_LIRC" = "xyes"; then
   lirc_libs=-llirc_client
   AC_SUBST(lirc_libs)
 fi
- 
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
@@ -53,13 +53,14 @@ src/bin/Makefile
 src/modules/Makefile
 src/modules/music/Makefile
 src/modules/video/Makefile
+src/modules/browser/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
 ])
- 
+
 AC_OUTPUT
- 
+
 echo
 echo "$PACKAGE $VERSION"
 echo

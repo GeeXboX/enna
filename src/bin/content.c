@@ -94,12 +94,10 @@ enna_content_select(const char *name)
    Enna_Content_Element *prev = NULL;
 
    if (!name) return -1;
-   printf("enna content select %s\n", name);
    for (l = _enna_contents; l; l = l->next)
      {
 	Enna_Content_Element *e;
 	e = l->data;
-	printf("elme : %s\n", e->name);
 
 	if (!strcmp(name, e->name))
 	  {
