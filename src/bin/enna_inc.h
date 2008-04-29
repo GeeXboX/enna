@@ -11,6 +11,7 @@
 #include "background.h"
 #include "module.h"
 #include "activity.h"
+#include "vfs.h"
 #include "image.h"
 #include "content.h"
 #include "pan.h"

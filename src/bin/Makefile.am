@@ -18,11 +18,13 @@ mainmenu.c\
 background.c\
 module.c\
 activity.c\
+vfs.c\
 image.c\
 list.c\
 content.c\
 pan.c\
-scrollframe.c
+scrollframe.c\
+location.c
 
 enna_LDADD = @ENNA_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -37,12 +39,14 @@ box.h\
 mainmenu.h\
 background.h\
 module.h\
+vfs.h\
 activity.h\
 image.h\
 list.h\
 content.h\
 pan.h\
-scrollframe.h
+scrollframe.h\
+location.h
 
 
 

@@ -2,9 +2,9 @@
 #include "enna.h"
 #include "scrollframe.h"
 
-#define thumbscroll_friction 2
-#define thumbscroll_momentum_threshhold 1
-#define thumbscroll_threshhold 1
+#define thumbscroll_friction 1.0
+#define thumbscroll_momentum_threshhold 100
+#define thumbscroll_threshhold 4
 
 #define SMART_NAME "enna_scrollframe"
 #define API_ENTRY E_Smart_Data *sd; sd = evas_object_smart_data_get(obj); if ((!obj) || (!sd) || (evas_object_type_get(obj) && strcmp(evas_object_type_get(obj), SMART_NAME)))
@@ -24,8 +24,6 @@ struct _E_Smart_Data
    Enna_Scrollframe_Policy hbar_flags, vbar_flags;
 
    struct {
-      unsigned char now : 1;
-      unsigned char dragged : 1;
       Evas_Coord x, y;
       Evas_Coord sx, sy;
       Evas_Coord dx, dy;
@@ -35,6 +33,12 @@ struct _E_Smart_Data
       } history[20];
       double anim_start;
       Ecore_Animator *momentum_animator;
+      Evas_Coord locked_x, locked_y;
+      unsigned char now : 1;
+      unsigned char dragged : 1;
+      unsigned char dir_x : 1;
+      unsigned char dir_y : 1;
+      unsigned char locked : 1;
    } down;
 
    struct {
@@ -55,6 +59,7 @@ struct _E_Smart_Data
    unsigned char hbar_visible : 1;
    unsigned char vbar_visible : 1;
    unsigned char extern_pan : 1;
+   unsigned char one_dir_at_a_time : 1;
 };
 
 /* local subsystem functions */
@@ -63,6 +68,7 @@ static void _e_smart_pan_changed_hook(void *data, Evas_Object *obj, void *event_
 static void _e_smart_pan_pan_changed_hook(void *data, Evas_Object *obj, void *event_info);
 static void _e_smart_event_wheel(void *data, Evas *e, Evas_Object *obj, void *event_info);
 static void _e_smart_event_mouse_down(void *data, Evas *e, Evas_Object *obj, void *event_info);
+static int  _e_smart_momentum_animator(void *data);
 static void _e_smart_event_mouse_up(void *data, Evas *e, Evas_Object *obj, void *event_info);
 static void _e_smart_event_mouse_move(void *data, Evas *e, Evas_Object *obj, void *event_info);
 static void _e_smart_event_key_down(void *data, Evas *e, Evas_Object *obj, void *event_info);
@@ -139,10 +145,10 @@ enna_scrollframe_child_set(Evas_Object *obj, Evas_Object *child)
 
 EAPI void
 enna_scrollframe_extern_pan_set(Evas_Object *obj, Evas_Object *pan,
-			     void (*pan_set) (Evas_Object *obj, Evas_Coord x, Evas_Coord y),
-			     void (*pan_get) (Evas_Object *obj, Evas_Coord *x, Evas_Coord *y),
-			     void (*pan_max_get) (Evas_Object *obj, Evas_Coord *x, Evas_Coord *y),
-			     void (*pan_child_size_get) (Evas_Object *obj, Evas_Coord *x, Evas_Coord *y))
+				void (*pan_set) (Evas_Object *obj, Evas_Coord x, Evas_Coord y),
+				void (*pan_get) (Evas_Object *obj, Evas_Coord *x, Evas_Coord *y),
+				void (*pan_max_get) (Evas_Object *obj, Evas_Coord *x, Evas_Coord *y),
+				void (*pan_child_size_get) (Evas_Object *obj, Evas_Coord *x, Evas_Coord *y))
 {
    API_ENTRY return;
 
@@ -332,6 +338,20 @@ enna_scrollframe_edje_object_get(Evas_Object *obj)
    return sd->edje_obj;
 }
 
+EAPI void
+enna_scrollframe_single_dir_set(Evas_Object *obj, Evas_Bool single_dir)
+{
+   API_ENTRY return;
+   sd->one_dir_at_a_time = single_dir;
+}
+
+EAPI Evas_Bool
+enna_scrollframe_single_dir_get(Evas_Object *obj)
+{
+   API_ENTRY return 0;
+   return sd->one_dir_at_a_time;
+}
+
 /* local subsystem functions */
 static void
 _e_smart_edje_drag_v(void *data, Evas_Object *obj, const char *emission, const char *source)
@@ -398,9 +418,6 @@ _e_smart_event_wheel(void *data, Evas *e, Evas_Object *obj, void *event_info)
 
    sd = data;
    ev = event_info;
-
-   dbg("mouse wheel\n");
-
    enna_scrollframe_child_pos_get(sd->smart_obj, &x, &y);
    y += ev->z * sd->step.y;
    enna_scrollframe_child_pos_set(sd->smart_obj, x, y);
@@ -416,6 +433,8 @@ _e_smart_event_mouse_down(void *data, Evas *e, Evas_Object *obj, void *event_inf
    sd = data;
    ev = event_info;
 
+
+
    if (sd->down.momentum_animator)
      {
 	ecore_animator_del(sd->down.momentum_animator);
@@ -423,22 +442,27 @@ _e_smart_event_mouse_down(void *data, Evas *e, Evas_Object *obj, void *event_inf
      }
    if (ev->button == 1)
      {
+	printf("down @ %3.3f\n", ecore_time_get());
 	sd->down.now = 1;
 	sd->down.dragged = 0;
+	sd->down.dir_x = 0;
+	sd->down.dir_y = 0;
 	sd->down.x = ev->canvas.x;
 	sd->down.y = ev->canvas.y;
 	enna_scrollframe_child_pos_get(sd->smart_obj, &x, &y);
 	sd->down.sx = x;
 	sd->down.sy = y;
+	sd->down.locked = 0;
 	memset(&(sd->down.history[0]), 0, sizeof(sd->down.history[0]) * 20);
 	sd->down.history[0].timestamp = ecore_time_get();
 	sd->down.history[0].x = ev->canvas.x;
 	sd->down.history[0].y = ev->canvas.y;
      }
+
 }
 
 static int
-_e_cb_momentum_animator(void *data)
+_e_smart_momentum_animator(void *data)
 {
    E_Smart_Data *sd;
    double t, dt, p;
@@ -477,9 +501,10 @@ _e_smart_event_mouse_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
    sd = data;
    ev = event_info;
 
+
    if (ev->button == 1)
      {
-
+	printf("up @ %3.3f\n", ecore_time_get());
 	x = ev->canvas.x - sd->down.x;
 	y = ev->canvas.y - sd->down.y;
 	if (sd->down.dragged)
@@ -514,11 +539,7 @@ _e_smart_event_mouse_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
 		      (vel > thumbscroll_momentum_threshhold))
 		    {
 		       if (!sd->down.momentum_animator)
-			 {
-			    edje_object_signal_emit(sd->edje_obj, "e,action,show,vbar", "e");
-			    sd->down.momentum_animator = ecore_animator_add(_e_cb_momentum_animator, sd);
-			 }
-
+			 sd->down.momentum_animator = ecore_animator_add(_e_smart_momentum_animator, sd);
 		       sd->down.dx = ((double)dx / at);
 		       sd->down.dy = ((double)dy / at);
 		       sd->down.anim_start = t;
@@ -526,15 +547,9 @@ _e_smart_event_mouse_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
 		       sd->down.sx = x;
 		       sd->down.sy = y;
 		    }
-
 	       }
-
+	     evas_event_feed_hold(e, 0, ev->timestamp, ev->data);
 	  }
-	else
-	  {
-	     edje_object_signal_emit(sd->edje_obj, "e,action,hide,vbar", "e");
-	  }
-
 	sd->down.dragged = 0;
 	sd->down.now = 0;
      }
@@ -551,30 +566,66 @@ _e_smart_event_mouse_move(void *data, Evas *e, Evas_Object *obj, void *event_inf
    sd = data;
    ev = event_info;
 
-   if (sd->down.now)
-     {
-	memmove(&(sd->down.history[1]), &(sd->down.history[0]),
-		sizeof(sd->down.history[0]) * 19);
-	sd->down.history[0].timestamp = ecore_time_get();
-	sd->down.history[0].x = ev->cur.canvas.x;
-	sd->down.history[0].y = ev->cur.canvas.y;
 
-	x = ev->cur.canvas.x - sd->down.x;
-	y = ev->cur.canvas.y - sd->down.y;
-	if ((sd->down.dragged) ||
-	    (((x * x) + (y * y)) >
-	     (thumbscroll_threshhold *
-	      thumbscroll_threshhold)))
+	if (sd->down.now)
 	  {
-	     ev->event_flags |= EVAS_EVENT_FLAG_ON_HOLD;
-	     sd->down.dragged = 1;
+	     memmove(&(sd->down.history[1]), &(sd->down.history[0]),
+		     sizeof(sd->down.history[0]) * 19);
+	     sd->down.history[0].timestamp = ecore_time_get();
+	     sd->down.history[0].x = ev->cur.canvas.x;
+	     sd->down.history[0].y = ev->cur.canvas.y;
 
-
+	     x = ev->cur.canvas.x - sd->down.x;
+	     if (x < 0) x = -x;
+	     y = ev->cur.canvas.y - sd->down.y;
+	     if (y < 0) y = -y;
+	     if ((sd->one_dir_at_a_time) &&
+		 (!sd->down.dir_x) && (!sd->down.dir_y))
+	       {
+		  if (x > y)
+		    {
+		       if (x > thumbscroll_threshhold)
+			 {
+			    sd->down.dir_x = 1;
+			    sd->down.dir_y = 0;
+			 }
+		    }
+		  else
+		    {
+		       if (y > thumbscroll_threshhold)
+			 {
+			    sd->down.dir_x = 0;
+			    sd->down.dir_y = 1;
+			 }
+		    }
+	       }
+	     if ((sd->down.dragged) ||
+		 (((x * x) + (y * y)) >
+		  (thumbscroll_threshhold *
+		   thumbscroll_threshhold)))
+	       {
+		  if (!sd->down.dragged)
+		    evas_event_feed_hold(e, 1, ev->timestamp, ev->data);
+		  ev->event_flags |= EVAS_EVENT_FLAG_ON_HOLD;
+		  printf("FLAG ON HOLD\n");
+		  sd->down.dragged = 1;
+	       }
+	     x = sd->down.sx - (ev->cur.canvas.x - sd->down.x);
+	     y = sd->down.sy - (ev->cur.canvas.y - sd->down.y);
+	     if ((sd->down.dir_x) || (sd->down.dir_y))
+	       {
+		  if (!sd->down.locked)
+		    {
+		       printf("lock dir to x%iy%i\n", sd->down.dir_x, sd->down.dir_y);
+		       sd->down.locked_x = x;
+		       sd->down.locked_y = y;
+		       sd->down.locked = 1;
+		    }
+		  if (sd->down.dir_x) y = sd->down.locked_y;
+		  else x = sd->down.locked_x;
+	       }
+	     enna_scrollframe_child_pos_set(sd->smart_obj, x, y);
 	  }
-	x = sd->down.sx - (ev->cur.canvas.x - sd->down.x);
-	y = sd->down.sy - (ev->cur.canvas.y - sd->down.y);
-	enna_scrollframe_child_pos_set(sd->smart_obj, x, y);
-     }
 
 }
 
@@ -885,15 +936,15 @@ _e_smart_add(Evas_Object *obj)
    o = edje_object_add(evas_object_evas_get(obj));
    sd->edje_obj = o;
    edje_object_file_set(o, enna_config_theme_get(),"e/widgets/scrollframe");
-   //edje_object_signal_callback_add(o, "drag*", "e.dragable.vbar", _e_smart_edje_drag_v, sd);
-   //edje_object_signal_callback_add(o, "drag*", "e.dragable.hbar", _e_smart_edje_drag_h, sd);
+   edje_object_signal_callback_add(o, "drag*", "e.dragable.vbar", _e_smart_edje_drag_v, sd);
+   edje_object_signal_callback_add(o, "drag*", "e.dragable.hbar", _e_smart_edje_drag_h, sd);
    evas_object_smart_member_add(o, obj);
 
    o = evas_object_rectangle_add(evas_object_evas_get(obj));
 
    sd->event_obj = o;
    evas_object_color_set(o, 0, 0, 0, 0);
-   //evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_WHEEL, _e_smart_event_wheel, sd);
+   evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_WHEEL, _e_smart_event_wheel, sd);
    evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN, _e_smart_event_mouse_down, sd);
    evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_UP, _e_smart_event_mouse_up, sd);
    evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_MOVE, _e_smart_event_mouse_move, sd);
@@ -983,23 +1034,23 @@ static void
 _e_smart_init(void)
 {
    if (_e_smart) return;
-     {
-	static const Evas_Smart_Class sc =
-	  {
-	     SMART_NAME,
-	       EVAS_SMART_CLASS_VERSION,
-	       _e_smart_add,
-	       _e_smart_del,
-	       _e_smart_move,
-	       _e_smart_resize,
-	       _e_smart_show,
-	       _e_smart_hide,
-	       _e_smart_color_set,
-	       _e_smart_clip_set,
-	       _e_smart_clip_unset,
-	       NULL
-	  };
-	_e_smart = evas_smart_class_new(&sc);
-     }
+   {
+      static const Evas_Smart_Class sc =
+	{
+	  SMART_NAME,
+	  EVAS_SMART_CLASS_VERSION,
+	  _e_smart_add,
+	  _e_smart_del,
+	  _e_smart_move,
+	  _e_smart_resize,
+	  _e_smart_show,
+	  _e_smart_hide,
+	  _e_smart_color_set,
+	  _e_smart_clip_set,
+	  _e_smart_clip_unset,
+	  NULL
+	};
+      _e_smart = evas_smart_class_new(&sc);
+   }
 }
 

@@ -143,6 +143,7 @@ enna_activity_hide(char *name)
   return 0;
 }
 
+/*
 EAPI int
 enna_activity_category_add(const char *name, Enna_Class_Filesystem *class)
 {
@@ -190,3 +191,4 @@ EAPI Evas_List *enna_activity_categories_get(const char *name)
      }
    return NULL;
 }
+*/
