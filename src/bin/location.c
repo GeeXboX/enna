@@ -75,7 +75,8 @@ static void         _e_smart_color_set(Evas_Object * obj, int r, int g,
 				       int b, int a);
 static void         _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip);
 static void         _e_smart_clip_unset(Evas_Object * obj);
-
+static void         _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info);
+static void         _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info);
 /* local subsystem globals */
 static Evas_Smart  *_e_smart = NULL;
 
@@ -124,10 +125,10 @@ enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *
 
    evas_object_lower(si->o_base);
    edje_object_signal_emit(si->o_base, "location,show", "enna");
-   /*evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_DOWN,
+   evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_DOWN,
 				  _e_smart_event_mouse_down, si);
    evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
-   _e_smart_event_mouse_up, si);*/
+				  _e_smart_event_mouse_up, si);
    evas_object_show(si->o_base);
 }
 
@@ -286,4 +287,36 @@ _e_smart_clip_unset(Evas_Object * obj)
    if (!sd)
       return;
    evas_object_clip_unset(sd->o_box);
+}
+
+static void
+_e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info)
+{
+   E_Smart_Data *sd;
+   Evas_Event_Mouse_Down *ev;
+   Enna_Location_Item *si;
+   Evas_List *l = NULL;
+   int i;
+
+   ev = event_info;
+   si = data;
+   sd = si->sd;
+
+   printf("Mouse Down\n");
+
+}
+
+static void
+_e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info)
+{
+   E_Smart_Data *sd;
+   Evas_Event_Mouse_Up *ev;
+   Enna_Location_Item *si;
+
+   ev = event_info;
+   si = data;
+   sd = si->sd;
+
+   printf("Mouse up\n");
+
 }
