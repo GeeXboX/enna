@@ -10,6 +10,11 @@ static void           _class_event(void *event_info);
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
 static void           _browse(void *data, void *data2);
+static void           _browse_down();
+static void           _select_down();
+static void           _select_up();
+static void           _activate();
+
 typedef struct _Enna_Module_Music Enna_Module_Music;
 
 struct _Enna_Module_Music
@@ -79,10 +84,14 @@ static void _class_event(void *event_info)
    printf("Music Key pressed : %s\n", ev->key);
 
    if (!strcmp(ev->key, "BackSpace"))
-     {
-	_browse_down();
+     _browse_down();
+   else if (!strcmp(ev->key, "Down"))
+     _select_down();
+   else if (!strcmp(ev->key, "Up"))
+     _select_up();
+   else if (!strcmp(ev->key, "Return"))
+     _activate();
 
-     }
 }
 
 static void
@@ -94,7 +103,34 @@ _list_clear(void *data, Evas_Object *o, const char *sig, const char *src)
    evas_object_del(data);
 }
 
-static void _browse_down()
+static void
+_select_down()
+{
+   enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) + 1);
+
+
+}
+
+static void
+_select_up()
+{
+   enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) - 1);
+}
+
+static void
+_activate()
+{
+   Enna_Vfs_File *f;
+   Enna_Class_Vfs *vfs;
+
+   vfs = enna_list_selected_data_get(mod->o_list);
+   f = enna_list_selected_data2_get(mod->o_list);
+   _browse(vfs, f);
+
+}
+
+static void
+_browse_down()
 {
 
    if (!mod->vfs) printf("VFS == NULL\n");
@@ -110,8 +146,9 @@ static void _browse_down()
 	enna_list_freeze(o);
 	if (evas_list_count(files))
 	  {
+	     int i = 0;
 	     /* Files returned : create list with items */
-	     for (l = files; l; l = l->next)
+	     for (l = files, i = 0; l; l = l->next, i++)
 	       {
 		  Enna_Vfs_File *f;
 		  Evas_Object *icon;
@@ -122,6 +159,7 @@ static void _browse_down()
 		  enna_list_append(o, icon, f->label, 0, _browse, NULL, mod->vfs, f);
 	       }
 
+
 	  }
 	else
 	  {
@@ -131,8 +169,11 @@ static void _browse_down()
 	     icon = edje_object_add(mod->em->evas);
 	     edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
 	     enna_list_append(o, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
+	     enna_list_selected_set(o, 0);
 	  }
-	enna_list_thaw(mod->o_list);
+	enna_list_selected_set(o, 0);
+	enna_list_thaw(o);
+
      }
 }
 
@@ -176,8 +217,9 @@ static void _browse(void *data, void *data2)
 	enna_list_freeze(o);
 	if (evas_list_count(files))
 	  {
+	     int i = 0;
 	     /* Create list of files */
-	     for (l = files; l; l = l->next)
+	     for (l = files, i = 0; l; l = l->next, i++)
 	       {
 		  Enna_Vfs_File *f;
 		  Evas_Object *icon;
@@ -186,6 +228,7 @@ static void _browse(void *data, void *data2)
 		  icon = edje_object_add(mod->em->evas);
 		  edje_object_file_set(icon, enna_config_theme_get(), f->icon);
 		  enna_list_append(o, icon, f->label, 0, _browse, NULL,vfs, f);
+
 	       }
 
 	}
@@ -199,6 +242,7 @@ static void _browse(void *data, void *data2)
 	     enna_list_append(o, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
 	  }
 	enna_list_thaw(mod->o_list);
+	enna_list_selected_set(o, 0);
      }
 
 }

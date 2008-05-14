@@ -204,8 +204,6 @@ static Evas_List *_class_browse_down()
 	else if (p)
 	  *(p) = 0;
 
-
-
 	files = _class_browse_up(path_tmp);
 
 	//if (mod->prev_uri) evas_stringshare_del(mod->prev_uri);
