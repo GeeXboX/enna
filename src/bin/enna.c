@@ -102,6 +102,8 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
      {
 	if (!strcmp(ev->key, "m"))
 	  enna_mainmenu_show(enna->o_mainmenu);
+	else
+	  enna_activity_event("music", event_info);
      }
 }
 /* Functions */
@@ -293,7 +295,7 @@ main(int arc, char **arv)
      }
 
    /* Must be called first */
-   enna_config_init(conffile, theme_name);
+   enna_config_init();
 
    enna = (Enna *) malloc(sizeof(Enna));
 

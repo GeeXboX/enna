@@ -1,47 +1,28 @@
 #ifndef _ENNA_CONFIG_H_
 #define _ENNA_CONFIG_H_
 
-
-
+typedef struct _Enna_Config_Root_Directories Enna_Config_Root_Directories;
 typedef struct _Enna_Config Enna_Config;
 
-struct conf_pair
+struct _Enna_Config_Root_Directories
 {
-   char               *key;
-   char               *value;
-   struct conf_pair   *next_pair;
-};
-
-struct conf_section
-{
-   char               *section_name;
-   struct conf_pair   *values;
-   struct conf_section *next_section;
+   const char *uri;
+   const char *label;
 };
 
 struct _Enna_Config
 {
-   char               *theme;
-   Evas_List          *music_extensions;
-   Evas_List          *video_extensions;
-   Evas_List          *photo_extensions;
-   Evas_List          *radio_extensions;
-   struct conf_section *sections;
+   /* Theme */
+   const char               *theme_filename;
+   /* Module Music */
+   Enna_Config_Root_Directories *music_local_root_directories;
+   Evas_List *music_filters;
 };
 
-EAPI void           enna_config_init(char *config_filename, char *theme_name);
+Enna_Config        *enna_config;
+
+EAPI void           enna_config_init(void);
 EAPI void           enna_config_shutdown(void);
-
 EAPI char          *enna_config_theme_get(void);
-EAPI void           enna_config_theme_set(char *theme_name);
-EAPI Evas_List     *enna_config_theme_available_get(void);
-
-EAPI Evas_List     *enna_config_extensions_get(char *type);
-EAPI void           enna_config_extensions_set(char *type, Evas_List * ext);
-
-EAPI char          *enna_config_get_conf_value(char *section_name,
-					       char *key_name);
-
-#define enna_config_get_conf_value_or_default(section_name, key_name, def) (enna_config_get_conf_value(section_name, key_name) ? enna_config_get_conf_value(section_name, key_name) : def)
 
 #endif

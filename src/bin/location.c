@@ -43,7 +43,7 @@ typedef struct _E_Smart_Data E_Smart_Data;
 
 struct _E_Smart_Data
 {
-   Evas_Coord          x, y, w, h, iw, ih;
+   Evas_Coord          x, y, w, h;
    Evas_Object        *o_box;
    Evas_List          *items;
 };
@@ -54,7 +54,6 @@ struct _Enna_Location_Item
 {
    void *sd;
    Evas_Object *o_base;
-   Evas_Object *o_icon;
    unsigned char selected : 1;
    void (*func) (void *data, void *data2);
    void *data;
@@ -89,7 +88,7 @@ enna_location_add(Evas * evas)
 }
 
 EAPI void
-enna_location_append  (Evas_Object *obj, Evas_Object *icon, const char *label, void (*func) (void *data, void *data2), void *data, void *data2)
+enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *data, void *data2), void *data, void *data2)
 {
    Enna_Location_Item *si;
    Evas_Coord mw = 0, mh = 0;
@@ -109,13 +108,7 @@ enna_location_append  (Evas_Object *obj, Evas_Object *icon, const char *label, v
 			     "enna/location/item");
    if (label)
      edje_object_part_text_set(si->o_base, "enna.text.label", label);
-   si->o_icon = icon;
-   /*  if (si->o_icon)
-     {
-	edje_extern_object_min_size_set(si->o_icon, sd->iw, sd->ih);
-	edje_object_part_swallow(si->o_base, "enna.swallow.icon", si->o_icon);
-	evas_object_show(si->o_icon);
-	}*/
+
    si->func = func;
    si->data = data;
    si->data2 = data2;
@@ -193,7 +186,6 @@ _e_smart_add(Evas_Object * obj)
    sd->y = 0;
    sd->w = 0;
    sd->h = 0;
-   sd->ih = sd->iw = 48;
    sd->items = NULL;
    evas_object_smart_member_add(sd->o_box, obj);
    evas_object_smart_data_set(obj, sd);

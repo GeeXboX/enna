@@ -143,52 +143,24 @@ enna_activity_hide(char *name)
   return 0;
 }
 
-/*
 EAPI int
-enna_activity_category_add(const char *name, Enna_Class_Filesystem *class)
+enna_activity_event(char *name, void *event_info)
 {
-   Enna_Class_Activity *act;
-   Evas_List *l, *l2;
+  Evas_List *l;
+  Enna_Class_Activity *act;
 
 
-   if (!name || !class) return -1;
-   for (l = _enna_activities; l; l = l->next)
+  if (!name) return -1;
+
+  for (l = _enna_activities; l; l = l->next)
      {
 	act = l->data;
 	if (!strcmp(act->name, name))
 	  {
-	     Enna_Class_Filesystem *cat;
-	     for (l2 = act->categories; l2; l2 = l2->next)
-	       {
-		  cat = l2->data;
-		  if (cat->pri > class->pri)
-		    {
-		       act->categories = evas_list_prepend_relative_list(act->categories, class, l2);
-		       return 0;
-		    }
-	       }
-	     act->categories = evas_list_append(act->categories, class);
-	     return 0;
+	    if (act->func.class_event)
+	      act->func.class_event(event_info);
 	  }
      }
-   return -1;
+  return 0;
 }
 
-EAPI Evas_List *enna_activity_categories_get(const char *name)
-{
-   Enna_Class_Activity *act;
-   Evas_List *l;
-
-   if (!name) return NULL;
-
-   for (l = _enna_activities; l; l = l->next)
-     {
-	act = l->data;
-	if (!strcmp(act->name, name))
-	  {
-	     return act->categories;
-	  }
-     }
-   return NULL;
-}
-*/

@@ -37,7 +37,8 @@ struct _Enna_Class_Vfs
    {
       void (*class_init)(int dummy);
       void (*class_shutdown)(int dummy);
-      Evas_List *(*class_browse)(const char *path);
+      Evas_List *(*class_browse_up)(const char *path);
+      Evas_List *(*class_browse_down)(void);
    }func;
 
 };

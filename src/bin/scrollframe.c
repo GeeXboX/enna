@@ -137,6 +137,7 @@ enna_scrollframe_child_set(Evas_Object *obj, Evas_Object *child)
    evas_object_event_callback_add(child, EVAS_CALLBACK_FREE, _e_smart_child_del_hook, sd);
    enna_pan_child_set(sd->pan_obj, sd->child_obj);
    sd->pan_func.child_size_get(sd->pan_obj, &w, &h);
+   printf("child size : %dx%d\n", w, h);
    sd->child.w = w;
    sd->child.h = h;
    _e_smart_scrollbar_size_adjust(sd);
@@ -607,7 +608,6 @@ _e_smart_event_mouse_move(void *data, Evas *e, Evas_Object *obj, void *event_inf
 		  if (!sd->down.dragged)
 		    evas_event_feed_hold(e, 1, ev->timestamp, ev->data);
 		  ev->event_flags |= EVAS_EVENT_FLAG_ON_HOLD;
-		  printf("FLAG ON HOLD\n");
 		  sd->down.dragged = 1;
 	       }
 	     x = sd->down.sx - (ev->cur.canvas.x - sd->down.x);

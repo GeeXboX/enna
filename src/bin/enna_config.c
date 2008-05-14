@@ -32,16 +32,10 @@
 #include "enna.h"
 #include "enna_config.h"
 
-
-
-Enna_Config         config;
-static const char        theme_filename[] = PACKAGE_DATA_DIR"/enna/theme/default.edj";
-
 EAPI char          *
 enna_config_theme_get()
 {
-
-   return theme_filename;
+   return enna_config->theme_filename;
 }
 
 /* EAPI void */
@@ -305,87 +299,42 @@ enna_config_theme_get()
 /* } */
 
 EAPI void
-enna_config_init(char *filename, char *theme_name)
+enna_config_init()
 {
+   Evas_List *l;
 
- /*   char                buf[4096]; */
-/*    int                 i = 0; */
-/*    char               *me[] = { "ogg", "mp3", "aac", "wav", "flac" }; */
-/*    char               *re[] = { "pls", "m3u" }; */
-/*    char               *ve[] = */
-/*       { "avi", "mpg", "mpeg", "mkv", "ts", "mp4", "asf", "mov", "iso", "wmv", */
-/* "ogg" }; */
-/*    char               *pe[] = { "jpg", "jpeg", "png", "tif" }; */
-
-/*    sprintf(buf, "%s/.enna/enna.cfg", enna_util_user_home_get()); */
-
-/*    config.sections = enna_config_load_conf_file((filename ? filename : buf)); */
-/*    if (config.sections == NULL) */
-/*      { */
-/* 	dbg("Cannot load conf file\n"); */
-/* 	exit(0); */
-/*      } */
-/*    /\* if theme_name is defined, we load this theme *\/ */
-/*    /\* else is maybe define in enna.cfg file          *\/ */
-/*    /\* else we get default.edj as default theme     *\/ */
-
-/*    enna_config_theme_set(theme_name); */
-/*    config.theme = enna_config_theme_get(); */
-/*    config.music_extensions = NULL; */
-/*    config.video_extensions = NULL; */
-/*    config.photo_extensions = NULL; */
-/*    config.radio_extensions = NULL; */
-/*    for (i = 0; i < 5; i++) */
-/*       config.music_extensions = */
-/* 	 evas_list_append(config.music_extensions, strdup(me[i])); */
-
-/*    for (i = 0; i < 11; i++) */
-/*       config.video_extensions = */
-/* 	 evas_list_append(config.video_extensions, strdup(ve[i])); */
-
-/*    for (i = 0; i < 4; i++) */
-/*       config.photo_extensions = */
-/* 	 evas_list_append(config.photo_extensions, strdup(pe[i])); */
-
-/*    for (i = 0; i < 2; i++) */
-/*       config.radio_extensions = */
-/* 	 evas_list_append(config.radio_extensions, strdup(re[i])); */
-
+   enna_config = calloc(1, sizeof(Enna_Config));
+   /* Theme config */
+   enna_config->theme_filename = evas_stringshare_add(PACKAGE_DATA_DIR"/enna/theme/default.edj");
+   /* Module Music config */
+   l = NULL;
+   Enna_Config_Root_Directories *root;
+   root = malloc(sizeof(Enna_Config_Root_Directories));
+   root->uri = evas_stringshare_add("file:///home/nico");
+   root->label = evas_stringshare_add("Home Direcory");
+   l = evas_list_append(l, root);
+   root = malloc(sizeof(Enna_Config_Root_Directories));
+   root->uri = evas_stringshare_add("file:///media/serveur");
+   root->label = evas_stringshare_add("Server");
+   l = evas_list_append(l, root);
+   root = malloc(sizeof(Enna_Config_Root_Directories));
+   root->uri = evas_stringshare_add("file:///home/nico/music");
+   root->label = evas_stringshare_add("Local Music");
+   l = evas_list_append(l, root);
+   enna_config->music_local_root_directories = l;
+   l = NULL;
+   l = evas_list_append(l, evas_stringshare_add("mp3"));
+   l = evas_list_append(l, evas_stringshare_add("ogg"));
+   l = evas_list_append(l, evas_stringshare_add("flac"));
+   l = evas_list_append(l, evas_stringshare_add("wma"));
+   l = evas_list_append(l, evas_stringshare_add("wav"));
+   enna_config->music_filters = l;
 }
 
 EAPI void
 enna_config_shutdown()
 {
-   /* struct conf_section *s; */
 
-   /* ENNA_FREE_LIST(config.music_extensions,free); */
-   /* ENNA_FREE_LIST(config.video_extensions,free); */
-   /* ENNA_FREE_LIST(config.photo_extensions,free); */
-   /* ENNA_FREE_LIST(config.radio_extensions,free); */
-   /* free(config.sections); */
-   /* ENNA_FREE(theme_filename); */
 }
 
-/* EAPI char          * */
-/* enna_config_get_conf_value(char *section_name, char *key_name) */
-/* { */
-/*    struct conf_section *sections = config.sections; */
 
-/*    while (sections) */
-/*      { */
-/* 	if (!strcmp(section_name, sections->section_name)) */
-/* 	  { */
-/* 	     struct conf_pair   *p = sections->values; */
-
-/* 	     while (p) */
-/* 	       { */
-/* 		  if (!strcmp(p->key, key_name)) */
-/* 		     return p->value; */
-/* 		  p = p->next_pair; */
-/* 	       } */
-/* 	     return NULL; */
-/* 	  } */
-/* 	sections = sections->next_section; */
-/*      } */
-/*    return NULL; */
-/* } */

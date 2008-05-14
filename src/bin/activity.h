@@ -18,11 +18,17 @@ struct _Enna_Class_Activity
     void (*class_shutdown)(int dummy);
     void (*class_show)(int dummy);
     void (*class_hide)(int dummy);
+     void (*class_event)(void *event_info);
   }func;
    Evas_List *categories;
 };
 
 EAPI int          enna_activity_add(Enna_Class_Activity *class);
 EAPI Evas_List   *enna_activities_get(void);
+EAPI int          enna_activity_init(char *name);
+EAPI int          enna_activity_show(char *name);
+EAPI int          enna_activity_shutdown(char *name);
+EAPI int          enna_activity_hide(char *name);
+EAPI int          enna_activity_event(char *name, void *event_info);
 
 #endif
