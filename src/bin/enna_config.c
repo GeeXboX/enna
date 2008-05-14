@@ -32,7 +32,7 @@
 #include "enna.h"
 #include "enna_config.h"
 
-EAPI char          *
+EAPI const char *
 enna_config_theme_get()
 {
    return enna_config->theme_filename;

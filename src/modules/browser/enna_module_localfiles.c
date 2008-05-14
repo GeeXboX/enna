@@ -6,6 +6,8 @@ static void           _class_init(int dummy);
 static void           _class_shutdown(int dummy);
 static Evas_List     *_class_browse_up(const char *path);
 static Evas_List     *_class_browse_down();
+static unsigned char _uri_has_extension(const char *uri);
+static unsigned char _uri_is_root(const char *uri);
 
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
@@ -115,7 +117,7 @@ static Evas_List *_class_browse_up(const char *path)
 		    }
 	       }
 	     /* FIXME : filters should come from config */
-	     else
+	     else if (_uri_has_extension(dir))
 	       {
 		  Enna_Vfs_File  *f;
 		  f = calloc(1, sizeof(Enna_Vfs_File));
@@ -139,6 +141,21 @@ static Evas_List *_class_browse_up(const char *path)
      }
 
    return NULL;
+
+}
+
+static unsigned char _uri_has_extension(const char *uri)
+{
+
+   Evas_List *l;
+
+   for (l = enna_config->music_filters; l; l = l->next)
+     {
+	const char *ext = l->data;
+	if(ecore_str_has_extension(uri, ext))
+	  return 1;
+     }
+   return 0;
 
 }
 

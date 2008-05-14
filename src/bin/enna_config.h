@@ -15,14 +15,14 @@ struct _Enna_Config
    /* Theme */
    const char               *theme_filename;
    /* Module Music */
-   Enna_Config_Root_Directories *music_local_root_directories;
+   Evas_List *music_local_root_directories;
    Evas_List *music_filters;
 };
 
 Enna_Config        *enna_config;
 
-EAPI void           enna_config_init(void);
-EAPI void           enna_config_shutdown(void);
-EAPI char          *enna_config_theme_get(void);
+EAPI void             enna_config_init(void);
+EAPI void             enna_config_shutdown(void);
+EAPI const char  *enna_config_theme_get(void);
 
 #endif
