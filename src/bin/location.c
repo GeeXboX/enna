@@ -318,5 +318,5 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
    sd = si->sd;
 
    printf("Mouse up\n");
-
+   if (si->func) si->func(si->data, si->data2);
 }

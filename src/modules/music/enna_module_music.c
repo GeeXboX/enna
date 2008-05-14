@@ -177,6 +177,13 @@ _browse_down()
      }
 }
 
+static void _test(void *data, void *data2)
+{
+
+   printf("Clicked on location\n");
+
+}
+
 static void _browse(void *data, void *data2)
 {
 
@@ -195,12 +202,12 @@ static void _browse(void *data, void *data2)
 	  {
 	     /* file param is NULL => create Root menu */
 	     files = vfs->func.class_browse_up(NULL);
-	     enna_location_append(mod->o_location, "Root", NULL, NULL, NULL);
+	     enna_location_append(mod->o_location, "Root", _browse, vfs, NULL);
 	  }
 	else if (file->is_directory)
 	  {
 	     /* File selected is a directory */
-	     enna_location_append(mod->o_location, file->label, NULL, NULL, NULL);
+	     enna_location_append(mod->o_location, file->label, _browse, vfs, file);
 	     files = vfs->func.class_browse_up(file->uri);
 	  }
 	else if (!file->is_directory)
