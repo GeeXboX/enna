@@ -2,4 +2,5 @@ MAINTAINERCLEANFILES = Makefile.in
 SUBDIRS = \
 music\
 video\
-browser
+browser\
+backend

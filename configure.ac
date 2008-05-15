@@ -56,8 +56,8 @@ AC_ARG_ENABLE(emotion-backend,
 AC_MSG_RESULT($want_emotion_backend)
 if test "x$want_emotion_backend" = "xyes" -o "x$want_emotion_backend" = "xauto"; then
   PKG_CHECK_MODULES(
-    emotion,
-    emotion,
+    [EMOTION],
+    [emotion],
     [
       AC_DEFINE(BUILD_EMOTION_BACKEND, 1, [Emotion media backend])
       have_emotion_backend="yes"
@@ -78,7 +78,7 @@ have_libplayer_backend="no"
 
 AC_MSG_CHECKING(whether libplayer backend is to be built)
 AC_ARG_ENABLE(libplayer-backend,
-    AC_HELP_STRING([--with-libplayer-backend], [Enable libplayer media backend]),
+    AC_HELP_STRING([--enable-libplayer-backend], [Enable libplayer media backend]),
     [ want_libplayer_backend=$enableval ]
 )
 AC_MSG_RESULT($want_libplayer_backend)
@@ -95,12 +95,6 @@ if test "x$want_libplayer_backend" = "xyes" -o "x$want_libplayer_backend" = "xau
 fi
 AM_CONDITIONAL(BUILD_LIBPLAYER_BACKEND, test "x$have_libplayer_backend" = "xyes")
 
-
-#####################################################################
-## Fill in flags
-AC_SUBST(emotion_cflags)
-AC_SUBST(emotion_libs)
-
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
@@ -109,6 +103,7 @@ src/modules/Makefile
 src/modules/music/Makefile
 src/modules/video/Makefile
 src/modules/browser/Makefile
+src/modules/backend/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
