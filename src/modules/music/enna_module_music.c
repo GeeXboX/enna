@@ -21,7 +21,6 @@ struct _Enna_Module_Music
 {
    Evas *e;
    Evas_Object *o_edje;
-   Evas_Object *o_scroll;
    Evas_Object *o_list;
    Evas_Object *o_location;
    Enna_Class_Vfs *vfs;
@@ -106,19 +105,14 @@ _list_clear(void *data, Evas_Object *o, const char *sig, const char *src)
 static void
 _select_down()
 {
-   Evas_Coord w, h, x, y;
    enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) + 1);
-   enna_list_selected_geometry_get(mod->o_list, &x, &y, &w, &h);
-   enna_scrollframe_child_region_show(mod->o_scroll, x, y, w, h);
+
 }
 
 static void
 _select_up()
 {
-   Evas_Coord w, h, x, y;
    enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) - 1);
-   enna_list_selected_geometry_get(mod->o_list, &x, &y, &w, &h);
-   enna_scrollframe_child_region_show(mod->o_scroll, x, y, w, h);
 }
 
 static void
@@ -175,9 +169,8 @@ _browse_down()
 	     edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
 	     enna_list_append(o, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
 	  }
+
 	enna_list_selected_set(o, 0);
-	enna_list_selected_geometry_get(mod->o_list, &x, &y, &w, &h);
-	enna_scrollframe_child_region_show(mod->o_scroll, x, y, w, h);
 	enna_list_thaw(o);
 
      }
@@ -196,7 +189,7 @@ static void _browse(void *data, void *data2)
    Enna_Class_Vfs *vfs = data;
    Enna_Vfs_File *file = data2;
    Evas_Coord mw, mh;
-   Evas_Coord w, h, x, y;
+
 
    if (!vfs) return;
 
@@ -257,8 +250,6 @@ static void _browse(void *data, void *data2)
 	  }
 	enna_list_thaw(mod->o_list);
 	enna_list_selected_set(o, 0);
-	enna_list_selected_geometry_get(mod->o_list, &x, &y, &w, &h);
-	enna_scrollframe_child_region_show(mod->o_scroll, x, y, w, h);
      }
 
 }
@@ -317,25 +308,12 @@ static void _create_gui()
   enna_list_min_size_get(o, &mw, &mh);
   evas_object_resize(o, 640, 3000);
   mod->o_list = o;
-
-  o = enna_scrollframe_add(mod->em->evas);
-  enna_scrollframe_policy_set(o, ENNA_SCROLLFRAME_POLICY_AUTO,
-			      ENNA_SCROLLFRAME_POLICY_AUTO);
-
-  enna_scrollframe_child_set(o, mod->o_list);
   edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
-  evas_object_event_callback_add(o, EVAS_CALLBACK_RESIZE, _e_wid_cb_scrollframe_resize, mod->o_list);
-  //evas_object_resize(o, 500, 500);
-  mod->o_scroll = o;
-
-
 
   o = enna_location_add(mod->em->evas);
   edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
   enna_location_append(o, "Music", NULL, NULL, NULL);
   mod->o_location = o;
-
-
 
 }
 

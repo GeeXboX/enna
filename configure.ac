@@ -22,7 +22,7 @@ AC_C_CONST
 
 PKG_CHECK_MODULES([ENNA],
   [
-   eet >= 0.9.9
+   eet >= 1.0.0
    evas >= 0.9.9
    ecore >= 0.9.9.40
    ecore-evas
@@ -31,20 +31,80 @@ PKG_CHECK_MODULES([ENNA],
    embryo >= 0.9.1
    edje >= 0.5.0
    edbus >= 0.0.1
-   emotion
    sqlite3
    lightmediascanner >= 0.1
-   libmusicbrainz
   ]
 )
 
-HAVE_LIRC=no
-AC_CHECK_HEADER(lirc/lirc_client.h, HAVE_LIRC=yes)
-if test "x$HAVE_LIRC" = "xyes"; then
+have_lirc_input=no
+AC_CHECK_HEADER(lirc/lirc_client.h, have_lirc_input=yes)
+if test "x$have_lirc_input" = "xyes"; then
   AC_DEFINE(HAVE_LIRC, 1, [Define if LIRC client lib is present])
   lirc_libs=-llirc_client
   AC_SUBST(lirc_libs)
 fi
+
+#######################################
+## Check if we should build the emotion backend
+want_emotion_backend="auto"
+have_emotion_backend="no"
+AC_MSG_CHECKING(whether emotion backend is to be built)
+AC_ARG_ENABLE(emotion-backend,
+  AC_HELP_STRING([--enable-emotion-backend], [enable Emotion media backend]),
+  [ want_emotion_backend=$enableval ]
+)
+AC_MSG_RESULT($want_emotion_backend)
+if test "x$want_emotion_backend" = "xyes" -o "x$want_emotion_backend" = "xauto"; then
+  PKG_CHECK_MODULES(
+    emotion,
+    emotion,
+    [
+      AC_DEFINE(BUILD_EMOTION_BACKEND, 1, [Emotion media backend])
+      have_emotion_backend="yes"
+    ],
+    [
+      if test "x$want_emotion_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([Emotion not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_EMOTION_BACKEND, test "x$have_emotion_backend" = "xyes")
+
+#######################################
+## Check if we should build the libplayer backend
+want_libplayer_backend="auto"
+have_libplayer_backend="no"
+AC_MSG_CHECKING(whether libplayer backend is to be built)
+AC_ARG_ENABLE(libplayer-backend,
+  AC_HELP_STRING([--enable-libplayer-backend], [enable Libplayer media backend]),
+  [ want_libplayer_backend=$enableval ]
+)
+AC_MSG_RESULT($want_libplayer_backend)
+if test "x$want_libplayer_backend" = "xyes" -o "x$want_libplayer_backend" = "xauto"; then
+  PKG_CHECK_MODULES(
+    libplayer,
+    libplayer,
+    [
+      AC_DEFINE(BUILD_LIBPLAYER_BACKEND, 1, [Libplayer media backend])
+      have_libplayer_backend="yes"
+    ],
+    [
+      if test "x$want_libplayer_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([Libplayer not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_LIBPLAYER_BACKEND, test "x$have_libplayer_backend" = "xyes")
+
+#####################################################################
+## Fill in flags
+AC_SUBST(emotion_cflags)
+AC_SUBST(emotion_libs)
+
+AC_SUBST(libplayer_cflags)
+AC_SUBST(libplayer_libs)
 
 AC_CONFIG_FILES([
 Makefile
@@ -66,7 +126,9 @@ echo "$PACKAGE $VERSION"
 echo
 echo "Optional Modules:"
 echo
-echo "  lirc client...................... : $HAVE_LIRC"
+echo "  lirc client...................... : $have_lirc_input"
+echo "  emotion backend.................. : $have_emotion_backend"
+echo "  libplayer backend................ : $have_libplayer_backend"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo

@@ -19,6 +19,7 @@ struct _E_Smart_Data
    Evas_Object *o_smart;
    Evas_Object *o_edje;
    Evas_Object *o_box;
+   Evas_Object *o_scroll;
    Evas_List *items;
    int selected;
 
@@ -92,6 +93,8 @@ enna_list_append  (Evas_Object *obj, Evas_Object *icon, const char *label, int h
 
    enna_box_pack_options_set(si->o_base, 1, 0, 1, 0, 0, 0.5,
 			     mw, mh, 99999, 99999);
+   enna_box_min_size_get(sd->o_box, NULL, &mh);
+   evas_object_resize(sd->o_box, 500, mh);
    enna_box_thaw(sd->o_box);
 
    evas_object_lower(sd->o_box);
@@ -101,8 +104,6 @@ enna_list_append  (Evas_Object *obj, Evas_Object *icon, const char *label, int h
 				  _e_smart_event_mouse_up, si);
    /*evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_MOVE,
      _e_smart_event_mouse_move, si);*/
-
-   enna_box_min_size_get(sd->o_box, NULL, NULL);
 
    evas_object_show(si->o_base);
 }
@@ -140,6 +141,7 @@ enna_list_selected_set(Evas_Object *obj, int n)
    Enna_List_Item *si = NULL;
    Evas_List *l = NULL;
    int i;
+   Evas_Coord w, h, x, y;
 
    API_ENTRY return;
    if (!sd->items) return;
@@ -165,6 +167,8 @@ enna_list_selected_set(Evas_Object *obj, int n)
    sd->selected = n;
    evas_object_raise(si->o_base);
    edje_object_signal_emit(si->o_base, "e,state,selected", "e");
+   enna_list_selected_geometry_get(obj, &x, &y, &w, &h);
+   enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
    if (si->func_hilight) si->func_hilight(si->data, si->data2);
    if (sd->selector) return;
    if (!sd->on_hold)
@@ -387,7 +391,7 @@ static void
 _e_smart_add(Evas_Object *obj)
 {
    E_Smart_Data *sd;
-
+   Evas_Coord mw, mh;
    sd = calloc(1, sizeof(E_Smart_Data));
    if (!sd) return;
    evas_object_smart_data_set(obj, sd);
@@ -403,8 +407,14 @@ _e_smart_add(Evas_Object *obj)
    enna_box_align_set(sd->o_box, 0.0, 0.0);
    enna_box_homogenous_set(sd->o_box, 1);
    enna_box_orientation_set(sd->o_box, 0);
-   edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_box);
 
+   sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
+   enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_AUTO,
+			       ENNA_SCROLLFRAME_POLICY_AUTO);
+   enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
+   edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_scroll);
+   enna_box_min_size_get(sd->o_box, &mw, &mh);
+   evas_object_resize(sd->o_box, mw, mh);
    evas_object_smart_member_add(sd->o_edje, obj);
    evas_object_event_callback_add(obj, EVAS_CALLBACK_KEY_DOWN,
 				  _e_smart_event_key_down, sd);
@@ -418,6 +428,7 @@ _e_smart_del(Evas_Object *obj)
    enna_list_clear(obj);
    evas_object_del(sd->o_edje);
    evas_object_del(sd->o_box);
+   evas_object_del(sd->o_scroll);
    free(sd);
 }
 
@@ -452,7 +463,6 @@ _e_smart_resize(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
    if ((sd->w == w) && (sd->h == h)) return;
    sd->w = w;
    sd->h = h;
-   printf("List evas resize : %dx%d\n", w, h);
    _e_smart_reconfigure(sd);
 }
 
