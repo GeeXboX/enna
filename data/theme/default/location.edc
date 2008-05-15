@@ -59,7 +59,7 @@ group {
 	    text {
 
                text:     "Item Label";
-               font:     "Vera";
+               font:     "content_bd";
 
                size:     15;
                min: 1 1;

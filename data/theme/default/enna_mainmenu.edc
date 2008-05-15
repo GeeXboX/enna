@@ -168,7 +168,7 @@ group {
             color_class: "ilist_item";
 	    text {
                text:     "Item Label";
-               font:     "Vera";
+               font:     "content_bd";
                //fit: 0 1;
                size:     15;
                align:    0 0.5;

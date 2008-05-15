@@ -4,8 +4,8 @@ images{
 }
 
 fonts{
-   font:"Vera.ttf" "Vera";
-   font:"VeraBd.ttf" "VeraBold";
+   font:"content.ttf" "content";
+   font:"content_bold.ttf" "content_bd";
 }
 
 collections
