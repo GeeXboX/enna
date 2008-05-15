@@ -106,15 +106,19 @@ _list_clear(void *data, Evas_Object *o, const char *sig, const char *src)
 static void
 _select_down()
 {
+   Evas_Coord w, h, x, y;
    enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) + 1);
-
-
+   enna_list_selected_geometry_get(mod->o_list, &x, &y, &w, &h);
+   enna_scrollframe_child_region_show(mod->o_scroll, x, y, w, h);
 }
 
 static void
 _select_up()
 {
+   Evas_Coord w, h, x, y;
    enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) - 1);
+   enna_list_selected_geometry_get(mod->o_list, &x, &y, &w, &h);
+   enna_scrollframe_child_region_show(mod->o_scroll, x, y, w, h);
 }
 
 static void
@@ -132,6 +136,7 @@ _activate()
 static void
 _browse_down()
 {
+   Evas_Coord w, h, x, y;
 
    if (!mod->vfs) printf("VFS == NULL\n");
    if (mod->vfs && mod->vfs->func.class_browse_down)
@@ -169,9 +174,10 @@ _browse_down()
 	     icon = edje_object_add(mod->em->evas);
 	     edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
 	     enna_list_append(o, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
-	     enna_list_selected_set(o, 0);
 	  }
 	enna_list_selected_set(o, 0);
+	enna_list_selected_geometry_get(mod->o_list, &x, &y, &w, &h);
+	enna_scrollframe_child_region_show(mod->o_scroll, x, y, w, h);
 	enna_list_thaw(o);
 
      }
@@ -190,6 +196,7 @@ static void _browse(void *data, void *data2)
    Enna_Class_Vfs *vfs = data;
    Enna_Vfs_File *file = data2;
    Evas_Coord mw, mh;
+   Evas_Coord w, h, x, y;
 
    if (!vfs) return;
 
@@ -250,6 +257,8 @@ static void _browse(void *data, void *data2)
 	  }
 	enna_list_thaw(mod->o_list);
 	enna_list_selected_set(o, 0);
+	enna_list_selected_geometry_get(mod->o_list, &x, &y, &w, &h);
+	enna_scrollframe_child_region_show(mod->o_scroll, x, y, w, h);
      }
 
 }

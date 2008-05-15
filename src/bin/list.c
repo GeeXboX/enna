@@ -90,7 +90,7 @@ enna_list_append  (Evas_Object *obj, Evas_Object *icon, const char *label, int h
    enna_box_freeze(sd->o_box);
    enna_box_pack_end(sd->o_box, si->o_base);
 
-   enna_box_pack_options_set(si->o_base, 1, 0, 1, 0, 0, 0,
+   enna_box_pack_options_set(si->o_base, 1, 0, 1, 0, 0, 0.5,
 			     mw, mh, 99999, 99999);
    enna_box_thaw(sd->o_box);
 
@@ -320,7 +320,7 @@ enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
 	edje_extern_object_min_size_set(si->o_icon, w, h);
 	edje_object_part_swallow(si->o_base, "e.swallow.icon", si->o_icon);
 	edje_object_size_min_calc(si->o_base, &mw, &mh);
-	enna_box_pack_options_set(si->o_icon, 1, 0, 1, 0, 0, 0,
+	enna_box_pack_options_set(si->o_icon, 1, 0, 1, 0, 0, 0.5,
 				  mw, mh, 99999, 99999);
      }
 }
