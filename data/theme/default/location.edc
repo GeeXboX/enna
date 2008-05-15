@@ -84,6 +84,11 @@ group {
          action:  STATE_SET "default" 0.0;
          transition: SINUSOIDAL 0.5;
          target: "enna.clip.location";
+         after: "location,hide,end";
+      }
+      program {
+         name: "location,hide,end";
+         action: SIGNAL_EMIT "location,hide,end" "edje";
       }
    }
 

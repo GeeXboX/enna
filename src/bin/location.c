@@ -130,6 +130,12 @@ enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *
    evas_object_show(si->o_base);
 }
 
+static void
+_location_hide_end(void *data, Evas_Object *o, const char *sig, const char *src)
+{
+   evas_object_del(data);
+}
+
 EAPI void
 enna_location_remove_nth(Evas_Object *obj, int n)
 {
@@ -140,8 +146,15 @@ enna_location_remove_nth(Evas_Object *obj, int n)
    if (!(si = evas_list_nth(sd->items, n))) return;
    sd->items = evas_list_remove(sd->items, si);
    edje_object_signal_emit(si->o_base, "location,hide", "enna");
-   //evas_object_del(si->o_base);
+   edje_object_signal_callback_add(si->o_base, "location,hide,end", "edje", _location_hide_end, si->o_base);
    ENNA_FREE(si);
+}
+
+EAPI int
+enna_location_count(Evas_Object *obj)
+{
+   API_ENTRY return 0;
+   return evas_list_count(sd->items);
 }
 
 /* local subsystem globals */

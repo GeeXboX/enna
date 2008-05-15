@@ -132,7 +132,6 @@ _browse_down()
 {
    Evas_Coord w, h, x, y;
 
-   if (!mod->vfs) printf("VFS == NULL\n");
    if (mod->vfs && mod->vfs->func.class_browse_down)
      {
 	Evas_List *files, *l;
@@ -157,7 +156,7 @@ _browse_down()
 		  edje_object_file_set(icon, enna_config_theme_get(), f->icon);
 		  enna_list_append(o, icon, f->label, 0, _browse, NULL, mod->vfs, f);
 	       }
-
+	     enna_location_remove_nth(mod->o_location, enna_location_count(mod->o_location) - 1);
 
 	  }
 	else
