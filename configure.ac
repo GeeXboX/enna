@@ -50,7 +50,7 @@ want_emotion_backend="auto"
 have_emotion_backend="no"
 AC_MSG_CHECKING(whether emotion backend is to be built)
 AC_ARG_ENABLE(emotion-backend,
-  AC_HELP_STRING([--enable-emotion-backend], [enable Emotion media backend]),
+  AC_HELP_STRING([--enable-emotion-backend], [Enable Emotion media backend]),
   [ want_emotion_backend=$enableval ]
 )
 AC_MSG_RESULT($want_emotion_backend)
@@ -75,36 +75,31 @@ AM_CONDITIONAL(BUILD_EMOTION_BACKEND, test "x$have_emotion_backend" = "xyes")
 ## Check if we should build the libplayer backend
 want_libplayer_backend="auto"
 have_libplayer_backend="no"
+
 AC_MSG_CHECKING(whether libplayer backend is to be built)
 AC_ARG_ENABLE(libplayer-backend,
-  AC_HELP_STRING([--enable-libplayer-backend], [enable Libplayer media backend]),
-  [ want_libplayer_backend=$enableval ]
+    AC_HELP_STRING([--with-libplayer-backend], [Enable libplayer media backend]),
+    [ want_libplayer_backend=$enableval ]
 )
 AC_MSG_RESULT($want_libplayer_backend)
 if test "x$want_libplayer_backend" = "xyes" -o "x$want_libplayer_backend" = "xauto"; then
-  PKG_CHECK_MODULES(
-    libplayer,
-    libplayer,
-    [
-      AC_DEFINE(BUILD_LIBPLAYER_BACKEND, 1, [Libplayer media backend])
-      have_libplayer_backend="yes"
-    ],
-    [
-      if test "x$want_libplayer_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([Libplayer not found (strict dependencies checking)])
-      fi
-    ]
-  )
+  AC_CHECK_LIB([player], [player_init], [have_libplayer_backend=yes], [have_libplayer_backend=no],)
+  if test "x$have_libplayer_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
+    AC_MSG_ERROR([libplayer support explicitly requested but libplayer couldn't be found])
+  fi
+  if test "x$have_libplayer_backend" = "xyes" ; then
+    AC_DEFINE(BUILD_LIPLAYER_BACKEND, 1, [Libplayer media backend])
+    libplayer_libs=-lplayer
+    AC_SUBST(libplayer_libs)
+  fi
 fi
 AM_CONDITIONAL(BUILD_LIBPLAYER_BACKEND, test "x$have_libplayer_backend" = "xyes")
+
 
 #####################################################################
 ## Fill in flags
 AC_SUBST(emotion_cflags)
 AC_SUBST(emotion_libs)
-
-AC_SUBST(libplayer_cflags)
-AC_SUBST(libplayer_libs)
 
 AC_CONFIG_FILES([
 Makefile
