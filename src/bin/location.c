@@ -132,6 +132,12 @@ enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *
    evas_object_show(si->o_base);
 }
 
+EAPI void
+enna_location_remove_nth(Evas_Object *obj, int n)
+{
+
+}
+
 /* local subsystem globals */
 static void
 _enna_location_smart_reconfigure(E_Smart_Data * sd)
