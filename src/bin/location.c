@@ -38,9 +38,7 @@
 #define API_ENTRY E_Smart_Data *sd; sd = evas_object_smart_data_get(obj); if ((!obj) || (!sd) || (evas_object_type_get(obj) && strcmp(evas_object_type_get(obj), SMART_NAME)))
 #define INTERNAL_ENTRY E_Smart_Data *sd; sd = evas_object_smart_data_get(obj); if (!sd) return;
 
-
 typedef struct _E_Smart_Data E_Smart_Data;
-
 struct _E_Smart_Data
 {
    Evas_Coord          x, y, w, h;
@@ -135,7 +133,15 @@ enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *
 EAPI void
 enna_location_remove_nth(Evas_Object *obj, int n)
 {
+   Enna_Location_Item *si = NULL;
 
+   API_ENTRY return;
+   if (!sd->items) return;
+   if (!(si = evas_list_nth(sd->items, n))) return;
+   sd->items = evas_list_remove(sd->items, si);
+   edje_object_signal_emit(si->o_base, "location,hide", "enna");
+   //evas_object_del(si->o_base);
+   ENNA_FREE(si);
 }
 
 /* local subsystem globals */
