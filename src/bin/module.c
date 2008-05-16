@@ -35,7 +35,7 @@ enna_module_shutdown(void)
 {
     Evas_List *l;
 
-    for (l = _enna_modules; l; l = l->next)
+    for (l = _enna_modules; l; l = evas_list_remove(l, l->data))
         {
             Enna_Module *m;
             m = l->data;
@@ -45,8 +45,7 @@ enna_module_shutdown(void)
                     m->enabled = 0;
                 }
             ecore_plugin_unload(m->plugin);
-            ENNA_FREE(m);
-            _enna_modules = evas_list_remove(_enna_modules, m);
+	    free(m);
         }
 
 

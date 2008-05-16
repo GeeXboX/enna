@@ -188,6 +188,7 @@ _test(void *data, Evas_Object *o, const char *sig, const char *src)
    files = data;
    printf("End of transition\n");
 
+   enna_list_freeze(o_list);
    evas_object_del(o_list);
 
    o_list = enna_list_add(mod->em->evas);
@@ -363,13 +364,11 @@ em_init(Enna_Module *em)
 static int
 em_shutdown(Enna_Module *em)
 {
-
-    Enna_Module_Music *mod;
-
-    mod = em->mod;
-    evas_object_del(mod->o_edje);
-    evas_object_del(mod->o_list);
-    return 1;
+   evas_object_del(mod->o_edje);
+   evas_object_del(mod->o_list);
+   evas_object_del(mod->o_location);
+   free(mod);
+   return 1;
 }
 
 EAPI void

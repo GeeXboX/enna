@@ -433,9 +433,15 @@ static void
 _e_smart_del(Evas_Object *obj)
 {
    INTERNAL_ENTRY;
+   /*
+    * FIXME if sd->o_box is deleting
+    * Segv in enna ?!!
+    */
+
+   /*evas_object_del(sd->o_box);*/
    enna_list_clear(obj);
    evas_object_del(sd->o_edje);
-   evas_object_del(sd->o_box);
+
    evas_object_del(sd->o_scroll);
    free(sd);
 }

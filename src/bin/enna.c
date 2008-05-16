@@ -224,6 +224,9 @@ _enna_shutdown()
    evas_object_del(enna->o_background);
    evas_object_del(enna->o_edje);
    evas_object_del(enna->o_mainmenu);
+   enna_scanner_shutdown();
+   enna_config_shutdown();
+   enna_module_shutdown();
 
    ENNA_FREE(enna->home);
    edje_shutdown();
@@ -231,9 +234,7 @@ _enna_shutdown()
    ecore_file_shutdown();
    ecore_shutdown();
    evas_shutdown();
-   enna_scanner_shutdown();
-   enna_config_shutdown();
-   enna_module_shutdown();
+
    ENNA_FREE(enna);
 }
 
