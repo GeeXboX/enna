@@ -34,6 +34,12 @@
           description {
              state: "default" 0.0;
              color: 255 255 255 255;
+             rel1 {relative: 0.1 -0.9;to: "enna.clip.module";}
+             rel2 {relative: 0.9 -0.1;to: "enna.clip.module";}
+          }
+          description {
+             state: "show" 0.0;
+             color: 255 255 255 255;
              rel1 {relative: 0.1 0.1;to: "enna.clip.module";}
              rel2 {relative: 0.9 0.9;to: "enna.clip.module";}
           }
@@ -45,6 +51,12 @@
           clip_to: "enna.clip.module";
           description {
              state: "default" 0.0;
+             color: 255 255 255 255;
+             rel1 {relative: 0.0 1.0;}
+             rel2 {relative: 1.0 1.1;};
+          }
+          description {
+             state: "show" 0.0;
              color: 255 255 255 255;
              rel1 {relative: 0.0 0.9;}
              rel2 {relative: 1.0 1.0;};
@@ -59,6 +71,8 @@
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
           target: "enna.clip.module";
+          target: "enna.swallow.list";
+          target: "enna.swallow.location";
        }
        program {
           name: "module,hide";
@@ -67,6 +81,8 @@
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
           target: "enna.clip.module";
+          target: "enna.swallow.list";
+          target: "enna.swallow.location";
        }
     }
  }

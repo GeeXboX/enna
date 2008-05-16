@@ -175,11 +175,58 @@ _browse_down()
      }
 }
 
-static void _test(void *data, void *data2)
+static void
+_test(void *data, Evas_Object *o, const char *sig, const char *src)
 {
+   Evas_Object *o_list, *oe;
+   Evas_List *files, *l;
 
-   printf("Clicked on location\n");
+   o_list = mod->o_list;
+   oe = enna_list_edje_object_get(o_list);
+   edje_object_signal_callback_del(oe, "list,transition,end", "edje", _test);
 
+   files = data;
+   printf("End of transition\n");
+
+   evas_object_del(o_list);
+
+   o_list = enna_list_add(mod->em->evas);
+   oe = enna_list_edje_object_get(o_list);
+   evas_object_show(o_list);
+   edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
+   edje_object_signal_emit(oe, "list,right,now", "enna");
+   enna_list_freeze(o_list);
+
+   if (evas_list_count(files))
+     {
+	int i = 0;
+	/* Create list of files */
+	for (l = files, i = 0; l; l = l->next, i++)
+	  {
+	     Enna_Vfs_File *f;
+	     Evas_Object *icon;
+
+	     f = l->data;
+	     icon = edje_object_add(mod->em->evas);
+	     edje_object_file_set(icon, enna_config_theme_get(), f->icon);
+	     enna_list_append(o_list, icon, f->label, 0, _browse, NULL,mod->vfs, f);
+
+	  }
+
+     }
+   else
+     {
+	/* No files returned : create no media item */
+	Evas_Object *icon;
+
+	icon = edje_object_add(mod->em->evas);
+	edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
+	enna_list_append(o_list, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
+     }
+   enna_list_thaw(o_list);
+   enna_list_selected_set(o_list, 0);
+   mod->o_list = o_list;
+   edje_object_signal_emit(oe, "list,default", "enna");
 }
 
 static void _browse(void *data, void *data2)
@@ -188,14 +235,14 @@ static void _browse(void *data, void *data2)
    Enna_Class_Vfs *vfs = data;
    Enna_Vfs_File *file = data2;
    Evas_Coord mw, mh;
-
+   Evas_List *files;
 
    if (!vfs) return;
 
    if (vfs->func.class_browse_up)
      {
-	Evas_List *files, *l;
-	Evas_Object *o;
+
+	Evas_Object *o, *oe;
 
 	if (!file)
 	  {
@@ -219,36 +266,12 @@ static void _browse(void *data, void *data2)
 	mod->vfs = vfs;
 	o = mod->o_list;
 	/* Clear list and add new items */
-	enna_list_clear(o);
-	enna_list_freeze(o);
-	if (evas_list_count(files))
-	  {
-	     int i = 0;
-	     /* Create list of files */
-	     for (l = files, i = 0; l; l = l->next, i++)
-	       {
-		  Enna_Vfs_File *f;
-		  Evas_Object *icon;
+	oe = enna_list_edje_object_get(o);
+	edje_object_signal_callback_add(oe, "list,transition,end", "edje", _test, files);
+	edje_object_signal_emit(oe, "list,left", "enna");
 
-		  f = l->data;
-		  icon = edje_object_add(mod->em->evas);
-		  edje_object_file_set(icon, enna_config_theme_get(), f->icon);
-		  enna_list_append(o, icon, f->label, 0, _browse, NULL,vfs, f);
 
-	       }
 
-	}
-	else
-	  {
-	     /* No files returned : create no media item */
-	     Evas_Object *icon;
-
-	     icon = edje_object_add(mod->em->evas);
-	     edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
-	     enna_list_append(o, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
-	  }
-	enna_list_thaw(mod->o_list);
-	enna_list_selected_set(o, 0);
      }
 
 }
@@ -277,7 +300,7 @@ _e_wid_cb_scrollframe_resize(void *data, Evas *e, Evas_Object *obj, void *event_
 static void _create_gui()
 {
 
-  Evas_Object *o;
+   Evas_Object *o, *oe;
   int i;
   Evas_Coord mw, mh;
   Evas_List *l, *categories;
@@ -286,7 +309,12 @@ static void _create_gui()
   edje_object_file_set(o, enna_config_theme_get(), "module/music");
   mod->o_edje = o;
 
+  /* Create List */
   o = enna_list_add(mod->em->evas);
+  oe = enna_list_edje_object_get(o);
+  enna_list_freeze(o);
+  edje_object_signal_emit(oe, "list,right,now", "enna");
+
   categories = enna_vfs_get(ENNA_CAPS_MUSIC);
 
   for( l = categories; l; l = l->next)
@@ -300,15 +328,14 @@ static void _create_gui()
        edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
        enna_list_append(o, icon, cat->label, 0, _browse, NULL, cat, NULL);
     }
-
+  enna_list_thaw(o);
   mod->vfs = NULL;
-
   evas_object_show(o);
-  enna_list_min_size_get(o, &mw, &mh);
-  evas_object_resize(o, 640, 3000);
   mod->o_list = o;
   edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
+  edje_object_signal_emit(oe, "list,default", "enna");
 
+  /* Create Location bar */
   o = enna_location_add(mod->em->evas);
   edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
   enna_location_append(o, "Music", NULL, NULL, NULL);

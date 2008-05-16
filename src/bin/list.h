@@ -28,5 +28,6 @@ EAPI void         enna_list_icon_size_set         (Evas_Object *obj, Evas_Coord 
 EAPI void         enna_list_clear                 (Evas_Object *obj);
 EAPI void         enna_list_freeze                (Evas_Object *obj);
 EAPI void         enna_list_thaw                  (Evas_Object *obj);
+EAPI Evas_Object *enna_list_edje_object_get       (Evas_Object *obj);
 #endif
 

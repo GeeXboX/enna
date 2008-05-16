@@ -108,6 +108,14 @@ enna_list_append  (Evas_Object *obj, Evas_Object *icon, const char *label, int h
    evas_object_show(si->o_base);
 }
 
+EAPI Evas_Object *
+enna_list_edje_object_get(Evas_Object *obj)
+{
+   API_ENTRY return NULL;
+   return sd->o_edje;
+}
+
+
 EAPI void
 enna_list_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
 {
@@ -167,8 +175,8 @@ enna_list_selected_set(Evas_Object *obj, int n)
    sd->selected = n;
    evas_object_raise(si->o_base);
    edje_object_signal_emit(si->o_base, "e,state,selected", "e");
-   enna_list_selected_geometry_get(obj, &x, &y, &w, &h);
-   enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
+   //enna_list_selected_geometry_get(obj, &x, &y, &w, &h);
+   //enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
    if (si->func_hilight) si->func_hilight(si->data, si->data2);
    if (sd->selector) return;
    if (!sd->on_hold)
