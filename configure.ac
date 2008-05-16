@@ -31,8 +31,6 @@ PKG_CHECK_MODULES([ENNA],
    embryo >= 0.9.1
    edje >= 0.5.0
    edbus >= 0.0.1
-   sqlite3
-   lightmediascanner >= 0.1
   ]
 )
 

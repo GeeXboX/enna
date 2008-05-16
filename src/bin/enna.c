@@ -133,8 +133,6 @@ _enna_init(int run_gl)
    if (!ecore_file_exists(tmp))
      ecore_file_mkdir(tmp);
 
-   enna_scanner_init();
-
    if (run_gl)
      enna->ee = ecore_evas_gl_x11_new(NULL, 0, 0, 0, 64, 64);
    else
@@ -224,7 +222,6 @@ _enna_shutdown()
    evas_object_del(enna->o_background);
    evas_object_del(enna->o_edje);
    evas_object_del(enna->o_mainmenu);
-   enna_scanner_shutdown();
    enna_config_shutdown();
    enna_module_shutdown();
 
