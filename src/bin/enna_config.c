@@ -53,7 +53,7 @@ enna_config_init()
    char home_dir[4096];
    snprintf(home_dir, sizeof(home_dir), "file://%s", enna_util_user_home_get());
    root->uri = evas_stringshare_add(home_dir);
-   root->label = evas_stringshare_add("Home Direcory");
+   root->label = evas_stringshare_add("Home Directory");
    l = evas_list_append(l, root);
    enna_config->music_local_root_directories = l;
    l = NULL;
