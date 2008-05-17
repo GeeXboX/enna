@@ -9,6 +9,9 @@ static void           _class_hide(int dummy);
 static void           _class_event(void *event_info);
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
+static void           _list_transition_core(Evas_List *files, unsigned char direction);
+static void           _list_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
+static void           _list_transition_right_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
 static void           _browse(void *data, void *data2);
 static void           _browse_down();
 static void           _select_down();
@@ -128,64 +131,18 @@ _activate()
 }
 
 static void
-_browse_down()
-{
-   Evas_Coord w, h, x, y;
-
-   if (mod->vfs && mod->vfs->func.class_browse_down)
-     {
-	Evas_List *files, *l;
-	Evas_Object *o;
-	files = mod->vfs->func.class_browse_down();
-
-	o = mod->o_list;
-
-	enna_list_clear(o);
-	enna_list_freeze(o);
-	if (evas_list_count(files))
-	  {
-	     int i = 0;
-	     /* Files returned : create list with items */
-	     for (l = files, i = 0; l; l = l->next, i++)
-	       {
-		  Enna_Vfs_File *f;
-		  Evas_Object *icon;
-
-		  f = l->data;
-		  icon = edje_object_add(mod->em->evas);
-		  edje_object_file_set(icon, enna_config_theme_get(), f->icon);
-		  enna_list_append(o, icon, f->label, 0, _browse, NULL, mod->vfs, f);
-	       }
-	     enna_location_remove_nth(mod->o_location, enna_location_count(mod->o_location) - 1);
-
-	  }
-	else
-	  {
-	     /* No files returned: Create No media file item */
-	     Evas_Object *icon;
-
-	     icon = edje_object_add(mod->em->evas);
-	     edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
-	     enna_list_append(o, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
-	  }
-
-	enna_list_selected_set(o, 0);
-	enna_list_thaw(o);
-
-     }
-}
-
-static void
-_test(void *data, Evas_Object *o, const char *sig, const char *src)
+_list_transition_core(Evas_List *files, unsigned char direction)
 {
    Evas_Object *o_list, *oe;
-   Evas_List *files, *l;
+   Evas_List *l;
 
    o_list = mod->o_list;
    oe = enna_list_edje_object_get(o_list);
-   edje_object_signal_callback_del(oe, "list,transition,end", "edje", _test);
+   if (!direction)
+     edje_object_signal_callback_del(oe, "list,transition,end", "edje", _list_transition_left_end_cb);
+   else
+      edje_object_signal_callback_del(oe, "list,transition,end", "edje", _list_transition_right_end_cb);
 
-   files = data;
    printf("End of transition\n");
 
    enna_list_freeze(o_list);
@@ -195,7 +152,12 @@ _test(void *data, Evas_Object *o, const char *sig, const char *src)
    oe = enna_list_edje_object_get(o_list);
    evas_object_show(o_list);
    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
-   edje_object_signal_emit(oe, "list,right,now", "enna");
+
+   if (direction == 0)
+     edje_object_signal_emit(oe, "list,right,now", "enna");
+   else
+     edje_object_signal_emit(oe, "list,left,now", "enna");
+
    enna_list_freeze(o_list);
 
    if (evas_list_count(files))
@@ -229,6 +191,43 @@ _test(void *data, Evas_Object *o, const char *sig, const char *src)
    mod->o_list = o_list;
    edje_object_signal_emit(oe, "list,default", "enna");
 }
+
+static void
+_list_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src)
+{
+
+   _list_transition_core(data, 0);
+
+
+}
+
+static void
+_list_transition_right_end_cb(void *data, Evas_Object *o, const char *sig, const char *src)
+{
+   _list_transition_core(data, 1);
+}
+
+static void
+_browse_down()
+{
+   Evas_Coord w, h, x, y;
+
+   if (mod->vfs && mod->vfs->func.class_browse_down)
+     {
+	Evas_Object *o, *oe;
+	Evas_List *files;
+
+	files = mod->vfs->func.class_browse_down();
+	o = mod->o_list;
+	/* Clear list and add new items */
+	oe = enna_list_edje_object_get(o);
+	edje_object_signal_callback_add(oe, "list,transition,end", "edje", _list_transition_right_end_cb, files);
+	edje_object_signal_emit(oe, "list,right", "enna");
+	enna_location_remove_nth(mod->o_location, enna_location_count(mod->o_location) - 1);
+     }
+}
+
+
 
 static void _browse(void *data, void *data2)
 {
@@ -268,7 +267,7 @@ static void _browse(void *data, void *data2)
 	o = mod->o_list;
 	/* Clear list and add new items */
 	oe = enna_list_edje_object_get(o);
-	edje_object_signal_callback_add(oe, "list,transition,end", "edje", _test, files);
+	edje_object_signal_callback_add(oe, "list,transition,end", "edje", _list_transition_left_end_cb, files);
 	edje_object_signal_emit(oe, "list,left", "enna");
 
 
