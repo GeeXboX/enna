@@ -42,15 +42,15 @@ EAPI void
 enna_config_init()
 {
    Evas_List *l;
+   Enna_Config_Root_Directories *root;
+   char home_dir[4096];
 
    enna_config = calloc(1, sizeof(Enna_Config));
    /* Theme config */
    enna_config->theme_filename = evas_stringshare_add(PACKAGE_DATA_DIR"/enna/theme/default.edj");
    /* Module Music config */
    l = NULL;
-   Enna_Config_Root_Directories *root;
    root = malloc(sizeof(Enna_Config_Root_Directories));
-   char home_dir[4096];
    snprintf(home_dir, sizeof(home_dir), "file://%s", enna_util_user_home_get());
    root->uri = evas_stringshare_add(home_dir);
    root->label = evas_stringshare_add("Home Directory");
