@@ -91,13 +91,6 @@ struct _Enna
    Evas_Object        *o_edje;      /**< Main edje. */
    Evas_Object        *o_mainmenu;  /**< Top menu. */
    Evas_Object       *o_content;    /** Edje Object to swallow content */
-#ifdef HAVE_LIRC
-   int                 lirc_fd;
-   struct lirc_config *lirc_cfg;
-   Ecore_Timer        *lirc_timer;
-   unsigned int        lirc_actions;
-   char               *event_prec;
-#endif
 
 };
 
