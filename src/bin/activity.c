@@ -35,7 +35,7 @@ enna_activity_add(Enna_Class_Activity *class)
  * @return -1 if error occurs, 0 otherwise
  */
 EAPI int
-enna_activity_del(char *name)
+enna_activity_del(const char *name)
 {
   Evas_List *l;
   Enna_Class_Activity *act;
@@ -64,7 +64,7 @@ enna_activities_get(void)
 
 
 EAPI int
-enna_activity_init(char *name)
+enna_activity_init(const char *name)
 {
   Evas_List *l;
   Enna_Class_Activity *act;
@@ -84,7 +84,7 @@ enna_activity_init(char *name)
 }
 
 EAPI int
-enna_activity_show(char *name)
+enna_activity_show(const char *name)
 {
   Evas_List *l;
   Enna_Class_Activity *act;
@@ -104,7 +104,7 @@ enna_activity_show(char *name)
 }
 
 EAPI int
-enna_activity_shutdown(char *name)
+enna_activity_shutdown(const char *name)
 {
   Evas_List *l;
   Enna_Class_Activity *act;
@@ -124,7 +124,7 @@ enna_activity_shutdown(char *name)
 }
 
 EAPI int
-enna_activity_hide(char *name)
+enna_activity_hide(const char *name)
 {
   Evas_List *l;
   Enna_Class_Activity *act;
@@ -144,7 +144,7 @@ enna_activity_hide(char *name)
 }
 
 EAPI int
-enna_activity_event(char *name, void *event_info)
+enna_activity_event(const char *name, void *event_info)
 {
   Evas_List *l;
   Enna_Class_Activity *act;

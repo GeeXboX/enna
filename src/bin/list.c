@@ -41,7 +41,6 @@ static void _e_smart_clip_unset       (Evas_Object *obj);
 static void _e_smart_reconfigure      (E_Smart_Data *sd);
 static void _e_smart_event_mouse_down (void *data, Evas *evas, Evas_Object *obj, void *event_info);
 static void _e_smart_event_mouse_up   (void *data, Evas *evas, Evas_Object *obj, void *event_info);
-static void _e_smart_event_mouse_move(void *data, Evas *e, Evas_Object *obj, void *event_info);
 static void _e_smart_event_key_down   (void *data, Evas *evas, Evas_Object *obj, void *event_info);
 
 static Evas_Smart *_e_smart = NULL;
@@ -149,7 +148,6 @@ enna_list_selected_set(Evas_Object *obj, int n)
    Enna_List_Item *si = NULL;
    Evas_List *l = NULL;
    int i;
-   Evas_Coord w, h, x, y;
 
    API_ENTRY return;
    if (!sd->items) return;
@@ -189,13 +187,9 @@ enna_list_selected_set(Evas_Object *obj, int n)
 EAPI int
 enna_list_selected_get(Evas_Object *obj)
 {
-   Evas_List *l = NULL;
-   int i, j;
-
    API_ENTRY return -1;
    if (!sd->items) return -1;
    return sd->selected;
-
 }
 
 EAPI const char *
@@ -540,23 +534,7 @@ _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_
 
 }
 
-static void
-_e_smart_event_mouse_move(void *data, Evas *e, Evas_Object *obj, void *event_info)
-{
-   Evas_Event_Mouse_Move *ev;
-   E_Smart_Data *sd;
-   Evas_Coord x = 0, y = 0, ix, iy;
-   Evas_Coord w = 0, h = 0;
-   Enna_List_Item *si;
 
-
-   ev = event_info;
-   si = data;
-   sd = si->sd;
-
-
-
-}
 
 static void
 _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info)

@@ -95,7 +95,6 @@ enna_module_disable(Enna_Module *m)
 EAPI Enna_Module *
 enna_module_open(const char *name, Evas *evas)
 {
-    const char *modpath;
     char module_name[4096];
     Ecore_Plugin *plugin;
     Enna_Module *m;

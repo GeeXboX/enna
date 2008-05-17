@@ -16,5 +16,7 @@
 #include "content.h"
 #include "pan.h"
 #include "scrollframe.h"
+#include "list.h"
+#include "location.h"
 
 #endif

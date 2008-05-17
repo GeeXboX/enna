@@ -13,5 +13,6 @@ EAPI void           enna_mainmenu_select_nth(Evas_Object *obj, int nth);
 EAPI void           enna_mainmenu_show(Evas_Object *obj);
 EAPI void           enna_mainmenu_hide(Evas_Object *obj);
 EAPI unsigned char  enna_mainmenu_visible(Evas_Object *obj);
-
+EAPI void           enna_mainmenu_activate_nth(Evas_Object *obj, int nth);
+EAPI int            enna_mainmenu_selected_get(Evas_Object *obj);
 #endif

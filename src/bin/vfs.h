@@ -42,5 +42,7 @@ struct _Enna_Class_Vfs
    }func;
 
 };
-
+EAPI int enna_vfs_init(Evas *evas);
+EAPI int enna_vfs_append(const char *name, unsigned char type, Enna_Class_Vfs *vfs);
+EAPI Evas_List *enna_vfs_get(ENNA_VFS_CAPS type);
 #endif

@@ -36,34 +36,13 @@
 Enna *enna;
 
 /* Callbacks */
-static void         _resize_viewport_cb(Ecore_Evas * ee);
+
 
 /* Functions */
-static int          enna_init(int run_gl);
 static void         _create_gui(void);
-static int          _event_quit(void *data, int ev_type, void *ev);
+
 
 /* Calbacks */
-
-static int
-_event_quit(void *data, int ev_type, void *ev)
-{
-   Ecore_Event_Signal_Exit *e;
-
-   e = (Ecore_Event_Signal_Exit *) ev;
-
-   if (e)
-     {
-	if (e->interrupt)
-	  dbg("Exit: interrupt\n");
-	if (e->quit)
-	  dbg("Exit: quit\n");
-	if (e->terminate)
-	  dbg("Exit: terminate\n");
-     }
-   ecore_main_loop_quit();
-   return 1;
-}
 
 static void
 _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
@@ -111,9 +90,7 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
 static int
 _enna_init(int run_gl)
 {
-   Evas_Coord          w, h;
    char                tmp[PATH_MAX];
-   int                 i;
 
    enna->home = enna_util_user_home_get();
 

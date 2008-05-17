@@ -29,5 +29,7 @@ EAPI void         enna_list_clear                 (Evas_Object *obj);
 EAPI void         enna_list_freeze                (Evas_Object *obj);
 EAPI void         enna_list_thaw                  (Evas_Object *obj);
 EAPI Evas_Object *enna_list_edje_object_get       (Evas_Object *obj);
+EAPI void *       enna_list_selected_data_get     (Evas_Object *obj);
+EAPI void *       enna_list_selected_data2_get    (Evas_Object *obj);
 #endif
 

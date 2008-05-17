@@ -97,15 +97,6 @@ static void _class_event(void *event_info)
 }
 
 static void
-_list_clear(void *data, Evas_Object *o, const char *sig, const char *src)
-
-{
-
-   printf("transition end\n");
-   evas_object_del(data);
-}
-
-static void
 _select_down()
 {
    enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) + 1);
@@ -124,8 +115,8 @@ _activate()
    Enna_Vfs_File *f;
    Enna_Class_Vfs *vfs;
 
-   vfs = enna_list_selected_data_get(mod->o_list);
-   f = enna_list_selected_data2_get(mod->o_list);
+   vfs = (Enna_Class_Vfs*)enna_list_selected_data_get(mod->o_list);
+   f = (Enna_Vfs_File*)enna_list_selected_data2_get(mod->o_list);
    _browse(vfs, f);
 
 }
@@ -142,8 +133,6 @@ _list_transition_core(Evas_List *files, unsigned char direction)
      edje_object_signal_callback_del(oe, "list,transition,end", "edje", _list_transition_left_end_cb);
    else
       edje_object_signal_callback_del(oe, "list,transition,end", "edje", _list_transition_right_end_cb);
-
-   printf("End of transition\n");
 
    enna_list_freeze(o_list);
    evas_object_del(o_list);
@@ -210,8 +199,6 @@ _list_transition_right_end_cb(void *data, Evas_Object *o, const char *sig, const
 static void
 _browse_down()
 {
-   Evas_Coord w, h, x, y;
-
    if (mod->vfs && mod->vfs->func.class_browse_down)
      {
 	Evas_Object *o, *oe;
@@ -234,7 +221,6 @@ static void _browse(void *data, void *data2)
 
    Enna_Class_Vfs *vfs = data;
    Enna_Vfs_File *file = data2;
-   Evas_Coord mw, mh;
    Evas_List *files;
 
    if (!vfs) return;
@@ -276,34 +262,13 @@ static void _browse(void *data, void *data2)
 
 }
 
-static void
-_e_wid_cb_scrollframe_resize(void *data, Evas *e, Evas_Object *obj, void *event_info)
-{
-   Evas_Coord mw, mh, vw, vh, w, h;
-
-   enna_scrollframe_child_viewport_size_get(obj, &vw, &vh);
-   enna_list_min_size_get(data, &mw, &mh);
-   evas_object_geometry_get(data, NULL, NULL, &w, &h);
-
-   printf("scrollframe : %dx%d list : %dx%d list min :%dx%d\n", vw, vh, w, h, mw, mh);
-
-   if (vw >= mw)
-     {
-   	if (w != vw && mw && mh)
-	  {
-	     printf("reisze list\n");
-	     evas_object_resize(data, vw, vh);
-	  }
-     }
-}
 
 static void _create_gui()
 {
 
    Evas_Object *o, *oe;
-  int i;
-  Evas_Coord mw, mh;
-  Evas_List *l, *categories;
+
+   Evas_List *l, *categories;
 
   o = edje_object_add(mod->em->evas);
   edje_object_file_set(o, enna_config_theme_get(), "module/music");

@@ -320,8 +320,6 @@ _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_
    E_Smart_Data *sd;
    Evas_Event_Mouse_Down *ev;
    Enna_Location_Item *si;
-   Evas_List *l = NULL;
-   int i;
 
    ev = event_info;
    si = data;

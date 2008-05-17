@@ -53,8 +53,6 @@ enna_vfs_init(Evas *evas)
 EAPI int
 enna_vfs_append(const char *name, unsigned char type, Enna_Class_Vfs *vfs)
 {
-   Evas_List *l;
-
    if (!vfs) return -1;
 
    if (type |= ENNA_CAPS_MUSIC)

@@ -12,7 +12,6 @@
 #include <Edje.h>
 #include <Ecore_Evas.h>
 
-#include <sqlite3.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -24,11 +23,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <math.h>
-#include <lightmediascanner.h>
-#include <sqlite3.h>
-#include <musicbrainz/queries.h>
-#include <musicbrainz/mb_c.h>
-
+#include <ctype.h>
 
 
 #include "enna_inc.h"
@@ -93,7 +88,7 @@ struct _Enna
    Ecore_Evas         *ee;          /**< Ecore_Evas. */
    Evas               *evas;        /**< Main enna evas.  */
    Evas_Object        *o_background;/**< Background object, it handles key down. */
-   Evas_Object        *o_edje;      /**< Main edje. */   
+   Evas_Object        *o_edje;      /**< Main edje. */
    Evas_Object        *o_mainmenu;  /**< Top menu. */
    Evas_Object       *o_content;    /** Edje Object to swallow content */
 #ifdef HAVE_LIRC

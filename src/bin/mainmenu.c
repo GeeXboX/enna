@@ -186,7 +186,6 @@ enna_mainmenu_selected_get(Evas_Object *obj)
 EAPI void
 enna_mainmenu_select_nth(Evas_Object *obj, int nth)
 {
-   Evas_List *l;
    E_Smart_Item *new, *prev;
 
    API_ENTRY return;
@@ -209,7 +208,6 @@ enna_mainmenu_select_nth(Evas_Object *obj, int nth)
 EAPI void
 enna_mainmenu_select_next(Evas_Object *obj)
 {
-   Evas_List *l;
    E_Smart_Item *new, *prev;
    int ns = 0;
 

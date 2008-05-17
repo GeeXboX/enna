@@ -23,6 +23,9 @@ EAPI Enna_Module_Api module_api =
 
 static void _class_init(int dummy)
 {
+
+   mod = calloc(1, sizeof(Enna_Module_Emotion));
+
 }
 
 static void _class_shutdown(int dummy)
@@ -34,7 +37,7 @@ static void _class_shutdown(int dummy)
 static int
 em_init(Enna_Module *em)
 {
-
+   _class_init(0);
     return 1;
 }
 
@@ -43,11 +46,9 @@ static int
 em_shutdown(Enna_Module *em)
 {
 
-    Enna_Module_Emotion *mod;
-
-    mod = em->mod;;
-
-    return 1;
+   _class_shutdown(0);
+   free(mod);
+   return 1;
 }
 
 EAPI void
