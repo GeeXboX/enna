@@ -223,8 +223,17 @@ _enna_shutdown()
 static void
 usage(char *binname)
 {
-   dbg("Usage: %s [-c filename] [-fs] [-th theme_name]\n", binname);
-   exit(0);
+  printf ("Enna MediaCenter\n");
+  printf (" Usage: %s [options ...]\n", binname);
+  printf (" Available Options:\n");
+  printf ("  -c, (--config):  Specify configuration file to be used.\n");
+  printf ("  -f, (--fs):      Force Fullscreen mode.\n");
+  printf ("  -g, (--gl):      Use OpenGL renderer instead of X11.\n");
+  printf ("  -h, (--help):    Display this help.\n");
+  printf ("  -t, (--theme):   Specify theme name to be used.\n");
+  printf ("  -v, (--verbose): Display verbose error messages.\n");
+  printf ("  -V, (--version): Display Enna version number.\n");
+  exit (0);
 }
 
 static int
