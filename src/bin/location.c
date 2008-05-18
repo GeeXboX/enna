@@ -43,6 +43,7 @@ struct _E_Smart_Data
 {
    Evas_Coord          x, y, w, h;
    Evas_Object        *o_box;
+   Evas_Object        *o_scroll;
    Evas_List          *items;
 };
 
