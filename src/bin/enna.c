@@ -38,10 +38,10 @@
 /* Global Variable Enna *enna*/
 Enna *enna;
 
-char *conffile = NULL;
-char *theme_name = NULL;
-int run_fullscreen = 0;
-int run_gl = 0;
+static char *conffile = NULL;
+static char *theme_name = NULL;
+static int run_fullscreen = 0;
+static int run_gl = 0;
 
 /* Callbacks */
 
