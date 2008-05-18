@@ -45,13 +45,14 @@ struct _E_Smart_Data
    Evas_Object        *o_box;
    Evas_Object        *o_scroll;
    Evas_List          *items;
+   unsigned char       on_hold : 1;
 };
 
 typedef struct _Enna_Location_Item Enna_Location_Item;
 
 struct _Enna_Location_Item
 {
-   void *sd;
+   E_Smart_Data *sd;
    Evas_Object *o_base;
    unsigned char selected : 1;
    void (*func) (void *data, void *data2);
@@ -92,11 +93,12 @@ enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *
 {
    Enna_Location_Item *si;
    Evas_Coord mw = 0, mh = 0;
+   Evas_Coord x,y,w,h;
 
    API_ENTRY return;
    si = ENNA_NEW(Enna_Location_Item, 1);
    si->sd = sd;
-   si->o_base = edje_object_add(evas_object_evas_get(sd->o_box));
+   si->o_base = edje_object_add(evas_object_evas_get(sd->o_scroll));
 
    printf("Append location %s\n", label);
 
@@ -115,11 +117,16 @@ enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *
    sd->items = evas_list_append(sd->items, si);
 
    edje_object_size_min_calc(si->o_base, &mw, &mh);
-   printf("%d %d\n", mw, mh);
    enna_box_freeze(sd->o_box);
    enna_box_pack_end(sd->o_box, si->o_base);
    enna_box_pack_options_set(si->o_base, 0, 1, 0, 1, 0, 0,
 			  mw, mh, 99999, 99999);
+   enna_box_min_size_get(sd->o_box, &mw, &mh);
+   printf("sd->o_box size : %dx%d\n", mw, mh);
+   evas_object_geometry_get(sd->o_scroll, NULL, NULL, NULL, &mh);
+   printf("sd->o_scroll size : %dx%d\n", mw, mh);
+   evas_object_resize(sd->o_box, mw, sd->h);
+
    enna_box_thaw(sd->o_box);
 
    evas_object_lower(si->o_base);
@@ -128,13 +135,25 @@ enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *
 				  _e_smart_event_mouse_down, si);
    evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
 				  _e_smart_event_mouse_up, si);
+
+   evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
+   enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
+
+
    evas_object_show(si->o_base);
 }
 
 static void
 _location_hide_end(void *data, Evas_Object *o, const char *sig, const char *src)
 {
-   evas_object_del(data);
+   Enna_Location_Item *si;
+   Evas_Coord x,y,w,h;
+   si = data;
+
+   evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
+   enna_scrollframe_child_region_show(si->sd->o_scroll, x, y, w, h);
+   evas_object_del(si->o_base);
+   free(si);
 }
 
 EAPI void
@@ -147,8 +166,8 @@ enna_location_remove_nth(Evas_Object *obj, int n)
    if (!(si = evas_list_nth(sd->items, n))) return;
    sd->items = evas_list_remove(sd->items, si);
    edje_object_signal_emit(si->o_base, "location,hide", "enna");
-   edje_object_signal_callback_add(si->o_base, "location,hide,end", "edje", _location_hide_end, si->o_base);
-   ENNA_FREE(si);
+   edje_object_signal_callback_add(si->o_base, "location,hide,end", "edje", _location_hide_end, si);
+
 }
 
 EAPI int
@@ -169,8 +188,9 @@ _enna_location_smart_reconfigure(E_Smart_Data * sd)
    w = sd->w;
    h = sd->h;
 
-   evas_object_move(sd->o_box, x, y);
-   evas_object_resize(sd->o_box, w, h);
+   evas_object_move(sd->o_scroll, x, y);
+   printf("location resize : %d %d %d %d\n", w, y, w, h);
+   evas_object_resize(sd->o_scroll, w, h);
 
 }
 
@@ -214,7 +234,12 @@ _e_smart_add(Evas_Object * obj)
    sd->w = 0;
    sd->h = 0;
    sd->items = NULL;
-   evas_object_smart_member_add(sd->o_box, obj);
+   sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
+   enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_AUTO,
+			       ENNA_SCROLLFRAME_POLICY_AUTO);
+   enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
+
+   evas_object_smart_member_add(sd->o_scroll, obj);
    evas_object_smart_data_set(obj, sd);
 }
 
@@ -227,6 +252,7 @@ _e_smart_del(Evas_Object * obj)
    if (!sd)
       return;
    evas_object_del(sd->o_box);
+   evas_object_del(sd->o_scroll);
    free(sd);
 }
 
@@ -268,7 +294,7 @@ _e_smart_show(Evas_Object * obj)
    sd = evas_object_smart_data_get(obj);
    if (!sd)
       return;
-   evas_object_show(sd->o_box);
+   evas_object_show(sd->o_scroll);
 }
 
 static void
@@ -279,7 +305,7 @@ _e_smart_hide(Evas_Object * obj)
    sd = evas_object_smart_data_get(obj);
    if (!sd)
       return;
-   evas_object_hide(sd->o_box);
+   evas_object_hide(sd->o_scroll);
 }
 
 static void
@@ -290,7 +316,7 @@ _e_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
    sd = evas_object_smart_data_get(obj);
    if (!sd)
       return;
-   evas_object_color_set(sd->o_box, r, g, b, a);
+   evas_object_color_set(sd->o_scroll, r, g, b, a);
 }
 
 static void
@@ -301,7 +327,7 @@ _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
    sd = evas_object_smart_data_get(obj);
    if (!sd)
       return;
-   evas_object_clip_set(sd->o_box, clip);
+   evas_object_clip_set(sd->o_scroll, clip);
 }
 
 static void
@@ -312,7 +338,7 @@ _e_smart_clip_unset(Evas_Object * obj)
    sd = evas_object_smart_data_get(obj);
    if (!sd)
       return;
-   evas_object_clip_unset(sd->o_box);
+   evas_object_clip_unset(sd->o_scroll);
 }
 
 static void
@@ -321,13 +347,27 @@ _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_
    E_Smart_Data *sd;
    Evas_Event_Mouse_Down *ev;
    Enna_Location_Item *si;
+   int i;
+   Evas_List *l = NULL;
 
    ev = event_info;
    si = data;
    sd = si->sd;
 
    printf("Mouse Down\n");
+   if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD)
+     sd->on_hold = 1;
+   else sd->on_hold = 0;
 
+   if (!sd->items) return;
+   for (i = 0, l = sd->items; l; l = l->next, i++)
+     {
+   	 if (l->data == si)
+   	   {
+	      //enna_box_selected_set(sd->o_smart, i);
+   	     break;
+   	  }
+    }
 }
 
 static void
@@ -341,6 +381,20 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
    si = data;
    sd = si->sd;
 
-   printf("Mouse up\n");
+
+   if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD) sd->on_hold = 1;
+   else sd->on_hold = 0;
+
+
+   if (!sd->items) return;
+   //if (!sd->selector) return;
+   //if (!(si = evas_list_nth(sd->items, sd->selected))) return;
+   if (sd->on_hold)
+     {
+   	sd->on_hold = 0;
+   	return;
+     }
    if (si->func) si->func(si->data, si->data2);
+
+
 }

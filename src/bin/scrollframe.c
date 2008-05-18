@@ -55,7 +55,13 @@ struct _E_Smart_Data
       void (*child_size_get) (Evas_Object *obj, Evas_Coord *x, Evas_Coord *y);
    } pan_func;
 
-
+   Ecore_Animator *animator;
+   double scroll_start;
+   double scroll_time;
+   Evas_Coord scroll_start_x;
+   Evas_Coord scroll_start_y;
+   Evas_Coord scroll_to_x;
+   Evas_Coord scroll_to_y;
    unsigned char hbar_visible : 1;
    unsigned char vbar_visible : 1;
    unsigned char extern_pan : 1;
@@ -242,6 +248,33 @@ enna_scrollframe_child_pos_get(Evas_Object *obj, Evas_Coord *x, Evas_Coord *y)
    sd->pan_func.get(sd->pan_obj, x, y);
 }
 
+static int
+_e_smart_animator_cb(void *data)
+{
+   double t;
+   E_Smart_Data *sd;
+   Evas_Coord x,y;
+   sd = data;
+   t = (ecore_time_get() - sd->scroll_start) / sd->scroll_time;
+   if (t > 1.0) t = 1.0;
+   t = 1.0 - t;
+   t = 1.0 - (t * t * t * t); /* more t's - more curve */
+   if (t > 1.0) t = 1.0;
+   x = sd->scroll_start_x + (t * (sd->scroll_to_x - sd->scroll_start_x));
+   y = sd->scroll_start_y + (t * (sd->scroll_to_x - sd->scroll_start_x));
+
+   enna_scrollframe_child_pos_set(sd->smart_obj, x, y);
+
+   if (t >= 1.0)
+     {
+	sd->animator = NULL;
+	return 0;
+     }
+   return 1;
+
+
+}
+
 EAPI void
 enna_scrollframe_child_region_show(Evas_Object *obj, Evas_Coord x, Evas_Coord y, Evas_Coord w, Evas_Coord h)
 {
@@ -266,8 +299,19 @@ enna_scrollframe_child_region_show(Evas_Object *obj, Evas_Coord x, Evas_Coord y,
 	ny = y + h - (ch - my);
 	if (ny > y) ny = y;
      }
+   printf(" x : %d y : %d nx : %d ny : %d\n", x, y, nx, ny);
    if ((nx == px) && (ny == py)) return;
-   enna_scrollframe_child_pos_set(obj, nx, ny);
+
+   sd->scroll_to_x = nx;
+   sd->scroll_to_y = ny;
+   sd->scroll_start_x = x;
+   sd->scroll_start_y = y;
+   sd->scroll_start = ecore_time_get();
+   sd->animator = ecore_animator_add(_e_smart_animator_cb,
+				     sd);
+
+
+   //enna_scrollframe_child_pos_set(obj, nx, ny);
 }
 
 EAPI void
@@ -472,6 +516,9 @@ _e_smart_momentum_animator(void *data)
    sd = data;
    t = ecore_time_get();
    dt = t - sd->down.anim_start;
+
+   printf("momentum animator %f\n", dt);
+
    if (dt >= 0.0)
      {
 	dt = dt / thumbscroll_friction;
@@ -481,6 +528,7 @@ _e_smart_momentum_animator(void *data)
 	dy = (sd->down.dy * thumbscroll_friction * p);
 	x = sd->down.sx - dx;
 	y = sd->down.sy - dy;
+	printf("new x : %d new y : %d\n", x, y);
 	enna_scrollframe_child_pos_set(sd->smart_obj, x, y);
 	if (dt >= 1.0)
 	  {
