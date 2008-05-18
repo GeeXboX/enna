@@ -99,14 +99,14 @@ static void _class_event(void *event_info)
 static void
 _select_down()
 {
-   enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) + 1);
+   enna_list_jump_nth(mod->o_list, enna_list_selected_get(mod->o_list) + 1);
 
 }
 
 static void
 _select_up()
 {
-   enna_list_selected_set(mod->o_list, enna_list_selected_get(mod->o_list) - 1);
+   enna_list_jump_nth(mod->o_list, enna_list_selected_get(mod->o_list) - 1);
 }
 
 static void

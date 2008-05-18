@@ -185,6 +185,45 @@ enna_list_selected_set(Evas_Object *obj, int n)
 
 }
 
+EAPI void
+enna_list_jump_nth(Evas_Object *obj, int n)
+{
+   Enna_List_Item *si = NULL;
+   Evas_List *l = NULL;
+   int i;
+   Evas_Coord x,y,w,h;
+
+   API_ENTRY return;
+   if (!sd->items) return;
+
+   i = evas_list_count(sd->items);
+   if (n >= i) n = i - 1;
+   else if (n < 0) n = 0;
+
+   for (l = sd->items; l; l = l->next)
+     {
+	if (!(si = l->data)) continue;
+	if ((!si->selected) || (si->header)) continue;
+	edje_object_signal_emit(si->o_base, "e,state,unselected", "e");
+	si->selected = 0;
+     }
+   sd->selected = -1;
+   if (!(si = evas_list_nth(sd->items, n))) return;
+
+   /* NB: Remove this if headers ever become selectable */
+   if (si->header) return;
+
+   si->selected = 1;
+   sd->selected = n;
+   evas_object_raise(si->o_base);
+   edje_object_signal_emit(si->o_base, "e,state,selected", "e");
+   evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
+   enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
+   if (si->func_hilight) si->func_hilight(si->data, si->data2);
+
+
+}
+
 EAPI int
 enna_list_selected_get(Evas_Object *obj)
 {
@@ -526,12 +565,12 @@ _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_
    if (!sd->items) return;
    for (i = 0, l = sd->items; l; l = l->next, i++)
      {
-   	 if (l->data == si)
-   	   {
-	      enna_list_selected_set(sd->o_smart, i);
+	if (l->data == si)
+	  {
+	     enna_list_selected_set(sd->o_smart, i);
    	     break;
    	  }
-    }
+     }
 
 }
 

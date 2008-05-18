@@ -616,64 +616,64 @@ _e_smart_event_mouse_move(void *data, Evas *e, Evas_Object *obj, void *event_inf
    ev = event_info;
 
 
-	if (sd->down.now)
-	  {
-	     memmove(&(sd->down.history[1]), &(sd->down.history[0]),
-		     sizeof(sd->down.history[0]) * 19);
-	     sd->down.history[0].timestamp = ecore_time_get();
-	     sd->down.history[0].x = ev->cur.canvas.x;
-	     sd->down.history[0].y = ev->cur.canvas.y;
+   if (sd->down.now)
+     {
+	memmove(&(sd->down.history[1]), &(sd->down.history[0]),
+		sizeof(sd->down.history[0]) * 19);
+	sd->down.history[0].timestamp = ecore_time_get();
+	sd->down.history[0].x = ev->cur.canvas.x;
+	sd->down.history[0].y = ev->cur.canvas.y;
 
-	     x = ev->cur.canvas.x - sd->down.x;
-	     if (x < 0) x = -x;
-	     y = ev->cur.canvas.y - sd->down.y;
-	     if (y < 0) y = -y;
-	     if ((sd->one_dir_at_a_time) &&
-		 (!sd->down.dir_x) && (!sd->down.dir_y))
+	x = ev->cur.canvas.x - sd->down.x;
+	if (x < 0) x = -x;
+	y = ev->cur.canvas.y - sd->down.y;
+	if (y < 0) y = -y;
+	if ((sd->one_dir_at_a_time) &&
+	    (!sd->down.dir_x) && (!sd->down.dir_y))
+	  {
+	     if (x > y)
 	       {
-		  if (x > y)
+		  if (x > thumbscroll_threshhold)
 		    {
-		       if (x > thumbscroll_threshhold)
-			 {
-			    sd->down.dir_x = 1;
-			    sd->down.dir_y = 0;
-			 }
-		    }
-		  else
-		    {
-		       if (y > thumbscroll_threshhold)
-			 {
-			    sd->down.dir_x = 0;
-			    sd->down.dir_y = 1;
-			 }
+		       sd->down.dir_x = 1;
+		       sd->down.dir_y = 0;
 		    }
 	       }
-	     if ((sd->down.dragged) ||
-		 (((x * x) + (y * y)) >
-		  (thumbscroll_threshhold *
-		   thumbscroll_threshhold)))
+	     else
 	       {
-		  if (!sd->down.dragged)
-		    evas_event_feed_hold(e, 1, ev->timestamp, ev->data);
-		  ev->event_flags |= EVAS_EVENT_FLAG_ON_HOLD;
-		  sd->down.dragged = 1;
-	       }
-	     x = sd->down.sx - (ev->cur.canvas.x - sd->down.x);
-	     y = sd->down.sy - (ev->cur.canvas.y - sd->down.y);
-	     if ((sd->down.dir_x) || (sd->down.dir_y))
-	       {
-		  if (!sd->down.locked)
+		  if (y > thumbscroll_threshhold)
 		    {
-		       printf("lock dir to x%iy%i\n", sd->down.dir_x, sd->down.dir_y);
-		       sd->down.locked_x = x;
-		       sd->down.locked_y = y;
-		       sd->down.locked = 1;
+		       sd->down.dir_x = 0;
+		       sd->down.dir_y = 1;
 		    }
-		  if (sd->down.dir_x) y = sd->down.locked_y;
-		  else x = sd->down.locked_x;
 	       }
-	     enna_scrollframe_child_pos_set(sd->smart_obj, x, y);
 	  }
+	if ((sd->down.dragged) ||
+	    (((x * x) + (y * y)) >
+	     (thumbscroll_threshhold *
+	      thumbscroll_threshhold)))
+	  {
+	     if (!sd->down.dragged)
+	       evas_event_feed_hold(e, 1, ev->timestamp, ev->data);
+	     ev->event_flags |= EVAS_EVENT_FLAG_ON_HOLD;
+	     sd->down.dragged = 1;
+	  }
+	x = sd->down.sx - (ev->cur.canvas.x - sd->down.x);
+	y = sd->down.sy - (ev->cur.canvas.y - sd->down.y);
+	if ((sd->down.dir_x) || (sd->down.dir_y))
+	  {
+	     if (!sd->down.locked)
+	       {
+		  printf("lock dir to x%iy%i\n", sd->down.dir_x, sd->down.dir_y);
+		  sd->down.locked_x = x;
+		  sd->down.locked_y = y;
+		  sd->down.locked = 1;
+	       }
+	     if (sd->down.dir_x) y = sd->down.locked_y;
+	     else x = sd->down.locked_x;
+	  }
+	enna_scrollframe_child_pos_set(sd->smart_obj, x, y);
+     }
 
 }
 
