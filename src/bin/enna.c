@@ -29,11 +29,19 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define _GNU_SOURCE
+#include <getopt.h>
+
 #include "enna.h"
 #include "enna_inc.h"
 
 /* Global Variable Enna *enna*/
 Enna *enna;
+
+char *conffile = NULL;
+char *theme_name = NULL;
+int run_fullscreen = 0;
+int run_gl = 0;
 
 /* Callbacks */
 
@@ -219,55 +227,76 @@ usage(char *binname)
    exit(0);
 }
 
+static int
+parse_command_line (int argc, char **argv)
+{
+  int c, index;
+  char short_options[] = "Vhvfgc:t:";
+  struct option long_options [] = {
+    {"help", no_argument, 0, 'h' },
+    {"version", no_argument, 0, 'V' },
+    {"verbose", no_argument, 0, 'v' },
+    {"fs", no_argument, 0, 'f' },
+    {"gl", no_argument, 0, 'g' },
+    {"config", required_argument, 0, 'c' },
+    {"theme", required_argument, 0, 't' },
+    {0, 0, 0, 0 }
+  };
+
+  /* command line argument processing */
+  while (1)
+  {
+    c = getopt_long (argc, argv, short_options, long_options, &index);
+
+    if (c == EOF)
+      break;
+
+    switch (c)
+    {
+    case 0:
+      /* opt = long_options[index].name; */
+      break;
+
+    case '?':
+    case 'h':
+      usage (argv[0]);
+      return -1;
+
+    case 'V':
+      break;
+
+    case 'v':
+      break;
+
+    case 'f':
+      run_fullscreen = 1;
+      break;
+
+    case 'g':
+      run_gl = 1;
+      break;
+
+    case 'c':
+      conffile = strdup (optarg);
+      break;
+
+    case 't':
+      theme_name = strdup (optarg);
+      break;
+
+    default:
+      usage (argv[0]);
+      return -1;
+    }
+  }
+
+  return 0;
+}
+
 int
 main(int arc, char **arv)
 {
-
-   char               *binname = arv[0];
-   char               *conffile = NULL;
-   char               *theme_name = NULL;
-   int                 run_fullscreen = 0;
-   int                 run_gl = 0;
-
-   arv++;
-   arc--;
-
-   while (arc)
-     {
-	if (!strcmp("-fs", *arv))
-	  {
-	     run_fullscreen = 1;
-	     arv++;
-	     arc--;
-	  }
-	else if (!strcmp("-gl", *arv))
-	  {
-	     run_gl = 1;
-	     arv++;
-	     arc--;
-	  }
-	else if (!strcmp("-c", *arv))
-	  {
-	     arv++;
-	     if (!--arc)
-	       usage(binname);
-	     conffile = strdup(*arv);
-	     arc--;
-	     arv++;
-	  }
-	else if (!strcmp("-th", *arv))
-	  {
-	     arv++;
-	     if (!--arc)
-	       usage(binname);
-	     theme_name = strdup(*arv);
-	     dbg("theme in use : %s\n", theme_name);
-	     arc--;
-	     arv++;
-	  }
-	else
-	  usage(binname);
-     }
+   parse_command_line (arc, arv);
 
    /* Must be called first */
    enna_config_init();
