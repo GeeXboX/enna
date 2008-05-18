@@ -299,16 +299,16 @@ enna_scrollframe_child_region_show(Evas_Object *obj, Evas_Coord x, Evas_Coord y,
 	ny = y + h - (ch - my);
 	if (ny > y) ny = y;
      }
-   printf(" x : %d y : %d nx : %d ny : %d\n", x, y, nx, ny);
+   printf(" px : %d py : %d nx : %d ny : %d delta_x=%d deltay = %d\n", px, py, nx, ny, px-nx, py-ny);
    if ((nx == px) && (ny == py)) return;
 
    sd->scroll_to_x = nx;
    sd->scroll_to_y = ny;
-   sd->scroll_start_x = x;
-   sd->scroll_start_y = y;
+   sd->scroll_start_x = px;
+   sd->scroll_start_y = py;
    sd->scroll_start = ecore_time_get();
-   sd->animator = ecore_animator_add(_e_smart_animator_cb,
-				     sd);
+   sd->scroll_time = 0.5;
+   sd->animator = ecore_animator_add(_e_smart_animator_cb,sd);
 
 
    //enna_scrollframe_child_pos_set(obj, nx, ny);

@@ -148,6 +148,7 @@ enna_list_selected_set(Evas_Object *obj, int n)
    Enna_List_Item *si = NULL;
    Evas_List *l = NULL;
    int i;
+   Evas_Coord x,y,w,h;
 
    API_ENTRY return;
    if (!sd->items) return;
@@ -173,7 +174,7 @@ enna_list_selected_set(Evas_Object *obj, int n)
    sd->selected = n;
    evas_object_raise(si->o_base);
    edje_object_signal_emit(si->o_base, "e,state,selected", "e");
-   //enna_list_selected_geometry_get(obj, &x, &y, &w, &h);
+   //enna_list_selected_geometry_get(si->o_base, &x, &y, &w, &h);
    //enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
    if (si->func_hilight) si->func_hilight(si->data, si->data2);
    if (sd->selector) return;
