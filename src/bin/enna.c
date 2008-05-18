@@ -223,83 +223,83 @@ _enna_shutdown()
 static void
 usage(char *binname)
 {
-  printf ("Enna MediaCenter\n");
-  printf (" Usage: %s [options ...]\n", binname);
-  printf (" Available Options:\n");
-  printf ("  -c, (--config):  Specify configuration file to be used.\n");
-  printf ("  -f, (--fs):      Force Fullscreen mode.\n");
-  printf ("  -g, (--gl):      Use OpenGL renderer instead of X11.\n");
-  printf ("  -h, (--help):    Display this help.\n");
-  printf ("  -t, (--theme):   Specify theme name to be used.\n");
-  printf ("  -v, (--verbose): Display verbose error messages.\n");
-  printf ("  -V, (--version): Display Enna version number.\n");
-  exit (0);
+   printf ("Enna MediaCenter\n");
+   printf (" Usage: %s [options ...]\n", binname);
+   printf (" Available Options:\n");
+   printf ("  -c, (--config):  Specify configuration file to be used.\n");
+   printf ("  -f, (--fs):      Force Fullscreen mode.\n");
+   printf ("  -g, (--gl):      Use OpenGL renderer instead of X11.\n");
+   printf ("  -h, (--help):    Display this help.\n");
+   printf ("  -t, (--theme):   Specify theme name to be used.\n");
+   printf ("  -v, (--verbose): Display verbose error messages.\n");
+   printf ("  -V, (--version): Display Enna version number.\n");
+   exit (0);
 }
 
 static int
 parse_command_line (int argc, char **argv)
 {
-  int c, index;
-  char short_options[] = "Vhvfgc:t:";
-  struct option long_options [] = {
-    {"help",             no_argument,       0, 'h' },
-    {"version",          no_argument,       0, 'V' },
-    {"verbose",          no_argument,       0, 'v' },
-    {"fs",               no_argument,       0, 'f' },
-    {"gl",               no_argument,       0, 'g' },
-    {"config",           required_argument, 0, 'c' },
-    {"theme",            required_argument, 0, 't' },
-    {0,                  0,                 0,  0  }
-  };
+   int c, index;
+   char short_options[] = "Vhvfgc:t:";
+   struct option long_options [] = {
+     {"help",             no_argument,       0, 'h' },
+     {"version",          no_argument,       0, 'V' },
+     {"verbose",          no_argument,       0, 'v' },
+     {"fs",               no_argument,       0, 'f' },
+     {"gl",               no_argument,       0, 'g' },
+     {"config",           required_argument, 0, 'c' },
+     {"theme",            required_argument, 0, 't' },
+     {0,                  0,                 0,  0  }
+   };
 
-  /* command line argument processing */
-  while (1)
-  {
-    c = getopt_long (argc, argv, short_options, long_options, &index);
+   /* command line argument processing */
+   while (1)
+     {
+        c = getopt_long (argc, argv, short_options, long_options, &index);
 
-    if (c == EOF)
-      break;
+        if (c == EOF)
+          break;
 
-    switch (c)
-    {
-    case 0:
-      /* opt = long_options[index].name; */
-      break;
+        switch (c)
+          {
+           case 0:
+              /* opt = long_options[index].name; */
+              break;
 
-    case '?':
-    case 'h':
-      usage (argv[0]);
-      return -1;
+           case '?':
+           case 'h':
+              usage (argv[0]);
+              return -1;
 
-    case 'V':
-      break;
+           case 'V':
+              break;
 
-    case 'v':
-      break;
+           case 'v':
+              break;
 
-    case 'f':
-      run_fullscreen = 1;
-      break;
+           case 'f':
+              run_fullscreen = 1;
+              break;
 
-    case 'g':
-      run_gl = 1;
-      break;
+           case 'g':
+              run_gl = 1;
+              break;
 
-    case 'c':
-      conffile = strdup (optarg);
-      break;
+           case 'c':
+              conffile = strdup (optarg);
+              break;
 
-    case 't':
-      theme_name = strdup (optarg);
-      break;
+           case 't':
+              theme_name = strdup (optarg);
+              break;
 
-    default:
-      usage (argv[0]);
-      return -1;
-    }
-  }
+           default:
+              usage (argv[0]);
+              return -1;
+          }
+     }
 
-  return 0;
+   return 0;
 }
 
 int
