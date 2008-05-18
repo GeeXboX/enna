@@ -51,7 +51,6 @@ static Enna_Class_Vfs class =
 
 static Evas_List *_class_browse_up(const char *path)
 {
-   printf("Local files Browse\n");
 
    /* Browse Root */
    if (!path)
@@ -77,7 +76,6 @@ static Evas_List *_class_browse_up(const char *path)
 	evas_stringshare_del(mod->uri);
 	mod->prev_uri = NULL;
 	mod->uri = NULL;
-	printf("browse_up : prev uri : %s; uri : %s\n", mod->prev_uri, mod->uri);
 	return files;
      }
    else if (strstr(path, "file://"))
@@ -136,7 +134,6 @@ static Evas_List *_class_browse_up(const char *path)
 	evas_stringshare_del(mod->prev_uri);
 	mod->prev_uri = mod->uri;
 	mod->uri = evas_stringshare_add(path);
-	printf("browse_up : prev uri : %s; uri : %s\n", mod->prev_uri, mod->uri);
 	return dirs_list;
      }
 
@@ -166,11 +163,8 @@ static unsigned char _uri_is_root(const char *uri)
    for (l = enna_config->music_local_root_directories; l; l = l->next)
      {
 	Enna_Config_Root_Directories *root = l->data;
-	printf("is root : %s %s\n", root->uri, uri);
 	if (!strcmp(root->uri, uri))
-	  {
-	     return 1;
-	  }
+	  return 1;
      }
    return 0;
 }
@@ -208,7 +202,6 @@ static Evas_List *_class_browse_down()
 	     evas_stringshare_del(mod->uri);
 	     mod->prev_uri = NULL;
 	     mod->uri = NULL;
-	     printf("browse_down : prev uri : %s; uri : %s\n", mod->prev_uri, mod->uri);
 	     return files;
 	  }
 
@@ -226,7 +219,6 @@ static Evas_List *_class_browse_down()
 	//if (mod->prev_uri) evas_stringshare_del(mod->prev_uri);
 	//if(mod->uri) evas_stringshare_del(mod->uri);
 	mod->uri = evas_stringshare_add(path_tmp);
-	printf("browse_down : prev uri : %s; uri : %s\n", mod->prev_uri, mod->uri);
 	return files;
      }
 

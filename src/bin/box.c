@@ -369,8 +369,6 @@ enna_box_min_size_get(Evas_Object * obj, Evas_Coord * minw, Evas_Coord * minh)
    if (sd->changed)
       _enna_box_smart_extents_calcuate(sd);
 
-   //printf("Box min size get : %dx%d   minw : %d, min h : %d\n", sd->w, sd->h, sd->min.w, sd->min.h);
-
    if (minw)
       *minw = sd->min.w;
    if (minh)

@@ -143,7 +143,6 @@ enna_scrollframe_child_set(Evas_Object *obj, Evas_Object *child)
    evas_object_event_callback_add(child, EVAS_CALLBACK_FREE, _e_smart_child_del_hook, sd);
    enna_pan_child_set(sd->pan_obj, sd->child_obj);
    sd->pan_func.child_size_get(sd->pan_obj, &w, &h);
-   printf("child size : %dx%d\n", w, h);
    sd->child.w = w;
    sd->child.h = h;
    _e_smart_scrollbar_size_adjust(sd);
@@ -299,7 +298,6 @@ enna_scrollframe_child_region_show(Evas_Object *obj, Evas_Coord x, Evas_Coord y,
 	ny = y + h - (ch - my);
 	if (ny > y) ny = y;
      }
-   printf(" px : %d py : %d nx : %d ny : %d delta_x=%d deltay = %d\n", px, py, nx, ny, px-nx, py-ny);
    if ((nx == px) && (ny == py)) return;
 
    sd->scroll_to_x = nx;
@@ -487,7 +485,6 @@ _e_smart_event_mouse_down(void *data, Evas *e, Evas_Object *obj, void *event_inf
      }
    if (ev->button == 1)
      {
-	printf("down @ %3.3f\n", ecore_time_get());
 	sd->down.now = 1;
 	sd->down.dragged = 0;
 	sd->down.dir_x = 0;
@@ -517,8 +514,6 @@ _e_smart_momentum_animator(void *data)
    t = ecore_time_get();
    dt = t - sd->down.anim_start;
 
-   printf("momentum animator %f\n", dt);
-
    if (dt >= 0.0)
      {
 	dt = dt / thumbscroll_friction;
@@ -528,7 +523,6 @@ _e_smart_momentum_animator(void *data)
 	dy = (sd->down.dy * thumbscroll_friction * p);
 	x = sd->down.sx - dx;
 	y = sd->down.sy - dy;
-	printf("new x : %d new y : %d\n", x, y);
 	enna_scrollframe_child_pos_set(sd->smart_obj, x, y);
 	if (dt >= 1.0)
 	  {
@@ -553,7 +547,6 @@ _e_smart_event_mouse_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
 
    if (ev->button == 1)
      {
-	printf("up @ %3.3f\n", ecore_time_get());
 	x = ev->canvas.x - sd->down.x;
 	y = ev->canvas.y - sd->down.y;
 	if (sd->down.dragged)
@@ -664,7 +657,6 @@ _e_smart_event_mouse_move(void *data, Evas *e, Evas_Object *obj, void *event_inf
 	  {
 	     if (!sd->down.locked)
 	       {
-		  printf("lock dir to x%iy%i\n", sd->down.dir_x, sd->down.dir_y);
 		  sd->down.locked_x = x;
 		  sd->down.locked_y = y;
 		  sd->down.locked = 1;

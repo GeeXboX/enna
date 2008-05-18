@@ -83,8 +83,6 @@ static void _class_event(void *event_info)
 
    ev = (Evas_Event_Key_Down *) event_info;
 
-   printf("Music Key pressed : %s\n", ev->key);
-
    if (!strcmp(ev->key, "BackSpace"))
      _browse_down();
    else if (!strcmp(ev->key, "Down"))
@@ -245,7 +243,6 @@ static void _browse(void *data, void *data2)
 	else if (!file->is_directory)
 	  {
 	     /* File selected is a regular file */
-	     printf("Select File\n");
 	     return;
 	  }
 
@@ -288,7 +285,6 @@ static void _create_gui()
        Enna_Class_Vfs *cat;
 
        cat = l->data;
-       printf("cat->label : %s cat->icon : %s\n", cat->label, cat->icon);
        icon = edje_object_add(mod->em->evas);
        edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
        enna_list_append(o, icon, cat->label, 0, _browse, NULL, cat, NULL);
