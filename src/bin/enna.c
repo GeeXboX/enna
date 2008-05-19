@@ -93,6 +93,20 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
 	  enna_activity_event("music", event_info);
      }
 }
+static void
+_resize_viewport_cb(Ecore_Evas * ee)
+{
+   Evas_Coord          w, h, x, y;
+
+   if (!enna->ee)
+     return;
+
+   evas_output_viewport_get(enna->evas, &x, &y, &w, &h);
+   evas_object_resize(enna->o_edje, w, h);
+   evas_object_move(enna->o_edje, x, y);
+   ecore_evas_resize(enna->ee, w, h);
+}
+
 /* Functions */
 
 static int
@@ -122,6 +136,10 @@ _enna_init(int run_gl)
      enna->ee = ecore_evas_gl_x11_new(NULL, 0, 0, 0, 64, 64);
    else
      enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
+
+
+   ecore_evas_fullscreen_set(enna->ee, run_fullscreen);
+
 
    if (!enna->ee)
      {
@@ -174,6 +192,7 @@ _create_gui()
    evas_object_event_callback_add(enna->o_edje,
 				  EVAS_CALLBACK_KEY_DOWN,
 				  _event_bg_key_down_cb, enna);
+   ecore_evas_callback_resize_set(enna->ee, _resize_viewport_cb);
    /* Create Content Object */
    o = enna_content_add(enna->evas);
    edje_object_part_swallow(enna->o_edje, "enna.swallow.module", o);

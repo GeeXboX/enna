@@ -300,7 +300,7 @@ static void _create_gui()
   o = enna_location_add(mod->em->evas);
   edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
 
-  //enna_location_append(o, "Music", NULL, NULL, NULL);
+  enna_location_append(o, "Music", NULL, NULL, NULL);
   mod->o_location = o;
 
 }
