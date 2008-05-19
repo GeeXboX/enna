@@ -146,7 +146,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
      edje_object_signal_emit(oe, "list,left,now", "enna");
 
    enna_list_freeze(o_list);
-
+   enna_list_icon_size_set(o_list, 64, 64);
    if (evas_list_count(files))
      {
 	int i = 0;
@@ -173,6 +173,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
 	enna_list_append(o_list, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
      }
+
    enna_list_thaw(o_list);
    enna_list_selected_set(o_list, 0);
    mod->o_list = o_list;
@@ -278,7 +279,7 @@ static void _create_gui()
   edje_object_signal_emit(oe, "list,right,now", "enna");
 
   categories = enna_vfs_get(ENNA_CAPS_MUSIC);
-
+  enna_list_icon_size_set(o, 64, 64);
   for( l = categories; l; l = l->next)
     {
        Evas_Object *icon;
