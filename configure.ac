@@ -30,7 +30,6 @@ PKG_CHECK_MODULES([ENNA],
    ecore-file
    embryo >= 0.9.1
    edje >= 0.5.0
-   edbus >= 0.0.1
   ]
 )
 

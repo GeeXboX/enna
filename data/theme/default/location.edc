@@ -55,6 +55,7 @@ group {
             rel2 { relative: 0.0 0.5; offset: -10 -10; to: "enna.clip.location";}
             color: 200 200 200 200;
             color3: 128 128 128 200;
+            fixed: 0 0;
             align: 0 0.5;
 	    text {
 
