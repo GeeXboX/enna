@@ -89,7 +89,7 @@ static void _class_event(void *event_info)
      _select_down();
    else if (!strcmp(ev->key, "Up"))
      _select_up();
-   else if (!strcmp(ev->key, "Return"))
+   else if (!strcmp(ev->key, "Return") ||!strcmp(ev->key, "KP_Enter") )
      _activate();
 
 }

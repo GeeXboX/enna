@@ -80,7 +80,7 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
 	  {
 	     enna_mainmenu_select_next(enna->o_mainmenu);
 	  }
-	else if (!strcmp(ev->key, "Return"))
+	else if (!strcmp(ev->key, "Return") ||!strcmp(ev->key, "KP_Enter") )
 	  {
 	     enna_mainmenu_activate_nth(enna->o_mainmenu, enna_mainmenu_selected_get(enna->o_mainmenu));
 	  }
