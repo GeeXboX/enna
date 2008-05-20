@@ -499,7 +499,8 @@ _e_smart_event_mouse_down(void *data, Evas *e, Evas_Object *obj, void *event_inf
 	sd->down.history[0].timestamp = ecore_time_get();
 	sd->down.history[0].x = ev->canvas.x;
 	sd->down.history[0].y = ev->canvas.y;
-	edje_object_signal_emit(sd->edje_obj, "e,action,show,vbar", "e");
+	if (sd->vbar_visible)
+	  edje_object_signal_emit(sd->edje_obj, "e,action,show,vbar", "e");
      }
 
 }
