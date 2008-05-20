@@ -235,8 +235,8 @@ _e_smart_add(Evas_Object * obj)
    sd->h = 0;
    sd->items = NULL;
    sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
-   enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_AUTO,
-			       ENNA_SCROLLFRAME_POLICY_AUTO);
+   enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
+			       ENNA_SCROLLFRAME_POLICY_OFF);
    enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
 
    evas_object_smart_member_add(sd->o_scroll, obj);

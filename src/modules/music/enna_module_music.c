@@ -254,8 +254,6 @@ static void _browse(void *data, void *data2)
 	edje_object_signal_callback_add(oe, "list,transition,end", "edje", _list_transition_left_end_cb, files);
 	edje_object_signal_emit(oe, "list,left", "enna");
 
-
-
      }
 
 }

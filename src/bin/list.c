@@ -6,7 +6,7 @@
 
 #define thumbscroll_friction 1.0
 #define thumbscroll_momentum_threshhold 100
-#define thumbscroll_threshhold 4
+#define thumbscroll_threshhold 16
 
 #define SMART_NAME "enna_list"
 #define API_ENTRY E_Smart_Data *sd; sd = evas_object_smart_data_get(obj); if ((!obj) || (!sd) || (evas_object_type_get(obj) && strcmp(evas_object_type_get(obj), SMART_NAME)))
@@ -451,7 +451,7 @@ _e_smart_add(Evas_Object *obj)
    enna_box_orientation_set(sd->o_box, 0);
 
    sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
-   enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_AUTO,
+   enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
 			       ENNA_SCROLLFRAME_POLICY_AUTO);
    enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_scroll);
