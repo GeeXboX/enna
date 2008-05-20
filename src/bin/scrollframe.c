@@ -499,6 +499,7 @@ _e_smart_event_mouse_down(void *data, Evas *e, Evas_Object *obj, void *event_inf
 	sd->down.history[0].timestamp = ecore_time_get();
 	sd->down.history[0].x = ev->canvas.x;
 	sd->down.history[0].y = ev->canvas.y;
+	edje_object_signal_emit(sd->edje_obj, "e,action,show,vbar", "e");
      }
 
 }
@@ -589,6 +590,8 @@ _e_smart_event_mouse_up(void *data, Evas *e, Evas_Object *obj, void *event_info)
 		       sd->down.sx = x;
 		       sd->down.sy = y;
 		    }
+		  else
+		    edje_object_signal_emit(sd->edje_obj, "e,action,hide,vbar", "e");
 	       }
 	     evas_event_feed_hold(e, 0, ev->timestamp, ev->data);
 	  }
