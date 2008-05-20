@@ -41,8 +41,7 @@ static void _e_smart_clip_unset       (Evas_Object *obj);
 static void _e_smart_reconfigure      (E_Smart_Data *sd);
 static void _e_smart_event_mouse_down (void *data, Evas *evas, Evas_Object *obj, void *event_info);
 static void _e_smart_event_mouse_up   (void *data, Evas *evas, Evas_Object *obj, void *event_info);
-static void _e_smart_event_key_down   (void *data, Evas *evas, Evas_Object *obj, void *event_info);
-
+static void _e_smart_event_key_down   (E_Smart_Data *sd, void *event_info);
 static Evas_Smart *_e_smart = NULL;
 
 EAPI Evas_Object *
@@ -174,8 +173,6 @@ enna_list_selected_set(Evas_Object *obj, int n)
    sd->selected = n;
    evas_object_raise(si->o_base);
    edje_object_signal_emit(si->o_base, "e,state,selected", "e");
-   //enna_list_selected_geometry_get(si->o_base, &x, &y, &w, &h);
-   //enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
    if (si->func_hilight) si->func_hilight(si->data, si->data2);
    if (sd->selector) return;
    if (!sd->on_hold)
@@ -404,6 +401,15 @@ enna_list_thaw(Evas_Object *obj)
    enna_box_thaw(sd->o_box);
 }
 
+EAPI void
+enna_list_event_key_down(Evas_Object *obj, void *event_info)
+{
+   API_ENTRY return;
+   _e_smart_event_key_down(sd, event_info);
+   //enna_scrollframe_event_key_down(sd->o_scroll, event_info);
+
+}
+
 /* SMART FUNCTIONS */
 static void
 _e_smart_init(void)
@@ -458,8 +464,7 @@ _e_smart_add(Evas_Object *obj)
    enna_box_min_size_get(sd->o_box, &mw, &mh);
    evas_object_resize(sd->o_box, mw, mh);
    evas_object_smart_member_add(sd->o_edje, obj);
-   evas_object_event_callback_add(obj, EVAS_CALLBACK_KEY_DOWN,
-				  _e_smart_event_key_down, sd);
+
    evas_object_propagate_events_set(obj, 0);
 }
 
@@ -605,14 +610,12 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
 }
 
 static void
-_e_smart_event_key_down(void *data, Evas *evas, Evas_Object *obj, void *event_info)
+_e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 {
    Evas_Event_Key_Down *ev;
-   E_Smart_Data *sd;
    Enna_List_Item *si;
    int n, ns;
 
-   sd = data;
    ev = event_info;
    ns = sd->selected;
 
@@ -635,7 +638,11 @@ _e_smart_event_key_down(void *data, Evas *evas, Evas_Object *obj, void *event_in
 	while ((si) && (si->header));
 	if (n != ns)
 	  {
+	     Evas_Coord x, y, h;
 	     enna_list_selected_set(sd->o_smart, n);
+	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
+	     y = h/evas_list_count(sd->items) * (n-1);
+	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
 	  }
      }
    else if ((!strcmp(ev->keyname, "Down")) || (!strcmp(ev->keyname, "KP_Down")))
@@ -654,9 +661,14 @@ _e_smart_event_key_down(void *data, Evas *evas, Evas_Object *obj, void *event_in
 	while ((si) && (si->header));
 	if (n != ns)
 	  {
-
+	     Evas_Coord x, y, h;
 	     enna_list_selected_set(sd->o_smart, n);
+	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
+	     y = h/evas_list_count(sd->items) * (n-3);
+	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
+
 	  }
+
      }
    else if ((!strcmp(ev->keyname, "Home")) || (!strcmp(ev->keyname, "KP_Home")))
      {
@@ -674,7 +686,11 @@ _e_smart_event_key_down(void *data, Evas *evas, Evas_Object *obj, void *event_in
 	while ((si) && (si->header));
 	if (n != ns)
 	  {
+	     Evas_Coord x, y, h;
 	     enna_list_selected_set(sd->o_smart, n);
+	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
+	     y = h/evas_list_count(sd->items) * (n);
+	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
 	  }
      }
    else if ((!strcmp(ev->keyname, "End")) || (!strcmp(ev->keyname, "KP_End")))
@@ -693,7 +709,11 @@ _e_smart_event_key_down(void *data, Evas *evas, Evas_Object *obj, void *event_in
 	while ((si) && (si->header));
 	if (n != ns)
 	  {
+	     Evas_Coord x, y, h;
 	     enna_list_selected_set(sd->o_smart, n);
+	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
+	     y = h/evas_list_count(sd->items) * (n);
+	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
 	  }
      }
    else if ((!strcmp(ev->keyname, "Return")) ||

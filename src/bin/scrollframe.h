@@ -28,5 +28,6 @@ EAPI void enna_scrollframe_page_size_get           (Evas_Object *obj, Evas_Coord
 EAPI void enna_scrollframe_policy_set              (Evas_Object *obj, Enna_Scrollframe_Policy hbar, Enna_Scrollframe_Policy vbar);
 EAPI void enna_scrollframe_policy_get              (Evas_Object *obj, Enna_Scrollframe_Policy *hbar, Enna_Scrollframe_Policy *vbar);
 EAPI Evas_Object *enna_scrollframe_edje_object_get (Evas_Object *obj);
+EAPI void enna_scrollframe_event_key_down          (Evas_Object *obj, void *event_info);
 
 #endif

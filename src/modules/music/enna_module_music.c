@@ -85,12 +85,10 @@ static void _class_event(void *event_info)
 
    if (!strcmp(ev->key, "BackSpace"))
      _browse_down();
-   else if (!strcmp(ev->key, "Down"))
-     _select_down();
-   else if (!strcmp(ev->key, "Up"))
-     _select_up();
    else if (!strcmp(ev->key, "Return") ||!strcmp(ev->key, "KP_Enter") )
      _activate();
+   else
+     enna_list_event_key_down(mod->o_list, event_info);
 
 }
 
