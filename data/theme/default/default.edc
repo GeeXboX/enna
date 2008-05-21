@@ -10,8 +10,8 @@ fonts{
 
 collections
 {
-#include "enna_background.edc"
-#include "enna_mainmenu.edc"
+#include "background.edc"
+#include "mainmenu.edc"
 #include "content.edc"
 #include "music.edc"
 #include "video.edc"

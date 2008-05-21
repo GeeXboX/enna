@@ -81,9 +81,9 @@ static void _class_event(void *event_info)
 
    ev = (Evas_Event_Key_Down *) event_info;
 
-   if (!strcmp(ev->key, "BackSpace"))
+   if (!strcmp(ev->key, "BackSpace") || !strcmp(ev->key, "Left"))
      _browse_down();
-   else if (!strcmp(ev->key, "Return") ||!strcmp(ev->key, "KP_Enter") )
+   else if (!strcmp(ev->key, "Return") ||!strcmp(ev->key, "KP_Enter") || !strcmp(ev->key, "Right"))
      _activate();
    else
      enna_list_event_key_down(mod->o_list, event_info);
