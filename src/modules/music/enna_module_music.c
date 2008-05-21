@@ -229,14 +229,17 @@ static void _browse(void *data, void *data2)
 
 	if (!file)
 	  {
+	     Evas_Object *icon;
 	     /* file param is NULL => create Root menu */
 	     files = vfs->func.class_browse_up(NULL);
-	     enna_location_append(mod->o_location, "Root", _browse, vfs, NULL);
+	     icon = edje_object_add(mod->em->evas);
+	     edje_object_file_set(icon, enna_config_theme_get(), "icon/home_mini");
+	     enna_location_append(mod->o_location, "Root", icon, _browse, vfs, NULL);
 	  }
 	else if (file->is_directory)
 	  {
 	     /* File selected is a directory */
-	     enna_location_append(mod->o_location, file->label, _browse, vfs, file);
+	     enna_location_append(mod->o_location, file->label, NULL, _browse, vfs, file);
 	     files = vfs->func.class_browse_up(file->uri);
 	  }
 	else if (!file->is_directory)
@@ -261,7 +264,7 @@ static void _create_gui()
 {
 
    Evas_Object *o, *oe;
-
+   Evas_Object *icon;
    Evas_List *l, *categories;
 
   o = edje_object_add(mod->em->evas);
@@ -278,7 +281,7 @@ static void _create_gui()
   enna_list_icon_size_set(o, 64, 64);
   for( l = categories; l; l = l->next)
     {
-       Evas_Object *icon;
+
        Enna_Class_Vfs *cat;
 
        cat = l->data;
@@ -297,7 +300,9 @@ static void _create_gui()
   o = enna_location_add(mod->em->evas);
   edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
 
-  enna_location_append(o, "Music", NULL, NULL, NULL);
+  icon = edje_object_add(mod->em->evas);
+  edje_object_file_set(icon, enna_config_theme_get(), "icon/music_mini");
+  enna_location_append(o, "Music", icon, NULL, NULL, NULL);
   mod->o_location = o;
 
 }

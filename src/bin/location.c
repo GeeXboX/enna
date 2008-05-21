@@ -42,6 +42,7 @@ typedef struct _E_Smart_Data E_Smart_Data;
 struct _E_Smart_Data
 {
    Evas_Coord          x, y, w, h;
+   Evas_Object        *smart_obj;
    Evas_Object        *o_box;
    Evas_Object        *o_scroll;
    Evas_List          *items;
@@ -54,6 +55,7 @@ struct _Enna_Location_Item
 {
    E_Smart_Data *sd;
    Evas_Object *o_base;
+   Evas_Object *o_icon;
    unsigned char selected : 1;
    void (*func) (void *data, void *data2);
    void *data;
@@ -89,7 +91,7 @@ enna_location_add(Evas * evas)
 }
 
 EAPI void
-enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *data, void *data2), void *data, void *data2)
+enna_location_append  (Evas_Object *obj, const char *label, Evas_Object *icon, void (*func) (void *data, void *data2), void *data, void *data2)
 {
    Enna_Location_Item *si;
    Evas_Coord mw = 0, mh = 0;
@@ -108,6 +110,15 @@ enna_location_append  (Evas_Object *obj, const char *label, void (*func) (void *
 			  "enna/location/item");
    if (label)
      edje_object_part_text_set(si->o_base, "enna.text.label", label);
+
+   si->o_icon = icon;
+   if (si->o_icon)
+     {
+	edje_extern_object_min_size_set(si->o_icon, 32, 32);
+	edje_object_part_swallow(si->o_base, "enna.swallow.icon", si->o_icon);
+	evas_object_show(si->o_icon);
+	edje_object_signal_emit(si->o_base, "icon,show", "enna");
+     }
 
    si->func = func;
    si->data = data;
@@ -153,6 +164,7 @@ _location_hide_end(void *data, Evas_Object *o, const char *sig, const char *src)
 
    evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
    enna_scrollframe_child_region_show(si->sd->o_scroll, x, y, w, h);
+   evas_object_del(si->o_icon);
    evas_object_del(si->o_base);
    free(si);
 }
@@ -238,7 +250,7 @@ _e_smart_add(Evas_Object * obj)
    enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
 			       ENNA_SCROLLFRAME_POLICY_OFF);
    enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
-
+   sd->smart_obj = obj;
    evas_object_smart_member_add(sd->o_scroll, obj);
    evas_object_smart_data_set(obj, sd);
 }
@@ -359,14 +371,7 @@ _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_
    else sd->on_hold = 0;
 
    if (!sd->items) return;
-   for (i = 0, l = sd->items; l; l = l->next, i++)
-     {
-	if (l->data == si)
-	  {
-	     //enna_box_selected_set(sd->o_smart, i);
-   	     break;
-   	  }
-     }
+
 }
 
 static void
@@ -375,7 +380,8 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
    E_Smart_Data *sd;
    Evas_Event_Mouse_Up *ev;
    Enna_Location_Item *si;
-
+   int i,j;
+   Evas_List *l;
    ev = event_info;
    si = data;
    sd = si->sd;
@@ -393,6 +399,7 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
    	sd->on_hold = 0;
    	return;
      }
+
    if (si->func) si->func(si->data, si->data2);
 
 
