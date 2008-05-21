@@ -147,7 +147,6 @@ enna_list_selected_set(Evas_Object *obj, int n)
    Enna_List_Item *si = NULL;
    Evas_List *l = NULL;
    int i;
-   Evas_Coord x,y,w,h;
 
    API_ENTRY return;
    if (!sd->items) return;

@@ -231,6 +231,33 @@ enna_mainmenu_select_next(Evas_Object *obj)
 
 }
 
+
+EAPI void
+enna_mainmenu_select_prev(Evas_Object *obj)
+{
+   E_Smart_Item *new, *prev;
+   int ns = 0;
+
+   API_ENTRY return;
+
+   ns = sd->selected;
+   prev = evas_list_nth(sd->items, ns);
+   if (!prev)
+     return;
+   ns--;
+   new = evas_list_nth(sd->items, ns);
+   if (!new)
+     {
+	ns = evas_list_count(sd->items)-1;
+	new = evas_list_nth(sd->items, ns);
+	if (!new) return;
+     }
+   sd->selected = ns;
+   edje_object_signal_emit(new->o_base, "enna,state,selected", "enna");
+   edje_object_signal_emit(prev->o_base, "enna,state,unselected", "enna");
+
+}
+
 EAPI void
 enna_mainmenu_show(Evas_Object *obj)
 {

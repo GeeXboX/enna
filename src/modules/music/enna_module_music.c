@@ -14,8 +14,6 @@ static void           _list_transition_left_end_cb(void *data, Evas_Object *o, c
 static void           _list_transition_right_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
 static void           _browse(void *data, void *data2);
 static void           _browse_down();
-static void           _select_down();
-static void           _select_up();
 static void           _activate();
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
@@ -90,19 +88,6 @@ static void _class_event(void *event_info)
    else
      enna_list_event_key_down(mod->o_list, event_info);
 
-}
-
-static void
-_select_down()
-{
-   enna_list_jump_nth(mod->o_list, enna_list_selected_get(mod->o_list) + 1);
-
-}
-
-static void
-_select_up()
-{
-   enna_list_jump_nth(mod->o_list, enna_list_selected_get(mod->o_list) - 1);
 }
 
 static void

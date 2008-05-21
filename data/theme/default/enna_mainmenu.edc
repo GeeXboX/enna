@@ -15,8 +15,8 @@ group {
          description {
             color: 255 255 255 255;
             state: "default" 0.0;
-            rel1{relative: 0 -0.8;};
-            rel2{relative: 1 0.2;};
+            rel1{relative: 0 -1;};
+            rel2{relative: 1 0;};
          }
          description {
             color: 255 255 255 255;
@@ -26,7 +26,7 @@ group {
          }
 
       }
-      part {
+      /*part {
          name: "shadow";
 
          clip_to: "enna.clip.mainmenu";
@@ -39,7 +39,7 @@ group {
                normal: "mainmenu_shadow.png";
             }
          }
-      }
+         }*/
       part {
          name: "bg";
          clip_to: "enna.clip.mainmenu";
@@ -47,9 +47,10 @@ group {
          description {
             state: "default" 0.0;
             rel1 {relative: 0 0;to: enna.clip.mainmenu;};
-            rel2 {relative: 1 0.9;to: enna.clip.mainmenu;};
+            rel2 {relative: 1 1;to: enna.clip.mainmenu;};
             image {
                normal: "mainmenu_background.png";
+               border: 150 150 0 123;
             }
          }
       }
@@ -60,8 +61,8 @@ group {
          repeat_events: 1;
          description {
             state: "default" 0.0;
-            rel1 {relative: 0 0;to: "bg";to: enna.clip.mainmenu;};
-            rel2 {relative: 1 1;to: "bg";to: enna.clip.mainmenu;};
+            rel1 {relative: 0.1 0.1;to: "bg";to: enna.clip.mainmenu;};
+            rel2 {relative: 0.9 0.5;to: "bg";to: enna.clip.mainmenu;};
          }
       }
    }

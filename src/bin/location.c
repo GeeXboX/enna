@@ -359,8 +359,6 @@ _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_
    E_Smart_Data *sd;
    Evas_Event_Mouse_Down *ev;
    Enna_Location_Item *si;
-   int i;
-   Evas_List *l = NULL;
 
    ev = event_info;
    si = data;
@@ -380,8 +378,7 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
    E_Smart_Data *sd;
    Evas_Event_Mouse_Up *ev;
    Enna_Location_Item *si;
-   int i,j;
-   Evas_List *l;
+
    ev = event_info;
    si = data;
    sd = si->sd;

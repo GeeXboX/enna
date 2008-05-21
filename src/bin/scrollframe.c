@@ -77,7 +77,6 @@ static void _e_smart_event_mouse_down(void *data, Evas *e, Evas_Object *obj, voi
 static int  _e_smart_momentum_animator(void *data);
 static void _e_smart_event_mouse_up(void *data, Evas *e, Evas_Object *obj, void *event_info);
 static void _e_smart_event_mouse_move(void *data, Evas *e, Evas_Object *obj, void *event_info);
-static void _e_smart_event_key_down(void *data, Evas *e, Evas_Object *obj, void *event_info);
 static void _e_smart_edje_drag_v(void *data, Evas_Object *obj, const char *emission, const char *source);
 static void _e_smart_edje_drag_h(void *data, Evas_Object *obj, const char *emission, const char *source);
 static void _e_smart_scrollbar_read(E_Smart_Data *sd);

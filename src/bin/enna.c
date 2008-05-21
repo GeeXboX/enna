@@ -75,20 +75,37 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
    else if (enna_mainmenu_visible(enna->o_mainmenu))
      {
 	if (!strcmp(ev->key, "m"))
-	  enna_mainmenu_hide(enna->o_mainmenu);
+	  {
+	     enna_mainmenu_hide(enna->o_mainmenu);
+	     edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+	     edje_object_signal_emit(enna->o_edje, "module,show", "enna");
+
+	  }
 	else if(!strcmp(ev->key, "Right"))
 	  {
 	     enna_mainmenu_select_next(enna->o_mainmenu);
+
+	  }
+	else if(!strcmp(ev->key, "Left"))
+	  {
+	     enna_mainmenu_select_prev(enna->o_mainmenu);
+
 	  }
 	else if (!strcmp(ev->key, "Return") ||!strcmp(ev->key, "KP_Enter") )
 	  {
 	     enna_mainmenu_activate_nth(enna->o_mainmenu, enna_mainmenu_selected_get(enna->o_mainmenu));
+	     edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+	     edje_object_signal_emit(enna->o_edje, "module,show", "enna");
 	  }
      }
    else
      {
 	if (!strcmp(ev->key, "m"))
-	  enna_mainmenu_show(enna->o_mainmenu);
+	  {
+	     enna_mainmenu_show(enna->o_mainmenu);
+	     edje_object_signal_emit(enna->o_edje, "mainmenu,show", "enna");
+	     edje_object_signal_emit(enna->o_edje, "module,hide", "enna");
+	  }
 	else
 	  enna_activity_event("music", event_info);
      }
