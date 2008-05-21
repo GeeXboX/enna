@@ -1,6 +1,5 @@
 images {
    image: "mainmenu_background.png" COMP;
-   image: "mainmenu_shadow.png" COMP;
    image: "menu_sel_bg.png" COMP;
    image: "menu_sel_fg.png" COMP;
 }
