@@ -272,17 +272,17 @@ _enna_shutdown()
 static void
 usage(char *binname)
 {
-   printf ("Enna MediaCenter\n");
-   printf (" Usage: %s [options ...]\n", binname);
-   printf (" Available Options:\n");
-   printf ("  -b, (--backend): Specify backend to used.\n");
-   printf ("  -c, (--config):  Specify configuration file to be used.\n");
-   printf ("  -f, (--fs):      Force Fullscreen mode.\n");
-   printf ("  -g, (--gl):      Use OpenGL renderer instead of X11.\n");
-   printf ("  -h, (--help):    Display this help.\n");
-   printf ("  -t, (--theme):   Specify theme name to be used.\n");
-   printf ("  -v, (--verbose): Display verbose error messages.\n");
-   printf ("  -V, (--version): Display Enna version number.\n");
+   printf("Enna MediaCenter\n");
+   printf(" Usage: %s [options ...]\n", binname);
+   printf(" Available Options:\n");
+   printf("  -b, (--backend): Specify backend to used.\n");
+   printf("  -c, (--config):  Specify configuration file to be used.\n");
+   printf("  -f, (--fs):      Force Fullscreen mode.\n");
+   printf("  -g, (--gl):      Use OpenGL renderer instead of X11.\n");
+   printf("  -h, (--help):    Display this help.\n");
+   printf("  -t, (--theme):   Specify theme name to be used.\n");
+   printf("  -v, (--verbose): Display verbose error messages.\n");
+   printf("  -V, (--version): Display Enna version number.\n");
    exit (0);
 }
 

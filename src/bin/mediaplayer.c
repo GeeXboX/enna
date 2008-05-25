@@ -57,13 +57,13 @@ enna_mediaplayer_init(void)
    {
    case ENNA_BACKEND_EMOTION:
    {
-     printf ("Using Emotion Backend\n");
+     printf("Using Emotion Backend\n");
      backend_name = "emotion";
      break;
    }
    case ENNA_BACKEND_LIBPLAYER:
    {
-     printf ("Using libplayer Backend\n");
+     printf("Using libplayer Backend\n");
      backend_name = "libplayer";
      break;
    }
