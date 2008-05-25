@@ -74,6 +74,7 @@ enna_content_append(const char *name, Evas_Object *content)
      {
 	Enna_Content_Element *e;
 	e = l->data;
+        if (!e) continue;
 	if (!strcmp(e->name, name))
 	  return -1;
      }
@@ -99,6 +100,9 @@ enna_content_select(const char *name)
 	Enna_Content_Element *e;
 	e = l->data;
 
+        if (!e)
+          continue;
+        
 	if (!strcmp(name, e->name))
 	  {
 	     if (!e->selected)
