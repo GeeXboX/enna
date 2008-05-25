@@ -7,8 +7,20 @@
 #define thumbscroll_threshhold 4
 
 #define SMART_NAME "enna_scrollframe"
-#define API_ENTRY E_Smart_Data *sd; sd = evas_object_smart_data_get(obj); if ((!obj) || (!sd) || (evas_object_type_get(obj) && strcmp(evas_object_type_get(obj), SMART_NAME)))
-#define INTERNAL_ENTRY E_Smart_Data *sd; sd = evas_object_smart_data_get(obj); if (!sd) return;
+
+#define API_ENTRY \
+   E_Smart_Data *sd; \
+   sd = evas_object_smart_data_get(obj); \
+   if ((!obj) || (!sd) || \
+     (evas_object_type_get(obj) && \
+     strcmp(evas_object_type_get(obj), SMART_NAME)))
+
+#define INTERNAL_ENTRY \
+   E_Smart_Data *sd; \
+   sd = evas_object_smart_data_get(obj); \
+   if (!sd) \
+      return;
+
 typedef struct _E_Smart_Data E_Smart_Data;
 
 struct _E_Smart_Data
