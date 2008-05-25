@@ -128,7 +128,7 @@ enna_module_open(const char *name, Evas *evas)
             m->func.init = ecore_plugin_symbol_get(plugin, "module_init");
             m->func.shutdown = ecore_plugin_symbol_get(plugin, "module_shutdown");
             m->name = m->api->name;
-            printf("Module \'%s\' loaded succesfull\n", m->api->name);
+            printf("Module \'%s\' loaded succesfully\n", m->api->name);
             m->enabled = 0;
             m->plugin = plugin;
             m->evas = evas;
