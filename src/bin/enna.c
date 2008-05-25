@@ -353,8 +353,9 @@ parse_command_line (int argc, char **argv)
                 {
                    printf ("Err: Invalid backend name.\n");
                    printf ("  Valid Options: emotion, libplayer\n");
+                   return -1;
                 }
-              return -1;
+              break;
 
            default:
               usage (argv[0]);
