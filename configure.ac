@@ -102,6 +102,7 @@ src/modules/video/Makefile
 src/modules/browser/Makefile
 src/modules/backend/Makefile
 src/modules/backend/emotion/Makefile
+src/modules/backend/libplayer/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
