@@ -105,17 +105,21 @@ static void _class_hide(int dummy)
 
 static void _class_event(void *event_info)
 {
-   Evas_Event_Key_Down *ev;
+   enna_key_t key = enna_get_key ((Evas_Event_Key_Down *) event_info);
 
-   ev = (Evas_Event_Key_Down *) event_info;
-
-   if (!strcmp(ev->key, "BackSpace") || !strcmp(ev->key, "Left"))
+   switch (key)
+   {
+   case ENNA_KEY_LEFT:
+   case ENNA_KEY_CANCEL:
      _browse_down();
-   else if (!strcmp(ev->key, "Return") ||!strcmp(ev->key, "KP_Enter") || !strcmp(ev->key, "Right"))
+     break;
+   case ENNA_KEY_RIGHT:
+   case ENNA_KEY_OK:
      _activate();
-   else
+     break;
+   default:
      enna_list_event_key_down(mod->o_list, event_info);
-
+   }
 }
 
 static void
