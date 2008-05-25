@@ -36,6 +36,7 @@ enum _MUSIC_STATE
      Evas_Object *o_edje;
      Evas_Object *o_list;
      Evas_Object *o_location;
+     Evas_Object *o_mediaplayer;
      Enna_Class_Vfs *vfs;
      Enna_Module *em;
      MUSIC_STATE state;
@@ -106,20 +107,63 @@ static void _class_hide(int dummy)
 static void _class_event(void *event_info)
 {
    enna_key_t key = enna_get_key ((Evas_Event_Key_Down *) event_info);
-
-   switch (key)
-   {
-   case ENNA_KEY_LEFT:
-   case ENNA_KEY_CANCEL:
-     _browse_down();
-     break;
-   case ENNA_KEY_RIGHT:
-   case ENNA_KEY_OK:
-     _activate();
-     break;
-   default:
-     enna_list_event_key_down(mod->o_list, event_info);
-   }
+   switch (mod->state)
+     {
+      case LIST_VIEW:
+	 switch (key)
+	   {
+	    case ENNA_KEY_LEFT:
+	    case ENNA_KEY_CANCEL:
+	       _browse_down();
+	       break;
+	    case ENNA_KEY_RIGHT:
+	    case ENNA_KEY_OK:
+	       _activate();
+	       break;
+	    default:
+	       enna_list_event_key_down(mod->o_list, event_info);
+	   }
+	 break;
+      case MEDIAPLAYER_VIEW:
+	 switch (key)
+	   {
+	    case ENNA_KEY_OK:
+	       enna_mediaplayer_play();
+	       break;
+	    case ENNA_KEY_RIGHT:
+	      {
+		 Enna_Metadata *metadata;
+		 if (enna_mediaplayer_next() < 0)
+		   {
+		      metadata = enna_mediaplayer_metadata_get();
+		      if (metadata)
+			enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
+		   }
+		 break;
+	      }
+	    case ENNA_KEY_LEFT:
+	      {
+		 Enna_Metadata *metadata;
+		 if (enna_mediaplayer_prev() < 0)
+		   {
+		      metadata = enna_mediaplayer_metadata_get();
+		      if (metadata)
+			enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
+		   }
+		 break;
+	      }
+	    case ENNA_KEY_CANCEL:
+	       mod->state = LIST_VIEW;
+	       edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
+	       edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+	       break;
+	    default:
+	       break;
+	   }
+	 break;
+      default:
+	 break;
+     }
 }
 
 static void
@@ -327,6 +371,9 @@ static void _create_mediaplayer_gui()
    metadata = enna_mediaplayer_metadata_get();
    if (metadata)
      enna_smart_player_metadata_set(o, metadata);
+
+   mod->o_mediaplayer = o;
+
 }
 
 static void _create_gui()
@@ -401,6 +448,7 @@ em_shutdown(Enna_Module *em)
    evas_object_del(mod->o_edje);
    evas_object_del(mod->o_list);
    evas_object_del(mod->o_location);
+   evas_object_del(mod->o_mediaplayer);
    free(mod);
    return 1;
 }

@@ -13,6 +13,7 @@ static int _class_file_set(const char *uri);
 static int _class_play(void);
 static int _class_pause(void);
 static int _class_stop(void);
+static Enna_Metadata *_class_metadata_get(void);
 
 static Enna_Class_MediaplayerBackend class =
 {
@@ -25,6 +26,7 @@ static Enna_Class_MediaplayerBackend class =
     _class_play,
     _class_pause,
     _class_stop,
+    _class_metadata_get,
   }
 };
 
@@ -82,6 +84,25 @@ static int _class_pause(void)
    return 0;
 }
 
+static Enna_Metadata *_class_metadata_get(void)
+{
+   Enna_Metadata *m;
+
+   m = calloc(1, sizeof(Enna_Metadata*));
+
+   m->title = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_TITLE);
+   m->album= emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ALBUM);
+   m->artist = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ARTIST);
+   m->genre = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_GENRE);
+   m->year =  emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_YEAR);
+   m->comment = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COMMENT);
+   m->discid = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_DISC_ID);
+   m->track = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COUNT);
+
+   return m;
+
+}
+
 /* Module interface */
 
 static int
@@ -92,7 +113,7 @@ em_init(Enna_Module *em)
    mod->evas = em->evas;
    mod->o_emotion = emotion_object_add(mod->evas);
    /* Fixme should come frome config */
-   if (!emotion_object_init(mod->o_emotion, "xine"))
+   if (!emotion_object_init(mod->o_emotion, "gstreamer"))
      {
 	printf("Error : could not initialize gstreamer plugin for emotion\n");
 	return 0;

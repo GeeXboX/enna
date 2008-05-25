@@ -36,10 +36,17 @@ enna_mediaplayer_backend_t enna_backend = ENNA_BACKEND_EMOTION;
 static Evas_List *_playlist;
 
 typedef struct _Enna_Mediaplayer Enna_Mediaplayer;
+typedef enum _PLAY_STATE PLAY_STATE;
+
+enum _PLAY_STATE  {
+    PLAYING,
+    PAUSE,
+    STOPPED
+  };
 
 struct _Enna_Mediaplayer
 {
-   unsigned char  playing : 1;
+   PLAY_STATE  play_state;
    int selected;
    Enna_Class_MediaplayerBackend *class;
 };
@@ -70,12 +77,12 @@ enna_mediaplayer_init(void)
    default:
      return -1;
    }
-   
+
    _playlist = NULL;
    _mediaplayer = calloc(1, sizeof(Enna_Mediaplayer));
    em = enna_module_open(backend_name, enna->evas);
    enna_module_enable(em);
-   _mediaplayer->playing = 0;
+   _mediaplayer->play_state = STOPPED;
    _mediaplayer->selected = 0;
    return 0;
 }
@@ -98,16 +105,31 @@ EAPI int
 enna_mediaplayer_play(void)
 {
 
-   if (!_mediaplayer->playing)
+   switch(_mediaplayer->play_state)
      {
-	const char *uri;
-	uri = evas_list_nth(_playlist, _mediaplayer->selected);
-	_mediaplayer->class->func.class_stop();
-	_mediaplayer->class->func.class_file_set(uri);
-	printf("Play\n");
- 	_mediaplayer->class->func.class_play();
-	_mediaplayer->playing = 1;
+      case STOPPED:
+	{
+	   const char *uri;
+	   uri = evas_list_nth(_playlist, _mediaplayer->selected);
+	   _mediaplayer->class->func.class_stop();
+	   _mediaplayer->class->func.class_file_set(uri);
+	   printf("Play\n");
+	   _mediaplayer->class->func.class_play();
+	   _mediaplayer->play_state = PLAYING;
+	}
+	break;
+      case PLAYING:
+	 enna_mediaplayer_pause();
+	 break;
+      case PAUSE:
+	 _mediaplayer->class->func.class_play();
+	 _mediaplayer->play_state = PLAYING;
+	 break;
+      default:
+	 break;
+
      }
+
 
    return 0;
 }
@@ -131,7 +153,7 @@ enna_mediaplayer_stop(void)
    if (_mediaplayer->class)
      {
 	_mediaplayer->class->func.class_stop();
-	_mediaplayer->playing = 0;
+	_mediaplayer->play_state = STOPPED;
      }
    return 0;
 }
@@ -139,18 +161,56 @@ enna_mediaplayer_stop(void)
 EAPI int
 enna_mediaplayer_pause(void)
 {
+   if (_mediaplayer->class)
+     {
+	_mediaplayer->class->func.class_pause();
+	_mediaplayer->play_state = PAUSE;
+     }
    return 0;
 }
 
 EAPI int
 enna_mediaplayer_next(void)
 {
+   const char *uri;
+
+   _mediaplayer->selected++;
+   if( _mediaplayer->selected > evas_list_count(_playlist) - 1)
+     {
+	_mediaplayer->selected--;
+	return -1;
+     }
+   uri = evas_list_nth(_playlist, _mediaplayer->selected);
+   printf("select %d\n", _mediaplayer->selected);
+   if (uri)
+     {
+	enna_mediaplayer_stop();
+	_mediaplayer->class->func.class_file_set(uri);
+	enna_mediaplayer_play();
+     }
+
    return 0;
 }
 
 EAPI int
 enna_mediaplayer_prev(void)
 {
+   const char *uri;
+
+   _mediaplayer->selected--;
+   if (_mediaplayer->selected < 0)
+     {
+	_mediaplayer->selected = 0;
+	return -1;
+     }
+   uri = evas_list_nth(_playlist, _mediaplayer->selected);
+   printf("select %d\n", _mediaplayer->selected);
+   if (uri)
+     {
+	enna_mediaplayer_stop();
+	_mediaplayer->class->func.class_file_set(uri);
+	enna_mediaplayer_play();
+     }
    return 0;
 }
 
@@ -181,7 +241,7 @@ enna_mediaplayer_playlist_clear(void)
      {
 	_mediaplayer->class->func.class_stop();
 	_mediaplayer->selected = 0;
-	_mediaplayer->playing = 0;
+	_mediaplayer->play_state = STOPPED;
      }
 
 }
