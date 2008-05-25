@@ -36,7 +36,11 @@
 #include "enna.h"
 
 #define SMART_NAME "enna_mainmenu"
-#define API_ENTRY E_Smart_Data *sd; sd = evas_object_smart_data_get(obj); if ((!obj) || (!sd) || (evas_object_type_get(obj) && strcmp(evas_object_type_get(obj), SMART_NAME)))
+#define API_ENTRY \
+  E_Smart_Data *sd; \
+  sd = evas_object_smart_data_get(obj); \
+  if ((!obj) || (!sd) || (evas_object_type_get(obj) \
+    && strcmp(evas_object_type_get(obj), SMART_NAME)))
 
 typedef struct _E_Smart_Data E_Smart_Data;
 typedef struct _E_Smart_Item E_Smart_Item;
