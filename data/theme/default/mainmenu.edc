@@ -49,7 +49,7 @@ group {
             rel2 {relative: 1 1;to: enna.clip.mainmenu;};
             image {
                normal: "mainmenu_background.png";
-               border: 150 150 0 123;
+               border: 60 60 0 60;
             }
          }
       }

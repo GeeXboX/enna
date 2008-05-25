@@ -235,6 +235,10 @@ _create_gui()
 
    enna_mainmenu_show(enna->o_mainmenu);
    ecore_evas_show(enna->ee);
+
+   /* Initialize and load mediaplayer modules */
+   enna_mediaplayer_init();
+
 }
 
 static void
@@ -245,7 +249,7 @@ _enna_shutdown()
    evas_object_del(enna->o_mainmenu);
    enna_config_shutdown();
    enna_module_shutdown();
-
+   enna_mediaplayer_shutdown();
    ENNA_FREE(enna->home);
    edje_shutdown();
    ecore_evas_shutdown();

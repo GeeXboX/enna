@@ -20,7 +20,9 @@ pkg_LTLIBRARIES = enna_module_music.la
 
 enna_module_music_la_SOURCES= \
 enna_module_music.c \
-enna_module_music.h
+enna_module_music.h \
+smart_player.c\
+smart_player.h
 
 enna_module_music_la_LIBADD = @ENNA_LIBS@
 enna_module_music_la_LDFLAGS = -module -avoid-version

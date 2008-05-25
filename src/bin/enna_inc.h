@@ -18,5 +18,6 @@
 #include "scrollframe.h"
 #include "list.h"
 #include "location.h"
+#include "mediaplayer.h"
 
 #endif

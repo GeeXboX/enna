@@ -23,7 +23,8 @@ list.c\
 content.c\
 pan.c\
 scrollframe.c\
-location.c
+location.c\
+mediaplayer.c
 
 enna_LDADD = @ENNA_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -44,7 +45,8 @@ list.h\
 content.h\
 pan.h\
 scrollframe.h\
-location.h
+location.h\
+mediaplayer.h
 
 
 

@@ -1,16 +1,40 @@
 /* Interface */
 
 #include "enna.h"
+#include <Emotion.h>
+
 
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
+
+static void _class_init(int dummy);
+static void _class_shutdown(int dummy);
+static int _class_file_set(const char *uri);
+static int _class_play(void);
+static int _class_pause(void);
+static int _class_stop(void);
+
+static Enna_Class_MediaplayerBackend class =
+{
+  "emotion",
+  1,
+  {
+    _class_init,
+    _class_shutdown,
+    _class_file_set,
+    _class_play,
+    _class_pause,
+    _class_stop,
+  }
+};
 
 typedef struct _Enna_Module_Emotion Enna_Module_Emotion;
 
 struct _Enna_Module_Emotion
 {
-   Evas *e;
+   Evas *evas;
    Evas_Object *o_emotion;
+   Enna_Module *em;
 };
 
 static Enna_Module_Emotion *mod;
@@ -23,13 +47,39 @@ EAPI Enna_Module_Api module_api =
 
 static void _class_init(int dummy)
 {
-
-   mod = calloc(1, sizeof(Enna_Module_Emotion));
+   printf("emotion class init\n");
 
 }
 
 static void _class_shutdown(int dummy)
 {
+   emotion_object_play_set(mod->o_emotion, 0);
+   evas_object_del(mod->o_emotion);
+}
+
+static int _class_file_set(const char *uri)
+{
+   emotion_object_file_set(mod->o_emotion, uri);
+   return 0;
+}
+
+static int _class_play(void)
+{
+   emotion_object_play_set(mod->o_emotion, 1);
+   return 0;
+}
+
+static int _class_stop(void)
+{
+   emotion_object_play_set(mod->o_emotion, 0);
+   emotion_object_position_set(mod->o_emotion, 0);
+   return 0;
+}
+
+static int _class_pause(void)
+{
+   emotion_object_play_set(mod->o_emotion, 0);
+   return 0;
 }
 
 /* Module interface */
@@ -37,8 +87,18 @@ static void _class_shutdown(int dummy)
 static int
 em_init(Enna_Module *em)
 {
-   _class_init(0);
-    return 1;
+   mod = calloc(1, sizeof(Enna_Module_Emotion));
+   mod->em = em;
+   mod->evas = em->evas;
+   mod->o_emotion = emotion_object_add(mod->evas);
+   /* Fixme should come frome config */
+   if (!emotion_object_init(mod->o_emotion, "xine"))
+     {
+	printf("Error : could not initialize gstreamer plugin for emotion\n");
+	return 0;
+     }
+   enna_mediaplayer_backend_register(&class);
+   return 1;
 }
 
 

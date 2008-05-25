@@ -44,7 +44,7 @@ static Enna_Class_Vfs class =
         _class_init,
         _class_shutdown,
 	_class_browse_up,
-	_class_browse_down
+	_class_browse_down,
     },
 };
 
@@ -72,8 +72,8 @@ static Evas_List *_class_browse_up(const char *path)
 	     file->icon = evas_stringshare_add("icon/hd");
 	     files = evas_list_append(files, file);
 	  }
-	evas_stringshare_del(mod->prev_uri);
-	evas_stringshare_del(mod->uri);
+	//evas_stringshare_del(mod->prev_uri);
+	//evas_stringshare_del(mod->uri);
 	mod->prev_uri = NULL;
 	mod->uri = NULL;
 	return files;
@@ -131,7 +131,7 @@ static Evas_List *_class_browse_up(const char *path)
 	  {
 	     dirs_list = evas_list_append(dirs_list, l->data);
 	  }
-	evas_stringshare_del(mod->prev_uri);
+	//evas_stringshare_del(mod->prev_uri);
 	mod->prev_uri = mod->uri;
 	mod->uri = evas_stringshare_add(path);
 	return dirs_list;
@@ -198,8 +198,8 @@ static Evas_List *_class_browse_down()
 		  file->icon = evas_stringshare_add("icon/hd");
 		  files = evas_list_append(files, file);
 	       }
-	     evas_stringshare_del(mod->prev_uri);
-	     evas_stringshare_del(mod->uri);
+	     //evas_stringshare_del(mod->prev_uri);
+	     //evas_stringshare_del(mod->uri);
 	     mod->prev_uri = NULL;
 	     mod->uri = NULL;
 	     return files;

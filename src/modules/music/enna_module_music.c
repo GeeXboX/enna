@@ -1,7 +1,10 @@
 /* Interface */
 
 #include "enna.h"
+#include "smart_player.h"
+
 static void           _create_gui();
+static void           _create_mediaplayer_gui();
 static void           _class_init(int dummy);
 static void           _class_shutdown(int dummy);
 static void           _class_show(int dummy);
@@ -18,47 +21,57 @@ static void           _activate();
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
 
-struct _Enna_Module_Music
+typedef enum _MUSIC_STATE MUSIC_STATE;
+
+enum _MUSIC_STATE
 {
-   Evas *e;
-   Evas_Object *o_edje;
-   Evas_Object *o_list;
-   Evas_Object *o_location;
-   Enna_Class_Vfs *vfs;
-   Enna_Module *em;
+  LIST_VIEW,
+  MEDIAPLAYER_VIEW,
+  DEFAULT_VIEW
 };
+
+  struct _Enna_Module_Music
+  {
+     Evas *e;
+     Evas_Object *o_edje;
+     Evas_Object *o_list;
+     Evas_Object *o_location;
+     Enna_Class_Vfs *vfs;
+     Enna_Module *em;
+     MUSIC_STATE state;
+  };
 
 static Enna_Module_Music *mod;
 
 EAPI Enna_Module_Api module_api =
-{
+  {
     ENNA_MODULE_VERSION,
     "music"
-};
+  };
 
 static Enna_Class_Activity class =
-{
+  {
     "music",
     1,
     "music",
     NULL,
     "icon/music",
     {
-        _class_init,
-        _class_shutdown,
-        _class_show,
-        _class_hide,
-	_class_event
+      _class_init,
+      _class_shutdown,
+      _class_show,
+      _class_hide,
+      _class_event
     },
     NULL
-};
+  };
 
 
 
 static void _class_init(int dummy)
 {
-    _create_gui();
-    enna_content_append("music", mod->o_edje);
+   _create_gui();
+   enna_content_append("music", mod->o_edje);
 }
 
 static void _class_shutdown(int dummy)
@@ -67,12 +80,27 @@ static void _class_shutdown(int dummy)
 
 static void _class_show(int dummy)
 {
-    edje_object_signal_emit(mod->o_edje, "show", "enna");
+   edje_object_signal_emit(mod->o_edje, "module,show", "enna");
+   switch  (mod->state)
+     {
+      case LIST_VIEW:
+	 edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+	 edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
+	 break;
+      case MEDIAPLAYER_VIEW:
+	 edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+	 edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+	 break;
+      default:
+	 printf("Error State Unknown in music module\n");
+     }
+
+
 }
 
 static void _class_hide(int dummy)
 {
-    edje_object_signal_emit(mod->o_edje, "hide", "enna");
+   edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
 }
 
 static void _class_event(void *event_info)
@@ -113,7 +141,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
    if (!direction)
      edje_object_signal_callback_del(oe, "list,transition,end", "edje", _list_transition_left_end_cb);
    else
-      edje_object_signal_callback_del(oe, "list,transition,end", "edje", _list_transition_right_end_cb);
+     edje_object_signal_callback_del(oe, "list,transition,end", "edje", _list_transition_right_end_cb);
 
    enna_list_freeze(o_list);
    evas_object_del(o_list);
@@ -203,7 +231,7 @@ static void _browse(void *data, void *data2)
 
    Enna_Class_Vfs *vfs = data;
    Enna_Vfs_File *file = data2;
-   Evas_List *files;
+   Evas_List *files, *l;
 
    if (!vfs) return;
 
@@ -230,6 +258,43 @@ static void _browse(void *data, void *data2)
 	else if (!file->is_directory)
 	  {
 	     /* File selected is a regular file */
+	     char *tmp;
+	     char *p;
+	     int i = 0;
+
+	     tmp = strdup(file->uri);
+
+	     p = strrchr(tmp, '/');
+	     if (p && *(p - 1) == '/')
+	       *(p) = 0;
+	     else if (p)
+	       *(p) = 0;
+
+	     files = vfs->func.class_browse_up(tmp);
+	     free(tmp);
+	     enna_mediaplayer_playlist_clear();
+	     enna_mediaplayer_stop();
+	     for (l = files; l; l = l->next)
+	       {
+		  Enna_Vfs_File *f;
+		  f = l->data;
+
+		  if (!f->is_directory)
+		    {
+		       printf("add %s\n", f->uri);
+		       enna_mediaplayer_uri_append(f->uri);
+		       if (!strcmp(f->uri, file->uri))
+			 {
+			    enna_mediaplayer_select_nth(i);
+			    enna_mediaplayer_play();
+			 }
+		       i++;
+		    }
+
+	       }
+
+	     _create_mediaplayer_gui();
+
 	     return;
 	  }
 
@@ -244,6 +309,19 @@ static void _browse(void *data, void *data2)
 
 }
 
+static void _create_mediaplayer_gui()
+{
+   Evas_Object *o;
+
+   mod->state = MEDIAPLAYER_VIEW;
+   edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+   edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+
+   o = enna_smart_player_add(mod->em->evas);
+   edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
+   evas_object_show(o);
+
+}
 
 static void _create_gui()
 {
@@ -252,43 +330,45 @@ static void _create_gui()
    Evas_Object *icon;
    Evas_List *l, *categories;
 
-  o = edje_object_add(mod->em->evas);
-  edje_object_file_set(o, enna_config_theme_get(), "module/music");
-  mod->o_edje = o;
+   mod->state = LIST_VIEW;
 
-  /* Create List */
-  o = enna_list_add(mod->em->evas);
-  oe = enna_list_edje_object_get(o);
-  enna_list_freeze(o);
-  edje_object_signal_emit(oe, "list,right,now", "enna");
+   o = edje_object_add(mod->em->evas);
+   edje_object_file_set(o, enna_config_theme_get(), "module/music");
+   mod->o_edje = o;
 
-  categories = enna_vfs_get(ENNA_CAPS_MUSIC);
-  enna_list_icon_size_set(o, 64, 64);
-  for( l = categories; l; l = l->next)
-    {
+   /* Create List */
+   o = enna_list_add(mod->em->evas);
+   oe = enna_list_edje_object_get(o);
+   enna_list_freeze(o);
+   edje_object_signal_emit(oe, "list,right,now", "enna");
 
-       Enna_Class_Vfs *cat;
+   categories = enna_vfs_get(ENNA_CAPS_MUSIC);
+   enna_list_icon_size_set(o, 64, 64);
+   for( l = categories; l; l = l->next)
+     {
 
-       cat = l->data;
-       icon = edje_object_add(mod->em->evas);
-       edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
-       enna_list_append(o, icon, cat->label, 0, _browse, NULL, cat, NULL);
-    }
-  enna_list_thaw(o);
-  mod->vfs = NULL;
-  evas_object_show(o);
-  mod->o_list = o;
-  edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
-  edje_object_signal_emit(oe, "list,default", "enna");
+	Enna_Class_Vfs *cat;
 
-  /* Create Location bar */
-  o = enna_location_add(mod->em->evas);
-  edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
+	cat = l->data;
+	icon = edje_object_add(mod->em->evas);
+	edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
+	enna_list_append(o, icon, cat->label, 0, _browse, NULL, cat, NULL);
+     }
+   enna_list_thaw(o);
+   mod->vfs = NULL;
+   evas_object_show(o);
+   mod->o_list = o;
+   edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
+   edje_object_signal_emit(oe, "list,default", "enna");
 
-  icon = edje_object_add(mod->em->evas);
-  edje_object_file_set(icon, enna_config_theme_get(), "icon/music_mini");
-  enna_location_append(o, "Music", icon, NULL, NULL, NULL);
-  mod->o_location = o;
+   /* Create Location bar */
+   o = enna_location_add(mod->em->evas);
+   edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
+
+   icon = edje_object_add(mod->em->evas);
+   edje_object_file_set(icon, enna_config_theme_get(), "icon/music_mini");
+   enna_location_append(o, "Music", icon, NULL, NULL, NULL);
+   mod->o_location = o;
 
 }
 
@@ -299,13 +379,13 @@ static void _create_gui()
 static int
 em_init(Enna_Module *em)
 {
-    mod = calloc(1, sizeof(Enna_Module_Music));
-    mod->em = em;
-    em->mod = mod;
+   mod = calloc(1, sizeof(Enna_Module_Music));
+   mod->em = em;
+   em->mod = mod;
 
-    enna_activity_add(&class);
+   enna_activity_add(&class);
 
-    return 1;
+   return 1;
 }
 
 
@@ -322,15 +402,15 @@ em_shutdown(Enna_Module *em)
 EAPI void
 module_init(Enna_Module *em)
 {
-    if (!em)
-        return;
+   if (!em)
+     return;
 
-    if (!em_init(em))
-        return;
+   if (!em_init(em))
+     return;
 }
 
 EAPI void
 module_shutdown(Enna_Module *em)
 {
-    em_shutdown(em);
+   em_shutdown(em);
 }
