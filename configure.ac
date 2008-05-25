@@ -101,6 +101,7 @@ src/modules/music/Makefile
 src/modules/video/Makefile
 src/modules/browser/Makefile
 src/modules/backend/Makefile
+src/modules/backend/emotion/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
