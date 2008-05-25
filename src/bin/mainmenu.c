@@ -102,7 +102,7 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
    Evas_Coord mw = 0, mh = 0;
    API_ENTRY return;
 
-   si = (E_Smart_Item *) malloc(sizeof(E_Smart_Item));
+   si = malloc(sizeof(E_Smart_Item));
    si->sd = sd;
    si->o_base = edje_object_add(evas_object_evas_get(sd->o_edje));
    edje_object_file_set(si->o_base, enna_config_theme_get(),
