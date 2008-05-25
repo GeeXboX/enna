@@ -43,7 +43,7 @@ enna_util_user_home_get()
 
    home = strdup(getenv("HOME"));
    if (!home)
-      return strdup("/tmp");
+      return strdup(getenv("CWD"));
    return home;
 }
 
