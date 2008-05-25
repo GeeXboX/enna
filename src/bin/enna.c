@@ -368,7 +368,8 @@ parse_command_line (int argc, char **argv)
 int
 main(int arc, char **arv)
 {
-   parse_command_line (arc, arv);
+   if (parse_command_line (arc, arv) < 0)
+     return 0; 
 
    /* Must be called first */
    enna_config_init();
