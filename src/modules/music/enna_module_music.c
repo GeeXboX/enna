@@ -316,7 +316,7 @@ static void _browse(void *data, void *data2)
 static void _create_mediaplayer_gui()
 {
    Evas_Object *o;
-
+   Enna_Metadata *metadata;
    mod->state = MEDIAPLAYER_VIEW;
    edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
    edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
@@ -324,7 +324,9 @@ static void _create_mediaplayer_gui()
    o = enna_smart_player_add(mod->em->evas);
    edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
    evas_object_show(o);
-
+   metadata = enna_mediaplayer_metadata_get();
+   if (metadata)
+     enna_smart_player_metadata_set(o, metadata);
 }
 
 static void _create_gui()

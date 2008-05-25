@@ -35,6 +35,20 @@
 
 #define SMART_NAME "smart_mediaplayer"
 
+#define API_ENTRY \
+   E_Smart_Data *sd; \
+   sd = evas_object_smart_data_get(obj); \
+   if ((!obj) || (!sd) || \
+     (evas_object_type_get(obj) && \
+     strcmp(evas_object_type_get(obj), SMART_NAME)))
+
+#define INTERNAL_ENTRY \
+   E_Smart_Data *sd; \
+   sd = evas_object_smart_data_get(obj); \
+   if (!sd) \
+      return;
+
+
 typedef struct _E_Smart_Data E_Smart_Data;
 
 struct _E_Smart_Data
@@ -68,6 +82,17 @@ enna_smart_player_add(Evas * evas)
 {
    _enna_mediaplayer_smart_init();
    return evas_object_smart_add(evas, _e_smart);
+}
+
+EAPI void
+enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
+{
+   API_ENTRY;
+   if (!metadata) return;
+   if (metadata->title) edje_object_part_text_set(sd->o_edje, "enna.text.title", metadata->title);
+   if (metadata->album) edje_object_part_text_set(sd->o_edje, "enna.text.album", metadata->album);
+   if (metadata->artist) edje_object_part_text_set(sd->o_edje, "enna.text.artist", metadata->artist);
+
 }
 
 /* local subsystem globals */

@@ -165,6 +165,15 @@ enna_mediaplayer_playlist_clear(void)
 
 }
 
+EAPI Enna_Metadata *
+enna_mediaplayer_metadata_get(void)
+{
+   if (_mediaplayer->class)
+     return _mediaplayer->class->func.class_metadata_get();
+   else
+     return NULL;
+}
+
 EAPI int
 enna_mediaplayer_playlist_count(void)
 {

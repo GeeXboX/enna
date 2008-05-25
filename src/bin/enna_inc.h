@@ -3,7 +3,6 @@
 
 #include "config.h"
 
-#include "scanner.h"
 #include "enna_config.h"
 #include "utils.h"
 #include "box.h"
