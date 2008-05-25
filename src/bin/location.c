@@ -140,10 +140,7 @@ enna_location_append  (Evas_Object *obj, const char *label, Evas_Object *icon, v
    enna_box_pack_end(sd->o_box, si->o_base);
    enna_box_pack_options_set(si->o_base, 0, 1, 0, 1, 0, 0,
 			     mw, mh, 99999, 99999);
-   if (!sd->h)
-     mh = 48;
-   else
-     mh = sd->h;
+   mh = sd->h ? sd->h : 48;
 
    enna_box_min_size_get(sd->o_box, &mw, NULL);
    //evas_object_geometry_get(sd->o_scroll, NULL, NULL, NULL, &mh);
