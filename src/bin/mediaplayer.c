@@ -31,6 +31,8 @@
 
 #include "enna.h"
 
+enna_mediaplayer_backend_t enna_backend = ENNA_BACKEND_EMOTION;
+
 static Evas_List *_playlist;
 
 typedef struct _Enna_Mediaplayer Enna_Mediaplayer;
@@ -49,10 +51,24 @@ EAPI int
 enna_mediaplayer_init(void)
 {
    Enna_Module *em;
+   char *backend_name;
 
+   if (enna_backend == ENNA_BACKEND_EMOTION)
+   {
+     printf ("Using Emotion Backend\n");
+     backend_name = "emotion";
+   }
+   else if (enna_backend == ENNA_BACKEND_LIBPLAYER)
+   {
+     printf ("Using libplayer Backend\n");
+     backend_name = "libplayer";
+   }
+   else
+     return -1;
+   
    _playlist = NULL;
    _mediaplayer = calloc(1, sizeof(Enna_Mediaplayer));
-   em = enna_module_open("emotion", enna->evas);
+   em = enna_module_open(backend_name, enna->evas);
    enna_module_enable(em);
    _mediaplayer->playing = 0;
    _mediaplayer->selected = 0;

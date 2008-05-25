@@ -275,6 +275,7 @@ usage(char *binname)
    printf ("Enna MediaCenter\n");
    printf (" Usage: %s [options ...]\n", binname);
    printf (" Available Options:\n");
+   printf ("  -b, (--backend): Specify backend to used.\n");
    printf ("  -c, (--config):  Specify configuration file to be used.\n");
    printf ("  -f, (--fs):      Force Fullscreen mode.\n");
    printf ("  -g, (--gl):      Use OpenGL renderer instead of X11.\n");
@@ -289,7 +290,7 @@ static int
 parse_command_line (int argc, char **argv)
 {
    int c, index;
-   char short_options[] = "Vhvfgc:t:";
+   char short_options[] = "Vhvfgc:t:b:";
    struct option long_options [] = {
      {"help",             no_argument,       0, 'h' },
      {"version",          no_argument,       0, 'V' },
@@ -298,6 +299,7 @@ parse_command_line (int argc, char **argv)
      {"gl",               no_argument,       0, 'g' },
      {"config",           required_argument, 0, 'c' },
      {"theme",            required_argument, 0, 't' },
+     {"backend",          required_argument, 0, 'b' },
      {0,                  0,                 0,  0  }
    };
 
@@ -341,6 +343,18 @@ parse_command_line (int argc, char **argv)
            case 't':
               theme_name = strdup (optarg);
               break;
+
+          case 'b':
+              if (!strcmp (optarg, "emotion"))
+                 enna_backend = ENNA_BACKEND_EMOTION;
+              else if (!strcmp (optarg, "libplayer"))
+                 enna_backend = ENNA_BACKEND_LIBPLAYER;
+              else
+                {
+                   printf ("Err: Invalid backend name.\n");
+                   printf ("  Valid Options: emotion, libplayer\n");
+                }
+              return -1;
 
            default:
               usage (argv[0]);

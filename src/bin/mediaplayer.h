@@ -3,6 +3,13 @@
 
 #include "enna.h"
 
+typedef enum {
+  ENNA_BACKEND_EMOTION,
+  ENNA_BACKEND_LIBPLAYER,
+} enna_mediaplayer_backend_t;
+
+extern enna_mediaplayer_backend_t enna_backend;
+
 typedef struct _Enna_Class_MediaplayerBackend Enna_Class_MediaplayerBackend;
 typedef struct _Enna_Metadata Enna_Metadata;
 
