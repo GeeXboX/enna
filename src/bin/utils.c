@@ -61,7 +61,7 @@ enna_util_has_suffix(char *str, Evas_List * patterns)
 
    for (l = patterns; l; l = evas_list_next(l))
      {
-	tmp = strdup(str);
+	tmp = calloc(1, strlen (str) + 1);
 	for (i = 0; i < strlen(str); i++)
 	  tmp[i] = tolower(str[i]);
 	result |= ecore_str_has_suffix(tmp, (char *)l->data);
