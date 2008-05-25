@@ -13,6 +13,7 @@ static int _class_file_set(const char *uri);
 static int _class_play(void);
 static int _class_pause(void);
 static int _class_stop(void);
+static Enna_Metadata *_class_metadata_get(void);
 
 static Enna_Class_MediaplayerBackend class =
 {
@@ -25,6 +26,7 @@ static Enna_Class_MediaplayerBackend class =
     _class_play,
     _class_pause,
     _class_stop,
+    _class_metadata_get,
   }
 };
 
@@ -78,6 +80,14 @@ static int _class_pause(void)
 {
   player_playback_pause (mod->player);
   return 0;
+}
+
+static Enna_Metadata *_class_metadata_get(void)
+{
+
+   /* FIXME libplayer should return metadata infos ? */
+   /* player_mrl_get_metadata*/
+   return NULL;
 }
 
 /* Module interface */
