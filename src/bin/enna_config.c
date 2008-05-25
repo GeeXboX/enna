@@ -43,7 +43,7 @@ enna_config_init()
 {
    Evas_List *l;
    Enna_Config_Root_Directories *root;
-   char home_dir[4096];
+   char home_dir[FILENAME_MAX];
 
    enna_config = calloc(1, sizeof(Enna_Config));
    /* Theme config */
