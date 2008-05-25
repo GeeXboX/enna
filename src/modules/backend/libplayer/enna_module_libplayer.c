@@ -84,10 +84,28 @@ static int _class_pause(void)
 
 static Enna_Metadata *_class_metadata_get(void)
 {
+  mrl_t *mrl;
+  Enna_Metadata *meta;
+  
+  mrl = mod->player->mrl;
+  if (!mrl)
+    return NULL;
 
-   /* FIXME libplayer should return metadata infos ? */
-   /* player_mrl_get_metadata*/
-   return NULL;
+  player_mrl_get_metadata (mod->player, mrl);
+  if (!mrl->meta)
+    return NULL;
+
+  meta = calloc (1, sizeof (Enna_Metadata));
+  meta->title = mrl->meta->title ? strdup (mrl->meta->title) : NULL;
+  meta->artist = mrl->meta->artist ? strdup (mrl->meta->artist) : NULL;
+  meta->album = mrl->meta->album ? strdup (mrl->meta->album) : NULL;
+  meta->year = mrl->meta->year ? strdup (mrl->meta->year) : NULL;
+  meta->genre = mrl->meta->genre ? strdup (mrl->meta->genre) : NULL;
+  meta->comment = NULL;
+  meta->discid = NULL;
+  meta->track = mrl->meta->track ? strdup (mrl->meta->track) : NULL;
+
+  return meta;
 }
 
 /* Module interface */
