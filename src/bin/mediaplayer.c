@@ -53,18 +53,23 @@ enna_mediaplayer_init(void)
    Enna_Module *em;
    char *backend_name;
 
-   if (enna_backend == ENNA_BACKEND_EMOTION)
+   switch (enna_backend)
+   {
+   case ENNA_BACKEND_EMOTION:
    {
      printf ("Using Emotion Backend\n");
      backend_name = "emotion";
+     break;
    }
-   else if (enna_backend == ENNA_BACKEND_LIBPLAYER)
+   case ENNA_BACKEND_LIBPLAYER:
    {
      printf ("Using libplayer Backend\n");
      backend_name = "libplayer";
+     break;
    }
-   else
+   default:
      return -1;
+   }
    
    _playlist = NULL;
    _mediaplayer = calloc(1, sizeof(Enna_Mediaplayer));
