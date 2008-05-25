@@ -266,10 +266,10 @@ _e_smart_animator_cb(void *data)
    Evas_Coord x,y;
    sd = data;
    t = (ecore_time_get() - sd->scroll_start) / sd->scroll_time;
-   if (t > 1.0) t = 1.0;
+   t = MMAX (t, 1.0);
    t = 1.0 - t;
    t = 1.0 - (t * t * t * t); /* more t's - more curve */
-   if (t > 1.0) t = 1.0;
+   t = MMAX (t, 1.0);
    x = sd->scroll_start_x + (t * (sd->scroll_to_x - sd->scroll_start_x));
    y = sd->scroll_start_y + (t * (sd->scroll_to_x - sd->scroll_start_x));
 
@@ -299,15 +299,15 @@ enna_scrollframe_child_region_show(Evas_Object *obj, Evas_Coord x, Evas_Coord y,
    if (x < px) nx = x;
    else if ((x + w) > (px + (cw - mx)))
      {
-	nx = x + w - (cw - mx);
-	if (nx > x) nx = x;
+        nx = x + w - (cw - mx);
+        nx = MMAX (nx, x);
      }
    ny = py;
    if (y < py) ny = y;
    else if ((y + h) > (py + (ch - my)))
      {
 	ny = y + h - (ch - my);
-	if (ny > y) ny = y;
+        ny = MMAX (ny, y);
      }
    if ((nx == px) && (ny == py)) return;
 
@@ -335,8 +335,8 @@ EAPI void
 enna_scrollframe_step_size_set(Evas_Object *obj, Evas_Coord x, Evas_Coord y)
 {
    API_ENTRY return;
-   if (x < 1) x = 1;
-   if (y < 1) y = 1;
+   x = MMIN (x, 1);
+   y = MMIN (y, 1);
    sd->step.x = x;
    sd->step.y = y;
    _e_smart_scrollbar_size_adjust(sd);
