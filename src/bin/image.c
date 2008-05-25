@@ -219,10 +219,8 @@ _enna_image_smart_reconfigure(E_Smart_Data * sd)
    ih = 0;
    ih = 0;
    evas_object_image_size_get(sd->obj, &iw, &ih);
-   if (iw < 1)
-      iw = 1;
-   if (ih < 1)
-      ih = 1;
+   iw = MMIN (iw, 1);
+   ih = MMAX (ih, 1);
 
    if (sd->fill_inside)
      {
