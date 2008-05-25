@@ -76,10 +76,8 @@ enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h)
    float               size = 12;
 
    size = sqrt(w * w + h * h) / (float)50.0;
-   if (size < 8)
-      size = 8;
-   else if (size > 30)
-      size = 30;
+   size = MMIN (size, 8);
+   size = MMAX (size, 30);
 
    return (unsigned int)size;
 
