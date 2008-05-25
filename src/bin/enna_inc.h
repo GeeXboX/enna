@@ -19,5 +19,6 @@
 #include "list.h"
 #include "location.h"
 #include "mediaplayer.h"
+#include "event_key.h"
 
 #endif

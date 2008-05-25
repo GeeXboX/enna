@@ -57,58 +57,67 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
                       void *event_info)
 {
    Enna               *enna;
-   Evas_Event_Key_Down *ev;
-
+   enna_key_t key;
+   
+   key = enna_get_key ((Evas_Event_Key_Down *) event_info);
+   if (key == ENNA_KEY_UNKNOWN)
+     return;
+   
    enna = (Enna *) data;
-   ev = (Evas_Event_Key_Down *) event_info;
-
-   printf("Key pressed : %s\n", ev->key);
-
-   if (!ev || !enna)
+   if (!enna)
      return;
 
-   if (!strcmp(ev->key, "q"))
+   if (key == ENNA_KEY_QUIT)
+     ecore_main_loop_quit();
+
+   if (enna_mainmenu_visible(enna->o_mainmenu))
+   {
+     switch (key)
      {
-	ecore_main_loop_quit();
-     }
-   /* Mainmenu is visible => key left/right/up/down/enter are redirect to it */
-   else if (enna_mainmenu_visible(enna->o_mainmenu))
+     case ENNA_KEY_MENU:
      {
-	if (!strcmp(ev->key, "m"))
-	  {
-	     enna_mainmenu_hide(enna->o_mainmenu);
-	     edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-	     edje_object_signal_emit(enna->o_edje, "module,show", "enna");
-
-	  }
-	else if(!strcmp(ev->key, "Right"))
-	  {
-	     enna_mainmenu_select_next(enna->o_mainmenu);
-
-	  }
-	else if(!strcmp(ev->key, "Left"))
-	  {
-	     enna_mainmenu_select_prev(enna->o_mainmenu);
-
-	  }
-	else if (!strcmp(ev->key, "Return") ||!strcmp(ev->key, "KP_Enter") )
-	  {
-	     enna_mainmenu_activate_nth(enna->o_mainmenu, enna_mainmenu_selected_get(enna->o_mainmenu));
-	     edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-	     edje_object_signal_emit(enna->o_edje, "module,show", "enna");
-	  }
+       enna_mainmenu_hide(enna->o_mainmenu);
+       edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+       edje_object_signal_emit(enna->o_edje, "module,show", "enna");
+       break;
      }
+     case ENNA_KEY_RIGHT:
+     {
+       enna_mainmenu_select_next(enna->o_mainmenu);
+       break;
+     }
+     case ENNA_KEY_LEFT:
+     {
+       enna_mainmenu_select_prev(enna->o_mainmenu);
+       break;
+     }
+     case ENNA_KEY_OK:
+     {
+       enna_mainmenu_activate_nth(enna->o_mainmenu, enna_mainmenu_selected_get(enna->o_mainmenu));
+       edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+       edje_object_signal_emit(enna->o_edje, "module,show", "enna");
+       break;
+     }
+     default:
+       break;
+     }
+   }
    else
+   {
+     switch (key)
      {
-	if (!strcmp(ev->key, "m"))
-	  {
-	     enna_mainmenu_show(enna->o_mainmenu);
-	     edje_object_signal_emit(enna->o_edje, "mainmenu,show", "enna");
-	     edje_object_signal_emit(enna->o_edje, "module,hide", "enna");
-	  }
-	else
-	  enna_activity_event("music", event_info);
+     case ENNA_KEY_MENU:
+     {
+       enna_mainmenu_show(enna->o_mainmenu);
+       edje_object_signal_emit(enna->o_edje, "mainmenu,show", "enna");
+       edje_object_signal_emit(enna->o_edje, "module,hide", "enna");
+       break;
      }
+     default:
+       enna_activity_event("music", event_info);
+       break;
+     }
+   }
 }
 static void
 _resize_viewport_cb(Ecore_Evas * ee)
