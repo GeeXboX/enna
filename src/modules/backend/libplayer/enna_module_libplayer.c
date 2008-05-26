@@ -95,8 +95,17 @@ static double _class_position_get()
 
 static double _class_length_get()
 {
-   /* FIXME: libplayer seems not to have length get API */
-   return 0.0;
+   mrl_t *mrl;
+
+   mrl = player_get_mrl (mod->player);
+   if (!mrl)
+     return 0.0;
+
+   player_mrl_get_properties (mod->player, mrl);
+   if (!mrl->prop)
+     return 0.0;
+
+   return (double) mrl->prop->length / 1000.0;
 }
 
 static Enna_Metadata *_class_metadata_get(void)
