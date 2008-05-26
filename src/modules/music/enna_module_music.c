@@ -108,6 +108,7 @@ static void _class_hide(int dummy)
 static void _class_event(void *event_info)
 {
    enna_key_t key = enna_get_key ((Evas_Event_Key_Down *) event_info);
+
    switch (mod->state)
      {
       case LIST_VIEW:
@@ -224,7 +225,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	  }
 
      }
-   else
+   else if (!direction)
      {
 	/* No files returned : create no media item */
 	Evas_Object *icon;
@@ -233,11 +234,31 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
 	enna_list_append(o_list, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
      }
+   else
+     {
+	/* Browse down and no file detected : Root */
+	Evas_List *l, *categories;
+	Evas_Object *icon;
+	categories = enna_vfs_get(ENNA_CAPS_MUSIC);
+	enna_list_icon_size_set(o_list, 64, 64);
+	for( l = categories; l; l = l->next)
+	  {
+
+	     Enna_Class_Vfs *cat;
+
+	     cat = l->data;
+	     icon = edje_object_add(mod->em->evas);
+	     edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
+	     enna_list_append(o_list, icon, cat->label, 0, _browse, NULL, cat, NULL);
+	  }
+	mod->vfs = NULL;
+     }
 
    enna_list_thaw(o_list);
    enna_list_selected_set(o_list, 0);
    mod->o_list = o_list;
    edje_object_signal_emit(oe, "list,default", "enna");
+
 }
 
 static void
@@ -353,7 +374,6 @@ static void _browse(void *data, void *data2)
 	oe = enna_list_edje_object_get(o);
 	edje_object_signal_callback_add(oe, "list,transition,end", "edje", _list_transition_left_end_cb, files);
 	edje_object_signal_emit(oe, "list,left", "enna");
-
      }
 
 }
@@ -375,6 +395,7 @@ static void _create_mediaplayer_gui()
 {
    Evas_Object *o;
    Enna_Metadata *metadata;
+
    mod->state = MEDIAPLAYER_VIEW;
 
    if (mod->o_mediaplayer)
@@ -392,6 +413,7 @@ static void _create_mediaplayer_gui()
 
    edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
    edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+
 }
 
 static void _create_gui()
@@ -441,7 +463,6 @@ static void _create_gui()
    edje_object_file_set(icon, enna_config_theme_get(), "icon/music_mini");
    enna_location_append(o, "Music", icon, NULL, NULL, NULL);
    mod->o_location = o;
-
 }
 
 
