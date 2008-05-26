@@ -13,6 +13,8 @@ static int _class_file_set(const char *uri);
 static int _class_play(void);
 static int _class_pause(void);
 static int _class_stop(void);
+static double _class_position_get();
+static double _class_length_get();
 static Enna_Metadata *_class_metadata_get(void);
 
 static Enna_Class_MediaplayerBackend class =
@@ -26,6 +28,8 @@ static Enna_Class_MediaplayerBackend class =
     _class_play,
     _class_pause,
     _class_stop,
+    _class_position_get,
+    _class_length_get,
     _class_metadata_get,
   }
 };
@@ -84,11 +88,21 @@ static int _class_pause(void)
    return 0;
 }
 
+static double _class_position_get()
+{
+   return emotion_object_position_get(mod->o_emotion);
+}
+
+static double _class_length_get()
+{
+   return emotion_object_play_length_get(mod->o_emotion);
+}
+
 static Enna_Metadata *_class_metadata_get(void)
 {
    Enna_Metadata *m;
 
-   m = calloc(1, sizeof(Enna_Metadata*));
+   m = calloc(1, sizeof(Enna_Metadata));
 
    m->title = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_TITLE);
    m->album= emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ALBUM);

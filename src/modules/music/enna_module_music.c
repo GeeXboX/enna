@@ -38,6 +38,7 @@ enum _MUSIC_STATE
      Evas_Object *o_location;
      Evas_Object *o_mediaplayer;
      Enna_Class_Vfs *vfs;
+     Ecore_Timer *timer;
      Enna_Module *em;
      MUSIC_STATE state;
   };
@@ -133,7 +134,7 @@ static void _class_event(void *event_info)
 	    case ENNA_KEY_RIGHT:
 	      {
 		 Enna_Metadata *metadata;
-		 if (enna_mediaplayer_next() < 0)
+		 if (!enna_mediaplayer_next())
 		   {
 		      metadata = enna_mediaplayer_metadata_get();
 		      if (metadata)
@@ -144,7 +145,7 @@ static void _class_event(void *event_info)
 	    case ENNA_KEY_LEFT:
 	      {
 		 Enna_Metadata *metadata;
-		 if (enna_mediaplayer_prev() < 0)
+		 if (!enna_mediaplayer_prev())
 		   {
 		      metadata = enna_mediaplayer_metadata_get();
 		      if (metadata)
@@ -357,13 +358,27 @@ static void _browse(void *data, void *data2)
 
 }
 
+static int _update_position_timer(void *data)
+{
+
+   double pos;
+   double length;
+
+   length = enna_mediaplayer_length_get();
+   pos = enna_mediaplayer_position_get();
+
+   enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
+   return 1;
+}
+
 static void _create_mediaplayer_gui()
 {
    Evas_Object *o;
    Enna_Metadata *metadata;
    mod->state = MEDIAPLAYER_VIEW;
-   edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-   edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+
+   if (mod->o_mediaplayer)
+     evas_object_del(mod->o_mediaplayer);
 
    o = enna_smart_player_add(mod->em->evas);
    edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
@@ -373,7 +388,10 @@ static void _create_mediaplayer_gui()
      enna_smart_player_metadata_set(o, metadata);
 
    mod->o_mediaplayer = o;
+   mod->timer = ecore_timer_add(1, _update_position_timer, NULL);
 
+   edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+   edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
 }
 
 static void _create_gui()

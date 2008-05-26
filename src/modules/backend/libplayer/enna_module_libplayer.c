@@ -13,6 +13,8 @@ static int _class_file_set(const char *uri);
 static int _class_play(void);
 static int _class_pause(void);
 static int _class_stop(void);
+static double _class_position_get();
+static double _class_length_get();
 static Enna_Metadata *_class_metadata_get(void);
 
 static Enna_Class_MediaplayerBackend class =
@@ -26,6 +28,8 @@ static Enna_Class_MediaplayerBackend class =
     _class_play,
     _class_pause,
     _class_stop,
+    _class_position_get,
+    _class_length_get,
     _class_metadata_get,
   }
 };
@@ -82,11 +86,23 @@ static int _class_pause(void)
   return 0;
 }
 
+static double _class_position_get()
+{
+   /* FIXME: libplayer seems not to have position get API */
+   return 0.0;
+}
+
+static double _class_length_get()
+{
+   /* FIXME: libplayer seems not to have length get API */
+   return 0.0;
+}
+
 static Enna_Metadata *_class_metadata_get(void)
 {
   mrl_t *mrl;
   Enna_Metadata *meta;
-  
+
   mrl = mod->player->mrl;
   if (!mrl)
     return NULL;

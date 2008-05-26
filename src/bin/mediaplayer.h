@@ -37,6 +37,8 @@ struct _Enna_Class_MediaplayerBackend
       int  (*class_play)(void);
       int  (*class_stop)(void);
       int  (*class_pause)(void);
+      double (*class_position_get)(void);
+      double (*class_length_get) (void);
       Enna_Metadata *(*class_metadata_get)(void);
    }func;
 };
@@ -51,6 +53,8 @@ EAPI int            enna_mediaplayer_stop(void);
 EAPI int            enna_mediaplayer_pause(void);
 EAPI int            enna_mediaplayer_next(void);
 EAPI int            enna_mediaplayer_prev(void);
+EAPI double         enna_mediaplayer_position_get(void);
+EAPI double         enna_mediaplayer_length_get(void);
 EAPI int            enna_mediaplayer_seek(double percent);
 EAPI int            enna_mediaplayer_playlist_load(const char *filename);
 EAPI int            enna_mediaplayer_playlist_save(const char *filename);

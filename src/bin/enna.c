@@ -58,11 +58,11 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
 {
    Enna               *enna;
    enna_key_t key;
-   
+
    key = enna_get_key ((Evas_Event_Key_Down *) event_info);
    if (key == ENNA_KEY_UNKNOWN)
      return;
-   
+
    enna = (Enna *) data;
    if (!enna)
      return;
@@ -253,19 +253,18 @@ _create_gui()
 static void
 _enna_shutdown()
 {
-   evas_object_del(enna->o_background);
-   evas_object_del(enna->o_edje);
-   evas_object_del(enna->o_mainmenu);
+
    enna_config_shutdown();
    enna_module_shutdown();
    enna_mediaplayer_shutdown();
-   ENNA_FREE(enna->home);
    edje_shutdown();
+   evas_object_del(enna->o_background);
+   evas_object_del(enna->o_edje);
+   evas_object_del(enna->o_mainmenu);
    ecore_evas_shutdown();
    ecore_file_shutdown();
    ecore_shutdown();
-   evas_shutdown();
-
+   ENNA_FREE(enna->home);
    ENNA_FREE(enna);
 }
 
@@ -370,7 +369,7 @@ int
 main(int arc, char **arv)
 {
    if (parse_command_line (arc, arv) < 0)
-     return 0; 
+     return 0;
 
    /* Must be called first */
    enna_config_init();

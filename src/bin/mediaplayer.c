@@ -214,6 +214,26 @@ enna_mediaplayer_prev(void)
    return 0;
 }
 
+EAPI double
+enna_mediaplayer_position_get(void)
+{
+   if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state == PLAYING)
+     {
+	return _mediaplayer->class->func.class_position_get();
+     }
+   return 0.0;
+}
+
+EAPI double
+enna_mediaplayer_length_get(void)
+{
+   if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state == PLAYING)
+     {
+	return _mediaplayer->class->func.class_length_get();
+     }
+   return 0.0;
+}
+
 EAPI int
 enna_mediaplayer_seek(double percent)
 {

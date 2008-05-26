@@ -85,6 +85,33 @@ enna_smart_player_add(Evas * evas)
 }
 
 EAPI void
+enna_smart_player_position_set(Evas_Object *obj, double pos, double len)
+{
+   long ph, pm, ps, lh, lm, ls;
+   double fraction;
+   char buf[256];
+   char buf2[256];
+   API_ENTRY;
+
+   lh = len / 3600000;
+   lm = len / 60 - (lh * 60);
+   ls = len - (lm * 60);
+   ph = pos / 3600;
+   pm = pos / 60 - (ph * 60);
+   ps = pos - (pm * 60);
+   snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
+   snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
+   if (len)
+      fraction = pos / len;
+   else
+      fraction = 0.0;
+
+   edje_object_part_text_set(sd->o_edje, "enna.text.length", buf2);
+   edje_object_part_text_set(sd->o_edje, "enna.text.position", buf);
+   edje_object_part_drag_value_set(sd->o_edje, "enna.dragable.pos", fraction, 0.0);
+}
+
+EAPI void
 enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
    API_ENTRY;
