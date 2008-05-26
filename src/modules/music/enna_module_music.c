@@ -216,11 +216,14 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	  {
 	     Enna_Vfs_File *f;
 	     Evas_Object *icon;
+	     Evas_Object *item;
 
 	     f = l->data;
 	     icon = edje_object_add(mod->em->evas);
 	     edje_object_file_set(icon, enna_config_theme_get(), f->icon);
-	     enna_list_append(o_list, icon, f->label, 0, _browse, NULL,mod->vfs, f);
+	     item = enna_listitem_add(mod->em->evas);
+	     enna_listitem_create_simple(item, icon, f->label);
+	     enna_list_append(o_list, item, _browse, NULL,mod->vfs, f);
 
 	  }
 
@@ -229,27 +232,33 @@ _list_transition_core(Evas_List *files, unsigned char direction)
      {
 	/* No files returned : create no media item */
 	Evas_Object *icon;
+	Evas_Object *item;
 
 	icon = edje_object_add(mod->em->evas);
 	edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
-	enna_list_append(o_list, icon, "No media found !", 0, NULL, NULL, NULL, NULL);
+	item = enna_listitem_add(mod->em->evas);
+	enna_listitem_create_simple(item, icon, "No Media found!\n");
+	enna_list_append(o_list, item, NULL, NULL, NULL, NULL);
      }
    else
      {
 	/* Browse down and no file detected : Root */
 	Evas_List *l, *categories;
-	Evas_Object *icon;
+
 	categories = enna_vfs_get(ENNA_CAPS_MUSIC);
 	enna_list_icon_size_set(o_list, 64, 64);
 	for( l = categories; l; l = l->next)
 	  {
-
 	     Enna_Class_Vfs *cat;
+	     Evas_Object *icon;
+	     Evas_Object *item;
 
 	     cat = l->data;
 	     icon = edje_object_add(mod->em->evas);
 	     edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
-	     enna_list_append(o_list, icon, cat->label, 0, _browse, NULL, cat, NULL);
+	     item = enna_listitem_add(mod->em->evas);
+	     enna_listitem_create_simple(item, icon, cat->label);
+	     enna_list_append(o_list, item, _browse, NULL, cat, NULL);
 	  }
 	mod->vfs = NULL;
      }
@@ -441,11 +450,13 @@ static void _create_gui()
      {
 
 	Enna_Class_Vfs *cat;
-
+	Evas_Object *item;
 	cat = l->data;
 	icon = edje_object_add(mod->em->evas);
 	edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
-	enna_list_append(o, icon, cat->label, 0, _browse, NULL, cat, NULL);
+	item = enna_listitem_add(mod->em->evas);
+	enna_listitem_create_simple(item, icon, cat->label);
+	enna_list_append(o, item,  _browse, NULL, cat, NULL);
      }
    enna_list_thaw(o);
    mod->vfs = NULL;

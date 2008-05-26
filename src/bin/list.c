@@ -32,8 +32,6 @@ struct _E_Smart_Data
    Evas_Object *o_scroll;
    Evas_List *items;
    int selected;
-
-
    unsigned char selector : 1;
    unsigned char on_hold : 1;
 };
@@ -61,7 +59,7 @@ enna_list_add(Evas *evas)
    return evas_object_smart_add(evas, _e_smart);
 }
 EAPI void
-enna_list_append  (Evas_Object *obj, Evas_Object *icon, const char *label, int header, void (*func) (void *data, void *data2), void (*func_hilight) (void *data, void *data2),  void *data, void *data2)
+enna_list_append  (Evas_Object *obj, Evas_Object *item, void (*func) (void *data, void *data2), void (*func_hilight) (void *data, void *data2),  void *data, void *data2)
 {
    Enna_List_Item *si;
    Evas_Coord mw = 0, mh = 0;
@@ -69,33 +67,15 @@ enna_list_append  (Evas_Object *obj, Evas_Object *icon, const char *label, int h
    API_ENTRY return;
    si = ENNA_NEW(Enna_List_Item, 1);
    si->sd = sd;
-   si->o_base = edje_object_add(evas_object_evas_get(sd->o_smart));
-   if (header)
-     edje_object_file_set(si->o_base, enna_config_theme_get(),
-			  "enna/list/item_header");
-   else if (evas_list_count(sd->items) & 0x1)
-     edje_object_file_set(si->o_base, enna_config_theme_get(),
-			  "enna/list/item");
-   else
-     edje_object_file_set(si->o_base, enna_config_theme_get(),
-			  "enna/list/item");
-   if (label)
-     edje_object_part_text_set(si->o_base, "e.text.label", label);
-   si->o_icon = icon;
-   if (si->o_icon)
-     {
-	edje_extern_object_min_size_set(si->o_icon, sd->iw, sd->ih);
-	edje_object_part_swallow(si->o_base, "e.swallow.icon", si->o_icon);
-	evas_object_show(si->o_icon);
-     }
+   si->o_base = item;
+
    si->func = func;
    si->func_hilight = func_hilight;
    si->data = data;
    si->data2 = data2;
-   si->header = header;
    sd->items = evas_list_append(sd->items, si);
 
-   edje_object_size_min_calc(si->o_base, &mw, &mh);
+   enna_listitem_min_size_get(si->o_base, &mw, &mh);
    enna_box_freeze(sd->o_box);
    enna_box_pack_end(sd->o_box, si->o_base);
 
@@ -110,8 +90,6 @@ enna_list_append  (Evas_Object *obj, Evas_Object *icon, const char *label, int h
 				  _e_smart_event_mouse_down, si);
    evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
 				  _e_smart_event_mouse_up, si);
-   /*evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_MOVE,
-     _e_smart_event_mouse_move, si);*/
 
    evas_object_show(si->o_base);
 }
@@ -145,7 +123,7 @@ enna_list_unselect(Evas_Object *obj)
 
 	if (!(si = l->data)) continue;
 	if (!si->selected) continue;
-	edje_object_signal_emit(si->o_base, "e,state,unselected", "e");
+	enna_listitem_select(si->o_base);
 	si->selected = 0;
      }
    sd->selected = -1;
@@ -168,20 +146,17 @@ enna_list_selected_set(Evas_Object *obj, int n)
    for (l = sd->items; l; l = l->next)
      {
 	if (!(si = l->data)) continue;
-	if ((!si->selected) || (si->header)) continue;
-	edje_object_signal_emit(si->o_base, "e,state,unselected", "e");
+	if (!si->selected) continue;
+	enna_listitem_unselect(si->o_base);
 	si->selected = 0;
      }
    sd->selected = -1;
    if (!(si = evas_list_nth(sd->items, n))) return;
 
-   /* NB: Remove this if headers ever become selectable */
-   if (si->header) return;
-
    si->selected = 1;
    sd->selected = n;
    evas_object_raise(si->o_base);
-   edje_object_signal_emit(si->o_base, "e,state,selected", "e");
+   enna_listitem_select(si->o_base);
    if (si->func_hilight) si->func_hilight(si->data, si->data2);
    if (sd->selector) return;
    if (!sd->on_hold)
@@ -209,20 +184,17 @@ enna_list_jump_nth(Evas_Object *obj, int n)
    for (l = sd->items; l; l = l->next)
      {
 	if (!(si = l->data)) continue;
-	if ((!si->selected) || (si->header)) continue;
-	edje_object_signal_emit(si->o_base, "e,state,unselected", "e");
+	if (!si->selected) continue;
+	enna_listitem_unselect(si->o_base);
 	si->selected = 0;
      }
    sd->selected = -1;
    if (!(si = evas_list_nth(sd->items, n))) return;
 
-   /* NB: Remove this if headers ever become selectable */
-   if (si->header) return;
-
    si->selected = 1;
    sd->selected = n;
    evas_object_raise(si->o_base);
-   edje_object_signal_emit(si->o_base, "e,state,selected", "e");
+   enna_listitem_select(si->o_base);
    evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
    enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
    if (si->func_hilight) si->func_hilight(si->data, si->data2);
@@ -238,18 +210,6 @@ enna_list_selected_get(Evas_Object *obj)
    return sd->selected;
 }
 
-EAPI const char *
-enna_list_selected_label_get(Evas_Object *obj)
-{
-   Enna_List_Item *si = NULL;
-
-   API_ENTRY return NULL;
-   if (!sd->items) return NULL;
-   if (sd->selected < 0) return NULL;
-   si = evas_list_nth(sd->items, sd->selected);
-   if (si) return edje_object_part_text_get(si->o_base, "e.text.label");
-   return NULL;
-}
 
 EAPI void *
 enna_list_selected_data_get(Evas_Object *obj)
@@ -277,18 +237,6 @@ enna_list_selected_data2_get(Evas_Object *obj)
    return NULL;
 }
 
-EAPI Evas_Object *
-enna_list_selected_icon_get(Evas_Object *obj)
-{
-   Enna_List_Item *si = NULL;
-
-   API_ENTRY return NULL;
-   if (!sd->items) return NULL;
-   if (sd->selected < 0) return NULL;
-   si = evas_list_nth(sd->items, sd->selected);
-   if (si) return si->o_icon;
-   return NULL;
-}
 
 EAPI void
 enna_list_selected_geometry_get(Evas_Object *obj, Evas_Coord *x, Evas_Coord *y, Evas_Coord *w, Evas_Coord *h)
@@ -332,26 +280,9 @@ enna_list_remove_num(Evas_Object *obj, int n)
    if (!(si = evas_list_nth(sd->items, n))) return;
    sd->items = evas_list_remove(sd->items, si);
    if (sd->selected == n) sd->selected = -1;
-   if (si->o_icon) evas_object_del(si->o_icon);
    evas_object_del(si->o_base);
    ENNA_FREE(si);
 }
-
-EAPI const char *
-enna_list_nth_label_get(Evas_Object *obj, int n)
-{
-   Enna_List_Item *si = NULL;
-
-   API_ENTRY return NULL;
-   if (!sd->items) return NULL;
-   si = evas_list_nth(sd->items, n);
-   if (si) return edje_object_part_text_get(si->o_base, "e.text.label");
-   return NULL;
-}
-
-
-
-
 
 EAPI void
 enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
@@ -368,11 +299,9 @@ enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
 	Evas_Coord mw = 0, mh = 0;
 
 	if (!(si = l->data)) continue;
-	if (!si->o_icon) continue;
-	edje_extern_object_min_size_set(si->o_icon, w, h);
-	edje_object_part_swallow(si->o_base, "e.swallow.icon", si->o_icon);
-	edje_object_size_min_calc(si->o_base, &mw, &mh);
-	enna_box_pack_options_set(si->o_icon, 1, 0, 1, 0, 0, 0.5,
+	enna_listitem_min_size_set(si->o_base, w, h);
+	enna_listitem_min_size_get(si->o_base, &mw, &mh);
+	enna_box_pack_options_set(si->o_base, 1, 0, 1, 0, 0, 0.5,
 				  mw, mh, 99999, 99999);
      }
 }
@@ -388,7 +317,6 @@ enna_list_clear(Evas_Object *obj)
 	Enna_List_Item *si;
 	si = sd->items->data;
 	sd->items = evas_list_remove_list(sd->items, sd->items);
-	if (si->o_icon) evas_object_del(si->o_icon);
 	evas_object_del(si->o_base);
 	ENNA_FREE(si);
      }
@@ -573,9 +501,6 @@ _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_
      sd->on_hold = 1;
    else sd->on_hold = 0;
 
-   /* NB: Remove if headers ever become selectable */
-   if (si->header) return;
-
    if (!sd->items) return;
    for (i = 0, l = sd->items; l; l = l->next, i++)
      {
@@ -588,8 +513,7 @@ _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_
 
 }
 
-
-
+/* FIXME remove do{}while(0) in this code ! */
 static void
 _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info)
 {
@@ -603,9 +527,6 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
 
    if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD) sd->on_hold = 1;
    else sd->on_hold = 0;
-
-   /* NB: Remove if headers ever become selectable */
-   if (si->header) return;
 
    if (!sd->items) return;
    //if (!sd->selector) return;
@@ -644,7 +565,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     --n;
 	     si = evas_list_nth(sd->items, n);
 	  }
-	while ((si) && (si->header));
+	while (0);
 	if (n != ns)
 	  {
 	     Evas_Coord x, y, h;
@@ -667,7 +588,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     ++n;
 	     si = evas_list_nth(sd->items, n);
 	  }
-	while ((si) && (si->header));
+	while (0);
 	if (n != ns)
 	  {
 	     Evas_Coord x, y, h;
@@ -692,7 +613,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     ++n;
 	     si = evas_list_nth(sd->items, n);
 	  }
-	while ((si) && (si->header));
+	while (0);
 	if (n != ns)
 	  {
 	     Evas_Coord x, y, h;
@@ -715,7 +636,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     --n;
 	     si = evas_list_nth(sd->items, n);
 	  }
-	while ((si) && (si->header));
+	while (0);
 	if (n != ns)
 	  {
 	     Evas_Coord x, y, h;
