@@ -103,7 +103,7 @@ static Enna_Metadata *_class_metadata_get(void)
   mrl_t *mrl;
   Enna_Metadata *meta;
 
-  mrl = mod->player->mrl;
+  mrl = player_get_mrl (mod->player);
   if (!mrl)
     return NULL;
 
