@@ -428,6 +428,7 @@ static void _create_gui()
    enna_list_thaw(o);
    mod->vfs = NULL;
    evas_object_show(o);
+   enna_list_selected_set(o, 0);
    mod->o_list = o;
    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
    edje_object_signal_emit(oe, "list,default", "enna");
