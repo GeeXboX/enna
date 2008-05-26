@@ -64,6 +64,7 @@ static void _class_shutdown(int dummy)
 
 static int _class_file_set(const char *uri)
 {
+  player_mrl_remove_all (mod->player);
   player_mrl_append (mod->player, (char *) uri, NULL, PLAYER_ADD_MRL_QUEUE);
   return 0;
 }
