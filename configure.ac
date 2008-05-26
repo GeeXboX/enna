@@ -36,7 +36,7 @@ PKG_CHECK_MODULES([ENNA],
 have_lirc_input=no
 AC_CHECK_HEADER(lirc/lirc_client.h, have_lirc_input=yes)
 if test "x$have_lirc_input" = "xyes"; then
-  AC_DEFINE(HAVE_LIRC, 1, [Define if LIRC client lib is present])
+  AC_DEFINE([HAVE_LIRC], [1], [Define if LIRC client lib is present])
   lirc_libs=-llirc_client
   AC_SUBST(lirc_libs)
 fi
