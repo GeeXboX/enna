@@ -35,6 +35,8 @@ enna_mediaplayer_backend_t enna_backend = ENNA_BACKEND_EMOTION;
 
 static Evas_List *_playlist;
 
+
+
 typedef struct _Enna_Mediaplayer Enna_Mediaplayer;
 typedef enum _PLAY_STATE PLAY_STATE;
 
@@ -52,6 +54,8 @@ struct _Enna_Mediaplayer
 };
 
 static Enna_Mediaplayer *_mediaplayer;
+
+static void _event_cb(void *data, int event);
 
 /* externally accessible functions */
 EAPI int
@@ -287,5 +291,23 @@ enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class)
    if (!class) return -1;
    _mediaplayer->class = class;
    class->func.class_init(0);
+
+   if (class->func.class_event_cb_set)
+     class->func.class_event_cb_set(_event_cb, NULL);
+
    return 0;
+}
+
+static void
+_event_cb(void *data, int event)
+{
+   switch(event)
+     {
+      case 0:
+	 printf("End of stream\n");
+	 enna_mediaplayer_next();
+	 break;
+      default:
+	 break;
+     }
 }

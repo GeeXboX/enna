@@ -40,6 +40,7 @@ struct _Enna_Class_MediaplayerBackend
       double (*class_position_get)(void);
       double (*class_length_get) (void);
       Enna_Metadata *(*class_metadata_get)(void);
+      void (*class_event_cb_set)(void (*event_cb)(void*data, int event), void *data);
    }func;
 };
 

@@ -16,6 +16,8 @@ static int _class_stop(void);
 static double _class_position_get();
 static double _class_length_get();
 static Enna_Metadata *_class_metadata_get(void);
+static void _class_event_cb_set(void (*event_cb)(void *data, int event), void *data);
+static void _eos_cb(void *data, Evas_Object * obj, void *event_info);
 
 static Enna_Class_MediaplayerBackend class =
 {
@@ -31,6 +33,7 @@ static Enna_Class_MediaplayerBackend class =
     _class_position_get,
     _class_length_get,
     _class_metadata_get,
+    _class_event_cb_set,
   }
 };
 
@@ -41,6 +44,9 @@ struct _Enna_Module_Emotion
    Evas *evas;
    Evas_Object *o_emotion;
    Enna_Module *em;
+   void (*event_cb)(void *data, int event);
+   void *event_cb_data;
+
 };
 
 static Enna_Module_Emotion *mod;
@@ -117,6 +123,21 @@ static Enna_Metadata *_class_metadata_get(void)
 
 }
 
+static void _class_event_cb_set(void (*event_cb)(void *data, int event), void *data)
+{
+   mod->event_cb_data = data;
+   mod->event_cb = event_cb;
+}
+
+static void
+_eos_cb(void *data, Evas_Object * obj, void *event_info)
+{
+   printf("End of stream\n");
+   if (mod->event_cb)
+     mod->event_cb(mod->event_cb_data, 0);
+}
+
+
 /* Module interface */
 
 static int
@@ -132,6 +153,7 @@ em_init(Enna_Module *em)
 	printf("Error : could not initialize gstreamer plugin for emotion\n");
 	return 0;
      }
+   evas_object_smart_callback_add(mod->o_emotion, "decode_stop", _eos_cb, NULL);
    enna_mediaplayer_backend_register(&class);
    return 1;
 }
