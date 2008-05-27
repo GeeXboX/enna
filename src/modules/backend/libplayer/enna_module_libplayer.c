@@ -129,7 +129,7 @@ static Enna_Metadata *_class_metadata_get(void)
   meta->album = mrl->meta->album ? strdup (mrl->meta->album) : NULL;
   meta->year = mrl->meta->year ? strdup (mrl->meta->year) : NULL;
   meta->genre = mrl->meta->genre ? strdup (mrl->meta->genre) : NULL;
-  meta->comment = NULL;
+  meta->comment = mrl->meta->comment ? strdup (mrl->meta->comment) : NULL;
   meta->discid = NULL;
   meta->track = mrl->meta->track ? strdup (mrl->meta->track) : NULL;
 
