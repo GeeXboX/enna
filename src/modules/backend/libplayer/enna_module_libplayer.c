@@ -89,8 +89,10 @@ static int _class_pause(void)
 
 static double _class_position_get()
 {
-   /* FIXME: libplayer seems not to have position get API */
-   return 0.0;
+   double time_pos;
+
+   time_pos = (double) player_get_time_pos (mod->player) / 1000.0;
+   return time_pos < 0.0 ? 0.0 : time_pos;
 }
 
 static double _class_length_get()
