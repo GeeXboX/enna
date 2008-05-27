@@ -1,19 +1,26 @@
 # get rid of that stupid cache mechanism
 rm -f config.cache
 
-AC_INIT(enna, 0.3.0, www.digital-corner.org)
-AC_PREREQ(2.52)
+AC_INIT([enna],[0.3.0],[www.digital-corner.org])
+AC_PREREQ(2.61)
 AC_CONFIG_SRCDIR(configure.ac)
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
 AC_ISC_POSIX
 
 AM_INIT_AUTOMAKE(1.6 dist-bzip2)
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 
 AC_PROG_CC
-AM_PROG_CC_STDC
+AC_PROG_CC
+AC_DIAGNOSE([obsolete],[AM_PROG_CC_STDC:
+	your code should no longer depend upon `am_cv_prog_cc_stdc', but upon
+	`ac_cv_prog_cc_stdc'.  Remove this warning and the assignment when
+	you adjust the code.  You can also remove the above call to
+	AC_PROG_CC if you already called it elsewhere.])
+am_cv_prog_cc_stdc=$ac_cv_prog_cc_stdc
+
 AC_HEADER_STDC
 AC_C_CONST
 AM_PROG_CC_C_O
@@ -51,7 +58,7 @@ want_emotion_backend="auto"
 have_emotion_backend="no"
 AC_MSG_CHECKING(whether emotion backend is to be built)
 AC_ARG_ENABLE(emotion-backend,
-  AC_HELP_STRING([--enable-emotion-backend], [Enable Emotion media backend]),
+  AS_HELP_STRING([--enable-emotion-backend],[Enable Emotion media backend]),
   [ want_emotion_backend=$enableval ]
 )
 AC_MSG_RESULT($want_emotion_backend)
@@ -79,7 +86,7 @@ have_libplayer_backend="no"
 
 AC_MSG_CHECKING(whether libplayer backend is to be built)
 AC_ARG_ENABLE(libplayer-backend,
-    AC_HELP_STRING([--enable-libplayer-backend], [Enable libplayer media backend]),
+    AS_HELP_STRING([--enable-libplayer-backend],[Enable libplayer media backend]),
     [ want_libplayer_backend=$enableval ]
 )
 AC_MSG_RESULT($want_libplayer_backend)
