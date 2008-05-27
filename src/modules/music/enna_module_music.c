@@ -207,7 +207,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
      edje_object_signal_emit(oe, "list,left,now", "enna");
 
    enna_list_freeze(o_list);
-   enna_list_icon_size_set(o_list, 64, 64);
+   //enna_list_icon_size_set(o_list, 64, 64);
    if (evas_list_count(files))
      {
 	int i = 0;
@@ -246,7 +246,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	Evas_List *l, *categories;
 
 	categories = enna_vfs_get(ENNA_CAPS_MUSIC);
-	enna_list_icon_size_set(o_list, 64, 64);
+	//enna_list_icon_size_set(o_list, 64, 64);
 	for( l = categories; l; l = l->next)
 	  {
 	     Enna_Class_Vfs *cat;
@@ -260,6 +260,18 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	     enna_listitem_create_simple(item, icon, cat->label);
 	     enna_list_append(o_list, item, _browse, NULL, cat, NULL);
 	  }
+	if (mod->o_mediaplayer)
+	  {
+	     Evas_Object *item;
+	     Enna_Metadata *metadata;
+	     Evas_Object *icon;
+
+	     metadata = enna_mediaplayer_metadata_get();
+	     item = enna_listitem_add(mod->em->evas);
+	     enna_listitem_create_full(item, icon, "Playing Now :", metadata->title, metadata->album, metadata->artist);
+	     enna_list_append(o_list, item, NULL, NULL, NULL, NULL);
+	  }
+
 	mod->vfs = NULL;
      }
 
@@ -369,11 +381,8 @@ static void _browse(void *data, void *data2)
 			 }
 		       i++;
 		    }
-
 	       }
-
 	     _create_mediaplayer_gui();
-
 	     return;
 	  }
 
@@ -429,8 +438,8 @@ static void _create_gui()
 {
 
    Evas_Object *o, *oe;
-   Evas_Object *icon;
    Evas_List *l, *categories;
+   Evas_Object *icon;
 
    mod->state = LIST_VIEW;
 
@@ -445,12 +454,12 @@ static void _create_gui()
    edje_object_signal_emit(oe, "list,right,now", "enna");
 
    categories = enna_vfs_get(ENNA_CAPS_MUSIC);
-   enna_list_icon_size_set(o, 64, 64);
+   //enna_list_icon_size_set(o, 64, 64);
    for( l = categories; l; l = l->next)
      {
-
-	Enna_Class_Vfs *cat;
 	Evas_Object *item;
+	Enna_Class_Vfs *cat;
+
 	cat = l->data;
 	icon = edje_object_add(mod->em->evas);
 	edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
@@ -458,6 +467,18 @@ static void _create_gui()
 	enna_listitem_create_simple(item, icon, cat->label);
 	enna_list_append(o, item,  _browse, NULL, cat, NULL);
      }
+   /* FIXME we must test play state instead of object here */
+   if (mod->o_mediaplayer)
+     {
+	Evas_Object *item;
+	Enna_Metadata *metadata;
+
+	metadata = enna_mediaplayer_metadata_get();
+	item = enna_listitem_add(mod->em->evas);
+	enna_listitem_create_full(item, NULL, "Playing Now :", metadata->title, metadata->album, metadata->artist);
+	enna_list_append(o, item, NULL, NULL, NULL, NULL);
+     }
+
    enna_list_thaw(o);
    mod->vfs = NULL;
    evas_object_show(o);

@@ -277,7 +277,7 @@ group {
 
 group {
    name: "enna/list/item_full";
-
+   min: 32 150;
    parts {
 
       part { name: "bg";
@@ -342,16 +342,16 @@ group {
 	    state: "default" 0.0;
 	    rel1 {
 	       to_x:     "enna.swallow.icon";
-	       relative: 1.0  0.1;
-	       //offset:   4 4;
+	       relative: 1.0  0.15;
+	       offset:   5 0;
 	    }
 	    rel2 {
-	       relative: 1.0  0.25;
-	       //offset:   -5 -5;
+	       relative: 1.0  0.30;
+	       offset:   -5 0;
 	    }
             color: 180 180 180 255;
             color3: 128 128 128 200;
-            align: 0.5 0.5;
+            align: 0 0.5;
 	    text {
                text:     "Playing Now";
                font:     "content";
@@ -359,6 +359,25 @@ group {
                //min: 1 1;
                max: 1 1;;
             }
+	 }
+      }
+      part {
+	 name:           "line";
+	 type:           RECT;
+	 mouse_events:   0;
+	 description {
+	    state: "default" 0.0;
+            color: 180 180 180 255;
+	    rel1 {
+	       to_x:     "enna.swallow.icon";
+	       relative: 1.0  0.35;
+	       offset:   4 0;
+	    }
+	    rel2 {
+	       relative: 1.0  0.35;
+	       offset:   -5 0;
+	    }
+
 	 }
       }
       part {
@@ -382,7 +401,7 @@ group {
 	    text {
                text:     "Feel Good Inc.";
                font:     "content_bd";
-               size:     30;
+               size:     25;
                //min: 1 1;
                max: 1 1;;
             }
@@ -409,7 +428,7 @@ group {
 	    text {
                text:     "Daemon Days";
                font:     "content";
-               size:     25;
+               size:     20;
                //min: 1 1;
                max: 1 1;;
             }
@@ -436,7 +455,7 @@ group {
 	    text {
                text:     "Gorillaz";
                font:     "content";
-               size:     25;
+               size:     20;
                //min: 1 1;
                max: 1 1;;
             }

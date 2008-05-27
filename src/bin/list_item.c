@@ -55,6 +55,7 @@ struct _E_Smart_Data
    Evas_Coord    x, y, w, h, iw, ih;
    Evas_Object  *o_edje;
    Evas_Object  *o_icon;
+   unsigned char full: 1;
 };
 
 /* local subsystem functions */
@@ -103,6 +104,7 @@ enna_listitem_create_simple( Evas_Object *obj, Evas_Object *icon,
      }
    edje_object_part_text_set(sd->o_edje, "enna.text.label", label);
    evas_object_smart_member_add(sd->o_edje, obj);
+   sd->full = 0;
 }
 
 EAPI void
@@ -118,7 +120,7 @@ enna_listitem_create_full( Evas_Object *obj,  Evas_Object *icon,
    sd->o_icon = icon;
    if (sd->o_icon)
      {
-	edje_extern_object_min_size_set(sd->o_icon, sd->iw, sd->ih);
+	edje_extern_object_min_size_set(sd->o_icon, 100, 100);
 	edje_object_part_swallow(sd->o_edje, "enna.swallow.icon", sd->o_icon);
 	evas_object_show(sd->o_icon);
      }
@@ -127,7 +129,7 @@ enna_listitem_create_full( Evas_Object *obj,  Evas_Object *icon,
    edje_object_part_text_set(sd->o_edje, "enna.text.album", album);
    edje_object_part_text_set(sd->o_edje, "enna.text.artist", artist);
    evas_object_smart_member_add(sd->o_edje, obj);
-
+   sd->full = 1;
 }
 
 
@@ -135,7 +137,13 @@ EAPI void
 enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
 {
    API_ENTRY return;
-   edje_object_size_min_calc(sd->o_edje, w, h);
+   if (!sd->full)
+     edje_object_size_min_calc(sd->o_edje, w, h);
+   else
+     {
+	if(w) *w = 150;
+	if(h) *h = 150;
+     }
 
 }
 
