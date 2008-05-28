@@ -31,7 +31,11 @@
 
 #include "enna.h"
 
+#ifdef BUILD_EMOTION_BACKEND
 enna_mediaplayer_backend_t enna_backend = ENNA_BACKEND_EMOTION;
+#else
+enna_mediaplayer_backend_t enna_backend = ENNA_BACKEND_LIBPLAYER;
+#endif
 
 static Evas_List *_playlist;
 
@@ -66,18 +70,22 @@ enna_mediaplayer_init(void)
 
    switch (enna_backend)
    {
+#ifdef BUILD_EMOTION_BACKEND
    case ENNA_BACKEND_EMOTION:
    {
      printf("Using Emotion Backend\n");
      backend_name = "emotion";
      break;
    }
+#endif
+#ifdef BUILD_LIPLAYER_BACKEND
    case ENNA_BACKEND_LIBPLAYER:
    {
      printf("Using libplayer Backend\n");
      backend_name = "libplayer";
      break;
    }
+#endif
    default:
      return -1;
    }
