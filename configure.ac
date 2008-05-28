@@ -24,6 +24,7 @@ am_cv_prog_cc_stdc=$ac_cv_prog_cc_stdc
 AC_HEADER_STDC
 AC_C_CONST
 AM_PROG_CC_C_O
+AC_PROG_GCC_TRADITIONAL
 
 define([AC_LIBTOOL_LANG_CXX_CONFIG], [:])dnl
 define([AC_LIBTOOL_LANG_F77_CONFIG], [:])dnl
@@ -102,6 +103,10 @@ if test "x$want_libplayer_backend" = "xyes" -o "x$want_libplayer_backend" = "xau
   fi
 fi
 AM_CONDITIONAL(BUILD_LIBPLAYER_BACKEND, test "x$have_libplayer_backend" = "xyes")
+
+if test "x$GCC" = "xyes"; then
+  CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
+fi
 
 AC_CONFIG_FILES([
 Makefile
