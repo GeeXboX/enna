@@ -59,7 +59,7 @@ struct _Enna_Mediaplayer
 
 static Enna_Mediaplayer *_mediaplayer;
 
-static void _event_cb(void *data, int event);
+static void _event_cb(void *data, enna_mediaplayer_event_t event);
 
 /* externally accessible functions */
 EAPI int
@@ -307,11 +307,11 @@ enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class)
 }
 
 static void
-_event_cb(void *data, int event)
+_event_cb(void *data, enna_mediaplayer_event_t event)
 {
    switch(event)
      {
-      case 0:
+      case ENNA_MP_EVENT_EOF:
 	 printf("End of stream\n");
 	 enna_mediaplayer_next();
 	 break;

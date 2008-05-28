@@ -16,7 +16,7 @@ static int _class_stop(void);
 static double _class_position_get();
 static double _class_length_get();
 static Enna_Metadata *_class_metadata_get(void);
-static void _class_event_cb_set(void (*event_cb)(void *data, int event), void *data);
+static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data);
 
 static Enna_Class_MediaplayerBackend class =
   {
@@ -43,7 +43,7 @@ struct _Enna_Module_libplayer
    Evas *evas;
    player_t *player;
    Enna_Module *em;
-   void (*event_cb)(void *data, int event);
+   void (*event_cb)(void *data, enna_mediaplayer_event_t event);
    void *event_cb_data;
 };
 
@@ -139,7 +139,7 @@ static Enna_Metadata *_class_metadata_get(void)
    return meta;
 }
 
-static void _class_event_cb_set(void (*event_cb)(void *data, int event), void *data)
+static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data)
 {
    /* FIXME: function to call when end of stream is send by libplayer */
 

@@ -16,7 +16,7 @@ static int _class_stop(void);
 static double _class_position_get();
 static double _class_length_get();
 static Enna_Metadata *_class_metadata_get(void);
-static void _class_event_cb_set(void (*event_cb)(void *data, int event), void *data);
+static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data);
 static void _eos_cb(void *data, Evas_Object * obj, void *event_info);
 
 static Enna_Class_MediaplayerBackend class =
@@ -44,7 +44,7 @@ struct _Enna_Module_Emotion
    Evas *evas;
    Evas_Object *o_emotion;
    Enna_Module *em;
-   void (*event_cb)(void *data, int event);
+   void (*event_cb)(void *data, enna_mediaplayer_event_t event);
    void *event_cb_data;
 
 };
@@ -123,7 +123,7 @@ static Enna_Metadata *_class_metadata_get(void)
 
 }
 
-static void _class_event_cb_set(void (*event_cb)(void *data, int event), void *data)
+static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data)
 {
    mod->event_cb_data = data;
    mod->event_cb = event_cb;

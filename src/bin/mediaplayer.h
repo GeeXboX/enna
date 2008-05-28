@@ -8,6 +8,10 @@ typedef enum {
   ENNA_BACKEND_LIBPLAYER,
 } enna_mediaplayer_backend_t;
 
+typedef enum {
+  ENNA_MP_EVENT_EOF,
+} enna_mediaplayer_event_t;
+
 extern enna_mediaplayer_backend_t enna_backend;
 
 typedef struct _Enna_Class_MediaplayerBackend Enna_Class_MediaplayerBackend;
@@ -40,7 +44,7 @@ struct _Enna_Class_MediaplayerBackend
       double (*class_position_get)(void);
       double (*class_length_get) (void);
       Enna_Metadata *(*class_metadata_get)(void);
-      void (*class_event_cb_set)(void (*event_cb)(void*data, int event), void *data);
+      void (*class_event_cb_set)(void (*event_cb)(void*data, enna_mediaplayer_event_t event), void *data);
    }func;
 };
 
