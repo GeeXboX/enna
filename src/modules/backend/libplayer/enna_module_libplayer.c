@@ -150,7 +150,7 @@ static void _class_event_cb_set(void (*event_cb)(void *data, int event), void *d
 /* Module interface */
 
 static int
-event_cb (player_event_t e, void *data)
+_event_cb (player_event_t e, void *data)
 {
    if (e == PLAYER_EVENT_PLAYBACK_FINISHED)
      printf ("PLAYBACK FINISHED\n");
@@ -166,7 +166,7 @@ em_init(Enna_Module *em)
    mod->evas = em->evas;
    mod->player =
      player_init (PLAYER_TYPE_MPLAYER, PLAYER_AO_ALSA, PLAYER_VO_XV,
-                  PLAYER_MSG_WARNING, event_cb);
+                  PLAYER_MSG_WARNING, _event_cb);
    enna_mediaplayer_backend_register(&class);
    return 1;
 }
