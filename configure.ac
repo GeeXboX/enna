@@ -67,15 +67,12 @@ if test "x$want_emotion_backend" = "xyes" -o "x$want_emotion_backend" = "xauto";
   PKG_CHECK_MODULES(
     [EMOTION],
     [emotion],
-    [
       AC_DEFINE(BUILD_EMOTION_BACKEND, 1, [Emotion media backend])
       have_emotion_backend="yes"
-    ],
-    [
+    ,
       if test "x$want_emotion_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
         AC_MSG_ERROR([Emotion not found (strict dependencies checking)])
       fi
-    ]
   )
 fi
 AM_CONDITIONAL(BUILD_EMOTION_BACKEND, test "x$have_emotion_backend" = "xyes")
