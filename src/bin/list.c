@@ -571,7 +571,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     Evas_Coord x, y, h;
 	     enna_list_selected_set(sd->o_smart, n);
 	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
-	     y = h/evas_list_count(sd->items) * (n-1);
+	     y = h/evas_list_count(sd->items) * (n-3);
 	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
 	  }
      }
