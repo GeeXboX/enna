@@ -106,11 +106,7 @@ static double _class_length_get()
    if (!mrl)
      return 0.0;
 
-   player_mrl_retrieve_properties (mod->player, mrl);
-   if (!mrl->prop)
-     return 0.0;
-
-   return (double) mrl->prop->length / 1000.0;
+   return (double) player_mrl_get_properties (mod->player, mrl, PLAYER_PROPERTY_LENGTH) / 1000.0;
 }
 
 static Enna_Metadata *_class_metadata_get(void)
