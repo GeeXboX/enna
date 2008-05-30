@@ -106,7 +106,7 @@ static double _class_length_get()
    if (!mrl)
      return 0.0;
 
-   player_mrl_get_properties (mod->player, mrl);
+   player_mrl_retrieve_properties (mod->player, mrl);
    if (!mrl->prop)
      return 0.0;
 
@@ -122,19 +122,15 @@ static Enna_Metadata *_class_metadata_get(void)
    if (!mrl)
      return NULL;
 
-   player_mrl_get_metadata (mod->player, mrl);
-   if (!mrl->meta)
-     return NULL;
-
    meta = calloc (1, sizeof (Enna_Metadata));
-   meta->title = mrl->meta->title ? strdup (mrl->meta->title) : NULL;
-   meta->artist = mrl->meta->artist ? strdup (mrl->meta->artist) : NULL;
-   meta->album = mrl->meta->album ? strdup (mrl->meta->album) : NULL;
-   meta->year = mrl->meta->year ? strdup (mrl->meta->year) : NULL;
-   meta->genre = mrl->meta->genre ? strdup (mrl->meta->genre) : NULL;
-   meta->comment = mrl->meta->comment ? strdup (mrl->meta->comment) : NULL;
+   meta->title = player_mrl_get_metadata (mod->player, mrl, PLAYER_METADATA_TITLE);
+   meta->artist = player_mrl_get_metadata (mod->player, mrl, PLAYER_METADATA_ARTIST);
+   meta->album = player_mrl_get_metadata (mod->player, mrl, PLAYER_METADATA_ALBUM);
+   meta->year = player_mrl_get_metadata (mod->player, mrl, PLAYER_METADATA_YEAR);
+   meta->genre = player_mrl_get_metadata (mod->player, mrl, PLAYER_METADATA_GENRE);
+   meta->comment = player_mrl_get_metadata (mod->player, mrl, PLAYER_METADATA_COMMENT);
    meta->discid = NULL;
-   meta->track = mrl->meta->track ? strdup (mrl->meta->track) : NULL;
+   meta->track = player_mrl_get_metadata (mod->player, mrl, PLAYER_METADATA_TRACK);
 
    return meta;
 }
