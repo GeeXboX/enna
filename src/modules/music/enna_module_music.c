@@ -264,7 +264,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	  {
 	     Evas_Object *item;
 	     Enna_Metadata *metadata;
-	     Evas_Object *icon;
+	     Evas_Object *icon = NULL;
 
 	     metadata = enna_mediaplayer_metadata_get();
 	     item = enna_listitem_add(mod->em->evas);
