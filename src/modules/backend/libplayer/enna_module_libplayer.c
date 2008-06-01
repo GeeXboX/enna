@@ -74,7 +74,7 @@ static int _class_file_set(const char *uri)
    args = calloc (1, sizeof (mrl_resource_local_args_t));
    args->location = strdup (uri);
 
-   mrl = mrl_new (mod->player, PLAYER_MRL_RESOURCE_FILE, args);
+   mrl = mrl_new (mod->player, MRL_RESOURCE_FILE, args);
    if (!mrl)
     return 1;
    
@@ -110,7 +110,7 @@ static double _class_position_get()
 
 static double _class_length_get()
 {
-   return (double) mrl_get_property (mod->player, NULL, PLAYER_PROPERTY_LENGTH) / 1000.0;
+   return (double) mrl_get_property (mod->player, NULL, MRL_PROPERTY_LENGTH) / 1000.0;
 }
 
 static Enna_Metadata *_class_metadata_get(void)
@@ -118,14 +118,14 @@ static Enna_Metadata *_class_metadata_get(void)
    Enna_Metadata *meta;
 
    meta = calloc (1, sizeof (Enna_Metadata));
-   meta->title = mrl_get_metadata (mod->player, NULL, PLAYER_METADATA_TITLE);
-   meta->artist = mrl_get_metadata (mod->player, NULL, PLAYER_METADATA_ARTIST);
-   meta->album = mrl_get_metadata (mod->player, NULL, PLAYER_METADATA_ALBUM);
-   meta->year = mrl_get_metadata (mod->player, NULL, PLAYER_METADATA_YEAR);
-   meta->genre = mrl_get_metadata (mod->player, NULL, PLAYER_METADATA_GENRE);
-   meta->comment = mrl_get_metadata (mod->player, NULL, PLAYER_METADATA_COMMENT);
+   meta->title = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TITLE);
+   meta->artist = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ARTIST);
+   meta->album = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ALBUM);
+   meta->year = mrl_get_metadata (mod->player, NULL, MRL_METADATA_YEAR);
+   meta->genre = mrl_get_metadata (mod->player, NULL, MRL_METADATA_GENRE);
+   meta->comment = mrl_get_metadata (mod->player, NULL, MRL_METADATA_COMMENT);
    meta->discid = NULL;
-   meta->track = mrl_get_metadata (mod->player, NULL, PLAYER_METADATA_TRACK);
+   meta->track = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TRACK);
 
    return meta;
 }
