@@ -68,6 +68,7 @@ enna_mediaplayer_init(void)
    Enna_Module *em;
    char *backend_name;
 
+   /* FIXME enna_backend should be a config parameter */
    switch (enna_backend)
    {
 #ifdef BUILD_EMOTION_BACKEND

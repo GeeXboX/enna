@@ -1,5 +1,17 @@
 
 #include "enna.h"
+#include "event_key.h"
+
+typedef struct _Input_Module_Item Input_Module_Item;
+struct _Input_Module_Item
+{
+   Enna_Module *module;
+   Enna_Class_Input *class;
+};
+
+static Evas_List *_input_modules;
+
+
 
 static const struct {
   const char *keyname;
@@ -17,11 +29,21 @@ static const struct {
   { NULL,                         ENNA_KEY_UNKNOWN       }
 };
 
-enna_key_t
+/* Static functions */
+
+static void
+_event_cb(void *data, enna_key_t event)
+{
+   printf("Event Key \n");
+}
+
+/* Public Functions */
+
+EAPI enna_key_t
 enna_get_key (Evas_Event_Key_Down *ev)
 {
   int i;
-  
+
   if (!ev)
     return ENNA_KEY_UNKNOWN;
 
@@ -32,4 +54,57 @@ enna_get_key (Evas_Event_Key_Down *ev)
       return enna_keymap[i].keycode;
 
   return ENNA_KEY_UNKNOWN;
+}
+
+EAPI void
+enna_input_init()
+{
+   Enna_Module *em;
+   Input_Module_Item *item;
+   _input_modules = NULL;
+
+#ifdef BUILD_LIRC_MODULE
+   em = enna_module_open("lirc", enna->evas);
+   enna_module_enable(em);
+   item = calloc(1, sizeof(Input_Module_Item));
+   item->module = em;
+   _input_modules = evas_list_append(_input_modules, item);
+#endif
+
+}
+
+EAPI void
+enna_input_shutdown()
+{
+   Evas_List *l = NULL;
+
+   for (l = _input_modules; l; l = l->next)
+     {
+	Input_Module_Item *item = l->data;
+	item->class->func.class_shutdown(0);
+	enna_module_disable(item->module);
+	free(item->module);
+	free(item);
+     }
+   evas_list_free(_input_modules);
+}
+
+EAPI int
+enna_input_class_register(Enna_Module *module, Enna_Class_Input *class)
+{
+   Evas_List *l = NULL;
+
+   for (l = _input_modules; l; l = l->next)
+     {
+	Input_Module_Item *item = l->data;
+
+	if (module == item->module)
+	  {
+	     item->class = class;
+	     class->func.class_init(0);
+	     class->func.class_event_cb_set(_event_cb, item);
+	     return 0;
+	  }
+     }
+   return -1;
 }

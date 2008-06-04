@@ -1,6 +1,8 @@
 #ifndef _EVENT_KEY_H_
 #define _EVENT_KEY_H_
 
+#include "enna.h"
+
 typedef enum {
   ENNA_KEY_UNKNOWN,
   ENNA_KEY_MENU,
@@ -13,6 +15,24 @@ typedef enum {
   ENNA_KEY_CANCEL,
 } enna_key_t;
 
-enna_key_t enna_get_key (Evas_Event_Key_Down *ev);
+typedef struct _Enna_Class_Input Enna_Class_Input;
+
+struct _Enna_Class_Input
+{
+   const char *name;
+   struct
+   {
+      void (*class_init)(int dummy);
+      void (*class_shutdown)(int dummy);
+      void (*class_event_cb_set)(void (*event_cb)(void*data, enna_key_t key), void *data);
+   }func;
+
+};
+
+EAPI enna_key_t enna_get_key (Evas_Event_Key_Down *ev);
+EAPI void       enna_input_init();
+EAPI void       enna_input_shutdown();
+//EAPI int        enna_input_class_register(Enna_Module *module, Enna_Class_Input *class);
+EAPI int enna_input_class_register(Enna_Module *module, Enna_Class_Input *class);
 
 #endif /* _EVENT_KEY_H_ */

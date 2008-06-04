@@ -48,10 +48,12 @@ PKG_CHECK_MODULES([ENNA],
 have_lirc_input=no
 AC_CHECK_HEADER(lirc/lirc_client.h, have_lirc_input=yes)
 if test "x$have_lirc_input" = "xyes"; then
-  AC_DEFINE([HAVE_LIRC], [1], [Define if LIRC client lib is present])
+  AC_DEFINE([BUILD_LIRC_MODULE], [1], [Define if LIRC client lib is present])
+  have_emotion_backend="yes"
   lirc_libs=-llirc_client
   AC_SUBST(lirc_libs)
 fi
+AM_CONDITIONAL(BUILD_LIRC_MODULE, test "x$have_lirc_input" = "xyes")
 
 #######################################
 ## Check if we should build the emotion backend
@@ -119,6 +121,8 @@ src/modules/browser/Makefile
 src/modules/backend/Makefile
 src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
+src/modules/input/Makefile
+src/modules/input/lirc/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile

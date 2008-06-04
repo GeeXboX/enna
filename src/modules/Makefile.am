@@ -3,4 +3,5 @@ SUBDIRS = \
 music\
 video\
 browser\
-backend
+backend\
+input

@@ -183,6 +183,7 @@ _enna_init(int run_gl)
 
    ecore_evas_show(enna->ee);
    _create_gui();
+   enna_input_init();
    return 1;
 }
 
@@ -253,7 +254,7 @@ _create_gui()
 static void
 _enna_shutdown()
 {
-
+   enna_input_shutdown();
    enna_config_shutdown();
    enna_module_shutdown();
    enna_mediaplayer_shutdown();
