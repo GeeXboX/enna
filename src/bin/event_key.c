@@ -34,18 +34,20 @@ static const struct {
 static void
 _event_cb(void *data, char *event)
 {
-   Evas_Event_Key_Down ev;
+   Ecore_X_Event_Key_Down *ev;
 
    if (!event) return;
-   ev.keyname = event;
-   ev.data = NULL;
-   ev.modifiers = NULL;
-   ev.locks = NULL;
-   ev.key = event;
-   ev.string = event;
-   ev.timestamp = ecore_time_get();
-   ev.event_flags = EVAS_EVENT_FLAG_NONE;
-   ecore_event_add(ENNA_EVENT_INPUT_KEY_DOWN, &ev, NULL, NULL);
+
+   ev = calloc(1, sizeof(Ecore_X_Event_Key_Down));
+
+   ev->keyname = event;
+   ev->keysymbol = event;
+   ev->key_compose = event;
+   ev->modifiers = 0;
+
+   printf("LIRC event : %s\n", event);
+
+   ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
 
 }
 
