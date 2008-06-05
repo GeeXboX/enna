@@ -32,9 +32,9 @@ static const struct {
 /* Static functions */
 
 static void
-_event_cb(void *data, enna_key_t event)
+_event_cb(void *data, char *event)
 {
-   printf("Event Key \n");
+   printf("Event Key : %s\n", event);
 }
 
 /* Public Functions */
@@ -61,14 +61,16 @@ enna_input_init()
 {
    Enna_Module *em;
    Input_Module_Item *item;
+
    _input_modules = NULL;
 
 #ifdef BUILD_LIRC_MODULE
    em = enna_module_open("lirc", enna->evas);
-   enna_module_enable(em);
    item = calloc(1, sizeof(Input_Module_Item));
    item->module = em;
+   printf("enna module open lirc\n");
    _input_modules = evas_list_append(_input_modules, item);
+   enna_module_enable(em);
 #endif
 
 }
@@ -93,16 +95,19 @@ EAPI int
 enna_input_class_register(Enna_Module *module, Enna_Class_Input *class)
 {
    Evas_List *l = NULL;
+   printf("class register\n");
 
    for (l = _input_modules; l; l = l->next)
      {
 	Input_Module_Item *item = l->data;
-
+	printf("next module\n");
 	if (module == item->module)
 	  {
+	     printf("item found\n");
 	     item->class = class;
 	     class->func.class_init(0);
 	     class->func.class_event_cb_set(_event_cb, item);
+
 	     return 0;
 	  }
      }

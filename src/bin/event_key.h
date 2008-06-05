@@ -24,7 +24,7 @@ struct _Enna_Class_Input
    {
       void (*class_init)(int dummy);
       void (*class_shutdown)(int dummy);
-      void (*class_event_cb_set)(void (*event_cb)(void*data, enna_key_t key), void *data);
+      void (*class_event_cb_set)(void (*event_cb)(void*data, char *event), void *data);
    }func;
 
 };

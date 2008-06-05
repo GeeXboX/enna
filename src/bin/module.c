@@ -97,6 +97,7 @@ enna_module_open(const char *name, Evas *evas)
     char module_name[4096];
     Ecore_Plugin *plugin;
     Enna_Module *m;
+
     if (!name || !evas) return NULL;
     m = malloc(sizeof(Enna_Module));
 

@@ -23,7 +23,7 @@ pkg_LTLIBRARIES = enna_module_lirc.la
 enna_module_lirc_la_SOURCES= \
 enna_module_lirc.c
 
-enna_module_lirc_la_LIBADD = @ENNA_LIBS@
+enna_module_lirc_la_LIBADD = @ENNA_LIBS@ @LIRC_LIBS@
 enna_module_lirc_la_LDFLAGS = -module -avoid-version
 enna_module_lirc_la_DEPENDENCIES = $(top_builddir)/config.h
 

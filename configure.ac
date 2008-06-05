@@ -50,8 +50,8 @@ AC_CHECK_HEADER(lirc/lirc_client.h, have_lirc_input=yes)
 if test "x$have_lirc_input" = "xyes"; then
   AC_DEFINE([BUILD_LIRC_MODULE], [1], [Define if LIRC client lib is present])
   have_emotion_backend="yes"
-  lirc_libs=-llirc_client
-  AC_SUBST(lirc_libs)
+  LIRC_LIBS=-llirc_client
+  AC_SUBST(LIRC_LIBS)
 fi
 AM_CONDITIONAL(BUILD_LIRC_MODULE, test "x$have_lirc_input" = "xyes")
 
