@@ -410,8 +410,6 @@ static void _next_song()
 	if (metadata)
 	  {
 	     enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
-	     if (mod->o_playing_now)
-	       enna_listitem_full_update(mod->o_playing_now, NULL, "Playing Now :", metadata->title, metadata->album, metadata->artist);
 	  }
      }
 }
@@ -425,8 +423,6 @@ static void _prev_song()
 	if (metadata)
 	  {
 	     enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
-	     if (mod->o_playing_now)
-	       enna_listitem_full_update(mod->o_playing_now, NULL, "Playing Now :", metadata->title, metadata->album, metadata->artist);
 	  }
      }
 }

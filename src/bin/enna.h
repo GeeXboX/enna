@@ -9,6 +9,7 @@
 #include <Ecore_Data.h>
 #include <Ecore_Txt.h>
 #include <Ecore_Str.h>
+#include <Ecore_X.h>
 #include <Edje.h>
 #include <Ecore_Evas.h>
 

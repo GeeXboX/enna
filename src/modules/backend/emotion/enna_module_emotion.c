@@ -134,7 +134,7 @@ _eos_cb(void *data, Evas_Object * obj, void *event_info)
 {
    printf("End of stream\n");
    if (mod->event_cb)
-     mod->event_cb(mod->event_cb_data, 0);
+     mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
 }
 
 

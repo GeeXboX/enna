@@ -29,10 +29,13 @@ struct _Enna_Class_Input
 
 };
 
-EAPI enna_key_t enna_get_key (Evas_Event_Key_Down *ev);
+/* Input ecore event */
+EAPI int ENNA_EVENT_INPUT_KEY_DOWN;
+
+/* Enna Event API functions */
+EAPI enna_key_t enna_get_key (void *event);
 EAPI void       enna_input_init();
 EAPI void       enna_input_shutdown();
-//EAPI int        enna_input_class_register(Enna_Module *module, Enna_Class_Input *class);
 EAPI int enna_input_class_register(Enna_Module *module, Enna_Class_Input *class);
 
 #endif /* _EVENT_KEY_H_ */

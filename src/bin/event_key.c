@@ -34,23 +34,38 @@ static const struct {
 static void
 _event_cb(void *data, char *event)
 {
-   printf("Event Key : %s\n", event);
+   Evas_Event_Key_Down ev;
+
+   if (!event) return;
+   ev.keyname = event;
+   ev.data = NULL;
+   ev.modifiers = NULL;
+   ev.locks = NULL;
+   ev.key = event;
+   ev.string = event;
+   ev.timestamp = ecore_time_get();
+   ev.event_flags = EVAS_EVENT_FLAG_NONE;
+   ecore_event_add(ENNA_EVENT_INPUT_KEY_DOWN, &ev, NULL, NULL);
+
 }
 
 /* Public Functions */
 
 EAPI enna_key_t
-enna_get_key (Evas_Event_Key_Down *ev)
+enna_get_key (void *event)
 {
   int i;
+  Ecore_X_Event_Key_Down *ev;
+
+  ev = event;
 
   if (!ev)
     return ENNA_KEY_UNKNOWN;
 
-  printf ("Key pressed : %s\n", ev->key);
+  printf ("Key pressed : %s\n", ev->keyname);
 
   for (i = 0; enna_keymap[i].keyname; i++)
-    if (!strcmp (enna_keymap[i].keyname, ev->key))
+    if (!strcmp (enna_keymap[i].keyname, ev->keyname))
       return enna_keymap[i].keycode;
 
   return ENNA_KEY_UNKNOWN;
@@ -61,6 +76,9 @@ enna_input_init()
 {
    Enna_Module *em;
    Input_Module_Item *item;
+
+   /* Create Input event "Key Down" */
+   ENNA_EVENT_INPUT_KEY_DOWN = ecore_event_type_new();
 
    _input_modules = NULL;
 

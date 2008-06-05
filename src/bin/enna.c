@@ -51,21 +51,19 @@ static void         _create_gui(void);
 
 
 /* Calbacks */
-
-static void
-_event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
-                      void *event_info)
+static int
+_event_bg_key_down_cb(void *data, int type, void *event)
 {
    Enna               *enna;
    enna_key_t key;
 
-   key = enna_get_key ((Evas_Event_Key_Down *) event_info);
+   key = enna_get_key (event);
    if (key == ENNA_KEY_UNKNOWN)
-     return;
+     return 0;
 
    enna = (Enna *) data;
    if (!enna)
-     return;
+     return 0;
 
    if (key == ENNA_KEY_QUIT)
      ecore_main_loop_quit();
@@ -114,10 +112,11 @@ _event_bg_key_down_cb(void *data, Evas * e, Evas_Object * obj,
        break;
      }
      default:
-       enna_activity_event("music", event_info);
+       enna_activity_event("music", event);
        break;
      }
    }
+   return 0;
 }
 static void
 _resize_viewport_cb(Ecore_Evas * ee)
@@ -216,9 +215,13 @@ _create_gui()
 
    edje_object_signal_emit(enna->o_edje, "mainmenu,show", "enna");
    evas_object_focus_set(enna->o_edje, 1);
-   evas_object_event_callback_add(enna->o_edje,
+
+   /*evas_object_event_callback_add(enna->o_edje,
 				  EVAS_CALLBACK_KEY_DOWN,
-				  _event_bg_key_down_cb, enna);
+				  _event_bg_key_down_cb, enna);*/
+
+   ecore_event_handler_add(ECORE_X_EVENT_KEY_DOWN, _event_bg_key_down_cb, enna);
+
    ecore_evas_callback_resize_set(enna->ee, _resize_viewport_cb);
    /* Create Content Object */
    o = enna_content_add(enna->evas);

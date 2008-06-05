@@ -77,7 +77,7 @@ static int _class_file_set(const char *uri)
    mrl = mrl_new (mod->player, MRL_RESOURCE_FILE, args);
    if (!mrl)
     return 1;
-   
+
    player_mrl_set (mod->player, mrl);
    return 0;
 }
@@ -144,8 +144,13 @@ static int
 _event_cb (player_event_t e, void *data)
 {
    if (e == PLAYER_EVENT_PLAYBACK_FINISHED)
-     printf ("PLAYBACK FINISHED\n");
-
+     {
+	printf ("PLAYBACK FINISHED\n");
+	if (mod->event_cb)
+	  {
+	     mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
+	  }
+     }
    return 0;
 }
 
