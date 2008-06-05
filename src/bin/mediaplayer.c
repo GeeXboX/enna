@@ -255,6 +255,7 @@ enna_mediaplayer_length_get(void)
 EAPI int
 enna_mediaplayer_seek(double percent)
 {
+   printf ("Seeking to: %d\%\n", (int) (100 * percent));
    return 0;
 }
 

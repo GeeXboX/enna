@@ -76,6 +76,14 @@ static void         _e_smart_clip_unset(Evas_Object * obj);
 /* local subsystem globals */
 static Evas_Smart  *_e_smart = NULL;
 
+static void _drag_bar_seek_cb (void *data, Evas_Object *obj,
+                               const char *emission, const char *source)
+{
+  double value;
+  edje_object_part_drag_value_get(obj, "enna.dragable.pos", &value, NULL);
+  enna_mediaplayer_seek(value);
+}
+
 /* externally accessible functions */
 EAPI Evas_Object   *
 enna_smart_player_add(Evas * evas)
@@ -176,6 +184,8 @@ _e_smart_add(Evas_Object * obj)
    sd->h = 0;
    evas_object_smart_member_add(sd->o_edje, obj);
    evas_object_smart_data_set(obj, sd);
+   edje_object_signal_callback_add (sd->o_edje, "drag", "enna.dragable.pos",
+                                    _drag_bar_seek_cb, NULL);
 }
 
 static void
