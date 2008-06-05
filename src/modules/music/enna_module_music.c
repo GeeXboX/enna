@@ -18,6 +18,9 @@ static void           _list_transition_right_end_cb(void *data, Evas_Object *o, 
 static void           _browse(void *data, void *data2);
 static void           _browse_down();
 static void           _activate();
+static int            _eos_cb(void *data, int type, void *event);
+static void           _next_song(void);
+static void           _prev_song(void);
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
 
@@ -37,6 +40,7 @@ enum _MUSIC_STATE
      Evas_Object *o_list;
      Evas_Object *o_location;
      Evas_Object *o_mediaplayer;
+
      Enna_Class_Vfs *vfs;
      Ecore_Timer *timer;
      Enna_Module *em;
@@ -134,24 +138,12 @@ static void _class_event(void *event_info)
 	       break;
 	    case ENNA_KEY_RIGHT:
 	      {
-		 Enna_Metadata *metadata;
-		 if (!enna_mediaplayer_next())
-		   {
-		      metadata = enna_mediaplayer_metadata_get();
-		      if (metadata)
-			enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
-		   }
+		 _next_song();
 		 break;
 	      }
 	    case ENNA_KEY_LEFT:
 	      {
-		 Enna_Metadata *metadata;
-		 if (!enna_mediaplayer_prev())
-		   {
-		      metadata = enna_mediaplayer_metadata_get();
-		      if (metadata)
-			enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
-		   }
+		 _prev_song();
 		 break;
 	      }
 	    case ENNA_KEY_CANCEL:
@@ -409,6 +401,46 @@ static int _update_position_timer(void *data)
    return 1;
 }
 
+static void _next_song()
+{
+   Enna_Metadata *metadata;
+   if (!enna_mediaplayer_next())
+     {
+	metadata = enna_mediaplayer_metadata_get();
+	if (metadata)
+	  {
+	     enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
+	     if (mod->o_playing_now)
+	       enna_listitem_full_update(mod->o_playing_now, NULL, "Playing Now :", metadata->title, metadata->album, metadata->artist);
+	  }
+     }
+}
+
+static void _prev_song()
+{
+   Enna_Metadata *metadata;
+   if (!enna_mediaplayer_prev())
+     {
+	metadata = enna_mediaplayer_metadata_get();
+	if (metadata)
+	  {
+	     enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
+	     if (mod->o_playing_now)
+	       enna_listitem_full_update(mod->o_playing_now, NULL, "Playing Now :", metadata->title, metadata->album, metadata->artist);
+	  }
+     }
+}
+
+
+static int
+_eos_cb(void *data, int type, void *event)
+{
+   printf(" Module Music receive EOS\n");
+   /* EOS received, update metadata */
+   _next_song();
+   return 1;
+}
+
 static void _create_mediaplayer_gui()
 {
    Evas_Object *o;
@@ -418,6 +450,8 @@ static void _create_mediaplayer_gui()
 
    if (mod->o_mediaplayer)
      evas_object_del(mod->o_mediaplayer);
+
+   ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
 
    o = enna_smart_player_add(mod->em->evas);
    edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
