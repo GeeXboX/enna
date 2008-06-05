@@ -48,6 +48,11 @@ struct _Enna_Class_MediaplayerBackend
    }func;
 };
 
+/* Mediaplayer event */
+EAPI int ENNA_EVENT_MEDIAPLAYER_EOS;
+EAPI int ENNA_EVENT_MEDIAPLAYER_METADATA_UPDATE;
+
+/* Mediaplayer API functions */
 EAPI int            enna_mediaplayer_init(void);
 EAPI void           enna_mediaplayer_shutdown(void);
 EAPI void           enna_mediaplayer_uri_append(const char *uri);

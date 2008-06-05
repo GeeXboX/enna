@@ -97,6 +97,11 @@ enna_mediaplayer_init(void)
    enna_module_enable(em);
    _mediaplayer->play_state = STOPPED;
    _mediaplayer->selected = 0;
+
+   /* Create Ecore Event ID */
+   ENNA_EVENT_MEDIAPLAYER_EOS = ecore_event_type_new();
+   ENNA_EVENT_MEDIAPLAYER_METADATA_UPDATE = ecore_event_type_new();
+
    return 0;
 }
 EAPI void
@@ -314,7 +319,7 @@ _event_cb(void *data, enna_mediaplayer_event_t event)
      {
       case ENNA_MP_EVENT_EOF:
 	 printf("End of stream\n");
-	 enna_mediaplayer_next();
+	 ecore_event_add(ENNA_EVENT_MEDIAPLAYER_EOS, NULL, NULL, NULL);
 	 break;
       default:
 	 break;
