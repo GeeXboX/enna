@@ -11,6 +11,7 @@ static void _class_init(int dummy);
 static void _class_shutdown(int dummy);
 static int _class_file_set(const char *uri);
 static int _class_play(void);
+static int _class_seek(double percent);
 static int _class_pause(void);
 static int _class_stop(void);
 static double _class_position_get();
@@ -28,6 +29,7 @@ static Enna_Class_MediaplayerBackend class =
     _class_shutdown,
     _class_file_set,
     _class_play,
+    _class_seek,
     _class_pause,
     _class_stop,
     _class_position_get,
@@ -78,6 +80,18 @@ static int _class_file_set(const char *uri)
 static int _class_play(void)
 {
    emotion_object_play_set(mod->o_emotion, 1);
+   return 0;
+}
+
+static int _class_seek(double percent)
+{
+   if (emotion_object_seekable_get (mod->o_emotion))
+   {
+      double length = emotion_object_play_length_get(mod->o_emotion);
+      double sec = percent * length;
+      emotion_object_position_set (mod->o_emotion, sec);
+   }
+
    return 0;
 }
 

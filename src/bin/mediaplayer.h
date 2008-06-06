@@ -39,6 +39,7 @@ struct _Enna_Class_MediaplayerBackend
       void (*class_shutdown)(int dummy);
       int  (*class_file_set)(const char *uri);
       int  (*class_play)(void);
+      int  (*class_seek)(double percent);
       int  (*class_stop)(void);
       int  (*class_pause)(void);
       double (*class_position_get)(void);

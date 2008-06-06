@@ -256,6 +256,8 @@ EAPI int
 enna_mediaplayer_seek(double percent)
 {
    printf ("Seeking to: %d\%\n", (int) (100 * percent));
+   if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state == PLAYING)
+      return _mediaplayer->class->func.class_seek(percent);
    return 0;
 }
 
