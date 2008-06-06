@@ -35,6 +35,7 @@
        }
        part {
           name: "location.bg";
+          clip_to: "enna.clip.module";
           type: RECT;
           description {
              state: "default" 0.0;

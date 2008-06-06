@@ -48,6 +48,7 @@ typedef struct _E_Smart_Item E_Smart_Item;
 struct _E_Smart_Data
 {
    Evas_Coord          x, y, w, h;
+   Evas_Object        *o_smart;
    Evas_Object        *o_edje;
    Evas_Object        *o_box;
    Evas_List          *items;
@@ -81,6 +82,8 @@ static void         _e_smart_color_set(Evas_Object * obj, int r, int g,
 				       int b, int a);
 static void         _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip);
 static void         _e_smart_clip_unset(Evas_Object * obj);
+static void         _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info);
+
 
 /* local subsystem globals */
 static Evas_Smart  *_e_smart = NULL;
@@ -132,6 +135,10 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
 			     mw, mh,	/* min */
 			     99999, 9999	/* max */
 			     );
+
+   evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
+				  _e_smart_event_mouse_up, si);
+
    evas_object_show(si->o_base);
 }
 
@@ -375,7 +382,7 @@ _e_smart_add(Evas_Object * obj)
    sd->o_box = o;
 
    edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_box);
-
+   sd->o_smart = obj;
    evas_object_smart_member_add(sd->o_edje, obj);
    evas_object_smart_data_set(obj, sd);
 }
@@ -488,4 +495,29 @@ _e_smart_clip_unset(Evas_Object * obj)
    if (!sd)
      return;
    evas_object_clip_unset(sd->o_edje);
+}
+
+static void
+_e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info)
+{
+   E_Smart_Data *sd;
+   Evas_Event_Mouse_Up *ev;
+   Enna_List_Item *si;
+   Evas_List *l;
+   int i;
+
+   ev = event_info;
+   si = data;
+   sd = si->sd;
+
+   if (!sd->items) return;
+
+   for (l = sd->items, i = 0; l; l = l->next, i++)
+     {
+	if (l->data == si)
+	  {
+	     enna_mainmenu_activate_nth(sd->o_smart, i);
+	     break;
+	  }
+     }
 }
