@@ -92,7 +92,7 @@ static int _class_play(void)
 
 static int _class_seek(double percent)
 {
-   player_playback_seek (mod->player, (int) (100 * percent));
+   player_playback_seek (mod->player, (int) (100 * percent), PLAYER_PB_SEEK_PERCENT);
    return 0;
 }
 
