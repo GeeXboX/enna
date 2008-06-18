@@ -12,7 +12,22 @@ static unsigned char _uri_is_root(const char *uri);
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
 
+typedef struct _Root_Directories Root_Directories;
 typedef struct _Enna_Module_Music Enna_Module_Music;
+typedef struct _Module_Config Module_Config;
+
+
+struct _Root_Directories
+{
+   const char *uri;
+   const char *label;
+   const char *icon;
+};
+
+struct _Module_Config
+{
+   Evas_List *root_directories;
+};
 
 struct _Enna_Module_Music
 {
@@ -23,6 +38,7 @@ struct _Enna_Module_Music
    Enna_Module *em;
    const char *uri;
    const char *prev_uri;
+   Module_Config *config;
 };
 
 static Enna_Module_Music *mod;
@@ -58,10 +74,10 @@ static Evas_List *_class_browse_up(const char *path)
 	Evas_List *files = NULL;
 	Evas_List *l;
 	/* FIXME: this list should come from config ! */
-	for (l = enna_config->music_local_root_directories; l; l = l->next)
+	for (l = mod->config->root_directories; l; l = l->next)
 	  {
 	     Enna_Vfs_File *file;
-	     Enna_Config_Root_Directories *root;
+	     Root_Directories *root;
 
 	     root = l->data;
 	     file = calloc(1, sizeof(Enna_Vfs_File));
@@ -160,9 +176,9 @@ static unsigned char _uri_is_root(const char *uri)
 {
    Evas_List *l;
 
-   for (l = enna_config->music_local_root_directories; l; l = l->next)
+   for (l = mod->config->root_directories; l; l = l->next)
      {
-	Enna_Config_Root_Directories *root = l->data;
+	Root_Directories *root = l->data;
 	if (!strcmp(root->uri, uri))
 	  return 1;
      }
@@ -184,10 +200,10 @@ static Evas_List *_class_browse_down()
 	     Evas_List *files = NULL;
 	     Evas_List *l;
 	     /* FIXME: this list should come from config ! */
-	     for (l = enna_config->music_local_root_directories; l; l = l->next)
+	     for (l = mod->config->root_directories; l; l = l->next)
 	       {
 		  Enna_Vfs_File *file;
-		  Enna_Config_Root_Directories *root;
+		  Root_Directories *root;
 
 		  root = l->data;
 		  file = calloc(1, sizeof(Enna_Vfs_File));
@@ -197,7 +213,7 @@ static Evas_List *_class_browse_down()
 		  file->is_directory = 1;
 		  file->icon = evas_stringshare_add("icon/hd");
 		  files = evas_list_append(files, file);
-	       }
+		  }
 	     //evas_stringshare_del(mod->prev_uri);
 	     //evas_stringshare_del(mod->uri);
 	     mod->prev_uri = NULL;
@@ -239,13 +255,47 @@ static void _class_shutdown(int dummy)
 static int
 em_init(Enna_Module *em)
 {
-    mod = calloc(1, sizeof(Enna_Module_Music));
-    mod->em = em;
-    em->mod = mod;
-    mod->prev_uri = NULL;
-    enna_vfs_append("localfiles", ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO, &class);
+   Enna_Config_Data *cfgdata;
+   Evas_List *l;
+   mod = calloc(1, sizeof(Enna_Module_Music));
+   mod->em = em;
+   em->mod = mod;
+   mod->prev_uri = NULL;
+   enna_vfs_append("localfiles", ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO, &class);
+   mod->config = calloc(1, sizeof(Module_Config));
+   mod->config->root_directories = NULL;
+   cfgdata = enna_config_module_pair_get("localfiles");
+   if (!cfgdata) return 1;
+   for (l = cfgdata->pair; l; l = l->next)
+     {
+	Evas_List *dir_data;
+	Config_Pair *pair = l->data;
+	enna_config_value_store(&dir_data, "path", ENNA_CONFIG_STRING_LIST, pair);
+	if(dir_data)
+	  {
+	     if(evas_list_count(dir_data) != 3)
+	       continue;
+	     else
+	       {
+		  Root_Directories *root;
+		  root = calloc(1, sizeof(Root_Directories));
+		  root->uri = evas_list_nth(dir_data,0);
+		  root->label = evas_list_nth(dir_data, 1);
+		  root->icon = evas_list_nth(dir_data,2);
+		  mod->config->root_directories = evas_list_append(mod->config->root_directories, root);
+	       }
+	  }
+     }
 
-    return 1;
+   for (l = mod->config->root_directories; l; l = l->next)
+     {
+	Root_Directories *root = l->data;
+	printf("root->label = %s\n", root->label);
+	printf("root->uri   = %s\n", root->uri);
+	printf("root->icon  = %s\n", root->icon);
+     }
+
+   return 1;
 }
 
 

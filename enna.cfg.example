@@ -15,3 +15,6 @@ backend=libplayer
 music_ext=ogg,mp3,flac,wav,wma
 
 
+[localfiles]
+path=file:///home/nico/Musique,Music,icon_hd
+path=file:///home/nico/Bureau,Serveur,icon_network
