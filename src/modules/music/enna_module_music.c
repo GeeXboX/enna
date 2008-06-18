@@ -229,7 +229,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	icon = edje_object_add(mod->em->evas);
 	edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
 	item = enna_listitem_add(mod->em->evas);
-	enna_listitem_create_simple(item, icon, "No Media found!\n");
+	enna_listitem_create_simple(item, icon, "No Media found!");
 	enna_list_append(o_list, item, NULL, NULL, NULL, NULL);
      }
    else
