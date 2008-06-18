@@ -124,10 +124,10 @@ enna_listitem_create_full( Evas_Object *obj,  Evas_Object *icon,
 	edje_object_part_swallow(sd->o_edje, "enna.swallow.icon", sd->o_icon);
 	evas_object_show(sd->o_icon);
      }
-   edje_object_part_text_set(sd->o_edje, "enna.text.info", info);
-   edje_object_part_text_set(sd->o_edje, "enna.text.title",title);
-   edje_object_part_text_set(sd->o_edje, "enna.text.album", album);
-   edje_object_part_text_set(sd->o_edje, "enna.text.artist", artist);
+   edje_object_part_text_set(sd->o_edje, "enna.text.info", info ? info : "");
+   edje_object_part_text_set(sd->o_edje, "enna.text.title",title ? title : "Unknown");
+   edje_object_part_text_set(sd->o_edje, "enna.text.album", album ? album : "Unknown Album");
+   edje_object_part_text_set(sd->o_edje, "enna.text.artist", artist ? artist : "Unknown Artist");
    evas_object_smart_member_add(sd->o_edje, obj);
    sd->full = 1;
 }

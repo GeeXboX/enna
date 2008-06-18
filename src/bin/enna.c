@@ -157,20 +157,47 @@ _enna_init(int run_gl)
    if (!ecore_file_exists(tmp))
      ecore_file_mkdir(tmp);
 
-   if (run_gl)
-     enna->ee = ecore_evas_gl_x11_new(NULL, 0, 0, 0, 64, 64);
+
+
+   if (!strcmp(enna_config->engine, "gl") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_GL_X11))
+     {
+	dbg("Load GL engine\n");
+	enna->ee = ecore_evas_gl_x11_new(NULL, 0, 0, 0, 64, 64);
+     }
+   else if (!strcmp(enna_config->engine, "xrender") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_XRENDER_X11))
+     {
+	dbg("Load XRENDER engine\n");
+	enna->ee = ecore_evas_xrender_x11_new(NULL, 0, 0, 0, 64, 64);
+     }
+   else if (!strcmp(enna_config->engine, "x11_16") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11_16))
+     {
+	dbg("Load X11_16 engine\n");
+	enna->ee = ecore_evas_software_x11_16_new(NULL, 0, 0, 0, 64, 64);
+     }
+   else if (!strcmp(enna_config->engine, "x11") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
+     {
+	dbg("Load X11 engine\n");
+	enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
+     }
+   else if (ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
+     {
+	dbg("Specified \'%s\' engine not found, use X11 software default engine\n", enna_config->engine);
+	enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
+     }
    else
-     enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
-
-
-   ecore_evas_fullscreen_set(enna->ee, run_fullscreen);
-
+     {
+	dbg("Can not create Ecore Evas with %s engine!\n",enna_config->engine);
+	return 0;
+     }
 
    if (!enna->ee)
-     {
+      {
 	dbg("Can not Initialize Ecore Evas !\n");
 	return 0;
      }
+
+
+   ecore_evas_fullscreen_set(enna->ee, enna_config->fullscreen | run_fullscreen);
 
    ecore_evas_title_set(enna->ee, "enna HTPC");
    ecore_evas_name_class_set(enna->ee, "enna", "enna");
@@ -281,7 +308,6 @@ usage(char *binname)
    printf("  -b, (--backend): Specify backend to used.\n");
    printf("  -c, (--config):  Specify configuration file to be used.\n");
    printf("  -f, (--fs):      Force Fullscreen mode.\n");
-   printf("  -g, (--gl):      Use OpenGL renderer instead of X11.\n");
    printf("  -h, (--help):    Display this help.\n");
    printf("  -t, (--theme):   Specify theme name to be used.\n");
    printf("  -v, (--verbose): Display verbose error messages.\n");
@@ -299,7 +325,6 @@ parse_command_line (int argc, char **argv)
      {"version",          no_argument,       0, 'V' },
      {"verbose",          no_argument,       0, 'v' },
      {"fs",               no_argument,       0, 'f' },
-     {"gl",               no_argument,       0, 'g' },
      {"config",           required_argument, 0, 'c' },
      {"theme",            required_argument, 0, 't' },
      {"backend",          required_argument, 0, 'b' },
@@ -333,10 +358,6 @@ parse_command_line (int argc, char **argv)
 
            case 'f':
               run_fullscreen = 1;
-              break;
-
-           case 'g':
-              run_gl = 1;
               break;
 
            case 'c':

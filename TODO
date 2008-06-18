@@ -1,6 +1,10 @@
 
 [Priority 10]
 
+ * Cover Manager
+      -> Write Cover Manager
+      -> Write Amazon plugin
+
  * Configuration
       -> Read config from file (text file)
       -> Save config to file
