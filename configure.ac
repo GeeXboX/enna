@@ -45,15 +45,15 @@ PKG_CHECK_MODULES([ENNA],
   ]
 )
 
-have_lirc_input=no
-AC_CHECK_HEADER(lirc/lirc_client.h, have_lirc_input=yes)
-if test "x$have_lirc_input" = "xyes"; then
+have_lirc_module=no
+AC_CHECK_HEADER(lirc/lirc_client.h, have_lirc_module=yes)
+if test "x$have_lirc_module" = "xyes"; then
   AC_DEFINE([BUILD_LIRC_MODULE], [1], [Define if LIRC client lib is present])
-  have_emotion_backend="yes"
+  have_lirc_module="yes"
   LIRC_LIBS=-llirc_client
   AC_SUBST(LIRC_LIBS)
 fi
-AM_CONDITIONAL(BUILD_LIRC_MODULE, test "x$have_lirc_input" = "xyes")
+AM_CONDITIONAL(BUILD_LIRC_MODULE, test "x$have_lirc_module" = "xyes")
 
 #######################################
 ## Check if we should build the emotion backend
@@ -110,6 +110,34 @@ if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
 
+
+#######################################
+## Check if we should build light media scanner module
+want_lms_module="auto"
+have_lms_module="no"
+AC_MSG_CHECKING(whether lms is to be built)
+AC_ARG_ENABLE(lms-module,
+  AS_HELP_STRING([--enable-lms-module],[Enable Light Media Scanner Module]),
+  [ want_lms_module=$enableval ]
+)
+AC_MSG_RESULT($want_lms_module)
+if test "x$want_lms_module" = "xyes" -o "x$want_lms_module" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LMS],
+    [lightmediascanner],
+    [
+      AC_DEFINE(BUILD_LMS_MODULE, 1, [Light media scanner Module])
+      have_lms_module="yes"
+    ],
+    [
+      if test "x$want_lms_module" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([Light media scanner not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_LMS_MODULE, test "x$have_lms_module" = "xyes")
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
@@ -118,6 +146,8 @@ src/modules/Makefile
 src/modules/music/Makefile
 src/modules/video/Makefile
 src/modules/browser/Makefile
+src/modules/browser/localfiles/Makefile
+src/modules/browser/lms/Makefile
 src/modules/backend/Makefile
 src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
@@ -135,9 +165,10 @@ echo "$PACKAGE $VERSION"
 echo
 echo "Optional Modules:"
 echo
-echo "  lirc client...................... : $have_lirc_input"
+echo "  lirc client...................... : $have_lirc_module"
 echo "  emotion backend.................. : $have_emotion_backend"
 echo "  libplayer backend................ : $have_libplayer_backend"
+echo "  light media scanner module....... : $have_lms_module"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo

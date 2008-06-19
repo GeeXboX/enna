@@ -69,53 +69,53 @@ _event_bg_key_down_cb(void *data, int type, void *event)
      ecore_main_loop_quit();
 
    if (enna_mainmenu_visible(enna->o_mainmenu))
-   {
-     switch (key)
      {
-     case ENNA_KEY_MENU:
-     {
-       enna_mainmenu_hide(enna->o_mainmenu);
-       edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-       //edje_object_signal_emit(enna->o_edje, "module,show", "enna");
-       break;
+	switch (key)
+	  {
+	   case ENNA_KEY_MENU:
+	     {
+		enna_mainmenu_hide(enna->o_mainmenu);
+		edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+		//edje_object_signal_emit(enna->o_edje, "module,show", "enna");
+		break;
+	     }
+	   case ENNA_KEY_RIGHT:
+	     {
+		enna_mainmenu_select_next(enna->o_mainmenu);
+		break;
+	     }
+	   case ENNA_KEY_LEFT:
+	     {
+		enna_mainmenu_select_prev(enna->o_mainmenu);
+		break;
+	     }
+	   case ENNA_KEY_OK:
+	     {
+		enna_mainmenu_activate_nth(enna->o_mainmenu, enna_mainmenu_selected_get(enna->o_mainmenu));
+		//edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+		//edje_object_signal_emit(enna->o_edje, "module,show", "enna");
+		break;
+	     }
+	   default:
+	      break;
+	  }
      }
-     case ENNA_KEY_RIGHT:
-     {
-       enna_mainmenu_select_next(enna->o_mainmenu);
-       break;
-     }
-     case ENNA_KEY_LEFT:
-     {
-       enna_mainmenu_select_prev(enna->o_mainmenu);
-       break;
-     }
-     case ENNA_KEY_OK:
-     {
-       enna_mainmenu_activate_nth(enna->o_mainmenu, enna_mainmenu_selected_get(enna->o_mainmenu));
-       //edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-       //edje_object_signal_emit(enna->o_edje, "module,show", "enna");
-       break;
-     }
-     default:
-       break;
-     }
-   }
    else
-   {
-     switch (key)
      {
-     case ENNA_KEY_MENU:
-     {
-       enna_mainmenu_show(enna->o_mainmenu);
-       //edje_object_signal_emit(enna->o_edje, "mainmenu,show", "enna");
-       //edje_object_signal_emit(enna->o_edje, "module,hide", "enna");
-       break;
+	switch (key)
+	  {
+	   case ENNA_KEY_MENU:
+	     {
+		enna_mainmenu_show(enna->o_mainmenu);
+		//edje_object_signal_emit(enna->o_edje, "mainmenu,show", "enna");
+		//edje_object_signal_emit(enna->o_edje, "module,hide", "enna");
+		break;
+	     }
+	   default:
+	      enna_activity_event("music", event);
+	      break;
+	  }
      }
-     default:
-       enna_activity_event("music", event);
-       break;
-     }
-   }
    return 0;
 }
 static void
@@ -191,7 +191,7 @@ _enna_init(int run_gl)
      }
 
    if (!enna->ee)
-      {
+     {
 	dbg("Can not Initialize Ecore Evas !\n");
 	return 0;
      }
@@ -244,8 +244,8 @@ _create_gui()
    evas_object_focus_set(enna->o_edje, 1);
 
    /*evas_object_event_callback_add(enna->o_edje,
-				  EVAS_CALLBACK_KEY_DOWN,
-				  _event_bg_key_down_cb, enna);*/
+     EVAS_CALLBACK_KEY_DOWN,
+     _event_bg_key_down_cb, enna);*/
 
    ecore_event_handler_add(ECORE_X_EVENT_KEY_DOWN, _event_bg_key_down_cb, enna);
 
@@ -262,6 +262,10 @@ _create_gui()
    enna_module_enable(em);
    em = enna_module_open("localfiles", enna->evas);
    enna_module_enable(em);
+#ifdef BUILD_LMS_MODULE
+   em = enna_module_open("lms", enna->evas);
+   enna_module_enable(em);
+#endif
    /* Load mainmenu items */
 
 
@@ -368,11 +372,11 @@ parse_command_line (int argc, char **argv)
               theme_name = strdup (optarg);
               break;
 
-          case 'b':
+	   case 'b':
               if (!strcmp (optarg, "emotion"))
-                 enna_backend = ENNA_BACKEND_EMOTION;
+		enna_backend = ENNA_BACKEND_EMOTION;
               else if (!strcmp (optarg, "libplayer"))
-                 enna_backend = ENNA_BACKEND_LIBPLAYER;
+		enna_backend = ENNA_BACKEND_LIBPLAYER;
               else
                 {
                    printf ("Err: Invalid backend name.\n");
