@@ -341,20 +341,14 @@ static void _browse(void *data, void *data2)
 	else if (!file->is_directory)
 	  {
 	     /* File selected is a regular file */
-	     char *tmp;
-	     char *p;
 	     int i = 0;
+	     Enna_Vfs_File *prev_vfs;
+	     char *prev_uri;
 
-	     tmp = strdup(file->uri);
-
-	     p = strrchr(tmp, '/');
-	     if (p && *(p - 1) == '/')
-	       *(p) = 0;
-	     else if (p)
-	       *(p) = 0;
-
-	     files = vfs->func.class_browse_up(tmp);
-	     free(tmp);
+	     prev_vfs = vfs->func.class_vfs_get();
+	     prev_uri = strdup(prev_vfs->uri);
+	     files = vfs->func.class_browse_up(prev_uri);
+	     ENNA_FREE(prev_uri);
 	     enna_mediaplayer_playlist_clear();
 	     enna_mediaplayer_stop();
 	     for (l = files; l; l = l->next)
@@ -364,7 +358,6 @@ static void _browse(void *data, void *data2)
 
 		  if (!f->is_directory)
 		    {
-		       printf("add %s\n", f->uri);
 		       enna_mediaplayer_uri_append(f->uri);
 		       if (!strcmp(f->uri, file->uri))
 			 {
@@ -431,7 +424,6 @@ static void _prev_song()
 static int
 _eos_cb(void *data, int type, void *event)
 {
-   printf(" Module Music receive EOS\n");
    /* EOS received, update metadata */
    _next_song();
    return 1;

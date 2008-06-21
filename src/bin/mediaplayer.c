@@ -31,11 +31,6 @@
 
 #include "enna.h"
 
-#ifdef BUILD_EMOTION_BACKEND
-enna_mediaplayer_backend_t enna_backend = ENNA_BACKEND_EMOTION;
-#else
-enna_mediaplayer_backend_t enna_backend = ENNA_BACKEND_LIBPLAYER;
-#endif
 
 static Evas_List *_playlist;
 
@@ -66,30 +61,29 @@ EAPI int
 enna_mediaplayer_init(void)
 {
    Enna_Module *em;
-   char *backend_name;
+   char *backend_name = NULL;
 
-   /* FIXME enna_backend should be a config parameter */
-   switch (enna_backend)
-   {
+
+   if (!strcmp(enna_config->backend, "emotion"))
+     {
 #ifdef BUILD_EMOTION_BACKEND
-   case ENNA_BACKEND_EMOTION:
-   {
-     printf("Using Emotion Backend\n");
-     backend_name = "emotion";
-     break;
-   }
+	printf("Using Emotion Backend\n");
+	backend_name = "emotion";
+#else
+	dbg("Backend selected not built !\n");
+	return -1;
 #endif
+     }
+   else if (!strcmp(enna_config->backend, "libplayer"))
+     {
 #ifdef BUILD_LIPLAYER_BACKEND
-   case ENNA_BACKEND_LIBPLAYER:
-   {
      printf("Using libplayer Backend\n");
      backend_name = "libplayer";
-     break;
-   }
-#endif
-   default:
+#else
+     dbg("Backend selected not built !\n");
      return -1;
-   }
+#endif
+     }
 
    _playlist = NULL;
    _mediaplayer = calloc(1, sizeof(Enna_Mediaplayer));

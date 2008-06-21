@@ -16,10 +16,10 @@ enum _ENNA_VFS_CAPS  {
 
 struct _Enna_Vfs_File
 {
-   const char *uri;
-   const char *label;
+   char *uri;
+   char *label;
    const char *icon;
-   const char *icon_file;
+   char *icon_file;
    unsigned char is_directory : 1;
    unsigned char is_selected : 1;
 
@@ -39,6 +39,7 @@ struct _Enna_Class_Vfs
       void (*class_shutdown)(int dummy);
       Evas_List *(*class_browse_up)(const char *path);
       Evas_List *(*class_browse_down)(void);
+      Enna_Vfs_File *(*class_vfs_get)(void);
    }func;
 
 };

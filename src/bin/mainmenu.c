@@ -523,6 +523,8 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
 	  }
      }
 }
+
+static void
 _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info)
 {
    E_Smart_Data *sd;

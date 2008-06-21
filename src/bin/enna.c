@@ -309,7 +309,6 @@ usage(char *binname)
    printf("Enna MediaCenter\n");
    printf(" Usage: %s [options ...]\n", binname);
    printf(" Available Options:\n");
-   printf("  -b, (--backend): Specify backend to used.\n");
    printf("  -c, (--config):  Specify configuration file to be used.\n");
    printf("  -f, (--fs):      Force Fullscreen mode.\n");
    printf("  -h, (--help):    Display this help.\n");
@@ -331,7 +330,6 @@ parse_command_line (int argc, char **argv)
      {"fs",               no_argument,       0, 'f' },
      {"config",           required_argument, 0, 'c' },
      {"theme",            required_argument, 0, 't' },
-     {"backend",          required_argument, 0, 'b' },
      {0,                  0,                 0,  0  }
    };
 
@@ -372,20 +370,7 @@ parse_command_line (int argc, char **argv)
               theme_name = strdup (optarg);
               break;
 
-	   case 'b':
-              if (!strcmp (optarg, "emotion"))
-		enna_backend = ENNA_BACKEND_EMOTION;
-              else if (!strcmp (optarg, "libplayer"))
-		enna_backend = ENNA_BACKEND_LIBPLAYER;
-              else
-                {
-                   printf ("Err: Invalid backend name.\n");
-                   printf ("  Valid Options: emotion, libplayer\n");
-                   return -1;
-                }
-              break;
-
-           default:
+	   default:
               usage (argv[0]);
               return -1;
           }

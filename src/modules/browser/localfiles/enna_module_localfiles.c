@@ -5,7 +5,9 @@
 static void           _class_init(int dummy);
 static void           _class_shutdown(int dummy);
 static Evas_List     *_class_browse_up(const char *path);
-static Evas_List     *_class_browse_down();
+static Evas_List     *_class_browse_down(void);
+static Enna_Vfs_File *_class_vfs_get(void);
+
 static unsigned char _uri_has_extension(const char *uri);
 static unsigned char _uri_is_root(const char *uri);
 
@@ -19,9 +21,9 @@ typedef struct _Module_Config Module_Config;
 
 struct _Root_Directories
 {
-   const char *uri;
-   const char *label;
-   const char *icon;
+   char *uri;
+   char *label;
+   char *icon;
 };
 
 struct _Module_Config
@@ -61,6 +63,7 @@ static Enna_Class_Vfs class =
         _class_shutdown,
 	_class_browse_up,
 	_class_browse_down,
+	_class_vfs_get,
     },
 };
 
@@ -185,7 +188,8 @@ static unsigned char _uri_is_root(const char *uri)
    return 0;
 }
 
-static Evas_List *_class_browse_down()
+static Evas_List *
+_class_browse_down()
 {
 
    /* Browse Root */
@@ -242,6 +246,19 @@ static Evas_List *_class_browse_down()
 
 }
 
+static Enna_Vfs_File *
+_class_vfs_get(void)
+{
+   Enna_Vfs_File  *f;
+   f = calloc(1, sizeof(Enna_Vfs_File));
+   f->uri  = mod->uri;
+   f->label = ecore_file_file_get(mod->uri);;
+   f->icon = evas_stringshare_add("icon/music");
+   f->is_directory = 1;
+
+   return f;
+}
+
 static void _class_init(int dummy)
 {
 }
@@ -286,15 +303,6 @@ em_init(Enna_Module *em)
 	       }
 	  }
      }
-
-   for (l = mod->config->root_directories; l; l = l->next)
-     {
-	Root_Directories *root = l->data;
-	printf("root->label = %s\n", root->label);
-	printf("root->uri   = %s\n", root->uri);
-	printf("root->icon  = %s\n", root->icon);
-     }
-
    return 1;
 }
 

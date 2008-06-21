@@ -57,17 +57,14 @@ enna_vfs_append(const char *name, unsigned char type, Enna_Class_Vfs *vfs)
 
    if (type |= ENNA_CAPS_MUSIC)
      {
-	printf("CAPS Music\n");
 	_enna_vfs_music = evas_list_append(_enna_vfs_music, vfs);
      }
    if (type |= ENNA_CAPS_VIDEO)
      {
-	printf("CAPS Video\n");
 	_enna_vfs_video = evas_list_append(_enna_vfs_video, vfs);
      }
    if (type |= ENNA_CAPS_PHOTO)
      {
-	printf("CAPS Photo\n");
 	_enna_vfs_photo = evas_list_append(_enna_vfs_photo, vfs);
      }
 
@@ -80,17 +77,14 @@ enna_vfs_get(ENNA_VFS_CAPS type)
 
   if (type == ENNA_CAPS_MUSIC)
     {
-       printf("Get Music caps\n");
        return _enna_vfs_music;
     }
   else if (type == ENNA_CAPS_VIDEO)
     {
-       printf(" Get Video Caps\n");
        return _enna_vfs_video;
     }
   else if (type == ENNA_CAPS_PHOTO)
     {
-       printf("Get Photo caps\n");
        return _enna_vfs_photo;
     }
   else

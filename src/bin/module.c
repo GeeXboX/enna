@@ -109,26 +109,24 @@ enna_module_open(const char *name, Evas *evas)
         }
 
     snprintf(module_name, sizeof(module_name), "enna_module_%s", name);
-    printf("Try to load %s\n", module_name);
+    dbg("Try to load %s\n", module_name);
     plugin = ecore_plugin_load(path_group, module_name, NULL);
 
     if (plugin)
         {
             m->api = ecore_plugin_symbol_get(plugin, "module_api");
-            printf("version : %i\n", m->api->version);
-
             if (!m->api || m->api->version != ENNA_MODULE_VERSION )
                 {
                     /* FIXME: popup error message */
                     /* Module version doesn't match enna version */
-                    printf("Error : Bad module version, unload %s module\n", m->api->name);
+                    dbg("Error : Bad module version, unload %s module\n", m->api->name);
                     ecore_plugin_unload(plugin);
                     return NULL;
                 }
             m->func.init = ecore_plugin_symbol_get(plugin, "module_init");
             m->func.shutdown = ecore_plugin_symbol_get(plugin, "module_shutdown");
             m->name = m->api->name;
-            printf("Module \'%s\' loaded succesfully\n", m->api->name);
+            dbg("Module \'%s\' loaded succesfully\n", m->api->name);
             m->enabled = 0;
             m->plugin = plugin;
             m->evas = evas;
@@ -136,7 +134,7 @@ enna_module_open(const char *name, Evas *evas)
             return m;
         }
     else
-        printf ("Unable to load module %s\n", name);
+        dbg("Unable to load module %s\n", name);
 
     return NULL;
 }

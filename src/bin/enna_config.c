@@ -105,11 +105,15 @@ enna_config_value_store(void *var, char *section, ENNA_CONFIG_TYPE type, Config_
 		       break;
 		     list = evas_list_append(list, string);
 		  }
-		*value =list;
+		*value = list;
 	     }
 	   default:
 	      break;
 	  }
+     }
+   else
+     {
+	printf("section not found\n");
      }
 }
 
@@ -144,15 +148,12 @@ _hash_foreach (const Evas_Hash *hash, const char *key, void *data, void *fdata)
 {
    Enna_Config_Data *config_data;
    Evas_List *l;
-   printf("Section : %s\n", key);
    if(!strcmp(key, "enna"))
      {
 	config_data = data;
 	for (l = config_data->pair; l; l = l->next)
 	  {
 	     Config_Pair *pair = l->data;
-	     printf("%s : %s\n", pair->key, pair->value);
-
 	     enna_config_value_store(&enna_config->theme, "theme", ENNA_CONFIG_STRING, pair);
 	     enna_config->theme_file = enna_config_theme_file_get(enna_config->theme);
 	     enna_config_value_store(&enna_config->fullscreen, "fullscreen", ENNA_CONFIG_INT, pair);
@@ -160,12 +161,6 @@ _hash_foreach (const Evas_Hash *hash, const char *key, void *data, void *fdata)
 	     enna_config_value_store(&enna_config->backend, "backend", ENNA_CONFIG_STRING, pair);
 	     enna_config_value_store(&enna_config->music_filters, "music_ext", ENNA_CONFIG_STRING_LIST, pair);
 	  }
-	printf("[Config]\n\ttheme : %s\n\tfullscreen : %d\n\tengine: %s\n\tbackend: %s\n", enna_config->theme,
-	       enna_config->fullscreen, enna_config->engine, enna_config->backend);
-	printf("\textensions : ");
-	for (l = enna_config->music_filters; l; l = l->next)
-	  printf("%s ", (char*)l->data);
-	printf("\n");
      }
 
 
