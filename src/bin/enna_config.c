@@ -131,8 +131,11 @@ enna_config_module_pair_get(const char *module_name)
 EAPI void
 enna_config_init()
 {
+   char filename[4096];
+
    enna_config = calloc(1, sizeof(Enna_Config));
-   hash_config = _config_load_conf_file("/home/nico/.enna/enna.cfg");
+   snprintf(filename, sizeof(filename), "%s/.enna/enna.cfg", enna_util_user_home_get());
+   hash_config = _config_load_conf_file(filename);
    evas_hash_foreach(hash_config, _hash_foreach, NULL);
 }
 
