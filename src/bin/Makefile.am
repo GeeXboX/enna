@@ -26,7 +26,8 @@ scrollframe.c\
 location.c\
 mediaplayer.c\
 event_key.c\
-list_item.c
+list_item.c\
+covers.c
 
 enna_LDADD = @ENNA_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -50,7 +51,8 @@ scrollframe.h\
 location.h\
 mediaplayer.h\
 event_key.h\
-list_item.h
+list_item.h\
+covers.h
 
 
 

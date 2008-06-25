@@ -18,7 +18,7 @@ struct _Enna_Vfs_File
 {
    char *uri;
    char *label;
-   const char *icon;
+   char *icon;
    char *icon_file;
    unsigned char is_directory : 1;
    unsigned char is_selected : 1;

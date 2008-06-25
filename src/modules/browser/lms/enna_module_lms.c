@@ -97,7 +97,7 @@ static Enna_Class_Vfs class =
     1,
     "Browse Library",
     NULL,
-    "icon/dd",
+    "icon/library",
     {
       _class_init,
       _class_shutdown,

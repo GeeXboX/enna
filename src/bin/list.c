@@ -82,7 +82,7 @@ enna_list_append  (Evas_Object *obj, Evas_Object *item, void (*func) (void *data
    enna_box_pack_options_set(si->o_base, 1, 0, 1, 0, 0, 0.5,
 			     mw, mh, 99999, 99999);
    enna_box_min_size_get(sd->o_box, NULL, &mh);
-   evas_object_resize(sd->o_box, 500, mh);
+   evas_object_resize(sd->o_box, sd->w, mh);
    enna_box_thaw(sd->o_box);
 
    evas_object_lower(sd->o_box);
@@ -480,8 +480,11 @@ _e_smart_clip_unset(Evas_Object *obj)
 static void
 _e_smart_reconfigure(E_Smart_Data *sd)
 {
+   Evas_Coord mh;
    evas_object_move(sd->o_edje, sd->x, sd->y);
    evas_object_resize(sd->o_edje, sd->w, sd->h);
+   enna_box_min_size_get(sd->o_box, NULL, &mh);
+   evas_object_resize(sd->o_box, sd->w, mh);
 }
 
 static void

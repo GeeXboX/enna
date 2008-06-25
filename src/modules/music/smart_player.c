@@ -122,11 +122,27 @@ enna_smart_player_position_set(Evas_Object *obj, double pos, double len)
 EAPI void
 enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
+   char *cover_file = NULL;
+   Evas_Object *cover;
+
    API_ENTRY;
+
    if (!metadata) return;
    if (metadata->title) edje_object_part_text_set(sd->o_edje, "enna.text.title", metadata->title);
    if (metadata->album) edje_object_part_text_set(sd->o_edje, "enna.text.album", metadata->album);
    if (metadata->artist) edje_object_part_text_set(sd->o_edje, "enna.text.artist", metadata->artist);
+
+   cover_file = enna_cover_album_get(metadata->artist, metadata->album, metadata->uri);
+   if (cover_file)
+     {
+	cover = enna_image_add(evas_object_evas_get(sd->o_edje));
+	enna_image_file_set(cover, cover_file);
+	edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", cover);
+	printf("cover_show\n");
+	edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
+     }
+   else
+     edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
 
 }
 

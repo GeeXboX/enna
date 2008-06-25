@@ -123,7 +123,7 @@ static Enna_Metadata *_class_metadata_get(void)
    Enna_Metadata *m;
 
    m = calloc(1, sizeof(Enna_Metadata));
-
+   m->uri = emotion_object_file_get(mod->o_emotion);
    m->title = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_TITLE);
    m->album= emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ALBUM);
    m->artist = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ARTIST);

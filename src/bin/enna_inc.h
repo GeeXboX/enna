@@ -20,5 +20,6 @@
 #include "mediaplayer.h"
 #include "event_key.h"
 #include "list_item.h"
+#include "covers.h"
 
 #endif

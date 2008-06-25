@@ -214,12 +214,79 @@ group {
       }
 
       part {
+         name: "titlebar.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0 0;
+            rel1.offset: 0 0;
+            rel2.relative: 1 0;
+            rel2.offset: 0 62;
+         }
+         description {
+            state: "show" 0.0;
+            rel1.relative: 0 0;
+            rel1.offset: 0 -62;
+            rel2.relative: 1 0;
+            rel2.offset: 0 0;
+         }
+      }
+      part {
+         name: "titlebar.bg";
+         clip_to: "titlebar.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0 0;
+            rel1.to: "titlebar.clip";
+            rel2.relative: 1 1;
+            rel2.to: "titlebar.clip";
+            color: 21 21 21 128;
+         }
+      }
+
+      part {
+         name:           "titlebar.date";
+         type:           TEXT;
+         clip_to: "titlebar.clip";
+         mouse_events:   1;
+	 description {
+            state: "default" 0.0;
+            min:      16 16;
+	    rel1 {
+               relative: 0.9  0.0;
+               to: titlebar.clip;
+	    }
+	    rel2 {
+               relative: 1.0  1.0;
+               to: titlebar.clip;
+	    }
+            color: 200 200 200 200;
+            color3: 128 128 128 200;
+
+            color_class: "ilist_item";
+	    text {
+               text:     "";
+               font:     "content_bd";
+               //fit: 0 1;
+               size:     15;
+               align:    0.5 0.5;
+               text_class: "list_label";
+            }
+	 }
+      }
+
+
+
+      part {
          name: "enna.swallow.box";
          type: SWALLOW;
          clip_to: "enna.clip.mainmenu";
          repeat_events: 1;
+
          description {
             state: "default" 0.0;
+            max: 1920 128;
             rel1 {relative: 0.1 0.1;to: "bg";to: enna.clip.mainmenu;};
             rel2 {relative: 0.9 0.5;to: "bg";to: enna.clip.mainmenu;};
          }
@@ -264,7 +331,7 @@ group {
 
             color_class: "ilist_item";
 	    text {
-               text:     "Item Label";
+               text:     "";
                font:     "content_bd";
                //fit: 0 1;
                size:     15;
@@ -427,6 +494,7 @@ group {
          transition: DECELERATE 0.5;
          target: "enna.clip.mainmenu";
          target: "shadow";
+         target: "titlebar.clip";
       }
       program {
          name: "mainmenu,hide";
@@ -436,6 +504,7 @@ group {
          transition: ACCELERATE 0.5;
          target: "enna.clip.mainmenu";
          target: "shadow";
+         target: "titlebar.clip";
       }
    }
    program { name: "init";
@@ -527,7 +596,7 @@ group {
 
             color_class: "ilist_item";
 	    text {
-               text:     "Item Label";
+               text:     "";
                font:     "content_bd";
                //fit: 0 1;
                size:     15;

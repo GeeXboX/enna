@@ -47,6 +47,7 @@ struct _Enna_Module_libplayer
    Enna_Module *em;
    void (*event_cb)(void *data, enna_mediaplayer_event_t event);
    void *event_cb_data;
+   char *uri;
 };
 
 static Enna_Module_libplayer *mod;
@@ -64,6 +65,8 @@ static void _class_init(int dummy)
 
 static void _class_shutdown(int dummy)
 {
+   if (mod->uri)
+     free(mod->uri);
    player_playback_stop (mod->player);
    player_uninit (mod->player);
 }
@@ -75,7 +78,9 @@ static int _class_file_set(const char *uri)
 
    args = calloc (1, sizeof (mrl_resource_local_args_t));
    args->location = strdup (uri);
-
+   if(mod->uri)
+     free(mod->uri);
+   mod->uri = strdup(uri);
    mrl = mrl_new (mod->player, MRL_RESOURCE_FILE, args);
    if (!mrl)
     return 1;
@@ -126,6 +131,8 @@ static Enna_Metadata *_class_metadata_get(void)
    Enna_Metadata *meta;
 
    meta = calloc (1, sizeof (Enna_Metadata));
+
+   meta->uri = mod->uri+7;
    meta->title = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TITLE);
    meta->artist = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ARTIST);
    meta->album = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ALBUM);
@@ -172,6 +179,7 @@ em_init(Enna_Module *em)
      player_init (PLAYER_TYPE_MPLAYER, PLAYER_AO_ALSA, PLAYER_VO_NULL,
                   PLAYER_MSG_WARNING, _event_cb);
    enna_mediaplayer_backend_register(&class);
+   mod->uri = NULL;
    return 1;
 }
 

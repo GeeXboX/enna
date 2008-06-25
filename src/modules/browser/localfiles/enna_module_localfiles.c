@@ -57,7 +57,7 @@ static Enna_Class_Vfs class =
     1,
     "Browse Local Files",
     NULL,
-    "icon/dd",
+    "icon/hd",
     {
         _class_init,
         _class_shutdown,
