@@ -954,7 +954,6 @@ em_init(Enna_Module *em)
    /* Default value */
    mod->scanner->commit_interval = 100;
    mod->scanner->slave_timeout = 1000;
-   mod->scanner->db_path = NULL;
    mod->scanner->scan_path = NULL;
    mod->scanner->parsers = NULL;
    /* Load Config file values */

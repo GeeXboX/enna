@@ -630,7 +630,6 @@ em_shutdown(Enna_Module *em)
    if (mod->vfs && mod->vfs->func.class_shutdown)
      {
 	mod->vfs->func.class_shutdown(0);
-	free(mod->vfs);
      }
    if (mod->prev_selected)
      free(mod->prev_selected);
