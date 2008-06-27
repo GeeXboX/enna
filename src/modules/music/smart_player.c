@@ -55,6 +55,8 @@ struct _E_Smart_Data
 {
    Evas_Coord          x, y, w, h;
    Evas_Object        *o_edje;
+   Evas_Object        *o_cover;
+   Evas_Object        *o_cover_old;
 };
 
 /* local subsystem functions */
@@ -123,7 +125,7 @@ EAPI void
 enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
    char *cover_file = NULL;
-   Evas_Object *cover;
+
 
    API_ENTRY;
 
@@ -135,14 +137,20 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
    cover_file = enna_cover_album_get(metadata->artist, metadata->album, metadata->uri);
    if (cover_file)
      {
-	cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-	enna_image_file_set(cover, cover_file);
-	edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", cover);
+	/* FIXME : add edje cb at end of cover transition to switch properly covers*/
+	sd->o_cover_old = sd->o_cover;
+	sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
+	enna_image_file_set(sd->o_cover, cover_file);
+	edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
 	printf("cover_show\n");
 	edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
+	evas_object_del(sd->o_cover_old);
      }
    else
-     edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
+     {
+	edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
+       	evas_object_del(sd->o_cover);
+     }
 
 }
 

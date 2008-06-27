@@ -138,12 +138,27 @@ enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
 {
    API_ENTRY return;
    if (!sd->full)
-     edje_object_size_min_calc(sd->o_edje, w, h);
+     {
+	if(w) *w = 100;
+	if(h) *h = 100;
+	//edje_object_size_min_calc(sd->o_edje, w, h);
+     }
    else
      {
 	if(w) *w = 150;
 	if(h) *h = 150;
      }
+
+}
+
+EAPI const char *
+enna_listitem_label_get(Evas_Object *obj)
+{
+  API_ENTRY return NULL;
+  if (sd->full)
+    return  edje_object_part_text_get(sd->o_edje, "enna.text.info");
+  else
+   return edje_object_part_text_get(sd->o_edje, "enna.text.label");
 
 }
 

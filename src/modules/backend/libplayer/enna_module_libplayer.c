@@ -129,6 +129,7 @@ static double _class_length_get()
 static Enna_Metadata *_class_metadata_get(void)
 {
    Enna_Metadata *meta;
+   const char *track_nb;
 
    meta = calloc (1, sizeof (Enna_Metadata));
 
@@ -140,7 +141,11 @@ static Enna_Metadata *_class_metadata_get(void)
    meta->genre = mrl_get_metadata (mod->player, NULL, MRL_METADATA_GENRE);
    meta->comment = mrl_get_metadata (mod->player, NULL, MRL_METADATA_COMMENT);
    meta->discid = NULL;
-   meta->track = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TRACK);
+   track_nb = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TRACK);
+   if (track_nb)
+     meta->track = atoi(track_nb);
+   else
+     meta->track = 0;
 
    return meta;
 }

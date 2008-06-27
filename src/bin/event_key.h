@@ -13,6 +13,16 @@ typedef enum {
   ENNA_KEY_DOWN,
   ENNA_KEY_OK,
   ENNA_KEY_CANCEL,
+  ENNA_KEY_0,
+  ENNA_KEY_1,
+  ENNA_KEY_2,
+  ENNA_KEY_3,
+  ENNA_KEY_4,
+  ENNA_KEY_5,
+  ENNA_KEY_6,
+  ENNA_KEY_7,
+  ENNA_KEY_8,
+  ENNA_KEY_9,
 } enna_key_t;
 
 typedef struct _Enna_Class_Input Enna_Class_Input;

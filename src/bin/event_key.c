@@ -26,6 +26,16 @@ static const struct {
   { "Return",                     ENNA_KEY_OK            },
   { "KP_Enter",                   ENNA_KEY_OK            },
   { "BackSpace",                  ENNA_KEY_CANCEL        },
+  { "KP_0",                       ENNA_KEY_0             },
+  { "KP_1",                       ENNA_KEY_1             },
+  { "KP_2",                       ENNA_KEY_2             },
+  { "KP_3",                       ENNA_KEY_3             },
+  { "KP_4",                       ENNA_KEY_4             },
+  { "KP_5",                       ENNA_KEY_5             },
+  { "KP_6",                       ENNA_KEY_6             },
+  { "KP_7",                       ENNA_KEY_7             },
+  { "KP_8",                       ENNA_KEY_8             },
+  { "KP_9",                       ENNA_KEY_9             },
   { NULL,                         ENNA_KEY_UNKNOWN       }
 };
 
@@ -64,10 +74,10 @@ enna_get_key (void *event)
   if (!ev)
     return ENNA_KEY_UNKNOWN;
 
-  printf ("Key pressed : %s\n", ev->keyname);
+  printf ("Key pressed : %s\n", ev->keysymbol);
 
   for (i = 0; enna_keymap[i].keyname; i++)
-    if (!strcmp (enna_keymap[i].keyname, ev->keyname))
+    if (!strcmp (enna_keymap[i].keyname, ev->keysymbol))
       return enna_keymap[i].keycode;
 
   return ENNA_KEY_UNKNOWN;
@@ -88,7 +98,6 @@ enna_input_init()
    em = enna_module_open("lirc", enna->evas);
    item = calloc(1, sizeof(Input_Module_Item));
    item->module = em;
-   printf("enna module open lirc\n");
    _input_modules = evas_list_append(_input_modules, item);
    enna_module_enable(em);
 #endif
@@ -105,8 +114,6 @@ enna_input_shutdown()
 	Input_Module_Item *item = l->data;
 	item->class->func.class_shutdown(0);
 	enna_module_disable(item->module);
-	free(item->module);
-	free(item);
      }
    evas_list_free(_input_modules);
 }
@@ -115,15 +122,12 @@ EAPI int
 enna_input_class_register(Enna_Module *module, Enna_Class_Input *class)
 {
    Evas_List *l = NULL;
-   printf("class register\n");
 
    for (l = _input_modules; l; l = l->next)
      {
 	Input_Module_Item *item = l->data;
-	printf("next module\n");
 	if (module == item->module)
 	  {
-	     printf("item found\n");
 	     item->class = class;
 	     class->func.class_init(0);
 	     class->func.class_event_cb_set(_event_cb, item);

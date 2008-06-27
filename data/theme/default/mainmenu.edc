@@ -286,7 +286,7 @@ group {
 
          description {
             state: "default" 0.0;
-            max: 1920 128;
+            max: 1920 256;
             rel1 {relative: 0.1 0.1;to: "bg";to: enna.clip.mainmenu;};
             rel2 {relative: 0.9 0.5;to: "bg";to: enna.clip.mainmenu;};
          }

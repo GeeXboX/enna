@@ -17,30 +17,7 @@ group {
             visible: 1;
          }
       }
-      part {
-         name: "cdcase";
-         clip_to: "enna.clip.player";
-         description {
-            state: "default" 0.0;
-            aspect: 1.1276 1.1276;
-            align: 0 0.5;
-            aspect_preference: BOTH;
-            rel1 {
-               relative: 0.0  0.0;
-            }
-            rel2 {
-               relative: 0.5  0.66;
-            }
-            image {
-               normal: "cd_case.png";
-               border: 54 30 19 23;
-
-            }
-         }
-      }
-
-
-      part {
+        part {
 	 name:           "enna.text.title";
          clip_to: "enna.clip.player";
 	 type:           TEXT;
@@ -48,11 +25,12 @@ group {
 	 description {
 	    state: "default" 0.0;
 	    rel1 {
-	       to_x:     "enna.clip.cover";
-	       relative: 1.0  0.1;
+               to_x: progress_bar_clip;
+               relative: -0.1  0.1;
 	    }
 	    rel2 {
-	       relative: 1.0  0.2;
+               to_x: progress_bar_clip;
+	       relative: 1.1  0.2;
 	    }
             color: 200 200 200 255;
             color3: 128 128 128 200;
@@ -61,8 +39,9 @@ group {
                text:     "Title";
                font:     "content_bd";
                size:     25;
-               //min: 1 1;
-               max: 1 1;;
+               fit: 1 1;
+               min: 1 0;
+               //max: 1 1;;
             }
 	 }
       }
@@ -74,11 +53,12 @@ group {
 	 description {
 	    state: "default" 0.0;
 	    rel1 {
-	       to_x:     "enna.clip.cover";
-	       relative: 1.0  0.2;
+               to_x: progress_bar_clip;
+               relative: -0.1  0.2;
 	    }
 	    rel2 {
-	       relative: 1.0  0.3;
+               to_x: progress_bar_clip;
+	       relative: 1.1  0.3;
 	    }
             color: 180 180 180 255;
             color3: 128 128 128 200;
@@ -87,8 +67,9 @@ group {
                text:     "Album";
                font:     "content";
                size:     20;
+               fit: 1 1;
                //min: 1 1;
-               max: 1 1;;
+               //max: 1 1;;
             }
 	 }
       }
@@ -100,11 +81,12 @@ group {
 	 description {
 	    state: "default" 0.0;
 	    rel1 {
-	       to_x:     "enna.clip.cover";
-	       relative: 1.0  0.3;
+               to_x: progress_bar_clip;
+	       relative: -0.1  0.3;
 	    }
 	    rel2 {
-	       relative: 1.0  0.4;
+               to_x: progress_bar_clip;
+	       relative: 1.1  0.4;
 	    }
             color: 180 180 180 255;
             color3: 128 128 128 200;
@@ -113,8 +95,9 @@ group {
                text:     "Artist";
                font:     "content";
                size:     20;
+               fit: 1 1;
                //min: 1 1;
-               max: 1 1;;
+               //max: 1 1;;
             }
 	 }
       }
@@ -157,7 +140,6 @@ group {
 	    rel1 {
 	       to_x:     "progress_bar";
 	       relative: 1.0  0.5;
-
                offset: 5 -10;
 	    }
 	    rel2 {
@@ -171,6 +153,7 @@ group {
                text:     "Artist";
                font:     "content";
                size:     15;
+
                //min: 1 1;
                //max: 1 1;;
             }
@@ -185,35 +168,37 @@ group {
             state: "default" 0.0;
             color: 255 255 255 0;
             visible: 0;
-            aspect_preference: VERTICAL;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
             rel1{
                relative: 0 0;
-               to: "cdcase";
-               offset: 54 19;
+
             }
             rel2{
-               relative: 1 1;
-               to: "cdcase";
-               offset: -30 -26;
+               relative: 0.5 0.6;
             }
          }
          description {
             state: "show" 0.0;
             color : 255 255 255 255;
             visible: 1;
-            aspect_preference: VERTICAL;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
             rel1{
                relative: 0 0;
-               to: "cdcase";
-               offset: 54 19;
+
             }
             rel2{
-               relative: 1 1;
-               to: "cdcase";
-               offset: -30 -26;
+               relative: 0.5 0.6;
+
             }
          }
       }
+
+
+
+
+
       part {
          name: "enna.swallow.cover";
          type: SWALLOW;
@@ -224,6 +209,29 @@ group {
             color: 255 255 255 255;
             rel1 {relative: 0 0;to: "enna.clip.cover";}
             rel2 {relative: 1 1;to: "enna.clip.cover";}
+         }
+      }
+      part {
+         name: "cdcase";
+         //clip_to: "enna.clip.player";
+         description {
+            state: "default" 0.0;
+            rel1 {
+               relative: 0.0  0.0;
+               to: "enna.clip.cover";
+               offset: -164 -16;
+            }
+            rel2 {
+               relative: 1.0  1.0;
+               to: "enna.clip.cover";
+               offset: 92 83;
+
+            }
+            image {
+               normal: "cd_case.png";
+               border: 164 92 16 83;
+
+            }
          }
       }
      part
@@ -299,16 +307,15 @@ group {
          description {
             state: "default" 0.0;
             color: 255 255 255 255;
-            visible: 1;
+            visible: 0;
             rel1{
                relative: 0 0;
-               to: "cdcase";
-               offset: 54 19;
+               to: "enna.clip.cover";
+
             }
             rel2{
                relative: 1 1;
-               to: "cdcase";
-               offset: -29 -25;
+               to: "enna.clip.cover";
             }
             image {
                normal: "cd_case_reflect.png";

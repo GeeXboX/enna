@@ -26,7 +26,7 @@ struct _Enna_Metadata
    const char *genre;
    const char *comment;
    const char *discid;
-   const char *track;
+   int         track;
    int         size;
    int         rating;
    int         play_count;

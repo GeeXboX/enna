@@ -34,6 +34,10 @@ struct _E_Smart_Data
    int selected;
    unsigned char selector : 1;
    unsigned char on_hold : 1;
+   unsigned int letter_mode;
+   Ecore_Timer *letter_timer;
+   unsigned int letter_event_nbr;
+   char letter_key ;
 };
 
 static void _e_smart_init             (void);
@@ -50,6 +54,7 @@ static void _e_smart_reconfigure      (E_Smart_Data *sd);
 static void _e_smart_event_mouse_down (void *data, Evas *evas, Evas_Object *obj, void *event_info);
 static void _e_smart_event_mouse_up   (void *data, Evas *evas, Evas_Object *obj, void *event_info);
 static void _e_smart_event_key_down   (E_Smart_Data *sd, void *event_info);
+static int _letter_timer_cb    (void *data);
 static Evas_Smart *_e_smart = NULL;
 
 EAPI Evas_Object *
@@ -163,6 +168,51 @@ enna_list_selected_set(Evas_Object *obj, int n)
      {
 	//mif (si->func) si->func(si->data, si->data2);
      }
+
+}
+
+EAPI int
+enna_list_jump_label(Evas_Object *obj, const char *label)
+{
+   Enna_List_Item *si = NULL;
+   Evas_List *l = NULL;
+   int i;
+   Evas_Coord x,y,h;
+   printf("enna_list_jump_labbel %s\n", label);
+
+   API_ENTRY return -1;
+   printf("return 1\n");
+   if (!sd->items || !label) return -1;
+
+
+   sd->selected = -1;
+   for (l = sd->items, i = 0; l; l = l->next, i++)
+     {
+	if (!(si = l->data)) continue;
+	if (si->selected)
+	  enna_listitem_unselect(si->o_base);
+
+
+	if (!strcmp(enna_listitem_label_get(si->o_base), label))
+	  {
+	     enna_listitem_select(si->o_base);
+	     si->selected = 1;
+	     sd->selected = i;
+	     printf("label get : %s\n", enna_listitem_label_get(si->o_base));
+	     break;
+	  }
+
+
+     }
+
+
+   if (!(si = evas_list_nth(sd->items, sd->selected))) return -1;
+
+   enna_list_selected_set(sd->o_smart, sd->selected);
+   evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
+   y = h/evas_list_count(sd->items) * (i-3);
+   enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
+   return sd->selected;
 
 }
 
@@ -405,6 +455,41 @@ _e_smart_add(Evas_Object *obj)
    evas_object_propagate_events_set(obj, 0);
 }
 
+
+static int
+_letter_timer_cb (void *data)
+{
+   E_Smart_Data *sd;
+   int i;
+   Evas_List *l;
+
+   sd = data;
+
+   edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
+   sd->letter_mode = 0;
+   for (i = 0, l = sd->items; l; l = l->next, i++)
+     {
+	char *label;
+	char *letter;
+	Enna_List_Item *si;
+	si = l->data;
+	label =  (char*)enna_listitem_label_get(si->o_base);
+	letter = (char*)edje_object_part_text_get (sd->o_edje, "enna.text.letter");
+	if ((letter && label) &&
+	    (letter[0] == label[0] ||
+	     letter[0] == label[0] + 32 ||
+	     letter[0]  + 32 == label[0] ))
+	  {
+	     Evas_Coord x,y,h;
+	     enna_list_selected_set(sd->o_smart, i);
+	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
+	     y = h/evas_list_count(sd->items) * (i-3);
+	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
+	     break;
+	  }
+     }
+   return 0;
+}
 static void
 _e_smart_del(Evas_Object *obj)
 {
@@ -545,17 +630,19 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
 static void
 _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 {
-   Evas_Event_Key_Down *ev;
+   Ecore_X_Event_Key_Down *ev;
    Enna_List_Item *si;
    int n, ns;
 
    ev = event_info;
    ns = sd->selected;
 
-   if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD) sd->on_hold = 1;
-   else sd->on_hold = 0;
 
-   if ((!strcmp(ev->keyname, "Up")) || (!strcmp(ev->keyname, "KP_Up")))
+
+   //if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD) sd->on_hold = 1;
+   //else sd->on_hold = 0;
+
+   if ((!strcmp(ev->keysymbol, "Up")) || (!strcmp(ev->keysymbol, "KP_Up")))
      {
 	n = ns;
 	do
@@ -578,7 +665,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
 	  }
      }
-   else if ((!strcmp(ev->keyname, "Down")) || (!strcmp(ev->keyname, "KP_Down")))
+   else if ((!strcmp(ev->keysymbol, "Down")) || (!strcmp(ev->keysymbol, "KP_Down")))
      {
 	n = ns;
 	do
@@ -603,7 +690,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	  }
 
      }
-   else if ((!strcmp(ev->keyname, "Home")) || (!strcmp(ev->keyname, "KP_Home")))
+   else if ((!strcmp(ev->keysymbol, "Home")) || (!strcmp(ev->keysymbol, "KP_Home")))
      {
 	n = -1;
 	do
@@ -626,7 +713,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
 	  }
      }
-   else if ((!strcmp(ev->keyname, "End")) || (!strcmp(ev->keyname, "KP_End")))
+   else if ((!strcmp(ev->keysymbol, "End")) || (!strcmp(ev->keysymbol, "KP_End")))
      {
 	n = evas_list_count(sd->items);
 	do
@@ -649,9 +736,9 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
 	  }
      }
-   else if ((!strcmp(ev->keyname, "Return")) ||
-	    (!strcmp(ev->keyname, "KP_Enter")) ||
-	    (!strcmp(ev->keyname, "space")))
+   else if ((!strcmp(ev->keysymbol, "Return")) ||
+	    (!strcmp(ev->keysymbol, "KP_Enter")) ||
+	    (!strcmp(ev->keysymbol, "space")))
      {
 	if (!sd->on_hold)
 	  {
@@ -662,5 +749,81 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	       }
 	  }
      }
+   else if ((!strcmp(ev->keysymbol, "KP_2")) || (!strcmp(ev->keysymbol, "2")) ||
+	    (!strcmp(ev->keysymbol, "KP_3")) || (!strcmp(ev->keysymbol, "3")) ||
+	    (!strcmp(ev->keysymbol, "KP_4")) || (!strcmp(ev->keysymbol, "4")) ||
+	    (!strcmp(ev->keysymbol, "KP_5")) || (!strcmp(ev->keysymbol, "5")) ||
+	    (!strcmp(ev->keysymbol, "KP_6")) || (!strcmp(ev->keysymbol, "6")) ||
+	    (!strcmp(ev->keysymbol, "KP_7")) || (!strcmp(ev->keysymbol, "7")) ||
+	    (!strcmp(ev->keysymbol, "KP_8")) || (!strcmp(ev->keysymbol, "8")) |
+	    (!strcmp(ev->keysymbol, "KP_9")) || (!strcmp(ev->keysymbol, "9")))
+     {
+	char key = ev->keysymbol[strlen(ev->keysymbol) - 1];
+
+	if (!sd->letter_mode)
+	  {
+	     char letter[2];
+	     int i;
+	     sd->letter_mode = 1;
+	     sd->letter_event_nbr = 0;
+	     sd->letter_key = key;
+
+	     switch(key)
+	       {
+		case '7':
+		   letter[0] = 'P';
+		   break;
+		case '8':
+		   letter[0] = 'T';
+		   break;
+		case '9':
+		   letter[0] = 'W';
+		   break;
+		default:
+		   letter[0] = (key-50)*3 + 65;
+	       }
+
+	     letter[1] = '\0';
+	     edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
+	     edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
+	     sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
+	  }
+	else
+	  {
+	     char letter[2];
+	     int mod = 3;
+	     ecore_timer_del(sd->letter_timer);
+	     sd->letter_mode = 1;
+
+	     if (key == '7' || key == '9')
+	       mod = 4;
+	     else
+	       mod = 3;
+
+	     if (sd->letter_key == key)
+	       sd->letter_event_nbr = (sd->letter_event_nbr + 1) % mod;
+	     else
+	       {
+		  sd->letter_event_nbr = 0;
+		  sd->letter_key = key;
+	       }
+	     if (key == '7')
+	       letter[0] = 'P' + sd->letter_event_nbr;
+	     else if (key == '8')
+	       letter[0] = 'T' + sd->letter_event_nbr;
+	     else if (key == '9')
+	       letter[0] = 'W' + sd->letter_event_nbr;
+	     else
+	       letter[0] = (key-50)*3 + 65 + sd->letter_event_nbr;
+
+	     letter[1] = '\0';
+	     edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
+	     printf("letter : %s\n", letter);
+	     edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
+	     sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
+
+	  }
+     }
+
    sd->on_hold = 0;
 }

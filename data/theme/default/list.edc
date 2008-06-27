@@ -1,6 +1,7 @@
 images {
    image: "menu_sel_bg.png" COMP;
    image: "menu_sel_fg.png" COMP;
+   image: "letter_bg.png" COMP;
 }
 
 group {
@@ -70,12 +71,12 @@ group {
 	    state: "default" 0.0;
 	    rel1 {
 	       to_x:     "enna.swallow.icon";
-	       relative: 1.0  0.0;
+	       relative: 1.2  0.0;
 	       offset:   4 4;
 	    }
 	    rel2 {
-	       relative: 1.0  1.0;
-	       offset:   -5 -5;
+	       relative: 1.2  1.0;
+	       offset:   -5  5;
 	    }
             color: 200 200 200 200;
             color3: 128 128 128 200;
@@ -550,6 +551,76 @@ group {
             rel2 {relative: 2 1;};
          }
       }
+      part {
+         name : "enna.clip.letter";
+         type: RECT;
+         mouse_events: 0;
+          description {
+             state: "default" 0.0;
+             color: 0 0 0 0;
+             visible: 1;
+             aspect_preference: BOTH;
+             aspect: 1 1;
+             rel1 {relative: 0.5 0.5;}
+             rel2 {relative: 0.5 0.5;};
+         }
+         description {
+            state: "show" 0.0;
+            visible: 1;
+            aspect_preference: BOTH;
+            aspect: 1 1;
+            color: 255 255 255 255;
+            rel1 {relative: 0.35 0.35;}
+            rel2 {relative: 0.65  0.65;};
+         }
+      }
+      part { name: "letter_bg";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 50;
+            rel1.relative: 0 0;
+            rel1.to: "enna.clip.letter";
+            rel2.relative: 1 1;
+            rel2.to: "enna.clip.letter";
+            image {
+               normal: "letter_bg.png";
+               border: 22 22 22 22;
+            }
+         }
+
+      }
+      part {
+	 name:           "enna.text.letter";
+	 type:           TEXT;
+         clip_to: "enna.clip.letter";
+	 mouse_events:   0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 {
+               relative: 0 0;
+               to: "enna.clip.letter";
+               offset: 22 22;
+	    }
+	    rel2 {
+	       relative: 1 1;
+	       to: "enna.clip.letter";
+               offset: -23 -23;
+	    }
+            color: 200 200 200 200;
+            color3: 128 128 128 200;
+            align: 0.5 0.5;
+	    text {
+               text:     "Item Label";
+               font:     "content";
+               size:     50;
+               fit: 0 1;
+               min: 0 0;
+               max: 0 0;
+            }
+	 }
+      }
+
    }
    programs{
       program {
@@ -596,5 +667,23 @@ group {
          name: "transition,end";
          action: SIGNAL_EMIT "list,transition,end" "edje";
       }
+
+     program {
+         name: "letter,show";
+         signal: "letter,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: "ACCELERATE" 0.3;
+         target: "enna.clip.letter";
+      }
+      program {
+         name: "letter,hide";
+         signal: "letter,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: "ACCELERATE" 0.3;
+         target: "enna.clip.letter";
+      }
    }
 }
+

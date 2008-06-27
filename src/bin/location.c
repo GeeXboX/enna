@@ -190,6 +190,17 @@ enna_location_remove_nth(Evas_Object *obj, int n)
 
 }
 
+EAPI const char *
+enna_location_label_get_nth(Evas_Object *obj, int n)
+{
+   Enna_Location_Item *si = NULL;
+
+   API_ENTRY return NULL;
+   if (!sd->items) return NULL;
+   if (!(si = evas_list_nth(sd->items, n))) return NULL;
+   return  edje_object_part_text_get(si->o_base, "enna.text.label");
+}
+
 EAPI int
 enna_location_count(Evas_Object *obj)
 {

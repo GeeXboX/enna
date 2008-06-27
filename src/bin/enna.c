@@ -58,8 +58,9 @@ _event_bg_key_down_cb(void *data, int type, void *event)
    enna_key_t key;
 
    key = enna_get_key (event);
-   if (key == ENNA_KEY_UNKNOWN)
-     return 0;
+
+   /*if (key == ENNA_KEY_UNKNOWN)
+     return 0;*/
 
    enna = (Enna *) data;
    if (!enna)
@@ -288,6 +289,9 @@ _create_gui()
 static void
 _enna_shutdown()
 {
+
+   enna_activity_del("music");
+   enna_activity_del("video");
    enna_input_shutdown();
    enna_config_shutdown();
    enna_module_shutdown();

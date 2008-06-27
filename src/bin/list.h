@@ -30,6 +30,7 @@ EAPI Evas_Object *enna_list_edje_object_get       (Evas_Object *obj);
 EAPI void *       enna_list_selected_data_get     (Evas_Object *obj);
 EAPI void *       enna_list_selected_data2_get    (Evas_Object *obj);
 EAPI void         enna_list_selected_geometry_get (Evas_Object *obj, Evas_Coord *x, Evas_Coord *y, Evas_Coord *w, Evas_Coord *h);
+EAPI int          enna_list_jump_label            (Evas_Object *obj, const char *label);
 EAPI void         enna_list_jump_nth              (Evas_Object *obj, int n);
 EAPI void         enna_list_event_key_down        (Evas_Object *obj, void *event_info);
 #endif

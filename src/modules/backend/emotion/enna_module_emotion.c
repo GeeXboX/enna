@@ -131,7 +131,7 @@ static Enna_Metadata *_class_metadata_get(void)
    m->year =  emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_YEAR);
    m->comment = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COMMENT);
    m->discid = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_DISC_ID);
-   m->track = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COUNT);
+   m->track = atoi(emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COUNT));
 
    return m;
 

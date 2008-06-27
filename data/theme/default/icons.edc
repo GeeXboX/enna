@@ -34,8 +34,11 @@ STOCK_ICON("icon_music.png", "icon/music", 128)
 STOCK_ICON("icon_video.png", "icon/video", 128)
 STOCK_ICON("icon_music_mini.png", "icon/music_mini", 32);
 STOCK_ICON("icon_home_mini.png", "icon/home_mini", 32);
-/* STOCK_ICON("icon_photo.png", "icon_photo", 128) */
-/* STOCK_ICON("icon_cdda.png",  "icon_cdda", 128) */
+STOCK_ICON("icon_library.png", "icon/library", 200)
+STOCK_ICON("icon_album.png",  "icon/album", 200)
+STOCK_ICON("icon_artist.png",  "icon/artist", 200)
+STOCK_ICON("icon_genre.png",  "icon/genre", 200)
+STOCK_ICON("icon_song.png",  "icon/song", 200)
 /* STOCK_ICON("icon_cdrom.png",  "icon_cdrom", 128) */
 /* STOCK_ICON("icon_dvdrom.png",  "icon_dvdrom", 128) */
 /* STOCK_ICON("icon_dvdvideo.png",  "icon_dvdvideo", 128) */

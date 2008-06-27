@@ -42,12 +42,12 @@ enum _MUSIC_STATE
      Evas_Object *o_list;
      Evas_Object *o_location;
      Evas_Object *o_mediaplayer;
-
      Enna_Class_Vfs *vfs;
      Ecore_Timer *timer;
      Enna_Module *em;
      MUSIC_STATE state;
      Ecore_Timer *timer_show_mediaplayer;
+     char *prev_selected;
   };
 
 static Enna_Module_Music *mod;
@@ -114,8 +114,9 @@ static void _class_hide(int dummy)
 
 static void _class_event(void *event_info)
 {
-   enna_key_t key = enna_get_key ((Evas_Event_Key_Down *) event_info);
-
+   Ecore_X_Event_Key_Down *ev = event_info;
+   enna_key_t key = enna_get_key (ev);
+   printf("Key pressed music : %s\n", ev->keysymbol);
    switch (mod->state)
      {
       case LIST_VIEW:
@@ -225,7 +226,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
      edje_object_signal_emit(oe, "list,left,now", "enna");
 
    enna_list_freeze(o_list);
-   //enna_list_icon_size_set(o_list, 64, 64);
+   enna_list_icon_size_set(o_list, 200, 200);
    if (evas_list_count(files))
      {
 	int i = 0;
@@ -237,8 +238,18 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	     Evas_Object *item;
 
 	     f = l->data;
-	     icon = edje_object_add(mod->em->evas);
-	     edje_object_file_set(icon, enna_config_theme_get(), f->icon);
+
+	     if (f->icon_file && f->icon_file[0] == '/')
+	       {
+		  icon = enna_image_add(mod->em->evas);
+		  enna_image_file_set(icon, f->icon_file);
+	       }
+	     else
+	       {
+		  icon = edje_object_add(mod->em->evas);
+		  edje_object_file_set(icon, enna_config_theme_get(), f->icon);
+	       }
+
 	     item = enna_listitem_add(mod->em->evas);
 	     enna_listitem_create_simple(item, icon, f->label);
 	     enna_list_append(o_list, item, _browse, _hilight, mod->vfs, f);
@@ -264,7 +275,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	Evas_List *l, *categories;
 
 	categories = enna_vfs_get(ENNA_CAPS_MUSIC);
-	//enna_list_icon_size_set(o_list, 64, 64);
+	enna_list_icon_size_set(o_list, 200, 200);
 	for( l = categories; l; l = l->next)
 	  {
 	     Enna_Class_Vfs *cat;
@@ -273,7 +284,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 
 	     cat = l->data;
 	     icon = edje_object_add(mod->em->evas);
-	     edje_object_file_set(icon, enna_config_theme_get(), "icon/music");
+	     edje_object_file_set(icon, enna_config_theme_get(), cat->icon);
 	     item = enna_listitem_add(mod->em->evas);
 	     enna_listitem_create_simple(item, icon, cat->label);
 	     enna_list_append(o_list, item, _browse, NULL, cat, NULL);
@@ -303,7 +314,20 @@ _list_transition_core(Evas_List *files, unsigned char direction)
      }
 
    enna_list_thaw(o_list);
-   enna_list_selected_set(o_list, 0);
+   if (mod->prev_selected)
+     {
+	printf("prev_selected : %s\n", mod->prev_selected);
+	if (!enna_list_jump_label(o_list, mod->prev_selected) > 0)
+	  enna_list_selected_set(o_list, 0);
+
+	free(mod->prev_selected);
+	mod->prev_selected = NULL;
+     }
+   else
+     {
+	enna_list_selected_set(o_list, 0);
+     }
+
    mod->o_list = o_list;
    edje_object_signal_emit(oe, "list,default", "enna");
 
@@ -338,6 +362,9 @@ _browse_down()
 	oe = enna_list_edje_object_get(o);
 	edje_object_signal_callback_add(oe, "list,transition,end", "edje", _list_transition_right_end_cb, files);
 	edje_object_signal_emit(oe, "list,right", "enna");
+
+	mod->prev_selected = strdup(enna_location_label_get_nth(mod->o_location,enna_location_count(mod->o_location) - 1));
+	printf("prev selected : %s\n", mod->prev_selected);
 	enna_location_remove_nth(mod->o_location, enna_location_count(mod->o_location) - 1);
      }
 }
@@ -345,8 +372,8 @@ _browse_down()
 static void
 _hilight(void *data, void *data2)
 {
-   Enna_Class_Vfs *vfs = data;
-   Enna_Vfs_File *file = data2;
+   /*Enna_Class_Vfs *vfs = data;
+     Enna_Vfs_File *file = data2;*/
 }
 
 static void
@@ -509,7 +536,7 @@ static void _create_gui()
    o = edje_object_add(mod->em->evas);
    edje_object_file_set(o, enna_config_theme_get(), "module/music");
    mod->o_edje = o;
-
+   mod->prev_selected = NULL;
    /* Create List */
    o = enna_list_add(mod->em->evas);
    oe = enna_list_edje_object_get(o);
@@ -517,7 +544,7 @@ static void _create_gui()
    edje_object_signal_emit(oe, "list,right,now", "enna");
 
    categories = enna_vfs_get(ENNA_CAPS_MUSIC);
-   //enna_list_icon_size_set(o, 64, 64);
+   enna_list_icon_size_set(o, 200, 200);
    for( l = categories; l; l = l->next)
      {
 	Evas_Object *item;
@@ -592,9 +619,22 @@ static int
 em_shutdown(Enna_Module *em)
 {
    evas_object_del(mod->o_edje);
+   enna_list_freeze(mod->o_list);
    evas_object_del(mod->o_list);
    evas_object_del(mod->o_location);
+   if (mod->timer_show_mediaplayer)
+    ecore_timer_del(mod->timer_show_mediaplayer);
+   if (mod->timer)
+     ecore_timer_del(mod->timer);
    evas_object_del(mod->o_mediaplayer);
+   if (mod->vfs && mod->vfs->func.class_shutdown)
+     {
+	mod->vfs->func.class_shutdown(0);
+	free(mod->vfs);
+     }
+   if (mod->prev_selected)
+     free(mod->prev_selected);
+
    free(mod);
    return 1;
 }

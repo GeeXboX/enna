@@ -9,6 +9,7 @@ EAPI void           enna_listitem_create_full( Evas_Object *obj,  Evas_Object *i
 EAPI void           enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h);
 EAPI void           enna_listitem_min_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h);
 EAPI void           enna_listitem_select(Evas_Object *obj);
+EAPI const char    *enna_listitem_label_get(Evas_Object *obj);
 EAPI void           enna_listitem_unselect(Evas_Object *obj);
 
 #endif
