@@ -29,6 +29,6 @@ EAPI int          enna_activity_init(const char *name);
 EAPI int          enna_activity_show(const char *name);
 EAPI int          enna_activity_shutdown(const char *name);
 EAPI int          enna_activity_hide(const char *name);
-EAPI int          enna_activity_event(const char *name, void *event_info);
+EAPI int          enna_activity_event(Enna_Class_Activity *act, void *event_info);
 
 #endif

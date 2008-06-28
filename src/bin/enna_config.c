@@ -163,6 +163,7 @@ _hash_foreach (const Evas_Hash *hash, const char *key, void *data, void *fdata)
 	     enna_config_value_store(&enna_config->engine, "engine", ENNA_CONFIG_STRING, pair);
 	     enna_config_value_store(&enna_config->backend, "backend", ENNA_CONFIG_STRING, pair);
 	     enna_config_value_store(&enna_config->music_filters, "music_ext", ENNA_CONFIG_STRING_LIST, pair);
+	     enna_config_value_store(&enna_config->video_filters, "video_ext", ENNA_CONFIG_STRING_LIST, pair);
 	  }
      }
 
@@ -200,6 +201,7 @@ _config_load_conf_file(char *filename)
 		     "#libplayer,emotion\n"
 		     "backend=libplayer\n\n"
 		     "music_ext=ogg,mp3,flac,wav,wma\n"
+		     "video_ext=avi,wmv,mkv,ogg,mpg,mpeg\n"
 		     );
 	     fclose(f);
 	  }

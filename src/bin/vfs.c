@@ -55,18 +55,14 @@ enna_vfs_append(const char *name, unsigned char type, Enna_Class_Vfs *vfs)
 {
    if (!vfs) return -1;
 
-   if (type |= ENNA_CAPS_MUSIC)
-     {
+   if ((type & ENNA_CAPS_MUSIC) == ENNA_CAPS_MUSIC)
 	_enna_vfs_music = evas_list_append(_enna_vfs_music, vfs);
-     }
-   if (type |= ENNA_CAPS_VIDEO)
-     {
+
+   if ((type & ENNA_CAPS_VIDEO) == ENNA_CAPS_VIDEO)
 	_enna_vfs_video = evas_list_append(_enna_vfs_video, vfs);
-     }
-   if (type |= ENNA_CAPS_PHOTO)
-     {
+
+   if ((type & ENNA_CAPS_PHOTO) == ENNA_CAPS_VIDEO)
 	_enna_vfs_photo = evas_list_append(_enna_vfs_photo, vfs);
-     }
 
    return 0;
 }
@@ -76,17 +72,14 @@ enna_vfs_get(ENNA_VFS_CAPS type)
 {
 
   if (type == ENNA_CAPS_MUSIC)
-    {
-       return _enna_vfs_music;
-    }
+    return _enna_vfs_music;
   else if (type == ENNA_CAPS_VIDEO)
     {
+       printf("return vfs video\n");
        return _enna_vfs_video;
     }
   else if (type == ENNA_CAPS_PHOTO)
-    {
-       return _enna_vfs_photo;
-    }
+    return _enna_vfs_photo;
   else
     return NULL;
 }

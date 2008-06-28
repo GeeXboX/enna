@@ -28,6 +28,7 @@ struct _Enna_Config
    /* Module Music */
    Evas_List                     *music_local_root_directories;
    Evas_List                     *music_filters;
+   Evas_List                     *video_filters;
 };
 
 struct _Enna_Config_Data

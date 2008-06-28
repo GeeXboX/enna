@@ -77,7 +77,6 @@ _event_bg_key_down_cb(void *data, int type, void *event)
 	     {
 		enna_mainmenu_hide(enna->o_mainmenu);
 		edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-		//edje_object_signal_emit(enna->o_edje, "module,show", "enna");
 		break;
 	     }
 	   case ENNA_KEY_RIGHT:
@@ -93,8 +92,6 @@ _event_bg_key_down_cb(void *data, int type, void *event)
 	   case ENNA_KEY_OK:
 	     {
 		enna_mainmenu_activate_nth(enna->o_mainmenu, enna_mainmenu_selected_get(enna->o_mainmenu));
-		//edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-		//edje_object_signal_emit(enna->o_edje, "module,show", "enna");
 		break;
 	     }
 	   default:
@@ -113,7 +110,7 @@ _event_bg_key_down_cb(void *data, int type, void *event)
 		break;
 	     }
 	   default:
-	      enna_activity_event("music", event);
+	      enna_activity_event(enna_mainmenu_selected_activity_get(enna->o_mainmenu), event);
 	      break;
 	  }
      }
@@ -272,8 +269,6 @@ _create_gui()
 
    enna_activity_init("music");
    enna_activity_init("video");
-   /* Select content */
-   //enna_content_select("music");
 
    enna_mainmenu_load_from_activities(enna->o_mainmenu);
    enna_mainmenu_select_nth(enna->o_mainmenu, 0);

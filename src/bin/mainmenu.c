@@ -54,6 +54,7 @@ struct _E_Smart_Data
    Evas_List          *items;
    int                 selected;
    unsigned char       visible : 1;
+
 };
 
 struct _E_Smart_Item
@@ -64,6 +65,7 @@ struct _E_Smart_Item
    void                (*func) (void *data);
    void               *data;
    unsigned char       selected : 1;
+   Enna_Class_Activity *act;
 };
 
 /* local subsystem functions */
@@ -99,15 +101,20 @@ enna_mainmenu_add(Evas * evas)
 
 EAPI void
 enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
+		     Enna_Class_Activity *act,
 		     void (*func) (void *data),
 		     void *data)
 {
    E_Smart_Item *si;
    Evas_Coord mw = 0, mh = 0;
+
    API_ENTRY return;
+
+   if (!act) return;
 
    si = malloc(sizeof(E_Smart_Item));
    si->sd = sd;
+   si->act = act;
    si->o_base = edje_object_add(evas_object_evas_get(sd->o_edje));
    edje_object_file_set(si->o_base, enna_config_theme_get(),
 			"enna/mainmenu/item");
@@ -169,7 +176,7 @@ enna_mainmenu_load_from_activities(Evas_Object *obj)
 	     icon = enna_image_add(evas_object_evas_get(sd->o_edje));
 	     enna_image_file_set(icon, act->icon_file);
 	  }
-	enna_mainmenu_append(obj, icon, act->name, _enna_mainmenu_activate_cb, act);
+	enna_mainmenu_append(obj, icon, act->name, act, _enna_mainmenu_activate_cb, act);
      }
 
 }
@@ -215,6 +222,22 @@ enna_mainmenu_select_nth(Evas_Object *obj, int nth)
    sd->selected = nth;
    edje_object_signal_emit(new->o_base, "enna,state,selected", "enna");
    if (new != prev) edje_object_signal_emit(prev->o_base, "enna,state,unselected", "enna");
+
+}
+
+EAPI Enna_Class_Activity *
+enna_mainmenu_selected_activity_get(Evas_Object *obj)
+{
+   E_Smart_Item *si;
+   API_ENTRY return;
+
+
+   si = evas_list_nth(sd->items, sd->selected);
+
+   if (!si)
+     return NULL;
+
+   return si->act;
 
 }
 
