@@ -141,7 +141,7 @@ AC_ARG_ENABLE(libxml2,
     [ want_libxml2=$enableval ]
 )
 AC_MSG_RESULT($want_libxml2)
-if test "x$want_curl" = "xyes" -o "x$want_curl" = "xauto"; then
+if test "x$want_libxml2" = "xyes" -o "x$want_libxml2" = "xauto"; then
   AC_CHECK_LIB([xml2], [xmlReadMemory], [have_libxml2=yes], [have_libxml2=no],)
   if test "x$have_libxml2" = "xyes" -a "x$use_strict" = "xyes" ; then
     AC_MSG_ERROR([libxml2 support explicitly requested but libxml2 couldn't be found])
@@ -152,7 +152,7 @@ if test "x$want_curl" = "xyes" -o "x$want_curl" = "xauto"; then
     AC_SUBST(libxml2_libs)
   fi
 fi
-AM_CONDITIONAL(BUILD_CURL, test "x$have_libxml2" = "xyes")
+AM_CONDITIONAL(BUILD_LIBXML2, test "x$have_libxml2" = "xyes")
 
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
