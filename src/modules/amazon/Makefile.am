@@ -15,6 +15,8 @@ INCLUDES = \
 @ENNA_CFLAGS@ -I/usr/include/libxml2
 
 if BUILD_AMAZON_MODULE
+if BUILD_LIBXML2
+if BUILD_CURL
 
 pkgdir = $(libdir)/enna/modules
 
@@ -30,4 +32,6 @@ enna_module_amazon_la_DEPENDENCIES = $(top_builddir)/config.h
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/module/enna_module_$(MODULE).*
 
+endif
+endif
 endif
