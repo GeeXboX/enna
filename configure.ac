@@ -108,31 +108,31 @@ AM_CONDITIONAL(BUILD_LIBPLAYER_BACKEND, test "x$have_libplayer_backend" = "xyes"
 
 #######################################
 ## Check if we should build with cURL support
-want_curl="auto"
-have_curl="no"
+want_libcurl="auto"
+have_libcurl="no"
 
-AC_MSG_CHECKING(whether cURL support is to be built)
-AC_ARG_ENABLE(curl,
-    AS_HELP_STRING([--enable-curl],[Enable cURL support]),
-    [ want_curl=$enableval ]
+AC_MSG_CHECKING(whether libcurl support is to be built)
+AC_ARG_ENABLE(libcurl,
+    AS_HELP_STRING([--enable-libcurl],[Enable libcurl support]),
+    [ want_libcurl=$enableval ]
 )
-AC_MSG_RESULT($want_curl)
-if test "x$want_curl" = "xyes" -o "x$want_curl" = "xauto"; then
+AC_MSG_RESULT($want_libcurl)
+if test "x$want_libcurl" = "xyes" -o "x$want_libcurl" = "xauto"; then
   PKG_CHECK_MODULES(
-    [CURL],
+    [LIBCURL],
     [libcurl],
     [
-      AC_DEFINE(BUILD_LIBCURL, 1, [cURL support])
-      have_curl="yes"
+      AC_DEFINE(BUILD_LIBCURL, 1, [lib support])
+      have_libcurl="yes"
     ],
     [
-      if test "x$want_curl" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([cURL not found (strict dependencies checking)])
+      if test "x$want_libcurl" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libcurl not found (strict dependencies checking)])
       fi
     ]
   )
 fi
-AM_CONDITIONAL(BUILD_CURL, test "x$have_curl" = "xyes")
+AM_CONDITIONAL(BUILD_LIBCURL, test "x$have_libcurl" = "xyes")
 
 #######################################
 ## Check if we should build with libxml2 support
@@ -237,7 +237,7 @@ echo "  lirc client...................... : $have_lirc_module"
 echo "  emotion backend.................. : $have_emotion_backend"
 echo "  libplayer backend................ : $have_libplayer_backend"
 echo "  light media scanner module....... : $have_lms_module"
-echo "  cURL............................. : $have_curl"
+echo "  libcurl.......................... : $have_libcurl"
 echo "  libxml2.......................... : $have_libxml2"
 echo "  Amazon module.................... : $want_amazon_module"
 echo
