@@ -24,6 +24,7 @@ struct _Enna_Class_Activity
 };
 
 EAPI int          enna_activity_add(Enna_Class_Activity *class);
+EAPI int          enna_activity_del(const char *name);
 EAPI Evas_List   *enna_activities_get(void);
 EAPI int          enna_activity_init(const char *name);
 EAPI int          enna_activity_show(const char *name);
