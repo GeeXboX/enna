@@ -86,8 +86,10 @@ enna_get_key (void *event)
 EAPI void
 enna_input_init()
 {
+#ifdef BUILD_LIRC_MODULE
    Enna_Module *em;
    Input_Module_Item *item;
+#endif
 
    /* Create Input event "Key Down" */
    ENNA_EVENT_INPUT_KEY_DOWN = ecore_event_type_new();
