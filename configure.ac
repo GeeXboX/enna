@@ -106,6 +106,54 @@ if test "x$want_libplayer_backend" = "xyes" -o "x$want_libplayer_backend" = "xau
 fi
 AM_CONDITIONAL(BUILD_LIBPLAYER_BACKEND, test "x$have_libplayer_backend" = "xyes")
 
+#######################################
+## Check if we should build with cURL support
+want_curl="auto"
+have_curl="no"
+
+AC_MSG_CHECKING(whether cURL support is to be built)
+AC_ARG_ENABLE(curl,
+    AS_HELP_STRING([--enable-curl],[Enable cURL support]),
+    [ want_curl=$enableval ]
+)
+AC_MSG_RESULT($want_curl)
+if test "x$want_curl" = "xyes" -o "x$want_curl" = "xauto"; then
+  AC_CHECK_LIB([curl], [curl_global_init], [have_curl=yes], [have_curl=no],)
+  if test "x$have_curl" = "xyes" -a "x$use_strict" = "xyes" ; then
+    AC_MSG_ERROR([cURL support explicitly requested but cURL couldn't be found])
+  fi
+  if test "x$have_curl" = "xyes" ; then
+    AC_DEFINE(BUILD_CURL, 1, [cURL])
+    curl_libs=-lcurl
+    AC_SUBST(curl_libs)
+  fi
+fi
+AM_CONDITIONAL(BUILD_CURL, test "x$have_curl" = "xyes")
+
+#######################################
+## Check if we should build with libxml2 support
+want_libxml2="auto"
+have_libxml2="no"
+
+AC_MSG_CHECKING(whether libxml2 support is to be built)
+AC_ARG_ENABLE(libxml2,
+    AS_HELP_STRING([--enable-libxml2],[Enable libxml2 support]),
+    [ want_libxml2=$enableval ]
+)
+AC_MSG_RESULT($want_libxml2)
+if test "x$want_curl" = "xyes" -o "x$want_curl" = "xauto"; then
+  AC_CHECK_LIB([xml2], [xmlReadMemory], [have_libxml2=yes], [have_libxml2=no],)
+  if test "x$have_libxml2" = "xyes" -a "x$use_strict" = "xyes" ; then
+    AC_MSG_ERROR([libxml2 support explicitly requested but libxml2 couldn't be found])
+  fi
+  if test "x$have_libxml2" = "xyes" ; then
+    AC_DEFINE(BUILD_LIBXML2, 1, [libxml2])
+    libxml2_libs=-lxml2
+    AC_SUBST(libxml2_libs)
+  fi
+fi
+AM_CONDITIONAL(BUILD_CURL, test "x$have_libxml2" = "xyes")
+
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
@@ -138,11 +186,23 @@ if test "x$want_lms_module" = "xyes" -o "x$want_lms_module" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LMS_MODULE, test "x$have_lms_module" = "xyes")
 
+#######################################
+## Check if we should build AMazon module
+want_amazon_module="yes"
+AC_MSG_CHECKING(whether amazon is to be built)
+AC_ARG_ENABLE(amazon-module,
+  AS_HELP_STRING([--enable-amazon-module],[Enable Amazon Module]),
+  [ want_amazon_module=$enableval ]
+)
+AC_MSG_RESULT($want_amazon_module)
+AM_CONDITIONAL(BUILD_AMAZON_MODULE, test "x$want_amazon_module" = "xyes")
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
 src/bin/Makefile
 src/modules/Makefile
+src/modules/amazon/Makefile
 src/modules/music/Makefile
 src/modules/video/Makefile
 src/modules/browser/Makefile
@@ -169,6 +229,9 @@ echo "  lirc client...................... : $have_lirc_module"
 echo "  emotion backend.................. : $have_emotion_backend"
 echo "  libplayer backend................ : $have_libplayer_backend"
 echo "  light media scanner module....... : $have_lms_module"
+echo "  cURL............................. : $have_curl"
+echo "  libxml2.......................... : $have_libxml2"
+echo "  Amazon module.................... : $want_amazon_module"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo

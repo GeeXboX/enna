@@ -33,6 +33,18 @@
 
 #include "enna.h"
 
+static Enna_Class_CoverPlugin *cover_class = NULL;
+
+EAPI int
+enna_cover_plugin_register (Enna_Class_CoverPlugin *class)
+{
+  if (!class)
+    return -1;
+
+  cover_class = class;
+
+  return 0;
+}
 
 EAPI char *enna_cover_album_get(const char *artist, const char *album, const char *filename)
 {
@@ -42,12 +54,15 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
 				    "front.png",
 				    "front.jpg"};
    char tmp[4096];
-   char *cover_file;
+   char *cover_file = NULL;
    int i;
-
+//#ifdef BUILD_AMAZON_MODULE
+   Enna_Module *em;
+//#endif
+   
    if (!artist || !album)
      return NULL;
-
+      
    if (filename)
      {
 
@@ -86,6 +101,23 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
 	     return cover_file;
 	  }
      }
+
+//#ifdef BUILD_AMAZON_MODULE
+   em = enna_module_open ("amazon", enna->evas);
+   enna_module_enable (em);
+
+   if (cover_class && cover_class->music_cover_get)
+    cover_file = cover_class->music_cover_get (artist, album);
+   
+   enna_module_disable (em);
+   cover_class = NULL;
+   
+   if (cover_file)
+     printf ("Amazon Cover File : %s\n", cover_file);
+
+   return cover_file;
+//#endif
+   
    return NULL;
 
 }
