@@ -5,21 +5,21 @@
 #include <sqlite3.h>
 
 
-static int            _db_bind_blob(sqlite3_stmt *stmt, int col, const void *blob, int len);
+//static int            _db_bind_blob(sqlite3_stmt *stmt, int col, const void *blob, int len);
 static int            _db_bind_text(sqlite3_stmt *stmt, int col, const char *text, int len);
 static sqlite3_stmt  *_db_compile_stmt(sqlite3 *db, const char *sql);
 static int            _db_reset_stmt(sqlite3_stmt *stmt);
-static int            _db_finalize_stmt(sqlite3_stmt *stmt, const char *name);
+//static int            _db_finalize_stmt(sqlite3_stmt *stmt, const char *name);
 static sqlite3       *_db_open(const char *filename);
 static void          *_scanner_thread(void *ptr);
 static int            _pipe_read_active(void *data, Ecore_Fd_Handler * fdh);
-static void           _metadata_print(Enna_Metadata * metadata);
-static int            _nb_medias_get(int type);
-static char          *_cover_get(const char *album, const char *artist);
-static Enna_Metadata *_audio_metadata_get(const char *filename);
-static int            _audio_nb_albums_get();
-static int            _audio_nb_artists_get();
-static int            _audio_nb_genres_get();
+//static void           _metadata_print(Enna_Metadata * metadata);
+//static int            _nb_medias_get(int type);
+//static char          *_cover_get(const char *album, const char *artist);
+//static Enna_Metadata *_audio_metadata_get(const char *filename);
+//static int            _audio_nb_albums_get();
+//static int            _audio_nb_artists_get();
+//static int            _audio_nb_genres_get();
 static Evas_List     *_audio_artists_list_get();
 static Evas_List     *_audio_albums_list_get();
 static Evas_List     *_audio_genres_list_get();
@@ -101,6 +101,7 @@ static Enna_Class_Vfs class =
     },
   };
 
+#if 0
 static int
 _db_bind_blob(sqlite3_stmt *stmt, int col, const void *blob, int len)
 {
@@ -124,6 +125,7 @@ _db_bind_blob(sqlite3_stmt *stmt, int col, const void *blob, int len)
 	return -col;
    }
 }
+#endif
 
 static int
 _db_bind_text(sqlite3_stmt *stmt, int col, const char *text, int len)
@@ -178,6 +180,7 @@ _db_reset_stmt(sqlite3_stmt *stmt)
    return ret;
 }
 
+#if 0
 static int
 _db_finalize_stmt(sqlite3_stmt *stmt, const char *name)
 {
@@ -192,6 +195,7 @@ _db_finalize_stmt(sqlite3_stmt *stmt, const char *name)
 
    return 0;
 }
+#endif
 
 
 static sqlite3 *
@@ -245,6 +249,7 @@ _pipe_read_active(void *data, Ecore_Fd_Handler * fdh)
 }
 
 
+#if 0
 static void
 _metadata_print(Enna_Metadata * metadata)
 {
@@ -448,6 +453,7 @@ _audio_nb_genres_get()
    _db_reset_stmt(stmt);
    return ret;
 }
+#endif
 
 static Evas_List *
 _audio_artists_list_get()
