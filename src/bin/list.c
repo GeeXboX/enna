@@ -763,7 +763,6 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	if (!sd->letter_mode)
 	  {
 	     char letter[2];
-	     int i;
 	     sd->letter_mode = 1;
 	     sd->letter_event_nbr = 0;
 	     sd->letter_key = key;
