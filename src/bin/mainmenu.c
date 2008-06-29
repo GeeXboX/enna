@@ -229,7 +229,7 @@ EAPI Enna_Class_Activity *
 enna_mainmenu_selected_activity_get(Evas_Object *obj)
 {
    E_Smart_Item *si;
-   API_ENTRY return;
+   API_ENTRY return NULL;
 
 
    si = evas_list_nth(sd->items, sd->selected);
