@@ -443,14 +443,14 @@ _class_vfs_get(int type)
    switch(type)
    {
     case ENNA_CAPS_MUSIC:
-       f->uri  = mod->music->uri;
-       f->label = ecore_file_file_get(mod->music->uri);;
-       f->icon = evas_stringshare_add("icon/music");
+       f->uri  = (char *) mod->music->uri;
+       f->label = (char *) ecore_file_file_get(mod->music->uri);;
+       f->icon = (char *) evas_stringshare_add("icon/music");
        break;
     case ENNA_CAPS_VIDEO:
-       f->uri  = mod->video->uri;
-       f->label = ecore_file_file_get(mod->video->uri);
-       f->icon = evas_stringshare_add("icon/video");
+       f->uri  = (char *) mod->video->uri;
+       f->label = (char *) ecore_file_file_get(mod->video->uri);
+       f->icon = (char *) evas_stringshare_add("icon/video");
        break;
    }
    f->is_directory = 1;
