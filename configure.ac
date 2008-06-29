@@ -118,15 +118,19 @@ AC_ARG_ENABLE(curl,
 )
 AC_MSG_RESULT($want_curl)
 if test "x$want_curl" = "xyes" -o "x$want_curl" = "xauto"; then
-  AC_CHECK_LIB([curl], [curl_global_init], [have_curl=yes], [have_curl=no],)
-  if test "x$have_curl" = "xyes" -a "x$use_strict" = "xyes" ; then
-    AC_MSG_ERROR([cURL support explicitly requested but cURL couldn't be found])
-  fi
-  if test "x$have_curl" = "xyes" ; then
-    AC_DEFINE(BUILD_CURL, 1, [cURL])
-    curl_libs=-lcurl
-    AC_SUBST(curl_libs)
-  fi
+  PKG_CHECK_MODULES(
+    [CURL],
+    [libcurl],
+    [
+      AC_DEFINE(BUILD_LIBCURL, 1, [cURL support])
+      have_curl="yes"
+    ],
+    [
+      if test "x$want_curl" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([cURL not found (strict dependencies checking)])
+      fi
+    ]
+  )
 fi
 AM_CONDITIONAL(BUILD_CURL, test "x$have_curl" = "xyes")
 
@@ -142,15 +146,19 @@ AC_ARG_ENABLE(libxml2,
 )
 AC_MSG_RESULT($want_libxml2)
 if test "x$want_libxml2" = "xyes" -o "x$want_libxml2" = "xauto"; then
-  AC_CHECK_LIB([xml2], [xmlReadMemory], [have_libxml2=yes], [have_libxml2=no],)
-  if test "x$have_libxml2" = "xyes" -a "x$use_strict" = "xyes" ; then
-    AC_MSG_ERROR([libxml2 support explicitly requested but libxml2 couldn't be found])
-  fi
-  if test "x$have_libxml2" = "xyes" ; then
-    AC_DEFINE(BUILD_LIBXML2, 1, [libxml2])
-    libxml2_libs=-lxml2
-    AC_SUBST(libxml2_libs)
-  fi
+  PKG_CHECK_MODULES(
+    [LIBXML2],
+    [libxml-2.0],
+    [
+      AC_DEFINE(BUILD_LIBXML2, 1, [libxml2 support])
+      have_libxml2="yes"
+    ],
+    [
+      if test "x$want_libxml2" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libxml2 not found (strict dependencies checking)])
+      fi
+    ]
+  )
 fi
 AM_CONDITIONAL(BUILD_LIBXML2, test "x$have_libxml2" = "xyes")
 
