@@ -56,7 +56,7 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
    char tmp[4096];
    char *cover_file = NULL;
    int i;
-#ifdef BUILD_AMAZON_MODULE
+#if defined(BUILD_AMAZON_MODULE) && defined(BUILD_LIBXML2) && defined(BUILD_LIBCURL)
    Enna_Module *em;
 #endif
    
@@ -102,7 +102,7 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
 	  }
      }
 
-#ifdef BUILD_AMAZON_MODULE
+#if defined(BUILD_AMAZON_MODULE) && defined(BUILD_LIBXML2) && defined(BUILD_LIBCURL)
    em = enna_module_open ("amazon", enna->evas);
    enna_module_enable (em);
 
