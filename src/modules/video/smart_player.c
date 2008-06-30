@@ -33,7 +33,7 @@
 
 #include "smart_player.h"
 
-#define SMART_NAME "smart_mediaplayer"
+#define SMART_NAME "smart_player"
 
 #define API_ENTRY \
    E_Smart_Data *sd; \
@@ -57,6 +57,7 @@ struct _E_Smart_Data
    Evas_Object        *o_edje;
    Evas_Object        *o_cover;
    Evas_Object        *o_cover_old;
+   Evas_Object        *o_fs;
 };
 
 /* local subsystem functions */
@@ -124,32 +125,12 @@ enna_smart_player_position_set(Evas_Object *obj, double pos, double len)
 EAPI void
 enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
-   char *cover_file = NULL;
-
-
    API_ENTRY;
 
    if (!metadata) return;
    if (metadata->title) edje_object_part_text_set(sd->o_edje, "enna.text.title", metadata->title);
    if (metadata->album) edje_object_part_text_set(sd->o_edje, "enna.text.album", metadata->album);
    if (metadata->artist) edje_object_part_text_set(sd->o_edje, "enna.text.artist", metadata->artist);
-
-   cover_file = enna_cover_album_get(metadata->artist, metadata->album, metadata->uri);
-   if (cover_file)
-     {
-	/* FIXME : add edje cb at end of cover transition to switch properly covers*/
-	sd->o_cover_old = sd->o_cover;
-	sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-	enna_image_file_set(sd->o_cover, cover_file);
-	edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
-	edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
-	evas_object_del(sd->o_cover_old);
-     }
-   else
-     {
-	edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
-       	evas_object_del(sd->o_cover);
-     }
 
 }
 
@@ -204,11 +185,17 @@ _e_smart_add(Evas_Object * obj)
    sd->x = 0;
    sd->y = 0;
    sd->w = 0;
+
    sd->h = 0;
    evas_object_smart_member_add(sd->o_edje, obj);
    evas_object_smart_data_set(obj, sd);
    edje_object_signal_callback_add (sd->o_edje, "drag", "enna.dragable.pos",
                                     _drag_bar_seek_cb, NULL);
+   //sd->o_fs = enna_fullscreen_add(evas_object_evas_get(obj));
+   //evas_object_show(sd->o_fs);
+   //enna_fullscreen_obj_set(sd->o_fs, enna_mediaplayer_video_obj_get());
+   edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", enna_mediaplayer_video_obj_get());
+   edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
 }
 
 static void

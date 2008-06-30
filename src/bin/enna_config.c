@@ -111,10 +111,6 @@ enna_config_value_store(void *var, char *section, ENNA_CONFIG_TYPE type, Config_
 	      break;
 	  }
      }
-   else
-     {
-	printf("section not found\n");
-     }
 }
 
 EAPI Enna_Config_Data *
@@ -298,7 +294,6 @@ _config_load_conf(char *conffile, int size)
 	     config_data->section = current_section;
 	     config_data->pair = NULL;
 	     config = evas_hash_add(config, current_section, config_data);
-	     printf("Section [\"%s\"]\n", current_section);
 	     current_line = eol + 1;
 	     continue;
 

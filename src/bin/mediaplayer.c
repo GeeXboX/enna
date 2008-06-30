@@ -309,6 +309,13 @@ enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class)
    return 0;
 }
 
+EAPI Evas_Object *
+enna_mediaplayer_video_obj_get(void)
+{
+   if (_mediaplayer->class->func.class_video_obj_get)
+     _mediaplayer->class->func.class_video_obj_get();
+}
+
 static void
 _event_cb(void *data, enna_mediaplayer_event_t event)
 {

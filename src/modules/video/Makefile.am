@@ -19,7 +19,8 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = enna_module_video.la
 
 enna_module_video_la_SOURCES= \
-enna_module_video.c 
+enna_module_video.c\
+smart_player.c
 
 enna_module_video_la_LIBADD = @ENNA_LIBS@
 enna_module_video_la_LDFLAGS = -module -avoid-version

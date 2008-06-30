@@ -17,6 +17,7 @@ static int _class_stop(void);
 static double _class_position_get();
 static double _class_length_get();
 static Enna_Metadata *_class_metadata_get(void);
+
 static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data);
 
 static Enna_Class_MediaplayerBackend class =
@@ -35,6 +36,7 @@ static Enna_Class_MediaplayerBackend class =
       _class_length_get,
       _class_metadata_get,
       _class_event_cb_set,
+      NULL
     }
   };
 

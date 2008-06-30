@@ -1,9 +1,10 @@
 /* Interface */
 
 #include "enna.h"
-
+#include "smart_player.h"
 
 static void           _create_gui();
+static void           _create_mediaplayer_gui();
 static void           _class_init(int dummy);
 static void           _class_shutdown(int dummy);
 static void           _class_show(int dummy);
@@ -18,6 +19,8 @@ static void           _browse(void *data, void *data2);
 static void           _hilight(void *data, void *data2);
 static void           _browse_down();
 static void           _activate();
+static int            _eos_cb(void *data, int type, void *event);
+static int            _show_mediaplayer_cb (void *data);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
 
@@ -111,7 +114,7 @@ static void _class_event(void *event_info)
 {
    Ecore_X_Event_Key_Down *ev = event_info;
    enna_key_t key = enna_get_key (ev);
-   printf("Key pressed video : %s\n", ev->keysymbol);
+
    switch (mod->state)
      {
       case LIST_VIEW:
@@ -137,6 +140,7 @@ static void _class_event(void *event_info)
 	       break;
 	    case ENNA_KEY_CANCEL:
 	       mod->state = LIST_VIEW;
+	       mod->timer_show_mediaplayer = ecore_timer_add(10, _show_mediaplayer_cb, NULL);
 	       edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
 	       edje_object_signal_emit(mod->o_edje, "list,show", "enna");
 	       break;
@@ -149,6 +153,20 @@ static void _class_event(void *event_info)
      }
 }
 
+static int _show_mediaplayer_cb (void *data)
+{
+
+  if (mod->o_mediaplayer)
+    {
+       mod->state = MEDIAPLAYER_VIEW;
+       edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+       edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+       ecore_timer_del(mod->timer_show_mediaplayer);
+       mod->timer_show_mediaplayer = NULL;
+    }
+
+   return 0;
+}
 
 static void
 _activate()
@@ -399,6 +417,7 @@ _browse(void *data, void *data2)
 		       i++;
 		    }
 	       }
+	     _create_mediaplayer_gui();
 	     return;
 	  }
 
@@ -412,6 +431,54 @@ _browse(void *data, void *data2)
 
 }
 
+
+
+static int _update_position_timer(void *data)
+{
+
+   double pos;
+   double length;
+
+   length = enna_mediaplayer_length_get();
+   pos = enna_mediaplayer_position_get();
+
+   enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
+   return 1;
+}
+
+
+static void _create_mediaplayer_gui()
+{
+   Evas_Object *o;
+
+   mod->state = MEDIAPLAYER_VIEW;
+
+   if (mod->o_mediaplayer)
+     evas_object_del(mod->o_mediaplayer);
+
+   ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
+
+   o = enna_smart_player_add(mod->em->evas);
+   edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
+   evas_object_show(o);
+   mod->o_mediaplayer = o;
+   mod->timer = ecore_timer_add(1, _update_position_timer, NULL);
+
+   edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+   edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+
+}
+
+static int
+_eos_cb(void *data, int type, void *event)
+{
+   /* EOS received, update metadata */
+   edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
+   edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+   evas_object_del(mod->o_mediaplayer);
+   mod->o_mediaplayer = NULL;
+   return 1;
+}
 
 static void _create_gui()
 {
