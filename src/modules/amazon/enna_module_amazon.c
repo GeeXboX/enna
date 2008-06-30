@@ -18,7 +18,10 @@
 #define AMAZON_HOSTNAME     "webservices.amazon.com"
 #define AMAZON_LICENSE_KEY  "0P1862RFDFSF4KYZQNG2"
 
-#define AMAZON_SEARCH_MUSIC "http://%s/onca/xml?Service=AWSECommerceService&SubscriptionId=%s&Operation=ItemSearch&Keywords=%s&SearchIndex=Music"
+#define AMAZON_SEARCH "http://%s/onca/xml?Service=AWSECommerceService&SubscriptionId=%s&Operation=ItemSearch&Keywords=%s&SearchIndex=%s"
+
+#define AMAZON_SEARCH_MUSIC "Music"
+#define AMAZON_SEARCH_MOVIE "DVD"
 
 #define AMAZON_SEARCH_COVER "http://%s/onca/xml?Service=AWSECommerceService&SubscriptionId=%s&Operation=ItemLookup&ItemId=%s&ResponseGroup=Images"
 
@@ -27,11 +30,13 @@
 /*****************************************************************************/
 
 static char * amazon_music_cover_get (const char *artist, const char *album);
+static char * amazon_movie_cover_get (const char *movie);
 
 static Enna_Class_CoverPlugin class =
   {
     "amazon",
-    amazon_music_cover_get
+    amazon_music_cover_get,
+    amazon_movie_cover_get,
   };
 
 typedef struct _Enna_Module_Amazon {
@@ -195,33 +200,25 @@ curl_http_get (char *url)
 }
 
 static char *
-amazon_cover_album_get (const char *artist, const char *album)
+amazon_cover_get (char *search_type, char *keywords)
 {
   char *buf, *cover;
   char url[MAX_URL_SIZE];
-  char keywords[MAX_KEYWORD_SIZE];
-  char escaped_keywords[2*MAX_KEYWORD_SIZE];
-  
+ 
   xmlDocPtr doc;
   xmlNode *img;
   xmlChar *asin, *cover_url;
 
-  if (!artist || !album)
+  if (!search_type || !keywords)
     return NULL;
   
-  /* 1. Format the keywords */
-  memset (keywords, '\0', MAX_KEYWORD_SIZE);
-  memset (escaped_keywords, '\0', 2 * MAX_KEYWORD_SIZE);
-  sprintf (keywords, "%s %s", artist, album);
-  url_escape_string (escaped_keywords, keywords);
-
-  /* 2. Prepare Amazon WebService URL for Music Search */
+  /* 2. Prepare Amazon WebService URL for Search */
   memset (url, '\0', MAX_URL_SIZE);
-  snprintf (url, MAX_URL_SIZE, AMAZON_SEARCH_MUSIC,
-            AMAZON_HOSTNAME, AMAZON_LICENSE_KEY, escaped_keywords);
+  snprintf (url, MAX_URL_SIZE, AMAZON_SEARCH,
+            AMAZON_HOSTNAME, AMAZON_LICENSE_KEY, keywords, search_type);
 
 #ifdef DEBUG
-  printf ("Music Search Request: %s\n", url);
+  printf ("Amazon Search Request: %s\n", url);
 #endif
 
   /* 3. Perform request */
@@ -230,7 +227,7 @@ amazon_cover_album_get (const char *artist, const char *album)
     return NULL;
 
 #ifdef DEBUG
-  printf ("Music Search Reply: %s\n", buf);
+  printf ("Amazon Search Reply: %s\n", buf);
 #endif
 
   /* 4. Parse the answer to get ASIN value */
@@ -245,7 +242,7 @@ amazon_cover_album_get (const char *artist, const char *album)
 
   if (!asin)
   {
-    printf ("Amazon: Unable to find the item \"%s - %s\"\n", artist, album);
+    printf ("Amazon: Unable to find the item \"%s\"\n", keywords);
     return NULL;
   }
 
@@ -294,7 +291,7 @@ amazon_cover_album_get (const char *artist, const char *album)
   cover_url = get_prop_value_from_xml_tree (img, "URL");
   if (!cover_url)
   {
-    printf ("Amazon: Unable to find the cover for %s - %s\n", artist, album);
+    printf ("Amazon: Unable to find the cover for %s\n", keywords);
     xmlFreeDoc (doc);
     return NULL;
   }
@@ -304,8 +301,8 @@ amazon_cover_album_get (const char *artist, const char *album)
   /* 8. Download cover and save to disk */
   cover = malloc (MAX_URL_SIZE);
   snprintf (cover, MAX_URL_SIZE,
-            "%s/.enna/covers/%s-%s.png",
-            enna_util_user_home_get (), artist, album);
+            "%s/.enna/covers/%s.png",
+            enna_util_user_home_get (), keywords);
 
   printf ("Saving %s to %s\n", cover_url, cover);
   ecore_file_download ((const char *) cover_url, cover, NULL, NULL, NULL);
@@ -317,7 +314,37 @@ amazon_cover_album_get (const char *artist, const char *album)
 static char *
 amazon_music_cover_get (const char *artist, const char *album)
 {
-  return amazon_cover_album_get (artist, album);
+  char keywords[MAX_KEYWORD_SIZE];
+  char escaped_keywords[2*MAX_KEYWORD_SIZE];
+  
+  if (!artist || !album)
+    return NULL;
+  
+  /* Format the keywords */
+  memset (keywords, '\0', MAX_KEYWORD_SIZE);
+  memset (escaped_keywords, '\0', 2 * MAX_KEYWORD_SIZE);
+  snprintf (keywords, MAX_KEYWORD_SIZE, "%s %s", artist, album);
+  url_escape_string (escaped_keywords, keywords);
+  
+  return amazon_cover_get (AMAZON_SEARCH_MUSIC, escaped_keywords);
+}
+
+static char *
+amazon_movie_cover_get (const char *movie)
+{
+  char keywords[MAX_KEYWORD_SIZE];
+  char escaped_keywords[2*MAX_KEYWORD_SIZE];
+  
+  if (!movie)
+    return NULL;
+  
+  /* Format the keywords */
+  memset (keywords, '\0', MAX_KEYWORD_SIZE);
+  memset (escaped_keywords, '\0', 2 * MAX_KEYWORD_SIZE);
+  snprintf (keywords, MAX_KEYWORD_SIZE, movie);
+  url_escape_string (escaped_keywords, keywords);
+  
+  return amazon_cover_get (AMAZON_SEARCH_MUSIC, escaped_keywords);
 }
 
 /*****************************************************************************/

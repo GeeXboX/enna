@@ -7,6 +7,7 @@ struct _Enna_Class_CoverPlugin
 {
   const char *name;
   char *(*music_cover_get)(const char *artist, const char *album);
+  char *(*movie_cover_get)(const char *movie);
 };
 
 EAPI int enna_cover_plugin_register(Enna_Class_CoverPlugin *class);
