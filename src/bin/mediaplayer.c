@@ -314,6 +314,8 @@ enna_mediaplayer_video_obj_get(void)
 {
    if (_mediaplayer->class->func.class_video_obj_get)
      _mediaplayer->class->func.class_video_obj_get();
+
+   return NULL;
 }
 
 static void
