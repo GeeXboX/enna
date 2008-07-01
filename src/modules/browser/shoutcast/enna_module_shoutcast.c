@@ -2,10 +2,7 @@
 
 #include "enna.h"
 #include "xml_utils.h"
-
-#include <curl/curl.h>
-#include <curl/types.h>
-#include <curl/easy.h>
+#include "url_utils.h"
 
 #define SHOUTCAST_URL      "http://www.shoutcast.com"
 
@@ -26,11 +23,6 @@ static Enna_Vfs_File *_class_vfs_get(void);
 
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
-
-typedef struct curl_data_s {
-  char *buffer;
-  size_t size;
-} curl_data_t;
 
 typedef struct Enna_Module_Music_s {
   Evas *e;
@@ -62,49 +54,15 @@ static Enna_Class_Vfs class_shoutcast =
     },
 };
 
-static size_t
-http_info_get (void *ptr, size_t size, size_t nmemb, void *data)
-{
-  size_t realsize = size * nmemb;
-  curl_data_t *mem = (curl_data_t *) data;
-
-  mem->buffer = realloc (mem->buffer, mem->size + realsize + 1);
-  if (mem->buffer)
-  {
-    memcpy (&(mem->buffer[mem->size]), ptr, realsize);
-    mem->size += realsize;
-    mem->buffer[mem->size] = 0;
-  }
-  
-  return realsize;
-}
-
-static curl_data_t
-http_get_data (CURL *curl, char *url)
-{
-  curl_data_t chunk;
-
-  chunk.buffer = NULL; /* we expect realloc(NULL, size) to work */
-  chunk.size = 0;      /* no data at this point */
-
-  curl_easy_setopt (curl, CURLOPT_URL, url);
-  curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, http_info_get);
-  curl_easy_setopt (curl, CURLOPT_WRITEDATA, (void *) &chunk);
-
-  curl_easy_perform (curl);
-
-  return chunk;
-}
-
 static Evas_List *
 browse_list (void)
 {
-  curl_data_t chunk;
+  url_data_t chunk;
   xmlDocPtr doc;
   xmlNode *list, *n;
   Evas_List *files = NULL;
 
-  chunk = http_get_data (mod->curl, SHOUTCAST_LIST);
+  chunk = url_get_data (mod->curl, SHOUTCAST_LIST);
 
   doc = xmlReadMemory (chunk.buffer, chunk.size,
                        NULL, NULL, 0);
@@ -142,7 +100,7 @@ browse_list (void)
 static Evas_List *
 browse_by_genre (const char *path)
 {
-    curl_data_t chunk;
+    url_data_t chunk;
     xmlDocPtr doc;
     xmlNode *list, *n;
     char url[MAX_URL];
@@ -152,7 +110,7 @@ browse_by_genre (const char *path)
 
     memset (url, '\0', MAX_URL);
     snprintf (url, MAX_URL, "%s%s", SHOUTCAST_STATION, genre);
-    chunk = http_get_data (mod->curl, url);
+    chunk = url_get_data (mod->curl, url);
 
     doc = xmlReadMemory (chunk.buffer, chunk.size,
                          NULL, NULL, 0);

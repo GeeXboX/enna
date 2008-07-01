@@ -4,7 +4,7 @@ INCLUDES = \
 -DPACKAGE_LIB_DIR=\"$(libdir)\" \
 -DPACKAGE_DATA_DIR=\""$(datadir)"\"
 
-AM_CFLAGS = @ENNA_CFLAGS@ @LIBXML2_CFLAGS@
+AM_CFLAGS = @ENNA_CFLAGS@ @LIBXML2_CFLAGS@ @LIBCURL_CFLAGS@
 
 bin_PROGRAMS = enna
 
@@ -28,9 +28,10 @@ mediaplayer.c\
 event_key.c\
 list_item.c\
 xml_utils.c\
+url_utils.c\
 covers.c
 
-enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@
+enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@
 enna_LDFLAGS = -rdynamic
 
 EXTRA_DIST= \
@@ -54,6 +55,7 @@ mediaplayer.h\
 event_key.h\
 list_item.h\
 xml_utils.h\
+url_utils.h\
 covers.h
 
 

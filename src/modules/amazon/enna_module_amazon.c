@@ -2,10 +2,7 @@
 
 #include "enna.h"
 #include "xml_utils.h"
-
-#include <curl/curl.h>
-#include <curl/types.h>
-#include <curl/easy.h>
+#include "url_utils.h"
 
 #define DEBUG 1
 
@@ -81,95 +78,13 @@ em_shutdown (Enna_Module *em)
 /*                             Amazon Helpers                                */
 /*****************************************************************************/
 
-static void
-url_escape_string (char *outbuf, const char *inbuf)
-{
-  unsigned char c, c1, c2;
-  int i, len;
-
-  len = strlen (inbuf);
-
-  for  (i = 0; i < len; i++)
-  {
-    c = inbuf[i];
-    if ((c == '%') && i < len - 2)
-    { /* need 2 more characters */
-      c1 = toupper (inbuf[i + 1]);
-      c2 = toupper (inbuf[i + 2]);
-      /* need uppercase chars */
-    }
-    else
-    {
-      c1 = 129;
-      c2 = 129;
-      /* not escaped chars */
-    }
-
-    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
-        || (c >= '0' && c <= '9') || (c >= 0x7f))
-      *outbuf++ = c;
-    else if (c =='%'
-             && ((c1 >= '0' && c1 <= '9') || (c1 >= 'A' && c1 <= 'F'))
-             && ((c2 >= '0' && c2 <= '9') || (c2 >= 'A' && c2 <= 'F')))
-    {
-      /* check if part of an escape sequence */
-      *outbuf++ = c; /* already escaped */
-    }
-    else
-    {
-      /* all others will be escaped */
-      c1 = ((c & 0xf0) >> 4);
-      c2 = (c & 0x0f);
-      if (c1 < 10)
-        c1 += '0';
-      else
-        c1 += 'A' - 10;
-      if (c2 < 10)
-        c2 += '0';
-      else
-        c2 += 'A' - 10;
-      *outbuf++ = '%';
-      *outbuf++ = c1;
-      *outbuf++ = c2;
-    }
-  }
-  *outbuf++='\0';
-}
-
-static int
-curl_http_buffer_get (void *buffer, size_t size, size_t nmemb, void *stream)
-{
-  char *msg = (char *) stream;
-
-  if (!msg)
-    return -1;
-
-  strncat (msg, buffer, (size * nmemb));
-
-  return (size * nmemb);
-}
-
-static char *
-curl_http_get (char *url)
-{
-  char *buf;
-
-  buf = malloc (MAX_BUF_LEN);
-  memset (buf, '\0', MAX_BUF_LEN);
-  
-  curl_easy_setopt (mod->curl, CURLOPT_URL, url);
-  curl_easy_setopt (mod->curl, CURLOPT_WRITEFUNCTION, curl_http_buffer_get);
-  curl_easy_setopt (mod->curl, CURLOPT_WRITEDATA, buf);
-
-  return (curl_easy_perform (mod->curl) == CURLE_OK) ? buf : NULL;
-}
-
 static char *
 amazon_cover_get (char *search_type, char *keywords)
 {
-  char *buf, *cover;
+  char *cover;
   char url[MAX_URL_SIZE];
- 
+  url_data_t data;
+  
   xmlDocPtr doc;
   xmlNode *img;
   xmlChar *asin, *cover_url;
@@ -187,17 +102,17 @@ amazon_cover_get (char *search_type, char *keywords)
 #endif
 
   /* 3. Perform request */
-  buf = curl_http_get (url);
-  if (!buf)
+  data = url_get_data (mod->curl, url);
+  if (data.status != CURLE_OK)
     return NULL;
 
 #ifdef DEBUG
-  printf ("Amazon Search Reply: %s\n", buf);
+  printf ("Amazon Search Reply: %s\n", data.buffer);
 #endif
 
   /* 4. Parse the answer to get ASIN value */
-  doc = xmlReadMemory (buf, strlen (buf), "noname.xml", NULL, 0);
-  free (buf);
+  doc = xmlReadMemory (data.buffer, data.size, "noname.xml", NULL, 0);
+  free (data.buffer);
   
   if (!doc)
     return NULL;
@@ -226,17 +141,17 @@ amazon_cover_get (char *search_type, char *keywords)
 #endif
 
   /* 6. Perform request */
-  buf = curl_http_get (url);
-  if (!buf)
+  data = url_get_data (mod->curl, url);
+  if (data.status != CURLE_OK)
     return NULL;
 
 #ifdef DEBUG
-  printf ("Cover Search Reply: %s\n", buf);
+  printf ("Cover Search Reply: %s\n", data.buffer);
 #endif
   
   /* 7. Parse the answer to get cover URL */
-  doc = xmlReadMemory (buf, strlen (buf), "noname.xml", NULL, 0);
-  free (buf);
+  doc = xmlReadMemory (data.buffer, data.size, "noname.xml", NULL, 0);
+  free (data.buffer);
   
   if (!doc)
     return NULL;
