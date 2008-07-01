@@ -264,6 +264,8 @@ _create_gui()
    em = enna_module_open("lms", enna->evas);
    enna_module_enable(em);
 #endif
+   em = enna_module_open("shoutcast", enna->evas);
+   enna_module_enable(em);
    /* Load mainmenu items */
 
 

@@ -414,7 +414,7 @@ _browse(void *data, void *data2)
 	     char *prev_uri;
 
 	     prev_vfs = vfs->func.class_vfs_get();
-	     prev_uri = strdup(prev_vfs->uri);
+	     prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
 	     files = vfs->func.class_browse_up(prev_uri);
 	     ENNA_FREE(prev_uri);
 	     enna_mediaplayer_playlist_clear();

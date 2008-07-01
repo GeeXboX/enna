@@ -209,6 +209,17 @@ AC_ARG_ENABLE(amazon-module,
 AC_MSG_RESULT($want_amazon_module)
 AM_CONDITIONAL(BUILD_AMAZON_MODULE, test "x$want_amazon_module" = "xyes")
 
+#######################################
+## Check if we should build SHOUTcast module
+want_shoutcast_module="yes"
+AC_MSG_CHECKING(whether SHOUTcast is to be built)
+AC_ARG_ENABLE(shoutcast-module,
+  AS_HELP_STRING([--enable-shoutcast-module],[Enable SHOUTcast Module]),
+  [ want_shoutcast_module=$enableval ]
+)
+AC_MSG_RESULT($want_shoutcast_module)
+AM_CONDITIONAL(BUILD_SHOUTCAST_MODULE, test "x$want_shoutcast_module" = "xyes")
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
@@ -220,6 +231,7 @@ src/modules/video/Makefile
 src/modules/browser/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/lms/Makefile
+src/modules/browser/shoutcast/Makefile
 src/modules/backend/Makefile
 src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
@@ -244,6 +256,7 @@ echo "  light media scanner module....... : $have_lms_module"
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libxml2.......................... : $have_libxml2"
 echo "  Amazon module.................... : $want_amazon_module"
+echo "  SHOUTcast module................. : $want_shoutcast_module"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo

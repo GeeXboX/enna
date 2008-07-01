@@ -1,2 +1,2 @@
-SUBDIRS = localfiles lms
+SUBDIRS = localfiles lms shoutcast
 
