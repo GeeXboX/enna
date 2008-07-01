@@ -29,6 +29,7 @@ event_key.c\
 list_item.c\
 xml_utils.c\
 url_utils.c\
+md5.c\
 covers.c
 
 enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@
@@ -56,6 +57,7 @@ event_key.h\
 list_item.h\
 xml_utils.h\
 url_utils.h\
+md5.h\
 covers.h
 
 
