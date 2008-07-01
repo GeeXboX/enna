@@ -111,7 +111,7 @@ amazon_cover_get (char *search_type, char *keywords)
 #endif
 
   /* 4. Parse the answer to get ASIN value */
-  doc = xmlReadMemory (data.buffer, data.size, "noname.xml", NULL, 0);
+  doc = xmlReadMemory (data.buffer, data.size, NULL, NULL, 0);
   free (data.buffer);
   
   if (!doc)
@@ -150,7 +150,7 @@ amazon_cover_get (char *search_type, char *keywords)
 #endif
   
   /* 7. Parse the answer to get cover URL */
-  doc = xmlReadMemory (data.buffer, data.size, "noname.xml", NULL, 0);
+  doc = xmlReadMemory (data.buffer, data.size, NULL, NULL, 0);
   free (data.buffer);
   
   if (!doc)
