@@ -94,15 +94,19 @@ AC_ARG_ENABLE(libplayer-backend,
 )
 AC_MSG_RESULT($want_libplayer_backend)
 if test "x$want_libplayer_backend" = "xyes" -o "x$want_libplayer_backend" = "xauto"; then
-  AC_CHECK_LIB([player], [player_init], [have_libplayer_backend=yes], [have_libplayer_backend=no],)
-  if test "x$have_libplayer_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
-    AC_MSG_ERROR([libplayer support explicitly requested but libplayer couldn't be found])
-  fi
-  if test "x$have_libplayer_backend" = "xyes" ; then
-    AC_DEFINE(BUILD_LIPLAYER_BACKEND, 1, [Libplayer media backend])
-    libplayer_libs=-lplayer
-    AC_SUBST(libplayer_libs)
-  fi
+  PKG_CHECK_MODULES(
+    [LIBPLAYER],
+    [libplayer],
+    [
+      AC_DEFINE(BUILD_LIBPLAYER_BACKEND, 1, [Libplayer media backend])
+      have_libplayer_backend="yes"
+    ],
+    [
+      if test "x$want_libplayer_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libplayer not found (strict dependencies checking)])
+      fi
+    ]
+  )
 fi
 AM_CONDITIONAL(BUILD_LIBPLAYER_BACKEND, test "x$have_libplayer_backend" = "xyes")
 

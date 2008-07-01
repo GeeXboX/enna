@@ -76,7 +76,7 @@ enna_mediaplayer_init(void)
      }
    else if (!strcmp(enna_config->backend, "libplayer"))
      {
-#ifdef BUILD_LIPLAYER_BACKEND
+#ifdef BUILD_LIBPLAYER_BACKEND
      printf("Using libplayer Backend\n");
      backend_name = "libplayer";
 #else
