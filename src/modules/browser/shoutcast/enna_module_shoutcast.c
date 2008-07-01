@@ -1,13 +1,11 @@
 /* Interface */
 
 #include "enna.h"
+#include "xml_utils.h"
 
 #include <curl/curl.h>
 #include <curl/types.h>
 #include <curl/easy.h>
-
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 
 #define SHOUTCAST_URL      "http://www.shoutcast.com"
 
@@ -63,24 +61,6 @@ static Enna_Class_Vfs class_shoutcast =
 	_class_vfs_get,
     },
 };
-
-static xmlNode *
-get_node_xml_tree (xmlNode *root, const char *prop)
-{
-  xmlNode *n, *children_node;
-  
-  for (n = root; n; n = n->next)
-  {
-    if (n->type == XML_ELEMENT_NODE
-        && xmlStrcmp ((unsigned char *) prop, n->name) == 0)
-      return n;
-    
-    if ((children_node = get_node_xml_tree (n->children, prop)))
-      return children_node;
-  }
-  
-  return NULL;
-}
 
 static size_t
 http_info_get (void *ptr, size_t size, size_t nmemb, void *data)
