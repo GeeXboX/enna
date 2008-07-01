@@ -247,16 +247,25 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
-echo "Optional Modules:"
+echo "Built-in librairies Modules:"
 echo
-echo "  lirc client...................... : $have_lirc_module"
-echo "  emotion backend.................. : $have_emotion_backend"
-echo "  libplayer backend................ : $have_libplayer_backend"
-echo "  light media scanner module....... : $have_lms_module"
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libxml2.......................... : $have_libxml2"
-echo "  Amazon module.................... : $want_amazon_module"
-echo "  SHOUTcast module................. : $want_shoutcast_module"
+echo
+echo "Optional Playback Backends:"
+echo
+echo "  emotion backend.................. : $have_emotion_backend"
+echo "  libplayer backend................ : $have_libplayer_backend"
+echo
+echo "Optional Browser Modules:"
+echo
+echo "  Light Media Scanner.............. : $have_lms_module"
+echo "  SHOUTcast........................ : $want_shoutcast_module"
+echo
+echo "Miscellaneous Modules:"
+echo
+echo "  lirc client...................... : $have_lirc_module"
+echo "  Amazon.com....................... : $want_amazon_module"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo
