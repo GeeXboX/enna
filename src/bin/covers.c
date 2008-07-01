@@ -56,13 +56,33 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
    char tmp[4096];
    char *cover_file = NULL;
    int i;
+   char *md5;
+   
 //#if defined(BUILD_AMAZON_MODULE) && defined(BUILD_LIBXML2) && defined(BUILD_LIBCURL)
    Enna_Module *em;
 //#endif
    
    if (!artist || !album)
      return NULL;
-      
+
+   memset (tmp, '\0', sizeof (tmp));
+   snprintf (tmp, sizeof (tmp), "%s %s", artist, album);
+   md5 = md5sum (tmp);
+   memset (tmp, '\0', sizeof (tmp));
+   snprintf (tmp, sizeof (tmp), "%s/.enna/covers/%s.png",
+             enna_util_user_home_get(), md5);
+   if (ecore_file_exists (tmp))
+   {
+     cover_file = strdup (tmp);
+     printf ("found : %s\n", cover_file);
+   }
+   free (md5);
+
+   if (cover_file)
+     return cover_file;
+
+   memset (tmp, '\0', sizeof (tmp));
+   
    if (filename)
      {
 
