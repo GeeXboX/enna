@@ -178,7 +178,7 @@ enna_list_jump_label(Evas_Object *obj, const char *label)
    Evas_List *l = NULL;
    int i;
    Evas_Coord x,y,h;
-   printf("enna_list_jump_labbel %s\n", label);
+   printf("enna_list_jump_label %s\n", label);
 
    API_ENTRY return -1;
    printf("return 1\n");
