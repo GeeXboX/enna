@@ -98,7 +98,8 @@ static Enna_Class_Vfs class_video =
 };
 
 
-static Evas_List *_class_browse_up_music(const char *path)
+static Evas_List *_class_browse_up (const char *path, ENNA_VFS_CAPS caps,
+                                    Class_Private_Data *data, char *icon)
 {
 
    /* Browse Root */
@@ -107,7 +108,7 @@ static Evas_List *_class_browse_up_music(const char *path)
 	Evas_List *files = NULL;
 	Evas_List *l;
 	/* FIXME: this list should come from config ! */
-	for (l = mod->music->config->root_directories; l; l = l->next)
+	for (l = data->config->root_directories; l; l = l->next)
 	  {
 	     Enna_Vfs_File *file;
 	     Root_Directories *root;
@@ -117,10 +118,10 @@ static Evas_List *_class_browse_up_music(const char *path)
                                                "icon/hd", NULL);
 	     files = evas_list_append(files, file);
 	  }
-	//evas_stringshare_del(mod->music->prev_uri);
-	//evas_stringshare_del(mod->music->uri);
-	mod->music->prev_uri = NULL;
-	mod->music->uri = NULL;
+	//evas_stringshare_del(data->prev_uri);
+	//evas_stringshare_del(data->uri);
+	data->prev_uri = NULL;
+	data->uri = NULL;
 	return files;
      }
    else if (strstr(path, "file://"))
@@ -148,20 +149,20 @@ static Evas_List *_class_browse_up_music(const char *path)
                   f = enna_vfs_create_directory (dir, filename,
                                                  "icon/directory", NULL);
 		  dirs_list = evas_list_append(dirs_list, f);
-		  if (mod->music->prev_uri)
+		  if (data->prev_uri)
 		    {
-		       if (!strcmp(dir, mod->music->prev_uri))
+		       if (!strcmp(dir, data->prev_uri))
 			 f->is_selected = 1;
 		       else
 			 f->is_selected = 0;
 		    }
 	       }
-	     else if (_uri_has_extension(dir, ENNA_CAPS_MUSIC))
+	     else if (_uri_has_extension(dir, caps))
 	       {
 		  Enna_Vfs_File  *f;
 
                   f = enna_vfs_create_file (dir, filename,
-                                            "icon/music", NULL);
+                                            icon, NULL);
 		  files_list = evas_list_append(files_list, f);
 	       }
 	  }
@@ -170,9 +171,9 @@ static Evas_List *_class_browse_up_music(const char *path)
 	  {
 	     dirs_list = evas_list_append(dirs_list, l->data);
 	  }
-	//evas_stringshare_del(mod->music->prev_uri);
-	mod->music->prev_uri = mod->music->uri;
-	mod->music->uri = evas_stringshare_add(path);
+	//evas_stringshare_del(data->prev_uri);
+	data->prev_uri = data->uri;
+	data->uri = evas_stringshare_add(path);
 	return dirs_list;
      }
 
@@ -180,85 +181,14 @@ static Evas_List *_class_browse_up_music(const char *path)
 
 }
 
+static Evas_List *_class_browse_up_music(const char *path)
+{
+  return _class_browse_up (path, ENNA_CAPS_MUSIC, mod->music, "icon/music");
+}
+
 static Evas_List *_class_browse_up_video(const char *path)
 {
-
-   /* Browse Root */
-   if (!path)
-     {
-	Evas_List *files = NULL;
-	Evas_List *l;
-	for (l = mod->video->config->root_directories; l; l = l->next)
-	  {
-	     Enna_Vfs_File *file;
-	     Root_Directories *root;
-
-	     root = l->data;
-             file = enna_vfs_create_directory (root->uri, root->label,
-                                               "icon/hd", NULL);
-	     files = evas_list_append(files, file);
-	  }
-	//evas_stringshare_del(mod->video->prev_uri);
-	//evas_stringshare_del(mod->video->uri);
-	mod->video->prev_uri = NULL;
-	mod->video->uri = NULL;
-	return files;
-     }
-   else if (strstr(path, "file://"))
-     {
-	Ecore_List *files = NULL;
-	char *filename = NULL;
-	Evas_List *files_list = NULL;
-	Evas_List *dirs_list = NULL;
-	Evas_List *l;
-	char dir[PATH_MAX];
-
-	files = ecore_file_ls(path+7);
-	ecore_list_sort(files, ECORE_COMPARE_CB(strcasecmp), ECORE_SORT_MIN);
-	filename = ecore_list_first_goto(files);
-
-	while ((filename = (char *)ecore_list_next(files)) != NULL)
-	  {
-	     sprintf(dir, "%s/%s", path, filename);
-	     if (filename[0] == '.')
-	       continue;
-	     else if (ecore_file_is_dir(dir+7))
-	       {
-		  Enna_Vfs_File  *f;
-
-                  f = enna_vfs_create_directory (dir, filename,
-                                                 "icon/directory", NULL);
-		  dirs_list = evas_list_append(dirs_list, f);
-		  if (mod->video->prev_uri)
-		    {
-		       if (!strcmp(dir, mod->video->prev_uri))
-			 f->is_selected = 1;
-		       else
-			 f->is_selected = 0;
-		    }
-	       }
-	     else if (_uri_has_extension(dir, ENNA_CAPS_VIDEO))
-	       {
-		  Enna_Vfs_File  *f;
-
-                  f = enna_vfs_create_file (dir, filename,
-                                            "icon/video", NULL);
-		  files_list = evas_list_append(files_list, f);
-	       }
-	  }
-	/* File after dir */
-	for (l = files_list; l; l = l->next)
-	  {
-	     dirs_list = evas_list_append(dirs_list, l->data);
-	  }
-	//evas_stringshare_del(mod->video->prev_uri);
-	mod->video->prev_uri = mod->video->uri;
-	mod->video->uri = evas_stringshare_add(path);
-	return dirs_list;
-     }
-
-   return NULL;
-
+    return _class_browse_up (path, ENNA_CAPS_VIDEO, mod->video, "icon/video");
 }
 
 static unsigned char _uri_has_extension(const char *uri, int type)
