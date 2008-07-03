@@ -15,7 +15,6 @@ static Evas_List     *_class_browse_down_video(void);
 static Enna_Vfs_File *_class_vfs_get_video(void);
 
 static unsigned char _uri_has_extension(const char *uri, int type);
-static unsigned char _uri_is_root(const char *uri, int type);
 
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
@@ -193,54 +192,39 @@ static unsigned char _uri_has_extension(const char *uri, int type)
 {
 
    Evas_List *l;
+   Evas_List *filters = NULL;
 
    if (type == ENNA_CAPS_MUSIC)
-     {
-
-	for (l = enna_config->music_filters; l; l = l->next)
-	  {
-	     const char *ext = l->data;
-	     if(ecore_str_has_extension(uri, ext))
-	       return 1;
-	  }
-     }
-
+     filters = enna_config->music_filters;
    else if (type == ENNA_CAPS_VIDEO)
-     {
+     filters = enna_config->video_filters;
 
-	for (l = enna_config->video_filters; l; l = l->next)
-	  {
-	     const char *ext = l->data;
-	     if(ecore_str_has_extension(uri, ext))
-	       return 1;
-	  }
-     }
+   if (!filters)
+     return 0;
+   
+   for (l = filters; l; l = l->next)
+   {
+     const char *ext = l->data;
+     if(ecore_str_has_extension(uri, ext))
+       return 1;
+   }
+
    return 0;
 
 }
 
-static unsigned char _uri_is_root(const char *uri, int type)
+static unsigned char _uri_is_root(Class_Private_Data *data,
+                                  const char *uri)
 {
    Evas_List *l;
-   if (type == ENNA_CAPS_MUSIC)
-     {
-	for (l = mod->music->config->root_directories; l; l = l->next)
-	  {
-	     Root_Directories *root = l->data;
-	     if (!strcmp(root->uri, uri))
-	       return 1;
-	  }
-     }
-   else
-   if (type == ENNA_CAPS_VIDEO)
-     {
-	for (l = mod->video->config->root_directories; l; l = l->next)
-	  {
-	     Root_Directories *root = l->data;
-	     if (!strcmp(root->uri, uri))
-	       return 1;
-	  }
-     }
+
+   for (l = data->config->root_directories; l; l = l->next)
+   {
+     Root_Directories *root = l->data;
+     if (!strcmp(root->uri, uri))
+       return 1;
+   }
+
    return 0;
 }
 
@@ -254,7 +238,7 @@ _class_browse_down(Class_Private_Data *data, ENNA_VFS_CAPS caps)
 	char *p;
 	Evas_List *files = NULL;
 
-	if (_uri_is_root(data->uri, caps))
+	if (_uri_is_root(data, data->uri))
 	  {
 	     Evas_List *files = NULL;
 	     Evas_List *l;
