@@ -382,7 +382,7 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 		       root->label = evas_list_nth(dir_data, 1);
 		       printf ("Root Data: %s\n", root->uri);
 		       root->icon = evas_list_nth(dir_data,2);
-		       data->config->root_directories = evas_list_append(mod->music->config->root_directories, root);
+		       data->config->root_directories = evas_list_append(data->config->root_directories, root);
 		    }
 	       }
 	  }
