@@ -4,8 +4,6 @@
 
 static void           _class_init();
 static void           _class_shutdown();
-//static Evas_List     *_class_browse_up(const char *path, int type);
-//static Evas_List     *_class_browse_down(int type);
 static Enna_Vfs_File *_class_vfs_get(int type);
 
 static Evas_List     *_class_browse_up_music(const char *path);
