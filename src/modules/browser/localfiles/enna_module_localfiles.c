@@ -450,29 +450,31 @@ static void _class_shutdown(int dummy)
 {
 }
 
-static void _class_init_music(int dummy)
+static void __class_init(const char *name, Class_Private_Data **priv,
+                         ENNA_VFS_CAPS caps, Enna_Class_Vfs *class, char *key)
 {
    Class_Private_Data *data;
    Enna_Config_Data *cfgdata;
    Evas_List *l;
 
    data = calloc(1, sizeof(Class_Private_Data));
-   mod->music = data;
+   *priv = data;
+   
+   enna_vfs_append(name, caps, class);
+   data->prev_uri = NULL;
 
-   enna_vfs_append("localfiles_music", ENNA_CAPS_MUSIC, &class_music);
-   mod->music->prev_uri = NULL;
+   data->config = calloc(1, sizeof(Module_Config));
+   data->config->root_directories = NULL;
 
-   mod->music->config = calloc(1, sizeof(Module_Config));
-   mod->music->config->root_directories = NULL;
    cfgdata = enna_config_module_pair_get("localfiles");
    if (!cfgdata) return;
    for (l = cfgdata->pair; l; l = l->next)
      {
 	Config_Pair *pair = l->data;
-	if (!strcmp(pair->key, "path_music"))
+	if (!strcmp(pair->key, key))
 	  {
 	     Evas_List *dir_data;
-	     enna_config_value_store(&dir_data, "path_music", ENNA_CONFIG_STRING_LIST, pair);
+	     enna_config_value_store(&dir_data, key, ENNA_CONFIG_STRING_LIST, pair);
 	     if(dir_data)
 	       {
 		  if(evas_list_count(dir_data) != 3)
@@ -484,51 +486,9 @@ static void _class_init_music(int dummy)
 		       root = calloc(1, sizeof(Root_Directories));
 		       root->uri = evas_list_nth(dir_data,0);
 		       root->label = evas_list_nth(dir_data, 1);
-		       printf ("Root Data Music : %s\n", root->uri);
+		       printf ("Root Data: %s\n", root->uri);
 		       root->icon = evas_list_nth(dir_data,2);
-		       mod->music->config->root_directories = evas_list_append(mod->music->config->root_directories, root);
-		    }
-	       }
-	  }
-     }
-}
-
-static void _class_init_video(int dummy)
-{
-   Class_Private_Data *data;
-   Enna_Config_Data *cfgdata;
-   Evas_List *l;
-
-   data = calloc(1, sizeof(Class_Private_Data));
-   mod->video = data;
-
-   enna_vfs_append("localfiles_video", ENNA_CAPS_VIDEO, &class_video);
-   mod->video->prev_uri = NULL;
-
-   mod->video->config = calloc(1, sizeof(Module_Config));
-   mod->video->config->root_directories = NULL;
-   cfgdata = enna_config_module_pair_get("localfiles");
-   if (!cfgdata) return;
-   for (l = cfgdata->pair; l; l = l->next)
-     {
-	Config_Pair *pair = l->data;
-	if (!strcmp(pair->key, "path_video"))
-	  {
-	     Evas_List *dir_data;
-	     enna_config_value_store(&dir_data, "path_video", ENNA_CONFIG_STRING_LIST, pair);
-	     if(dir_data)
-	       {
-		  if(evas_list_count(dir_data) != 3)
-		    continue;
-		  else
-		    {
-		       Root_Directories *root;
-		       root = calloc(1, sizeof(Root_Directories));
-		       root->uri = evas_list_nth(dir_data,0);
-		       root->label = evas_list_nth(dir_data, 1);
-		       printf ("Root Data Video : %s\n", root->uri);
-		       root->icon = evas_list_nth(dir_data,2);
-		       mod->video->config->root_directories = evas_list_append(mod->video->config->root_directories, root);
+		       data->config->root_directories = evas_list_append(mod->music->config->root_directories, root);
 		    }
 	       }
 	  }
@@ -545,8 +505,10 @@ em_init(Enna_Module *em)
    mod->em = em;
    em->mod = mod;
 
-   _class_init_music(0);
-   _class_init_video(0);
+   __class_init ("localfiles_music", &mod->music,
+                 ENNA_CAPS_MUSIC, &class_music, "path_music");
+   __class_init ("localfiles_video", &mod->video,
+                 ENNA_CAPS_VIDEO, &class_video, "path_video");
 
    return 1;
 }
