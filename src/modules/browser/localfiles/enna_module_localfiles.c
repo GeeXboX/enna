@@ -284,7 +284,7 @@ _class_browse_down(Class_Private_Data *data, ENNA_VFS_CAPS caps)
 	else if (p)
 	  *(p) = 0;
 
-	files = _class_browse_up_music(path_tmp);
+	files = _class_browse_up(path_tmp, caps, data, NULL);
 	mod->music->uri = evas_stringshare_add(path_tmp);
 	return files;
      }
