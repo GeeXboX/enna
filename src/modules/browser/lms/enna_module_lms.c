@@ -617,27 +617,13 @@ _vfs_set(char *uri, char *label,
 	 char *icon_file, unsigned char is_directory,
 	 char *icon)
 {
-   Enna_Vfs_File *file;
-
-   file = calloc(1, sizeof(Enna_Vfs_File));
-   file->uri = uri;
-   file->label = label;
-   file->icon_file = icon_file;
-   file->is_directory = 1;
-   file->icon = icon;
-
-   return file;
+   return enna_vfs_create_directory (uri, label, icon, icon_file);
 }
 
 static void
 _vfs_free(Enna_Vfs_File *file)
 {
-   if (!file) return;
-   ENNA_FREE(file->uri);
-   ENNA_FREE(file->label);
-   ENNA_FREE(file->icon_file);
-   evas_stringshare_del(file->icon);
-   ENNA_FREE(file);
+   enna_vfs_remove (file);
 }
 
 static int
@@ -660,28 +646,16 @@ _browse_root()
    mod->state = ROOT;
    mod->vfs = NULL;
 
-   file = calloc(1, sizeof(Enna_Vfs_File));
-   file->uri = "artists://";
-   file->label = "Artists";
-   file->icon_file = NULL;
-   file->is_directory = 1;
-   file->icon = "icon/artist";
+   file = enna_vfs_create_directory ("artists://", "Artists",
+                                     "icon/artist", NULL);
    entries = evas_list_append(entries, file);
 
-   file = calloc(1, sizeof(Enna_Vfs_File));
-   file->uri = "albums://";
-   file->label = "Albums";
-   file->icon_file = NULL;
-   file->is_directory = 1;
-   file->icon = "icon/album";
+   file = enna_vfs_create_directory ("albums://", "Albums",
+                                     "icon/album", NULL);
    entries = evas_list_append(entries, file);
 
-   file = calloc(1, sizeof(Enna_Vfs_File));
-   file->uri = "genres://";
-   file->label = "Genres";
-   file->icon_file = NULL;
-   file->is_directory = 1;
-   file->icon = "icon/genre";
+   file = enna_vfs_create_directory ("genres://", "Genres",
+                                     "icon/genre", NULL);
    entries = evas_list_append(entries, file);
 
    return entries;
@@ -701,14 +675,9 @@ _browse_artists_root()
 	Enna_Vfs_File *file;
 	char uri[4096];
 
-	file = calloc(1, sizeof(Enna_Vfs_File));
-
 	snprintf(uri, sizeof(uri), "artists://%s", (char*)l->data);
-	file->uri = strdup(uri);
-	file->label = l->data;
-	file->icon_file = NULL;
-	file->is_directory = 1;
-	file->icon = strdup("icon/artist");
+        file = enna_vfs_create_directory (uri, l->data,
+                                          "icon/artist", NULL);
 	entries = evas_list_append(entries, file);
 
      }
@@ -740,15 +709,9 @@ static Evas_List *_class_browse_up(const char *path)
 	     Enna_Vfs_File *file;
 	     char uri[4096];
 
-	     file = calloc(1, sizeof(Enna_Vfs_File));
-
 	     snprintf(uri, sizeof(uri), "albums://%s", (char*)l->data);
-	     file->uri = strdup(uri);
-	     file->label = l->data;
 	     /* FIXME Set Cover filename here */
-	     file->icon_file = NULL;
-	     file->is_directory = 1;
-	     file->icon = NULL;
+             file = enna_vfs_create_directory (uri, l->data, NULL, NULL);
 	     entries = evas_list_append(entries, file);
 
 	  }
@@ -767,15 +730,9 @@ static Evas_List *_class_browse_up(const char *path)
 	     Enna_Vfs_File *file;
 	     char uri[4096];
 
-	     file = calloc(1, sizeof(Enna_Vfs_File));
-
 	     snprintf(uri, sizeof(uri), "genres://%s", (char*)l->data);
-	     file->uri = strdup(uri);
-	     file->label = l->data;
 	     /* FIXME Set Cover filename here */
-	     file->icon_file = NULL;
-	     file->is_directory = 1;
-	     file->icon = NULL;
+             file = enna_vfs_create_directory (uri, l->data, NULL, NULL);
 	     entries = evas_list_append(entries, file);
 
 	  }
@@ -794,8 +751,6 @@ static Evas_List *_class_browse_up(const char *path)
 
 	     mod->state = ARTISTS_ALBUMS;
 
-
-
 	     _vfs_free(mod->vfs);
 	     mod->vfs = _vfs_set(strdup(path), strdup(path+10), NULL, 1, NULL);
 	     artist = path + 10;
@@ -804,12 +759,11 @@ static Evas_List *_class_browse_up(const char *path)
 		  Enna_Vfs_File *file;
 		  Evas_List *l2 = NULL;
 		  Enna_Vfs_File *filename;
-		  file = calloc(1, sizeof(Enna_Vfs_File));
-
+                  char *icon_file = NULL;
+                  
 		  snprintf(uri, sizeof(uri), "%s/%s", path, (char*)l->data);
-		  file->uri = strdup(uri);
-		  file->label = l->data;
-		  album = file->label;
+
+		  album = uri;
 		  /* FIXME Set Cover filename here */
 		  /* */
 		  printf("album : %s, artist : %s\n", album, artist);
@@ -818,12 +772,11 @@ static Evas_List *_class_browse_up(const char *path)
 		    {
 		       filename = evas_list_nth(l2, 0);
 		       printf("uri : %s\n", filename->uri);
-		       file->icon_file =enna_cover_album_get( artist, album, filename->uri);
+		       icon_file =enna_cover_album_get( artist, album, filename->uri);
 		    }
-		  else
-		    file->icon_file = NULL;
-		  file->is_directory = 1;
-		  file->icon = strdup("icon/album");
+
+                  file = enna_vfs_create_directory (uri, l->data,
+                                                    "icon/album", icon_file);
 		  entries = evas_list_append(entries, file);
 
 	       }
@@ -852,15 +805,10 @@ static Evas_List *_class_browse_up(const char *path)
 		  char tmp[4096];
 
 		  m = l->data;
-		  file = calloc(1, sizeof(Enna_Vfs_File));
-
 		  snprintf(uri, sizeof(uri), "file://%s", m->uri);
-		  file->uri = strdup(uri);
 		  snprintf(tmp, sizeof(tmp), "%02d - %s", m->track, m->title);
-		  file->label = strdup(tmp);
-		  file->icon_file = NULL;
-		  file->is_directory = 0;
-		  file->icon = strdup("icon/song");
+                  file = enna_vfs_create_file (uri, tmp,
+                                               "icon/song", NULL);
 		  entries = evas_list_append(entries, file);
 		  free(m);
 

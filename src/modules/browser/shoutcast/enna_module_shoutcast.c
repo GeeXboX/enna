@@ -74,20 +74,19 @@ browse_list (void)
   {
     Enna_Vfs_File *file;
     xmlChar *genre;
-     
+    char *uri;
+    
     if (!xmlHasProp (n, (xmlChar *) "name"))
       continue;
 
     genre = xmlGetProp (n, (xmlChar *) "name");
-   
-    file = calloc (1, sizeof (Enna_Vfs_File));
-    file->uri = malloc (strlen (SHOUTCAST_GENRE)
-                        + strlen ((char *) genre) + 1);
-    sprintf (file->uri, "%s%s", SHOUTCAST_GENRE, genre);
-    file->label = strdup ((char *) genre);
-    file->icon_file = NULL;
-    file->is_directory = 1;
-    file->icon = "icon/webradio";
+
+    uri = malloc (strlen (SHOUTCAST_GENRE) + strlen ((char *) genre) + 1);
+    sprintf (uri, "%s%s", SHOUTCAST_GENRE, genre);
+
+    file = enna_vfs_create_directory (uri, (char *) genre,
+                                      "icon/webradio", NULL);
+    free (uri);
     files = evas_list_append (files, file);
   }
   
@@ -147,11 +146,8 @@ browse_by_genre (const char *path)
         memset (uri, '\0', MAX_URL);
         snprintf (uri, MAX_URL, "%s%s?id=%s", SHOUTCAST_URL, tunein, id);
 
-        file = calloc (1, sizeof (Enna_Vfs_File));
-        file->uri = strdup (uri);
-        file->label = strdup ((char *) name);
-        file->icon = "icon/music";
-        file->is_directory = 0;
+        file = enna_vfs_create_file (uri, (char *) name,
+                                     "icon/music", NULL);
         files = evas_list_append (files, file);
       }
     }
@@ -183,15 +179,9 @@ _class_browse_down (void)
 static Enna_Vfs_File *
 _class_vfs_get (void)
 {
-   Enna_Vfs_File *f;
-
-   f = calloc (1, sizeof (Enna_Vfs_File));
-   f->uri = NULL;
-   f->label = NULL;
-   f->icon = (char *) evas_stringshare_add ("icon/music");
-   f->is_directory = 1;
-
-   return f;
+  return enna_vfs_create_directory (NULL, NULL, (char *)
+                                    evas_stringshare_add ("icon/music"),
+                                    NULL);
 }
 
 static void

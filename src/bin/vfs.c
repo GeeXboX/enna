@@ -84,6 +84,43 @@ enna_vfs_get(ENNA_VFS_CAPS type)
     return NULL;
 }
 
+static Enna_Vfs_File *
+enna_vfs_create_inode (char *uri, char *label,
+                       char *icon, char *icon_file, int dir)
+{
+  Enna_Vfs_File *f;
 
+  f = calloc (1, sizeof (Enna_Vfs_File));
+  f->uri = uri ? strdup (uri) : NULL;
+  f->label = label ? strdup (label) : NULL;
+  f->icon = icon ? strdup (icon) : NULL;
+  f->icon_file = icon_file ? strdup (icon_file) : NULL;
+  f->is_directory = dir;
 
+  return f;
+}
 
+Enna_Vfs_File *
+enna_vfs_create_file (char *uri, char *label, char *icon, char *icon_file)
+{
+  return enna_vfs_create_inode (uri, label, icon, icon_file, 0);
+}
+
+Enna_Vfs_File *
+enna_vfs_create_directory (char *uri, char *label, char *icon, char *icon_file)
+{
+  return enna_vfs_create_inode (uri, label, icon, icon_file, 1);
+}
+
+void
+enna_vfs_remove (Enna_Vfs_File *f)
+{
+  if (!f)
+    return;
+
+  ENNA_FREE (f->uri);
+  ENNA_FREE (f->label);
+  ENNA_FREE (f->icon);
+  ENNA_FREE (f->icon_file);
+  ENNA_FREE (f);
+}
