@@ -61,7 +61,7 @@ enna_vfs_append(const char *name, unsigned char type, Enna_Class_Vfs *vfs)
    if ((type & ENNA_CAPS_VIDEO) == ENNA_CAPS_VIDEO)
 	_enna_vfs_video = evas_list_append(_enna_vfs_video, vfs);
 
-   if ((type & ENNA_CAPS_PHOTO) == ENNA_CAPS_VIDEO)
+   if ((type & ENNA_CAPS_PHOTO) == ENNA_CAPS_PHOTO)
 	_enna_vfs_photo = evas_list_append(_enna_vfs_photo, vfs);
 
    return 0;
