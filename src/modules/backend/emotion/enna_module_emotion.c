@@ -3,68 +3,24 @@
 #include "enna.h"
 #include <Emotion.h>
 
-
-static int            em_init(Enna_Module *em);
-static int            em_shutdown(Enna_Module *em);
-
-static void _class_init(int dummy);
-static void _class_shutdown(int dummy);
-static int _class_file_set(const char *uri);
-static int _class_play(void);
-static int _class_seek(double percent);
-static int _class_pause(void);
-static int _class_stop(void);
-static double _class_position_get();
-static double _class_length_get();
-static Enna_Metadata *_class_metadata_get(void);
-static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data);
-static Evas_Object *_class_video_obj_get(void);
-static void _eos_cb(void *data, Evas_Object * obj, void *event_info);
-
-static Enna_Class_MediaplayerBackend class =
-{
-  "emotion",
-  1,
-  {
-    _class_init,
-    _class_shutdown,
-    _class_file_set,
-    _class_play,
-    _class_seek,
-    _class_pause,
-    _class_stop,
-    _class_position_get,
-    _class_length_get,
-    _class_metadata_get,
-    _class_event_cb_set,
-    _class_video_obj_get
-  }
-};
-
-typedef struct _Enna_Module_Emotion Enna_Module_Emotion;
-
-struct _Enna_Module_Emotion
+typedef struct _Enna_Module_Emotion
 {
    Evas *evas;
    Evas_Object *o_emotion;
    Enna_Module *em;
    void (*event_cb)(void *data, enna_mediaplayer_event_t event);
    void *event_cb_data;
-
-};
+} Enna_Module_Emotion;
 
 static Enna_Module_Emotion *mod;
 
-EAPI Enna_Module_Api module_api =
-{
-    ENNA_MODULE_VERSION,
-    "emotion"
-};
+/*****************************************************************************/
+/*                         Private Module API                                */
+/*****************************************************************************/
 
 static void _class_init(int dummy)
 {
    printf("emotion class init\n");
-
 }
 
 static void _class_shutdown(int dummy)
@@ -164,36 +120,33 @@ _eos_cb(void *data, Evas_Object * obj, void *event_info)
      mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
 }
 
+static Enna_Class_MediaplayerBackend class = {
+  "emotion",
+  1,
+  {
+    _class_init,
+    _class_shutdown,
+    _class_file_set,
+    _class_play,
+    _class_seek,
+    _class_pause,
+    _class_stop,
+    _class_position_get,
+    _class_length_get,
+    _class_metadata_get,
+    _class_event_cb_set,
+    _class_video_obj_get
+  }
+};
 
-/* Module interface */
+/*****************************************************************************/
+/*                          Public Module API                                */
+/*****************************************************************************/
 
-static int
-em_init(Enna_Module *em)
-{
-   mod = calloc(1, sizeof(Enna_Module_Emotion));
-   mod->em = em;
-   mod->evas = em->evas;
-   mod->o_emotion = emotion_object_add(mod->evas);
-   /* Fixme should come frome config */
-   if (!emotion_object_init(mod->o_emotion, "gstreamer"))
-     {
-	printf("Error : could not initialize gstreamer plugin for emotion\n");
-	return 0;
-     }
-   evas_object_smart_callback_add(mod->o_emotion, "decode_stop", _eos_cb, NULL);
-   enna_mediaplayer_backend_register(&class);
-   return 1;
-}
-
-
-static int
-em_shutdown(Enna_Module *em)
-{
-
-   _class_shutdown(0);
-   free(mod);
-   return 1;
-}
+EAPI Enna_Module_Api module_api = {
+    ENNA_MODULE_VERSION,
+    "emotion"
+};
 
 EAPI void
 module_init(Enna_Module *em)
@@ -201,12 +154,23 @@ module_init(Enna_Module *em)
     if (!em)
         return;
 
-    if (!em_init(em))
-        return;
+    mod = calloc(1, sizeof(Enna_Module_Emotion));
+    mod->em = em;
+    mod->evas = em->evas;
+    mod->o_emotion = emotion_object_add(mod->evas);
+    /* Fixme should come frome config */
+    if (!emotion_object_init(mod->o_emotion, "gstreamer"))
+    {
+      printf("Error : could not initialize gstreamer plugin for emotion\n");
+      return;
+     }
+    evas_object_smart_callback_add(mod->o_emotion, "decode_stop", _eos_cb, NULL);
+    enna_mediaplayer_backend_register(&class);
 }
 
 EAPI void
 module_shutdown(Enna_Module *em)
 {
-    em_shutdown(em);
+  _class_shutdown(0);
+  free(mod);
 }
