@@ -13,14 +13,9 @@
 
 #define MAX_URL 1024
 
-static Enna_Vfs_File *_class_vfs_get(void);
-
 static Evas_List     *_class_browse_up(const char *path);
 static Evas_List     *_class_browse_down(void);
 static Enna_Vfs_File *_class_vfs_get(void);
-
-static int            em_init(Enna_Module *em);
-static int            em_shutdown(Enna_Module *em);
 
 typedef struct Enna_Module_Music_s {
   Evas *e;
@@ -184,9 +179,12 @@ _class_vfs_get (void)
 
 /* Module interface */
 
-static int
-em_init (Enna_Module *em)
+EAPI void
+module_init (Enna_Module *em)
 {
+  if (!em)
+    return;
+
   mod = calloc (1, sizeof (Enna_Module_Music));
   mod->em = em;
   em->mod = mod;
@@ -195,36 +193,14 @@ em_init (Enna_Module *em)
   mod->curl = curl_easy_init ();
 
   enna_vfs_append ("shoutcast", ENNA_CAPS_MUSIC, &class_shoutcast);
-  
-  return 1;
-}
-
-static int
-em_shutdown (Enna_Module *em)
-{
-  Enna_Module_Music *mod;
-
-  mod = em->mod;;  
-
-  if (mod->curl)
-    curl_easy_cleanup (mod->curl);
-  curl_global_cleanup ();
-    
-  return 1;
-}
-
-EAPI void
-module_init (Enna_Module *em)
-{
-  if (!em)
-    return;
-
-  if (!em_init (em))
-    return;
 }
 
 EAPI void
 module_shutdown (Enna_Module *em)
 {
-  em_shutdown (em);
+  Enna_Module_Music *mod = em->mod;
+
+  if (mod->curl)
+    curl_easy_cleanup (mod->curl);
+  curl_global_cleanup ();
 }
