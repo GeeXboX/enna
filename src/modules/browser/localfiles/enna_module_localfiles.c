@@ -2,96 +2,70 @@
 
 #include "enna.h"
 
-static Enna_Vfs_File *_class_vfs_get(int type);
-
-static Evas_List     *_class_browse_up_music(const char *path);
-static Evas_List     *_class_browse_down_music(void);
-static Enna_Vfs_File *_class_vfs_get_music(void);
-
-static Evas_List     *_class_browse_up_video(const char *path);
-static Evas_List     *_class_browse_down_video(void);
-static Enna_Vfs_File *_class_vfs_get_video(void);
-
-static unsigned char _uri_has_extension(const char *uri, int type);
-
-static int            em_init(Enna_Module *em);
-static int            em_shutdown(Enna_Module *em);
-
-typedef struct _Root_Directories Root_Directories;
-typedef struct _Enna_Module_Music Enna_Module_Music;
-typedef struct _Module_Config Module_Config;
-typedef struct _Class_Private_Data Class_Private_Data;
-
-struct _Root_Directories
-{
+typedef struct _Root_Directories {
    char *uri;
    char *label;
    char *icon;
-};
+} Root_Directories;
 
-struct _Module_Config
-{
+typedef struct _Module_Config {
    Evas_List *root_directories;
-};
+} Module_Config;
 
-
-
-
-struct _Class_Private_Data
-{
+typedef struct _Class_Private_Data {
    const char *uri;
    const char *prev_uri;
    Module_Config *config;
-};
+} Class_Private_Data;
 
-struct _Enna_Module_Music
-{
+typedef struct _Enna_Module_Music {
    Evas *e;
    Enna_Module *em;
    Class_Private_Data *music;
    Class_Private_Data *video;
-};
+} Enna_Module_Music;
 
 static Enna_Module_Music *mod;
 
-EAPI Enna_Module_Api module_api =
+static unsigned char _uri_has_extension(const char *uri, int type)
 {
-    ENNA_MODULE_VERSION,
-    "localfiles"
-};
 
-static Enna_Class_Vfs class_music =
+   Evas_List *l;
+   Evas_List *filters = NULL;
+
+   if (type == ENNA_CAPS_MUSIC)
+     filters = enna_config->music_filters;
+   else if (type == ENNA_CAPS_VIDEO)
+     filters = enna_config->video_filters;
+
+   if (!filters)
+     return 0;
+   
+   for (l = filters; l; l = l->next)
+   {
+     const char *ext = l->data;
+     if(ecore_str_has_extension(uri, ext))
+       return 1;
+   }
+
+   return 0;
+
+}
+
+static unsigned char _uri_is_root(Class_Private_Data *data,
+                                  const char *uri)
 {
-    "localfiles_music",
-    1,
-    "Browse Local Files",
-    NULL,
-    "icon/hd",
-    {
-        NULL,
-        NULL,
-	_class_browse_up_music,
-	_class_browse_down_music,
-	_class_vfs_get_music,
-    },
-};
+   Evas_List *l;
 
-static Enna_Class_Vfs class_video =
-{
-    "localfiles_video",
-    1,
-    "Browse Local Files",
-    NULL,
-    "icon/hd",
-    {
-        NULL,
-        NULL,
-	_class_browse_up_video,
-	_class_browse_down_video,
-	_class_vfs_get_video,
-    },
-};
+   for (l = data->config->root_directories; l; l = l->next)
+   {
+     Root_Directories *root = l->data;
+     if (!strcmp(root->uri, uri))
+       return 1;
+   }
 
+   return 0;
+}
 
 static Evas_List *_class_browse_up (const char *path, ENNA_VFS_CAPS caps,
                                     Class_Private_Data *data, char *icon)
@@ -184,46 +158,6 @@ static Evas_List *_class_browse_up_music(const char *path)
 static Evas_List *_class_browse_up_video(const char *path)
 {
     return _class_browse_up (path, ENNA_CAPS_VIDEO, mod->video, "icon/video");
-}
-
-static unsigned char _uri_has_extension(const char *uri, int type)
-{
-
-   Evas_List *l;
-   Evas_List *filters = NULL;
-
-   if (type == ENNA_CAPS_MUSIC)
-     filters = enna_config->music_filters;
-   else if (type == ENNA_CAPS_VIDEO)
-     filters = enna_config->video_filters;
-
-   if (!filters)
-     return 0;
-   
-   for (l = filters; l; l = l->next)
-   {
-     const char *ext = l->data;
-     if(ecore_str_has_extension(uri, ext))
-       return 1;
-   }
-
-   return 0;
-
-}
-
-static unsigned char _uri_is_root(Class_Private_Data *data,
-                                  const char *uri)
-{
-   Evas_List *l;
-
-   for (l = data->config->root_directories; l; l = l->next)
-   {
-     Root_Directories *root = l->data;
-     if (!strcmp(root->uri, uri))
-       return 1;
-   }
-
-   return 0;
 }
 
 static Evas_List *
@@ -360,50 +294,68 @@ static void __class_init(const char *name, Class_Private_Data **priv,
      }
 }
 
+static Enna_Class_Vfs class_music =
+{
+    "localfiles_music",
+    1,
+    "Browse Local Files",
+    NULL,
+    "icon/hd",
+    {
+        NULL,
+        NULL,
+	_class_browse_up_music,
+	_class_browse_down_music,
+	_class_vfs_get_music,
+    },
+};
+
+static Enna_Class_Vfs class_video =
+{
+    "localfiles_video",
+    1,
+    "Browse Local Files",
+    NULL,
+    "icon/hd",
+    {
+        NULL,
+        NULL,
+	_class_browse_up_video,
+	_class_browse_down_video,
+	_class_vfs_get_video,
+    },
+};
+
 /* Module interface */
 
-static int
-em_init(Enna_Module *em)
+EAPI Enna_Module_Api module_api =
 {
-
-   mod = calloc(1, sizeof(Enna_Module_Music));
-   mod->em = em;
-   em->mod = mod;
-
-   __class_init ("localfiles_music", &mod->music,
-                 ENNA_CAPS_MUSIC, &class_music, "path_music");
-   __class_init ("localfiles_video", &mod->video,
-                 ENNA_CAPS_VIDEO, &class_video, "path_video");
-
-   return 1;
-}
-
-
-
-static int
-em_shutdown(Enna_Module *em)
-{
-
-    Enna_Module_Music *mod;
-
-    mod = em->mod;;
-    free(mod->music);
-    free(mod->video);
-    return 1;
-}
+  ENNA_MODULE_VERSION,
+  "localfiles"
+};
 
 EAPI void
 module_init(Enna_Module *em)
 {
-    if (!em)
-        return;
+  if (!em)
+    return;
 
-    if (!em_init(em))
-        return;
+  mod = calloc(1, sizeof(Enna_Module_Music));
+  mod->em = em;
+  em->mod = mod;
+
+  __class_init ("localfiles_music", &mod->music,
+                ENNA_CAPS_MUSIC, &class_music, "path_music");
+  __class_init ("localfiles_video", &mod->video,
+                ENNA_CAPS_VIDEO, &class_video, "path_video");
 }
 
 EAPI void
 module_shutdown(Enna_Module *em)
 {
-    em_shutdown(em);
+  Enna_Module_Music *mod;
+
+  mod = em->mod;;
+  free (mod->music);
+  free (mod->video);
 }
