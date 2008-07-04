@@ -123,10 +123,13 @@ enna_mediaplayer_play(void)
 	{
 	   const char *uri;
 	   uri = evas_list_nth(_playlist, _mediaplayer->selected);
-	   _mediaplayer->class->func.class_stop();
-	   _mediaplayer->class->func.class_file_set(uri);
+	   if (_mediaplayer->class->func.class_stop)
+             _mediaplayer->class->func.class_stop();
+	   if (uri && _mediaplayer->class->func.class_file_set)
+             _mediaplayer->class->func.class_file_set(uri);
 	   printf("Play\n");
-	   _mediaplayer->class->func.class_play();
+	   if (_mediaplayer->class->func.class_play)
+             _mediaplayer->class->func.class_play();
 	   _mediaplayer->play_state = PLAYING;
 	}
 	break;
@@ -134,7 +137,8 @@ enna_mediaplayer_play(void)
 	 enna_mediaplayer_pause();
 	 break;
       case PAUSE:
-	 _mediaplayer->class->func.class_play();
+        if (_mediaplayer->class->func.class_play)
+          _mediaplayer->class->func.class_play();
 	 _mediaplayer->play_state = PLAYING;
 	 break;
       default:
@@ -153,7 +157,7 @@ enna_mediaplayer_select_nth(int n)
    if (n < 0 || n > evas_list_count(_playlist) - 1) return -1;
    uri = evas_list_nth(_playlist, n);
    printf("select %d\n", n);
-   if (uri)
+   if (uri && _mediaplayer->class->func.class_file_set)
      _mediaplayer->class->func.class_file_set(uri);
    _mediaplayer->selected = n;
    return 0;
@@ -164,7 +168,8 @@ enna_mediaplayer_stop(void)
 {
    if (_mediaplayer->class)
      {
-	_mediaplayer->class->func.class_stop();
+        if (_mediaplayer->class->func.class_stop)
+          _mediaplayer->class->func.class_stop();
 	_mediaplayer->play_state = STOPPED;
      }
    return 0;
@@ -175,7 +180,8 @@ enna_mediaplayer_pause(void)
 {
    if (_mediaplayer->class)
      {
-	_mediaplayer->class->func.class_pause();
+        if (_mediaplayer->class->func.class_pause)
+          _mediaplayer->class->func.class_pause();
 	_mediaplayer->play_state = PAUSE;
      }
    return 0;
@@ -197,7 +203,8 @@ enna_mediaplayer_next(void)
    if (uri)
      {
 	enna_mediaplayer_stop();
-	_mediaplayer->class->func.class_file_set(uri);
+	if (uri && _mediaplayer->class->func.class_file_set)
+          _mediaplayer->class->func.class_file_set(uri);
 	enna_mediaplayer_play();
      }
 
@@ -220,7 +227,8 @@ enna_mediaplayer_prev(void)
    if (uri)
      {
 	enna_mediaplayer_stop();
-	_mediaplayer->class->func.class_file_set(uri);
+	if (uri && _mediaplayer->class->func.class_file_set)
+          _mediaplayer->class->func.class_file_set(uri);
 	enna_mediaplayer_play();
      }
    return 0;
@@ -231,7 +239,8 @@ enna_mediaplayer_position_get(void)
 {
    if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state == PLAYING)
      {
-	return _mediaplayer->class->func.class_position_get();
+        if (_mediaplayer->class->func.class_position_get)
+          return _mediaplayer->class->func.class_position_get();
      }
    return 0.0;
 }
@@ -241,7 +250,8 @@ enna_mediaplayer_length_get(void)
 {
    if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state == PLAYING)
      {
-	return _mediaplayer->class->func.class_length_get();
+        if (_mediaplayer->class->func.class_length_get)
+          return _mediaplayer->class->func.class_length_get();
      }
    return 0.0;
 }
@@ -251,7 +261,8 @@ enna_mediaplayer_seek(double percent)
 {
    printf ("Seeking to: %d%%\n", (int) (100 * percent));
    if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state == PLAYING)
-      return _mediaplayer->class->func.class_seek(percent);
+      if (_mediaplayer->class->func.class_seek)
+        return _mediaplayer->class->func.class_seek(percent);
    return 0;
 }
 
@@ -274,7 +285,8 @@ enna_mediaplayer_playlist_clear(void)
    _playlist = NULL;
    if (_mediaplayer->class)
      {
-	_mediaplayer->class->func.class_stop();
+        if (_mediaplayer->class->func.class_stop)
+          _mediaplayer->class->func.class_stop();
 	_mediaplayer->selected = 0;
 	_mediaplayer->play_state = STOPPED;
      }
@@ -284,10 +296,10 @@ enna_mediaplayer_playlist_clear(void)
 EAPI Enna_Metadata *
 enna_mediaplayer_metadata_get(void)
 {
-   if (_mediaplayer->class)
+   if (_mediaplayer->class && _mediaplayer->class->func.class_metadata_get)
      return _mediaplayer->class->func.class_metadata_get();
-   else
-     return NULL;
+
+   return NULL;
 }
 
 EAPI int
@@ -301,7 +313,8 @@ enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class)
 {
    if (!class) return -1;
    _mediaplayer->class = class;
-   class->func.class_init(0);
+   if (class->func.class_init)
+     class->func.class_init(0);
 
    if (class->func.class_event_cb_set)
      class->func.class_event_cb_set(_event_cb, NULL);
