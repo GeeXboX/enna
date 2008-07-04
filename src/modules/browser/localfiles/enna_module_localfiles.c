@@ -2,8 +2,6 @@
 
 #include "enna.h"
 
-static void           _class_init();
-static void           _class_shutdown();
 static Enna_Vfs_File *_class_vfs_get(int type);
 
 static Evas_List     *_class_browse_up_music(const char *path);
@@ -70,8 +68,8 @@ static Enna_Class_Vfs class_music =
     NULL,
     "icon/hd",
     {
-        _class_init,
-        _class_shutdown,
+        NULL,
+        NULL,
 	_class_browse_up_music,
 	_class_browse_down_music,
 	_class_vfs_get_music,
@@ -86,8 +84,8 @@ static Enna_Class_Vfs class_video =
     NULL,
     "icon/hd",
     {
-        _class_init,
-        _class_shutdown,
+        NULL,
+        NULL,
 	_class_browse_up_video,
 	_class_browse_down_video,
 	_class_vfs_get_video,
@@ -315,17 +313,6 @@ static Enna_Vfs_File *
 _class_vfs_get_video(void)
 {
    return _class_vfs_get(ENNA_CAPS_VIDEO);
-}
-
-
-
-static void _class_init(int dummy)
-{
-}
-
-
-static void _class_shutdown(int dummy)
-{
 }
 
 static void __class_init(const char *name, Class_Private_Data **priv,

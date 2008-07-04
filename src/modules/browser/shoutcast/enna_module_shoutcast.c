@@ -13,8 +13,6 @@
 
 #define MAX_URL 1024
 
-static void           _class_init();
-static void           _class_shutdown();
 static Enna_Vfs_File *_class_vfs_get(void);
 
 static Evas_List     *_class_browse_up(const char *path);
@@ -46,8 +44,8 @@ static Enna_Class_Vfs class_shoutcast =
     NULL,
     "icon/shoutcast",
     {
-        _class_init,
-        _class_shutdown,
+        NULL,
+        NULL,
 	_class_browse_up,
 	_class_browse_down,
 	_class_vfs_get,
@@ -182,18 +180,6 @@ _class_vfs_get (void)
   return enna_vfs_create_directory (NULL, NULL, (char *)
                                     evas_stringshare_add ("icon/music"),
                                     NULL);
-}
-
-static void
-_class_init (int dummy)
-{
-  /* dummy */
-}
-
-static void
-_class_shutdown (int dummy)
-{
-    /* dummy */
 }
 
 /* Module interface */

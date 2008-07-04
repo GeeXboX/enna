@@ -26,8 +26,6 @@ static Evas_List     *_audio_genres_list_get();
 static Evas_List     *_audio_albums_of_artist_list_get(const char *artist);
 static Evas_List     *_audio_tracks_of_album_list_get(const char *artist, const char *album);
 
-static void           _class_init(int dummy);
-static void           _class_shutdown(int dummy);
 static Evas_List     *_class_browse_up(const char *path);
 static Evas_List     *_class_browse_down();
 static Enna_Vfs_File *_class_vfs_get(void);
@@ -93,8 +91,8 @@ static Enna_Class_Vfs class =
     NULL,
     "icon/library",
     {
-      _class_init,
-      _class_shutdown,
+      NULL,
+      NULL,
       _class_browse_up,
       _class_browse_down,
       _class_vfs_get,
@@ -856,16 +854,6 @@ static Evas_List *_class_browse_down()
 static Enna_Vfs_File *_class_vfs_get()
 {
    return mod->vfs;
-}
-
-static void _class_init(int dummy)
-{
-
-
-}
-
-static void _class_shutdown(int dummy)
-{
 }
 
 /* Module interface */
