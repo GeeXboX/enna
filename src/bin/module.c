@@ -40,7 +40,8 @@ enna_module_shutdown(void)
             m = l->data;
             if (m->enabled)
                 {
-                    m->func.shutdown(m);
+                    if (m->func.shutdown)
+                        m->func.shutdown(m);
                     m->enabled = 0;
                 }
             ecore_plugin_unload(m->plugin);
@@ -63,12 +64,9 @@ enna_module_enable(Enna_Module *m)
   if (!m) return -1;
   if(m->enabled) return 0;
   if (m->func.init)
-    {
-      m->func.init(m);
-      m->enabled = 1;
-      return 0;
-    }
-  return -1;
+    m->func.init(m);
+  m->enabled = 1;
+  return 0;
 }
 
 EAPI int
