@@ -18,14 +18,14 @@ typedef struct _Class_Private_Data {
    Module_Config *config;
 } Class_Private_Data;
 
-typedef struct _Enna_Module_Music {
+typedef struct _Enna_Module_LocalFiles {
    Evas *e;
    Enna_Module *em;
    Class_Private_Data *music;
    Class_Private_Data *video;
-} Enna_Module_Music;
+} Enna_Module_LocalFiles;
 
-static Enna_Module_Music *mod;
+static Enna_Module_LocalFiles *mod;
 
 static unsigned char _uri_has_extension(const char *uri, int type)
 {
@@ -340,7 +340,7 @@ module_init(Enna_Module *em)
   if (!em)
     return;
 
-  mod = calloc(1, sizeof(Enna_Module_Music));
+  mod = calloc(1, sizeof(Enna_Module_LocalFiles));
   mod->em = em;
   em->mod = mod;
 
@@ -353,7 +353,7 @@ module_init(Enna_Module *em)
 EAPI void
 module_shutdown(Enna_Module *em)
 {
-  Enna_Module_Music *mod;
+  Enna_Module_LocalFiles *mod;
 
   mod = em->mod;;
   free (mod->music);
