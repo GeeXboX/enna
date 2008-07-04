@@ -13,10 +13,6 @@
 
 #define MAX_URL 1024
 
-static Evas_List     *_class_browse_up(const char *path);
-static Evas_List     *_class_browse_down(void);
-static Enna_Vfs_File *_class_vfs_get(void);
-
 typedef struct Enna_Module_Music_s {
   Evas *e;
   Enna_Module *em;
@@ -24,28 +20,6 @@ typedef struct Enna_Module_Music_s {
 } Enna_Module_Music;
 
 static Enna_Module_Music *mod;
-
-EAPI Enna_Module_Api module_api =
-{
-    ENNA_MODULE_VERSION,
-    "shoutcast"
-};
-
-static Enna_Class_Vfs class_shoutcast =
-{
-    "shoutcast",
-    1,
-    "SHOUTcast Streaming",
-    NULL,
-    "icon/shoutcast",
-    {
-        NULL,
-        NULL,
-	_class_browse_up,
-	_class_browse_down,
-	_class_vfs_get,
-    },
-};
 
 static Evas_List *
 browse_list (void)
@@ -177,7 +151,28 @@ _class_vfs_get (void)
                                     NULL);
 }
 
+static Enna_Class_Vfs class_shoutcast = {
+  "shoutcast",
+  1,
+  "SHOUTcast Streaming",
+  NULL,
+  "icon/shoutcast",
+  {
+    NULL,
+    NULL,
+    _class_browse_up,
+    _class_browse_down,
+    _class_vfs_get,
+  },
+};
+
 /* Module interface */
+
+EAPI Enna_Module_Api module_api =
+{
+    ENNA_MODULE_VERSION,
+    "shoutcast"
+};
 
 EAPI void
 module_init (Enna_Module *em)
