@@ -92,10 +92,7 @@ static Enna_Metadata *_class_metadata_get(void)
    m->discid = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_DISC_ID);
 
    track = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COUNT);
-   if (track)
-     m->track = atoi(track);
-   else
-     m->track = 0;
+   m->track = track ? atoi(track) : 0;
    return m;
 
 }
