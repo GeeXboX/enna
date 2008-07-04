@@ -20,20 +20,6 @@
 
 #define AMAZON_SEARCH_COVER "http://%s/onca/xml?Service=AWSECommerceService&SubscriptionId=%s&Operation=ItemLookup&ItemId=%s&ResponseGroup=Images"
 
-/*****************************************************************************/
-/*                         Private Module API                                */
-/*****************************************************************************/
-
-static char * amazon_music_cover_get (const char *artist, const char *album);
-static char * amazon_movie_cover_get (const char *movie);
-
-static Enna_Class_CoverPlugin class =
-  {
-    "amazon",
-    amazon_music_cover_get,
-    amazon_movie_cover_get,
-  };
-
 typedef struct _Enna_Module_Amazon {
   Evas *evas;
   Enna_Module *em;
@@ -41,38 +27,6 @@ typedef struct _Enna_Module_Amazon {
 } Enna_Module_Amazon;
 
 static Enna_Module_Amazon *mod;
-
-EAPI Enna_Module_Api module_api =
-  {
-    ENNA_MODULE_VERSION,
-    "amazon"
-  };
-
-static int
-em_init (Enna_Module *em)
-{
-  mod = calloc (1, sizeof (Enna_Module_Amazon));
-
-  mod->em = em;
-  mod->evas = em->evas;
-  
-  curl_global_init (CURL_GLOBAL_DEFAULT);
-  mod->curl = curl_easy_init ();
-  enna_cover_plugin_register (&class);
-  
-  return 1;
-}
-
-static int
-em_shutdown (Enna_Module *em)
-{
-  if (mod->curl)
-    curl_easy_cleanup (mod->curl);
-  curl_global_cleanup ();
-  free (mod);
-  
-  return 1;
-}
 
 /*****************************************************************************/
 /*                             Amazon Helpers                                */
@@ -195,6 +149,10 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
   return cover;
 }
 
+/*****************************************************************************/
+/*                         Private Module API                                */
+/*****************************************************************************/
+
 static char *
 amazon_music_cover_get (const char *artist, const char *album)
 {
@@ -231,9 +189,20 @@ amazon_movie_cover_get (const char *movie)
   return amazon_cover_get (AMAZON_SEARCH_MUSIC, keywords, escaped_keywords);
 }
 
+static Enna_Class_CoverPlugin class = {
+  "amazon",
+  amazon_music_cover_get,
+  amazon_movie_cover_get,
+};
+
 /*****************************************************************************/
 /*                          Public Module API                                */
 /*****************************************************************************/
+
+EAPI Enna_Module_Api module_api = {
+  ENNA_MODULE_VERSION,
+  "amazon"
+};
 
 EAPI void
 module_init (Enna_Module *em)
@@ -241,12 +210,21 @@ module_init (Enna_Module *em)
   if (!em)
     return;
 
-  if (!em_init (em))
-    return;
+  mod = calloc (1, sizeof (Enna_Module_Amazon));
+
+  mod->em = em;
+  mod->evas = em->evas;
+  
+  curl_global_init (CURL_GLOBAL_DEFAULT);
+  mod->curl = curl_easy_init ();
+  enna_cover_plugin_register (&class);
 }
 
 EAPI void
 module_shutdown (Enna_Module *em)
 {
-  em_shutdown (em);
+  if (mod->curl)
+    curl_easy_cleanup (mod->curl);
+  curl_global_cleanup ();
+  free (mod);
 }
