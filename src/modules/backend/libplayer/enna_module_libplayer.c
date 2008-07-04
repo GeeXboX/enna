@@ -3,46 +3,7 @@
 #include "enna.h"
 #include <player.h>
 
-
-static int            em_init(Enna_Module *em);
-static int            em_shutdown(Enna_Module *em);
-
-static void _class_init(int dummy);
-static void _class_shutdown(int dummy);
-static int _class_file_set(const char *uri);
-static int _class_play(void);
-static int _class_seek(double percent);
-static int _class_pause(void);
-static int _class_stop(void);
-static double _class_position_get();
-static double _class_length_get();
-static Enna_Metadata *_class_metadata_get(void);
-
-static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data);
-
-static Enna_Class_MediaplayerBackend class =
-  {
-    "libplayer",
-    1,
-    {
-      _class_init,
-      _class_shutdown,
-      _class_file_set,
-      _class_play,
-      _class_seek,
-      _class_pause,
-      _class_stop,
-      _class_position_get,
-      _class_length_get,
-      _class_metadata_get,
-      _class_event_cb_set,
-      NULL
-    }
-  };
-
-typedef struct _Enna_Module_libplayer Enna_Module_libplayer;
-
-struct _Enna_Module_libplayer
+typedef struct _Enna_Module_libplayer
 {
    Evas *evas;
    player_t *player;
@@ -50,15 +11,13 @@ struct _Enna_Module_libplayer
    void (*event_cb)(void *data, enna_mediaplayer_event_t event);
    void *event_cb_data;
    char *uri;
-};
+} Enna_Module_libplayer;
 
 static Enna_Module_libplayer *mod;
 
-EAPI Enna_Module_Api module_api =
-  {
-    ENNA_MODULE_VERSION,
-    "libplayer"
-  };
+/*****************************************************************************/
+/*                         Private Module API                                */
+/*****************************************************************************/
 
 static void _class_init(int dummy)
 {
@@ -160,8 +119,6 @@ static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_ev
    mod->event_cb = event_cb;
 }
 
-/* Module interface */
-
 static int
 _event_cb (player_event_t e, void *data)
 {
@@ -176,9 +133,40 @@ _event_cb (player_event_t e, void *data)
    return 0;
 }
 
-static int
-em_init(Enna_Module *em)
+static Enna_Class_MediaplayerBackend class = {
+  "libplayer",
+  1,
+  {
+    _class_init,
+    _class_shutdown,
+    _class_file_set,
+    _class_play,
+    _class_seek,
+    _class_pause,
+    _class_stop,
+    _class_position_get,
+    _class_length_get,
+    _class_metadata_get,
+    _class_event_cb_set,
+    NULL
+  }
+};
+
+/*****************************************************************************/
+/*                          Public Module API                                */
+/*****************************************************************************/
+
+EAPI Enna_Module_Api module_api = {
+  ENNA_MODULE_VERSION,
+  "libplayer"
+};
+
+EAPI void
+module_init(Enna_Module *em)
 {
+   if (!em)
+     return;
+
    mod = calloc(1, sizeof(Enna_Module_libplayer));
    mod->em = em;
    mod->evas = em->evas;
@@ -187,31 +175,11 @@ em_init(Enna_Module *em)
                   PLAYER_MSG_WARNING, _event_cb);
    enna_mediaplayer_backend_register(&class);
    mod->uri = NULL;
-   return 1;
-}
-
-
-static int
-em_shutdown(Enna_Module *em)
-{
-
-   _class_shutdown(0);
-   free(mod);
-   return 1;
-}
-
-EAPI void
-module_init(Enna_Module *em)
-{
-   if (!em)
-     return;
-
-   if (!em_init(em))
-     return;
 }
 
 EAPI void
 module_shutdown(Enna_Module *em)
 {
-   em_shutdown(em);
+   _class_shutdown(0);
+   free(mod);
 }
