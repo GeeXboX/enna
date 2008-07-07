@@ -14,12 +14,15 @@ backend=libplayer
 
 music_ext=ogg,mp3,flac,wav,wma
 video_ext=avi,mkv,ogg,mpg,mpeg,wmv
+photo_ext=jpg,jpeg,png
 
 [localfiles]
 path_music=file:///home/nico/Musique,Music,icon_hd
 path_music=file:///home/serveur/Medias/Musique,Serveur,icon_network
 path_video=file:///home/nico/Video,Video,icon_hd
 path_video=file:///home/serveur/Medias/Videos,Serveur,icon_network
+path_photo=file:///home/nico/Photos,Photos,icon_hd
+path_photo=file:///home/serveur/Medias/Photos,Serveur,icon_network
 
 [lms]
 path=file:///home/nico/Musique

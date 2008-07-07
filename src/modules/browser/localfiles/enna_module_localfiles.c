@@ -23,6 +23,7 @@ typedef struct _Enna_Module_LocalFiles {
    Enna_Module *em;
    Class_Private_Data *music;
    Class_Private_Data *video;
+  Class_Private_Data *photo;
 } Enna_Module_LocalFiles;
 
 static Enna_Module_LocalFiles *mod;
@@ -37,6 +38,8 @@ static unsigned char _uri_has_extension(const char *uri, int type)
      filters = enna_config->music_filters;
    else if (type == ENNA_CAPS_VIDEO)
      filters = enna_config->video_filters;
+   else if (type == ENNA_CAPS_PHOTO)
+     filters = enna_config->photo_filters;
 
    if (!filters)
      return 0;
@@ -160,6 +163,11 @@ static Evas_List *_class_browse_up_video(const char *path)
     return _class_browse_up (path, ENNA_CAPS_VIDEO, mod->video, "icon/video");
 }
 
+static Evas_List *_class_browse_up_photo(const char *path)
+{
+    return _class_browse_up (path, ENNA_CAPS_PHOTO, mod->photo, "icon/photo");
+}
+
 static Evas_List *
 _class_browse_down(Class_Private_Data *data, ENNA_VFS_CAPS caps)
 {
@@ -218,6 +226,12 @@ _class_browse_down_video(void)
   return _class_browse_down (mod->video, ENNA_CAPS_VIDEO);
 }
 
+static Evas_List *
+_class_browse_down_photo(void)
+{
+  return _class_browse_down (mod->photo, ENNA_CAPS_PHOTO);
+}
+
 static Enna_Vfs_File *
 _class_vfs_get(int type)
 {
@@ -231,6 +245,11 @@ _class_vfs_get(int type)
        return enna_vfs_create_directory ((char *) mod->video->uri,
                                          (char *) ecore_file_file_get (mod->video->uri),
                                          (char *) evas_stringshare_add ("icon/video"), NULL);
+
+    case ENNA_CAPS_PHOTO:
+       return enna_vfs_create_directory ((char *) mod->photo->uri,
+                                         (char *) ecore_file_file_get (mod->photo->uri),
+                                         (char *) evas_stringshare_add ("icon/photo"), NULL);
 
    }
 
@@ -247,6 +266,12 @@ static Enna_Vfs_File *
 _class_vfs_get_video(void)
 {
    return _class_vfs_get(ENNA_CAPS_VIDEO);
+}
+
+static Enna_Vfs_File *
+_class_vfs_get_photo(void)
+{
+   return _class_vfs_get(ENNA_CAPS_PHOTO);
 }
 
 static void __class_init(const char *name, Class_Private_Data **priv,
@@ -326,6 +351,22 @@ static Enna_Class_Vfs class_video =
     },
 };
 
+static Enna_Class_Vfs class_photo =
+{
+    "localfiles_photo",
+    1,
+    "Browse Local Files",
+    NULL,
+    "icon/hd",
+    {
+        NULL,
+        NULL,
+	_class_browse_up_photo,
+	_class_browse_down_photo,
+	_class_vfs_get_photo,
+    },
+};
+
 /* Module interface */
 
 EAPI Enna_Module_Api module_api =
@@ -348,6 +389,8 @@ module_init(Enna_Module *em)
                 ENNA_CAPS_MUSIC, &class_music, "path_music");
   __class_init ("localfiles_video", &mod->video,
                 ENNA_CAPS_VIDEO, &class_video, "path_video");
+  __class_init ("localfiles_photo", &mod->photo,
+                ENNA_CAPS_PHOTO, &class_photo, "path_photo");
 }
 
 EAPI void
@@ -358,4 +401,5 @@ module_shutdown(Enna_Module *em)
   mod = em->mod;;
   free (mod->music);
   free (mod->video);
+  free (mod->photo);
 }
