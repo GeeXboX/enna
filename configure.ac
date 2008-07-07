@@ -228,6 +228,7 @@ src/modules/Makefile
 src/modules/amazon/Makefile
 src/modules/music/Makefile
 src/modules/video/Makefile
+src/modules/photo/Makefile
 src/modules/browser/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/lms/Makefile

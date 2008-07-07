@@ -15,6 +15,7 @@ collections
 #include "content.edc"
 #include "music.edc"
 #include "video.edc"
+#include "photo.edc"
 #include "icons.edc"
 #include "list.edc"
 #include "scrollframe.edc"

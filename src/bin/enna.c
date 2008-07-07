@@ -258,6 +258,8 @@ _create_gui()
    enna_module_enable(em);
    em = enna_module_open("video", enna->evas);
    enna_module_enable(em);
+   em = enna_module_open("photo", enna->evas);
+   enna_module_enable(em);
    em = enna_module_open("localfiles", enna->evas);
    enna_module_enable(em);
 #ifdef BUILD_LMS_MODULE
@@ -271,6 +273,7 @@ _create_gui()
 
    enna_activity_init("music");
    enna_activity_init("video");
+   enna_activity_init("photo");
 
    enna_mainmenu_load_from_activities(enna->o_mainmenu);
    enna_mainmenu_select_nth(enna->o_mainmenu, 0);
@@ -289,6 +292,7 @@ _enna_shutdown()
 
    enna_activity_del("music");
    enna_activity_del("video");
+   enna_activity_del("photo");
    enna_input_shutdown();
    enna_config_shutdown();
    enna_module_shutdown();

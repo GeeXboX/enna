@@ -3,6 +3,7 @@ SUBDIRS = \
 amazon\
 music\
 video\
+photo\
 browser\
 backend\
 input

@@ -32,6 +32,7 @@ group { \
 /* STOCK_ICON("icon_pl.png", "icon_pl", 128) */
 STOCK_ICON("icon_music.png", "icon/music", 128)
 STOCK_ICON("icon_video.png", "icon/video", 128)
+STOCK_ICON("icon_photo.png", "icon/photo", 128)
 STOCK_ICON("icon_music_mini.png", "icon/music_mini", 32);
 STOCK_ICON("icon_home_mini.png", "icon/home_mini", 32);
 STOCK_ICON("icon_library.png", "icon/library", 200)
