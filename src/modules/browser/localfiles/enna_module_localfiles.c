@@ -23,7 +23,7 @@ typedef struct _Enna_Module_LocalFiles {
    Enna_Module *em;
    Class_Private_Data *music;
    Class_Private_Data *video;
-  Class_Private_Data *photo;
+   Class_Private_Data *photo;
 } Enna_Module_LocalFiles;
 
 static Enna_Module_LocalFiles *mod;
