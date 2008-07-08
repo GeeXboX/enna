@@ -632,12 +632,12 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 {
    Ecore_X_Event_Key_Down *ev;
    Enna_List_Item *si;
+   enna_key_t keycode;
    int n, ns;
 
    ev = event_info;
    ns = sd->selected;
-
-
+   keycode = enna_get_key (ev);
 
    //if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD) sd->on_hold = 1;
    //else sd->on_hold = 0;
@@ -824,5 +824,35 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	  }
      }
 
+   if (enna_key_is_alpha (keycode))
+   {
+     char k = enna_key_get_alpha (keycode);
+     Evas_List *l;
+     Evas_Coord x, y, h;
+     int i = 0;
+     
+     l = sd->items;
+     while (l)
+     {
+       Enna_List_Item *item;
+       Enna_Vfs_File *file;
+       item = evas_list_data (l);
+       file = (Enna_Vfs_File *) item->data2;
+
+       if (tolower (file->label[0]) == k)
+         break;
+       l = l->next;
+       i++;
+     }
+
+     if (i != evas_list_count (sd->items))
+     {
+       enna_list_selected_set(sd->o_smart, i);
+       evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
+       y = h/evas_list_count(sd->items) * (i);
+       enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
+     }
+   }
+   
    sd->on_hold = 0;
 }
