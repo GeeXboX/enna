@@ -830,6 +830,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
        if (!item)
          continue;
        file = (Enna_Vfs_File *) item->data2;
+       if (!file)
+         continue;
 
        if (tolower (file->label[0]) == k)
          break;
