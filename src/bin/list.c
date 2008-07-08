@@ -652,7 +652,9 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
    //if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD) sd->on_hold = 1;
    //else sd->on_hold = 0;
 
-   if ((!strcmp(ev->keysymbol, "Up")) || (!strcmp(ev->keysymbol, "KP_Up")))
+   switch (keycode)
+   {
+   case ENNA_KEY_UP:
      {
 	n = ns;
 	do
@@ -669,7 +671,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	if (n != ns)
           list_item_select (sd, n, n - 3);
      }
-   else if ((!strcmp(ev->keysymbol, "Down")) || (!strcmp(ev->keysymbol, "KP_Down")))
+     break;
+   case ENNA_KEY_DOWN:
      {
 	n = ns;
 	do
@@ -686,7 +689,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
         if (n != ns)
           list_item_select (sd, n, n - 3);
      }
-   else if ((!strcmp(ev->keysymbol, "Home")) || (!strcmp(ev->keysymbol, "KP_Home")))
+     break;
+   case ENNA_KEY_HOME:
      {
 	n = -1;
 	do
@@ -703,7 +707,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	if (n != ns)
           list_item_select (sd, n, n);
      }
-   else if ((!strcmp(ev->keysymbol, "End")) || (!strcmp(ev->keysymbol, "KP_End")))
+     break;
+   case ENNA_KEY_END:
      {
 	n = evas_list_count(sd->items);
 	do
@@ -720,9 +725,9 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	if (n != ns)
           list_item_select (sd, n, n);
      }
-   else if ((!strcmp(ev->keysymbol, "Return")) ||
-	    (!strcmp(ev->keysymbol, "KP_Enter")) ||
-	    (!strcmp(ev->keysymbol, "space")))
+     break;
+   case ENNA_KEY_OK:
+   case ENNA_KEY_SPACE:
      {
 	if (!sd->on_hold)
 	  {
@@ -733,14 +738,15 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	       }
 	  }
      }
-   else if ((!strcmp(ev->keysymbol, "KP_2")) || (!strcmp(ev->keysymbol, "2")) ||
-	    (!strcmp(ev->keysymbol, "KP_3")) || (!strcmp(ev->keysymbol, "3")) ||
-	    (!strcmp(ev->keysymbol, "KP_4")) || (!strcmp(ev->keysymbol, "4")) ||
-	    (!strcmp(ev->keysymbol, "KP_5")) || (!strcmp(ev->keysymbol, "5")) ||
-	    (!strcmp(ev->keysymbol, "KP_6")) || (!strcmp(ev->keysymbol, "6")) ||
-	    (!strcmp(ev->keysymbol, "KP_7")) || (!strcmp(ev->keysymbol, "7")) ||
-	    (!strcmp(ev->keysymbol, "KP_8")) || (!strcmp(ev->keysymbol, "8")) |
-	    (!strcmp(ev->keysymbol, "KP_9")) || (!strcmp(ev->keysymbol, "9")))
+     break;
+   case ENNA_KEY_2:
+   case ENNA_KEY_3:
+   case ENNA_KEY_4:
+   case ENNA_KEY_5:
+   case ENNA_KEY_6:
+   case ENNA_KEY_7:
+   case ENNA_KEY_8:
+   case ENNA_KEY_9:
      {
 	char key = ev->keysymbol[strlen(ev->keysymbol) - 1];
 
@@ -807,7 +813,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 
 	  }
      }
-
+     break;
+   default:
    if (enna_key_is_alpha (keycode))
    {
      char k = enna_key_get_alpha (keycode);
@@ -830,6 +837,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 
      if (i != evas_list_count (sd->items))
        list_item_select (sd, i, i);
+   }
+   break;
    }
    
    sd->on_hold = 0;
