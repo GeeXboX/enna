@@ -628,6 +628,16 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
 }
 
 static void
+list_item_select (E_Smart_Data *sd, int n, int count)
+{
+  Evas_Coord x, y, h;
+  enna_list_selected_set (sd->o_smart, n);
+  evas_object_geometry_get (sd->o_box, &x, NULL, NULL, &h);
+  y = h / evas_list_count (sd->items) * count;
+  enna_scrollframe_child_pos_set (sd->o_scroll, x, y);
+}
+
+static void
 _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 {
    Ecore_X_Event_Key_Down *ev;
@@ -657,13 +667,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	  }
 	while (0);
 	if (n != ns)
-	  {
-	     Evas_Coord x, y, h;
-	     enna_list_selected_set(sd->o_smart, n);
-	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
-	     y = h/evas_list_count(sd->items) * (n-3);
-	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
-	  }
+          list_item_select (sd, n, n - 3);
      }
    else if ((!strcmp(ev->keysymbol, "Down")) || (!strcmp(ev->keysymbol, "KP_Down")))
      {
@@ -679,16 +683,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	     si = evas_list_nth(sd->items, n);
 	  }
 	while (0);
-	if (n != ns)
-	  {
-	     Evas_Coord x, y, h;
-	     enna_list_selected_set(sd->o_smart, n);
-	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
-	     y = h/evas_list_count(sd->items) * (n-3);
-	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
-
-	  }
-
+        if (n != ns)
+          list_item_select (sd, n, n - 3);
      }
    else if ((!strcmp(ev->keysymbol, "Home")) || (!strcmp(ev->keysymbol, "KP_Home")))
      {
@@ -705,13 +701,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	  }
 	while (0);
 	if (n != ns)
-	  {
-	     Evas_Coord x, y, h;
-	     enna_list_selected_set(sd->o_smart, n);
-	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
-	     y = h/evas_list_count(sd->items) * (n);
-	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
-	  }
+          list_item_select (sd, n, n);
      }
    else if ((!strcmp(ev->keysymbol, "End")) || (!strcmp(ev->keysymbol, "KP_End")))
      {
@@ -728,13 +718,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 	  }
 	while (0);
 	if (n != ns)
-	  {
-	     Evas_Coord x, y, h;
-	     enna_list_selected_set(sd->o_smart, n);
-	     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
-	     y = h/evas_list_count(sd->items) * (n);
-	     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
-	  }
+          list_item_select (sd, n, n);
      }
    else if ((!strcmp(ev->keysymbol, "Return")) ||
 	    (!strcmp(ev->keysymbol, "KP_Enter")) ||
@@ -846,12 +830,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
      }
 
      if (i != evas_list_count (sd->items))
-     {
-       enna_list_selected_set(sd->o_smart, i);
-       evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
-       y = h/evas_list_count(sd->items) * (i);
-       enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
-     }
+       list_item_select (sd, i, i);
    }
    
    sd->on_hold = 0;
