@@ -812,7 +812,6 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
    {
      char k = enna_key_get_alpha (keycode);
      Evas_List *l;
-     Evas_Coord x, y, h;
      int i = 0;
      
      l = sd->items;
