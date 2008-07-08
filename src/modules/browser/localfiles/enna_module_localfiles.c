@@ -133,9 +133,14 @@ static Evas_List *_class_browse_up (const char *path, ENNA_VFS_CAPS caps,
 	       {
 		  Enna_Vfs_File  *f;
 
-                  f = enna_vfs_create_file (dir, filename,
-                                            icon, NULL);
-		  files_list = evas_list_append(files_list, f);
+                  if (caps & ENNA_CAPS_PHOTO)
+                    f = enna_vfs_create_file (dir, filename,
+                                              NULL, dir + 7);
+                  else
+                    f = enna_vfs_create_file (dir, filename,
+                                              icon, NULL);
+
+                  files_list = evas_list_append(files_list, f);
 	       }
 	  }
 	/* File after dir */
