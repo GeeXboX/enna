@@ -39,6 +39,23 @@ _activate()
 
 }
 
+static Evas_Object *
+create_item (const char *img, const char *label)
+{
+  Evas_Object *icon, *item;
+
+  if (!img || !label)
+    return NULL;
+        
+  icon = edje_object_add (mod->em->evas);
+  edje_object_file_set (icon, enna_config_theme_get (), img);
+
+  item = enna_listitem_add (mod->em->evas);
+  enna_listitem_create_simple (item, icon, label);
+
+  return item;
+}
+
 static void
 _list_transition_core(Evas_List *files, unsigned char direction)
 {
@@ -100,13 +117,9 @@ _list_transition_core(Evas_List *files, unsigned char direction)
    else if (!direction)
      {
 	/* No files returned : create no media item */
-	Evas_Object *icon;
 	Evas_Object *item;
 
-	icon = edje_object_add(mod->em->evas);
-	edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
-	item = enna_listitem_add(mod->em->evas);
-	enna_listitem_create_simple(item, icon, "No Media found!");
+        item = create_item ("icon_nofile", "No Media found!");
 	enna_list_append(o_list, item, NULL, NULL, NULL, NULL);
      }
    else
@@ -119,15 +132,12 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	for( l = categories; l; l = l->next)
 	  {
 	     Enna_Class_Vfs *cat;
-	     Evas_Object *icon;
 	     Evas_Object *item;
 
 	     cat = l->data;
 	     printf("cat : %s\n", cat->label);
-	     icon = edje_object_add(mod->em->evas);
-	     edje_object_file_set(icon, enna_config_theme_get(), cat->icon);
-	     item = enna_listitem_add(mod->em->evas);
-	     enna_listitem_create_simple(item, icon, cat->label);
+
+             item = create_item (cat->icon, cat->label);
 	     enna_list_append(o_list, item, _browse, NULL, cat, NULL);
 	  }
 
