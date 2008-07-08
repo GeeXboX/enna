@@ -23,6 +23,34 @@ typedef enum {
   ENNA_KEY_7,
   ENNA_KEY_8,
   ENNA_KEY_9,
+
+  /* Alphabetical characters */
+  ENNA_KEY_A,
+  ENNA_KEY_B,
+  ENNA_KEY_C,
+  ENNA_KEY_D,
+  ENNA_KEY_E,
+  ENNA_KEY_F,
+  ENNA_KEY_G,
+  ENNA_KEY_H,
+  ENNA_KEY_I,
+  ENNA_KEY_J,
+  ENNA_KEY_K,
+  ENNA_KEY_L,
+  ENNA_KEY_M,
+  ENNA_KEY_N,
+  ENNA_KEY_O,
+  ENNA_KEY_P,
+  ENNA_KEY_Q,
+  ENNA_KEY_R,
+  ENNA_KEY_S,
+  ENNA_KEY_T,
+  ENNA_KEY_U,
+  ENNA_KEY_V,
+  ENNA_KEY_W,
+  ENNA_KEY_X,
+  ENNA_KEY_Y,
+  ENNA_KEY_Z,
 } enna_key_t;
 
 typedef struct _Enna_Class_Input Enna_Class_Input;
@@ -44,6 +72,8 @@ EAPI int ENNA_EVENT_INPUT_KEY_DOWN;
 
 /* Enna Event API functions */
 EAPI enna_key_t enna_get_key (void *event);
+EAPI int enna_key_is_alpha (enna_key_t key);
+EAPI char enna_key_get_alpha (enna_key_t key);
 EAPI void       enna_input_init();
 EAPI void       enna_input_shutdown();
 EAPI int enna_input_class_register(Enna_Module *module, Enna_Class_Input *class);

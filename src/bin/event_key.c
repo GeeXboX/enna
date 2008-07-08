@@ -1,3 +1,4 @@
+#include <ctype.h>
 
 #include "enna.h"
 #include "event_key.h"
@@ -17,8 +18,6 @@ static const struct {
   const char *keyname;
   enna_key_t keycode;
 } enna_keymap[] = {
-  { "m",                          ENNA_KEY_MENU          },
-  { "q",                          ENNA_KEY_QUIT          },
   { "Left",                       ENNA_KEY_LEFT          },
   { "Right",                      ENNA_KEY_RIGHT         },
   { "Up",                         ENNA_KEY_UP            },
@@ -36,6 +35,32 @@ static const struct {
   { "KP_7",                       ENNA_KEY_7             },
   { "KP_8",                       ENNA_KEY_8             },
   { "KP_9",                       ENNA_KEY_9             },
+  { "a",                          ENNA_KEY_A             },
+  { "b",                          ENNA_KEY_B             },
+  { "c",                          ENNA_KEY_C             },
+  { "d",                          ENNA_KEY_D             },
+  { "e",                          ENNA_KEY_E             },
+  { "f",                          ENNA_KEY_F             },
+  { "g",                          ENNA_KEY_G             },
+  { "h",                          ENNA_KEY_H             },
+  { "i",                          ENNA_KEY_I             },
+  { "j",                          ENNA_KEY_J             },
+  { "k",                          ENNA_KEY_K             },
+  { "l",                          ENNA_KEY_L             },
+  { "m",                          ENNA_KEY_MENU          },
+  { "n",                          ENNA_KEY_N             },
+  { "o",                          ENNA_KEY_O             },
+  { "p",                          ENNA_KEY_P             },
+  { "q",                          ENNA_KEY_QUIT          },
+  { "r",                          ENNA_KEY_R             },
+  { "s",                          ENNA_KEY_S             },
+  { "t",                          ENNA_KEY_T             },
+  { "u",                          ENNA_KEY_U             },
+  { "v",                          ENNA_KEY_V             },
+  { "w",                          ENNA_KEY_W             },
+  { "x",                          ENNA_KEY_X             },
+  { "y",                          ENNA_KEY_Y             },
+  { "z",                          ENNA_KEY_Z             },
   { NULL,                         ENNA_KEY_UNKNOWN       }
 };
 
@@ -81,6 +106,24 @@ enna_get_key (void *event)
       return enna_keymap[i].keycode;
 
   return ENNA_KEY_UNKNOWN;
+}
+
+EAPI int
+enna_key_is_alpha (enna_key_t key)
+{
+  return (key >= ENNA_KEY_A && key <= ENNA_KEY_Z);
+}
+
+EAPI char
+enna_key_get_alpha (enna_key_t key)
+{
+  int i;
+
+  for (i = 0; enna_keymap[i].keyname; i++)
+    if (enna_keymap[i].keycode == key)
+      return enna_keymap[i].keyname[0];
+
+  return ' ';
 }
 
 EAPI void
