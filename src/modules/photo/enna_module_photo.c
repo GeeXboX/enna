@@ -299,11 +299,8 @@ _create_gui (void)
 	Enna_Class_Vfs *cat;
 
 	cat = l->data;
-	icon = edje_object_add(mod->em->evas);
 	printf("icon : %s\n", cat->icon);
-	edje_object_file_set(icon, enna_config_theme_get(), cat->icon);
-	item = enna_listitem_add(mod->em->evas);
-	enna_listitem_create_simple(item, icon, cat->label);
+        item = create_item (cat->icon, cat->label);      
 	enna_list_append(o, item,  _browse, NULL, cat, NULL);
      }
 
