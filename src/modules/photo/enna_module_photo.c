@@ -16,7 +16,6 @@ typedef struct _Enna_Module_Photo {
   Evas_Object *o_list;
   Evas_Object *o_location;
   Enna_Class_Vfs *vfs;
-  Ecore_Timer *timer;
   Enna_Module *em;
   char *prev_selected;
 } Enna_Module_Photo;
@@ -419,9 +418,6 @@ module_shutdown (Enna_Module *em)
   enna_list_freeze (mod->o_list);
   evas_object_del (mod->o_list);
   evas_object_del (mod->o_location);
-
-  if (mod->timer)
-    ecore_timer_del (mod->timer);
 
   if (mod->vfs && mod->vfs->func.class_shutdown)
     mod->vfs->func.class_shutdown (0);
