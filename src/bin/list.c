@@ -827,6 +827,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
        Enna_List_Item *item;
        Enna_Vfs_File *file;
        item = evas_list_data (l);
+       if (!item)
+         continue;
        file = (Enna_Vfs_File *) item->data2;
 
        if (tolower (file->label[0]) == k)
