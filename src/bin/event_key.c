@@ -28,6 +28,8 @@ static const struct {
   { "KP_Home",                    ENNA_KEY_HOME          },
   { "End",                        ENNA_KEY_END           },
   { "KP_End",                     ENNA_KEY_END           },
+  { "Prior",                      ENNA_KEY_PAGE_UP       },
+  { "Next",                       ENNA_KEY_PAGE_DOWN     },
   { "Return",                     ENNA_KEY_OK            },
   { "KP_Enter",                   ENNA_KEY_OK            },
   { "BackSpace",                  ENNA_KEY_CANCEL        },
