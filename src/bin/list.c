@@ -628,13 +628,38 @@ _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_in
 }
 
 static void
-list_item_select (E_Smart_Data *sd, int n, int count)
+list_item_select (E_Smart_Data *sd, int n)
 {
   Evas_Coord x, y, h;
   enna_list_selected_set (sd->o_smart, n);
   evas_object_geometry_get (sd->o_box, &x, NULL, NULL, &h);
-  y = h / evas_list_count (sd->items) * count;
+  y = h / evas_list_count (sd->items) * n;
   enna_scrollframe_child_pos_set (sd->o_scroll, x, y);
+}
+
+static void
+list_set_item (E_Smart_Data *sd, int start, int up)
+{
+  Enna_List_Item *si;
+  int n, ns;
+
+  ns = start;
+  n = ns;
+  do
+  {
+    int i = up ? evas_list_count (sd->items) - 1 : 0;
+
+    if (n == i)
+    {
+      n = ns;
+      break;
+    }
+    n = up ? n + 1 : n - 1;
+    si = evas_list_nth (sd->items, n);
+  } while (0);
+
+  if (n != ns)
+    list_item_select (sd, n);
 }
 
 static void
@@ -643,7 +668,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
    Ecore_X_Event_Key_Down *ev;
    Enna_List_Item *si;
    enna_key_t keycode;
-   int n, ns;
+   int ns;
 
    ev = event_info;
    ns = sd->selected;
@@ -655,76 +680,16 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
    switch (keycode)
    {
    case ENNA_KEY_UP:
-     {
-	n = ns;
-	do
-	  {
-	     if (n == 0)
-	       {
-		  n = ns;
-		  break;
-	       }
-	     --n;
-	     si = evas_list_nth(sd->items, n);
-	  }
-	while (0);
-	if (n != ns)
-          list_item_select (sd, n, n - 3);
-     }
+     list_set_item (sd, ns, 0);
      break;
    case ENNA_KEY_DOWN:
-     {
-	n = ns;
-	do
-	  {
-	     if (n == (evas_list_count(sd->items) - 1))
-	       {
-		  n = ns;
-		  break;
-	       }
-	     ++n;
-	     si = evas_list_nth(sd->items, n);
-	  }
-	while (0);
-        if (n != ns)
-          list_item_select (sd, n, n - 3);
-     }
+     list_set_item (sd, ns, 1);
      break;
    case ENNA_KEY_HOME:
-     {
-	n = -1;
-	do
-	  {
-	     if (n == (evas_list_count(sd->items) - 1))
-	       {
-		  n = ns;
-		  break;
-	       }
-	     ++n;
-	     si = evas_list_nth(sd->items, n);
-	  }
-	while (0);
-	if (n != ns)
-          list_item_select (sd, n, n);
-     }
+     list_set_item (sd, -1, 1);
      break;
    case ENNA_KEY_END:
-     {
-	n = evas_list_count(sd->items);
-	do
-	  {
-	     if (n == 0)
-	       {
-		  n = ns;
-		  break;
-	       }
-	     --n;
-	     si = evas_list_nth(sd->items, n);
-	  }
-	while (0);
-	if (n != ns)
-          list_item_select (sd, n, n);
-     }
+     list_set_item (sd, evas_list_count (sd->items), 0);
      break;
    case ENNA_KEY_OK:
    case ENNA_KEY_SPACE:
@@ -840,7 +805,7 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
      }
 
      if (i != evas_list_count (sd->items))
-       list_item_select (sd, i, i);
+       list_item_select (sd, i);
    }
    break;
    }
