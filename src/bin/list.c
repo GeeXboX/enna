@@ -662,6 +662,34 @@ list_set_item (E_Smart_Data *sd, int start, int up)
     list_item_select (sd, n);
 }
 
+static void
+list_jump_to_ascii (E_Smart_Data *sd, char k)
+{
+  Evas_List *l;
+  int i = 0;
+     
+  l = sd->items;
+  while (l)
+  {
+    Enna_List_Item *item;
+    Enna_Vfs_File *file;
+    item = evas_list_data (l);
+    if (!item)
+      continue;
+    file = (Enna_Vfs_File *) item->data2;
+    if (!file)
+      continue;
+    
+    if (tolower (file->label[0]) == k)
+      break;
+    l = l->next;
+    i++;
+  }
+  
+  if (i != evas_list_count (sd->items))
+    list_item_select (sd, i);
+}
+
 static char
 list_get_letter_from_key (char key)
 {
@@ -715,6 +743,7 @@ list_get_alpha_from_digit (E_Smart_Data *sd, char key)
   printf ("letter : %s\n", letter);
   edje_object_part_text_set (sd->o_edje, "enna.text.letter", letter);
   sd->letter_timer = ecore_timer_add (1.5, _letter_timer_cb, sd);
+  list_jump_to_ascii (sd, letter[0]);
 }
 
 static void
@@ -773,34 +802,12 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
      }
      break;
    default:
-   if (enna_key_is_alpha (keycode))
-   {
-     char k = enna_key_get_alpha (keycode);
-     Evas_List *l;
-     int i = 0;
-     
-     l = sd->items;
-     while (l)
+     if (enna_key_is_alpha (keycode))
      {
-       Enna_List_Item *item;
-       Enna_Vfs_File *file;
-       item = evas_list_data (l);
-       if (!item)
-         continue;
-       file = (Enna_Vfs_File *) item->data2;
-       if (!file)
-         continue;
-
-       if (tolower (file->label[0]) == k)
-         break;
-       l = l->next;
-       i++;
+       char k = enna_key_get_alpha (keycode);
+       list_jump_to_ascii (sd, k);
      }
-
-     if (i != evas_list_count (sd->items))
-       list_item_select (sd, i);
-   }
-   break;
+     break;
    }
    
    sd->on_hold = 0;
