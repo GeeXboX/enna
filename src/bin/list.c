@@ -662,6 +662,61 @@ list_set_item (E_Smart_Data *sd, int start, int up)
     list_item_select (sd, n);
 }
 
+static char
+list_get_letter_from_key (char key)
+{
+  switch (key)
+  {
+  case '7':
+    return 'P';
+  case '8':
+    return 'T';
+  case '9':
+    return 'W';
+  default:
+    return ((key - 50) * 3 + 65);
+  }
+}
+
+static void
+list_get_alpha_from_digit (E_Smart_Data *sd, char key)
+{
+  char letter[2];
+
+  letter[0] = list_get_letter_from_key (key);
+  letter[1] = '\0';
+  
+  sd->letter_mode = 1;
+  
+  if (!sd->letter_mode)
+  {
+    sd->letter_event_nbr = 0;
+    sd->letter_key = key;
+  }
+  else
+  {
+    int mod;
+
+    ecore_timer_del (sd->letter_timer);
+    mod = (key == '7' || key == '9') ? 4 : 3;
+
+    if (sd->letter_key == key)
+      sd->letter_event_nbr = (sd->letter_event_nbr + 1) % mod;
+    else
+    {
+      sd->letter_event_nbr = 0;
+      sd->letter_key = key;
+    }
+            
+    letter[0] += sd->letter_event_nbr;
+  }
+
+  edje_object_signal_emit (sd->o_edje, "letter,show", "enna");
+  printf ("letter : %s\n", letter);
+  edje_object_part_text_set (sd->o_edje, "enna.text.letter", letter);
+  sd->letter_timer = ecore_timer_add (1.5, _letter_timer_cb, sd);
+}
+
 static void
 _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
 {
@@ -713,70 +768,8 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
    case ENNA_KEY_8:
    case ENNA_KEY_9:
      {
-	char key = ev->keysymbol[strlen(ev->keysymbol) - 1];
-
-	if (!sd->letter_mode)
-	  {
-	     char letter[2];
-	     sd->letter_mode = 1;
-	     sd->letter_event_nbr = 0;
-	     sd->letter_key = key;
-
-	     switch(key)
-	       {
-		case '7':
-		   letter[0] = 'P';
-		   break;
-		case '8':
-		   letter[0] = 'T';
-		   break;
-		case '9':
-		   letter[0] = 'W';
-		   break;
-		default:
-		   letter[0] = (key-50)*3 + 65;
-	       }
-
-	     letter[1] = '\0';
-	     edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
-	     edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
-	     sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
-	  }
-	else
-	  {
-	     char letter[2];
-	     int mod = 3;
-	     ecore_timer_del(sd->letter_timer);
-	     sd->letter_mode = 1;
-
-	     if (key == '7' || key == '9')
-	       mod = 4;
-	     else
-	       mod = 3;
-
-	     if (sd->letter_key == key)
-	       sd->letter_event_nbr = (sd->letter_event_nbr + 1) % mod;
-	     else
-	       {
-		  sd->letter_event_nbr = 0;
-		  sd->letter_key = key;
-	       }
-	     if (key == '7')
-	       letter[0] = 'P' + sd->letter_event_nbr;
-	     else if (key == '8')
-	       letter[0] = 'T' + sd->letter_event_nbr;
-	     else if (key == '9')
-	       letter[0] = 'W' + sd->letter_event_nbr;
-	     else
-	       letter[0] = (key-50)*3 + 65 + sd->letter_event_nbr;
-
-	     letter[1] = '\0';
-	     edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
-	     printf("letter : %s\n", letter);
-	     edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
-	     sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
-
-	  }
+       char key = ev->keysymbol[strlen(ev->keysymbol) - 1];
+       list_get_alpha_from_digit (sd, key);
      }
      break;
    default:
