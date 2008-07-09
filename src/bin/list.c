@@ -638,7 +638,7 @@ list_item_select (E_Smart_Data *sd, int n)
 }
 
 static void
-list_set_item (E_Smart_Data *sd, int start, int up)
+list_set_item (E_Smart_Data *sd, int start, int up, int step)
 {
   Enna_List_Item *si;
   int n, ns;
@@ -654,7 +654,7 @@ list_set_item (E_Smart_Data *sd, int start, int up)
       n = ns;
       break;
     }
-    n = up ? n + 1 : n - 1;
+    n = up ? n + step : n - step;
     si = evas_list_nth (sd->items, n);
   } while (0);
 
@@ -764,16 +764,22 @@ _e_smart_event_key_down(E_Smart_Data *sd, void *event_info)
    switch (keycode)
    {
    case ENNA_KEY_UP:
-     list_set_item (sd, ns, 0);
+     list_set_item (sd, ns, 0, 1);
+     break;
+   case ENNA_KEY_PAGE_UP:
+     list_set_item (sd, ns, 0, 5);
      break;
    case ENNA_KEY_DOWN:
-     list_set_item (sd, ns, 1);
+     list_set_item (sd, ns, 1, 1);
+     break;
+   case ENNA_KEY_PAGE_DOWN:
+     list_set_item (sd, ns, 1, 5);
      break;
    case ENNA_KEY_HOME:
-     list_set_item (sd, -1, 1);
+     list_set_item (sd, -1, 1, 1);
      break;
    case ENNA_KEY_END:
-     list_set_item (sd, evas_list_count (sd->items), 0);
+     list_set_item (sd, evas_list_count (sd->items), 0, 1);
      break;
    case ENNA_KEY_OK:
    case ENNA_KEY_SPACE:
