@@ -171,7 +171,7 @@ module_init(Enna_Module *em)
    mod->em = em;
    mod->evas = em->evas;
    mod->player =
-     player_init (PLAYER_TYPE_MPLAYER, PLAYER_AO_ALSA, PLAYER_VO_XV,
+     player_init (PLAYER_TYPE_MPLAYER, PLAYER_AO_AUTO, PLAYER_VO_AUTO,
                   PLAYER_MSG_WARNING, _event_cb);
    enna_mediaplayer_backend_register(&class);
    mod->uri = NULL;
