@@ -104,7 +104,10 @@ static Enna_Metadata *_class_metadata_get(void)
    meta->discid = NULL;
    track_nb = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TRACK);
    if (track_nb)
+     {
      meta->track = atoi(track_nb);
+        free(track_nb);
+     }
    else
      meta->track = 0;
 
