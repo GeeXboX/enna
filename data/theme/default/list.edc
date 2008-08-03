@@ -55,11 +55,11 @@ group {
             //	    fixed:    1 1;
 	    rel1 {
 	       relative: 0.0  0.0;
-	       offset:   4    4;
+	       offset:   4    5;
 	    }
 	    rel2 {
 	       relative: 0.0  1.0;
-	       offset:   4   -5;
+	       offset:   4   -19;
 	    }
 	 }
       }
@@ -76,7 +76,7 @@ group {
 	    }
 	    rel2 {
 	       relative: 1.2  1.0;
-	       offset:   -5  5;
+	       offset:   -5  -19;
 	    }
             color: 200 200 200 200;
             color3: 128 128 128 200;
@@ -99,7 +99,7 @@ group {
             rel2.to: "bg";
             image {
                normal: "menu_sel_fg.png";
-               border: 8 8 5 9;
+               border: 15 31 15 31;
             }
          }
          description { state: "selected" 0.0;
@@ -237,7 +237,7 @@ group {
             rel2.to: "bg";
             image {
                normal: "menu_sel_fg.png";
-               border: 8 8 5 9;
+               border: 15 31 15 31;
             }
          }
          description { state: "selected" 0.0;
@@ -471,7 +471,7 @@ group {
             rel2.to: "bg";
             image {
                normal: "menu_sel_fg.png";
-               border: 8 8 5 9;
+               border: 15 31 15 31;
             }
          }
          description { state: "selected" 0.0;
