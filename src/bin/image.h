@@ -10,6 +10,7 @@ EAPI void           enna_image_smooth_scale_set(Evas_Object * obj, int smooth);
 EAPI int            enna_image_smooth_scale_get(Evas_Object * obj);
 EAPI void           enna_image_alpha_set(Evas_Object * obj, int smooth);
 EAPI int            enna_image_alpha_get(Evas_Object * obj);
+EAPI void           enna_image_load_size_set(Evas_Object * obj, int w, int h);
 EAPI void           enna_image_size_get(Evas_Object * obj, int *w, int *h);
 EAPI int            enna_image_fill_inside_get(Evas_Object * obj);
 EAPI void           enna_image_fill_inside_set(Evas_Object * obj,

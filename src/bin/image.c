@@ -82,7 +82,7 @@ enna_image_file_set(Evas_Object * obj, const char *file)
    if (!sd)
       return;
    /* smart code here */
-   evas_object_image_load_size_set(sd->obj, 400, 400);
+   /*evas_object_image_load_size_set(sd->obj, 32, 32);*/
    evas_object_image_file_set(sd->obj, file, NULL);
    _enna_image_smart_reconfigure(sd);
 }
@@ -146,6 +146,21 @@ enna_image_alpha_get(Evas_Object * obj)
       return 0;
 
    return evas_object_image_alpha_get(sd->obj);
+}
+
+EAPI void
+ enna_image_load_size_set(Evas_Object * obj, int w, int h)
+{
+   E_Smart_Data       *sd;
+
+   sd = evas_object_smart_data_get(obj);
+   if (!sd)
+      return 0;
+
+
+   evas_object_image_load_size_set(sd->obj, w, h);
+
+
 }
 
 EAPI void

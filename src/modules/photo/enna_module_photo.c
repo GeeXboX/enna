@@ -45,7 +45,7 @@ create_item (const char *img, const char *label)
 
   if (!img || !label)
     return NULL;
-        
+
   icon = edje_object_add (mod->em->evas);
   edje_object_file_set (icon, enna_config_theme_get (), img);
 
@@ -98,6 +98,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	     if (f->icon_file && f->icon_file[0] == '/')
 	       {
 		  icon = enna_image_add(mod->em->evas);
+		  enna_image_load_size_set(icon, 32,32);
 		  enna_image_file_set(icon, f->icon_file);
 	       }
 	     else
@@ -299,7 +300,7 @@ _create_gui (void)
 
 	cat = l->data;
 	printf("icon : %s\n", cat->icon);
-        item = create_item (cat->icon, cat->label);      
+        item = create_item (cat->icon, cat->label);
 	enna_list_append(o, item,  _browse, NULL, cat, NULL);
      }
 
