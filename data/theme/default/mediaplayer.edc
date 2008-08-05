@@ -259,29 +259,7 @@ group {
 
          }
       }
-     part
-      {
-         name: "progress_bar_event";
-         type: RECT;
-         //clip_to: "enna.clip.player";
-	 mouse_events: 1;
-         description {
-            state: "default" 0.0;
-            visible: 1;
-            color: 255 255 255 0;
-            rel1
-            {
-               relative: 0.5 0.5;
-	       offset: 0 -15;
-            }
-            rel2
-            {
-               relative: 0.9 0.5;
-	       offset: 0 14;
-            }
 
-         }
-      }
      part
       {
          name: "progress_bar";
@@ -371,6 +349,30 @@ group {
 	     color: 255 255 255 255;
 	 }
       }
+     part
+      {
+         name: "progress_bar_event";
+         type: RECT;
+         //clip_to: "enna.clip.player";
+	 mouse_events: 1;
+	 repeat_events: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 0;
+            rel1
+            {
+               relative: 0.5 0.5;
+	       offset: 0 -15;
+            }
+            rel2
+            {
+               relative: 0.9 0.5;
+	       offset: 0 14;
+            }
+
+         }
+      }
 
    }
    programs {
@@ -402,7 +404,13 @@ group {
          name: "mouse,out,drag";
          signal: "mouse,out";
          source:  "progress_bar_event";
-         action:  STATE_SET "default" 0.0;
+         action:  ACTION_STOP;
+	 target: "mouse,in,drag";
+	 after: "mouse,out,drag2";
+      }
+      program{
+         name: "mouse,out,drag2";
+         action: STATE_SET "default" 0.0;
          transition: SINUSOIDAL 1.0;
          target: "enna.dragable.pos";
       }
