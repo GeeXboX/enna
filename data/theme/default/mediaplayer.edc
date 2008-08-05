@@ -2,6 +2,7 @@ images {
    image: "cd_case_reflect.png" COMP;
    image: "cd_case.png" COMP;
    image: "progress_bar.png" COMP;
+   image: "progress_bar_content.png" COMP;
    image: "progress_bar_drag.png" COMP;
 }
 
@@ -240,11 +241,34 @@ group {
          name: "progress_bar_clip";
          type: RECT;
          clip_to: "enna.clip.player";
-	 mouse_events: 0;
+	 mouse_events: 1;
          description {
             state: "default" 0.0;
             visible: 1;
             color: 255 255 255 255;
+            rel1
+            {
+               relative: 0.5 0.5;
+	       offset: 0 -15;
+            }
+            rel2
+            {
+               relative: 0.9 0.5;
+	       offset: 0 14;
+            }
+
+         }
+      }
+     part
+      {
+         name: "progress_bar_event";
+         type: RECT;
+         //clip_to: "enna.clip.player";
+	 mouse_events: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 0;
             rel1
             {
                relative: 0.5 0.5;
@@ -281,86 +305,73 @@ group {
             }
             image {
                normal: "progress_bar.png";
-               border: 4 4 2 2;            
+               border: 4 4 2 2;
 	    }
          }
       }
 
       part {
       	 name: "enna.dragable.pos2";
+	   mouse_events: 0;
 	 description{
 	   state: "default" 0.0;
+
 	    rel1{
 	       relative: 0 0.5;
 	       to: "progress_bar_clip";
 	       offset: 0 -4;
-	       
-	    }   
+
+	    }
 	    rel2{
-	       relative: 1 0.5;
+	       relative: 0.5 0.5;
 	       to_x: "enna.dragable.pos";
 	       to_y: "progress_bar_clip";
 	       offset: 0 2;
 	    }
 	     image {
-	     normal: "progress_bar_drag.png";
-               border: 3 3 3 3;  
+	     normal: "progress_bar_content.png";
+               border: 3 3 3 3;
 	    }
-	 }  
+	 }
       }
       part {
 	 name: "enna.dragable.pos";
 	 //clip_to: "progress_bar_clip";
          dragable {
-	    x: 1 1 50;
-	    y: 0 0 0;
+	    x: 1 1 1;
+	    y: 1 1 1;
 	    confine: "progress_bar";
          }
          description {
 	    state: "default" 0.0;
-            //min: 8 15;
+            min: 25 13;
+	    visible: 0;
+	    color: 255 255 255 0;
+	    //aspect: 1 1;
 	    rel1{
 	       relative: 0 0.5;
 	       to: "progress_bar_clip";
-	       offset: 0 -4;
+	       //offset: -12 -6;
 	    }
 	    rel2 {
 	       relative: 1 0.5;
 	       to: "progress_bar_clip";
-	       offset: 0 4;
+	       //offset: 13 6;
 	    }
 	    image {
 	     normal: "progress_bar_drag.png";
-               border: 3 3 3 3;  
+               border: 6 6 6 6;
 	    }
-	    
+
          }
-
+	 description {
+	     state: "select" 0.0;
+	     inherit: "default" 0.0;
+	     visible: 1;
+	     color: 255 255 255 255;
+	 }
       }
-      part {
-         name: "case_reflect";
-         clip_to: "enna.clip.player";
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 255;
-            visible: 0;
-            rel1{
-               relative: 0 0;
-               to: "enna.clip.cover";
 
-            }
-            rel2{
-               relative: 1 1;
-               to: "enna.clip.cover";
-            }
-            image {
-               normal: "cd_case_reflect.png";
-               border: 5 5 5 5;
-
-            }
-         }
-
-      }
    }
    programs {
       program {
@@ -378,6 +389,22 @@ group {
          action:  STATE_SET "default" 0.0;
          transition: SINUSOIDAL 1.0;
          target: "enna.clip.cover";
+      }
+      program {
+         name: "mouse,in,drag";
+         signal: "mouse,in";
+         source:  "progress_bar_event";
+         action:  STATE_SET "select" 0.0;
+         transition: SINUSOIDAL 1.0;
+         target: "enna.dragable.pos";
+      }
+     program {
+         name: "mouse,out,drag";
+         signal: "mouse,out";
+         source:  "progress_bar_event";
+         action:  STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 1.0;
+         target: "enna.dragable.pos";
       }
    }
 }
