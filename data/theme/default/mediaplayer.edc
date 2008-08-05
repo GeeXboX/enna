@@ -397,7 +397,7 @@ group {
          signal: "mouse,in";
          source:  "progress_bar_event";
          action:  STATE_SET "select" 0.0;
-         transition: SINUSOIDAL 1.0;
+         transition: SINUSOIDAL 0.2;
          target: "enna.dragable.pos";
       }
      program {
@@ -411,7 +411,7 @@ group {
       program{
          name: "mouse,out,drag2";
          action: STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 1.0;
+         transition: SINUSOIDAL 0.2;
          target: "enna.dragable.pos";
       }
    }
