@@ -57,11 +57,11 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
    char *cover_file = NULL;
    int i;
    char *md5;
-   
+
 //#if defined(BUILD_AMAZON_MODULE) && defined(BUILD_LIBXML2) && defined(BUILD_LIBCURL)
    Enna_Module *em;
 //#endif
-   
+
    if (!artist || !album)
      return NULL;
 
@@ -82,11 +82,11 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
      return cover_file;
 
    memset (tmp, '\0', sizeof (tmp));
-   
+
    if (filename)
      {
 
-	const char *file_dir = ecore_file_dir_get(filename);
+	const char *file_dir = ecore_file_dir_get(filename+7);
 	if (ecore_file_can_read(file_dir))
 	  {
 	     for(i = 0; i < 4; i++)
@@ -107,7 +107,6 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
 		  return cover_file;
 	       }
 	  }
-	else return NULL;
 
      }
    else
@@ -128,16 +127,16 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
 
    if (cover_class && cover_class->music_cover_get)
     cover_file = cover_class->music_cover_get (artist, album);
-   
+
    enna_module_disable (em);
    cover_class = NULL;
-   
+
    if (cover_file)
      printf ("Amazon Cover File : %s\n", cover_file);
 
    return cover_file;
 //#endif
-   
+
    return NULL;
 
 }
