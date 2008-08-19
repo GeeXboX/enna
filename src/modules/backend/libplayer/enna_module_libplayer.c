@@ -76,6 +76,7 @@ static int _class_stop(void)
 static int _class_pause(void)
 {
    printf("libplayer pause\n");
+   if (player_playback_get_state (mod->player) == PLAYER_PB_STATE_PLAY)
    player_playback_pause (mod->player);
    return 0;
 }
