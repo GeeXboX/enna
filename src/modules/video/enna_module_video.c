@@ -144,6 +144,7 @@ static void _class_event(void *event_info)
 	       mod->timer_show_mediaplayer = ecore_timer_add(10, _show_mediaplayer_cb, NULL);
 	       edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
 	       edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+	       break;
 	    case ENNA_KEY_OK:
 	       if (mod->timer_show_mediaplayer)
 		 {
@@ -153,6 +154,7 @@ static void _class_event(void *event_info)
 	       edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
 	       mod->state = MEDIAPLAYER_VIEW;
 	       enna_mediaplayer_play();
+	       break;
 	    default:
 	       break;
 	   }
