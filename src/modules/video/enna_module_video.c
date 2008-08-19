@@ -178,10 +178,10 @@ static void _class_event(void *event_info)
 	       _seek_video(-0.01);
 	       break;
 	    case  ENNA_KEY_UP:
-	       _seek_video(+0.10);
+	       _seek_video(+0.05);
 	       break;
 	    case  ENNA_KEY_DOWN:
-	       _seek_video(-0.10);
+	       _seek_video(-0.05);
 	       break;
 	    default:
 	       break;
