@@ -57,7 +57,7 @@ static int _class_play(void)
    if (state == PLAYER_PB_STATE_PAUSE)
      player_playback_pause (mod->player); /* unpause */
    else if (state == PLAYER_PB_STATE_IDLE)
-   player_playback_start (mod->player);
+     player_playback_start (mod->player);
    return 0;
 }
 
@@ -77,7 +77,7 @@ static int _class_pause(void)
 {
    printf("libplayer pause\n");
    if (player_playback_get_state (mod->player) == PLAYER_PB_STATE_PLAY)
-   player_playback_pause (mod->player);
+     player_playback_pause (mod->player);
    return 0;
 }
 
@@ -90,7 +90,7 @@ static double _class_position_get()
     *       of MPlayer and the pause is lost
     */
    if (player_playback_get_state (mod->player) == PLAYER_PB_STATE_PLAY)
-   time_pos = (double) player_get_time_pos (mod->player) / 1000.0;
+     time_pos = (double) player_get_time_pos (mod->player) / 1000.0;
    return time_pos < 0.0 ? 0.0 : time_pos;
 }
 
