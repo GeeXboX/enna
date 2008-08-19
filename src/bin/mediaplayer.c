@@ -127,16 +127,19 @@ enna_mediaplayer_play(void)
              _mediaplayer->class->func.class_stop();
 	   if (uri && _mediaplayer->class->func.class_file_set)
              _mediaplayer->class->func.class_file_set(uri);
-	   printf("Play\n");
 	   if (_mediaplayer->class->func.class_play)
              _mediaplayer->class->func.class_play();
 	   _mediaplayer->play_state = PLAYING;
+	   printf("<<<<<<<<<<<<< STOP->PLAY\n");
+
 	}
 	break;
       case PLAYING:
+	   printf("<<<<<<<<<<<<< PLAY->PAUSE\n");
 	 enna_mediaplayer_pause();
 	 break;
       case PAUSE:
+	 printf("<<<<<<<<<<<<< PAUSE->PLAY\n");
         if (_mediaplayer->class->func.class_play)
           _mediaplayer->class->func.class_play();
 	 _mediaplayer->play_state = PLAYING;
@@ -160,6 +163,7 @@ enna_mediaplayer_select_nth(int n)
    if (uri && _mediaplayer->class->func.class_file_set)
      _mediaplayer->class->func.class_file_set(uri);
    _mediaplayer->selected = n;
+   printf("<<<<<<<<<<<<< FILE SET %s\n", uri);
    return 0;
 }
 
@@ -171,6 +175,7 @@ enna_mediaplayer_stop(void)
         if (_mediaplayer->class->func.class_stop)
           _mediaplayer->class->func.class_stop();
 	_mediaplayer->play_state = STOPPED;
+	printf("<<<<<<<<<<<<< STOP\n");
      }
    return 0;
 }
@@ -183,6 +188,7 @@ enna_mediaplayer_pause(void)
         if (_mediaplayer->class->func.class_pause)
           _mediaplayer->class->func.class_pause();
 	_mediaplayer->play_state = PAUSE;
+	printf("<<<<<<<<<<<<< PAUSE\n");
      }
    return 0;
 }
@@ -205,6 +211,7 @@ enna_mediaplayer_next(void)
 	enna_mediaplayer_stop();
 	if (uri && _mediaplayer->class->func.class_file_set)
           _mediaplayer->class->func.class_file_set(uri);
+	printf("<<<<<<<<<<<<< FILE SET %s\n", uri);
 	enna_mediaplayer_play();
      }
 
@@ -229,6 +236,7 @@ enna_mediaplayer_prev(void)
 	enna_mediaplayer_stop();
 	if (uri && _mediaplayer->class->func.class_file_set)
           _mediaplayer->class->func.class_file_set(uri);
+	printf("<<<<<<<<<<<<< FILE SET %s\n", uri);
 	enna_mediaplayer_play();
      }
    return 0;
@@ -287,6 +295,7 @@ enna_mediaplayer_playlist_clear(void)
      {
         if (_mediaplayer->class->func.class_stop)
           _mediaplayer->class->func.class_stop();
+	printf("<<<<<<<<<<<<< STOP playlistclear\n");
 	_mediaplayer->selected = 0;
 	_mediaplayer->play_state = STOPPED;
      }

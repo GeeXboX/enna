@@ -12,6 +12,7 @@ static void           _class_hide(int dummy);
 static void           _class_event(void *event_info);
 static int            em_init(Enna_Module *em);
 static int            em_shutdown(Enna_Module *em);
+static void           _seek_video(double value);
 static void           _list_transition_core(Evas_List *files, unsigned char direction);
 static void           _list_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
 static void           _list_transition_right_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
@@ -30,7 +31,8 @@ enum _VIDEO_STATE
 {
   LIST_VIEW,
   MEDIAPLAYER_VIEW,
-  DEFAULT_VIEW
+  VIDEO_INFO_VIEW,
+  DEFAULT_VIEW,
 };
 
   struct _Enna_Module_Video
@@ -94,9 +96,11 @@ static void _class_show(int dummy)
 	 edje_object_signal_emit(mod->o_edje, "list,show", "enna");
 	 edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
 	 break;
-      case MEDIAPLAYER_VIEW:
+      case VIDEO_INFO_VIEW:
 	 edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
 	 edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+	 break;
+      case MEDIAPLAYER_VIEW:
 	 break;
       default:
 	 printf("Error State Unknown in video module\n");
@@ -132,17 +136,50 @@ static void _class_event(void *event_info)
 	       enna_list_event_key_down(mod->o_list, event_info);
 	   }
 	 break;
-      case MEDIAPLAYER_VIEW:
+      case VIDEO_INFO_VIEW:
 	 switch (key)
 	   {
-	    case ENNA_KEY_OK:
-	       enna_mediaplayer_play();
-	       break;
 	    case ENNA_KEY_CANCEL:
 	       mod->state = LIST_VIEW;
 	       mod->timer_show_mediaplayer = ecore_timer_add(10, _show_mediaplayer_cb, NULL);
 	       edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
 	       edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+	    case ENNA_KEY_OK:
+	       if (mod->timer_show_mediaplayer)
+		 {
+		    ecore_timer_del(mod->timer_show_mediaplayer);
+		    mod->timer_show_mediaplayer = NULL;
+		 }
+	       edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
+	       mod->state = MEDIAPLAYER_VIEW;
+	       enna_mediaplayer_play();
+	    default:
+	       break;
+	   }
+	 break;
+      case MEDIAPLAYER_VIEW:
+	 switch (key)
+	   {
+	    case ENNA_KEY_CANCEL:
+	    case ENNA_KEY_OK:
+	       enna_mediaplayer_stop();
+	       mod->state = VIDEO_INFO_VIEW;
+	       edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+	       break;
+	    case ENNA_KEY_SPACE:
+	       enna_mediaplayer_play();
+	       break;
+	    case  ENNA_KEY_RIGHT:
+	       _seek_video(+0.01);
+	       break;
+	    case  ENNA_KEY_LEFT:
+	       _seek_video(-0.01);
+	       break;
+	    case  ENNA_KEY_UP:
+	       _seek_video(+0.10);
+	       break;
+	    case  ENNA_KEY_DOWN:
+	       _seek_video(-0.10);
 	       break;
 	    default:
 	       break;
@@ -158,7 +195,7 @@ static int _show_mediaplayer_cb (void *data)
 
   if (mod->o_mediaplayer)
     {
-       mod->state = MEDIAPLAYER_VIEW;
+       mod->state = VIDEO_INFO_VIEW;
        edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
        edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
        ecore_timer_del(mod->timer_show_mediaplayer);
@@ -177,6 +214,21 @@ _activate()
    vfs = (Enna_Class_Vfs*)enna_list_selected_data_get(mod->o_list);
    f = (Enna_Vfs_File*)enna_list_selected_data2_get(mod->o_list);
    _browse(vfs, f);
+
+}
+
+static void
+_seek_video(double value)
+{
+   double pos,len,seek;
+   pos = enna_mediaplayer_position_get();
+   len = enna_mediaplayer_length_get();
+   if (len)
+     seek = (pos / len) + value;
+   if (seek <= 1.0 && seek >= 0.0)
+     enna_mediaplayer_seek(seek);
+
+   printf("Seek value : %f\n", seek);
 
 }
 
@@ -412,7 +464,7 @@ _browse(void *data, void *data2)
 		       if (!strcmp(f->uri, file->uri))
 			 {
 			    enna_mediaplayer_select_nth(i);
-			    enna_mediaplayer_play();
+			    //enna_mediaplayer_play();
 			 }
 		       i++;
 		    }
@@ -451,7 +503,7 @@ static void _create_mediaplayer_gui()
 {
    Evas_Object *o;
 
-   mod->state = MEDIAPLAYER_VIEW;
+   mod->state = VIDEO_INFO_VIEW;
 
    if (mod->o_mediaplayer)
      evas_object_del(mod->o_mediaplayer);

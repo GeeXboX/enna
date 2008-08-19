@@ -70,6 +70,7 @@ static int _class_stop(void)
 
 static int _class_pause(void)
 {
+   printf("libplayer pause\n");
    player_playback_pause (mod->player);
    return 0;
 }
@@ -90,7 +91,7 @@ static double _class_length_get()
 static Enna_Metadata *_class_metadata_get(void)
 {
    Enna_Metadata *meta;
-   const char *track_nb;
+   char *track_nb;
 
    meta = calloc (1, sizeof (Enna_Metadata));
 
@@ -145,8 +146,8 @@ static Enna_Class_MediaplayerBackend class = {
     _class_file_set,
     _class_play,
     _class_seek,
-    _class_pause,
     _class_stop,
+    _class_pause,
     _class_position_get,
     _class_length_get,
     _class_metadata_get,
