@@ -52,6 +52,11 @@ static int _class_file_set(const char *uri)
 
 static int _class_play(void)
 {
+   player_pb_state_t state = player_playback_get_state (mod->player);
+
+   if (state == PLAYER_PB_STATE_PAUSE)
+     player_playback_pause (mod->player); /* unpause */
+   else if (state == PLAYER_PB_STATE_IDLE)
    player_playback_start (mod->player);
    return 0;
 }
