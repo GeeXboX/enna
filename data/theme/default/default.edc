@@ -21,6 +21,7 @@ collections
 #include "scrollframe.edc"
 #include "location.edc"
 #include "mediaplayer.edc"
+#include "video_info.edc"
 
    group {
       name: "enna";

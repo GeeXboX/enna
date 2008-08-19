@@ -518,6 +518,8 @@ static void _create_mediaplayer_gui()
    mod->o_mediaplayer = o;
    mod->timer = ecore_timer_add(1, _update_position_timer, NULL);
 
+   enna_smart_player_metadata_set(mod->o_mediaplayer, enna_mediaplayer_metadata_get());
+
    edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
    edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
 

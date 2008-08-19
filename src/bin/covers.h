@@ -13,5 +13,5 @@ struct _Enna_Class_CoverPlugin
 EAPI int enna_cover_plugin_register(Enna_Class_CoverPlugin *class);
 
 EAPI char *enna_cover_album_get(const char *artist, const char *album, const char *filename);
-
+EAPI char *enna_cover_video_get(const char *filename);
 #endif

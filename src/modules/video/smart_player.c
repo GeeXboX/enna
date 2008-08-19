@@ -125,13 +125,34 @@ enna_smart_player_position_set(Evas_Object *obj, double pos, double len)
 EAPI void
 enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
+   char *cover_file = NULL;
    API_ENTRY;
 
-   if (!metadata) return;
-   if (metadata->title) edje_object_part_text_set(sd->o_edje, "enna.text.title", metadata->title);
-   if (metadata->album) edje_object_part_text_set(sd->o_edje, "enna.text.album", metadata->album);
-   if (metadata->artist) edje_object_part_text_set(sd->o_edje, "enna.text.artist", metadata->artist);
+   printf("metadata set\n");
 
+   if (!metadata) return;
+   if (metadata->uri) edje_object_part_text_set(sd->o_edje, "enna.text.title", ecore_file_file_get(metadata->uri));
+
+   cover_file = enna_cover_video_get(metadata->uri);
+
+   if (cover_file)
+     {
+	printf("cover filename : %s\n", cover_file);
+	/* FIXME : add edje cb at end of cover transition to switch properly covers*/
+	sd->o_cover_old = sd->o_cover;
+	sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
+	evas_object_show(sd->o_cover);
+	enna_image_load_size_set(sd->o_cover, 300,300);
+	enna_image_file_set(sd->o_cover, cover_file);
+	edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
+	edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
+	evas_object_del(sd->o_cover_old);
+     }
+   else
+     {
+	edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
+       	evas_object_del(sd->o_cover);
+     }
 }
 
 /* local subsystem globals */
@@ -181,7 +202,7 @@ _e_smart_add(Evas_Object * obj)
    if (!sd)
       return;
    sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-   edje_object_file_set(sd->o_edje, enna_config_theme_get(), "mediaplayer");
+   edje_object_file_set(sd->o_edje, enna_config_theme_get(), "video_info");
    sd->x = 0;
    sd->y = 0;
    sd->w = 0;

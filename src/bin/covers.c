@@ -140,3 +140,90 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
    return NULL;
 
 }
+
+
+EAPI char *enna_cover_video_get(const char *filename)
+{
+
+   const char *cover_names[] = {"cover.png",
+			        "cover.jpg",
+				"front.png",
+				"front.jpg"};
+   char tmp[4096];
+   char *cover_file = NULL;
+   int i;
+   char *md5;
+   char *file;
+
+//#if defined(BUILD_AMAZON_MODULE) && defined(BUILD_LIBXML2) && defined(BUILD_LIBCURL)
+   Enna_Module *em;
+//#endif
+
+   if (!filename)
+     return NULL;
+
+   char *p = NULL;
+   file = strdup(ecore_file_file_get(filename + 7));
+   p = strrchr(file, '.');
+   if (p) *p = '\0';
+   printf("file : %s\n", file);
+
+   memset (tmp, '\0', sizeof (tmp));
+   snprintf (tmp, sizeof (tmp), "%s", file);
+   md5 = md5sum (tmp);
+   memset (tmp, '\0', sizeof (tmp));
+   snprintf (tmp, sizeof (tmp), "%s/.enna/covers/%s.png",
+             enna_util_user_home_get(), md5);
+   if (ecore_file_exists (tmp))
+   {
+     cover_file = strdup (tmp);
+     printf ("found : %s\n", cover_file);
+   }
+   free (md5);
+
+   if (cover_file)
+     return cover_file;
+
+   memset (tmp, '\0', sizeof (tmp));
+
+   if (filename)
+     {
+
+	const char *file_dir = ecore_file_dir_get(filename+7);
+	if (ecore_file_can_read(file_dir))
+	  {
+	     for(i = 0; i < 4; i++)
+	       {
+		  snprintf(tmp, sizeof(tmp), "%s/%s", file_dir, cover_names[i]);
+		  if (ecore_file_exists(tmp))
+		    {
+		       cover_file = strdup(tmp);
+		       printf("found : %s\n", cover_file);
+		       return cover_file;
+		    }
+	       }
+	  }
+
+     }
+
+   printf("Search for %s with amazon video\n",ecore_file_file_get(filename+7));
+
+//#if defined(BUILD_AMAZON_MODULE) && defined(BUILD_LIBXML2) && defined(BUILD_LIBCURL)
+   em = enna_module_open ("amazon", enna->evas);
+   enna_module_enable (em);
+
+   if (cover_class && cover_class->movie_cover_get)
+     cover_file = cover_class->movie_cover_get (file);
+
+   enna_module_disable (em);
+   cover_class = NULL;
+
+   if (cover_file)
+     printf ("Amazon Cover File : %s\n", cover_file);
+
+   return cover_file;
+//#endif
+
+   return NULL;
+
+}

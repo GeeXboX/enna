@@ -39,14 +39,14 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
   char url[MAX_URL_SIZE];
   url_data_t data;
   char *md5;
-  
+
   xmlDocPtr doc;
   xmlNode *img;
   xmlChar *asin, *cover_url;
 
   if (!search_type || !keywords || !escaped_keywords)
     return NULL;
-  
+
   /* 2. Prepare Amazon WebService URL for Search */
   memset (url, '\0', MAX_URL_SIZE);
   snprintf (url, MAX_URL_SIZE, AMAZON_SEARCH,
@@ -69,7 +69,7 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
   /* 4. Parse the answer to get ASIN value */
   doc = xmlReadMemory (data.buffer, data.size, NULL, NULL, 0);
   free (data.buffer);
-  
+
   if (!doc)
     return NULL;
 
@@ -104,11 +104,11 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
 #ifdef DEBUG
   printf ("Cover Search Reply: %s\n", data.buffer);
 #endif
-  
+
   /* 7. Parse the answer to get cover URL */
   doc = xmlReadMemory (data.buffer, data.size, NULL, NULL, 0);
   free (data.buffer);
-  
+
   if (!doc)
     return NULL;
 
@@ -133,7 +133,7 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
   }
 
   xmlFreeDoc (doc);
-  
+
   /* 8. Download cover and save to disk */
   md5 = md5sum (keywords);
   cover = malloc (MAX_URL_SIZE);
@@ -141,11 +141,11 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
             "%s/.enna/covers/%s.png",
             enna_util_user_home_get (), md5);
   free (md5);
-  
+
   printf ("Saving %s to %s\n", cover_url, cover);
   ecore_file_download ((const char *) cover_url, cover, NULL, NULL, NULL);
   xmlFree (cover_url);
-  
+
   return cover;
 }
 
@@ -158,16 +158,16 @@ amazon_music_cover_get (const char *artist, const char *album)
 {
   char keywords[MAX_KEYWORD_SIZE];
   char escaped_keywords[2*MAX_KEYWORD_SIZE];
-  
+
   if (!artist || !album)
     return NULL;
-  
+
   /* Format the keywords */
   memset (keywords, '\0', MAX_KEYWORD_SIZE);
   memset (escaped_keywords, '\0', 2 * MAX_KEYWORD_SIZE);
   snprintf (keywords, MAX_KEYWORD_SIZE, "%s %s", artist, album);
   url_escape_string (escaped_keywords, keywords);
-  
+
   return amazon_cover_get (AMAZON_SEARCH_MUSIC, keywords, escaped_keywords);
 }
 
@@ -176,17 +176,17 @@ amazon_movie_cover_get (const char *movie)
 {
   char keywords[MAX_KEYWORD_SIZE];
   char escaped_keywords[2*MAX_KEYWORD_SIZE];
-  
+
   if (!movie)
     return NULL;
-  
+
   /* Format the keywords */
   memset (keywords, '\0', MAX_KEYWORD_SIZE);
   memset (escaped_keywords, '\0', 2 * MAX_KEYWORD_SIZE);
   snprintf (keywords, MAX_KEYWORD_SIZE, movie);
   url_escape_string (escaped_keywords, keywords);
-  
-  return amazon_cover_get (AMAZON_SEARCH_MUSIC, keywords, escaped_keywords);
+
+  return amazon_cover_get (AMAZON_SEARCH_MOVIE, keywords, escaped_keywords);
 }
 
 static Enna_Class_CoverPlugin class = {
@@ -214,7 +214,7 @@ module_init (Enna_Module *em)
 
   mod->em = em;
   mod->evas = em->evas;
-  
+
   curl_global_init (CURL_GLOBAL_DEFAULT);
   mod->curl = curl_easy_init ();
   enna_cover_plugin_register (&class);
