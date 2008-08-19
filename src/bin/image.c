@@ -155,12 +155,9 @@ EAPI void
 
    sd = evas_object_smart_data_get(obj);
    if (!sd)
-      return 0;
-
+      return;
 
    evas_object_image_load_size_set(sd->obj, w, h);
-
-
 }
 
 EAPI void
