@@ -5,6 +5,7 @@
 
 #include "enna_config.h"
 #include "utils.h"
+#include "metadata.h"
 #include "box.h"
 #include "activity.h"
 #include "mainmenu.h"

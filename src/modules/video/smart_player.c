@@ -79,14 +79,6 @@ static void         _e_smart_clip_unset(Evas_Object * obj);
 /* local subsystem globals */
 static Evas_Smart  *_e_smart = NULL;
 
-static void _drag_bar_seek_cb (void *data, Evas_Object *obj,
-                               const char *emission, const char *source)
-{
-  double value;
-  edje_object_part_drag_value_get(obj, "enna.dragable.pos", &value, NULL);
-  enna_mediaplayer_seek(value);
-}
-
 /* externally accessible functions */
 EAPI Evas_Object   *
 enna_smart_player_add(Evas * evas)
@@ -95,37 +87,13 @@ enna_smart_player_add(Evas * evas)
    return evas_object_smart_add(evas, _e_smart);
 }
 
-EAPI void
-enna_smart_player_position_set(Evas_Object *obj, double pos, double len)
-{
-   long ph, pm, ps, lh, lm, ls;
-   double fraction;
-   char buf[256];
-   char buf2[256];
-   API_ENTRY;
-
-   lh = len / 3600000;
-   lm = len / 60 - (lh * 60);
-   ls = len - (lm * 60);
-   ph = pos / 3600;
-   pm = pos / 60 - (ph * 60);
-   ps = pos - (pm * 60);
-   snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
-   snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
-   if (len)
-      fraction = pos / len;
-   else
-      fraction = 0.0;
-
-   edje_object_part_text_set(sd->o_edje, "enna.text.length", buf2);
-   edje_object_part_text_set(sd->o_edje, "enna.text.position", buf);
-   edje_object_part_drag_value_set(sd->o_edje, "enna.dragable.pos", fraction, 0.0);
-}
 
 EAPI void
 enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
    char *cover_file = NULL;
+   char buf[4096];
+
    API_ENTRY;
 
    printf("metadata set\n");
@@ -133,8 +101,46 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
    if (!metadata) return;
    if (metadata->uri) edje_object_part_text_set(sd->o_edje, "enna.text.title", ecore_file_file_get(metadata->uri));
 
-   cover_file = enna_cover_video_get(metadata->uri);
+   snprintf(buf, sizeof(buf), "Size : %.2f MB",metadata->size / 1024.0 / 1024.0);
+   edje_object_part_text_set(sd->o_edje, "enna.text.size", buf);
 
+   snprintf(buf, sizeof(buf), "Length: %.2f sec",metadata->length / 1000.0);
+   edje_object_part_text_set(sd->o_edje, "enna.text.length", buf);
+
+   snprintf(buf, sizeof(buf), "Codec : %s",metadata->video->codec);
+   edje_object_part_text_set(sd->o_edje, "enna.text.videocodec", buf);
+
+   snprintf(buf, sizeof(buf), "Size : %dx%d",metadata->video->width, metadata->video->height);
+   edje_object_part_text_set(sd->o_edje, "enna.text.videosize", buf);
+
+   snprintf(buf, sizeof(buf), "Framerate : %.2f",metadata->video->framerate);
+   edje_object_part_text_set(sd->o_edje, "enna.text.framerate", buf);
+
+   snprintf(buf, sizeof(buf), "Codec : %s",metadata->music->codec);
+   edje_object_part_text_set(sd->o_edje, "enna.text.audiocodec", buf);
+
+   snprintf(buf, sizeof(buf), "Bitrate : %i kbps",metadata->music->bitrate / 1000);
+   edje_object_part_text_set(sd->o_edje, "enna.text.bitrate", buf);
+
+   snprintf(buf, sizeof(buf), "Samplerate : %i Hz", metadata->music->samplerate);
+   edje_object_part_text_set(sd->o_edje, "enna.text.samplerate", buf);
+   /*
+   printf(" Size : %.2f MB\n", metadata->size / 1024.0 / 1024.0);
+   printf(" Length: %.2f sec\n", metadata->length / 1000.0);
+   printf(" Video Codec: %s\n", metadata->video->codec);
+   printf(" Video Bitrate: %i kbps\n", metadata->video->bitrate / 1000);
+   printf(" Video Width: %i\n", metadata->video->width);
+   printf(" Video Height: %i\n", metadata->video->height);
+   printf(" Video Channels: %i\n", metadata->video->channels);
+   printf(" Video Streams: %i\n", metadata->video->streams);
+   printf(" Video Framerate: %.2f\n", metadata->video->framerate);
+   printf(" Audio Codec: %s\n", metadata->music->codec);
+   printf(" Audio Bitrate: %i kbps\n", metadata->music->bitrate / 1000);
+   printf(" Audio Channels: %i\n", metadata->music->channels);
+   printf(" Audio Sample Rate: %i Hz\n", metadata->music->samplerate);
+   */
+
+   cover_file = enna_cover_video_get(metadata->uri);
    if (cover_file)
      {
 	printf("cover filename : %s\n", cover_file);
@@ -153,6 +159,10 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 	edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
        	evas_object_del(sd->o_cover);
      }
+
+
+
+   enna_metadata_free(metadata);
 }
 
 /* local subsystem globals */
@@ -210,11 +220,7 @@ _e_smart_add(Evas_Object * obj)
    sd->h = 0;
    evas_object_smart_member_add(sd->o_edje, obj);
    evas_object_smart_data_set(obj, sd);
-   edje_object_signal_callback_add (sd->o_edje, "drag", "enna.dragable.pos",
-                                    _drag_bar_seek_cb, NULL);
-   //sd->o_fs = enna_fullscreen_add(evas_object_evas_get(obj));
-   //evas_object_show(sd->o_fs);
-   //enna_fullscreen_obj_set(sd->o_fs, enna_mediaplayer_video_obj_get());
+
    edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", enna_mediaplayer_video_obj_get());
    edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
 }

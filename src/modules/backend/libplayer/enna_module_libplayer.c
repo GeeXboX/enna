@@ -83,7 +83,7 @@ static int _class_pause(void)
 
 static double _class_position_get()
 {
-   double time_pos;
+   double time_pos = 0.0;
 
    /*
     * NOTE: it needs a fix in libplayer because get_time_pos changes the state
@@ -103,25 +103,69 @@ static Enna_Metadata *_class_metadata_get(void)
 {
    Enna_Metadata *meta;
    char *track_nb;
+   char *buf;
+   int bitrate = 0;
+   meta = enna_metadata_new();
 
-   meta = calloc (1, sizeof (Enna_Metadata));
+   meta->uri = strdup(mod->uri+7);
+   meta->size =  mrl_get_size (mod->player, NULL);
+   meta->length = mrl_get_property (mod->player, NULL, MRL_PROPERTY_LENGTH);
 
-   meta->uri = mod->uri+7;
-   meta->title = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TITLE);
-   meta->artist = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ARTIST);
-   meta->album = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ALBUM);
-   meta->year = mrl_get_metadata (mod->player, NULL, MRL_METADATA_YEAR);
-   meta->genre = mrl_get_metadata (mod->player, NULL, MRL_METADATA_GENRE);
-   meta->comment = mrl_get_metadata (mod->player, NULL, MRL_METADATA_COMMENT);
-   meta->discid = NULL;
+   buf = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TITLE);
+   if (buf)
+     meta->title = strdup(buf);
+
+   buf = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ARTIST);
+   if (buf)
+   meta->music->artist = strdup(buf);
+
+   buf = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ALBUM);
+   if (buf)
+     meta->music->album = strdup(buf);
+
+   buf = mrl_get_metadata (mod->player, NULL, MRL_METADATA_YEAR);
+   if (buf)
+     meta->music->year = strdup(buf);
+
+   buf = mrl_get_metadata (mod->player, NULL, MRL_METADATA_GENRE);
+   if (buf)
+     meta->music->genre = strdup(buf);
+
+   buf = mrl_get_metadata (mod->player, NULL, MRL_METADATA_COMMENT);
+   if(buf)
+     meta->music->comment = strdup(buf);
+
+   meta->music->discid = NULL;
+
    track_nb = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TRACK);
    if (track_nb)
      {
-        meta->track = atoi(track_nb);
+        meta->music->track = atoi(track_nb);
         free(track_nb);
      }
    else
-     meta->track = 0;
+     meta->music->track = 0;
+
+   buf = mrl_get_audio_codec (mod->player, NULL);
+   if (buf)
+     meta->music->codec =  strdup(buf);
+
+   meta->music->bitrate =  mrl_get_property (mod->player, NULL, MRL_PROPERTY_AUDIO_BITRATE);
+   meta->music->channels =  mrl_get_property (mod->player, NULL, MRL_PROPERTY_AUDIO_CHANNELS);
+   meta->music->samplerate =  mrl_get_property (mod->player, NULL, MRL_PROPERTY_AUDIO_SAMPLERATE);
+
+   buf = mrl_get_video_codec (mod->player, NULL);
+   if (buf)
+     meta->video->codec = strdup(buf);
+
+   meta->video->width =  mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_WIDTH);
+   meta->video->height =  mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_HEIGHT);
+   meta->video->channels = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_CHANNELS);
+   meta->video->streams = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_STREAMS);
+   meta->video->framerate = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_FRAMEDURATION);
+   bitrate = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_BITRATE);
+   if (bitrate)
+     meta->video->bitrate = PLAYER_VIDEO_FRAMEDURATION_RATIO_DIV / bitrate;
 
    return meta;
 }
