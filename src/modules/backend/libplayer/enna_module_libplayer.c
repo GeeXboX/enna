@@ -103,7 +103,7 @@ static Enna_Metadata *_class_metadata_get(void)
 {
    Enna_Metadata *meta;
    char *track_nb;
-   int bitrate = 0;
+   int framerate = 0;
    meta = enna_metadata_new();
 
    meta->uri = strdup(mod->uri+7);
@@ -137,10 +137,10 @@ static Enna_Metadata *_class_metadata_get(void)
    meta->video->height =  mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_HEIGHT);
    meta->video->channels = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_CHANNELS);
    meta->video->streams = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_STREAMS);
-   meta->video->framerate = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_FRAMEDURATION);
-   bitrate = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_BITRATE);
-   if (bitrate)
-     meta->video->bitrate = PLAYER_VIDEO_FRAMEDURATION_RATIO_DIV / bitrate;
+   framerate = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_FRAMEDURATION);
+   if (framerate)
+     meta->video->framerate = PLAYER_VIDEO_FRAMEDURATION_RATIO_DIV / framerate;
+   meta->video->bitrate = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_BITRATE);
 
    return meta;
 }
