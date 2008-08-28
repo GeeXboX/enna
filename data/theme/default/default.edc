@@ -22,7 +22,7 @@ collections
 #include "location.edc"
 #include "mediaplayer.edc"
 #include "video_info.edc"
-
+#include "slideshow.edc"
    group {
       name: "enna";
       min: 800 480;

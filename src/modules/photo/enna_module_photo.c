@@ -1,6 +1,7 @@
 /* Interface */
 
 #include "enna.h"
+#include "smart_player.h"
 
 static void           _create_gui();
 static void           _list_transition_core(Evas_List *files, unsigned char direction);
@@ -10,11 +11,22 @@ static void           _browse(void *data, void *data2);
 static void           _browse_down();
 static void           _activate();
 
+typedef enum _PHOTO_STATE PHOTO_STATE;
+enum _PHOTO_STATE
+{
+  LIST_VIEW,
+  SLIDESHOW_VIEW,
+  DEFAULT_VIEW,
+};
+
+
 typedef struct _Enna_Module_Photo {
   Evas *e;
   Evas_Object *o_edje;
   Evas_Object *o_list;
   Evas_Object *o_location;
+  Evas_Object *o_slideshow;
+  PHOTO_STATE  state;
   Enna_Class_Vfs *vfs;
   Enna_Module *em;
   char *prev_selected;
@@ -200,6 +212,25 @@ _browse_down()
      }
 }
 
+static void _create_mediaplayer_gui()
+{
+   Evas_Object *o;
+
+   mod->state = SLIDESHOW_VIEW;
+
+   if (mod->o_slideshow)
+     evas_object_del(mod->o_slideshow);
+
+   o = enna_smart_player_add(mod->em->evas);
+   edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
+   evas_object_show(o);
+   mod->o_slideshow = o;
+
+   edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+   edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+
+}
+
 static void
 _browse(void *data, void *data2)
 {
@@ -241,8 +272,10 @@ _browse(void *data, void *data2)
 	     prev_uri = strdup(prev_vfs->uri);
 	     files = vfs->func.class_browse_up(prev_uri);
 	     ENNA_FREE(prev_uri);
-	     enna_mediaplayer_playlist_clear();
-	     enna_mediaplayer_stop();
+
+	     _create_mediaplayer_gui();
+	    /*  enna_mediaplayer_playlist_clear(); */
+/* 	     enna_mediaplayer_stop(); */
 	     for (l = files; l; l = l->next)
 	       {
 		  Enna_Vfs_File *f;
@@ -250,15 +283,17 @@ _browse(void *data, void *data2)
 
 		  if (!f->is_directory)
 		    {
-		       enna_mediaplayer_uri_append(f->uri);
-		       if (!strcmp(f->uri, file->uri))
-			 {
-			    enna_mediaplayer_select_nth(i);
-			    enna_mediaplayer_play();
-			 }
+		       enna_smart_player_image_append(mod->o_slideshow, f->uri);
+/* 		       enna_mediaplayer_uri_append(f->uri); */
+/* 		       if (!strcmp(f->uri, file->uri)) */
+/* 			 { */
+/* 			    enna_mediaplayer_select_nth(i); */
+/* 			    enna_mediaplayer_play(); */
+/* 			 } */
 		       i++;
 		    }
 	       }
+	     enna_smart_player_play(mod->o_slideshow);
 	     return;
 	  }
 
@@ -284,7 +319,7 @@ _create_gui (void)
    edje_object_file_set(o, enna_config_theme_get(), "module/photo");
    mod->o_edje = o;
    mod->prev_selected = NULL;
-
+   mod->state = LIST_VIEW;
    /* Create List */
    o = enna_list_add(mod->em->evas);
    oe = enna_list_edje_object_get(o);
