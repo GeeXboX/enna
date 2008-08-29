@@ -221,7 +221,10 @@ _activate()
 static void
 _seek_video(double value)
 {
-   double pos,len,seek;
+   double pos  = 0.0;
+   double len  = 0.0;
+   double seek = 0.0;
+
    pos = enna_mediaplayer_position_get();
    len = enna_mediaplayer_length_get();
    if (len)
