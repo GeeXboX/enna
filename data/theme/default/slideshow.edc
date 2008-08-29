@@ -64,7 +64,7 @@ group {
       signal: "enna,swallow1,state1";
       source: "enna";
       action:  STATE_SET "state1" 0.0;
-      transition: ACCELERATE 0.3;
+      transition: DECELERATE 0.3;
       target: "enna.switcher.swallow1";
 
 
@@ -87,7 +87,7 @@ group {
       signal: "enna,swallow1,default";
       source: "enna";
       action:  STATE_SET "default" 0.0;
-      transition: ACCELERATE 0.3;
+      transition: DECELERATE 0.3;
       target: "enna.switcher.swallow1";
       }
       program {
@@ -102,7 +102,7 @@ group {
       signal: "enna,swallow1,state2";
       source: "enna";
       action:  STATE_SET "state2" 0.0;
-      transition: ACCELERATE 0.3;
+      transition: DECELERATE 0.3;
       target: "enna.switcher.swallow1";
 
       }
@@ -118,7 +118,7 @@ group {
       signal: "enna,swallow2,state1";
       source: "enna";
       action:  STATE_SET "state1" 0.0;
-      transition: ACCELERATE 0.3;
+      transition: DECELERATE 0.3;
       target: "enna.switcher.swallow2";
 
       }
@@ -134,7 +134,7 @@ group {
       signal: "enna,swallow2,default";
       source: "enna";
       action:  STATE_SET "default" 0.0;
-      transition: ACCELERATE 0.3;
+      transition: DECELERATE 0.3;
       target: "enna.switcher.swallow2";
 
       }
@@ -151,7 +151,7 @@ group {
       signal: "enna,swallow2,state2";
       source: "enna";
       action:  STATE_SET "state2" 0.0;
-      transition: ACCELERATE 0.3;
+      transition: DECELERATE 0.3;
       target: "enna.switcher.swallow2";
       after: "end_swallow1_state1";
       }

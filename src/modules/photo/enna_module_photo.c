@@ -225,7 +225,7 @@ static void _create_slideshow_gui()
    evas_object_show(o);
    mod->o_slideshow = o;
 
-   edje_object_signal_emit(mod->o_edje, "slideshow,show", "enna");
+   //edje_object_signal_emit(mod->o_edje, "slideshow,show", "enna");
    edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
 
 }
@@ -385,19 +385,51 @@ _class_event (void *event_info)
   Ecore_X_Event_Key_Down *ev = event_info;
   enna_key_t key = enna_get_key (ev);
 
-  switch (key)
-  {
-  case ENNA_KEY_LEFT:
-  case ENNA_KEY_CANCEL:
-    _browse_down ();
-    break;
-  case ENNA_KEY_RIGHT:
-  case ENNA_KEY_OK:
-    _activate ();
-    break;
-  default:
-    enna_list_event_key_down (mod->o_list, event_info);
-  }
+  switch (mod->state)
+    {
+     case LIST_VIEW:
+	switch (key)
+	  {
+	   case ENNA_KEY_LEFT:
+	   case ENNA_KEY_CANCEL:
+	      _browse_down ();
+	      break;
+	   case ENNA_KEY_RIGHT:
+	   case ENNA_KEY_OK:
+	      _activate ();
+	      break;
+	   default:
+	      enna_list_event_key_down (mod->o_list, event_info);
+	  }
+	break;
+     case SLIDESHOW_VIEW:
+	switch (key)
+	  {
+	   case ENNA_KEY_CANCEL:
+	      //enna_slideshow_stop(mod->o_slideshow);
+	      evas_object_del(mod->o_slideshow);
+	      mod->state = LIST_VIEW;
+	      edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+	      break;
+	   case ENNA_KEY_RIGHT:
+	      enna_slideshow_next(mod->o_slideshow);
+	      break;
+	   case ENNA_KEY_LEFT:
+	      //enna_slideshow_prev(mod->o_slideshow);
+	      break;
+	   case ENNA_KEY_OK:
+	      enna_slideshow_play(mod->o_slideshow);
+
+	      break;
+	   default:
+	      enna_list_event_key_down (mod->o_list, event_info);
+	  }
+	break;
+     default:
+	break;
+    }
+
+
 }
 
 static Enna_Class_Activity class = {

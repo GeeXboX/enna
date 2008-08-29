@@ -258,10 +258,15 @@ static void
 _e_smart_del(Evas_Object * obj)
 {
    E_Smart_Data       *sd;
+   Evas_List *l;
 
    sd = evas_object_smart_data_get(obj);
    if (!sd)
       return;
+
+   for (l = sd->playlist; l; l = l->next)
+     evas_object_del(l->data);
+
    evas_object_del(sd->o_edje);
    free(sd);
 }
