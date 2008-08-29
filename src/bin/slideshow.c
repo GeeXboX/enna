@@ -1,8 +1,8 @@
 /*
- * smart_mediaplayer.c
+ * slideshow.c
  * Copyright (C) Nicolas Aguirre 2006,2007,2008 <aguirre.nicolas@gmail.com>
  *
- * smart_mediaplayer.c is free software copyrighted by Nicolas Aguirre.
+ * slideshow.c is free software copyrighted by Nicolas Aguirre.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -16,7 +16,7 @@
  *    contributor may be used to endorse or promote products derived
  *    from this software without specific prior written permission.
  *
- * smart_mediaplayer.c IS PROVIDED BY Nicolas Aguirre ``AS IS'' AND ANY EXPRESS
+ * slideshow.c IS PROVIDED BY Nicolas Aguirre ``AS IS'' AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED.  IN NO EVENT SHALL Nicolas Aguirre OR ANY OTHER CONTRIBUTORS
@@ -31,9 +31,9 @@
 
 /* derived from e_icon */
 
-#include "smart_player.h"
+#include "slideshow.h"
 
-#define SMART_NAME "smart_player"
+#define SMART_NAME "slideshow"
 
 #define API_ENTRY \
    E_Smart_Data *sd; \
@@ -62,8 +62,8 @@ struct _E_Smart_Data
 };
 
 /* local subsystem functions */
-static void         _enna_mediaplayer_smart_reconfigure(E_Smart_Data * sd);
-static void         _enna_mediaplayer_smart_init(void);
+static void         _enna_slideshow_smart_reconfigure(E_Smart_Data * sd);
+static void         _enna_slideshow_smart_init(void);
 static void         _switch_images(E_Smart_Data * sd, Evas_Object * obj1, Evas_Object * obj2);
 static void         _e_smart_add(Evas_Object * obj);
 static void         _e_smart_del(Evas_Object * obj);
@@ -83,14 +83,14 @@ static Evas_Smart  *_e_smart = NULL;
 
 /* externally accessible functions */
 EAPI Evas_Object   *
-enna_smart_player_add(Evas * evas)
+enna_slideshow_add(Evas * evas)
 {
-   _enna_mediaplayer_smart_init();
+   _enna_slideshow_smart_init();
    return evas_object_smart_add(evas, _e_smart);
 }
 
 EAPI void
-enna_smart_player_image_append(Evas_Object *obj, const char *filename)
+enna_slideshow_image_append(Evas_Object *obj, const char *filename)
 {
    Evas_Object *o;
    Evas_Coord w,h;
@@ -110,7 +110,7 @@ enna_smart_player_image_append(Evas_Object *obj, const char *filename)
 }
 
 EAPI int
-enna_smart_player_next(Evas_Object * obj)
+enna_slideshow_next(Evas_Object * obj)
 {
    Evas_Object *o, *po;
 
@@ -134,7 +134,7 @@ enna_smart_player_next(Evas_Object * obj)
 }
 
 EAPI void
-enna_smart_player_play(Evas_Object * obj)
+enna_slideshow_play(Evas_Object * obj)
 {
    Evas_Object        *o;
 
@@ -145,7 +145,7 @@ enna_smart_player_play(Evas_Object * obj)
 	/* Play */
 	o = evas_list_nth(sd->playlist, sd->playlist_id);
 	_switch_images(sd, NULL, o);
-	sd->timer = ecore_timer_add(5, enna_smart_player_next, sd->obj);
+	sd->timer = ecore_timer_add(5, enna_slideshow_next, sd->obj);
      }
    else
      {
@@ -192,7 +192,7 @@ _switch_images(E_Smart_Data * sd, Evas_Object * obj1, Evas_Object * obj2)
 }
 
 static void
-_enna_mediaplayer_smart_reconfigure(E_Smart_Data * sd)
+_enna_slideshow_smart_reconfigure(E_Smart_Data * sd)
 {
    Evas_Coord          x, y, w, h;
 
@@ -207,7 +207,7 @@ _enna_mediaplayer_smart_reconfigure(E_Smart_Data * sd)
 }
 
 static void
-_enna_mediaplayer_smart_init(void)
+_enna_slideshow_smart_init(void)
 {
    if (_e_smart)
       return;
@@ -278,7 +278,7 @@ _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
       return;
    sd->x = x;
    sd->y = y;
-   _enna_mediaplayer_smart_reconfigure(sd);
+   _enna_slideshow_smart_reconfigure(sd);
 }
 
 static void
@@ -293,7 +293,7 @@ _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
       return;
    sd->w = w;
    sd->h = h;
-   _enna_mediaplayer_smart_reconfigure(sd);
+   _enna_slideshow_smart_reconfigure(sd);
 }
 
 static void

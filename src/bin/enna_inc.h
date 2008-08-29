@@ -23,5 +23,6 @@
 #include "list_item.h"
 #include "covers.h"
 #include "md5.h"
+#include "slideshow.h"
 
 #endif

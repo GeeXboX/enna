@@ -1,7 +1,6 @@
 /* Interface */
 
 #include "enna.h"
-#include "smart_player.h"
 
 static void           _create_gui();
 static void           _list_transition_core(Evas_List *files, unsigned char direction);
@@ -221,7 +220,7 @@ static void _create_mediaplayer_gui()
    if (mod->o_slideshow)
      evas_object_del(mod->o_slideshow);
 
-   o = enna_smart_player_add(mod->em->evas);
+   o = enna_slideshow_add(mod->em->evas);
    edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
    evas_object_show(o);
    mod->o_slideshow = o;
@@ -283,7 +282,7 @@ _browse(void *data, void *data2)
 
 		  if (!f->is_directory)
 		    {
-		       enna_smart_player_image_append(mod->o_slideshow, f->uri);
+		       enna_slideshow_image_append(mod->o_slideshow, f->uri);
 /* 		       enna_mediaplayer_uri_append(f->uri); */
 /* 		       if (!strcmp(f->uri, file->uri)) */
 /* 			 { */
@@ -293,7 +292,7 @@ _browse(void *data, void *data2)
 		       i++;
 		    }
 	       }
-	     enna_smart_player_play(mod->o_slideshow);
+	     enna_slideshow_play(mod->o_slideshow);
 	     return;
 	  }
 

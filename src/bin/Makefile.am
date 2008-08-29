@@ -31,7 +31,8 @@ list_item.c\
 xml_utils.c\
 url_utils.c\
 md5.c\
-covers.c
+covers.c\
+slideshow.c
 
 enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -60,7 +61,8 @@ list_item.h\
 xml_utils.h\
 url_utils.h\
 md5.h\
-covers.h
+covers.h\
+slideshow.h
 
 
 

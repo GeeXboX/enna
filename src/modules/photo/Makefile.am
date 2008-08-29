@@ -19,8 +19,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = enna_module_photo.la
 
 enna_module_photo_la_SOURCES= \
-enna_module_photo.c\
-smart_player.c
+enna_module_photo.c
 
 enna_module_photo_la_LIBADD = @ENNA_LIBS@
 enna_module_photo_la_LDFLAGS = -module -avoid-version
