@@ -415,7 +415,7 @@ _class_event (void *event_info)
 	      enna_slideshow_next(mod->o_slideshow);
 	      break;
 	   case ENNA_KEY_LEFT:
-	      //enna_slideshow_prev(mod->o_slideshow);
+	      enna_slideshow_prev(mod->o_slideshow);
 	      break;
 	   case ENNA_KEY_OK:
 	      enna_slideshow_play(mod->o_slideshow);

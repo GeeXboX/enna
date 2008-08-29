@@ -114,7 +114,7 @@ enna_slideshow_image_append(Evas_Object *obj, const char *filename)
 EAPI int
 enna_slideshow_next(Evas_Object * obj)
 {
-   Evas_Object *o, *po;
+   Evas_Object *o;
 
    API_ENTRY return 0;
 
@@ -133,6 +133,30 @@ enna_slideshow_next(Evas_Object * obj)
      }
    return 0;
 }
+
+EAPI int
+enna_slideshow_prev(Evas_Object * obj)
+{
+   Evas_Object *o;
+
+   API_ENTRY return 0;
+
+   sd->playlist_id--;
+   o = evas_list_nth(sd->playlist, sd->playlist_id);
+
+   if (o)
+     {
+	_switch_images(sd,  o);
+	return 1;
+     }
+   else
+     {
+	sd->playlist_id++;
+	return 0;
+     }
+   return 0;
+}
+
 
 EAPI void
 enna_slideshow_play(Evas_Object * obj)
@@ -166,14 +190,11 @@ _edje_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
 
    E_Smart_Data *sd = (E_Smart_Data*)data;
 
-   //printf("emission edje : %s, source : %s\n", emission, source);
    if (!strcmp(emission,"done"))
      {
-	printf("done\n");
 	edje_object_part_unswallow(sd->o_edje, sd->old_slide);
 	evas_object_hide(sd->old_slide);
 	sd->old_slide = NULL;
-	//edje_object_signal_emit(sd->o_edje, "show,1", "enna");
      }
 }
 
@@ -182,16 +203,8 @@ static void
 _switch_images(E_Smart_Data * sd, Evas_Object * new_slide)
 {
 
-   /*if (!sd || (!obj1 && !obj2))
-      return;
-   */
-
-
    if (!sd || sd->old_slide || !new_slide)
      return;
-
-
-
 
    edje_object_part_unswallow(sd->o_edje, sd->slide);
    edje_object_part_unswallow(sd->o_edje, sd->old_slide);
