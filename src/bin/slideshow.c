@@ -49,6 +49,10 @@
       return;
 
 
+#define STOP 0
+#define PLAY 1
+#define PAUSE 2
+
 typedef struct _E_Smart_Data E_Smart_Data;
 
 struct _E_Smart_Data
@@ -61,6 +65,7 @@ struct _E_Smart_Data
    Ecore_Timer        *timer;
    Evas_Object        *old_slide;
    Evas_Object        *slide;
+   unsigned char       state;
 };
 
 /* local subsystem functions */
@@ -118,12 +123,14 @@ enna_slideshow_next(Evas_Object * obj)
 
    API_ENTRY return 0;
 
+   if (sd->old_slide) return 1;
+
    sd->playlist_id++;
    o = evas_list_nth(sd->playlist, sd->playlist_id);
 
    if (o)
      {
-	_switch_images(sd,  o);
+	_switch_images(sd, o);
 	return 1;
      }
    else
@@ -141,11 +148,19 @@ enna_slideshow_prev(Evas_Object * obj)
 
    API_ENTRY return 0;
 
+   if (sd->old_slide) return 1;
+
    sd->playlist_id--;
    o = evas_list_nth(sd->playlist, sd->playlist_id);
 
    if (o)
      {
+	if (sd->state == PLAY)
+	  {
+	     sd->state = PAUSE;
+	     ecore_timer_del(sd->timer);
+	     sd->timer = NULL;
+	  }
 	_switch_images(sd,  o);
 	return 1;
      }
@@ -168,13 +183,16 @@ enna_slideshow_play(Evas_Object * obj)
    if (!sd->timer)
      {
 	/* Play */
+	sd->state = PLAY;
 	o = evas_list_nth(sd->playlist, sd->playlist_id);
 	_switch_images(sd, o);
 	sd->timer = ecore_timer_add(4, enna_slideshow_next, sd->obj);
      }
    else
      {
+
 	/* Pause */
+	sd->state = PAUSE;
 	ecore_timer_del(sd->timer);
 	sd->timer = NULL;
      }
@@ -203,7 +221,7 @@ static void
 _switch_images(E_Smart_Data * sd, Evas_Object * new_slide)
 {
 
-   if (!sd || sd->old_slide || !new_slide)
+   if (!sd || !new_slide)
      return;
 
    edje_object_part_unswallow(sd->o_edje, sd->slide);
@@ -214,9 +232,6 @@ _switch_images(E_Smart_Data * sd, Evas_Object * new_slide)
    edje_object_part_swallow(sd->o_edje, "slide.1", sd->old_slide);
    edje_object_part_swallow(sd->o_edje, "slide.2", sd->slide);
    edje_object_signal_emit(sd->o_edje, "show,2", "enna");
-
-
-
 }
 
 static void
@@ -283,6 +298,7 @@ _e_smart_add(Evas_Object * obj)
    sd->timer = NULL;
    sd->old_slide = NULL;
    sd->slide = NULL;
+   sd->state = STOP;
 }
 
 static void
@@ -299,6 +315,7 @@ _e_smart_del(Evas_Object * obj)
      evas_object_del(l->data);
 
    evas_object_del(sd->o_edje);
+   ecore_timer_del(sd->timer);
    free(sd);
 }
 

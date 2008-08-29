@@ -406,7 +406,6 @@ _class_event (void *event_info)
 	switch (key)
 	  {
 	   case ENNA_KEY_CANCEL:
-	      //enna_slideshow_stop(mod->o_slideshow);
 	      evas_object_del(mod->o_slideshow);
 	      mod->state = LIST_VIEW;
 	      edje_object_signal_emit(mod->o_edje, "list,show", "enna");
