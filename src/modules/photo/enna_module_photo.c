@@ -211,7 +211,7 @@ _browse_down()
      }
 }
 
-static void _create_mediaplayer_gui()
+static void _create_slideshow_gui()
 {
    Evas_Object *o;
 
@@ -221,11 +221,11 @@ static void _create_mediaplayer_gui()
      evas_object_del(mod->o_slideshow);
 
    o = enna_slideshow_add(mod->em->evas);
-   edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
+   edje_object_part_swallow(mod->o_edje, "enna.swallow.slideshow", o);
    evas_object_show(o);
    mod->o_slideshow = o;
 
-   edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+   edje_object_signal_emit(mod->o_edje, "slideshow,show", "enna");
    edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
 
 }
@@ -272,9 +272,7 @@ _browse(void *data, void *data2)
 	     files = vfs->func.class_browse_up(prev_uri);
 	     ENNA_FREE(prev_uri);
 
-	     _create_mediaplayer_gui();
-	    /*  enna_mediaplayer_playlist_clear(); */
-/* 	     enna_mediaplayer_stop(); */
+	     _create_slideshow_gui();
 	     for (l = files; l; l = l->next)
 	       {
 		  Enna_Vfs_File *f;
@@ -283,12 +281,6 @@ _browse(void *data, void *data2)
 		  if (!f->is_directory)
 		    {
 		       enna_slideshow_image_append(mod->o_slideshow, f->uri);
-/* 		       enna_mediaplayer_uri_append(f->uri); */
-/* 		       if (!strcmp(f->uri, file->uri)) */
-/* 			 { */
-/* 			    enna_mediaplayer_select_nth(i); */
-/* 			    enna_mediaplayer_play(); */
-/* 			 } */
 		       i++;
 		    }
 	       }
@@ -378,7 +370,7 @@ _class_show (int dummy)
 {
   edje_object_signal_emit(mod->o_edje, "module,show", "enna");
   edje_object_signal_emit (mod->o_edje, "list,show", "enna");
-  edje_object_signal_emit (mod->o_edje, "mediaplayer,hide", "enna");
+  edje_object_signal_emit (mod->o_edje, "slideshow,hide", "enna");
 }
 
 static void
