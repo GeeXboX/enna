@@ -49,6 +49,8 @@
       return;
 
 
+#define NB_TRANSITIONS_MAX 3.0
+
 #define STOP 0
 #define PLAY 1
 #define PAUSE 2
@@ -59,6 +61,7 @@ struct _E_Smart_Data
 {
    Evas_Coord          x, y, w, h;
    Evas_Object        *o_edje;
+   Evas_Object        *o_transition;
    Evas_Object        *obj;
    Evas_List          *playlist;
    unsigned int        playlist_id;
@@ -71,6 +74,8 @@ struct _E_Smart_Data
 /* local subsystem functions */
 static void         _enna_slideshow_smart_reconfigure(E_Smart_Data * sd);
 static void         _enna_slideshow_smart_init(void);
+static void         _random_transition(E_Smart_Data *sd);
+static void         _edje_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
 static void         _switch_images(E_Smart_Data * sd, Evas_Object * new_slide);
 static void         _e_smart_add(Evas_Object * obj);
 static void         _e_smart_del(Evas_Object * obj);
@@ -202,6 +207,35 @@ enna_slideshow_play(Evas_Object * obj)
 /* local subsystem globals */
 
 static void
+_random_transition(E_Smart_Data *sd)
+{
+   unsigned int n;
+
+   if (!sd) return;
+
+   n = 1 + (int) ( 3.0 * rand() / ( RAND_MAX + 1.0 ));
+   if (sd->o_transition) evas_object_del(sd->o_transition);
+   sd->o_transition = edje_object_add(evas_object_evas_get(sd->obj));
+   printf("Transition n°%d\n", n);
+   switch(n)
+     {
+      case 1:
+	 edje_object_file_set(sd->o_transition, enna_config_theme_get(), "transitions/crossfade");
+	 break;
+      case 2:
+	 edje_object_file_set(sd->o_transition, enna_config_theme_get(), "transitions/vswipe");
+	 break;
+      case 3:
+	 edje_object_file_set(sd->o_transition, enna_config_theme_get(), "transitions/hslide");
+	 break;
+      default:
+	 break;
+     }
+   edje_object_part_swallow(sd->o_edje, "enna.swallow.transition", sd->o_transition);
+   edje_object_signal_callback_add(sd->o_transition, "*", "*", _edje_cb, sd);
+}
+
+static void
 _edje_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
 {
 
@@ -210,7 +244,7 @@ _edje_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
 
    if (!strcmp(emission,"done"))
      {
-	edje_object_part_unswallow(sd->o_edje, sd->old_slide);
+	edje_object_part_unswallow(sd->o_transition, sd->old_slide);
 	evas_object_hide(sd->old_slide);
 	sd->old_slide = NULL;
      }
@@ -221,17 +255,19 @@ static void
 _switch_images(E_Smart_Data * sd, Evas_Object * new_slide)
 {
 
-   if (!sd || !new_slide)
+   if (!sd || !new_slide || !sd->o_transition)
      return;
 
-   edje_object_part_unswallow(sd->o_edje, sd->slide);
-   edje_object_part_unswallow(sd->o_edje, sd->old_slide);
+   _random_transition(sd);
+
+   edje_object_part_unswallow(sd->o_transition, sd->slide);
+   edje_object_part_unswallow(sd->o_transition, sd->old_slide);
    sd->old_slide = sd->slide;
    sd->slide = new_slide;
-   edje_object_signal_emit(sd->o_edje, "reset", "enna");
-   edje_object_part_swallow(sd->o_edje, "slide.1", sd->old_slide);
-   edje_object_part_swallow(sd->o_edje, "slide.2", sd->slide);
-   edje_object_signal_emit(sd->o_edje, "show,2", "enna");
+   edje_object_signal_emit(sd->o_transition, "reset", "enna");
+   edje_object_part_swallow(sd->o_transition, "slide.1", sd->old_slide);
+   edje_object_part_swallow(sd->o_transition, "slide.2", sd->slide);
+   edje_object_signal_emit(sd->o_transition, "show,2", "enna");
 }
 
 static void
@@ -279,9 +315,9 @@ _e_smart_add(Evas_Object * obj)
    sd = calloc(1, sizeof(E_Smart_Data));
    if (!sd)
       return;
+
    sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-   edje_object_file_set(sd->o_edje, enna_config_theme_get(), "transitions/vswipe");
-   edje_object_signal_callback_add(sd->o_edje, "*", "*", _edje_cb, sd);
+   edje_object_file_set(sd->o_edje, enna_config_theme_get(), "transitions");
    sd->x = 0;
    sd->y = 0;
    sd->w = 0;
@@ -299,6 +335,8 @@ _e_smart_add(Evas_Object * obj)
    sd->old_slide = NULL;
    sd->slide = NULL;
    sd->state = STOP;
+   sd->o_transition = NULL;
+   _random_transition(sd);
 }
 
 static void

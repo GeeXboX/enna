@@ -2,6 +2,29 @@ images
 {
     image: "transition_vswipe_gap.png" COMP;
 }
+
+group {
+   name: "transitions";
+   parts {
+      part {
+      name: "bg";
+      type: RECT;
+         description {
+            state: "default" 0.0;
+	    color: 0 0 0 255;
+         }
+      }
+      part {
+      name: "enna.swallow.transition";
+      type: SWALLOW;
+         description {
+            state: "default" 0.0;
+	    color: 255 255 255 255;
+         }
+      }
+   }
+}
+
 group {
    name: "transitions/crossfade";
    parts {
