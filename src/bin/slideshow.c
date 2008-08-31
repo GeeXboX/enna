@@ -316,6 +316,8 @@ _e_smart_add(Evas_Object * obj)
    if (!sd)
       return;
 
+   srand(time(NULL));
+
    sd->o_edje = edje_object_add(evas_object_evas_get(obj));
    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "transitions");
    sd->x = 0;
