@@ -36,6 +36,7 @@
 #include "enna_inc.h"
 
 /* Ecore_Evas API update portability fixes */
+
 #ifndef ECORE_EVAS_ENGINE_OPENGL_X11
 #define ECORE_EVAS_ENGINE_OPENGL_X11 ECORE_EVAS_ENGINE_GL_X11
 #endif
@@ -224,8 +225,8 @@ _enna_init(int run_gl)
 
    evas_data_attach_set(enna->evas, enna);
 
-   ecore_evas_show(enna->ee);
    _create_gui();
+   ecore_evas_show(enna->ee);
    enna_input_init();
    return 1;
 }
@@ -314,12 +315,20 @@ _enna_shutdown()
    enna_activity_del("photo");
    enna_input_shutdown();
    enna_config_shutdown();
-   enna_module_shutdown();
+
+   /* Fucking double corruption list come from there
+    * but i'm unable to find where exactly
+    * I have fix few free/mem leak in different modules
+    * but without find the problem
+    * feel free to investigate
+    */
+   /*enna_module_shutdown();*/
+
    enna_mediaplayer_shutdown();
-   edje_shutdown();
    evas_object_del(enna->o_background);
    evas_object_del(enna->o_edje);
    evas_object_del(enna->o_mainmenu);
+   edje_shutdown();
    ecore_evas_shutdown();
    ecore_file_shutdown();
    ecore_shutdown();
