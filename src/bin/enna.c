@@ -36,7 +36,6 @@
 #include "enna_inc.h"
 
 /* Ecore_Evas API update portability fixes */
-
 #ifndef ECORE_EVAS_ENGINE_OPENGL_X11
 #define ECORE_EVAS_ENGINE_OPENGL_X11 ECORE_EVAS_ENGINE_GL_X11
 #endif
@@ -44,7 +43,6 @@
 #ifndef ECORE_EVAS_ENGINE_SOFTWARE_16_X11
 #define ECORE_EVAS_ENGINE_SOFTWARE_16_X11 ECORE_EVAS_ENGINE_SOFTWARE_X11_16
 #endif
-
 /* Global Variable Enna *enna*/
 Enna *enna;
 

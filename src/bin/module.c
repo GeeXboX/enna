@@ -31,6 +31,22 @@ enna_module_init(void)
 	  }
 	return 0;
      }
+   if (!path_group)
+     {
+	Ecore_List *l;
+	char *p;
+	path_group = ecore_path_group_new();
+	ecore_path_group_add(path_group, PACKAGE_LIB_DIR"/enna/modules/");
+	dbg("Plugin Directory : %s\n", PACKAGE_LIB_DIR"/enna/modules/");
+	l = ecore_plugin_available_get(path_group);
+	ecore_list_first_goto(l);
+	dbg("Plugin available : \n", p);
+	while ((p = ecore_list_next(l)))
+	  {
+	     dbg("\t * %s\n", p);
+	  }
+	return 0;
+     }
 
    return -1;
 }
@@ -45,6 +61,26 @@ enna_module_shutdown(void)
 {
    Evas_List *l;
 
+    for (l = _enna_modules; l; l = evas_list_remove(l, l->data))
+        {
+            Enna_Module *m;
+            m = l->data;
+            if (m->enabled)
+                {
+                    if (m->func.shutdown)
+                        m->func.shutdown(m);
+                    m->enabled = 0;
+                }
+            ecore_plugin_unload(m->plugin);
+	    free(m);
+        }
+
+
+    if (path_group)
+        {
+            ecore_path_group_del(path_group);
+            path_group = NULL;
+        }
    for (l = _enna_modules; l; l = evas_list_remove(l, l->data))
      {
 	Enna_Module *m;
@@ -66,7 +102,6 @@ enna_module_shutdown(void)
 	ecore_path_group_del(path_group);
 	path_group = NULL;
      }
-
    return 0;
 }
 
