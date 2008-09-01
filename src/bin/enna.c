@@ -412,7 +412,7 @@ main(int arc, char **arv)
    /* Must be called first */
    enna_config_init();
 
-   enna = malloc(sizeof(Enna));
+   enna = calloc(1, sizeof(Enna));
 
    if (!_enna_init(run_gl))
      return 0;
