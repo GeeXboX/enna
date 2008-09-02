@@ -69,7 +69,7 @@ enna_module_shutdown(void)
 
 	if (m->enabled)
 	  {
-	     printf("diable m->name : %s\n", m->name);
+	     printf("disable m->name : %s\n", m->name);
 	     enna_module_disable(m);
 	  }
 	ecore_plugin_unload(m->plugin);
