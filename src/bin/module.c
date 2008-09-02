@@ -61,26 +61,6 @@ enna_module_shutdown(void)
 {
    Evas_List *l;
 
-    for (l = _enna_modules; l; l = evas_list_remove(l, l->data))
-        {
-            Enna_Module *m;
-            m = l->data;
-            if (m->enabled)
-                {
-                    if (m->func.shutdown)
-                        m->func.shutdown(m);
-                    m->enabled = 0;
-                }
-            ecore_plugin_unload(m->plugin);
-	    free(m);
-        }
-
-
-    if (path_group)
-        {
-            ecore_path_group_del(path_group);
-            path_group = NULL;
-        }
    for (l = _enna_modules; l; l = evas_list_remove(l, l->data))
      {
 	Enna_Module *m;
