@@ -107,6 +107,7 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
 {
    E_Smart_Item *si;
    Evas_Coord mw = 0, mh = 0;
+   const char *tmp;
 
    API_ENTRY return;
 
@@ -137,6 +138,14 @@ enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label,
    edje_object_size_min_calc(si->o_base, &mw, &mh);
    edje_object_size_min_get(si->o_base, &mw, &mh);
    enna_box_pack_end(sd->o_box, si->o_base);
+
+   tmp = edje_object_data_get(si->o_base, "height");
+   if (tmp)
+     mh = atoi(tmp);
+   tmp = edje_object_data_get(si->o_base, "width");
+   if (tmp)
+     mw = atoi(tmp);
+
    enna_box_pack_options_set(si->o_base, 1, 1,	/* fill */
 			     1, 1,	/* expand */
 			     0.5, 0.5,	/* align */
