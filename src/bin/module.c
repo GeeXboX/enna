@@ -40,7 +40,7 @@ enna_module_init(void)
 	dbg("Plugin Directory : %s\n", PACKAGE_LIB_DIR"/enna/modules/");
 	l = ecore_plugin_available_get(path_group);
 	ecore_list_first_goto(l);
-	dbg("Plugin available : \n", p);
+	dbg("Plugin available : \n");
 	while ((p = ecore_list_next(l)))
 	  {
 	     dbg("\t * %s\n", p);
