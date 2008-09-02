@@ -31,23 +31,6 @@ enna_module_init(void)
 	  }
 	return 0;
      }
-   if (!path_group)
-     {
-	Ecore_List *l;
-	char *p;
-	path_group = ecore_path_group_new();
-	ecore_path_group_add(path_group, PACKAGE_LIB_DIR"/enna/modules/");
-	dbg("Plugin Directory : %s\n", PACKAGE_LIB_DIR"/enna/modules/");
-	l = ecore_plugin_available_get(path_group);
-	ecore_list_first_goto(l);
-	dbg("Plugin available : \n");
-	while ((p = ecore_list_next(l)))
-	  {
-	     dbg("\t * %s\n", p);
-	  }
-	return 0;
-     }
-
    return -1;
 }
 
