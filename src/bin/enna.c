@@ -313,15 +313,7 @@ _enna_shutdown()
    enna_activity_del("photo");
    enna_input_shutdown();
    enna_config_shutdown();
-
-   /* Fucking double corruption list come from there
-    * but i'm unable to find where exactly
-    * I have fix few free/mem leak in different modules
-    * but without find the problem
-    * feel free to investigate
-    */
-   /*enna_module_shutdown();*/
-
+   enna_module_shutdown();
    enna_mediaplayer_shutdown();
    evas_object_del(enna->o_background);
    evas_object_del(enna->o_edje);
