@@ -137,18 +137,30 @@ EAPI void
 enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
 {
   API_ENTRY return;
+  Evas_Coord oh;
+
   if (!sd->full)
     {
+      char *hs = edje_object_data_get(sd->o_edje, "height");
+      if (hs)
+	oh = atoi(hs);
+      else
+	oh = 100;
 
-      if(w) *w = 100;
-      if(h) *h = 100;
+      if(w) *w = oh;
+      if(h) *h = oh;
     }
   else
     {
-      if(w) *w = 150;
-      if(h) *h = 150;
-    }
+      char *hs = edje_object_data_get(sd->o_edje, "full_height");
+      if (hs)
+	oh = atoi(hs);
+      else
+	oh = 150;
 
+      if(w) *w = oh;
+      if(h) *h = oh;
+    }
 }
 
 EAPI const char *
