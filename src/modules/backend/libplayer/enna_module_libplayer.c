@@ -303,7 +303,6 @@ module_init(Enna_Module *em)
    if (!mod->player)
      {
         dbg("Error during libplayer module initialization\n");
-        free(mod);
         return;
      }
 
