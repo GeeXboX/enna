@@ -9,7 +9,7 @@ theme=default
 #x11,xrender,gl,x11_16
 engine=x11
 
-#libplayer,emotion\n
+#libplayer,emotion
 backend=libplayer
 
 music_ext=ogg,mp3,flac,wav,wma
