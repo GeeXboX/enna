@@ -299,6 +299,14 @@ module_init(Enna_Module *em)
    mod->evas = em->evas;
    mod->player =
      player_init (type, ao, vo, verbosity, enna->ee_winid, _event_cb);
+
+   if (!mod->player)
+     {
+        dbg("Error during libplayer module initialization\n");
+        free(mod);
+        return;
+     }
+
    enna_mediaplayer_backend_register(&class);
    mod->uri = NULL;
 }
