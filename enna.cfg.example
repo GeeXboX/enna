@@ -16,6 +16,23 @@ music_ext=ogg,mp3,flac,wav,wma
 video_ext=avi,mkv,ogg,mpg,mpeg,wmv
 photo_ext=jpg,jpeg,png
 
+[libplayer]
+# Values by default are 'mplayer' type, 'auto' video_out, 'auto' audio_out
+# and 'warning' verbosity. Changed these parameters only if that is really
+# necessary.
+
+#gstreamer,mplayer,vlc,xine
+#type=
+
+#auto,x11,xv,gl,fb
+#video_out=
+
+#auto,alsa,oss
+#audio_out=
+
+#info,warning,error,critical,none
+#verbosity=
+
 [localfiles]
 path_music=file:///path/to/Music,Music,icon_hd
 path_music=file:///path/to/server/Medias/Music,Server,icon_network

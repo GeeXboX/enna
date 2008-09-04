@@ -198,15 +198,107 @@ EAPI Enna_Module_Api module_api = {
 EAPI void
 module_init(Enna_Module *em)
 {
+   Enna_Config_Data *cfgdata;
+   char *value = NULL;
+
+   player_type_t type = PLAYER_TYPE_MPLAYER;
+   player_vo_t vo = PLAYER_VO_AUTO;
+   player_ao_t ao = PLAYER_AO_AUTO;
+   player_verbosity_level_t verbosity = PLAYER_MSG_WARNING;
+
    if (!em)
      return;
+
+   /* Load Config file values */
+   cfgdata = enna_config_module_pair_get("libplayer");
+
+   printf("libplayer parameters:\n");
+
+   if (cfgdata)
+     {
+        Evas_List *l;
+
+        for (l = cfgdata->pair; l; l = l->next)
+          {
+             Config_Pair *pair = l->data;
+
+             if (!strcmp("type", pair->key))
+               {
+                  enna_config_value_store(&value, "type", ENNA_CONFIG_STRING, pair);
+                  printf(" * type: %s\n", value);
+
+                  if (!strcmp("gstreamer", value))
+                    type = PLAYER_TYPE_GSTREAMER;
+                  else if (!strcmp("mplayer", value))
+                    type = PLAYER_TYPE_MPLAYER;
+                  else if (!strcmp("vlc", value))
+                    type = PLAYER_TYPE_VLC;
+                  else if (!strcmp("xine", value))
+                    type = PLAYER_TYPE_XINE;
+                  else
+                    printf("   - unknown type, 'mplayer' used instead\n");
+               }
+             else if (!strcmp("video_out", pair->key))
+               {
+                  enna_config_value_store(&value, "video_out", ENNA_CONFIG_STRING, pair);
+                  printf(" * video out: %s\n", value);
+
+                  if (!strcmp("auto", value))
+                    vo = PLAYER_VO_AUTO;
+                  else if (!strcmp("x11", value))
+                    vo = PLAYER_VO_X11;
+                  else if (!strcmp("xv", value))
+                    vo = PLAYER_VO_XV;
+                  else if (!strcmp("gl", value))
+                    vo = PLAYER_VO_GL;
+                  else if (!strcmp("fb", value))
+                    vo = PLAYER_VO_FB;
+                  else
+                    printf("   - unknown video_out, 'auto' used instead\n");
+               }
+             else if (!strcmp("audio_out", pair->key))
+               {
+                  enna_config_value_store(&value, "audio_out", ENNA_CONFIG_STRING, pair);
+                  printf(" * audio out: %s\n", value);
+
+                  if (!strcmp("auto", value))
+                    ao = PLAYER_AO_AUTO;
+                  else if (!strcmp("alsa", value))
+                    ao = PLAYER_AO_ALSA;
+                  else if (!strcmp("oss", value))
+                    ao = PLAYER_AO_OSS;
+                  else
+                    printf("   - unknown audio_out, 'auto' used instead\n");
+               }
+             else if (!strcmp("verbosity", pair->key))
+               {
+                  enna_config_value_store(&value, "verbosity", ENNA_CONFIG_STRING, pair);
+                  printf(" * verbosity level: %s\n", value);
+
+                  if (!strcmp("info", value))
+                    verbosity = PLAYER_MSG_INFO;
+                  else if (!strcmp("warning", value))
+                    verbosity = PLAYER_MSG_WARNING;
+                  else if (!strcmp("error", value))
+                    verbosity = PLAYER_MSG_ERROR;
+                  else if (!strcmp("critical", value))
+                    verbosity = PLAYER_MSG_CRITICAL;
+                  else if (!strcmp("none", value))
+                    verbosity = PLAYER_MSG_NONE;
+                  else
+                    printf("   - unknown verbosity, 'warning' used instead\n");
+               }
+          }
+     }
+
+   if (!value)
+     printf(" * use all parameters by default\n");
 
    mod = calloc(1, sizeof(Enna_Module_libplayer));
    mod->em = em;
    mod->evas = em->evas;
    mod->player =
-     player_init (PLAYER_TYPE_MPLAYER, PLAYER_AO_AUTO, PLAYER_VO_AUTO,
-                  PLAYER_MSG_WARNING, enna->ee_winid, _event_cb);
+     player_init (type, ao, vo, verbosity, enna->ee_winid, _event_cb);
    enna_mediaplayer_backend_register(&class);
    mod->uri = NULL;
 }
