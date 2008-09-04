@@ -18,7 +18,7 @@ photo_ext=jpg,jpeg,png
 
 [libplayer]
 # Values by default are 'mplayer' type, 'auto' video_out, 'auto' audio_out
-# and 'warning' verbosity. Changed these parameters only if that is really
+# and 'warning' verbosity. Change these parameters only if that is really
 # necessary.
 
 #gstreamer,mplayer,vlc,xine
