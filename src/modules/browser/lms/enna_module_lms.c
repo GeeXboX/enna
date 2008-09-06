@@ -985,6 +985,7 @@ em_shutdown(Enna_Module *em)
    mod = em->mod;
 
    lms_stop_processing(mod->scanner->lms);
+   pthread_join(mod->scanner->scanner_thread, NULL);
    for (l = mod->scanner->parsers; l; l = l->next)
      lms_parser_del(mod->scanner->lms, (lms_plugin_t*)l->data);
    lms_free(mod->scanner->lms);
