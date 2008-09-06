@@ -20,7 +20,7 @@ group {
       }
       part {
 	 name:    "enna.text.title";
-         //clip_to: "enna.clip.player";
+         clip_to: "enna.clip.player";
 	 type:           TEXT;
 	 mouse_events:   0;
 	 description {
@@ -42,7 +42,6 @@ group {
                font:     "content_bd";
                size:     45;
                align: 0 0.5;
-               //fit: 1 1;
             }
 	 }
       }
@@ -69,7 +68,6 @@ group {
                font:     "content";
                size:     35;
                align: 0 0.5;
-               //fit: 1 1;
             }
 	 }
       }
@@ -98,7 +96,6 @@ group {
                font:     "content";
                size:     35;
                align: 0 0.5;
-               //fit: 1 1;
             }
 	 }
       }
