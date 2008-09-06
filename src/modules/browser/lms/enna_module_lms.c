@@ -4,6 +4,7 @@
 #include <lightmediascanner.h>
 #include <sqlite3.h>
 
+#define ENNA_MODULE_NAME "lms"
 
 //static int            _db_bind_blob(sqlite3_stmt *stmt, int col, const void *blob, int len);
 static int            _db_bind_text(sqlite3_stmt *stmt, int col, const char *text, int len);
@@ -119,7 +120,8 @@ _db_bind_blob(sqlite3_stmt *stmt, int col, const void *blob, int len)
 
 	db = sqlite3_db_handle(stmt);
 	err = sqlite3_errmsg(db);
-	fprintf(stderr, "ERROR: could not bind SQL value %d: %s\n", col, err);
+        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                  "could not bind SQL value %d: %s\n", col, err);
 	return -col;
    }
 }
@@ -144,7 +146,8 @@ _db_bind_text(sqlite3_stmt *stmt, int col, const char *text, int len)
 
 	db = sqlite3_db_handle(stmt);
 	err = sqlite3_errmsg(db);
-	fprintf(stderr, "ERROR: could not bind SQL value %d: %s\n", col, err);
+        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                  "could not bind SQL value %d: %s\n", col, err);
 	return -col;
      }
 }
@@ -155,7 +158,8 @@ _db_compile_stmt(sqlite3 *db, const char *sql)
    sqlite3_stmt *stmt;
 
    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
-     dbg("ERROR: could not prepare \"%s\": %s\n", sql,
+     enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+               "could not prepare \"%s\": %s\n", sql,
 	 sqlite3_errmsg(db));
 
    return stmt;
@@ -168,12 +172,14 @@ _db_reset_stmt(sqlite3_stmt *stmt)
 
    ret = r = sqlite3_reset(stmt);
    if (r != SQLITE_OK)
-     fprintf(stderr, "ERROR: could not reset SQL statement: #%d\n", r);
+     enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+               "could not reset SQL statement: #%d\n", r);
 
    r = sqlite3_clear_bindings(stmt);
    ret += r;
    if (r != SQLITE_OK)
-     fprintf(stderr, "ERROR: could not clear SQL: #%d\n", r);
+     enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+               "could not clear SQL: #%d\n", r);
 
    return ret;
 }
@@ -187,7 +193,8 @@ _db_finalize_stmt(sqlite3_stmt *stmt, const char *name)
    r = sqlite3_finalize(stmt);
    if (r != SQLITE_OK)
      {
-	dbg("ERROR: could not finalize %s statement: #%d\n", name, r);
+       enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 "could not finalize %s statement: #%d\n", name, r);
 	return -1;
      }
 
@@ -204,7 +211,8 @@ _db_open(const char *filename)
 
    if (sqlite3_open(filename, &db) != SQLITE_OK)
      {
-	dbg("ERROR: could not open DB \"%s\": %s\n", filename, sqlite3_errmsg(db));
+       enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 "could not open DB \"%s\": %s\n", filename, sqlite3_errmsg(db));
 	sqlite3_close(db);
 	return NULL;
      }
@@ -221,14 +229,15 @@ _scanner_thread(void *ptr)
 
    for (l = scanner->scan_path; l; l = l->next)
      {
-	printf("scan : %s\n", (char*)l->data);
+       enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                 "scan : %s\n", (char*)l->data);
 	lms_check(scanner->lms, (char*)l->data);
 	/*  Start Scan process */
 	lms_process(scanner->lms, (char*)l->data);
 	/*  Scann process is done */
      }
 
-   dbg("Scanner Thread Done\n");
+   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Scanner Thread Done\n");
    buf[0] = "done";
    write(scanner->fd_ev_write, buf, sizeof(buf));
    return NULL;
@@ -241,7 +250,7 @@ _pipe_read_active(void *data, Ecore_Fd_Handler * fdh)
 
    scanner = (Enna_Scanner *) data;
    pthread_join(scanner->scanner_thread, NULL);
-   dbg("Scanner Thread ended\n");
+   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Scanner Thread ended\n");
 
    return 0;
 }
@@ -252,8 +261,8 @@ static void
 _metadata_print(Enna_Metadata * metadata)
 {
 #if 0
-   dbg("---------\n");
-   dbg("\n\tfile:\t%s\n\ttitle:\t%s\n\tartist:\t%s\n\talbum:\t%s\n\tgenre:\t%s\n"
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "---------\n");
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "\n\tfile:\t%s\n\ttitle:\t%s\n\tartist:\t%s\n\talbum:\t%s\n\tgenre:\t%s\n"
        "\ttrack\t%s\n\tplay count:\t%d\n",
        metadata->uri ? metadata->uri : "Unknown",
        metadata->title[0] ? metadata->title : "Unknown Title",
@@ -262,7 +271,7 @@ _metadata_print(Enna_Metadata * metadata)
        metadata->genre[0] ? metadata->genre : "Unknown Genre",
        metadata->track,
        metadata->play_count);
-   dbg("----------\n");
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "----------\n");
 #endif
 }
 
@@ -285,7 +294,7 @@ _nb_medias_get(int type)
      }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   dbg("Nb of medias in files db : %d\n", nb);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in files db : %d\n", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -350,7 +359,8 @@ _audio_metadata_get(const char *filename)
    r = sqlite3_step(stmt);
    if (r == SQLITE_DONE)
      {
-	fprintf(stderr, "ERROR: could not get file info from table: %s\n",
+       enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 "could not get file info from table: %s\n",
 		sqlite3_errmsg(sqlite3_db_handle(stmt)));
 	ret = 1;
 	goto done;
@@ -396,7 +406,7 @@ _audio_nb_albums_get()
      }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   dbg("Nb of medias in audio_albums db : %d\n", nb);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_albums db : %d\n", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -421,7 +431,7 @@ _audio_nb_artists_get()
      }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   dbg("Nb of medias in audio_artists db : %d\n", nb);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_artists db : %d\n", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -446,7 +456,7 @@ _audio_nb_genres_get()
      }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   dbg("Nb of medias in audio_genres db : %d\n", nb);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_genres db : %d\n", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -763,12 +773,14 @@ static Evas_List *_class_browse_up(const char *path)
 		  album = uri;
 		  /* FIXME Set Cover filename here */
 		  /* */
-		  printf("album : %s, artist : %s\n", album, artist);
+                  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                            "album : %s, artist : %s\n", album, artist);
 		  l2 = _audio_tracks_of_album_list_get(artist, album);
 		  if (evas_list_count(l2))
 		    {
 		       filename = evas_list_nth(l2, 0);
-		       printf("uri : %s\n", filename->uri);
+                       enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                                 "uri : %s\n", filename->uri);
 		       icon_file =enna_cover_album_get( artist, album, filename->uri);
 		    }
 
@@ -835,7 +847,8 @@ static Evas_List *_class_browse_down()
 	   Evas_List *files;
 	   char *uri;
 	   mod->state = ARTISTS_ROOT;
-	   printf("mod->vfs->uri : %s\n", ecore_file_dir_get(mod->vfs->uri));
+           enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                     "mod->vfs->uri : %s\n", ecore_file_dir_get(mod->vfs->uri));
 	   uri = strdup(ecore_file_dir_get(mod->vfs->uri));
 	   files = _class_browse_up(uri);
 	   free(uri);
@@ -919,7 +932,7 @@ em_init(Enna_Module *em)
 	for (l = parser; l; l = l->next)
 	  {
 	     char *p = l->data;
-	     printf("parser : %s\n", p);
+	       enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,"parser : %s\n", p);
 	     if(!strcmp(p, "ogg"))
 	       mod->scanner->parsers = evas_list_append(mod->scanner->parsers, lms_parser_find_and_add(mod->scanner->lms, "ogg"));
 	     if(!strcmp(p, "mp3"))
@@ -935,9 +948,12 @@ em_init(Enna_Module *em)
 
      }
    for (l = mod->scanner->scan_path; l; l = l->next)
-     printf("Scanner is going to scan : %s\n", (char*)l->data);
-   printf("Slave Timeout : %d\n",mod->scanner->slave_timeout);
-   printf("Commit Interval : %d\n", mod->scanner->commit_interval);
+     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+               "Scanner is going to scan : %s\n", (char*)l->data);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+             "Slave Timeout : %d\n",mod->scanner->slave_timeout);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+             "Commit Interval : %d\n", mod->scanner->commit_interval);
 
    lms_set_commit_interval(mod->scanner->lms, mod->scanner->commit_interval);
    lms_set_slave_timeout(mod->scanner->lms, mod->scanner->slave_timeout);
@@ -968,7 +984,7 @@ em_init(Enna_Module *em)
 
 
  error:
-   dbg("Error during lms module initialisation\n");
+   enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME, "lms module initialisation\n");
    lms_free(mod->scanner->lms);
    evas_stringshare_del(mod->scanner->db_path);
    evas_stringshare_del(mod->scanner->charset);

@@ -21,13 +21,13 @@ enna_module_init(void)
 	path_group = ecore_path_group_new();
 
 	ecore_path_group_add(path_group, PACKAGE_LIB_DIR"/enna/modules/");
-	dbg("Plugin Directory : %s\n", PACKAGE_LIB_DIR"/enna/modules/");
+	enna_log (ENNA_MSG_INFO, NULL, "Plugin Directory : %s\n", PACKAGE_LIB_DIR"/enna/modules/");
 	l = ecore_plugin_available_get(path_group);
 	ecore_list_first_goto(l);
-	dbg("Plugin available :\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Plugin available :\n");
 	while ((p = ecore_list_next(l)))
 	  {
-	     dbg("\t * %s\n", p);
+	     enna_log (ENNA_MSG_INFO, NULL, "\t * %s\n", p);
 	  }
 	return 0;
      }
@@ -52,7 +52,7 @@ enna_module_shutdown(void)
 
 	if (m->enabled)
 	  {
-	     printf("disable m->name : %s\n", m->name);
+	     enna_log (ENNA_MSG_WARNING, NULL, "disable m->name : %s\n", m->name);
 	     enna_module_disable(m);
 	  }
 	ecore_plugin_unload(m->plugin);
@@ -113,12 +113,12 @@ enna_module_open(const char *name, Evas *evas)
 
    if (!path_group)
      {
-	dbg("Error : enna Module should be Init before call this function\n");
+	enna_log (ENNA_MSG_ERROR, NULL, "enna Module should be Init before call this function\n");
 	return NULL;
      }
 
    snprintf(module_name, sizeof(module_name), "enna_module_%s", name);
-   dbg("Try to load %s\n", module_name);
+   enna_log (ENNA_MSG_INFO, NULL, "Try to load %s\n", module_name);
    plugin = ecore_plugin_load(path_group, module_name, NULL);
    if (plugin)
      {
@@ -127,14 +127,14 @@ enna_module_open(const char *name, Evas *evas)
 	  {
 	     /* FIXME: popup error message */
 	     /* Module version doesn't match enna version */
-	     dbg("Error : Bad module version, unload %s module\n", m->api->name);
+	     enna_log (ENNA_MSG_WARNING, NULL, "Bad module version, unload %s module\n", m->api->name);
 	     ecore_plugin_unload(plugin);
 	     return NULL;
 	  }
 	m->func.init = ecore_plugin_symbol_get(plugin, "module_init");
 	m->func.shutdown = ecore_plugin_symbol_get(plugin, "module_shutdown");
 	m->name = m->api->name;
-	dbg("Module \'%s\' loaded succesfully\n", m->api->name);
+	enna_log (ENNA_MSG_INFO, NULL, "Module \'%s\' loaded succesfully\n", m->api->name);
 	m->enabled = 0;
 	m->plugin = plugin;
 	m->evas = evas;
@@ -142,7 +142,7 @@ enna_module_open(const char *name, Evas *evas)
 	return m;
      }
    else
-     dbg("Unable to load module %s\n", name);
+     enna_log (ENNA_MSG_WARNING, NULL, "Unable to load module %s\n", name);
 
    return NULL;
 }

@@ -67,20 +67,20 @@ enna_mediaplayer_init(void)
    if (!strcmp(enna_config->backend, "emotion"))
      {
 #ifdef BUILD_EMOTION_BACKEND
-	printf("Using Emotion Backend\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Using Emotion Backend\n");
 	backend_name = "emotion";
 #else
-	dbg("Backend selected not built !\n");
+	enna_log (ENNA_MSG_ERROR, NULL, "Backend selected not built !\n");
 	return -1;
 #endif
      }
    else if (!strcmp(enna_config->backend, "libplayer"))
      {
 #ifdef BUILD_LIBPLAYER_BACKEND
-     printf("Using libplayer Backend\n");
+     enna_log (ENNA_MSG_INFO, NULL, "Using libplayer Backend\n");
      backend_name = "libplayer";
 #else
-     dbg("Backend selected not built !\n");
+     enna_log (ENNA_MSG_ERROR, NULL, "Backend selected not built !\n");
      return -1;
 #endif
      }
@@ -130,16 +130,16 @@ enna_mediaplayer_play(void)
 	   if (_mediaplayer->class->func.class_play)
              _mediaplayer->class->func.class_play();
 	   _mediaplayer->play_state = PLAYING;
-	   printf("<<<<<<<<<<<<< STOP->PLAY\n");
+	   enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< STOP->PLAY\n");
 
 	}
 	break;
       case PLAYING:
-	   printf("<<<<<<<<<<<<< PLAY->PAUSE\n");
+	   enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< PLAY->PAUSE\n");
 	 enna_mediaplayer_pause();
 	 break;
       case PAUSE:
-	 printf("<<<<<<<<<<<<< PAUSE->PLAY\n");
+	 enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< PAUSE->PLAY\n");
         if (_mediaplayer->class->func.class_play)
           _mediaplayer->class->func.class_play();
 	 _mediaplayer->play_state = PLAYING;
@@ -159,11 +159,11 @@ enna_mediaplayer_select_nth(int n)
    const char *uri;
    if (n < 0 || n > evas_list_count(_playlist) - 1) return -1;
    uri = evas_list_nth(_playlist, n);
-   printf("select %d\n", n);
+   enna_log (ENNA_MSG_INFO, NULL, "select %d\n", n);
    if (uri && _mediaplayer->class->func.class_file_set)
      _mediaplayer->class->func.class_file_set(uri);
    _mediaplayer->selected = n;
-   printf("<<<<<<<<<<<<< FILE SET %s\n", uri);
+   enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< FILE SET %s\n", uri);
    return 0;
 }
 
@@ -175,7 +175,7 @@ enna_mediaplayer_stop(void)
         if (_mediaplayer->class->func.class_stop)
           _mediaplayer->class->func.class_stop();
 	_mediaplayer->play_state = STOPPED;
-	printf("<<<<<<<<<<<<< STOP\n");
+	enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< STOP\n");
      }
    return 0;
 }
@@ -188,7 +188,7 @@ enna_mediaplayer_pause(void)
         if (_mediaplayer->class->func.class_pause)
           _mediaplayer->class->func.class_pause();
 	_mediaplayer->play_state = PAUSE;
-	printf("<<<<<<<<<<<<< PAUSE\n");
+	enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< PAUSE\n");
      }
    return 0;
 }
@@ -205,13 +205,13 @@ enna_mediaplayer_next(void)
 	return -1;
      }
    uri = evas_list_nth(_playlist, _mediaplayer->selected);
-   printf("select %d\n", _mediaplayer->selected);
+   enna_log (ENNA_MSG_INFO, NULL, "select %d\n", _mediaplayer->selected);
    if (uri)
      {
 	enna_mediaplayer_stop();
 	if (uri && _mediaplayer->class->func.class_file_set)
           _mediaplayer->class->func.class_file_set(uri);
-	printf("<<<<<<<<<<<<< FILE SET %s\n", uri);
+	enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< FILE SET %s\n", uri);
 	enna_mediaplayer_play();
      }
 
@@ -230,13 +230,13 @@ enna_mediaplayer_prev(void)
 	return -1;
      }
    uri = evas_list_nth(_playlist, _mediaplayer->selected);
-   printf("select %d\n", _mediaplayer->selected);
+   enna_log (ENNA_MSG_INFO, NULL, "select %d\n", _mediaplayer->selected);
    if (uri)
      {
 	enna_mediaplayer_stop();
 	if (uri && _mediaplayer->class->func.class_file_set)
           _mediaplayer->class->func.class_file_set(uri);
-	printf("<<<<<<<<<<<<< FILE SET %s\n", uri);
+	enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< FILE SET %s\n", uri);
 	enna_mediaplayer_play();
      }
    return 0;
@@ -267,7 +267,7 @@ enna_mediaplayer_length_get(void)
 EAPI int
 enna_mediaplayer_seek(double percent)
 {
-   printf ("Seeking to: %d%%\n", (int) (100 * percent));
+   enna_log (ENNA_MSG_INFO, NULL, "Seeking to: %d%%\n", (int) (100 * percent));
    if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state == PLAYING)
       if (_mediaplayer->class->func.class_seek)
         return _mediaplayer->class->func.class_seek(percent);
@@ -295,7 +295,7 @@ enna_mediaplayer_playlist_clear(void)
      {
         if (_mediaplayer->class->func.class_stop)
           _mediaplayer->class->func.class_stop();
-	printf("<<<<<<<<<<<<< STOP playlistclear\n");
+	enna_log (ENNA_MSG_EVENT, NULL, "<<<<<<<<<<<<< STOP playlistclear\n");
 	_mediaplayer->selected = 0;
 	_mediaplayer->play_state = STOPPED;
      }
@@ -346,7 +346,7 @@ _event_cb(void *data, enna_mediaplayer_event_t event)
    switch(event)
      {
       case ENNA_MP_EVENT_EOF:
-	 printf("End of stream\n");
+	 enna_log (ENNA_MSG_INFO, NULL, "End of stream\n");
 	 ecore_event_add(ENNA_EVENT_MEDIAPLAYER_EOS, NULL, NULL, NULL);
 	 break;
       default:

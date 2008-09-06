@@ -178,10 +178,10 @@ enna_list_jump_label(Evas_Object *obj, const char *label)
    Evas_List *l = NULL;
    int i;
    Evas_Coord x,y,h;
-   printf("enna_list_jump_label %s\n", label);
+   enna_log (ENNA_MSG_EVENT, NULL, "enna_list_jump_label %s\n", label);
 
    API_ENTRY return -1;
-   printf("return 1\n");
+   enna_log (ENNA_MSG_EVENT, NULL, "return 1\n");
    if (!sd->items || !label) return -1;
 
 
@@ -198,7 +198,7 @@ enna_list_jump_label(Evas_Object *obj, const char *label)
 	     enna_listitem_select(si->o_base);
 	     si->selected = 1;
 	     sd->selected = i;
-	     printf("label get : %s\n", enna_listitem_label_get(si->o_base));
+	     enna_log (ENNA_MSG_EVENT, NULL, "label get : %s\n", enna_listitem_label_get(si->o_base));
 	     break;
 	  }
 
@@ -740,7 +740,7 @@ list_get_alpha_from_digit (E_Smart_Data *sd, char key)
   }
 
   edje_object_signal_emit (sd->o_edje, "letter,show", "enna");
-  printf ("letter : %s\n", letter);
+  enna_log (ENNA_MSG_EVENT, NULL, "letter : %s\n", letter);
   edje_object_part_text_set (sd->o_edje, "enna.text.letter", letter);
   sd->letter_timer = ecore_timer_add (1.5, _letter_timer_cb, sd);
   list_jump_to_ascii (sd, letter[0]);

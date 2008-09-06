@@ -33,6 +33,8 @@
 
 #include "smart_player.h"
 
+#define ENNA_MODULE_NAME "video"
+
 #define SMART_NAME "smart_player"
 
 #define API_ENTRY \
@@ -96,7 +98,7 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 
    API_ENTRY;
 
-   printf("metadata set\n");
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "metadata set\n");
 
    if (!metadata) return;
    if (metadata->uri) edje_object_part_text_set(sd->o_edje, "enna.text.title", ecore_file_file_get(metadata->uri));
@@ -143,7 +145,8 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
    cover_file = enna_cover_video_get(metadata->uri);
    if (cover_file)
      {
-	printf("cover filename : %s\n", cover_file);
+       enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                 "cover filename : %s\n", cover_file);
 	/* FIXME : add edje cb at end of cover transition to switch properly covers*/
 	sd->o_cover_old = sd->o_cover;
 	sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));

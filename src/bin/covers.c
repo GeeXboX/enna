@@ -74,7 +74,7 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
    if (ecore_file_exists (tmp))
    {
      cover_file = strdup (tmp);
-     printf ("found : %s\n", cover_file);
+     enna_log (ENNA_MSG_INFO, NULL, "found : %s\n", cover_file);
    }
    free (md5);
 
@@ -95,7 +95,7 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
 		  if (ecore_file_exists(tmp))
 		    {
 		       cover_file = strdup(tmp);
-		       printf("found : %s\n", cover_file);
+		       enna_log (ENNA_MSG_INFO, NULL, "found : %s\n", cover_file);
 		       return cover_file;
 		    }
 	       }
@@ -103,7 +103,7 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
 	     if (ecore_file_exists(tmp))
 	       {
 		  cover_file = strdup(tmp);
-		  printf("found : %s\n", cover_file);
+		  enna_log (ENNA_MSG_INFO, NULL, "found : %s\n", cover_file);
 		  return cover_file;
 	       }
 	  }
@@ -116,7 +116,7 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
 	if (ecore_file_exists(tmp))
 	  {
 	     cover_file = strdup(tmp);
-	     printf("cover art found : %s\n", cover_file);
+	     enna_log (ENNA_MSG_INFO, NULL, "cover art found : %s\n", cover_file);
 	     return cover_file;
 	  }
      }
@@ -132,7 +132,7 @@ EAPI char *enna_cover_album_get(const char *artist, const char *album, const cha
    cover_class = NULL;
 
    if (cover_file)
-     printf ("Amazon Cover File : %s\n", cover_file);
+     enna_log (ENNA_MSG_INFO, NULL, "Amazon Cover File : %s\n", cover_file);
 
    return cover_file;
 //#endif
@@ -166,7 +166,7 @@ EAPI char *enna_cover_video_get(const char *filename)
    file = strdup(ecore_file_file_get(filename + 7));
    p = strrchr(file, '.');
    if (p) *p = '\0';
-   printf("file : %s\n", file);
+   enna_log (ENNA_MSG_INFO, NULL, "file : %s\n", file);
 
    memset (tmp, '\0', sizeof (tmp));
    snprintf (tmp, sizeof (tmp), "%s", file);
@@ -177,7 +177,7 @@ EAPI char *enna_cover_video_get(const char *filename)
    if (ecore_file_exists (tmp))
    {
      cover_file = strdup (tmp);
-     printf ("found : %s\n", cover_file);
+     enna_log (ENNA_MSG_INFO, NULL, "found : %s\n", cover_file);
    }
    free (md5);
 
@@ -198,7 +198,7 @@ EAPI char *enna_cover_video_get(const char *filename)
 		  if (ecore_file_exists(tmp))
 		    {
 		       cover_file = strdup(tmp);
-		       printf("found : %s\n", cover_file);
+		       enna_log (ENNA_MSG_INFO, NULL, "found : %s\n", cover_file);
 		       return cover_file;
 		    }
 	       }
@@ -206,7 +206,7 @@ EAPI char *enna_cover_video_get(const char *filename)
 
      }
 
-   printf("Search for %s with amazon video\n",ecore_file_file_get(filename+7));
+   enna_log (ENNA_MSG_EVENT, NULL, "Search for %s with amazon video\n",ecore_file_file_get(filename+7));
 
 //#if defined(BUILD_AMAZON_MODULE) && defined(BUILD_LIBXML2) && defined(BUILD_LIBCURL)
    em = enna_module_open ("amazon", enna->evas);
@@ -219,7 +219,7 @@ EAPI char *enna_cover_video_get(const char *filename)
    cover_class = NULL;
 
    if (cover_file)
-     printf ("Amazon Cover File : %s\n", cover_file);
+     enna_log (ENNA_MSG_INFO, NULL, "Amazon Cover File : %s\n", cover_file);
 
    return cover_file;
 //#endif

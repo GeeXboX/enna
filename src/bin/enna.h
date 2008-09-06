@@ -76,6 +76,15 @@
   while (0)
 
 
+typedef enum {
+  ENNA_MSG_NONE,          /* no error messages */
+  ENNA_MSG_EVENT,         /* notify each incoming event */
+  ENNA_MSG_INFO,          /* working operations */
+  ENNA_MSG_WARNING,       /* harmless failures */
+  ENNA_MSG_ERROR,         /* may result in hazardous behavior */
+  ENNA_MSG_CRITICAL,      /* prevents lib from working */
+} enna_msg_level_t;
+
 /**
  * @struct Enna
  * @brief Main Enna struct, includes all stuct and vars
@@ -93,7 +102,7 @@ struct _Enna
    Evas_Object        *o_edje;      /**< Main edje. */
    Evas_Object        *o_mainmenu;  /**< Top menu. */
    Evas_Object       *o_content;    /** Edje Object to swallow content */
-
+   enna_msg_level_t   lvl;          /**< Error message level */
 };
 
 extern Enna *enna;
