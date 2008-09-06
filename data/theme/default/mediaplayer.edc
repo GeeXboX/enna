@@ -130,7 +130,7 @@ group {
             }
 	 }
       }
-     part {
+      part {
 	 name:           "enna.text.length";
          clip_to: "enna.clip.player";
 	 type:           TEXT;
@@ -254,7 +254,7 @@ group {
          }
       }
 
-     part
+      part
       {
          name: "progress_bar";
          clip_to: "progress_bar_clip";
@@ -284,9 +284,9 @@ group {
 
       part {
       	 name: "enna.dragable.pos2";
-	   mouse_events: 0;
+         mouse_events: 0;
 	 description{
-	   state: "default" 0.0;
+            state: "default" 0.0;
 
 	    rel1{
 	       relative: 0 0.5;
@@ -300,15 +300,15 @@ group {
 	       to_y: "progress_bar_clip";
 	       offset: 0 2;
 	    }
-	     image {
-	     normal: "progress_bar_content.png";
+            image {
+               normal: "progress_bar_content.png";
                border: 3 3 3 3;
 	    }
 	 }
       }
       part {
 	 name: "enna.dragable.pos";
-	   clip_to: "progress_bar_clip";
+         clip_to: "progress_bar_clip";
          dragable {
 	    x: 1 1 1;
 	    y: 1 1 1;
@@ -328,19 +328,19 @@ group {
 	       to: "progress_bar_clip";
 	    }
 	    image {
-	     normal: "progress_bar_drag.png";
+               normal: "progress_bar_drag.png";
                border: 6 6 6 6;
 	    }
 
          }
 	 description {
-	     state: "select" 0.0;
-	     inherit: "default" 0.0;
-	     visible: 1;
-	     color: 255 255 255 255;
+            state: "select" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
 	 }
       }
-     part
+      part
       {
          name: "event";
          type: RECT;
@@ -393,7 +393,7 @@ group {
          transition: SINUSOIDAL 0.2;
          target: "enna.dragable.pos";
       }
-     program {
+      program {
          name: "mouse,out,drag";
          signal: "mouse,out";
          source:  "event";
