@@ -141,7 +141,7 @@ enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
 
   if (!sd->full)
     {
-      char *hs = edje_object_data_get(sd->o_edje, "height");
+      char *hs = (char *) edje_object_data_get(sd->o_edje, "height");
       if (hs)
 	oh = atoi(hs);
       else
@@ -152,7 +152,7 @@ enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
     }
   else
     {
-      char *hs = edje_object_data_get(sd->o_edje, "full_height");
+      char *hs = (char *) edje_object_data_get(sd->o_edje, "full_height");
       if (hs)
 	oh = atoi(hs);
       else

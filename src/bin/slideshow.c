@@ -122,10 +122,11 @@ enna_slideshow_image_append(Evas_Object *obj, const char *filename)
 }
 
 EAPI int
-enna_slideshow_next(Evas_Object * obj)
+enna_slideshow_next(void *data)
 {
    Evas_Object *o;
-
+   Evas_Object * obj = (Evas_Object *) data;
+   
    API_ENTRY return 0;
 
    if (sd->old_slide) return 1;
@@ -147,10 +148,11 @@ enna_slideshow_next(Evas_Object * obj)
 }
 
 EAPI int
-enna_slideshow_prev(Evas_Object * obj)
+enna_slideshow_prev(void *data)
 {
    Evas_Object *o;
-
+   Evas_Object * obj = (Evas_Object *) data;
+   
    API_ENTRY return 0;
 
    if (sd->old_slide) return 1;
@@ -179,10 +181,11 @@ enna_slideshow_prev(Evas_Object * obj)
 
 
 EAPI void
-enna_slideshow_play(Evas_Object * obj)
+enna_slideshow_play(void *data)
 {
    Evas_Object        *o;
-
+   Evas_Object * obj = (Evas_Object *) data;
+   
    API_ENTRY return;
 
    if (!sd->timer)

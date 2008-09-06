@@ -414,7 +414,7 @@ _e_smart_add(Evas_Object * obj)
     * 1 => Horizontal
     * 0 => Vertical
     */
-   tmp = edje_object_data_get(sd->o_edje, "orientation");
+   tmp = (char *) edje_object_data_get(sd->o_edje, "orientation");
    if (tmp)
      orientation = atoi(tmp);
 
