@@ -337,7 +337,6 @@ usage(char *binname)
    printf("  -f, (--fs):      Force Fullscreen mode.\n");
    printf("  -h, (--help):    Display this help.\n");
    printf("  -t, (--theme):   Specify theme name to be used.\n");
-   printf("  -v, (--verbose): Display verbose error messages.\n");
    printf("  -V, (--version): Display Enna version number.\n");
    exit (0);
 }
@@ -346,11 +345,10 @@ static int
 parse_command_line (int argc, char **argv)
 {
    int c, index;
-   char short_options[] = "Vhvfgc:t:b:";
+   char short_options[] = "Vhfgc:t:b:";
    struct option long_options [] = {
      {"help",             no_argument,       0, 'h' },
      {"version",          no_argument,       0, 'V' },
-     {"verbose",          no_argument,       0, 'v' },
      {"fs",               no_argument,       0, 'f' },
      {"config",           required_argument, 0, 'c' },
      {"theme",            required_argument, 0, 't' },
@@ -377,9 +375,6 @@ parse_command_line (int argc, char **argv)
               return -1;
 
            case 'V':
-              break;
-
-           case 'v':
               break;
 
            case 'f':
