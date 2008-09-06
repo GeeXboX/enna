@@ -112,7 +112,7 @@ enna_slideshow_image_append(Evas_Object *obj, const char *filename)
    if (!filename) return;
 
    o = enna_image_add(evas_object_evas_get(obj));
-   enna_log (ENNA_MSG_EVENT, NULL, "append : %s\n", filename);
+   enna_log (ENNA_MSG_EVENT, NULL, "append : %s", filename);
    enna_image_file_set(o, filename+7);
    enna_image_size_get(o, &w, &h);
    enna_image_load_size_set(o, w, h);
@@ -216,7 +216,7 @@ _random_transition(E_Smart_Data *sd)
    n = 1 + (int) ( 3.0 * rand() / ( RAND_MAX + 1.0 ));
    if (sd->o_transition) evas_object_del(sd->o_transition);
    sd->o_transition = edje_object_add(evas_object_evas_get(sd->obj));
-   enna_log (ENNA_MSG_EVENT, NULL, "Transition n°%d\n", n);
+   enna_log (ENNA_MSG_EVENT, NULL, "Transition n°%d", n);
    switch(n)
      {
       case 1:

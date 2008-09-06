@@ -88,7 +88,7 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
   }
 
 #ifdef DEBUG
-  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Found Amazon ASIN: %s\n", asin);
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Found Amazon ASIN: %s", asin);
 #endif
 
   /* 5. Prepare Amazon WebService URL for Cover Search */

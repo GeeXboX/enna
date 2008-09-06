@@ -23,7 +23,7 @@ static Enna_Module_libplayer *mod;
 
 static void _class_init(int dummy)
 {
-  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class init\n");
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class init");
 }
 
 static void _class_shutdown(int dummy)
@@ -77,7 +77,7 @@ static int _class_stop(void)
 
 static int _class_pause(void)
 {
-   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "pause\n");
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "pause");
    if (player_playback_get_state (mod->player) == PLAYER_PB_STATE_PLAY)
      player_playback_pause (mod->player);
    return 0;
@@ -160,7 +160,7 @@ _event_cb (player_event_t e, void *data)
 {
    if (e == PLAYER_EVENT_PLAYBACK_FINISHED)
      {
-        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "PLAYBACK FINISHED\n");
+        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "PLAYBACK FINISHED");
 	if (mod->event_cb)
 	  {
 	     mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
@@ -214,7 +214,7 @@ module_init(Enna_Module *em)
    /* Load Config file values */
    cfgdata = enna_config_module_pair_get("libplayer");
 
-   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:\n");
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:");
 
    if (cfgdata)
      {

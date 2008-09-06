@@ -168,48 +168,48 @@ _enna_init(int run_gl)
 
    if (!strcmp(enna_config->engine, "gl") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_OPENGL_X11))
      {
-	enna_log (ENNA_MSG_INFO, NULL, "Load GL engine\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Load GL engine");
 	enna->ee = ecore_evas_gl_x11_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_gl_x11_window_get (enna->ee);
      }
    else if (!strcmp(enna_config->engine, "xrender") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_XRENDER_X11))
      {
-	enna_log (ENNA_MSG_INFO, NULL, "Load XRENDER engine\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Load XRENDER engine");
 	enna->ee = ecore_evas_xrender_x11_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_xrender_x11_window_get (enna->ee);
      }
    else if (!strcmp(enna_config->engine, "x11_16") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_16_X11))
      {
-	enna_log (ENNA_MSG_INFO, NULL, "Load X11_16 engine\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Load X11_16 engine");
 	enna->ee = ecore_evas_software_x11_16_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_software_x11_16_window_get (enna->ee);
      }
    else if (!strcmp(enna_config->engine, "x11") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
      {
-	enna_log (ENNA_MSG_INFO, NULL, "Load X11 engine\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Load X11 engine");
 	enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_software_x11_window_get (enna->ee);
      }
    else if (ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
      {
-	enna_log (ENNA_MSG_WARNING, NULL, "Specified \'%s\' engine not found, use X11 software default engine\n", enna_config->engine);
+	enna_log (ENNA_MSG_WARNING, NULL, "Specified \'%s\' engine not found, use X11 software default engine", enna_config->engine);
 	enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_software_x11_window_get (enna->ee);
      }
    else
      {
-	enna_log (ENNA_MSG_CRITICAL, NULL, "Can not create Ecore Evas with %s engine!\n",enna_config->engine);
+	enna_log (ENNA_MSG_CRITICAL, NULL, "Can not create Ecore Evas with %s engine!",enna_config->engine);
 	return 0;
      }
 
    if (!enna->ee)
      {
-	enna_log (ENNA_MSG_CRITICAL, NULL, "Can not Initialize Ecore Evas !\n");
+	enna_log (ENNA_MSG_CRITICAL, NULL, "Can not Initialize Ecore Evas !");
 	return 0;
      }
 
@@ -415,7 +415,7 @@ main(int arc, char **arv)
    ecore_main_loop_begin();
 
    _enna_shutdown();
-   enna_log (ENNA_MSG_INFO, NULL, "Bye Bye !\n");
+   enna_log (ENNA_MSG_INFO, NULL, "Bye Bye !");
 
    return 0;
 }

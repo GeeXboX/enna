@@ -237,7 +237,7 @@ _scanner_thread(void *ptr)
 	/*  Scann process is done */
      }
 
-   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Scanner Thread Done\n");
+   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Scanner Thread Done");
    buf[0] = "done";
    write(scanner->fd_ev_write, buf, sizeof(buf));
    return NULL;
@@ -250,7 +250,7 @@ _pipe_read_active(void *data, Ecore_Fd_Handler * fdh)
 
    scanner = (Enna_Scanner *) data;
    pthread_join(scanner->scanner_thread, NULL);
-   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Scanner Thread ended\n");
+   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Scanner Thread ended");
 
    return 0;
 }
@@ -261,8 +261,8 @@ static void
 _metadata_print(Enna_Metadata * metadata)
 {
 #if 0
-  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "---------\n");
-  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "\n\tfile:\t%s\n\ttitle:\t%s\n\tartist:\t%s\n\talbum:\t%s\n\tgenre:\t%s\n"
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "---------");
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "\n\tfile:\t%s\n\ttitle:\t%s\n\tartist:\t%s\n\talbum:\t%s\n\tgenre:\t%s"
        "\ttrack\t%s\n\tplay count:\t%d\n",
        metadata->uri ? metadata->uri : "Unknown",
        metadata->title[0] ? metadata->title : "Unknown Title",
@@ -271,7 +271,7 @@ _metadata_print(Enna_Metadata * metadata)
        metadata->genre[0] ? metadata->genre : "Unknown Genre",
        metadata->track,
        metadata->play_count);
-  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "----------\n");
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "----------");
 #endif
 }
 
@@ -294,7 +294,7 @@ _nb_medias_get(int type)
      }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in files db : %d\n", nb);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in files db : %d", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -406,7 +406,7 @@ _audio_nb_albums_get()
      }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_albums db : %d\n", nb);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_albums db : %d", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -431,7 +431,7 @@ _audio_nb_artists_get()
      }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_artists db : %d\n", nb);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_artists db : %d", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -456,7 +456,7 @@ _audio_nb_genres_get()
      }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_genres db : %d\n", nb);
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Nb of medias in audio_genres db : %d", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -932,7 +932,7 @@ em_init(Enna_Module *em)
 	for (l = parser; l; l = l->next)
 	  {
 	     char *p = l->data;
-	       enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,"parser : %s\n", p);
+	       enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,"parser : %s", p);
 	     if(!strcmp(p, "ogg"))
 	       mod->scanner->parsers = evas_list_append(mod->scanner->parsers, lms_parser_find_and_add(mod->scanner->lms, "ogg"));
 	     if(!strcmp(p, "mp3"))
@@ -984,7 +984,7 @@ em_init(Enna_Module *em)
 
 
  error:
-   enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME, "lms module initialisation\n");
+   enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME, "lms module initialisation");
    lms_free(mod->scanner->lms);
    evas_stringshare_del(mod->scanner->db_path);
    evas_stringshare_del(mod->scanner->charset);

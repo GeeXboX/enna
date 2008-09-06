@@ -144,7 +144,7 @@ enna_location_append  (Evas_Object *obj, const char *label, Evas_Object *icon, v
 
    enna_box_min_size_get(sd->o_box, &mw, NULL);
    //evas_object_geometry_get(sd->o_scroll, NULL, NULL, NULL, &mh);
-   enna_log (ENNA_MSG_EVENT, NULL, "Resize o_box : %dx%d\n", mw, mh);
+   enna_log (ENNA_MSG_EVENT, NULL, "Resize o_box : %dx%d", mw, mh);
    evas_object_resize(sd->o_box, mw, mh);
 
    enna_box_thaw(sd->o_box);

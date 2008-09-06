@@ -99,7 +99,7 @@ _event_cb(void *data, char *event)
    ev->key_compose = event;
    ev->modifiers = 0;
 
-   enna_log (ENNA_MSG_EVENT, NULL, "LIRC event : %s\n", event);
+   enna_log (ENNA_MSG_EVENT, NULL, "LIRC event : %s", event);
 
    ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
 
@@ -118,7 +118,7 @@ enna_get_key (void *event)
   if (!ev)
     return ENNA_KEY_UNKNOWN;
 
-  enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : %s\n", ev->keysymbol);
+  enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : %s", ev->keysymbol);
 
   for (i = 0; enna_keymap[i].keyname; i++)
     if (!strcmp (enna_keymap[i].keyname, ev->keysymbol))

@@ -98,7 +98,7 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 
    API_ENTRY;
 
-   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "metadata set\n");
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "metadata set");
 
    if (!metadata) return;
    if (metadata->uri) edje_object_part_text_set(sd->o_edje, "enna.text.title", ecore_file_file_get(metadata->uri));

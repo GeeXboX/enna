@@ -22,7 +22,7 @@ static Enna_Module_Emotion *mod;
 
 static void _class_init(int dummy)
 {
-   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class init\n");
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class init");
 }
 
 static void _class_shutdown(int dummy)
@@ -115,7 +115,7 @@ static Evas_Object *_class_video_obj_get(void)
 static void
 _eos_cb(void *data, Evas_Object * obj, void *event_info)
 {
-   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "End of stream\n");
+   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "End of stream");
    if (mod->event_cb)
      mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
 }

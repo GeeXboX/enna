@@ -139,7 +139,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
      {
 	/* Browse down and no file detected : Root */
 	Evas_List *l, *categories;
-        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "get CAPS Photo\n");
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "get CAPS Photo");
 	categories = enna_vfs_get(ENNA_CAPS_PHOTO);
 	enna_list_icon_size_set(o_list, 200, 200);
 	for( l = categories; l; l = l->next)
@@ -161,7 +161,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
    enna_list_thaw(o_list);
    if (mod->prev_selected)
      {
-       enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev_selected : %s\n", mod->prev_selected);
+       enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev_selected : %s", mod->prev_selected);
 	if (!enna_list_jump_label(o_list, mod->prev_selected) > 0)
 	  enna_list_selected_set(o_list, 0);
 

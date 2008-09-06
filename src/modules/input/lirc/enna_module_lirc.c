@@ -70,7 +70,7 @@ static void _class_init(int dummy)
    char cfg_file[4096];
    struct lirc_config *config;
 
-     enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class LIRC INPUT init\n");
+     enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class LIRC INPUT init");
 
    if ((fd = lirc_init("enna", 1)) == -1)
      {
