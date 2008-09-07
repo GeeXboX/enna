@@ -49,8 +49,6 @@
       -> Buttons
 
  * Bugs
-     -> Segfault when exiting enna !!!!!!! Memory corruption, hard to
-   find :/
      -> Remove item when location bar is clicked
      -> When using 'back' in audio/video player, ui comes back to menu but
         timer renders media player view again after a few seconds.
