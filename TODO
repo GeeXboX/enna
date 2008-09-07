@@ -57,6 +57,10 @@
      -> 4:3 videos are cropped when displayed on a 16:10 window.
      -> Ensure media player works (do not segv) if
         libplayer has no x11 support.
+     -> Segfault when location bar is hidden too fastly
+        (go in some subfolders -> hold Backspace key; will reproduce the bug)
+     -> Duplicated folder's name in location bar when a subfolder is opened
+        too fastly
 
 [Priority 9]
 
