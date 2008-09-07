@@ -164,6 +164,8 @@ _enna_init(int run_gl)
    if (!ecore_file_exists(tmp))
      ecore_file_mkdir(tmp);
 
+   if (enna_config->verbosity)
+     {
    if (!strcmp (enna_config->verbosity, "none"))
      enna->lvl = ENNA_MSG_NONE;
    else if (!strcmp (enna_config->verbosity, "event"))
@@ -176,6 +178,7 @@ _enna_init(int run_gl)
      enna->lvl = ENNA_MSG_ERROR;
    else if (!strcmp (enna_config->verbosity, "critical"))
      enna->lvl = ENNA_MSG_CRITICAL;
+     }
 
    if (!strcmp(enna_config->engine, "gl") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_OPENGL_X11))
      {
