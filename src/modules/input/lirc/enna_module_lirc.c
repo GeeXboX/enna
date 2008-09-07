@@ -75,7 +75,7 @@ static void _class_init(int dummy)
    if ((fd = lirc_init("enna", 1)) == -1)
      {
        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                 "could not initialize LIRC support\n");
+                 "could not initialize LIRC support");
 	return;
      }
 
@@ -85,7 +85,7 @@ static void _class_init(int dummy)
      {
 	lirc_deinit();
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "could not find Lirc config file\n");
+                  "could not find Lirc config file");
 	return;
      }
 
@@ -113,7 +113,7 @@ static void _class_shutdown(int dummy)
 
 	lirc_freeconfig(mod->lirc_config);
         enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                  "class LIRC INPUT shutdown\n");
+                  "class LIRC INPUT shutdown");
 	evas_stringshare_del(mod->config_filename);
 	ecore_main_fd_handler_del(mod->fd_handler);
 	lirc_deinit();

@@ -121,7 +121,7 @@ _db_bind_blob(sqlite3_stmt *stmt, int col, const void *blob, int len)
 	db = sqlite3_db_handle(stmt);
 	err = sqlite3_errmsg(db);
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "could not bind SQL value %d: %s\n", col, err);
+                  "could not bind SQL value %d: %s", col, err);
 	return -col;
    }
 }
@@ -147,7 +147,7 @@ _db_bind_text(sqlite3_stmt *stmt, int col, const char *text, int len)
 	db = sqlite3_db_handle(stmt);
 	err = sqlite3_errmsg(db);
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "could not bind SQL value %d: %s\n", col, err);
+                  "could not bind SQL value %d: %s", col, err);
 	return -col;
      }
 }
@@ -159,7 +159,7 @@ _db_compile_stmt(sqlite3 *db, const char *sql)
 
    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
      enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-               "could not prepare \"%s\": %s\n", sql,
+               "could not prepare \"%s\": %s", sql,
 	 sqlite3_errmsg(db));
 
    return stmt;
@@ -173,13 +173,13 @@ _db_reset_stmt(sqlite3_stmt *stmt)
    ret = r = sqlite3_reset(stmt);
    if (r != SQLITE_OK)
      enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-               "could not reset SQL statement: #%d\n", r);
+               "could not reset SQL statement: #%d", r);
 
    r = sqlite3_clear_bindings(stmt);
    ret += r;
    if (r != SQLITE_OK)
      enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-               "could not clear SQL: #%d\n", r);
+               "could not clear SQL: #%d", r);
 
    return ret;
 }
@@ -194,7 +194,7 @@ _db_finalize_stmt(sqlite3_stmt *stmt, const char *name)
    if (r != SQLITE_OK)
      {
        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                 "could not finalize %s statement: #%d\n", name, r);
+                 "could not finalize %s statement: #%d", name, r);
 	return -1;
      }
 
@@ -212,7 +212,7 @@ _db_open(const char *filename)
    if (sqlite3_open(filename, &db) != SQLITE_OK)
      {
        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                 "could not open DB \"%s\": %s\n", filename, sqlite3_errmsg(db));
+                 "could not open DB \"%s\": %s", filename, sqlite3_errmsg(db));
 	sqlite3_close(db);
 	return NULL;
      }
@@ -230,7 +230,7 @@ _scanner_thread(void *ptr)
    for (l = scanner->scan_path; l; l = l->next)
      {
        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                 "scan : %s\n", (char*)l->data);
+                 "scan : %s", (char*)l->data);
 	lms_check(scanner->lms, (char*)l->data);
 	/*  Start Scan process */
 	lms_process(scanner->lms, (char*)l->data);
@@ -263,7 +263,7 @@ _metadata_print(Enna_Metadata * metadata)
 #if 0
   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "---------");
   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "\n\tfile:\t%s\n\ttitle:\t%s\n\tartist:\t%s\n\talbum:\t%s\n\tgenre:\t%s"
-       "\ttrack\t%s\n\tplay count:\t%d\n",
+       "\ttrack\t%s\n\tplay count:\t%d",
        metadata->uri ? metadata->uri : "Unknown",
        metadata->title[0] ? metadata->title : "Unknown Title",
        metadata->artist[0] ? metadata->artist : "Unknown Artist",
@@ -360,7 +360,7 @@ _audio_metadata_get(const char *filename)
    if (r == SQLITE_DONE)
      {
        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                 "could not get file info from table: %s\n",
+                 "could not get file info from table: %s",
 		sqlite3_errmsg(sqlite3_db_handle(stmt)));
 	ret = 1;
 	goto done;
@@ -774,13 +774,13 @@ static Evas_List *_class_browse_up(const char *path)
 		  /* FIXME Set Cover filename here */
 		  /* */
                   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                            "album : %s, artist : %s\n", album, artist);
+                            "album : %s, artist : %s", album, artist);
 		  l2 = _audio_tracks_of_album_list_get(artist, album);
 		  if (evas_list_count(l2))
 		    {
 		       filename = evas_list_nth(l2, 0);
                        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                                 "uri : %s\n", filename->uri);
+                                 "uri : %s", filename->uri);
 		       icon_file =enna_cover_album_get( artist, album, filename->uri);
 		    }
 
@@ -848,7 +848,7 @@ static Evas_List *_class_browse_down()
 	   char *uri;
 	   mod->state = ARTISTS_ROOT;
            enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                     "mod->vfs->uri : %s\n", ecore_file_dir_get(mod->vfs->uri));
+                     "mod->vfs->uri : %s", ecore_file_dir_get(mod->vfs->uri));
 	   uri = strdup(ecore_file_dir_get(mod->vfs->uri));
 	   files = _class_browse_up(uri);
 	   free(uri);
@@ -949,11 +949,11 @@ em_init(Enna_Module *em)
      }
    for (l = mod->scanner->scan_path; l; l = l->next)
      enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-               "Scanner is going to scan : %s\n", (char*)l->data);
+               "Scanner is going to scan : %s", (char*)l->data);
    enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-             "Slave Timeout : %d\n",mod->scanner->slave_timeout);
+             "Slave Timeout : %d",mod->scanner->slave_timeout);
    enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-             "Commit Interval : %d\n", mod->scanner->commit_interval);
+             "Commit Interval : %d", mod->scanner->commit_interval);
 
    lms_set_commit_interval(mod->scanner->lms, mod->scanner->commit_interval);
    lms_set_slave_timeout(mod->scanner->lms, mod->scanner->slave_timeout);

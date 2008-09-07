@@ -149,7 +149,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 
 	     cat = l->data;
              enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                       "cat : %s\n", cat->label);
+                       "cat : %s", cat->label);
 
              item = create_item (cat->icon, cat->label);
 	     enna_list_append(o_list, item, _browse, NULL, cat, NULL);
@@ -210,7 +210,7 @@ _browse_down()
 
 	mod->prev_selected = strdup(enna_location_label_get_nth(mod->o_location,enna_location_count(mod->o_location) - 1));
         enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "prev selected : %s\n", mod->prev_selected);
+                  "prev selected : %s", mod->prev_selected);
 	enna_location_remove_nth(mod->o_location, enna_location_count(mod->o_location) - 1);
      }
 }
@@ -330,7 +330,7 @@ _create_gui (void)
 
 	cat = l->data;
         enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                  "icon : %s\n", cat->icon);
+                  "icon : %s", cat->icon);
         item = create_item (cat->icon, cat->label);
 	enna_list_append(o, item,  _browse, NULL, cat, NULL);
      }

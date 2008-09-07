@@ -228,7 +228,7 @@ module_init(Enna_Module *em)
                {
                   enna_config_value_store(&value, "type", ENNA_CONFIG_STRING, pair);
                   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                            " * type: %s\n", value);
+                            " * type: %s", value);
 
                   if (!strcmp("gstreamer", value))
                     type = PLAYER_TYPE_GSTREAMER;
@@ -240,13 +240,13 @@ module_init(Enna_Module *em)
                     type = PLAYER_TYPE_XINE;
                   else
                     enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                              "   - unknown type, 'mplayer' used instead\n");
+                              "   - unknown type, 'mplayer' used instead");
                }
              else if (!strcmp("video_out", pair->key))
                {
                   enna_config_value_store(&value, "video_out", ENNA_CONFIG_STRING, pair);
                   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                            " * video out: %s\n", value);
+                            " * video out: %s", value);
 
                   if (!strcmp("auto", value))
                     vo = PLAYER_VO_AUTO;
@@ -260,13 +260,13 @@ module_init(Enna_Module *em)
                     vo = PLAYER_VO_FB;
                   else
                     enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                              "   - unknown video_out, 'auto' used instead\n");
+                              "   - unknown video_out, 'auto' used instead");
                }
              else if (!strcmp("audio_out", pair->key))
                {
                   enna_config_value_store(&value, "audio_out", ENNA_CONFIG_STRING, pair);
                   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                            " * audio out: %s\n", value);
+                            " * audio out: %s", value);
 
                   if (!strcmp("auto", value))
                     ao = PLAYER_AO_AUTO;
@@ -276,13 +276,13 @@ module_init(Enna_Module *em)
                     ao = PLAYER_AO_OSS;
                   else
                     enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                              "   - unknown audio_out, 'auto' used instead\n");
+                              "   - unknown audio_out, 'auto' used instead");
                }
              else if (!strcmp("verbosity", pair->key))
                {
                   enna_config_value_store(&value, "verbosity", ENNA_CONFIG_STRING, pair);
                   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                            " * verbosity level: %s\n", value);
+                            " * verbosity level: %s", value);
 
                   if (!strcmp("info", value))
                     verbosity = PLAYER_MSG_INFO;
@@ -296,14 +296,14 @@ module_init(Enna_Module *em)
                     verbosity = PLAYER_MSG_NONE;
                   else
                     enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                              "   - unknown verbosity, 'warning' used instead\n");
+                              "   - unknown verbosity, 'warning' used instead");
                }
           }
      }
 
    if (!value)
      enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-               " * use all parameters by default\n");
+               " * use all parameters by default");
 
    mod = calloc(1, sizeof(Enna_Module_libplayer));
    mod->em = em;
@@ -314,7 +314,7 @@ module_init(Enna_Module *em)
    if (!mod->player)
      {
        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                 "libplayer module initialization\n");
+                 "libplayer module initialization");
         return;
      }
 

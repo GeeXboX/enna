@@ -162,7 +162,7 @@ module_init(Enna_Module *em)
     if (!emotion_object_init(mod->o_emotion, "gstreamer"))
     {
       enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                "could not initialize gstreamer plugin for emotion\n");
+                "could not initialize gstreamer plugin for emotion");
       return;
      }
     evas_object_smart_callback_add(mod->o_emotion, "decode_stop", _eos_cb, NULL);
