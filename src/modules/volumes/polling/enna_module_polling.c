@@ -43,6 +43,7 @@ _monitor_cb(void *data, Ecore_File_Monitor *em,
      {
       case ECORE_FILE_EVENT_MODIFIED:
 	 dbg("/etc/mtab modifed\n");
+	 break;
       default:
 	 return;
      }
