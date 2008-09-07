@@ -41,12 +41,8 @@ _monitor_cb(void *data, Ecore_File_Monitor *em,
 
    switch(event)
      {
-      case ECORE_FILE_EVENT_CREATED_DIRECTORY:
-	 dbg("New Directory\n");
-	 break;
-      case ECORE_FILE_EVENT_DELETED_DIRECTORY:
-	 dbg("Delete Directory\n");
-	 break;
+      case ECORE_FILE_EVENT_MODIFIED:
+	 dbg("/etc/mtab modifed\n");
       default:
 	 return;
      }
