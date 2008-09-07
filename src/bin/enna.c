@@ -36,6 +36,7 @@
 #include "enna_inc.h"
 
 /* Ecore_Evas API update portability fixes */
+/*
 #ifndef ECORE_EVAS_ENGINE_OPENGL_X11
 #define ECORE_EVAS_ENGINE_OPENGL_X11 ECORE_EVAS_ENGINE_GL_X11
 #endif
@@ -43,6 +44,7 @@
 #ifndef ECORE_EVAS_ENGINE_SOFTWARE_16_X11
 #define ECORE_EVAS_ENGINE_SOFTWARE_16_X11 ECORE_EVAS_ENGINE_SOFTWARE_X11_16
 #endif
+*/
 /* Global Variable Enna *enna*/
 Enna *enna;
 
@@ -272,6 +274,8 @@ _create_gui()
    enna->o_content = o;
 
    /* Create Modules */
+   em = enna_module_open("polling", enna->evas);
+   enna_module_enable(em);
    em = enna_module_open("music", enna->evas);
    enna_module_enable(em);
    em = enna_module_open("video", enna->evas);
