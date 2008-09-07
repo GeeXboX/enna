@@ -82,17 +82,41 @@ static Enna_Metadata *_class_metadata_get(void)
 {
    Enna_Metadata *m;
    const char *track;
+   char *tmp;
 
    m = enna_metadata_new();
 
-   m->uri = strdup(emotion_object_file_get(mod->o_emotion));
-   m->title = strdup(emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_TITLE));
-   m->music->album= strdup(emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ALBUM));
-   m->music->artist = strdup(emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ARTIST));
-   m->music->genre = strdup(emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_GENRE));
-   m->music->year =  strdup(emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_YEAR));
-   m->music->comment = strdup(emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COMMENT));
-   m->music->discid = strdup(emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_DISC_ID));
+   tmp = emotion_object_file_get(mod->o_emotion);
+   if (tmp)
+     m->uri = strdup(tmp);
+
+   tmp =  emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_TITLE);
+   if (tmp)
+     m->title = strdup(tmp);
+
+   tmp = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ALBUM);
+   if (tmp)
+      m->music->album = strdup(tmp);
+
+   tmp = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_ARTIST);
+   if (tmp)
+     m->music->artist = strdup(tmp);
+
+   tmp = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_GENRE);
+   if (tmp)
+     m->music->genre = strdup(tmp);
+
+   tmp = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_YEAR);
+   if (tmp)
+     m->music->year = strdup(tmp);
+
+   tmp = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COMMENT);
+   if (tmp)
+     m->music->comment = strdup(tmp);
+
+   tmp = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_DISC_ID);
+   if (tmp)
+     m->music->discid = strdup(tmp);
 
    track = emotion_object_meta_info_get(mod->o_emotion, EMOTION_META_INFO_TRACK_COUNT);
    m->music->track = track ? atoi(track) : 0;
