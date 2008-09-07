@@ -3,6 +3,8 @@
 #include "enna.h"
 #include "smart_player.h"
 
+#define ENNA_MODULE_NAME "music"
+
 static void           _create_gui();
 static void           _create_mediaplayer_gui();
 static void           _class_init(int dummy);
@@ -101,7 +103,8 @@ static void _class_show(int dummy)
 	 edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
 	 break;
       default:
-	 printf("Error State Unknown in music module\n");
+        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                  "Error State Unknown in music module\n");
      }
 
 
@@ -116,7 +119,8 @@ static void _class_event(void *event_info)
 {
    Ecore_X_Event_Key_Down *ev = event_info;
    enna_key_t key = enna_get_key (ev);
-   printf("Key pressed music : %s\n", ev->keysymbol);
+   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             "Key pressed music : %s\n", ev->keysymbol);
    switch (mod->state)
      {
       case LIST_VIEW:
@@ -135,7 +139,7 @@ static void _class_event(void *event_info)
 	   }
 	 if (mod->o_mediaplayer && mod->timer_show_mediaplayer )
 	   {
-	      printf("delay 10s\n");
+	        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "delay 10s");
 	      ecore_timer_del(mod->timer_show_mediaplayer);
 	      mod->timer_show_mediaplayer = ecore_timer_add(10, _show_mediaplayer_cb, NULL);
 
@@ -316,7 +320,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
    enna_list_thaw(o_list);
    if (mod->prev_selected)
      {
-	printf("prev_selected : %s\n", mod->prev_selected);
+       enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev_selected : %s", mod->prev_selected);
 	if (!enna_list_jump_label(o_list, mod->prev_selected) > 0)
 	  enna_list_selected_set(o_list, 0);
 
@@ -364,7 +368,7 @@ _browse_down()
 	edje_object_signal_emit(oe, "list,right", "enna");
 
 	mod->prev_selected = strdup(enna_location_label_get_nth(mod->o_location,enna_location_count(mod->o_location) - 1));
-	printf("prev selected : %s\n", mod->prev_selected);
+        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev selected : %s", mod->prev_selected);
 	enna_location_remove_nth(mod->o_location, enna_location_count(mod->o_location) - 1);
      }
 }
@@ -552,7 +556,7 @@ static void _create_gui()
 
 	cat = l->data;
 	icon = edje_object_add(mod->em->evas);
-	printf("icon : %s\n", cat->icon);
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "icon : %s", cat->icon);
 	edje_object_file_set(icon, enna_config_theme_get(), cat->icon);
 	item = enna_listitem_add(mod->em->evas);
 	enna_listitem_create_simple(item, icon, cat->label);

@@ -147,6 +147,7 @@ _enna_init(int run_gl)
 {
    char                tmp[PATH_MAX];
 
+   enna->lvl = ENNA_MSG_INFO;
    enna->home = enna_util_user_home_get();
 
    ecore_init();
@@ -165,52 +166,66 @@ _enna_init(int run_gl)
    if (!ecore_file_exists(tmp))
      ecore_file_mkdir(tmp);
 
-
+   if (enna_config->verbosity)
+     {
+        if (!strcmp (enna_config->verbosity, "none"))
+          enna->lvl = ENNA_MSG_NONE;
+        else if (!strcmp (enna_config->verbosity, "event"))
+          enna->lvl = ENNA_MSG_EVENT;
+        else if (!strcmp (enna_config->verbosity, "info"))
+          enna->lvl = ENNA_MSG_INFO;
+        else if (!strcmp (enna_config->verbosity, "warning"))
+          enna->lvl = ENNA_MSG_WARNING;
+        else if (!strcmp (enna_config->verbosity, "error"))
+          enna->lvl = ENNA_MSG_ERROR;
+        else if (!strcmp (enna_config->verbosity, "critical"))
+          enna->lvl = ENNA_MSG_CRITICAL;
+     }
 
    if (!strcmp(enna_config->engine, "gl") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_OPENGL_X11))
      {
-	dbg("Load GL engine\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Load GL engine");
 	enna->ee = ecore_evas_gl_x11_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_gl_x11_window_get (enna->ee);
      }
    else if (!strcmp(enna_config->engine, "xrender") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_XRENDER_X11))
      {
-	dbg("Load XRENDER engine\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Load XRENDER engine");
 	enna->ee = ecore_evas_xrender_x11_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_xrender_x11_window_get (enna->ee);
      }
    else if (!strcmp(enna_config->engine, "x11_16") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_16_X11))
      {
-	dbg("Load X11_16 engine\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Load X11_16 engine");
 	enna->ee = ecore_evas_software_x11_16_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_software_x11_16_window_get (enna->ee);
      }
    else if (!strcmp(enna_config->engine, "x11") && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
      {
-	dbg("Load X11 engine\n");
+	enna_log (ENNA_MSG_INFO, NULL, "Load X11 engine");
 	enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_software_x11_window_get (enna->ee);
      }
    else if (ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
      {
-	dbg("Specified \'%s\' engine not found, use X11 software default engine\n", enna_config->engine);
+	enna_log (ENNA_MSG_WARNING, NULL, "Specified \'%s\' engine not found, use X11 software default engine", enna_config->engine);
 	enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
 	if (enna->ee)
 	  enna->ee_winid = ecore_evas_software_x11_window_get (enna->ee);
      }
    else
      {
-	dbg("Can not create Ecore Evas with %s engine!\n",enna_config->engine);
+	enna_log (ENNA_MSG_CRITICAL, NULL, "Can not create Ecore Evas with %s engine!",enna_config->engine);
 	return 0;
      }
 
    if (!enna->ee)
      {
-	dbg("Can not Initialize Ecore Evas !\n");
+	enna_log (ENNA_MSG_CRITICAL, NULL, "Can not Initialize Ecore Evas !");
 	return 0;
      }
 
@@ -340,7 +355,6 @@ usage(char *binname)
    printf("  -f, (--fs):      Force Fullscreen mode.\n");
    printf("  -h, (--help):    Display this help.\n");
    printf("  -t, (--theme):   Specify theme name to be used.\n");
-   printf("  -v, (--verbose): Display verbose error messages.\n");
    printf("  -V, (--version): Display Enna version number.\n");
    exit (0);
 }
@@ -349,11 +363,10 @@ static int
 parse_command_line (int argc, char **argv)
 {
    int c, index;
-   char short_options[] = "Vhvfgc:t:b:";
+   char short_options[] = "Vhfgc:t:b:";
    struct option long_options [] = {
      {"help",             no_argument,       0, 'h' },
      {"version",          no_argument,       0, 'V' },
-     {"verbose",          no_argument,       0, 'v' },
      {"fs",               no_argument,       0, 'f' },
      {"config",           required_argument, 0, 'c' },
      {"theme",            required_argument, 0, 't' },
@@ -380,9 +393,6 @@ parse_command_line (int argc, char **argv)
               return -1;
 
            case 'V':
-              break;
-
-           case 'v':
               break;
 
            case 'f':
@@ -423,7 +433,7 @@ main(int arc, char **arv)
    ecore_main_loop_begin();
 
    _enna_shutdown();
-   dbg("Bye Bye !\n");
+   enna_log (ENNA_MSG_INFO, NULL, "Bye Bye !");
 
    return 0;
 }

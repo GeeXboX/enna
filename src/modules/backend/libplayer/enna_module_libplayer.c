@@ -3,6 +3,8 @@
 #include "enna.h"
 #include <player.h>
 
+#define ENNA_MODULE_NAME "libplayer"
+
 typedef struct _Enna_Module_libplayer
 {
    Evas *evas;
@@ -21,7 +23,7 @@ static Enna_Module_libplayer *mod;
 
 static void _class_init(int dummy)
 {
-   printf("libplayer class init\n");
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class init");
 }
 
 static void _class_shutdown(int dummy)
@@ -75,7 +77,7 @@ static int _class_stop(void)
 
 static int _class_pause(void)
 {
-   printf("libplayer pause\n");
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "pause");
    if (player_playback_get_state (mod->player) == PLAYER_PB_STATE_PLAY)
      player_playback_pause (mod->player);
    return 0;
@@ -158,7 +160,7 @@ _event_cb (player_event_t e, void *data)
 {
    if (e == PLAYER_EVENT_PLAYBACK_FINISHED)
      {
-	printf ("PLAYBACK FINISHED\n");
+        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "PLAYBACK FINISHED");
 	if (mod->event_cb)
 	  {
 	     mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
@@ -212,7 +214,7 @@ module_init(Enna_Module *em)
    /* Load Config file values */
    cfgdata = enna_config_module_pair_get("libplayer");
 
-   printf("libplayer parameters:\n");
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:");
 
    if (cfgdata)
      {
@@ -225,7 +227,8 @@ module_init(Enna_Module *em)
              if (!strcmp("type", pair->key))
                {
                   enna_config_value_store(&value, "type", ENNA_CONFIG_STRING, pair);
-                  printf(" * type: %s\n", value);
+                  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                            " * type: %s", value);
 
                   if (!strcmp("gstreamer", value))
                     type = PLAYER_TYPE_GSTREAMER;
@@ -236,12 +239,14 @@ module_init(Enna_Module *em)
                   else if (!strcmp("xine", value))
                     type = PLAYER_TYPE_XINE;
                   else
-                    printf("   - unknown type, 'mplayer' used instead\n");
+                    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                              "   - unknown type, 'mplayer' used instead");
                }
              else if (!strcmp("video_out", pair->key))
                {
                   enna_config_value_store(&value, "video_out", ENNA_CONFIG_STRING, pair);
-                  printf(" * video out: %s\n", value);
+                  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                            " * video out: %s", value);
 
                   if (!strcmp("auto", value))
                     vo = PLAYER_VO_AUTO;
@@ -254,12 +259,14 @@ module_init(Enna_Module *em)
                   else if (!strcmp("fb", value))
                     vo = PLAYER_VO_FB;
                   else
-                    printf("   - unknown video_out, 'auto' used instead\n");
+                    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                              "   - unknown video_out, 'auto' used instead");
                }
              else if (!strcmp("audio_out", pair->key))
                {
                   enna_config_value_store(&value, "audio_out", ENNA_CONFIG_STRING, pair);
-                  printf(" * audio out: %s\n", value);
+                  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                            " * audio out: %s", value);
 
                   if (!strcmp("auto", value))
                     ao = PLAYER_AO_AUTO;
@@ -268,12 +275,14 @@ module_init(Enna_Module *em)
                   else if (!strcmp("oss", value))
                     ao = PLAYER_AO_OSS;
                   else
-                    printf("   - unknown audio_out, 'auto' used instead\n");
+                    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                              "   - unknown audio_out, 'auto' used instead");
                }
              else if (!strcmp("verbosity", pair->key))
                {
                   enna_config_value_store(&value, "verbosity", ENNA_CONFIG_STRING, pair);
-                  printf(" * verbosity level: %s\n", value);
+                  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                            " * verbosity level: %s", value);
 
                   if (!strcmp("info", value))
                     verbosity = PLAYER_MSG_INFO;
@@ -286,13 +295,15 @@ module_init(Enna_Module *em)
                   else if (!strcmp("none", value))
                     verbosity = PLAYER_MSG_NONE;
                   else
-                    printf("   - unknown verbosity, 'warning' used instead\n");
+                    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                              "   - unknown verbosity, 'warning' used instead");
                }
           }
      }
 
    if (!value)
-     printf(" * use all parameters by default\n");
+     enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+               " * use all parameters by default");
 
    mod = calloc(1, sizeof(Enna_Module_libplayer));
    mod->em = em;
@@ -302,7 +313,8 @@ module_init(Enna_Module *em)
 
    if (!mod->player)
      {
-        dbg("Error during libplayer module initialization\n");
+       enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 "libplayer module initialization");
         return;
      }
 

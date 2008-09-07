@@ -6,6 +6,8 @@
 
 #define DEBUG 1
 
+#define ENNA_MODULE_NAME "amazon"
+
 #define MAX_URL_SIZE        1024
 #define MAX_KEYWORD_SIZE    1024
 #define MAX_BUF_LEN         65535
@@ -54,7 +56,8 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
             escaped_keywords, search_type);
 
 #ifdef DEBUG
-  printf ("Amazon Search Request: %s\n", url);
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+            "Search Request: %s\n", url);
 #endif
 
   /* 3. Perform request */
@@ -63,7 +66,8 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
     return NULL;
 
 #ifdef DEBUG
-  printf ("Amazon Search Reply: %s\n", data.buffer);
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+            "Search Reply: %s\n", data.buffer);
 #endif
 
   /* 4. Parse the answer to get ASIN value */
@@ -78,12 +82,13 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
 
   if (!asin)
   {
-    printf ("Amazon: Unable to find the item \"%s\"\n", escaped_keywords);
+    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+              "Unable to find the item \"%s\"\n", escaped_keywords);
     return NULL;
   }
 
 #ifdef DEBUG
-  printf ("Found Amazon ASIN: %s\n", asin);
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Found Amazon ASIN: %s", asin);
 #endif
 
   /* 5. Prepare Amazon WebService URL for Cover Search */
@@ -93,7 +98,8 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
   xmlFree (asin);
 
 #ifdef DEBUG
-  printf ("Cover Search Request: %s\n", url);
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+            "Cover Search Request: %s\n", url);
 #endif
 
   /* 6. Perform request */
@@ -102,7 +108,8 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
     return NULL;
 
 #ifdef DEBUG
-  printf ("Cover Search Reply: %s\n", data.buffer);
+  enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+            "Cover Search Reply: %s\n", data.buffer);
 #endif
 
   /* 7. Parse the answer to get cover URL */
@@ -127,7 +134,8 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
   cover_url = get_prop_value_from_xml_tree (img, "URL");
   if (!cover_url)
   {
-    printf ("Amazon: Unable to find the cover for %s\n", escaped_keywords);
+    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+              "Unable to find the cover for %s\n", escaped_keywords);
     xmlFreeDoc (doc);
     return NULL;
   }
@@ -142,7 +150,8 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
             enna_util_user_home_get (), md5);
   free (md5);
 
-  printf ("Saving %s to %s\n", cover_url, cover);
+  enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+            "Saving %s to %s\n", cover_url, cover);
   ecore_file_download ((const char *) cover_url, cover, NULL, NULL, NULL);
   xmlFree (cover_url);
 

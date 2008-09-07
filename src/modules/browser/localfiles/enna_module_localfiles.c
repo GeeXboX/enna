@@ -2,6 +2,8 @@
 
 #include "enna.h"
 
+#define ENNA_MODULE_NAME "localfiles"
+
 typedef struct _Root_Directories {
    char *uri;
    char *label;
@@ -315,7 +317,8 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 		       root = calloc(1, sizeof(Root_Directories));
 		       root->uri = evas_list_nth(dir_data,0);
 		       root->label = evas_list_nth(dir_data, 1);
-		       printf ("Root Data: %s\n", root->uri);
+                       enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                                 "Root Data: %s", root->uri);
 		       root->icon = evas_list_nth(dir_data,2);
 		       data->config->root_directories = evas_list_append(data->config->root_directories, root);
 		    }

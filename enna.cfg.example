@@ -1,4 +1,7 @@
 [enna]
+#none,event,info,warning,error,critical
+verbosity=info
+
 #0,1
 fullscreen=0
 

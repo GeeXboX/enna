@@ -3,6 +3,8 @@
 #include "enna.h"
 #include <lirc/lirc_client.h>
 
+#define ENNA_MODULE_NAME "lirc"
+
 static void           _class_init(int dummy);
 static void           _class_shutdown(int dummy);
 static void           _class_event_cb_set(void (*event_cb)(void *data, char *event), void *data);
@@ -68,11 +70,12 @@ static void _class_init(int dummy)
    char cfg_file[4096];
    struct lirc_config *config;
 
-   printf("class LIRC INPUT init\n");
+     enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class LIRC INPUT init");
 
    if ((fd = lirc_init("enna", 1)) == -1)
      {
-	dbg("could not initialize LIRC support\n");
+       enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 "could not initialize LIRC support");
 	return;
      }
 
@@ -81,7 +84,8 @@ static void _class_init(int dummy)
    if (lirc_readconfig(cfg_file, &config, NULL) != 0)
      {
 	lirc_deinit();
-	dbg("could not find Lirc config file\n");
+        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                  "could not find Lirc config file");
 	return;
      }
 
@@ -108,7 +112,8 @@ static void _class_shutdown(int dummy)
      {
 
 	lirc_freeconfig(mod->lirc_config);
-	printf("class LIRC INPUT shutdown\n");
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                  "class LIRC INPUT shutdown");
 	evas_stringshare_del(mod->config_filename);
 	ecore_main_fd_handler_del(mod->fd_handler);
 	lirc_deinit();

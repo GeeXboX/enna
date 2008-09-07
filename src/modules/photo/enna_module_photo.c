@@ -2,6 +2,8 @@
 
 #include "enna.h"
 
+#define ENNA_MODULE_NAME "photo"
+
 static void           _create_gui();
 static void           _list_transition_core(Evas_List *files, unsigned char direction);
 static void           _list_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
@@ -137,7 +139,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
      {
 	/* Browse down and no file detected : Root */
 	Evas_List *l, *categories;
-	printf("get CAPS Photo\n");
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "get CAPS Photo");
 	categories = enna_vfs_get(ENNA_CAPS_PHOTO);
 	enna_list_icon_size_set(o_list, 200, 200);
 	for( l = categories; l; l = l->next)
@@ -146,7 +148,8 @@ _list_transition_core(Evas_List *files, unsigned char direction)
 	     Evas_Object *item;
 
 	     cat = l->data;
-	     printf("cat : %s\n", cat->label);
+             enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                       "cat : %s", cat->label);
 
              item = create_item (cat->icon, cat->label);
 	     enna_list_append(o_list, item, _browse, NULL, cat, NULL);
@@ -158,7 +161,7 @@ _list_transition_core(Evas_List *files, unsigned char direction)
    enna_list_thaw(o_list);
    if (mod->prev_selected)
      {
-	printf("prev_selected : %s\n", mod->prev_selected);
+       enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev_selected : %s", mod->prev_selected);
 	if (!enna_list_jump_label(o_list, mod->prev_selected) > 0)
 	  enna_list_selected_set(o_list, 0);
 
@@ -206,7 +209,8 @@ _browse_down()
 	edje_object_signal_emit(oe, "list,right", "enna");
 
 	mod->prev_selected = strdup(enna_location_label_get_nth(mod->o_location,enna_location_count(mod->o_location) - 1));
-	printf("prev selected : %s\n", mod->prev_selected);
+        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                  "prev selected : %s", mod->prev_selected);
 	enna_location_remove_nth(mod->o_location, enna_location_count(mod->o_location) - 1);
      }
 }
@@ -325,7 +329,8 @@ _create_gui (void)
 	Enna_Class_Vfs *cat;
 
 	cat = l->data;
-	printf("icon : %s\n", cat->icon);
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                  "icon : %s", cat->icon);
         item = create_item (cat->icon, cat->label);
 	enna_list_append(o, item,  _browse, NULL, cat, NULL);
      }

@@ -3,6 +3,8 @@
 #include "enna.h"
 #include <Emotion.h>
 
+#define ENNA_MODULE_NAME "emotion"
+
 typedef struct _Enna_Module_Emotion
 {
    Evas *evas;
@@ -20,7 +22,7 @@ static Enna_Module_Emotion *mod;
 
 static void _class_init(int dummy)
 {
-   printf("emotion class init\n");
+   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "class init");
 }
 
 static void _class_shutdown(int dummy)
@@ -113,7 +115,7 @@ static Evas_Object *_class_video_obj_get(void)
 static void
 _eos_cb(void *data, Evas_Object * obj, void *event_info)
 {
-   printf("End of stream\n");
+   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "End of stream");
    if (mod->event_cb)
      mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
 }
@@ -159,7 +161,8 @@ module_init(Enna_Module *em)
     /* Fixme should come frome config */
     if (!emotion_object_init(mod->o_emotion, "gstreamer"))
     {
-      printf("Error : could not initialize gstreamer plugin for emotion\n");
+      enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                "could not initialize gstreamer plugin for emotion");
       return;
      }
     evas_object_smart_callback_add(mod->o_emotion, "decode_stop", _eos_cb, NULL);

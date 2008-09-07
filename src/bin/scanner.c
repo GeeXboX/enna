@@ -72,8 +72,8 @@ static sqlite3 * _db_open(const char *filename)
    sqlite3 *db;
 
     if (sqlite3_open(filename, &db) != SQLITE_OK) {
-        dbg("ERROR: could not open DB \"%s\": %s\n",
-                filename, sqlite3_errmsg(db));
+        enna_log (ENNA_MSG_ERROR, NULL, "could not open DB \"%s\": %s",
+                  filename, sqlite3_errmsg(db));
 	sqlite3_close(db);
 	return NULL;
     }
@@ -98,7 +98,7 @@ _db_bind_blob(sqlite3_stmt *stmt, int col, const void *blob, int len)
 
         db = sqlite3_db_handle(stmt);
         err = sqlite3_errmsg(db);
-        fprintf(stderr, "ERROR: could not bind SQL value %d: %s\n", col, err);
+        enna_log (ENNA_MSG_ERROR, NULL, "could not bind SQL value %d: %s", col, err);
         return -col;
     }
 }
@@ -121,7 +121,8 @@ _db_bind_text(sqlite3_stmt *stmt, int col, const char *text, int len)
 
         db = sqlite3_db_handle(stmt);
         err = sqlite3_errmsg(db);
-        fprintf(stderr, "ERROR: could not bind SQL value %d: %s\n", col, err);
+        enna_log (ENNA_MSG_ERROR, NULL,
+                  "could not bind SQL value %d: %s\n", col, err);
         return -col;
     }
 }
@@ -132,8 +133,8 @@ _db_compile_stmt(sqlite3 *db, const char *sql)
     sqlite3_stmt *stmt;
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
-      dbg("ERROR: could not prepare \"%s\": %s\n", sql,
-	  sqlite3_errmsg(db));
+      enna_log (ENNA_MSG_ERROR, NULL, "could not prepare \"%s\": %s", sql,
+                sqlite3_errmsg(db));
 
     return stmt;
 }
@@ -145,12 +146,12 @@ _db_reset_stmt(sqlite3_stmt *stmt)
 
     ret = r = sqlite3_reset(stmt);
     if (r != SQLITE_OK)
-        fprintf(stderr, "ERROR: could not reset SQL statement: #%d\n", r);
+        enna_log (ENNA_MSG_ERROR, NULL, "could not reset SQL statement: #%d", r);
 
     r = sqlite3_clear_bindings(stmt);
     ret += r;
     if (r != SQLITE_OK)
-        fprintf(stderr, "ERROR: could not clear SQL: #%d\n", r);
+        enna_log (ENNA_MSG_ERROR, NULL, "could not clear SQL: #%d", r);
 
     return ret;
 }
@@ -162,7 +163,8 @@ _db_finalize_stmt(sqlite3_stmt *stmt, const char *name)
 
     r = sqlite3_finalize(stmt);
     if (r != SQLITE_OK) {
-        dbg("ERROR: could not finalize %s statement: #%d\n",
+      enna_log (ENNA_MSG_ERROR, NULL,
+                "could not finalize %s statement: #%d\n",
                 name, r);
         return -1;
     }
@@ -208,7 +210,7 @@ _cover_download(const char *artist, const char *album)
    if (!ret)
      {
 	mb_GetQueryError(o, error, 256);
-	dbg("Query failed: %s\n", error);
+	enna_log (ENNA_MSG_WARNING, NULL, "Query failed: %s", error);
 	mb_Delete(o);
 	return 0;
      }
@@ -217,7 +219,7 @@ _cover_download(const char *artist, const char *album)
    numAlbums = mb_GetResultInt(o, MBE_GetNumAlbums);
    if (numAlbums < 1)
      {
-	dbg("No albums found.\n");
+	enna_log (ENNA_MSG_INFO, NULL, "No albums found.");
 	mb_Delete(o);
 	return 0;
      }
@@ -263,7 +265,7 @@ _cover_download(const char *artist, const char *album)
 	   if (!ret)
 	     {
 		mb_GetQueryError(o2, error, 256);
-		dbg("Query failed: %s\n", error);
+		enna_log (ENNA_MSG_WARNING, NULL, "Query failed: %s", error);
 		mb_Delete(o);
 		mb_Delete(o2);
 		return 0;
@@ -271,7 +273,7 @@ _cover_download(const char *artist, const char *album)
 	   mb_Select1(o2, MBS_SelectArtist, 1);
 	   if (!mb_GetResultData(o2, MBE_ArtistGetArtistName, data, 256))
 	     {
-		dbg("Artist Name not found\n");
+		enna_log (ENNA_MSG_INFO, NULL, "Artist Name not found");
 		mb_Delete(o);
 		mb_Delete(o2);
 		return 0;
@@ -305,7 +307,7 @@ _cover_download(const char *artist, const char *album)
    if (!ret)
      {
 	mb_GetQueryError(o, error, 256);
-	dbg("Query failed: %s\n", error);
+	enna_log (ENNA_MSG_WARNING, NULL, "Query failed: %s", error);
 	mb_Delete(o);
 	return 0;
      }
@@ -322,7 +324,7 @@ _cover_download(const char *artist, const char *album)
       if (!mb_GetResultData(o, MBE_AlbumGetAlbumId, data, 256))
 	{
 	   mb_Delete(o);
-	   dbg("Album not found.\n");
+	   enna_log (ENNA_MSG_INFO, NULL, "Album not found.");
 	   return 0;
 	}
 
@@ -336,7 +338,7 @@ _cover_download(const char *artist, const char *album)
 	   return 0;
 	}
       else
-	dbg("asin found : %s\n", asin);
+	enna_log (ENNA_MSG_INFO, NULL, "asin found : %s", asin);
 
       mb_Select(o, MBS_Back);
 
@@ -352,7 +354,7 @@ _cover_download(const char *artist, const char *album)
    mb_Delete(o);
 
    sprintf(data, "http://images.amazon.com/images/P/%s.01.LZZZZZZZ.jpg", asin);
-   dbg("data : %s\n", data);
+   enna_log (ENNA_MSG_EVENT, NULL, "data : %s", data);
 
    sprintf(temp, "%s/.enna/covers/%s - %s.jpg", enna_util_user_home_get(), artist,
 	   album);
@@ -391,7 +393,7 @@ static void
        sprintf(cover_filename, "%s/.enna/covers/%s - %s.jpg", enna_util_user_home_get(), artist, album);
        if (ecore_file_exists(cover_filename))
 	 {
-	    dbg("cover exists : %s\n", cover_filename);
+	    enna_log (ENNA_MSG_EVENT, NULL, "cover exists : %s", cover_filename);
 	 }
        else
 	 _cover_download(artist,album);
@@ -399,7 +401,7 @@ static void
 
  done:
    _db_reset_stmt(stmt);
-   dbg("Scanner Thread Done\n");
+   enna_log (ENNA_MSG_EVENT, NULL, "Scanner Thread Done");
    buf[0] = "done";
    write(scanner->fd_ev_write, buf, sizeof(buf));
    return NULL;
@@ -412,7 +414,7 @@ _pipe_read_active(void *data, Ecore_Fd_Handler * fdh)
 
    scanner = (Enna_Scanner *) data;
    pthread_join(scanner->scanner_thread, NULL);
-   dbg("Scanner Thread ended\n");
+   enna_log (ENNA_MSG_EVENT, NULL, "Scanner Thread ended");
    return 0;
 }
 
@@ -490,8 +492,8 @@ static void
 _metadata_print(Enna_Metadata * metadata)
 {
 #if 0
-   dbg("---------\n");
-   dbg("\n\tfile:\t%s\n\ttitle:\t%s\n\tartist:\t%s\n\talbum:\t%s\n\tgenre:\t%s\n"
+   enna_log (ENNA_MSG_INFO, NULL, "---------");
+   enna_log (ENNA_MSG_INFO, NULL, "\n\tfile:\t%s\n\ttitle:\t%s\n\tartist:\t%s\n\talbum:\t%s\n\tgenre:\t%s"
        "\ttrack\t%d\n\tplay count:\t%d\n",
        metadata->uri ? metadata->uri : "Unknown",
        metadata->title[0] ? metadata->title : "Unknown Title",
@@ -500,7 +502,7 @@ _metadata_print(Enna_Metadata * metadata)
        metadata->genre[0] ? metadata->genre : "Unknown Genre",
        metadata->track_nb,
        metadata->play_count);
-   dbg("----------\n");
+   enna_log (ENNA_MSG_INFO, NULL, "----------");
 #endif
 }
 
@@ -532,7 +534,7 @@ EAPI int enna_scanner_nb_medias_get(int type)
    }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   dbg("Nb of medias in files db : %d\n", nb);
+   enna_log (ENNA_MSG_EVENT, NULL, "Nb of medias in files db : %d", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -593,7 +595,7 @@ EAPI Enna_Metadata *enna_scanner_audio_metadata_get(const char *filename)
 
    r = sqlite3_step(stmt);
    if (r == SQLITE_DONE) {
-      fprintf(stderr, "ERROR: could not get file info from table: %s\n",
+      enna_log (ENNA_MSG_ERROR, NULL, "could not get file info from table: %s",
 	      sqlite3_errmsg(sqlite3_db_handle(stmt)));
       ret = 1;
       goto done;
@@ -637,7 +639,7 @@ EAPI int enna_scanner_audio_nb_albums_get()
    }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   dbg("Nb of medias in audio_albums db : %d\n", nb);
+   enna_log (ENNA_MSG_EVENT, NULL, "Nb of medias in audio_albums db : %d", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -660,7 +662,7 @@ EAPI int enna_scanner_audio_nb_artists_get()
    }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   dbg("Nb of medias in audio_artists db : %d\n", nb);
+   enna_log (ENNA_MSG_EVENT, NULL, "Nb of medias in audio_artists db : %d", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;
@@ -683,7 +685,7 @@ EAPI int enna_scanner_audio_nb_genres_get()
    }
    nb = sqlite3_column_int(stmt, 0);
    ret = 0;
-   dbg("Nb of medias in audio_genres db : %d\n", nb);
+   enna_log (ENNA_MSG_EVENT, NULL, "Nb of medias in audio_genres db : %d", nb);
  done:
    _db_reset_stmt(stmt);
    return ret;

@@ -158,6 +158,7 @@ _hash_foreach (const Evas_Hash *hash, const char *key, void *data, void *fdata)
 	     enna_config_value_store(&enna_config->fullscreen, "fullscreen", ENNA_CONFIG_INT, pair);
 	     enna_config_value_store(&enna_config->engine, "engine", ENNA_CONFIG_STRING, pair);
 	     enna_config_value_store(&enna_config->backend, "backend", ENNA_CONFIG_STRING, pair);
+             enna_config_value_store(&enna_config->verbosity, "verbosity", ENNA_CONFIG_STRING, pair);
 	     enna_config_value_store(&enna_config->music_filters, "music_ext", ENNA_CONFIG_STRING_LIST, pair);
 	     enna_config_value_store(&enna_config->video_filters, "video_ext", ENNA_CONFIG_STRING_LIST, pair);
 	     enna_config_value_store(&enna_config->photo_filters, "photo_ext", ENNA_CONFIG_STRING_LIST, pair);
@@ -180,7 +181,7 @@ _config_load_conf_file(char *filename)
 
    if (stat(filename, &st))
      {
-	dbg("Cannot stat file %s\n", filename);
+	enna_log (ENNA_MSG_WARNING, NULL, "Cannot stat file %s", filename);
 	sprintf(tmp, "%s/.enna", enna_util_user_home_get());
 	if (!ecore_file_is_dir(tmp))
 	  ecore_file_mkdir(tmp);
@@ -191,6 +192,7 @@ _config_load_conf_file(char *filename)
 	  {
 	     fprintf(f, "[enna]\n"
 		     "\n"
+                     "verbosity=info\n\n"
 		     "fullscreen=0\n\n"
 		     "theme=default\n\n"
 		     "#x11,xrender,gl,x11_16\n"
@@ -208,7 +210,7 @@ _config_load_conf_file(char *filename)
 
    if (stat(filename, &st))
      {
-	dbg("Cannot stat file %s\n", filename);
+	enna_log (ENNA_MSG_ERROR, NULL, "Cannot stat file %s", filename);
 	return NULL;
      }
 
@@ -216,13 +218,13 @@ _config_load_conf_file(char *filename)
 
    if (!conffile)
      {
-	dbg("Cannot malloc %d bytes\n", (int)st.st_size);
+	enna_log (ENNA_MSG_ERROR, NULL, "Cannot malloc %d bytes", (int)st.st_size);
 	return NULL;
      }
 
    if ((fd = open(filename, O_RDONLY)) < 0)
      {
-	dbg("Cannot open file\n");
+	enna_log (ENNA_MSG_ERROR, NULL, "Cannot open file");
 	return NULL;
      }
 
@@ -230,7 +232,7 @@ _config_load_conf_file(char *filename)
 
    if (ret != st.st_size)
      {
-	dbg("Cannot read conf file entirely, read only %d bytes\n", ret);
+	enna_log (ENNA_MSG_ERROR, NULL, "Cannot read conf file entirely, read only %d bytes", ret);
 	return NULL;
      }
 
@@ -282,7 +284,7 @@ _config_load_conf(char *conffile, int size)
 
 	     if (end_of_section_name[1] != 0)
 	       {
-		  dbg("malformed section name %s\n", current_line);
+		  enna_log (ENNA_MSG_WARNING, NULL, "malformed section name %s", current_line);
 		  return NULL;
 	       }
 	     current_line++;
@@ -304,7 +306,7 @@ _config_load_conf(char *conffile, int size)
 	// Must be in a section to provide a key/value pair
 	if (!current_section)
 	  {
-	     dbg("No section for this line %s\n", current_line);
+	     enna_log (ENNA_MSG_WARNING, NULL, "No section for this line %s", current_line);
 	     /* FIXME : free hash and confile*/
 	     return NULL;
 	  }
@@ -314,7 +316,7 @@ _config_load_conf(char *conffile, int size)
 	value = strchr(current_line, '=');
 	if (!value)
 	  {
-	     dbg("Malformed line %s\n", current_line);
+	     enna_log (ENNA_MSG_WARNING, NULL, "Malformed line %s", current_line);
 	     /* FIXME : free hash and confile*/
 	     return NULL;
 	  }

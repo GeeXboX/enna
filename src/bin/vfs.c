@@ -75,7 +75,7 @@ enna_vfs_get(ENNA_VFS_CAPS type)
     return _enna_vfs_music;
   else if (type == ENNA_CAPS_VIDEO)
     {
-       printf("return vfs video\n");
+       enna_log (ENNA_MSG_EVENT, NULL, "return vfs video");
        return _enna_vfs_video;
     }
   else if (type == ENNA_CAPS_PHOTO)

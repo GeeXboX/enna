@@ -112,7 +112,7 @@ enna_slideshow_image_append(Evas_Object *obj, const char *filename)
    if (!filename) return;
 
    o = enna_image_add(evas_object_evas_get(obj));
-   printf("append : %s\n", filename);
+   enna_log (ENNA_MSG_EVENT, NULL, "append : %s", filename);
    enna_image_file_set(o, filename+7);
    enna_image_size_get(o, &w, &h);
    enna_image_load_size_set(o, w, h);
@@ -122,10 +122,11 @@ enna_slideshow_image_append(Evas_Object *obj, const char *filename)
 }
 
 EAPI int
-enna_slideshow_next(Evas_Object * obj)
+enna_slideshow_next(void *data)
 {
    Evas_Object *o;
-
+   Evas_Object * obj = (Evas_Object *) data;
+   
    API_ENTRY return 0;
 
    if (sd->old_slide) return 1;
@@ -147,10 +148,11 @@ enna_slideshow_next(Evas_Object * obj)
 }
 
 EAPI int
-enna_slideshow_prev(Evas_Object * obj)
+enna_slideshow_prev(void *data)
 {
    Evas_Object *o;
-
+   Evas_Object * obj = (Evas_Object *) data;
+   
    API_ENTRY return 0;
 
    if (sd->old_slide) return 1;
@@ -179,10 +181,11 @@ enna_slideshow_prev(Evas_Object * obj)
 
 
 EAPI void
-enna_slideshow_play(Evas_Object * obj)
+enna_slideshow_play(void *data)
 {
    Evas_Object        *o;
-
+   Evas_Object * obj = (Evas_Object *) data;
+   
    API_ENTRY return;
 
    if (!sd->timer)
@@ -216,7 +219,7 @@ _random_transition(E_Smart_Data *sd)
    n = 1 + (int) ( 3.0 * rand() / ( RAND_MAX + 1.0 ));
    if (sd->o_transition) evas_object_del(sd->o_transition);
    sd->o_transition = edje_object_add(evas_object_evas_get(sd->obj));
-   printf("Transition n°%d\n", n);
+   enna_log (ENNA_MSG_EVENT, NULL, "Transition n°%d", n);
    switch(n)
      {
       case 1:

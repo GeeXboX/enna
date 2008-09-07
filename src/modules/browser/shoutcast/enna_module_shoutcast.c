@@ -4,6 +4,8 @@
 #include "xml_utils.h"
 #include "url_utils.h"
 
+#define ENNA_MODULE_NAME "shoutcast"
+
 #define SHOUTCAST_URL      "http://www.shoutcast.com"
 
 #define SHOUTCAST_GENRE    "shoutcast://"

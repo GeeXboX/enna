@@ -25,6 +25,7 @@ struct _Enna_Config
    int                            fullscreen;
    const char                    *engine;
    const char                    *backend;
+   const char                    *verbosity;
    /* Module Music */
    Evas_List                     *music_local_root_directories;
    Evas_List                     *music_filters;
