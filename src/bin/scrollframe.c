@@ -1090,21 +1090,21 @@ _e_smart_init(void)
 {
    if (_e_smart) return;
    {
-      static const Evas_Smart_Class sc =
-	{
-	  SMART_NAME,
-	  EVAS_SMART_CLASS_VERSION,
-	  _e_smart_add,
-	  _e_smart_del,
-	  _e_smart_move,
-	  _e_smart_resize,
-	  _e_smart_show,
-	  _e_smart_hide,
-	  _e_smart_color_set,
-	  _e_smart_clip_set,
-	  _e_smart_clip_unset,
-	  NULL
-	};
+      static const Evas_Smart_Class sc = {
+	SMART_NAME,
+	EVAS_SMART_CLASS_VERSION,
+	_e_smart_add,
+	_e_smart_del,
+	_e_smart_move,
+	_e_smart_resize,
+	_e_smart_show,
+	_e_smart_hide,
+	_e_smart_color_set,
+	_e_smart_clip_set,
+	_e_smart_clip_unset,
+	NULL,
+	NULL
+      };
       _e_smart = evas_smart_class_new(&sc);
    }
 }

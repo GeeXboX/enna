@@ -82,7 +82,7 @@ _enna_SMARTNAME_smart_reconfigure(E_Smart_Data * sd)
    y = sd->y;
    w = sd->w;
    h = sd->h;
-  
+
    evas_object_move(sd->obj, x, y);
    evas_object_resize(sd->obj, w, h);
 
@@ -105,6 +105,7 @@ _enna_SMARTNAME_smart_init(void)
       _e_smart_color_set,
       _e_smart_clip_set,
       _e_smart_clip_unset,
+      NULL,
       NULL
    };
    _e_smart = evas_smart_class_new(&sc);

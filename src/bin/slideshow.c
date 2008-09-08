@@ -126,7 +126,7 @@ enna_slideshow_next(void *data)
 {
    Evas_Object *o;
    Evas_Object * obj = (Evas_Object *) data;
-   
+
    API_ENTRY return 0;
 
    if (sd->old_slide) return 1;
@@ -152,7 +152,7 @@ enna_slideshow_prev(void *data)
 {
    Evas_Object *o;
    Evas_Object * obj = (Evas_Object *) data;
-   
+
    API_ENTRY return 0;
 
    if (sd->old_slide) return 1;
@@ -185,7 +185,7 @@ enna_slideshow_play(void *data)
 {
    Evas_Object        *o;
    Evas_Object * obj = (Evas_Object *) data;
-   
+
    API_ENTRY return;
 
    if (!sd->timer)
@@ -305,6 +305,7 @@ _enna_slideshow_smart_init(void)
       _e_smart_color_set,
       _e_smart_clip_set,
       _e_smart_clip_unset,
+      NULL,
       NULL
    };
    _e_smart = evas_smart_class_new(&sc);
