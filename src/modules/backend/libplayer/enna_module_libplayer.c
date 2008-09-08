@@ -5,6 +5,16 @@
 
 #define ENNA_MODULE_NAME "libplayer"
 
+#define URI_TYPE_FTP  "ftp://"
+#define URI_TYPE_HTTP "http://"
+#define URI_TYPE_MMS  "mms://"
+#define URI_TYPE_RTP  "rtp://"
+#define URI_TYPE_RTSP "rtsp://"
+#define URI_TYPE_SMB  "smb://"
+#define URI_TYPE_TCP  "tcp://"
+#define URI_TYPE_UDP  "udp://"
+#define URI_TYPE_UNSV "unsv://"
+
 typedef struct _Enna_Module_libplayer
 {
    Evas *evas;
@@ -34,19 +44,66 @@ static void _class_shutdown(int dummy)
    player_uninit (mod->player);
 }
 
+static mrl_t *
+set_network_stream (const char *uri, mrl_resource_t type)
+{
+  mrl_t *mrl;
+  mrl_resource_network_args_t *args;
+
+  args      = calloc (1, sizeof (mrl_resource_network_args_t));
+  args->url = strdup (uri);
+  mrl       = mrl_new (mod->player, type, args);
+
+  return mrl;
+}
+
+static mrl_t *
+set_local_stream (const char *uri)
+{
+  mrl_t *mrl;
+  mrl_resource_local_args_t *args;
+
+  args           = calloc (1, sizeof (mrl_resource_local_args_t));
+  args->location = strdup (uri);
+  mrl            = mrl_new (mod->player, MRL_RESOURCE_FILE, args);
+
+  return mrl;
+}
+  
 static int _class_file_set(const char *uri)
 {
-   mrl_t *mrl;
-   mrl_resource_local_args_t *args;
+   mrl_t *mrl = NULL;
 
-   args = calloc (1, sizeof (mrl_resource_local_args_t));
-   args->location = strdup (uri);
+   /* try network streams */
+   if (!strncmp (uri, URI_TYPE_FTP, strlen (URI_TYPE_FTP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_FTP);
+   else if (!strncmp (uri, URI_TYPE_HTTP, strlen (URI_TYPE_HTTP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_HTTP);
+   else if (!strncmp (uri, URI_TYPE_MMS, strlen (URI_TYPE_MMS)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_MMS);
+   else if (!strncmp (uri, URI_TYPE_RTP, strlen (URI_TYPE_RTP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_RTP);
+   else if (!strncmp (uri, URI_TYPE_RTSP, strlen (URI_TYPE_RTSP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_RTSP);
+   else if (!strncmp (uri, URI_TYPE_SMB, strlen (URI_TYPE_SMB)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_SMB);
+   else if (!strncmp (uri, URI_TYPE_TCP, strlen (URI_TYPE_TCP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_TCP);
+   else if (!strncmp (uri, URI_TYPE_UDP, strlen (URI_TYPE_UDP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_UDP);
+   else if (!strncmp (uri, URI_TYPE_UNSV, strlen (URI_TYPE_UNSV)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_UNSV);
+
+   /* default is local files */
+   if (!mrl)
+     mrl = set_local_stream (uri);
+
+   if (!mrl)
+     return 1;
+   
    if(mod->uri)
      free(mod->uri);
    mod->uri = strdup(uri);
-   mrl = mrl_new (mod->player, MRL_RESOURCE_FILE, args);
-   if (!mrl)
-    return 1;
 
    player_mrl_set (mod->player, mrl);
    return 0;
