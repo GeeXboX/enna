@@ -305,6 +305,8 @@ _create_gui()
 #endif
    em = enna_module_open("shoutcast", enna->evas);
    enna_module_enable(em);
+   em = enna_module_open("netstreams", enna->evas);
+   enna_module_enable(em);
    /* Load mainmenu items */
 
 

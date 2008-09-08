@@ -233,6 +233,7 @@ src/modules/browser/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/lms/Makefile
 src/modules/browser/shoutcast/Makefile
+src/modules/browser/netstreams/Makefile
 src/modules/backend/Makefile
 src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
