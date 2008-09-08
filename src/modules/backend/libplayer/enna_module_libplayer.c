@@ -23,6 +23,7 @@ typedef struct _Enna_Module_libplayer
    void (*event_cb)(void *data, enna_mediaplayer_event_t event);
    void *event_cb_data;
    char *uri;
+   char *label;
 } Enna_Module_libplayer;
 
 static Enna_Module_libplayer *mod;
@@ -40,6 +41,8 @@ static void _class_shutdown(int dummy)
 {
    if (mod->uri)
      free(mod->uri);
+   if (mod->label)
+     free(mod->label);
    player_playback_stop (mod->player);
    player_uninit (mod->player);
 }
@@ -70,7 +73,7 @@ set_local_stream (const char *uri)
   return mrl;
 }
   
-static int _class_file_set(const char *uri)
+static int _class_file_set(const char *uri, const char *label)
 {
    mrl_t *mrl = NULL;
 
@@ -104,6 +107,10 @@ static int _class_file_set(const char *uri)
    if(mod->uri)
      free(mod->uri);
    mod->uri = strdup(uri);
+
+   if(mod->label)
+     free(mod->label);
+   mod->label = label ? strdup (label) : NULL;
 
    player_mrl_set (mod->player, mrl);
    return 0;
@@ -165,7 +172,7 @@ static Enna_Metadata *_class_metadata_get(void)
    int frameduration = 0;
    meta = enna_metadata_new();
 
-   meta->uri = strdup(mod->uri+7);
+   meta->uri = mod->label ? strdup (mod->label) : strdup(mod->uri+7);
    meta->size =  mrl_get_size (mod->player, NULL);
    meta->length = mrl_get_property (mod->player, NULL, MRL_PROPERTY_LENGTH);
 
@@ -377,6 +384,7 @@ module_init(Enna_Module *em)
 
    enna_mediaplayer_backend_register(&class);
    mod->uri = NULL;
+   mod->label = NULL;
 }
 
 EAPI void

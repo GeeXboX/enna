@@ -31,7 +31,7 @@ static void _class_shutdown(int dummy)
    evas_object_del(mod->o_emotion);
 }
 
-static int _class_file_set(const char *uri)
+static int _class_file_set(const char *uri, const char *label)
 {
    emotion_object_file_set(mod->o_emotion, uri);
    return 0;

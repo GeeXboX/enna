@@ -23,7 +23,7 @@ struct _Enna_Class_MediaplayerBackend
    {
       void (*class_init)(int dummy);
       void (*class_shutdown)(int dummy);
-      int  (*class_file_set)(const char *uri);
+      int  (*class_file_set)(const char *uri, const char *label);
       int  (*class_play)(void);
       int  (*class_seek)(double percent);
       int  (*class_stop)(void);
@@ -43,7 +43,7 @@ EAPI int ENNA_EVENT_MEDIAPLAYER_METADATA_UPDATE;
 /* Mediaplayer API functions */
 EAPI int            enna_mediaplayer_init(void);
 EAPI void           enna_mediaplayer_shutdown(void);
-EAPI void           enna_mediaplayer_uri_append(const char *uri);
+EAPI void           enna_mediaplayer_uri_append(const char *uri, const char *label);
 EAPI int            enna_mediaplayer_select_nth(int n);
 EAPI Enna_Metadata *enna_mediaplayer_metadata_get(void);
 EAPI int            enna_mediaplayer_play(void);

@@ -430,7 +430,7 @@ _browse(void *data, void *data2)
 
 		  if (!f->is_directory)
 		    {
-		       enna_mediaplayer_uri_append(f->uri);
+		       enna_mediaplayer_uri_append(f->uri, f->label);
 		       if (!strcmp(f->uri, file->uri))
 			 {
 			    enna_mediaplayer_select_nth(i);
