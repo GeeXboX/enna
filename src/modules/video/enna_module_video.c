@@ -148,15 +148,23 @@ static void _class_event(void *event_info)
 	       edje_object_signal_emit(mod->o_edje, "list,show", "enna");
 	       break;
 	    case ENNA_KEY_OK:
-	       if (mod->timer_show_mediaplayer)
-		 {
-		    ecore_timer_del(mod->timer_show_mediaplayer);
-		    mod->timer_show_mediaplayer = NULL;
-		 }
-	       edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
-	       mod->state = MEDIAPLAYER_VIEW;
-	       enna_mediaplayer_play();
-	       break;
+	      {
+		 Evas_Object *o_video;
+		 if (mod->timer_show_mediaplayer)
+		   {
+		      ecore_timer_del(mod->timer_show_mediaplayer);
+		      mod->timer_show_mediaplayer = NULL;
+		   }
+		 edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
+		 mod->state = MEDIAPLAYER_VIEW;
+		 enna_mediaplayer_play();
+		 o_video = enna_mediaplayer_video_obj_get();
+		 if (o_video)
+		   {
+		      edje_object_part_swallow(enna->o_edje, "enna.swallow.fullscreen", o_video);
+		   }
+		 break;
+	      }
 	    default:
 	       break;
 	   }

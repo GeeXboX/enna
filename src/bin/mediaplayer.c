@@ -326,9 +326,9 @@ EAPI Evas_Object *
 enna_mediaplayer_video_obj_get(void)
 {
    if (_mediaplayer->class->func.class_video_obj_get)
-     _mediaplayer->class->func.class_video_obj_get();
-
-   return NULL;
+     return _mediaplayer->class->func.class_video_obj_get();
+   else
+     return NULL;
 }
 
 static void

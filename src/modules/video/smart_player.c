@@ -224,8 +224,6 @@ _e_smart_add(Evas_Object * obj)
    evas_object_smart_member_add(sd->o_edje, obj);
    evas_object_smart_data_set(obj, sd);
 
-   edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", enna_mediaplayer_video_obj_get());
-   edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
 }
 
 static void
