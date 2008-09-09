@@ -41,7 +41,8 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
   char url[MAX_URL_SIZE];
   url_data_t data;
   char *md5;
-
+  int fd;
+  
   xmlDocPtr doc;
   xmlNode *img;
   xmlChar *asin, *cover_url;
@@ -152,7 +153,28 @@ amazon_cover_get (char *search_type, char *keywords, char *escaped_keywords)
 
   enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
             "Saving %s to %s\n", cover_url, cover);
-  ecore_file_download ((const char *) cover_url, cover, NULL, NULL, NULL);
+
+  data = url_get_data (mod->curl, (char *) cover_url);
+  if (data.status != CURLE_OK)
+  {
+    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+            "Unable to download requested cover file\n");
+    return NULL;
+  }
+
+  fd = open (cover, O_WRONLY | O_CREAT, 0666);
+  if (fd < 0)
+  {
+    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+            "Unable to open stream to save cover file\n");
+
+    free (data.buffer);
+    return NULL;
+  }
+
+  write (fd, data.buffer, data.size);
+  free (data.buffer);
+  
   xmlFree (cover_url);
 
   return cover;
