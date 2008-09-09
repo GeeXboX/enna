@@ -172,11 +172,11 @@ static Enna_Metadata *_class_metadata_get(void)
    int frameduration = 0;
    meta = enna_metadata_new();
 
-   meta->uri = mod->label ? strdup (mod->label) : strdup(mod->uri+7);
+   meta->uri = strdup(mod->uri+7);
    meta->size =  mrl_get_size (mod->player, NULL);
    meta->length = mrl_get_property (mod->player, NULL, MRL_PROPERTY_LENGTH);
 
-   meta->title = mrl_get_metadata (mod->player, NULL, MRL_METADATA_TITLE);
+   meta->title = mod->label ? strdup (mod->label) : mrl_get_metadata (mod->player, NULL, MRL_METADATA_TITLE);
    meta->music->artist = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ARTIST);
    meta->music->album = mrl_get_metadata (mod->player, NULL, MRL_METADATA_ALBUM);
    meta->music->year = mrl_get_metadata (mod->player, NULL, MRL_METADATA_YEAR);
