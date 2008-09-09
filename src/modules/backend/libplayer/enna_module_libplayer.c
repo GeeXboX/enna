@@ -5,6 +5,16 @@
 
 #define ENNA_MODULE_NAME "libplayer"
 
+#define URI_TYPE_FTP  "ftp://"
+#define URI_TYPE_HTTP "http://"
+#define URI_TYPE_MMS  "mms://"
+#define URI_TYPE_RTP  "rtp://"
+#define URI_TYPE_RTSP "rtsp://"
+#define URI_TYPE_SMB  "smb://"
+#define URI_TYPE_TCP  "tcp://"
+#define URI_TYPE_UDP  "udp://"
+#define URI_TYPE_UNSV "unsv://"
+
 typedef struct _Enna_Module_libplayer
 {
    Evas *evas;
@@ -13,6 +23,7 @@ typedef struct _Enna_Module_libplayer
    void (*event_cb)(void *data, enna_mediaplayer_event_t event);
    void *event_cb_data;
    char *uri;
+   char *label;
 } Enna_Module_libplayer;
 
 static Enna_Module_libplayer *mod;
@@ -30,23 +41,76 @@ static void _class_shutdown(int dummy)
 {
    if (mod->uri)
      free(mod->uri);
+   if (mod->label)
+     free(mod->label);
    player_playback_stop (mod->player);
    player_uninit (mod->player);
 }
 
-static int _class_file_set(const char *uri)
+static mrl_t *
+set_network_stream (const char *uri, mrl_resource_t type)
 {
-   mrl_t *mrl;
-   mrl_resource_local_args_t *args;
+  mrl_t *mrl;
+  mrl_resource_network_args_t *args;
 
-   args = calloc (1, sizeof (mrl_resource_local_args_t));
-   args->location = strdup (uri);
+  args      = calloc (1, sizeof (mrl_resource_network_args_t));
+  args->url = strdup (uri);
+  mrl       = mrl_new (mod->player, type, args);
+
+  return mrl;
+}
+
+static mrl_t *
+set_local_stream (const char *uri)
+{
+  mrl_t *mrl;
+  mrl_resource_local_args_t *args;
+
+  args           = calloc (1, sizeof (mrl_resource_local_args_t));
+  args->location = strdup (uri);
+  mrl            = mrl_new (mod->player, MRL_RESOURCE_FILE, args);
+
+  return mrl;
+}
+  
+static int _class_file_set(const char *uri, const char *label)
+{
+   mrl_t *mrl = NULL;
+
+   /* try network streams */
+   if (!strncmp (uri, URI_TYPE_FTP, strlen (URI_TYPE_FTP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_FTP);
+   else if (!strncmp (uri, URI_TYPE_HTTP, strlen (URI_TYPE_HTTP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_HTTP);
+   else if (!strncmp (uri, URI_TYPE_MMS, strlen (URI_TYPE_MMS)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_MMS);
+   else if (!strncmp (uri, URI_TYPE_RTP, strlen (URI_TYPE_RTP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_RTP);
+   else if (!strncmp (uri, URI_TYPE_RTSP, strlen (URI_TYPE_RTSP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_RTSP);
+   else if (!strncmp (uri, URI_TYPE_SMB, strlen (URI_TYPE_SMB)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_SMB);
+   else if (!strncmp (uri, URI_TYPE_TCP, strlen (URI_TYPE_TCP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_TCP);
+   else if (!strncmp (uri, URI_TYPE_UDP, strlen (URI_TYPE_UDP)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_UDP);
+   else if (!strncmp (uri, URI_TYPE_UNSV, strlen (URI_TYPE_UNSV)))
+     mrl = set_network_stream (uri, MRL_RESOURCE_UNSV);
+
+   /* default is local files */
+   if (!mrl)
+     mrl = set_local_stream (uri);
+
+   if (!mrl)
+     return 1;
+   
    if(mod->uri)
      free(mod->uri);
    mod->uri = strdup(uri);
-   mrl = mrl_new (mod->player, MRL_RESOURCE_FILE, args);
-   if (!mrl)
-    return 1;
+
+   if(mod->label)
+     free(mod->label);
+   mod->label = label ? strdup (label) : NULL;
 
    player_mrl_set (mod->player, mrl);
    return 0;
@@ -108,7 +172,7 @@ static Enna_Metadata *_class_metadata_get(void)
    int frameduration = 0;
    meta = enna_metadata_new();
 
-   meta->uri = strdup(mod->uri+7);
+   meta->uri = mod->label ? strdup (mod->label) : strdup(mod->uri+7);
    meta->size =  mrl_get_size (mod->player, NULL);
    meta->length = mrl_get_property (mod->player, NULL, MRL_PROPERTY_LENGTH);
 
@@ -320,6 +384,7 @@ module_init(Enna_Module *em)
 
    enna_mediaplayer_backend_register(&class);
    mod->uri = NULL;
+   mod->label = NULL;
 }
 
 EAPI void

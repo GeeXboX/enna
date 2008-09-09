@@ -31,6 +31,10 @@
 
 #include "enna.h"
 
+typedef struct list_item_s {
+  const char *uri;
+  const char *label;
+} list_item_t;
 
 static Evas_List *_playlist;
 
@@ -107,9 +111,12 @@ enna_mediaplayer_shutdown()
 
 
 EAPI void
-enna_mediaplayer_uri_append(const char *uri)
+enna_mediaplayer_uri_append(const char *uri, const char *label)
 {
-   _playlist = evas_list_append(_playlist, uri);
+  list_item_t *item = calloc (1, sizeof (list_item_t));
+  item->uri   = uri ? strdup (uri) : NULL;
+  item->label = label ? strdup (label) : NULL;
+  _playlist   = evas_list_append (_playlist, item);
 }
 
 
@@ -121,12 +128,12 @@ enna_mediaplayer_play(void)
      {
       case STOPPED:
 	{
-	   const char *uri;
-	   uri = evas_list_nth(_playlist, _mediaplayer->selected);
+	   list_item_t *item;
+	   item = evas_list_nth(_playlist, _mediaplayer->selected);
 	   if (_mediaplayer->class->func.class_stop)
              _mediaplayer->class->func.class_stop();
-	   if (uri && _mediaplayer->class->func.class_file_set)
-             _mediaplayer->class->func.class_file_set(uri);
+	   if (item && item->uri && _mediaplayer->class->func.class_file_set)
+             _mediaplayer->class->func.class_file_set(item->uri, item->label);
 	   if (_mediaplayer->class->func.class_play)
              _mediaplayer->class->func.class_play();
 	   _mediaplayer->play_state = PLAYING;
@@ -153,12 +160,12 @@ enna_mediaplayer_play(void)
 EAPI int
 enna_mediaplayer_select_nth(int n)
 {
-   const char *uri;
+   list_item_t *item;
    if (n < 0 || n > evas_list_count(_playlist) - 1) return -1;
-   uri = evas_list_nth(_playlist, n);
+   item = evas_list_nth(_playlist, n);
    enna_log (ENNA_MSG_INFO, NULL, "select %d", n);
-   if (uri && _mediaplayer->class->func.class_file_set)
-     _mediaplayer->class->func.class_file_set(uri);
+   if (item && item->uri && _mediaplayer->class->func.class_file_set)
+     _mediaplayer->class->func.class_file_set(item->uri, item->label);
    _mediaplayer->selected = n;
    return 0;
 }
@@ -190,7 +197,7 @@ enna_mediaplayer_pause(void)
 EAPI int
 enna_mediaplayer_next(void)
 {
-   const char *uri;
+   list_item_t *item;
 
    _mediaplayer->selected++;
    if( _mediaplayer->selected > evas_list_count(_playlist) - 1)
@@ -198,13 +205,13 @@ enna_mediaplayer_next(void)
 	_mediaplayer->selected--;
 	return -1;
      }
-   uri = evas_list_nth(_playlist, _mediaplayer->selected);
+   item = evas_list_nth(_playlist, _mediaplayer->selected);
    enna_log (ENNA_MSG_INFO, NULL, "select %d", _mediaplayer->selected);
-   if (uri)
+   if (item)
      {
 	enna_mediaplayer_stop();
-	if (uri && _mediaplayer->class->func.class_file_set)
-          _mediaplayer->class->func.class_file_set(uri);
+	if (item->uri && _mediaplayer->class->func.class_file_set)
+          _mediaplayer->class->func.class_file_set(item->uri, item->label);
 	enna_mediaplayer_play();
      }
 
@@ -214,7 +221,7 @@ enna_mediaplayer_next(void)
 EAPI int
 enna_mediaplayer_prev(void)
 {
-   const char *uri;
+   list_item_t *item;
 
    _mediaplayer->selected--;
    if (_mediaplayer->selected < 0)
@@ -222,13 +229,13 @@ enna_mediaplayer_prev(void)
 	_mediaplayer->selected = 0;
 	return -1;
      }
-   uri = evas_list_nth(_playlist, _mediaplayer->selected);
+   item = evas_list_nth(_playlist, _mediaplayer->selected);
    enna_log (ENNA_MSG_INFO, NULL, "select %d", _mediaplayer->selected);
-   if (uri)
+   if (item)
      {
 	enna_mediaplayer_stop();
-	if (uri && _mediaplayer->class->func.class_file_set)
-          _mediaplayer->class->func.class_file_set(uri);
+	if (item->uri && _mediaplayer->class->func.class_file_set)
+          _mediaplayer->class->func.class_file_set(item->uri, item->label);
 	enna_mediaplayer_play();
      }
    return 0;
