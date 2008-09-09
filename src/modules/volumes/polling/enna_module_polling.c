@@ -34,8 +34,6 @@ _monitor_cb(void *data, Ecore_File_Monitor *em,
 
    Enna_Module_Polling *mod = data;
 
-   dbg("Monitor cb %s %d\n", path, event);
-
    if (!mod || !path || strncmp(path, "/etc/mtab", 6))
      return;
 
@@ -46,8 +44,6 @@ _monitor_cb(void *data, Ecore_File_Monitor *em,
       default:
 	 return;
      }
-
-
 }
 
 /* Module interface */
