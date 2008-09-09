@@ -37,7 +37,7 @@
 #define PATH_MAX 4096
 #endif
 
-#define NBR_ELEMENTS(arr)		(sizeof (arr) / sizeof ((arr)[0]))
+#define ARRAY_NB_ELEMENTS(array) (sizeof (array) / sizeof (array[0]))
 #define ENNA_FREE(p) { if (p) {free(p); p = NULL;} }
 #define ENNA_NEW(s, n) (s *)calloc(n, sizeof(s))
 #define ENNA_FREE_LIST(list, free)			\

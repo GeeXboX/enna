@@ -45,8 +45,6 @@ enna_cover_plugin_register (Enna_Class_CoverPlugin *class)
   return 0;
 }
 
-#define ARRAY_NB_ELEMENTS(array) (sizeof (array) / sizeof (array[0]))
-
 static char *
 cover_get_from_picture_file (const char *filename)
 {
@@ -64,12 +62,12 @@ cover_get_from_picture_file (const char *filename)
   const char *dir;
   char cover[1024];
   int i, j;
-  
+
   enna_log (ENNA_MSG_EVENT, NULL, "Trying to get cover from picture files");
 
   if (!filename)
     return NULL;
-  
+
   dir = dirname ((char *) filename);
   if (!ecore_file_can_read (dir))
     return NULL;
@@ -84,14 +82,14 @@ cover_get_from_picture_file (const char *filename)
       return strdup (cover);
 
     for (j = 0; j < ARRAY_NB_ELEMENTS (known_filenames); j++)
-    {     
+    {
       memset (cover, '\0', sizeof (cover));
       snprintf (cover, sizeof (cover), "%s/%s.%s",
                 dir, known_filenames[j], known_extensions[i]);
 
       if (!ecore_file_exists (cover))
         continue;
-      
+
       return strdup (cover);
     }
   }
@@ -107,16 +105,16 @@ cover_get_from_saved_file (char *keywords)
 
   enna_log (ENNA_MSG_EVENT, NULL,
             "Trying to get cover from previously saved cover file");
-  
+
   if (!keywords)
     return NULL;
-  
+
   md5 = md5sum (keywords);
   memset (cover, '\0', sizeof (cover));
   snprintf (cover, sizeof (cover), "%s/.enna/covers/%s.png",
             enna_util_user_home_get (), md5);
   free (md5);
-  
+
   if (!ecore_file_exists (cover))
     return NULL;
 
@@ -130,7 +128,7 @@ cover_get_from_amazon (const char *artist,
   Enna_Module *em;
   char *cover = NULL;
   char tmp[1024];
-  
+
   em = enna_module_open ("amazon", enna->evas);
   enna_module_enable (em);
 
@@ -138,7 +136,7 @@ cover_get_from_amazon (const char *artist,
   memset (tmp, '\0', sizeof (tmp));
   snprintf (tmp, sizeof (tmp), "%s/.enna/covers", enna_util_user_home_get ());
   mkdir (tmp, 0755);
-  
+
   if (artist || album) /* i.e. "music" */
   {
     if (cover_class && cover_class->music_cover_get)
@@ -183,7 +181,7 @@ enna_cover_get (const char *artist, const char *album,
 
   /* check on Amazon.com */
   cover = cover_get_from_amazon (artist, album, filename);
-  
+
  cover_found:
   if (cover)
     enna_log (ENNA_MSG_INFO, NULL, "Using cover from: %s", cover);
