@@ -29,7 +29,6 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <libgen.h>
 #include "enna.h"
 
 static Enna_Class_CoverPlugin *cover_class = NULL;
@@ -59,7 +58,7 @@ cover_get_from_picture_file (const char *filename)
     "png"
   };
 
-  const char *dir;
+  char *dir, *ret = NULL;
   char cover[1024];
   int i, j;
 
@@ -68,9 +67,9 @@ cover_get_from_picture_file (const char *filename)
   if (!filename)
     return NULL;
 
-  dir = dirname ((char *) filename);
+  dir = ecore_file_dir_get (filename);
   if (!ecore_file_can_read (dir))
-    return NULL;
+    goto out;
 
   for (i = 0; i < ARRAY_NB_ELEMENTS (known_extensions); i++)
   {
@@ -79,7 +78,10 @@ cover_get_from_picture_file (const char *filename)
               dir, filename, known_extensions[i]);
 
     if (ecore_file_exists (cover))
-      return strdup (cover);
+    {
+      ret = strdup (cover);
+      goto out;
+    }
 
     for (j = 0; j < ARRAY_NB_ELEMENTS (known_filenames); j++)
     {
@@ -90,11 +92,14 @@ cover_get_from_picture_file (const char *filename)
       if (!ecore_file_exists (cover))
         continue;
 
-      return strdup (cover);
+      ret = strdup (cover);
+      goto out;
     }
   }
 
-  return NULL;
+out:
+  free (dir);
+  return ret;
 }
 
 static char *
