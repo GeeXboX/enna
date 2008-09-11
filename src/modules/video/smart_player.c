@@ -91,6 +91,35 @@ enna_smart_player_add(Evas * evas)
 
 
 EAPI void
+enna_smart_player_show_video(Evas_Object *obj)
+{
+   Evas_Object *o_video;
+
+   API_ENTRY;
+
+   o_video = enna_mediaplayer_video_obj_get();
+   if (o_video)
+     edje_object_part_swallow(enna->o_edje, "enna.swallow.fullsceen" , o_video);
+
+}
+
+
+EAPI void
+enna_smart_player_hide_video(Evas_Object *obj)
+{
+   Evas_Object *o_video;
+
+   API_ENTRY;
+
+   o_video = enna_mediaplayer_video_obj_get();
+   if (o_video)
+     {
+	edje_object_part_unswallow(enna->o_edje, o_video);
+	evas_object_hide(o_video);
+     }
+}
+
+EAPI void
 enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
    char *cover_file = NULL;

@@ -6,7 +6,8 @@
 #define ENNA_MODULE_NAME "video"
 
 static void           _create_gui();
-static void           _create_mediaplayer_gui();
+static void           _create_video_info_gui();
+static void           _create_videoplayer_gui();
 static void           _class_init(int dummy);
 static void           _class_shutdown(int dummy);
 static void           _class_show(int dummy);
@@ -32,7 +33,7 @@ typedef enum _VIDEO_STATE VIDEO_STATE;
 enum _VIDEO_STATE
 {
   LIST_VIEW,
-  MEDIAPLAYER_VIEW,
+  VIDEOPLAYER_VIEW,
   VIDEO_INFO_VIEW,
   DEFAULT_VIEW,
 };
@@ -101,7 +102,7 @@ static void _class_show(int dummy)
 	 edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
 	 edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
 	 break;
-      case MEDIAPLAYER_VIEW:
+      case VIDEOPLAYER_VIEW:
 	 break;
       default:
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
@@ -148,33 +149,19 @@ static void _class_event(void *event_info)
 	       edje_object_signal_emit(mod->o_edje, "list,show", "enna");
 	       break;
 	    case ENNA_KEY_OK:
-	      {
-		 Evas_Object *o_video;
-		 if (mod->timer_show_mediaplayer)
-		   {
-		      ecore_timer_del(mod->timer_show_mediaplayer);
-		      mod->timer_show_mediaplayer = NULL;
-		   }
-		 edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
-		 mod->state = MEDIAPLAYER_VIEW;
-		 enna_mediaplayer_play();
-		 o_video = enna_mediaplayer_video_obj_get();
-		 if (o_video)
-		   {
-		      edje_object_part_swallow(enna->o_edje, "enna.swallow.fullscreen", o_video);
-		   }
-		 break;
-	      }
+	       _create_videoplayer_gui();
+	       break;
 	    default:
 	       break;
 	   }
 	 break;
-      case MEDIAPLAYER_VIEW:
+      case VIDEOPLAYER_VIEW:
 	 switch (key)
 	   {
 	    case ENNA_KEY_CANCEL:
 	    case ENNA_KEY_OK:
 	       enna_mediaplayer_stop();
+	       enna_smart_player_hide_video(mod->o_mediaplayer);
 	       mod->state = VIDEO_INFO_VIEW;
 	       edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
 	       break;
@@ -464,7 +451,7 @@ _browse(void *data, void *data2)
 		       i++;
 		    }
 	       }
-	     _create_mediaplayer_gui();
+	     _create_video_info_gui();
 	     return;
 	  }
 
@@ -480,7 +467,21 @@ _browse(void *data, void *data2)
 
 
 
-static void _create_mediaplayer_gui()
+static void _create_videoplayer_gui()
+{
+   mod->state = VIDEOPLAYER_VIEW;
+   if (mod->timer_show_mediaplayer)
+     {
+	ecore_timer_del(mod->timer_show_mediaplayer);
+	mod->timer_show_mediaplayer = NULL;
+     }
+   edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
+   mod->state = VIDEOPLAYER_VIEW;
+   enna_mediaplayer_play();
+   enna_smart_player_show_video(mod->o_mediaplayer);
+}
+
+static void _create_video_info_gui()
 {
    Evas_Object *o;
    Enna_Metadata *m;
