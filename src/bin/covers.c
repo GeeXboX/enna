@@ -155,7 +155,7 @@ cover_get_from_amazon (const char *artist,
       char *file = (char *) ecore_file_file_get (path);
 
       it = strrchr (file, '.');
-      if (it > strrchr (file, '/')) /* remove suffix? */
+      if (it) /* remove suffix? */
         *it = '\0';
 
       cover = cover_class->movie_cover_get (file);
