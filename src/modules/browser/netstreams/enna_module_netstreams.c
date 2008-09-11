@@ -127,8 +127,14 @@ parse_netstream (const char *path, netstreams_priv_t *data)
   url_data_t chunk;
   char *file, *header;
   Evas_List *streams = NULL;
+  int dl = 1;
+
+  if (strstr (path, "file://"))
+    dl = 0;
 
   /* download playlist */
+  if (dl)
+  {
   file = mktemp (tmp);
   chunk = url_get_data (mod->curl, (char *) path);
 
@@ -139,6 +145,9 @@ parse_netstream (const char *path, netstreams_priv_t *data)
   fwrite (chunk.buffer, chunk.size, 1, f);
   free (chunk.buffer);
   fclose (f);
+  }
+  else
+    file = (char *) path + 7;
 
   /* parse playlist */
   f = fopen (file, "r");
@@ -152,6 +161,7 @@ parse_netstream (const char *path, netstreams_priv_t *data)
 
   free (header);
   fclose (f);
+  if (dl)
   unlink (file);
 
   data->prev_uri = data->uri;
