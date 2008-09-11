@@ -147,10 +147,20 @@ cover_get_from_amazon (const char *artist,
     if (cover_class && cover_class->music_cover_get)
       cover = cover_class->music_cover_get (artist, album);
   }
-  else /* i.e. movie */
+  else if (filename) /* i.e. movie */
   {
     if (cover_class && cover_class->movie_cover_get)
-      cover = cover_class->movie_cover_get (filename);
+    {
+      char *it, *path = strdup (filename);
+      char *file = (char *) ecore_file_file_get (path);
+
+      it = strrchr (file, '.');
+      if (it > strrchr (file, '/')) /* remove suffix? */
+        *it = '\0';
+
+      cover = cover_class->movie_cover_get (file);
+      free (path);
+    }
   }
 
   enna_module_disable (em);
