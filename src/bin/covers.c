@@ -127,6 +127,22 @@ cover_get_from_saved_file (char *keywords)
 }
 
 static char *
+cover_get_movie_keywords (const char *filename)
+{
+  char *it, *movie;
+  char *path = strdup (filename);
+  char *file = (char *) ecore_file_file_get (path);
+
+  it = strrchr (file, '.');
+  if (it) /* remove suffix? */
+    *it = '\0';
+
+  movie = strdup (file);
+  free (path);
+  return movie;
+}
+
+static char *
 cover_get_from_amazon (const char *artist,
                        const char *album, const char *filename)
 {
@@ -151,15 +167,9 @@ cover_get_from_amazon (const char *artist,
   {
     if (cover_class && cover_class->movie_cover_get)
     {
-      char *it, *path = strdup (filename);
-      char *file = (char *) ecore_file_file_get (path);
-
-      it = strrchr (file, '.');
-      if (it) /* remove suffix? */
-        *it = '\0';
-
-      cover = cover_class->movie_cover_get (file);
-      free (path);
+      char *movie = cover_get_movie_keywords (filename);
+      cover = cover_class->movie_cover_get (movie);
+      free (movie);
     }
   }
 
@@ -174,17 +184,25 @@ enna_cover_get (const char *artist, const char *album,
                 const char *filename)
 {
   char *cover = NULL;
+  char tmp[1024];
+
+  memset (tmp, '\0', sizeof (tmp));
 
   /* check for previously downloaded cover file */
   if (artist && album)
   {
-    char tmp[1024];
-    memset (tmp, '\0', sizeof (tmp));
     snprintf (tmp, sizeof (tmp), "%s %s", artist, album);
+  }
+  else if (filename)
+  {
+    char *movie = cover_get_movie_keywords (filename);
+    snprintf (tmp, sizeof (tmp), "%s", movie);
+    free (movie);
+  }
+
     cover = cover_get_from_saved_file (tmp);
     if (cover)
       goto cover_found;
-  }
 
   /* check for known cover artwork filenames */
   if (filename)
