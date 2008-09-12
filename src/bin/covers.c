@@ -200,9 +200,9 @@ enna_cover_get (const char *artist, const char *album,
     free (movie);
   }
 
-    cover = cover_get_from_saved_file (tmp);
-    if (cover)
-      goto cover_found;
+  cover = cover_get_from_saved_file (tmp);
+  if (cover)
+    goto cover_found;
 
   /* check for known cover artwork filenames */
   if (filename)
