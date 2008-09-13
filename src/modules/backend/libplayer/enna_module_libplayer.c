@@ -165,6 +165,31 @@ static double _class_length_get()
    return (double) mrl_get_property (mod->player, NULL, MRL_PROPERTY_LENGTH) / 1000.0;
 }
 
+static char *take_snapshot (char *uri)
+{
+  char dst[1024];
+  mrl_t *mrl;
+  int sec;
+  char *md5;
+
+  if (!uri)
+    return NULL;
+  
+  /* take snapshot at 15% of stream */
+  sec = (int) (_class_length_get () * 15 / 100);
+
+  md5 = md5sum (uri);
+  memset (dst, '\0', sizeof (dst));
+  snprintf (dst, sizeof (dst), "%s/.enna/covers/%s.png",
+            enna_util_user_home_get (), md5);
+  free (md5);
+
+  mrl = player_mrl_get_current (mod->player);
+  mrl_video_snapshot (mod->player, mrl, sec, MRL_SNAPSHOT_JPG, dst);
+
+  return strdup (dst);
+}
+
 static Enna_Metadata *_class_metadata_get(void)
 {
    Enna_Metadata *meta;
@@ -207,6 +232,7 @@ static Enna_Metadata *_class_metadata_get(void)
    if (frameduration)
      meta->video->framerate = PLAYER_VIDEO_FRAMEDURATION_RATIO_DIV / frameduration;
    meta->video->bitrate = mrl_get_property (mod->player, NULL, MRL_PROPERTY_VIDEO_BITRATE);
+   meta->video->snapshot = take_snapshot (mod->uri);
 
    return meta;
 }

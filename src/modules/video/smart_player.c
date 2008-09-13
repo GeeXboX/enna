@@ -173,6 +173,8 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
    */
 
    cover_file = enna_cover_video_get(metadata->uri);
+   if (!cover_file && metadata->video)
+     cover_file = metadata->video->snapshot;
    if (cover_file)
      {
        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,

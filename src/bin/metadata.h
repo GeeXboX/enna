@@ -34,6 +34,7 @@ struct _Enna_Metadata_Video
    int         streams;
    float       framerate;
    int         bitrate; /* in Bps */
+   char       *snapshot;
 };
 
 
