@@ -33,7 +33,7 @@ photo_ext=jpg,jpeg,png
 #auto,alsa,oss
 #audio_out=
 
-#info,warning,error,critical,none
+#verbose,info,warning,error,critical,none
 #verbosity=
 
 [localfiles]

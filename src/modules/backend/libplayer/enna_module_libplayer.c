@@ -374,7 +374,9 @@ module_init(Enna_Module *em)
                   enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
                             " * verbosity level: %s", value);
 
-                  if (!strcmp("info", value))
+                  if (!strcmp("verbose", value))
+                    verbosity = PLAYER_MSG_VERBOSE;
+                  else if (!strcmp("info", value))
                     verbosity = PLAYER_MSG_INFO;
                   else if (!strcmp("warning", value))
                     verbosity = PLAYER_MSG_WARNING;
