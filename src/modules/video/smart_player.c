@@ -124,6 +124,8 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
    char *cover_file = NULL;
    char buf[4096];
+   int h, mn, sec;
+   float len;
 
    API_ENTRY;
 
@@ -136,7 +138,11 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
    snprintf(buf, sizeof(buf), "Size : %.2f MB",metadata->size / 1024.0 / 1024.0);
    edje_object_part_text_set(sd->o_edje, "enna.text.size", buf);
 
-   snprintf(buf, sizeof(buf), "Length: %.2f sec",metadata->length / 1000.0);
+   len = metadata->length / 1000.0;
+   h = (int) (len / 3600);
+   mn = (int) ((len - (h * 3600)) / 60);
+   sec = (int) (len - (h * 3600) - (mn * 60));
+   snprintf(buf, sizeof(buf), "Length: %.2d h %.2d mn %.2d sec", h, mn, sec);
    edje_object_part_text_set(sd->o_edje, "enna.text.length", buf);
 
    snprintf(buf, sizeof(buf), "Codec : %s",metadata->video->codec);
