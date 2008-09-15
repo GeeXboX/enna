@@ -514,8 +514,9 @@ static void _create_mediaplayer_gui()
         ecore_event_handler_del(mod->eos_event_handler);
         evas_object_del(mod->o_mediaplayer);
     }
-    
-    mod->eos_event_handler = ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
+
+    mod->eos_event_handler = ecore_event_handler_add(
+            ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
 
     o = enna_smart_player_add(mod->em->evas);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);

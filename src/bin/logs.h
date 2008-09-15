@@ -3,8 +3,8 @@
 
 #include "enna.h"
 
-void elog (int level, const char *module,
-           char *file, int line, const char *format, ...);
+void elog(int level, const char *module, char *file, int line,
+        const char *format, ...);
 
 #define enna_log(level,module,fmt,arg...) \
         elog(level,module,__FILE__,__LINE__,fmt,##arg)

@@ -15,50 +15,48 @@
 #define F_BLUE   COLOR(34)
 #define B_RED    COLOR(41)
 
-void
-elog (int level, const char *module,
-      char *file, int line, const char *format, ...)
+void elog(int level, const char *module, char *file, int line,
+        const char *format, ...)
 {
-  static const char const *c[] = {
-    [ENNA_MSG_EVENT]    = F_BLUE,
-    [ENNA_MSG_INFO]     = F_GREEN,
-    [ENNA_MSG_WARNING]  = F_YELLOW,
-    [ENNA_MSG_ERROR]    = F_RED,
-    [ENNA_MSG_CRITICAL] = B_RED,
-  };
+    static const char const *c[] =
+    { [ENNA_MSG_EVENT] = F_BLUE, [ENNA_MSG_INFO] = F_GREEN,
+            [ENNA_MSG_WARNING] = F_YELLOW, [ENNA_MSG_ERROR] = F_RED,
+            [ENNA_MSG_CRITICAL] = B_RED, 
+};
 
-  static const char const *l[] = {
-    [ENNA_MSG_EVENT]    = "Event",
-    [ENNA_MSG_INFO]     = "Info",
-    [ENNA_MSG_WARNING]  = "Warn",
-    [ENNA_MSG_ERROR]    = "Err",
+static const char const *l[] =
+{
+    [ENNA_MSG_EVENT] = "Event",
+    [ENNA_MSG_INFO] = "Info",
+    [ENNA_MSG_WARNING] = "Warn",
+    [ENNA_MSG_ERROR] = "Err",
     [ENNA_MSG_CRITICAL] = "Crit",
-  };
-  
-  va_list va;
-  int verbosity;
+};
 
-  if (!enna || !format)
-    return;
+va_list va;
+int verbosity;
 
-  verbosity = enna->lvl;
+if (!enna || !format)
+return;
 
-  /* do we really want loging ? */
-  if (verbosity == ENNA_MSG_NONE)
-    return;
+verbosity = enna->lvl;
 
-  if (level < verbosity)
-    return;
+/* do we really want loging ? */
+if (verbosity == ENNA_MSG_NONE)
+return;
 
-  va_start (va, format);
+if (level < verbosity)
+return;
 
-  if (!module)
-    module = DEFAULT_MODULE_NAME;
-  
-  fprintf (stderr, "[" BOLD "%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
-           module, file, line, c[level], l[level]);
+va_start (va, format);
 
-  vfprintf (stderr, format, va);
-  fprintf (stderr, "\n");
-  va_end (va);
+if (!module)
+module = DEFAULT_MODULE_NAME;
+
+fprintf (stderr, "[" BOLD "%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
+        module, file, line, c[level], l[level]);
+
+vfprintf (stderr, format, va);
+fprintf (stderr, "\n");
+va_end (va);
 }

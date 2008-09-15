@@ -26,7 +26,6 @@
 #include <math.h>
 #include <ctype.h>
 
-
 #include "enna_inc.h"
 
 //#define ENNA_DEBUG0
@@ -69,13 +68,14 @@
         evas_object_del(obj);                           \
         
 
-typedef enum {
-  ENNA_MSG_NONE,          /* no error messages */
-  ENNA_MSG_EVENT,         /* notify each incoming event */
-  ENNA_MSG_INFO,          /* working operations */
-  ENNA_MSG_WARNING,       /* harmless failures */
-  ENNA_MSG_ERROR,         /* may result in hazardous behavior */
-  ENNA_MSG_CRITICAL,      /* prevents lib from working */
+typedef enum
+{
+    ENNA_MSG_NONE, /* no error messages */
+    ENNA_MSG_EVENT, /* notify each incoming event */
+    ENNA_MSG_INFO, /* working operations */
+    ENNA_MSG_WARNING, /* harmless failures */
+    ENNA_MSG_ERROR, /* may result in hazardous behavior */
+    ENNA_MSG_CRITICAL, /* prevents lib from working */
 } enna_msg_level_t;
 
 /**
@@ -87,15 +87,15 @@ typedef struct _Enna Enna;
 
 struct _Enna
 {
-   char               *home;        /**< Home directory ie $HOME/.enna. */
-   Ecore_Evas         *ee;          /**< Ecore_Evas. */
-   Ecore_X_Window      ee_winid;    /**< Ecore_Evas WindowID */
-   Evas               *evas;        /**< Main enna evas.  */
-   Evas_Object        *o_background;/**< Background object, it handles key down. */
-   Evas_Object        *o_edje;      /**< Main edje. */
-   Evas_Object        *o_mainmenu;  /**< Top menu. */
-   Evas_Object       *o_content;    /** Edje Object to swallow content */
-   enna_msg_level_t   lvl;          /**< Error message level */
+    char *home; /**< Home directory ie $HOME/.enna. */
+    Ecore_Evas *ee; /**< Ecore_Evas. */
+    Ecore_X_Window ee_winid; /**< Ecore_Evas WindowID */
+    Evas *evas; /**< Main enna evas.  */
+    Evas_Object *o_background;/**< Background object, it handles key down. */
+    Evas_Object *o_edje; /**< Main edje. */
+    Evas_Object *o_mainmenu; /**< Top menu. */
+    Evas_Object *o_content; /** Edje Object to swallow content */
+    enna_msg_level_t lvl; /**< Error message level */
 };
 
 extern Enna *enna;
