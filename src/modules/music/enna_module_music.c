@@ -108,7 +108,7 @@ static void _class_event(void *event_info)
 {
     Ecore_X_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key(ev);
-    enna_log(ENNA_MSG_WARN, ENNA_MODULE_NAME, "Key pressed music : %s\n",
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %s\n",
             ev->keysymbol);
     switch (mod->state)
     {
@@ -128,7 +128,7 @@ static void _class_event(void *event_info)
             }
             if (mod->o_mediaplayer)
             {
-                enna_log(ENNA_MSG_WARN, ENNA_MODULE_NAME, "delay 10s");
+                enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "delay 10s");
                 ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
                 mod->timer_show_mediaplayer = ecore_timer_add(10,
                         _show_mediaplayer_cb, NULL);
