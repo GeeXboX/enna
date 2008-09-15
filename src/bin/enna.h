@@ -57,6 +57,17 @@
     }							\
   while (0)
 
+#define ENNA_TIMER_DEL(timer)                           \
+    if (timer)                                          \
+    {                                                   \
+        ecore_timer_del(timer);                         \
+        timer = NULL;                                   \
+    }                                                   \
+
+#define ENNA_OBJECT_DEL(obj)                            \
+    if (obj)                                            \
+        evas_object_del(obj);                           \
+        
 
 typedef enum {
   ENNA_MSG_NONE,          /* no error messages */

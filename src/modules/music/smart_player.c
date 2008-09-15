@@ -143,12 +143,12 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 	enna_image_file_set(sd->o_cover, cover_file);
 	edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
 	edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
-	evas_object_del(sd->o_cover_old);
+	ENNA_OBJECT_DEL(sd->o_cover_old);
      }
    else
      {
 	edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
-       	evas_object_del(sd->o_cover);
+       	ENNA_OBJECT_DEL(sd->o_cover);
      }
    enna_metadata_free(metadata);
 
@@ -221,7 +221,9 @@ _e_smart_del(Evas_Object * obj)
    sd = evas_object_smart_data_get(obj);
    if (!sd)
       return;
-   evas_object_del(sd->o_edje);
+   ENNA_OBJECT_DEL(sd->o_cover);
+   ENNA_OBJECT_DEL(sd->o_cover_old)
+   ENNA_OBJECT_DEL(sd->o_edje);
    free(sd);
 }
 
