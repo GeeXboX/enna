@@ -196,7 +196,13 @@ EAPI void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
         return;
     if (si->func)
     {
+        Evas_Object *icon;
         si->func(si->data);
+        edje_object_part_text_set(sd->o_edje, "titlebar.text.label", si->act->name);
+        icon = edje_object_add(evas_object_evas_get(sd->o_edje));
+        edje_object_file_set(icon, enna_config_theme_get(),si->act->icon);
+        printf("si->act->icon : %s\n", si->act->icon);
+        edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
         enna_mainmenu_hide(obj);
     }
 }
