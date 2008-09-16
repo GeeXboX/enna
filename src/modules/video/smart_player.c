@@ -257,11 +257,12 @@ static void _e_smart_add(Evas_Object * obj)
 static void _e_smart_del(Evas_Object * obj)
 {
     E_Smart_Data *sd;
-
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
-    evas_object_del(sd->o_edje);
+    ENNA_OBJECT_DEL(sd->o_cover);
+    ENNA_OBJECT_DEL(sd->o_cover_old);
+    ENNA_OBJECT_DEL(sd->o_edje);
     free(sd);
 }
 

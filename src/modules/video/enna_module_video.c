@@ -52,6 +52,7 @@ struct _Enna_Module_Video
     VIDEO_STATE state;
     Ecore_Timer *timer_show_mediaplayer;
     char *prev_selected;
+    Ecore_Event_Handler *eos_event_handler;
 };
 
 static Enna_Module_Video *mod;
@@ -132,6 +133,7 @@ static void _class_event(void *event_info)
             {
                 case ENNA_KEY_CANCEL:
                     mod->state = LIST_VIEW;
+                    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
                     mod->timer_show_mediaplayer = ecore_timer_add(10,
                             _show_mediaplayer_cb, NULL);
                     edje_object_signal_emit(mod->o_edje, "mediaplayer,hide",
@@ -188,7 +190,7 @@ static int _show_mediaplayer_cb(void *data)
         mod->state = VIDEO_INFO_VIEW;
         edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
         edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
-        ecore_timer_del(mod->timer_show_mediaplayer);
+        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
         mod->timer_show_mediaplayer = NULL;
     }
 
@@ -464,11 +466,7 @@ static void _browse(void *data, void *data2)
 static void _create_videoplayer_gui()
 {
     mod->state = VIDEOPLAYER_VIEW;
-    if (mod->timer_show_mediaplayer)
-    {
-        ecore_timer_del(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer = NULL;
-    }
+    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
     mod->state = VIDEOPLAYER_VIEW;
     enna_mediaplayer_play();
@@ -482,10 +480,10 @@ static void _create_video_info_gui()
 
     mod->state = VIDEO_INFO_VIEW;
 
-    if (mod->o_mediaplayer)
-        evas_object_del(mod->o_mediaplayer);
-
-    ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
+    ENNA_OBJECT_DEL(mod->o_mediaplayer);
+    if (mod->eos_event_handler)
+        ecore_event_handler_del(mod->eos_event_handler);
+    mod->eos_event_handler = ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
 
     o = enna_smart_player_add(mod->em->evas);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
@@ -519,6 +517,7 @@ static void _create_gui()
 
     mod->state = LIST_VIEW;
     mod->timer_show_mediaplayer = NULL;
+    mod->eos_event_handler = NULL;
     o = edje_object_add(mod->em->evas);
     edje_object_file_set(o, enna_config_theme_get(), "module/video");
     mod->o_edje = o;
@@ -582,8 +581,7 @@ static int em_shutdown(Enna_Module *em)
     enna_list_freeze(mod->o_list);
     evas_object_del(mod->o_list);
     evas_object_del(mod->o_location);
-    if (mod->timer_show_mediaplayer)
-        ecore_timer_del(mod->timer_show_mediaplayer);
+    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     evas_object_del(mod->o_mediaplayer);
     if (mod->vfs && mod->vfs->func.class_shutdown)
     {
