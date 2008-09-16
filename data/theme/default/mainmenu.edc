@@ -19,16 +19,21 @@ group
             
             date(year, month, day, yearday, weekday, hour, minute, second);
     
-            new buf1[3], buf2[3], buf3[6];
+            new buf1[3], buf2[3], buf3[16], buf4[10];
             if (hour < 10) snprintf(buf1, 3, "0%d", hour);
             else           snprintf(buf1, 3, "%d", hour);
     
             if (minute < 10) snprintf(buf2, 3, "0%d", minute);
             else             snprintf(buf2, 3, "%d", minute);
     
-            snprintf(buf3, 6, "%s:%s", buf1, buf2);
+            
+            snprintf(buf4, 10, "%i/%i/%i", day, month, year)
+            
+            snprintf(buf3, 16, "%s %s:%s", buf4, buf1, buf2);
             set_text(PART:"titlebar.date", buf3);
     
+            
+            
             new Float:in;
     
             in = 60.0 - second;
@@ -229,13 +234,14 @@ group
                 min: 16 16;
                 rel1
                 {
-                    relative: 0.9 0.0;
+                    relative: 0.7 0.0;
                     to: titlebar.clip;
                 }
                 rel2
                 {
                     relative: 1.0 1.0;
                     to: titlebar.clip;
+                    offset: -10 0;
                 }
                 color: 200 200 200 200;
                 color3: 128 128 128 200;
@@ -247,7 +253,7 @@ group
                     font: "content_bd";
                     //fit: 0 1;
                     size: 15;
-                    align: 0.5 0.5;
+                    align: 1 0.5;
                     text_class: "list_label";
                 }
             }
