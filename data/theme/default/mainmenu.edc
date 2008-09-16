@@ -25,17 +25,14 @@ group
     
             if (minute < 10) snprintf(buf2, 3, "0%d", minute);
             else             snprintf(buf2, 3, "%d", minute);
-    
-            
+                
             snprintf(buf4, 10, "%i/%i/%i", day, month, year)
             
             snprintf(buf3, 16, "%s %s:%s", buf4, buf1, buf2);
             set_text(PART:"titlebar.date", buf3);
-    
-            
-            
+             
             new Float:in;
-    
+   
             in = 60.0 - second;
             timer(in, "clock_cn", 1);
 
@@ -45,51 +42,45 @@ group
     {
         part
         {
+            name: "titlebar.bg";
+            clip_to: "titlebar.clip";
+            type: RECT;
+            description
+            {
+                visible: 1;
+                state: "default" 0.0;
+                rel1.relative: 0 1;
+                rel1.to: "titlebar.clip";
+                rel1.offset: 0 -1;
+                rel2.relative: 1 1;
+                rel2.to: "titlebar.clip";
+                rel2.offset: 0 0;
+                color: 128 128 128 255;
+            }
+        }
+        part
+        {
             name: "enna.clip.mainmenu";
             type: "RECT";
             description
             {
-                color: 255 255 255 255;
+                color: 255 255 255 0;
+                visible: 0;
                 state: "default" 0.0;
-                rel1
-                {   relative: 0 -1;};
-                rel2
-                {   relative: 1 0;};
+                rel1.relative: 0 0;
+                rel1.offset: 0 61;
+                rel2.relative: 1 0;
+                rel2.offset: 0 61;
             }
             description
             {
                 color: 255 255 255 255;
                 state: "show" 0.0;
-                rel1
-                {   relative: 0 0;};
-                rel2
-                {   relative: 1 1;};
+                rel1.relative: 0 0;
+                rel1.offset: 0 61;
+                rel2.relative: 1 1;
             }
 
-        }
-        part
-        {
-            name: "shadow";
-            type: RECT;
-            description
-            {
-                state: "default" 0.0;
-                color: 0 0 0 0;
-                visible: 0;
-                rel1
-                {   relative: 0 0;};
-                rel2
-                {   relative: 1 1;};
-            }
-            description
-            {
-                state: "show" 0.0;
-                color: 0 0 0 220;
-                rel1
-                {   relative: 0 0;};
-                rel2
-                {   relative: 1 1;};
-            }
         }
         part
         {
@@ -119,37 +110,11 @@ group
             {
                 state: "default" 0.0;
                 rel1.relative: 0 0;
-                rel1.offset: 0 0;
                 rel2.relative: 1 0;
-                rel2.offset: 0 62;
-            }
-            description
-            {
-                state: "show" 0.0;
-                rel1.relative: 0 0;
-                rel1.offset: 0 -62;
-                rel2.relative: 1 0;
-                rel2.offset: 0 0;
+                rel2.offset: 0 60;
             }
         }
-        part
-        {
-            name: "titlebar.bg";
-            clip_to: "titlebar.clip";
-            type: RECT;
-            description
-            {
-                visible: 1;
-                state: "default" 0.0;
-                rel1.relative: 0 1;
-                rel1.to: "titlebar.clip";
-                rel1.offset: 0 -1;
-                rel2.relative: 1 1;
-                rel2.to: "titlebar.clip";
-                rel2.offset: 0 0;
-                color: 200 200 200 200;
-            }
-        }
+
         part
         {
             name: "titlebar.iconbox";
@@ -288,8 +253,6 @@ group
             action: STATE_SET "show" 0.0;
             transition: DECELERATE 0.5;
             target: "enna.clip.mainmenu";
-            target: "shadow";
-            target: "titlebar.clip";
         }
         program
         {
@@ -299,8 +262,6 @@ group
             action: STATE_SET "default" 0.0;
             transition: ACCELERATE 0.5;
             target: "enna.clip.mainmenu";
-            target: "shadow";
-            target: "titlebar.clip";
         }
     }
     program
