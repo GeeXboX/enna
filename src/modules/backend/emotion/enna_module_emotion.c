@@ -82,7 +82,7 @@ static Enna_Metadata *_class_metadata_get(void)
 {
     Enna_Metadata *m;
     const char *track;
-    char *tmp;
+    const char *tmp;
 
     m = enna_metadata_new();
 
