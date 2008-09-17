@@ -19,7 +19,7 @@ group
             
             date(year, month, day, yearday, weekday, hour, minute, second);
     
-            new buf1[3], buf2[3], buf3[16], buf4[10];
+            new buf1[3], buf2[3], buf3[20], buf4[10];
             if (hour < 10) snprintf(buf1, 3, "0%d", hour);
             else           snprintf(buf1, 3, "%d", hour);
     
@@ -28,13 +28,13 @@ group
                 
             snprintf(buf4, 10, "%i/%i/%i", day, month, year)
             
-            snprintf(buf3, 16, "%s %s:%s", buf4, buf1, buf2);
+            snprintf(buf3, 20, "%s | %s:%s", buf4, buf1, buf2);
             set_text(PART:"titlebar.date", buf3);
              
             new Float:in;
    
             in = 60.0 - second;
-            timer(in, "clock_cn", 1);
+            timer(in, "clock_cb", 1);
 
         }
     }
