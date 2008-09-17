@@ -34,7 +34,7 @@ group
             new Float:in;
    
             in = 60.0 - second;
-            timer(in, "clock_cn", 1);
+            timer(in, "clock_cb", 1);
 
         }
     }
