@@ -196,14 +196,14 @@ EAPI void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
         return;
     if (si->func)
     {
-        
+
         Evas_Object *icon;
         si->func(si->data);
         /* Unswallow and delete previous icons */
         icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
         edje_object_part_unswallow(sd->o_edje, icon);
         ENNA_OBJECT_DEL(icon);
-    
+
         edje_object_part_text_set(sd->o_edje, "titlebar.text.label", si->act->name);
         icon = edje_object_add(evas_object_evas_get(sd->o_edje));
         edje_object_file_set(icon, enna_config_theme_get(),si->act->icon);
@@ -319,7 +319,7 @@ EAPI void enna_mainmenu_show(Evas_Object *obj)
         return;
 
     sd->visible = 1;
-    
+
     /* Unswallow and delete previous icons */
     icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
     edje_object_part_unswallow(sd->o_edje, icon);
@@ -332,7 +332,7 @@ EAPI void enna_mainmenu_show(Evas_Object *obj)
     edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
     */
     edje_object_signal_emit(sd->o_edje, "mainmenu,show", "enna");
-    
+
 }
 
 EAPI void enna_mainmenu_hide(Evas_Object *obj)
@@ -344,7 +344,7 @@ EAPI void enna_mainmenu_hide(Evas_Object *obj)
         return;
 
     sd->visible = 0;
-    
+
     si = evas_list_nth(sd->items, sd->selected);
 
     if (si && si->act)
@@ -355,14 +355,14 @@ EAPI void enna_mainmenu_hide(Evas_Object *obj)
        icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
        edje_object_part_unswallow(sd->o_edje, icon);
        ENNA_OBJECT_DEL(icon);
-   
+
        edje_object_part_text_set(sd->o_edje, "titlebar.text.label", si->act->name);
        icon = edje_object_add(evas_object_evas_get(sd->o_edje));
        edje_object_file_set(icon, enna_config_theme_get(),si->act->icon);
        edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
        enna_mainmenu_hide(obj);
     }
-    
+
     edje_object_signal_emit(sd->o_edje, "mainmenu,hide", "enna");
 }
 
@@ -450,7 +450,7 @@ static void _e_smart_add(Evas_Object * obj)
     o = enna_box_add(e);
     enna_box_orientation_set(o, orientation);
     enna_box_homogenous_set(o, 1);
-    enna_box_align_set(o, 0.5, 0.5);
+    //    enna_box_align_set(o, 0.5, 0.5);
     sd->o_box = o;
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_box);
