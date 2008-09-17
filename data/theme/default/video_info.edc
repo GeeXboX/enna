@@ -89,7 +89,7 @@ group {
          mouse_events:   0;
          description
          {
-            state: "defaqult" 0.0;
+            state: "default" 0.0;
             color: 0 0 0 255;
             aspect: 1.33 1.33;
             aspect_preference: BOTH;
