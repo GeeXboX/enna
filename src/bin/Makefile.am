@@ -24,6 +24,7 @@ list.c\
 content.c\
 pan.c\
 scrollframe.c\
+button.c\
 location.c\
 mediaplayer.c\
 event_key.c\
@@ -55,6 +56,7 @@ list.h\
 content.h\
 pan.h\
 scrollframe.h\
+button.h\
 location.h\
 mediaplayer.h\
 event_key.h\
