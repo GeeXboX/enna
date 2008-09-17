@@ -45,7 +45,7 @@ struct _Smart_Data
 };
 
 /* local subsystem functions */
-static void _smart_reconfigure(E_Smart_Data * sd);
+static void _smart_reconfigure(Smart_Data * sd);
 static void _smart_init(void);
 static void _smart_add(Evas_Object * obj);
 static void _smart_del(Evas_Object * obj);
@@ -65,11 +65,11 @@ EAPI Evas_Object *
 enna_button_add(Evas * evas)
 {
     _smart_init();
-    return evas_object_smart_add(evas, _e_smart);
+    return evas_object_smart_add(evas, _smart);
 }
 
 /* local subsystem globals */
-static void _smart_reconfigure(E_Smart_Data * sd)
+static void _smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
 
@@ -105,7 +105,7 @@ static void _smart_init(void)
     _smart = evas_smart_class_new(&sc);
 }
 
-static void _e_smart_add(Evas_Object * obj)
+static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
 
