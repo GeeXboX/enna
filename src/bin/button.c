@@ -1,6 +1,6 @@
 /*
  * button.c
- * Copyright (C) Nicolas Aguirre 2006,2007,2008 <aguirre.nicolas@gmail.com>
+ * Copyright (C) Nicolas Aguirre 2008 <aguirre.nicolas@gmail.com>
  *
  * button.c is free software copyrighted by Nicolas Aguirre.
  *
@@ -36,12 +36,21 @@
 
 #define SMART_NAME "enna_button"
 
+#define API_ENTRY \
+  Smart_Data *sd; \
+  sd = evas_object_smart_data_get(obj); \
+  if ((!obj) || (!sd) || (evas_object_type_get(obj) \
+    && strcmp(evas_object_type_get(obj), SMART_NAME)))
+
 typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
+    Evas_Object *o_icon;
+    char *label;
+    Evas_Hash *funcs;       /* Callback functions hash */
 };
 
 /* local subsystem functions */
@@ -64,8 +73,55 @@ static Evas_Smart *_smart = NULL;
 EAPI Evas_Object *
 enna_button_add(Evas * evas)
 {
+    
     _smart_init();
     return evas_object_smart_add(evas, _smart);
+}
+
+/* Add Callback function */
+EAPI void
+enna_button_cb_add(Evas_Object *obj, void (*func_cb) (void *data), const char *event, void *data)
+{
+    //Button_Cb_Func *f;
+    API_ENTRY;
+    if (!func_cb || !event) return;
+    
+    /*f = malloc(sizeof(Button_Cb_Func));
+    f->func = func;
+    f->data = data;
+    evas_hash_append(sd->funcs, event, f);*/       
+}
+
+EAPI void
+enna_button_label_set(Evas_Object *obj, const char *label)
+{
+    API_ENTRY;
+    
+    if (!label) return; 
+    
+    ENNA_FREE(sd->label);
+    sd->label = strdup(label);
+    edje_object_part_text_set(sd->o_edje, "enna.text.label", label);
+}
+
+EAPI void
+enna_button_icon_set(Evas_Object *obj, const char *icon)
+{
+    API_ENTRY;
+    if (!icon) return;
+    /* Check if icon is an image */
+    if (icon[0] == '/' && ecore_file_exists(icon))
+    {
+        sd->o_icon = enna_image_add(evas_object_evas_get(sd->o_edje));
+        enna_image_file_set(sd->o_icon, icon);
+    }
+    /* Not a filename, get edje object */
+    else
+    {
+        sd->o_icon = edje_object_add(evas_object_evas_get(sd->o_edje));
+        edje_object_file_set(sd->o_icon, enna_config_theme_get(), icon);
+    }
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.icon", sd->o_icon);
 }
 
 /* local subsystem globals */
@@ -108,15 +164,13 @@ static void _smart_init(void)
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
-
+    
     sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-    sd->x = 0;
-    sd->y = 0;
-    sd->w = 0;
-    sd->h = 0;
+    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/button");
+    evas_object_show(sd->o_edje);
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
 }
@@ -128,6 +182,8 @@ static void _smart_del(Evas_Object * obj)
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
+    ENNA_OBJECT_DEL(sd->o_icon);
+    ENNA_FREE(sd->label);
     evas_object_del(sd->o_edje);
     free(sd);
 }

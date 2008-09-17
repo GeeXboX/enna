@@ -454,6 +454,12 @@ static void _e_smart_add(Evas_Object * obj)
     sd->o_box = o;
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_box);
+    
+    o = enna_button_add(e);
+    enna_button_icon_set(o, "icon/home_mini");
+    edje_object_part_swallow(sd->o_edje, "titlebar.swallow.button", o);
+    evas_object_show(o);
+    
     sd->o_smart = obj;
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);

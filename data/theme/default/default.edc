@@ -27,6 +27,7 @@ collections
 #include "icons.edc"
 #include "list.edc"
 #include "scrollframe.edc"
+#include "button.edc"
 #include "location.edc"
 #include "mediaplayer.edc"
 #include "video_info.edc"
