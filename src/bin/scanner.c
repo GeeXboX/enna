@@ -122,7 +122,7 @@ int _db_bind_text(sqlite3_stmt *stmt, int col, const char *text, int len)
 
         db = sqlite3_db_handle(stmt);
         err = sqlite3_errmsg(db);
-        enna_log(ENNA_MSG_ERROR, NULL, "could not bind SQL value %d: %s\n",
+        enna_log(ENNA_MSG_ERROR, NULL, "could not bind SQL value %d: %s",
                 col, err);
         return -col;
     }
@@ -163,7 +163,7 @@ int _db_finalize_stmt(sqlite3_stmt *stmt, const char *name)
     if (r != SQLITE_OK)
     {
         enna_log(ENNA_MSG_ERROR, NULL,
-                "could not finalize %s statement: #%d\n", name, r);
+                "could not finalize %s statement: #%d", name, r);
         return -1;
     }
 
