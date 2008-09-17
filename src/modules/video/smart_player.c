@@ -188,7 +188,7 @@ EAPI void enna_smart_player_metadata_set(Evas_Object *obj,
         cover_file = metadata->video->snapshot;
     if (cover_file)
     {
-        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "cover filename : %s\n",
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "cover filename : %s",
                 cover_file);
         /* FIXME : add edje cb at end of cover transition to switch properly covers*/
         sd->o_cover_old = sd->o_cover;

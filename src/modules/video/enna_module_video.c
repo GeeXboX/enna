@@ -96,7 +96,7 @@ static void _class_show(int dummy)
             break;
         default:
             enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                    "State Unknown in video module\n");
+                    "State Unknown in video module");
     }
 
 }
