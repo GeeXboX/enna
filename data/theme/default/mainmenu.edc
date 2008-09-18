@@ -138,7 +138,7 @@ group
             description
             {
                 visible: 1;
-                align: 0.5 0.5;
+                align: 0 0.5;
                 aspect: 1.0 1.0;
                 aspect_preference: BOTH;
                 state: "default" 0.0;
