@@ -2,7 +2,6 @@ images
 {
     image: "button.png" COMP;
     image: "button_glow.png" COMP;
-    image: "button_pressed.png" COMP;
 }
 
 group
