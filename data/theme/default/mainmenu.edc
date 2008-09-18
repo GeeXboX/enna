@@ -124,9 +124,9 @@ group
             {
                 visible: 1;
                 state: "default" 0.0;
-                rel1.relative: 0 0;
+                rel1.relative: 0.8 0;
                 rel1.to: "titlebar.clip";
-                rel2.relative: 0.3 1;
+                rel2.relative: 1 1;
                 rel2.to: "titlebar.clip";
             }
         }
@@ -142,9 +142,9 @@ group
                 aspect: 1.0 1.0;
                 aspect_preference: BOTH;
                 state: "default" 0.0;
-                rel1.relative: 0.3 0;
+                rel1.relative: 0 0;
                 rel1.to: "titlebar.clip";
-                rel2.relative: 0.4 1;
+                rel2.relative: 0.2 1;
                 rel2.to: "titlebar.clip";
             }
         }
@@ -241,12 +241,12 @@ group
                 min: 16 16;
                 rel1
                 {
-                    relative: 0.7 0.0;
+                    relative: 0.4 0.0;
                     to: titlebar.clip;
                 }
                 rel2
                 {
-                    relative: 1.0 1.0;
+                    relative: 0.6 1.0;
                     to: titlebar.clip;
                     offset: -10 0;
                 }
