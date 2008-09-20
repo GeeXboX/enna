@@ -167,21 +167,6 @@ EAPI void enna_smart_player_metadata_set(Evas_Object *obj,
     snprintf(buf, sizeof(buf), "Samplerate : %i Hz",
             metadata->music->samplerate);
     edje_object_part_text_set(sd->o_edje, "enna.text.samplerate", buf);
-    /*
-     printf(" Size : %.2f MB\n", metadata->size / 1024.0 / 1024.0);
-     printf(" Length: %.2f sec\n", metadata->length / 1000.0);
-     printf(" Video Codec: %s\n", metadata->video->codec);
-     printf(" Video Bitrate: %i kbps\n", metadata->video->bitrate / 1000);
-     printf(" Video Width: %i\n", metadata->video->width);
-     printf(" Video Height: %i\n", metadata->video->height);
-     printf(" Video Channels: %i\n", metadata->video->channels);
-     printf(" Video Streams: %i\n", metadata->video->streams);
-     printf(" Video Framerate: %.2f\n", metadata->video->framerate);
-     printf(" Audio Codec: %s\n", metadata->music->codec);
-     printf(" Audio Bitrate: %i kbps\n", metadata->music->bitrate / 1000);
-     printf(" Audio Channels: %i\n", metadata->music->channels);
-     printf(" Audio Sample Rate: %i Hz\n", metadata->music->samplerate);
-     */
 
     cover_file = enna_cover_video_get(metadata->uri);
     if (!cover_file && metadata->video)
