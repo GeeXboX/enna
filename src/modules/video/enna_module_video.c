@@ -492,6 +492,7 @@ static void _create_video_info_gui()
 
     m = enna_mediaplayer_metadata_get();
     enna_smart_player_metadata_set(mod->o_mediaplayer, m);
+    enna_metadata_free(m);
 
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
     edje_object_signal_emit(mod->o_edje, "list,hide", "enna");

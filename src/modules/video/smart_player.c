@@ -190,8 +190,6 @@ EAPI void enna_smart_player_metadata_set(Evas_Object *obj,
         edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
         evas_object_del(sd->o_cover);
     }
-
-    enna_metadata_free(metadata);
 }
 
 /* local subsystem globals */
