@@ -31,6 +31,7 @@ struct _Enna_Class_MediaplayerBackend
         int (*class_pause)(void);
         double (*class_position_get)(void);
         double (*class_length_get)(void);
+        void (*class_snapshot)(const char *uri, const char *file);
         Enna_Metadata *(*class_metadata_get)(void);
         void (*class_event_cb_set)(void (*event_cb)(void*data, enna_mediaplayer_event_t event), void *data);
         Evas_Object *(*class_video_obj_get)(void);
@@ -46,6 +47,7 @@ EAPI int enna_mediaplayer_init(void);
 EAPI void enna_mediaplayer_shutdown(void);
 EAPI void enna_mediaplayer_uri_append(const char *uri, const char *label);
 EAPI int enna_mediaplayer_select_nth(int n);
+EAPI void enna_mediaplayer_snapshot(const char *uri);
 EAPI Enna_Metadata *enna_mediaplayer_metadata_get(void);
 EAPI int enna_mediaplayer_play(void);
 EAPI int enna_mediaplayer_stop(void);

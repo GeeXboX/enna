@@ -189,6 +189,21 @@ static char *take_snapshot(char *uri)
     return strdup(dst);
 }
 
+static void _class_snapshot(const char *uri, const char *file)
+{
+    mrl_t *mrl;
+    int sec;
+
+    if (!uri || !file)
+        return;
+
+    /* take snapshot at 15% of stream */
+    sec = (int) (_class_length_get() * 15 / 100);
+
+    mrl = player_mrl_get_current(mod->player);
+    mrl_video_snapshot(mod->player, mrl, sec, MRL_SNAPSHOT_PNG, file);
+}
+
 static Enna_Metadata *_class_metadata_get(void)
 {
     Enna_Metadata *meta;
@@ -276,7 +291,7 @@ static Enna_Class_MediaplayerBackend class =
 { "libplayer", 1,
 { _class_init, _class_shutdown, _class_file_set, _class_play, _class_seek,
         _class_stop, _class_pause, _class_position_get, _class_length_get,
-        _class_metadata_get, _class_event_cb_set, NULL } };
+        _class_snapshot, _class_metadata_get, _class_event_cb_set, NULL } };
 
 /*****************************************************************************/
 /*                          Public Module API                                */
