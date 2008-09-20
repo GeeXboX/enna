@@ -72,7 +72,7 @@ collections
             }
          }
         part {
-            name: "enna.swallow.fullsceen";
+            name: "enna.swallow.fullscreen";
             clip_to: "enna.clip.fullscreen";
             type: SWALLOW;
             description{
