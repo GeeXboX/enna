@@ -156,8 +156,6 @@ EAPI void enna_smart_player_cover_set(Evas_Object *obj,
     API_ENTRY;
     
     cover_file = enna_cover_video_get(metadata->uri);
-    if (!cover_file && metadata->video)
-        cover_file = metadata->video->snapshot;
     if (cover_file)
     {
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "cover filename : %s",
