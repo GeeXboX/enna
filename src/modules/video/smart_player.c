@@ -56,6 +56,8 @@ struct _E_Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
+    Evas_Object *o_snapshot;
+    Evas_Object *o_snapshot_old;
     Evas_Object *o_cover;
     Evas_Object *o_cover_old;
     Evas_Object *o_fs;
@@ -111,6 +113,38 @@ EAPI void enna_smart_player_hide_video(Evas_Object *obj)
     {
         edje_object_part_unswallow(enna->o_edje, o_video);
         evas_object_hide(o_video);
+    }
+}
+
+EAPI void enna_smart_player_snapshot_set(Evas_Object *obj,
+                                         Enna_Metadata *metadata)
+{
+    char *snapshot_file;
+
+    API_ENTRY;
+
+    snapshot_file = metadata->video ? metadata->video->snapshot : NULL;
+    
+    if (snapshot_file)
+    {
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "snapshot filename : %s",
+                snapshot_file);
+
+        /* FIXME : add edje cb at end of snapshot transition to switch properly snapshots*/
+        sd->o_snapshot_old = sd->o_snapshot;
+        sd->o_snapshot = enna_image_add(evas_object_evas_get(sd->o_edje));
+        evas_object_show(sd->o_snapshot);
+        enna_image_load_size_set(sd->o_snapshot, 300, 300);
+        enna_image_file_set(sd->o_snapshot, snapshot_file);
+        edje_object_part_swallow(sd->o_edje,
+                                 "enna.swallow.snapshot", sd->o_snapshot);
+        edje_object_signal_emit(sd->o_edje, "snapshot,show", "enna");
+        evas_object_del(sd->o_snapshot_old);
+    }
+    else
+    {
+        edje_object_signal_emit(sd->o_edje, "snapshot,hide", "enna");
+        evas_object_del(sd->o_snapshot);
     }
 }
 
@@ -250,6 +284,8 @@ static void _e_smart_del(Evas_Object * obj)
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
+    ENNA_OBJECT_DEL(sd->o_snapshot);
+    ENNA_OBJECT_DEL(sd->o_snapshot_old);
     ENNA_OBJECT_DEL(sd->o_cover);
     ENNA_OBJECT_DEL(sd->o_cover_old);
     ENNA_OBJECT_DEL(sd->o_edje);

@@ -491,6 +491,7 @@ static void _create_video_info_gui()
     mod->o_mediaplayer = o;
 
     m = enna_mediaplayer_metadata_get();
+    enna_smart_player_snapshot_set(mod->o_mediaplayer, m);
     enna_smart_player_cover_set(mod->o_mediaplayer, m);
     enna_smart_player_metadata_set(mod->o_mediaplayer, m);
     enna_metadata_free(m);
