@@ -25,5 +25,6 @@
 #include "md5.h"
 #include "logs.h"
 #include "slideshow.h"
+#include "button.h"
 
 #endif
