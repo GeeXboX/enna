@@ -184,7 +184,7 @@ static char *take_snapshot(char *uri)
     free(md5);
 
     mrl = player_mrl_get_current(mod->player);
-    mrl_video_snapshot(mod->player, mrl, sec, MRL_SNAPSHOT_JPG, dst);
+    mrl_video_snapshot(mod->player, mrl, sec, MRL_SNAPSHOT_PNG, dst);
 
     return strdup(dst);
 }
