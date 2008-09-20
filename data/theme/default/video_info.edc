@@ -1,6 +1,4 @@
 images {
-   image: "cd_case_reflect.png" COMP;
-   image: "cd_case.png" COMP;
    image: "progress_bar.png" COMP;
    image: "progress_bar_content.png" COMP;
    image: "progress_bar_drag.png" COMP;
