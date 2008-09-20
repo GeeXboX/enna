@@ -130,7 +130,8 @@ EAPI void enna_smart_player_snapshot_set(Evas_Object *obj,
              enna_util_user_home_get(), md5);
     free(md5);
 
-    enna_mediaplayer_snapshot(metadata->uri);
+    if (!ecore_file_exists (file))
+      enna_mediaplayer_snapshot(metadata->uri);
     
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "snapshot filename : %s", file);
 
