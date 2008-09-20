@@ -216,7 +216,8 @@ EAPI void enna_smart_player_metadata_set(Evas_Object *obj,
             metadata->video->height);
     edje_object_part_text_set(sd->o_edje, "enna.text.videosize", buf);
 
-    snprintf(buf, sizeof(buf), "Framerate : %.2f", metadata->video->framerate);
+    snprintf(buf, sizeof(buf), "Framerate : %.2f fps",
+             metadata->video->framerate);
     edje_object_part_text_set(sd->o_edje, "enna.text.framerate", buf);
 
     snprintf(buf, sizeof(buf), "Codec : %s", metadata->music->codec);
