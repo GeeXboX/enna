@@ -47,7 +47,7 @@ EAPI int enna_mediaplayer_init(void);
 EAPI void enna_mediaplayer_shutdown(void);
 EAPI void enna_mediaplayer_uri_append(const char *uri, const char *label);
 EAPI int enna_mediaplayer_select_nth(int n);
-EAPI void enna_mediaplayer_snapshot(const char *uri);
+EAPI void enna_mediaplayer_snapshot(const char *uri, const char *file);
 EAPI Enna_Metadata *enna_mediaplayer_metadata_get(void);
 EAPI int enna_mediaplayer_play(void);
 EAPI int enna_mediaplayer_stop(void);

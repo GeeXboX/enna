@@ -34,6 +34,7 @@ url_utils.c\
 md5.c\
 covers.c\
 logs.c\
+snapshots.c\
 slideshow.c
 
 enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@
@@ -66,6 +67,7 @@ url_utils.h\
 md5.h\
 covers.h\
 logs.h\
+snapshots.h\
 slideshow.h
 
 

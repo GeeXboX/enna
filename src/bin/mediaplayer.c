@@ -286,29 +286,10 @@ EAPI void enna_mediaplayer_playlist_clear(void)
 }
 
 EAPI void
-enna_mediaplayer_snapshot(const char *uri)
+enna_mediaplayer_snapshot(const char *uri, const char *file)
 {
-    char dst[1024];
-    char *md5;
-
-    if (!_mediaplayer->class ||
-        !_mediaplayer->class->func.class_snapshot ||
-        !uri)
-        return;
-    
-    /* try to create snapshot directory storage first */
-    memset(dst, '\0', sizeof (dst));
-    snprintf(dst, sizeof (dst),
-             "%s/.enna/snapshots", enna_util_user_home_get());
-    mkdir(dst, 0755);
-    
-    md5 = md5sum((char *)uri);
-    memset(dst, '\0', sizeof (dst));
-    snprintf(dst, sizeof (dst), "%s/.enna/snapshots/%s.png",
-            enna_util_user_home_get(), md5);
-    free(md5);
-
-    _mediaplayer->class->func.class_snapshot(uri, dst);
+    if (_mediaplayer->class && _mediaplayer->class->func.class_snapshot)
+        _mediaplayer->class->func.class_snapshot(uri, file);
 }
 
 EAPI Enna_Metadata *

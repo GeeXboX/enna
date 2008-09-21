@@ -119,32 +119,31 @@ EAPI void enna_smart_player_hide_video(Evas_Object *obj)
 EAPI void enna_smart_player_snapshot_set(Evas_Object *obj,
                                          Enna_Metadata *metadata)
 {
-    char file[1024];
-    char *md5;
+    char *snap_file = NULL;
     
     API_ENTRY;
 
-    md5 = md5sum((char *) metadata->uri);
-    memset(file, '\0', sizeof (file));
-    snprintf(file, sizeof (file), "%s/.enna/snapshots/%s.png",
-             enna_util_user_home_get(), md5);
-    free(md5);
+    snap_file = enna_snapshot_get(metadata->uri);
+    if (snap_file)
+    {
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "snapshot filename : %s", snap_file);
 
-    if (!ecore_file_exists (file))
-      enna_mediaplayer_snapshot(metadata->uri);
-    
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "snapshot filename : %s", file);
-
-    /* FIXME : add edje cb at end of snapshot transition to switch properly snapshots*/
-    sd->o_snapshot_old = sd->o_snapshot;
-    sd->o_snapshot = enna_image_add(evas_object_evas_get(sd->o_edje));
-    evas_object_show(sd->o_snapshot);
-    enna_image_load_size_set(sd->o_snapshot, 300, 300);
-    enna_image_file_set(sd->o_snapshot, file);
-    edje_object_part_swallow(sd->o_edje,
-                             "enna.swallow.snapshot", sd->o_snapshot);
-    edje_object_signal_emit(sd->o_edje, "snapshot,show", "enna");
-    evas_object_del(sd->o_snapshot_old);
+        /* FIXME : add edje cb at end of snapshot transition to switch properly snapshots*/
+        sd->o_snapshot_old = sd->o_snapshot;
+        sd->o_snapshot = enna_image_add(evas_object_evas_get(sd->o_edje));
+        evas_object_show(sd->o_snapshot);
+        enna_image_load_size_set(sd->o_snapshot, 300, 300);
+        enna_image_file_set(sd->o_snapshot, snap_file);
+        edje_object_part_swallow(sd->o_edje,
+                                 "enna.swallow.snapshot", sd->o_snapshot);
+        edje_object_signal_emit(sd->o_edje, "snapshot,show", "enna");
+        evas_object_del(sd->o_snapshot_old);
+    }
+    else
+    {
+        edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
+        evas_object_del(sd->o_cover);
+    }
 }
 
 EAPI void enna_smart_player_cover_set(Evas_Object *obj,
