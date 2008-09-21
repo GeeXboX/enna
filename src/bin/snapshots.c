@@ -11,6 +11,9 @@ enna_snapshot_get(const char *uri)
     if (!uri)
         return NULL;
 
+    if (!enna->use_snapshots)
+        return NULL;
+    
     /* try to create snapshot directory storage first */
     memset(dst, '\0', sizeof (dst));
     snprintf(dst, sizeof (dst),

@@ -226,6 +226,9 @@ static int _enna_init(int run_gl)
         return 0;
     }
 
+    enna->use_covers = enna_config->use_covers;
+    enna->use_snapshots = enna_config->use_snapshots;
+    
     ecore_evas_fullscreen_set(enna->ee, enna_config->fullscreen
             | run_fullscreen);
 
