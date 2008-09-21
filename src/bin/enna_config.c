@@ -150,8 +150,10 @@ static Evas_Bool _hash_foreach(const Evas_Hash *hash, const char *key,
                     = enna_config_theme_file_get(enna_config->theme);
             enna_config_value_store(&enna_config->fullscreen, "fullscreen",
                     ENNA_CONFIG_INT, pair);
+            enna_config->use_covers = 1;
             enna_config_value_store(&enna_config->use_covers, "use_covers",
                     ENNA_CONFIG_INT, pair);
+            enna_config->use_snapshots = 1;
             enna_config_value_store(&enna_config->use_snapshots,
                                     "use_snapshots",
                                     ENNA_CONFIG_INT, pair);
