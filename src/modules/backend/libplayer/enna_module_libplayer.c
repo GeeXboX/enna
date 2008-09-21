@@ -1,6 +1,7 @@
 /* Interface */
 
 #include "enna.h"
+#include "codecs.h"
 #include <player.h>
 
 #define ENNA_MODULE_NAME "libplayer"
@@ -184,6 +185,8 @@ static Enna_Metadata *_class_metadata_get(void)
     Enna_Metadata *meta;
     char *track_nb;
     int frameduration = 0;
+    char *codec_id;
+    
     meta = enna_metadata_new();
 
     meta->uri = strdup(mod->uri+7);
@@ -212,7 +215,10 @@ static Enna_Metadata *_class_metadata_get(void)
     else
         meta->music->track = 0;
 
-    meta->music->codec = mrl_get_audio_codec(mod->player, NULL);
+    codec_id = mrl_get_audio_codec(mod->player, NULL);
+    meta->music->codec = get_codec_name (codec_id);
+    free (codec_id);
+    
     meta->music->bitrate = mrl_get_property(mod->player, NULL,
             MRL_PROPERTY_AUDIO_BITRATE);
     meta->music->channels = mrl_get_property(mod->player, NULL,
@@ -220,7 +226,10 @@ static Enna_Metadata *_class_metadata_get(void)
     meta->music->samplerate = mrl_get_property(mod->player, NULL,
             MRL_PROPERTY_AUDIO_SAMPLERATE);
 
-    meta->video->codec = mrl_get_video_codec(mod->player, NULL);
+    codec_id = mrl_get_video_codec(mod->player, NULL);
+    meta->video->codec = get_codec_name (codec_id);
+    free (codec_id);
+    
     meta->video->width = mrl_get_property(mod->player, NULL,
             MRL_PROPERTY_VIDEO_WIDTH);
     meta->video->height = mrl_get_property(mod->player, NULL,
