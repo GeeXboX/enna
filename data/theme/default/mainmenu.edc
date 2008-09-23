@@ -4,6 +4,7 @@ images
     image: "mainmenu_background.png" COMP;
     image: "menu_sel_bg.png" COMP;
     image: "menu_sel_fg.png" COMP;
+    image: "title_bar.png" COMP;
 }
 
 group
@@ -40,24 +41,6 @@ group
     }
     parts
     {
-        part
-        {
-            name: "titlebar.bg";
-            clip_to: "titlebar.clip";
-            type: RECT;
-            description
-            {
-                visible: 1;
-                state: "default" 0.0;
-                rel1.relative: 0 1;
-                rel1.to: "titlebar.clip";
-                rel1.offset: 0 -1;
-                rel2.relative: 1 1;
-                rel2.to: "titlebar.clip";
-                rel2.offset: 0 0;
-                color: 128 128 128 255;
-            }
-        }
         part
         {
             name: "enna.clip.mainmenu";
@@ -111,10 +94,48 @@ group
                 state: "default" 0.0;
                 rel1.relative: 0 0;
                 rel2.relative: 1 0;
+                rel2.offset: 0 96;
+            }
+        }
+        part
+        {
+            name: "titlebar.zone";
+            clip_to: "titlebar.clip";
+            type: RECT;
+            description
+            {
+                state: "default" 0.0;
+                rel1.relative: 0 0;
+                rel2.relative: 1 0;
                 rel2.offset: 0 60;
             }
         }
-
+        part
+        {
+            name: "title_bar_bg";
+            type: IMAGE;
+ 
+            description
+            {
+                state: "default" 0.0;
+                visible: 1;
+                rel1.to: "titlebar.clip";
+                rel2.to: "titlebar.clip";
+                image
+                {
+                    normal: "title_bar.png";
+                    border: 0 0 0 0;
+                } 
+                fill {
+                    smooth: 0;
+                    size
+                    {
+                        relative: 0 0;
+                        offset: 97 97;
+                    }
+                }
+            }
+        }
         part
         {
             name: "titlebar.iconbox";
@@ -124,10 +145,11 @@ group
             {
                 visible: 1;
                 state: "default" 0.0;
-                rel1.relative: 0.8 0;
-                rel1.to: "titlebar.clip";
+                align: 1 0.5;
+                rel1.relative: 0.88 0;
+                rel1.to: "titlebar.zone";
                 rel2.relative: 1 1;
-                rel2.to: "titlebar.clip";
+                rel2.to: "titlebar.zone";
             }
         }
         part
@@ -143,9 +165,9 @@ group
                 aspect_preference: BOTH;
                 state: "default" 0.0;
                 rel1.relative: 0 0;
-                rel1.to: "titlebar.clip";
+                rel1.to: "titlebar.zone";
                 rel2.relative: 0.2 1;
-                rel2.to: "titlebar.clip";
+                rel2.to: "titlebar.zone";
             }
         }
         part
@@ -194,6 +216,7 @@ group
                 {
                     relative: 1 1;
                     to: titlebar.iconbox;
+                    offset: -10 0;
                 }
                 color: 200 200 200 200;
                 text
@@ -201,7 +224,7 @@ group
                     text: "Item Label";
                     font: "content_bd";
                     size: 25;
-                    align: 0 0.5;
+                    align: 1 0.5;
                 }
             }
         }
@@ -238,16 +261,16 @@ group
             description
             {
                 state: "default" 0.0;
-                min: 16 16;
+                align: 0.5 0.5;
                 rel1
                 {
                     relative: 0.4 0.0;
-                    to: titlebar.clip;
+                    to: titlebar.zone;
                 }
                 rel2
                 {
                     relative: 0.6 1.0;
-                    to: titlebar.clip;
+                    to: titlebar.zone;
                     offset: -10 0;
                 }
                 color: 200 200 200 200;
@@ -260,7 +283,7 @@ group
                     font: "content_bd";
                     //fit: 0 1;
                     size: 15;
-                    align: 1 0.5;
+                    align: 0.5 0.5;
                     text_class: "list_label";
                 }
             }

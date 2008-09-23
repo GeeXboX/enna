@@ -4,8 +4,8 @@ images{
 }
 
 fonts{
-   font:"content.ttf" "content";
-   font:"content_bold.ttf" "content_bd";
+   font:"FreeSans.ttf" "content";
+   font:"FreeSansBold.ttf" "content_bd";
 }
 
 spectra {
@@ -34,7 +34,7 @@ collections
 #include "slideshow.edc"
    group {
       name: "enna";
-      min: 800 480;
+      min: 1280 720;
       parts {
 
          part {
