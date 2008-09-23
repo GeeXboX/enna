@@ -41,6 +41,7 @@ group
     }
     parts
     {
+        
         part
         {
             name: "enna.clip.mainmenu";
@@ -50,7 +51,7 @@ group
                 color: 255 255 255 0;
                 visible: 0;
                 state: "default" 0.0;
-                rel1.relative: 0 0;
+                rel1.relative: 0 -1;
                 rel1.offset: 0 61;
                 rel2.relative: 1 0;
                 rel2.offset: 0 61;
@@ -73,6 +74,7 @@ group
             description
             {
                 state: "default" 0.0;
+                visible: 0;
                 rel1
                 {   relative: 0 0;to: enna.clip.mainmenu;};
                 rel2
@@ -84,7 +86,23 @@ group
                 }
             }
         }
+        part
+        {
+            name: "enna.swallow.box";
+            type: SWALLOW;
+            clip_to: "enna.clip.mainmenu";
+            repeat_events: 1;
 
+            description
+            {
+                state: "default" 0.0;
+                max: 1920 256;
+                rel1
+                {   relative: 0.1 0.1;to: "bg";to: enna.clip.mainmenu;};
+                rel2
+                {   relative: 0.9 0.5;to: "bg";to: enna.clip.mainmenu;};
+            }
+        }
         part
         {
             name: "titlebar.clip";
@@ -288,25 +306,6 @@ group
                 }
             }
         }
-
-        part
-        {
-            name: "enna.swallow.box";
-            type: SWALLOW;
-            clip_to: "enna.clip.mainmenu";
-            repeat_events: 1;
-
-            description
-            {
-                state: "default" 0.0;
-                max: 1920 256;
-                rel1
-                {   relative: 0.1 0.1;to: "bg";to: enna.clip.mainmenu;};
-                rel2
-                {   relative: 0.9 0.5;to: "bg";to: enna.clip.mainmenu;};
-            }
-        }
-
     }
     programs
     {
