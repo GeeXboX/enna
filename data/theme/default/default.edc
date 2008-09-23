@@ -4,8 +4,8 @@ images{
 }
 
 fonts{
-   font:"FreeSans.ttf" "content";
-   font:"FreeSansBold.ttf" "content_bd";
+   font:"content.ttf" "content";
+   font:"content_bold.ttf" "content_bd";
 }
 
 spectra {
