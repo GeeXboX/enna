@@ -49,6 +49,7 @@
       -> Buttons
 
  * Bugs
+     -> libcurl and libxml2 are not checked in configure.in
      -> Remove item when location bar is clicked
      -> When using 'back' in audio/video player, ui comes back to menu but
         timer renders media player view again after a few seconds.
