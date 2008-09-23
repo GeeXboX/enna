@@ -14,6 +14,11 @@ spectra {
     color: 255 255 255 50 1;
     color: 255 255 255 10 1;
   }
+  spectrum {
+    name: "grey_gradient";
+    color: 109 109 109 70 1;
+    color: 85 85 85 80 1;
+  }
 }
 
 collections

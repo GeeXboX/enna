@@ -34,7 +34,7 @@ group {
 	    };
 	    rel2 { 
 	        relative: 0.0 1.0; 
-	        to_x: "info_bg";
+	        to_x: "info.clip.bg";
 	    };
             color:  200 200 200 200;
             color3: 128 128 128 200;
@@ -53,36 +53,74 @@ group {
 /*			Movie Infos                                          */
 /*****************************************************************************/
 
-      part {
-         name: "shadow_info_bg";
-         type: IMAGE;
-         mouse_events: 0;
-         description
-         {
-            state: "default" 0.0;
-            rel1 { relative: 0 0; to: "info_bg"; }
-            rel2 {
-               relative: 1 1;
-               to: "info_bg";
-               offset: 13 13;
-            }
-            image.normal: "shadow.png";
-            image.border: 14 14 14 14;
-         }
-      }
+
 
       part {
-         name: "info_bg";
+         name: "info.clip.bg";
          type: RECT;
          mouse_events: 0;
          description {
             state: "default" 0.0;
-            color: 0 0 0 255;
-            min: 300 300;
+            color: 0 0 0 0;
             rel1 { relative: 0.7 0.0; }
             rel2 { relative: 1.0 1.0; }
          }
       }
+      part {
+         name: "info.bg";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            color: 50 50 50 50;
+            rel1 { relative: 0.7 0.0; }
+            rel2 { relative: 1.0 1.0; }
+         }
+      }
+      part
+        {
+            name: "bg_gradient";
+            type: GRADIENT;
+            description
+            {
+                state: "default" 0.0;
+                rel1.to: "info.clip.bg";
+                rel1.relative: 0 0;
+                rel1.offset: 1 1;
+                rel2.to: "info.clip.bg";
+                rel2.relative: 1 1.0;
+                rel2.offset: -2 -2;
+                gradient {
+                    spectrum: "grey_gradient";
+                    rel1.relative: 0.5 0;
+                    rel1.offset: 0 0;
+                    rel2.relative: 0.5 1;
+                    rel2.offset: -1 0;
+                }
+            }
+        } 
+      part
+        {
+            name: "reflect";
+            type: GRADIENT;
+            description
+            {
+                state: "default" 0.0;
+                rel1.to: "info.clip.bg";
+                rel1.relative: 0 0;
+                rel1.offset: 1 1;
+                rel2.to: "info.clip.bg";
+                rel2.relative: 1 0.5;
+                rel2.offset: -2 -2;
+                gradient {
+                    spectrum: "Reflect";
+                    rel1.relative: 0.5 0;
+                    rel1.offset: 0 0;
+                    rel2.relative: 0.5 1;
+                    rel2.offset: -1 0;
+                }
+            }
+        } 
 
 /*****************************************************************************/
 /*			Movie Properties                                     */
@@ -95,8 +133,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.20; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.25; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.20; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.25; to: "info.clip.bg"; }
             color: 200 200 200 200;
             color3: 128 128 128 200;
             align: 0.5 0.5;
@@ -117,8 +155,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.25; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.30; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.25; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.30; to: "info.clip.bg"; }
             color: 200 200 200 128;
             color3: 128 128 128 128;
             align: 0.5 0.5;
@@ -139,8 +177,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.30; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.35; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.30; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.35; to: "info.clip.bg"; }
             color: 200 200 200 128;
             color3: 128 128 128 128;
             align: 0.5 0.5;
@@ -161,8 +199,8 @@ group {
             state: "default" 0.0;
             color : 255 255 255 128;
             visible: 1;
-            rel1 { relative: 0.1 0.40; to: "info_bg"; }
-	    rel2 { relative: 0.9 0.40; to: "info_bg"; }
+            rel1 { relative: 0.1 0.40; to: "info.clip.bg"; }
+	    rel2 { relative: 0.9 0.40; to: "info.clip.bg"; }
          }
       }
 
@@ -177,8 +215,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.45; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.50; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.45; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.50; to: "info.clip.bg"; }
             color: 200 200 200 200;
             color3: 128 128 128 200;
             align: 0.5 0.5;
@@ -199,8 +237,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.50; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.55; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.50; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.55; to: "info.clip.bg"; }
             color: 200 200 200 128;
             color3: 128 128 128 128;
 	    text {
@@ -220,8 +258,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.55; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.60; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.55; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.60; to: "info.clip.bg"; }
             color: 200 200 200 128;
             color3: 128 128 128 128;
 	    text {
@@ -241,8 +279,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.60; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.65; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.60; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.65; to: "info.clip.bg"; }
             color: 200 200 200 128;
             color3: 128 128 128 128;
 	    text {
@@ -266,8 +304,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.70; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.75; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.70; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.75; to: "info.clip.bg"; }
             color: 200 200 200 200;
             color3: 128 128 128 200;
 	    align: 0.5 0.5;
@@ -288,8 +326,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.75; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.80; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.75; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.80; to: "info.clip.bg"; }
             color: 200 200 200 128;
             color3: 128 128 128 128;
 	    text {
@@ -309,8 +347,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.80; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.85; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.80; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.85; to: "info.clip.bg"; }
             color: 200 200 200 128;
             color3: 128 128 128 128;
 	    text {
@@ -330,8 +368,8 @@ group {
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.85; to: "info_bg"; }
-	    rel2 { relative: 1.0 0.90; to: "info_bg"; }
+	    rel1 { relative: 0.0 0.85; to: "info.clip.bg"; }
+	    rel2 { relative: 1.0 0.90; to: "info.clip.bg"; }
             color: 200 200 200 128;
             color3: 128 128 128 128;
 	    text {
