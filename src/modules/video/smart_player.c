@@ -126,14 +126,22 @@ EAPI void enna_smart_player_snapshot_set(Evas_Object *obj,
     snap_file = enna_snapshot_get(metadata->uri);
     if (snap_file)
     {
+        Evas_Coord ow,oh;
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "snapshot filename : %s", snap_file);
 
         /* FIXME : add edje cb at end of snapshot transition to switch properly snapshots*/
         sd->o_snapshot_old = sd->o_snapshot;
         sd->o_snapshot = enna_image_add(evas_object_evas_get(sd->o_edje));
         evas_object_show(sd->o_snapshot);
-        enna_image_load_size_set(sd->o_snapshot, 300, 300);
+        
+        /* Stretch image to fit the parent container */
+        enna_image_fill_inside_set(sd->o_snapshot, 0);
+        
         enna_image_file_set(sd->o_snapshot, snap_file);
+        /* Full definition for image loaded */
+        enna_image_size_get(sd->o_snapshot, &ow, &oh);
+        enna_image_load_size_set(sd->o_snapshot, ow, oh);
+ 
         edje_object_part_swallow(sd->o_edje,
                                  "enna.swallow.snapshot", sd->o_snapshot);
         edje_object_signal_emit(sd->o_edje, "snapshot,show", "enna");
@@ -141,7 +149,7 @@ EAPI void enna_smart_player_snapshot_set(Evas_Object *obj,
     }
     else
     {
-        edje_object_signal_emit(sd->o_edje, "cover,hide", "enna");
+        edje_object_signal_emit(sd->o_edje, "snapshot,hide", "enna");
         evas_object_del(sd->o_cover);
     }
 }
@@ -156,14 +164,18 @@ EAPI void enna_smart_player_cover_set(Evas_Object *obj,
     cover_file = enna_cover_video_get(metadata->uri);
     if (cover_file)
     {
+        Evas_Coord ow,oh;
+        float aspect = 1.0;
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "cover filename : %s",
                 cover_file);
         /* FIXME : add edje cb at end of cover transition to switch properly covers*/
         sd->o_cover_old = sd->o_cover;
+        
         sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-        evas_object_show(sd->o_cover);
-        enna_image_load_size_set(sd->o_cover, 300, 300);
         enna_image_file_set(sd->o_cover, cover_file);
+        enna_image_size_get(sd->o_cover, &ow, &oh);
+        enna_image_load_size_set(sd->o_cover, ow, oh);
+        enna_image_fill_inside_set(sd->o_cover, 0);
         edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
         edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
         evas_object_del(sd->o_cover_old);
