@@ -96,7 +96,7 @@ EAPI void enna_smart_player_show_video(Evas_Object *obj)
 
     o_video = enna_mediaplayer_video_obj_get();
     if (o_video)
-        edje_object_part_swallow(enna->o_edje, "enna.swallow.fullsrceen",
+        edje_object_part_swallow(enna->o_edje, "enna.swallow.fullscreen",
                 o_video);
 
 }
