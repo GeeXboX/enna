@@ -25,6 +25,7 @@ content.c\
 pan.c\
 scrollframe.c\
 button.c\
+switcher.c\
 location.c\
 mediaplayer.c\
 event_key.c\
@@ -58,6 +59,7 @@ content.h\
 pan.h\
 scrollframe.h\
 button.h\
+switcher.h\
 location.h\
 mediaplayer.h\
 event_key.h\
