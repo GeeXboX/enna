@@ -7,6 +7,8 @@
 
 static void _create_gui();
 static void _create_video_info_gui();
+static void _video_info_prev();
+static void _video_info_next();
 static void _create_videoplayer_gui();
 static void _class_init(int dummy);
 static void _class_shutdown(int dummy);
@@ -139,6 +141,12 @@ static void _class_event(void *event_info)
                     edje_object_signal_emit(mod->o_edje, "mediaplayer,hide",
                             "enna");
                     edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+                    break;
+                case ENNA_KEY_RIGHT:
+                    _video_info_next();
+                    break;
+                case ENNA_KEY_LEFT:
+                    _vide_info_prev();
                     break;
                 case ENNA_KEY_OK:
                     _create_videoplayer_gui();
@@ -443,7 +451,6 @@ static void _browse(void *data, void *data2)
                     if (!strcmp(f->uri, file->uri))
                     {
                         enna_mediaplayer_select_nth(i);
-                        //enna_mediaplayer_play();
                     }
                     i++;
                 }
@@ -471,6 +478,17 @@ static void _create_videoplayer_gui()
     mod->state = VIDEOPLAYER_VIEW;
     enna_mediaplayer_play();
     enna_smart_player_show_video(mod->o_mediaplayer);
+}
+
+
+static void _video_info_prev()
+{
+        
+}
+
+static void _video_info_next()
+{
+    
 }
 
 static void _create_video_info_gui()

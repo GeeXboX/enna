@@ -162,6 +162,14 @@ EAPI int enna_mediaplayer_select_nth(int n)
     return 0;
 }
 
+EAPI int enna_mediaplayer_selected_get(void)
+{
+    if (_mediaplayer)
+        return _mediaplayer->selected;
+    else
+        return -1;
+}
+
 EAPI int enna_mediaplayer_stop(void)
 {
     if (_mediaplayer->class)
