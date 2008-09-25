@@ -57,6 +57,7 @@ struct _Enna_Module_Video
     Ecore_Timer *timer_show_mediaplayer;
     char *prev_selected;
     Ecore_Event_Handler *eos_event_handler;
+    unsigned char is_root: 1;
 };
 
 static Enna_Module_Video *mod;
@@ -122,7 +123,13 @@ static void _class_event(void *event_info)
             {
                 case ENNA_KEY_LEFT:
                 case ENNA_KEY_CANCEL:
-                    _browse_down();
+                    if (!mod->is_root)
+                        _browse_down();
+                    else
+                    {
+                        enna_content_hide();
+                        enna_mainmenu_show(enna->o_mainmenu);
+                     }
                     break;
                 case ENNA_KEY_RIGHT:
                 case ENNA_KEY_OK:
@@ -267,6 +274,7 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
     if (evas_list_count(files))
     {
         int i = 0;
+        mod->is_root = 0;
         /* Create list of files */
         for (l = files, i = 0; l; l = l->next, i++)
         {
@@ -299,7 +307,7 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
         /* No files returned : create no media item */
         Evas_Object *icon;
         Evas_Object *item;
-
+        mod->is_root = 0;
         icon = edje_object_add(mod->em->evas);
         edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
         item = enna_listitem_add(mod->em->evas);
@@ -310,7 +318,7 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
     {
         /* Browse down and no file detected : Root */
         Evas_List *l, *categories;
-        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "get CAPS Video");
+        mod->is_root = 1;
         categories = enna_vfs_get(ENNA_CAPS_VIDEO);
         enna_list_icon_size_set(o_list, 200, 200);
         for (l = categories; l; l = l->next)
@@ -607,6 +615,8 @@ static void _create_gui()
     Evas_Object *icon;
 
     mod->state = LIST_VIEW;
+    /* First creation : show root */
+    mod->is_root = 1;
     mod->timer_show_mediaplayer = NULL;
     mod->eos_event_handler = NULL;
     o = edje_object_add(mod->em->evas);
@@ -668,12 +678,12 @@ static int em_init(Enna_Module *em)
 
 static int em_shutdown(Enna_Module *em)
 {
-    evas_object_del(mod->o_edje);
+    ENNA_OBJECT_DEL(mod->o_edje);
     enna_list_freeze(mod->o_list);
-    evas_object_del(mod->o_list);
-    evas_object_del(mod->o_location);
+    ENNA_OBJECT_DEL(mod->o_list);
+    ENNA_OBJECT_DEL(mod->o_location);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-    evas_object_del(mod->o_mediaplayer);
+    ENNA_OBJECT_DEL(mod->o_mediaplayer);
     if (mod->vfs && mod->vfs->func.class_shutdown)
     {
         mod->vfs->func.class_shutdown(0);
