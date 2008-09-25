@@ -123,7 +123,6 @@ static void _edje_cb(void *data, Evas_Object *obj, const char *emission,
 {
 
     Smart_Data *sd = (Smart_Data*)data;
-    printf("%s, %s\n", emission, source);
     if (!strcmp(emission, "done"))
     {
         edje_object_part_unswallow(sd->o_transition, sd->old_slide);
