@@ -70,6 +70,9 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y);
 static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h);
 static void _smart_show(Evas_Object *obj);
 static void _smart_hide(Evas_Object *obj);
+static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
+static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip);
+static void _smart_clip_unset(Evas_Object * obj);
 
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
@@ -127,6 +130,7 @@ static void _edje_cb(void *data, Evas_Object *obj, const char *emission,
         evas_object_raise(sd->old_slide);
         evas_object_hide(sd->old_slide);
         sd->old_slide = NULL;
+        evas_object_smart_callback_call(sd->obj, "transition_done", NULL);
     }
 }
 
@@ -173,9 +177,9 @@ static void _smart_init(void)
             _smart_resize, 
             _smart_show, 
             _smart_hide,
-            NULL,
-            NULL, 
-            NULL,
+            _smart_color_set,
+            _smart_clip_set, 
+            _smart_clip_unset,
             NULL,
             NULL };
     _smart = evas_smart_class_new(&sc);
@@ -235,15 +239,44 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
 static void _smart_show(Evas_Object *obj)
 {
-    INTERNAL_ENTRY
-    ;
+    INTERNAL_ENTRY;
     evas_object_show(sd->o_transition);
 }
 
 static void _smart_hide(Evas_Object *obj)
 {
-    INTERNAL_ENTRY
-    ;
+    INTERNAL_ENTRY;
     evas_object_hide(sd->o_transition);
+}
+
+static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
+{
+    Smart_Data *sd;
+
+    sd = evas_object_smart_data_get(obj);
+    if (!sd)
+        return;
+    evas_object_color_set(sd->o_transition, r, g, b, a);
+}
+
+static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
+{
+    Smart_Data *sd;
+
+    sd = evas_object_smart_data_get(obj);
+    if (!sd)
+        return;
+    evas_object_clip_set(sd->o_transition, clip);
+}
+
+static void _smart_clip_unset(Evas_Object * obj)
+{
+    Smart_Data *sd;
+
+    sd = evas_object_smart_data_get(obj);
+    if (!sd)
+        return;
+        
+    evas_object_clip_unset(sd->o_transition);
 }
 

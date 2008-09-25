@@ -50,6 +50,7 @@ struct _Enna_Module_Video
     Evas_Object *o_location;
     Evas_Object *o_switcher;
     Evas_Object *o_mediaplayer;
+    Evas_Object *o_mediaplayer_old;
     Enna_Class_Vfs *vfs;
     Enna_Module *em;
     VIDEO_STATE state;
@@ -471,6 +472,8 @@ static void _browse(void *data, void *data2)
 
 }
 
+
+
 static void _create_videoplayer_gui()
 {
     mod->state = VIDEOPLAYER_VIEW;
@@ -481,6 +484,14 @@ static void _create_videoplayer_gui()
     enna_smart_player_show_video(mod->o_mediaplayer);
 }
 
+
+static void
+_switcher_transition_done_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
+    mod->o_mediaplayer_old = NULL;
+    
+}
 
 static void _video_info_prev()
 {
@@ -493,6 +504,10 @@ static void _video_info_prev()
         Evas_Object *o;
         n--;
         enna_mediaplayer_select_nth(n);
+        
+        ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
+        mod->o_mediaplayer_old = NULL;
+        
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
          m = enna_mediaplayer_metadata_get();
@@ -500,6 +515,8 @@ static void _video_info_prev()
         enna_smart_player_cover_set(o, m);
         enna_smart_player_metadata_set(o, m);
         enna_metadata_free(m);
+        mod->o_mediaplayer_old = mod->o_mediaplayer;
+        mod->o_mediaplayer = o;
         enna_switcher_objects_switch(mod->o_switcher, o);
     }
     
@@ -516,14 +533,20 @@ static void _video_info_next()
         Enna_Metadata *m;
         Evas_Object *o;
         n++;
+        
+        ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
+        mod->o_mediaplayer_old = NULL;
+        
         enna_mediaplayer_select_nth(n);
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
-         m = enna_mediaplayer_metadata_get();
+        m = enna_mediaplayer_metadata_get();
         enna_smart_player_snapshot_set(o, m);
         enna_smart_player_cover_set(o, m);
         enna_smart_player_metadata_set(o, m);
         enna_metadata_free(m);
+        mod->o_mediaplayer_old = mod->o_mediaplayer;
+        mod->o_mediaplayer = o;
         enna_switcher_objects_switch(mod->o_switcher, o);
     } 
 }
@@ -535,6 +558,8 @@ static void _create_video_info_gui()
 
     mod->state = VIDEO_INFO_VIEW;
 
+    ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
+    mod->o_mediaplayer_old = NULL;
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     if (mod->eos_event_handler)
         ecore_event_handler_del(mod->eos_event_handler);
@@ -542,6 +567,7 @@ static void _create_video_info_gui()
 
     o = enna_switcher_add(mod->em->evas);
     evas_object_show(o);
+    evas_object_smart_callback_add(o, "transition_done", _switcher_transition_done_cb, mod);
     mod->o_switcher = o;
 
     o = enna_smart_player_add(mod->em->evas);
