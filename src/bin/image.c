@@ -231,7 +231,6 @@ static void _enna_image_smart_reconfigure(E_Smart_Data * sd)
         evas_object_move(sd->obj, x, y);
         evas_object_image_fill_set(sd->obj, 0, 0, w, h);
         evas_object_resize(sd->obj, w, h);
-        printf("smart resize : %d %d\n", w, h);
     }
     else
     {
