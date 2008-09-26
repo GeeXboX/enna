@@ -167,7 +167,6 @@ static double _class_length_get()
 
 static void _class_snapshot(const char *uri, const char *file)
 {
-    mrl_t *mrl;
     int sec;
 
     if (!uri || !file)
@@ -176,8 +175,7 @@ static void _class_snapshot(const char *uri, const char *file)
     /* take snapshot at 15% of stream */
     sec = (int) (_class_length_get() * 15 / 100);
 
-    mrl = player_mrl_get_current(mod->player);
-    mrl_video_snapshot(mod->player, mrl, sec, MRL_SNAPSHOT_PNG, file);
+    mrl_video_snapshot(mod->player, NULL, sec, MRL_SNAPSHOT_PNG, file);
 }
 
 static Enna_Metadata *_class_metadata_get(void)
