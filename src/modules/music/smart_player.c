@@ -132,12 +132,18 @@ EAPI void enna_smart_player_metadata_set(Evas_Object *obj,
     if (metadata->title)
         edje_object_part_text_set(sd->o_edje, "enna.text.title",
                 metadata->title);
+    else
+        edje_object_part_text_set(sd->o_edje, "enna.text.title", "");
     if (metadata->music->album)
         edje_object_part_text_set(sd->o_edje, "enna.text.album",
                 metadata->music->album);
+    else
+        edje_object_part_text_set(sd->o_edje, "enna.text.album", "");
     if (metadata->music->artist)
         edje_object_part_text_set(sd->o_edje, "enna.text.artist",
                 metadata->music->artist);
+    else
+        edje_object_part_text_set(sd->o_edje, "enna.text.artist", "");
 
     cover_file = enna_cover_album_get(metadata->music->artist,
             metadata->music->album, metadata->uri);
