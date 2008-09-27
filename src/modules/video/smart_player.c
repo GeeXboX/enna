@@ -327,6 +327,7 @@ static void _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
     sd->w = w;
     sd->h = h;
     _enna_mediaplayer_smart_reconfigure(sd);
+    enna_mediaplayer_video_resize(0, 0, 0, 0);
 }
 
 static void _e_smart_show(Evas_Object * obj)

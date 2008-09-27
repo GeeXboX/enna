@@ -170,6 +170,7 @@ static Enna_Class_MediaplayerBackend class = {
     _class_length_get,
     _class_snapshot,
     _class_metadata_get,
+    NULL,
     _class_event_cb_set,
     _class_video_obj_get
   }

@@ -247,6 +247,15 @@ static Enna_Metadata *_class_metadata_get(void)
     return meta;
 }
 
+static void _class_video_resize(int x, int y, int w, int h)
+{
+    int flags = PLAYER_X_WINDOW_X | PLAYER_X_WINDOW_Y |
+                PLAYER_X_WINDOW_W | PLAYER_X_WINDOW_H;
+
+    /* if w or h is 0, libplayer guess the best size automatically */
+    player_x_window_set_properties(mod->player, x, y, w, h, flags);
+}
+
 static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data)
 {
     /* FIXME: function to call when end of stream is send by libplayer */
@@ -282,6 +291,7 @@ static Enna_Class_MediaplayerBackend class = {
     _class_length_get,
     _class_snapshot,
     _class_metadata_get,
+    _class_video_resize,
     _class_event_cb_set,
     NULL
   }

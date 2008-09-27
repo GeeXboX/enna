@@ -269,6 +269,13 @@ EAPI int enna_mediaplayer_seek(double percent)
     return 0;
 }
 
+EAPI void
+enna_mediaplayer_video_resize(int x, int y, int w, int h)
+{
+    if (_mediaplayer->class && _mediaplayer->class->func.class_video_resize)
+        _mediaplayer->class->func.class_video_resize(x, y, w, h);
+}
+
 EAPI int enna_mediaplayer_playlist_load(const char *filename)
 {
     return 0;

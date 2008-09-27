@@ -33,6 +33,7 @@ struct _Enna_Class_MediaplayerBackend
         double (*class_length_get)(void);
         void (*class_snapshot)(const char *uri, const char *file);
         Enna_Metadata *(*class_metadata_get)(void);
+        void (*class_video_resize)(int x, int y, int w, int h);
         void (*class_event_cb_set)(void (*event_cb)(void*data, enna_mediaplayer_event_t event), void *data);
         Evas_Object *(*class_video_obj_get)(void);
     } func;
@@ -58,6 +59,7 @@ EAPI int enna_mediaplayer_prev(void);
 EAPI double enna_mediaplayer_position_get(void);
 EAPI double enna_mediaplayer_length_get(void);
 EAPI int enna_mediaplayer_seek(double percent);
+EAPI void enna_mediaplayer_video_resize(int x, int y, int w, int h);
 EAPI int enna_mediaplayer_playlist_load(const char *filename);
 EAPI int enna_mediaplayer_playlist_save(const char *filename);
 EAPI void enna_mediaplayer_playlist_clear(void);
