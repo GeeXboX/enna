@@ -165,7 +165,6 @@ EAPI void enna_smart_player_cover_set(Evas_Object *obj,
     if (cover_file)
     {
         Evas_Coord ow,oh;
-        float aspect = 1.0;
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "cover filename : %s",
                 cover_file);
         /* FIXME : add edje cb at end of cover transition to switch properly covers*/
