@@ -133,6 +133,7 @@ static void _class_event(void *event_info)
                     break;
                 case ENNA_KEY_RIGHT:
                 case ENNA_KEY_OK:
+	        case ENNA_KEY_SPACE:
                     _activate();
                     break;
                 default:
@@ -158,6 +159,7 @@ static void _class_event(void *event_info)
                     _video_info_prev();
                     break;
                 case ENNA_KEY_OK:
+                case ENNA_KEY_SPACE:
                     _create_videoplayer_gui();
                     break;
                 default:
