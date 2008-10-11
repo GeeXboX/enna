@@ -41,10 +41,14 @@ typedef struct _Picture_Item Picture_Item;
 struct _Picture_Item
 {
     Evas_Object *o_edje;
-    int row;
     Evas_Object *o_pict; // Enna image object
     Smart_Data *sd;
+    int row;
     unsigned char selected : 1;
+    void (*func)(void *data, void *data2);
+    void (*func_hilight)(void *data, void *data2);
+    void *data;
+    void *data2;
 };
 
 struct _Smart_Data
@@ -110,7 +114,13 @@ Evas_Object * enna_wall_add(Evas * evas)
     return evas_object_smart_add(evas, _smart);
 }
 
-void enna_wall_picture_append(Evas_Object *obj, const char *filename)
+void enna_wall_picture_append(Evas_Object *obj,
+    const char *filename,
+    void (*func) (void *data, void *data2),
+    void (*func_hilight) (void *data, void *data2),
+    void *data,
+    void *data2
+    )
 {
 
     Evas_Coord w, h, ow, oh;
@@ -167,6 +177,10 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
         row = 2;
 
     pi->row = row;
+    pi->func = func;
+    pi->func_hilight = func_hilight;
+    pi->data = data;
+    pi->data2 = data2;
 
     sd->items[row] = evas_list_append(sd->items[row], pi);
 
@@ -193,6 +207,30 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
 	);
     enna_box_thaw(sd->o_box[pi->row]);
 
+}
+
+void *enna_wall_selected_data_get(Evas_Object *obj)
+{
+    Picture_Item *pi = NULL;
+
+    API_ENTRY return NULL;
+
+    pi = _smart_selected_item_get(sd, NULL, NULL);
+    if (pi)
+        return pi->data;
+    return NULL;
+}
+
+void *enna_wall_selected_data2_get(Evas_Object *obj)
+{
+    Picture_Item *pi = NULL;
+
+    API_ENTRY return NULL;
+
+    pi = _smart_selected_item_get(sd, NULL, NULL);
+    if (pi)
+        return pi->data2;
+    return NULL;
 }
 
 ///////////////////// LEFT /////////////////////
