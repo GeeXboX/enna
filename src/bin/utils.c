@@ -32,7 +32,7 @@
 #include "enna.h"
 #include "utils.h"
 
-EAPI char * enna_util_user_home_get()
+char * enna_util_user_home_get()
 {
     static char *home = NULL;
 
@@ -94,7 +94,7 @@ unsigned char enna_util_uri_has_extension(const char *uri, int type)
 
 }
 
-EAPI unsigned int enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h)
+unsigned int enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h)
 {
     float size = 12;
 
@@ -106,8 +106,7 @@ EAPI unsigned int enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h)
 
 }
 
-EAPI void enna_util_switch_objects(Evas_Object * container, Evas_Object * obj1,
-        Evas_Object * obj2)
+void enna_util_switch_objects(Evas_Object * container, Evas_Object * obj1, Evas_Object * obj2)
 {
     Evas_Object *s;
 
