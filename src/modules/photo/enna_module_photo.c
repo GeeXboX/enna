@@ -6,10 +6,6 @@
 
 static void _create_gui();
 static void _list_transition_core(Evas_List *files, unsigned char direction);
-static void _list_transition_left_end_cb(void *data, Evas_Object *o,
-        const char *sig, const char *src);
-static void _list_transition_right_end_cb(void *data, Evas_Object *o,
-        const char *sig, const char *src);
 static void _browse(void *data, void *data2);
 static void _browse_down();
 static void _activate();
@@ -110,19 +106,6 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
     mod->o_wall = o_wall;
 }
 
-static void _list_transition_left_end_cb(void *data, Evas_Object *o,
-        const char *sig, const char *src)
-{
-
-    _list_transition_core(data, 0);
-
-}
-
-static void _list_transition_right_end_cb(void *data, Evas_Object *o,
-        const char *sig, const char *src)
-{
-    _list_transition_core(data, 1);
-}
 
 static void _browse_down()
 {
