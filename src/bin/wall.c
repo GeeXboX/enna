@@ -49,6 +49,7 @@ struct _Picture_Item
     void (*func_hilight)(void *data, void *data2);
     void *data;
     void *data2;
+    Evas_Coord w,h;
 };
 
 struct _Smart_Data
@@ -56,8 +57,6 @@ struct _Smart_Data
     Evas_Coord x, y, w, h;
     Evas_Object *obj;
     Evas_Object *o_scroll;
-    Evas_Object *o_table;
-    Evas_List *pictures;
     Evas_Object *o_cont;
     Evas_Object *o_box[3];
     Evas_List *items[3];
@@ -86,6 +85,10 @@ struct _Preload_Data
 
 /* local subsystem functions */
 static int _smart_momentum_animator(void *data);
+static Picture_Item *_smart_create_directory_item(Smart_Data *sd, const char *dirname);
+static Picture_Item *_smart_create_picture_item(Smart_Data *sd, const char *filename);
+static Picture_Item *_smart_create_edje_item(Smart_Data *sd, const char *edje_part);
+
 static Picture_Item *_smart_selected_item_get(Smart_Data *sd, int *row,
         int *col);
 static void _smart_item_unselect(Smart_Data *sd, Picture_Item *pi);
@@ -114,6 +117,192 @@ Evas_Object * enna_wall_add(Evas * evas)
     return evas_object_smart_add(evas, _smart);
 }
 
+
+static Picture_Item *_smart_create_picture_item(Smart_Data *sd, const char *filename)
+{
+    Evas_Coord w, h, ow, oh;
+    Evas_Object *o, *o_pict;
+    Picture_Item *pi = NULL;
+
+    if (!sd || !filename) return NULL;
+
+    pi = calloc(1, sizeof(Picture_Item));
+    sd->nb++;
+
+    /* Create Edje object */
+    o = edje_object_add(evas_object_evas_get(sd->o_scroll));
+    edje_object_file_set(o, enna_config_theme_get(), "enna/picture/item");
+    evas_object_show(o);
+
+    /* Create Image object */
+    o_pict = enna_image_add(evas_object_evas_get(sd->o_scroll));
+
+    enna_image_file_set(o_pict,filename);
+    enna_image_size_get(o_pict, &w, &h);
+
+    if (w > h)
+    {
+	oh = 200;
+	ow = oh * (float)w/(float)h;
+    }
+    else
+    {
+	oh = 200;
+	ow = oh * (float)w/(float)h;
+    }
+
+    enna_image_fill_inside_set(o_pict, 0);
+    enna_image_load_size_set(o_pict, ow, oh);
+    evas_object_resize(o_pict, ow, oh);
+    /* Enable preload */
+    enna_image_preload(o_pict, 0);
+
+    pi->o_pict = o_pict;
+    pi->o_edje = o;
+    pi->sd = sd;
+    pi->w = ow;
+    pi->h = oh;
+
+    evas_object_repeat_events_set(o_pict, 1);
+    /* Set external edje object properties */
+    edje_extern_object_min_size_set(o, ow, oh);
+    edje_extern_object_aspect_set(o, EDJE_ASPECT_CONTROL_BOTH,
+	(float)w/(float)h, (float)w/(float)h);
+
+    /* Swallow picture into edje container */
+    edje_object_part_swallow(o, "enna.swallow.icon", o_pict);
+    evas_object_show(o_pict);
+
+    evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
+	_smart_event_mouse_down, pi);
+
+    return pi;
+
+}
+
+static Picture_Item *_smart_create_directory_item(Smart_Data *sd, const char *dirname)
+{
+    Picture_Item *pi = NULL;
+    Evas_Object *o_pict, *o;
+    Evas_Coord ow, oh;
+    Ecore_List *files = NULL;
+    char *filename = NULL;
+    char dir[PATH_MAX];
+    Evas_List *photos = NULL;
+
+    if (!dirname) return NULL;
+
+    pi = calloc(1, sizeof(Picture_Item));
+    sd->nb++;
+
+    files = ecore_file_ls(dirname);
+    filename = ecore_list_first_goto(files);
+
+    while ((filename = (char *)ecore_list_next(files)) != NULL)
+    {
+	sprintf(dir, "%s/%s", dirname, filename);
+	if (!enna_util_uri_has_extension(dir, ENNA_CAPS_PHOTO))
+	    continue;
+	photos = evas_list_append(photos, dir);
+    }
+
+    if (!photos || !evas_list_count(photos))
+    {
+	return _smart_create_edje_item(sd, "icon/directory");
+	printf(" dans la merde nico\n");
+    }
+    else
+    {
+	char *pict_filename;
+	int n = 0;
+	Evas_Coord w, h;
+	o = edje_object_add(evas_object_evas_get(sd->o_scroll));
+	edje_object_file_set(o, enna_config_theme_get(), "enna/picture/directory");
+	evas_object_show(o);
+
+	n = 1 + (int) ( evas_list_count(photos) * rand() / (RAND_MAX + 1.0 ));
+	pict_filename = evas_list_nth(photos, n);
+
+	o_pict = enna_image_add(evas_object_evas_get(sd->o_scroll));
+	enna_image_file_set(o_pict,pict_filename);
+	enna_image_size_get(o_pict, &w, &h);
+
+	if (w > h)
+	{
+	    oh = 200;
+	    ow = oh * (float)w/(float)h;
+	}
+	else
+	{
+	    oh = 200;
+	    ow = oh * (float)w/(float)h;
+	}
+	enna_image_fill_inside_set(o_pict, 0);
+	enna_image_load_size_set(o_pict, ow, oh);
+	evas_object_resize(o_pict, ow, oh);
+	/* Enable preload */
+	enna_image_preload(o_pict, 0);
+	pi->o_pict = o_pict;
+	pi->o_edje = o;
+	pi->sd = sd;
+	pi->w = ow;
+	pi->h = oh;
+	evas_object_repeat_events_set(o_pict, 1);
+	/* Set external edje object properties */
+	edje_extern_object_min_size_set(o, ow, oh);
+	edje_extern_object_aspect_set(o, EDJE_ASPECT_CONTROL_BOTH,
+	    (float)w/(float)h, (float)w/(float)h);
+
+	/* Swallow picture into edje container */
+	edje_object_part_swallow(o, "enna.swallow.icon", o_pict);
+	evas_object_show(o_pict);
+
+	evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
+	    _smart_event_mouse_down, pi);
+
+	return pi;
+    }
+
+}
+
+static Picture_Item *_smart_create_edje_item(Smart_Data *sd, const char *edje_part)
+{
+    Picture_Item *pi = NULL;
+    Evas_Object *o_edje, *o;
+    Evas_Coord ow, oh;
+
+    if (!sd || !edje_part) return NULL;
+
+    pi = calloc(1, sizeof(Picture_Item));
+    sd->nb++;
+
+    /* Create Edje object */
+    o_edje = edje_object_add(evas_object_evas_get(sd->o_scroll));
+    edje_object_file_set(o_edje, enna_config_theme_get(), "enna/picture/item");
+    evas_object_show(o_edje);
+
+    o = edje_object_add(evas_object_evas_get(sd->o_scroll));
+    edje_object_file_set(o, enna_config_theme_get(), edje_part);
+    ow = oh = 200;
+    edje_extern_object_min_size_set(o, ow, oh);
+
+    pi->o_pict = o;
+    pi->o_edje = o_edje;
+    pi->sd = sd;
+    pi->w = ow;
+    pi->h = oh;
+
+    /* Swallow picture into edje container */
+    edje_object_part_swallow(o_edje, "enna.swallow.icon", o);
+    evas_object_show(o_edje);
+
+    evas_object_event_callback_add(o_edje, EVAS_CALLBACK_MOUSE_DOWN,
+	_smart_event_mouse_down, pi);
+
+    return pi;
+
+}
+
 void enna_wall_picture_append(Evas_Object *obj,
     const char *filename,
     void (*func) (void *data, void *data2),
@@ -123,48 +312,45 @@ void enna_wall_picture_append(Evas_Object *obj,
     )
 {
 
-    Evas_Coord w, h, ow, oh;
-    Evas_Object *o, *o_pict;
-    int row, w0, w1, w2;
+
     Picture_Item *pi;
+    Evas_Coord w0, w1, w2;
+    int row;
 
-    API_ENTRY
-	return;
+    API_ENTRY return;
 
-    pi = calloc(1, sizeof(Picture_Item));
+    if (!filename) return;
 
-    sd->nb++;
+    printf("filename : %s\n", filename);
 
-    o = edje_object_add(evas_object_evas_get(sd->o_scroll));
-    edje_object_file_set(o, "default.edj", "enna/picture/item");
-    edje_object_part_text_set(o, "enna.text.label",
-	ecore_file_file_get(filename));
-    evas_object_show(o);
-
-    o_pict = enna_image_add(evas_object_evas_get(sd->o_scroll));
-    enna_image_file_set(o_pict, filename);
-    enna_image_size_get(o_pict, &w, &h);
-
-    if (w > h)
+    if (ecore_file_exists(filename+7))
     {
-        oh = 250;
-        ow = oh * (float)w/(float)h;
+	if (ecore_file_is_dir(filename+7))
+	{
+	    /* Directory */
+	    printf("Firectory\n"),
+	    pi = _smart_create_directory_item(sd, filename+7);
+	}
+	else
+	{
+	    /* File */
+	    printf("File\n");
+	    pi = _smart_create_picture_item(sd, filename+7);
+	}
     }
     else
     {
-        oh = 250;
-        ow = oh * (float)w/(float)h;
+	/* Edje part */
+	printf("Edje\n");
+	pi = _smart_create_edje_item(sd, filename);
     }
-    enna_image_fill_inside_set(o_pict, 0);
-    enna_image_load_size_set(o_pict, ow, oh);
-    evas_object_resize(o_pict, ow, oh);
 
-    enna_image_preload(o_pict, 0);
+    pi->func = func;
+    pi->func_hilight = func_hilight;
+    pi->data = data;
+    pi->data2 = data2;
 
-    pi->o_pict = o_pict;
-    pi->o_edje = o;
-    pi->sd = sd;
-
+    /* Select the best row : the shorter */
     enna_box_min_size_get(sd->o_box[0], &w0, NULL);
     enna_box_min_size_get(sd->o_box[1], &w1, NULL);
     enna_box_min_size_get(sd->o_box[2], &w2, NULL);
@@ -177,35 +363,23 @@ void enna_wall_picture_append(Evas_Object *obj,
         row = 2;
 
     pi->row = row;
-    pi->func = func;
-    pi->func_hilight = func_hilight;
-    pi->data = data;
-    pi->data2 = data2;
 
-    sd->items[row] = evas_list_append(sd->items[row], pi);
+    /* Add item to items list */
+    sd->items[pi->row] = evas_list_append(sd->items[pi->row], pi);
 
-    evas_object_geometry_get(o_pict, NULL, NULL, &ow, &oh);
+    printf("ow : %d oh %d\n", pi->w, pi->h);
 
-    evas_object_repeat_events_set(o_pict, 1);
-    edje_extern_object_min_size_set(o, ow, oh);
-    enna_image_size_get(o_pict, &w, &h);
-    edje_extern_object_aspect_set(o, EDJE_ASPECT_CONTROL_BOTH, (float)w
-	/(float)h, (float)w/(float)h);
-    edje_object_part_swallow(o, "enna.swallow.icon", o_pict);
-    evas_object_show(o_pict);
-
-    evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
-	_smart_event_mouse_down, pi);
-
+    /* Append item to box object */
     enna_box_freeze(sd->o_box[pi->row]);
-    enna_box_pack_end(sd->o_box[pi->row], o);
-    enna_box_pack_options_set(o, 0, 0, /* fill */
+    enna_box_pack_end(sd->o_box[pi->row], pi->o_edje);
+    enna_box_pack_options_set(pi->o_edje, 0, 0, /* fill */
 	0, 0, /* expand */
 	0, 0, /* align */
-	ow, oh, /* min */
+	pi->w, pi->h, /* min */
 	99999, 9999 /* max */
 	);
     enna_box_thaw(sd->o_box[pi->row]);
+
 
 }
 
@@ -619,17 +793,17 @@ static void _smart_reconfigure(Smart_Data * sd)
     for (i = 0; i < 3; i++)
     {
         enna_box_min_size_get(sd->o_box[i], &w, &h);
-        evas_object_resize(sd->o_box[i], w, 250);
+        evas_object_resize(sd->o_box[i], w, sd->h / 3);
         if (w > ow)
             ow = w;
-        enna_box_pack_options_set(sd->o_box[i], 0, 0, 0, 0, 0, 0, w, 250,
+        enna_box_pack_options_set(sd->o_box[i], 0, 0, 0, 0, 0, 0, w, sd->h / 3,
 	    99999, 9999);
 
     }
 
     enna_box_min_size_get(sd->o_cont, &w, &h);
     evas_object_resize(sd->o_cont, w, h);
-
+    printf("geom : %d, %d %dx%d| cont : %dx%d\n", sd->x, sd->y, sd->w, sd->h, w, h);
 }
 
 static void _smart_init(void)
@@ -681,12 +855,28 @@ static void _smart_add(Evas_Object * obj)
 static void _smart_del(Evas_Object * obj)
 {
     Smart_Data *sd;
-
+    int i;
+    Evas_List *l;
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
 
-    evas_object_del(sd->o_scroll);
+    /* evas_object_del(sd->o_scroll);
+    ENNA_FREE(sd->o_cont);
+
+    for (i = 0; i < 3; ++i)
+    {
+	ENNA_FREE(sd->o_box[i]);
+        for (l = sd->items[i]; l; l = l->next)
+        {
+            Picture_Item *pi = l->data;
+	    ENNA_FREE(pi->o_edje);
+	    ENNA_FREE(pi->o_pict);
+	}
+	evas_list_free(sd->items[i]);
+
+	}*/
+
     free(sd);
 }
 
