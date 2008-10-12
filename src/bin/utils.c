@@ -45,7 +45,7 @@ EAPI char * enna_util_user_home_get()
     return home;
 }
 
-EAPI int enna_util_has_suffix(char *str, Evas_List * patterns)
+int enna_util_has_suffix(char *str, Evas_List * patterns)
 {
     Evas_List *l;
     int result = 0;
@@ -65,6 +65,33 @@ EAPI int enna_util_has_suffix(char *str, Evas_List * patterns)
         ENNA_FREE(tmp);
     }
     return result;
+}
+
+unsigned char enna_util_uri_has_extension(const char *uri, int type)
+{
+
+    Evas_List *l;
+    Evas_List *filters = NULL;
+
+    if (type == ENNA_CAPS_MUSIC)
+        filters = enna_config->music_filters;
+    else if (type == ENNA_CAPS_VIDEO)
+        filters = enna_config->video_filters;
+    else if (type == ENNA_CAPS_PHOTO)
+        filters = enna_config->photo_filters;
+
+    if (!filters)
+        return 0;
+
+    for (l = filters; l; l = l->next)
+    {
+        const char *ext = l->data;
+        if (ecore_str_has_extension(uri, ext))
+            return 1;
+    }
+
+    return 0;
+
 }
 
 EAPI unsigned int enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h)
