@@ -37,6 +37,8 @@ collections
 #include "mediaplayer.edc"
 #include "video_info.edc"
 #include "slideshow.edc"
+#include "picture.edc"
+
    group {
       name: "enna";
       min: 1280 720;
