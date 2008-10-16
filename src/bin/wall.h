@@ -3,6 +3,10 @@
 
 #include "enna.h"
 
-EAPI Evas_Object *enna_wall_add(Evas * evas);
-EAPI void enna_wall_picture_append(Evas_Object *obj, const char *filename);
+Evas_Object *enna_wall_add(Evas * evas);
+void enna_wall_picture_append(Evas_Object *obj, const char *filename);
+void enna_wall_right_select(Evas_Object *obj);
+void enna_wall_left_select(Evas_Object *obj);
+void enna_wall_up_select(Evas_Object *obj);
+void enna_wall_down_select(Evas_Object *obj);
 #endif
