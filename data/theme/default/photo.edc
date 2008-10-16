@@ -23,13 +23,31 @@
           description {
              state: "default" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0 -1.0;to: "enna.clip.module";}
-             rel2 {relative: 1.0 0;offset: 0 -64;to: "enna.clip.module";}
+             rel1 {relative: -0.25 0.0;to: "enna.clip.module";}
+             rel2 {relative: 0.0 1.0;offset: 0 -64;to: "enna.clip.module";}
           }
           description {
              state: "show" 0.0;
              color: 255 255 255 255;
              rel1 {relative: 0 0.0;to: "enna.clip.module";}
+             rel2 {relative: 0.25 1;offset: 0 -64;to: "enna.clip.module";}
+          }
+       }
+       part {
+          name: "enna.swallow.wall";
+          type: SWALLOW;
+          mouse_events : 1;
+          clip_to: "enna.clip.module";
+          description {
+             state: "default" 0.0;
+             color: 255 255 255 255;
+             rel1 {relative: 1 0.0;to: "enna.clip.module";}
+             rel2 {relative: 1.75 1;offset: 0 -64;to: "enna.clip.module";}
+          }
+          description {
+             state: "show" 0.0;
+             color: 255 255 255 255;
+             rel1 {relative: 0.25 0.0;to: "enna.clip.module";}
              rel2 {relative: 1 1;offset: 0 -64;to: "enna.clip.module";}
           }
        }

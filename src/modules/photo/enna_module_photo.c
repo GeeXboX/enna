@@ -22,6 +22,7 @@ typedef struct _Enna_Module_Photo
 {
     Evas *e;
     Evas_Object *o_edje;
+    Evas_Object *o_list;
     Evas_Object *o_wall;
     Evas_Object *o_location;
     Evas_Object *o_slideshow;
@@ -224,25 +225,33 @@ static void _create_gui(void)
 	mod->is_root = 1;
     mod->state = WALL_VIEW;
     /* Create List */
-    o = enna_wall_add(mod->em->evas);
-
+    o = enna_list_add(mod->em->evas);
     categories = enna_vfs_get(ENNA_CAPS_PHOTO);
     for (l = categories; l; l = l->next)
     {
+	Evas_Object *item;
         Enna_Class_Vfs *cat;
 
         cat = l->data;
+        icon = edje_object_add(mod->em->evas);
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "icon : %s", cat->icon);
-        enna_wall_picture_append(o, cat->icon, _browse, NULL, cat, NULL);
+        edje_object_file_set(icon, enna_config_theme_get(), cat->icon);
+        item = enna_listitem_add(mod->em->evas);
+        enna_listitem_create_simple(item, icon, cat->label);
+        enna_list_append(o, item, _browse, NULL, cat, NULL);
     }
 
-
+    enna_list_selected_set(o, 0);
 
     mod->vfs = NULL;
+    mod->o_list = o;
+
+    o = enna_wall_add(mod->em->evas);
     evas_object_show(o);
-    //enna_wall_selected_set(o, 0, 0);
+
     mod->o_wall = o;
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
+    edje_object_part_swallow(mod->o_edje, "enna.swallow.wall", mod->o_wall);
+    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", mod->o_list);
 
 
     /* Create Location bar */
