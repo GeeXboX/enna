@@ -133,23 +133,23 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
     sd->nb++;
 
     o = edje_object_add(evas_object_evas_get(sd->o_scroll));
-    edje_object_file_set(o, "default.edj", "enna/picture/item");
+    edje_object_file_set(o, enna_config_theme_get(), "enna/picture/item");
     edje_object_part_text_set(o, "enna.text.label",
-            ecore_file_file_get(filename));
+	ecore_file_file_get(filename+7));
     evas_object_show(o);
 
     o_pict = enna_image_add(evas_object_evas_get(sd->o_scroll));
-    enna_image_file_set(o_pict, filename);
+    enna_image_file_set(o_pict, filename+7);
     enna_image_size_get(o_pict, &w, &h);
 
     if (w > h)
     {
-        oh = 250;
+        oh = 200;
         ow = oh * (float)w/(float)h;
     }
     else
     {
-        oh = 250;
+        oh = 200;
         ow = oh * (float)w/(float)h;
     }
     enna_image_fill_inside_set(o_pict, 0);
@@ -562,16 +562,18 @@ static void _smart_reconfigure(Smart_Data * sd)
     for (i = 0; i < 3; i++)
     {
         enna_box_min_size_get(sd->o_box[i], &w, &h);
-        evas_object_resize(sd->o_box[i], w, 250);
+        evas_object_resize(sd->o_box[i], w, sd->h / 3);
         if (w > ow)
             ow = w;
-        enna_box_pack_options_set(sd->o_box[i], 0, 0, 0, 0, 0, 0, w, 250,
+        enna_box_pack_options_set(sd->o_box[i], 0, 0, 0, 0, 0, 0, w, sd->h / 3,
                 99999, 9999);
 
     }
 
     enna_box_min_size_get(sd->o_cont, &w, &h);
     evas_object_resize(sd->o_cont, w, h);
+
+    printf("Geometry : %d %d %d %d\n", sd->x, sd->y, sd->w, sd->h);
 
 }
 

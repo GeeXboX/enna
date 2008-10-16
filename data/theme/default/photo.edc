@@ -47,7 +47,7 @@
           description {
              state: "show" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0.25 0.0;to: "enna.clip.module";}
+             rel1 {relative: 1 0.0;to:"enna.swallow.list";}
              rel2 {relative: 1 1;offset: 0 -64;to: "enna.clip.module";}
           }
        }
@@ -133,6 +133,22 @@
           transition: SINUSOIDAL 0.5;
           target: "enna.swallow.list";
           target: "enna.swallow.location";
+       }
+       program {
+          name: "wall,show";
+          signal: "wall,show";
+          source:  "enna";
+          action:  STATE_SET "show" 0.0;
+          transition: SINUSOIDAL 0.5;
+          target: "enna.swallow.wall";
+       }
+       program {
+          name: "wall,hide";
+          signal: "wall,hide";
+          source:  "enna";
+          action:  STATE_SET "default" 0.0;
+          transition: SINUSOIDAL 0.5;
+          target: "enna.swallow.wall";
        }
        program {
           name: "slideshow,show";
