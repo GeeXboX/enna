@@ -141,10 +141,7 @@ static int _enna_init(int run_gl)
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
 
-    ecore_init();
-    ecore_file_init();
-    ecore_evas_init();
-    edje_init();
+
     enna_module_init();
 
     sprintf(tmp, "%s/.enna", enna->home);
@@ -418,6 +415,10 @@ int main(int arc, char **arv)
 {
     if (parse_command_line(arc, arv) < 0)
         return 0;
+
+    ecore_evas_init();
+    ecore_file_init();
+    edje_init();
 
     /* Must be called first */
     enna_config_init();
