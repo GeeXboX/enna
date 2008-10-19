@@ -217,7 +217,6 @@ void enna_wall_left_select(Evas_Object *obj)
 
     if (!ppi)
     {
-        printf("none selected\n");
         col = 0;
     }
     else
@@ -262,7 +261,6 @@ void enna_wall_right_select(Evas_Object *obj)
         ppi = _smart_selected_item_get(sd, &row, &col);
         if (col == evas_list_count(sd->items[row]) - 1 || !ppi)
         {
-            printf("Last selected\n");
             return;
         }
         else
@@ -284,7 +282,7 @@ void enna_wall_right_select(Evas_Object *obj)
         sd->down.dt = 1500.0;
         sd->down.anim_start = ecore_time_get();
         enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
-        printf("sx : %d | x %d \n", sd->down.sx, sd->down.x);
+
     }
     else
     {
@@ -328,7 +326,6 @@ void enna_wall_right_select(Evas_Object *obj)
 
     if (!ppi)
     {
-        printf("none selected\n");
         col = 0;
     }
     else
@@ -572,8 +569,6 @@ static void _smart_reconfigure(Smart_Data * sd)
 
     enna_box_min_size_get(sd->o_cont, &w, &h);
     evas_object_resize(sd->o_cont, w, h);
-
-    printf("Geometry : %d %d %d %d\n", sd->x, sd->y, sd->w, sd->h);
 
 }
 
