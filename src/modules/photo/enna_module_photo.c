@@ -111,7 +111,6 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
 	    }
 	    else
 	    {
-		printf("Piture : %s\n", f->uri);
 		enna_wall_picture_append(o_wall, f->uri);
 	    }
 	}
