@@ -140,7 +140,7 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
 	/* Browse down and no file detected : Root */
         Evas_List *l, *categories;
         mod->is_root = 1;
-        categories = enna_vfs_get(ENNA_CAPS_MUSIC);
+        categories = enna_vfs_get(ENNA_CAPS_PHOTO);
         enna_list_icon_size_set(o_list, 200, 200);
         for (l = categories; l; l = l->next)
         {
