@@ -416,6 +416,7 @@ int main(int arc, char **arv)
     if (parse_command_line(arc, arv) < 0)
         return 0;
 
+    ecore_init();
     ecore_evas_init();
     ecore_file_init();
     edje_init();
