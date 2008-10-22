@@ -335,9 +335,9 @@ static void _enna_shutdown()
     evas_object_del(enna->o_edje);
     evas_object_del(enna->o_mainmenu);
     edje_shutdown();
-    ecore_evas_shutdown();
     ecore_file_shutdown();
-    ecore_shutdown();
+    ecore_evas_shutdown();
+
     ENNA_FREE(enna->home);
     ENNA_FREE(enna);
 }
