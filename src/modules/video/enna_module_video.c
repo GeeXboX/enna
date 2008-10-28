@@ -271,7 +271,6 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
     else
         edje_object_signal_emit(oe, "list,left,now", "enna");
 
-    enna_list_freeze(o_list);
     enna_list_icon_size_set(o_list, 200, 200);
     if (eina_list_count(files))
     {
@@ -341,7 +340,6 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
         mod->vfs = NULL;
     }
 
-    enna_list_thaw(o_list);
     if (mod->prev_selected)
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev_selected : %s",
@@ -628,7 +626,7 @@ static void _create_gui()
     /* Create List */
     o = enna_list_add(mod->em->evas);
     oe = enna_list_edje_object_get(o);
-    enna_list_freeze(o);
+
     edje_object_signal_emit(oe, "list,right,now", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_VIDEO);
@@ -647,7 +645,6 @@ static void _create_gui()
         enna_list_append(o, item, _browse, NULL, cat, NULL);
     }
 
-    enna_list_thaw(o);
     mod->vfs = NULL;
     evas_object_show(o);
     enna_list_selected_set(o, 0);
@@ -681,7 +678,6 @@ static int em_init(Enna_Module *em)
 static int em_shutdown(Enna_Module *em)
 {
     ENNA_OBJECT_DEL(mod->o_edje);
-    enna_list_freeze(mod->o_list);
     ENNA_OBJECT_DEL(mod->o_list);
     ENNA_OBJECT_DEL(mod->o_location);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
