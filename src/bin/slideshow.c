@@ -91,14 +91,14 @@ static void _e_smart_clip_unset(Evas_Object * obj);
 static Evas_Smart *_e_smart = NULL;
 
 /* externally accessible functions */
-EAPI Evas_Object *
+Evas_Object *
 enna_slideshow_add(Evas * evas)
 {
     _enna_slideshow_smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
 
-EAPI void enna_slideshow_image_append(Evas_Object *obj, const char *filename)
+void enna_slideshow_image_append(Evas_Object *obj, const char *filename)
 {
     Evas_Object *o;
     Evas_Coord w, h;
@@ -119,7 +119,7 @@ EAPI void enna_slideshow_image_append(Evas_Object *obj, const char *filename)
 
 }
 
-EAPI int enna_slideshow_next(void *data)
+int enna_slideshow_next(void *data)
 {
     Evas_Object *o;
     Evas_Object * obj = (Evas_Object *) data;
@@ -146,7 +146,7 @@ EAPI int enna_slideshow_next(void *data)
     return 0;
 }
 
-EAPI int enna_slideshow_prev(void *data)
+int enna_slideshow_prev(void *data)
 {
     Evas_Object *o;
     Evas_Object * obj = (Evas_Object *) data;
@@ -179,7 +179,7 @@ EAPI int enna_slideshow_prev(void *data)
     return 0;
 }
 
-EAPI void enna_slideshow_play(void *data)
+void enna_slideshow_play(void *data)
 {
     Evas_Object *o;
     Evas_Object * obj = (Evas_Object *) data;

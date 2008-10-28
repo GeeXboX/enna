@@ -490,13 +490,13 @@ static Enna_Class_Activity
 /*                          Public Module API                                */
 /*****************************************************************************/
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "photo"
 };
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -508,7 +508,7 @@ EAPI void module_init(Enna_Module *em)
     enna_activity_add(&class);
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     evas_object_del(mod->o_edje);
 

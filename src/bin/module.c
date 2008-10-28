@@ -10,7 +10,7 @@ static Ecore_Path_Group *path_group = NULL;
  * @return 1 if Initilisation is done correctly, 0 otherwise or if init is called more then twice
  */
 
-EAPI int enna_module_init(void)
+int enna_module_init(void)
 {
     if (!path_group)
     {
@@ -38,7 +38,7 @@ EAPI int enna_module_init(void)
          * @return 1 if succes 0 otherwise
          */
 
-        EAPI int enna_module_shutdown(void)
+        int enna_module_shutdown(void)
         {
             Eina_List *l;
 
@@ -65,7 +65,7 @@ EAPI int enna_module_init(void)
             return 0;
         }
 
-        EAPI int enna_module_enable(Enna_Module *m)
+        int enna_module_enable(Enna_Module *m)
         {
             if (!m)
                 return -1;
@@ -77,7 +77,7 @@ EAPI int enna_module_init(void)
             return 0;
         }
 
-        EAPI int enna_module_disable(Enna_Module *m)
+        int enna_module_disable(Enna_Module *m)
         {
             if (!m)
                 return -1;
@@ -98,7 +98,7 @@ EAPI int enna_module_init(void)
          * @return E_Module loaded
          * @note Module music can be loaded like this : enna_module_open("music") this module in loaded from file /usr/lib/enna/modules/music.so
          */
-        EAPI Enna_Module *
+        Enna_Module *
         enna_module_open(const char *name, Evas *evas)
         {
             char module_name[4096];

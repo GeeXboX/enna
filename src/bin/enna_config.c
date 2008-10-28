@@ -39,12 +39,12 @@ static Evas_Bool _hash_foreach(const Evas_Hash *hash, const char *key,
 static Evas_Hash *_config_load_conf_file(char *filename);
 static Evas_Hash *_config_load_conf(char *conffile, int size);
 
-EAPI const char * enna_config_theme_get()
+const char * enna_config_theme_get()
 {
     return enna_config->theme_file;
 }
 
-EAPI const char * enna_config_theme_file_get(const char *s)
+const char * enna_config_theme_file_get(const char *s)
 {
     if (!s)
         return NULL;
@@ -64,7 +64,7 @@ EAPI const char * enna_config_theme_file_get(const char *s)
     return NULL;
 }
 
-EAPI void enna_config_value_store(void *var, char *section,
+void enna_config_value_store(void *var, char *section,
         ENNA_CONFIG_TYPE type, Config_Pair *pair)
 {
     if (!strcmp(pair->key, section))
@@ -108,7 +108,7 @@ EAPI void enna_config_value_store(void *var, char *section,
     }
 }
 
-EAPI Enna_Config_Data *
+Enna_Config_Data *
 enna_config_module_pair_get(const char *module_name)
 {
     if(!hash_config || !module_name)
@@ -117,7 +117,7 @@ enna_config_module_pair_get(const char *module_name)
     return evas_hash_find(hash_config, module_name);
 }
 
-EAPI void enna_config_init()
+void enna_config_init()
 {
     char filename[4096];
 
@@ -128,7 +128,7 @@ EAPI void enna_config_init()
     evas_hash_foreach(hash_config, _hash_foreach, NULL);
 }
 
-EAPI void enna_config_shutdown()
+void enna_config_shutdown()
 {
 
 }
@@ -200,7 +200,7 @@ static Evas_Hash * _config_load_conf_file(char *filename)
                 "verbosity=info\n\n"
                 "fullscreen=0\n\n"
                 "use_covers=1\n\n"
-                "use_snapshots=1\n\n"    
+                "use_snapshots=1\n\n"
                 "theme=default\n\n"
                 "#x11,xrender,gl,x11_16\n"
                 "engine=x11\n\n"

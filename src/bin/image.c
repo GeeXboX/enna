@@ -62,14 +62,14 @@ static void _e_smart_clip_unset(Evas_Object * obj);
 static Evas_Smart *_e_smart = NULL;
 
 /* externally accessible functions */
-EAPI Evas_Object *
+Evas_Object *
 enna_image_add(Evas * evas)
 {
     _enna_image_smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
 
-EAPI void enna_image_file_set(Evas_Object * obj, const char *file)
+void enna_image_file_set(Evas_Object * obj, const char *file)
 {
     E_Smart_Data *sd;
 
@@ -82,7 +82,7 @@ EAPI void enna_image_file_set(Evas_Object * obj, const char *file)
     _enna_image_smart_reconfigure(sd);
 }
 
-EAPI const char * enna_image_file_get(Evas_Object * obj)
+const char * enna_image_file_get(Evas_Object * obj)
 {
     E_Smart_Data *sd;
     const char *file;
@@ -95,7 +95,7 @@ EAPI const char * enna_image_file_get(Evas_Object * obj)
     return file;
 }
 
-EAPI void enna_image_smooth_scale_set(Evas_Object * obj, int smooth)
+void enna_image_smooth_scale_set(Evas_Object * obj, int smooth)
 {
     E_Smart_Data *sd;
 
@@ -106,7 +106,7 @@ EAPI void enna_image_smooth_scale_set(Evas_Object * obj, int smooth)
     evas_object_image_smooth_scale_set(sd->obj, smooth);
 }
 
-EAPI int enna_image_smooth_scale_get(Evas_Object * obj)
+int enna_image_smooth_scale_get(Evas_Object * obj)
 {
     E_Smart_Data *sd;
 
@@ -117,7 +117,7 @@ EAPI int enna_image_smooth_scale_get(Evas_Object * obj)
     return evas_object_image_smooth_scale_get(sd->obj);
 }
 
-EAPI void enna_image_alpha_set(Evas_Object * obj, int alpha)
+void enna_image_alpha_set(Evas_Object * obj, int alpha)
 {
     E_Smart_Data *sd;
 
@@ -127,7 +127,7 @@ EAPI void enna_image_alpha_set(Evas_Object * obj, int alpha)
     evas_object_image_alpha_set(sd->obj, alpha);
 }
 
-EAPI int enna_image_alpha_get(Evas_Object * obj)
+int enna_image_alpha_get(Evas_Object * obj)
 {
     E_Smart_Data *sd;
 
@@ -138,7 +138,7 @@ EAPI int enna_image_alpha_get(Evas_Object * obj)
     return evas_object_image_alpha_get(sd->obj);
 }
 
-EAPI void enna_image_load_size_set(Evas_Object * obj, int w, int h)
+void enna_image_load_size_set(Evas_Object * obj, int w, int h)
 {
     E_Smart_Data *sd;
 
@@ -149,7 +149,7 @@ EAPI void enna_image_load_size_set(Evas_Object * obj, int w, int h)
     evas_object_image_load_size_set(sd->obj, w, h);
 }
 
-EAPI void enna_image_size_get(Evas_Object * obj, int *w, int *h)
+void enna_image_size_get(Evas_Object * obj, int *w, int *h)
 {
     E_Smart_Data *sd;
 
@@ -159,7 +159,7 @@ EAPI void enna_image_size_get(Evas_Object * obj, int *w, int *h)
     return evas_object_image_size_get(sd->obj, w, h);
 }
 
-EAPI int enna_image_fill_inside_get(Evas_Object * obj)
+int enna_image_fill_inside_get(Evas_Object * obj)
 {
     E_Smart_Data *sd;
 
@@ -169,7 +169,7 @@ EAPI int enna_image_fill_inside_get(Evas_Object * obj)
     return 0;
 }
 
-EAPI void enna_image_fill_inside_set(Evas_Object * obj, int fill_inside)
+void enna_image_fill_inside_set(Evas_Object * obj, int fill_inside)
 {
     E_Smart_Data *sd;
 
@@ -183,7 +183,7 @@ EAPI void enna_image_fill_inside_set(Evas_Object * obj, int fill_inside)
     _enna_image_smart_reconfigure(sd);
 }
 
-EAPI void enna_image_data_set(Evas_Object * obj, void *data, int w, int h)
+void enna_image_data_set(Evas_Object * obj, void *data, int w, int h)
 {
     E_Smart_Data *sd;
 
@@ -194,7 +194,7 @@ EAPI void enna_image_data_set(Evas_Object * obj, void *data, int w, int h)
     evas_object_image_data_copy_set(sd->obj, data);
 }
 
-EAPI void * enna_image_data_get(Evas_Object * obj, int *w, int *h)
+void * enna_image_data_get(Evas_Object * obj, int *w, int *h)
 {
     E_Smart_Data *sd;
 
@@ -205,7 +205,7 @@ EAPI void * enna_image_data_get(Evas_Object * obj, int *w, int *h)
     return evas_object_image_data_get(sd->obj, 0);
 }
 
-EAPI void enna_image_preload(Evas_Object *obj, Evas_Bool cancel)
+void enna_image_preload(Evas_Object *obj, Evas_Bool cancel)
 {
     E_Smart_Data *sd;
 

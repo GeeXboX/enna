@@ -81,7 +81,7 @@ struct _Enna_Module_Lms
 
 static Enna_Module_Lms *mod;
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "lms"
@@ -89,7 +89,7 @@ EAPI Enna_Module_Api module_api =
 
 static Enna_Class_Vfs class =
 { "lms", 1, "Browse Library", NULL, "icon/library",
-{ NULL, NULL, _class_browse_up, _class_browse_down, _class_vfs_get, 
+{ NULL, NULL, _class_browse_up, _class_browse_down, _class_vfs_get,
 },
 };
 
@@ -980,7 +980,7 @@ static int em_shutdown(Enna_Module *em)
     return 1;
 }
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -989,7 +989,7 @@ EAPI void module_init(Enna_Module *em)
         return;
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     em_shutdown(em);
 }

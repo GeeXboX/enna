@@ -59,13 +59,13 @@ static void _e_smart_event_key_down(E_Smart_Data *sd, void *event_info);
 static int _letter_timer_cb(void *data);
 static Evas_Smart *_e_smart = NULL;
 
-EAPI Evas_Object *
+Evas_Object *
 enna_list_add(Evas *evas)
 {
     _e_smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
-EAPI void enna_list_append(Evas_Object *obj, Evas_Object *item, void (*func) (void *data, void *data2), void (*func_hilight) (void *data, void *data2), void *data, void *data2)
+void enna_list_append(Evas_Object *obj, Evas_Object *item, void (*func) (void *data, void *data2), void (*func_hilight) (void *data, void *data2), void *data, void *data2)
 {
     Enna_List_Item *si;
     Evas_Coord mw = 0, mh = 0;
@@ -97,21 +97,21 @@ EAPI void enna_list_append(Evas_Object *obj, Evas_Object *item, void (*func) (vo
     evas_object_show(si->o_base);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 enna_list_edje_object_get(Evas_Object *obj)
 {
     API_ENTRY return NULL;
     return sd->o_edje;
 }
 
-EAPI void enna_list_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
+void enna_list_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
 {
     API_ENTRY return;
 
     evas_object_size_hint_min_get(sd->o_edje, w, h);
 }
 
-EAPI void enna_list_unselect(Evas_Object *obj)
+void enna_list_unselect(Evas_Object *obj)
 {
     Eina_List *l;
 
@@ -135,7 +135,7 @@ EAPI void enna_list_unselect(Evas_Object *obj)
     sd->selected = -1;
 }
 
-EAPI void enna_list_selected_set(Evas_Object *obj, int n)
+void enna_list_selected_set(Evas_Object *obj, int n)
 {
     Enna_List_Item *si = NULL;
     Eina_List *l = NULL;
@@ -180,7 +180,7 @@ EAPI void enna_list_selected_set(Evas_Object *obj, int n)
 
 }
 
-EAPI int enna_list_jump_label(Evas_Object *obj, const char *label)
+int enna_list_jump_label(Evas_Object *obj, const char *label)
 {
     Enna_List_Item *si = NULL;
     Eina_List *l = NULL;
@@ -225,7 +225,7 @@ EAPI int enna_list_jump_label(Evas_Object *obj, const char *label)
 
 }
 
-EAPI void enna_list_jump_nth(Evas_Object *obj, int n)
+void enna_list_jump_nth(Evas_Object *obj, int n)
 {
     Enna_List_Item *si = NULL;
     Eina_List *l = NULL;
@@ -267,7 +267,7 @@ EAPI void enna_list_jump_nth(Evas_Object *obj, int n)
 
 }
 
-EAPI int enna_list_selected_get(Evas_Object *obj)
+int enna_list_selected_get(Evas_Object *obj)
 {
     API_ENTRY
     return -1;
@@ -276,7 +276,7 @@ EAPI int enna_list_selected_get(Evas_Object *obj)
     return sd->selected;
 }
 
-EAPI void * enna_list_selected_data_get(Evas_Object *obj)
+void * enna_list_selected_data_get(Evas_Object *obj)
 {
     Enna_List_Item *si = NULL;
 
@@ -292,7 +292,7 @@ EAPI void * enna_list_selected_data_get(Evas_Object *obj)
     return NULL;
 }
 
-EAPI void * enna_list_selected_data2_get(Evas_Object *obj)
+void * enna_list_selected_data2_get(Evas_Object *obj)
 {
     Enna_List_Item *si = NULL;
 
@@ -308,7 +308,7 @@ EAPI void * enna_list_selected_data2_get(Evas_Object *obj)
     return NULL;
 }
 
-EAPI void enna_list_selected_geometry_get(Evas_Object *obj, Evas_Coord *x,
+void enna_list_selected_geometry_get(Evas_Object *obj, Evas_Coord *x,
         Evas_Coord *y, Evas_Coord *w, Evas_Coord *h)
 {
     Enna_List_Item *si = NULL;
@@ -328,7 +328,7 @@ EAPI void enna_list_selected_geometry_get(Evas_Object *obj, Evas_Coord *x,
         *y -= sd->y;
 }
 
-EAPI int enna_list_selected_count_get(Evas_Object *obj)
+int enna_list_selected_count_get(Evas_Object *obj)
 {
     Eina_List *l = NULL;
     int count = 0;
@@ -349,7 +349,7 @@ EAPI int enna_list_selected_count_get(Evas_Object *obj)
     return count;
 }
 
-EAPI void enna_list_remove_num(Evas_Object *obj, int n)
+void enna_list_remove_num(Evas_Object *obj, int n)
 {
     Enna_List_Item *si = NULL;
 
@@ -366,7 +366,7 @@ EAPI void enna_list_remove_num(Evas_Object *obj, int n)
     ENNA_FREE(si);
 }
 
-EAPI void enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
+void enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
 {
     Eina_List *l = NULL;
 
@@ -390,7 +390,7 @@ EAPI void enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
     }
 }
 
-EAPI void enna_list_clear(Evas_Object *obj)
+void enna_list_clear(Evas_Object *obj)
 {
     API_ENTRY
     return;
@@ -406,7 +406,7 @@ EAPI void enna_list_clear(Evas_Object *obj)
     sd->selected = -1;
 }
 
-EAPI void enna_list_event_key_down(Evas_Object *obj, void *event_info)
+void enna_list_event_key_down(Evas_Object *obj, void *event_info)
 {
     API_ENTRY
     return;

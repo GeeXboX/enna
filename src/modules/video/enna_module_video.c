@@ -62,7 +62,7 @@ struct _Enna_Module_Video
 
 static Enna_Module_Video *mod;
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "video"
@@ -692,7 +692,7 @@ static int em_shutdown(Enna_Module *em)
     return 1;
 }
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -701,7 +701,7 @@ EAPI void module_init(Enna_Module *em)
         return;
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     em_shutdown(em);
 }

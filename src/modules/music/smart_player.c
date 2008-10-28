@@ -83,14 +83,14 @@ static void _drag_bar_seek_cb(void *data, Evas_Object *obj,
 }
 
 /* externally accessible functions */
-EAPI Evas_Object *
+Evas_Object *
 enna_smart_player_add(Evas * evas)
 {
     _enna_mediaplayer_smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
 
-EAPI void enna_smart_player_position_set(Evas_Object *obj, double pos,
+void enna_smart_player_position_set(Evas_Object *obj, double pos,
         double len)
 {
     long ph, pm, ps, lh, lm, ls;
@@ -119,7 +119,7 @@ EAPI void enna_smart_player_position_set(Evas_Object *obj, double pos,
             0.0);
 }
 
-EAPI void enna_smart_player_metadata_set(Evas_Object *obj,
+void enna_smart_player_metadata_set(Evas_Object *obj,
         Enna_Metadata *metadata)
 {
     char *cover_file = NULL;

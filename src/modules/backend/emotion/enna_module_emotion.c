@@ -180,13 +180,13 @@ static Enna_Class_MediaplayerBackend class = {
 /*                          Public Module API                                */
 /*****************************************************************************/
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "emotion"
 };
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -206,7 +206,7 @@ EAPI void module_init(Enna_Module *em)
     enna_mediaplayer_backend_register(&class);
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     _class_shutdown(0);
     free(mod);

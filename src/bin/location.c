@@ -92,14 +92,14 @@ static void _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 static Evas_Smart *_e_smart = NULL;
 
 /* externally accessible functions */
-EAPI Evas_Object *
+Evas_Object *
 enna_location_add(Evas * evas)
 {
     _enna_location_smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
 
-EAPI void enna_location_append(Evas_Object *obj, const char *label,
+void enna_location_append(Evas_Object *obj, const char *label,
         Evas_Object *icon, void (*func) (void *data, void *data2), void *data, void *data2)
 {
     Enna_Location_Item *si;
@@ -183,7 +183,7 @@ static void _location_hide_end(void *data, Evas_Object *o, const char *sig,
      _enna_location_smart_reconfigure(sd);
 }
 
-EAPI void enna_location_remove_nth(Evas_Object *obj, int n)
+void enna_location_remove_nth(Evas_Object *obj, int n)
 {
     Enna_Location_Item *si = NULL;
 
@@ -198,7 +198,7 @@ EAPI void enna_location_remove_nth(Evas_Object *obj, int n)
             _location_hide_end, si);
 }
 
-EAPI const char * enna_location_label_get_nth(Evas_Object *obj, int n)
+const char * enna_location_label_get_nth(Evas_Object *obj, int n)
 {
     Enna_Location_Item *si = NULL;
 
@@ -211,7 +211,7 @@ EAPI const char * enna_location_label_get_nth(Evas_Object *obj, int n)
     return edje_object_part_text_get(si->o_base, "enna.text.label");
 }
 
-EAPI int enna_location_count(Evas_Object *obj)
+int enna_location_count(Evas_Object *obj)
 {
     API_ENTRY
     return 0;

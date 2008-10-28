@@ -342,7 +342,7 @@ group
 group
 {
     name: "enna/mainmenu/item";
-    min: 32 32;
+    min: 256 256;
     parts
     {
         part

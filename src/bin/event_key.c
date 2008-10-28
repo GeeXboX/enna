@@ -108,7 +108,7 @@ static void _event_cb(void *data, char *event)
 
 /* Public Functions */
 
-EAPI enna_key_t
+enna_key_t
 enna_get_key (void *event)
 {
     int i;
@@ -128,12 +128,12 @@ enna_get_key (void *event)
     return ENNA_KEY_UNKNOWN;
 }
 
-EAPI int enna_key_is_alpha(enna_key_t key)
+int enna_key_is_alpha(enna_key_t key)
 {
     return (key >= ENNA_KEY_A && key <= ENNA_KEY_Z);
 }
 
-EAPI char enna_key_get_alpha(enna_key_t key)
+char enna_key_get_alpha(enna_key_t key)
 {
     int i;
 
@@ -144,7 +144,7 @@ EAPI char enna_key_get_alpha(enna_key_t key)
     return ' ';
 }
 
-EAPI void enna_input_init()
+void enna_input_init()
 {
 #ifdef BUILD_LIRC_MODULE
     Enna_Module *em;
@@ -166,7 +166,7 @@ EAPI void enna_input_init()
 
 }
 
-EAPI void enna_input_shutdown()
+void enna_input_shutdown()
 {
     Eina_List *l = NULL;
 
@@ -179,7 +179,7 @@ EAPI void enna_input_shutdown()
     eina_list_free(_input_modules);
 }
 
-EAPI int enna_input_class_register(Enna_Module *module, Enna_Class_Input *class)
+int enna_input_class_register(Enna_Module *module, Enna_Class_Input *class)
 {
     Eina_List *l = NULL;
 

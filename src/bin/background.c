@@ -61,7 +61,7 @@ static void _e_smart_clip_unset(Evas_Object * obj);
 static Evas_Smart *_e_smart = NULL;
 
 /* externally accessible functions */
-EAPI Evas_Object *
+Evas_Object *
 enna_background_add(Evas * evas)
 {
     _enna_background_smart_init();

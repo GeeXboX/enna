@@ -33,7 +33,7 @@
 
 static Enna_Class_CoverPlugin *cover_class = NULL;
 
-EAPI int enna_cover_plugin_register(Enna_Class_CoverPlugin *class)
+int enna_cover_plugin_register(Enna_Class_CoverPlugin *class)
 {
     if (!class)
         return -1;
@@ -209,16 +209,16 @@ static char * enna_cover_get(const char *artist, const char *album,
     return cover;
 }
 
-EAPI char * enna_cover_album_get(const char *artist, const char *album,
+char * enna_cover_album_get(const char *artist, const char *album,
         const char *filename)
 {
     if (!enna->use_covers)
         return NULL;
-    
+
     return enna_cover_get(artist, album, filename);
 }
 
-EAPI char * enna_cover_video_get(const char *filename)
+char * enna_cover_video_get(const char *filename)
 {
     if (!enna->use_covers)
         return NULL;

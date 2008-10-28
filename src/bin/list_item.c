@@ -75,14 +75,14 @@ static void _e_smart_clip_unset(Evas_Object * obj);
 static Evas_Smart *_e_smart = NULL;
 
 /* externally accessible functions */
-EAPI Evas_Object *
+Evas_Object *
 enna_listitem_add(Evas * evas)
 {
     _enna_listitem_smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
 
-EAPI void enna_listitem_create_simple(Evas_Object *obj, Evas_Object *icon,
+void enna_listitem_create_simple(Evas_Object *obj, Evas_Object *icon,
         const char *label)
 {
     Evas_Coord mw, mh;
@@ -109,7 +109,7 @@ EAPI void enna_listitem_create_simple(Evas_Object *obj, Evas_Object *icon,
     evas_object_size_hint_min_set(sd->o_edje, mw, 100);
 }
 
-EAPI void enna_listitem_create_full(Evas_Object *obj, Evas_Object *icon,
+void enna_listitem_create_full(Evas_Object *obj, Evas_Object *icon,
         const char *info, const char *title, const char *album,
         const char *artist)
 {
@@ -138,7 +138,7 @@ EAPI void enna_listitem_create_full(Evas_Object *obj, Evas_Object *icon,
     sd->full = 1;
 }
 
-EAPI void enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w,
+void enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w,
         Evas_Coord *h)
 {
     API_ENTRY
@@ -148,7 +148,7 @@ EAPI void enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w,
     evas_object_size_hint_min_get(sd->o_edje, w, h);
 }
 
-EAPI const char * enna_listitem_label_get(Evas_Object *obj)
+const char * enna_listitem_label_get(Evas_Object *obj)
 {
     API_ENTRY
     return NULL;
@@ -159,21 +159,21 @@ EAPI const char * enna_listitem_label_get(Evas_Object *obj)
 
 }
 
-EAPI void enna_listitem_select(Evas_Object *obj)
+void enna_listitem_select(Evas_Object *obj)
 {
     API_ENTRY
     return;
     edje_object_signal_emit(sd->o_edje, "enna,state,selected", "enna");
 }
 
-EAPI void enna_listitem_unselect(Evas_Object *obj)
+void enna_listitem_unselect(Evas_Object *obj)
 {
     API_ENTRY
     return;
     edje_object_signal_emit(sd->o_edje, "enna,state,unselected", "enna");
 }
 
-EAPI void enna_listitem_min_size_set(Evas_Object *obj, Evas_Coord w,
+void enna_listitem_min_size_set(Evas_Object *obj, Evas_Coord w,
         Evas_Coord h)
 {
     API_ENTRY

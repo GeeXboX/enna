@@ -58,7 +58,7 @@ struct _Enna_Module_Music
 
 static Enna_Module_Music *mod;
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "music"
@@ -265,7 +265,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
     else if (!direction)
     {
         /* No files returned : create no media item */
-        
+
         Evas_Object *icon;
         Evas_Object *item;
         mod->is_root = 0;
@@ -658,7 +658,7 @@ static int em_shutdown(Enna_Module *em)
     return 1;
 }
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -667,7 +667,7 @@ EAPI void module_init(Enna_Module *em)
         return;
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     em_shutdown(em);
 }
