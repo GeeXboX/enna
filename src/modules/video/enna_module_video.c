@@ -263,7 +263,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
     o_list = enna_list_add(mod->em->evas);
     oe = enna_list_edje_object_get(o_list);
     evas_object_show(o_list);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
+
 
     if (direction == 0)
         edje_object_signal_emit(oe, "list,right,now", "enna");
@@ -355,6 +355,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
     }
 
     mod->o_list = o_list;
+    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
     edje_object_signal_emit(oe, "list,default", "enna");
 
 }
