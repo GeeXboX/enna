@@ -258,7 +258,6 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
         edje_object_signal_callback_del(oe, "list,transition,end", "edje",
                 _list_transition_right_end_cb);
 
-    enna_list_freeze(o_list);
     evas_object_del(o_list);
 
     o_list = enna_list_add(mod->em->evas);

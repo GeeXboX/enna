@@ -136,18 +136,16 @@ EAPI void enna_location_append(Evas_Object *obj, const char *label,
     sd->items = eina_list_append(sd->items, si);
 
     edje_object_size_min_calc(si->o_base, &mw, &mh);
-    enna_box_freeze(sd->o_box);
+
     enna_box_pack_end(sd->o_box, si->o_base);
-    enna_box_pack_options_set(si->o_base, 0, 1, 0, 1, 0, 0, mw, mh, 99999,
-            99999);
-    mh = sd->h ? sd->h : 48;
+    evas_object_size_hint_min_set(si->o_base, mw, sd->h);
+    evas_object_size_hint_align_set(si->o_base, 0, 0.5);
+    evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
 
-    enna_box_min_size_get(sd->o_box, &mw, NULL);
-    //evas_object_geometry_get(sd->o_scroll, NULL, NULL, NULL, &mh);
-    enna_log(ENNA_MSG_EVENT, NULL, "Resize o_box : %dx%d", mw, mh);
-    evas_object_resize(sd->o_box, mw, mh);
+    mh = sd->h ? sd->h : 64;
 
-    enna_box_thaw(sd->o_box);
+    evas_object_size_hint_min_get(sd->o_box, &mw, NULL);
+    evas_object_resize(sd->o_box, mw, sd->h);
 
     evas_object_lower(si->o_base);
     edje_object_signal_emit(si->o_base, "location,show", "enna");
@@ -165,32 +163,39 @@ EAPI void enna_location_append(Evas_Object *obj, const char *label,
 static void _location_hide_end(void *data, Evas_Object *o, const char *sig,
         const char *src)
 {
+    E_Smart_Data *sd;
     Enna_Location_Item *si;
     Evas_Coord x, y, w, h;
     si = data;
 
+    if (!si) return;
+
+    sd = si->sd;
+    sd->items = eina_list_remove(sd->items, si);
+    enna_box_unpack(si->o_base);
     evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
-    enna_scrollframe_child_region_show(si->sd->o_scroll, x, y, w, h);
-    evas_object_del(si->o_icon);
-    evas_object_del(si->o_base);
-    free(si);
+     enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
+     edje_object_signal_callback_del(si->o_base, "location,hide,end", "edje",
+       _location_hide_end);
+     evas_object_del(si->o_icon);
+     evas_object_del(si->o_base);
+     free(si);
+     _enna_location_smart_reconfigure(sd);
 }
 
 EAPI void enna_location_remove_nth(Evas_Object *obj, int n)
 {
     Enna_Location_Item *si = NULL;
 
-    API_ENTRY
-    return;
+    API_ENTRY return;
     if (!sd->items)
         return;
     if (!(si = eina_list_nth(sd->items, n)))
         return;
-    sd->items = eina_list_remove(sd->items, si);
+
     edje_object_signal_emit(si->o_base, "location,hide", "enna");
     edje_object_signal_callback_add(si->o_base, "location,hide,end", "edje",
             _location_hide_end, si);
-
 }
 
 EAPI const char * enna_location_label_get_nth(Evas_Object *obj, int n)
@@ -216,16 +221,21 @@ EAPI int enna_location_count(Evas_Object *obj)
 /* local subsystem globals */
 static void _enna_location_smart_reconfigure(E_Smart_Data * sd)
 {
-    Evas_Coord x, y, w, h;
+    Evas_Coord mw, w = 0;
+    Evas_List *l;
 
-    x = sd->x;
-    y = sd->y;
-    w = sd->w;
-    h = sd->h;
 
-    evas_object_move(sd->o_scroll, x, y);
-    evas_object_resize(sd->o_scroll, w, h);
+    for (l = sd->items; l; l = l->next)
+    {
+	Enna_Location_Item *si = l->data;
+	evas_object_size_hint_min_get(si->o_base, &mw, NULL);
+	w+= mw;
+    }
 
+    evas_object_resize(sd->o_box, w, sd->h);
+
+    evas_object_move(sd->o_scroll, sd->x, sd->y);
+    evas_object_resize(sd->o_scroll, sd->w, sd->h);
 }
 
 static void _enna_location_smart_init(void)
@@ -249,17 +259,19 @@ static void _e_smart_add(Evas_Object * obj)
         return;
 
     sd->o_box = enna_box_add(evas_object_evas_get(obj));
-    //enna_box_align_set(sd->o_box, 0, 0.5);
     enna_box_homogenous_set(sd->o_box, 0);
     enna_box_orientation_set(sd->o_box, 1);
+    evas_object_size_hint_align_set(sd->o_box, 0, 0.5);
+    evas_object_size_hint_weight_set(sd->o_box, 1.0, 0.0);
+
     sd->x = 0;
     sd->y = 0;
     sd->w = 0;
     sd->h = 0;
     sd->items = NULL;
     sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
-    enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
-            ENNA_SCROLLFRAME_POLICY_OFF);
+    enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_AUTO,
+            ENNA_SCROLLFRAME_POLICY_AUTO);
     enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
     sd->smart_obj = obj;
     evas_object_smart_member_add(sd->o_scroll, obj);
@@ -274,13 +286,17 @@ static void _e_smart_del(Evas_Object * obj)
     if (!sd)
         return;
 
-    /*
-     * FIXME if sd->o_box is deleting
-     * Segv in enna ?!!
-     */
-
-    /*evas_object_del(sd->o_box);*/
     evas_object_del(sd->o_scroll);
+    evas_object_del(sd->o_box);
+
+    while (sd->items)
+    {
+	Enna_Location_Item *si = sd->items->data;
+	sd->items = eina_list_remove_list(sd->items, sd->items);
+	evas_object_del(si->o_base);
+	evas_object_del(si->o_icon);
+	free(si);
+    }
     free(sd);
 }
 

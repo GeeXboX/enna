@@ -85,6 +85,7 @@ enna_listitem_add(Evas * evas)
 EAPI void enna_listitem_create_simple(Evas_Object *obj, Evas_Object *icon,
         const char *label)
 {
+    Evas_Coord mw, mh;
     API_ENTRY
     return;
     if (sd->o_edje)
@@ -99,9 +100,13 @@ EAPI void enna_listitem_create_simple(Evas_Object *obj, Evas_Object *icon,
         edje_object_part_swallow(sd->o_edje, "enna.swallow.icon", sd->o_icon);
         evas_object_show(sd->o_icon);
     }
+    evas_object_size_hint_min_set(sd->o_edje, sd->iw, sd->ih);
     edje_object_part_text_set(sd->o_edje, "enna.text.label", label);
     evas_object_smart_member_add(sd->o_edje, obj);
     sd->full = 0;
+    evas_object_geometry_get(sd->o_edje, NULL, NULL, &mw, &mh);
+    edje_object_size_min_calc(sd->o_edje, &mw, &mh);
+    evas_object_size_hint_min_set(sd->o_edje, mw, 100);
 }
 
 EAPI void enna_listitem_create_full(Evas_Object *obj, Evas_Object *icon,
@@ -140,32 +145,7 @@ EAPI void enna_listitem_min_size_get(Evas_Object *obj, Evas_Coord *w,
     return;
     Evas_Coord oh;
 
-    if (!sd->full)
-    {
-        char *hs = (char *) edje_object_data_get(sd->o_edje, "height");
-        if (hs)
-            oh = atoi(hs);
-        else
-            oh = 100;
-
-        if (w)
-            *w = oh;
-        if (h)
-            *h = oh;
-    }
-    else
-    {
-        char *hs = (char *) edje_object_data_get(sd->o_edje, "full_height");
-        if (hs)
-            oh = atoi(hs);
-        else
-            oh = 150;
-
-        if (w)
-            *w = oh;
-        if (h)
-            *h = oh;
-    }
+    evas_object_size_hint_min_get(sd->o_edje, w, h);
 }
 
 EAPI const char * enna_listitem_label_get(Evas_Object *obj)

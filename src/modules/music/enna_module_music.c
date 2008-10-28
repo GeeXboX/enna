@@ -223,7 +223,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
     o_list = enna_list_add(mod->em->evas);
     oe = enna_list_edje_object_get(o_list);
     evas_object_show(o_list);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
+
 
     if (direction == 0)
         edje_object_signal_emit(oe, "list,right,now", "enna");
@@ -239,8 +239,8 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
         for (l = files, i = 0; l; l = l->next, i++)
         {
             Enna_Vfs_File *f;
-            Evas_Object *icon;
-            Evas_Object *item;
+            Evas_Object *icon = NULL;
+            Evas_Object *item = NULL;
 
             f = l->data;
 
@@ -338,6 +338,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
     }
 
     mod->o_list = o_list;
+    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
     edje_object_signal_emit(oe, "list,default", "enna");
 
 }
@@ -362,6 +363,7 @@ static void _browse_down()
     {
         Evas_Object *o, *oe;
         Eina_List *files;
+	char *prev;
 
         files = mod->vfs->func.class_browse_down();
         o = mod->o_list;
@@ -371,12 +373,16 @@ static void _browse_down()
                 _list_transition_right_end_cb, files);
         edje_object_signal_emit(oe, "list,right", "enna");
 
-        mod->prev_selected = strdup(enna_location_label_get_nth(
-                mod->o_location, enna_location_count(mod->o_location) - 1));
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev selected : %s",
-                mod->prev_selected);
-        enna_location_remove_nth(mod->o_location,
-                enna_location_count(mod->o_location) - 1);
+	ENNA_FREE(mod->prev_selected);
+	mod->prev_selected = NULL;
+	prev = enna_location_label_get_nth(mod->o_location, enna_location_count(mod->o_location) - 1);
+	if (prev)
+	    mod->prev_selected = strdup(prev);
+
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev selected : %s", mod->prev_selected);
+        enna_location_remove_nth(mod->o_location,enna_location_count(mod->o_location) - 1);
+	//je_object_part_swallow(mod->o_edje, "enna.swallow.location", mod->o_location);
+
     }
 }
 

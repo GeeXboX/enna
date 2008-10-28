@@ -141,12 +141,9 @@ EAPI void enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon,
     if (tmp)
         mw = atoi(tmp);
 
-    enna_box_pack_options_set(si->o_base, 1, 1, /* fill */
-    1, 1, /* expand */
-    0.5, 0.5, /* align */
-    mw, mh, /* min */
-    99999, 9999 /* max */
-    );
+    evas_object_size_hint_min_set(si->o_base, mw, mh);
+    evas_object_size_hint_align_set(si->o_base, 0.5, 0.5);
+    evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
 
     evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
             _e_smart_event_mouse_up, si);
@@ -450,7 +447,7 @@ static void _e_smart_add(Evas_Object * obj)
     o = enna_box_add(e);
     enna_box_orientation_set(o, orientation);
     enna_box_homogenous_set(o, 1);
-    //    enna_box_align_set(o, 0.5, 0.5);
+    evas_object_size_hint_align_set(o, 0.5, 0.5);
     sd->o_box = o;
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_box);

@@ -162,9 +162,9 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
     pi->o_edje = o;
     pi->sd = sd;
 
-    enna_box_min_size_get(sd->o_box[0], &w0, NULL);
-    enna_box_min_size_get(sd->o_box[1], &w1, NULL);
-    enna_box_min_size_get(sd->o_box[2], &w2, NULL);
+    evas_object_size_hint_min_get(sd->o_box[0], &w0, NULL);
+    evas_object_size_hint_min_get(sd->o_box[1], &w1, NULL);
+    evas_object_size_hint_min_get(sd->o_box[2], &w2, NULL);
 
     if (w0 <= w1 && w0 <= w2)
         row = 0;
@@ -190,15 +190,12 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
             _smart_event_mouse_down, pi);
 
-    enna_box_freeze(sd->o_box[pi->row]);
+
     enna_box_pack_end(sd->o_box[pi->row], o);
-    enna_box_pack_options_set(o, 0, 0, /* fill */
-    0, 0, /* expand */
-    0, 0, /* align */
-    ow, oh, /* min */
-    99999, 9999 /* max */
-    );
-    enna_box_thaw(sd->o_box[pi->row]);
+    evas_object_size_hint_min_set(o, ow, oh);
+    evas_object_size_hint_align_set(o, 0, 0);
+
+
 
 }
 
@@ -558,16 +555,14 @@ static void _smart_reconfigure(Smart_Data * sd)
 
     for (i = 0; i < 3; i++)
     {
-        enna_box_min_size_get(sd->o_box[i], &w, &h);
+	evas_object_size_hint_min_get(sd->o_box[i], &w, &h);
         evas_object_resize(sd->o_box[i], w, sd->h / 3);
         if (w > ow)
             ow = w;
-        enna_box_pack_options_set(sd->o_box[i], 0, 0, 0, 0, 0, 0, w, sd->h / 3,
-                99999, 9999);
-
+	evas_object_size_hint_min_set(sd->o_box[i], w, sd->h / 3);
+	evas_object_size_hint_align_set(sd->o_box[i], 0, 0);
     }
-
-    enna_box_min_size_get(sd->o_cont, &w, &h);
+    evas_object_size_hint_min_get(sd->o_cont, &w, &h);
     evas_object_resize(sd->o_cont, w, h);
 
 }
