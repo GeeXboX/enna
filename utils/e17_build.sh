@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DEFAULT_SYSROOT="/usr"
-COMPONENTS="ecore edje edje_editor edje_viewer eet embryo emotion esmart etk evas"
+COMPONENTS="eina ecore edje edje_editor edje_viewer eet embryo emotion esmart etk evas"
 SVN_DIR="/tmp/E17-svn"
 SVN_URL="http://svn.enlightenment.org/svn/e/trunk/"
 
@@ -18,6 +18,12 @@ export CFLAGS="-I$BUILD_DIR/include"
 export LDFLAGS="-L$BUILD_DIR/lib"
 export LD_LIBRARY_PATH="$BUILD_DIR/lib"
 export PKG_CONFIG_PATH="$BUILD_DIR/lib/pkgconfig"
+
+cd eina
+./autogen.sh
+./configure --prefix="$BUILD_DIR" --enable-pthread
+make install
+cd ..
 
 cd eet
 ./autogen.sh
