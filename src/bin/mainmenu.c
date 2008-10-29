@@ -35,16 +35,16 @@
 #include "enna.h"
 
 #define SMART_NAME "enna_mainmenu"
-#define API_ENTRY \
-  E_Smart_Data *sd; \
-  sd = evas_object_smart_data_get(obj); \
-  if ((!obj) || (!sd) || (evas_object_type_get(obj) \
-    && strcmp(evas_object_type_get(obj), SMART_NAME)))
+#define API_ENTRY						\
+    Smart_Data *sd;						\
+    sd = evas_object_smart_data_get(obj);			\
+    if ((!obj) || (!sd) || (evas_object_type_get(obj)		\
+	    && strcmp(evas_object_type_get(obj), SMART_NAME)))
 
-typedef struct _E_Smart_Data E_Smart_Data;
-typedef struct _E_Smart_Item E_Smart_Item;
+typedef struct _Smart_Data Smart_Data;
+typedef struct _Smart_Item Smart_Item;
 
-struct _E_Smart_Data
+struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *o_smart;
@@ -57,9 +57,9 @@ struct _E_Smart_Data
 
 };
 
-struct _E_Smart_Item
+struct _Smart_Item
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Object *o_base;
     Evas_Object *o_icon;
     void (*func)(void *data);
@@ -70,22 +70,20 @@ struct _E_Smart_Item
 
 /* local subsystem functions */
 static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-static void _enna_mainmenu_activate_cb(void *data);
-static void _enna_mainmenu_smart_reconfigure(E_Smart_Data * sd);
-static void _enna_mainmenu_smart_init(void);
-static void _e_smart_add(Evas_Object * obj);
-static void _e_smart_del(Evas_Object * obj);
-static void _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y);
-static void _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h);
-static void _e_smart_show(Evas_Object * obj);
-static void _e_smart_hide(Evas_Object * obj);
-static void _e_smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
-static void _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip);
-static void _e_smart_clip_unset(Evas_Object * obj);
-static void _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info);
-static void _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info);
+static void _smart_activate_cb(void *data);
+static void _smart_reconfigure(Smart_Data * sd);
+static void _smart_init(void);
+static void _smart_add(Evas_Object * obj);
+static void _smart_del(Evas_Object * obj);
+static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y);
+static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h);
+static void _smart_show(Evas_Object * obj);
+static void _smart_hide(Evas_Object * obj);
+static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
+static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip);
+static void _smart_clip_unset(Evas_Object * obj);
+static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info);
+static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info);
 
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
@@ -94,29 +92,27 @@ static Evas_Smart *_e_smart = NULL;
 Evas_Object *
 enna_mainmenu_add(Evas * evas)
 {
-    _enna_mainmenu_smart_init();
+    _smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
 
-void enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon,
-        const char *label, Enna_Class_Activity *act, void (*func) (void *data), void *data)
+void enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label, Enna_Class_Activity *act, void (*func) (void *data), void *data)
 {
-    E_Smart_Item *si;
+    Smart_Item *si;
     Evas_Coord mw = 0, mh = 0;
     const char *tmp;
 
-    API_ENTRY
-    return;
+    API_ENTRY return;
 
     if (!act)
         return;
 
-    si = malloc(sizeof(E_Smart_Item));
+    si = malloc(sizeof(Smart_Item));
     si->sd = sd;
     si->act = act;
     si->o_base = edje_object_add(evas_object_evas_get(sd->o_edje));
     edje_object_file_set(si->o_base, enna_config_theme_get(),
-            "enna/mainmenu/item");
+	"enna/mainmenu/item");
     if (label)
     {
         edje_object_part_text_set(si->o_base, "enna.text.label", label);
@@ -148,17 +144,16 @@ void enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon,
     evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
 
     evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
-            _e_smart_event_mouse_up, si);
+	_smart_event_mouse_up, si);
     evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_DOWN,
-            _e_smart_event_mouse_down, si);
+	_smart_event_mouse_down, si);
     evas_object_show(si->o_base);
 }
 
 void enna_mainmenu_load_from_activities(Evas_Object *obj)
 {
     Eina_List *activities, *l;
-    API_ENTRY
-    return;
+    API_ENTRY return;
 
     activities = enna_activities_get();
 
@@ -178,17 +173,16 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
             icon = enna_image_add(evas_object_evas_get(sd->o_edje));
             enna_image_file_set(icon, act->icon_file);
         }
-        enna_mainmenu_append(obj, icon, act->name, act,
-                _enna_mainmenu_activate_cb, act);
+        enna_mainmenu_append(obj, icon, act->name, act, _smart_activate_cb, act);
     }
 
 }
 
 void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
 {
-    E_Smart_Item *si;
+    Smart_Item *si;
     API_ENTRY
-    return;
+	return;
 
     si = eina_list_nth(sd->items, nth);
     if (!si)
@@ -213,17 +207,15 @@ void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
 
 int enna_mainmenu_selected_get(Evas_Object *obj)
 {
-    API_ENTRY
-    return -1;
+    API_ENTRY return -1;
     return sd->selected;
 }
 
 void enna_mainmenu_select_nth(Evas_Object *obj, int nth)
 {
-    E_Smart_Item *new, *prev;
+    Smart_Item *new, *prev;
 
-    API_ENTRY
-    return;
+    API_ENTRY return;
 
     prev = eina_list_nth(sd->items, sd->selected);
 
@@ -241,28 +233,25 @@ void enna_mainmenu_select_nth(Evas_Object *obj, int nth)
 
 }
 
-Enna_Class_Activity *
-enna_mainmenu_selected_activity_get(Evas_Object *obj)
+Enna_Class_Activity *enna_mainmenu_selected_activity_get(Evas_Object *obj)
 {
-    E_Smart_Item *si;
+    Smart_Item *si;
     API_ENTRY return NULL;
 
     si = eina_list_nth(sd->items, sd->selected);
 
     if (!si)
-    return NULL;
+	return NULL;
 
     return si->act;
-
 }
 
 void enna_mainmenu_select_next(Evas_Object *obj)
 {
-    E_Smart_Item *new, *prev;
+    Smart_Item *new, *prev;
     int ns = 0;
 
-    API_ENTRY
-    return;
+    API_ENTRY return;
 
     ns = sd->selected;
     prev = eina_list_nth(sd->items, ns);
@@ -285,11 +274,10 @@ void enna_mainmenu_select_next(Evas_Object *obj)
 
 void enna_mainmenu_select_prev(Evas_Object *obj)
 {
-    E_Smart_Item *new, *prev;
+    Smart_Item *new, *prev;
     int ns = 0;
 
-    API_ENTRY
-    return;
+    API_ENTRY return;
 
     ns = sd->selected;
     prev = eina_list_nth(sd->items, ns);
@@ -313,6 +301,7 @@ void enna_mainmenu_select_prev(Evas_Object *obj)
 void enna_mainmenu_show(Evas_Object *obj)
 {
     Evas_Object *icon;
+
     API_ENTRY return;
     if (sd->visible)
         return;
@@ -327,8 +316,8 @@ void enna_mainmenu_show(Evas_Object *obj)
     edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "Enna");
     /* FIXME: add enna icon */
     /*icon = edje_object_add(evas_object_evas_get(sd->o_edje));
-    edje_object_file_set(icon, enna_config_theme_get(), si->act->icon);
-    edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
+      edje_object_file_set(icon, enna_config_theme_get(), si->act->icon);
+      edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
     */
     edje_object_signal_emit(sd->o_edje, "mainmenu,show", "enna");
 
@@ -336,9 +325,9 @@ void enna_mainmenu_show(Evas_Object *obj)
 
 void enna_mainmenu_hide(Evas_Object *obj)
 {
-    E_Smart_Item *si;
-    API_ENTRY
-    return;
+    Smart_Item *si;
+
+    API_ENTRY return;
     if (!sd->visible)
         return;
 
@@ -348,18 +337,18 @@ void enna_mainmenu_hide(Evas_Object *obj)
 
     if (si && si->act)
     {
-       Evas_Object *icon;
-       si->func(si->data);
-       /* Unswallow and delete previous icons */
-       icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
-       edje_object_part_unswallow(sd->o_edje, icon);
-       ENNA_OBJECT_DEL(icon);
+	Evas_Object *icon;
+	si->func(si->data);
+	/* Unswallow and delete previous icons */
+	icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
+	edje_object_part_unswallow(sd->o_edje, icon);
+	ENNA_OBJECT_DEL(icon);
 
-       edje_object_part_text_set(sd->o_edje, "titlebar.text.label", si->act->name);
-       icon = edje_object_add(evas_object_evas_get(sd->o_edje));
-       edje_object_file_set(icon, enna_config_theme_get(),si->act->icon);
-       edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
-       enna_mainmenu_hide(obj);
+	edje_object_part_text_set(sd->o_edje, "titlebar.text.label", si->act->name);
+	icon = edje_object_add(evas_object_evas_get(sd->o_edje));
+	edje_object_file_set(icon, enna_config_theme_get(),si->act->icon);
+	edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
+	enna_mainmenu_hide(obj);
     }
 
     edje_object_signal_emit(sd->o_edje, "mainmenu,hide", "enna");
@@ -367,8 +356,7 @@ void enna_mainmenu_hide(Evas_Object *obj)
 
 unsigned char enna_mainmenu_visible(Evas_Object *obj)
 {
-    API_ENTRY
-    return 0;
+    API_ENTRY return 0;
     return sd->visible;
 }
 
@@ -376,20 +364,19 @@ unsigned char enna_mainmenu_visible(Evas_Object *obj)
 
 static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-   E_Smart_Data *sd = data;
-   Ecore_X_Event_Key_Down *ev;
+    Ecore_X_Event_Key_Down *ev;
 
-   ev = calloc(1, sizeof(Ecore_X_Event_Key_Down));
+    ev = calloc(1, sizeof(Ecore_X_Event_Key_Down));
 
-   ev->keyname = eina_stringshare_add("Super_L");
-   ev->keysymbol = eina_stringshare_add("Super_L");
-   ev->key_compose = eina_stringshare_add("Super_L");
-   ev->modifiers = 0;
+    ev->keyname = eina_stringshare_add("Super_L");
+    ev->keysymbol = eina_stringshare_add("Super_L");
+    ev->key_compose = eina_stringshare_add("Super_L");
+    ev->modifiers = 0;
 
-   ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
+    ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
 }
 
-static void _enna_mainmenu_activate_cb(void *data)
+static void _smart_activate_cb(void *data)
 {
     Enna_Class_Activity *act;
 
@@ -400,7 +387,7 @@ static void _enna_mainmenu_activate_cb(void *data)
 
 }
 
-static void _enna_mainmenu_smart_reconfigure(E_Smart_Data * sd)
+static void _smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
 
@@ -414,26 +401,37 @@ static void _enna_mainmenu_smart_reconfigure(E_Smart_Data * sd)
 
 }
 
-static void _enna_mainmenu_smart_init(void)
+static void _smart_init(void)
 {
     if (_e_smart)
         return;
     static const Evas_Smart_Class sc =
-    { SMART_NAME, EVAS_SMART_CLASS_VERSION, _e_smart_add, _e_smart_del,
-            _e_smart_move, _e_smart_resize, _e_smart_show, _e_smart_hide,
-            _e_smart_color_set, _e_smart_clip_set, _e_smart_clip_unset, NULL,
-            NULL };
+	{
+	    SMART_NAME,
+	    EVAS_SMART_CLASS_VERSION,
+	    _smart_add,
+	    _smart_del,
+	    _smart_move,
+	    _smart_resize,
+	    _smart_show,
+	    _smart_hide,
+	    _smart_color_set,
+	    _smart_clip_set,
+	    _smart_clip_unset,
+	    NULL,
+	    NULL
+	};
     _e_smart = evas_smart_class_new(&sc);
 }
 
-static void _e_smart_add(Evas_Object * obj)
+static void _smart_add(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Object *o;
     Evas *e;
     unsigned int orientation = 1;
     char *tmp = NULL;
-    sd = calloc(1, sizeof(E_Smart_Data));
+    sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
 
@@ -481,9 +479,9 @@ static void _e_smart_add(Evas_Object * obj)
     evas_object_smart_data_set(obj, sd);
 }
 
-static void _e_smart_del(Evas_Object * obj)
+static void _smart_del(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Eina_List *l;
 
     sd = evas_object_smart_data_get(obj);
@@ -492,7 +490,7 @@ static void _e_smart_del(Evas_Object * obj)
 
     for (l = sd->items; l; l = l->next)
     {
-        E_Smart_Item *si;
+        Smart_Item *si;
         si = l->data;
         evas_object_del(si->o_base);
         evas_object_del(si->o_icon);
@@ -503,9 +501,9 @@ static void _e_smart_del(Evas_Object * obj)
     free(sd);
 }
 
-static void _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
+static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -514,12 +512,12 @@ static void _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
         return;
     sd->x = x;
     sd->y = y;
-    _enna_mainmenu_smart_reconfigure(sd);
+    _smart_reconfigure(sd);
 }
 
-static void _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
+static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -528,12 +526,12 @@ static void _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
         return;
     sd->w = w;
     sd->h = h;
-    _enna_mainmenu_smart_reconfigure(sd);
+    _smart_reconfigure(sd);
 }
 
-static void _e_smart_show(Evas_Object * obj)
+static void _smart_show(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -542,9 +540,9 @@ static void _e_smart_show(Evas_Object * obj)
     evas_object_show(sd->o_edje);
 }
 
-static void _e_smart_hide(Evas_Object * obj)
+static void _smart_hide(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -552,9 +550,9 @@ static void _e_smart_hide(Evas_Object * obj)
     evas_object_hide(sd->o_edje);
 }
 
-static void _e_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
+static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -562,9 +560,9 @@ static void _e_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
     evas_object_color_set(sd->o_edje, r, g, b, a);
 }
 
-static void _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
+static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -572,9 +570,9 @@ static void _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
     evas_object_clip_set(sd->o_edje, clip);
 }
 
-static void _e_smart_clip_unset(Evas_Object * obj)
+static void _smart_clip_unset(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -582,10 +580,9 @@ static void _e_smart_clip_unset(Evas_Object * obj)
     evas_object_clip_unset(sd->o_edje);
 }
 
-static void _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info)
+static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Event_Mouse_Up *ev;
     Enna_List_Item *si;
     Eina_List *l;
@@ -608,10 +605,9 @@ static void _e_smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
     }
 }
 
-static void _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info)
+static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Event_Mouse_Down *ev;
     Enna_List_Item *si;
     Enna_List_Item *prev;
@@ -632,7 +628,7 @@ static void _e_smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         {
             edje_object_signal_emit(si->o_base, "enna,state,selected", "enna");
             edje_object_signal_emit(prev->o_base, "enna,state,unselected",
-                    "enna");
+		"enna");
             sd->selected = i;
             break;
         }
