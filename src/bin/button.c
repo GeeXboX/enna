@@ -47,13 +47,16 @@ typedef struct _Smart_Data Smart_Data;
 struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
+    Evas_Object *obj;
     Evas_Object *o_edje;
     Evas_Object *o_icon;
     char *label;
+
     Evas_Hash *funcs;       /* Callback functions hash */
 };
 
 /* local subsystem functions */
+static void _smart_signal_clicked_cb(void *data, Evas_Object *obj, const char *emission, const char *source);
 static void _smart_reconfigure(Smart_Data * sd);
 static void _smart_init(void);
 static void _smart_add(Evas_Object * obj);
@@ -125,6 +128,13 @@ enna_button_icon_set(Evas_Object *obj, const char *icon)
 }
 
 /* local subsystem globals */
+
+static void _smart_signal_clicked_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
+{
+   Smart_Data *sd = data;
+   evas_object_smart_callback_call(sd->obj, "clicked", NULL);
+}
+
 static void _smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
@@ -171,6 +181,8 @@ static void _smart_add(Evas_Object * obj)
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/button");
     evas_object_show(sd->o_edje);
+    edje_object_signal_callback_add(sd->o_edje, "enna,action,click", "", _smart_signal_clicked_cb, sd);
+    sd->obj = obj;
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
 }

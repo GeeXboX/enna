@@ -50,6 +50,7 @@ struct _E_Smart_Data
     Evas_Object *o_smart;
     Evas_Object *o_edje;
     Evas_Object *o_box;
+    Evas_Object *o_home_button;
     Eina_List *items;
     int selected;
     unsigned char visible : 1;
@@ -68,6 +69,7 @@ struct _E_Smart_Item
 };
 
 /* local subsystem functions */
+static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 static void _enna_mainmenu_activate_cb(void *data);
 static void _enna_mainmenu_smart_reconfigure(E_Smart_Data * sd);
 static void _enna_mainmenu_smart_init(void);
@@ -372,6 +374,21 @@ unsigned char enna_mainmenu_visible(Evas_Object *obj)
 
 /* local subsystem globals */
 
+static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+   E_Smart_Data *sd = data;
+   Ecore_X_Event_Key_Down *ev;
+
+   ev = calloc(1, sizeof(Ecore_X_Event_Key_Down));
+
+   ev->keyname = eina_stringshare_add("Super_L");
+   ev->keysymbol = eina_stringshare_add("Super_L");
+   ev->key_compose = eina_stringshare_add("Super_L");
+   ev->modifiers = 0;
+
+   ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
+}
+
 static void _enna_mainmenu_activate_cb(void *data)
 {
     Enna_Class_Activity *act;
@@ -456,6 +473,8 @@ static void _e_smart_add(Evas_Object * obj)
     enna_button_icon_set(o, "icon/home_mini");
     edje_object_part_swallow(sd->o_edje, "titlebar.swallow.button", o);
     evas_object_show(o);
+    evas_object_smart_callback_add(o, "clicked", _home_button_clicked_cb, sd);
+    sd->o_home_button = o;
 
     sd->o_smart = obj;
     evas_object_smart_member_add(sd->o_edje, obj);
