@@ -35,28 +35,15 @@
 
 #define SMART_NAME "slideshow"
 
-#define API_ENTRY \
-   E_Smart_Data *sd; \
-   sd = evas_object_smart_data_get(obj); \
-   if ((!obj) || (!sd) || \
-     (evas_object_type_get(obj) && \
-     strcmp(evas_object_type_get(obj), SMART_NAME)))
-
-#define INTERNAL_ENTRY \
-   E_Smart_Data *sd; \
-   sd = evas_object_smart_data_get(obj); \
-   if (!sd) \
-      return;
-
 #define NB_TRANSITIONS_MAX 3.0
 
 #define STOP 0
 #define PLAY 1
 #define PAUSE 2
 
-typedef struct _smart_Data E_Smart_Data;
+typedef struct _Smart_Data Smart_Data;
 
-struct _smart_Data
+struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
@@ -71,12 +58,12 @@ struct _smart_Data
 };
 
 /* local subsystem functions */
-static void _enna_slideshow_smart_reconfigure(E_Smart_Data * sd);
+static void _enna_slideshow_smart_reconfigure(Smart_Data * sd);
 static void _enna_slideshow_smart_init(void);
-static void _random_transition(E_Smart_Data *sd);
+static void _random_transition(Smart_Data *sd);
 static void _edje_cb(void *data, Evas_Object *obj, const char *emission,
         const char *source);
-static void _switch_images(E_Smart_Data * sd, Evas_Object * new_slide);
+static void _switch_images(Smart_Data * sd, Evas_Object * new_slide);
 static void _smart_add(Evas_Object * obj);
 static void _smart_del(Evas_Object * obj);
 static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y);
@@ -208,7 +195,7 @@ void enna_slideshow_play(void *data)
 
 /* local subsystem globals */
 
-static void _random_transition(E_Smart_Data *sd)
+static void _random_transition(Smart_Data *sd)
 {
     unsigned int n;
 
@@ -246,7 +233,7 @@ static void _edje_cb(void *data, Evas_Object *obj, const char *emission,
         const char *source)
 {
 
-    E_Smart_Data *sd = (E_Smart_Data*)data;
+    Smart_Data *sd = (Smart_Data*)data;
 
     if (!strcmp(emission, "done"))
     {
@@ -256,7 +243,7 @@ static void _edje_cb(void *data, Evas_Object *obj, const char *emission,
     }
 }
 
-static void _switch_images(E_Smart_Data * sd, Evas_Object * new_slide)
+static void _switch_images(Smart_Data * sd, Evas_Object * new_slide)
 {
 
     if (!sd || !new_slide || !sd->o_transition)
@@ -274,7 +261,7 @@ static void _switch_images(E_Smart_Data * sd, Evas_Object * new_slide)
     edje_object_signal_emit(sd->o_transition, "show,2", "enna");
 }
 
-static void _enna_slideshow_smart_reconfigure(E_Smart_Data * sd)
+static void _enna_slideshow_smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
 
@@ -302,9 +289,9 @@ static void _enna_slideshow_smart_init(void)
 
 static void _smart_add(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
-    sd = calloc(1, sizeof(E_Smart_Data));
+    sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
 
@@ -334,7 +321,7 @@ static void _smart_add(Evas_Object * obj)
 
 static void _smart_del(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Eina_List *l;
 
     sd = evas_object_smart_data_get(obj);
@@ -351,7 +338,7 @@ static void _smart_del(Evas_Object * obj)
 
 static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -365,7 +352,7 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 
 static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -379,7 +366,7 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
 static void _smart_show(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -389,7 +376,7 @@ static void _smart_show(Evas_Object * obj)
 
 static void _smart_hide(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -399,7 +386,7 @@ static void _smart_hide(Evas_Object * obj)
 
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -409,7 +396,7 @@ static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -419,7 +406,7 @@ static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 
 static void _smart_clip_unset(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)

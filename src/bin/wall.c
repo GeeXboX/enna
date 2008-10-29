@@ -34,8 +34,6 @@
 #include "wall.h"
 
 #define SMART_NAME "enna_wall"
-#define API_ENTRY Smart_Data *sd; sd = evas_object_smart_data_get(obj); if ((!obj) || (!sd) || (evas_object_type_get(obj) && strcmp(evas_object_type_get(obj), SMART_NAME)))
-#define INTERNAL_ENTRY Smart_Data *sd; sd = evas_object_smart_data_get(obj); if (!sd) return;
 
 #define KEY_NONE 0
 #define KEY_LEFT 1

@@ -36,20 +36,8 @@
 
 #define SMART_NAME "enna_location"
 
-#define API_ENTRY \
-   E_Smart_Data *sd; \
-   sd = evas_object_smart_data_get(obj); \
-   if ((!obj) || (!sd) || \
-      (evas_object_type_get(obj) \
-      && strcmp(evas_object_type_get(obj), SMART_NAME)))
-
-#define INTERNAL_ENTRY \
-   E_Smart_Data *sd; \
-   sd = evas_object_smart_data_get(obj); \
-   if (!sd) return;
-
-typedef struct _smart_Data E_Smart_Data;
-struct _smart_Data
+typedef struct _Smart_Data Smart_Data;
+struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *smart_obj;
@@ -63,7 +51,7 @@ typedef struct _Enna_Location_Item Enna_Location_Item;
 
 struct _Enna_Location_Item
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Object *o_base;
     Evas_Object *o_icon;
     unsigned char selected : 1;
@@ -73,7 +61,7 @@ struct _Enna_Location_Item
 };
 
 /* local subsystem functions */
-static void _enna_location_smart_reconfigure(E_Smart_Data * sd);
+static void _enna_location_smart_reconfigure(Smart_Data * sd);
 static void _enna_location_smart_init(void);
 static void _smart_add(Evas_Object * obj);
 static void _smart_del(Evas_Object * obj);
@@ -163,7 +151,7 @@ void enna_location_append(Evas_Object *obj, const char *label,
 static void _location_hide_end(void *data, Evas_Object *o, const char *sig,
         const char *src)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Enna_Location_Item *si;
     Evas_Coord x, y, w, h;
     si = data;
@@ -219,7 +207,7 @@ int enna_location_count(Evas_Object *obj)
 }
 
 /* local subsystem globals */
-static void _enna_location_smart_reconfigure(E_Smart_Data * sd)
+static void _enna_location_smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord mw, w = 0;
     Evas_List *l;
@@ -252,9 +240,9 @@ static void _enna_location_smart_init(void)
 
 static void _smart_add(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
-    sd = calloc(1, sizeof(E_Smart_Data));
+    sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
 
@@ -280,7 +268,7 @@ static void _smart_add(Evas_Object * obj)
 
 static void _smart_del(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -302,7 +290,7 @@ static void _smart_del(Evas_Object * obj)
 
 static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -316,7 +304,7 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 
 static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -330,7 +318,7 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
 static void _smart_show(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -340,7 +328,7 @@ static void _smart_show(Evas_Object * obj)
 
 static void _smart_hide(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -350,7 +338,7 @@ static void _smart_hide(Evas_Object * obj)
 
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -360,7 +348,7 @@ static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -370,7 +358,7 @@ static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 
 static void _smart_clip_unset(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -381,7 +369,7 @@ static void _smart_clip_unset(Evas_Object * obj)
 static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         void *event_info)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Event_Mouse_Down *ev;
     Enna_Location_Item *si;
 
@@ -402,7 +390,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
         void *event_info)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Event_Mouse_Up *ev;
     Enna_Location_Item *si;
 

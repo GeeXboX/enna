@@ -1,8 +1,7 @@
 #include <enna.h>
 
 #define SMART_NAME "enna_pan"
-#define API_ENTRY Smart_Data *sd; sd = evas_object_smart_data_get(obj); if ((!obj) || (!sd) || (evas_object_type_get(obj) && strcmp(evas_object_type_get(obj), SMART_NAME)))
-#define INTERNAL_ENTRY Smart_Data *sd; sd = evas_object_smart_data_get(obj); if (!sd) return;
+
 typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
@@ -257,7 +256,7 @@ static void _smart_init(void)
 	     SMART_NAME,
 	       EVAS_SMART_CLASS_VERSION,
 	       _smart_add,
-	       _smart_del, 
+	       _smart_del,
 	       _smart_move,
 	       _smart_resize,
 	       _smart_show,

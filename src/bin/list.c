@@ -10,20 +10,8 @@
 
 #define SMART_NAME "enna_list"
 
-#define API_ENTRY \
-   E_Smart_Data *sd; \
-   sd = evas_object_smart_data_get(obj); \
-   if ((!obj) || (!sd) || \
-      (evas_object_type_get(obj) \
-      && strcmp(evas_object_type_get(obj), SMART_NAME)))
-
-#define INTERNAL_ENTRY \
-   E_Smart_Data *sd; \
-   sd = evas_object_smart_data_get(obj); \
-   if (!sd) return;
-
-typedef struct _smart_Data E_Smart_Data;
-struct _smart_Data
+typedef struct _Smart_Data Smart_Data;
+struct _Smart_Data
 {
     Evas_Coord x, y, w, h, iw, ih;
     Evas_Object *o_smart;
@@ -50,12 +38,12 @@ static void _smart_resize(Evas_Object *obj, Evas_Coord w, Evas_Coord h);
 static void _smart_color_set(Evas_Object *obj, int r, int g, int b, int a);
 static void _smart_clip_set(Evas_Object *obj, Evas_Object *clip);
 static void _smart_clip_unset(Evas_Object *obj);
-static void _smart_reconfigure(E_Smart_Data *sd);
+static void _smart_reconfigure(Smart_Data *sd);
 static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         void *event_info);
 static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
         void *event_info);
-static void _smart_event_key_down(E_Smart_Data *sd, void *event_info);
+static void _smart_event_key_down(Smart_Data *sd, void *event_info);
 static int _letter_timer_cb(void *data);
 static Evas_Smart *_e_smart = NULL;
 
@@ -432,9 +420,9 @@ static void _smart_init(void)
 
 static void _smart_add(Evas_Object *obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
-    sd = calloc(1, sizeof(E_Smart_Data));
+    sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
     evas_object_smart_data_set(obj, sd);
@@ -464,7 +452,7 @@ static void _smart_add(Evas_Object *obj)
 
 static int _letter_timer_cb(void *data)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     int i;
     Eina_List *l;
 
@@ -567,7 +555,7 @@ static void _smart_clip_unset(Evas_Object *obj)
     evas_object_clip_unset(sd->o_edje);
 }
 
-static void _smart_reconfigure(E_Smart_Data *sd)
+static void _smart_reconfigure(Smart_Data *sd)
 {
     Evas_Coord mh, mw,  h = 0;
     Evas_List *l;
@@ -592,7 +580,7 @@ static void _smart_reconfigure(E_Smart_Data *sd)
 static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         void *event_info)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Event_Mouse_Down *ev;
     Enna_List_Item *si;
     Eina_List *l = NULL;
@@ -624,7 +612,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
         void *event_info)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas_Event_Mouse_Up *ev;
     Enna_List_Item *si;
 
@@ -650,7 +638,7 @@ static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
         si->func(si->data, si->data2);
 }
 
-static void list_item_select(E_Smart_Data *sd, int n)
+static void list_item_select(Smart_Data *sd, int n)
 {
     Evas_Coord x, y, h;
     enna_list_selected_set(sd->o_smart, n);
@@ -659,7 +647,7 @@ static void list_item_select(E_Smart_Data *sd, int n)
     enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
 }
 
-static void list_set_item(E_Smart_Data *sd, int start, int up, int step)
+static void list_set_item(Smart_Data *sd, int start, int up, int step)
 {
     Enna_List_Item *si;
     int n, ns;
@@ -683,7 +671,7 @@ static void list_set_item(E_Smart_Data *sd, int start, int up, int step)
         list_item_select(sd, n);
 }
 
-static void list_jump_to_ascii(E_Smart_Data *sd, char k)
+static void list_jump_to_ascii(Smart_Data *sd, char k)
 {
     Eina_List *l;
     int i = 0;
@@ -725,7 +713,7 @@ static char list_get_letter_from_key(char key)
     }
 }
 
-static void list_get_alpha_from_digit(E_Smart_Data *sd, char key)
+static void list_get_alpha_from_digit(Smart_Data *sd, char key)
 {
     char letter[2];
 
@@ -764,7 +752,7 @@ static void list_get_alpha_from_digit(E_Smart_Data *sd, char key)
     list_jump_to_ascii(sd, letter[0]);
 }
 
-static void _smart_event_key_down(E_Smart_Data *sd, void *event_info)
+static void _smart_event_key_down(Smart_Data *sd, void *event_info)
 {
     Ecore_X_Event_Key_Down *ev;
     Enna_List_Item *si;
