@@ -88,7 +88,7 @@ static int _event_bg_key_down_cb(void *data, int type, void *event)
                 break;
             }
             case ENNA_KEY_OK:
-	    case ENNA_KEY_SPACE:
+            case ENNA_KEY_SPACE:
             {
                 enna_mainmenu_activate_nth(enna->o_mainmenu,
                         enna_mainmenu_selected_get(enna->o_mainmenu));

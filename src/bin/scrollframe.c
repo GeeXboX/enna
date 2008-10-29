@@ -1,8 +1,6 @@
 #include "enna.h"
 
 #define SMART_NAME "enna_scrollframe"
-#define API_ENTRY Smart_Data *sd; sd = evas_object_smart_data_get(obj); if ((!obj) || (!sd) || (evas_object_type_get(obj) && strcmp(evas_object_type_get(obj), SMART_NAME)))
-#define INTERNAL_ENTRY Smart_Data *sd; sd = evas_object_smart_data_get(obj); if (!sd) return;
 
 #define thumbscroll_friction 1.0
 #define thumbscroll_momentum_threshhold 100
@@ -723,7 +721,7 @@ static void _smart_scrollbar_read(Smart_Data *sd)
 
 static void _smart_scrollbar_reset(Smart_Data *sd)
 {
-    Evas_Coord px, py;
+    Evas_Coord px = 0, py = 0;
 
     edje_object_part_drag_value_set(sd->edje_obj, "e.dragable.vbar", 0.0, 0.0);
     edje_object_part_drag_value_set(sd->edje_obj, "e.dragable.hbar", 0.0, 0.0);
@@ -883,7 +881,7 @@ static void _smart_scrollbar_size_adjust(Smart_Data *sd)
 {
     if ((sd->child_obj) || (sd->extern_pan))
     {
-        Evas_Coord x, y, w, h, mx = 0, my = 0, vw = 0, vh = 0, px, py;
+        Evas_Coord x, y, w, h, mx = 0, my = 0, vw = 0, vh = 0, px = 0, py = 0;
         double vx, vy, size;
 
         edje_object_part_geometry_get(sd->edje_obj, "e.swallow.content", NULL,
@@ -948,7 +946,7 @@ static void _smart_scrollbar_size_adjust(Smart_Data *sd)
     }
     else
     {
-        Evas_Coord px, py;
+        Evas_Coord px = 0, py = 0;
 
         edje_object_part_drag_size_set(sd->edje_obj, "e.dragable.vbar", 1.0,
                 1.0);

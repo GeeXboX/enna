@@ -184,7 +184,7 @@ static Enna_Metadata *_class_metadata_get(void)
     char *track_nb;
     int frameduration = 0;
     char *codec_id;
-    
+
     meta = enna_metadata_new();
 
     meta->uri = strdup(mod->uri+7);
@@ -216,7 +216,7 @@ static Enna_Metadata *_class_metadata_get(void)
     codec_id = mrl_get_audio_codec(mod->player, NULL);
     meta->music->codec = get_codec_name (codec_id);
     free (codec_id);
-    
+
     meta->music->bitrate = mrl_get_property(mod->player, NULL,
             MRL_PROPERTY_AUDIO_BITRATE);
     meta->music->channels = mrl_get_property(mod->player, NULL,
@@ -227,7 +227,7 @@ static Enna_Metadata *_class_metadata_get(void)
     codec_id = mrl_get_video_codec(mod->player, NULL);
     meta->video->codec = get_codec_name (codec_id);
     free (codec_id);
-    
+
     meta->video->width = mrl_get_property(mod->player, NULL,
             MRL_PROPERTY_VIDEO_WIDTH);
     meta->video->height = mrl_get_property(mod->player, NULL,
@@ -301,13 +301,13 @@ static Enna_Class_MediaplayerBackend class = {
 /*                          Public Module API                                */
 /*****************************************************************************/
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "libplayer"
 };
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     Enna_Config_Data *cfgdata;
     char *value = NULL;
@@ -327,7 +327,7 @@ EAPI void module_init(Enna_Module *em)
 
     if (cfgdata)
     {
-        Evas_List *l;
+        Eina_List *l;
 
         for (l = cfgdata->pair; l; l = l->next)
         {
@@ -437,7 +437,7 @@ EAPI void module_init(Enna_Module *em)
     mod->label = NULL;
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     _class_shutdown(0);
     free(mod);

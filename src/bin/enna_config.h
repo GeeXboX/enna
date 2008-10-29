@@ -27,16 +27,16 @@ struct _Enna_Config
     const char *backend;
     const char *verbosity;
     /* Module Music */
-    Evas_List *music_local_root_directories;
-    Evas_List *music_filters;
-    Evas_List *video_filters;
-    Evas_List *photo_filters;
+    Eina_List *music_local_root_directories;
+    Eina_List *music_filters;
+    Eina_List *video_filters;
+    Eina_List *photo_filters;
 };
 
 struct _Enna_Config_Data
 {
     char *section;
-    Evas_List *pair;
+    Eina_List *pair;
 };
 
 struct _Config_Pair
@@ -45,13 +45,13 @@ struct _Config_Pair
     char *value;
 };
 
-EAPI Enna_Config *enna_config;
+Enna_Config *enna_config;
 
-EAPI const char *enna_config_theme_get(void);
-EAPI const char *enna_config_theme_file_get(const char *s);
-EAPI void enna_config_value_store(void *var, char *section,
+const char *enna_config_theme_get(void);
+const char *enna_config_theme_file_get(const char *s);
+void enna_config_value_store(void *var, char *section,
         ENNA_CONFIG_TYPE type, Config_Pair *pair);
-EAPI Enna_Config_Data *enna_config_module_pair_get(const char *module_name);
-EAPI void enna_config_init(void);
-EAPI void enna_config_shutdown(void);
+Enna_Config_Data *enna_config_module_pair_get(const char *module_name);
+void enna_config_init(void);
+void enna_config_shutdown(void);
 #endif

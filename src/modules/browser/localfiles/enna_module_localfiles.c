@@ -13,7 +13,7 @@ typedef struct _Root_Directories
 
 typedef struct _Module_Config
 {
-    Evas_List *root_directories;
+    Eina_List *root_directories;
 } Module_Config;
 
 typedef struct _Class_Private_Data
@@ -36,7 +36,7 @@ static Enna_Module_LocalFiles *mod;
 
 static unsigned char _uri_is_root(Class_Private_Data *data, const char *uri)
 {
-    Evas_List *l;
+    Eina_List *l;
 
     for (l = data->config->root_directories; l; l = l->next)
     {
@@ -48,15 +48,15 @@ static unsigned char _uri_is_root(Class_Private_Data *data, const char *uri)
     return 0;
 }
 
-static Evas_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
+static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
         Class_Private_Data *data, char *icon)
 {
 
     /* Browse Root */
     if (!path)
     {
-        Evas_List *files = NULL;
-        Evas_List *l;
+        Eina_List *files = NULL;
+        Eina_List *l;
         /* FIXME: this list should come from config ! */
         for (l = data->config->root_directories; l; l = l->next)
         {
@@ -66,7 +66,7 @@ static Evas_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
             root = l->data;
             file = enna_vfs_create_directory(root->uri, root->label, "icon/hd",
                     NULL);
-            files = evas_list_append(files, file);
+            files = eina_list_append(files, file);
         }
         //evas_stringshare_del(data->prev_uri);
         //evas_stringshare_del(data->uri);
@@ -78,9 +78,9 @@ static Evas_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
     {
         Ecore_List *files = NULL;
         char *filename = NULL;
-        Evas_List *files_list = NULL;
-        Evas_List *dirs_list = NULL;
-        Evas_List *l;
+        Eina_List *files_list = NULL;
+        Eina_List *dirs_list = NULL;
+        Eina_List *l;
         char dir[PATH_MAX];
 
         files = ecore_file_ls(path+7);
@@ -98,7 +98,7 @@ static Evas_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
 
                 f = enna_vfs_create_directory(dir, filename, "icon/directory",
                         NULL);
-                dirs_list = evas_list_append(dirs_list, f);
+                dirs_list = eina_list_append(dirs_list, f);
                 if (data->prev_uri)
                 {
                     if (!strcmp(dir, data->prev_uri))
@@ -116,13 +116,13 @@ static Evas_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
                 else
                     f = enna_vfs_create_file(dir, filename, icon, NULL);
 
-                files_list = evas_list_append(files_list, f);
+                files_list = eina_list_append(files_list, f);
             }
         }
         /* File after dir */
         for (l = files_list; l; l = l->next)
         {
-            dirs_list = evas_list_append(dirs_list, l->data);
+            dirs_list = eina_list_append(dirs_list, l->data);
         }
         //evas_stringshare_del(data->prev_uri);
         data->prev_uri = data->uri;
@@ -134,22 +134,22 @@ static Evas_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
 
 }
 
-static Evas_List *_class_browse_up_music(const char *path)
+static Eina_List *_class_browse_up_music(const char *path)
 {
     return _class_browse_up(path, ENNA_CAPS_MUSIC, mod->music, "icon/music");
 }
 
-static Evas_List *_class_browse_up_video(const char *path)
+static Eina_List *_class_browse_up_video(const char *path)
 {
     return _class_browse_up(path, ENNA_CAPS_VIDEO, mod->video, "icon/video");
 }
 
-static Evas_List *_class_browse_up_photo(const char *path)
+static Eina_List *_class_browse_up_photo(const char *path)
 {
     return _class_browse_up(path, ENNA_CAPS_PHOTO, mod->photo, "icon/photo");
 }
 
-static Evas_List * _class_browse_down(Class_Private_Data *data,
+static Eina_List * _class_browse_down(Class_Private_Data *data,
         ENNA_VFS_CAPS caps)
 {
     /* Browse Root */
@@ -157,12 +157,12 @@ static Evas_List * _class_browse_down(Class_Private_Data *data,
     {
         char *path_tmp = NULL;
         char *p;
-        Evas_List *files = NULL;
+        Eina_List *files = NULL;
 
         if (_uri_is_root(data, data->uri))
         {
-            Evas_List *files = NULL;
-            Evas_List *l;
+            Eina_List *files = NULL;
+            Eina_List *l;
             for (l = data->config->root_directories; l; l = l->next)
             {
                 Enna_Vfs_File *file;
@@ -171,7 +171,7 @@ static Evas_List * _class_browse_down(Class_Private_Data *data,
                 root = l->data;
                 file = enna_vfs_create_directory(root->uri, root->label,
                         "icon/hd", NULL);
-                files = evas_list_append(files, file);
+                files = eina_list_append(files, file);
             }
             data->prev_uri = NULL;
             data->uri = NULL;
@@ -195,17 +195,17 @@ static Evas_List * _class_browse_down(Class_Private_Data *data,
     return NULL;
 }
 
-static Evas_List * _class_browse_down_music(void)
+static Eina_List * _class_browse_down_music(void)
 {
     return _class_browse_down(mod->music, ENNA_CAPS_MUSIC);
 }
 
-static Evas_List * _class_browse_down_video(void)
+static Eina_List * _class_browse_down_video(void)
 {
     return _class_browse_down(mod->video, ENNA_CAPS_VIDEO);
 }
 
-static Evas_List * _class_browse_down_photo(void)
+static Eina_List * _class_browse_down_photo(void)
 {
     return _class_browse_down(mod->photo, ENNA_CAPS_PHOTO);
 }
@@ -253,7 +253,7 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 {
     Class_Private_Data *data;
     Enna_Config_Data *cfgdata;
-    Evas_List *l;
+    Eina_List *l;
 
     data = calloc(1, sizeof(Class_Private_Data));
     *priv = data;
@@ -272,24 +272,24 @@ static void __class_init(const char *name, Class_Private_Data **priv,
         Config_Pair *pair = l->data;
         if (!strcmp(pair->key, key))
         {
-            Evas_List *dir_data;
+            Eina_List *dir_data;
             enna_config_value_store(&dir_data, key, ENNA_CONFIG_STRING_LIST,
                     pair);
             if (dir_data)
             {
-                if (evas_list_count(dir_data) != 3)
+                if (eina_list_count(dir_data) != 3)
                     continue;
                 else
                 {
                     Root_Directories *root;
 
                     root = calloc(1, sizeof(Root_Directories));
-                    root->uri = evas_list_nth(dir_data, 0);
-                    root->label = evas_list_nth(dir_data, 1);
+                    root->uri = eina_list_nth(dir_data, 0);
+                    root->label = eina_list_nth(dir_data, 1);
                     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Root Data: %s",
                             root->uri);
-                    root->icon = evas_list_nth(dir_data, 2);
-                    data->config->root_directories = evas_list_append(
+                    root->icon = eina_list_nth(dir_data, 2);
+                    data->config->root_directories = eina_list_append(
                             data->config->root_directories, root);
                 }
             }
@@ -320,13 +320,13 @@ static Enna_Class_Vfs class_photo =
 
 /* Module interface */
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "localfiles"
 };
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -343,7 +343,7 @@ EAPI void module_init(Enna_Module *em)
             &class_photo, "path_photo");
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     Enna_Module_LocalFiles *mod;
 

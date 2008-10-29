@@ -51,10 +51,10 @@ static void _activate()
 
 }
 
-static void _list_transition_core(Evas_List *files, unsigned char direction)
+static void _list_transition_core(Eina_List *files, unsigned char direction)
 {
     Evas_Object *o_wall, *o_list, *oe;
-    Evas_List *l;
+    Eina_List *l;
 
     o_wall = mod->o_wall;
     o_list = mod->o_list;
@@ -78,7 +78,7 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
 
 
 
-    if (evas_list_count(files))
+    if (eina_list_count(files))
     {
         int i = 0;
 	int nb_dir = 0;
@@ -137,7 +137,7 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
     else
     {
 	/* Browse down and no file detected : Root */
-        Evas_List *l, *categories;
+        Eina_List *l, *categories;
         mod->is_root = 1;
         categories = enna_vfs_get(ENNA_CAPS_PHOTO);
         enna_list_icon_size_set(o_list, 200, 200);
@@ -201,7 +201,7 @@ static void _browse_down()
     if (mod->vfs && mod->vfs->func.class_browse_down)
     {
         Evas_Object *o, *oe;
-        Evas_List *files;
+        Eina_List *files;
 
         files = mod->vfs->func.class_browse_down();
         o = mod->o_list;
@@ -246,7 +246,7 @@ static void _browse(void *data, void *data2)
 
     Enna_Class_Vfs *vfs = data;
     Enna_Vfs_File *file = data2;
-    Evas_List *files, *l;
+    Eina_List *files, *l;
 
     if (!vfs)
         return;
@@ -317,7 +317,7 @@ static void _create_gui(void)
 {
 
     Evas_Object *o;
-    Evas_List *l, *categories;
+    Eina_List *l, *categories;
     Evas_Object *icon;
 
     o = edje_object_add(mod->em->evas);
@@ -490,13 +490,13 @@ static Enna_Class_Activity
 /*                          Public Module API                                */
 /*****************************************************************************/
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "photo"
 };
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -508,7 +508,7 @@ EAPI void module_init(Enna_Module *em)
     enna_activity_add(&class);
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     evas_object_del(mod->o_edje);
 

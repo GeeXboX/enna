@@ -18,7 +18,7 @@ static void _class_event(void *event_info);
 static int em_init(Enna_Module *em);
 static int em_shutdown(Enna_Module *em);
 static void _seek_video(double value);
-static void _list_transition_core(Evas_List *files, unsigned char direction);
+static void _list_transition_core(Eina_List *files, unsigned char direction);
 static void _list_transition_left_end_cb(void *data, Evas_Object *o,
         const char *sig, const char *src);
 static void _list_transition_right_end_cb(void *data, Evas_Object *o,
@@ -62,7 +62,7 @@ struct _Enna_Module_Video
 
 static Enna_Module_Video *mod;
 
-EAPI Enna_Module_Api module_api =
+Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "video"
@@ -244,10 +244,10 @@ static void _seek_video(double value)
 
 }
 
-static void _list_transition_core(Evas_List *files, unsigned char direction)
+static void _list_transition_core(Eina_List *files, unsigned char direction)
 {
     Evas_Object *o_list, *oe;
-    Evas_List *l;
+    Eina_List *l;
 
     o_list = mod->o_list;
     oe = enna_list_edje_object_get(o_list);
@@ -258,22 +258,20 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
         edje_object_signal_callback_del(oe, "list,transition,end", "edje",
                 _list_transition_right_end_cb);
 
-    enna_list_freeze(o_list);
     evas_object_del(o_list);
 
     o_list = enna_list_add(mod->em->evas);
     oe = enna_list_edje_object_get(o_list);
     evas_object_show(o_list);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
+
 
     if (direction == 0)
         edje_object_signal_emit(oe, "list,right,now", "enna");
     else
         edje_object_signal_emit(oe, "list,left,now", "enna");
 
-    enna_list_freeze(o_list);
     enna_list_icon_size_set(o_list, 200, 200);
-    if (evas_list_count(files))
+    if (eina_list_count(files))
     {
         int i = 0;
         mod->is_root = 0;
@@ -319,7 +317,7 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
     else
     {
         /* Browse down and no file detected : Root */
-        Evas_List *l, *categories;
+        Eina_List *l, *categories;
         mod->is_root = 1;
         categories = enna_vfs_get(ENNA_CAPS_VIDEO);
         enna_list_icon_size_set(o_list, 200, 200);
@@ -341,7 +339,6 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
         mod->vfs = NULL;
     }
 
-    enna_list_thaw(o_list);
     if (mod->prev_selected)
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev_selected : %s",
@@ -358,6 +355,7 @@ static void _list_transition_core(Evas_List *files, unsigned char direction)
     }
 
     mod->o_list = o_list;
+    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
     edje_object_signal_emit(oe, "list,default", "enna");
 
 }
@@ -381,7 +379,7 @@ static void _browse_down()
     if (mod->vfs && mod->vfs->func.class_browse_down)
     {
         Evas_Object *o, *oe;
-        Evas_List *files;
+        Eina_List *files;
 
         files = mod->vfs->func.class_browse_down();
         o = mod->o_list;
@@ -411,7 +409,7 @@ static void _browse(void *data, void *data2)
 
     Enna_Class_Vfs *vfs = data;
     Enna_Vfs_File *file = data2;
-    Evas_List *files, *l;
+    Eina_List *files, *l;
 
     if (!vfs)
         return;
@@ -538,7 +536,7 @@ static void _video_info_next()
     int n;
     n = enna_mediaplayer_selected_get();
 
-    if (n < enna_mediaplayer_playlist_count() - 2)
+    if (n < enna_mediaplayer_playlist_count() - 1)
     {
         Enna_Metadata *m;
         Evas_Object *o;
@@ -613,7 +611,7 @@ static void _create_gui()
 {
 
     Evas_Object *o, *oe;
-    Evas_List *l, *categories;
+    Eina_List *l, *categories;
     Evas_Object *icon;
 
     mod->state = LIST_VIEW;
@@ -628,7 +626,7 @@ static void _create_gui()
     /* Create List */
     o = enna_list_add(mod->em->evas);
     oe = enna_list_edje_object_get(o);
-    enna_list_freeze(o);
+
     edje_object_signal_emit(oe, "list,right,now", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_VIDEO);
@@ -647,7 +645,6 @@ static void _create_gui()
         enna_list_append(o, item, _browse, NULL, cat, NULL);
     }
 
-    enna_list_thaw(o);
     mod->vfs = NULL;
     evas_object_show(o);
     enna_list_selected_set(o, 0);
@@ -681,7 +678,6 @@ static int em_init(Enna_Module *em)
 static int em_shutdown(Enna_Module *em)
 {
     ENNA_OBJECT_DEL(mod->o_edje);
-    enna_list_freeze(mod->o_list);
     ENNA_OBJECT_DEL(mod->o_list);
     ENNA_OBJECT_DEL(mod->o_location);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
@@ -697,7 +693,7 @@ static int em_shutdown(Enna_Module *em)
     return 1;
 }
 
-EAPI void module_init(Enna_Module *em)
+void module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -706,7 +702,7 @@ EAPI void module_init(Enna_Module *em)
         return;
 }
 
-EAPI void module_shutdown(Enna_Module *em)
+void module_shutdown(Enna_Module *em)
 {
     em_shutdown(em);
 }

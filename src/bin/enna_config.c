@@ -39,12 +39,12 @@ static Evas_Bool _hash_foreach(const Evas_Hash *hash, const char *key,
 static Evas_Hash *_config_load_conf_file(char *filename);
 static Evas_Hash *_config_load_conf(char *conffile, int size);
 
-EAPI const char * enna_config_theme_get()
+const char * enna_config_theme_get()
 {
     return enna_config->theme_file;
 }
 
-EAPI const char * enna_config_theme_file_get(const char *s)
+const char * enna_config_theme_file_get(const char *s)
 {
     if (!s)
         return NULL;
@@ -64,7 +64,7 @@ EAPI const char * enna_config_theme_file_get(const char *s)
     return NULL;
 }
 
-EAPI void enna_config_value_store(void *var, char *section,
+void enna_config_value_store(void *var, char *section,
         ENNA_CONFIG_TYPE type, Config_Pair *pair)
 {
     if (!strcmp(pair->key, section))
@@ -85,8 +85,8 @@ EAPI void enna_config_value_store(void *var, char *section,
             }
             case ENNA_CONFIG_STRING_LIST:
             {
-                Evas_List *list;
-                Evas_List **value = var;
+                Eina_List *list;
+                Eina_List **value = var;
                 char **clist;
                 char *string;
                 int i;
@@ -98,7 +98,7 @@ EAPI void enna_config_value_store(void *var, char *section,
                 {
                     if (!string)
                         break;
-                    list = evas_list_append(list, string);
+                    list = eina_list_append(list, string);
                 }
                 *value = list;
             }
@@ -108,7 +108,7 @@ EAPI void enna_config_value_store(void *var, char *section,
     }
 }
 
-EAPI Enna_Config_Data *
+Enna_Config_Data *
 enna_config_module_pair_get(const char *module_name)
 {
     if(!hash_config || !module_name)
@@ -117,7 +117,7 @@ enna_config_module_pair_get(const char *module_name)
     return evas_hash_find(hash_config, module_name);
 }
 
-EAPI void enna_config_init()
+void enna_config_init()
 {
     char filename[4096];
 
@@ -128,7 +128,7 @@ EAPI void enna_config_init()
     evas_hash_foreach(hash_config, _hash_foreach, NULL);
 }
 
-EAPI void enna_config_shutdown()
+void enna_config_shutdown()
 {
 
 }
@@ -137,7 +137,7 @@ static Evas_Bool _hash_foreach(const Evas_Hash *hash, const char *key,
         void *data, void *fdata)
 {
     Enna_Config_Data *config_data;
-    Evas_List *l;
+    Eina_List *l;
     if (!strcmp(key, "enna"))
     {
         config_data = data;
@@ -200,7 +200,7 @@ static Evas_Hash * _config_load_conf_file(char *filename)
                 "verbosity=info\n\n"
                 "fullscreen=0\n\n"
                 "use_covers=1\n\n"
-                "use_snapshots=1\n\n"    
+                "use_snapshots=1\n\n"
                 "theme=default\n\n"
                 "#x11,xrender,gl,x11_16\n"
                 "engine=x11\n\n"
@@ -338,7 +338,7 @@ static Evas_Hash * _config_load_conf(char *conffile, int size)
         config_data = evas_hash_find(config, current_section);
         if (config_data)
         {
-            config_data->pair = evas_list_append(config_data->pair, pair);
+            config_data->pair = eina_list_append(config_data->pair, pair);
             /* Need this ? */
             /*evas_hash_modify(hash, current_section, config_data);*/
         }
