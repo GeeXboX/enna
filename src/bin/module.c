@@ -49,7 +49,7 @@ int enna_module_init(void)
 
                 if (m->enabled)
                 {
-                    enna_log(ENNA_MSG_WARNING, NULL, "disable m->name : %s",
+                    enna_log(ENNA_MSG_INFO, NULL, "disable module : %s",
                             m->name);
                     enna_module_disable(m);
                 }
