@@ -51,6 +51,8 @@ struct _Smart_Data
     Evas_Object *o_edje;
     Evas_Object *o_box;
     Evas_Object *o_home_button;
+    Evas_Object *o_back_button;
+    Evas_Object *o_btn_box;
     Eina_List *items;
     int selected;
     unsigned char visible : 1;
@@ -376,6 +378,20 @@ static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_in
     ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
 }
 
+static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Ecore_X_Event_Key_Down *ev;
+
+    ev = calloc(1, sizeof(Ecore_X_Event_Key_Down));
+
+    ev->keyname = eina_stringshare_add("BackSpace");
+    ev->keysymbol = eina_stringshare_add("BackSpace");
+    ev->key_compose = eina_stringshare_add("BackSpace");
+    ev->modifiers = 0;
+
+    ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
+}
+
 static void _smart_activate_cb(void *data)
 {
     Enna_Class_Activity *act;
@@ -467,12 +483,32 @@ static void _smart_add(Evas_Object * obj)
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_box);
 
+    sd->o_btn_box = enna_box_add(e);
+    enna_box_homogenous_set(sd->o_btn_box, 0);
+    enna_box_orientation_set(sd->o_btn_box, 1);
+    evas_object_size_hint_align_set(sd->o_btn_box, 0, 0.5);
+    evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 0.0);
+    edje_object_part_swallow(sd->o_edje, "titlebar.swallow.button", sd->o_btn_box);
+
     o = enna_button_add(e);
     enna_button_icon_set(o, "icon/home_mini");
-    edje_object_part_swallow(sd->o_edje, "titlebar.swallow.button", o);
-    evas_object_show(o);
     evas_object_smart_callback_add(o, "clicked", _home_button_clicked_cb, sd);
+    evas_object_size_hint_align_set(o, 0, 0.5);
+    evas_object_size_hint_weight_set(o, 1.0, 1.0);
+    evas_object_size_hint_min_set(o, 64, 64);
+    enna_box_pack_end(sd->o_btn_box, o);
+    evas_object_show(o);
     sd->o_home_button = o;
+
+    o = enna_button_add(e);
+    enna_button_icon_set(o, "icon/arrow_left");
+    evas_object_size_hint_align_set(o, 0, 0.5);
+    evas_object_size_hint_weight_set(o, 1.0, 1.0);
+    evas_object_size_hint_min_set(o, 64, 64);
+    enna_box_pack_end(sd->o_btn_box, o);
+    evas_object_show(o);
+    evas_object_smart_callback_add(o, "clicked", _back_button_clicked_cb, sd);
+    sd->o_back_button = o;
 
     sd->o_smart = obj;
     evas_object_smart_member_add(sd->o_edje, obj);
