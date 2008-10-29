@@ -340,7 +340,7 @@ void enna_mainmenu_hide(Evas_Object *obj)
     if (si && si->act)
     {
 	Evas_Object *icon;
-	si->func(si->data);
+
 	/* Unswallow and delete previous icons */
 	icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
 	edje_object_part_unswallow(sd->o_edje, icon);
@@ -399,6 +399,7 @@ static void _smart_activate_cb(void *data)
     if (!data)
         return;
     act = data;
+
     enna_content_select(act->name);
 
 }

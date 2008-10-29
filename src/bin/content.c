@@ -77,7 +77,7 @@ int enna_content_append(const char *name, Evas_Object *content)
             return -1;
     }
     elem = calloc(1, sizeof(Enna_Content_Element));
-    elem->name = evas_stringshare_add(name);
+    elem->name = eina_stringshare_add(name);
     elem->content = content;
     elem->selected = 0;
     _enna_contents = eina_list_append(_enna_contents, elem);
@@ -103,11 +103,8 @@ int enna_content_select(const char *name)
 
         if (!strcmp(name, e->name))
         {
-            if (!e->selected)
-            {
-                new = e;
-                e->selected = 1;
-            }
+	    new = e;
+            e->selected = 1;
         }
         else if (e->selected)
         {
