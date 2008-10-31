@@ -93,45 +93,45 @@ static Enna_Metadata *_class_metadata_get(void)
 
     tmp = emotion_object_file_get(mod->o_emotion);
     if (tmp)
-        m->uri = strdup(tmp);
+	m->uri = strdup(tmp);
 
     tmp = emotion_object_meta_info_get(mod->o_emotion,
-            EMOTION_META_INFO_TRACK_TITLE);
+	EMOTION_META_INFO_TRACK_TITLE);
     if (tmp)
-        m->title = strdup(tmp);
+	m->title = strdup(tmp);
 
     tmp = emotion_object_meta_info_get(mod->o_emotion,
-            EMOTION_META_INFO_TRACK_ALBUM);
+	EMOTION_META_INFO_TRACK_ALBUM);
     if (tmp)
-        m->music->album = strdup(tmp);
+	m->music->album = strdup(tmp);
 
     tmp = emotion_object_meta_info_get(mod->o_emotion,
-            EMOTION_META_INFO_TRACK_ARTIST);
+	EMOTION_META_INFO_TRACK_ARTIST);
     if (tmp)
-        m->music->artist = strdup(tmp);
+	m->music->artist = strdup(tmp);
 
     tmp = emotion_object_meta_info_get(mod->o_emotion,
-            EMOTION_META_INFO_TRACK_GENRE);
+	EMOTION_META_INFO_TRACK_GENRE);
     if (tmp)
-        m->music->genre = strdup(tmp);
+	m->music->genre = strdup(tmp);
 
     tmp = emotion_object_meta_info_get(mod->o_emotion,
-            EMOTION_META_INFO_TRACK_YEAR);
+	EMOTION_META_INFO_TRACK_YEAR);
     if (tmp)
-        m->music->year = strdup(tmp);
+	m->music->year = strdup(tmp);
 
     tmp = emotion_object_meta_info_get(mod->o_emotion,
-            EMOTION_META_INFO_TRACK_COMMENT);
+	EMOTION_META_INFO_TRACK_COMMENT);
     if (tmp)
-        m->music->comment = strdup(tmp);
+	m->music->comment = strdup(tmp);
 
     tmp = emotion_object_meta_info_get(mod->o_emotion,
-            EMOTION_META_INFO_TRACK_DISC_ID);
+	EMOTION_META_INFO_TRACK_DISC_ID);
     if (tmp)
-        m->music->discid = strdup(tmp);
+	m->music->discid = strdup(tmp);
 
     track = emotion_object_meta_info_get(mod->o_emotion,
-            EMOTION_META_INFO_TRACK_COUNT);
+	EMOTION_META_INFO_TRACK_COUNT);
     m->music->track = track ? atoi(track) : 0;
     return m;
 
@@ -152,28 +152,28 @@ static void _eos_cb(void *data, Evas_Object * obj, void *event_info)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "End of stream");
     if (mod->event_cb)
-        mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
+	mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
 }
 
 static Enna_Class_MediaplayerBackend class = {
-  "emotion",
-  1,
-  {
-    _class_init,
-    _class_shutdown,
-    _class_file_set,
-    _class_play,
-    _class_seek,
-    _class_stop,
-    _class_pause,
-    _class_position_get,
-    _class_length_get,
-    _class_snapshot,
-    _class_metadata_get,
-    NULL,
-    _class_event_cb_set,
-    _class_video_obj_get
-  }
+    "emotion",
+    1,
+    {
+	_class_init,
+	_class_shutdown,
+	_class_file_set,
+	_class_play,
+	_class_seek,
+	_class_stop,
+	_class_pause,
+	_class_position_get,
+	_class_length_get,
+	_class_snapshot,
+	_class_metadata_get,
+	NULL,
+	_class_event_cb_set,
+	_class_video_obj_get
+    }
 };
 
 /*****************************************************************************/
@@ -188,18 +188,52 @@ Enna_Module_Api module_api =
 
 void module_init(Enna_Module *em)
 {
-    if (!em)
-        return;
+    Enna_Config_Data *cfgdata;
+    char *value = NULL;
+    const char *plugin = NULL;
 
+    if (!em)
+	return;
+
+    /* Load Config file values */
+    cfgdata = enna_config_module_pair_get("libplayer");
+
+    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:");
+
+    if (cfgdata)
+    {
+	Eina_List *l;
+	for (l = cfgdata->pair; l; l = l->next)
+        {
+            Config_Pair *pair = l->data;
+
+            if (!strcmp("type", pair->key))
+            {
+                enna_config_value_store(&value, "type", ENNA_CONFIG_STRING,
+                        pair);
+                enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * type: %s", value);
+
+                if ((!strcmp("gstreamer", value)) ||(!strcmp("xine", value)) || (!strcmp("vlc", value)))
+		    plugin = eina_stringshare_add(value);
+		else
+		{
+                    enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                            "   - unknown type, 'gstreamer' used instead");
+		    plugin = eina_stringshare_add("gstreamer");
+		}
+            }
+
+	}
+    }
     mod = calloc(1, sizeof(Enna_Module_Emotion));
     mod->em = em;
     mod->evas = em->evas;
     mod->o_emotion = emotion_object_add(mod->evas);
     /* Fixme should come frome config */
-    if (!emotion_object_init(mod->o_emotion, "gstreamer"))
+    if (!emotion_object_init(mod->o_emotion, plugin))
     {
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                "could not initialize gstreamer plugin for emotion");
+	    "could not initialize %s plugin for emotion", plugin);
         return;
     }
     evas_object_smart_callback_add(mod->o_emotion, "decode_stop", _eos_cb, NULL);
