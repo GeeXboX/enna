@@ -196,7 +196,7 @@ void module_init(Enna_Module *em)
 	return;
 
     /* Load Config file values */
-    cfgdata = enna_config_module_pair_get("libplayer");
+    cfgdata = enna_config_module_pair_get("emotion");
 
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:");
 
@@ -207,9 +207,9 @@ void module_init(Enna_Module *em)
         {
             Config_Pair *pair = l->data;
 
-            if (!strcmp("type", pair->key))
+            if (!strcmp("backend", pair->key))
             {
-                enna_config_value_store(&value, "type", ENNA_CONFIG_STRING,
+                enna_config_value_store(&value, "backend", ENNA_CONFIG_STRING,
                         pair);
                 enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * type: %s", value);
 
