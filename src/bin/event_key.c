@@ -112,17 +112,17 @@ enna_key_t
 enna_get_key (void *event)
 {
     int i;
-    Ecore_X_Event_Key_Down *ev;
+    Evas_Event_Key_Down *ev;
 
     ev = event;
 
     if (!ev)
     return ENNA_KEY_UNKNOWN;
 
-    enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : %s", ev->keysymbol);
+    enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : %s", ev->key);
 
     for (i = 0; enna_keymap[i].keyname; i++)
-    if (!strcmp (enna_keymap[i].keyname, ev->keysymbol))
+    if (!strcmp (enna_keymap[i].keyname, ev->key))
     return enna_keymap[i].keycode;
 
     return ENNA_KEY_UNKNOWN;
