@@ -202,6 +202,24 @@ static int _enna_init(int run_gl)
         if (enna->ee)
             enna->ee_winid = ecore_evas_software_x11_window_get(enna->ee);
     }
+    else if (!strcmp(enna_config->engine, "fb")
+            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_FB))
+    {
+        enna_log(ENNA_MSG_INFO, NULL, "Load Framebuffer engine");
+        enna->ee = ecore_evas_fb_new(NULL, 0,64, 64);
+    }
+   else if (!strcmp(enna_config->engine, "directfb")
+            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_DIRECTFB))
+    {
+        enna_log(ENNA_MSG_INFO, NULL, "Load DirectFB engine");
+        enna->ee = ecore_evas_directfb_new(NULL, 0, 0, 0, 64, 64);
+    }
+   else if (!strcmp(enna_config->engine, "sdl")
+            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SDL))
+    {
+        enna_log(ENNA_MSG_INFO, NULL, "Load SDL engine");
+        enna->ee = ecore_evas_sdl_new(NULL, 64, 64, 1, 0, 0, 1);
+    }
     else if (ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
     {
         enna_log(
