@@ -12,6 +12,8 @@ typedef struct _Enna_Module_Emotion
     Enna_Module *em;
     void (*event_cb)(void *data, enna_mediaplayer_event_t event);
     void *event_cb_data;
+    const char *plugin;
+
 } Enna_Module_Emotion;
 
 static Enna_Module_Emotion *mod;
@@ -80,6 +82,78 @@ static double _class_length_get()
 
 static void _class_snapshot(const char *uri, const char *file)
 {
+#if 0
+   Ecore_Evas *ee;
+   Evas *evas;
+   Evas_Object *o_emotion;
+
+    if (!uri || !file)
+        return;
+    printf("uri : %s, file : %s\n", uri, file);
+    if (!ecore_file_exists(file))
+    {
+
+       Evas_Object *o_img, *o_rect;
+       Evas_Coord ow, oh;
+       Evas_Pixel_Import_Source *pixels;
+	ecore_evas_init();
+
+	ee = ecore_evas_buffer_new(32, 32);
+	evas = ecore_evas_get(ee);
+	o_emotion = emotion_object_add(evas);
+	ecore_evas_data_set(ee, "emotion", o_emotion);
+	emotion_object_init(o_emotion, mod->plugin);
+	emotion_object_file_set(o_emotion, uri);
+	emotion_object_play_set(o_emotion, 1);
+	emotion_object_audio_mute_set(o_emotion, 1);
+	emotion_object_position_set(o_emotion, 825.0);
+	emotion_object_size_get(o_emotion, &ow, &oh);
+	evas_object_resize(o_emotion, ow, oh);
+	evas_object_move(o_emotion, 0, 0);
+	evas_object_show(o_emotion);
+	printf("%d %d\n", ow, oh);
+	ecore_evas_resize(ee, ow, oh);
+	if (emotion_object_seekable_get(o_emotion))
+	  {
+	     double length = emotion_object_play_length_get(o_emotion);
+	     double sec = 0.15 * length;
+	     emotion_object_position_set(o_emotion, sec);
+	     printf("set position %3.3f\n", sec);
+	  }
+
+	o_rect = evas_object_rectangle_add(evas);
+
+	evas_object_resize(o_rect, ow, oh);
+	evas_object_move(o_rect, 0, 0);
+	evas_object_color_set(o_rect, 255, 0, 0,255);
+	evas_object_show(o_rect);
+
+	ecore_evas_show(ee);
+
+	//	o_img = ecore_evas_object_image_new(ee);
+	o_img = evas_object_image_add(enna->evas);
+	pixels = calloc(1, sizeof(Evas_Pixel_Import_Source));
+	pixels->format = EVAS_PIXEL_FORMAT_ARGB32;
+	pixels->w = ow;
+	pixels->h = oh;
+	pixels->rows = ecore_evas_buffer_pixels_get(ee);
+	printf("pixels : %p\n", pixels->rows);
+	evas_object_image_data_set(o_img,pixels->rows);
+	evas_object_image_pixels_dirty_set(o_img, 1);
+	evas_object_image_alpha_set(o_img, 1);
+	evas_object_image_size_set(o_img, ow, oh);
+	evas_object_image_fill_set(o_img, 0, 0, ow, oh);
+	evas_object_move(o_img, 0, 0);
+	evas_object_resize(o_img, ow, oh);
+	evas_object_show(o_img);
+	evas_object_image_save(o_img, "/home/nico/toto.png", NULL, NULL);
+
+	evas_object_del(o_img);
+	evas_object_del(o_emotion);
+	ecore_evas_free(ee);
+
+    }
+#endif
 
 }
 
@@ -190,10 +264,13 @@ void module_init(Enna_Module *em)
 {
     Enna_Config_Data *cfgdata;
     char *value = NULL;
-    const char *plugin = NULL;
 
     if (!em)
 	return;
+
+    mod = calloc(1, sizeof(Enna_Module_Emotion));
+
+    mod->plugin = NULL;
 
     /* Load Config file values */
     cfgdata = enna_config_module_pair_get("emotion");
@@ -214,26 +291,26 @@ void module_init(Enna_Module *em)
                 enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * type: %s", value);
 
                 if ((!strcmp("gstreamer", value)) ||(!strcmp("xine", value)) || (!strcmp("vlc", value)))
-		    plugin = eina_stringshare_add(value);
+		    mod->plugin = eina_stringshare_add(value);
 		else
 		{
                     enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
                             "   - unknown type, 'gstreamer' used instead");
-		    plugin = eina_stringshare_add("gstreamer");
+		    mod->plugin = eina_stringshare_add("gstreamer");
 		}
             }
 
 	}
     }
-    mod = calloc(1, sizeof(Enna_Module_Emotion));
+
     mod->em = em;
     mod->evas = em->evas;
     mod->o_emotion = emotion_object_add(mod->evas);
     /* Fixme should come frome config */
-    if (!emotion_object_init(mod->o_emotion, plugin))
+    if (!emotion_object_init(mod->o_emotion, mod->plugin))
     {
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-	    "could not initialize %s plugin for emotion", plugin);
+	    "could not initialize %s plugin for emotion", mod->plugin);
         return;
     }
     evas_object_smart_callback_add(mod->o_emotion, "decode_stop", _eos_cb, NULL);

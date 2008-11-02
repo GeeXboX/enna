@@ -312,7 +312,12 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
                 cover = enna_image_add(mod->em->evas);
                 enna_image_file_set(cover, cover_file);
             }
-
+	    else
+	    {
+		cover = edje_object_add(mod->em->evas);
+		edje_object_file_set(cover, enna_config_theme_get(), "icon/unknown_cover");
+		evas_object_show(cover);
+	    }
             enna_listitem_create_full(item, cover, "Playing Now :",
                     metadata->title, metadata->music->album,
                     metadata->music->artist);
@@ -602,7 +607,12 @@ static void _create_gui()
             cover = enna_image_add(mod->em->evas);
             enna_image_file_set(cover, cover_file);
         }
-
+	else
+	{
+	    cover = edje_object_add(mod->em->evas);
+	    edje_object_file_set(cover, enna_config_theme_get(), "icon/unknown_cover");
+	    evas_object_show(cover);
+	}
         enna_listitem_create_full(item, cover, "Playing Now :",
                 metadata->title, metadata->music->album,
                 metadata->music->artist);

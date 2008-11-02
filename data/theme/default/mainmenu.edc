@@ -200,13 +200,13 @@ group
                 //      fixed:    1 1;
                 rel1
                 {
-                    relative: 0.0 0.0;
+                    relative: 0.1 0.1;
                     to: titlebar.iconbox;
                     //offset: 4 5;
                 }
                 rel2
                 {
-                    relative: 0.0 1.0;
+                    relative: 0.1 0.9;
                     to: titlebar.iconbox;
                     //offset: 4 -19;
                 }
@@ -254,7 +254,7 @@ group
                 state: "default" 0.0;
                 rel1
                 {
-                    relative: 0.0 0.0;
+                    relative: 0 0;
                     to: titlebar.buttonbox;
                 }
                 rel2
@@ -392,16 +392,15 @@ group
                 align: 0.5 0.5;
                 aspect: 1.0 1.0;
                 aspect_preference: VERTICAL;
-                //	    fixed:    1 1;
                 rel1
                 {
-                    relative: 0.0 0.0;
-                    //offset:   4    4;
+                    relative: 0.1 0.1;
+                    offset:   10    10;
                 }
                 rel2
                 {
-                    relative: 1.0 0.8;
-                    //offset:   4   -4;
+                    relative: 0.9 0.8;
+                    offset:   10   -10;
                 }
             }
             description
@@ -410,16 +409,13 @@ group
                 align: 0.5 0.5;
                 aspect: 1.0 1.0;
                 aspect_preference: VERTICAL;
-                //	    fixed:    1 1;
                 rel1
                 {
-                    relative: -0.1 -0.1;
-                    //offset:   4    4;
+                    relative: 0 0;
                 }
                 rel2
                 {
-                    relative: 1.1 0.9;
-                    //offset:   4   -4;
+                    relative: 1 0.9;
                 }
             }
 

@@ -167,12 +167,10 @@ group {
             aspect: 1.0 1.0;
             aspect_preference: BOTH;
             rel1{
-               relative: 0.0 0;
-               offset: 90 16;
+               relative: 0.1 0.1;
             }
             rel2{
-               relative: 0.50  1.0;
-               offset: -16 -16;
+               relative: 0.50  0.9;
             }
          }
          description {
