@@ -107,10 +107,10 @@ static void _class_hide(int dummy)
 
 static void _class_event(void *event_info)
 {
-    Ecore_X_Event_Key_Down *ev = event_info;
+    Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key(ev);
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %s\n",
-            ev->keysymbol);
+            ev->key);
     switch (mod->state)
     {
         case LIST_VIEW:

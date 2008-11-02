@@ -754,7 +754,7 @@ static void list_get_alpha_from_digit(Smart_Data *sd, char key)
 
 static void _smart_event_key_down(Smart_Data *sd, void *event_info)
 {
-    Ecore_X_Event_Key_Down *ev;
+    Evas_Event_Key_Down *ev;
     Enna_List_Item *si;
     enna_key_t keycode;
     int ns;
@@ -809,7 +809,7 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
         case ENNA_KEY_8:
         case ENNA_KEY_9:
         {
-            char key = ev->keysymbol[strlen(ev->keysymbol) - 1];
+            char key = ev->key[strlen(ev->key) - 1];
             list_get_alpha_from_digit(sd, key);
         }
             break;

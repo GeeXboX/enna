@@ -366,30 +366,13 @@ unsigned char enna_mainmenu_visible(Evas_Object *obj)
 
 static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    Ecore_X_Event_Key_Down *ev;
-
-    ev = calloc(1, sizeof(Ecore_X_Event_Key_Down));
-
-    ev->keyname = eina_stringshare_add("Super_L");
-    ev->keysymbol = eina_stringshare_add("Super_L");
-    ev->key_compose = eina_stringshare_add("Super_L");
-    ev->modifiers = 0;
-
-    ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
+    evas_event_feed_key_down(enna->evas, "Super_L", "Super_L", "Super_L", NULL, ecore_time_get(), data);
 }
 
 static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    Ecore_X_Event_Key_Down *ev;
 
-    ev = calloc(1, sizeof(Ecore_X_Event_Key_Down));
-
-    ev->keyname = eina_stringshare_add("BackSpace");
-    ev->keysymbol = eina_stringshare_add("BackSpace");
-    ev->key_compose = eina_stringshare_add("BackSpace");
-    ev->modifiers = 0;
-
-    ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
+    evas_event_feed_key_down(enna->evas, "BackSpace", "BackSpace", "BackSpace", NULL, ecore_time_get(), data);
 }
 
 static void _smart_activate_cb(void *data)

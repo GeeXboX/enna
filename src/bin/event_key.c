@@ -88,21 +88,13 @@ static const struct
 
 static void _event_cb(void *data, char *event)
 {
-    Ecore_X_Event_Key_Down *ev;
 
     if (!event)
         return;
 
-    ev = calloc(1, sizeof(Ecore_X_Event_Key_Down));
-
-    ev->keyname = event;
-    ev->keysymbol = event;
-    ev->key_compose = event;
-    ev->modifiers = 0;
-
+    evas_event_feed_key_down(enna->evas, event, event, event, NULL, ecore_time_get(), data);
     enna_log(ENNA_MSG_EVENT, NULL, "LIRC event : %s", event);
 
-    ecore_event_add(ECORE_X_EVENT_KEY_DOWN, ev, NULL, NULL);
 
 }
 
