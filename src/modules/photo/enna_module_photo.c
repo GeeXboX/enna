@@ -126,6 +126,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
 	    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o_list);
 	}
 	edje_object_part_swallow(mod->o_edje, "enna.swallow.wall", o_wall);
+	enna_wall_select_nth(o_wall, 0, 0);
 
     }
     else if (!direction)

@@ -235,80 +235,6 @@ void enna_wall_left_select(Evas_Object *obj)
 ///////////////////// RIGHT /////////////////////
 void enna_wall_right_select(Evas_Object *obj)
 {
-#if 0
-    Picture_Item *pi, *ppi;
-    Evas_Coord x, y;
-    Evas_Coord w;
-
-    API_ENTRY return;
-
-    if (sd->down.momentum_animator)
-    {
-        ecore_animator_del(sd->down.momentum_animator);
-        sd->down.momentum_animator = NULL;
-    }
-
-    if (!sd->down.now)
-    {
-        int row = 0;
-        int col = 0;
-
-        ppi = _smart_selected_item_get(sd, &row, &col);
-        if (col == evas_list_count(sd->items[row]) - 1 || !ppi)
-        {
-            return;
-        }
-        else
-        {
-            _smart_item_unselect(sd, ppi);
-            col++;
-            pi = evas_list_nth(sd->items[row], col);
-        }
-
-        pi->selected = 1;
-        sd->col_sel = col;
-        sd->row_sel = row;
-        sd->down.o_selected = pi;
-        evas_object_geometry_get(ppi->o_edje, NULL, NULL, &w, NULL);
-        enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
-        sd->down.now = 1;
-        sd->down.sx = x;
-        sd->down.x = x + w;
-        sd->down.dt = 1500.0;
-        sd->down.anim_start = ecore_time_get();
-        enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
-
-    }
-    else
-    {
-
-        w = 0;
-        ppi = evas_list_nth(sd->items[sd->row_sel], sd->col_sel);
-        if (ppi)
-        {
-            ppi->selected = 0;
-            sd->col_sel++;
-
-        }
-        pi = evas_list_nth(sd->items[sd->row_sel], sd->col_sel);
-        if (pi)
-        {
-            pi->selected = 1;
-            evas_object_geometry_get(ppi->o_edje, NULL, NULL, &w, NULL);
-        }
-
-        sd->down.o_selected = pi;
-        sd->down.dt += 500.0;
-        if (sd->down.dt> 3000)
-        sd->down.dt = 3000;
-
-        sd->down.x += w;
-    }
-
-    //if (!sd->down.momentum_animator)
-    //    sd->down.momentum_animator = ecore_animator_add(_smart_momentum_animator, sd)
-#endif
-
     Picture_Item *pi, *ppi;
     int row, col;
     Evas_Coord x, y;
@@ -431,6 +357,22 @@ void enna_wall_down_select(Evas_Object *obj)
     }
 
 }
+
+void enna_wall_select_nth(Evas_Object *obj, int col, int row)
+{
+    Picture_Item *pi;
+
+    API_ENTRY;
+
+    pi = eina_list_nth(sd->items[row], col);
+    if (!pi) return;
+
+    _smart_item_unselect(sd, _smart_selected_item_get(sd, NULL, NULL));
+    _smart_item_select(sd, pi);
+
+
+}
+
 /* local subsystem globals */
 
 static Picture_Item *_smart_selected_item_get(Smart_Data *sd, int *row,
