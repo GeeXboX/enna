@@ -202,8 +202,7 @@ void enna_wall_left_select(Evas_Object *obj)
 {
     Picture_Item *pi, *ppi;
     int row, col;
-    Evas_Coord x, y;
-    Evas_Coord w;
+    Evas_Coord x, y, w;
 
     API_ENTRY
     return;
@@ -216,17 +215,16 @@ void enna_wall_left_select(Evas_Object *obj)
     }
     else
     {
-        _smart_item_unselect(sd, ppi);
         col--;
-    }
-
-    pi = evas_list_nth(sd->items[sd->row_sel], col);
-    if (pi)
-    {
-        _smart_item_select(sd, pi);
-        evas_object_geometry_get(pi->o_edje, NULL, NULL, &w, NULL);
-        enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
-        enna_scrollframe_child_pos_set(sd->o_scroll, x - w, y);
+	pi = evas_list_nth(sd->items[sd->row_sel], col);
+	if (pi)
+	{
+	    evas_object_geometry_get(pi->o_edje, NULL, NULL, &w, NULL);
+	    enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
+	    enna_scrollframe_child_pos_set(sd->o_scroll, x - w, y);
+	    _smart_item_select(sd, pi);
+	    _smart_item_unselect(sd, ppi);
+	}
     }
 
 }
@@ -237,31 +235,29 @@ void enna_wall_right_select(Evas_Object *obj)
 {
     Picture_Item *pi, *ppi;
     int row, col;
-    Evas_Coord x, y;
-    Evas_Coord w;
+    Evas_Coord x, y, w;
+
 
     API_ENTRY
     return;
 
     ppi = _smart_selected_item_get(sd, &row, &col);
-
     if (!ppi)
     {
         col = 0;
     }
     else
     {
-        _smart_item_unselect(sd, ppi);
         col++;
-    }
-
-    pi = evas_list_nth(sd->items[sd->row_sel], col);
-    if (pi)
-    {
-        _smart_item_select(sd, pi);
-        evas_object_geometry_get(pi->o_edje, NULL, NULL, &w, NULL);
-        enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
-        enna_scrollframe_child_pos_set(sd->o_scroll, x + w, y);
+	pi = evas_list_nth(sd->items[sd->row_sel], col);
+	if (pi)
+	{
+	    enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
+	    evas_object_size_hint_min_get(pi->o_edje, &w, NULL);
+	    enna_scrollframe_child_pos_set(sd->o_scroll, x+w , y);
+	    _smart_item_select(sd, pi);
+	    _smart_item_unselect(sd, ppi);
+	}
     }
 }
 
@@ -302,15 +298,18 @@ void enna_wall_up_select(Evas_Object *obj)
 
     for (l = sd->items[sd->row_sel], i = 0; l; l = l->next, ++i)
     {
-        Picture_Item *pi;
         pi = l->data;
         evas_object_geometry_get(pi->o_edje, &x, NULL, NULL, NULL);
         if (x >= sx)
         {
             _smart_item_select(sd, pi);
-            break;
+            return;
         }
     }
+
+    pi = eina_list_data_get(eina_list_last(sd->items[sd->row_sel]));
+    if (pi)
+	_smart_item_select(sd, pi);
 }
 ///////////////////// DOWN /////////////////////
 void enna_wall_down_select(Evas_Object *obj)
@@ -352,10 +351,13 @@ void enna_wall_down_select(Evas_Object *obj)
         if (x >= sx)
         {
             _smart_item_select(sd, pi);
-            break;
+            return;
         }
     }
 
+    pi = eina_list_data_get(eina_list_last(sd->items[sd->row_sel]));
+    if (pi)
+	_smart_item_select(sd, pi);
 }
 
 void enna_wall_select_nth(Evas_Object *obj, int col, int row)
