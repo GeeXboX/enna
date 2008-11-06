@@ -90,7 +90,8 @@ static char * cover_get_from_picture_file(const char *filename)
         }
     }
 
-    out: free(dir);
+out:
+    free(dir);
     return ret;
 }
 
@@ -203,7 +204,8 @@ static char * enna_cover_get(const char *artist, const char *album,
     /* check on Amazon.com */
     cover = cover_get_from_amazon(artist, album, filename);
 
-    cover_found: if (cover)
+cover_found:
+    if (cover)
         enna_log(ENNA_MSG_INFO, NULL, "Using cover from: %s", cover);
 
     return cover;
