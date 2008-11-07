@@ -59,10 +59,10 @@ struct _Smart_Data
     Evas_Object *obj;
     Evas_Object *o_scroll;
     Evas_Object *o_table;
-    Evas_List *pictures;
+    Eina_List *pictures;
     Evas_Object *o_cont;
     Evas_Object *o_box[3];
-    Evas_List *items[3];
+    Eina_List *items[3];
     int nb;
     int row_sel;
     int col_sel;
@@ -173,7 +173,7 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
 
     pi->row = row;
 
-    sd->items[row] = evas_list_append(sd->items[row], pi);
+    sd->items[row] = eina_list_append(sd->items[row], pi);
 
     evas_object_geometry_get(o_pict, NULL, NULL, &ow, &oh);
 
@@ -214,7 +214,7 @@ void enna_wall_left_select(Evas_Object *obj)
     else
     {
         col--;
-	pi = evas_list_nth(sd->items[sd->row_sel], col);
+	pi = eina_list_nth(sd->items[sd->row_sel], col);
 	if (pi)
 	{
 	    Evas_Coord x, y;
@@ -249,7 +249,7 @@ void enna_wall_right_select(Evas_Object *obj)
     else
     {
         col++;
-	pi = evas_list_nth(sd->items[sd->row_sel], col);
+	pi = eina_list_nth(sd->items[sd->row_sel], col);
 	if (pi)
 	{
 	    Evas_Coord x, y;
@@ -270,7 +270,7 @@ void enna_wall_right_select(Evas_Object *obj)
 void enna_wall_up_select(Evas_Object *obj)
 {
     Picture_Item *pi, *ppi;
-    Evas_List *l;
+    Eina_List *l;
     Evas_Coord sx, x;
     int i;
     int row, col;
@@ -320,7 +320,7 @@ void enna_wall_up_select(Evas_Object *obj)
 void enna_wall_down_select(Evas_Object *obj)
 {
     Picture_Item *pi, *ppi;
-    Evas_List *l;
+    Eina_List *l;
     Evas_Coord sx, x;
     int i;
     int row, col;
@@ -385,7 +385,7 @@ void enna_wall_select_nth(Evas_Object *obj, int col, int row)
 static Picture_Item *_smart_selected_item_get(Smart_Data *sd, int *row,
         int *col)
 {
-    Evas_List *l;
+    Eina_List *l;
     int i, j;
 
     for (i = 0; i < 3; ++i)
@@ -572,7 +572,7 @@ static void _smart_del(Evas_Object * obj)
         while (sd->items[i])
         {
             Picture_Item *pi = sd->items[i]->data;
-            sd->items[i] = evas_list_remove_list(sd->items[i], sd->items[i]);
+            sd->items[i] = eina_list_remove_list(sd->items[i], sd->items[i]);
             evas_object_del(pi->o_edje);
             evas_object_del(pi->o_pict);
             free(pi);

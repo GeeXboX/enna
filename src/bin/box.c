@@ -14,7 +14,7 @@ struct _Smart_Data
    unsigned char    changed : 1;
    unsigned char    horizontal : 1;
    unsigned char    homogenous : 1;
-   Evas_List       *items;
+   Eina_List       *items;
 };
 
 /* local subsystem functions */
@@ -90,7 +90,7 @@ enna_box_pack_start(Evas_Object *obj, Evas_Object *child)
    sd = evas_object_smart_data_get(obj);
    if (!sd) return 0;
    _smart_adopt(sd, child);
-   sd->items = evas_list_prepend(sd->items, child);
+   sd->items = eina_list_prepend(sd->items, child);
    _smart_reconfigure(sd);
    return 0;
 }
@@ -104,9 +104,9 @@ enna_box_pack_end(Evas_Object *obj, Evas_Object *child)
    sd = evas_object_smart_data_get(obj);
    if (!sd) return 0;
    _smart_adopt(sd, child);
-   sd->items = evas_list_append(sd->items, child);
+   sd->items = eina_list_append(sd->items, child);
    _smart_reconfigure(sd);
-   return evas_list_count(sd->items) - 1;
+   return eina_list_count(sd->items) - 1;
 }
 
 int
@@ -114,13 +114,13 @@ enna_box_pack_before(Evas_Object *obj, Evas_Object *child, Evas_Object *before)
 {
    Smart_Data *sd;
    int i = 0;
-   Evas_List *l;
+   Eina_List *l;
 
    if (!child) return 0;
    sd = evas_object_smart_data_get(obj);
    if (!sd) return 0;
    _smart_adopt(sd, child);
-   sd->items = evas_list_prepend_relative(sd->items, child, before);
+   sd->items = eina_list_prepend_relative(sd->items, child, before);
    for (i = 0, l = sd->items; l; l = l->next, i++)
      {
 	if (l->data == child) break;
@@ -134,13 +134,13 @@ enna_box_pack_after(Evas_Object *obj, Evas_Object *child, Evas_Object *after)
 {
    Smart_Data *sd;
    int i = 0;
-   Evas_List *l;
+   Eina_List *l;
 
    if (!child) return 0;
    sd = evas_object_smart_data_get(obj);
    if (!sd) return 0;
    _smart_adopt(sd, child);
-   sd->items = evas_list_append_relative(sd->items, child, after);
+   sd->items = eina_list_append_relative(sd->items, child, after);
    for (i = 0, l = sd->items; l; l = l->next, i++)
      {
 	if (l->data == child) break;
@@ -158,7 +158,7 @@ enna_box_unpack(Evas_Object *obj)
    sd = evas_object_smart_data_get(evas_object_smart_parent_get(obj));
    if (!sd)  return;
 
-   sd->items = evas_list_remove(sd->items, obj);
+   sd->items = eina_list_remove(sd->items, obj);
    _smart_disown(obj);
    _smart_reconfigure(sd);
 }
@@ -217,7 +217,7 @@ static void
 _smart_reconfigure(Smart_Data *sd)
 {
    Evas_Coord x, y, w, h, xx, yy;
-   Evas_List *l;
+   Eina_List *l;
    Evas_Coord minw, minh, wdif, hdif, mnw, mnh, mxw, mxh;
    int count, expand, fw, fh, xw, xh;
    double ax, ay, wx, wy;
@@ -231,7 +231,7 @@ _smart_reconfigure(Smart_Data *sd)
 
    evas_object_size_hint_min_get(sd->obj, &minw, &minh);
    evas_object_size_hint_align_get(sd->obj, &ax, &ay);
-   count = evas_list_count(sd->items);
+   count = eina_list_count(sd->items);
    expand = 0;
    if (w < minw)
      {
@@ -388,7 +388,7 @@ _smart_reconfigure(Smart_Data *sd)
 static void
 _smart_extents_calculate(Smart_Data *sd)
 {
-   Evas_List *l;
+   Eina_List *l;
    Evas_Coord minw, minh, maxw, maxh, mnw, mnh;
 
    /* FIXME: need to calc max */
@@ -405,9 +405,9 @@ _smart_extents_calculate(Smart_Data *sd)
 	     if (minw < mnw) minw = mnw;
 	  }
 	if (sd->horizontal)
-          minw *= evas_list_count(sd->items);
+          minw *= eina_list_count(sd->items);
 	else
-          minh *= evas_list_count(sd->items);
+          minh *= eina_list_count(sd->items);
      }
    else
      {
@@ -492,7 +492,7 @@ static void
 _smart_move(Evas_Object *obj, Evas_Coord x, Evas_Coord y)
 {
    Smart_Data *sd;
-   Evas_List *l;
+   Eina_List *l;
    Evas_Coord dx, dy;
 
    sd = evas_object_smart_data_get(obj);
