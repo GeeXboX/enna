@@ -640,11 +640,26 @@ static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
 
 static void list_item_select(Smart_Data *sd, int n)
 {
-    Evas_Coord x, y, h;
+    /*Evas_Coord x, y, h;
+
     enna_list_selected_set(sd->o_smart, n);
     evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
+
     y = h / eina_list_count(sd->items) * n;
-    enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
+
+    enna_scrollframe_child_pos_set(sd->o_scroll, x, y);*/
+
+
+    Evas_Coord x, y;
+    Evas_Coord xedje, yedje, hedje, ybox;
+
+    enna_list_selected_set(sd->o_smart, n);
+    enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
+    enna_list_selected_geometry_get(sd->o_smart, &xedje, &yedje, NULL, &hedje);
+    evas_object_geometry_get(sd->o_box, NULL, &ybox, NULL, NULL);
+    y = (yedje + hedje / 2 - ybox - sd->h / 2 + sd->y);
+    enna_scrollframe_child_pos_set(sd->o_scroll, x , y);
+
 }
 
 static void list_set_item(Smart_Data *sd, int start, int up, int step)
