@@ -221,6 +221,16 @@ AC_ARG_ENABLE(shoutcast-module,
 AC_MSG_RESULT($want_shoutcast_module)
 AM_CONDITIONAL(BUILD_SHOUTCAST_MODULE, test "x$want_shoutcast_module" = "xyes")
 
+AC_ARG_ENABLE(theme,
+	[AC_HELP_STRING([--disable-theme], [disable theme.
+        [[default=enabled]]])],
+	[build_theme=$enableval],
+	[build_theme="yes"]
+)
+
+AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
+
+
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
@@ -252,6 +262,9 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
+echo "Build theme........................ : $build_theme"
+echo
+echo
 echo "Built-in librairies Modules:"
 echo
 echo "  libcurl.......................... : $have_libcurl"
@@ -274,3 +287,4 @@ echo "  Amazon.com....................... : $want_amazon_module"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo
+
