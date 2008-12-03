@@ -138,14 +138,14 @@ static void _list_engines()
     Eina_List  *n;
     const char *engine;
 
-    enna_log(ENNA_MSG_CRITICAL, NULL, "supported engines:\n");
+    enna_log(ENNA_MSG_CRITICAL, NULL, "supported engines:");
 
     lst = ecore_evas_engines_get();
 
     EINA_LIST_FOREACH(lst, n, engine)
     {
         if (strcmp(engine, "buffer") != 0)
-            enna_log(ENNA_MSG_CRITICAL, NULL, "\t*%s\n", engine);
+            enna_log(ENNA_MSG_CRITICAL, NULL, "\t*%s", engine);
     }
 
     ecore_evas_engines_free(lst);
