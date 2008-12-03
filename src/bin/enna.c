@@ -199,7 +199,10 @@ static int _enna_init(int run_gl)
         return 0;
     }
 
-
+    if (ecore_str_has_extension(enna_config->engine, "_x11"))
+    {
+	enna->ee_winid = ecore_evas_window_get(enna->ee);
+    }
 
     enna->use_covers = enna_config->use_covers;
     enna->use_snapshots = enna_config->use_snapshots;
