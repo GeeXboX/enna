@@ -51,8 +51,8 @@
     "#located at /usr/share/enna/theme/default.edj\n"			\
     "theme=default\n"							\
     "\n"								\
-    "#x11,xrender,gl,x11_16\n"						\
-    "engine=x11\n"							\
+    "#software_x11,xrender_x11,opengl_x11,software_x11_16\n"						\
+    "engine=software_x11\n"							\
     "\n"								\
     "#libplayer,emotion\n"						\
     "backend=libplayer\n"						\

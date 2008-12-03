@@ -132,6 +132,25 @@ static void _resize_viewport_cb(Ecore_Evas * ee)
     ecore_evas_resize(enna->ee, w, h);
 }
 
+static void _list_engines()
+{
+    Eina_List  *lst;
+    Eina_List  *n;
+    const char *engine;
+
+    enna_log(ENNA_MSG_CRITICAL, NULL, "supported engines:\n");
+
+    lst = ecore_evas_engines_get();
+
+    EINA_LIST_FOREACH(lst, n, engine)
+    {
+        if (strcmp(engine, "buffer") != 0)
+            enna_log(ENNA_MSG_CRITICAL, NULL, "\t*%s\n", engine);
+    }
+
+    ecore_evas_engines_free(lst);
+}
+
 /* Functions */
 
 static int _enna_init(int run_gl)
@@ -169,80 +188,18 @@ static int _enna_init(int run_gl)
             enna->lvl = ENNA_MSG_CRITICAL;
     }
 
-    if (!strcmp(enna_config->engine, "gl")
-            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_OPENGL_X11))
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "Load GL engine");
-        enna->ee = ecore_evas_gl_x11_new(NULL, 0, 0, 0, 64, 64);
-        if (enna->ee)
-            enna->ee_winid = ecore_evas_gl_x11_window_get(enna->ee);
-    }
-    else if (!strcmp(enna_config->engine, "xrender")
-            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_XRENDER_X11))
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "Load XRENDER engine");
-        enna->ee = ecore_evas_xrender_x11_new(NULL, 0, 0, 0, 64, 64);
-        if (enna->ee)
-            enna->ee_winid = ecore_evas_xrender_x11_window_get(enna->ee);
-    }
-    else if (!strcmp(enna_config->engine, "x11_16")
-            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_16_X11))
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "Load X11_16 engine");
-        enna->ee = ecore_evas_software_x11_16_new(NULL, 0, 0, 0, 64, 64);
-        if (enna->ee)
-            enna->ee_winid = ecore_evas_software_x11_16_window_get(enna->ee);
-    }
-    else if (!strcmp(enna_config->engine, "x11")
-            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "Load X11 engine");
-        enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
-        if (enna->ee)
-            enna->ee_winid = ecore_evas_software_x11_window_get(enna->ee);
-    }
-    else if (!strcmp(enna_config->engine, "fb")
-            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_FB))
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "Load Framebuffer engine");
-        enna->ee = ecore_evas_fb_new(NULL, 0,64, 64);
-    }
-   else if (!strcmp(enna_config->engine, "directfb")
-            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_DIRECTFB))
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "Load DirectFB engine");
-        enna->ee = ecore_evas_directfb_new(NULL, 0, 0, 0, 64, 64);
-    }
-   else if (!strcmp(enna_config->engine, "sdl")
-            && ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SDL))
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "Load SDL engine");
-        enna->ee = ecore_evas_sdl_new(NULL, 64, 64, 1, 0, 0, 1);
-    }
-    else if (ecore_evas_engine_type_supported_get(ECORE_EVAS_ENGINE_SOFTWARE_X11))
-    {
-        enna_log(
-                ENNA_MSG_WARNING,
-                NULL,
-                "Specified \'%s\' engine not found, use X11 software default engine",
-                enna_config->engine);
-        enna->ee = ecore_evas_software_x11_new(NULL, 0, 0, 0, 64, 64);
-        if (enna->ee)
-            enna->ee_winid = ecore_evas_software_x11_window_get(enna->ee);
-    }
-    else
-    {
-        enna_log(ENNA_MSG_CRITICAL, NULL,
-                "Can not create Ecore Evas with %s engine!",
-                enna_config->engine);
-        return 0;
-    }
+    enna->ee = ecore_evas_new(enna_config->engine, 0, 0, 1, 1, NULL);
 
     if (!enna->ee)
     {
-        enna_log(ENNA_MSG_CRITICAL, NULL, "Can not Initialize Ecore Evas !");
+        enna_log(ENNA_MSG_CRITICAL, NULL,
+	    "Can not create Ecore Evas with %s engine!",
+	    enna_config->engine);
+	_list_engines();
         return 0;
     }
+
+
 
     enna->use_covers = enna_config->use_covers;
     enna->use_snapshots = enna_config->use_snapshots;

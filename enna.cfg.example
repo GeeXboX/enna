@@ -15,8 +15,8 @@ use_snapshots=1
 #located at /usr/share/enna/theme/default.edj
 theme=default
 
-#x11,xrender,gl,x11_16
-engine=x11
+#software_x11,xrender_x11,opengl_x11,software_x11_16
+engine=software_x11
 
 #libplayer,emotion
 backend=libplayer
