@@ -478,7 +478,6 @@ static void _smart_add(Evas_Object * obj)
     enna_button_icon_set(o, "icon/home_mini");
     evas_object_smart_callback_add(o, "clicked", _home_button_clicked_cb, sd);
     evas_object_size_hint_align_set(o, 0.5, 0.5);
-    //evas_object_size_hint_weight_set(o, 1.0, 1.0);
     evas_object_size_hint_min_set(o, 64, 64);
     enna_box_pack_end(sd->o_btn_box, o);
     evas_object_show(o);
@@ -487,7 +486,6 @@ static void _smart_add(Evas_Object * obj)
     o = enna_button_add(e);
     enna_button_icon_set(o, "icon/arrow_left");
     evas_object_size_hint_align_set(o, 0.5, 0.5);
-    //evas_object_size_hint_weight_set(o, 1.0, 1.0);
     evas_object_size_hint_min_set(o, 64, 64);
     enna_box_pack_end(sd->o_btn_box, o);
     evas_object_show(o);
