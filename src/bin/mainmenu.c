@@ -132,7 +132,7 @@ void enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label
     sd->items = eina_list_append(sd->items, si);
     edje_object_size_min_calc(si->o_base, &mw, &mh);
     edje_object_size_min_get(si->o_base, &mw, &mh);
-
+    enna_box_pack_end(sd->o_box, si->o_base);
 
     tmp = edje_object_data_get(si->o_base, "height");
     if (tmp)
@@ -141,9 +141,9 @@ void enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label
     if (tmp)
         mw = atoi(tmp);
 
-    evas_object_resize(si->o_base, mw, mh);
+    evas_object_size_hint_min_set(si->o_base, mw, mh);
     evas_object_size_hint_align_set(si->o_base, 0.5, 0.5);
-    evas_object_box_append(sd->o_box, si->o_base);
+    evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
 
     evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
 	_smart_event_mouse_up, si);
@@ -459,39 +459,37 @@ static void _smart_add(Evas_Object * obj)
     if (tmp)
         orientation = atoi(tmp);
 
-    o = evas_object_box_add(e);
-    if (orientation)
-	evas_object_box_layout_set(o, evas_object_box_layout_horizontal, NULL, NULL);
-    else
-	evas_object_box_layout_set(o, evas_object_box_layout_vertical, NULL, NULL);
-    evas_object_box_align_set(o, 0.5, 0.5);
+    o = enna_box_add(e);
+    enna_box_orientation_set(o, orientation);
+    enna_box_homogenous_set(o, 0);
+    evas_object_size_hint_align_set(o, 0, 0.5);
     sd->o_box = o;
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_box);
 
-    sd->o_btn_box = evas_object_box_add(e);
-    evas_object_box_layout_set(sd->o_btn_box, evas_object_box_layout_horizontal, NULL, NULL);
-    evas_object_box_align_set(sd->o_btn_box, 0, 0.5);
+    sd->o_btn_box = enna_box_add(e);
+    enna_box_homogenous_set(sd->o_btn_box, 0);
+    enna_box_orientation_set(sd->o_btn_box, 1);
+    evas_object_size_hint_align_set(sd->o_btn_box, 0, 0.5);
+    evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
     edje_object_part_swallow(sd->o_edje, "titlebar.swallow.button", sd->o_btn_box);
 
     o = enna_button_add(e);
     enna_button_icon_set(o, "icon/home_mini");
     evas_object_smart_callback_add(o, "clicked", _home_button_clicked_cb, sd);
-    evas_object_size_hint_align_set(o, 0, 0.5);
-    evas_object_size_hint_weight_set(o, 1.0, 1.0);
+    evas_object_size_hint_align_set(o, 0.5, 0.5);
+    //evas_object_size_hint_weight_set(o, 1.0, 1.0);
     evas_object_size_hint_min_set(o, 64, 64);
-    evas_object_resize(o, 64, 64);
-    evas_object_box_append(sd->o_btn_box, o);
+    enna_box_pack_end(sd->o_btn_box, o);
     evas_object_show(o);
     sd->o_home_button = o;
 
     o = enna_button_add(e);
     enna_button_icon_set(o, "icon/arrow_left");
-    evas_object_size_hint_align_set(o, 0, 0.5);
-    evas_object_size_hint_weight_set(o, 1.0, 1.0);
+    evas_object_size_hint_align_set(o, 0.5, 0.5);
+    //evas_object_size_hint_weight_set(o, 1.0, 1.0);
     evas_object_size_hint_min_set(o, 64, 64);
-    evas_object_resize(o, 64, 64);
-    evas_object_box_append(sd->o_btn_box, o);
+    enna_box_pack_end(sd->o_btn_box, o);
     evas_object_show(o);
     evas_object_smart_callback_add(o, "clicked", _back_button_clicked_cb, sd);
     sd->o_back_button = o;
