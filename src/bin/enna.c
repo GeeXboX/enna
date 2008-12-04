@@ -132,6 +132,11 @@ static void _resize_viewport_cb(Ecore_Evas * ee)
     ecore_evas_resize(enna->ee, w, h);
 }
 
+static void _cb_delete(void *data, Evas *e, Evas_Object *obj, void *einfo)
+{
+    ecore_main_loop_quit();
+}
+
 static void _list_engines()
 {
     Eina_List  *lst;
@@ -237,6 +242,8 @@ static void _create_gui()
     evas_object_move(o, 0, 0);
     evas_object_show(o);
     ecore_evas_resize(enna->ee, w, h);
+    ecore_evas_object_associate(enna->ee, o, 0);
+    evas_object_event_callback_add(o, EVAS_CALLBACK_FREE, _cb_delete, NULL);
     enna->o_edje = o;
 
     /* Create Background Object */
