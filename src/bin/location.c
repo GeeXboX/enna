@@ -100,12 +100,10 @@ void enna_location_append(Evas_Object *obj, const char *label,
     si->sd = sd;
     si->o_base = edje_object_add(evas_object_evas_get(sd->o_scroll));
 
-    if (eina_list_count(sd->items) & 0x1)
-        edje_object_file_set(si->o_base, enna_config_theme_get(),
-                "enna/location/item");
-    else
-        edje_object_file_set(si->o_base, enna_config_theme_get(),
-                "enna/location/item");
+
+    edje_object_file_set(si->o_base, enna_config_theme_get(),
+	"enna/location/item");
+
     if (label)
         edje_object_part_text_set(si->o_base, "enna.text.label", label);
 
@@ -125,12 +123,14 @@ void enna_location_append(Evas_Object *obj, const char *label,
 
     edje_object_size_min_calc(si->o_base, &mw, &mh);
 
+    mh = sd->h ? sd->h : 64;
+
     enna_box_pack_end(sd->o_box, si->o_base);
-    evas_object_size_hint_min_set(si->o_base, mw, sd->h);
+    evas_object_size_hint_min_set(si->o_base, mw, mh);
     evas_object_size_hint_align_set(si->o_base, 0, 0.5);
     evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
 
-    mh = sd->h ? sd->h : 64;
+
 
     evas_object_size_hint_min_get(sd->o_box, &mw, NULL);
     evas_object_resize(sd->o_box, mw, sd->h);
