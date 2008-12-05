@@ -24,6 +24,8 @@
  * Video module (based on music one)
       -> Add video support to emotion backend
 
+ * Show QUIT menu on exit
+
  * Add Simple Widgets
       -> Checkbox
       -> Slider
