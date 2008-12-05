@@ -435,13 +435,14 @@ static void _smart_add(Evas_Object *obj)
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/list");
     sd->o_box = enna_box_add(evas_object_evas_get(obj));
-    evas_object_size_hint_align_set(sd->o_box, 0.0, 0.0);
+    evas_object_size_hint_align_set(sd->o_box, 0, 0.5);
+    evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
     enna_box_homogenous_set(sd->o_box, 1);
     enna_box_orientation_set(sd->o_box, 0);
 
     sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
     enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
-            ENNA_SCROLLFRAME_POLICY_AUTO);
+            ENNA_SCROLLFRAME_POLICY_ON);
     enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_scroll);
 
