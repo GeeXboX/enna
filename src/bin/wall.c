@@ -30,7 +30,7 @@
  */
 
 /* derived from e_icon */
-
+#include "enna.h"
 #include "wall.h"
 
 #define SMART_NAME "enna_wall"
