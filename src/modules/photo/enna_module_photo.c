@@ -9,11 +9,13 @@ static void _list_transition_core(Evas_List *files, unsigned char direction);
 static void _browse(void *data, void *data2);
 static void _browse_down();
 static void _activate();
+static void _photo_info_fs();
 
 typedef enum _PHOTO_STATE PHOTO_STATE;
 enum _PHOTO_STATE
 {
     WALL_VIEW,
+    WALL_PREVIEW,
     SLIDESHOW_VIEW,
     DEFAULT_VIEW,
 };
@@ -49,6 +51,68 @@ static void _activate()
     vfs = (Enna_Class_Vfs*)enna_list_selected_data_get(mod->o_list);
     f = (Enna_Vfs_File*)enna_list_selected_data2_get(mod->o_list);
     _browse(vfs, f);
+
+}
+
+static void _photo_info_fs()
+{
+    Evas_Object *o_edje;
+    Evas_Object *o_pict;
+    Evas_Coord x1,y1,w1,h1, x2,y2,w2,h2;
+    Evas_Coord xi,yi,wi,hi, xf,yf,wf,hf;
+    Edje_Message_Int_Set *msg;
+    const char *filename;
+
+    mod->state = WALL_PREVIEW;
+
+    /* Prepare edje message */
+    msg = calloc(1,sizeof(Edje_Message_Int_Set) - sizeof(int) + (4 * sizeof(int)));
+    msg->count = 4;
+
+
+    enna_wall_selected_geometry_get(mod->o_wall, &x2, &y2, &w2, &h2);
+    filename = enna_wall_selected_filename_get(mod->o_wall);
+    if (!filename) return;
+
+    o_pict = enna_image_add(mod->em->evas);
+    enna_image_file_set(o_pict, filename);
+    enna_image_fill_inside_set(o_pict, 0);
+    enna_image_preload(o_pict, 0);
+
+
+    o_edje = edje_object_add(mod->em->evas);
+    edje_object_file_set(o_edje, enna_config_theme_get(), "enna/picture/info");
+    edje_object_part_swallow(o_edje, "enna.swallow.content", o_pict);
+
+    /* Set Final state in fullscreen */
+    edje_object_part_swallow(mod->o_edje, "enna.swallow.slideshow", o_edje);
+    evas_object_geometry_get(mod->o_edje, &x1, &y1, &w1, &h1);
+    hf = h1;
+    wf = hf * (float)w2 / (float)h2;
+    xf = w1 / 2 - wf / 2;
+    yf = h1 / 2 - hf / 2;
+
+    enna_image_load_size_set(o_pict, wf, hf);
+    msg->val[0] = xf;
+    msg->val[1] = yf;
+    msg->val[2] = wf;
+    msg->val[3] = hf;
+
+    edje_object_message_send(o_edje, EDJE_MESSAGE_INT_SET, 2, msg);
+
+    /* Set custom state : size and position of actual thumbnail */
+    xi = x2 - x1;
+    yi = y2 - y1;
+    wi = w2;
+    hi = h2;
+    msg->val[0] = xi;
+    msg->val[1] = yi;
+    msg->val[2] = wi;
+    msg->val[3] = hi;
+    edje_object_message_send(o_edje, EDJE_MESSAGE_INT_SET, 1, msg);
+    free(msg);
+    edje_object_signal_emit(o_edje, "resize", "enna");
+    //edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
 
 }
 
@@ -443,7 +507,13 @@ static void _class_event(void *event_info)
                 case ENNA_KEY_OK:
 	        case ENNA_KEY_SPACE:
 		    if (mod->list_selected)
+		    {
 			_activate();
+		    }
+		    else
+		    {
+			_photo_info_fs();
+		    }
                     break;
                 case ENNA_KEY_RIGHT:
 		    if (mod->list_selected)
@@ -479,6 +549,13 @@ static void _class_event(void *event_info)
 
             }
             break;
+        case WALL_PREVIEW:
+	    switch (key)
+	    {
+
+
+	    }
+	    break;
         case SLIDESHOW_VIEW:
             switch (key)
             {

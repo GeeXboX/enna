@@ -16,8 +16,8 @@ spectra {
   }
   spectrum {
     name: "grey_gradient";
-    color: 109 109 109 70 1;
-    color: 85 85 85 80 1;
+    color: 34 34 34 255 1;
+    color: 01 01 01 255 1;
   }
 }
 
