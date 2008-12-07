@@ -69,6 +69,7 @@ static void _photo_info_delete_cb(void *data,
     o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
     ENNA_OBJECT_DEL(o_pict);
     ENNA_OBJECT_DEL(mod->o_preview);
+    mod->state = WALL_VIEW;
 
 }
 
@@ -105,8 +106,8 @@ static void _photo_info_fs()
     o_pict = enna_image_add(mod->em->evas);
     enna_image_file_set(o_pict, filename);
     enna_image_fill_inside_set(o_pict, 0);
+    enna_image_load_size_set(o_pict, wf, hf);
     enna_image_preload(o_pict, 0);
-
 
     o_edje = edje_object_add(mod->em->evas);
     edje_object_file_set(o_edje, enna_config_theme_get(), "enna/picture/info");
@@ -120,7 +121,6 @@ static void _photo_info_fs()
     xf = w1 / 2 - wf / 2;
     yf = h1 / 2 - hf / 2;
 
-    enna_image_load_size_set(o_pict, wf, hf);
     msg->val[0] = xf;
     msg->val[1] = yf;
     msg->val[2] = wf;
@@ -583,7 +583,6 @@ static void _class_event(void *event_info)
 	case ENNA_KEY_CANCEL:
 	    printf("photo delete\n");
 	    _photo_info_delete();
-	    mod->state = WALL_VIEW;
 	default:
 	    break;
 
