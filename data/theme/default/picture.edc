@@ -271,7 +271,7 @@ group
             visible: 0;
             color: 255 255 255 0;
          }
-         description { state: "fullscreen" 0.0;
+         description { state: "show" 0.0;
 
          }
       }
@@ -321,14 +321,14 @@ group
             rel1.to: "min";
             rel2.to: "min";
          }
-         description { state: "fullscreen" 0.0;
+         description { state: "show" 0.0;
             color: 255 255 255 255;
             rel1.to: "max";
             rel2.to: "max";
          }
       }
 
-
+      /*
       part
       {
          name: "icon_bar";
@@ -356,17 +356,29 @@ group
                }
             }
          }
-      }
+         }*/
    }
    programs
    {
-      program { name: "maximize";
-         signal: "resize";
+      program { name: "show";
+         signal: "show";
          source: "enna";
-         action: STATE_SET "fullscreen" 0.0;
-         transition: SINUSOIDAL 0.5;
+         action: STATE_SET "show" 0.0;
+         transition: DECELERATE 0.4;
          target: "enna.swallow.content";
          target: "clip_bg";
+      }
+      program { name: "hide";
+         signal: "hide";
+         source: "enna";
+         action: STATE_SET "default" 0.0;
+         transition: DECELERATE 0.4;
+         target: "enna.swallow.content";
+         target: "clip_bg";
+         after:  "done";
+      }
+      program { name: "done";
+         action:  SIGNAL_EMIT "done" "";
       }
    }
 }

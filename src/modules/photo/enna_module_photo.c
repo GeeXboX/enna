@@ -27,6 +27,7 @@ typedef struct _Enna_Module_Photo
     Evas_Object *o_list;
     Evas_Object *o_wall;
     Evas_Object *o_location;
+    Evas_Object *o_preview;
     Evas_Object *o_slideshow;
     PHOTO_STATE state;
     Enna_Class_Vfs *vfs;
@@ -52,6 +53,33 @@ static void _activate()
     f = (Enna_Vfs_File*)enna_list_selected_data2_get(mod->o_list);
     _browse(vfs, f);
 
+}
+
+static void _photo_info_delete_cb(void *data,
+    Evas_Object *obj,
+    const char *emission,
+    const char *source)
+{
+
+    Evas_Object *o_pict;
+
+
+    printf("delete cb\n");
+    edje_object_signal_callback_del(mod->o_preview, "done", "", _photo_info_delete_cb);
+    o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
+    ENNA_OBJECT_DEL(o_pict);
+    ENNA_OBJECT_DEL(mod->o_preview);
+
+}
+
+
+static void _photo_info_delete()
+{
+
+    printf("info delete\n");
+    edje_object_signal_callback_add(mod->o_preview, "done","", _photo_info_delete_cb, NULL);
+    edje_object_signal_emit(mod->o_preview, "hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
 }
 
 static void _photo_info_fs()
@@ -111,9 +139,9 @@ static void _photo_info_fs()
     msg->val[3] = hi;
     edje_object_message_send(o_edje, EDJE_MESSAGE_INT_SET, 1, msg);
     free(msg);
-    edje_object_signal_emit(o_edje, "resize", "enna");
-    //edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
-
+    edje_object_signal_emit(o_edje, "show", "enna");
+    edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
+    mod->o_preview = o_edje;
 }
 
 static void _list_transition_core(Eina_List *files, unsigned char direction)
@@ -240,7 +268,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
     if (mod->prev_selected)
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev_selected : %s",
-                mod->prev_selected);
+	    mod->prev_selected);
         if (!enna_list_jump_label(o_list, mod->prev_selected) > 0)
             enna_list_selected_set(o_list, 0);
 
@@ -260,7 +288,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
 }
 
 static void _list_transition_left_end_cb(void *data, Evas_Object *o,
-        const char *sig, const char *src)
+    const char *sig, const char *src)
 {
 
     _list_transition_core(data, 0);
@@ -268,7 +296,7 @@ static void _list_transition_left_end_cb(void *data, Evas_Object *o,
 }
 
 static void _list_transition_right_end_cb(void *data, Evas_Object *o,
-        const char *sig, const char *src)
+    const char *sig, const char *src)
 {
     _list_transition_core(data, 1);
 }
@@ -285,15 +313,15 @@ static void _browse_down()
         /* Clear list and add new items */
         oe = enna_list_edje_object_get(o);
         edje_object_signal_callback_add(oe, "list,transition,end", "edje",
-                _list_transition_right_end_cb, files);
+	    _list_transition_right_end_cb, files);
         edje_object_signal_emit(oe, "list,right", "enna");
 
         mod->prev_selected = strdup(enna_location_label_get_nth(
                 mod->o_location, enna_location_count(mod->o_location) - 1));
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "prev selected : %s",
-                mod->prev_selected);
+	    mod->prev_selected);
         enna_location_remove_nth(mod->o_location,
-                enna_location_count(mod->o_location) - 1);
+	    enna_location_count(mod->o_location) - 1);
     }
 
 }
@@ -339,15 +367,15 @@ static void _browse(void *data, void *data2)
             files = vfs->func.class_browse_up(NULL);
             icon = edje_object_add(mod->em->evas);
             edje_object_file_set(icon, enna_config_theme_get(),
-                    "icon/home_mini");
+		"icon/home_mini");
             enna_location_append(mod->o_location, "Root", icon, _browse, vfs,
-                    NULL);
+		NULL);
         }
         else if (file->is_directory)
         {
             /* File selected is a directory */
             enna_location_append(mod->o_location, file->label, NULL, _browse,
-                    vfs, file);
+		vfs, file);
             files = vfs->func.class_browse_up(file->uri);
         }
         else if (!file->is_directory)
@@ -383,7 +411,7 @@ static void _browse(void *data, void *data2)
         /* Clear list and add new items */
         oe = enna_list_edje_object_get(mod->o_list);
         edje_object_signal_callback_add(oe, "list,transition,end", "edje",
-                _list_transition_left_end_cb, files);
+	    _list_transition_left_end_cb, files);
         edje_object_signal_emit(oe, "list,left", "enna");
 
     }
@@ -483,114 +511,119 @@ static void _class_event(void *event_info)
 
     switch (mod->state)
     {
-        case WALL_VIEW:
-            switch (key)
-            {
-                case ENNA_KEY_CANCEL:
-		    if (mod->is_root)
-                    {
-                        enna_content_hide();
-                        enna_mainmenu_show(enna->o_mainmenu);
-                    }
-		    else if (mod->list_selected || mod->no_dir)
-		    {
-			_browse_down();
-			mod->list_selected = 1;
-		    }
-		    else
-		    {
-			mod->list_selected = 1;
-			edje_object_signal_emit(mod->o_edje, "list,show", "enna");
-		    }
-                    break;
-
-                case ENNA_KEY_OK:
-	        case ENNA_KEY_SPACE:
-		    if (mod->list_selected)
-		    {
-			_activate();
-		    }
-		    else
-		    {
-			_photo_info_fs();
-		    }
-                    break;
-                case ENNA_KEY_RIGHT:
-		    if (mod->list_selected)
-		    {
-			mod->list_selected = 0;
-			edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
-		    }
-		    enna_wall_right_select(mod->o_wall);
-		    break;
-                case ENNA_KEY_LEFT:
-		    if (mod->list_selected)
-		    {
-			mod->list_selected = 0;
-			edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
-		    }
-		    enna_wall_left_select(mod->o_wall);
-		    break;
-                case ENNA_KEY_UP:
-		    if (mod->list_selected)
-			enna_list_event_key_down(mod->o_list, event_info);
-		    else
-			enna_wall_up_select(mod->o_wall);
-
-		    break;
-                case ENNA_KEY_DOWN:
-		    if (mod->list_selected)
-			enna_list_event_key_down(mod->o_list, event_info);
-		    else
-			enna_wall_down_select(mod->o_wall);
-		    break;
-                default:
-		    break;
-
-            }
-            break;
-        case WALL_PREVIEW:
-	    switch (key)
+    case WALL_VIEW:
+	switch (key)
+	{
+	case ENNA_KEY_CANCEL:
+	    if (mod->is_root)
 	    {
-
-
+		enna_content_hide();
+		enna_mainmenu_show(enna->o_mainmenu);
+	    }
+	    else if (mod->list_selected || mod->no_dir)
+	    {
+		_browse_down();
+		mod->list_selected = 1;
+	    }
+	    else
+	    {
+		mod->list_selected = 1;
+		edje_object_signal_emit(mod->o_edje, "list,show", "enna");
 	    }
 	    break;
-        case SLIDESHOW_VIEW:
-            switch (key)
-            {
-                case ENNA_KEY_CANCEL:
-                    evas_object_del(mod->o_slideshow);
-                    mod->state = WALL_VIEW;
-		    edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
-                    edje_object_signal_emit(mod->o_edje, "list,show", "enna");
-                    break;
-                case ENNA_KEY_RIGHT:
-                    enna_slideshow_next(mod->o_slideshow);
-                    break;
-                case ENNA_KEY_LEFT:
-                    enna_slideshow_prev(mod->o_slideshow);
-                    break;
-                case ENNA_KEY_OK:
-	            case ENNA_KEY_SPACE:
-                    enna_slideshow_play(mod->o_slideshow);
 
-                    break;
-                default:
-                    break;
-            }
-            break;
-        default:
-            break;
+	case ENNA_KEY_OK:
+	case ENNA_KEY_SPACE:
+	    if (mod->list_selected)
+	    {
+		_activate();
+	    }
+	    else
+	    {
+		_photo_info_fs();
+	    }
+	    break;
+	case ENNA_KEY_RIGHT:
+	    if (mod->list_selected)
+	    {
+		mod->list_selected = 0;
+		edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+	    }
+	    enna_wall_right_select(mod->o_wall);
+	    break;
+	case ENNA_KEY_LEFT:
+	    if (mod->list_selected)
+	    {
+		mod->list_selected = 0;
+		edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+	    }
+	    enna_wall_left_select(mod->o_wall);
+	    break;
+	case ENNA_KEY_UP:
+	    if (mod->list_selected)
+		enna_list_event_key_down(mod->o_list, event_info);
+	    else
+		enna_wall_up_select(mod->o_wall);
+
+	    break;
+	case ENNA_KEY_DOWN:
+	    if (mod->list_selected)
+		enna_list_event_key_down(mod->o_list, event_info);
+	    else
+		enna_wall_down_select(mod->o_wall);
+	    break;
+	default:
+	    break;
+
+	}
+	break;
+    case WALL_PREVIEW:
+	switch (key)
+	{
+	case ENNA_KEY_CANCEL:
+	    printf("photo delete\n");
+	    _photo_info_delete();
+	    mod->state = WALL_VIEW;
+	default:
+	    break;
+
+	}
+	break;
+    case SLIDESHOW_VIEW:
+	switch (key)
+	{
+	case ENNA_KEY_CANCEL:
+	    evas_object_del(mod->o_slideshow);
+	    mod->state = WALL_VIEW;
+	    edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
+	    edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+	    break;
+	case ENNA_KEY_RIGHT:
+	    enna_slideshow_next(mod->o_slideshow);
+	    break;
+	case ENNA_KEY_LEFT:
+	    enna_slideshow_prev(mod->o_slideshow);
+	    break;
+	case ENNA_KEY_OK:
+	case ENNA_KEY_SPACE:
+	    enna_slideshow_play(mod->o_slideshow);
+
+	    break;
+	default:
+	    break;
+	}
+	break;
+    default:
+	break;
     }
 
 }
 
 static Enna_Class_Activity
-        class =
-        { "photo", 1, "photo", NULL, "icon/photo",
-                { _class_init, _class_shutdown, _class_show, _class_hide,
-                        _class_event }, NULL };
+class =
+{ "photo", 1, "photo", NULL, "icon/photo",
+  { _class_init, _class_shutdown, _class_show, _class_hide,
+    _class_event }, NULL };
 
 /*****************************************************************************/
 /*                          Public Module API                                */
