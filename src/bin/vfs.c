@@ -41,7 +41,6 @@ static Eina_List *_enna_vfs_photo = NULL;
 /* externally accessible functions */
 int enna_vfs_init(Evas *evas)
 {
-
     return 0;
 }
 
