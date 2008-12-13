@@ -23,6 +23,7 @@ syntax: regexp
 ^ltmain.sh
 ^missing
 ^stamp-h1
+^TAGS
 
 ^src/bin/enna
 ^.*\.edj
