@@ -50,13 +50,13 @@ int enna_vfs_append(const char *name, unsigned char type,
     if (!vfs)
         return -1;
 
-    if ((type & ENNA_CAPS_MUSIC) == ENNA_CAPS_MUSIC)
+    if (type & ENNA_CAPS_MUSIC)
         _enna_vfs_music = eina_list_append(_enna_vfs_music, vfs);
 
-    if ((type & ENNA_CAPS_VIDEO) == ENNA_CAPS_VIDEO)
+    if (type & ENNA_CAPS_VIDEO)
         _enna_vfs_video = eina_list_append(_enna_vfs_video, vfs);
 
-    if ((type & ENNA_CAPS_PHOTO) == ENNA_CAPS_PHOTO)
+    if (type & ENNA_CAPS_PHOTO)
         _enna_vfs_photo = eina_list_append(_enna_vfs_photo, vfs);
 
     return 0;
