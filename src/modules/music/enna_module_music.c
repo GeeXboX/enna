@@ -370,7 +370,7 @@ static void _browse_down()
         Eina_List *files;
 	char *prev;
 
-        files = mod->vfs->func.class_browse_down();
+        files = mod->vfs->func.class_browse_down(mod->vfs->cookie);
         o = mod->o_list;
         /* Clear list and add new items */
         oe = enna_list_edje_object_get(o);
@@ -416,7 +416,7 @@ static void _browse(void *data, void *data2)
         {
             Evas_Object *icon;
             /* file param is NULL => create Root menu */
-            files = vfs->func.class_browse_up(NULL);
+            files = vfs->func.class_browse_up(NULL, vfs->cookie);
             icon = edje_object_add(mod->em->evas);
             edje_object_file_set(icon, enna_config_theme_get(),
                     "icon/home_mini");
@@ -428,7 +428,7 @@ static void _browse(void *data, void *data2)
             /* File selected is a directory */
             enna_location_append(mod->o_location, file->label, NULL, _browse,
                     vfs, file);
-            files = vfs->func.class_browse_up(file->uri);
+            files = vfs->func.class_browse_up(file->uri, vfs->cookie);
         }
         else if (!file->is_directory)
         {
@@ -437,9 +437,9 @@ static void _browse(void *data, void *data2)
             Enna_Vfs_File *prev_vfs;
             char *prev_uri;
 
-            prev_vfs = vfs->func.class_vfs_get();
+            prev_vfs = vfs->func.class_vfs_get(vfs->cookie);
             prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
-            files = vfs->func.class_browse_up(prev_uri);
+            files = vfs->func.class_browse_up(prev_uri, vfs->cookie);
             ENNA_FREE(prev_uri);
             enna_mediaplayer_playlist_clear();
             enna_mediaplayer_stop();
@@ -659,7 +659,7 @@ static int em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     if (mod->vfs && mod->vfs->func.class_shutdown)
     {
-        mod->vfs->func.class_shutdown(0);
+        mod->vfs->func.class_shutdown(0, mod->vfs->cookie);
     }
     if (mod->prev_selected)
         free(mod->prev_selected);
