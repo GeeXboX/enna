@@ -176,6 +176,7 @@ vfs_add_volume_entry (volume_t *v)
     class->func.class_browse_up   = NULL;
     class->func.class_browse_down = NULL;
     class->func.class_vfs_get     = NULL;
+    class->cookie                 = NULL;
 
     enna_vfs_append (NULL, caps, class);
 }

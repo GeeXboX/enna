@@ -179,12 +179,12 @@ static Eina_List * browse_up(const char *path, netstreams_priv_t *data,
     return parse_netstream(path, data);
 }
 
-static Eina_List * browse_up_music(const char *path)
+static Eina_List * browse_up_music(const char *path, void *cookie)
 {
     return browse_up(path, mod->music, "icon/music");
 }
 
-static Eina_List * browse_up_video(const char *path)
+static Eina_List * browse_up_video(const char *path, void *cookie)
 {
     return browse_up(path, mod->video, "icon/video");
 }
@@ -197,24 +197,24 @@ static Eina_List * browse_down(netstreams_priv_t *data)
     return NULL;
 }
 
-static Eina_List * browse_down_music(void)
+static Eina_List * browse_down_music(void *cookie)
 {
     return browse_down(mod->music);
 }
 
-static Eina_List * browse_down_video(void)
+static Eina_List * browse_down_video(void *cookie)
 {
     return browse_down(mod->video);
 }
 
-static Enna_Vfs_File * vfs_get_music(void)
+static Enna_Vfs_File * vfs_get_music(void *cookie)
 {
     return enna_vfs_create_directory((char *) mod->music->uri,
             (char *) ecore_file_file_get(mod->music->uri),
             (char *) evas_stringshare_add("icon/music"), NULL);
 }
 
-static Enna_Vfs_File * vfs_get_video(void)
+static Enna_Vfs_File * vfs_get_video(void *cookie)
 {
     return enna_vfs_create_directory((char *) mod->video->uri,
             (char *) ecore_file_file_get(mod->video->uri),
@@ -274,13 +274,13 @@ static void class_init(const char *name, netstreams_priv_t **priv,
 static Enna_Class_Vfs class_music =
 { "netstreams_music", 1, "Browse Network Streams", NULL, "icon/music",
 { NULL, NULL, browse_up_music, browse_down_music, vfs_get_music,
-},
+}, NULL
 };
 
 static Enna_Class_Vfs class_video =
 { "netstreams_video", 1, "Browse Network Streams", NULL, "icon/video",
 { NULL, NULL, browse_up_video, browse_down_video, vfs_get_video,
-},
+}, NULL
 };
 
 /* Module interface */

@@ -134,17 +134,17 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
 
 }
 
-static Eina_List *_class_browse_up_music(const char *path)
+static Eina_List *_class_browse_up_music(const char *path, void *cookie)
 {
     return _class_browse_up(path, ENNA_CAPS_MUSIC, mod->music, "icon/music");
 }
 
-static Eina_List *_class_browse_up_video(const char *path)
+static Eina_List *_class_browse_up_video(const char *path, void *cookie)
 {
     return _class_browse_up(path, ENNA_CAPS_VIDEO, mod->video, "icon/video");
 }
 
-static Eina_List *_class_browse_up_photo(const char *path)
+static Eina_List *_class_browse_up_photo(const char *path, void *cookie)
 {
     return _class_browse_up(path, ENNA_CAPS_PHOTO, mod->photo, "icon/photo");
 }
@@ -195,17 +195,17 @@ static Eina_List * _class_browse_down(Class_Private_Data *data,
     return NULL;
 }
 
-static Eina_List * _class_browse_down_music(void)
+static Eina_List * _class_browse_down_music(void *cookie)
 {
     return _class_browse_down(mod->music, ENNA_CAPS_MUSIC);
 }
 
-static Eina_List * _class_browse_down_video(void)
+static Eina_List * _class_browse_down_video(void *cookie)
 {
     return _class_browse_down(mod->video, ENNA_CAPS_VIDEO);
 }
 
-static Eina_List * _class_browse_down_photo(void)
+static Eina_List * _class_browse_down_photo(void *cookie)
 {
     return _class_browse_down(mod->photo, ENNA_CAPS_PHOTO);
 }
@@ -233,17 +233,17 @@ static Enna_Vfs_File * _class_vfs_get(int type)
     return NULL;
 }
 
-static Enna_Vfs_File * _class_vfs_get_music(void)
+static Enna_Vfs_File * _class_vfs_get_music(void *cookie)
 {
     return _class_vfs_get(ENNA_CAPS_MUSIC);
 }
 
-static Enna_Vfs_File * _class_vfs_get_video(void)
+static Enna_Vfs_File * _class_vfs_get_video(void *cookie)
 {
     return _class_vfs_get(ENNA_CAPS_VIDEO);
 }
 
-static Enna_Vfs_File * _class_vfs_get_photo(void)
+static Enna_Vfs_File * _class_vfs_get_photo(void *cookie)
 {
     return _class_vfs_get(ENNA_CAPS_PHOTO);
 }
@@ -301,21 +301,21 @@ static Enna_Class_Vfs class_music =
 { "localfiles_music", 1, "Browse Local Files", NULL, "icon/hd",
 { NULL, NULL, _class_browse_up_music, _class_browse_down_music,
         _class_vfs_get_music,
-},
+}, NULL
 };
 
 static Enna_Class_Vfs class_video =
 { "localfiles_video", 1, "Browse Local Files", NULL, "icon/hd",
 { NULL, NULL, _class_browse_up_video, _class_browse_down_video,
         _class_vfs_get_video,
-},
+}, NULL
 };
 
 static Enna_Class_Vfs class_photo =
 { "localfiles_photo", 1, "Browse Local Files", NULL, "icon/hd",
 { NULL, NULL, _class_browse_up_photo, _class_browse_down_photo,
         _class_vfs_get_photo,
-},
+}, NULL
 };
 
 /* Module interface */

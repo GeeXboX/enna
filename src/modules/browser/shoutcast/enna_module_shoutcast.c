@@ -120,7 +120,7 @@ static Eina_List * browse_by_genre(const char *path)
     return files;
 }
 
-static Eina_List * _class_browse_up(const char *path)
+static Eina_List * _class_browse_up(const char *path, void *cookie)
 {
     if (!path)
         return browse_list();
@@ -131,12 +131,12 @@ static Eina_List * _class_browse_up(const char *path)
     return NULL;
 }
 
-static Eina_List * _class_browse_down(void)
+static Eina_List * _class_browse_down(void *cookie)
 {
     return browse_list();
 }
 
-static Enna_Vfs_File * _class_vfs_get(void)
+static Enna_Vfs_File * _class_vfs_get(void *cookie)
 {
     return enna_vfs_create_directory(NULL, NULL,
             (char *) evas_stringshare_add("icon/music"), NULL);
@@ -145,7 +145,7 @@ static Enna_Vfs_File * _class_vfs_get(void)
 static Enna_Class_Vfs class_shoutcast =
 { "shoutcast", 1, "SHOUTcast Streaming", NULL, "icon/shoutcast",
 { NULL, NULL, _class_browse_up, _class_browse_down, _class_vfs_get,
-},
+}, NULL
 };
 
 /* Module interface */
