@@ -81,17 +81,13 @@ void enna_vfs_class_remove(const char *name, unsigned char type)
 Eina_List *
 enna_vfs_get(ENNA_VFS_CAPS type)
 {
-
     if (type == ENNA_CAPS_MUSIC)
-    return _enna_vfs_music;
+        return _enna_vfs_music;
     else if (type == ENNA_CAPS_VIDEO)
-    {
-        enna_log (ENNA_MSG_EVENT, NULL, "return vfs video");
         return _enna_vfs_video;
-    }
     else if (type == ENNA_CAPS_PHOTO)
-    return _enna_vfs_photo;
-    else
+        return _enna_vfs_photo;
+
     return NULL;
 }
 
