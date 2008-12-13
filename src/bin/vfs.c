@@ -63,6 +63,22 @@ int enna_vfs_append(const char *name, unsigned char type,
     return 0;
 }
 
+void enna_vfs_class_remove(const char *name, unsigned char type)
+{
+    Eina_List *tmp;
+    
+    if (!name)
+        return;
+
+    tmp = enna_vfs_get (type);
+    tmp = eina_list_nth_list (tmp, 0);
+    do {
+        Enna_Class_Vfs *class = (Enna_Class_Vfs *) tmp->data;
+        if (class && !strcmp (class->name, name))
+            tmp = eina_list_remove (tmp, class);
+    } while ((tmp = eina_list_next (tmp)));
+}
+
 Eina_List *
 enna_vfs_get(ENNA_VFS_CAPS type)
 {
