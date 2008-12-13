@@ -269,6 +269,8 @@ static void _create_gui()
     enna->o_content = o;
 
     /* Create Modules */
+    em = enna_module_open("hal", enna->evas);
+    enna_module_enable(em);
     em = enna_module_open("polling", enna->evas);
     enna_module_enable(em);
     em = enna_module_open("music", enna->evas);

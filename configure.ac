@@ -200,6 +200,33 @@ fi
 AM_CONDITIONAL(BUILD_LMS_MODULE, test "x$have_lms_module" = "xyes")
 
 #######################################
+## Check if we should build hal module
+want_hal_module="auto"
+have_hal_module="no"
+AC_MSG_CHECKING(whether hal is to be built)
+AC_ARG_ENABLE(hal-module,
+  AS_HELP_STRING([--enable-hal-module],[Enable HAL Module]),
+  [ want_hal_module=$enableval ]
+)
+AC_MSG_RESULT($want_hal_module)
+if test "x$want_hal_module" = "xyes" -o "x$want_hal_module" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [EHAL],
+    [ehal hal-storage],
+    [
+      AC_DEFINE(BUILD_HAL_MODULE, 1, [HAL Module])
+      have_hal_module="yes"
+    ],
+    [
+      if test "x$want_hal_module" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([eHAL not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_HAL_MODULE, test "x$have_hal_module" = "xyes")
+
+#######################################
 ## Check if we should build AMazon module
 want_amazon_module="yes"
 AC_MSG_CHECKING(whether amazon is to be built)
@@ -241,6 +268,7 @@ src/modules/music/Makefile
 src/modules/video/Makefile
 src/modules/photo/Makefile
 src/modules/browser/Makefile
+src/modules/browser/hal/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/lms/Makefile
 src/modules/browser/shoutcast/Makefile
@@ -277,6 +305,7 @@ echo "  libplayer backend................ : $have_libplayer_backend"
 echo
 echo "Optional Browser Modules:"
 echo
+echo "  HAL.............................. : $have_hal_module"
 echo "  Light Media Scanner.............. : $have_lms_module"
 echo "  SHOUTcast........................ : $want_shoutcast_module"
 echo
