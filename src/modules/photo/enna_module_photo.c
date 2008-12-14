@@ -1,6 +1,7 @@
 /* Interface */
 
 #include "enna.h"
+#include "libexif/exif-data.h"
 
 #define ENNA_MODULE_NAME "photo"
 
@@ -33,6 +34,11 @@ typedef struct _Enna_Module_Photo
     Enna_Class_Vfs *vfs;
     Enna_Module *em;
     char *prev_selected;
+    struct {
+	Evas_Object *o_scroll;
+	Evas_Object *o_exif;
+	char *str;
+    }exif;
     unsigned char is_root : 1;
     unsigned char list_selected : 1;
     unsigned char no_dir : 1;
@@ -64,23 +70,92 @@ static void _photo_info_delete_cb(void *data,
     Evas_Object *o_pict;
 
 
-    printf("delete cb\n");
     edje_object_signal_callback_del(mod->o_preview, "done", "", _photo_info_delete_cb);
     o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
+
+    ENNA_OBJECT_DEL(mod->exif.o_exif);
+    ENNA_OBJECT_DEL(mod->exif.o_scroll);
+    free(mod->exif.str);
+    mod->exif.str = NULL;
+
     ENNA_OBJECT_DEL(o_pict);
     ENNA_OBJECT_DEL(mod->o_preview);
     mod->state = WALL_VIEW;
-
 }
 
 
 static void _photo_info_delete()
 {
-
-    printf("info delete\n");
     edje_object_signal_callback_add(mod->o_preview, "done","", _photo_info_delete_cb, NULL);
     edje_object_signal_emit(mod->o_preview, "hide", "enna");
+    edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
     edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
+}
+
+
+static void _exif_content_foreach_func(ExifEntry *entry, void *callback_data)
+{
+  char buf[2000];
+  char buf_txtblk[2000];
+  char *exif_str;
+  size_t len;
+
+  exif_entry_get_value(entry, buf, sizeof(buf));
+  snprintf(buf_txtblk, sizeof(buf_txtblk), "<hilight>%s</hilight> : %s<br>",
+	 exif_tag_get_name(entry->tag),
+	 exif_entry_get_value(entry, buf, sizeof(buf)));
+
+  if (!mod->exif.str)
+      len = strlen(buf_txtblk) + 1;
+  else
+      len = strlen(mod->exif.str) + strlen(buf_txtblk) + 1;
+
+  exif_str = (char*)calloc(len, sizeof(char));
+  if (mod->exif.str)
+      strcpy(exif_str, mod->exif.str);
+  strcat(exif_str, buf_txtblk);
+  free(mod->exif.str);
+  mod->exif.str = exif_str;
+
+}
+
+
+
+static void _exif_data_foreach_func(ExifContent *content, void *callback_data)
+{
+  exif_content_foreach_entry(content, _exif_content_foreach_func, callback_data);
+}
+
+
+/** Run EXIF parsing test on the given file. */
+
+static void _exif_parse_metadata(const char *filename)
+{
+  ExifData *d;
+  Evas_Coord mw, mh;
+
+  if (!filename) return;
+
+  if (mod->exif.str)
+      free(mod->exif.str);
+
+  mod->exif.str = NULL;
+
+  if (mod->exif.o_exif)
+      evas_object_del(mod->exif.o_exif);
+
+  mod->exif.o_exif = edje_object_add(mod->em->evas);
+  edje_object_file_set(mod->exif.o_exif, enna_config_theme_get(), "exif/data");
+  mod->exif.o_scroll = enna_scrollframe_add(mod->em->evas);
+  edje_object_part_swallow(mod->o_preview, "enna.swallow.exif", mod->exif.o_scroll);
+  d = exif_data_new_from_file(filename);
+  exif_data_foreach_content(d, _exif_data_foreach_func, NULL);
+  exif_data_unref(d);
+  edje_object_part_text_set(mod->exif.o_exif, "enna.text.exif", mod->exif.str);
+  edje_object_size_min_calc(mod->exif.o_exif, &mw, &mh);
+  evas_object_resize(mod->exif.o_exif, mw, mh);
+  evas_object_size_hint_min_set(mod->exif.o_exif, mw, mh);
+  enna_scrollframe_child_set(mod->exif.o_scroll, mod->exif.o_exif);
 }
 
 static void _photo_info_fs()
@@ -106,7 +181,7 @@ static void _photo_info_fs()
     o_pict = enna_image_add(mod->em->evas);
     enna_image_file_set(o_pict, filename);
     enna_image_fill_inside_set(o_pict, 0);
-    enna_image_load_size_set(o_pict, wf, hf);
+
     enna_image_preload(o_pict, 0);
 
     o_edje = edje_object_add(mod->em->evas);
@@ -125,7 +200,7 @@ static void _photo_info_fs()
     msg->val[1] = yf;
     msg->val[2] = wf;
     msg->val[3] = hf;
-
+    enna_image_load_size_set(o_pict, wf, hf);
     edje_object_message_send(o_edje, EDJE_MESSAGE_INT_SET, 2, msg);
 
     /* Set custom state : size and position of actual thumbnail */
@@ -139,9 +214,11 @@ static void _photo_info_fs()
     msg->val[3] = hi;
     edje_object_message_send(o_edje, EDJE_MESSAGE_INT_SET, 1, msg);
     free(msg);
-    edje_object_signal_emit(o_edje, "show", "enna");
-    edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
+
     mod->o_preview = o_edje;
+    _exif_parse_metadata(filename);
+    edje_object_signal_emit(mod->o_preview, "show", "enna");
+    edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
 }
 
 static void _list_transition_core(Eina_List *files, unsigned char direction)
@@ -581,8 +658,14 @@ static void _class_event(void *event_info)
 	switch (key)
 	{
 	case ENNA_KEY_CANCEL:
-	    printf("photo delete\n");
 	    _photo_info_delete();
+	    break;
+	case ENNA_KEY_UP:
+	    edje_object_signal_emit(mod->o_preview, "show,exif", "enna");
+	    break;
+	case ENNA_KEY_DOWN:
+	    edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
+	    break;
 	default:
 	    break;
 
