@@ -14,6 +14,8 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@ @EHAL_CFLAGS@
 
+if BUILD_HAL_MODULE
+
 pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = enna_module_hal.la
@@ -27,3 +29,5 @@ enna_module_hal_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/enna_module_$(MODULE).*
+
+endif
