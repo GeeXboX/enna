@@ -29,5 +29,6 @@
 #include "slideshow.h"
 #include "button.h"
 #include "switcher.h"
+#include "parser_cdda.h"
 
 #endif

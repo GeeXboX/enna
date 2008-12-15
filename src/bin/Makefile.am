@@ -4,7 +4,7 @@ INCLUDES = \
 -DPACKAGE_LIB_DIR=\"$(libdir)\" \
 -DPACKAGE_DATA_DIR=\""$(datadir)"\"
 
-AM_CFLAGS = @ENNA_CFLAGS@ @LIBXML2_CFLAGS@ @LIBCURL_CFLAGS@
+AM_CFLAGS = @ENNA_CFLAGS@ @LIBXML2_CFLAGS@ @LIBCURL_CFLAGS@ @LIBCDDB_CFLAGS@
 
 bin_PROGRAMS = enna
 
@@ -37,9 +37,10 @@ md5.c\
 covers.c\
 logs.c\
 snapshots.c\
+parser_cdda.c\
 slideshow.c
 
-enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@
+enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@ @LIBCDDB_LIBS@
 enna_LDFLAGS = -rdynamic
 
 EXTRA_DIST= \
@@ -72,6 +73,7 @@ md5.h\
 covers.h\
 logs.h\
 snapshots.h\
+parser_cdda.h\
 slideshow.h
 
 
