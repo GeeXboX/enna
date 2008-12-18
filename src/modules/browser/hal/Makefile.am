@@ -18,16 +18,16 @@ if BUILD_HAL_MODULE
 
 pkgdir = $(libdir)/enna/modules
 
-pkg_LTLIBRARIES = enna_module_hal.la
+pkg_LTLIBRARIES = browser_hal.la
 
-enna_module_hal_la_SOURCES= \
+browser_hal_la_SOURCES= \
 enna_module_hal.c hal_storage.c hal_volume.c
 
-enna_module_hal_la_LIBADD = @ENNA_LIBS@ @EHAL_LIBS@
-enna_module_hal_la_LDFLAGS = -module -avoid-version
-enna_module_hal_la_DEPENDENCIES = $(top_builddir)/config.h
+browser_hal_la_LIBADD = @ENNA_LIBS@ @EHAL_LIBS@
+browser_hal_la_LDFLAGS = -module -avoid-version
+browser_hal_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
-	rm -rf $(DESTDIR)$(libdir)/enna/modules/enna_module_$(MODULE).*
+	rm -rf $(DESTDIR)$(libdir)/enna/modules/browser_$(MODULE).*
 
 endif

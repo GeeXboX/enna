@@ -18,16 +18,16 @@ if BUILD_LMS_MODULE
 
 pkgdir = $(libdir)/enna/modules
 
-pkg_LTLIBRARIES = enna_module_lms.la
+pkg_LTLIBRARIES = browser_lms.la
 
-enna_module_lms_la_SOURCES= \
+browser_lms_la_SOURCES= \
 enna_module_lms.c
 
-enna_module_lms_la_LIBADD = @ENNA_LIBS@ @LMS_LIBS@
-enna_module_lms_la_LDFLAGS = -module -avoid-version
-enna_module_lms_la_DEPENDENCIES = $(top_builddir)/config.h
+browser_lms_la_LIBADD = @ENNA_LIBS@ @LMS_LIBS@
+browser_lms_la_LDFLAGS = -module -avoid-version
+browser_lms_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
-	rm -rf $(DESTDIR)$(libdir)/enna/modules/enna_module_$(MODULE).*
+	rm -rf $(DESTDIR)$(libdir)/enna/modules/browser_$(MODULE).*
 
 endif
