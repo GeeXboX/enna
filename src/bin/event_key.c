@@ -138,7 +138,7 @@ char enna_key_get_alpha(enna_key_t key)
 
 void enna_input_init()
 {
-#ifdef BUILD_LIRC_MODULE
+#ifdef BUILD_INPUT_LIRC
     Enna_Module *em;
     Input_Module_Item *item;
 #endif
@@ -148,7 +148,7 @@ void enna_input_init()
 
     _input_modules = NULL;
 
-#ifdef BUILD_LIRC_MODULE
+#ifdef BUILD_INPUT_LIRC
     em = enna_module_open("input_lirc", enna->evas);
     item = calloc(1, sizeof(Input_Module_Item));
     item->module = em;

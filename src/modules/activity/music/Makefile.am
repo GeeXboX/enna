@@ -14,6 +14,8 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
+if BUILD_ACTIVITY_MUSIC
+
 pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_music.la
@@ -30,3 +32,5 @@ activity_music_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/activity_$(MODULE).*
+
+endif

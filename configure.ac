@@ -47,76 +47,244 @@ PKG_CHECK_MODULES([ENNA],
   ]
 )
 
-have_lirc_module=no
-AC_CHECK_HEADER(lirc/lirc_client.h, have_lirc_module=yes)
-if test "x$have_lirc_module" = "xyes"; then
-  AC_DEFINE([BUILD_LIRC_MODULE], [1], [Define if LIRC client lib is present])
-  have_lirc_module="yes"
-  LIRC_LIBS=-llirc_client
-  AC_SUBST(LIRC_LIBS)
-fi
-AM_CONDITIONAL(BUILD_LIRC_MODULE, test "x$have_lirc_module" = "xyes")
+#########
+# Theme #
+#########
 
-#######################################
-## Check if we should build the emotion backend
-want_emotion_backend="auto"
-have_emotion_backend="no"
-AC_MSG_CHECKING(whether emotion backend is to be built)
-AC_ARG_ENABLE(emotion-backend,
-  AS_HELP_STRING([--enable-emotion-backend],[Enable Emotion media backend]),
-  [ want_emotion_backend=$enableval ]
+AC_ARG_ENABLE(theme,
+	[AC_HELP_STRING([--disable-theme], [disable theme.
+        [[default=enabled]]])],
+	[build_theme=$enableval],
+	[build_theme="yes"]
 )
-AC_MSG_RESULT($want_emotion_backend)
-if test "x$want_emotion_backend" = "xyes" -o "x$want_emotion_backend" = "xauto"; then
+AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
+
+####################
+# Activity Modules #
+####################
+
+# Music
+want_activity_music="yes"
+AC_MSG_CHECKING(whether music activity module is to be built)
+AC_ARG_ENABLE(activity-music,
+  AS_HELP_STRING([--enable-activity-music],[Enable Music Activity Module]),
+  [ want_activity_music=$enableval ]
+)
+AC_MSG_RESULT($want_activity_music)
+AM_CONDITIONAL(BUILD_ACTIVITY_MUSIC, test "x$want_activity_music" = "xyes")
+
+# Photo
+want_activity_photo="yes"
+AC_MSG_CHECKING(whether photo activity module is to be built)
+AC_ARG_ENABLE(activity-photo,
+  AS_HELP_STRING([--enable-activity-photo],[Enable Photo Activity Module]),
+  [ want_activity_photo=$enableval ]
+)
+AC_MSG_RESULT($want_activity_photo)
+AM_CONDITIONAL(BUILD_ACTIVITY_PHOTO, test "x$want_activity_photo" = "xyes")
+
+# Video
+want_activity_video="yes"
+AC_MSG_CHECKING(whether video activity module is to be built)
+AC_ARG_ENABLE(activity-video,
+  AS_HELP_STRING([--enable-activity-video],[Enable Video Activity Module]),
+  [ want_activity_video=$enableval ]
+)
+AC_MSG_RESULT($want_activity_video)
+AM_CONDITIONAL(BUILD_ACTIVITY_VIDEO, test "x$want_activity_video" = "xyes")
+
+###################
+# Backend Modules #
+###################
+
+# Emotion
+want_backend_emotion="auto"
+have_backend_emotion="no"
+AC_MSG_CHECKING(whether emotion backend is to be built)
+AC_ARG_ENABLE(backend-emotion,
+  AS_HELP_STRING([--enable-backend-emotion],[Enable Emotion media backend]),
+  [ want_backend_emotion=$enableval ]
+)
+AC_MSG_RESULT($want_backend_emotion)
+if test "x$want_backend_emotion" = "xyes" -o "x$want_backend_emotion" = "xauto"; then
   PKG_CHECK_MODULES(
     [EMOTION],
     [emotion],
     [
-      AC_DEFINE(BUILD_EMOTION_BACKEND, 1, [Emotion media backend])
-      have_emotion_backend="yes"
+      AC_DEFINE(BUILD_BACKEND_EMOTION, 1, [Emotion media backend])
+      have_backend_emotion="yes"
     ],
     [
-      if test "x$want_emotion_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
+      if test "x$want_backend_emotion" = "xyes" -a "x$use_strict" = "xyes" ; then
         AC_MSG_ERROR([Emotion not found (strict dependencies checking)])
       fi
     ]
   )
 fi
-AM_CONDITIONAL(BUILD_EMOTION_BACKEND, test "x$have_emotion_backend" = "xyes")
+AM_CONDITIONAL(BUILD_BACKEND_EMOTION, test "x$have_backend_emotion" = "xyes")
 
-#######################################
-## Check if we should build the libplayer backend
-want_libplayer_backend="auto"
-have_libplayer_backend="no"
-
+# libplayer
+want_backend_libplayer="auto"
+have_backend_libplayer="no"
 AC_MSG_CHECKING(whether libplayer backend is to be built)
-AC_ARG_ENABLE(libplayer-backend,
-    AS_HELP_STRING([--enable-libplayer-backend],[Enable libplayer media backend]),
-    [ want_libplayer_backend=$enableval ]
+AC_ARG_ENABLE(backend-libplayer,
+    AS_HELP_STRING([--enable-backend-libplayer],[Enable libplayer media backend]),
+    [ want_backend_libplayer=$enableval ]
 )
-AC_MSG_RESULT($want_libplayer_backend)
-if test "x$want_libplayer_backend" = "xyes" -o "x$want_libplayer_backend" = "xauto"; then
+AC_MSG_RESULT($want_backend_libplayer)
+if test "x$want_backend_libplayer" = "xyes" -o "x$want_backend_libplayer" = "xauto"; then
   PKG_CHECK_MODULES(
     [LIBPLAYER],
     [libplayer],
     [
-      AC_DEFINE(BUILD_LIBPLAYER_BACKEND, 1, [Libplayer media backend])
-      have_libplayer_backend="yes"
+      AC_DEFINE(BUILD_BACKEND_LIBPLAYER, 1, [libplayer media backend])
+      have_backend_libplayer="yes"
     ],
     [
-      if test "x$want_libplayer_backend" = "xyes" -a "x$use_strict" = "xyes" ; then
+      if test "x$want_backend_libplayer" = "xyes" -a "x$use_strict" = "xyes" ; then
         AC_MSG_ERROR([libplayer not found (strict dependencies checking)])
       fi
     ]
   )
 fi
-AM_CONDITIONAL(BUILD_LIBPLAYER_BACKEND, test "x$have_libplayer_backend" = "xyes")
+AM_CONDITIONAL(BUILD_BACKEND_LIBPLAYER, test "x$have_backend_libplayer" = "xyes")
 
-#######################################
-## Check if we should build with cURL support
+###################
+# Browser Modules #
+###################
+
+# HAL
+want_browser_hal="auto"
+have_browser_hal="no"
+AC_MSG_CHECKING(whether hal browser is to be built)
+AC_ARG_ENABLE(browser-hal,
+  AS_HELP_STRING([--enable-browser-hal],[Enable HAL Browser]),
+  [ want_browser_hal=$enableval ]
+)
+AC_MSG_RESULT($want_browser_hal)
+if test "x$want_browser_hal" = "xyes" -o "x$want_browser_hal" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [EHAL],
+    [ehal hal-storage],
+    [
+      AC_DEFINE(BUILD_BROWSER_HAL, 1, [HAL Browser])
+      have_browser_hal="yes"
+    ],
+    [
+      if test "x$want_browser_hal" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([ehal or hal-sotrage not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_BROWSER_HAL, test "x$have_browser_hal" = "xyes")
+
+# Light Media Scanner (LMS)
+want_browser_lms="auto"
+have_browser_lms="no"
+AC_MSG_CHECKING(whether lms browser is to be built)
+AC_ARG_ENABLE(browser-lms,
+  AS_HELP_STRING([--enable-browser-lms],[Enable Light Media Scanner Browser Module]),
+  [ want_browser_lms=$enableval ]
+)
+AC_MSG_RESULT($want_browser_lms)
+if test "x$want_browser_lms" = "xyes" -o "x$want_browser_lms" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LMS],
+    [lightmediascanner],
+    [
+      AC_DEFINE(BUILD_BROWSER_LMS, 1, [Light media scanner Module])
+      have_browser_lms="yes"
+    ],
+    [
+      if test "x$want_browser_lms" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([Light media scanner not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_BROWSER_LMS, test "x$have_browser_lms" = "xyes")
+
+# Local Files
+want_browser_localfiles="yes"
+AC_MSG_CHECKING(whether localfiles browser module is to be built)
+AC_ARG_ENABLE(browser-localfiles,
+  AS_HELP_STRING([--enable-browser-localfiles],[Enable Local Files Browser Module]),
+  [ want_browser_localfiles=$enableval ]
+)
+AC_MSG_RESULT($want_browser_localfiles)
+AM_CONDITIONAL(BUILD_BROWSER_LOCALFILES, test "x$want_browser_localfiles" = "xyes")
+
+# NetStreams
+want_browser_netstreams="yes"
+AC_MSG_CHECKING(whether netstreams browser module is to be built)
+AC_ARG_ENABLE(browser-netstreams,
+  AS_HELP_STRING([--enable-browser-netstreams],[Enable NetStreams Browser Module]),
+  [ want_browser_netstreams=$enableval ]
+)
+AC_MSG_RESULT($want_browser_netstreams)
+AM_CONDITIONAL(BUILD_BROWSER_NETSTREAMS, test "x$want_browser_netstreams" = "xyes")
+
+# SHOUTcast
+want_browser_shoutcast="yes"
+AC_MSG_CHECKING(whether shoutcast browser module is to be built)
+AC_ARG_ENABLE(browser-shoutcast,
+  AS_HELP_STRING([--enable-browser-shoutcast],[Enable SHOUTcast Browser Module]),
+  [ want_browser_shoutcast=$enableval ]
+)
+AC_MSG_RESULT($want_browser_shoutcast)
+AM_CONDITIONAL(BUILD_BROWSER_SHOUTCAST, test "x$want_browser_shoutcast" = "xyes")
+
+#################
+# Input Modules #
+#################
+
+# LIRC
+have_input_lirc=no
+AC_CHECK_HEADER(lirc/lirc_client.h, have_input_lirc=yes)
+if test "x$have_input_lirc" = "xyes"; then
+  AC_DEFINE([BUILD_INPUT_LIRC], [1], [Define if LIRC client lib is present])
+  have_input_lirc="yes"
+  LIRC_LIBS=-llirc_client
+  AC_SUBST(LIRC_LIBS)
+fi
+AM_CONDITIONAL(BUILD_INPUT_LIRC, test "x$have_input_lirc" = "xyes")
+
+####################
+# Metadata Modules #
+####################
+
+# Amazon.com
+want_metadata_amazon="yes"
+AC_MSG_CHECKING(whether amazon.com metadata module is to be built)
+AC_ARG_ENABLE(metadata-amazon,
+  AS_HELP_STRING([--enable-metadata-amazon],[Enable Amazon Metadata Module]),
+  [ want_metadata_amazon=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_amazon)
+AM_CONDITIONAL(BUILD_METADATA_AMAZON, test "x$want_metadata_amazon" = "xyes")
+
+##################
+# Volume Modules #
+##################
+
+# Polling
+want_volume_polling="yes"
+AC_MSG_CHECKING(whether polling volume module is to be built)
+AC_ARG_ENABLE(volume-polling,
+  AS_HELP_STRING([--enable-volume-polling],[Enable Polling Volume Module]),
+  [ want_volume_polling=$enableval ]
+)
+AC_MSG_RESULT($want_volume_polling)
+AM_CONDITIONAL(BUILD_VOLUME_POLLING, test "x$want_volume_polling" = "xyes")
+
+##############
+# Librairies #
+##############
+
+# libcurl
 want_libcurl="auto"
 have_libcurl="no"
-
 AC_MSG_CHECKING(whether libcurl support is to be built)
 AC_ARG_ENABLE(libcurl,
     AS_HELP_STRING([--enable-libcurl],[Enable libcurl support]),
@@ -140,11 +308,9 @@ if test "x$want_libcurl" = "xyes" -o "x$want_libcurl" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LIBCURL, test "x$have_libcurl" = "xyes")
 
-#######################################
-## Check if we should build with libxml2 support
+# libxml2
 want_libxml2="auto"
 have_libxml2="no"
-
 AC_MSG_CHECKING(whether libxml2 support is to be built)
 AC_ARG_ENABLE(libxml2,
     AS_HELP_STRING([--enable-libxml2],[Enable libxml2 support]),
@@ -168,11 +334,9 @@ if test "x$want_libxml2" = "xyes" -o "x$want_libxml2" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LIBXML2, test "x$have_libxml2" = "xyes")
 
-#######################################
-## Check if we should build with libcddb support
+# libcddb
 want_libcddb="auto"
 have_libcddb="no"
-
 AC_MSG_CHECKING(whether libcddb support is to be built)
 AC_ARG_ENABLE(libcddb,
     AS_HELP_STRING([--enable-libcddb],[Enable libcddb support]),
@@ -199,92 +363,6 @@ AM_CONDITIONAL(BUILD_LIBCDDB, test "x$have_libcddb" = "xyes")
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
-
-
-#######################################
-## Check if we should build light media scanner module
-want_lms_module="auto"
-have_lms_module="no"
-AC_MSG_CHECKING(whether lms is to be built)
-AC_ARG_ENABLE(lms-module,
-  AS_HELP_STRING([--enable-lms-module],[Enable Light Media Scanner Module]),
-  [ want_lms_module=$enableval ]
-)
-AC_MSG_RESULT($want_lms_module)
-if test "x$want_lms_module" = "xyes" -o "x$want_lms_module" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LMS],
-    [lightmediascanner],
-    [
-      AC_DEFINE(BUILD_LMS_MODULE, 1, [Light media scanner Module])
-      have_lms_module="yes"
-    ],
-    [
-      if test "x$want_lms_module" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([Light media scanner not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_LMS_MODULE, test "x$have_lms_module" = "xyes")
-
-#######################################
-## Check if we should build hal module
-want_hal_module="auto"
-have_hal_module="no"
-AC_MSG_CHECKING(whether hal is to be built)
-AC_ARG_ENABLE(hal-module,
-  AS_HELP_STRING([--enable-hal-module],[Enable HAL Module]),
-  [ want_hal_module=$enableval ]
-)
-AC_MSG_RESULT($want_hal_module)
-if test "x$want_hal_module" = "xyes" -o "x$want_hal_module" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [EHAL],
-    [ehal hal-storage],
-    [
-      AC_DEFINE(BUILD_HAL_MODULE, 1, [HAL Module])
-      have_hal_module="yes"
-    ],
-    [
-      if test "x$want_hal_module" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([eHAL not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_HAL_MODULE, test "x$have_hal_module" = "xyes")
-
-#######################################
-## Check if we should build AMazon module
-want_amazon_module="yes"
-AC_MSG_CHECKING(whether amazon is to be built)
-AC_ARG_ENABLE(amazon-module,
-  AS_HELP_STRING([--enable-amazon-module],[Enable Amazon Module]),
-  [ want_amazon_module=$enableval ]
-)
-AC_MSG_RESULT($want_amazon_module)
-AM_CONDITIONAL(BUILD_AMAZON_MODULE, test "x$want_amazon_module" = "xyes")
-
-#######################################
-## Check if we should build SHOUTcast module
-want_shoutcast_module="yes"
-AC_MSG_CHECKING(whether SHOUTcast is to be built)
-AC_ARG_ENABLE(shoutcast-module,
-  AS_HELP_STRING([--enable-shoutcast-module],[Enable SHOUTcast Module]),
-  [ want_shoutcast_module=$enableval ]
-)
-AC_MSG_RESULT($want_shoutcast_module)
-AM_CONDITIONAL(BUILD_SHOUTCAST_MODULE, test "x$want_shoutcast_module" = "xyes")
-
-AC_ARG_ENABLE(theme,
-	[AC_HELP_STRING([--disable-theme], [disable theme.
-        [[default=enabled]]])],
-	[build_theme=$enableval],
-	[build_theme="yes"]
-)
-
-AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
 
 
 AC_CONFIG_FILES([
@@ -324,27 +402,42 @@ echo
 echo "Build theme........................ : $build_theme"
 echo
 echo
-echo "Built-in librairies Modules:"
+echo "Supported Activity Modules:"
+echo
+echo "  music............................ : $want_activity_music"
+echo "  photo............................ : $want_activity_photo"
+echo "  video............................ : $want_activity_video"
+echo
+echo "Supported Backends Modules:"
+echo
+echo "  emotion.......................... : $have_backend_emotion"
+echo "  libplayer backend................ : $have_backend_libplayer"
+echo
+echo "Supported Browser Modules:"
+echo
+echo "  HAL.............................. : $have_browser_hal"
+echo "  Light Media Scanner.............. : $have_browser_lms"
+echo "  Local files...................... : $want_browser_localfiles"
+echo "  Network Streams.................. : $want_browser_netstreams"
+echo "  SHOUTcast........................ : $want_browser_shoutcast"
+echo
+echo "Supported Input Modules:"
+echo
+echo "  LIRC client...................... : $have_input_lirc"
+echo
+echo "Supported Metadata Modules:"
+echo
+echo "  Amazon.com....................... : $want_metadata_amazon"
+echo
+echo "Supported Volume Modules:"
+echo
+echo "  Polling.......................... : $want_volume_polling"
+echo
+echo "Optional linked-in librairies:"
 echo
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libxml2.......................... : $have_libxml2"
 echo "  libcddb.......................... : $have_libcddb"
-echo
-echo "Optional Playback Backends:"
-echo
-echo "  emotion backend.................. : $have_emotion_backend"
-echo "  libplayer backend................ : $have_libplayer_backend"
-echo
-echo "Optional Browser Modules:"
-echo
-echo "  HAL.............................. : $have_hal_module"
-echo "  Light Media Scanner.............. : $have_lms_module"
-echo "  SHOUTcast........................ : $want_shoutcast_module"
-echo
-echo "Miscellaneous Modules:"
-echo
-echo "  lirc client...................... : $have_lirc_module"
-echo "  Amazon.com....................... : $want_amazon_module"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo

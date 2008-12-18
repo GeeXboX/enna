@@ -12,7 +12,7 @@ INCLUDES = \
 @ENNA_CFLAGS@ \
 @EMOTION_CFLAGS@
 
-if BUILD_EMOTION_BACKEND
+if BUILD_BACKEND_EMOTION
 
 pkgdir =$(libdir)/enna/modules
 

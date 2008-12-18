@@ -14,6 +14,7 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
+if BUILD_VOLUME_POLLING
 
 pkgdir = $(libdir)/enna/modules
 
@@ -29,3 +30,4 @@ volume_polling_la_DEPENDENCIES = $(top_builddir)/config.h
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/volume_$(MODULE).*
 
+endif

@@ -14,7 +14,7 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
-if BUILD_LIRC_MODULE
+if BUILD_INPUT_LIRC
 
 pkgdir = $(libdir)/enna/modules
 

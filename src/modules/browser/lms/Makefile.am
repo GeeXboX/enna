@@ -14,7 +14,7 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@ @LMS_CFLAGS@
 
-if BUILD_LMS_MODULE
+if BUILD_BROWSER_LMS
 
 pkgdir = $(libdir)/enna/modules
 

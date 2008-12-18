@@ -14,7 +14,7 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@ @EHAL_CFLAGS@
 
-if BUILD_HAL_MODULE
+if BUILD_BROWSER_HAL
 
 pkgdir = $(libdir)/enna/modules
 

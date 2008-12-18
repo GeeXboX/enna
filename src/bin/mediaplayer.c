@@ -68,7 +68,7 @@ int enna_mediaplayer_init(void)
 
     if (!strcmp(enna_config->backend, "emotion"))
     {
-#ifdef BUILD_EMOTION_BACKEND
+#ifdef BUILD_BACKEND_EMOTION
         enna_log (ENNA_MSG_INFO, NULL, "Using Emotion Backend");
         backend_name = "emotion";
 #else
@@ -78,7 +78,7 @@ int enna_mediaplayer_init(void)
     }
     else if (!strcmp(enna_config->backend, "libplayer"))
     {
-#ifdef BUILD_LIBPLAYER_BACKEND
+#ifdef BUILD_BACKEND_EMOTION
         enna_log (ENNA_MSG_INFO, NULL, "Using libplayer Backend");
         backend_name = "libplayer";
 #else

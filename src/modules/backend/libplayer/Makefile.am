@@ -12,7 +12,7 @@ INCLUDES = \
 @ENNA_CFLAGS@ \
 @LIBPLAYER_CFLAGS@
 
-if BUILD_LIBPLAYER_BACKEND
+if BUILD_BACKEND_LIBPLAYER
 
 pkgdir =$(libdir)/enna/modules
 

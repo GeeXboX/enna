@@ -14,6 +14,8 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
+if BUILD_ACTIVITY_PHOTO
+
 pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_photo.la
@@ -27,3 +29,5 @@ activity_photo_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/activity_$(MODULE).*
+
+endif

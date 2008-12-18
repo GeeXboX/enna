@@ -281,7 +281,7 @@ static void _create_gui()
     enna_module_enable(em);
     em = enna_module_open("browser_localfiles", enna->evas);
     enna_module_enable(em);
-#ifdef BUILD_LMS_MODULE
+#ifdef BUILD_BROWSER_LMS
     em = enna_module_open("browser_lms", enna->evas);
     enna_module_enable(em);
 #endif
