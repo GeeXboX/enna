@@ -20,10 +20,10 @@ int enna_module_init(void)
 
         ecore_path_group_add(path_group, PACKAGE_LIB_DIR"/enna/modules/");
         enna_log (ENNA_MSG_INFO, NULL,
-                  "Plugin Directory : %s", PACKAGE_LIB_DIR"/enna/modules/");
+                  "Plugin Directory: %s", PACKAGE_LIB_DIR"/enna/modules/");
         l = ecore_plugin_available_get(path_group);
         ecore_list_first_goto(l);
-        enna_log(ENNA_MSG_INFO, NULL, "Plugin available :");
+        enna_log(ENNA_MSG_INFO, NULL, "Available Plugins:");
         while ((p = ecore_list_next(l)))
         {
             enna_log(ENNA_MSG_INFO, NULL, "\t * %s", p);
