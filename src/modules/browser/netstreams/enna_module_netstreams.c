@@ -288,6 +288,7 @@ static Enna_Class_Vfs class_video =
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
+    ENNA_MODULE_BROWSER,
     "browser_netstreams"
 };
 

@@ -8,6 +8,14 @@
 typedef struct _Enna_Module Enna_Module;
 typedef struct _Enna_Module_Api Enna_Module_Api;
 
+typedef enum {
+    ENNA_MODULE_ACTIVITY,
+    ENNA_MODULE_BACKEND,
+    ENNA_MODULE_BROWSER,
+    ENNA_MODULE_METADATA,
+    ENNA_MODULE_VOLUME,
+} _Enna_Module_Type;
+
 struct _Enna_Module
 {
     const char *name;
@@ -27,6 +35,7 @@ struct _Enna_Module
 struct _Enna_Module_Api
 {
     int version;
+    _Enna_Module_Type type;
     const char *name;
 };
 

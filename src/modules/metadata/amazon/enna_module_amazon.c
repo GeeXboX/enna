@@ -223,6 +223,7 @@ static Enna_Class_CoverPlugin class =
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
+    ENNA_MODULE_METADATA,
     "metadata_amazon"
 };
 
