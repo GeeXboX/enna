@@ -86,6 +86,12 @@ int enna_mediaplayer_init(void)
         return -1;
 #endif
     }
+    else
+    {
+        enna_log(ENNA_MSG_ERROR, NULL,
+                 "Unknown backend (%s)!", enna_config->backend);
+        return -1;
+    }
 
     _playlist = NULL;
     _mediaplayer = calloc(1, sizeof(Enna_Mediaplayer));
