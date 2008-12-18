@@ -714,7 +714,7 @@ class =
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "photo"
+    "activity_photo"
 };
 
 void module_init(Enna_Module *em)

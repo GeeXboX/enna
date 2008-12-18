@@ -84,7 +84,7 @@ static Enna_Module_Lms *mod;
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "lms"
+    "browser_lms"
 };
 
 static Enna_Class_Vfs class =

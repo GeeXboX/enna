@@ -303,7 +303,7 @@ ehal_device_removed (void *data, DBusMessage *msg)
 
 Enna_Module_Api module_api = {
     ENNA_MODULE_VERSION,
-    "hal"
+    "browser_hal"
 };
 
 void

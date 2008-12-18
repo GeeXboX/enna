@@ -326,7 +326,7 @@ static Enna_Class_MediaplayerBackend class = {
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "libplayer"
+    "backend_libplayer"
 };
 
 void module_init(Enna_Module *em)

@@ -95,13 +95,13 @@ int enna_module_disable(Enna_Module *m)
  * @brief Open a module
  * @param name the module name
  * @return E_Module loaded
- * @note Module music can be loaded like this : enna_module_open("music") this
- *       module in loaded from file /usr/lib/enna/modules/music.so
+ * @note Module music can be loaded like this :
+ *  enna_module_open("activity_music") this
+ *       module in loaded from file /usr/lib/enna/modules/activity_music.so
  */
 Enna_Module *
 enna_module_open(const char *name, Evas *evas)
 {
-    char module_name[4096];
     Ecore_Plugin *plugin;
     Enna_Module *m;
 
@@ -116,9 +116,8 @@ enna_module_open(const char *name, Evas *evas)
         return NULL;
     }
 
-    snprintf(module_name, sizeof(module_name), "enna_module_%s", name);
-    enna_log (ENNA_MSG_INFO, NULL, "Try to load %s", module_name);
-    plugin = ecore_plugin_load(path_group, module_name, NULL);
+    enna_log (ENNA_MSG_INFO, NULL, "Try to load %s", name);
+    plugin = ecore_plugin_load(path_group, name, NULL);
     if (plugin)
     {
         m->api = ecore_plugin_symbol_get(plugin, "module_api");

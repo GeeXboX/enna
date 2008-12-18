@@ -153,7 +153,7 @@ static Enna_Class_Vfs class_shoutcast =
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "shoutcast"
+    "browser_shoutcast"
 };
 
 void module_init(Enna_Module *em)

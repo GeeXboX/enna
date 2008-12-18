@@ -20,7 +20,7 @@ static Enna_Module_Polling *mod;
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "polling"
+    "volume_polling"
 };
 
 /* Static functions */

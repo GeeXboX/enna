@@ -323,7 +323,7 @@ static Enna_Class_Vfs class_photo =
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "localfiles"
+    "browser_localfiles"
 };
 
 void module_init(Enna_Module *em)

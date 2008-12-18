@@ -30,7 +30,7 @@ static Enna_Module_Lirc *mod;
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "lirc"
+    "input_lirc"
 };
 
 static Enna_Class_Input class =

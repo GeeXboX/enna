@@ -269,25 +269,25 @@ static void _create_gui()
     enna->o_content = o;
 
     /* Create Modules */
-    em = enna_module_open("hal", enna->evas);
+    em = enna_module_open("browser_hal", enna->evas);
     enna_module_enable(em);
-    em = enna_module_open("polling", enna->evas);
+    em = enna_module_open("volume_polling", enna->evas);
     enna_module_enable(em);
-    em = enna_module_open("music", enna->evas);
+    em = enna_module_open("activity_music", enna->evas);
     enna_module_enable(em);
-    em = enna_module_open("video", enna->evas);
+    em = enna_module_open("activity_video", enna->evas);
     enna_module_enable(em);
-    em = enna_module_open("photo", enna->evas);
+    em = enna_module_open("activity_photo", enna->evas);
     enna_module_enable(em);
-    em = enna_module_open("localfiles", enna->evas);
+    em = enna_module_open("browser_localfiles", enna->evas);
     enna_module_enable(em);
 #ifdef BUILD_LMS_MODULE
-    em = enna_module_open("lms", enna->evas);
+    em = enna_module_open("browser_lms", enna->evas);
     enna_module_enable(em);
 #endif
-    em = enna_module_open("shoutcast", enna->evas);
+    em = enna_module_open("browser_shoutcast", enna->evas);
     enna_module_enable(em);
-    em = enna_module_open("netstreams", enna->evas);
+    em = enna_module_open("browser_netstreams", enna->evas);
     enna_module_enable(em);
     /* Load mainmenu items */
 

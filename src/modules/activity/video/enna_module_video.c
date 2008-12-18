@@ -65,7 +65,7 @@ static Enna_Module_Video *mod;
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "video"
+    "activity_video"
 };
 
 static Enna_Class_Activity
