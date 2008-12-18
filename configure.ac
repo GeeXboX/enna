@@ -72,6 +72,9 @@ AC_ARG_ENABLE(activity-music,
 )
 AC_MSG_RESULT($want_activity_music)
 AM_CONDITIONAL(BUILD_ACTIVITY_MUSIC, test "x$want_activity_music" = "xyes")
+if test "x$want_activity_music" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_MUSIC, 1, [Music Activity])
+fi
 
 # Photo
 want_activity_photo="yes"
@@ -82,6 +85,9 @@ AC_ARG_ENABLE(activity-photo,
 )
 AC_MSG_RESULT($want_activity_photo)
 AM_CONDITIONAL(BUILD_ACTIVITY_PHOTO, test "x$want_activity_photo" = "xyes")
+if test "x$want_activity_photo" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_PHOTO, 1, [Photo Activity])
+fi
 
 # Video
 want_activity_video="yes"
@@ -92,6 +98,9 @@ AC_ARG_ENABLE(activity-video,
 )
 AC_MSG_RESULT($want_activity_video)
 AM_CONDITIONAL(BUILD_ACTIVITY_VIDEO, test "x$want_activity_video" = "xyes")
+if test "x$want_activity_video" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_VIDEO, 1, [Video Activity])
+fi
 
 ###################
 # Backend Modules #
@@ -214,6 +223,9 @@ AC_ARG_ENABLE(browser-localfiles,
 )
 AC_MSG_RESULT($want_browser_localfiles)
 AM_CONDITIONAL(BUILD_BROWSER_LOCALFILES, test "x$want_browser_localfiles" = "xyes")
+if test "x$want_browser_localfiles" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_LOCALFILES, 1, [Localfiles Browser])
+fi
 
 # NetStreams
 want_browser_netstreams="yes"
@@ -224,6 +236,9 @@ AC_ARG_ENABLE(browser-netstreams,
 )
 AC_MSG_RESULT($want_browser_netstreams)
 AM_CONDITIONAL(BUILD_BROWSER_NETSTREAMS, test "x$want_browser_netstreams" = "xyes")
+if test "x$want_browser_netstreams" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_NETSTREAMS, 1, [NetStreams Browser])
+fi
 
 # SHOUTcast
 want_browser_shoutcast="yes"
@@ -234,6 +249,9 @@ AC_ARG_ENABLE(browser-shoutcast,
 )
 AC_MSG_RESULT($want_browser_shoutcast)
 AM_CONDITIONAL(BUILD_BROWSER_SHOUTCAST, test "x$want_browser_shoutcast" = "xyes")
+if test "x$want_browser_shoutcast" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_SHOUTCAST, 1, [SHOUTcast Browser])
+fi
 
 #################
 # Input Modules #
@@ -263,6 +281,9 @@ AC_ARG_ENABLE(metadata-amazon,
 )
 AC_MSG_RESULT($want_metadata_amazon)
 AM_CONDITIONAL(BUILD_METADATA_AMAZON, test "x$want_metadata_amazon" = "xyes")
+if test "x$want_metadata_amazon" = "xyes"; then
+  AC_DEFINE(BUILD_METADATA_AMAZON, 1, [Amazon.com Metadata])
+fi
 
 ##################
 # Volume Modules #
@@ -277,6 +298,9 @@ AC_ARG_ENABLE(volume-polling,
 )
 AC_MSG_RESULT($want_volume_polling)
 AM_CONDITIONAL(BUILD_VOLUME_POLLING, test "x$want_volume_polling" = "xyes")
+if test "x$want_volume_polling" = "xyes"; then
+  AC_DEFINE(BUILD_VOLUME_POLLING, 1, [Polling Volume])
+fi
 
 ##############
 # Librairies #
