@@ -37,11 +37,18 @@ struct _Enna_Metadata_Video
 
 struct _Enna_Metadata
 {
+    char *keywords;
     char *uri;
     char *title;
     int size; /* in Bytes */
     int type;
     int length; /* in seconds */
+    char *overview;
+    int runtime;
+    int year;
+    char *categories;
+    char *cover;
+    char *backdrop;
     Enna_Metadata_Video *video;
     Enna_Metadata_Music *music;
 

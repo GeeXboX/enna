@@ -18,8 +18,13 @@ void enna_metadata_free(Enna_Metadata *m)
     if (!m)
         return;
 
+    ENNA_FREE(m->keywords);
     ENNA_FREE(m->uri);
     ENNA_FREE(m->title);
+    ENNA_FREE(m->overview);
+    ENNA_FREE(m->categories);
+    ENNA_FREE(m->cover);
+    ENNA_FREE(m->backdrop);
     if (m->video)
     {
         ENNA_FREE(m->video->codec);
