@@ -1,2 +1,2 @@
-SUBDIRS = localfiles lms shoutcast netstreams hal
+SUBDIRS = hal lms localfiles netstreams shoutcast
 
