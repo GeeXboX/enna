@@ -68,7 +68,7 @@ struct _Enna_Metadata_Grabber
     char *name;
     int priority;
     int caps;
-    void (* grab) (Enna_Metadata *meta);
+    void (* grab) (Enna_Metadata *meta, int caps);
 };
 
 Enna_Metadata *enna_metadata_new();

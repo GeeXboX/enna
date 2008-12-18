@@ -109,7 +109,7 @@ enna_metadata_grab (int caps, char *keywords)
 
             /* check if grabber has the requested capabilities */
             if (g->caps & caps)
-                g->grab (meta);
+                g->grab (meta, caps);
         } while ((tmp = eina_list_next (tmp)));
     }
 
