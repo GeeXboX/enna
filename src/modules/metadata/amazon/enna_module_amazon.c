@@ -7,6 +7,7 @@
 #define DEBUG 1
 
 #define ENNA_MODULE_NAME "amazon"
+#define ENNA_GRABBER_NAME "amazon"
 
 #define MAX_URL_SIZE        1024
 #define MAX_KEYWORD_SIZE    1024
@@ -178,42 +179,44 @@ static char * amazon_cover_get(char *search_type, char *keywords,
 /*                         Private Module API                                */
 /*****************************************************************************/
 
-static char * amazon_music_cover_get(const char *artist, const char *album)
+static void
+amazon_grab (Enna_Metadata *meta, int caps)
 {
-    char keywords[MAX_KEYWORD_SIZE];
-    char escaped_keywords[2*MAX_KEYWORD_SIZE];
+    char escaped_keywords;
+    char *search_type = NULL;
+    char *cover;
+    
+    if (!meta)
+        return;
 
-    if (!artist || !album)
-        return NULL;
+    /* do not grab if already known */
+    if (meta->cover)
+        return;
 
     /* Format the keywords */
-    memset(keywords, '\0', MAX_KEYWORD_SIZE);
-    memset(escaped_keywords, '\0', 2 * MAX_KEYWORD_SIZE);
-    snprintf(keywords, MAX_KEYWORD_SIZE, "%s %s", artist, album);
-    url_escape_string(escaped_keywords, keywords);
+    escaped_keywords = calloc (1, 2 * sizeof (meta->keywords));
+    url_escape_string(escaped_keywords, meta->keywords);
 
-    return amazon_cover_get(AMAZON_SEARCH_MUSIC, keywords, escaped_keywords);
+    if (caps & ENNA_GRABBER_CAP_AUDIO)
+        search_type = AMAZON_SEARCH_MUSIC;
+    else if (caps & ENNA_GRABBER_CAP_VIDEO)
+        search_type = AMAZON_SEARCH_MOVIE;
+            
+    cover = amazon_cover_get (search_type, meta->keywords, escaped_keywords);
+    if (cover)
+    {
+        meta->cover = strdup (cover);
+        free (cover);
+    }
+
+    free (escaped_keywords);
 }
 
-static char * amazon_movie_cover_get(const char *movie)
-{
-    char keywords[MAX_KEYWORD_SIZE];
-    char escaped_keywords[2*MAX_KEYWORD_SIZE];
-
-    if (!movie)
-        return NULL;
-
-    /* Format the keywords */
-    memset(keywords, '\0', MAX_KEYWORD_SIZE);
-    memset(escaped_keywords, '\0', 2 * MAX_KEYWORD_SIZE);
-    snprintf(keywords, MAX_KEYWORD_SIZE, "%s", movie);
-    url_escape_string(escaped_keywords, keywords);
-
-    return amazon_cover_get(AMAZON_SEARCH_MOVIE, keywords, escaped_keywords);
-}
-
-static Enna_Class_CoverPlugin class =
-{ "amazon", amazon_music_cover_get, amazon_movie_cover_get,
+static Enna_Metadata_Grabber grabber = {
+    ENNA_GRABBER_NAME,
+    3,
+    ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_NETWORK,
+    amazon_grab,
 };
 
 /*****************************************************************************/
@@ -239,11 +242,12 @@ void module_init(Enna_Module *em)
 
     curl_global_init(CURL_GLOBAL_DEFAULT);
     mod->curl = curl_easy_init();
-    enna_cover_plugin_register(&class);
+    enna_metadata_add_grabber (&grabber);
 }
 
 void module_shutdown(Enna_Module *em)
 {
+    enna_metadata_remove_grabber (ENNA_GRABBER_NAME);
     if (mod->curl)
         curl_easy_cleanup(mod->curl);
     curl_global_cleanup();
