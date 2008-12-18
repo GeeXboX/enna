@@ -70,7 +70,7 @@ int enna_mediaplayer_init(void)
     {
 #ifdef BUILD_BACKEND_EMOTION
         enna_log (ENNA_MSG_INFO, NULL, "Using Emotion Backend");
-        backend_name = "emotion";
+        backend_name = "backend_emotion";
 #else
         enna_log(ENNA_MSG_ERROR, NULL, "Backend selected not built !");
         return -1;
@@ -80,7 +80,7 @@ int enna_mediaplayer_init(void)
     {
 #ifdef BUILD_BACKEND_EMOTION
         enna_log (ENNA_MSG_INFO, NULL, "Using libplayer Backend");
-        backend_name = "libplayer";
+        backend_name = "backend_libplayer";
 #else
         enna_log(ENNA_MSG_ERROR, NULL, "Backend selected not built !");
         return -1;
