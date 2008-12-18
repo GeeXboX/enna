@@ -296,7 +296,6 @@ src/modules/activity/Makefile
 src/modules/activity/music/Makefile
 src/modules/activity/photo/Makefile
 src/modules/activity/video/Makefile
-src/modules/amazon/Makefile
 src/modules/browser/Makefile
 src/modules/browser/hal/Makefile
 src/modules/browser/localfiles/Makefile
@@ -308,6 +307,8 @@ src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
+src/modules/metadata/Makefile
+src/modules/metadata/amazon/Makefile
 src/modules/volume/Makefile
 src/modules/volume/polling/Makefile
 data/Makefile
