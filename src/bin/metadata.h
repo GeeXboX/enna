@@ -4,6 +4,7 @@
 typedef struct _Enna_Metadata Enna_Metadata;
 typedef struct _Enna_Metadata_Video Enna_Metadata_Video;
 typedef struct _Enna_Metadata_Music Enna_Metadata_Music;
+typedef struct _Enna_Metadata_Grabber Enna_Metadata_Grabber;
 
 struct _Enna_Metadata_Music
 {
@@ -54,7 +55,27 @@ struct _Enna_Metadata
 
 };
 
+#define ENNA_GRABBER_CAP_AUDIO       0x0001
+#define ENNA_GRABBER_CAP_VIDEO       0x0002
+#define ENNA_GRABBER_CAP_PICTURE     0x0004
+#define ENNA_GRABBER_CAP_NETWORK     0x0008
+
+#define ENNA_GRABBER_PRIORITY_MAX 1
+#define ENNA_GRABBER_PRIORITY_MIN 10
+
+struct _Enna_Metadata_Grabber
+{
+    char *name;
+    int priority;
+    int caps;
+    void (* grab) (Enna_Metadata *meta);
+};
+
 Enna_Metadata *enna_metadata_new();
 void enna_metadata_free(Enna_Metadata *m);
+
+void enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber);
+void enna_metadata_remove_grabber (char *name);
+Enna_Metadata *enna_metadata_grab (int caps, char *keywords);
 
 #endif
