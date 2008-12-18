@@ -269,28 +269,44 @@ static void _create_gui()
     enna->o_content = o;
 
     /* Create Modules */
+#ifdef BUILD_BROWSER_HAL
     em = enna_module_open("browser_hal", enna->evas);
     enna_module_enable(em);
+#endif
+#ifdef BUILD_VOLUME_POLLING
     em = enna_module_open("volume_polling", enna->evas);
     enna_module_enable(em);
+#endif
+#ifdef BUILD_ACTIVITY_MUSIC
     em = enna_module_open("activity_music", enna->evas);
     enna_module_enable(em);
+#endif
+#ifdef BUILD_ACTIVITY_VIDEO
     em = enna_module_open("activity_video", enna->evas);
     enna_module_enable(em);
+#endif
+#ifdef BUILD_ACTIVITY_PHOTO
     em = enna_module_open("activity_photo", enna->evas);
     enna_module_enable(em);
+#endif
+#ifdef BUILD_BROWSER_LOCALFILES
     em = enna_module_open("browser_localfiles", enna->evas);
     enna_module_enable(em);
+#endif
 #ifdef BUILD_BROWSER_LMS
     em = enna_module_open("browser_lms", enna->evas);
     enna_module_enable(em);
 #endif
+#ifdef BUILD_BROWSER_SHOUTCAST
     em = enna_module_open("browser_shoutcast", enna->evas);
     enna_module_enable(em);
+#endif
+#ifdef BUILD_BROWSER_NETSTREAMS
     em = enna_module_open("browser_netstreams", enna->evas);
     enna_module_enable(em);
-    /* Load mainmenu items */
+#endif
 
+    /* Load mainmenu items */
     enna_activity_init("music");
     enna_activity_init("video");
     enna_activity_init("photo");
