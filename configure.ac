@@ -308,8 +308,8 @@ src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
-src/modules/volumes/Makefile
-src/modules/volumes/polling/Makefile
+src/modules/volume/Makefile
+src/modules/volume/polling/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile

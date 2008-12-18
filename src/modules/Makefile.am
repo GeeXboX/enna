@@ -5,4 +5,4 @@ amazon\
 browser\
 backend\
 input\
-volumes
+volume
