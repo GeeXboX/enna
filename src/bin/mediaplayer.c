@@ -70,7 +70,7 @@ int enna_mediaplayer_init(void)
     {
 #ifdef BUILD_BACKEND_EMOTION
         enna_log (ENNA_MSG_INFO, NULL, "Using Emotion Backend");
-        backend_name = "backend_emotion";
+        backend_name = "emotion";
 #else
         enna_log(ENNA_MSG_ERROR, NULL, "Backend selected not built !");
         return -1;
@@ -80,7 +80,7 @@ int enna_mediaplayer_init(void)
     {
 #ifdef BUILD_BACKEND_LIBPLAYER
         enna_log (ENNA_MSG_INFO, NULL, "Using libplayer Backend");
-        backend_name = "backend_libplayer";
+        backend_name = "libplayer";
 #else
         enna_log(ENNA_MSG_ERROR, NULL, "Backend selected not built !");
         return -1;
@@ -95,7 +95,7 @@ int enna_mediaplayer_init(void)
 
     _playlist = NULL;
     _mediaplayer = calloc(1, sizeof(Enna_Mediaplayer));
-    em = enna_module_open(backend_name, enna->evas);
+    em = enna_module_open(backend_name, ENNA_MODULE_BACKEND, enna->evas);
     enna_module_enable(em);
     _mediaplayer->play_state = STOPPED;
     _mediaplayer->selected = 0;

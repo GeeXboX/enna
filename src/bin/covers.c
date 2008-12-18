@@ -140,7 +140,7 @@ static char * cover_get_from_amazon(const char *artist, const char *album,
     char *cover = NULL;
     char tmp[1024];
 
-    em = enna_module_open("metadata_amazon", enna->evas);
+    em = enna_module_open("amazon", ENNA_MODULE_METADATA, enna->evas);
     enna_module_enable(em);
 
     /* try to create cover directory storage first */

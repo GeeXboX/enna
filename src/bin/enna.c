@@ -270,41 +270,41 @@ static void _create_gui()
 
     /* Create Modules */
 #ifdef BUILD_ACTIVITY_MUSIC
-    em = enna_module_open("activity_music", enna->evas);
+    em = enna_module_open("music", ENNA_MODULE_ACTIVITY, enna->evas);
     enna_module_enable(em);
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
-    em = enna_module_open("activity_photo", enna->evas);
+    em = enna_module_open("photo", ENNA_MODULE_ACTIVITY, enna->evas);
     enna_module_enable(em);
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
-    em = enna_module_open("activity_video", enna->evas);
+    em = enna_module_open("video", ENNA_MODULE_ACTIVITY, enna->evas);
     enna_module_enable(em);
 #endif
 
 #ifdef BUILD_BROWSER_HAL
-    em = enna_module_open("browser_hal", enna->evas);
+    em = enna_module_open("hal", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
 #endif
 #ifdef BUILD_BROWSER_LMS
-    em = enna_module_open("browser_lms", enna->evas);
+    em = enna_module_open("lms", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
 #endif
 #ifdef BUILD_BROWSER_LOCALFILES
-    em = enna_module_open("browser_localfiles", enna->evas);
+    em = enna_module_open("localfiles", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
 #endif
 #ifdef BUILD_BROWSER_NETSTREAMS
-    em = enna_module_open("browser_netstreams", enna->evas);
+    em = enna_module_open("netstreams", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
 #endif
 #ifdef BUILD_BROWSER_SHOUTCAST
-    em = enna_module_open("browser_shoutcast", enna->evas);
+    em = enna_module_open("shoutcast", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
 #endif
 
 #ifdef BUILD_VOLUME_POLLING
-    em = enna_module_open("volume_polling", enna->evas);
+    em = enna_module_open("polling", ENNA_MODULE_VOLUME, enna->evas);
     enna_module_enable(em);
 #endif
 

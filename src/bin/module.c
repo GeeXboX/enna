@@ -100,10 +100,12 @@ int enna_module_disable(Enna_Module *m)
  *       module in loaded from file /usr/lib/enna/modules/activity_music.so
  */
 Enna_Module *
-enna_module_open(const char *name, Evas *evas)
+enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
 {
     Ecore_Plugin *plugin;
     Enna_Module *m;
+    char module_name[4096];
+    char *module_class;
 
     if (!name || !evas) return NULL;
 
@@ -116,8 +118,34 @@ enna_module_open(const char *name, Evas *evas)
         return NULL;
     }
 
-    enna_log (ENNA_MSG_INFO, NULL, "Try to load %s", name);
-    plugin = ecore_plugin_load(path_group, name, NULL);
+    switch (type)
+    {
+    case ENNA_MODULE_ACTIVITY:
+      module_class = "activity";
+      break;
+      
+    case ENNA_MODULE_BACKEND:
+      module_class = "backend";
+      break;
+
+    case ENNA_MODULE_BROWSER:
+      module_class = "browser";
+      break;
+
+    case ENNA_MODULE_METADATA:
+      module_class = "metadata";
+      break;
+
+    case ENNA_MODULE_VOLUME:
+      module_class = "volume";
+      break;
+
+    default:
+      return NULL;
+    }
+    snprintf(module_name, sizeof(module_name), "%s_%s", module_class, name);
+    enna_log (ENNA_MSG_INFO, NULL, "Try to load %s", module_name);
+    plugin = ecore_plugin_load(path_group, module_name, NULL);
     if (plugin)
     {
         m->api = ecore_plugin_symbol_get(plugin, "module_api");
