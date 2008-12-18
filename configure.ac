@@ -292,10 +292,11 @@ Makefile
 src/Makefile
 src/bin/Makefile
 src/modules/Makefile
+src/modules/activity/Makefile
+src/modules/activity/music/Makefile
+src/modules/activity/photo/Makefile
+src/modules/activity/video/Makefile
 src/modules/amazon/Makefile
-src/modules/music/Makefile
-src/modules/video/Makefile
-src/modules/photo/Makefile
 src/modules/browser/Makefile
 src/modules/browser/hal/Makefile
 src/modules/browser/localfiles/Makefile
