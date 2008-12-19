@@ -39,7 +39,7 @@ static char * amazon_cover_get(char *search_type, char *keywords,
     char url[MAX_URL_SIZE];
     url_data_t data;
     char *md5;
-    int fd;
+    int fd, n;
 
     xmlDocPtr doc;
     xmlNode *img;
@@ -157,7 +157,7 @@ static char * amazon_cover_get(char *search_type, char *keywords,
         return NULL;
     }
 
-    write(fd, data.buffer, data.size);
+    n = write(fd, data.buffer, data.size);
     free(data.buffer);
 
     xmlFree(cover_url);
