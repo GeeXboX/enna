@@ -301,17 +301,22 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
             Evas_Object *item;
             Enna_Metadata *metadata;
             Evas_Object *cover = NULL;
-            const char *cover_file;
+            Enna_Metadata *meta;
+            char keywords[1024];
+            
             mod->is_root = 0;
             metadata = enna_mediaplayer_metadata_get();
             item = enna_listitem_add(mod->em->evas);
 
-            cover_file = enna_cover_album_get(metadata->music->artist,
-                    metadata->music->album, metadata->uri);
-            if (cover_file)
+            memset (keywords, '\0', sizeof (keywords));
+            snprintf (keywords, sizeof (keywords), "%s %s",
+                      metadata->music->artist, metadata->music->album);
+            meta = enna_metadata_grab (ENNA_GRABBER_CAP_AUDIO,
+                                       metadata->uri, keywords);
+            if (meta && meta->cover)
             {
                 cover = enna_image_add(mod->em->evas);
-                enna_image_file_set(cover, cover_file);
+                enna_image_file_set(cover, meta->cover);
             }
 	    else
 	    {
@@ -319,6 +324,7 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
 		edje_object_file_set(cover, enna_config_theme_get(), "icon/unknown_cover");
 		evas_object_show(cover);
 	    }
+            enna_metadata_free(meta);
             enna_listitem_create_full(item, cover, "Playing Now :",
                     metadata->title, metadata->music->album,
                     metadata->music->artist);
@@ -596,17 +602,21 @@ static void _create_gui()
         Evas_Object *item;
         Enna_Metadata *metadata;
         Evas_Object *cover = NULL;
-        const char *cover_file;
+        Enna_Metadata *meta;
+        char keywords[1024];
 
         metadata = enna_mediaplayer_metadata_get();
         item = enna_listitem_add(mod->em->evas);
 
-        cover_file = enna_cover_album_get(metadata->music->artist,
-                metadata->music->album, metadata->uri);
-        if (cover_file)
+        memset (keywords, '\0', sizeof (keywords));
+        snprintf (keywords, sizeof (keywords), "%s %s",
+                  metadata->music->artist, metadata->music->album);
+        meta = enna_metadata_grab (ENNA_GRABBER_CAP_AUDIO,
+                                   metadata->uri, keywords);
+        if (meta && meta->cover)
         {
             cover = enna_image_add(mod->em->evas);
-            enna_image_file_set(cover, cover_file);
+            enna_image_file_set(cover, meta->cover);
         }
 	else
 	{
@@ -614,6 +624,7 @@ static void _create_gui()
 	    edje_object_file_set(cover, enna_config_theme_get(), "icon/unknown_cover");
 	    evas_object_show(cover);
 	}
+        enna_metadata_free(meta);            
         enna_listitem_create_full(item, cover, "Playing Now :",
                 metadata->title, metadata->music->album,
                 metadata->music->artist);

@@ -4,8 +4,6 @@
 #include "xml_utils.h"
 #include "url_utils.h"
 
-#define DEBUG 1
-
 #define ENNA_MODULE_NAME "metadata_amazon"
 #define ENNA_GRABBER_NAME "amazon"
 
@@ -55,18 +53,15 @@ static char * amazon_cover_get(char *search_type, char *keywords,
     snprintf(url, MAX_URL_SIZE, AMAZON_SEARCH,
     AMAZON_HOSTNAME, AMAZON_LICENSE_KEY, escaped_keywords, search_type);
 
-#ifdef DEBUG
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Search Request: %s", url);
-#endif
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Search Request: %s", url);
 
     /* 3. Perform request */
     data = url_get_data(mod->curl, url);
     if (data.status != CURLE_OK)
         return NULL;
 
-#ifdef DEBUG
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Search Reply: %s", data.buffer);
-#endif
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             "Search Reply: %s", data.buffer);
 
     /* 4. Parse the answer to get ASIN value */
     doc = xmlReadMemory(data.buffer, data.size, NULL, NULL, 0);
@@ -85,9 +80,7 @@ static char * amazon_cover_get(char *search_type, char *keywords,
         return NULL;
     }
 
-#ifdef DEBUG
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Found Amazon ASIN: %s", asin);
-#endif
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Found Amazon ASIN: %s", asin);
 
     /* 5. Prepare Amazon WebService URL for Cover Search */
     memset(url, '\0', MAX_URL_SIZE);
@@ -95,19 +88,16 @@ static char * amazon_cover_get(char *search_type, char *keywords,
     AMAZON_HOSTNAME, AMAZON_LICENSE_KEY, asin);
     xmlFree(asin);
 
-#ifdef DEBUG
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Cover Search Request: %s", url);
-#endif
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             "Cover Search Request: %s", url);
 
     /* 6. Perform request */
     data = url_get_data(mod->curl, url);
     if (data.status != CURLE_OK)
         return NULL;
 
-#ifdef DEBUG
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Cover Search Reply: %s",
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Cover Search Reply: %s",
             data.buffer);
-#endif
 
     /* 7. Parse the answer to get cover URL */
     doc = xmlReadMemory(data.buffer, data.size, NULL, NULL, 0);
