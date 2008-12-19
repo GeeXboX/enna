@@ -303,6 +303,11 @@ static void _create_gui()
     enna_module_enable(em);
 #endif
 
+#ifdef BUILD_METADATA_AMAZON
+    em = enna_module_open("amazon", ENNA_MODULE_METADATA, enna->evas);
+    enna_module_enable(em);
+#endif
+
 #ifdef BUILD_VOLUME_POLLING
     em = enna_module_open("polling", ENNA_MODULE_VOLUME, enna->evas);
     enna_module_enable(em);
