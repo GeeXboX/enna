@@ -172,7 +172,7 @@ static char * amazon_cover_get(char *search_type, char *keywords,
 static void
 amazon_grab (Enna_Metadata *meta, int caps)
 {
-    char escaped_keywords;
+    char *escaped_keywords;
     char *search_type = NULL;
     char *cover;
     
