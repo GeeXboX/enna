@@ -30,7 +30,7 @@ metadata_amazon_la_LDFLAGS = -module -avoid-version
 metadata_amazon_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
-	rm -rf $(DESTDIR)$(libdir)/enna/modules/metdata_$(MODULE).*
+	rm -rf $(DESTDIR)$(libdir)/enna/modules/metadata_$(MODULE).*
 
 endif
 endif
