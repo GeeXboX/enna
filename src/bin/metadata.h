@@ -39,6 +39,7 @@ struct _Enna_Metadata_Video
 struct _Enna_Metadata
 {
     char *keywords;
+    char *md5;
     char *uri;
     char *title;
     int size; /* in Bytes */
