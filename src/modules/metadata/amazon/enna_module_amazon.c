@@ -175,6 +175,7 @@ amazon_grab (Enna_Metadata *meta, int caps)
     char *escaped_keywords;
     char *search_type = NULL;
     char *cover;
+    char tmp[1024];
     
     if (!meta)
         return;
@@ -183,6 +184,11 @@ amazon_grab (Enna_Metadata *meta, int caps)
     if (meta->cover)
         return;
 
+    /* try to create cover directory storage first */
+    memset(tmp, '\0', sizeof (tmp));
+    snprintf(tmp, sizeof (tmp), "%s/.enna/covers", enna_util_user_home_get());
+    mkdir(tmp, 0755);
+    
     /* Format the keywords */
     escaped_keywords = calloc (1, 2 * sizeof (meta->keywords));
     url_escape_string(escaped_keywords, meta->keywords);
