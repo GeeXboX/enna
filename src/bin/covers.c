@@ -33,16 +33,6 @@
 
 static Enna_Class_CoverPlugin *cover_class = NULL;
 
-int enna_cover_plugin_register(Enna_Class_CoverPlugin *class)
-{
-    if (!class)
-        return -1;
-
-    cover_class = class;
-
-    return 0;
-}
-
 static char * cover_get_from_picture_file(const char *filename)
 {
     const char *known_filenames[] =
