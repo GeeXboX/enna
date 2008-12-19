@@ -31,6 +31,7 @@ collections
 #include "photo.edc"
 #include "icons.edc"
 #include "list.edc"
+#include "browser.edc"
 #include "scrollframe.edc"
 #include "button.edc"
 #include "location.edc"
