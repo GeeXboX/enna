@@ -6,7 +6,7 @@
 
 #define DEBUG 1
 
-#define ENNA_MODULE_NAME "amazon"
+#define ENNA_MODULE_NAME "metadata_amazon"
 #define ENNA_GRABBER_NAME "amazon"
 
 #define MAX_URL_SIZE        1024
