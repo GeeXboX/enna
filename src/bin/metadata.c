@@ -56,7 +56,11 @@ enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber)
 
     tmp = eina_list_nth_list (metadata_grabbers, 0);
     do {
-        Enna_Metadata_Grabber *g = (Enna_Metadata_Grabber *) tmp->data;
+        Enna_Metadata_Grabber *g = NULL;
+
+        if (tmp)
+            g = (Enna_Metadata_Grabber *) tmp->data;
+        
         if (g && !strcmp (g->name, grabber->name))
             return; /* already added grabber */
     } while ((tmp = eina_list_next (tmp)));
@@ -74,7 +78,11 @@ enna_metadata_remove_grabber (char *name)
 
     tmp = eina_list_nth_list (metadata_grabbers, 0);
     do {
-        Enna_Metadata_Grabber *g = (Enna_Metadata_Grabber *) tmp->data;
+        Enna_Metadata_Grabber *g = NULL;
+
+        if (tmp)
+            g = (Enna_Metadata_Grabber *) tmp->data;
+        
         if (g && !strcmp (g->name, name))
         {
             tmp = eina_list_remove (tmp, g);
@@ -101,7 +109,12 @@ enna_metadata_grab (int caps, char *keywords)
 
         tmp = eina_list_nth_list (metadata_grabbers, 0);
         do {
-            Enna_Metadata_Grabber *g = (Enna_Metadata_Grabber *) tmp->data;
+            Enna_Metadata_Grabber *g = NULL;
+
+            if (tmp)
+                g = (Enna_Metadata_Grabber *) tmp->data;
+            if (!g)
+                continue;
 
             /* check for grabber's priority */
             if (g->priority != i)
