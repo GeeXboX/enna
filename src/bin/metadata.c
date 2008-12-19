@@ -93,15 +93,16 @@ enna_metadata_remove_grabber (char *name)
 }
 
 Enna_Metadata *
-enna_metadata_grab (int caps, char *keywords)
+enna_metadata_grab (int caps, char *uri, char *keywords)
 {
     Enna_Metadata *meta;
     int i;
 
-    if (!keywords)
+    if (!uri || !keywords)
         return NULL;
     
-    meta = enna_metadata_new ();  
+    meta = enna_metadata_new ();
+    meta->uri = strdup (uri);
     meta->keywords = strdup (keywords);
     
     for (i = ENNA_GRABBER_PRIORITY_MAX; i < ENNA_GRABBER_PRIORITY_MIN; i++)

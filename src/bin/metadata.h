@@ -77,6 +77,6 @@ void enna_metadata_free(Enna_Metadata *m);
 
 void enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber);
 void enna_metadata_remove_grabber (char *name);
-Enna_Metadata *enna_metadata_grab (int caps, char *keywords);
+Enna_Metadata *enna_metadata_grab (int caps, char *uri, char *keywords);
 
 #endif
