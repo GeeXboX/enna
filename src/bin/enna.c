@@ -307,6 +307,10 @@ static void _create_gui()
     em = enna_module_open("amazon", ENNA_MODULE_METADATA, enna->evas);
     enna_module_enable(em);
 #endif
+#ifdef BUILD_METADATA_LOCALFILES
+    em = enna_module_open("localfiles", ENNA_MODULE_METADATA, enna->evas);
+    enna_module_enable(em);
+#endif
 
 #ifdef BUILD_VOLUME_POLLING
     em = enna_module_open("polling", ENNA_MODULE_VOLUME, enna->evas);

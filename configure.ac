@@ -285,6 +285,19 @@ if test "x$want_metadata_amazon" = "xyes"; then
   AC_DEFINE(BUILD_METADATA_AMAZON, 1, [Amazon.com Metadata])
 fi
 
+# Local Files
+want_metadata_localfiles="yes"
+AC_MSG_CHECKING(whether local files metadata module is to be built)
+AC_ARG_ENABLE(metadata-localfiles,
+  AS_HELP_STRING([--enable-metadata-localfiles],[Enable Local Files Metadata Module]),
+  [ want_metadata_localfiles=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_localfiles)
+AM_CONDITIONAL(BUILD_METADATA_LOCALFILES, test "x$want_metadata_localfiles" = "xyes")
+if test "x$want_metadata_localfiles" = "xyes"; then
+  AC_DEFINE(BUILD_METADATA_LOCALFILES, 1, [Local Files Metadata])
+fi
+
 ##################
 # Volume Modules #
 ##################
@@ -411,6 +424,7 @@ src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/metadata/Makefile
 src/modules/metadata/amazon/Makefile
+src/modules/metadata/localfiles/Makefile
 src/modules/volume/Makefile
 src/modules/volume/polling/Makefile
 data/Makefile
@@ -452,6 +466,7 @@ echo
 echo "Supported Metadata Modules:"
 echo
 echo "  Amazon.com....................... : $want_metadata_amazon"
+echo "  Local files...................... : $want_metadata_localfiles"
 echo
 echo "Supported Volume Modules:"
 echo

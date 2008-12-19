@@ -1,4 +1,5 @@
 MAINTAINERCLEANFILES = Makefile.in
 
 SUBDIRS = \
-amazon
+amazon\
+localfiles
