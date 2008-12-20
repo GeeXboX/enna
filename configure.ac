@@ -43,7 +43,6 @@ PKG_CHECK_MODULES([ENNA],
    ecore-file
    embryo >= 0.9.1
    edje >= 0.5.0
-   libexif
   ]
 )
 
@@ -397,6 +396,32 @@ if test "x$want_libcurl" = "xyes" -o "x$want_libcurl" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LIBCURL, test "x$have_libcurl" = "xyes")
 
+# libexif
+want_libexif="auto"
+have_libexif="no"
+AC_MSG_CHECKING(whether libexif support is to be built)
+AC_ARG_ENABLE(libexif,
+    AS_HELP_STRING([--enable-libexif],[Enable libexif support]),
+    [ want_libexif=$enableval ]
+)
+AC_MSG_RESULT($want_libexif)
+if test "x$want_libexif" = "xyes" -o "x$want_libexif" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LIBEXIF],
+    [libexif],
+    [
+      AC_DEFINE(BUILD_LIBEXIF, 1, [libexif support])
+      have_libexif="yes"
+    ],
+    [
+      if test "x$want_libexif" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libexif not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_LIBEXIF, test "x$have_libexif" = "xyes")
+
 # libxml2
 want_libxml2="auto"
 have_libxml2="no"
@@ -504,6 +529,7 @@ echo "Optional linked-in librairies:"
 echo
 echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"
+echo "  libexif.......................... : $have_libexif"
 echo "  libxml2.......................... : $have_libxml2"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
