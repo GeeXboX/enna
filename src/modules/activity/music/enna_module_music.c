@@ -32,8 +32,7 @@ enum _MUSIC_STATE
 {
     MENU_VIEW,
     BROWSER_VIEW,
-    MEDIAPLAYER_VIEW,
-    DEFAULT_VIEW
+    MEDIAPLAYER_VIEW
 };
 
 struct _Enna_Module_Music
