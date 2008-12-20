@@ -59,9 +59,10 @@ static char * read_line_from_stream(FILE *stream)
 {
     char line[MAX_LINE];
     int i = 0;
+    char *l;
 
     memset(line, '\0', MAX_LINE);
-    fgets(line, MAX_LINE, stream);
+    l = fgets(line, MAX_LINE, stream);
 
     if (!strcmp(line, ""))
         return NULL;
@@ -126,7 +127,7 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
     url_data_t chunk;
     char *file, *header;
     Eina_List *streams = NULL;
-    int dl = 1;
+    int n, dl = 1;
 
     if (strstr(path, "file://"))
         dl = 0;
@@ -141,7 +142,7 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
         if (!f)
             return NULL;
 
-        fwrite(chunk.buffer, chunk.size, 1, f);
+        n = fwrite(chunk.buffer, chunk.size, 1, f);
         free(chunk.buffer);
         fclose(f);
     }
