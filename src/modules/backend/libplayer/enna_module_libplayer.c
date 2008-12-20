@@ -1,7 +1,6 @@
 /* Interface */
 
 #include "enna.h"
-#include "codecs.h"
 #include <player.h>
 
 #define ENNA_MODULE_NAME "libplayer"
@@ -167,74 +166,6 @@ static double _class_length_get()
             / 1000.0;
 }
 
-static Enna_Metadata *_class_metadata_get(void)
-{
-    Enna_Metadata *meta;
-    char *track_nb;
-    int frameduration = 0;
-    char *codec_id;
-
-    meta = enna_metadata_new(mod->uri+7);
-
-    meta->size = mrl_get_size(mod->player, NULL);
-    meta->length = mrl_get_property(mod->player, NULL, MRL_PROPERTY_LENGTH);
-
-    meta->title = mod->label ? strdup(mod->label) : mrl_get_metadata(
-            mod->player, NULL, MRL_METADATA_TITLE);
-    meta->music->artist = mrl_get_metadata(mod->player, NULL,
-            MRL_METADATA_ARTIST);
-    meta->music->album
-            = mrl_get_metadata(mod->player, NULL, MRL_METADATA_ALBUM);
-    meta->music->year = mrl_get_metadata(mod->player, NULL, MRL_METADATA_YEAR);
-    meta->music->genre
-            = mrl_get_metadata(mod->player, NULL, MRL_METADATA_GENRE);
-    meta->music->comment = mrl_get_metadata(mod->player, NULL,
-            MRL_METADATA_COMMENT);
-    meta->music->discid = NULL;
-
-    track_nb = mrl_get_metadata(mod->player, NULL, MRL_METADATA_TRACK);
-    if (track_nb)
-    {
-        meta->music->track = atoi(track_nb);
-        free(track_nb);
-    }
-    else
-        meta->music->track = 0;
-
-    codec_id = mrl_get_audio_codec(mod->player, NULL);
-    meta->music->codec = get_codec_name (codec_id);
-    free (codec_id);
-
-    meta->music->bitrate = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_AUDIO_BITRATE);
-    meta->music->channels = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_AUDIO_CHANNELS);
-    meta->music->samplerate = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_AUDIO_SAMPLERATE);
-
-    codec_id = mrl_get_video_codec(mod->player, NULL);
-    meta->video->codec = get_codec_name (codec_id);
-    free (codec_id);
-
-    meta->video->width = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_VIDEO_WIDTH);
-    meta->video->height = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_VIDEO_HEIGHT);
-    meta->video->channels = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_VIDEO_CHANNELS);
-    meta->video->streams = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_VIDEO_STREAMS);
-    frameduration = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_VIDEO_FRAMEDURATION);
-    if (frameduration)
-        meta->video->framerate = PLAYER_VIDEO_FRAMEDURATION_RATIO_DIV
-                / frameduration;
-    meta->video->bitrate = mrl_get_property(mod->player, NULL,
-            MRL_PROPERTY_VIDEO_BITRATE);
-
-    return meta;
-}
-
 static void _class_video_resize(int x, int y, int w, int h)
 {
     int flags = PLAYER_X_WINDOW_X | PLAYER_X_WINDOW_Y |
@@ -297,7 +228,6 @@ static Enna_Class_MediaplayerBackend class = {
     _class_pause,
     _class_position_get,
     _class_length_get,
-    _class_metadata_get,
     _class_video_resize,
     _class_event_cb_set,
     NULL

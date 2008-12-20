@@ -19,8 +19,7 @@ pkgdir =$(libdir)/enna/modules
 pkg_LTLIBRARIES = backend_libplayer.la
 
 backend_libplayer_la_SOURCES = \
-enna_module_libplayer.c \
-codecs.c
+enna_module_libplayer.c
 
 backend_libplayer_la_LIBADD = @ENNA_LIBS@ @LIBPLAYER_LIBS@
 backend_libplayer_la_LDFLAGS = -module -avoid-version

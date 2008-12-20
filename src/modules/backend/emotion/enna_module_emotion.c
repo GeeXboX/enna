@@ -80,60 +80,6 @@ static double _class_length_get()
     return emotion_object_play_length_get(mod->o_emotion);
 }
 
-static Enna_Metadata *_class_metadata_get(void)
-{
-    Enna_Metadata *m;
-    const char *track;
-    const char *tmp;
-
-    tmp = emotion_object_file_get(mod->o_emotion);
-    if (!tmp)
-      return NULL;
-    
-    m = enna_metadata_new (tmp);
-
-    tmp = emotion_object_meta_info_get(mod->o_emotion,
-	EMOTION_META_INFO_TRACK_TITLE);
-    if (tmp)
-	m->title = strdup(tmp);
-
-    tmp = emotion_object_meta_info_get(mod->o_emotion,
-	EMOTION_META_INFO_TRACK_ALBUM);
-    if (tmp)
-	m->music->album = strdup(tmp);
-
-    tmp = emotion_object_meta_info_get(mod->o_emotion,
-	EMOTION_META_INFO_TRACK_ARTIST);
-    if (tmp)
-	m->music->artist = strdup(tmp);
-
-    tmp = emotion_object_meta_info_get(mod->o_emotion,
-	EMOTION_META_INFO_TRACK_GENRE);
-    if (tmp)
-	m->music->genre = strdup(tmp);
-
-    tmp = emotion_object_meta_info_get(mod->o_emotion,
-	EMOTION_META_INFO_TRACK_YEAR);
-    if (tmp)
-	m->music->year = strdup(tmp);
-
-    tmp = emotion_object_meta_info_get(mod->o_emotion,
-	EMOTION_META_INFO_TRACK_COMMENT);
-    if (tmp)
-	m->music->comment = strdup(tmp);
-
-    tmp = emotion_object_meta_info_get(mod->o_emotion,
-	EMOTION_META_INFO_TRACK_DISC_ID);
-    if (tmp)
-	m->music->discid = strdup(tmp);
-
-    track = emotion_object_meta_info_get(mod->o_emotion,
-	EMOTION_META_INFO_TRACK_COUNT);
-    m->music->track = track ? atoi(track) : 0;
-    return m;
-
-}
-
 static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data)
 {
     mod->event_cb_data = data;
@@ -165,7 +111,6 @@ static Enna_Class_MediaplayerBackend class = {
 	_class_pause,
 	_class_position_get,
 	_class_length_get,
-	_class_metadata_get,
 	NULL,
 	_class_event_cb_set,
 	_class_video_obj_get
