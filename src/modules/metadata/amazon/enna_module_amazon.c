@@ -176,6 +176,8 @@ amazon_grab (Enna_Metadata *meta, int caps)
     char *search_type = NULL;
     char *cover;
     char tmp[1024];
+
+    return; /* broken as for now */
     
     if (!meta)
         return;
