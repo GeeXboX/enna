@@ -170,7 +170,6 @@ _class_event(void *event_info)
 	    _prev_song();
 	    break;
 	case ENNA_KEY_CANCEL:
-
 	    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
 	    mod->timer_show_mediaplayer = ecore_timer_add(10,
 		_show_mediaplayer_cb, NULL);
@@ -178,7 +177,10 @@ _class_event(void *event_info)
 	    edje_object_signal_emit(mod->o_edje, "mediaplayer,hide",
 		"enna");
 	    edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-	    mod->state = BROWSER_VIEW;
+	    if (mod->o_browser)
+		mod->state = BROWSER_VIEW;
+	    else
+		mod->state = MENU_VIEW;
 	    break;
 	default:
 	    break;
