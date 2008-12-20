@@ -36,7 +36,6 @@ url_utils.c\
 md5.c\
 covers.c\
 logs.c\
-snapshots.c\
 parser_cdda.c\
 slideshow.c
 
@@ -72,7 +71,6 @@ url_utils.h\
 md5.h\
 covers.h\
 logs.h\
-snapshots.h\
 parser_cdda.h\
 slideshow.h
 

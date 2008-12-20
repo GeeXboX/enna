@@ -306,13 +306,6 @@ void enna_mediaplayer_playlist_clear(void)
 
 }
 
-void
-enna_mediaplayer_snapshot(const char *uri, const char *file)
-{
-    if (_mediaplayer->class && _mediaplayer->class->func.class_snapshot)
-        _mediaplayer->class->func.class_snapshot(uri, file);
-}
-
 Enna_Metadata *
 enna_mediaplayer_metadata_get(void)
 {

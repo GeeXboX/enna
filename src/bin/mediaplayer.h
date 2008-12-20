@@ -49,7 +49,6 @@ void enna_mediaplayer_shutdown(void);
 void enna_mediaplayer_uri_append(const char *uri, const char *label);
 int enna_mediaplayer_select_nth(int n);
 int enna_mediaplayer_selected_get(void);
-void enna_mediaplayer_snapshot(const char *uri, const char *file);
 Enna_Metadata *enna_mediaplayer_metadata_get(void);
 int enna_mediaplayer_play(void);
 int enna_mediaplayer_stop(void);

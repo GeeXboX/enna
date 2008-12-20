@@ -23,7 +23,6 @@
 #include "event_key.h"
 #include "list_item.h"
 #include "covers.h"
-#include "snapshots.h"
 #include "md5.h"
 #include "logs.h"
 #include "slideshow.h"
