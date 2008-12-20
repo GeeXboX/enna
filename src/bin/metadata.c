@@ -15,6 +15,7 @@ enna_metadata_new (char *uri)
     m->music = calloc(1, sizeof(Enna_Metadata_Music));
 
     m->uri = strdup (uri);
+    m->md5 = md5sum (uri);
     
     return m;
 }
