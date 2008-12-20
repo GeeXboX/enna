@@ -184,6 +184,9 @@ amazon_grab (Enna_Metadata *meta, int caps)
     if (meta->cover)
         return;
 
+    if (!meta->keywords)
+        return;
+    
     /* try to create cover directory storage first */
     memset(tmp, '\0', sizeof (tmp));
     snprintf(tmp, sizeof (tmp), "%s/.enna/covers", enna_util_user_home_get());
