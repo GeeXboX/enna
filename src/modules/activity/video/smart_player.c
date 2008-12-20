@@ -123,7 +123,10 @@ void enna_smart_player_snapshot_set(Evas_Object *obj,
 
     API_ENTRY;
 
-    snap_file = enna_snapshot_get(metadata->uri);
+    if (!metadata)
+        return;
+
+    snap_file = metadata->snapshot;
     if (snap_file)
     {
         Evas_Coord ow,oh;
@@ -161,7 +164,10 @@ void enna_smart_player_cover_set(Evas_Object *obj,
 
     API_ENTRY;
 
-    cover_file = enna_cover_video_get(metadata->uri);
+    if (!metadata)
+        return;
+    
+    cover_file = metadata->cover;
     if (cover_file)
     {
         Evas_Coord ow,oh;
