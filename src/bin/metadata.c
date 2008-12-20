@@ -20,9 +20,9 @@ void enna_metadata_free(Enna_Metadata *m)
     if (!m)
         return;
 
-    ENNA_FREE(m->keywords);
-    ENNA_FREE(m->md5);
     ENNA_FREE(m->uri);
+    ENNA_FREE(m->md5);
+    ENNA_FREE(m->keywords);
     ENNA_FREE(m->title);
     ENNA_FREE(m->overview);
     ENNA_FREE(m->categories);
