@@ -97,6 +97,23 @@ set_mrl (const char *uri)
     return 0;
 }
 
+static char *
+get_movie_name (const char *filename)
+{
+    char *it, *movie;
+    char *path = strdup (filename);
+    char *file = (char *) ecore_file_file_get (path);
+
+    it = strrchr(file, '.');
+    if (it) /* remove suffix? */
+        *it = '\0';
+
+    movie = strdup (file);
+    free (path);
+
+    return movie;
+}
+
 static void
 libplayer_grab (Enna_Metadata *meta, int caps)
 {
@@ -184,6 +201,10 @@ libplayer_grab (Enna_Metadata *meta, int caps)
 
     if (caps & ENNA_GRABBER_CAP_VIDEO)
     {
+        char *name = get_movie_name (meta->uri);
+        enna_metadata_add_keywords (meta, name);
+        free (name);
+            
         if (!meta->video->codec)
         {
             codec_id = mrl_get_video_codec (mod->player, NULL);
