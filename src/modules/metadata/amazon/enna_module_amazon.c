@@ -186,6 +186,9 @@ amazon_grab (Enna_Metadata *meta, int caps)
 
     if (!meta->keywords)
         return;
+
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+              "Grabbing info from %s", meta->uri);
     
     /* try to create cover directory storage first */
     memset(tmp, '\0', sizeof (tmp));
