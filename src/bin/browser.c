@@ -242,28 +242,35 @@ static void _browse(void *data, void *data2)
 {
     Smart_Data *sd = data;
 
+    sd->file = data2;
+
     if (!sd || !sd->vfs)
         return;
 
     if (sd->vfs->func.class_browse_up)
     {
+	Browser_Selected_File_Data *ev = calloc(1, sizeof(Browser_Selected_File_Data));
+	ev->vfs = sd->vfs;
+	ev->file = sd->file;
 
         if (sd->file->is_directory)
         {
             /* File selected is a directory */
             sd->files = sd->vfs->func.class_browse_up(sd->file->uri, sd->vfs->cookie);
-	    evas_object_smart_callback_call (sd->obj, "selected", sd->file);
+	    ev->files = sd->files;
+	    evas_object_smart_callback_call (sd->obj, "selected", ev);
         }
-        else if (!sd->file->is_directory)
+        else
         {
             /* File selected is a regular file */
 	    Enna_Vfs_File *prev_vfs;
             char *prev_uri;
-
             prev_vfs = sd->vfs->func.class_vfs_get(sd->vfs->cookie);
             prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
             sd->files = sd->vfs->func.class_browse_up(prev_uri, sd->vfs->cookie);
-	    evas_object_smart_callback_call (sd->obj, "selected", sd->file);
+	    ENNA_FREE(prev_uri);
+	    ev->files = sd->files;
+	    evas_object_smart_callback_call (sd->obj, "selected", ev);
             return;
         }
 
@@ -343,8 +350,8 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 
             item = enna_listitem_add(sd->evas);
             enna_listitem_create_simple(item, icon, f->label);
-	    sd->file = f;
-            enna_list_append(sd->o_list, item, _browse, NULL, sd, NULL);
+	    //sd->file = f;
+            enna_list_append(sd->o_list, item, _browse, NULL, sd, f);
 
         }
 

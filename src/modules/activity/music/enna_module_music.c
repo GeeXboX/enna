@@ -96,7 +96,7 @@ static void _class_show(int dummy)
 	break;
     case MEDIAPLAYER_VIEW:
 	edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-	edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+	edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
 	break;
     default:
 	enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
@@ -178,7 +178,7 @@ static int _show_mediaplayer_cb(void *data)
     {
         mod->state = MEDIAPLAYER_VIEW;
         edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+        edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
         ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     }
 
@@ -197,6 +197,7 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
     printf("Root Selected\n");
     mod->state = MENU_VIEW;
     ENNA_OBJECT_DEL(mod->o_browser);
+    mod->o_browser = NULL;
     _create_menu();
 
 }
@@ -204,12 +205,35 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 static void
 _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 {
+    int i = 0;
+    Enna_Vfs_File *f;
+    Eina_List *l;
+    Browser_Selected_File_Data *ev = event_info;
 
-    Enna_Vfs_File *file = event_info;
-    if (file->is_directory)
-	printf("Directory Selected %s\n", file->uri);
+    if (ev->file->is_directory)
+    {
+	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s\n", ev->file->uri);
+    }
     else
-	printf("File Selected %s\n", file->uri);
+    {
+	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "File Selected %s\n", ev->file->uri);
+	/* File selected, create mediaplayer */
+	EINA_LIST_FOREACH(ev->files, l, f)
+	{
+	    if (!f->is_directory)
+	    {
+		enna_mediaplayer_uri_append(f->uri, f->label);
+		if (!strcmp(f->uri, ev->file->uri))
+		{
+		    enna_mediaplayer_select_nth(i);
+	 	    enna_mediaplayer_play();
+		}
+		i++;
+	    }
+	}
+	_create_mediaplayer_gui();
+    }
+    free(ev);
 }
 
 static void
@@ -305,7 +329,7 @@ static void _create_mediaplayer_gui()
     mod->timer = ecore_timer_add(1, _update_position_timer, NULL);
 
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-    edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
 
 }
 
