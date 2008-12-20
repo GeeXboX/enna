@@ -107,6 +107,9 @@ libplayer_grab (Enna_Metadata *meta, int caps)
     if (!meta || !meta->uri)
         return;
 
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+              "Grabbing info from %s", meta->uri);
+    
     set_mrl (meta->uri);
 
     if (!meta->size)
