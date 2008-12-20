@@ -34,7 +34,6 @@ list_item.c\
 xml_utils.c\
 url_utils.c\
 md5.c\
-covers.c\
 logs.c\
 parser_cdda.c\
 slideshow.c
@@ -69,7 +68,6 @@ list_item.h\
 xml_utils.h\
 url_utils.h\
 md5.h\
-covers.h\
 logs.h\
 parser_cdda.h\
 slideshow.h

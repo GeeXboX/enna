@@ -147,7 +147,7 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
             /* check for grabber's priority */
             if (g->priority != i)
                 continue;
-
+           
             /* check if grabber has the requested capabilities */
             if (g->caps & caps)
                 g->grab (meta, caps);
