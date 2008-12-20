@@ -37,6 +37,7 @@
 
 #define SMART_NAME "smart_player"
 
+#undef API_ENTRY
 #define API_ENTRY \
    E_Smart_Data *sd; \
    sd = evas_object_smart_data_get(obj); \
@@ -44,6 +45,7 @@
      (evas_object_type_get(obj) && \
      strcmp(evas_object_type_get(obj), SMART_NAME)))
 
+#undef INTERNAL_ENTRY
 #define INTERNAL_ENTRY \
    E_Smart_Data *sd; \
    sd = evas_object_smart_data_get(obj); \
