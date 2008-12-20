@@ -23,7 +23,11 @@ url_data_t url_get_data(CURL *curl, char *url)
 
     chunk.buffer = NULL; /* we expect realloc(NULL, size) to work */
     chunk.size = 0; /* no data at this point */
-
+    chunk.status = CURLE_FAILED_INIT;
+    
+    if (!curl || !url)
+      return chunk;
+    
     curl_easy_setopt(curl, CURLOPT_URL, url);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, url_buffer_get);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
