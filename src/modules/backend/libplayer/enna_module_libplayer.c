@@ -167,19 +167,6 @@ static double _class_length_get()
             / 1000.0;
 }
 
-static void _class_snapshot(const char *uri, const char *file)
-{
-    int sec;
-
-    if (!uri || !file)
-        return;
-
-    /* take snapshot at 15% of stream */
-    sec = (int) (_class_length_get() * 15 / 100);
-
-    mrl_video_snapshot(mod->player, NULL, sec, MRL_SNAPSHOT_PNG, file);
-}
-
 static Enna_Metadata *_class_metadata_get(void)
 {
     Enna_Metadata *meta;
@@ -310,7 +297,6 @@ static Enna_Class_MediaplayerBackend class = {
     _class_pause,
     _class_position_get,
     _class_length_get,
-    _class_snapshot,
     _class_metadata_get,
     _class_video_resize,
     _class_event_cb_set,
