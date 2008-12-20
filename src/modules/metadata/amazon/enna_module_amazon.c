@@ -246,7 +246,7 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
-    enna_metadata_remove_grabber (ENNA_GRABBER_NAME);
+    //enna_metadata_remove_grabber (ENNA_GRABBER_NAME);
     if (mod->curl)
         curl_easy_cleanup(mod->curl);
     curl_global_cleanup();

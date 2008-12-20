@@ -154,6 +154,6 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
-    enna_metadata_remove_grabber (ENNA_GRABBER_NAME);
+    //enna_metadata_remove_grabber (ENNA_GRABBER_NAME);
     free(mod);
 }
