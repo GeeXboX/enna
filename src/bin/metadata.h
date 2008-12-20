@@ -50,6 +50,7 @@ struct _Enna_Metadata
     int year;
     char *categories;
     char *cover;
+    char *snapshot;
     char *backdrop;
     Enna_Metadata_Video *video;
     Enna_Metadata_Music *music;

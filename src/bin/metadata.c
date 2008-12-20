@@ -35,6 +35,7 @@ void enna_metadata_free(Enna_Metadata *m)
     ENNA_FREE(m->overview);
     ENNA_FREE(m->categories);
     ENNA_FREE(m->cover);
+    ENNA_FREE(m->snapshot);
     ENNA_FREE(m->backdrop);
     if (m->video)
     {
