@@ -72,7 +72,7 @@ struct _Enna_Metadata_Grabber
     void (* grab) (Enna_Metadata *meta, int caps);
 };
 
-Enna_Metadata *enna_metadata_new();
+Enna_Metadata *enna_metadata_new(char *uri);
 void enna_metadata_free(Enna_Metadata *m);
 
 void enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber);

@@ -580,10 +580,10 @@ static Eina_List * _audio_tracks_of_album_list_get(const char *artist,
 
     while (sqlite3_step(stmt) == SQLITE_ROW)
     {
-        Enna_Metadata *m = enna_metadata_new();
+        Enna_Metadata *m =
+            enna_metadata_new((char*)sqlite3_column_text(stmt, 1));
 
         m->title = strdup((char*)sqlite3_column_text(stmt, 0));
-        m->uri = strdup((char*)sqlite3_column_text(stmt, 1));
         m->music->track = sqlite3_column_int(stmt, 2);
         if (m)
             tracks = eina_list_append(tracks, m);

@@ -3,14 +3,19 @@
 static Eina_List *metadata_grabbers = NULL;
 
 Enna_Metadata *
-enna_metadata_new()
+enna_metadata_new (char *uri)
 {
-
     Enna_Metadata *m;
 
+    if (!uri)
+      return NULL;
+    
     m = calloc(1, sizeof(Enna_Metadata));
     m->video = calloc(1, sizeof(Enna_Metadata_Video));
     m->music = calloc(1, sizeof(Enna_Metadata_Music));
+
+    m->uri = strdup (uri);
+    
     return m;
 }
 
@@ -101,8 +106,7 @@ enna_metadata_grab (int caps, char *uri, char *keywords)
     if (!uri || !keywords)
         return NULL;
     
-    meta = enna_metadata_new ();
-    meta->uri = strdup (uri);
+    meta = enna_metadata_new (uri);
     meta->keywords = strdup (keywords);
     
     for (i = ENNA_GRABBER_PRIORITY_MAX; i < ENNA_GRABBER_PRIORITY_MIN; i++)

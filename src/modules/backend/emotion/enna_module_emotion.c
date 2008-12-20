@@ -163,11 +163,11 @@ static Enna_Metadata *_class_metadata_get(void)
     const char *track;
     const char *tmp;
 
-    m = enna_metadata_new();
-
     tmp = emotion_object_file_get(mod->o_emotion);
-    if (tmp)
-	m->uri = strdup(tmp);
+    if (!tmp)
+      return NULL;
+    
+    m = enna_metadata_new (tmp);
 
     tmp = emotion_object_meta_info_get(mod->o_emotion,
 	EMOTION_META_INFO_TRACK_TITLE);

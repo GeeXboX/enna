@@ -187,9 +187,8 @@ static Enna_Metadata *_class_metadata_get(void)
     int frameduration = 0;
     char *codec_id;
 
-    meta = enna_metadata_new();
+    meta = enna_metadata_new(mod->uri+7);
 
-    meta->uri = strdup(mod->uri+7);
     meta->size = mrl_get_size(mod->player, NULL);
     meta->length = mrl_get_property(mod->player, NULL, MRL_PROPERTY_LENGTH);
 
