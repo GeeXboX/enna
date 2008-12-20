@@ -122,11 +122,18 @@ libplayer_grab (Enna_Metadata *meta, int caps)
     if (caps & ENNA_GRABBER_CAP_AUDIO)
     {
         if (!meta->music->artist)
+        {
             meta->music->artist = mrl_get_metadata (mod->player, NULL,
                                                     MRL_METADATA_ARTIST);
+            enna_metadata_add_keywords (meta, meta->music->artist);
+        }
+        
         if (!meta->music->album)
+        {
             meta->music->album = mrl_get_metadata (mod->player, NULL,
                                                    MRL_METADATA_ALBUM);
+            enna_metadata_add_keywords (meta, meta->music->album);
+        }
         
         if (!meta->music->year)
             meta->music->year = mrl_get_metadata (mod->player, NULL,
