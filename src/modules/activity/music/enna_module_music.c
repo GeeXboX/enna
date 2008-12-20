@@ -208,7 +208,16 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
     ENNA_OBJECT_DEL(mod->o_browser);
     mod->o_browser = NULL;
     _create_menu();
+    enna_location_remove_nth(mod->o_location,enna_location_count(mod->o_location) - 1);
 }
+
+static void
+_browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    printf("Browse Down detected\n");
+    enna_location_remove_nth(mod->o_location,enna_location_count(mod->o_location) - 1);
+}
+
 
 static void
 _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
@@ -255,6 +264,8 @@ _browse(void *data, void *data2)
     mod->o_browser = enna_browser_add(mod->em->evas);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
+    evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
+
     mod->state = BROWSER_VIEW;
 
     evas_object_show(mod->o_browser);
@@ -262,6 +273,7 @@ _browse(void *data, void *data2)
     enna_browser_root_set(mod->o_browser, vfs);
     evas_object_del(mod->o_list);
     mod->o_list = NULL;
+    enna_location_append(mod->o_location, vfs->label, NULL, NULL, NULL, NULL);
 }
 
 

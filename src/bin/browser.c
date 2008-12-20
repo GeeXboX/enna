@@ -34,6 +34,7 @@
  *
  * "root" this event is sent when root is browse
  * "selected" this event is sent when a file or a directory is selected
+ * "browse_down" this event is sent when browse down is detected
  *
  */
 
@@ -293,8 +294,10 @@ static void _browse_down(Smart_Data *sd)
 	if (!sd->files)
 	{
 	    evas_object_smart_callback_call (sd->obj, "root", NULL);
-	    return;
 	}
+
+	evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
+
         /* Clear list and add new items */
         edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
 	    _list_transition_right_end_cb, sd);
