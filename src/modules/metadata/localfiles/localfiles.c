@@ -22,7 +22,7 @@ cover_get_from_saved_file (Enna_Metadata *meta)
 {
     char cover[1024];
 
-    enna_log (ENNA_MSG_EVENT, NULL,
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Trying to get cover from previously saved cover file");
 
     if (!meta->keywords || !meta->md5)
@@ -52,7 +52,8 @@ cover_get_from_picture_file (Enna_Metadata *meta)
     char cover[1024];
     int i, j;
     
-    enna_log (ENNA_MSG_EVENT, NULL, "Trying to get cover from picture files");
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+              "Trying to get cover from picture files");
 
     if (!meta || !meta->uri)
         return;
@@ -116,7 +117,8 @@ localfiles_grab (Enna_Metadata *meta, int caps)
 
  cover_found:
     if (meta->cover)
-        enna_log (ENNA_MSG_INFO, NULL, "Using cover from: %s", meta->cover);
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                  "Using cover from: %s", meta->cover);
 }
 
 static Enna_Metadata_Grabber grabber = {

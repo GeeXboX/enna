@@ -1,5 +1,7 @@
 #include "enna.h"
 
+#define MODULE_NAME "enna"
+
 static Eina_List *metadata_grabbers = NULL;
 
 Enna_Metadata *
@@ -51,6 +53,28 @@ void enna_metadata_free(Enna_Metadata *m)
         free(m->music);
     }
     free(m);
+}
+
+void
+enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords)
+{
+    char key[1024];
+    
+    if (!meta || !keywords)
+        return;
+
+    if (!meta->keywords)
+        meta->keywords = strdup (keywords);
+    else
+    {
+        memset (key, '\0', sizeof (key));
+        snprintf (key, sizeof (key), "%s %s", meta->keywords, keywords);
+        free (meta->keywords);
+        meta->keywords = strdup (key);
+    }
+
+    enna_log (ENNA_MSG_EVENT, MODULE_NAME,
+              "Metadata keywords set to '%s'", meta->keywords);
 }
 
 void
