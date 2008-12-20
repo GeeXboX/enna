@@ -8,6 +8,8 @@
 #define ENNA_GRABBER_NAME       "libplayer"
 #define ENNA_GRABBER_PRIORITY   2
 
+#define SNAPSHOTS_PATH          "snapshots"
+
 #define URI_TYPE_FTP  "ftp://"
 #define URI_TYPE_HTTP "http://"
 #define URI_TYPE_MMS  "mms://"
@@ -213,6 +215,37 @@ libplayer_grab (Enna_Metadata *meta, int caps)
             meta->video->bitrate =
                 mrl_get_property (mod->player, NULL,
                                   MRL_PROPERTY_VIDEO_BITRATE);
+
+        /* snapshot */
+        if (enna->use_snapshots && !meta->snapshot)
+        {
+            char dst[1024];
+            
+            /* try to create snapshot directory storage first */
+            memset (dst, '\0', sizeof (dst));
+            snprintf (dst, sizeof (dst), "%s/.enna/%s",
+                      enna_util_user_home_get(), SNAPSHOTS_PATH);
+            if (!ecore_file_is_dir (dst))
+                mkdir (dst, 0755);
+
+            memset (dst, '\0', sizeof (dst));
+            snprintf (dst, sizeof (dst), "%s/.enna/%s/%s.png",
+                      enna_util_user_home_get(), SNAPSHOTS_PATH, meta->md5);
+            
+            if (!ecore_file_exists (dst))
+            {
+                double length;
+                int sec;
+
+                /* take snapshot at 15% of stream */
+                length = mrl_get_property (mod->player, NULL,
+                                           MRL_PROPERTY_LENGTH) / 1000.0;
+                sec = (int) (length * 15 / 100);
+                mrl_video_snapshot (mod->player, NULL, sec,
+                                    MRL_SNAPSHOT_PNG, dst);
+                meta->snapshot = strdup (dst);
+            }
+        }
     }
 }
 
