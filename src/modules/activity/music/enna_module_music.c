@@ -210,13 +210,16 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     Eina_List *l;
     Browser_Selected_File_Data *ev = event_info;
 
+    if (!ev || !ev->file) return;
+
     if (ev->file->is_directory)
     {
 	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s\n", ev->file->uri);
+	enna_location_append(mod->o_location, ev->file->label, NULL, NULL, NULL, NULL);
     }
     else
     {
-	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "File Selected %s\n", ev->file->uri);
+	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s\n", ev->file->uri);
 	/* File selected, create mediaplayer */
 	EINA_LIST_FOREACH(ev->files, l, f)
 	{
@@ -239,7 +242,6 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 static void
 _browse(void *data, void *data2)
 {
-
     Enna_Class_Vfs *vfs = data;
 
     mod->o_browser = enna_browser_add(mod->em->evas);
@@ -252,7 +254,6 @@ _browse(void *data, void *data2)
     enna_browser_root_set(mod->o_browser, vfs);
     evas_object_del(mod->o_list);
     mod->o_list = NULL;
-
 }
 
 
@@ -260,13 +261,11 @@ _browse(void *data, void *data2)
 static int
 _update_position_timer(void *data)
 {
-
     double pos;
     double length;
 
     length = enna_mediaplayer_length_get();
     pos = enna_mediaplayer_position_get();
-
     enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
     return 1;
 }

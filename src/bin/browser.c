@@ -429,7 +429,7 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_RIGHT:
     case ENNA_KEY_OK:
     case ENNA_KEY_SPACE:
-	_browse(sd, NULL);
+	_browse(sd, enna_list_selected_data2_get(sd->o_list));
 	break;
     default:
 	enna_list_event_key_down(sd->o_list, event_info);
