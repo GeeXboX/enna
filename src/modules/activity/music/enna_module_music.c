@@ -8,6 +8,13 @@
 static void _create_menu();
 static void _create_gui();
 static void _create_mediaplayer_gui();
+static void _browse(void *data, void *data2);
+static void _activate();
+static int _eos_cb(void *data, int type, void *event);
+static void _next_song(void);
+static void _prev_song(void);
+static int _show_mediaplayer_cb(void *data);
+
 static void _class_init(int dummy);
 static void _class_shutdown(int dummy);
 static void _class_show(int dummy);
@@ -15,12 +22,7 @@ static void _class_hide(int dummy);
 static void _class_event(void *event_info);
 static int em_init(Enna_Module *em);
 static int em_shutdown(Enna_Module *em);
-static void _browse(void *data, void *data2);
-static void _activate();
-static int _eos_cb(void *data, int type, void *event);
-static void _next_song(void);
-static void _prev_song(void);
-static int _show_mediaplayer_cb(void *data);
+
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
 
@@ -75,17 +77,20 @@ static Enna_Class_Activity class =
     NULL
 };
 
-static void _class_init(int dummy)
+static void
+_class_init(int dummy)
 {
     _create_gui();
     enna_content_append("music", mod->o_edje);
 }
 
-static void _class_shutdown(int dummy)
+static void
+_class_shutdown(int dummy)
 {
 }
 
-static void _class_show(int dummy)
+static void
+_class_show(int dummy)
 {
     edje_object_signal_emit(mod->o_edje, "module,show", "enna");
     switch (mod->state)
@@ -105,12 +110,14 @@ static void _class_show(int dummy)
 
 }
 
-static void _class_hide(int dummy)
+static void
+_class_hide(int dummy)
 {
     edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
 }
 
-static void _class_event(void *event_info)
+static void
+_class_event(void *event_info)
 {
     Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key(ev);
@@ -183,7 +190,8 @@ static void _class_event(void *event_info)
     }
 }
 
-static int _show_mediaplayer_cb(void *data)
+static int
+_show_mediaplayer_cb(void *data)
 {
 
     if (mod->o_mediaplayer)
@@ -277,7 +285,8 @@ _update_position_timer(void *data)
     return 1;
 }
 
-static void _next_song()
+static void
+_next_song()
 {
     Enna_Metadata *metadata;
     if (!enna_mediaplayer_next())
@@ -288,7 +297,8 @@ static void _next_song()
     }
 }
 
-static void _prev_song()
+static void
+_prev_song()
 {
     Enna_Metadata *metadata;
     if (!enna_mediaplayer_prev())
@@ -299,14 +309,16 @@ static void _prev_song()
     }
 }
 
-static int _eos_cb(void *data, int type, void *event)
+static int
+_eos_cb(void *data, int type, void *event)
 {
     /* EOS received, update metadata */
     _next_song();
     return 1;
 }
 
-static void _create_mediaplayer_gui()
+static void
+_create_mediaplayer_gui()
 {
     Evas_Object *o;
     Enna_Metadata *metadata;
@@ -339,7 +351,8 @@ static void _create_mediaplayer_gui()
 
 }
 
-static void _create_menu()
+static void
+_create_menu()
 {
     Evas_Object *o;
     Eina_List *l, *categories;
@@ -370,7 +383,8 @@ static void _create_menu()
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
 }
 
-static void _create_gui()
+static void
+_create_gui()
 {
     Evas_Object *o;
     Evas_Object *icon;
@@ -397,7 +411,8 @@ static void _create_gui()
 
 /* Module interface */
 
-static int em_init(Enna_Module *em)
+static int
+em_init(Enna_Module *em)
 {
     mod = calloc(1, sizeof(Enna_Module_Music));
     mod->em = em;
@@ -408,7 +423,8 @@ static int em_init(Enna_Module *em)
     return 1;
 }
 
-static int em_shutdown(Enna_Module *em)
+static int
+em_shutdown(Enna_Module *em)
 {
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
