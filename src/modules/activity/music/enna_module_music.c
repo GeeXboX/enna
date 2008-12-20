@@ -188,7 +188,7 @@ static int _show_mediaplayer_cb(void *data)
 static void
 _activate()
 {
-
+    _browse(enna_list_selected_data_get(mod->o_list), NULL);
 }
 
 static void

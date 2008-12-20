@@ -293,14 +293,6 @@ static void _browse_down(Smart_Data *sd)
     }
 }
 
-static void _activate(Smart_Data *sd)
-{
-    sd->vfs = (Enna_Class_Vfs*)enna_list_selected_data_get(sd->o_list);
-    sd->file = (Enna_Vfs_File*)enna_list_selected_data2_get(sd->o_list);
-    _browse(sd, NULL);
-
-}
-
 static void
 _list_transition_core(Smart_Data *sd, unsigned char direction)
 {
@@ -430,7 +422,7 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_RIGHT:
     case ENNA_KEY_OK:
     case ENNA_KEY_SPACE:
-	_activate(sd);
+	_browse(sd, NULL);
 	break;
     default:
 	enna_list_event_key_down(sd->o_list, event_info);
