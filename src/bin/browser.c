@@ -155,6 +155,8 @@ static void _smart_del(Evas_Object * obj)
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
+
+    edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje", _list_transition_left_end_cb);
     ENNA_OBJECT_DEL(sd->o_list);
     evas_object_del(sd->o_edje);
     free(sd);
@@ -244,7 +246,7 @@ static void _browse(void *data, void *data2)
 
     sd->file = data2;
 
-    if (!sd || !sd->vfs)
+    if (!sd || !sd->vfs || !sd->files)
         return;
 
     if (sd->vfs->func.class_browse_up)
@@ -418,6 +420,10 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     enna_key_t key = enna_get_key(ev);
 
     API_ENTRY return;
+
+    edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
+	_list_transition_left_end_cb);
+
 
     enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s\n", ev->key);
     switch (key)

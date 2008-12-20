@@ -119,6 +119,12 @@ static void _class_event(void *event_info)
     switch (mod->state)
     {
     case MENU_VIEW:
+	if (mod->o_mediaplayer)
+	{
+	    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+	    mod->timer_show_mediaplayer = ecore_timer_add(10,
+		_show_mediaplayer_cb, NULL);
+	}
 	switch (key)
 	{
 	case ENNA_KEY_LEFT:
@@ -129,13 +135,19 @@ static void _class_event(void *event_info)
 	case ENNA_KEY_RIGHT:
 	case ENNA_KEY_OK:
 	case ENNA_KEY_SPACE:
-	    _activate();
+	    _browse(enna_list_selected_data_get(mod->o_list), NULL);
 	    break;
 	default:
 	    enna_list_event_key_down(mod->o_list, event_info);
 	}
 	break;
     case BROWSER_VIEW:
+	if (mod->o_mediaplayer)
+	{
+	    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+	    mod->timer_show_mediaplayer = ecore_timer_add(10,
+		_show_mediaplayer_cb, NULL);
+	}
 	enna_browser_event_feed(mod->o_browser, event_info);
 	break;
     case MEDIAPLAYER_VIEW:
@@ -185,11 +197,6 @@ static int _show_mediaplayer_cb(void *data)
     return 0;
 }
 
-static void
-_activate()
-{
-    _browse(enna_list_selected_data_get(mod->o_list), NULL);
-}
 
 static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
