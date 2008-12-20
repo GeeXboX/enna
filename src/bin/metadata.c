@@ -122,17 +122,13 @@ enna_metadata_remove_grabber (char *name)
     } while ((tmp = eina_list_next (tmp)));
 }
 
-Enna_Metadata *
-enna_metadata_grab (int caps, char *uri, char *keywords)
+void
+enna_metadata_grab (Enna_Metadata *meta, int caps)
 {
-    Enna_Metadata *meta;
     int i;
 
-    if (!uri || !keywords)
-        return NULL;
-    
-    meta = enna_metadata_new (uri);
-    meta->keywords = strdup (keywords);
+    if (!meta)
+        return;
     
     for (i = ENNA_GRABBER_PRIORITY_MAX; i < ENNA_GRABBER_PRIORITY_MIN; i++)
     {
@@ -156,6 +152,4 @@ enna_metadata_grab (int caps, char *uri, char *keywords)
                 g->grab (meta, caps);
         } while ((tmp = eina_list_next (tmp)));
     }
-
-    return meta;
 }
