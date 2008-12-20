@@ -248,8 +248,6 @@ static void _browse(void *data, void *data2)
     if (sd->vfs->func.class_browse_up)
     {
 
-        Evas_Object *o, *oe;
-
         if (!sd->file)
         {
             /* file param is NULL => create Root menu */
@@ -265,8 +263,7 @@ static void _browse(void *data, void *data2)
         else if (!sd->file->is_directory)
         {
             /* File selected is a regular file */
-            int i = 0;
-            Enna_Vfs_File *prev_vfs;
+	    Enna_Vfs_File *prev_vfs;
             char *prev_uri;
 
             prev_vfs = sd->vfs->func.class_vfs_get(sd->vfs->cookie);
