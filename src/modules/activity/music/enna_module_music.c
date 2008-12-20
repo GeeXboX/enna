@@ -189,7 +189,6 @@ _class_event(void *event_info)
 static int
 _show_mediaplayer_cb(void *data)
 {
-
     if (mod->o_mediaplayer)
     {
         mod->state = MEDIAPLAYER_VIEW;
@@ -197,7 +196,6 @@ _show_mediaplayer_cb(void *data)
         edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
         ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     }
-
     return 0;
 }
 
@@ -210,7 +208,6 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
     ENNA_OBJECT_DEL(mod->o_browser);
     mod->o_browser = NULL;
     _create_menu();
-
 }
 
 static void
@@ -344,7 +341,6 @@ _create_mediaplayer_gui()
 
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
     edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
-
 }
 
 static void
@@ -352,7 +348,6 @@ _create_menu()
 {
     Evas_Object *o;
     Eina_List *l, *categories;
-
 
     /* Create List */
     o = enna_list_add(mod->em->evas);
