@@ -302,17 +302,16 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
             Enna_Metadata *metadata;
             Evas_Object *cover = NULL;
             Enna_Metadata *meta;
-            char keywords[1024];
             
             mod->is_root = 0;
             metadata = enna_mediaplayer_metadata_get();
             item = enna_listitem_add(mod->em->evas);
 
-            memset (keywords, '\0', sizeof (keywords));
-            snprintf (keywords, sizeof (keywords), "%s %s",
-                      metadata->music->artist, metadata->music->album);
-            meta = enna_metadata_grab (ENNA_GRABBER_CAP_AUDIO,
-                                       metadata->uri, keywords);
+            meta = enna_metadata_new (metadata->uri);
+            enna_metadata_add_keywords (meta, metadata->music->artist);
+            enna_metadata_add_keywords (meta, metadata->music->album);
+            enna_metadata_grab (meta, ENNA_GRABBER_CAP_AUDIO);
+
             if (meta && meta->cover)
             {
                 cover = enna_image_add(mod->em->evas);
@@ -603,16 +602,15 @@ static void _create_gui()
         Enna_Metadata *metadata;
         Evas_Object *cover = NULL;
         Enna_Metadata *meta;
-        char keywords[1024];
 
         metadata = enna_mediaplayer_metadata_get();
         item = enna_listitem_add(mod->em->evas);
 
-        memset (keywords, '\0', sizeof (keywords));
-        snprintf (keywords, sizeof (keywords), "%s %s",
-                  metadata->music->artist, metadata->music->album);
-        meta = enna_metadata_grab (ENNA_GRABBER_CAP_AUDIO,
-                                   metadata->uri, keywords);
+        meta = enna_metadata_new (metadata->uri);
+        enna_metadata_add_keywords (meta, metadata->music->artist);
+        enna_metadata_add_keywords (meta, metadata->music->album);
+        enna_metadata_grab (meta, ENNA_GRABBER_CAP_AUDIO);
+        
         if (meta && meta->cover)
         {
             cover = enna_image_add(mod->em->evas);

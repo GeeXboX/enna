@@ -109,7 +109,6 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
         Enna_Metadata *metadata)
 {
     Enna_Metadata *meta;
-    char keywords[1024];
     
     API_ENTRY;
 
@@ -122,11 +121,10 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     edje_object_part_text_set(sd->o_edje, "enna.text.artist",
                               metadata->music->artist ? metadata->music->artist : "");
 
-    memset (keywords, '\0', sizeof (keywords));
-    snprintf (keywords, sizeof (keywords), "%s %s",
-              metadata->music->artist, metadata->music->album);
-    meta = enna_metadata_grab (ENNA_GRABBER_CAP_AUDIO,
-                               metadata->uri, keywords);
+    meta = enna_metadata_new (metadata->uri);
+    enna_metadata_add_keywords (meta, metadata->music->artist);
+    enna_metadata_add_keywords (meta, metadata->music->album);
+    enna_metadata_grab (meta, ENNA_GRABBER_CAP_AUDIO);
 
     ENNA_OBJECT_DEL(sd->o_cover);
     if (meta && meta->cover)
