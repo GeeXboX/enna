@@ -17,6 +17,7 @@
 #include "pan.h"
 #include "scrollframe.h"
 #include "list.h"
+#include "browser.h"
 #include "wall.h"
 #include "location.h"
 #include "mediaplayer.h"
