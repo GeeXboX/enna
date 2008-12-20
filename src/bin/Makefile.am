@@ -21,6 +21,7 @@ activity.c\
 vfs.c\
 image.c\
 list.c\
+browser.c\
 content.c\
 pan.c\
 scrollframe.c\
@@ -55,6 +56,7 @@ vfs.h\
 activity.h\
 image.h\
 list.h\
+browser.h\
 content.h\
 pan.h\
 scrollframe.h\
