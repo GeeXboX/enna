@@ -369,7 +369,7 @@ static void _browse_down()
     {
         Evas_Object *o, *oe;
         Eina_List *files;
-	char *prev;
+	const char *prev;
 
         files = mod->vfs->func.class_browse_down(mod->vfs->cookie);
         o = mod->o_list;
