@@ -285,6 +285,32 @@ if test "x$want_metadata_amazon" = "xyes"; then
   AC_DEFINE(BUILD_METADATA_AMAZON, 1, [Amazon.com Metadata])
 fi
 
+# libplayer
+want_metadata_libplayer="auto"
+have_metadata_libplayer="no"
+AC_MSG_CHECKING(whether libplayer metadata is to be built)
+AC_ARG_ENABLE(metadata-libplayer,
+    AS_HELP_STRING([--enable-metadata-libplayer],[Enable libplayer Metadata module]),
+    [ want_metadata_libplayer=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_libplayer)
+if test "x$want_metadata_libplayer" = "xyes" -o "x$want_metadata_libplayer" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LIBPLAYER],
+    [libplayer],
+    [
+      AC_DEFINE(BUILD_METADATA_LIBPLAYER, 1, [libplayer metadata module])
+      have_metadata_libplayer="yes"
+    ],
+    [
+      if test "x$want_metadata_libplayer" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libplayer not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_METADATA_LIBPLAYER, test "x$have_metadata_libplayer" = "xyes")
+
 # Local Files
 want_metadata_localfiles="yes"
 AC_MSG_CHECKING(whether local files metadata module is to be built)
@@ -424,6 +450,7 @@ src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/metadata/Makefile
 src/modules/metadata/amazon/Makefile
+src/modules/metadata/libplayer/Makefile
 src/modules/metadata/localfiles/Makefile
 src/modules/volume/Makefile
 src/modules/volume/polling/Makefile
@@ -466,6 +493,7 @@ echo
 echo "Supported Metadata Modules:"
 echo
 echo "  Amazon.com....................... : $want_metadata_amazon"
+echo "  libplayer........................ : $have_metadata_libplayer"
 echo "  Local files...................... : $want_metadata_localfiles"
 echo
 echo "Supported Volume Modules:"
