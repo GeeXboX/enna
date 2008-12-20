@@ -54,7 +54,6 @@ struct _Smart_Data
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
     Evas *evas;
-    unsigned char is_root : 1;
 };
 
 
@@ -156,6 +155,7 @@ static void _smart_del(Evas_Object * obj)
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
+    ENNA_OBJECT_DEL(sd->o_list);
     evas_object_del(sd->o_edje);
     free(sd);
 }
@@ -248,13 +248,7 @@ static void _browse(void *data, void *data2)
     if (sd->vfs->func.class_browse_up)
     {
 
-        if (!sd->file)
-        {
-            /* file param is NULL => create Root menu */
-            sd->files = sd->vfs->func.class_browse_up(NULL, sd->vfs->cookie);
-	    sd->is_root = 1;
-        }
-        else if (sd->file->is_directory)
+        if (sd->file->is_directory)
         {
             /* File selected is a directory */
             sd->files = sd->vfs->func.class_browse_up(sd->file->uri, sd->vfs->cookie);
@@ -287,6 +281,11 @@ static void _browse_down(Smart_Data *sd)
     if (sd->vfs && sd->vfs->func.class_browse_down)
     {
 	sd->files = sd->vfs->func.class_browse_down(sd->vfs->cookie);
+	if (!sd->files)
+	{
+	    evas_object_smart_callback_call (sd->obj, "root", NULL);
+	    return;
+	}
         /* Clear list and add new items */
         edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
 	    _list_transition_right_end_cb, sd);
@@ -329,7 +328,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     if (eina_list_count(files))
     {
         int i = 0;
-        sd->is_root = 0;
+
         /* Create list of files */
         for (l = files, i = 0; l; l = l->next, i++)
         {
@@ -362,10 +361,8 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     else if (!direction)
     {
         /* No files returned : create no media item */
-
         Evas_Object *icon;
         Evas_Object *item;
-        sd->is_root = 0;
         icon = edje_object_add(sd->evas);
         edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
         item = enna_listitem_add(sd->evas);
@@ -408,7 +405,6 @@ void enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
 
     if (vfs->func.class_browse_up)
     {
-
 	/* create Root menu */
 	sd->files = vfs->func.class_browse_up(NULL, vfs->cookie);
         sd->vfs = vfs;
@@ -429,10 +425,7 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     {
     case ENNA_KEY_LEFT:
     case ENNA_KEY_CANCEL:
-	if (!sd->is_root)
-	    _browse_down(sd);
-	else
-	    evas_object_smart_callback_call (sd->obj, "root", NULL);
+	_browse_down(sd);
 	break;
     case ENNA_KEY_RIGHT:
     case ENNA_KEY_OK:

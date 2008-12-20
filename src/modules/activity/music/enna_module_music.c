@@ -5,6 +5,7 @@
 
 #define ENNA_MODULE_NAME "music"
 
+static void _create_menu();
 static void _create_gui();
 static void _create_mediaplayer_gui();
 static void _class_init(int dummy);
@@ -194,6 +195,9 @@ static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
     printf("Root Selected\n");
+    mod->state = MENU_VIEW;
+    ENNA_OBJECT_DEL(mod->o_browser);
+    _create_menu();
 
 }
 
