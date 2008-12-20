@@ -1,7 +1,9 @@
 /* Interface */
 
 #include "enna.h"
+#ifdef BUILD_LIBEXIF
 #include "libexif/exif-data.h"
+#endif
 
 #define ENNA_MODULE_NAME "photo"
 
@@ -34,11 +36,13 @@ typedef struct _Enna_Module_Photo
     Enna_Class_Vfs *vfs;
     Enna_Module *em;
     char *prev_selected;
+#ifdef BUILD_LIBEXIF
     struct {
 	Evas_Object *o_scroll;
 	Evas_Object *o_exif;
 	char *str;
     }exif;
+#endif
     unsigned char is_root : 1;
     unsigned char list_selected : 1;
     unsigned char no_dir : 1;
@@ -73,11 +77,13 @@ static void _photo_info_delete_cb(void *data,
     edje_object_signal_callback_del(mod->o_preview, "done", "", _photo_info_delete_cb);
     o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
 
+#ifdef BUILD_LIBEXIF
     ENNA_OBJECT_DEL(mod->exif.o_exif);
     ENNA_OBJECT_DEL(mod->exif.o_scroll);
     free(mod->exif.str);
     mod->exif.str = NULL;
-
+#endif
+    
     ENNA_OBJECT_DEL(o_pict);
     ENNA_OBJECT_DEL(mod->o_preview);
     mod->state = WALL_VIEW;
@@ -93,6 +99,7 @@ static void _photo_info_delete()
 }
 
 
+#ifdef BUILD_LIBEXIF
 static void _exif_content_foreach_func(ExifEntry *entry, void *callback_data)
 {
   char buf[2000];
@@ -157,6 +164,7 @@ static void _exif_parse_metadata(const char *filename)
   evas_object_size_hint_min_set(mod->exif.o_exif, mw, mh);
   enna_scrollframe_child_set(mod->exif.o_scroll, mod->exif.o_exif);
 }
+#endif
 
 static void _photo_info_fs()
 {
@@ -216,7 +224,9 @@ static void _photo_info_fs()
     free(msg);
 
     mod->o_preview = o_edje;
+#ifdef BUILD_LIBEXIF
     _exif_parse_metadata(filename);
+#endif
     edje_object_signal_emit(mod->o_preview, "show", "enna");
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
 }
@@ -660,12 +670,14 @@ static void _class_event(void *event_info)
 	case ENNA_KEY_CANCEL:
 	    _photo_info_delete();
 	    break;
+#ifdef BUILD_LIBEXIF
 	case ENNA_KEY_UP:
 	    edje_object_signal_emit(mod->o_preview, "show,exif", "enna");
 	    break;
 	case ENNA_KEY_DOWN:
 	    edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
 	    break;
+#endif
 	default:
 	    break;
 
