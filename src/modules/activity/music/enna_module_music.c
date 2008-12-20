@@ -194,6 +194,7 @@ static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
     printf("Root Selected\n");
+
 }
 
 static void
@@ -201,12 +202,10 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 {
 
     Enna_Vfs_File *file = event_info;
-
     if (file->is_directory)
 	printf("Directory Selected %s\n", file->uri);
     else
 	printf("File Selected %s\n", file->uri);
-
 }
 
 static void
@@ -306,20 +305,11 @@ static void _create_mediaplayer_gui()
 
 }
 
-static void _create_gui()
+static void _create_menu()
 {
-
     Evas_Object *o;
     Eina_List *l, *categories;
-    Evas_Object *icon;
 
-    /* Set default state */
-    mod->state = MENU_VIEW;
-
-    /* Create main edje object */
-    o = edje_object_add(mod->em->evas);
-    edje_object_file_set(o, enna_config_theme_get(), "module/music");
-    mod->o_edje = o;
 
     /* Create List */
     o = enna_list_add(mod->em->evas);
@@ -330,6 +320,7 @@ static void _create_gui()
     {
         Evas_Object *item;
         Enna_Class_Vfs *cat;
+	Evas_Object *icon;
 
         cat = l->data;
         icon = edje_object_add(mod->em->evas);
@@ -343,6 +334,22 @@ static void _create_gui()
     mod->o_list = o;
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
+}
+
+static void _create_gui()
+{
+    Evas_Object *o;
+    Evas_Object *icon;
+
+    /* Set default state */
+    mod->state = MENU_VIEW;
+
+    /* Create main edje object */
+    o = edje_object_add(mod->em->evas);
+    edje_object_file_set(o, enna_config_theme_get(), "module/music");
+    mod->o_edje = o;
+
+    _create_menu();
 
     /* Create Location bar */
     o = enna_location_add(mod->em->evas);
