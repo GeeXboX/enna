@@ -435,7 +435,7 @@ echo
 echo "Supported Backends Modules:"
 echo
 echo "  emotion.......................... : $have_backend_emotion"
-echo "  libplayer backend................ : $have_backend_libplayer"
+echo "  libplayer........................ : $have_backend_libplayer"
 echo
 echo "Supported Browser Modules:"
 echo
