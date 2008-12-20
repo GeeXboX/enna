@@ -108,7 +108,7 @@
 
 static Evas_Hash *hash_config;
 
-static Evas_Bool _hash_foreach(const Evas_Hash *hash, const char *key,
+static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
         void *data, void *fdata);
 static Evas_Hash *_config_load_conf_file(char *filename);
 static Evas_Hash *_config_load_conf(char *conffile, int size);
@@ -207,12 +207,12 @@ void enna_config_shutdown()
 
 }
 
-static Evas_Bool _hash_foreach(const Evas_Hash *hash, const char *key,
+static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
         void *data, void *fdata)
 {
     Enna_Config_Data *config_data;
     Eina_List *l;
-    if (!strcmp(key, "enna"))
+    if (!strcmp((const char *) key, "enna"))
     {
         config_data = data;
         for (l = config_data->pair; l; l = l->next)
