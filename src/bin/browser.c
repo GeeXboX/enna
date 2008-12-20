@@ -252,7 +252,7 @@ static void _browse(void *data, void *data2)
         {
             /* file param is NULL => create Root menu */
             sd->files = sd->vfs->func.class_browse_up(NULL, sd->vfs->cookie);
-	    evas_object_smart_callback_call (sd->obj, "root", NULL);
+	    sd->is_root = 1;
         }
         else if (sd->file->is_directory)
         {
@@ -431,6 +431,8 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_CANCEL:
 	if (!sd->is_root)
 	    _browse_down(sd);
+	else
+	    evas_object_smart_callback_call (sd->obj, "root", NULL);
 	break;
     case ENNA_KEY_RIGHT:
     case ENNA_KEY_OK:
