@@ -345,6 +345,32 @@ fi
 # Librairies #
 ##############
 
+# libcddb
+want_libcddb="auto"
+have_libcddb="no"
+AC_MSG_CHECKING(whether libcddb support is to be built)
+AC_ARG_ENABLE(libcddb,
+    AS_HELP_STRING([--enable-libcddb],[Enable libcddb support]),
+    [ want_libcddb=$enableval ]
+)
+AC_MSG_RESULT($want_libcddb)
+if test "x$want_libcddb" = "xyes" -o "x$want_libcddb" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LIBCDDB],
+    [libcddb],
+    [
+      AC_DEFINE(BUILD_LIBCDDB, 1, [libcddb support])
+      have_libcddb="yes"
+    ],
+    [
+      if test "x$want_libcddb" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libcddb not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_LIBCDDB, test "x$have_libcddb" = "xyes")
+
 # libcurl
 want_libcurl="auto"
 have_libcurl="no"
@@ -396,32 +422,6 @@ if test "x$want_libxml2" = "xyes" -o "x$want_libxml2" = "xauto"; then
   )
 fi
 AM_CONDITIONAL(BUILD_LIBXML2, test "x$have_libxml2" = "xyes")
-
-# libcddb
-want_libcddb="auto"
-have_libcddb="no"
-AC_MSG_CHECKING(whether libcddb support is to be built)
-AC_ARG_ENABLE(libcddb,
-    AS_HELP_STRING([--enable-libcddb],[Enable libcddb support]),
-    [ want_libcddb=$enableval ]
-)
-AC_MSG_RESULT($want_libcddb)
-if test "x$want_libcddb" = "xyes" -o "x$want_libcddb" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LIBCDDB],
-    [libcddb],
-    [
-      AC_DEFINE(BUILD_LIBCDDB, 1, [libcddb support])
-      have_libcddb="yes"
-    ],
-    [
-      if test "x$want_libcddb" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([libcddb not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_LIBCDDB, test "x$have_libcddb" = "xyes")
 
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
@@ -502,9 +502,9 @@ echo "  Polling.......................... : $want_volume_polling"
 echo
 echo "Optional linked-in librairies:"
 echo
+echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libxml2.......................... : $have_libxml2"
-echo "  libcddb.......................... : $have_libcddb"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo
