@@ -316,8 +316,14 @@ enna_mediaplayer_snapshot(const char *uri, const char *file)
 Enna_Metadata *
 enna_mediaplayer_metadata_get(void)
 {
-    if (_mediaplayer->class && _mediaplayer->class->func.class_metadata_get)
-    return _mediaplayer->class->func.class_metadata_get();
+    list_item_t *item;
+    item = eina_list_nth(_playlist, _mediaplayer->selected);
+
+    if (!item)
+        return NULL;
+
+    if (item->uri)
+        return enna_metadata_new ((char *) item->uri);
 
     return NULL;
 }

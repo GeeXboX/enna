@@ -519,7 +519,8 @@ static void _video_info_prev()
 
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
-         m = enna_mediaplayer_metadata_get();
+        m = enna_mediaplayer_metadata_get();
+        enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO);
         enna_smart_player_snapshot_set(o, m);
         enna_smart_player_cover_set(o, m);
         enna_smart_player_metadata_set(o, m);
@@ -550,6 +551,7 @@ static void _video_info_next()
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
         m = enna_mediaplayer_metadata_get();
+        enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO);
         enna_smart_player_snapshot_set(o, m);
         enna_smart_player_cover_set(o, m);
         enna_smart_player_metadata_set(o, m);
@@ -584,6 +586,7 @@ static void _create_video_info_gui()
     mod->o_mediaplayer = o;
 
     m = enna_mediaplayer_metadata_get();
+    enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO);
     enna_smart_player_snapshot_set(mod->o_mediaplayer, m);
     enna_smart_player_cover_set(mod->o_mediaplayer, m);
     enna_smart_player_metadata_set(mod->o_mediaplayer, m);

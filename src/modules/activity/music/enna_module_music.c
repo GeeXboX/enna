@@ -299,17 +299,13 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
         if (mod->o_mediaplayer)
         {
             Evas_Object *item;
-            Enna_Metadata *metadata;
             Evas_Object *cover = NULL;
             Enna_Metadata *meta;
             
             mod->is_root = 0;
-            metadata = enna_mediaplayer_metadata_get();
             item = enna_listitem_add(mod->em->evas);
 
-            meta = enna_metadata_new (metadata->uri);
-            enna_metadata_add_keywords (meta, metadata->music->artist);
-            enna_metadata_add_keywords (meta, metadata->music->album);
+            meta = enna_mediaplayer_metadata_get();
             enna_metadata_grab (meta, ENNA_GRABBER_CAP_AUDIO);
 
             if (meta && meta->cover)
@@ -323,10 +319,9 @@ static void _list_transition_core(Eina_List *files, unsigned char direction)
 		edje_object_file_set(cover, enna_config_theme_get(), "icon/unknown_cover");
 		evas_object_show(cover);
 	    }
-            enna_metadata_free(meta);
             enna_listitem_create_full(item, cover, "Playing Now :",
-                    metadata->title, metadata->music->album,
-                    metadata->music->artist);
+                    meta->title, meta->music->album,
+                    meta->music->artist);
             enna_list_append(o_list, item, NULL, NULL, NULL, NULL);
         }
 
@@ -499,10 +494,8 @@ static void _next_song()
     if (!enna_mediaplayer_next())
     {
         metadata = enna_mediaplayer_metadata_get();
-        if (metadata)
-        {
-            enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
-        }
+        enna_metadata_grab (metadata, ENNA_GRABBER_CAP_AUDIO);
+        enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
     }
 }
 
@@ -512,10 +505,8 @@ static void _prev_song()
     if (!enna_mediaplayer_prev())
     {
         metadata = enna_mediaplayer_metadata_get();
-        if (metadata)
-        {
-            enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
-        }
+        enna_metadata_grab (metadata, ENNA_GRABBER_CAP_AUDIO);
+        enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
     }
 }
 
@@ -546,9 +537,10 @@ static void _create_mediaplayer_gui()
     o = enna_smart_player_add(mod->em->evas);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
     evas_object_show(o);
+
     metadata = enna_mediaplayer_metadata_get();
-    if (metadata)
-        enna_smart_player_metadata_set(o, metadata);
+    enna_metadata_grab (metadata, ENNA_GRABBER_CAP_AUDIO);
+    enna_smart_player_metadata_set(o, metadata);
 
     mod->o_mediaplayer = o;
     mod->timer = ecore_timer_add(1, _update_position_timer, NULL);
@@ -599,16 +591,11 @@ static void _create_gui()
     if (mod->o_mediaplayer)
     {
         Evas_Object *item;
-        Enna_Metadata *metadata;
         Evas_Object *cover = NULL;
         Enna_Metadata *meta;
 
-        metadata = enna_mediaplayer_metadata_get();
         item = enna_listitem_add(mod->em->evas);
-
-        meta = enna_metadata_new (metadata->uri);
-        enna_metadata_add_keywords (meta, metadata->music->artist);
-        enna_metadata_add_keywords (meta, metadata->music->album);
+        meta = enna_mediaplayer_metadata_get ();
         enna_metadata_grab (meta, ENNA_GRABBER_CAP_AUDIO);
         
         if (meta && meta->cover)
@@ -622,10 +609,9 @@ static void _create_gui()
 	    edje_object_file_set(cover, enna_config_theme_get(), "icon/unknown_cover");
 	    evas_object_show(cover);
 	}
-        enna_metadata_free(meta);            
         enna_listitem_create_full(item, cover, "Playing Now :",
-                metadata->title, metadata->music->album,
-                metadata->music->artist);
+                meta->title, meta->music->album,
+                meta->music->artist);
         enna_list_append(o, item, NULL, NULL, NULL, NULL);
     }
 
