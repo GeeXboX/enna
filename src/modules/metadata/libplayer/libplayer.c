@@ -253,8 +253,8 @@ libplayer_grab (Enna_Metadata *meta, int caps)
                 sec = (int) (length * 15 / 100);
                 mrl_video_snapshot (mod->player, NULL, sec,
                                     MRL_SNAPSHOT_PNG, dst);
-                meta->snapshot = strdup (dst);
             }
+            meta->snapshot = strdup (dst);
         }
     }
 }
