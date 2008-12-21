@@ -495,7 +495,7 @@ _create_gui()
 
     mod->state = MENU_VIEW;
     o = edje_object_add(mod->em->evas);
-    edje_object_file_set(o, enna_config_theme_get(), "module/video");
+    edje_object_file_set(o, enna_config_theme_get(), "module/music_video");
     mod->o_edje = o;
     _create_menu();
     /* Create Location bar */
