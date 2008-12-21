@@ -125,7 +125,7 @@ static Enna_Metadata_Grabber grabber = {
     ENNA_GRABBER_NAME,
     ENNA_GRABBER_PRIORITY_MAX,
     0,
-    ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO,
+    ENNA_GRABBER_CAP_COVER,
     localfiles_grab,
 };
 
