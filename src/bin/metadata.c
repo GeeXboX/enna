@@ -2,6 +2,9 @@
 
 #define MODULE_NAME "enna"
 
+#define PATH_COVERS             "covers"
+#define PATH_SNAPSHOTS          "snapshots"
+
 static Eina_List *metadata_grabbers = NULL;
 
 Enna_Metadata *
@@ -55,6 +58,26 @@ void enna_metadata_free(Enna_Metadata *m)
         free(m->music);
     }
     free(m);
+}
+
+void
+enna_metadata_init (void)
+{
+    char dst[1024];
+            
+    /* try to create covers directory storage */
+    memset (dst, '\0', sizeof (dst));
+    snprintf (dst, sizeof (dst), "%s/.enna/%s",
+              enna_util_user_home_get (), PATH_COVERS);
+    if (!ecore_file_is_dir (dst))
+        ecore_file_mkdir (dst);
+
+    /* try to create snapshots directory storage */
+    memset (dst, '\0', sizeof (dst));
+    snprintf (dst, sizeof (dst), "%s/.enna/%s",
+              enna_util_user_home_get (), PATH_SNAPSHOTS);
+    if (!ecore_file_is_dir (dst))
+        ecore_file_mkdir (dst);
 }
 
 void
