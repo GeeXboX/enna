@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES = Makefile.in
 
-MODULE = amazon
+MODULE = libplayer
 
 # data files for the module
 filesdir = $(libdir)/enna/modules/
