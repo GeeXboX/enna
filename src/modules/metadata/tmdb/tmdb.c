@@ -47,6 +47,10 @@ tmdb_parse (Enna_Metadata *meta)
     if (!meta || !meta->keywords)
         return;
 
+    /* TMDB only has sense on video files */
+    if (meta->type != ENNA_METADATA_VIDEO)
+        return;
+    
     /* get HTTP compliant keywords */
     escaped_keywords = calloc (1, 2 * strlen (meta->keywords));
     url_escape_string (escaped_keywords, meta->keywords);
