@@ -168,7 +168,7 @@ void enna_smart_player_cover_set(Evas_Object *obj,
 
     if (!metadata)
         return;
-    
+
     cover_file = metadata->cover;
     if (cover_file)
     {
@@ -202,8 +202,7 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     int h, mn, sec;
     float len;
 
-    API_ENTRY
-    ;
+    API_ENTRY return;
 
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "metadata set");
 
@@ -216,38 +215,29 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
         edje_object_part_text_set(sd->o_edje, "enna.text.title",
                 ecore_file_file_get(metadata->uri));
 
-    snprintf(buf, sizeof(buf), "Size : %.2f MB", metadata->size / 1024.0
-            / 1024.0);
-    edje_object_part_text_set(sd->o_edje, "enna.text.size", buf);
-
     len = metadata->length / 1000.0;
     h = (int) (len / 3600);
     mn = (int) ((len - (h * 3600)) / 60);
-    sec = (int) (len - (h * 3600) - (mn * 60));
-    snprintf(buf, sizeof(buf), "Length: %.2d h %.2d mn %.2d sec", h, mn, sec);
-    edje_object_part_text_set(sd->o_edje, "enna.text.length", buf);
 
-    snprintf(buf, sizeof(buf), "Codec : %s", metadata->video->codec);
-    edje_object_part_text_set(sd->o_edje, "enna.text.videocodec", buf);
+    snprintf(buf, sizeof(buf),
+	"<hilight>Size<tab><tab><tab></hilight>:<tab>%.2f MB<br>"
+	"<hilight>Length<tab><tab></hilight>:<tab>%.2d h %.2d mn<br>"
+	"<hilight>Video Codec<tab></hilight>:<tab>%s<br>"
+	"<hilight>Size<tab><tab><tab></hilight>:<tab>%dx%d<br>"
+	"<hilight>Framerate<tab></hilight>:<tab>%.2f fps<br>"
+	"<hilight>Audio Codec<tab></hilight>:<tab>%s<br>"
+	"<hilight>Bitrate<tab><tab></hilight>:<tab>%i kbps<br>"
+	"<hilight>Samplerate</hilight><tab>:<tab>%i Hz<br>",
+	metadata->size / 1024.0 / 1024.0,
+	h, mn,
+	metadata->video->codec,
+	metadata->video->width, metadata->video->height,
+	metadata->video->framerate,
+	metadata->music->codec,
+	metadata->music->bitrate / 1000,
+	metadata->music->samplerate);
 
-    snprintf(buf, sizeof(buf), "Size : %dx%d", metadata->video->width,
-            metadata->video->height);
-    edje_object_part_text_set(sd->o_edje, "enna.text.videosize", buf);
-
-    snprintf(buf, sizeof(buf), "Framerate : %.2f fps",
-             metadata->video->framerate);
-    edje_object_part_text_set(sd->o_edje, "enna.text.framerate", buf);
-
-    snprintf(buf, sizeof(buf), "Codec : %s", metadata->music->codec);
-    edje_object_part_text_set(sd->o_edje, "enna.text.audiocodec", buf);
-
-    snprintf(buf, sizeof(buf), "Bitrate : %i kbps", metadata->music->bitrate
-            / 1000);
-    edje_object_part_text_set(sd->o_edje, "enna.text.bitrate", buf);
-
-    snprintf(buf, sizeof(buf), "Samplerate : %i Hz",
-            metadata->music->samplerate);
-    edje_object_part_text_set(sd->o_edje, "enna.text.samplerate", buf);
+    edje_object_part_text_set(sd->o_edje, "enna.text", buf);
 }
 
 /* local subsystem globals */
