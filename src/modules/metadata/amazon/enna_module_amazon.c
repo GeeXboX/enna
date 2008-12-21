@@ -189,6 +189,14 @@ amazon_grab (Enna_Metadata *meta, int caps)
     if (!meta->keywords)
         return;
 
+    /* check file type to ensure looking for meta has a sense */
+    if (meta->type == ENNA_METADATA_AUDIO)
+        search_type = AMAZON_SEARCH_MUSIC;
+    else if (meta->type == ENNA_METADATA_VIDEO)
+        search_type = AMAZON_SEARCH_MOVIE;
+    else
+        return;
+
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Grabbing info from %s", meta->uri);
     
@@ -200,11 +208,6 @@ amazon_grab (Enna_Metadata *meta, int caps)
     /* Format the keywords */
     escaped_keywords = calloc (1, 2 * sizeof (meta->keywords));
     url_escape_string(escaped_keywords, meta->keywords);
-
-    if (caps & ENNA_GRABBER_CAP_AUDIO)
-        search_type = AMAZON_SEARCH_MUSIC;
-    else if (caps & ENNA_GRABBER_CAP_VIDEO)
-        search_type = AMAZON_SEARCH_MOVIE;
             
     cover = amazon_cover_get (search_type, meta->keywords, escaped_keywords);
     if (cover)
