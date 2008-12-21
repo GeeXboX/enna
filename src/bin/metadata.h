@@ -57,9 +57,9 @@ struct _Enna_Metadata
 
 };
 
-#define ENNA_GRABBER_CAP_AUDIO       0x0001
-#define ENNA_GRABBER_CAP_VIDEO       0x0002
-#define ENNA_GRABBER_CAP_PICTURE     0x0004
+#define ENNA_GRABBER_CAP_AUDIO       0x0001  /* audio metadata: id3tags ... */
+#define ENNA_GRABBER_CAP_VIDEO       0x0002  /* video metadata: fourccs ... */
+#define ENNA_GRABBER_CAP_PICTURE     0x0004  /* photo metadata: exif ... */
 
 #define ENNA_GRABBER_PRIORITY_MAX 1
 #define ENNA_GRABBER_PRIORITY_MIN 10
