@@ -101,6 +101,10 @@ url_save_to_disk (CURL *curl, char *src, char *dst)
     
     if (!curl || !src || !dst)
         return;
+
+    /* no need to download again an already existing file */
+    if (ecore_file_exists (dst))
+        return;
     
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Saving %s to %s", src, dst);
 
