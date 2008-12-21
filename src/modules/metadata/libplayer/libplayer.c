@@ -283,6 +283,7 @@ libplayer_grab (Enna_Metadata *meta, int caps)
 static Enna_Metadata_Grabber grabber = {
     ENNA_GRABBER_NAME,
     ENNA_GRABBER_PRIORITY,
+    0,
     ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO,
     libplayer_grab,
 };

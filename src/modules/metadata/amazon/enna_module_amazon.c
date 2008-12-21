@@ -219,6 +219,7 @@ amazon_grab (Enna_Metadata *meta, int caps)
 static Enna_Metadata_Grabber grabber = {
     ENNA_GRABBER_NAME,
     3,
+    1,
     ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_NETWORK,
     amazon_grab,
 };

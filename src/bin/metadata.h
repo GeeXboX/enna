@@ -69,6 +69,7 @@ struct _Enna_Metadata_Grabber
 {
     char *name;
     int priority;
+    int require_network;
     int caps;
     void (* grab) (Enna_Metadata *meta, int caps);
 };
