@@ -120,7 +120,8 @@ libplayer_grab (Enna_Metadata *meta, int caps)
     char *track_nb;
     int frameduration = 0;
     char *codec_id;
-
+    mrl_type_t type;
+    
     if (!meta || !meta->uri)
         return;
 
@@ -129,6 +130,12 @@ libplayer_grab (Enna_Metadata *meta, int caps)
     
     set_mrl (meta->uri);
 
+    type = mrl_get_type (mod->player, NULL);
+    if (type == MRL_TYPE_AUDIO)
+        meta->type = ENNA_METADATA_AUDIO;
+    else if (type == MRL_TYPE_VIDEO)
+        meta->type = ENNA_METADATA_VIDEO;
+    
     if (!meta->size)
         meta->size = mrl_get_size (mod->player, NULL);
 
