@@ -11,6 +11,9 @@ static void _create_video_info_gui();
 static void _create_videoplayer_gui();
 static void _video_info_prev();
 static void _video_info_next();
+static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
+static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
+static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
 
 static void _seek_video(double value);
 static void _browse(void *data, void *data2);
@@ -252,6 +255,9 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
     printf("Root Selected\n");
     mod->state = MENU_VIEW;
+    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
+    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     mod->o_browser = NULL;
     _create_menu();
@@ -312,26 +318,23 @@ _browse(void *data, void *data2)
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
-
-    mod->state = BROWSER_VIEW;
-
     evas_object_show(mod->o_browser);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.browser", mod->o_browser);
     enna_browser_root_set(mod->o_browser, vfs);
     evas_object_del(mod->o_list);
     mod->o_list = NULL;
     enna_location_append(mod->o_location, vfs->label, NULL, NULL, NULL, NULL);
+    mod->state = BROWSER_VIEW;
 }
 
 static void
 _create_videoplayer_gui()
 {
-    mod->state = VIDEOPLAYER_VIEW;
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
-    mod->state = VIDEOPLAYER_VIEW;
     enna_mediaplayer_play();
     enna_smart_player_show_video(mod->o_mediaplayer);
+    mod->state = VIDEOPLAYER_VIEW;
 }
 
 
@@ -411,8 +414,6 @@ _create_video_info_gui()
     Evas_Object *o;
     Enna_Metadata *m;
 
-    mod->state = VIDEO_INFO_VIEW;
-
     ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
     mod->o_mediaplayer_old = NULL;
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
@@ -442,6 +443,7 @@ _create_video_info_gui()
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
     edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
 
+    mod->state = VIDEO_INFO_VIEW;
 
 }
 
@@ -526,6 +528,9 @@ em_shutdown(Enna_Module *em)
 {
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
+    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
+    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_location);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);

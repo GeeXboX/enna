@@ -54,6 +54,7 @@ struct _Smart_Data
     Eina_List *files;
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
+    unsigned char accept_ev : 1;
     Evas *evas;
 };
 
@@ -144,6 +145,7 @@ static void _smart_add(Evas_Object * obj)
     sd->y = 0;
     sd->w = 0;
     sd->h = 0;
+    sd->accept_ev = 0;
     evas_object_smart_member_add(sd->o_edje, obj);
     sd->obj = obj;
     evas_object_smart_data_set(obj, sd);
@@ -156,7 +158,7 @@ static void _smart_del(Evas_Object * obj)
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
-
+    edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje", _list_transition_right_end_cb);
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje", _list_transition_left_end_cb);
     ENNA_OBJECT_DEL(sd->o_list);
     evas_object_del(sd->o_edje);
@@ -245,11 +247,11 @@ static void _browse(void *data, void *data2)
 {
     Smart_Data *sd = data;
 
-    sd->file = data2;
-
-    if (!sd || !sd->vfs || !sd->files)
+    if (!sd || !sd->vfs)
         return;
 
+    sd->file = data2;
+    sd->accept_ev = 0;
     if (sd->vfs->func.class_browse_up)
     {
 	Browser_Selected_File_Data *ev = calloc(1, sizeof(Browser_Selected_File_Data));
@@ -261,6 +263,7 @@ static void _browse(void *data, void *data2)
             /* File selected is a directory */
             sd->files = sd->vfs->func.class_browse_up(sd->file->uri, sd->vfs->cookie);
 	    ev->files = sd->files;
+
 	    evas_object_smart_callback_call (sd->obj, "selected", ev);
         }
         else
@@ -273,6 +276,7 @@ static void _browse(void *data, void *data2)
             sd->files = sd->vfs->func.class_browse_up(prev_uri, sd->vfs->cookie);
 	    ENNA_FREE(prev_uri);
 	    ev->files = sd->files;
+	    sd->accept_ev = 1;
 	    evas_object_smart_callback_call (sd->obj, "selected", ev);
             return;
         }
@@ -287,6 +291,8 @@ static void _browse(void *data, void *data2)
 static void _browse_down(Smart_Data *sd)
 {
     if (!sd) return;
+
+    sd->accept_ev = 0;
 
     if (sd->vfs && sd->vfs->func.class_browse_down)
     {
@@ -385,7 +391,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
     edje_object_signal_emit(sd->o_edje, "list,default", "enna");
-
+    sd->accept_ev = 1;
 }
 
 static void
@@ -424,9 +430,16 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
 
     API_ENTRY return;
 
+    if (!sd->accept_ev)
+    {
+	printf("ev not accept\n");
+	return;
+    }
+
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
 	_list_transition_left_end_cb);
-
+    edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
+	_list_transition_right_end_cb);
 
     enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s\n", ev->key);
     switch (key)

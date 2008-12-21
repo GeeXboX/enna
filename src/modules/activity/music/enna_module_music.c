@@ -9,7 +9,9 @@ static void _create_menu();
 static void _create_gui();
 static void _create_mediaplayer_gui();
 static void _browse(void *data, void *data2);
-static void _activate();
+static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
+static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
+static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
 static int _eos_cb(void *data, int type, void *event);
 static void _next_song(void);
 static void _prev_song(void);
@@ -203,6 +205,9 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
     printf("Root Selected\n");
     mod->state = MENU_VIEW;
+    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
+    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     mod->o_browser = NULL;
     _create_menu();
@@ -433,6 +438,9 @@ em_shutdown(Enna_Module *em)
 {
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
+    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
+    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_location);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
