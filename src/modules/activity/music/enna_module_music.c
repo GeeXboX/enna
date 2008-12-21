@@ -23,7 +23,6 @@ static void _class_event(void *event_info);
 static int em_init(Enna_Module *em);
 static int em_shutdown(Enna_Module *em);
 
-
 typedef struct _Enna_Module_Music Enna_Module_Music;
 
 typedef enum _MUSIC_STATE MUSIC_STATE;
@@ -105,7 +104,6 @@ _class_show(int dummy)
 	enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
 	    "Error State Unknown in music module\n");
     }
-
 }
 
 static void
