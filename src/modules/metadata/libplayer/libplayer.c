@@ -246,7 +246,10 @@ libplayer_grab (Enna_Metadata *meta, int caps)
             meta->video->bitrate =
                 mrl_get_property (mod->player, NULL,
                                   MRL_PROPERTY_VIDEO_BITRATE);
+    }
 
+    if (caps & ENNA_GRABBER_CAP_COVER)
+    {
         /* snapshot */
         if (enna->use_snapshots && !meta->snapshot)
         {
@@ -284,7 +287,7 @@ static Enna_Metadata_Grabber grabber = {
     ENNA_GRABBER_NAME,
     ENNA_GRABBER_PRIORITY,
     0,
-    ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO,
+    ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER,
     libplayer_grab,
 };
 
