@@ -201,7 +201,7 @@ group {
                rel2 { relative: 1.0 0.5; to: "info.clip.bg"; offset: -10 -10;}
 	       text {
 		  style: "infos_style";
-		  min: 1 1;
+		  min: 0 0;
 
 	       }
 	    }
