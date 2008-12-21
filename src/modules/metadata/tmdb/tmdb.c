@@ -6,7 +6,7 @@
 
 #define ENNA_MODULE_NAME        "metadata_tmdb"
 #define ENNA_GRABBER_NAME       "tmdb"
-#define ENNA_GRABBER_PRIORITY   2
+#define ENNA_GRABBER_PRIORITY   3
 
 #define PATH_BACKDROPS          "backdrops"
 #define PATH_COVERS             "covers"
