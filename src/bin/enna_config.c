@@ -42,6 +42,8 @@
     "fullscreen=0\n"							\
     "\n"								\
     "#0,1\n"								\
+    "use_network=1\n"							\
+    "\n"								\
     "use_covers=1\n"							\
     "\n"								\
     "#0,1\n"								\
@@ -223,6 +225,9 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
             enna_config->theme_file
                     = enna_config_theme_file_get(enna_config->theme);
             enna_config_value_store(&enna_config->fullscreen, "fullscreen",
+                    ENNA_CONFIG_INT, pair);
+            enna_config->use_network = 1;
+            enna_config_value_store(&enna_config->use_network, "use_network",
                     ENNA_CONFIG_INT, pair);
             enna_config->use_covers = 1;
             enna_config_value_store(&enna_config->use_covers, "use_covers",

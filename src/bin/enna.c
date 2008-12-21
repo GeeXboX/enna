@@ -209,6 +209,7 @@ static int _enna_init(int run_gl)
 	enna->ee_winid = (Ecore_X_Window) ecore_evas_window_get(enna->ee);
     }
 
+    enna->use_network = enna_config->use_network;
     enna->use_covers = enna_config->use_covers;
     enna->use_snapshots = enna_config->use_snapshots;
 
