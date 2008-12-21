@@ -6,6 +6,14 @@ typedef struct _Enna_Metadata_Video Enna_Metadata_Video;
 typedef struct _Enna_Metadata_Music Enna_Metadata_Music;
 typedef struct _Enna_Metadata_Grabber Enna_Metadata_Grabber;
 
+typedef enum
+{
+    ENNA_METADATA_UNKNOWN,
+    ENNA_METADATA_AUDIO,
+    ENNA_METADATA_VIDEO,
+    ENNA_METADATA_PHOTO,
+} Enna_Metadata_Type;
+
 struct _Enna_Metadata_Music
 {
 
@@ -38,12 +46,12 @@ struct _Enna_Metadata_Video
 
 struct _Enna_Metadata
 {
+    Enna_Metadata_Type type;
     char *uri;
     char *md5;
     char *keywords;
     char *title;
     int size; /* in Bytes */
-    int type;
     int length; /* in seconds */
     char *overview;
     int runtime;

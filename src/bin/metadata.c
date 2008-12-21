@@ -16,6 +16,7 @@ enna_metadata_new (char *uri)
     m->video = calloc(1, sizeof(Enna_Metadata_Video));
     m->music = calloc(1, sizeof(Enna_Metadata_Music));
 
+    m->type = ENNA_METADATA_UNKNOWN;
     m->uri = strdup (uri);
     m->md5 = md5sum (uri);
     
