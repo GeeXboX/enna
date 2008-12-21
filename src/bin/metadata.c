@@ -103,6 +103,25 @@ enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords)
 }
 
 void
+enna_metadata_add_category (Enna_Metadata *meta, char *category)
+{
+    char cat[1024];
+    
+    if (!meta || !category)
+        return;
+
+    if (!meta->categories)
+        meta->categories = strdup (category);
+    else
+    {
+        memset (cat, '\0', sizeof (cat));
+        snprintf (cat, sizeof (cat), "%s, %s", meta->categories, category);
+        free (meta->categories);
+        meta->categories = strdup (cat);
+    }
+}
+
+void
 enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber)
 {
     Eina_List *tmp;
