@@ -6,6 +6,7 @@
 
 #define ENNA_MODULE_NAME "metadata_amazon"
 #define ENNA_GRABBER_NAME "amazon"
+#define ENNA_GRABBER_PRIORITY   3
 
 #define MAX_URL_SIZE        1024
 #define MAX_KEYWORD_SIZE    1024
@@ -175,7 +176,6 @@ amazon_grab (Enna_Metadata *meta, int caps)
     char *escaped_keywords;
     char *search_type = NULL;
     char *cover;
-    char tmp[1024];
 
     return; /* broken as for now */
     
@@ -200,11 +200,6 @@ amazon_grab (Enna_Metadata *meta, int caps)
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Grabbing info from %s", meta->uri);
     
-    /* try to create cover directory storage first */
-    memset(tmp, '\0', sizeof (tmp));
-    snprintf(tmp, sizeof (tmp), "%s/.enna/covers", enna_util_user_home_get());
-    mkdir(tmp, 0755);
-    
     /* Format the keywords */
     escaped_keywords = calloc (1, 2 * sizeof (meta->keywords));
     url_escape_string(escaped_keywords, meta->keywords);
@@ -221,7 +216,7 @@ amazon_grab (Enna_Metadata *meta, int caps)
 
 static Enna_Metadata_Grabber grabber = {
     ENNA_GRABBER_NAME,
-    3,
+    ENNA_GRABBER_PRIORITY,
     1,
     ENNA_GRABBER_CAP_COVER,
     amazon_grab,

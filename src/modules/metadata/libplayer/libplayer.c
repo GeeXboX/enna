@@ -262,13 +262,6 @@ libplayer_grab (Enna_Metadata *meta, int caps)
         {
             char dst[1024];
             
-            /* try to create snapshot directory storage first */
-            memset (dst, '\0', sizeof (dst));
-            snprintf (dst, sizeof (dst), "%s/.enna/%s",
-                      enna_util_user_home_get(), SNAPSHOTS_PATH);
-            if (!ecore_file_is_dir (dst))
-                mkdir (dst, 0755);
-
             memset (dst, '\0', sizeof (dst));
             snprintf (dst, sizeof (dst), "%s/.enna/%s/%s.png",
                       enna_util_user_home_get(), SNAPSHOTS_PATH, meta->md5);

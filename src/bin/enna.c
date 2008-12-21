@@ -322,6 +322,9 @@ static void _create_gui()
     enna_module_enable(em);
 #endif
 
+    /* Init Metadatas */
+    enna_metadata_init ();
+    
     /* Load mainmenu items */
     enna_activity_init("music");
     enna_activity_init("video");
