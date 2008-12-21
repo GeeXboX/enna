@@ -295,7 +295,8 @@ _next_song()
     if (!enna_mediaplayer_next())
     {
         metadata = enna_mediaplayer_metadata_get();
-        enna_metadata_grab (metadata, ENNA_GRABBER_CAP_AUDIO);
+        enna_metadata_grab (metadata,
+                            ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);
         enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
     }
 }
@@ -307,7 +308,8 @@ _prev_song()
     if (!enna_mediaplayer_prev())
     {
         metadata = enna_mediaplayer_metadata_get();
-        enna_metadata_grab (metadata, ENNA_GRABBER_CAP_AUDIO);
+        enna_metadata_grab (metadata,
+                            ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);
         enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
     }
 }
@@ -343,7 +345,8 @@ _create_mediaplayer_gui()
     evas_object_show(o);
 
     metadata = enna_mediaplayer_metadata_get();
-    enna_metadata_grab (metadata, ENNA_GRABBER_CAP_AUDIO);
+    enna_metadata_grab (metadata,
+                        ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);
     enna_smart_player_metadata_set(o, metadata);
 
     mod->o_mediaplayer = o;

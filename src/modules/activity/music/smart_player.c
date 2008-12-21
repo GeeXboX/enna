@@ -124,7 +124,7 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     meta = enna_metadata_new (metadata->uri);
     enna_metadata_add_keywords (meta, metadata->music->artist);
     enna_metadata_add_keywords (meta, metadata->music->album);
-    enna_metadata_grab (meta, ENNA_GRABBER_CAP_AUDIO);
+    enna_metadata_grab (meta, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);
 
     ENNA_OBJECT_DEL(sd->o_cover);
     if (meta && meta->cover)
