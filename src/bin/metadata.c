@@ -23,6 +23,7 @@ enna_metadata_new (char *uri)
     m->type = ENNA_METADATA_UNKNOWN;
     m->uri = strdup (uri);
     m->md5 = md5sum (uri);
+    m->parsed = 0;
     
     return m;
 }
@@ -181,6 +182,10 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
 
     if (!meta)
         return;
+
+    /* avoid parsing the same resource twice */
+    if (meta->parsed)
+        return;
     
     for (i = ENNA_GRABBER_PRIORITY_MAX; i < ENNA_GRABBER_PRIORITY_MIN; i++)
     {
@@ -208,4 +213,6 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
                 g->grab (meta, caps);
         } while ((tmp = eina_list_next (tmp)));
     }
+
+    meta->parsed = 1;
 }

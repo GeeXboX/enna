@@ -60,6 +60,7 @@ struct _Enna_Metadata
     char *cover;
     char *snapshot;
     char *backdrop;
+    int parsed;
     Enna_Metadata_Video *video;
     Enna_Metadata_Music *music;
 
