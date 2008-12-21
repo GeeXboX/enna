@@ -2,6 +2,7 @@
 
 #define MODULE_NAME "enna"
 
+#define PATH_BACKDROPS          "backdrops"
 #define PATH_COVERS             "covers"
 #define PATH_SNAPSHOTS          "snapshots"
 
@@ -65,6 +66,13 @@ enna_metadata_init (void)
 {
     char dst[1024];
             
+    /* try to create backdrops directory storage */
+    memset (dst, '\0', sizeof (dst));
+    snprintf (dst, sizeof (dst), "%s/.enna/%s",
+              enna_util_user_home_get (), PATH_BACKDROPS);
+    if (!ecore_file_is_dir (dst))
+        ecore_file_mkdir (dst);
+
     /* try to create covers directory storage */
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
@@ -100,6 +108,25 @@ enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords)
 
     enna_log (ENNA_MSG_EVENT, MODULE_NAME,
               "Metadata keywords set to '%s'", meta->keywords);
+}
+
+void
+enna_metadata_add_category (Enna_Metadata *meta, char *category)
+{
+    char cat[1024];
+    
+    if (!meta || !category)
+        return;
+
+    if (!meta->categories)
+        meta->categories = strdup (category);
+    else
+    {
+        memset (cat, '\0', sizeof (cat));
+        snprintf (cat, sizeof (cat), "%s, %s", meta->categories, category);
+        free (meta->categories);
+        meta->categories = strdup (cat);
+    }
 }
 
 void

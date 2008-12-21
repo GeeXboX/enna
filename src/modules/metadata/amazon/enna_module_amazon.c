@@ -177,8 +177,6 @@ amazon_grab (Enna_Metadata *meta, int caps)
     char *search_type = NULL;
     char *cover;
 
-    return; /* broken as for now */
-    
     if (!meta)
         return;
 
@@ -201,7 +199,7 @@ amazon_grab (Enna_Metadata *meta, int caps)
               "Grabbing info from %s", meta->uri);
     
     /* Format the keywords */
-    escaped_keywords = calloc (1, 2 * sizeof (meta->keywords));
+    escaped_keywords = calloc (1, 2 * strlen (meta->keywords));
     url_escape_string(escaped_keywords, meta->keywords);
             
     cover = amazon_cover_get (search_type, meta->keywords, escaped_keywords);
@@ -230,7 +228,7 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     ENNA_MODULE_METADATA,
-    "metadata_amazon"
+    ENNA_MODULE_NAME
 };
 
 void module_init(Enna_Module *em)
