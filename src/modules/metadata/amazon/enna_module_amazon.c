@@ -6,6 +6,7 @@
 
 #define ENNA_MODULE_NAME "metadata_amazon"
 #define ENNA_GRABBER_NAME "amazon"
+#define ENNA_GRABBER_PRIORITY   3
 
 #define MAX_URL_SIZE        1024
 #define MAX_KEYWORD_SIZE    1024
@@ -215,7 +216,7 @@ amazon_grab (Enna_Metadata *meta, int caps)
 
 static Enna_Metadata_Grabber grabber = {
     ENNA_GRABBER_NAME,
-    3,
+    ENNA_GRABBER_PRIORITY,
     1,
     ENNA_GRABBER_CAP_COVER,
     amazon_grab,
