@@ -128,7 +128,7 @@ void enna_smart_player_snapshot_set(Evas_Object *obj,
     if (!metadata)
         return;
 
-    snap_file = metadata->snapshot;
+    snap_file = metadata->backdrop ? metadata->backdrop : metadata->snapshot;
     if (snap_file)
     {
         Evas_Coord ow,oh;
