@@ -253,7 +253,6 @@ _seek_video(double value)
 static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
-    printf("Root Selected\n");
     mod->state = MENU_VIEW;
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
@@ -267,7 +266,6 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 static void
 _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 {
-    printf("Browse Down detected\n");
     enna_location_remove_nth(mod->o_location,enna_location_count(mod->o_location) - 1);
 }
 

@@ -430,12 +430,6 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
 
     API_ENTRY return;
 
-    if (!sd->accept_ev)
-    {
-	printf("ev not accept\n");
-	return;
-    }
-
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
 	_list_transition_left_end_cb);
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
