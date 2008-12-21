@@ -300,6 +300,7 @@ static void _browse_down(Smart_Data *sd)
 	if (!sd->files)
 	{
 	    evas_object_smart_callback_call (sd->obj, "root", NULL);
+	    return;
 	}
 
 	evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
