@@ -268,6 +268,7 @@ static const struct {
     { "3ivX", "3ivx Delta 4.5" },
     { "rv3040", "RealPlayer 10 RV30/40" },
     { "rv3040win", "RealPlayer 10 RV30/40" },
+    { "ffrv40", "RealPlayer 9 RV40" },
     { "rv40", "RealPlayer 9 RV40" },
     { "rv40win", "RealPlayer 9 RV40" },
     { "rv40mac", "RealPlayer 9 RV40" },
