@@ -14,6 +14,22 @@ typedef enum
     ENNA_MP_EVENT_EOF,
 } enna_mediaplayer_event_t;
 
+typedef enum _PLAY_STATE PLAY_STATE;
+
+enum _PLAY_STATE
+{
+    PLAYING,
+    PAUSE,
+    STOPPED
+};
+
+typedef struct _Enna_Event_Mediaplayer_Seek_Data Enna_Event_Mediaplayer_Seek_Data;
+
+struct _Enna_Event_Mediaplayer_Seek_Data
+{
+    double seek_value;
+};
+
 typedef struct _Enna_Class_MediaplayerBackend Enna_Class_MediaplayerBackend;
 
 struct _Enna_Class_MediaplayerBackend
@@ -40,6 +56,13 @@ struct _Enna_Class_MediaplayerBackend
 /* Mediaplayer event */
 int ENNA_EVENT_MEDIAPLAYER_EOS;
 int ENNA_EVENT_MEDIAPLAYER_METADATA_UPDATE;
+int ENNA_EVENT_MEDIAPLAYER_START;
+int ENNA_EVENT_MEDIAPLAYER_STOP;
+int ENNA_EVENT_MEDIAPLAYER_PAUSE;
+int ENNA_EVENT_MEDIAPLAYER_UNPAUSE;
+int ENNA_EVENT_MEDIAPLAYER_PREV;
+int ENNA_EVENT_MEDIAPLAYER_NEXT;
+int ENNA_EVENT_MEDIAPLAYER_SEEK;
 
 /* Mediaplayer API functions */
 int enna_mediaplayer_init(void);
@@ -64,4 +87,5 @@ int enna_mediaplayer_playlist_count(void);
 Evas_Object *enna_mediaplayer_video_obj_get(void);
 int
         enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class);
+PLAY_STATE enna_mediaplayer_state_get(void);
 #endif

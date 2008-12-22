@@ -40,14 +40,6 @@ typedef struct list_item_s
 static Eina_List *_playlist;
 
 typedef struct _Enna_Mediaplayer Enna_Mediaplayer;
-typedef enum _PLAY_STATE PLAY_STATE;
-
-enum _PLAY_STATE
-{
-    PLAYING,
-    PAUSE,
-    STOPPED
-};
 
 struct _Enna_Mediaplayer
 {
@@ -103,7 +95,13 @@ int enna_mediaplayer_init(void)
     /* Create Ecore Event ID */
     ENNA_EVENT_MEDIAPLAYER_EOS = ecore_event_type_new();
     ENNA_EVENT_MEDIAPLAYER_METADATA_UPDATE = ecore_event_type_new();
-
+    ENNA_EVENT_MEDIAPLAYER_START = ecore_event_type_new();
+ 	ENNA_EVENT_MEDIAPLAYER_STOP = ecore_event_type_new();
+ 	ENNA_EVENT_MEDIAPLAYER_PAUSE = ecore_event_type_new();
+ 	ENNA_EVENT_MEDIAPLAYER_UNPAUSE = ecore_event_type_new();
+ 	ENNA_EVENT_MEDIAPLAYER_PREV = ecore_event_type_new();
+ 	ENNA_EVENT_MEDIAPLAYER_NEXT = ecore_event_type_new();
+ 	ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new();
     return 0;
 }
 void enna_mediaplayer_shutdown()
@@ -136,7 +134,7 @@ int enna_mediaplayer_play(void)
             if (_mediaplayer->class->func.class_play)
                 _mediaplayer->class->func.class_play();
             _mediaplayer->play_state = PLAYING;
-
+            ecore_event_add(ENNA_EVENT_MEDIAPLAYER_START, NULL, NULL, NULL);
         }
             break;
         case PLAYING:
@@ -146,6 +144,7 @@ int enna_mediaplayer_play(void)
             if (_mediaplayer->class->func.class_play)
                 _mediaplayer->class->func.class_play();
             _mediaplayer->play_state = PLAYING;
+            ecore_event_add(ENNA_EVENT_MEDIAPLAYER_UNPAUSE, NULL, NULL, NULL);
             break;
         default:
             break;
@@ -183,6 +182,7 @@ int enna_mediaplayer_stop(void)
         if (_mediaplayer->class->func.class_stop)
             _mediaplayer->class->func.class_stop();
         _mediaplayer->play_state = STOPPED;
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
     }
     return 0;
 }
@@ -194,6 +194,7 @@ int enna_mediaplayer_pause(void)
         if (_mediaplayer->class->func.class_pause)
             _mediaplayer->class->func.class_pause();
         _mediaplayer->play_state = PAUSE;
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_PAUSE, NULL, NULL, NULL);
     }
     return 0;
 }
@@ -216,6 +217,7 @@ int enna_mediaplayer_next(void)
         if (item->uri && _mediaplayer->class->func.class_file_set)
             _mediaplayer->class->func.class_file_set(item->uri, item->label);
         enna_mediaplayer_play();
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_NEXT, NULL, NULL, NULL);
     }
 
     return 0;
@@ -239,6 +241,7 @@ int enna_mediaplayer_prev(void)
         if (item->uri && _mediaplayer->class->func.class_file_set)
             _mediaplayer->class->func.class_file_set(item->uri, item->label);
         enna_mediaplayer_play();
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_PREV, NULL, NULL, NULL);
     }
     return 0;
 }
@@ -270,8 +273,16 @@ int enna_mediaplayer_seek(double percent)
     enna_log(ENNA_MSG_INFO, NULL, "Seeking to: %d%%", (int) (100 * percent));
     if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state
             == PLAYING)
-        if (_mediaplayer->class->func.class_seek)
-            return _mediaplayer->class->func.class_seek(percent);
+    {        
+            Enna_Event_Mediaplayer_Seek_Data *ev;
+            ev = calloc(1, sizeof(Enna_Event_Mediaplayer_Seek_Data));
+            if (!ev)
+                return 0;
+            ev->seek_value=percent;    
+            ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
+            if (_mediaplayer->class->func.class_seek)            
+                return _mediaplayer->class->func.class_seek(percent);
+    }    
     return 0;
 }
 
@@ -302,6 +313,7 @@ void enna_mediaplayer_playlist_clear(void)
             _mediaplayer->class->func.class_stop();
         _mediaplayer->selected = 0;
         _mediaplayer->play_state = STOPPED;
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
     }
 
 }
@@ -360,4 +372,9 @@ static void _event_cb(void *data, enna_mediaplayer_event_t event)
         default:
             break;
     }
+}
+
+PLAY_STATE enna_mediaplayer_state_get(void)
+{
+    return(_mediaplayer->play_state);
 }
