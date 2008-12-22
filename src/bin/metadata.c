@@ -96,10 +96,13 @@ eet_eina_hash_add (Eina_Hash *hash, const char *key, const void *data)
 
 #define EDD_NEW(str) \
   eet_data_descriptor_new (#str, sizeof (str), \
-                           eina_list_next, eina_list_append, \
-                           eina_list_data_get, eina_list_free, \
-                           eina_hash_foreach, eet_eina_hash_add, \
-                           eina_hash_free)
+                           (void *) eina_list_next, \
+                           (void *) eina_list_append, \
+                           (void *) eina_list_data_get, \
+                           (void *) eina_list_free, \
+                           (void *) eina_hash_foreach, \
+                           (void *) eet_eina_hash_add, \
+                           (void *) eina_hash_free)
 
 #define EDD_ADD(str, field, type) \
   EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata##str, \
