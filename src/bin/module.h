@@ -14,6 +14,7 @@ typedef enum {
     ENNA_MODULE_BROWSER,
     ENNA_MODULE_METADATA,
     ENNA_MODULE_VOLUME,
+    ENNA_MODULE_INPUT,
 } _Enna_Module_Type;
 
 struct _Enna_Module
