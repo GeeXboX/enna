@@ -37,8 +37,8 @@ cd evas
             --with-x \
             --enable-gl-x11 \
             --enable-eet \
-            --enable-software-xcb \
-            --enable-xrender-xcb \
+            --disable-software-xcb \
+            --disable-xrender-xcb \
             --enable-software-16-x11 \
             --enable-fb
 make install
@@ -52,8 +52,8 @@ cd ecore
             --enable-ecore-x-xcb \
             --enable-ecore-evas-opengl-x11 \
             --enable-ecore-evas-software-16-x11 \
-            --enable-ecore-evas-software-xcb \
-            --enable-ecore-evas-xrender-xcb \
+            --disable-ecore-evas-software-xcb \
+            --disable-ecore-evas-xrender-xcb \
             --enable-ecore-evas
 make install
 cd ..
