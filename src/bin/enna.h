@@ -12,6 +12,7 @@
 #include <Ecore_X.h>
 #include <Edje.h>
 #include <Ecore_Evas.h>
+#include <Eet.h>
 
 #include <fcntl.h>
 #include <stdlib.h>
