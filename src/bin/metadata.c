@@ -94,6 +94,10 @@ eet_eina_hash_add (Eina_Hash *hash, const char *key, const void *data)
     return hash;
 }
 
+#define EDD_ADD(str, field, type) \
+  EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata##str, \
+                                 #field, field, EET_T_##type)
+
 static Eet_Data_Descriptor *
 enna_metadata_video_desc (void)
 {
@@ -108,23 +112,15 @@ enna_metadata_video_desc (void)
                                    eina_hash_foreach,
                                    eet_eina_hash_add,
                                    eina_hash_free);
-    
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Video,
-                                   "codec", codec, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Video,
-                                   "width", width, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Video,
-                                   "height", height, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Video,
-                                   "aspect", aspect, EET_T_FLOAT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Video,
-                                   "channels", channels, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Video,
-                                   "streams", streams, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Video,
-                                   "framerate", framerate, EET_T_FLOAT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Video,
-                                   "bitrate", bitrate, EET_T_INT);
+
+    EDD_ADD (_Video, codec,     STRING);
+    EDD_ADD (_Video, width,     INT);
+    EDD_ADD (_Video, height,    INT);
+    EDD_ADD (_Video, aspect,    FLOAT);
+    EDD_ADD (_Video, channels,  INT);
+    EDD_ADD (_Video, streams,   INT);
+    EDD_ADD (_Video, framerate, FLOAT);
+    EDD_ADD (_Video, bitrate,   INT);
 
     return edd;
 }
@@ -143,34 +139,21 @@ enna_metadata_music_desc (void)
                                    eina_hash_foreach,
                                    eet_eina_hash_add,
                                    eina_hash_free);
-   
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "artist", artist, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "album", album, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "year", year, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "genre", genre, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "comment", comment, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "discid", discid, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "track", track, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "rating", rating, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "play_count", play_count, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "codec", codec, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "bitrate", bitrate, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "channels", channels, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata_Music,
-                                   "samplerate", samplerate, EET_T_INT);
 
+    EDD_ADD (_Music, artist,     STRING);
+    EDD_ADD (_Music, album,      STRING);
+    EDD_ADD (_Music, year,       STRING);
+    EDD_ADD (_Music, genre,      STRING);
+    EDD_ADD (_Music, comment,    STRING);
+    EDD_ADD (_Music, discid,     STRING);
+    EDD_ADD (_Music, track,      INT);
+    EDD_ADD (_Music, rating,     INT);
+    EDD_ADD (_Music, play_count, INT);
+    EDD_ADD (_Music, codec,      STRING);
+    EDD_ADD (_Music, bitrate,    INT);
+    EDD_ADD (_Music, channels,   INT);
+    EDD_ADD (_Music, samplerate, INT);
+    
     return edd;
 }
 
@@ -188,36 +171,21 @@ enna_metadata_desc (void)
                                    eet_eina_hash_add,
                                    eina_hash_free);
 
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "type", type, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "uri", uri, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "md5", md5, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "keywords", keywords, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "title", title, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "size", size, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "length", length, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "overview", overview, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "runtime", runtime, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "year", year, EET_T_INT);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "categories", categories, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "cover", cover, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "snapshot", snapshot, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "backdrop", backdrop, EET_T_STRING);
-    EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata,
-                                   "parsed", parsed, EET_T_INT);
+    EDD_ADD (, type,        INT);
+    EDD_ADD (, uri,         STRING);
+    EDD_ADD (, md5,         STRING);
+    EDD_ADD (, keywords,    STRING);
+    EDD_ADD (, title,       STRING);
+    EDD_ADD (, size,        INT);
+    EDD_ADD (, length,      INT);
+    EDD_ADD (, overview,    STRING);
+    EDD_ADD (, runtime,     INT);
+    EDD_ADD (, year,        INT);
+    EDD_ADD (, categories,  STRING);
+    EDD_ADD (, cover,       STRING);
+    EDD_ADD (, snapshot,    STRING);
+    EDD_ADD (, backdrop,    STRING);
+    EDD_ADD (, parsed,      INT);
 
     edd_video = enna_metadata_video_desc ();
     EET_DATA_DESCRIPTOR_ADD_SUB (edd, Enna_Metadata,
