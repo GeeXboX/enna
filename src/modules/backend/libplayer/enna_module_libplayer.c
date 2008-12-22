@@ -197,7 +197,7 @@ static int _event_cb(player_event_t e, void *data)
 }
 
 static int
-_x_event_key_down(void *data __UNUSED__, int type __UNUSED__, void *event)
+_x_event_key_down(void *data, int type, void *event)
 {
    Ecore_X_Event_Key_Down *e;
    e = event;
