@@ -275,7 +275,7 @@ static const struct {
     { "rv30", "RealPlayer 8 RV30" },
     { "rv30win", "RealPlayer 8 RV30" },
     { "rv30mac", "RealPlayer 9 RV30" },
-    { "ffrv20", "realPlayer 8 RV20" },
+    { "ffrv20", "RealPlayer 8 RV20" },
     { "rv20", "RealPlayer 8 RV20" },
     { "rv20winrp10", "RealPlayer 10 RV20" },
     { "rv20win", "RealPlayer 8 RV20" },
