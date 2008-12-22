@@ -199,7 +199,7 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
         Enna_Metadata *metadata)
 {
     char buf[4096];
-    int h, mn, sec;
+    int h, mn;
     float len;
 
     API_ENTRY return;
