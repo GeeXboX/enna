@@ -149,7 +149,7 @@ void enna_input_init()
     _input_modules = NULL;
 
 #ifdef BUILD_INPUT_LIRC
-    em = enna_module_open("input_lirc", ENNA_MODULE_INPUT, enna->evas);
+    em = enna_module_open("lirc", ENNA_MODULE_INPUT, enna->evas);
     item = calloc(1, sizeof(Input_Module_Item));
     item->module = em;
     _input_modules = eina_list_append(_input_modules, item);
