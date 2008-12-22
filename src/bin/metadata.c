@@ -94,6 +94,13 @@ eet_eina_hash_add (Eina_Hash *hash, const char *key, const void *data)
     return hash;
 }
 
+#define EDD_NEW(str) \
+  eet_data_descriptor_new (#str, sizeof (str), \
+                           eina_list_next, eina_list_append, \
+                           eina_list_data_get, eina_list_free, \
+                           eina_hash_foreach, eet_eina_hash_add, \
+                           eina_hash_free)
+
 #define EDD_ADD(str, field, type) \
   EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata##str, \
                                  #field, field, EET_T_##type)
@@ -102,17 +109,9 @@ static Eet_Data_Descriptor *
 enna_metadata_video_desc (void)
 {
     Eet_Data_Descriptor *edd;
-    
-    edd = eet_data_descriptor_new ("Enna_Metadata_Video",
-                                   sizeof (Enna_Metadata_Video),
-                                   eina_list_next,
-                                   eina_list_append,
-                                   eina_list_data_get,
-                                   eina_list_free,
-                                   eina_hash_foreach,
-                                   eet_eina_hash_add,
-                                   eina_hash_free);
 
+    edd = EDD_NEW (Enna_Metadata_Video);
+       
     EDD_ADD (_Video, codec,     STRING);
     EDD_ADD (_Video, width,     INT);
     EDD_ADD (_Video, height,    INT);
@@ -130,16 +129,8 @@ enna_metadata_music_desc (void)
 {
     Eet_Data_Descriptor *edd;
 
-    edd = eet_data_descriptor_new ("Enna_Metadata_Music",
-                                   sizeof (Enna_Metadata_Music),
-                                   eina_list_next,
-                                   eina_list_append,
-                                   eina_list_data_get,
-                                   eina_list_free,
-                                   eina_hash_foreach,
-                                   eet_eina_hash_add,
-                                   eina_hash_free);
-
+    edd = EDD_NEW (Enna_Metadata_Music);
+    
     EDD_ADD (_Music, artist,     STRING);
     EDD_ADD (_Music, album,      STRING);
     EDD_ADD (_Music, year,       STRING);
@@ -162,14 +153,7 @@ enna_metadata_desc (void)
 {
     Eet_Data_Descriptor *edd, *edd_video, *edd_music;
 
-    edd = eet_data_descriptor_new ("Enna_Metadata", sizeof (Enna_Metadata),
-                                   eina_list_next,
-                                   eina_list_append,
-                                   eina_list_data_get,
-                                   eina_list_free,
-                                   eina_hash_foreach,
-                                   eet_eina_hash_add,
-                                   eina_hash_free);
+    edd = EDD_NEW (Enna_Metadata);
 
     EDD_ADD (, type,        INT);
     EDD_ADD (, uri,         STRING);
