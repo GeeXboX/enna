@@ -34,6 +34,7 @@ static int em_shutdown(Enna_Module *em);
 static int _eos_cb(void *data, int type, void *event);
 static int _prev_cb(void *data, int type, void *event);
 static int _next_cb(void *data, int type, void *event);
+static int _seek_cb(void *data, int type, void *event);
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
 
@@ -60,6 +61,7 @@ struct _Enna_Module_Music
     Ecore_Event_Handler *eos_event_handler;
     Ecore_Event_Handler *next_event_handler;
     Ecore_Event_Handler *prev_event_handler;
+    Ecore_Event_Handler *seek_event_handler;
 };
 
 static Enna_Module_Music *mod;
@@ -295,13 +297,17 @@ _browse(void *data, void *data2)
 static int
 _update_position_timer(void *data)
 {
-    double pos;
-    double length;
+    if(enna_mediaplayer_state_get()!=PAUSE)
+    {
+        double pos;
+        double length;
 
-    length = enna_mediaplayer_length_get();
-    pos = enna_mediaplayer_position_get();
-    enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
-    return 1;
+        length = enna_mediaplayer_length_get();
+        pos = enna_mediaplayer_position_get();
+        enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
+        enna_log(ENNA_MSG_INFO, NULL, "Position %f %f",pos,length);
+    }
+    return 1;   
 }
 
 static void
@@ -338,6 +344,7 @@ _create_mediaplayer_gui()
         evas_object_del(mod->o_mediaplayer);
         ecore_event_handler_del(mod->next_event_handler);
         ecore_event_handler_del(mod->prev_event_handler);
+        ecore_event_handler_del(mod->seek_event_handler);
     }
 
     mod->eos_event_handler = ecore_event_handler_add(
@@ -346,6 +353,8 @@ _create_mediaplayer_gui()
             ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, NULL);
     mod->prev_event_handler = ecore_event_handler_add(
             ENNA_EVENT_MEDIAPLAYER_PREV, _prev_cb, NULL);
+    mod->seek_event_handler = ecore_event_handler_add(
+            ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, NULL);
 
     o = enna_smart_player_add(mod->em->evas);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
@@ -471,5 +480,18 @@ static int _next_cb(void *data, int type, void *event)
 static int _prev_cb(void *data, int type, void *event)
 {
     METADATA_APPLY;
+}
+
+static int _seek_cb(void *data, int type, void *event)
+{
+    Enna_Event_Mediaplayer_Seek_Data *ev;
+    double pos;
+    double length;
+    double percent;
+    ev=event;
+    percent=ev->seek_value;    
+    length = enna_mediaplayer_length_get();
+    pos=length*percent;
+    enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
 }
 
