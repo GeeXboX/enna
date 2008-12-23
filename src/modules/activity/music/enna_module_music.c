@@ -4,6 +4,12 @@
 #include "smart_player.h"
 
 #define ENNA_MODULE_NAME "music"
+#define METADATA_APPLY \
+    Enna_Metadata *metadata;\
+    metadata = enna_mediaplayer_metadata_get();\
+    enna_metadata_grab (metadata,\
+                        ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);\
+    enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
 
 static void _create_menu();
 static void _create_gui();
@@ -12,7 +18,7 @@ static void _browse(void *data, void *data2);
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
-static int _eos_cb(void *data, int type, void *event);
+
 static void _next_song(void);
 static void _prev_song(void);
 static int _show_mediaplayer_cb(void *data);
@@ -24,6 +30,10 @@ static void _class_hide(int dummy);
 static void _class_event(void *event_info);
 static int em_init(Enna_Module *em);
 static int em_shutdown(Enna_Module *em);
+/*Events from mediaplayer*/
+static int _eos_cb(void *data, int type, void *event);
+static int _prev_cb(void *data, int type, void *event);
+static int _next_cb(void *data, int type, void *event);
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
 
@@ -48,6 +58,8 @@ struct _Enna_Module_Music
     MUSIC_STATE state;
     Ecore_Timer *timer_show_mediaplayer;
     Ecore_Event_Handler *eos_event_handler;
+    Ecore_Event_Handler *next_event_handler;
+    Ecore_Event_Handler *prev_event_handler;
 };
 
 static Enna_Module_Music *mod;
@@ -295,27 +307,13 @@ _update_position_timer(void *data)
 static void
 _next_song()
 {
-    Enna_Metadata *metadata;
-    if (!enna_mediaplayer_next())
-    {
-        metadata = enna_mediaplayer_metadata_get();
-        enna_metadata_grab (metadata,
-                            ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);
-        enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
-    }
+    enna_mediaplayer_next();    
 }
 
 static void
 _prev_song()
 {
-    Enna_Metadata *metadata;
-    if (!enna_mediaplayer_prev())
-    {
-        metadata = enna_mediaplayer_metadata_get();
-        enna_metadata_grab (metadata,
-                            ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);
-        enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
-    }
+    enna_mediaplayer_prev();
 }
 
 static int
@@ -330,7 +328,6 @@ static void
 _create_mediaplayer_gui()
 {
     Evas_Object *o;
-    Enna_Metadata *metadata;
 
     mod->state = MEDIAPLAYER_VIEW;
 
@@ -339,21 +336,25 @@ _create_mediaplayer_gui()
         ENNA_TIMER_DEL(mod->timer);
         ecore_event_handler_del(mod->eos_event_handler);
         evas_object_del(mod->o_mediaplayer);
+        ecore_event_handler_del(mod->next_event_handler);
+        ecore_event_handler_del(mod->prev_event_handler);
     }
 
     mod->eos_event_handler = ecore_event_handler_add(
             ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
+    mod->next_event_handler = ecore_event_handler_add(
+            ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, NULL);
+    mod->prev_event_handler = ecore_event_handler_add(
+            ENNA_EVENT_MEDIAPLAYER_PREV, _prev_cb, NULL);
 
     o = enna_smart_player_add(mod->em->evas);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
     evas_object_show(o);
 
-    metadata = enna_mediaplayer_metadata_get();
-    enna_metadata_grab (metadata,
-                        ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);
-    enna_smart_player_metadata_set(o, metadata);
-
     mod->o_mediaplayer = o;
+
+    METADATA_APPLY;
+
     mod->timer = ecore_timer_add(1, _update_position_timer, NULL);
 
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
@@ -461,3 +462,14 @@ void module_shutdown(Enna_Module *em)
 {
     em_shutdown(em);
 }
+
+static int _next_cb(void *data, int type, void *event)
+{
+    METADATA_APPLY;
+}
+
+static int _prev_cb(void *data, int type, void *event)
+{
+    METADATA_APPLY;
+}
+
