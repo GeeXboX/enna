@@ -15,8 +15,7 @@
 
 #define TMDB_HOSTNAME           "api.themoviedb.org"
 
-/* we do not (yet) have our own, this is XBMC one */
-#define TMDB_API_KEY            "57983e31fb435df4df77afb854740ea9"
+#define TMDB_API_KEY            "5401cd030990fba60e1c23d2832de62e"
 
 #define TMDB_QUERY_SEARCH "http://%s/2.0/Movie.search?title=%s&api_key=%s"
 #define TMDB_QUERY_INFO   "http://%s/2.0/Movie.getInfo?id=%s&api_key=%s"
