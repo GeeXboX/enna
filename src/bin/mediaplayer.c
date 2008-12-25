@@ -96,12 +96,12 @@ int enna_mediaplayer_init(void)
     ENNA_EVENT_MEDIAPLAYER_EOS = ecore_event_type_new();
     ENNA_EVENT_MEDIAPLAYER_METADATA_UPDATE = ecore_event_type_new();
     ENNA_EVENT_MEDIAPLAYER_START = ecore_event_type_new();
- 	ENNA_EVENT_MEDIAPLAYER_STOP = ecore_event_type_new();
- 	ENNA_EVENT_MEDIAPLAYER_PAUSE = ecore_event_type_new();
- 	ENNA_EVENT_MEDIAPLAYER_UNPAUSE = ecore_event_type_new();
- 	ENNA_EVENT_MEDIAPLAYER_PREV = ecore_event_type_new();
- 	ENNA_EVENT_MEDIAPLAYER_NEXT = ecore_event_type_new();
- 	ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_STOP = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_PAUSE = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_UNPAUSE = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_PREV = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_NEXT = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new();
     return 0;
 }
 void enna_mediaplayer_shutdown()
