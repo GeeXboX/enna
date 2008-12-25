@@ -42,6 +42,9 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 #verbose,info,warning,error,critical,none
 #verbosity=
 
+# Metadata module (video)
+blacklist_keywords=divx,dvdrip,dvdscr,hdtv,lol,screencam,screener,vtv,xvid
+
 [localfiles]
 path_music=file:///path/to/Music,Music,icon_hd
 path_music=file:///path/to/server/Medias/Music,Server,icon_network

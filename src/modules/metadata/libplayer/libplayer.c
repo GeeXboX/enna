@@ -1,5 +1,6 @@
 /* Interface */
 
+#define _GNU_SOURCE
 #include "enna.h"
 #include "codecs.h"
 #include <player.h>
@@ -25,7 +26,7 @@ typedef struct _Metadata_Module_libplayer
     Evas *evas;
     Enna_Module *em;
     player_t *player;
-    
+    Eina_List *bl_keywords;
 
 } Metadata_Module_libplayer;
 
@@ -98,6 +99,70 @@ set_mrl (const char *uri)
 }
 
 static char *
+clean_whitespace (char *str)
+{
+    char *clean, *clean_it;
+    char *it;
+
+    clean = malloc (strlen (str) + 1);
+    if (!clean)
+        return str;
+    clean_it = clean;
+
+    for (it = str; *it; it++)
+    {
+        if (!isspace (*it))
+        {
+            *clean_it = *it;
+            clean_it++;
+        }
+        else if (!isspace (*(it + 1)) && *(it + 1) != '\0')
+        {
+            *clean_it = ' ';
+            clean_it++;
+        }
+    }
+
+    /* remove spaces after */
+    while (clean_it > str && isspace (*(clean_it - 1)))
+      clean_it--;
+    *clean_it = '\0';
+
+    /* remove spaces before */
+    clean_it = clean;
+    while (isspace (*clean_it))
+      clean_it++;
+
+    strcpy (str, clean_it);
+    free (clean);
+    return str;
+}
+
+static char *
+proceed_blacklist (char *name)
+{
+    Evas_List *l;
+
+    if (!mod->bl_keywords)
+        return name;
+
+    for (l = mod->bl_keywords; l; l = l->next)
+    {
+        const char *it = l->data;
+        char *p = strcasestr (name, it);
+        size_t size;
+        if (!p)
+            continue;
+
+        size = strlen (it);
+        if (!isgraph (*(p + size)) && (p == name || !isgraph (*(p - 1))))
+            memset (p, ' ', size);
+    }
+
+    return name;
+}
+
+static char *
 get_movie_name (const char *filename)
 {
     char *it, *movie;
@@ -107,6 +172,18 @@ get_movie_name (const char *filename)
     it = strrchr(file, '.');
     if (it) /* remove suffix? */
         *it = '\0';
+
+    /* decrapify the movie's name */
+    for (it = file; *it; it++)
+        if (!isspace (*it)
+            && (*it < '0' || *it > '9')
+            && (*it < 'A' || *it > 'Z')
+            && (*it < 'a' || *it > 'z')
+            && (unsigned) *it <= 0x7F) /* limit to ASCII 7-bit */
+            *it = ' ';
+
+    proceed_blacklist (file);
+    clean_whitespace (file);
 
     movie = strdup (file);
     free (path);
@@ -209,6 +286,7 @@ libplayer_grab (Enna_Metadata *meta, int caps)
     if (caps & ENNA_GRABBER_CAP_VIDEO)
     {
         char *name = get_movie_name (meta->uri);
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "movie's name: \"%s\"", name);
         enna_metadata_add_keywords (meta, name);
         free (name);
             
@@ -308,6 +386,7 @@ void module_init(Enna_Module *em)
     player_type_t type = PLAYER_TYPE_MPLAYER;
     player_verbosity_level_t verbosity = PLAYER_MSG_WARNING;
     char *value = NULL;
+    Eina_List *bl_keywords = NULL;
     
     if (!em)
         return;
@@ -363,6 +442,8 @@ void module_init(Enna_Module *em)
                     enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
                              "   - unknown verbosity, 'warning' used instead");
             }
+            enna_config_value_store (&bl_keywords, "blacklist_keywords",
+                                     ENNA_CONFIG_STRING_LIST, pair);
         }
     }
     
@@ -370,6 +451,7 @@ void module_init(Enna_Module *em)
 
     mod->em = em;
     mod->evas = em->evas;
+    mod->bl_keywords = bl_keywords;
 
     mod->player = player_init (type, PLAYER_AO_NULL, PLAYER_VO_NULL,
                                verbosity, 0, NULL);
@@ -388,5 +470,7 @@ void module_shutdown(Enna_Module *em)
     //enna_metadata_remove_grabber (ENNA_GRABBER_NAME);
     player_playback_stop (mod->player);
     player_uninit (mod->player);
+    if (mod->bl_keywords)
+        eina_list_free (mod->bl_keywords);
     free(mod);
 }

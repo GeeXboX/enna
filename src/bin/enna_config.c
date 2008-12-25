@@ -84,6 +84,9 @@
     "#verbose,info,warning,error,critical,none\n"			\
     "#verbosity=\n"							\
     "\n"								\
+    "# Metadata module (video)\n"					\
+    "blacklist_keywords=divx,dvdrip,dvdscr,hdtv,lol,screencam,screener,vtv,xvid\n" \
+    "\n"								\
     "[localfiles]\n"							\
     "path_music=file:///path/to/Music,Music,icon_hd\n"			\
     "path_music=file:///path/to/server/Medias/Music,Server,icon_network\n" \
