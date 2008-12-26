@@ -143,9 +143,6 @@ proceed_blacklist (char *name)
 {
     Evas_List *l;
 
-    if (!mod->bl_keywords)
-        return name;
-
     for (l = mod->bl_keywords; l; l = l->next)
     {
         const char *it = l->data;
