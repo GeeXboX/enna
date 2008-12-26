@@ -288,6 +288,10 @@ libplayer_grab (Enna_Metadata *meta, int caps)
         char *name = get_movie_name (meta->uri);
         enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "movie's name: \"%s\"", name);
         enna_metadata_add_keywords (meta, name);
+
+        if (!meta->title)
+            meta->title = name;
+        else
         free (name);
             
         if (!meta->video->codec)
