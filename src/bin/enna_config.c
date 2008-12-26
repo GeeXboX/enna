@@ -60,7 +60,7 @@
     "backend=libplayer\n"						\
     "\n"								\
     "music_ext=3gp,aac,ape,apl,flac,m4a,mac,mka,mp2,mp3,mp4,mpc,ogg,ra,wav,wma\n" \
-    "video_ext=asf,avi,divx,dvr-ms,evo,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m\n" \
+    "video_ext=asf,avi,divx,dvr-ms,evo,flc,fli,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m\n" \
     "photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm\n"				\
     "\n"								\
     "[emotion]\n"							\
