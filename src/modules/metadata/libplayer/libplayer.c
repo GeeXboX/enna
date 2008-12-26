@@ -292,7 +292,7 @@ libplayer_grab (Enna_Metadata *meta, int caps)
         if (!meta->title)
             meta->title = name;
         else
-        free (name);
+            free (name);
             
         if (!meta->video->codec)
         {
