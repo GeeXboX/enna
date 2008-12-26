@@ -210,7 +210,7 @@ int enna_location_count(Evas_Object *obj)
 static void _enna_location_smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord mw, w = 0;
-    Evas_List *l;
+    Eina_List *l;
 
 
     for (l = sd->items; l; l = l->next)

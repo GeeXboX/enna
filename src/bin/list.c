@@ -559,7 +559,7 @@ static void _smart_clip_unset(Evas_Object *obj)
 static void _smart_reconfigure(Smart_Data *sd)
 {
     Evas_Coord mh, mw,  h = 0;
-    Evas_List *l;
+    Eina_List *l;
 
     evas_object_move(sd->o_edje, sd->x, sd->y);
     evas_object_resize(sd->o_edje, sd->w, sd->h);

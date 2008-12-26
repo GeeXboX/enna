@@ -141,7 +141,7 @@ clean_whitespace (char *str)
 static char *
 proceed_blacklist (char *name)
 {
-    Evas_List *l;
+    Eina_List *l;
 
     for (l = mod->bl_keywords; l; l = l->next)
     {

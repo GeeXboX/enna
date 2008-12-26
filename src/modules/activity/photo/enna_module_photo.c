@@ -8,7 +8,7 @@
 #define ENNA_MODULE_NAME "photo"
 
 static void _create_gui();
-static void _list_transition_core(Evas_List *files, unsigned char direction);
+static void _list_transition_core(Eina_List *files, unsigned char direction);
 static void _browse(void *data, void *data2);
 static void _browse_down();
 static void _activate();
