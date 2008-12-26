@@ -198,13 +198,13 @@ libplayer_grab (Enna_Metadata *meta, int caps)
     int frameduration = 0;
     char *codec_id;
     mrl_type_t type;
-    
+
     if (!meta || !meta->uri)
         return;
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Grabbing info from %s", meta->uri);
-    
+
     set_mrl (meta->uri);
 
     type = mrl_get_type (mod->player, NULL);
@@ -212,7 +212,7 @@ libplayer_grab (Enna_Metadata *meta, int caps)
         meta->type = ENNA_METADATA_AUDIO;
     else if (type == MRL_TYPE_VIDEO)
         meta->type = ENNA_METADATA_VIDEO;
-    
+
     if (!meta->size)
         meta->size = mrl_get_size (mod->player, NULL);
 
@@ -231,14 +231,14 @@ libplayer_grab (Enna_Metadata *meta, int caps)
                                                     MRL_METADATA_ARTIST);
             enna_metadata_add_keywords (meta, meta->music->artist);
         }
-        
+
         if (!meta->music->album)
         {
             meta->music->album = mrl_get_metadata (mod->player, NULL,
                                                    MRL_METADATA_ALBUM);
             enna_metadata_add_keywords (meta, meta->music->album);
         }
-        
+
         if (!meta->music->year)
             meta->music->year = mrl_get_metadata (mod->player, NULL,
                                                   MRL_METADATA_YEAR);
@@ -293,7 +293,7 @@ libplayer_grab (Enna_Metadata *meta, int caps)
             meta->title = name;
         else
             free (name);
-            
+
         if (!meta->video->codec)
         {
             codec_id = mrl_get_video_codec (mod->player, NULL);
@@ -343,11 +343,11 @@ libplayer_grab (Enna_Metadata *meta, int caps)
         if (enna->use_snapshots && !meta->snapshot)
         {
             char dst[1024];
-            
+
             memset (dst, '\0', sizeof (dst));
             snprintf (dst, sizeof (dst), "%s/.enna/%s/%s.png",
                       enna_util_user_home_get(), SNAPSHOTS_PATH, meta->md5);
-            
+
             if (!ecore_file_exists (dst))
             {
                 double length;
@@ -391,7 +391,7 @@ void module_init(Enna_Module *em)
     player_verbosity_level_t verbosity = PLAYER_MSG_WARNING;
     char *value = NULL;
     Eina_List *bl_keywords = NULL;
-    
+
     if (!em)
         return;
 
@@ -450,7 +450,7 @@ void module_init(Enna_Module *em)
                                      ENNA_CONFIG_STRING_LIST, pair);
         }
     }
-    
+
     mod = calloc (1, sizeof (Metadata_Module_libplayer));
 
     mod->em = em;
