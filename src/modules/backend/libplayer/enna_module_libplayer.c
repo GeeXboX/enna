@@ -151,7 +151,7 @@ static double _class_position_get()
 {
     double time_pos = 0.0;
 
-        time_pos = (double) player_get_time_pos(mod->player) / 1000.0;
+    time_pos = (double) player_get_time_pos(mod->player) / 1000.0;
     return time_pos < 0.0 ? 0.0 : time_pos;
 }
 
