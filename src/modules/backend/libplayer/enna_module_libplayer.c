@@ -151,11 +151,6 @@ static double _class_position_get()
 {
     double time_pos = 0.0;
 
-    /*
-     * NOTE: it needs a fix in libplayer because get_time_pos changes the state
-     *       of MPlayer and the pause is lost
-     */
-    if (player_playback_get_state(mod->player) == PLAYER_PB_STATE_PLAY)
         time_pos = (double) player_get_time_pos(mod->player) / 1000.0;
     return time_pos < 0.0 ? 0.0 : time_pos;
 }
