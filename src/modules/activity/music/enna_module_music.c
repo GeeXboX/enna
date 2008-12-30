@@ -307,13 +307,13 @@ _update_position_timer(void *data)
         enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
         enna_log(ENNA_MSG_INFO, NULL, "Position %f %f",pos,length);
     }
-    return 1;   
+    return 1;
 }
 
 static void
 _next_song()
 {
-    enna_mediaplayer_next();    
+    enna_mediaplayer_next();
 }
 
 static void
@@ -475,11 +475,13 @@ void module_shutdown(Enna_Module *em)
 static int _next_cb(void *data, int type, void *event)
 {
     METADATA_APPLY;
+    return 1;
 }
 
 static int _prev_cb(void *data, int type, void *event)
 {
     METADATA_APPLY;
+    return 1;
 }
 
 static int _seek_cb(void *data, int type, void *event)
@@ -489,9 +491,10 @@ static int _seek_cb(void *data, int type, void *event)
     double length;
     double percent;
     ev=event;
-    percent=ev->seek_value;    
+    percent=ev->seek_value;
     length = enna_mediaplayer_length_get();
     pos=length*percent;
     enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
+    return 1;
 }
 
