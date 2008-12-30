@@ -76,3 +76,12 @@ STOCK_ICON("dev_nfs.png",           "icon/nfs",        128)
 STOCK_ICON("dev_photo.png",         "icon/photo",      128)
 STOCK_ICON("dev_samba.png",         "icon/samba",      128)
 STOCK_ICON("dev_usb_stick.png",     "icon/usbstick",   128)
+
+/*Mediacontrol*/
+STOCK_ICON("mp_play.png",     "icon/mp_play",   128)
+STOCK_ICON("mp_pause.png",     "icon/mp_pause",   128)
+STOCK_ICON("mp_next.png",     "icon/mp_next",   128)
+STOCK_ICON("mp_prev.png",     "icon/mp_prev",   128)
+STOCK_ICON("mp_rewind.png",     "icon/mp_rewind",   128)
+STOCK_ICON("mp_forward.png",     "icon/mp_forward",   128)
+STOCK_ICON("mp_stop.png",     "icon/mp_stop",   128)

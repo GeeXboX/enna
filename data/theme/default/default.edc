@@ -38,6 +38,7 @@ collections
 #include "video_info.edc"
 #include "slideshow.edc"
 #include "picture.edc"
+#include "mediacontrol.edc"
 
    group {
       name: "enna";

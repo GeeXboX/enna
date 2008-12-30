@@ -37,7 +37,8 @@ url_utils.c\
 md5.c\
 logs.c\
 parser_cdda.c\
-slideshow.c
+slideshow.c\
+mediacontrol.c
 
 enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@ @LIBCDDB_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -72,7 +73,8 @@ url_utils.h\
 md5.h\
 logs.h\
 parser_cdda.h\
-slideshow.h
+slideshow.h\
+mediacontrol.h
 
 
 

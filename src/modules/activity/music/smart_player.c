@@ -8,8 +8,7 @@
  * modification, are permitted provided that the following conditions
  * are met:
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer. 
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
  * 3. Neither the name ``Nicolas Aguirre'' nor the name of any other
@@ -32,6 +31,7 @@
 /* derived from e_icon */
 
 #include "smart_player.h"
+#include "mediacontrol.h"
 
 #define SMART_NAME "smart_mediaplayer"
 
@@ -42,6 +42,7 @@ struct _Smart_Data
     Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
     Evas_Object *o_cover;
+    Evas_Object *o_mediacontrol;
 };
 
 /* local subsystem functions */
@@ -201,6 +202,10 @@ static void _smart_add(Evas_Object * obj)
     sd->y = 0;
     sd->w = 0;
     sd->h = 0;
+    sd->o_mediacontrol=enna_mediacontrol_add(evas_object_evas_get(sd->o_edje));
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.mediacontrol", sd->o_mediacontrol);
+    
+    evas_object_smart_member_add(sd->o_mediacontrol, obj); 
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
     edje_object_signal_callback_add(sd->o_edje, "drag", "enna.dragable.pos",
@@ -214,6 +219,7 @@ static void _smart_del(Evas_Object * obj)
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
+    ENNA_OBJECT_DEL(sd->o_mediacontrol);
     ENNA_OBJECT_DEL(sd->o_cover);
     ENNA_OBJECT_DEL(sd->o_edje);
     free(sd);
