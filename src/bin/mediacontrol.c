@@ -113,17 +113,13 @@ static int _stop_cb(void *data, int type, void *event)
 
 static int _prev_cb(void *data, int type, void *event)
 {
-    Enna_Event_Mediaplayer_Seek_Data *ev;
-    ev=event;
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event PREV %d%%",(int) (100 * ev->seek_value));
+    enna_log(ENNA_MSG_INFO, NULL, "Media control Event PREV");
     return 1;
 }
 
 static int _next_cb(void *data, int type, void *event)
 {
-    Enna_Event_Mediaplayer_Seek_Data *ev;
-    ev=event;
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event NEXT %d%%",(int) (100 * ev->seek_value));
+    enna_log(ENNA_MSG_INFO, NULL, "Media control Event NEXT");
     return 1;
 }
 
