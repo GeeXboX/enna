@@ -55,7 +55,7 @@ struct _Smart_Data
     Ecore_Event_Handler *pause_event_handler;
     Ecore_Event_Handler *unpause_event_handler;
     Ecore_Event_Handler *seek_event_handler;
-    float seek_step; /*percent value*/   
+    float seek_step; /*percent value*/
 };
 
 /* local subsystem functions */
@@ -168,7 +168,7 @@ static void _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_
     double pos;
     double length;
     length = enna_mediaplayer_length_get();
-    pos = enna_mediaplayer_position_get();    
+    pos = enna_mediaplayer_position_get();
     enna_mediaplayer_seek((pos/length)-(sd->seek_step/100));
 }
 
@@ -192,7 +192,7 @@ static void _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_in
 {
     enna_mediaplayer_stop();
 }
- 
+
 static void show_play_button(Smart_Data * sd)
 {
     edje_object_signal_emit(sd->o_edje, "play,show", "enna");
@@ -261,48 +261,48 @@ static void _smart_add(Evas_Object * obj)
     sd->o_edje = edje_object_add(evas);
     edje_object_file_set(enna, enna_config_theme_get(), "enna");
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "mediacontrol");
-    evas_object_show(sd->o_edje);    
-       
+    evas_object_show(sd->o_edje);
+
     o= enna_button_add(evas);
     enna_button_icon_set(o, "icon/mp_play");
     edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.play",o);
     evas_object_smart_callback_add(o, "clicked", _button_clicked_play_cb, sd);
-    sd->o_play=o;       
+    sd->o_play=o;
 
-    o = enna_button_add(evas);   
+    o = enna_button_add(evas);
     enna_button_icon_set(o, "icon/mp_pause");
     edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.pause",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_pause_cb, sd);   
+    evas_object_smart_callback_add(o, "clicked", _button_clicked_pause_cb, sd);
     sd->o_pause=o;
-   
-    o = enna_button_add(evas);   
+
+    o = enna_button_add(evas);
     enna_button_icon_set(o, "icon/mp_prev");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.prev",o);   
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_prev_cb, sd); 
+    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.prev",o);
+    evas_object_smart_callback_add(o, "clicked", _button_clicked_prev_cb, sd);
     sd->o_prev=o;
-   
-    o = enna_button_add(evas); 
+
+    o = enna_button_add(evas);
     enna_button_icon_set(o, "icon/mp_rewind");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.rewind",o); 
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_rewind_cb, sd);   
+    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.rewind",o);
+    evas_object_smart_callback_add(o, "clicked", _button_clicked_rewind_cb, sd);
     sd->o_rewind=o;
-   
-    o = enna_button_add(evas); 
+
+    o = enna_button_add(evas);
     enna_button_icon_set(o, "icon/mp_forward");
     edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.forward",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_forward_cb, sd); 
+    evas_object_smart_callback_add(o, "clicked", _button_clicked_forward_cb, sd);
     sd->o_forward=o;
-   
-    o = enna_button_add(evas); 
+
+    o = enna_button_add(evas);
     enna_button_icon_set(o, "icon/mp_next");
     edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.next",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_next_cb, sd); 
+    evas_object_smart_callback_add(o, "clicked", _button_clicked_next_cb, sd);
     sd->o_next=o;
-   
-    o = enna_button_add(evas); 
+
+    o = enna_button_add(evas);
     enna_button_icon_set(o, "icon/mp_stop");
     edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.stop",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_stop_cb, sd); 
+    evas_object_smart_callback_add(o, "clicked", _button_clicked_stop_cb, sd);
     sd->o_stop=o;
 
     sd->start_event_handler = ecore_event_handler_add(
@@ -312,20 +312,20 @@ static void _smart_add(Evas_Object * obj)
     sd->prev_event_handler = ecore_event_handler_add(
              ENNA_EVENT_MEDIAPLAYER_PREV, _prev_cb, sd);
     sd->next_event_handler = ecore_event_handler_add(
-            ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, sd);   
+            ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, sd);
     sd->pause_event_handler = ecore_event_handler_add(
             ENNA_EVENT_MEDIAPLAYER_PAUSE, _pause_cb, sd);
     sd->unpause_event_handler = ecore_event_handler_add(
             ENNA_EVENT_MEDIAPLAYER_UNPAUSE, _unpause_cb, sd);
     sd->seek_event_handler = ecore_event_handler_add(
             ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, sd);
-    if (enna_mediaplayer_state_get==PLAYING)
+    if (enna_mediaplayer_state_get() == PLAYING)
         show_pause_button(sd);
     else
         show_play_button(sd);
- 
+
     evas_object_smart_member_add(sd->o_edje, obj);
-    evas_object_smart_data_set(obj, sd);    
+    evas_object_smart_data_set(obj, sd);
 }
 
 static void _smart_del(Evas_Object * obj)
@@ -335,7 +335,7 @@ static void _smart_del(Evas_Object * obj)
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
-        
+
     ecore_event_handler_del(sd->start_event_handler);
     ecore_event_handler_del(sd->stop_event_handler);
     ecore_event_handler_del(sd->next_event_handler);
@@ -400,7 +400,7 @@ static void _smart_hide(Evas_Object * obj)
     if (!sd)
         return;
     evas_object_hide(sd->o_edje);
-  
+
 }
 
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
