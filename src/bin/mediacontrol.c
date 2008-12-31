@@ -99,40 +99,40 @@ enna_mediacontrol_add(Evas * evas)
 static int _start_cb(void *data, int type, void *event)
 {
     show_pause_button(data);
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event PLAY ");
+    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PLAY ");
     return 1;
 }
 
 static int _stop_cb(void *data, int type, void *event)
 {
     show_play_button(data);
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event STOP ");
+    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event STOP ");
     return 1;
 }
 
 static int _prev_cb(void *data, int type, void *event)
 {
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event PREV");
+    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PREV");
     return 1;
 }
 
 static int _next_cb(void *data, int type, void *event)
 {
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event NEXT");
+    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event NEXT");
     return 1;
 }
 
 static int _unpause_cb(void *data, int type, void *event)
 {
     show_pause_button(data);
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event UN_PAUSE");
+    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event UN_PAUSE");
     return 1;
 }
 
 static int _pause_cb(void *data, int type, void *event)
 {
     show_play_button(data);
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event PAUSE ");
+    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PAUSE ");
     return 1;
 }
 
@@ -140,7 +140,7 @@ static int _seek_cb(void *data, int type, void *event)
 {
     Enna_Event_Mediaplayer_Seek_Data *ev;
     ev=event;
-    enna_log(ENNA_MSG_INFO, NULL, "Media control Event SEEK %d%%",(int) (100 * ev->seek_value));
+    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event SEEK %d%%",(int) (100 * ev->seek_value));
     return 1;
 }
 
@@ -244,7 +244,6 @@ static void _smart_init(void)
 static void _smart_add(Evas_Object * obj)
 {
     Evas_Object *o;
-    Evas_Object *enna;
     Smart_Data *sd;
     Evas *evas;
     sd = calloc(1, sizeof(Smart_Data));
@@ -258,7 +257,6 @@ static void _smart_add(Evas_Object * obj)
     evas=evas_object_evas_get(obj);
 
     sd->o_edje = edje_object_add(evas);
-    edje_object_file_set(enna, enna_config_theme_get(), "enna");
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "mediacontrol");
     evas_object_show(sd->o_edje);
 
