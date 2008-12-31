@@ -59,7 +59,6 @@ struct _Smart_Data
 };
 
 /* local subsystem functions */
-static void _button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 static void _smart_reconfigure(Smart_Data * sd);
 static void _smart_init(void);
 static void _smart_add(Evas_Object * obj);
