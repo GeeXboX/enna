@@ -305,7 +305,7 @@ _update_position_timer(void *data)
         length = enna_mediaplayer_length_get();
         pos = enna_mediaplayer_position_get();
         enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
-        enna_log(ENNA_MSG_INFO, NULL, "Position %f %f",pos,length);
+        enna_log(ENNA_MSG_EVENT, NULL, "Position %f %f",pos,length);
     }
     return 1;
 }
