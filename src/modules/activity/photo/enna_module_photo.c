@@ -463,17 +463,10 @@ static void _class_event(void *event_info)
 	    _photo_info_fs();
 	    break;
 	case ENNA_KEY_RIGHT:
-	    enna_wall_right_select(mod->o_wall);
-	    break;
 	case ENNA_KEY_LEFT:
-	    enna_wall_left_select(mod->o_wall);
-	    break;
 	case ENNA_KEY_UP:
-	    enna_wall_up_select(mod->o_wall);
-	    break;
 	case ENNA_KEY_DOWN:
-	    enna_wall_down_select(mod->o_wall);
-	    break;
+	    enna_wall_event_feed(mod->o_wall, ev);
 	default:
 	    break;
 
