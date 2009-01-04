@@ -12,7 +12,7 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules/$(MODULE) \
 -I$(top_srcdir)/src/bin \
 -I$(top_srcdir)/src/modules \
-@ENNA_CFLAGS@
+@ENNA_CFLAGS@ @LIBEXIF_CFLAGS@
 
 if BUILD_ACTIVITY_PHOTO
 
@@ -23,7 +23,7 @@ pkg_LTLIBRARIES = activity_photo.la
 activity_photo_la_SOURCES= \
 enna_module_photo.c
 
-activity_photo_la_LIBADD = @ENNA_LIBS@
+activity_photo_la_LIBADD = @ENNA_LIBS@ @LIBEXIF_LIBS@
 activity_photo_la_LDFLAGS = -module -avoid-version
 activity_photo_la_DEPENDENCIES = $(top_builddir)/config.h
 
