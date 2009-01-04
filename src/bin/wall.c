@@ -35,12 +35,6 @@
 
 #define SMART_NAME "enna_wall"
 
-#define KEY_NONE 0
-#define KEY_LEFT 1
-#define KEY_RIGHT 2
-#define KEY_UP 3
-#define KEY_DOWN 4
-
 typedef struct _Smart_Data Smart_Data;
 typedef struct _Picture_Item Picture_Item;
 
