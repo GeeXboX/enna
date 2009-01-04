@@ -1,3 +1,7 @@
+images {
+   image: "location_panel.png" COMP;
+   image: "location_panel_shadow.png" COMP;
+}
  group {
     name: "module/music_video";
     parts {
@@ -73,7 +77,7 @@
              state: "show" 0.0;
              color: 255 255 255 255;
              visible: 1;
-             rel1 {relative: 0.0 1.0;offset: 0 -65;}
+             rel1 {relative: 0.0 1.0;offset: 0 -64;}
              rel2 {relative: 1.0 1.0;}
           }
        }
@@ -81,16 +85,20 @@
        part {
           name: "location.bg";
           clip_to: "clip.location";
-          type: RECT;
+
           description {
              state: "default" 0.0;
-             color: 21 21 21 255;
+             color: 255 255 255 255;
              rel1 {relative: 0.0 0.0;to: "clip.location";}
              rel2 {relative: 1.0 1.0;to: "clip.location";}
              image{
+                normal: "location_panel.png";
+                border: 16 16 16 16;
              }
+
           }
        }
+
        part {
           name: "enna.swallow.location";
           type: SWALLOW;
@@ -103,7 +111,21 @@
              rel2 {relative: 1.0 1.0;to: "clip.location";}
           }
        }
+       part {
+          name: "location.shadow";
+          clip_to: "clip.location";
 
+          description {
+             state: "default" 0.0;
+             color: 255 255 255 255;
+             rel1 {relative: 0.0 0.0;to: "clip.location";}
+             rel2 {relative: 1.0 1.0;to: "clip.location";}
+             image{
+                normal: "location_panel_shadow.png";
+             }
+
+          }
+       }
        part {
           name: "enna.swallow.mediaplayer";
           type: SWALLOW;
