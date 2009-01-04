@@ -323,6 +323,7 @@ static void _browse(void *data, void *data2)
     Enna_Class_Vfs *vfs = data;
 
     mod->o_browser = enna_browser_add(mod->em->evas);
+    enna_browser_show_file_set(mod->o_browser, 0);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);

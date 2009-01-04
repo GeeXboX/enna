@@ -13,5 +13,6 @@ struct _Browser_Selected_File_Data
 
 Evas_Object    *enna_browser_add(Evas * evas);
 void            enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs);
+void            enna_browser_show_file_set(Evas_Object *obj, unsigned char show);
 void            enna_browser_event_feed(Evas_Object *obj, void *event_info);
 #endif

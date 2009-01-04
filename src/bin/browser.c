@@ -55,6 +55,7 @@ struct _Smart_Data
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
     unsigned char accept_ev : 1;
+    unsigned char show_file : 1;
     Evas *evas;
 };
 
@@ -85,6 +86,15 @@ enna_browser_add(Evas * evas)
 {
     _smart_init();
     return evas_object_smart_add(evas, _smart);
+}
+
+void enna_browser_show_file_set(Evas_Object *obj, unsigned char show)
+{
+
+    API_ENTRY return;
+
+    sd->show_file = show;
+
 }
 
 /* local subsystem globals */
@@ -146,6 +156,7 @@ static void _smart_add(Evas_Object * obj)
     sd->w = 0;
     sd->h = 0;
     sd->accept_ev = 0;
+    sd->show_file = 1;
     evas_object_smart_member_add(sd->o_edje, obj);
     sd->obj = obj;
     evas_object_smart_data_set(obj, sd);
@@ -266,7 +277,7 @@ static void _browse(void *data, void *data2)
 
 	    evas_object_smart_callback_call (sd->obj, "selected", ev);
         }
-        else
+        else if (sd->show_file)
         {
             /* File selected is a regular file */
 	    Enna_Vfs_File *prev_vfs;
@@ -349,6 +360,9 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 
             f = l->data;
 
+	    if (!f->is_directory && !sd->show_file)
+		continue;
+
             if (f->icon_file && f->icon_file[0] == '/')
             {
                 icon = enna_image_add(sd->evas);
@@ -364,7 +378,6 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             enna_listitem_create_simple(item, icon, f->label);
 	    //sd->file = f;
             enna_list_append(sd->o_list, item, _browse, NULL, sd, f);
-
         }
 
 
