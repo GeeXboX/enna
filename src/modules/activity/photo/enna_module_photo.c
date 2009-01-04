@@ -36,9 +36,7 @@ typedef struct _Enna_Module_Photo
     Evas_Object *o_preview;
     Evas_Object *o_slideshow;
     PHOTO_STATE state;
-    Enna_Class_Vfs *vfs;
     Enna_Module *em;
-    char *prev_selected;
 #ifdef BUILD_LIBEXIF
     struct {
 	Evas_Object *o_scroll;
@@ -46,9 +44,7 @@ typedef struct _Enna_Module_Photo
 	char *str;
     }exif;
 #endif
-    unsigned char is_root : 1;
-    unsigned char list_selected : 1;
-    unsigned char no_dir : 1;
+
 } Enna_Module_Photo;
 
 static Enna_Module_Photo *mod;
@@ -557,11 +553,5 @@ void module_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_wall);
     ENNA_OBJECT_DEL(mod->o_menu);
     ENNA_OBJECT_DEL(mod->o_browser);
-    if (mod->vfs && mod->vfs->func.class_shutdown)
-        mod->vfs->func.class_shutdown(0, mod->vfs->cookie);
-
-    if (mod->prev_selected)
-        free(mod->prev_selected);
-
     free(mod);
 }
