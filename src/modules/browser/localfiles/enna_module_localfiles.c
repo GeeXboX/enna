@@ -110,12 +110,7 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
             else if (enna_util_uri_has_extension(dir, caps))
             {
                 Enna_Vfs_File *f;
-
-                if (caps & ENNA_CAPS_PHOTO)
-                    f = enna_vfs_create_file(dir, filename, NULL, dir + 7);
-                else
-                    f = enna_vfs_create_file(dir, filename, icon, NULL);
-
+		f = enna_vfs_create_file(dir, filename, icon, NULL);
                 files_list = eina_list_append(files_list, f);
             }
         }
