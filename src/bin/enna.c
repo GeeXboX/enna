@@ -40,6 +40,8 @@ Enna *enna;
 
 static char *conffile = NULL;
 static char *theme_name = NULL;
+static unsigned int app_w = 1280;
+static unsigned int app_h = 720;
 static int run_fullscreen = 0;
 static int run_gl = 0;
 
@@ -233,16 +235,16 @@ static int _enna_init(int run_gl)
 static void _create_gui()
 {
     Evas_Object *o;
-    Evas_Coord w, h;
+//    Evas_Coord w, h;
     Enna_Module *em;
 
     o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "enna");
-    edje_object_size_min_get(o, &w, &h);
-    evas_object_resize(o, w, h);
+    printf("%dx%d\n", app_w, app_h);
+    evas_object_resize(o, app_w, app_h);
     evas_object_move(o, 0, 0);
     evas_object_show(o);
-    ecore_evas_resize(enna->ee, w, h);
+    ecore_evas_resize(enna->ee, app_w, app_h);
     ecore_evas_object_associate(enna->ee, o, 0);
     evas_object_event_callback_add(o, EVAS_CALLBACK_FREE, _cb_delete, NULL);
     enna->o_edje = o;
@@ -328,7 +330,7 @@ static void _create_gui()
 
     /* Init Metadatas */
     enna_metadata_init ();
-    
+
     /* Load mainmenu items */
     enna_activity_init("music");
     enna_activity_init("video");
@@ -369,6 +371,23 @@ static void _enna_shutdown()
     ENNA_FREE(enna);
 }
 
+static unsigned char _opt_geometry_parse(const char *optarg, unsigned int *pw, unsigned int *ph)
+{
+    int w = 0, h = 0;
+
+    if (sscanf(optarg, "%dx%d", &w, &h) != 2)
+/*	return 0;
+    else
+	return 1;
+*/
+	printf("optarf : %s\n", optarg);
+    if (pw) *pw = w;
+    if (ph) *ph = h;
+
+    printf("%d x %d\n", w, h);
+
+}
+
 static void usage(char *binname)
 {
     printf("Enna MediaCenter\n");
@@ -378,6 +397,7 @@ static void usage(char *binname)
     printf("  -f, (--fs):      Force Fullscreen mode.\n");
     printf("  -h, (--help):    Display this help.\n");
     printf("  -t, (--theme):   Specify theme name to be used.\n");
+    printf("  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n");
     printf("  -V, (--version): Display Enna version number.\n");
     exit(0);
 }
@@ -385,7 +405,7 @@ static void usage(char *binname)
 static int parse_command_line(int argc, char **argv)
 {
     int c, index;
-    char short_options[] = "Vhfgc:t:b:";
+    char short_options[] = "Vhfc:t:b:g:";
     struct option long_options [] =
     {
     { "help", no_argument, 0, 'h' },
@@ -393,6 +413,7 @@ static int parse_command_line(int argc, char **argv)
     { "fs", no_argument, 0, 'f' },
     { "config", required_argument, 0, 'c' },
     { "theme", required_argument, 0, 't' },
+    { "geometry", required_argument, 0, 'g'},
     { 0, 0, 0, 0 } };
 
     /* command line argument processing */
@@ -405,33 +426,36 @@ static int parse_command_line(int argc, char **argv)
 
         switch (c)
         {
-            case 0:
-                /* opt = long_options[index].name; */
-                break;
+	case 0:
+	    /* opt = long_options[index].name; */
+	    break;
 
-            case '?':
-            case 'h':
-                usage(argv[0]);
-                return -1;
+	case '?':
+	case 'h':
+	    usage(argv[0]);
+	    return -1;
 
-            case 'V':
-                break;
+	case 'V':
+	    break;
 
-            case 'f':
-                run_fullscreen = 1;
-                break;
+	case 'f':
+	    run_fullscreen = 1;
+	    break;
 
-            case 'c':
-                conffile = strdup(optarg);
-                break;
+	case 'c':
+	    conffile = strdup(optarg);
+	    break;
 
-            case 't':
-                theme_name = strdup(optarg);
-                break;
-
-            default:
-                usage(argv[0]);
-                return -1;
+	case 't':
+	    theme_name = strdup(optarg);
+	    break;
+	case 'g':
+	    _opt_geometry_parse(optarg, &app_w, &app_h);
+	    printf("appw : %d apph : %d\n", app_w, app_h);
+	    break;
+	default:
+	    usage(argv[0]);
+	    return -1;
         }
     }
 
