@@ -60,6 +60,7 @@ static void _smart_clip_unset(Evas_Object * obj);
 
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
+static Enna_Playlist *_enna_playlist;
 
 static void _drag_bar_seek_cb(void *data, Evas_Object *obj,
         const char *emission, const char *source)
@@ -71,8 +72,9 @@ static void _drag_bar_seek_cb(void *data, Evas_Object *obj,
 
 /* externally accessible functions */
 Evas_Object *
-enna_smart_player_add(Evas * evas)
+enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
 {
+    _enna_playlist = enna_playlist;
     _enna_mediaplayer_smart_init();
     return evas_object_smart_add(evas, _smart);
 }
@@ -202,7 +204,7 @@ static void _smart_add(Evas_Object * obj)
     sd->y = 0;
     sd->w = 0;
     sd->h = 0;
-    sd->o_mediacontrol=enna_mediacontrol_add(evas_object_evas_get(sd->o_edje));
+    sd->o_mediacontrol=enna_mediacontrol_add(evas_object_evas_get(sd->o_edje),_enna_playlist);
     edje_object_part_swallow(sd->o_edje, "enna.swallow.mediacontrol", sd->o_mediacontrol);
     
     evas_object_smart_member_add(sd->o_mediacontrol, obj); 

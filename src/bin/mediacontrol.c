@@ -85,12 +85,13 @@ static void show_pause_button(Smart_Data * sd);
 
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
-
+static Enna_Playlist *_enna_playlist;
 
 /* externally accessible functions */
 Evas_Object *
-enna_mediacontrol_add(Evas * evas)
+enna_mediacontrol_add(Evas * evas,Enna_Playlist *enna_playlist)
 {
+    _enna_playlist=enna_playlist;
     _smart_init();
     return evas_object_smart_add(evas, _smart);
 }
@@ -147,7 +148,7 @@ static int _seek_cb(void *data, int type, void *event)
 /* events from buttons*/
 static void _button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    enna_mediaplayer_play();
+    enna_mediaplayer_play(_enna_playlist);
 }
 
 static void _button_clicked_pause_cb(void *data, Evas_Object *obj, void *event_info)
@@ -157,7 +158,7 @@ static void _button_clicked_pause_cb(void *data, Evas_Object *obj, void *event_i
 
 static void _button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    enna_mediaplayer_prev();
+    enna_mediaplayer_prev(_enna_playlist);
 }
 
 static void _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
@@ -184,7 +185,7 @@ static void _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event
 
 static void _button_clicked_next_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    enna_mediaplayer_next();
+    enna_mediaplayer_next(_enna_playlist);
 }
 
 static void _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)

@@ -6,7 +6,7 @@
 #define ENNA_MODULE_NAME "music"
 #define METADATA_APPLY \
     Enna_Metadata *metadata;\
-    metadata = enna_mediaplayer_metadata_get();\
+    metadata = enna_mediaplayer_metadata_get(_enna_playlist);\
     enna_metadata_grab (metadata,\
                         ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);\
     enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
@@ -65,6 +65,7 @@ struct _Enna_Module_Music
 };
 
 static Enna_Module_Music *mod;
+static Enna_Playlist *_enna_playlist;
 
 Enna_Module_Api module_api =
 {
@@ -172,7 +173,7 @@ _class_event(void *event_info)
 	{
 	case ENNA_KEY_OK:
 	case ENNA_KEY_SPACE:
-	    enna_mediaplayer_play();
+	    enna_mediaplayer_play(_enna_playlist);
 	    break;
 	case ENNA_KEY_RIGHT:
 	    _next_song();
@@ -252,17 +253,17 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     else
     {
 	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s\n", ev->file->uri);
-	enna_mediaplayer_playlist_clear();
+	enna_mediaplayer_playlist_clear(_enna_playlist);
 	/* File selected, create mediaplayer */
 	EINA_LIST_FOREACH(ev->files, l, f)
 	{
 	    if (!f->is_directory)
 	    {
-		enna_mediaplayer_uri_append(f->uri, f->label);
+		enna_mediaplayer_uri_append(_enna_playlist,f->uri, f->label);
 		if (!strcmp(f->uri, ev->file->uri))
 		{
-		    enna_mediaplayer_select_nth(i);
-	 	    enna_mediaplayer_play();
+		    enna_mediaplayer_select_nth(_enna_playlist,i);
+	 	    enna_mediaplayer_play(_enna_playlist);
 		}
 		i++;
 	    }
@@ -313,13 +314,13 @@ _update_position_timer(void *data)
 static void
 _next_song()
 {
-    enna_mediaplayer_next();
+    enna_mediaplayer_next(_enna_playlist);
 }
 
 static void
 _prev_song()
 {
-    enna_mediaplayer_prev();
+    enna_mediaplayer_prev(_enna_playlist);
 }
 
 static int
@@ -356,7 +357,7 @@ _create_mediaplayer_gui()
     mod->seek_event_handler = ecore_event_handler_add(
             ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, NULL);
 
-    o = enna_smart_player_add(mod->em->evas);
+    o = enna_smart_player_add(mod->em->evas,_enna_playlist);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
     evas_object_show(o);
 
@@ -465,10 +466,12 @@ void module_init(Enna_Module *em)
 
     if (!em_init(em))
         return;
+    _enna_playlist = enna_mediaplayer_playlist_create();
 }
 
 void module_shutdown(Enna_Module *em)
 {
+    enna_mediaplayer_playlist_free(_enna_playlist);
     em_shutdown(em);
 }
 

@@ -56,6 +56,7 @@ struct _Enna_Module_Video
 };
 
 static Enna_Module_Video *mod;
+static Enna_Playlist *_enna_playlist;
 
 Enna_Module_Api module_api =
 {
@@ -193,7 +194,7 @@ _class_event(void *event_info)
 		"enna");
 	    break;
 	case ENNA_KEY_SPACE:
-	    enna_mediaplayer_play();
+	    enna_mediaplayer_play(_enna_playlist);
 	    break;
 	case ENNA_KEY_RIGHT:
 	    _seek_video(+0.01);
@@ -288,16 +289,16 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     else
     {
 	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s\n", ev->file->uri);
-	enna_mediaplayer_playlist_clear();
+	enna_mediaplayer_playlist_clear(_enna_playlist);
 	/* File selected, create mediaplayer */
 	EINA_LIST_FOREACH(ev->files, l, f)
 	{
 	    if (!f->is_directory)
 	    {
-		enna_mediaplayer_uri_append(f->uri, f->label);
+		enna_mediaplayer_uri_append(_enna_playlist,f->uri, f->label);
 		if (!strcmp(f->uri, ev->file->uri))
 		{
-		    enna_mediaplayer_select_nth(i);
+		    enna_mediaplayer_select_nth(_enna_playlist,i);
 		}
 		i++;
 	    }
@@ -330,7 +331,8 @@ _create_videoplayer_gui()
 {
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
-    enna_mediaplayer_play();
+    enna_mediaplayer_stop();
+    enna_mediaplayer_play(_enna_playlist);
     enna_smart_player_show_video(mod->o_mediaplayer);
     mod->state = VIDEOPLAYER_VIEW;
 }
@@ -348,21 +350,21 @@ static void
 _video_info_prev()
 {
     int n;
-    n = enna_mediaplayer_selected_get();
+    n = enna_mediaplayer_selected_get(_enna_playlist);
 
     if (n > 0)
     {
         Enna_Metadata *m;
         Evas_Object *o;
         n--;
-        enna_mediaplayer_select_nth(n);
+        enna_mediaplayer_select_nth(_enna_playlist,n);
 
         ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
         mod->o_mediaplayer_old = NULL;
 
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
-        m = enna_mediaplayer_metadata_get();
+        m = enna_mediaplayer_metadata_get(_enna_playlist);
         enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER);
         enna_smart_player_snapshot_set(o, m);
         enna_smart_player_cover_set(o, m);
@@ -380,9 +382,9 @@ static void
 _video_info_next()
 {
     int n;
-    n = enna_mediaplayer_selected_get();
+    n = enna_mediaplayer_selected_get(_enna_playlist);
 
-    if (n < enna_mediaplayer_playlist_count() - 1)
+    if (n < enna_mediaplayer_playlist_count(_enna_playlist) - 1)
     {
         Enna_Metadata *m;
         Evas_Object *o;
@@ -391,10 +393,10 @@ _video_info_next()
         ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
         mod->o_mediaplayer_old = NULL;
 
-        enna_mediaplayer_select_nth(n);
+        enna_mediaplayer_select_nth(_enna_playlist,n);
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
-        m = enna_mediaplayer_metadata_get();
+        m = enna_mediaplayer_metadata_get(_enna_playlist);
         enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER);
         enna_smart_player_snapshot_set(o, m);
         enna_smart_player_cover_set(o, m);
@@ -428,7 +430,7 @@ _create_video_info_gui()
     evas_object_show(o);
     mod->o_mediaplayer = o;
 
-    m = enna_mediaplayer_metadata_get();
+    m = enna_mediaplayer_metadata_get(_enna_playlist);
     enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER);
     enna_smart_player_snapshot_set(mod->o_mediaplayer, m);
     enna_smart_player_cover_set(mod->o_mediaplayer, m);
@@ -546,10 +548,12 @@ module_init(Enna_Module *em)
 
     if (!em_init(em))
         return;
+   _enna_playlist = enna_mediaplayer_playlist_create();
 }
 
 void
 module_shutdown(Enna_Module *em)
 {
+    enna_mediaplayer_playlist_free(_enna_playlist);
     em_shutdown(em);
 }
