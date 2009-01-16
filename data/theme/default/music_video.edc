@@ -27,14 +27,14 @@ images {
            description {
              state: "default" 0.0;
              color: 255 255 255 0;
-             rel1 {relative: 0.1 -0.9;to: "clip.module";}
-             rel2 {relative: 0.9 0;offset: 0 -64;to: "clip.module";}
+             rel1 {relative: 0  -1.0;to: "clip.module";}
+             rel2 {relative: 1 0;offset: 0 -64;to: "clip.module";}
           }
           description {
              state: "show" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0.1 0.02;to: "clip.module";}
-             rel2 {relative: 0.9 1;offset: 0 -64;to: "clip.module";}
+             rel1 {relative: 0 0;to: "clip.module";}
+             rel2 {relative: 1 1;offset: 0 -64;to: "clip.module";}
           }
        }
 
@@ -46,7 +46,9 @@ images {
           description {
              state: "default" 0.0;
              rel1.to: "clip.content";
+             rel1.relative: 0.1 0.1;
              rel2.to: "clip.content";
+             rel2.relative: 0.9 0.9;
           }
        }
 
@@ -57,8 +59,10 @@ images {
           clip_to: "clip.content";
           description {
              state: "default" 0.0;
-             rel1.to: "clip.content";
+          rel1.to: "clip.content";
+          rel1.relative: 0.1 0.1;
              rel2.to: "clip.content";
+             rel2.relative: 0.9 0.9;
           }
        }
 
