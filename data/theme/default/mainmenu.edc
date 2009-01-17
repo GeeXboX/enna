@@ -10,7 +10,7 @@ images
 group
 {
     name: "enna/mainmenu";
-    min: 32 32;
+    //min: 32 32;
     script
     {
     public clock_cb(val)
@@ -96,7 +96,7 @@ group
             description
             {
                 state: "default" 0.0;
-                max: 1920 256;
+                //max: 1920 256;
                 rel1
                 {   relative: 0.1 0.1;to: "bg";to: enna.clip.mainmenu;};
                 rel2
@@ -336,7 +336,6 @@ group
 group
 {
     name: "enna/mainmenu/item";
-    min: 256 256;
     parts
     {
         part
@@ -350,13 +349,11 @@ group
                 color: 255 255 255 0;
                 rel1
                 {
-                    relative: 0.0 0.0;
-                    offset: -5 -3;
+                    relative: 0.2 0.2;
                 }
                 rel2
                 {
-                    relative: 1.0 0.8;
-                    offset: 4 5;
+                    relative: 0.8 0.8;
                 }
                 image
                 {
@@ -373,51 +370,26 @@ group
                 rel1
                 {
                     relative: 0.0 0.0;
-                    offset: -2 0;
                 }
                 rel2
                 {
-                    relative: 1.0 0.9;
-                    offset: 1 2;
+                    relative: 1.0 1.0;
                 }
             }
         }
         part
         {
-            name: "enna.swallow.icon";
+            name: "enna.swallow.content";
             type: SWALLOW;
             description
             {
                 state: "default" 0.0;
-                align: 0.5 0.5;
-                aspect: 1.0 1.0;
-                aspect_preference: VERTICAL;
-                rel1
-                {
-                    relative: 0.1 0.1;
-                    offset:   10    10;
-                }
-                rel2
-                {
-                    relative: 0.9 0.8;
-                    offset:   10   -10;
-                }
+
+                rel1.to: "bg";
+               rel2.to: "bg";
+
             }
-            description
-            {
-                state: "selected" 0.0;
-                align: 0.5 0.5;
-                aspect: 1.0 1.0;
-                aspect_preference: VERTICAL;
-                rel1
-                {
-                    relative: 0 0;
-                }
-                rel2
-                {
-                    relative: 1 0.9;
-                }
-            }
+
 
         }
 
@@ -463,17 +435,9 @@ group
             {   state: "default" 0.0;
                 visible: 0;
                 color: 255 255 255 0;
-                rel1
-                {
-                    //to_x:     "enna.swallow.icon";
-                    relative: 0.0 0.0;
-                    offset: -15 -15;
-                }
-                rel2
-                {
-                    relative: 1.0 1.0;
-                    offset: 31 31;
-                }
+               rel1.to: "bg";
+               rel2.to: "bg";
+
                 image
                 {
                     normal: "menu_sel_fg.png";
@@ -503,23 +467,23 @@ group
 
         program
         {   name: "sel";
-            signal: "enna,state,selected";
+            signal: "select";
             source: "enna";
             action: STATE_SET "selected" 0.0;
             transition: LINEAR 0.25;
             target: "bg";
             target: "fg";
-            target: "enna.swallow.icon";
+            target: "enna.swallow.content";
         }
         program
         {   name: "unsel";
-            signal: "enna,state,unselected";
+            signal: "unselect";
             source: "enna";
             action: STATE_SET "default" 0.0;
             transition: LINEAR 0.25;
             target: "bg";
             target: "fg";
-            target: "enna.swallow.icon";
+            target: "enna.swallow.content";
         }
 
     }

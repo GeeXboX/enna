@@ -29,5 +29,6 @@
 #include "button.h"
 #include "switcher.h"
 #include "parser_cdda.h"
+#include "carousel.h"
 
 #endif

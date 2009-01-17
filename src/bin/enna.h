@@ -3,6 +3,7 @@
 #ifndef ENNA_H_
 #define ENNA_H_
 
+#include <Eina.h>
 #include <Evas.h>
 #include <Ecore.h>
 #include <Ecore_File.h>
