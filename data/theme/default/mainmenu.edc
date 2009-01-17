@@ -349,11 +349,11 @@ group
             color: 255 255 255 0;
             rel1
             {
-               relative: 0.2 0.2;
+               relative: 0.1 0.1;
             }
             rel2
             {
-               relative: 0.8 0.8;
+               relative: 0.9 0.9;
             }
             image
             {
@@ -386,7 +386,9 @@ group
             state: "default" 0.0;
 
             rel1.to: "bg";
+            rel1.offset: 30 30;
             rel2.to: "bg";
+            rel2.offset: -30 -30;
 
          }
 
