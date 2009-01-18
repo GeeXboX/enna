@@ -4,7 +4,6 @@ images { \
 } \
 group { \
    name: icon_name; \
-   min: size size;                           \
    parts { \
       part { \
          name: "icon"; \
@@ -61,21 +60,21 @@ STOCK_ICON("icon_freeboxtv.png", "icon/freeboxtv", 256)
 STOCK_ICON("icon_nofile.png", "icon_nofile", 256)
 STOCK_ICON("arrow_left.png", "icon/arrow_left", 256)
 
-STOCK_ICON("dev_bluetooth.png",     "icon/bluetooth",  128)
-STOCK_ICON("dev_camera.png",        "icon/camera",     128)
-STOCK_ICON("dev_cdda2.png",         "icon/cdda2",      128)
-STOCK_ICON("dev_cdda.png",          "icon/cdda",       128)
-STOCK_ICON("dev_cdrom.png",         "icon/cdrom",      128)
-STOCK_ICON("dev_cdrw.png",          "icon/cdrw",       128)
-STOCK_ICON("dev_dvd.png",           "icon/dvd",        128)
-STOCK_ICON("dev_hdd.png",           "icon/hdd",        128)
-STOCK_ICON("dev_ipod.png",          "icon/ipod",       128)
-STOCK_ICON("dev_mem_card.png",      "icon/memorycard", 128)
-STOCK_ICON("dev_tv.png",            "icon/tv",         128)
-STOCK_ICON("dev_nfs.png",           "icon/nfs",        128)
-STOCK_ICON("dev_photo.png",         "icon/photo",      128)
-STOCK_ICON("dev_samba.png",         "icon/samba",      128)
-STOCK_ICON("dev_usb_stick.png",     "icon/usbstick",   128)
+STOCK_ICON("dev_bluetooth.png",     "icon/dev/bluetooth",  128)
+STOCK_ICON("dev_camera.png",        "icon/dev/camera",     128)
+STOCK_ICON("dev_cdda2.png",         "icon/dev/cdda2",      128)
+STOCK_ICON("dev_cdda.png",          "icon/dev/cdda",       128)
+STOCK_ICON("dev_cdrom.png",         "icon/dev/cdrom",      128)
+STOCK_ICON("dev_cdrw.png",          "icon/dev/cdrw",       128)
+STOCK_ICON("dev_dvd.png",           "icon/dev/dvd",        128)
+STOCK_ICON("dev_hdd.png",           "icon/dev/hdd",        128)
+STOCK_ICON("dev_ipod.png",          "icon/dev/ipod",       128)
+STOCK_ICON("dev_mem_card.png",      "icon/dev/memorycard", 128)
+STOCK_ICON("dev_tv.png",            "icon/dev/tv",         128)
+STOCK_ICON("dev_nfs.png",           "icon/dev/nfs",        128)
+STOCK_ICON("dev_photo.png",         "icon/dev/photo",      128)
+STOCK_ICON("dev_samba.png",         "icon/dev/samba",      128)
+STOCK_ICON("dev_usb_stick.png",     "icon/dev/usbstick",   128)
 
 /*Mediacontrol*/
 STOCK_ICON("mp_play.png",     "icon/mp_play",   128)
