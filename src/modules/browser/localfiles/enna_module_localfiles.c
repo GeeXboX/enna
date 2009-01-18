@@ -131,17 +131,17 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
 
 static Eina_List *_class_browse_up_music(const char *path, void *cookie)
 {
-    return _class_browse_up(path, ENNA_CAPS_MUSIC, mod->music, "icon/music");
+    return _class_browse_up(path, ENNA_CAPS_MUSIC, mod->music, "icon/file/music");
 }
 
 static Eina_List *_class_browse_up_video(const char *path, void *cookie)
 {
-    return _class_browse_up(path, ENNA_CAPS_VIDEO, mod->video, "icon/video");
+    return _class_browse_up(path, ENNA_CAPS_VIDEO, mod->video, "icon/file/video");
 }
 
 static Eina_List *_class_browse_up_photo(const char *path, void *cookie)
 {
-    return _class_browse_up(path, ENNA_CAPS_PHOTO, mod->photo, "icon/photo");
+    return _class_browse_up(path, ENNA_CAPS_PHOTO, mod->photo, "icon/file/photo");
 }
 
 static Eina_List * _class_browse_down(Class_Private_Data *data,

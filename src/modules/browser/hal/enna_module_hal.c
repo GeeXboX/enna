@@ -23,7 +23,7 @@ typedef struct _Enna_Module_Hal
     DBusConnection *conn;
     LibHalContext *ctx;
     DBusError error;
-    
+
     Ecore_List *storages;
     Ecore_List *volumes;
 } Enna_Module_Hal;
@@ -41,7 +41,7 @@ ehal_add_storage (char *udi)
 
     if (!udi)
         return;
-    
+
     s = storage_append (mod->ctx, udi);
     ecore_list_append (mod->storages, s);
 }
@@ -53,7 +53,7 @@ ehal_remove_storage (char *udi)
 
     if (!udi)
         return;
-    
+
     s = ecore_list_first_goto (mod->storages);
     while ((s = ecore_list_next (mod->storages)))
         if (!strcmp (s->udi, udi))
@@ -65,11 +65,11 @@ ehal_find_storages (void *data, void *reply, DBusError *error)
 {
     E_Hal_Manager_Find_Device_By_Capability_Return *ret = reply;
     char *udi;
-  
+
     if (!ret || !ret->strings)
         return;
 
-    if (dbus_error_is_set (error)) 
+    if (dbus_error_is_set (error))
     {
         dbus_error_free (error);
         return;
@@ -85,8 +85,8 @@ ehal_is_storage (void *data, void *reply, DBusError *error)
 {
     E_Hal_Device_Query_Capability_Return *ret = reply;
     char *udi = data;
-    
-    if (dbus_error_is_set (error)) 
+
+    if (dbus_error_is_set (error))
     {
         dbus_error_free (error);
         return;
@@ -107,7 +107,7 @@ vfs_add_volume_entry (volume_t *v)
     char name[256];
     int caps = 0;
     char *icon;
-    
+
     if (!v)
         return;
 
@@ -116,40 +116,40 @@ vfs_add_volume_entry (volume_t *v)
         /* discard unknown volumes */
     case VOLUME_TYPE_UNKNOWN:
         return;
-        
+
     case VOLUME_TYPE_HDD:
         /* discarded un-accessible HDDs */
         if (!v->mounted)
             return;
 
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon = "icon/hdd";
+        icon = "icon/dev/hdd";
         break;
 
     case VOLUME_TYPE_CD:
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon = "icon/cdrom";
+        icon = "icon/dev/cdrom";
         break;
-        
+
     case VOLUME_TYPE_CDDA:
         caps = ENNA_CAPS_MUSIC;
-        icon = "icon/cdda2";
+        icon = "icon/dev/cdda2";
         break;
 
     case VOLUME_TYPE_DVD:
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon = "icon/dvd";
+        icon = "icon/dev/dvd";
         break;
-        
+
     case VOLUME_TYPE_DVD_VIDEO:
         caps = ENNA_CAPS_VIDEO;
-        icon = "icon/dvd";
+        icon = "icon/dev/dvd";
         break;
 
     case VOLUME_TYPE_VCD:
     case VOLUME_TYPE_SVCD:
         caps = ENNA_CAPS_VIDEO;
-        icon = "icon/cdrom";
+        icon = "icon/dev/cdrom";
         break;
     }
 
@@ -164,7 +164,7 @@ vfs_add_volume_entry (volume_t *v)
 
     if (!v->name)
         v->name = strdup (name);
-    
+
     class                         = calloc (1, sizeof (Enna_Class_Vfs));
     class->name                   = strdup (name);
     class->pri                    = 1;
@@ -188,7 +188,7 @@ ehal_add_volume (char *udi)
 
     if (!udi)
         return;
-    
+
     v = volume_append (mod->ctx, udi);
     if (v && v->parent)
     {
@@ -197,7 +197,7 @@ ehal_add_volume (char *udi)
         if (s)
             v->s = s;
     }
-        
+
     ecore_list_append (mod->volumes, v);
     vfs_add_volume_entry (v);
 }
@@ -209,7 +209,7 @@ ehal_remove_volume (char *udi)
 
     if (!udi)
         return;
-    
+
     v = ecore_list_first_goto (mod->volumes);
     while ((v = ecore_list_next (mod->volumes)))
         if (!strcmp (v->udi, udi))
@@ -226,11 +226,11 @@ ehal_find_volumes (void *data, void *reply, DBusError *error)
 {
     E_Hal_Manager_Find_Device_By_Capability_Return *ret = reply;
     char *udi;
-  
+
     if (!ret || !ret->strings)
         return;
 
-    if (dbus_error_is_set (error)) 
+    if (dbus_error_is_set (error))
     {
         dbus_error_free (error);
         return;
@@ -247,7 +247,7 @@ ehal_is_volume (void *data, void *reply, DBusError *error)
     E_Hal_Device_Query_Capability_Return *ret = reply;
     char *udi = data;
 
-    if (dbus_error_is_set (error)) 
+    if (dbus_error_is_set (error))
     {
         dbus_error_free (error);
         return;
@@ -267,7 +267,7 @@ ehal_device_added (void *data, DBusMessage *msg)
     Enna_Module_Hal *mod = data;
     DBusError err;
     char *udi;
-  
+
     dbus_error_init (&err);
     dbus_message_get_args (msg, &err,
                            DBUS_TYPE_STRING, &udi, DBUS_TYPE_INVALID);
@@ -325,14 +325,14 @@ module_init (Enna_Module *em)
     mod->conn = dbus_bus_get (DBUS_BUS_SYSTEM, &mod->error);
     if (!mod->conn)
         goto dbus_error;
-  
+
     mod->ctx = libhal_ctx_new ();
     if (!mod->ctx)
         goto hal_error;
 
     libhal_ctx_set_dbus_connection (mod->ctx, mod->conn);
     libhal_ctx_init (mod->ctx, &mod->error);
-        
+
     mod->storages = ecore_list_new ();
     ecore_list_free_cb_set (mod->storages, ECORE_FREE_CB (storage_free));
 
@@ -345,7 +345,7 @@ module_init (Enna_Module *em)
     e_hal_manager_find_device_by_capability (mod->dbus,
                                              EHAL_VOLUME_NAME,
                                              ehal_find_volumes, mod);
-    
+
     e_dbus_signal_handler_add (mod->dbus, E_HAL_SENDER, E_HAL_MANAGER_PATH,
                                E_HAL_MANAGER_INTERFACE, EHAL_ACTION_ADD,
                                ehal_device_added, mod);
@@ -355,7 +355,7 @@ module_init (Enna_Module *em)
                                ehal_device_removed, NULL);
 
     return;
-    
+
  hal_error:
     dbus_connection_unref (mod->conn);
     dbus_error_free (&mod->error);
@@ -380,7 +380,7 @@ module_shutdown (Enna_Module *em)
 
     dbus_connection_unref (mod->conn);
     dbus_error_free (&mod->error);
-    
+
     e_dbus_connection_close (mod->dbus);
     e_dbus_shutdown ();
 }
