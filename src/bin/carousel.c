@@ -179,6 +179,20 @@ void enna_carousel_select_nth(Evas_Object *obj, int n)
 
 }
 
+void enna_carousel_activate_nth(Evas_Object *obj, int n)
+{
+    Carousel_Item *pi;
+
+    API_ENTRY;
+
+    pi = eina_list_nth(sd->items, n);
+    if (!pi) return;
+
+    evas_object_smart_callback_call (pi->sd->obj, "activate", pi->label);
+
+}
+
+
 void enna_carousel_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *w, int *h)
 {
     Eina_List *l;
@@ -311,6 +325,7 @@ static Carousel_Item *_smart_selected_item_get(Smart_Data *sd, int *col)
 	Carousel_Item *pi = l->data;
 	if (pi->selected)
 	{
+	    if (col) *col = j;
 	    return pi;
 	}
     }
