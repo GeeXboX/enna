@@ -42,7 +42,6 @@
 	    && strcmp(evas_object_type_get(obj), SMART_NAME)))
 
 typedef struct _Smart_Data Smart_Data;
-typedef struct _Smart_Item Smart_Item;
 
 struct _Smart_Data
 {
@@ -103,7 +102,7 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
     {
         Enna_Class_Activity *act;
         Evas_Object *icon = NULL;
-	const char *icon_filename;
+	const char *icon_filename = NULL;
         act = l->data;
 
         if (act->icon)
@@ -201,8 +200,6 @@ void enna_mainmenu_show(Evas_Object *obj)
 
 void enna_mainmenu_hide(Evas_Object *obj)
 {
-    Smart_Item *si = NULL;
-
     API_ENTRY return;
     if (!sd->visible)
         return;
@@ -371,7 +368,6 @@ static void _smart_add(Evas_Object * obj)
 static void _smart_del(Evas_Object * obj)
 {
     Smart_Data *sd;
-    Eina_List *l;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
