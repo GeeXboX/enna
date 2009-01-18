@@ -188,7 +188,7 @@ void enna_carousel_activate_nth(Evas_Object *obj, int n)
     pi = eina_list_nth(sd->items, n);
     if (!pi) return;
 
-    evas_object_smart_callback_call (pi->sd->obj, "activate", pi->label);
+    evas_object_smart_callback_call (pi->sd->obj, "activate", (void*)pi->label);
 
 }
 
@@ -237,7 +237,7 @@ int enna_carousel_selected_get(Evas_Object *obj)
 	    return i;
 	}
     }
-    return NULL;
+    return -1;
 }
 
 /* local subsystem globals */
@@ -371,12 +371,12 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     evas_object_raise(pi->o_edje);
     pi->selected = 1;
     edje_object_signal_emit(pi->o_edje, "select", "enna");
-    evas_object_smart_callback_call (pi->sd->obj, "activate", pi->label);
+    evas_object_smart_callback_call (pi->sd->obj, "activate", (void*)pi->label);
 }
 
 static void _smart_reconfigure(Smart_Data * sd)
 {
-    Evas_Coord x, y, w, h;
+    Evas_Coord w, h;
     Evas_Coord ow, oh;
     Carousel_Item *it;
     Eina_List *l;
