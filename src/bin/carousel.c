@@ -356,6 +356,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     evas_object_raise(pi->o_edje);
     pi->selected = 1;
     edje_object_signal_emit(pi->o_edje, "select", "enna");
+    evas_object_smart_callback_call (pi->sd->obj, "activate", pi->label);
 }
 
 static void _smart_reconfigure(Smart_Data * sd)

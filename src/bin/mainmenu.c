@@ -72,7 +72,7 @@ struct _Smart_Item
 
 /* local subsystem functions */
 static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-static void _smart_activate_cb(void *data);
+static void _smart_activate_cb (void *data, Evas_Object *obj, void *event_info);
 static void _smart_reconfigure(Smart_Data * sd);
 static void _smart_init(void);
 static void _smart_add(Evas_Object * obj);
@@ -96,13 +96,11 @@ enna_mainmenu_add(Evas * evas)
     return evas_object_smart_add(evas, _e_smart);
 }
 
-void enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label, Enna_Class_Activity *act, void (*func) (void *data), void *data)
+void enna_mainmenu_append(Evas_Object *obj, Evas_Object *icon, const char *label, Enna_Class_Activity *act)
 {
 
     API_ENTRY return;
-
     enna_carousel_object_append(sd->o_carousel, icon, label);
-
 }
 
 void enna_mainmenu_load_from_activities(Evas_Object *obj)
@@ -129,7 +127,7 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
             enna_image_file_set(icon, act->icon_file);
         }
 	evas_object_size_hint_aspect_set(icon, EVAS_ASPECT_CONTROL_VERTICAL, 320, 320);
-        enna_mainmenu_append(obj, icon, act->name, act, _smart_activate_cb, act);
+        enna_mainmenu_append(obj, icon, act->name, act);
     }
 
 }
@@ -212,6 +210,13 @@ void enna_mainmenu_select_prev(Evas_Object *obj)
 
 }
 
+void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
+{
+    API_ENTRY return;
+
+    enna_carousel_event_feed(sd->o_carousel, event_info);
+}
+
 void enna_mainmenu_show(Evas_Object *obj)
 {
     Evas_Object *icon;
@@ -287,15 +292,17 @@ static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_in
     evas_event_feed_key_down(enna->evas, "BackSpace", "BackSpace", "BackSpace", NULL, ecore_time_get(), data);
 }
 
-static void _smart_activate_cb(void *data)
+static void
+_smart_activate_cb (void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_Class_Activity *act;
+    const char *label = event_info;
+    Smart_Data *sd = data;
 
-    if (!data)
+    if (!data || !event_info)
         return;
-    act = data;
 
-    enna_content_select(act->name);
+    enna_content_select(label);
+    enna_mainmenu_hide(sd->o_smart);
 
 }
 
@@ -374,6 +381,7 @@ static void _smart_add(Evas_Object * obj)
     o = enna_carousel_add(e);
 //    enna_carousel_orientation_set(o, orientation);
     sd->o_carousel = o;
+    evas_object_smart_callback_add(sd->o_carousel, "activate", _smart_activate_cb, sd);
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_carousel);
 

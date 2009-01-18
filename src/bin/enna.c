@@ -80,20 +80,16 @@ static void _event_bg_key_down_cb(void *data, Evas *e, Evas_Object *obj, void *e
                 break;
             }
             case ENNA_KEY_RIGHT:
-            {
-                enna_mainmenu_select_next(enna->o_mainmenu);
-                break;
-            }
             case ENNA_KEY_LEFT:
             {
-                enna_mainmenu_select_prev(enna->o_mainmenu);
+                enna_mainmenu_event_feed(enna->o_mainmenu, event);
                 break;
             }
             case ENNA_KEY_OK:
             case ENNA_KEY_SPACE:
             {
                 enna_mainmenu_activate_nth(enna->o_mainmenu,
-                        enna_mainmenu_selected_get(enna->o_mainmenu));
+		    enna_mainmenu_selected_get(enna->o_mainmenu));
                 break;
             }
             default:
