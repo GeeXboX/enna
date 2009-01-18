@@ -103,20 +103,26 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
     {
         Enna_Class_Activity *act;
         Evas_Object *icon = NULL;
+	const char *icon_filename;
         act = l->data;
 
         if (act->icon)
         {
-            icon = edje_object_add(evas_object_evas_get(sd->o_edje));
-            edje_object_file_set(icon, enna_config_theme_get(), act->icon);
+	    icon = edje_object_add(evas_object_evas_get(sd->o_edje));
+	    icon_filename = act->icon;
+
         }
         else if (act->icon_file)
         {
             icon = enna_image_add(evas_object_evas_get(sd->o_edje));
-            enna_image_file_set(icon, act->icon_file);
+	    icon_filename = act->icon_file;
         }
+
+	edje_object_file_set(icon, enna_config_theme_get(), icon_filename);
+
+	evas_object_data_set(icon, "icon", icon_filename);
 	evas_object_data_set(icon, "activity", act);
-	evas_object_size_hint_aspect_set(icon, EVAS_ASPECT_CONTROL_VERTICAL, 320, 320);
+	evas_object_size_hint_aspect_set(icon, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
         enna_mainmenu_append(obj, icon, act->name, act);
     }
 
@@ -184,6 +190,13 @@ void enna_mainmenu_show(Evas_Object *obj)
     sd->visible = 1;
     edje_object_signal_emit(sd->o_edje, "mainmenu,show", "enna");
 
+    /* Unswallow and delete previous icons */
+    icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
+    edje_object_part_unswallow(sd->o_edje, icon);
+    ENNA_OBJECT_DEL(icon);
+
+    edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "Enna");
+
 }
 
 void enna_mainmenu_hide(Evas_Object *obj)
@@ -221,13 +234,28 @@ static void
 _smart_activate_cb (void *data, Evas_Object *obj, void *event_info)
 {
     const char *label = event_info;
+    const char *icon_filename = NULL;
     Smart_Data *sd = data;
+    Evas_Object *icon, *o;
 
     if (!data || !event_info)
         return;
 
     enna_content_select(label);
     enna_mainmenu_hide(sd->o_smart);
+
+    /* Unswallow and delete previous icons */
+    icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
+    edje_object_part_unswallow(sd->o_edje, icon);
+    ENNA_OBJECT_DEL(icon);
+
+    o = enna_carousel_selected_object_get(sd->o_carousel);
+    icon_filename = evas_object_data_get(o, "icon");
+
+    edje_object_part_text_set(sd->o_edje, "titlebar.text.label", label);
+    icon = edje_object_add(evas_object_evas_get(sd->o_edje));
+    edje_object_file_set(icon, enna_config_theme_get(), icon_filename);
+    edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
 
 }
 
