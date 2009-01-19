@@ -247,10 +247,10 @@ static Enna_Vfs_File * _class_vfs_get_photo(void *cookie)
 static int  _update_volumes_cb(void *data, int type, void *event)
 {
     Eina_List *l;
-    Enna_Volume *v;
+    Enna_Volume *v = event;
     Class_Private_Data *priv = data;
 
-    EINA_LIST_FOREACH( enna_volumes_get("file://"), l, v)
+    if (!strcmp(v->type, "file://"))
     {
 	Root_Directories *root;
 	root = calloc(1, sizeof(Root_Directories));
@@ -311,6 +311,7 @@ static void __class_init(const char *name, Class_Private_Data **priv,
             }
         }
     }
+
     data->volume_add_handler = ecore_event_handler_add(
 	ENNA_EVENT_VOLUME_ADDED, _update_volumes_cb, data);
 
