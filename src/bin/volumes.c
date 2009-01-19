@@ -48,8 +48,6 @@ void enna_volumes_append(const char *type, Enna_Volume *v)
 
     if (!v) return;
 
-
-    printf("append : %s\n", type);
     l = eina_hash_find(_volumes, type);
     l = eina_list_append(l, v);
 
@@ -75,8 +73,6 @@ void enna_volumes_remove(const char *type, Enna_Volume *v)
 
 Eina_List *enna_volumes_get(const char *type)
 {
-
-    printf("enna_volumes_get %p %s %p\n",eina_hash_find(_volumes, type), type, _volumes);
     return eina_hash_find(_volumes, type);
 }
 
