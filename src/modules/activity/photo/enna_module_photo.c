@@ -285,12 +285,10 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 	{
 	    if (!ecore_file_is_dir(f->uri + 7))
 	    {
-		printf("filename : %s\n", f->uri+7);
 		enna_wall_picture_append(mod->o_wall, f->uri);
 	    }
 	    else
 	    {
-		printf("count++\n");
 		count++;
 	    }
 	}

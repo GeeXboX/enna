@@ -339,7 +339,6 @@ static void _wall_right_select(Evas_Object *obj)
 	enna_scrollframe_child_pos_set(sd->o_scroll, x , y);
 	_smart_item_select(sd, pi);
 	if (ppi) _smart_item_unselect(sd, ppi);
-	printf("right : %d %d\n", sd->row_sel, col);
     }
 
 }

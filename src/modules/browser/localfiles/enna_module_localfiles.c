@@ -257,7 +257,6 @@ static int  _update_volumes_cb(void *data, int type, void *event)
 	root->uri = strdup(v->uri);
 	root->label = strdup(v->label);
 	root->icon = strdup(v->icon);
-	printf("Add : %s %s %s\n", root->uri, root->label, root->icon);
 	priv->config->root_directories = eina_list_append(
 	    priv->config->root_directories, root);
     }
