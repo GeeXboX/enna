@@ -15,8 +15,8 @@ void _hash_data_free_cb(void *data)
 	eina_stringshare_del(v->icon);
 	eina_stringshare_del(v->type);
 	eina_stringshare_del(v->uri);
-	ENNA_FREE(v->name);
-	ENNA_FREE(v->label);
+	eina_stringshare_del(v->name);
+	eina_stringshare_del(v->label);
 
     }
     eina_list_free(l);
@@ -55,8 +55,6 @@ void enna_volumes_append(const char *type, Enna_Volume *v)
     {
 	ev = calloc(1, sizeof(Enna_Volume));
    	memcpy(ev, v, sizeof(Enna_Volume));
-	ev->name = strdup(v->name);
-	ev->label = strdup(v->label);
 	enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_VOLUME_ADDED Sent");
 	ecore_event_add(ENNA_EVENT_VOLUME_ADDED, ev, _free_ev_cb, NULL);
     }
@@ -73,8 +71,6 @@ void enna_volumes_remove(const char *type, Enna_Volume *v)
     {
 	ev = calloc(1, sizeof(Enna_Volume));
    	memcpy(ev, v, sizeof(Enna_Volume));
-	ev->name = strdup(v->name);
-	ev->label = strdup(v->label);
 	enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_VOLUME_REMOVED Sent");
 	ecore_event_add(ENNA_EVENT_VOLUME_REMOVED, ev, _free_ev_cb, NULL);
     }
@@ -90,7 +86,10 @@ static void _free_ev_cb (void *data, void *ev)
 {
     Enna_Volume *v = ev;
 
-    ENNA_FREE(v->name);
-    ENNA_FREE(v->label);
+    eina_stringshare_del(v->icon);
+    eina_stringshare_del(v->type);
+    eina_stringshare_del(v->uri);
+    eina_stringshare_del(v->name);
+    eina_stringshare_del(v->label);
     ENNA_FREE(v);
 }

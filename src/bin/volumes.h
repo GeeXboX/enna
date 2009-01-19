@@ -7,8 +7,8 @@ typedef struct _Enna_Volume Enna_Volume;
 
 struct _Enna_Volume
 {
-    char *name;
-    char *label;
+    const char *name;
+    const char *label;
     const char *icon; /* edje or file icon*/
     const char *uri;  /* Uri of root : file:///media/disk-1 or cdda:// */
     const char *type; /* Uri type : cdda:// dvdnav:// file:// ...*/
