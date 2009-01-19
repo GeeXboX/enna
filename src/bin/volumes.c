@@ -57,6 +57,7 @@ void enna_volumes_append(const char *type, Enna_Volume *v)
    	memcpy(ev, v, sizeof(Enna_Volume));
 	ev->name = strdup(v->name);
 	ev->label = strdup(v->label);
+	enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_VOLUME_ADDED Sent");
 	ecore_event_add(ENNA_EVENT_VOLUME_ADDED, ev, _free_ev_cb, NULL);
     }
 
@@ -64,10 +65,19 @@ void enna_volumes_append(const char *type, Enna_Volume *v)
 
 void enna_volumes_remove(const char *type, Enna_Volume *v)
 {
+    Enna_Volume *ev;
     Eina_List *l = eina_hash_find(_volumes, type);
+
     l = eina_list_remove(l, v);
     if (l)
-	ecore_event_add(ENNA_EVENT_VOLUME_REMOVED, NULL, NULL, NULL);
+    {
+	ev = calloc(1, sizeof(Enna_Volume));
+   	memcpy(ev, v, sizeof(Enna_Volume));
+	ev->name = strdup(v->name);
+	ev->label = strdup(v->label);
+	enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_VOLUME_REMOVED Sent");
+	ecore_event_add(ENNA_EVENT_VOLUME_REMOVED, ev, _free_ev_cb, NULL);
+    }
 
 }
 
