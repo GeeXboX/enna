@@ -479,7 +479,6 @@ src/modules/backend/Makefile
 src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
 src/modules/browser/Makefile
-src/modules/browser/hal/Makefile
 src/modules/browser/lms/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
@@ -492,7 +491,7 @@ src/modules/metadata/libplayer/Makefile
 src/modules/metadata/localfiles/Makefile
 src/modules/metadata/tmdb/Makefile
 src/modules/volume/Makefile
-src/modules/volume/polling/Makefile
+src/modules/volume/hal/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
@@ -519,7 +518,6 @@ echo "  libplayer........................ : $have_backend_libplayer"
 echo
 echo "Supported Browser Modules:"
 echo
-echo "  HAL.............................. : $have_browser_hal"
 echo "  Light Media Scanner.............. : $have_browser_lms"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
@@ -538,7 +536,7 @@ echo "  TheMovieDB.org................... : $want_metadata_tmdb"
 echo
 echo "Supported Volume Modules:"
 echo
-echo "  Polling.......................... : $want_volume_polling"
+echo "  HAL.............................. : $have_browser_hal"
 echo
 echo "Optional linked-in librairies:"
 echo
