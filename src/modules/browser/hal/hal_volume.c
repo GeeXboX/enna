@@ -65,25 +65,26 @@ volume_free (volume_t *v)
 
     if (v->vol)
         libhal_volume_free (v->vol);
-    if (v->name)
-        free (v->name);
-    if (v->udi)
-        free (v->udi);
-    if (v->parent)
-        free (v->parent);
-    if (v->cd_type)
-        free (v->cd_type);
-    if (v->cd_content_type)
-        free (v->cd_content_type);
-    if (v->label)
-        free (v->label);
-    if (v->fstype)
-        free (v->fstype);
-    if (v->partition_label)
-        free (v->partition_label);
-    if (v->mount_point)
-        free (v->mount_point);
-    
+
+    ENNA_FREE (v->name);
+    ENNA_FREE (v->udi);
+    ENNA_FREE (v->parent);
+    ENNA_FREE (v->cd_type);
+    ENNA_FREE (v->cd_content_type);
+    ENNA_FREE (v->label);
+    ENNA_FREE (v->fstype);
+    ENNA_FREE (v->partition_label);
+    ENNA_FREE (v->mount_point);
+    if (v->enna_volume)
+    {
+	Enna_Volume *ev = v->enna_volume;
+	ENNA_FREE(ev->name);
+	ENNA_FREE(ev->label);
+	eina_stringshare_del(ev->icon);
+	eina_stringshare_del(ev->type);
+	eina_stringshare_del(ev->uri);
+	free(ev);
+    }
     free (v);
 }
 
@@ -92,7 +93,7 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
 {
     LibHalVolumeUsage usage;
     int i;
-    
+
     usage = libhal_volume_get_fsusage (v->vol);
     if ((usage != LIBHAL_VOLUME_USAGE_MOUNTABLE_FILESYSTEM) &&
         (usage != LIBHAL_VOLUME_USAGE_UNKNOWN))
@@ -102,14 +103,14 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
 
     if (libhal_volume_get_storage_device_udi (v->vol))
         v->parent = strdup (libhal_volume_get_storage_device_udi (v->vol));
-    
+
     if (libhal_volume_is_disc (v->vol))
     {
         LibHalVolumeDiscType type;
         DBusError error;
 
         v->type = VOLUME_TYPE_CD;
-        
+
         type = libhal_volume_get_disc_type (v->vol);
         for (i = 0; vol_disc_type_mapping[i].name; i++)
             if (vol_disc_type_mapping[i].type == type)
@@ -134,7 +135,7 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
             }
         dbus_error_free (&error);
     }
-   
+
     if (libhal_volume_get_label (v->vol))
         v->label = strdup (libhal_volume_get_label (v->vol));
 
@@ -144,7 +145,7 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
     if (libhal_volume_get_partition_label (v->vol))
         v->partition_label =
             strdup (libhal_volume_get_partition_label (v->vol));
-    
+
     v->mounted = libhal_volume_is_mounted (v->vol);
     if (v->mounted && libhal_volume_get_mount_point (v->vol))
         v->mount_point = strdup (libhal_volume_get_mount_point (v->vol));
@@ -172,14 +173,14 @@ volume_append (LibHalContext *ctx, const char *udi)
 {
     volume_t *v;
     LibHalVolume *vol;
-    
+
     if (!ctx || !udi)
         return NULL;
 
     vol = libhal_volume_from_udi (ctx, udi);
     if (!vol)
         return NULL;
-    
+
     v = volume_new ();
     v->vol = vol;
     v->udi = strdup (udi);
@@ -204,7 +205,7 @@ volume_find (Ecore_List *list, const char *udi)
 
     if (!udi)
         return NULL;
-    
+
     v = ecore_list_find (list, ECORE_COMPARE_CB (volume_find_helper), udi);
     return v;
 }

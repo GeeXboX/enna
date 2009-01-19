@@ -27,8 +27,11 @@ typedef struct volume_s {
     int mounted;
     char *mount_point;
     unsigned long size;
-    
+
     storage_t *s;
+
+    Enna_Volume *enna_volume;
+
 } volume_t;
 
 void volume_free (volume_t *v);

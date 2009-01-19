@@ -103,7 +103,6 @@ ehal_is_storage (void *data, void *reply, DBusError *error)
 static void
 vfs_add_volume_entry (volume_t *v)
 {
-    Enna_Class_Vfs *class;
     char name[256], tmp[4096];
     int caps = 0;
     const char *icon = NULL;
@@ -191,6 +190,7 @@ vfs_add_volume_entry (volume_t *v)
     evol->type = type;
     evol->uri = uri;
     enna_volumes_append(evol->type, evol);
+    v->enna_volume = evol;
 }
 
 static void
@@ -224,13 +224,14 @@ ehal_remove_volume (char *udi)
 
     v = ecore_list_first_goto (mod->volumes);
     while ((v = ecore_list_next (mod->volumes)))
+    {
         if (!strcmp (v->udi, udi))
         {
-            enna_vfs_class_remove (v->name, ENNA_CAPS_MUSIC);
-            enna_vfs_class_remove (v->name, ENNA_CAPS_VIDEO);
-            enna_vfs_class_remove (v->name, ENNA_CAPS_PHOTO);
+	    if (v->enna_volume)
+		enna_volumes_remove(v->enna_volume->type, v->enna_volume);
             volume_free (v);
         }
+    }
 }
 
 static void
