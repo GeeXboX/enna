@@ -104,9 +104,12 @@ static void
 vfs_add_volume_entry (volume_t *v)
 {
     Enna_Class_Vfs *class;
-    char name[256];
+    char name[256], tmp[4096];
     int caps = 0;
-    char *icon;
+    const char *icon = NULL;
+    const char *type = NULL;
+    const char *uri = NULL;
+    Enna_Volume *evol;
 
     if (!v)
         return;
@@ -123,34 +126,50 @@ vfs_add_volume_entry (volume_t *v)
             return;
 
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon = "icon/dev/hdd";
+        icon = eina_stringshare_add("icon/dev/hdd");
+	type =  eina_stringshare_add("file://");
+	snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+	uri = eina_stringshare_add(tmp);
         break;
 
     case VOLUME_TYPE_CD:
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon = "icon/dev/cdrom";
+        icon =  eina_stringshare_add("icon/dev/cdrom");
+	type =  eina_stringshare_add("file://");
+	snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+	uri = eina_stringshare_add(tmp);
         break;
 
     case VOLUME_TYPE_CDDA:
         caps = ENNA_CAPS_MUSIC;
-        icon = "icon/dev/cdda2";
+        icon =  eina_stringshare_add("icon/dev/cdda2");
+	type =  eina_stringshare_add("cdda://");
+	uri  =  eina_stringshare_add("cdda://");
         break;
 
     case VOLUME_TYPE_DVD:
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon = "icon/dev/dvd";
+        icon =  eina_stringshare_add("icon/dev/dvd");
+	type =  eina_stringshare_add("file://");
+	snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+	uri = eina_stringshare_add(tmp);
+
         break;
 
     case VOLUME_TYPE_DVD_VIDEO:
         caps = ENNA_CAPS_VIDEO;
-        icon = "icon/dev/dvd";
+        icon =  eina_stringshare_add("icon/dev/dvd");
+	type =  eina_stringshare_add("dvd://"); /* Need a way to manage dvdnav:// !*/
+	uri  =  eina_stringshare_add("dvd://"); /* Need a way to manage dvdnav:// !*/
         break;
 
     case VOLUME_TYPE_VCD:
     case VOLUME_TYPE_SVCD:
         caps = ENNA_CAPS_VIDEO;
-        icon = "icon/dev/cdrom";
-        break;
+        icon = eina_stringshare_add("icon/dev/cdrom");
+	type =  eina_stringshare_add("vcd://");
+	uri =  eina_stringshare_add("vcd://");
+	break;
     }
 
     /* get volume displayed name/label */
@@ -165,20 +184,13 @@ vfs_add_volume_entry (volume_t *v)
     if (!v->name)
         v->name = strdup (name);
 
-    class                         = calloc (1, sizeof (Enna_Class_Vfs));
-    class->name                   = strdup (name);
-    class->pri                    = 1;
-    class->label                  = strdup (name);
-    class->icon_file              = NULL;
-    class->icon                   = icon ? strdup (icon) : NULL;
-    class->func.class_init        = NULL;
-    class->func.class_shutdown    = NULL;
-    class->func.class_browse_up   = NULL;
-    class->func.class_browse_down = NULL;
-    class->func.class_vfs_get     = NULL;
-    class->cookie                 = NULL;
-
-    enna_vfs_append (NULL, caps, class);
+    evol = calloc(1, sizeof(Enna_Volume));
+    evol->name = strdup(name);
+    evol->label = strdup(name);
+    evol->icon = icon;
+    evol->type = type;
+    evol->uri = uri;
+    enna_volumes_append(evol->type, evol);
 }
 
 static void

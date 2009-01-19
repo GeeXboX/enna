@@ -19,6 +19,7 @@ background.c\
 module.c\
 activity.c\
 vfs.c\
+volumes.c\
 image.c\
 list.c\
 browser.c\
@@ -55,6 +56,7 @@ mainmenu.h\
 background.h\
 module.h\
 vfs.h\
+volumes.h\
 activity.h\
 image.h\
 list.h\

@@ -65,7 +65,7 @@ int enna_vfs_append(const char *name, unsigned char type,
 void enna_vfs_class_remove(const char *name, unsigned char type)
 {
     Eina_List *tmp;
-    
+
     if (!name)
         return;
 

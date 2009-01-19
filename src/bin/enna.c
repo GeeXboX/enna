@@ -266,6 +266,8 @@ static void _create_gui()
     edje_object_part_swallow(enna->o_edje, "enna.swallow.module", o);
     enna->o_content = o;
 
+    enna_volumes_init();
+
     /* Create Modules */
 #ifdef BUILD_ACTIVITY_MUSIC
     em = enna_module_open("music", ENNA_MODULE_ACTIVITY, enna->evas);

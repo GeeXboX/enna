@@ -21,6 +21,7 @@ typedef struct _Class_Private_Data
     const char *uri;
     const char *prev_uri;
     Module_Config *config;
+    Ecore_Event_Handler *volume_add_handler;
 } Class_Private_Data;
 
 typedef struct _Enna_Module_LocalFiles
@@ -243,6 +244,26 @@ static Enna_Vfs_File * _class_vfs_get_photo(void *cookie)
     return _class_vfs_get(ENNA_CAPS_PHOTO);
 }
 
+static int  _update_volumes_cb(void *data, int type, void *event)
+{
+    Eina_List *l;
+    Enna_Volume *v;
+    Class_Private_Data *priv = data;
+
+    EINA_LIST_FOREACH( enna_volumes_get("file://"), l, v)
+    {
+	Root_Directories *root;
+	root = calloc(1, sizeof(Root_Directories));
+	root->uri = strdup(v->uri);
+	root->label = strdup(v->label);
+	root->icon = strdup(v->icon);
+	printf("Add : %s %s %s\n", root->uri, root->label, root->icon);
+	priv->config->root_directories = eina_list_append(
+	    priv->config->root_directories, root);
+    }
+    return 1;
+}
+
 static void __class_init(const char *name, Class_Private_Data **priv,
         ENNA_VFS_CAPS caps, Enna_Class_Vfs *class, char *key)
 {
@@ -290,6 +311,9 @@ static void __class_init(const char *name, Class_Private_Data **priv,
             }
         }
     }
+    data->volume_add_handler = ecore_event_handler_add(
+	ENNA_EVENT_VOLUME_ADDED, _update_volumes_cb, data);
+
 }
 
 static Enna_Class_Vfs class_music =
