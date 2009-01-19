@@ -269,7 +269,7 @@ static void _browse(void *data, void *data2)
 	ev->vfs = sd->vfs;
 	ev->file = sd->file;
 
-        if (sd->file->is_directory)
+        if (sd->file && sd->file->is_directory)
         {
             /* File selected is a directory */
             sd->files = sd->vfs->func.class_browse_up(sd->file->uri, sd->vfs->cookie);
