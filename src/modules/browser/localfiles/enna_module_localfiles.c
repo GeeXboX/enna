@@ -4,6 +4,13 @@
 
 #define ENNA_MODULE_NAME "localfiles"
 
+typedef struct _Root_Directories
+{
+    char *uri;
+    char *label;
+    char *icon;
+} Root_Directories;
+
 typedef struct _Module_Config
 {
     Eina_List *root_directories;
@@ -35,7 +42,7 @@ static unsigned char _uri_is_root(Class_Private_Data *data, const char *uri)
 
     for (l = data->config->root_directories; l; l = l->next)
     {
-        Enna_Volume *root = l->data;
+        Root_Directories *root = l->data;
         if (!strcmp(root->uri, uri))
             return 1;
     }
@@ -56,7 +63,7 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
         for (l = data->config->root_directories; l; l = l->next)
         {
             Enna_Vfs_File *file;
-            Enna_Volume *root;
+            Root_Directories *root;
 
             root = l->data;
             file = enna_vfs_create_directory(root->uri, root->label, "icon/hd",
@@ -156,7 +163,7 @@ static Eina_List * _class_browse_down(Class_Private_Data *data,
             for (l = data->config->root_directories; l; l = l->next)
             {
                 Enna_Vfs_File *file;
-                Enna_Volume *root;
+                Root_Directories *root;
 
                 root = l->data;
 		file = enna_vfs_create_directory(root->uri, root->label,
@@ -240,15 +247,21 @@ static Enna_Vfs_File * _class_vfs_get_photo(void *cookie)
 
 static int  _add_volumes_cb(void *data, int type, void *event)
 {
-    Enna_Volume *v = event;
+    Root_Directories *root ;
+    Enna_Volume *v =  event;
     Class_Private_Data *priv = data;
 
     if (!strcmp(v->type, "file://"))
     {
-	Enna_Volume *vol = calloc(1, sizeof(Enna_Volume));
-	vol = memcpy(vol, v, sizeof(Enna_Volume));
+	root = calloc(1, sizeof(Root_Directories));
+
+	root->uri = strdup(v->uri);
+	root->label = strdup(v->label);
+	root->icon = strdup(v->icon);
+
+	printf("add %s\n", root->label);
 	priv->config->root_directories = eina_list_append(
-	    priv->config->root_directories, vol);
+	    priv->config->root_directories, root);
     }
     return 1;
 }
@@ -262,9 +275,16 @@ static int  _remove_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "file://"))
     {
-	Enna_Volume *root = eina_list_data_find(priv->config->root_directories, v);
-	printf("remove : %s\n", root->label);
-	priv->config->root_directories = eina_list_remove(priv->config->root_directories, root);
+	Root_Directories *root;
+	Eina_List *l;
+	EINA_LIST_FOREACH(priv->config->root_directories, l, root)
+	{
+	    if (!strcmp(root->label, v->label))
+	    {
+		printf("remove : %s\n", root->label);
+		priv->config->root_directories = eina_list_remove(priv->config->root_directories, root);
+	    }
+	}
     }
     return 1;
 }
@@ -302,14 +322,14 @@ static void __class_init(const char *name, Class_Private_Data **priv,
                     continue;
                 else
                 {
-                    Enna_Volume *root;
+                    Root_Directories *root;
 
-                    root = calloc(1, sizeof(Enna_Volume));
-                    root->uri = eina_stringshare_add(eina_list_nth(dir_data, 0));
-                    root->label = eina_stringshare_add(eina_list_nth(dir_data, 1));
+                    root = calloc(1, sizeof(Root_Directories));
+                    root->uri = eina_list_nth(dir_data, 0);
+                    root->label = eina_list_nth(dir_data, 1);
                     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Root Data: %s",
                             root->uri);
-                    root->icon = eina_stringshare_add(eina_list_nth(dir_data, 2));
+                    root->icon = eina_list_nth(dir_data, 2);
                     data->config->root_directories = eina_list_append(
                             data->config->root_directories, root);
                 }

@@ -16,10 +16,10 @@ enum _ENNA_VFS_CAPS
 
 struct _Enna_Vfs_File
 {
-    const char *uri;
-    const char *label;
-    const char *icon;
-    const char *icon_file;
+    char *uri;
+    char *label;
+    char *icon;
+    char *icon_file;
     unsigned char is_directory : 1;
     unsigned char is_selected : 1;
 
@@ -48,7 +48,7 @@ int enna_vfs_append(const char *name, unsigned char type,
         Enna_Class_Vfs *vfs);
 void enna_vfs_class_remove(const char *name, unsigned char type);
 Eina_List *enna_vfs_get(ENNA_VFS_CAPS type);
-Enna_Vfs_File *enna_vfs_create_file      (const char *uri, const char *label, const char *icon, const char *icon_file);
-Enna_Vfs_File *enna_vfs_create_directory (const char *uri, const char *label, const char *icon, const char *icon_file);
+Enna_Vfs_File *enna_vfs_create_file (char *uri, char *label, char *icon, char *icon_file);
+Enna_Vfs_File *enna_vfs_create_directory (char *uri, char *label, char *icon, char *icon_file);
 void enna_vfs_remove(Enna_Vfs_File *f);
 #endif
