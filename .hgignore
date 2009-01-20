@@ -6,6 +6,7 @@ syntax: regexp
 ^.*\.Po$
 ^.*\.Plo$
 ^.*\.la$
+^.*\.lai$
 ^.*\.lo$
 ^.*\.so$
 
