@@ -376,6 +376,7 @@ Enna_Playlist * enna_mediaplayer_playlist_create(void)
     Enna_Playlist  *enna_playlist = calloc(1, sizeof(Enna_Playlist));
     enna_playlist->selected=0;
     enna_playlist->playlist=NULL;
+    return enna_playlist;
 }
 
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist)
