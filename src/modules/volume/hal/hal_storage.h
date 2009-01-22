@@ -3,6 +3,7 @@
 
 typedef struct storage_s {
     LibHalDrive *drv;
+    LibHalDriveType type;
     char *udi;
     char *bus;
     char *drive_type;

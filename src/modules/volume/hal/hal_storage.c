@@ -81,7 +81,6 @@ storage_free (storage_t *s)
 static void
 storage_get_properties (storage_t *s)
 {
-    LibHalDriveType type;
     LibHalDriveBus bus;
     int i;
     
@@ -96,9 +95,9 @@ storage_get_properties (storage_t *s)
             break;
         }
 
-    type = libhal_drive_get_type (s->drv);
+    s->type = libhal_drive_get_type (s->drv);
     for (i = 0; drv_type_mapping[i].name; i++)
-        if (drv_type_mapping[i].type == type)
+        if (drv_type_mapping[i].type == s->type)
         {
             s->drive_type = strdup (drv_type_mapping[i].name);
             break;
