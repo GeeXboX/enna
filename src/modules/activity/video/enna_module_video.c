@@ -8,6 +8,7 @@
 static void _create_menu();
 static void _create_gui();
 static void _create_video_info_gui();
+static void _return_to_video_info_gui();
 static void _create_videoplayer_gui();
 static void _video_info_prev();
 static void _video_info_next();
@@ -187,11 +188,7 @@ _class_event(void *event_info)
 	{
 	case ENNA_KEY_CANCEL:
 	case ENNA_KEY_OK:
-	    enna_mediaplayer_stop();
-	    enna_smart_player_hide_video(mod->o_mediaplayer);
-	    mod->state = VIDEO_INFO_VIEW;
-	    edje_object_signal_emit(mod->o_edje, "mediaplayer,show",
-		"enna");
+        _return_to_video_info_gui();
 	    break;
 	case ENNA_KEY_SPACE:
 	    enna_mediaplayer_play(_enna_playlist);
@@ -447,14 +444,20 @@ _create_video_info_gui()
 
 }
 
+static void
+_return_to_video_info_gui()
+{
+    enna_mediaplayer_stop();
+    enna_smart_player_hide_video(mod->o_mediaplayer);
+    mod->state = VIDEO_INFO_VIEW;
+    edje_object_signal_emit(mod->o_edje, "mediaplayer,show",
+    "enna");
+}
+
 static int
 _eos_cb(void *data, int type, void *event)
 {
-    /* EOS received, update metadata */
-    edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
-    edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-    evas_object_del(mod->o_mediaplayer);
-    mod->o_mediaplayer = NULL;
+    _return_to_video_info_gui();
     return 1;
 }
 
