@@ -460,7 +460,8 @@ em_shutdown(Enna_Module *em)
     return 1;
 }
 
-void module_init(Enna_Module *em)
+void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -469,24 +470,28 @@ void module_init(Enna_Module *em)
         return;
 }
 
-void module_shutdown(Enna_Module *em)
+void
+module_shutdown(Enna_Module *em)
 {    
     em_shutdown(em);
 }
 
-static int _next_cb(void *data, int type, void *event)
+static int
+_next_cb(void *data, int type, void *event)
 {
     METADATA_APPLY;
     return 1;
 }
 
-static int _prev_cb(void *data, int type, void *event)
+static int
+_prev_cb(void *data, int type, void *event)
 {
     METADATA_APPLY;
     return 1;
 }
 
-static int _seek_cb(void *data, int type, void *event)
+static int
+_seek_cb(void *data, int type, void *event)
 {
     Enna_Event_Mediaplayer_Seek_Data *ev;
     double pos;

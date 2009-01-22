@@ -97,47 +97,54 @@ enna_mediacontrol_add(Evas * evas,Enna_Playlist *enna_playlist)
 }
 
 /* Event from mediaplayer*/
-static int _start_cb(void *data, int type, void *event)
+static int
+_start_cb(void *data, int type, void *event)
 {
     show_pause_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PLAY ");
     return 1;
 }
 
-static int _stop_cb(void *data, int type, void *event)
+static int
+_stop_cb(void *data, int type, void *event)
 {
     show_play_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event STOP ");
     return 1;
 }
 
-static int _prev_cb(void *data, int type, void *event)
+static int
+_prev_cb(void *data, int type, void *event)
 {
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PREV");
     return 1;
 }
 
-static int _next_cb(void *data, int type, void *event)
+static int
+_next_cb(void *data, int type, void *event)
 {
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event NEXT");
     return 1;
 }
 
-static int _unpause_cb(void *data, int type, void *event)
+static int
+_unpause_cb(void *data, int type, void *event)
 {
     show_pause_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event UN_PAUSE");
     return 1;
 }
 
-static int _pause_cb(void *data, int type, void *event)
+static int
+_pause_cb(void *data, int type, void *event)
 {
     show_play_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PAUSE ");
     return 1;
 }
 
-static int _seek_cb(void *data, int type, void *event)
+static int
+_seek_cb(void *data, int type, void *event)
 {
     Enna_Event_Mediaplayer_Seek_Data *ev;
     ev=event;
@@ -146,22 +153,26 @@ static int _seek_cb(void *data, int type, void *event)
 }
 
 /* events from buttons*/
-static void _button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
 {
     enna_mediaplayer_play(_enna_playlist);
 }
 
-static void _button_clicked_pause_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_button_clicked_pause_cb(void *data, Evas_Object *obj, void *event_info)
 {
     enna_mediaplayer_pause();
 }
 
-static void _button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
 {
     enna_mediaplayer_prev(_enna_playlist);
 }
 
-static void _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data * sd;
     sd = (Smart_Data *) data;
@@ -172,7 +183,8 @@ static void _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_
     enna_mediaplayer_seek((pos/length)-(sd->seek_step/100));
 }
 
-static void _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data * sd;
     sd = (Smart_Data *) data;
@@ -183,30 +195,34 @@ static void _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event
     enna_mediaplayer_seek((pos/length)+(sd->seek_step/100));
 }
 
-static void _button_clicked_next_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_button_clicked_next_cb(void *data, Evas_Object *obj, void *event_info)
 {
     enna_mediaplayer_next(_enna_playlist);
 }
 
-static void _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
 {
     enna_mediaplayer_stop();
 }
 
-static void show_play_button(Smart_Data * sd)
+static void
+show_play_button(Smart_Data * sd)
 {
     edje_object_signal_emit(sd->o_edje, "play,show", "enna");
 }
 
-static void show_pause_button(Smart_Data * sd)
+static void
+show_pause_button(Smart_Data * sd)
 {
     edje_object_signal_emit(sd->o_edje, "play,hide", "enna");
 }
 
 
 /* local subsystem globals */
-
-static void _smart_reconfigure(Smart_Data * sd)
+static void
+_smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
 
@@ -220,7 +236,8 @@ static void _smart_reconfigure(Smart_Data * sd)
 
 }
 
-static void _smart_init(void)
+static void
+_smart_init(void)
 {
     if (_smart)
         return;
@@ -242,7 +259,8 @@ static void _smart_init(void)
     _smart = evas_smart_class_new(&sc);
 }
 
-static void _smart_add(Evas_Object * obj)
+static void
+_smart_add(Evas_Object * obj)
 {
     Evas_Object *o;
     Smart_Data *sd;
@@ -326,7 +344,8 @@ static void _smart_add(Evas_Object * obj)
     evas_object_smart_data_set(obj, sd);
 }
 
-static void _smart_del(Evas_Object * obj)
+static void
+_smart_del(Evas_Object * obj)
 {
     Smart_Data *sd;
 
@@ -352,7 +371,8 @@ static void _smart_del(Evas_Object * obj)
     free(sd);
 }
 
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
+static void
+_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
     Smart_Data *sd;
 
@@ -366,7 +386,8 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
     _smart_reconfigure(sd);
 }
 
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
+static void
+_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
     Smart_Data *sd;
 
@@ -380,7 +401,8 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
     _smart_reconfigure(sd);
 }
 
-static void _smart_show(Evas_Object * obj)
+static void
+_smart_show(Evas_Object * obj)
 {
     Smart_Data *sd;
 
@@ -390,7 +412,8 @@ static void _smart_show(Evas_Object * obj)
     evas_object_show(sd->o_edje);
 }
 
-static void _smart_hide(Evas_Object * obj)
+static void
+_smart_hide(Evas_Object * obj)
 {
     Smart_Data *sd;
 
@@ -401,7 +424,8 @@ static void _smart_hide(Evas_Object * obj)
 
 }
 
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
+static void
+_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
     Smart_Data *sd;
 
@@ -411,7 +435,8 @@ static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
     evas_object_color_set(sd->o_edje, r, g, b, a);
 }
 
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
+static void
+_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
     Smart_Data *sd;
 
@@ -421,7 +446,8 @@ static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
     evas_object_clip_set(sd->o_edje, clip);
 }
 
-static void _smart_clip_unset(Evas_Object * obj)
+static void
+_smart_clip_unset(Evas_Object * obj)
 {
     Smart_Data *sd;
 

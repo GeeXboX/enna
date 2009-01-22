@@ -48,10 +48,12 @@ struct _Enna_Mediaplayer
 
 static Enna_Mediaplayer *_mediaplayer;
 
-static void _event_cb(void *data, enna_mediaplayer_event_t event);
+static void
+_event_cb(void *data, enna_mediaplayer_event_t event);
 
 /* externally accessible functions */
-int enna_mediaplayer_init(void)
+int
+enna_mediaplayer_init(void)
 {
     Enna_Module *em;
     char *backend_name = NULL;
@@ -100,12 +102,14 @@ int enna_mediaplayer_init(void)
     ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new();
     return 0;
 }
-void enna_mediaplayer_shutdown()
+void
+enna_mediaplayer_shutdown()
 {
     free(_mediaplayer);
 }
 
-void enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,const char *uri, const char *label)
+void
+enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,const char *uri, const char *label)
 {
     list_item_t *item = calloc(1, sizeof(list_item_t));
     item->uri = uri ? strdup(uri) : NULL;
@@ -113,7 +117,8 @@ void enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,const char *uri, c
     enna_playlist->playlist = eina_list_append(enna_playlist->playlist, item);
 }
 
-int enna_mediaplayer_play(Enna_Playlist *enna_playlist)
+int
+enna_mediaplayer_play(Enna_Playlist *enna_playlist)
 {
 
     switch (_mediaplayer->play_state)
@@ -149,7 +154,8 @@ int enna_mediaplayer_play(Enna_Playlist *enna_playlist)
     return 0;
 }
 
-int enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist,int n)
+int
+enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist,int n)
 {
     list_item_t *item;
     if (n < 0 || n > eina_list_count(enna_playlist->playlist) - 1)
@@ -162,12 +168,14 @@ int enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist,int n)
     return 0;
 }
 
-int enna_mediaplayer_selected_get(Enna_Playlist *enna_playlist)
+int
+enna_mediaplayer_selected_get(Enna_Playlist *enna_playlist)
 {
     return enna_playlist->selected;
 }
 
-int enna_mediaplayer_stop(void)
+int
+enna_mediaplayer_stop(void)
 {
     if (_mediaplayer->class)
     {
@@ -179,7 +187,8 @@ int enna_mediaplayer_stop(void)
     return 0;
 }
 
-int enna_mediaplayer_pause(void)
+int
+enna_mediaplayer_pause(void)
 {
     if (_mediaplayer->class)
     {
@@ -191,7 +200,8 @@ int enna_mediaplayer_pause(void)
     return 0;
 }
 
-int enna_mediaplayer_next(Enna_Playlist *enna_playlist)
+int
+enna_mediaplayer_next(Enna_Playlist *enna_playlist)
 {
     list_item_t *item;
 
@@ -215,7 +225,8 @@ int enna_mediaplayer_next(Enna_Playlist *enna_playlist)
     return 0;
 }
 
-int enna_mediaplayer_prev(Enna_Playlist *enna_playlist)
+int
+enna_mediaplayer_prev(Enna_Playlist *enna_playlist)
 {
     list_item_t *item;
 
@@ -238,7 +249,8 @@ int enna_mediaplayer_prev(Enna_Playlist *enna_playlist)
     return 0;
 }
 
-double enna_mediaplayer_position_get(void)
+double
+enna_mediaplayer_position_get(void)
 {
     if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state
             == PLAYING)
@@ -249,7 +261,8 @@ double enna_mediaplayer_position_get(void)
     return 0.0;
 }
 
-double enna_mediaplayer_length_get(void)
+double
+enna_mediaplayer_length_get(void)
 {
     if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state
             == PLAYING)
@@ -260,7 +273,8 @@ double enna_mediaplayer_length_get(void)
     return 0.0;
 }
 
-int enna_mediaplayer_seek(double percent)
+int
+enna_mediaplayer_seek(double percent)
 {
     enna_log(ENNA_MSG_INFO, NULL, "Seeking to: %d%%", (int) (100 * percent));
     if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state
@@ -285,17 +299,20 @@ enna_mediaplayer_video_resize(int x, int y, int w, int h)
         _mediaplayer->class->func.class_video_resize(x, y, w, h);
 }
 
-int enna_mediaplayer_playlist_load(const char *filename)
+int
+enna_mediaplayer_playlist_load(const char *filename)
 {
     return 0;
 }
 
-int enna_mediaplayer_playlist_save(const char *filename)
+int
+enna_mediaplayer_playlist_save(const char *filename)
 {
     return 0;
 }
 
-void enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
+void
+enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
 {
     eina_list_free(enna_playlist->playlist);
     enna_playlist->playlist = NULL;
@@ -317,12 +334,14 @@ enna_mediaplayer_metadata_get(Enna_Playlist *enna_playlist)
     return NULL;
 }
 
-int enna_mediaplayer_playlist_count(Enna_Playlist *enna_playlist)
+int
+enna_mediaplayer_playlist_count(Enna_Playlist *enna_playlist)
 {
     return eina_list_count(enna_playlist->playlist);
 }
 
-int enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class)
+int
+enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class)
 {
     if (!class)
         return -1;
@@ -345,7 +364,8 @@ enna_mediaplayer_video_obj_get(void)
     return NULL;
 }
 
-static void _event_cb(void *data, enna_mediaplayer_event_t event)
+static void
+_event_cb(void *data, enna_mediaplayer_event_t event)
 {
     switch (event)
     {
@@ -358,12 +378,14 @@ static void _event_cb(void *data, enna_mediaplayer_event_t event)
     }
 }
 
-PLAY_STATE enna_mediaplayer_state_get(void)
+PLAY_STATE 
+enna_mediaplayer_state_get(void)
 {
     return(_mediaplayer->play_state);
 }
 
-Enna_Playlist * enna_mediaplayer_playlist_create(void)
+Enna_Playlist * 
+enna_mediaplayer_playlist_create(void)
 {
     Enna_Playlist  *enna_playlist = calloc(1, sizeof(Enna_Playlist));
     enna_playlist->selected=0;
@@ -371,12 +393,15 @@ Enna_Playlist * enna_mediaplayer_playlist_create(void)
     return enna_playlist;
 }
 
-void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist)
+void
+enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist)
 {
     eina_list_free(enna_playlist->playlist);
     free(enna_playlist);
 }
-void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist)
+
+void
+enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist)
 {
     enna_mediaplayer_playlist_clear(enna_playlist);
     if (_mediaplayer->class)
