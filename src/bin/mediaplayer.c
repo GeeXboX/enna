@@ -299,15 +299,7 @@ void enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
 {
     eina_list_free(enna_playlist->playlist);
     enna_playlist->playlist = NULL;
-    if (_mediaplayer->class)
-    {
-        if (_mediaplayer->class->func.class_stop)
-            _mediaplayer->class->func.class_stop();
-        enna_playlist->selected = 0;
-        _mediaplayer->play_state = STOPPED;
-        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
-    }
-
+    enna_playlist->selected = 0;
 }
 
 Enna_Metadata *
@@ -383,4 +375,15 @@ void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist)
 {
     eina_list_free(enna_playlist->playlist);
     free(enna_playlist);
+}
+void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist)
+{
+    enna_mediaplayer_playlist_clear(enna_playlist);
+    if (_mediaplayer->class)
+    {
+        if (_mediaplayer->class->func.class_stop)
+            _mediaplayer->class->func.class_stop();
+        _mediaplayer->play_state = STOPPED;
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
+    }
 }
