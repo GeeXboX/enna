@@ -109,6 +109,7 @@ vfs_add_volume_entry (volume_t *v)
     const char *type = NULL;
     const char *uri = NULL;
     Enna_Volume *evol;
+    char *ic = NULL;
 
     if (!v)
         return;
@@ -125,7 +126,35 @@ vfs_add_volume_entry (volume_t *v)
             return;
 
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon = eina_stringshare_add("icon/dev/hdd");
+
+        switch (v->s->type)
+        {
+        case LIBHAL_DRIVE_TYPE_CAMERA:
+            ic = "icon/dev/camera";
+            break;
+
+        case LIBHAL_DRIVE_TYPE_PORTABLE_AUDIO_PLAYER:
+            ic = "icon/dev/ipod";
+            break;
+
+        case LIBHAL_DRIVE_TYPE_FLASHKEY:
+        case LIBHAL_DRIVE_TYPE_REMOVABLE_DISK:
+            ic = "icon/dev/usbstick";
+            break;
+
+        case LIBHAL_DRIVE_TYPE_COMPACT_FLASH:
+        case LIBHAL_DRIVE_TYPE_MEMORY_STICK:
+        case LIBHAL_DRIVE_TYPE_SMART_MEDIA:
+        case LIBHAL_DRIVE_TYPE_SD_MMC:
+            ic = "icon/dev/memorycard";
+            break;
+
+        default:
+            ic = "icon/dev/hdd";
+            break;
+        }
+
+        icon = eina_stringshare_add(ic);
 	type =  eina_stringshare_add("file://");
 	snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
 	uri = eina_stringshare_add(tmp);
