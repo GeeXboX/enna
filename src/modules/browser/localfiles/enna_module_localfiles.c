@@ -66,8 +66,9 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
             Root_Directories *root;
 
             root = l->data;
-            file = enna_vfs_create_directory(root->uri, root->label, "icon/hd",
-                    NULL);
+            file = enna_vfs_create_directory(root->uri, root->label,
+                                             root->icon ?
+                                             root->icon : "icon/hd", NULL);
             files = eina_list_append(files, file);
         }
         //evas_stringshare_del(data->prev_uri);
