@@ -254,7 +254,7 @@ ehal_remove_volume (char *udi)
     v = ecore_list_first_goto (mod->volumes);
     while ((v = ecore_list_next (mod->volumes)))
     {
-        if (!strcmp (v->udi, udi))
+        if (v->udi && !strcmp (v->udi, udi))
         {
 	    if (v->enna_volume)
 		enna_volumes_remove(v->enna_volume->type, v->enna_volume);
