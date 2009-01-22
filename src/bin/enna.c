@@ -282,10 +282,6 @@ static void _create_gui()
     enna_module_enable(em);
 #endif
 
-#ifdef BUILD_BROWSER_HAL
-    em = enna_module_open("hal", ENNA_MODULE_BROWSER, enna->evas);
-    enna_module_enable(em);
-#endif
 #ifdef BUILD_BROWSER_LMS
     em = enna_module_open("lms", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
@@ -320,6 +316,10 @@ static void _create_gui()
     enna_module_enable(em);
 #endif
 
+#ifdef BUILD_VOLUME_HAL
+    em = enna_module_open("hal", ENNA_MODULE_VOLUME, enna->evas);
+    enna_module_enable(em);
+#endif
 #ifdef BUILD_VOLUME_POLLING
     em = enna_module_open("polling", ENNA_MODULE_VOLUME, enna->evas);
     enna_module_enable(em);

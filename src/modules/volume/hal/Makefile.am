@@ -14,20 +14,20 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@ @EHAL_CFLAGS@
 
-if BUILD_BROWSER_HAL
+if BUILD_VOLUME_HAL
 
 pkgdir = $(libdir)/enna/modules
 
-pkg_LTLIBRARIES = browser_hal.la
+pkg_LTLIBRARIES = volume_hal.la
 
-browser_hal_la_SOURCES= \
+volume_hal_la_SOURCES= \
 enna_module_hal.c hal_storage.c hal_volume.c
 
-browser_hal_la_LIBADD = @ENNA_LIBS@ @EHAL_LIBS@
-browser_hal_la_LDFLAGS = -module -avoid-version
-browser_hal_la_DEPENDENCIES = $(top_builddir)/config.h
+volume_hal_la_LIBADD = @ENNA_LIBS@ @EHAL_LIBS@
+volume_hal_la_LDFLAGS = -module -avoid-version
+volume_hal_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
-	rm -rf $(DESTDIR)$(libdir)/enna/modules/browser_$(MODULE).*
+	rm -rf $(DESTDIR)$(libdir)/enna/modules/volume_$(MODULE).*
 
 endif

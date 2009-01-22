@@ -161,32 +161,6 @@ AM_CONDITIONAL(BUILD_BACKEND_LIBPLAYER, test "x$have_backend_libplayer" = "xyes"
 # Browser Modules #
 ###################
 
-# HAL
-want_browser_hal="auto"
-have_browser_hal="no"
-AC_MSG_CHECKING(whether hal browser is to be built)
-AC_ARG_ENABLE(browser-hal,
-  AS_HELP_STRING([--enable-browser-hal],[Enable HAL Browser]),
-  [ want_browser_hal=$enableval ]
-)
-AC_MSG_RESULT($want_browser_hal)
-if test "x$want_browser_hal" = "xyes" -o "x$want_browser_hal" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [EHAL],
-    [ehal hal-storage],
-    [
-      AC_DEFINE(BUILD_BROWSER_HAL, 1, [HAL Browser])
-      have_browser_hal="yes"
-    ],
-    [
-      if test "x$want_browser_hal" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([ehal or hal-sotrage not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_BROWSER_HAL, test "x$have_browser_hal" = "xyes")
-
 # Light Media Scanner (LMS)
 want_browser_lms="auto"
 have_browser_lms="no"
@@ -339,6 +313,32 @@ fi
 ##################
 # Volume Modules #
 ##################
+
+# HAL
+want_volume_hal="auto"
+have_volume_hal="no"
+AC_MSG_CHECKING(whether hal volume module is to be built)
+AC_ARG_ENABLE(volume-hal,
+  AS_HELP_STRING([--enable-volume-hal],[Enable HAL Volume]),
+  [ want_volume_hal=$enableval ]
+)
+AC_MSG_RESULT($want_volume_hal)
+if test "x$want_volume_hal" = "xyes" -o "x$want_volume_hal" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [EHAL],
+    [ehal hal-storage],
+    [
+      AC_DEFINE(BUILD_VOLUME_HAL, 1, [HAL Volume])
+      have_volume_hal="yes"
+    ],
+    [
+      if test "x$want_volume_hal" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([ehal or hal-storage not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_VOLUME_HAL, test "x$have_volume_hal" = "xyes")
 
 # Polling
 want_volume_polling="yes"
@@ -536,7 +536,7 @@ echo "  TheMovieDB.org................... : $want_metadata_tmdb"
 echo
 echo "Supported Volume Modules:"
 echo
-echo "  HAL.............................. : $have_browser_hal"
+echo "  HAL.............................. : $have_volume_hal"
 echo
 echo "Optional linked-in librairies:"
 echo
