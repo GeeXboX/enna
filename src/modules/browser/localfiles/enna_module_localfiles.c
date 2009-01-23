@@ -168,7 +168,7 @@ static Eina_List * _class_browse_down(Class_Private_Data *data,
 
                 root = l->data;
 		file = enna_vfs_create_directory(root->uri, root->label,
-                        "icon/hd", NULL);
+                        root->icon ? root->icon : "icon/hd", NULL);
                 files = eina_list_append(files, file);
             }
             data->prev_uri = NULL;
