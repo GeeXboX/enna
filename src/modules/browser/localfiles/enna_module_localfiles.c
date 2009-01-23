@@ -385,7 +385,7 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 static Enna_Class_Vfs class_music = {
     "localfiles_music",
     1,
-    "Browse Local Files",
+    "Browse Local Devices",
     NULL,
     "icon/hd",
     { NULL,
@@ -402,7 +402,7 @@ static Enna_Class_Vfs class_music = {
 static Enna_Class_Vfs class_video = {
     "localfiles_video",
     1,
-    "Browse Local Files",
+    "Browse Local Devices",
     NULL,
     "icon/hd",
     { NULL,
@@ -419,7 +419,7 @@ static Enna_Class_Vfs class_video = {
 static Enna_Class_Vfs class_photo = {
     "localfiles_photo",
     1,
-    "Browse Local Files",
+    "Browse Local Devices",
     NULL,
     "icon/hd",
     { NULL,
