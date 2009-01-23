@@ -230,18 +230,18 @@ static Enna_Class_MediaplayerBackend class = {
     "libplayer",
     1,
     {
-      _class_init,
-      _class_shutdown,
-      _class_file_set,
-      _class_play,
-      _class_seek,
-      _class_stop,
-      _class_pause,
-      _class_position_get,
-      _class_length_get,
-      _class_video_resize,
-      _class_event_cb_set,
-      NULL
+        _class_init,
+        _class_shutdown,
+        _class_file_set,
+        _class_play,
+        _class_seek,
+        _class_stop,
+        _class_pause,
+        _class_position_get,
+        _class_length_get,
+        _class_video_resize,
+        _class_event_cb_set,
+        NULL
     }
 };
 
