@@ -60,6 +60,8 @@ STOCK_ICON("dev_photo.png",         "icon/dev/photo")
 STOCK_ICON("dev_samba.png",         "icon/dev/samba")
 STOCK_ICON("dev_usb_stick.png",     "icon/dev/usbstick")
 
+STOCK_ICON("folder_favorites.png",  "icon/favorite")
+
 /* File type icons */
 STOCK_ICON("icon_music.png", "icon/file/music")
 STOCK_ICON("icon_video.png", "icon/file/video")
