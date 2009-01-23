@@ -468,7 +468,7 @@ void module_shutdown(Enna_Module *em)
 {
     Enna_Module_LocalFiles *mod;
 
-    mod = em->mod;;
+    mod = em->mod;
 #ifdef BUILD_ACTIVITY_MUSIC
     free(mod->music);
 #endif
