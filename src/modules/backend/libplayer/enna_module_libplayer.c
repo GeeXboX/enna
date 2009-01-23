@@ -14,6 +14,7 @@
 #define URI_TYPE_TCP  "tcp://"
 #define URI_TYPE_UDP  "udp://"
 #define URI_TYPE_UNSV "unsv://"
+
 typedef struct _Enna_Module_libplayer
 {
     Evas *evas;
@@ -130,8 +131,8 @@ static int _class_play(void)
 
 static int _class_seek(double percent)
 {
-    player_playback_seek(mod->player, (int) (100 * percent),
-            PLAYER_PB_SEEK_PERCENT);
+    player_playback_seek(mod->player,
+                         (int) (100 * percent), PLAYER_PB_SEEK_PERCENT);
     return 0;
 }
 
@@ -159,8 +160,8 @@ static double _class_position_get()
 
 static double _class_length_get()
 {
-    return (double) mrl_get_property(mod->player, NULL, MRL_PROPERTY_LENGTH)
-            / 1000.0;
+    return (double) mrl_get_property(mod->player,
+                                     NULL, MRL_PROPERTY_LENGTH) / 1000.0;
 }
 
 static void _class_video_resize(int x, int y, int w, int h)
@@ -172,7 +173,9 @@ static void _class_video_resize(int x, int y, int w, int h)
     player_x_window_set_properties(mod->player, x, y, w, h, flags);
 }
 
-static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_event_t event), void *data)
+static void _class_event_cb_set(void (*event_cb)(void *data,
+                                                 enna_mediaplayer_event_t event),
+                                void *data)
 {
     /* FIXME: function to call when end of stream is send by libplayer */
 
@@ -202,42 +205,44 @@ static int _event_cb(player_event_t e, void *data)
     return 0;
 }
 
-static int
-_x_event_key_down(void *data, int type, void *event)
+static int _x_event_key_down(void *data, int type, void *event)
 {
-   Ecore_X_Event_Key_Down *e;
-   e = event;
-   /*
-      HACK !
-      If e->win is the same than enna winid, don't manage this event
-      ecore_evas_x will do this for us.
-      But if e->win is different than enna winid event are sent to
-      libplayer subwindow and we must broadcast this event to Evas
-   */
-   if (e->win != enna->ee_winid)
-   {
-       enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Ecore_X_Event_Key_Down %s", e->keyname);
-       evas_event_feed_key_down(enna->evas, e->keyname, e->keysymbol, e->key_compose, NULL, e->time, NULL);
-   }
+    Ecore_X_Event_Key_Down *e;
+    e = event;
+    /*
+       HACK !
+       If e->win is the same than enna winid, don't manage this event
+       ecore_evas_x will do this for us.
+       But if e->win is different than enna winid event are sent to
+       libplayer subwindow and we must broadcast this event to Evas
+    */
+    if (e->win != enna->ee_winid)
+    {
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                 "Ecore_X_Event_Key_Down %s", e->keyname);
+        evas_event_feed_key_down(enna->evas, e->keyname, e->keysymbol,
+                                 e->key_compose, NULL, e->time, NULL);
+    }
    return 1;
 }
 
 static Enna_Class_MediaplayerBackend class = {
-  "libplayer",
-  1,
-  { _class_init,
-    _class_shutdown,
-    _class_file_set,
-    _class_play,
-    _class_seek,
-    _class_stop,
-    _class_pause,
-    _class_position_get,
-    _class_length_get,
-    _class_video_resize,
-    _class_event_cb_set,
-    NULL
-  }
+    "libplayer",
+    1,
+    {
+      _class_init,
+      _class_shutdown,
+      _class_file_set,
+      _class_play,
+      _class_seek,
+      _class_stop,
+      _class_pause,
+      _class_position_get,
+      _class_length_get,
+      _class_video_resize,
+      _class_event_cb_set,
+      NULL
+    }
 };
 
 /*****************************************************************************/
@@ -279,8 +284,8 @@ void module_init(Enna_Module *em)
 
             if (!strcmp("type", pair->key))
             {
-                enna_config_value_store(&value, "type", ENNA_CONFIG_STRING,
-                        pair);
+                enna_config_value_store(&value, "type",
+                                        ENNA_CONFIG_STRING, pair);
                 enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * type: %s", value);
 
                 if (!strcmp("gstreamer", value))
@@ -293,14 +298,14 @@ void module_init(Enna_Module *em)
                     type = PLAYER_TYPE_XINE;
                 else
                     enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                            "   - unknown type, 'mplayer' used instead");
+                             "   - unknown type, 'mplayer' used instead");
             }
             else if (!strcmp("video_out", pair->key))
             {
                 enna_config_value_store(&value, "video_out",
-                        ENNA_CONFIG_STRING, pair);
-                enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * video out: %s",
-                        value);
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                         " * video out: %s", value);
 
                 if (!strcmp("auto", value))
                     vo = PLAYER_VO_AUTO;
@@ -314,14 +319,14 @@ void module_init(Enna_Module *em)
                     vo = PLAYER_VO_FB;
                 else
                     enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                            "   - unknown video_out, 'auto' used instead");
+                             "   - unknown video_out, 'auto' used instead");
             }
             else if (!strcmp("audio_out", pair->key))
             {
                 enna_config_value_store(&value, "audio_out",
-                        ENNA_CONFIG_STRING, pair);
-                enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * audio out: %s",
-                        value);
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                         " * audio out: %s", value);
 
                 if (!strcmp("auto", value))
                     ao = PLAYER_AO_AUTO;
@@ -331,14 +336,14 @@ void module_init(Enna_Module *em)
                     ao = PLAYER_AO_OSS;
                 else
                     enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                            "   - unknown audio_out, 'auto' used instead");
+                             "   - unknown audio_out, 'auto' used instead");
             }
             else if (!strcmp("verbosity", pair->key))
             {
                 enna_config_value_store(&value, "verbosity",
-                        ENNA_CONFIG_STRING, pair);
+                                        ENNA_CONFIG_STRING, pair);
                 enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                        " * verbosity level: %s", value);
+                         " * verbosity level: %s", value);
 
                 if (!strcmp("verbose", value))
                     verbosity = PLAYER_MSG_VERBOSE;
@@ -354,24 +359,25 @@ void module_init(Enna_Module *em)
                     verbosity = PLAYER_MSG_NONE;
                 else
                     enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                            "   - unknown verbosity, 'warning' used instead");
+                             "   - unknown verbosity, 'warning' used instead");
             }
         }
     }
 
     if (!value)
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                " * use all parameters by default");
+                 " * use all parameters by default");
 
     mod = calloc(1, sizeof(Enna_Module_libplayer));
     mod->em = em;
     mod->evas = em->evas;
 
-    mod->key_down_event_handler  = ecore_event_handler_add(ECORE_X_EVENT_KEY_DOWN, _x_event_key_down, NULL);
+    mod->key_down_event_handler =
+        ecore_event_handler_add(ECORE_X_EVENT_KEY_DOWN, _x_event_key_down, NULL);
     mod->pipe = ecore_pipe_add(_pipe_read, NULL);
 
-    mod->player = player_init(type, ao, vo, verbosity,enna->ee_winid,
-            _event_cb);
+    mod->player =
+        player_init(type, ao, vo, verbosity, enna->ee_winid, _event_cb);
 
     if (!mod->player)
     {
