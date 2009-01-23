@@ -88,15 +88,15 @@
     "blacklist_keywords=1080p,720p,ctu,divx,dvdrip,dvdscr,fqm,hdtv,lol,notv,pdtv,screencam,screener,vtv,x264,xvid\n" \
     "\n"								\
     "[localfiles]\n"							\
-    "path_music=file:///path/to/Music,Music,icon_hd\n"			\
-    "path_music=file:///path/to/server/Medias/Music,Server,icon_network\n" \
-    "path_video=file:///path/to/Videos,Videos,icon_hd\n"		\
-    "path_video=file:///path/to/server/Medias/Videos,Server,icon_network\n" \
-    "path_photo=file:///path/to/Photos,Photos,icon_hd\n"		\
-    "path_photo=file:///path/to/server/Medias/Photos,Server,icon_network\n" \
+    "path_music=file:///path/to/Music,Music,icon/favorite\n"			\
+    "path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs\n" \
+    "path_video=file:///path/to/Videos,Videos,icon/favorite\n"		\
+    "path_video=file:///path/to/server/Medias/Videos,Server,icon/dev/nfs\n" \
+    "path_photo=file:///path/to/Photos,Photos,icon/favorite\n"		\
+    "path_photo=file:///path/to/server/Medias/Photos,Server,icon/dev/nfs\n" \
     "\n"								\
     "[netstreams]\n"							\
-    "stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon_freeboxtv\n" \
+    "stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv\n" \
     "\n"								\
     "[lms]\n"								\
     "path=file:///path/to/Music\n"					\

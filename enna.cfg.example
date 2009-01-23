@@ -46,15 +46,15 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 blacklist_keywords=1080p,720p,ctu,divx,dvdrip,dvdscr,fqm,hdtv,lol,notv,pdtv,screencam,screener,vtv,x264,xvid
 
 [localfiles]
-path_music=file:///path/to/Music,Music,icon_hd
-path_music=file:///path/to/server/Medias/Music,Server,icon_network
-path_video=file:///path/to/Videos,Videos,icon_hd
-path_video=file:///path/to/server/Medias/Videos,Server,icon_network
-path_photo=file:///path/to/Photos,Photos,icon_hd
-path_photo=file:///path/to/server/Medias/Photos,Server,icon_network
+path_music=file:///path/to/Music,Music,icon/favorite
+path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs
+path_video=file:///path/to/Videos,Videos,icon/favorite
+path_video=file:///path/to/server/Medias/Videos,Server,icon/dev/nfs
+path_photo=file:///path/to/Photos,Photos,icon/favorite
+path_photo=file:///path/to/server/Medias/Photos,Server,icon/dev/nfs
 
 [netstreams]
-stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon_freeboxtv
+stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv
 
 [lms]
 path=file:///path/to/Music
