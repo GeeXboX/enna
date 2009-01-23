@@ -29,9 +29,15 @@ typedef struct _Enna_Module_LocalFiles
 {
     Evas *e;
     Enna_Module *em;
+#ifdef BUILD_ACTIVITY_MUSIC
     Class_Private_Data *music;
+#endif
+#ifdef BUILD_ACTIVITY_VIDEO
     Class_Private_Data *video;
+#endif
+#ifdef BUILD_ACTIVITY_PHOTO
     Class_Private_Data *photo;
+#endif
 } Enna_Module_LocalFiles;
 
 static Enna_Module_LocalFiles *mod;
@@ -131,23 +137,29 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
 
 }
 
+#ifdef BUILD_ACTIVITY_MUSIC
 static Eina_List *_class_browse_up_music(const char *path, void *cookie)
 {
     return _class_browse_up(path, ENNA_CAPS_MUSIC,
                             mod->music, "icon/file/music");
 }
+#endif
 
+#ifdef BUILD_ACTIVITY_VIDEO
 static Eina_List *_class_browse_up_video(const char *path, void *cookie)
 {
     return _class_browse_up(path, ENNA_CAPS_VIDEO,
                             mod->video, "icon/file/video");
 }
+#endif
 
+#ifdef BUILD_ACTIVITY_PHOTO
 static Eina_List *_class_browse_up_photo(const char *path, void *cookie)
 {
     return _class_browse_up(path, ENNA_CAPS_PHOTO,
                             mod->photo, "icon/file/photo");
 }
+#endif
 
 static Eina_List * _class_browse_down(Class_Private_Data *data,
                                       ENNA_VFS_CAPS caps)
@@ -195,58 +207,76 @@ static Eina_List * _class_browse_down(Class_Private_Data *data,
     return NULL;
 }
 
+#ifdef BUILD_ACTIVITY_MUSIC
 static Eina_List * _class_browse_down_music(void *cookie)
 {
     return _class_browse_down(mod->music, ENNA_CAPS_MUSIC);
 }
+#endif
 
+#ifdef BUILD_ACTIVITY_VIDEO
 static Eina_List * _class_browse_down_video(void *cookie)
 {
     return _class_browse_down(mod->video, ENNA_CAPS_VIDEO);
 }
+#endif
 
+#ifdef BUILD_ACTIVITY_PHOTO
 static Eina_List * _class_browse_down_photo(void *cookie)
 {
     return _class_browse_down(mod->photo, ENNA_CAPS_PHOTO);
 }
+#endif
 
 static Enna_Vfs_File * _class_vfs_get(int type)
 {
     switch (type)
     {
+#ifdef BUILD_ACTIVITY_MUSIC
         case ENNA_CAPS_MUSIC:
             return enna_vfs_create_directory((char *) mod->music->uri,
                     (char *) ecore_file_file_get(mod->music->uri),
                     (char *) evas_stringshare_add("icon/music"), NULL);
+#endif
+#ifdef BUILD_ACTIVITY_VIDEO
         case ENNA_CAPS_VIDEO:
             return enna_vfs_create_directory((char *) mod->video->uri,
                     (char *) ecore_file_file_get(mod->video->uri),
                     (char *) evas_stringshare_add("icon/video"), NULL);
-
+#endif
+#ifdef BUILD_ACTIVITY_PHOTO
         case ENNA_CAPS_PHOTO:
             return enna_vfs_create_directory((char *) mod->photo->uri,
                     (char *) ecore_file_file_get(mod->photo->uri),
                     (char *) evas_stringshare_add("icon/photo"), NULL);
-
+#endif
+        default:
+            break;
     }
 
     return NULL;
 }
 
+#ifdef BUILD_ACTIVITY_MUSIC
 static Enna_Vfs_File * _class_vfs_get_music(void *cookie)
 {
     return _class_vfs_get(ENNA_CAPS_MUSIC);
 }
+#endif
 
+#ifdef BUILD_ACTIVITY_VIDEO
 static Enna_Vfs_File * _class_vfs_get_video(void *cookie)
 {
     return _class_vfs_get(ENNA_CAPS_VIDEO);
 }
+#endif
 
+#ifdef BUILD_ACTIVITY_PHOTO
 static Enna_Vfs_File * _class_vfs_get_photo(void *cookie)
 {
     return _class_vfs_get(ENNA_CAPS_PHOTO);
 }
+#endif
 
 static int _add_volumes_cb(void *data, int type, void *event)
 {
@@ -351,6 +381,7 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 
 }
 
+#ifdef BUILD_ACTIVITY_MUSIC
 static Enna_Class_Vfs class_music = {
     "localfiles_music",
     1,
@@ -365,7 +396,9 @@ static Enna_Class_Vfs class_music = {
     },
     NULL
 };
+#endif
 
+#ifdef BUILD_ACTIVITY_VIDEO
 static Enna_Class_Vfs class_video = {
     "localfiles_video",
     1,
@@ -380,7 +413,9 @@ static Enna_Class_Vfs class_video = {
     },
     NULL
 };
+#endif
 
+#ifdef BUILD_ACTIVITY_PHOTO
 static Enna_Class_Vfs class_photo = {
     "localfiles_photo",
     1,
@@ -395,6 +430,7 @@ static Enna_Class_Vfs class_photo = {
     },
     NULL
 };
+#endif
 
 /* Module interface */
 
@@ -414,12 +450,18 @@ void module_init(Enna_Module *em)
     mod->em = em;
     em->mod = mod;
 
+#ifdef BUILD_ACTIVITY_MUSIC
     __class_init("localfiles_music", &mod->music, ENNA_CAPS_MUSIC,
                  &class_music, "path_music");
+#endif
+#ifdef BUILD_ACTIVITY_VIDEO
     __class_init("localfiles_video", &mod->video, ENNA_CAPS_VIDEO,
                  &class_video, "path_video");
+#endif
+#ifdef BUILD_ACTIVITY_PHOTO
     __class_init("localfiles_photo", &mod->photo, ENNA_CAPS_PHOTO,
                  &class_photo, "path_photo");
+#endif
 }
 
 void module_shutdown(Enna_Module *em)
@@ -427,7 +469,13 @@ void module_shutdown(Enna_Module *em)
     Enna_Module_LocalFiles *mod;
 
     mod = em->mod;;
+#ifdef BUILD_ACTIVITY_MUSIC
     free(mod->music);
+#endif
+#ifdef BUILD_ACTIVITY_VIDEO
     free(mod->video);
+#endif
+#ifdef BUILD_ACTIVITY_PHOTO
     free(mod->photo);
+#endif
 }
