@@ -24,6 +24,7 @@ typedef struct _Enna_Module_libplayer
     char *uri;
     char *label;
     Ecore_Event_Handler *key_down_event_handler;
+    Ecore_Pipe *pipe;
 } Enna_Module_libplayer;
 
 static Enna_Module_libplayer *mod;
@@ -44,6 +45,7 @@ static void _class_shutdown(int dummy)
     if (mod->label)
         free(mod->label);
     ecore_event_handler_del(mod->key_down_event_handler);
+    ecore_pipe_del(mod->pipe);
     player_playback_stop(mod->player);
     player_uninit(mod->player);
 }
@@ -178,15 +180,24 @@ static void _class_event_cb_set(void (*event_cb)(void *data, enna_mediaplayer_ev
     mod->event_cb = event_cb;
 }
 
+static void _pipe_read(void *data, void *buf, unsigned int nbyte)
+{
+    enna_mediaplayer_event_t *event = buf;
+
+    if (!mod->event_cb || !buf)
+        return;
+
+    mod->event_cb(mod->event_cb_data, *event);
+}
+
 static int _event_cb(player_event_t e, void *data)
 {
+    enna_mediaplayer_event_t event;
+
     if (e == PLAYER_EVENT_PLAYBACK_FINISHED)
     {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "PLAYBACK FINISHED");
-        if (mod->event_cb)
-        {
-            mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
-        }
+        event = ENNA_MP_EVENT_EOF;
+        ecore_pipe_write(mod->pipe, &event, sizeof(event));
     }
     return 0;
 }
@@ -357,6 +368,7 @@ void module_init(Enna_Module *em)
     mod->evas = em->evas;
 
     mod->key_down_event_handler  = ecore_event_handler_add(ECORE_X_EVENT_KEY_DOWN, _x_event_key_down, NULL);
+    mod->pipe = ecore_pipe_add(_pipe_read, NULL);
 
     mod->player = player_init(type, ao, vo, verbosity,enna->ee_winid,
             _event_cb);
