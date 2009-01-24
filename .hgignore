@@ -1,4 +1,5 @@
 syntax: regexp
+^.*~$
 ^.*Makefile$
 ^.*Makefile\.in$
 ^.*\.a$
@@ -9,6 +10,7 @@ syntax: regexp
 ^.*\.lai$
 ^.*\.lo$
 ^.*\.so$
+^.*\.Tpo$
 
 ^aclocal\.m4$
 ^autom4te\.cache*$
