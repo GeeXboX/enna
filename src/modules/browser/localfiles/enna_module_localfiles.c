@@ -304,8 +304,6 @@ static int _remove_volumes_cb(void *data, int type, void *event)
     Enna_Volume *v = event;
     Class_Private_Data *priv = data;
 
-    printf("Remove\n");
-
     if (!strcmp(v->type, "file://"))
     {
 	Root_Directories *root;
