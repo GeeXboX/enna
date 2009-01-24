@@ -292,7 +292,7 @@ static int _add_volumes_cb(void *data, int type, void *event)
 	root->label = strdup(v->label);
 	root->icon = strdup(v->icon);
 
-	printf("add %s\n", root->label);
+	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "add : %s", root->label);
 	priv->config->root_directories = eina_list_append(
 	    priv->config->root_directories, root);
     }
@@ -314,7 +314,8 @@ static int _remove_volumes_cb(void *data, int type, void *event)
             {
                 if (!strcmp(root->label, v->label))
                 {
-                    printf("remove : %s\n", root->label);
+                    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                             "remove : %s", root->label);
                     priv->config->root_directories =
                         eina_list_remove(priv->config->root_directories, root);
                 }
