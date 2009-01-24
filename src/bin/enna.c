@@ -324,6 +324,10 @@ static void _create_gui()
     em = enna_module_open("polling", ENNA_MODULE_VOLUME, enna->evas);
     enna_module_enable(em);
 #endif
+#ifdef BUILD_VOLUME_MTAB
+    em = enna_module_open("mtab", ENNA_MODULE_VOLUME, enna->evas);
+    enna_module_enable(em);
+#endif
 
     /* Init Metadatas */
     enna_metadata_init ();

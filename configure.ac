@@ -353,6 +353,19 @@ if test "x$want_volume_polling" = "xyes"; then
   AC_DEFINE(BUILD_VOLUME_POLLING, 1, [Polling Volume])
 fi
 
+# mtab
+want_volume_mtab="yes"
+AC_MSG_CHECKING(whether mtab volume module is to be built)
+AC_ARG_ENABLE(volume-mtab,
+  AS_HELP_STRING([--enable-volume-mtab],[Enable mtab Volume Module]),
+  [ want_volume_mtab=$enableval ]
+)
+AC_MSG_RESULT($want_volume_mtab)
+AM_CONDITIONAL(BUILD_VOLUME_MTAB, test "x$want_volume_mtab" = "xyes")
+if test "x$want_volume_mtab" = "xyes"; then
+  AC_DEFINE(BUILD_VOLUME_MTAB, 1, [mtab Volume])
+fi
+
 ##############
 # Librairies #
 ##############
@@ -492,6 +505,7 @@ src/modules/metadata/localfiles/Makefile
 src/modules/metadata/tmdb/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
+src/modules/volume/mtab/Makefile
 data/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
@@ -537,6 +551,7 @@ echo
 echo "Supported Volume Modules:"
 echo
 echo "  HAL.............................. : $have_volume_hal"
+echo "  mtab............................. : $want_volume_mtab"
 echo
 echo "Optional linked-in librairies:"
 echo
