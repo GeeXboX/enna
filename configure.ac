@@ -340,19 +340,6 @@ if test "x$want_volume_hal" = "xyes" -o "x$want_volume_hal" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_VOLUME_HAL, test "x$have_volume_hal" = "xyes")
 
-# Polling
-want_volume_polling="yes"
-AC_MSG_CHECKING(whether polling volume module is to be built)
-AC_ARG_ENABLE(volume-polling,
-  AS_HELP_STRING([--enable-volume-polling],[Enable Polling Volume Module]),
-  [ want_volume_polling=$enableval ]
-)
-AC_MSG_RESULT($want_volume_polling)
-AM_CONDITIONAL(BUILD_VOLUME_POLLING, test "x$want_volume_polling" = "xyes")
-if test "x$want_volume_polling" = "xyes"; then
-  AC_DEFINE(BUILD_VOLUME_POLLING, 1, [Polling Volume])
-fi
-
 # mtab
 want_volume_mtab="yes"
 AC_MSG_CHECKING(whether mtab volume module is to be built)
