@@ -99,7 +99,8 @@ mtab_parse (void)
     {
         mtab_type_t type = MTAB_TYPE_NONE;
 
-        if (!strncmp (mnt->mnt_type, "nfs", 3))
+        if (!strcmp (mnt->mnt_type, "nfs") ||
+            !strcmp (mnt->mnt_type, "nfs4"))
             type = MTAB_TYPE_NFS;
         else if (!strcmp (mnt->mnt_type, "smbfs") ||
                  !strcmp (mnt->mnt_type, "cifs"))
