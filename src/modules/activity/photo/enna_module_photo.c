@@ -241,6 +241,14 @@ static void _create_slideshow_gui()
 }
 
 static void
+_picture_selected_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    printf("_photo_info_fs\n");
+    _photo_info_fs();
+}
+
+
+static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
     mod->state = MENU_VIEW;
@@ -250,6 +258,7 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 
     /* Delete objects */
     ENNA_OBJECT_DEL(mod->o_browser);
+    evas_object_smart_callback_del(mod->o_wall, "selected", _picture_selected_cb);
     ENNA_OBJECT_DEL(mod->o_wall);
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
@@ -261,9 +270,9 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 static void
 _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 {
+    evas_object_smart_callback_del(mod->o_wall, "selected", _picture_selected_cb);
     ENNA_OBJECT_DEL(mod->o_wall);
 }
-
 
 static void
 _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
@@ -279,6 +288,8 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     {
 	ENNA_OBJECT_DEL(mod->o_wall);
 	mod->o_wall = enna_wall_add(mod->em->evas);
+	evas_object_smart_callback_add(mod->o_wall, "selected", _picture_selected_cb, NULL);
+
 	evas_object_show(mod->o_wall);
 
 	EINA_LIST_FOREACH(ev->files, l, f)
