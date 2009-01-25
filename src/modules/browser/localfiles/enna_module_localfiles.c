@@ -92,7 +92,12 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
         char dir[PATH_MAX];
 
         files = ecore_file_ls(path+7);
-        ecore_list_sort(files, ECORE_COMPARE_CB(strcasecmp), ECORE_SORT_MIN);
+
+	/* If no file found return immediatly*/
+	if (!files)
+	    return NULL;
+
+	ecore_list_sort(files, ECORE_COMPARE_CB(strcasecmp), ECORE_SORT_MIN);
         filename = ecore_list_first_goto(files);
 
         while ((filename = (char *)ecore_list_next(files)) != NULL)
