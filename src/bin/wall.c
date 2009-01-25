@@ -113,6 +113,17 @@ Evas_Object * enna_wall_add(Evas * evas)
     return evas_object_smart_add(evas, _smart);
 }
 
+static
+void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    Picture_Item *pi = data;
+
+    if (!pi) return;
+
+    edje_object_part_swallow(pi->o_edje, "enna.swallow.icon", pi->o_pict);
+    evas_object_show(pi->o_edje);
+
+}
 void enna_wall_picture_append(Evas_Object *obj, const char *filename)
 {
 
@@ -132,7 +143,6 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
     edje_object_file_set(o, enna_config_theme_get(), "enna/picture/item");
     edje_object_part_text_set(o, "enna.text.label",
 	ecore_file_file_get(filename+7));
-    evas_object_show(o);
 
     o_pict = enna_image_add(evas_object_evas_get(sd->o_scroll));
     enna_image_file_set(o_pict, filename+7);
@@ -153,6 +163,8 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
     evas_object_resize(o_pict, ow, oh);
 
     enna_image_preload(o_pict, 0);
+    evas_object_smart_callback_add(o_pict, "preload", _wall_image_preload_cb, pi);
+
 
     pi->o_pict = o_pict;
     pi->o_edje = o;
@@ -180,20 +192,15 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
     enna_image_size_get(o_pict, &w, &h);
     edje_extern_object_aspect_set(o, EDJE_ASPECT_CONTROL_BOTH, (float)w
             /(float)h, (float)w/(float)h);
-    edje_object_part_swallow(o, "enna.swallow.icon", o_pict);
-    evas_object_show(o_pict);
 
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
             _smart_event_mouse_down, pi);
 
-
     enna_box_pack_end(sd->o_box[pi->row], o);
     evas_object_size_hint_min_set(o, ow, oh);
     evas_object_size_hint_align_set(o, 0, 0);
-
-
-
 }
+
 void enna_wall_event_feed(Evas_Object *obj, void *event_info)
 {
     Evas_Event_Key_Down *ev = event_info;
