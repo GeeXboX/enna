@@ -72,11 +72,11 @@ group
             inherit: "default" 0.0;
             rel1
             {
-               relative: -0.2 -0.2;
+               relative: -0.4 -0.4;
             }
             rel2
             {
-               relative: 1.2 1.2;
+               relative: 1.4 1.4;
             }
          }
          description
@@ -85,11 +85,11 @@ group
             inherit: "default" 0.0;
             rel1
             {
-               relative: -0.2 0;
+               relative: -0.4 0;
             }
             rel2
             {
-               relative: 1.2 1.4;
+               relative: 1.4 1.6;
             }
          }
          description
@@ -98,11 +98,11 @@ group
             inherit: "default" 0.0;
             rel1
             {
-               relative: -0.2 -0.4;
+               relative: -0.4 -0.6;
             }
             rel2
             {
-               relative: 1.2 1;
+               relative: 1.4 1;
             }
          }
       }
