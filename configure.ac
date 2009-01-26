@@ -226,6 +226,32 @@ if test "x$want_browser_shoutcast" = "xyes"; then
   AC_DEFINE(BUILD_BROWSER_SHOUTCAST, 1, [SHOUTcast Browser])
 fi
 
+# UPnP/DLNA
+want_browser_upnp="no"
+have_browser_upnp="no"
+AC_MSG_CHECKING(whether UPnP/DLNA browser is to be built)
+AC_ARG_ENABLE(browser-upnp,
+  AS_HELP_STRING([--enable-browser-upnp],[Enable UPnP/DLNA Browser Module]),
+  [ want_browser_upnp=$enableval ]
+)
+AC_MSG_RESULT($want_browser_upnp)
+if test "x$want_browser_upnp" = "xyes" -o "x$want_browser_upnp" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [GUPNP],
+    [gssdp-1.0 gupnp-1.0 gupnp-av-1.0],
+    [
+      AC_DEFINE(BUILD_BROWSER_UPNP, 1, [UPnP/DLNA Browser Module])
+      have_browser_upnp="yes"
+    ],
+    [
+      if test "x$want_browser_upnp" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([gupnp-1.0 not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_BROWSER_UPNP, test "x$have_browser_upnp" = "xyes")
+
 #################
 # Input Modules #
 #################
@@ -483,6 +509,7 @@ src/modules/browser/lms/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
 src/modules/browser/shoutcast/Makefile
+src/modules/browser/upnp/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/metadata/Makefile
@@ -523,6 +550,7 @@ echo "  Light Media Scanner.............. : $have_browser_lms"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  SHOUTcast........................ : $want_browser_shoutcast"
+echo "  UPnP/DLNA........................ : $have_browser_upnp"
 echo
 echo "Supported Input Modules:"
 echo
