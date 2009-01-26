@@ -227,7 +227,7 @@ if test "x$want_browser_shoutcast" = "xyes"; then
 fi
 
 # UPnP/DLNA
-want_browser_upnp="auto"
+want_browser_upnp="no"
 have_browser_upnp="no"
 AC_MSG_CHECKING(whether UPnP/DLNA browser is to be built)
 AC_ARG_ENABLE(browser-upnp,
