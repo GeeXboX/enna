@@ -298,6 +298,10 @@ static void _create_gui()
     em = enna_module_open("shoutcast", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
 #endif
+#ifdef BUILD_BROWSER_UPNP
+    em = enna_module_open("upnp", ENNA_MODULE_BROWSER, enna->evas);
+    enna_module_enable(em);
+#endif
 
 #ifdef BUILD_METADATA_AMAZON
     em = enna_module_open("amazon", ENNA_MODULE_METADATA, enna->evas);
