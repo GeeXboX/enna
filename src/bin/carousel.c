@@ -365,8 +365,6 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         ppi->selected = 0;
         edje_object_signal_emit(ppi->o_edje, "unselect", "enna");
     }
-    else if (ppi == pi)
-        return;
 
     evas_object_raise(pi->o_edje);
     pi->selected = 1;
