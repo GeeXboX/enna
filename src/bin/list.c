@@ -20,7 +20,6 @@ struct _Smart_Data
     Evas_Object *o_scroll;
     Eina_List *items;
     int selected;
-    unsigned char selector : 1;
     unsigned char on_hold : 1;
     unsigned int letter_mode;
     Ecore_Timer *letter_timer;
@@ -159,8 +158,7 @@ void enna_list_selected_set(Evas_Object *obj, int n)
     enna_listitem_select(si->o_base);
     if (si->func_hilight)
         si->func_hilight(si->data, si->data2);
-    if (sd->selector)
-        return;
+
     if (!sd->on_hold)
     {
         //mif (si->func) si->func(si->data, si->data2);
