@@ -159,10 +159,6 @@ void enna_list_selected_set(Evas_Object *obj, int n)
     if (si->func_hilight)
         si->func_hilight(si->data, si->data2);
 
-    if (!sd->on_hold)
-    {
-        //mif (si->func) si->func(si->data, si->data2);
-    }
 
 }
 
@@ -397,8 +393,6 @@ void enna_list_event_key_down(Evas_Object *obj, void *event_info)
     API_ENTRY
     return;
     _smart_event_key_down(sd, event_info);
-    //enna_scrollframe_event_key_down(sd->o_scroll, event_info);
-
 }
 
 /* SMART FUNCTIONS */
@@ -626,8 +620,7 @@ static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
 
     if (!sd->items)
         return;
-    //if (!sd->selector) return;
-    //if (!(si = eina_list_nth(sd->items, sd->selected))) return;
+
     if (sd->on_hold)
     {
         sd->on_hold = 0;
@@ -639,16 +632,6 @@ static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
 
 static void list_item_select(Smart_Data *sd, int n)
 {
-    /*Evas_Coord x, y, h;
-
-    enna_list_selected_set(sd->o_smart, n);
-    evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
-
-    y = h / eina_list_count(sd->items) * n;
-
-    enna_scrollframe_child_pos_set(sd->o_scroll, x, y);*/
-
-
     Evas_Coord x, y;
     Evas_Coord xedje, yedje, hedje, ybox;
 
@@ -776,9 +759,6 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
     ev = event_info;
     ns = sd->selected;
     keycode = enna_get_key(ev);
-
-    //if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD) sd->on_hold = 1;
-    //else sd->on_hold = 0;
 
     switch (keycode)
     {
