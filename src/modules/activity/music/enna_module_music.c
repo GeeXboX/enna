@@ -201,6 +201,17 @@ _class_event(void *event_info)
     }
 }
 
+static void _event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
+        void *event_info)
+{
+    if (mod->o_mediaplayer)
+    {
+	enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Remove Timer");
+	ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+	mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
+    }
+}
+
 static int
 _show_mediaplayer_cb(void *data)
 {
@@ -426,6 +437,10 @@ _create_gui()
     edje_object_file_set(icon, enna_config_theme_get(), "icon/music_mini");
     enna_location_append(o, "Music", icon, NULL, NULL, NULL);
     mod->o_location = o;
+
+    evas_object_event_callback_add(mod->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
+	_event_mouse_down, NULL);
+
 }
 
 /* Module interface */
@@ -472,7 +487,7 @@ module_init(Enna_Module *em)
 
 void
 module_shutdown(Enna_Module *em)
-{    
+{
     em_shutdown(em);
 }
 
