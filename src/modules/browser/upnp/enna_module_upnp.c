@@ -181,7 +181,8 @@ didl_process_object (xmlNode *e, char *udn)
         char uri[1024];
 
         memset (uri, '\0', sizeof (uri));
-        snprintf (uri, sizeof (uri), "udn:%s,id:%s", udn, id);
+        snprintf (uri, sizeof (uri),
+                  "udn:%s,id:%s,parent_id:%s", udn, id, parent_id);
 
         f = enna_vfs_create_directory (uri, title, "icon/directory", NULL);
 
@@ -365,10 +366,10 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
 }
 
 static Eina_List *
-browse_server_list (const char *uri)
+browse_server_list (const char *uri, int parent)
 {
     upnp_media_server_t *srv = NULL;
-    char udn[512], id[256];
+    char udn[512], id[256], parent_id[256];
     int i, res, count;
 
     memset (udn, '\0', sizeof (udn));
@@ -377,8 +378,8 @@ browse_server_list (const char *uri)
     if (!uri)
         return NULL;
 
-    res = sscanf (uri, "udn:%[^,],id:%s", udn, id);
-    if (res != 2)
+    res = sscanf (uri, "udn:%[^,],id:%[^,],parent_id:%s", udn, id, parent_id);
+    if (res != 3)
         return NULL;
 
     count = ecore_list_count (mod->devices);
@@ -398,7 +399,7 @@ browse_server_list (const char *uri)
     if (!srv)
         return NULL;
 
-    return upnp_browse (srv, id, 0, UPNP_MAX_BROWSE);
+    return upnp_browse (srv, parent ? parent_id : id, 0, UPNP_MAX_BROWSE);
 }
 
 static Eina_List *
@@ -423,7 +424,8 @@ upnp_list_mediaservers (void)
 
         memset (uri, '\0', sizeof (uri));
         snprintf (uri, sizeof (uri),
-                  "udn:%s,id:%s", srv->udn, UPNP_DEFAULT_ROOT);
+                  "udn:%s,id:%s,parent_id:%s",
+                  srv->udn, UPNP_DEFAULT_ROOT, UPNP_DEFAULT_ROOT);
 
         f = enna_vfs_create_directory (uri, name, "icon/dev/nfs", NULL);
         servers = eina_list_append (servers, f);
@@ -489,7 +491,7 @@ _class_browse_up (const char *id, void *cookie)
     else
     {
         /* browse content from media server */
-        l = browse_server_list (id);
+        l = browse_server_list (id, 0);
         mod->prev_id = strdup (id);
     }
 
@@ -500,7 +502,7 @@ static Eina_List *
 _class_browse_down (void *cookie)
 {
     if (mod->prev_id)
-        return browse_server_list (mod->prev_id);
+        return browse_server_list (mod->prev_id, 1);
 
     return upnp_list_mediaservers ();
 }
