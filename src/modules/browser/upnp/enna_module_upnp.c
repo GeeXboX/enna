@@ -500,7 +500,7 @@ static Eina_List *
 _class_browse_down (void *cookie)
 {
     if (mod->prev_id)
-        browse_server_list (mod->prev_id);
+        return browse_server_list (mod->prev_id);
 
     return upnp_list_mediaservers ();
 }
