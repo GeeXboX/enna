@@ -520,11 +520,12 @@ static Enna_Class_Vfs class_upnp = {
     "UPnP/DLNA Media Servers",
     NULL,
     "icon/upnp",
-    { NULL,
-      NULL,
-      _class_browse_up,
-      _class_browse_down,
-      _class_vfs_get,
+    {
+        NULL,
+        NULL,
+        _class_browse_up,
+        _class_browse_down,
+        _class_vfs_get,
     },
     NULL
 };
