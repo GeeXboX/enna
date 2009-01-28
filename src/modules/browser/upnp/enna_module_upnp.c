@@ -30,10 +30,10 @@ typedef struct Enna_Module_UPnP_s
 {
     Evas *e;
     Enna_Module *em;
-    pthread_t tid;
     pthread_mutex_t mutex;
     Ecore_List *devices;
-    GMainLoop *loop;
+    Ecore_Idler *idler;
+    GMainContext *mctx;
     GUPnPContext *ctx;
     GUPnPControlPoint *cp;
     char *prev_id;
@@ -73,6 +73,51 @@ upnp_media_server_free (upnp_media_server_t *srv)
     if (srv->model)
         free (srv->model);
     free (srv);
+}
+
+static gboolean
+upnp_gloop_prepare (GSource *source, gint *timeout)
+{
+    return TRUE;
+}
+
+static gboolean
+upnp_gloop_check (GSource *source)
+{
+    return TRUE;
+}
+
+static gboolean
+upnp_gloop_dispatch (GSource *source,
+                     GSourceFunc callback, gpointer user_data)
+{
+    ecore_main_loop_iterate ();
+    return TRUE;
+}
+
+static GSourceFuncs
+upnp_gloop_source_funcs = {
+    upnp_gloop_prepare,
+    upnp_gloop_check,
+    upnp_gloop_dispatch,
+    NULL,
+    NULL,
+    NULL
+};
+
+static void
+upnp_gloop_main_begin (GMainContext *ctx)
+{
+    GSource *s = g_source_new (&upnp_gloop_source_funcs, sizeof (GSource));
+    g_source_attach (s, ctx);
+}
+
+static int
+upnp_gloop_idler (void *data)
+{
+    GMainContext *mctx = data;
+    g_main_context_iteration (mctx, FALSE);
+    return 1; /* keep going */
 }
 
 static xmlNode *
@@ -481,13 +526,6 @@ static Enna_Class_Vfs class_upnp = {
     NULL
 };
 
-static void *
-upnp_loop_thread (void *cookie)
-{
-    g_main_loop_run (mod->loop);
-    return NULL;
-}
-
 /* Module interface */
 
 Enna_Module_Api module_api =
@@ -517,12 +555,14 @@ void module_init (Enna_Module *em)
     ecore_list_free_cb_set (mod->devices,
                             ECORE_FREE_CB (upnp_media_server_free));
 
-    mod->loop = g_main_loop_new (NULL, FALSE);
-    GMainContext *mctx = g_main_loop_get_context (mod->loop);
-    pthread_create (&mod->tid, NULL, upnp_loop_thread, NULL);
+
+    /* bind upnp context to ecore */
+    mod->mctx = g_main_context_default ();
+    upnp_gloop_main_begin (mod->mctx);
+    mod->idler = ecore_idler_add (upnp_gloop_idler, mod->mctx);
 
     error = NULL;
-    mod->ctx = gupnp_context_new (mctx, NULL, 0, &error);
+    mod->ctx = gupnp_context_new (mod->mctx, NULL, 0, &error);
     if (error)
     {
         g_error_free (error);
@@ -554,11 +594,10 @@ void module_shutdown (Enna_Module *em)
     gssdp_resource_browser_set_active
         (GSSDP_RESOURCE_BROWSER (mod->cp), FALSE);
 
-    g_main_loop_quit (mod->loop);
-    g_main_loop_unref (mod->loop);
-
     g_object_unref (mod->cp);
     g_object_unref (mod->ctx);
+
+    ecore_idler_del (mod->idler);
 
     ENNA_FREE (mod->prev_id);
     pthread_mutex_destroy (&mod->mutex);
