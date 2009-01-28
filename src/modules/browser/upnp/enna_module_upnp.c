@@ -4,7 +4,8 @@
  *
  * TODO:
  *  - Add device shutdown discovery (remove from list)
- *  - Check why gUPnP hangs if action calls are performed too fast.
+ *  - Fix potential segv if browsed too fast (mutex issue i'd say).
+ *  - Fix browse down feature (probably bad parent_id).
  *
  */
 
