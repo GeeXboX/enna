@@ -68,6 +68,12 @@ static void _event_bg_key_down_cb(void *data, Evas *e, Evas_Object *obj, void *e
     if (key == ENNA_KEY_QUIT)
         ecore_main_loop_quit();
 
+    if (key == ENNA_KEY_FULLSCREEN)
+    {
+	run_fullscreen = ~run_fullscreen;
+	ecore_evas_fullscreen_set(enna->ee, run_fullscreen);
+    }
+
     if (enna_mainmenu_visible(enna->o_mainmenu))
     {
         switch (key)
