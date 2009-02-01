@@ -76,7 +76,7 @@ static Enna_Class_Vfs class_dvd = {
     1,
     "Watch DVD Video",
     NULL,
-    "icon/dvd",
+    "icon/dev/dvd",
     {
 	NULL,
 	NULL,
