@@ -65,13 +65,11 @@ void enna_volumes_remove(const char *type, Enna_Volume *v)
     Eina_List *l = eina_hash_find(_volumes, type);
 
     l = eina_list_remove(l, v);
-    if (l)
-    {
-	ev = calloc(1, sizeof(Enna_Volume));
-   	memcpy(ev, v, sizeof(Enna_Volume));
-	enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_VOLUME_REMOVED Sent");
-	ecore_event_add(ENNA_EVENT_VOLUME_REMOVED, ev, NULL, NULL);
-    }
+
+    ev = calloc(1, sizeof(Enna_Volume));
+    memcpy(ev, v, sizeof(Enna_Volume));
+    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_VOLUME_REMOVED Sent");
+    ecore_event_add(ENNA_EVENT_VOLUME_REMOVED, ev, NULL, NULL);
 
 }
 
