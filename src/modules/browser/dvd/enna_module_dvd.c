@@ -5,6 +5,7 @@
 #define ENNA_MODULE_NAME "dvd"
 
 
+
 typedef struct _Class_Private_Data
 {
     const char *uri;
@@ -49,27 +50,6 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
 }
 
 
-static int _add_volumes_cb(void *data, int type, void *event)
-{
-    Enna_Volume *v =  event;
-    if (!strcmp(v->type, "dvd://"))
-    {
-
-    }
-    return 1;
-}
-
-static int _remove_volumes_cb(void *data, int type, void *event)
-{
-    Enna_Volume *v = event;
-
-    if (!strcmp(v->type, "dvd://"))
-    {
-
-    }
-    return 1;
-}
-
 
 static Enna_Class_Vfs class_dvd = {
     "dvd_dvd",
@@ -86,6 +66,32 @@ static Enna_Class_Vfs class_dvd = {
     },
     NULL
 };
+
+static int _add_volumes_cb(void *data, int type, void *event)
+{
+    Enna_Volume *v =  event;
+
+    if (!strcmp(v->type, "dvd://"))
+    {
+	printf("Dvd added\n");
+	enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
+    }
+    return 1;
+}
+
+static int _remove_volumes_cb(void *data, int type, void *event)
+{
+    Enna_Volume *v = event;
+
+    if (!strcmp(v->type, "dvd://"))
+    {
+	printf("DVD Removes\n");
+	enna_vfs_class_remove("dvd", ENNA_CAPS_VIDEO);
+    }
+    return 1;
+}
+
+
 
 /* Module interface */
 
@@ -107,7 +113,7 @@ void module_init(Enna_Module *em)
 
     mod->dvd = calloc(1, sizeof(Class_Private_Data));
 
-    enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
+
 
     mod->dvd->volume_add_handler =
         ecore_event_handler_add(ENNA_EVENT_VOLUME_ADDED,
