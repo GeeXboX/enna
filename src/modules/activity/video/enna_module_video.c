@@ -298,9 +298,11 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 	{
 	    if (!f->is_directory)
 	    {
+		enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Append : %s %s to playlist\n", f->label, f->uri);
 		enna_mediaplayer_uri_append(mod->enna_playlist,f->uri, f->label);
 		if (!strcmp(f->uri, ev->file->uri))
 		{
+		    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Select : %s %d in playlist\n", f->uri, i);
 		    enna_mediaplayer_select_nth(mod->enna_playlist,i);
 		}
 		i++;

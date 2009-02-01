@@ -141,6 +141,7 @@ enna_mediaplayer_play(Enna_Playlist *enna_playlist)
             enna_mediaplayer_pause();
             break;
         case PAUSE:
+
             if (_mediaplayer->class->func.class_play)
                 _mediaplayer->class->func.class_play();
             _mediaplayer->play_state = PLAYING;
@@ -177,6 +178,8 @@ enna_mediaplayer_selected_get(Enna_Playlist *enna_playlist)
 int
 enna_mediaplayer_stop(void)
 {
+
+    printf("Stop\n");
     if (_mediaplayer->class)
     {
         if (_mediaplayer->class->func.class_stop)
@@ -279,16 +282,16 @@ enna_mediaplayer_seek(double percent)
     enna_log(ENNA_MSG_INFO, NULL, "Seeking to: %d%%", (int) (100 * percent));
     if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state
             == PLAYING)
-    {        
+    {
             Enna_Event_Mediaplayer_Seek_Data *ev;
             ev = calloc(1, sizeof(Enna_Event_Mediaplayer_Seek_Data));
             if (!ev)
                 return 0;
-            ev->seek_value=percent;    
+            ev->seek_value=percent;
             ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-            if (_mediaplayer->class->func.class_seek)            
+            if (_mediaplayer->class->func.class_seek)
                 return _mediaplayer->class->func.class_seek(percent);
-    }    
+    }
     return 0;
 }
 
@@ -378,13 +381,13 @@ _event_cb(void *data, enna_mediaplayer_event_t event)
     }
 }
 
-PLAY_STATE 
+PLAY_STATE
 enna_mediaplayer_state_get(void)
 {
     return(_mediaplayer->play_state);
 }
 
-Enna_Playlist * 
+Enna_Playlist *
 enna_mediaplayer_playlist_create(void)
 {
     Enna_Playlist  *enna_playlist = calloc(1, sizeof(Enna_Playlist));

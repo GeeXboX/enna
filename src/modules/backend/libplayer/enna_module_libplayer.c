@@ -5,15 +5,17 @@
 
 #define ENNA_MODULE_NAME "libplayer"
 
-#define URI_TYPE_FTP  "ftp://"
-#define URI_TYPE_HTTP "http://"
-#define URI_TYPE_MMS  "mms://"
-#define URI_TYPE_RTP  "rtp://"
-#define URI_TYPE_RTSP "rtsp://"
-#define URI_TYPE_SMB  "smb://"
-#define URI_TYPE_TCP  "tcp://"
-#define URI_TYPE_UDP  "udp://"
-#define URI_TYPE_UNSV "unsv://"
+#define URI_TYPE_FTP      "ftp://"
+#define URI_TYPE_HTTP     "http://"
+#define URI_TYPE_MMS      "mms://"
+#define URI_TYPE_RTP      "rtp://"
+#define URI_TYPE_RTSP     "rtsp://"
+#define URI_TYPE_SMB      "smb://"
+#define URI_TYPE_TCP      "tcp://"
+#define URI_TYPE_UDP      "udp://"
+#define URI_TYPE_UNSV     "unsv://"
+#define URI_TYPE_DVD      "dvd://"
+#define URI_TYPE_DVDNAV   "dvdnav://"
 
 typedef struct _Enna_Module_libplayer
 {
@@ -61,6 +63,57 @@ static mrl_t * set_network_stream(const char *uri, mrl_resource_t type)
     mrl = mrl_new(mod->player, type, args);
 
     return mrl;
+
+}
+
+static mrl_t * set_dvd_stream(const char *uri, mrl_resource_t type)
+{
+    mrl_t *mrl;
+    mrl_resource_videodisc_args_t *args;
+    char *meta;
+    uint32_t prop = 0;
+    int tmp = 0;
+    int title = 0;
+
+    args = calloc(1, sizeof(mrl_resource_videodisc_args_t));
+    mrl = mrl_new(mod->player, type, args);
+
+    meta = mrl_get_metadata_dvd (mod->player, mrl, (uint8_t *) &prop);
+    if (meta)
+    {
+	enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Meta DVD VolumeID: %s", meta);
+	free (meta);
+    }
+
+    if (prop)
+    {
+	int i;
+
+	enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Meta DVD Titles: %i", prop);
+
+	for (i = 1; i <= prop; i++)
+	{
+	    uint32_t chapters, angles, length;
+
+	    chapters = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+		MRL_METADATA_DVD_TITLE_CHAPTERS);
+	    angles = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+		MRL_METADATA_DVD_TITLE_ANGLES);
+	    length = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+		MRL_METADATA_DVD_TITLE_LENGTH);
+
+	    enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,"Meta DVD Title %i (%.2f sec), Chapters: %i, Angles: %i",
+		i, length / 1000.0, chapters, angles);
+	    if (length > tmp)
+	    {
+		tmp = length;
+		title = i;
+	    }
+	}
+    }
+    args->title_start = title;
+
+    return mrl;
 }
 
 static mrl_t * set_local_stream(const char *uri)
@@ -98,6 +151,12 @@ static int _class_file_set(const char *uri, const char *label)
         mrl = set_network_stream(uri, MRL_RESOURCE_UDP);
     else if (!strncmp(uri, URI_TYPE_UNSV, strlen(URI_TYPE_UNSV)))
         mrl = set_network_stream(uri, MRL_RESOURCE_UNSV);
+
+    /* Try Dvd video */
+    else if (!strncmp(uri, URI_TYPE_DVD, strlen(URI_TYPE_DVD)))
+        mrl = set_dvd_stream(uri, MRL_RESOURCE_DVD);
+    else if (!strncmp(uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
+        mrl = set_dvd_stream(uri, MRL_RESOURCE_DVDNAV);
 
     /* default is local files */
     if (!mrl)
