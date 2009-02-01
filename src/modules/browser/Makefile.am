@@ -1,2 +1,2 @@
-SUBDIRS = lms localfiles netstreams shoutcast upnp
+SUBDIRS = lms localfiles netstreams shoutcast upnp dvd
 

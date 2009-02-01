@@ -308,6 +308,10 @@ static void _create_gui()
     em = enna_module_open("upnp", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
 #endif
+#ifdef BUILD_BROWSER_DVD
+    em = enna_module_open("dvd", ENNA_MODULE_BROWSER, enna->evas);
+    enna_module_enable(em);
+#endif
 
 #ifdef BUILD_METADATA_AMAZON
     em = enna_module_open("amazon", ENNA_MODULE_METADATA, enna->evas);

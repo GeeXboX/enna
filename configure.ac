@@ -252,6 +252,20 @@ if test "x$want_browser_upnp" = "xyes" -o "x$want_browser_upnp" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_BROWSER_UPNP, test "x$have_browser_upnp" = "xyes")
 
+# DVD Video
+want_browser_dvd="yes"
+AC_MSG_CHECKING(whether dvd video browser module is to be built)
+AC_ARG_ENABLE(browser-dvd,
+  AS_HELP_STRING([--enable-browser-dvd],[Enable DVD Video Browser Module]),
+  [ want_browser_dvd=$enableval ]
+)
+AC_MSG_RESULT($want_browser_dvd)
+AM_CONDITIONAL(BUILD_BROWSER_DVD, test "x$want_browser_dvd" = "xyes")
+if test "x$want_browser_dvd" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_DVD, 1, [Dvd Video Browser])
+fi
+
+
 #################
 # Input Modules #
 #################
@@ -510,6 +524,7 @@ src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
 src/modules/browser/shoutcast/Makefile
 src/modules/browser/upnp/Makefile
+src/modules/browser/dvd/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/metadata/Makefile
@@ -551,6 +566,7 @@ echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  SHOUTcast........................ : $want_browser_shoutcast"
 echo "  UPnP/DLNA........................ : $have_browser_upnp"
+echo "  DVD Video........................ : $want_browser_dvd"
 echo
 echo "Supported Input Modules:"
 echo
