@@ -78,8 +78,8 @@ volume_free (volume_t *v)
     if (v->enna_volume)
     {
 	Enna_Volume *ev = v->enna_volume;
-	eina_stringshare_del(ev->name);
-	eina_stringshare_del(ev->label);
+	ENNA_FREE(ev->name);
+	ENNA_FREE(ev->label);
 	eina_stringshare_del(ev->icon);
 	eina_stringshare_del(ev->type);
 	eina_stringshare_del(ev->uri);

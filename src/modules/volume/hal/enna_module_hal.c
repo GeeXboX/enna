@@ -215,9 +215,9 @@ vfs_add_volume_entry (volume_t *v)
     evol = calloc(1, sizeof(Enna_Volume));
     evol->name = strdup(name);
     evol->label = strdup(name);
-    evol->icon = icon;
-    evol->type = type;
-    evol->uri = uri;
+    evol->icon = eina_stringshare_add(icon);
+    evol->type = eina_stringshare_add(type);
+    evol->uri = eina_stringshare_add(uri);
     enna_volumes_append(evol->type, evol);
     v->enna_volume = evol;
 }
@@ -257,7 +257,10 @@ ehal_remove_volume (char *udi)
         if (v->udi && !strcmp (v->udi, udi))
         {
 	    if (v->enna_volume)
+	    {
 		enna_volumes_remove(v->enna_volume->type, v->enna_volume);
+		printf("remove volume : %s\n", v->enna_volume->label);
+	    }
             volume_free (v);
         }
     }
