@@ -242,7 +242,13 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 static void
 _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 {
-    enna_location_remove_nth(mod->o_location,enna_location_count(mod->o_location) - 1);
+    int n;
+    char *label ;
+
+    n = enna_location_count(mod->o_location) - 1;
+    label = enna_location_label_get_nth(mod->o_location, n);
+    enna_browser_select_label(mod->o_browser, label);
+    enna_location_remove_nth(mod->o_location, n);
 }
 
 
