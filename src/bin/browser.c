@@ -54,9 +54,10 @@ struct _Smart_Data
     Eina_List *files;
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
+    Evas *evas;
+    char *prev;
     unsigned char accept_ev : 1;
     unsigned char show_file : 1;
-    Evas *evas;
 };
 
 
@@ -314,8 +315,6 @@ static void _browse_down(Smart_Data *sd)
 	    return;
 	}
 
-	evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
-
         /* Clear list and add new items */
         edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
 	    _list_transition_right_end_cb, sd);
@@ -340,7 +339,8 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     ENNA_OBJECT_DEL(sd->o_list);
 
     sd->o_list = enna_list_add(sd->evas);
-    evas_object_show(sd->o_list);
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
+    edje_object_calc_force(sd->o_edje);
 
     if (direction == 0)
         edje_object_signal_emit(sd->o_edje, "list,right,now", "enna");
@@ -379,8 +379,10 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 	    //sd->file = f;
             enna_list_append(sd->o_list, item, _browse, NULL, sd, f);
         }
-
-
+	if (direction)
+	    evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
+	else
+	    enna_list_selected_set(sd->o_list, 0);
     }
     else if (!direction)
     {
@@ -392,18 +394,14 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
         item = enna_listitem_add(sd->evas);
         enna_listitem_create_simple(item, icon, "No Media found!");
         enna_list_append(sd->o_list, item, NULL, NULL, NULL, NULL);
+	enna_list_selected_set(sd->o_list, 0);
     }
     else
     {
         /* Browse down and no file detected : Root */
         sd->vfs = NULL;
+
     }
-
-
-    enna_list_selected_set(sd->o_list, 0);
-    evas_object_show(sd->o_list);
-
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
     edje_object_signal_emit(sd->o_edje, "list,default", "enna");
     sd->accept_ev = 1;
 }
@@ -468,3 +466,14 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
 
 }
 
+int
+enna_browser_select_label(Evas_Object *obj, const char *label)
+{
+
+    API_ENTRY return -1;
+
+    if (!sd || !sd->o_list) return -1;
+
+    return enna_list_jump_label(sd->o_list, label);
+
+}
