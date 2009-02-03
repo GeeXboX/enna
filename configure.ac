@@ -536,6 +536,7 @@ src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
 data/Makefile
+data/other/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
 ])
