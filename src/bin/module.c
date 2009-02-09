@@ -140,6 +140,10 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
       module_class = "volume";
       break;
 
+    case ENNA_MODULE_INPUT:
+      module_class = "input";
+      break;
+
     default:
       return NULL;
     }
