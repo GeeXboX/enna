@@ -113,7 +113,7 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
         Enna_Metadata *metadata)
 {
     Enna_Metadata *meta;
-    
+
     API_ENTRY;
 
     if (!metadata)
@@ -135,9 +135,10 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     {
         /* FIXME : add edje cb at end of cover transition to switch properly covers*/
 
-        sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-	enna_image_fill_inside_set(sd->o_cover, 0);
-        enna_image_file_set(sd->o_cover, meta->cover);
+	sd->o_cover = enna_reflection_add(evas_object_evas_get(sd->o_edje));
+//        sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
+	enna_reflection_fill_inside_set(sd->o_cover, 0);
+        enna_reflection_file_set(sd->o_cover, meta->cover);
         edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
         edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
 
@@ -207,8 +208,8 @@ static void _smart_add(Evas_Object * obj)
     sd->h = 0;
     sd->o_mediacontrol=enna_mediacontrol_add(evas_object_evas_get(sd->o_edje),_enna_playlist);
     edje_object_part_swallow(sd->o_edje, "enna.swallow.mediacontrol", sd->o_mediacontrol);
-    
-    evas_object_smart_member_add(sd->o_mediacontrol, obj); 
+
+    evas_object_smart_member_add(sd->o_mediacontrol, obj);
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
     edje_object_signal_callback_add(sd->o_edje, "drag", "enna.dragable.pos",
