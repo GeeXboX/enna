@@ -31,5 +31,6 @@
 #include "switcher.h"
 #include "parser_cdda.h"
 #include "carousel.h"
+#include "reflection.h"
 
 #endif
