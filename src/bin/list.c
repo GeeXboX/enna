@@ -74,7 +74,7 @@ void enna_list_append(Evas_Object *obj, Evas_Object *item, void (*func) (void *d
 
     enna_listitem_min_size_get(si->o_base, &mw, &mh);
 
-    enna_box_pack_end(sd->o_box, item);
+    elm_box_pack_end(sd->o_box, item);
     evas_object_size_hint_min_set(si->o_base, mw, mh);
     evas_object_size_hint_align_set(si->o_base, 0, 0.5);
     evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
@@ -420,11 +420,11 @@ static void _smart_add(Evas_Object *obj)
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/list");
-    sd->o_box = enna_box_add(evas_object_evas_get(obj));
+    sd->o_box = elm_box_add(obj);
     evas_object_size_hint_align_set(sd->o_box, 0, 0.5);
     evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
-    enna_box_homogenous_set(sd->o_box, 1);
-    enna_box_orientation_set(sd->o_box, 0);
+    elm_box_homogenous_set(sd->o_box, 1);
+    elm_box_horizontal_set(sd->o_box, 0);
 
     sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
     enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,

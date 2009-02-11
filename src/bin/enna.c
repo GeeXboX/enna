@@ -471,14 +471,12 @@ static int parse_command_line(int argc, char **argv)
     return 0;
 }
 
-int main(int arc, char **arv)
+int main(int argc, char **argv)
 {
-    if (parse_command_line(arc, arv) < 0)
+    if (parse_command_line(argc, argv) < 0)
         return 0;
 
-    ecore_evas_init();
-    ecore_file_init();
-    edje_init();
+    elm_init(argc, argv);
 
     /* Must be called first */
     enna_config_init();
