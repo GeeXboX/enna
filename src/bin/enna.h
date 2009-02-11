@@ -14,6 +14,7 @@
 #include <Edje.h>
 #include <Ecore_Evas.h>
 #include <Eet.h>
+#include <Elementary.h>
 
 #include <fcntl.h>
 #include <stdlib.h>
