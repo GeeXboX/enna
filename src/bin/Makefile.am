@@ -13,7 +13,6 @@ enna.c\
 enna_config.c\
 utils.c\
 metadata.c\
-box.c\
 mainmenu.c\
 background.c\
 module.c\
@@ -52,7 +51,6 @@ enna_inc.h\
 enna_config.h\
 utils.h\
 metadata.h\
-box.h\
 mainmenu.h\
 background.h\
 module.h\
