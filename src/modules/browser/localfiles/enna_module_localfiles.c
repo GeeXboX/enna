@@ -239,21 +239,21 @@ static Enna_Vfs_File * _class_vfs_get(int type)
     {
 #ifdef BUILD_ACTIVITY_MUSIC
         case ENNA_CAPS_MUSIC:
-            return enna_vfs_create_directory((char *) mod->music->uri,
-                    (char *) ecore_file_file_get(mod->music->uri),
-                    (char *) evas_stringshare_add("icon/music"), NULL);
+            return enna_vfs_create_directory(mod->music->uri,
+                    ecore_file_file_get(mod->music->uri),
+                    evas_stringshare_add("icon/music"), NULL);
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
         case ENNA_CAPS_VIDEO:
-            return enna_vfs_create_directory((char *) mod->video->uri,
-                    (char *) ecore_file_file_get(mod->video->uri),
-                    (char *) evas_stringshare_add("icon/video"), NULL);
+            return enna_vfs_create_directory(mod->video->uri,
+                    ecore_file_file_get(mod->video->uri),
+                    evas_stringshare_add("icon/video"), NULL);
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
         case ENNA_CAPS_PHOTO:
-            return enna_vfs_create_directory((char *) mod->photo->uri,
-                    (char *) ecore_file_file_get(mod->photo->uri),
-                    (char *) evas_stringshare_add("icon/photo"), NULL);
+            return enna_vfs_create_directory(mod->photo->uri,
+                    ecore_file_file_get(mod->photo->uri),
+                    evas_stringshare_add("icon/photo"), NULL);
 #endif
         default:
             break;

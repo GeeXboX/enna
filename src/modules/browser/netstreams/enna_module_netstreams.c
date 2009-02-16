@@ -210,16 +210,16 @@ static Eina_List * browse_down_video(void *cookie)
 
 static Enna_Vfs_File * vfs_get_music(void *cookie)
 {
-    return enna_vfs_create_directory((char *) mod->music->uri,
-            (char *) ecore_file_file_get(mod->music->uri),
-            (char *) evas_stringshare_add("icon/music"), NULL);
+    return enna_vfs_create_directory(mod->music->uri,
+            ecore_file_file_get(mod->music->uri),
+            evas_stringshare_add("icon/music"), NULL);
 }
 
 static Enna_Vfs_File * vfs_get_video(void *cookie)
 {
-    return enna_vfs_create_directory((char *) mod->video->uri,
-            (char *) ecore_file_file_get(mod->video->uri),
-            (char *) evas_stringshare_add("icon/video"), NULL);
+    return enna_vfs_create_directory(mod->video->uri,
+            ecore_file_file_get(mod->video->uri),
+            evas_stringshare_add("icon/video"), NULL);
 }
 
 static void class_init(const char *name, netstreams_priv_t **priv,
