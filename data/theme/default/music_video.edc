@@ -37,17 +37,41 @@ images {
              rel2 {relative: 1 1;offset: 0 -64;to: "clip.module";}
           }
        }
-
+       part {
+          name: "clip.list";
+          clip_to: "clip.content";
+          type: RECT;
+          mouse_events: 0;
+          description {
+             state: "default" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+          }
+          description {
+             state: "left" 0.0;
+             color: 255 255 255 255;
+             visible: 0;
+             rel1 {relative: -1 0;}
+             rel2 {relative:  0  1;};
+          }
+          description {
+             state: "right" 0.0;
+             color: 255 255 255 255;
+             visible: 0;
+             rel1{relative: 1 0;}
+             rel2 {relative: 2 1;};
+          }
+       }
        part {
           name: "enna.swallow.list";
           type: SWALLOW;
           mouse_events : 1;
-          clip_to: "clip.content";
+          clip_to: "clip.list";
           description {
              state: "default" 0.0;
-             rel1.to: "clip.content";
+             rel1.to: "clip.list";
              rel1.relative: 0.1 0.1;
-             rel2.to: "clip.content";
+             rel2.to: "clip.list";
              rel2.relative: 0.9 0.9;
           }
        }
@@ -206,6 +230,51 @@ images {
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
           target: "enna.swallow.mediaplayer";
+       }
+
+       program {
+          name: "list,left,now";
+          signal: "list,left,now";
+          source:  "enna";
+          action:  STATE_SET "left" 0.0;
+          target: "clip.list";
+       }
+       program {
+          name: "list,right,now";
+          signal: "list,right,now";
+          source:  "enna";
+          action:  STATE_SET "right" 0.0;
+          target: "clip.list";
+       }
+       program {
+          name: "list,right";
+          signal: "list,right";
+          source:  "enna";
+          action:  STATE_SET "right" 0.0;
+          transition: "ACCELERATE" 0.3;
+          target: "clip.list";
+          after: "transition,end";
+       }
+       program {
+          name: "list,left";
+          signal: "list,left";
+          source:  "enna";
+          action:  STATE_SET "left" 0.0;
+          transition: "ACCELERATE" 0.3;
+          target: "clip.list";
+          after: "transition,end";
+       }
+       program {
+          name: "list,default";
+          signal: "list,default";
+          source:  "enna";
+          action:  STATE_SET "default" 0.0;
+          transition: "ACCELERATE" 0.3;
+          target: "clip.list";
+       }
+       program {
+          name: "transition,end";
+          action: SIGNAL_EMIT "list,transition,end" "edje";
        }
     }
  }
