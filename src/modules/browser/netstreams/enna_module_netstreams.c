@@ -137,6 +137,8 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
     {
         file = mktemp(tmp);
         chunk = url_get_data(mod->curl, (char *) path);
+        if (chunk.status != CURLE_OK)
+          return NULL;
 
         f = fopen(file, "w");
         if (!f)
