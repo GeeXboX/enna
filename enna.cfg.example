@@ -43,7 +43,7 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 #verbosity=
 
 # Metadata module (video)
-blacklist_keywords=1080p,720p,ctu,divx,dvdrip,dvdscr,fqm,hdtv,lol,notv,pdtv,screencam,screener,vtv,x264,xvid
+blacklist_keywords=1080p,720p,ctu,divx,dvdrip,dvdscr,fqm,hdtv,lol,notv,pdtv,screencam,screener,vtv,x264,xvid,dsr
 
 [localfiles]
 path_music=file:///path/to/Music,Music,icon/favorite
