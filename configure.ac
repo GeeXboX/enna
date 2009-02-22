@@ -350,6 +350,19 @@ if test "x$want_metadata_tmdb" = "xyes"; then
   AC_DEFINE(BUILD_METADATA_TMDB, 1, [TheMovieDB.org Metadata])
 fi
 
+# TheTVDB.org (TVDB)
+want_metadata_tvdb="yes"
+AC_MSG_CHECKING(whether thetvdb.com metadata module is to be built)
+AC_ARG_ENABLE(metadata-tvdb,
+  AS_HELP_STRING([--enable-metadata-tvdb],[Enable TheTVDB Metadata Module]),
+  [ want_metadata_tvdb=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_tvdb)
+AM_CONDITIONAL(BUILD_METADATA_TVDB, test "x$want_metadata_tvdb" = "xyes")
+if test "x$want_metadata_tvdb" = "xyes"; then
+  AC_DEFINE(BUILD_METADATA_TVDB, 1, [TheTVDB.com Metadata])
+fi
+
 ##################
 # Volume Modules #
 ##################
@@ -532,6 +545,7 @@ src/modules/metadata/amazon/Makefile
 src/modules/metadata/libplayer/Makefile
 src/modules/metadata/localfiles/Makefile
 src/modules/metadata/tmdb/Makefile
+src/modules/metadata/tvdb/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
@@ -579,6 +593,7 @@ echo "  Amazon.com....................... : $want_metadata_amazon"
 echo "  libplayer........................ : $have_metadata_libplayer"
 echo "  Local files...................... : $want_metadata_localfiles"
 echo "  TheMovieDB.org................... : $want_metadata_tmdb"
+echo "  TheTVDB.com...................... : $want_metadata_tvdb"
 echo
 echo "Supported Volume Modules:"
 echo
