@@ -127,7 +127,11 @@ enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,const char *uri, const 
 int
 enna_mediaplayer_play(Enna_Playlist *enna_playlist)
 {
-
+    if (!_mediaplayer->class)
+    {
+      enna_log(ENNA_MSG_CRITICAL, NULL, "mediaplayer class not registered!");
+      return -1;
+    }
     switch (_mediaplayer->play_state)
     {
         case STOPPED:
@@ -170,7 +174,7 @@ enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist,int n)
         return -1;
     item = eina_list_nth(enna_playlist->playlist, n);
     enna_log(ENNA_MSG_INFO, NULL, "select %d", n);
-    if (item && item->uri && _mediaplayer->class->func.class_file_set)
+    if (item && item->uri && _mediaplayer->class && _mediaplayer->class->func.class_file_set)
         _mediaplayer->class->func.class_file_set(item->uri, item->label);
     enna_playlist->selected = n;
     return 0;
@@ -226,7 +230,7 @@ enna_mediaplayer_next(Enna_Playlist *enna_playlist)
     if (item)
     {
         enna_mediaplayer_stop();
-        if (item->uri && _mediaplayer->class->func.class_file_set)
+        if (item->uri && _mediaplayer->class && _mediaplayer->class->func.class_file_set)
             _mediaplayer->class->func.class_file_set(item->uri, item->label);
         enna_mediaplayer_play(enna_playlist);
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_NEXT, NULL, NULL, NULL);
@@ -251,7 +255,7 @@ enna_mediaplayer_prev(Enna_Playlist *enna_playlist)
     if (item)
     {
         enna_mediaplayer_stop();
-        if (item->uri && _mediaplayer->class->func.class_file_set)
+        if (item->uri && _mediaplayer->class && _mediaplayer->class->func.class_file_set)
             _mediaplayer->class->func.class_file_set(item->uri, item->label);
         enna_mediaplayer_play(enna_playlist);
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_PREV, NULL, NULL, NULL);
@@ -265,7 +269,7 @@ enna_mediaplayer_position_get(void)
     if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state
             == PLAYING)
     {
-        if (_mediaplayer->class->func.class_position_get)
+        if (_mediaplayer->class && _mediaplayer->class->func.class_position_get)
             return _mediaplayer->class->func.class_position_get();
     }
     return 0.0;
@@ -277,7 +281,7 @@ enna_mediaplayer_length_get(void)
     if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state
             == PLAYING)
     {
-        if (_mediaplayer->class->func.class_length_get)
+        if (_mediaplayer->class && _mediaplayer->class->func.class_length_get)
             return _mediaplayer->class->func.class_length_get();
     }
     return 0.0;
@@ -296,7 +300,7 @@ enna_mediaplayer_seek(double percent)
                 return 0;
             ev->seek_value=percent;
             ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-            if (_mediaplayer->class->func.class_seek)
+            if (_mediaplayer->class && _mediaplayer->class->func.class_seek)
                 return _mediaplayer->class->func.class_seek(percent);
     }
     return 0;
