@@ -151,7 +151,7 @@ tmdb_parse (Enna_Metadata *meta)
             int r, y, m, d;
             r = sscanf ((char *) tmp, "%d-%d-%d", &y, &m, &d);
             xmlFree (tmp);
-            if (r == 0)
+            if (r == 3)
                 meta->year = y;
         }
     }
