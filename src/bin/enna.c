@@ -329,6 +329,10 @@ static void _create_gui()
     em = enna_module_open("tmdb", ENNA_MODULE_METADATA, enna->evas);
     enna_module_enable(em);
 #endif
+#ifdef BUILD_METADATA_TVDB
+    em = enna_module_open("tvdb", ENNA_MODULE_METADATA, enna->evas);
+    enna_module_enable(em);
+#endif
 
 #ifdef BUILD_VOLUME_HAL
     em = enna_module_open("hal", ENNA_MODULE_VOLUME, enna->evas);

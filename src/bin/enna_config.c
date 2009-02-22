@@ -85,7 +85,7 @@
     "#verbosity=\n"							\
     "\n"								\
     "# Metadata module (video)\n"					\
-    "blacklist_keywords=1080p,720p,ctu,divx,dvdrip,dvdscr,fqm,hdtv,lol,notv,pdtv,screencam,screener,vtv,x264,xvid\n" \
+    "blacklist_keywords=1080p,720p,ctu,divx,dvdrip,dvdscr,fqm,hdtv,lol,notv,pdtv,screencam,screener,vtv,x264,xvid,dsr\n" \
     "\n"								\
     "[localfiles]\n"							\
     "path_music=file:///path/to/Music,Music,icon/favorite\n"			\
