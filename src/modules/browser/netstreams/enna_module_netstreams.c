@@ -156,7 +156,7 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
 
     /* Network Extended M3U Playlist Stream Online Listings */
     header = read_line_from_stream(f);
-    if (!strncmp(header, EXT_M3U_HEADER, strlen(EXT_M3U_HEADER)))
+    if (header && !strncmp(header, EXT_M3U_HEADER, strlen(EXT_M3U_HEADER)))
         streams = parse_extm3u(f);
 
     free(header);
