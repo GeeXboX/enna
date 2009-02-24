@@ -241,6 +241,7 @@ static void _create_gui()
 
     o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "enna");
+    elm_theme_extension_add(enna_config_theme_get());
     evas_object_resize(o, app_w, app_h);
     evas_object_move(o, 0, 0);
     evas_object_show(o);

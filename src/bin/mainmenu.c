@@ -296,7 +296,7 @@ static void _smart_init(void)
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
-    Evas_Object *o;
+    Evas_Object *o, *ic, *bt;
     Evas *e;
     unsigned int orientation = 1;
     char *tmp = NULL;
@@ -342,23 +342,25 @@ static void _smart_add(Evas_Object * obj)
     evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
     edje_object_part_swallow(sd->o_edje, "titlebar.swallow.button", sd->o_btn_box);
 
-    o = enna_button_add(e);
-    enna_button_icon_set(o, "icon/home_mini");
-    evas_object_smart_callback_add(o, "clicked", _home_button_clicked_cb, sd);
-    evas_object_size_hint_align_set(o, 0.5, 0.5);
-    evas_object_size_hint_min_set(o, 64, 64);
-    elm_box_pack_end(sd->o_btn_box, o);
-    evas_object_show(o);
-    sd->o_home_button = o;
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/home_mini");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _home_button_clicked_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
 
-    o = enna_button_add(e);
-    enna_button_icon_set(o, "icon/arrow_left");
-    evas_object_size_hint_align_set(o, 0.5, 0.5);
-    evas_object_size_hint_min_set(o, 64, 64);
-    elm_box_pack_end(sd->o_btn_box, o);
-    evas_object_show(o);
-    evas_object_smart_callback_add(o, "clicked", _back_button_clicked_cb, sd);
-    sd->o_back_button = o;
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/arrow_left");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _back_button_clicked_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
 
     sd->o_smart = obj;
     evas_object_smart_member_add(sd->o_edje, obj);
