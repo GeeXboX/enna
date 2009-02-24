@@ -26,7 +26,6 @@ content.c\
 pan.c\
 scrollframe.c\
 wall.c\
-button.c\
 switcher.c\
 location.c\
 mediaplayer.c\
@@ -64,7 +63,6 @@ content.h\
 pan.h\
 scrollframe.h\
 wall.h\
-button.h\
 switcher.h\
 location.h\
 mediaplayer.h\

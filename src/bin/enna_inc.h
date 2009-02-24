@@ -26,7 +26,6 @@
 #include "md5.h"
 #include "logs.h"
 #include "slideshow.h"
-#include "button.h"
 #include "switcher.h"
 #include "parser_cdda.h"
 #include "carousel.h"

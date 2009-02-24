@@ -33,20 +33,6 @@
 
 #include "enna.h"
 
-#define BTN(name)							\
-    {									\
-	ic = elm_icon_add(obj);						\
-	printf("%s\n", "icon/mp_##name##"); \
-	elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_##name##"); \
-	elm_icon_scale_set(ic, 0, 0);					\
-	bt = elm_button_add(obj);					\
-	evas_object_smart_callback_add(bt, "clicked",_button_clicked_##name##_cb, sd); \
-	elm_button_icon_set(bt, ic);					\
-	elm_box_pack_end(sd->o_btn_box, bt);				\
-	evas_object_show(bt);						\
-	evas_object_show(ic);						\
-    }									\
-
 #define SMART_NAME "enna_MEDIACONTROL"
 
 typedef struct _Smart_Data Smart_Data;
@@ -277,7 +263,7 @@ _smart_init(void)
 static void
 _smart_add(Evas_Object * obj)
 {
-    Evas_Object *o, *ic, *bt;
+    Evas_Object *ic, *bt;
     Smart_Data *sd;
     Evas *evas;
     sd = calloc(1, sizeof(Smart_Data));
@@ -300,15 +286,6 @@ _smart_add(Evas_Object * obj)
     evas_object_size_hint_align_set(sd->o_btn_box, 0, 0.5);
     evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_btn_box);
-
-
-/*    BTN(play);
-    BTN(pause);
-    BTN(prev);
-    BTN(rewind);
-    BTN(forward);
-    BTN(next);
-    BTN(stop);*/
 
     ic = elm_icon_add(obj);
     elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
@@ -380,49 +357,6 @@ _smart_add(Evas_Object * obj)
     evas_object_show(bt);
     evas_object_show(ic);
 
-/*
-    o= enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_play");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.play",o);
-
-    sd->o_play=o;
-
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_pause");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.pause",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_pause_cb, sd);
-    sd->o_pause=o;
-
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_prev");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.prev",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_prev_cb, sd);
-    sd->o_prev=o;
-
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_rewind");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.rewind",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_rewind_cb, sd);
-    sd->o_rewind=o;
-
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_forward");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.forward",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_forward_cb, sd);
-    sd->o_forward=o;
-
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_next");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.next",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_next_cb, sd);
-    sd->o_next=o;
-
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_stop");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.stop",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_stop_cb, sd);
-    sd->o_stop=o;
-*/
     sd->play_event_handler = ecore_event_handler_add(
              ENNA_EVENT_MEDIAPLAYER_START, _start_cb, sd);
     sd->stop_event_handler = ecore_event_handler_add(
