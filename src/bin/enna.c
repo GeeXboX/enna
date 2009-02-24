@@ -43,7 +43,6 @@ static char *theme_name = NULL;
 static unsigned int app_w = 1280;
 static unsigned int app_h = 720;
 static int run_fullscreen = 0;
-static int run_gl = 0;
 
 /* Callbacks */
 
@@ -162,7 +161,7 @@ static void _list_engines()
 
 /* Functions */
 
-static int _enna_init(int run_gl)
+static int _enna_init()
 {
     char tmp[PATH_MAX];
 
@@ -487,7 +486,7 @@ int main(int argc, char **argv)
 
     enna = calloc(1, sizeof(Enna));
 
-    if (!_enna_init(run_gl))
+    if (!_enna_init())
         return 0;
 
     ecore_main_loop_begin();
