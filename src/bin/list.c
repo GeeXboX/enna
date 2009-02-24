@@ -237,7 +237,8 @@ void enna_list_jump_nth(Evas_Object *obj, int n)
     evas_object_raise(si->o_base);
     enna_listitem_select(si->o_base);
     evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
-    enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
+    /* FIXME
+       enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);*/
     if (si->func_hilight)
         si->func_hilight(si->data, si->data2);
 
@@ -426,10 +427,8 @@ static void _smart_add(Evas_Object *obj)
     elm_box_homogenous_set(sd->o_box, 1);
     elm_box_horizontal_set(sd->o_box, 0);
 
-    sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
-    enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
-            ENNA_SCROLLFRAME_POLICY_ON);
-    enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
+    sd->o_scroll = elm_scroller_add(obj);
+    elm_scroller_content_set(sd->o_scroll, sd->o_box);
 
     evas_object_event_callback_add(sd->o_box, EVAS_CALLBACK_RESIZE,
 	_box_size_hints_changed_cb, sd);
@@ -467,7 +466,8 @@ static int _letter_timer_cb(void *data)
             enna_list_selected_set(sd->o_smart, i);
             evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
             y = h/eina_list_count(sd->items) * (i-3);
-            enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
+	    //FIXME
+            /*enna_scrollframe_child_pos_set(sd->o_scroll, x, y);*/
             break;
         }
     }
@@ -640,11 +640,13 @@ static void list_item_select(Smart_Data *sd, int n)
     Evas_Coord xedje, yedje, hedje, ybox, hbox;
 
     enna_list_selected_set(sd->o_smart, n);
-    enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
+    /* FIXME
+       enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);*/
     enna_list_selected_geometry_get(sd->o_smart, &xedje, &yedje, NULL, &hedje);
     evas_object_geometry_get(sd->o_box, NULL, &ybox, NULL, &hbox);
     y = (yedje + hedje / 2 - ybox - sd->h / 2 + sd->y);
-    enna_scrollframe_child_pos_set(sd->o_scroll, x , y);
+    /* FIXME
+       enna_scrollframe_child_pos_set(sd->o_scroll, x , y);*/
 }
 
 static void list_set_item(Smart_Data *sd, int start, int up, int step)
