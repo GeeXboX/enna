@@ -1,11 +1,14 @@
-/* Interface */
+/*
+ * TheTVDB.com metadata plugin.
+ *  See http://thetvdb.com/wiki/index.php?title=Programmers_API
+ */
 
 #include "enna.h"
 #include "xml_utils.h"
 #include "url_utils.h"
 
-#define ENNA_MODULE_NAME        "metadata_tmdb"
-#define ENNA_GRABBER_NAME       "tmdb"
+#define ENNA_MODULE_NAME        "metadata_tvdb"
+#define ENNA_GRABBER_NAME       "tvdb"
 #define ENNA_GRABBER_PRIORITY   3
 
 #define PATH_BACKDROPS          "backdrops"
@@ -13,28 +16,31 @@
 
 #define MAX_URL_SIZE            1024
 
-#define TMDB_HOSTNAME           "api.themoviedb.org"
+#define TVDB_DEFAULT_LANGUAGE   "en"
 
-#define TMDB_API_KEY            "5401cd030990fba60e1c23d2832de62e"
+#define TVDB_HOSTNAME           "thetvdb.com"
+#define TVDB_IMAGES_HOSTNAME    "images.thetvdb.com"
 
-#define TMDB_QUERY_SEARCH "http://%s/2.0/Movie.search?title=%s&api_key=%s"
-#define TMDB_QUERY_INFO   "http://%s/2.0/Movie.getInfo?id=%s&api_key=%s"
+#define TVDB_API_KEY            "29739E1D50A2ACA9"
 
-typedef struct _Enna_Metadata_Tmdb
-{
+#define TVDB_QUERY_SEARCH       "http://%s/api/GetSeries.php?seriesname=%s"
+#define TVDB_QUERY_INFO         "http://%s/api/%s/series/%s/%s.xml"
+#define TVDB_COVERS_URL         "http://%s/banners/%s"
+
+typedef struct _Enna_Metadata_Tvdb {
     Evas *evas;
     Enna_Module *em;
     CURL *curl;
-} Enna_Metadata_Tmdb;
+} Enna_Metadata_Tvdb;
 
-static Enna_Metadata_Tmdb *mod;
+static Enna_Metadata_Tvdb *mod;
 
-/*****************************************************************************/
-/*                         TheMovieDB.org Helpers                            */
-/*****************************************************************************/
+/****************************************************************************/
+/*                           TheTVDB.com Helpers                            */
+/****************************************************************************/
 
 static void
-tmdb_parse (Enna_Metadata *meta)
+tvdb_parse (Enna_Metadata *meta)
 {
     char url[MAX_URL_SIZE];
     char *escaped_keywords;
@@ -42,22 +48,23 @@ tmdb_parse (Enna_Metadata *meta)
 
     xmlDocPtr doc = NULL;
     xmlChar *tmp;
-    
+    xmlNode *n;
+
     if (!meta || !meta->keywords)
         return;
 
     /* TMDB only has sense on video files */
     if (meta->type != ENNA_METADATA_VIDEO)
         return;
-    
+
     /* get HTTP compliant keywords */
     escaped_keywords = calloc (1, 2 * strlen (meta->keywords));
     url_escape_string (escaped_keywords, meta->keywords);
 
-    /* proceed with TMDB search request */
+    /* proceed with TVDB search request */
     memset (url, '\0', MAX_URL_SIZE);
-    snprintf (url, MAX_URL_SIZE, TMDB_QUERY_SEARCH,
-              TMDB_HOSTNAME, escaped_keywords, TMDB_API_KEY);
+    snprintf (url, MAX_URL_SIZE, TVDB_QUERY_SEARCH,
+              TVDB_HOSTNAME, escaped_keywords);
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Search Request: %s", url);
 
@@ -74,33 +81,27 @@ tmdb_parse (Enna_Metadata *meta)
     if (!doc)
         goto error;
 
-    /* check for total number of results */
-    tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                        "totalResults");
-    if (!tmp)
+    /* check for a known DB entry */
+    n = get_node_xml_tree (xmlDocGetRootElement (doc), "Series");
+    if (!n)
     {
         enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
                   "Unable to find the item \"%s\"", escaped_keywords);
         goto error;
     }
 
-    /* check that requested item is known on TMDB */
-    if (!xmlStrcmp ((unsigned char *) tmp, (unsigned char *) "0"))
-        goto error;
-    xmlFree (tmp);
-
-    /* get TMDB Movie ID */
-    tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc), "id");
+    /* get TVDB serie ID */
+    tmp = get_prop_value_from_xml_tree (n, "seriesid");
     if (!tmp)
         goto error;
 
     xmlFreeDoc (doc);
     doc = NULL;
 
-    /* proceed with TMDB search request */
+    /* proceed with TVDB info request */
     memset (url, '\0', MAX_URL_SIZE);
-    snprintf (url, MAX_URL_SIZE,
-              TMDB_QUERY_INFO, TMDB_HOSTNAME, tmp, TMDB_API_KEY);
+    snprintf (url, MAX_URL_SIZE, TVDB_QUERY_INFO,
+              TVDB_HOSTNAME, TVDB_API_KEY, tmp, TVDB_DEFAULT_LANGUAGE);
     xmlFree (tmp);
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Info Request: %s", url);
@@ -109,7 +110,8 @@ tmdb_parse (Enna_Metadata *meta)
     if (data.status != CURLE_OK)
         goto error;
 
-    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Info Reply: %s", data.buffer);
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+              "Info Reply: %s", data.buffer);
 
     /* parse the XML answer */
     doc = xmlReadMemory (data.buffer, data.size, NULL, NULL, 0);
@@ -121,7 +123,7 @@ tmdb_parse (Enna_Metadata *meta)
     if (!meta->overview)
     {
         tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "short_overview");
+                                            "Overview");
         if (tmp)
         {
             meta->overview = strdup ((char *) tmp);
@@ -133,19 +135,19 @@ tmdb_parse (Enna_Metadata *meta)
     if (!meta->runtime)
     {
         tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "runtime");
+                                            "Runtime");
         if (tmp)
         {
             meta->runtime = atoi ((char *) tmp);
             xmlFree (tmp);
         }
     }
-    
-    /* fetch movie year of production */
+
+    /* fetch first air date */
     if (!meta->year)
     {
         tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "release");
+                                            "FirstAired");
         if (tmp)
         {
             int r, y, m, d;
@@ -159,40 +161,35 @@ tmdb_parse (Enna_Metadata *meta)
     /* fetch movie categories */
     if (!meta->categories)
     {
-        xmlNode *cat;
-        int i;
-
-        cat = get_node_xml_tree (xmlDocGetRootElement (doc), "category");
-        for (i = 0; i < 4; i++)
+        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
+                                            "Genre");
+        if (tmp)
         {
-            if (!cat)
-                break;
-            
-            tmp = get_prop_value_from_xml_tree (cat, "name");
-            if (tmp)
-            {
-                enna_metadata_add_category (meta, (char *) tmp);
-                xmlFree (tmp);
-            }
-            cat = cat->next;
+            meta->categories = strdup ((char *) tmp);
+            xmlFree (tmp);
         }
     }
 
     /* fetch movie poster/cover */
     if (!meta->cover)
     {
-        tmp = get_prop_value_from_xml_tree_by_attr (xmlDocGetRootElement (doc),
-                                                    "poster", "size", "cover");
+        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
+                                            "poster");
 
         if (tmp)
         {
-            char cover[1024];
-                        
+            char tmp_url[MAX_URL_SIZE];
+            char cover[MAX_URL_SIZE];
+
+            memset (tmp_url, '\0', MAX_URL_SIZE);
+            snprintf (tmp_url, sizeof (tmp_url),
+                      TVDB_COVERS_URL, TVDB_IMAGES_HOSTNAME, tmp);
+
             snprintf (cover, sizeof (cover), "%s/.enna/%s/%s.png",
                       enna_util_user_home_get(), PATH_COVERS, meta->md5);
-            url_save_to_disk (mod->curl, (char *) tmp, cover);
+            url_save_to_disk (mod->curl, tmp_url, cover);
             xmlFree (tmp);
-            
+
             meta->cover = strdup (cover);
         }
     }
@@ -200,34 +197,39 @@ tmdb_parse (Enna_Metadata *meta)
     /* fetch movie backdrop */
     if (!meta->backdrop)
     {
-        tmp = get_prop_value_from_xml_tree_by_attr (xmlDocGetRootElement (doc),
-                                                    "backdrop", "size", "mid");
+        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
+                                            "fanart");
 
         if (tmp)
         {
-            char back[1024];
-                        
-            snprintf (back, sizeof (back), "%s/.enna/%s/%s.png",
+            char tmp_url[MAX_URL_SIZE];
+            char cover[MAX_URL_SIZE];
+
+            memset (tmp_url, '\0', MAX_URL_SIZE);
+            snprintf (tmp_url, sizeof (tmp_url),
+                      TVDB_COVERS_URL, TVDB_IMAGES_HOSTNAME, tmp);
+
+            snprintf (cover, sizeof (cover), "%s/.enna/%s/%s.png",
                       enna_util_user_home_get(), PATH_BACKDROPS, meta->md5);
-            url_save_to_disk (mod->curl, (char *) tmp, back);
+            url_save_to_disk (mod->curl, tmp_url, cover);
             xmlFree (tmp);
-            
-            meta->backdrop = strdup (back);
+
+            meta->backdrop = strdup (cover);
         }
     }
-    
+
  error:
     if (doc)
         xmlFreeDoc (doc);
     ENNA_FREE (escaped_keywords);
 }
 
-/*****************************************************************************/
-/*                         Private Module API                                */
-/*****************************************************************************/
+/****************************************************************************/
+/*                        Private Module API                                */
+/****************************************************************************/
 
 static void
-tmdb_grab (Enna_Metadata *meta, int caps)
+tvdb_grab (Enna_Metadata *meta, int caps)
 {
     if (!meta || !meta->keywords)
         return;
@@ -235,7 +237,7 @@ tmdb_grab (Enna_Metadata *meta, int caps)
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Grabbing info from %s", meta->uri);
 
-    tmdb_parse (meta);
+    tvdb_parse (meta);
 }
 
 static Enna_Metadata_Grabber grabber = {
@@ -243,12 +245,12 @@ static Enna_Metadata_Grabber grabber = {
     ENNA_GRABBER_PRIORITY,
     1,
     ENNA_GRABBER_CAP_COVER,
-    tmdb_grab,
+    tvdb_grab,
 };
 
-/*****************************************************************************/
-/*                          Public Module API                                */
-/*****************************************************************************/
+/****************************************************************************/
+/*                         Public Module API                                */
+/****************************************************************************/
 
 Enna_Module_Api module_api =
 {
@@ -263,7 +265,7 @@ module_init (Enna_Module *em)
     if (!em)
         return;
 
-    mod = calloc(1, sizeof (Enna_Metadata_Tmdb));
+    mod = calloc(1, sizeof (Enna_Metadata_Tvdb));
 
     mod->em = em;
     mod->evas = em->evas;
@@ -276,7 +278,6 @@ module_init (Enna_Module *em)
 void
 module_shutdown (Enna_Module *em)
 {
-    //enna_metadata_remove_grabber (ENNA_GRABBER_NAME);
     if (mod->curl)
         curl_easy_cleanup (mod->curl);
     curl_global_cleanup ();

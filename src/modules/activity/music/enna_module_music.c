@@ -19,6 +19,8 @@ static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
 
+static void _menu_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
+
 static void _next_song(void);
 static void _prev_song(void);
 static int _show_mediaplayer_cb(void *data);
@@ -30,6 +32,7 @@ static void _class_hide(int dummy);
 static void _class_event(void *event_info);
 static int em_init(Enna_Module *em);
 static int em_shutdown(Enna_Module *em);
+
 /*Events from mediaplayer*/
 static int _eos_cb(void *data, int type, void *event);
 static int _prev_cb(void *data, int type, void *event);
@@ -63,6 +66,7 @@ struct _Enna_Module_Music
     Ecore_Event_Handler *prev_event_handler;
     Ecore_Event_Handler *seek_event_handler;
     Enna_Playlist *enna_playlist;
+    unsigned char  accept_ev : 1;
 };
 
 static Enna_Module_Music *mod;
@@ -136,6 +140,9 @@ _class_event(void *event_info)
     enna_key_t key = enna_get_key(ev);
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %s\n",
 	ev->key);
+
+    if (!mod->accept_ev) return;
+
     switch (mod->state)
     {
     case MENU_VIEW:
@@ -225,6 +232,17 @@ _show_mediaplayer_cb(void *data)
     return 0;
 }
 
+static void
+_menu_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src)
+{
+    edje_object_signal_callback_del(mod->o_edje, "list,transition,end", "edje",
+	    _menu_transition_left_end_cb);
+    mod->state = BROWSER_VIEW;
+
+    evas_object_del(mod->o_list);
+    mod->o_list = NULL;
+    mod->accept_ev = 1;
+}
 
 static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
@@ -233,9 +251,10 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
     evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
-    ENNA_OBJECT_DEL(mod->o_browser);
-    mod->o_browser = NULL;
+    mod->accept_ev = 0;
+
     _create_menu();
+
     enna_location_remove_nth(mod->o_location,enna_location_count(mod->o_location) - 1);
 }
 
@@ -295,19 +314,20 @@ _browse(void *data, void *data2)
 {
     Enna_Class_Vfs *vfs = data;
 
+    mod->accept_ev = 0;
     mod->o_browser = enna_browser_add(mod->em->evas);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
 
-    mod->state = BROWSER_VIEW;
-
     evas_object_show(mod->o_browser);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.browser", mod->o_browser);
     enna_browser_root_set(mod->o_browser, vfs);
-    evas_object_del(mod->o_list);
-    mod->o_list = NULL;
+
     enna_location_append(mod->o_location, vfs->label, NULL, NULL, NULL, NULL);
+    edje_object_signal_callback_add(mod->o_edje, "list,transition,end", "edje",
+	_menu_transition_left_end_cb, NULL);
+    edje_object_signal_emit(mod->o_edje, "list,left", "enna");
 }
 
 
@@ -394,10 +414,13 @@ _create_menu()
     Evas_Object *o;
     Eina_List *l, *categories;
 
-    /* Create List */
-    o = enna_list_add(mod->em->evas);
-    edje_object_signal_emit(mod->o_edje, "list,right,now", "enna");
+   /* Set default state */
+    mod->state = MENU_VIEW;
 
+    /* Create List */
+    ENNA_OBJECT_DEL(mod->o_browser);
+    mod->o_browser = NULL;
+    o = enna_list_add(mod->em->evas);
     categories = enna_vfs_get(ENNA_CAPS_MUSIC);
     for (l = categories; l; l = l->next)
     {
@@ -415,8 +438,10 @@ _create_menu()
 
     enna_list_selected_set(o, 0);
     mod->o_list = o;
+    edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
+    mod->accept_ev = 1;
 }
 
 static void

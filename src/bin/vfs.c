@@ -91,8 +91,8 @@ enna_vfs_get(ENNA_VFS_CAPS type)
     return NULL;
 }
 
-static Enna_Vfs_File * enna_vfs_create_inode(char *uri, char *label,
-        char *icon, char *icon_file, int dir)
+static Enna_Vfs_File * enna_vfs_create_inode(const char *uri, const char *label,
+        const char *icon, const char *icon_file, int dir)
 {
     Enna_Vfs_File *f;
 
@@ -106,14 +106,14 @@ static Enna_Vfs_File * enna_vfs_create_inode(char *uri, char *label,
     return f;
 }
 
-Enna_Vfs_File * enna_vfs_create_file(char *uri, char *label, char *icon,
-        char *icon_file)
+Enna_Vfs_File * enna_vfs_create_file(const char *uri, const char *label, const char *icon,
+        const char *icon_file)
 {
     return enna_vfs_create_inode(uri, label, icon, icon_file, 0);
 }
 
-Enna_Vfs_File * enna_vfs_create_directory(char *uri, char *label, char *icon,
-        char *icon_file)
+Enna_Vfs_File * enna_vfs_create_directory(const char *uri, const char *label, const char *icon,
+        const char *icon_file)
 {
     return enna_vfs_create_inode(uri, label, icon, icon_file, 1);
 }

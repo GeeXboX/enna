@@ -44,9 +44,9 @@ static Eina_List * _class_browse_down(void *cookie)
 static Enna_Vfs_File * _class_vfs_get(void *cookie)
 {
 
-    return enna_vfs_create_directory((char *) mod->dvd->uri,
-	(char *) ecore_file_file_get(mod->dvd->uri),
-	(char *) evas_stringshare_add("icon/dvd"), NULL);
+    return enna_vfs_create_directory(mod->dvd->uri,
+	ecore_file_file_get(mod->dvd->uri),
+	evas_stringshare_add("icon/dvd"), NULL);
 }
 
 

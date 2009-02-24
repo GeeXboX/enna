@@ -135,10 +135,12 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     {
         /* FIXME : add edje cb at end of cover transition to switch properly covers*/
 
-	sd->o_cover = enna_reflection_add(evas_object_evas_get(sd->o_edje));
-//        sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-	enna_reflection_fill_inside_set(sd->o_cover, 0);
-        enna_reflection_file_set(sd->o_cover, meta->cover);
+//	sd->o_cover = enna_reflection_add(evas_object_evas_get(sd->o_edje));
+        sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
+	//enna_reflection_fill_inside_set(sd->o_cover, 0);
+	enna_image_fill_inside_set(sd->o_cover, 0);
+        //enna_reflection_file_set(sd->o_cover, meta->cover);
+	enna_image_file_set(sd->o_cover, meta->cover);
         edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
         edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
 

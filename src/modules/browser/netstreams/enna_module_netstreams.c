@@ -137,6 +137,8 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
     {
         file = mktemp(tmp);
         chunk = url_get_data(mod->curl, (char *) path);
+        if (chunk.status != CURLE_OK)
+          return NULL;
 
         f = fopen(file, "w");
         if (!f)
@@ -156,7 +158,7 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
 
     /* Network Extended M3U Playlist Stream Online Listings */
     header = read_line_from_stream(f);
-    if (!strncmp(header, EXT_M3U_HEADER, strlen(EXT_M3U_HEADER)))
+    if (header && !strncmp(header, EXT_M3U_HEADER, strlen(EXT_M3U_HEADER)))
         streams = parse_extm3u(f);
 
     free(header);
@@ -210,16 +212,16 @@ static Eina_List * browse_down_video(void *cookie)
 
 static Enna_Vfs_File * vfs_get_music(void *cookie)
 {
-    return enna_vfs_create_directory((char *) mod->music->uri,
-            (char *) ecore_file_file_get(mod->music->uri),
-            (char *) evas_stringshare_add("icon/music"), NULL);
+    return enna_vfs_create_directory(mod->music->uri,
+            ecore_file_file_get(mod->music->uri),
+            evas_stringshare_add("icon/music"), NULL);
 }
 
 static Enna_Vfs_File * vfs_get_video(void *cookie)
 {
-    return enna_vfs_create_directory((char *) mod->video->uri,
-            (char *) ecore_file_file_get(mod->video->uri),
-            (char *) evas_stringshare_add("icon/video"), NULL);
+    return enna_vfs_create_directory(mod->video->uri,
+            ecore_file_file_get(mod->video->uri),
+            evas_stringshare_add("icon/video"), NULL);
 }
 
 static void class_init(const char *name, netstreams_priv_t **priv,
