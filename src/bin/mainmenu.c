@@ -378,6 +378,7 @@ static void _smart_del(Evas_Object * obj)
     eina_list_free(sd->items);
     evas_object_del(sd->o_edje);
     evas_object_del(sd->o_carousel);
+    evas_object_del(sd->o_btn_box);
     free(sd);
 }
 
