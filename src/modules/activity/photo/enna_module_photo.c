@@ -15,8 +15,15 @@ static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_i
 static void _browse(void *data, void *data2);
 
 static void _photo_info_fs();
-
 typedef enum _PHOTO_STATE PHOTO_STATE;
+typedef struct _Photo_Item_Class_Data Photo_Item_Class_Data;
+
+struct _Photo_Item_Class_Data
+{
+    const char *icon;
+    const char *label;
+};
+
 enum _PHOTO_STATE
 {
     WALL_VIEW,
@@ -43,6 +50,7 @@ typedef struct _Enna_Module_Photo
 	Evas_Object *o_exif;
 	char *str;
     }exif;
+    Elm_Genlist_Item_Class *item_class;
 #endif
 
 } Enna_Module_Photo;
@@ -113,8 +121,6 @@ static void _exif_content_foreach_func(ExifEntry *entry, void *callback_data)
   mod->exif.str = exif_str;
 
 }
-
-
 
 static void _exif_data_foreach_func(ExifContent *content, void *callback_data)
 {
@@ -353,26 +359,23 @@ _create_menu()
 {
     Evas_Object *o;
     Eina_List *l, *categories;
-
+    Enna_Class_Vfs *cat;
 
     /* Create List */
     o = enna_list_add(mod->em->evas);
     edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_PHOTO);
-    for (l = categories; l; l = l->next)
+    EINA_LIST_FOREACH(l, categories, cat)
     {
-        Evas_Object *item;
-        Enna_Class_Vfs *cat;
-	Evas_Object *icon;
+   	Photo_Item_Class_Data *item;
 
-        cat = l->data;
-        icon = edje_object_add(mod->em->evas);
-        edje_object_file_set(icon, enna_config_theme_get(), cat->icon);
-        item = enna_listitem_add(mod->em->evas);
-        enna_listitem_create_simple(item, icon, cat->label);
-        enna_list_append(o, item, _browse, NULL, cat, NULL);
+	item = calloc(1, sizeof(Photo_Item_Class_Data));
+	item->icon = eina_stringshare_add(cat->icon);
+	item->label = eina_stringshare_add(cat->label);
+        enna_list_append(o, mod->item_class, item, _browse, cat);
     }
+
 
     enna_list_selected_set(o, 0);
     mod->o_menu = o;

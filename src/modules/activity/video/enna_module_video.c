@@ -29,8 +29,14 @@ static int em_init(Enna_Module *em);
 static int em_shutdown(Enna_Module *em);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
-
 typedef enum _VIDEO_STATE VIDEO_STATE;
+typedef struct _Video_Item_Class_Data Video_Item_Class_Data;
+
+struct _Video_Item_Class_Data
+{
+    const char *icon;
+    const char *label;
+};
 
 enum _VIDEO_STATE
 {
@@ -55,6 +61,7 @@ struct _Enna_Module_Video
     Ecore_Timer *timer_show_mediaplayer;
     Ecore_Event_Handler *eos_event_handler;
     Enna_Playlist *enna_playlist;
+    Elm_Genlist_Item_Class *item_class;
 };
 
 static Enna_Module_Video *mod;
@@ -475,24 +482,21 @@ _create_menu()
 {
     Evas_Object *o;
     Eina_List *l, *categories;
+    Enna_Class_Vfs *cat;
 
     /* Create List */
     o = enna_list_add(mod->em->evas);
     edje_object_signal_emit(mod->o_edje, "list,right,now", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_VIDEO);
-    for (l = categories; l; l = l->next)
+    EINA_LIST_FOREACH(l, categories, cat)
     {
-        Evas_Object *item;
-        Enna_Class_Vfs *cat;
-	Evas_Object *icon;
+   	Video_Item_Class_Data *item;
 
-        cat = l->data;
-        icon = edje_object_add(mod->em->evas);
-        edje_object_file_set(icon, enna_config_theme_get(), cat->icon);
-        item = enna_listitem_add(mod->em->evas);
-        enna_listitem_create_simple(item, icon, cat->label);
-        enna_list_append(o, item, _browse, NULL, cat, NULL);
+	item = calloc(1, sizeof(Video_Item_Class_Data));
+	item->icon = eina_stringshare_add(cat->icon);
+	item->label = eina_stringshare_add(cat->label);
+        enna_list_append(o, mod->item_class, item, _browse, cat);
     }
 
     enna_list_selected_set(o, 0);
