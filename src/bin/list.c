@@ -53,10 +53,13 @@ enna_list_add(Evas *evas)
 
 void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, void (*func) (void *data, Evas_Object *obj, void *event_info), void *data)
 {
+    Elm_Genlist_Item *item;
     API_ENTRY return;
 
-    elm_genlist_item_append (sd->o_list, class, class_data,
+    item = elm_genlist_item_append (sd->o_list, class, class_data,
 	NULL, ELM_GENLIST_ITEM_NONE, func, data );
+
+    sd->items = eina_list_append(sd->items, item);
 }
 
 void enna_list_selected_set(Evas_Object *obj, int n)
@@ -347,15 +350,6 @@ static void _smart_del(Evas_Object *obj)
     INTERNAL_ENTRY ;
 
     evas_object_del(sd->o_list);
-//    evas_object_del(sd->o_box);
-    while (sd->items)
-    {
-	Enna_List_Item *si = sd->items->data;
-	sd->items = eina_list_remove_list(sd->items, sd->items);
-	evas_object_del(si->o_base);
-	free(si);
-    }
-
     evas_object_del(sd->o_edje);
     free(sd);
 }
@@ -438,20 +432,13 @@ static void _smart_reconfigure(Smart_Data *sd)
 
 static void list_item_select(Smart_Data *sd, int n)
 {
-    Evas_Coord x, y;
-    Evas_Coord xedje, yedje, wedje, hedje, ybox, hbox, wbox;
+/*    Elm_Genlist_Item *it;
 
-    enna_list_selected_set(sd->o_smart, n);
-    /* FIXME
-       enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
-    enna_list_selected_geometry_get(sd->o_smart, &xedje, &yedje, &wedje, &hedje);
-    evas_object_geometry_get(sd->o_box, NULL, &ybox, &wbox, &hbox);
-    y = (yedje + hedje / 2 - ybox - sd->h / 2 + sd->y);*/
+    it = eina_list_nth(sd->items, n);
+    if (!it) return;
 
-//    elm_scroller_region_show(sd->o_scroll, sd->x, y, wbox, hedje);
-
-    /* FIXME
-       enna_scrollframe_child_pos_set(sd->o_scroll, x , y);*/
+    elm_genlist_item_selected_set(it, 1);
+*/
 }
 
 static void list_set_item(Smart_Data *sd, int start, int up, int step)

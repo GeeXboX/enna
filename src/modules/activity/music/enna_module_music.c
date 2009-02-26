@@ -518,11 +518,6 @@ static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const ch
 
 static void _genlist_del(const void *data, Evas_Object *obj)
 {
-    Music_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    free(item);
 }
 
 /* Module interface */
