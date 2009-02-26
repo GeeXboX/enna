@@ -60,8 +60,8 @@ void enna_list_append(Evas_Object *obj, Evas_Object *item, void (*func) (void *d
     Enna_List_Item *si;
     Evas_Coord mw = 0, mh = 0;
 
-    API_ENTRY
-    return;
+    API_ENTRY return;
+
     si = ENNA_NEW(Enna_List_Item, 1);
     si->sd = sd;
     si->o_base = item;
@@ -397,10 +397,21 @@ static void _smart_init(void)
         return;
     {
         static const Evas_Smart_Class sc =
-        { SMART_NAME, EVAS_SMART_CLASS_VERSION, _smart_add, _smart_del,
-                _smart_move, _smart_resize, _smart_show, _smart_hide,
-                _smart_color_set, _smart_clip_set, _smart_clip_unset,
-                NULL, NULL };
+        {
+	    SMART_NAME,
+	    EVAS_SMART_CLASS_VERSION,
+	    _smart_add,
+	    _smart_del,
+	    _smart_move,
+	    _smart_resize,
+	    _smart_show,
+	    _smart_hide,
+	    _smart_color_set,
+	    _smart_clip_set,
+	    _smart_clip_unset,
+	    NULL,
+	    NULL
+	};
         _e_smart = evas_smart_class_new(&sc);
     }
 }
@@ -637,14 +648,17 @@ static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
 static void list_item_select(Smart_Data *sd, int n)
 {
     Evas_Coord x, y;
-    Evas_Coord xedje, yedje, hedje, ybox, hbox;
+    Evas_Coord xedje, yedje, wedje, hedje, ybox, hbox, wbox;
 
     enna_list_selected_set(sd->o_smart, n);
     /* FIXME
        enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);*/
-    enna_list_selected_geometry_get(sd->o_smart, &xedje, &yedje, NULL, &hedje);
-    evas_object_geometry_get(sd->o_box, NULL, &ybox, NULL, &hbox);
+    enna_list_selected_geometry_get(sd->o_smart, &xedje, &yedje, &wedje, &hedje);
+    evas_object_geometry_get(sd->o_box, NULL, &ybox, &wbox, &hbox);
     y = (yedje + hedje / 2 - ybox - sd->h / 2 + sd->y);
+
+//    elm_scroller_region_show(sd->o_scroll, sd->x, y, wbox, hedje);
+
     /* FIXME
        enna_scrollframe_child_pos_set(sd->o_scroll, x , y);*/
 }
