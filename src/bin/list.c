@@ -59,44 +59,6 @@ void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * cl
 	NULL, ELM_GENLIST_ITEM_NONE, func, data );
 }
 
-Evas_Object *
-enna_list_edje_object_get(Evas_Object *obj)
-{
-    API_ENTRY return NULL;
-    return sd->o_edje;
-}
-
-void enna_list_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
-{
-    API_ENTRY return;
-
-    evas_object_size_hint_min_get(sd->o_edje, w, h);
-}
-
-void enna_list_unselect(Evas_Object *obj)
-{
-    Eina_List *l;
-
-    API_ENTRY
-    return;
-    if (!sd->items)
-        return;
-    if (sd->selected < 0)
-        return;
-    for (l = sd->items; l; l = l->next)
-    {
-        Enna_List_Item *si = NULL;
-
-        if (!(si = l->data))
-            continue;
-        if (!si->selected)
-            continue;
-        enna_listitem_select(si->o_base);
-        si->selected = 0;
-    }
-    sd->selected = -1;
-}
-
 void enna_list_selected_set(Evas_Object *obj, int n)
 {
     Enna_List_Item *si = NULL;
@@ -241,22 +203,6 @@ void * enna_list_selected_data_get(Evas_Object *obj)
     return NULL;
 }
 
-void * enna_list_selected_data2_get(Evas_Object *obj)
-{
-    Enna_List_Item *si = NULL;
-
-    API_ENTRY
-    return NULL;
-    if (!sd->items)
-        return NULL;
-    if (sd->selected < 0)
-        return NULL;
-    si = eina_list_nth(sd->items, sd->selected);
-    if (si)
-        return si->data2;
-    return NULL;
-}
-
 void enna_list_selected_geometry_get(Evas_Object *obj, Evas_Coord *x,
         Evas_Coord *y, Evas_Coord *w, Evas_Coord *h)
 {
@@ -298,62 +244,6 @@ int enna_list_selected_count_get(Evas_Object *obj)
     return count;
 }
 
-void enna_list_remove_num(Evas_Object *obj, int n)
-{
-    Enna_List_Item *si = NULL;
-
-    API_ENTRY
-    return;
-    if (!sd->items)
-        return;
-    if (!(si = eina_list_nth(sd->items, n)))
-        return;
-    sd->items = eina_list_remove(sd->items, si);
-    if (sd->selected == n)
-        sd->selected = -1;
-    evas_object_del(si->o_base);
-    ENNA_FREE(si);
-}
-
-void enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
-{
-    Eina_List *l = NULL;
-
-    API_ENTRY
-    return;
-    if ((sd->iw == w) && (sd->ih == h))
-        return;
-    sd->iw = w;
-    sd->ih = h;
-    for (l = sd->items; l; l = l->next)
-    {
-        Enna_List_Item *si = NULL;
-        Evas_Coord mw = 0, mh = 0;
-
-        if (!(si = l->data))
-            continue;
-        enna_listitem_min_size_set(si->o_base, w, h);
-        enna_listitem_min_size_get(si->o_base, &mw, &mh);
-	evas_object_size_hint_min_set(si->o_base, mw, mh);
-	evas_object_size_hint_align_set(si->o_base, 0, 0.5);
-    }
-}
-
-void enna_list_clear(Evas_Object *obj)
-{
-    API_ENTRY
-    return;
-
-    while (sd->items)
-    {
-        Enna_List_Item *si;
-        si = sd->items->data;
-        sd->items = eina_list_remove_list(sd->items, sd->items);
-        evas_object_del(si->o_base);
-        ENNA_FREE(si);
-    }
-    sd->selected = -1;
-}
 
 void enna_list_event_key_down(Evas_Object *obj, void *event_info)
 {
