@@ -38,6 +38,7 @@ void elog(int level, const char *module, char *file, int line,
 
     va_list va;
     int verbosity;
+    const char *prefix = NULL;
 
     if (!enna || !format)
         return;
@@ -55,9 +56,11 @@ void elog(int level, const char *module, char *file, int line,
 
     if (!module)
         module = DEFAULT_MODULE_NAME;
+    else
+        prefix = DEFAULT_MODULE_NAME "/";
 
-    fprintf (stderr, "[" BOLD "%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
-             module, file, line, c[level], l[level]);
+    fprintf (stderr, "[" BOLD "%s%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
+             prefix ? prefix : "", module, file, line, c[level], l[level]);
 
     vfprintf (stderr, format, va);
     fprintf (stderr, "\n");
