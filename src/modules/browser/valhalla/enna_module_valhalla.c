@@ -1,6 +1,6 @@
 /*
  * Valhalla browser module
- *  Mathieu Scchroeter (C) 2009
+ *  Mathieu Schroeter (C) 2009
  */
 
 #include "enna.h"
