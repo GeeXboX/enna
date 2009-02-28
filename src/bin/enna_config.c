@@ -98,6 +98,19 @@
     "[netstreams]\n"							\
     "stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv\n" \
     "\n"								\
+    "[valhalla]"							\
+    "path=file:///path/to/Music"					\
+    "path=file:///path/to/server/Medias/Music"				\
+    "verbosity=info"							\
+    "parser_number=2"							\
+    "commit_interval=128"						\
+    "# <=0 for infinite"						\
+    "scan_loop=-1"							\
+    "# time [sec] for sleeping between loops"				\
+    "scan_sleep=900"							\
+    "# 0: normal, -20: higher, 19 lower\n"				\
+    "scan_priority=19\n"						\
+    "\n"								\
     "[lms]\n"								\
     "path=file:///path/to/Music\n"					\
     "path=file:///path/to/server/Medias/Music\n"			\

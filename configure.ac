@@ -187,6 +187,32 @@ if test "x$want_browser_lms" = "xyes" -o "x$want_browser_lms" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_BROWSER_LMS, test "x$have_browser_lms" = "xyes")
 
+# Valhalla Scanner
+want_browser_valhalla="auto"
+have_browser_valhalla="no"
+AC_MSG_CHECKING(whether Valhalla browser is to be built)
+AC_ARG_ENABLE(browser_valhalla,
+  AS_HELP_STRING([--enable-browser-valhalla],[Enable Valhalla Browser Module]),
+  [ want_browser_valhalla=$enableval ]
+)
+AC_MSG_RESULT($want_browser_valhalla)
+if test "x$want_browser_valhalla" = "xyes" -o "x$want_browser_valhalla" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [VALHALLA],
+    [libvalhalla],
+    [
+      AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
+      have_browser_valhalla="yes"
+    ],
+    [
+      if test "x$want_browser_valhalla" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([valhalla not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_BROWSER_VALHALLA, test "x$have_browser_valhalla" = "xyes")
+
 # Local Files
 want_browser_localfiles="yes"
 AC_MSG_CHECKING(whether localfiles browser module is to be built)
@@ -533,6 +559,7 @@ src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
 src/modules/browser/Makefile
 src/modules/browser/lms/Makefile
+src/modules/browser/valhalla/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
 src/modules/browser/shoutcast/Makefile
@@ -577,6 +604,7 @@ echo
 echo "Supported Browser Modules:"
 echo
 echo "  Light Media Scanner.............. : $have_browser_lms"
+echo "  Valhalla Scanner................. : $have_browser_valhalla"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  SHOUTcast........................ : $want_browser_shoutcast"

@@ -292,6 +292,10 @@ static void _create_gui()
     em = enna_module_open("lms", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);
 #endif
+#ifdef BUILD_BROWSER_VALHALLA
+    em = enna_module_open("valhalla", ENNA_MODULE_BROWSER, enna->evas);
+    enna_module_enable(em);
+#endif
 #ifdef BUILD_BROWSER_LOCALFILES
     em = enna_module_open("localfiles", ENNA_MODULE_BROWSER, enna->evas);
     enna_module_enable(em);

@@ -56,6 +56,19 @@ path_photo=file:///path/to/server/Medias/Photos,Server,icon/dev/nfs
 [netstreams]
 stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv
 
+[valhalla]
+path=file:///path/to/Music
+path=file:///path/to/server/Medias/Music
+verbosity=info
+parser_number=2
+commit_interval=128
+# <=0 for infinite
+scan_loop=-1
+# time [sec] for sleeping between loops
+scan_sleep=900
+# 0: normal, -20: higher, 19 lower
+scan_priority=19
+
 [lms]
 path=file:///path/to/Music
 path=file:///path/to/server/Medias/Music
