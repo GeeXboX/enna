@@ -17,17 +17,10 @@ struct _Enna_List_Item
 };
 
 Evas_Object *enna_list_add (Evas *evas);
-void enna_list_append(Evas_Object *obj, Evas_Object *item, void (*func) (void *data, void *data2), void (*func_hilight) (void *data, void *data2), void *data, void *data2);
-void enna_list_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord*h);
+void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, void (*func) (void *data), void *data);
 void enna_list_selected_set(Evas_Object *obj, int n);
 int enna_list_selected_get(Evas_Object *obj);
-void enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h);
-void enna_list_clear(Evas_Object *obj);
-void enna_list_freeze(Evas_Object *obj);
-void enna_list_thaw(Evas_Object *obj);
-Evas_Object *enna_list_edje_object_get (Evas_Object *obj);
 void * enna_list_selected_data_get(Evas_Object *obj);
-void * enna_list_selected_data2_get(Evas_Object *obj);
 void enna_list_selected_geometry_get(Evas_Object *obj, Evas_Coord *x,
         Evas_Coord *y, Evas_Coord *w, Evas_Coord *h);
 int enna_list_jump_label(Evas_Object *obj, const char *label);

@@ -250,7 +250,7 @@ _enna_reflection_smart_reconfigure(E_Smart_Data * sd)
     evas_object_image_alpha_set(sd->reflection, 1);
 
     /* Get pixels */
-    old_pixels = evas_object_image_data_get(sd->obj, 0);
+    old_pixels = evas_object_image_data_get(sd->obj, 1);
     evas_object_image_size_get(sd->obj, &w, &h);
 
     if (!old_pixels)

@@ -11,13 +11,21 @@
 #define SMART_NAME "enna_list"
 
 typedef struct _Smart_Data Smart_Data;
+typedef struct _List_Item List_Item;
+
+struct _List_Item
+{
+    void *data;
+    void (*func) (void *data);
+    Elm_Genlist_Item *item;
+};
+
 struct _Smart_Data
 {
     Evas_Coord x, y, w, h, iw, ih;
     Evas_Object *o_smart;
     Evas_Object *o_edje;
-    Evas_Object *o_box;
-    Evas_Object *o_scroll;
+    Evas_Object *o_list;
     Eina_List *items;
     int selected;
     unsigned char on_hold : 1;
@@ -25,6 +33,7 @@ struct _Smart_Data
     Ecore_Timer *letter_timer;
     unsigned int letter_event_nbr;
     char letter_key;
+
 };
 
 static void _smart_init(void);
@@ -38,14 +47,9 @@ static void _smart_color_set(Evas_Object *obj, int r, int g, int b, int a);
 static void _smart_clip_set(Evas_Object *obj, Evas_Object *clip);
 static void _smart_clip_unset(Evas_Object *obj);
 static void _smart_reconfigure(Smart_Data *sd);
-static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info);
-static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info);
 static void _smart_event_key_down(Smart_Data *sd, void *event_info);
 static int _letter_timer_cb(void *data);
 static void list_item_select(Smart_Data *sd, int n);
-static void _box_size_hints_changed_cb(void *data, Evas *e, Evas_Object *obj, void *event_info);
 
 static Evas_Smart *_e_smart = NULL;
 
@@ -55,74 +59,44 @@ enna_list_add(Evas *evas)
     _smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
-void enna_list_append(Evas_Object *obj, Evas_Object *item, void (*func) (void *data, void *data2), void (*func_hilight) (void *data, void *data2), void *data, void *data2)
+
+void _item_activated(void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_List_Item *si;
-    Evas_Coord mw = 0, mh = 0;
-
-    API_ENTRY
-    return;
-    si = ENNA_NEW(Enna_List_Item, 1);
-    si->sd = sd;
-    si->o_base = item;
-
-    si->func = func;
-    si->func_hilight = func_hilight;
-    si->data = data;
-    si->data2 = data2;
-    sd->items = eina_list_append(sd->items, si);
-
-    enna_listitem_min_size_get(si->o_base, &mw, &mh);
-
-    enna_box_pack_end(sd->o_box, item);
-    evas_object_size_hint_min_set(si->o_base, mw, mh);
-    evas_object_size_hint_align_set(si->o_base, 0, 0.5);
-    evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
-
-    evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_DOWN,
-            _smart_event_mouse_down, si);
-    evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
-            _smart_event_mouse_up, si);
-
-    evas_object_show(si->o_base);
-}
-
-Evas_Object *
-enna_list_edje_object_get(Evas_Object *obj)
-{
-    API_ENTRY return NULL;
-    return sd->o_edje;
-}
-
-void enna_list_min_size_get(Evas_Object *obj, Evas_Coord *w, Evas_Coord *h)
-{
-    API_ENTRY return;
-
-    evas_object_size_hint_min_get(sd->o_edje, w, h);
-}
-
-void enna_list_unselect(Evas_Object *obj)
-{
+    Smart_Data *sd = data;
+    Elm_Genlist_Item *item = event_info;
+    List_Item *it = NULL;
     Eina_List *l;
 
-    API_ENTRY
-    return;
-    if (!sd->items)
-        return;
-    if (sd->selected < 0)
-        return;
-    for (l = sd->items; l; l = l->next)
-    {
-        Enna_List_Item *si = NULL;
+    if (!sd) return;
 
-        if (!(si = l->data))
-            continue;
-        if (!si->selected)
-            continue;
-        enna_listitem_select(si->o_base);
-        si->selected = 0;
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+	if (it->item == item)
+	{
+	    printf("Activate item\n");
+	    it->func(it->data);
+	    return;
+	}
     }
-    sd->selected = -1;
+}
+
+void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, void (*func) (void *data),  void *data)
+{
+
+    List_Item *it;
+    API_ENTRY return;
+
+    it = calloc(1, sizeof(List_Item));
+
+    it->item = elm_genlist_item_append (sd->o_list, class, class_data,
+	NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL );
+
+    it->func = func;
+    it->data = data;
+
+    evas_object_smart_callback_add(sd->o_list, "clicked", _item_activated, sd);
+
+    sd->items = eina_list_append(sd->items, it);
 }
 
 void enna_list_selected_set(Evas_Object *obj, int n)
@@ -131,8 +105,9 @@ void enna_list_selected_set(Evas_Object *obj, int n)
     Eina_List *l = NULL;
     int i;
 
-    API_ENTRY
     return;
+
+    API_ENTRY return;
     if (!sd->items)
         return;
 
@@ -237,7 +212,8 @@ void enna_list_jump_nth(Evas_Object *obj, int n)
     evas_object_raise(si->o_base);
     enna_listitem_select(si->o_base);
     evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
-    enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
+    /* FIXME
+       enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);*/
     if (si->func_hilight)
         si->func_hilight(si->data, si->data2);
 
@@ -265,22 +241,6 @@ void * enna_list_selected_data_get(Evas_Object *obj)
     si = eina_list_nth(sd->items, sd->selected);
     if (si)
         return si->data;
-    return NULL;
-}
-
-void * enna_list_selected_data2_get(Evas_Object *obj)
-{
-    Enna_List_Item *si = NULL;
-
-    API_ENTRY
-    return NULL;
-    if (!sd->items)
-        return NULL;
-    if (sd->selected < 0)
-        return NULL;
-    si = eina_list_nth(sd->items, sd->selected);
-    if (si)
-        return si->data2;
     return NULL;
 }
 
@@ -325,62 +285,6 @@ int enna_list_selected_count_get(Evas_Object *obj)
     return count;
 }
 
-void enna_list_remove_num(Evas_Object *obj, int n)
-{
-    Enna_List_Item *si = NULL;
-
-    API_ENTRY
-    return;
-    if (!sd->items)
-        return;
-    if (!(si = eina_list_nth(sd->items, n)))
-        return;
-    sd->items = eina_list_remove(sd->items, si);
-    if (sd->selected == n)
-        sd->selected = -1;
-    evas_object_del(si->o_base);
-    ENNA_FREE(si);
-}
-
-void enna_list_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
-{
-    Eina_List *l = NULL;
-
-    API_ENTRY
-    return;
-    if ((sd->iw == w) && (sd->ih == h))
-        return;
-    sd->iw = w;
-    sd->ih = h;
-    for (l = sd->items; l; l = l->next)
-    {
-        Enna_List_Item *si = NULL;
-        Evas_Coord mw = 0, mh = 0;
-
-        if (!(si = l->data))
-            continue;
-        enna_listitem_min_size_set(si->o_base, w, h);
-        enna_listitem_min_size_get(si->o_base, &mw, &mh);
-	evas_object_size_hint_min_set(si->o_base, mw, mh);
-	evas_object_size_hint_align_set(si->o_base, 0, 0.5);
-    }
-}
-
-void enna_list_clear(Evas_Object *obj)
-{
-    API_ENTRY
-    return;
-
-    while (sd->items)
-    {
-        Enna_List_Item *si;
-        si = sd->items->data;
-        sd->items = eina_list_remove_list(sd->items, sd->items);
-        evas_object_del(si->o_base);
-        ENNA_FREE(si);
-    }
-    sd->selected = -1;
-}
 
 void enna_list_event_key_down(Evas_Object *obj, void *event_info)
 {
@@ -396,13 +300,25 @@ static void _smart_init(void)
         return;
     {
         static const Evas_Smart_Class sc =
-        { SMART_NAME, EVAS_SMART_CLASS_VERSION, _smart_add, _smart_del,
-                _smart_move, _smart_resize, _smart_show, _smart_hide,
-                _smart_color_set, _smart_clip_set, _smart_clip_unset,
-                NULL, NULL };
+        {
+	    SMART_NAME,
+	    EVAS_SMART_CLASS_VERSION,
+	    _smart_add,
+	    _smart_del,
+	    _smart_move,
+	    _smart_resize,
+	    _smart_show,
+	    _smart_hide,
+	    _smart_color_set,
+	    _smart_clip_set,
+	    _smart_clip_unset,
+	    NULL,
+	    NULL
+	};
         _e_smart = evas_smart_class_new(&sc);
     }
 }
+
 
 static void _smart_add(Evas_Object *obj)
 {
@@ -420,21 +336,13 @@ static void _smart_add(Evas_Object *obj)
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/list");
-    sd->o_box = enna_box_add(evas_object_evas_get(obj));
-    evas_object_size_hint_align_set(sd->o_box, 0, 0.5);
-    evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
-    enna_box_homogenous_set(sd->o_box, 1);
-    enna_box_orientation_set(sd->o_box, 0);
 
-    sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
-    enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
-            ENNA_SCROLLFRAME_POLICY_ON);
-    enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
+    sd->o_list = elm_genlist_add(obj);
+    evas_object_size_hint_weight_set(sd->o_list, 1.0, 1.0);
+    evas_object_show(sd->o_list);
 
-    evas_object_event_callback_add(sd->o_box, EVAS_CALLBACK_RESIZE,
-	_box_size_hints_changed_cb, sd);
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
 
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_scroll);
 
     evas_object_smart_member_add(sd->o_edje, obj);
 
@@ -463,11 +371,13 @@ static int _letter_timer_cb(void *data)
         if ((letter && label) && (letter[0] == label[0] || letter[0]
                 == label[0] + 32 || letter[0] + 32 == label[0] ))
         {
-            Evas_Coord x, y, h;
+            /*Evas_Coord x, y, h;
+            //FIXME
             enna_list_selected_set(sd->o_smart, i);
             evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
             y = h/eina_list_count(sd->items) * (i-3);
-            enna_scrollframe_child_pos_set(sd->o_scroll, x, y);
+
+            enna_scrollframe_child_pos_set(sd->o_scroll, x, y);*/
             break;
         }
     }
@@ -475,19 +385,20 @@ static int _letter_timer_cb(void *data)
 }
 static void _smart_del(Evas_Object *obj)
 {
-    INTERNAL_ENTRY ;
+    Eina_List *list;
+    Eina_List *l;
+    Eina_List *l_prev;
+    List_Item *it;
 
-    evas_object_del(sd->o_scroll);
-    evas_object_del(sd->o_box);
-    while (sd->items)
-    {
-	Enna_List_Item *si = sd->items->data;
-	sd->items = eina_list_remove_list(sd->items, sd->items);
-	evas_object_del(si->o_base);
-	free(si);
-    }
+    INTERNAL_ENTRY;
 
+    evas_object_del(sd->o_list);
     evas_object_del(sd->o_edje);
+    EINA_LIST_REVERSE_FOREACH_SAFE(sd->items, l, l_prev, it)
+    {
+	free(it);
+	list = eina_list_remove_list(list, l);
+    }
     free(sd);
 }
 
@@ -564,87 +475,18 @@ static void _smart_reconfigure(Smart_Data *sd)
         evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
         h += mh;
     }
-    evas_object_size_hint_min_get(sd->o_box, NULL, &mh);
-    evas_object_resize(sd->o_box, sd->w, h);
-}
 
-static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info)
-{
-    Smart_Data *sd;
-    Evas_Event_Mouse_Down *ev;
-    Enna_List_Item *si;
-    Eina_List *l = NULL;
-    int i;
-
-    ev = event_info;
-    si = data;
-    sd = si->sd;
-
-    if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD)
-        sd->on_hold = 1;
-    else
-        sd->on_hold = 0;
-
-    if (!sd->items)
-        return;
-    for (i = 0, l = sd->items; l; l = l->next, i++)
-    {
-        if (l->data == si)
-        {
-            enna_list_selected_set(sd->o_smart, i);
-            break;
-        }
-    }
-
-}
-
-static void _box_size_hints_changed_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
-{
-    Smart_Data *sd = data;
-
-    list_item_select(sd, sd->selected);
-}
-
-static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info)
-{
-    Smart_Data *sd;
-    Evas_Event_Mouse_Up *ev;
-    Enna_List_Item *si;
-
-    ev = event_info;
-    si = data;
-    sd = si->sd;
-
-    if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD)
-        sd->on_hold = 1;
-    else
-        sd->on_hold = 0;
-
-    if (!sd->items)
-        return;
-
-    if (sd->on_hold)
-    {
-        sd->on_hold = 0;
-        return;
-    }
-    if (si->func)
-        si->func(si->data, si->data2);
 }
 
 static void list_item_select(Smart_Data *sd, int n)
 {
-    Evas_Coord x, y;
-    Evas_Coord xedje, yedje, hedje, ybox, hbox;
+    List_Item *it;
 
-    enna_list_selected_set(sd->o_smart, n);
-    enna_scrollframe_child_pos_get(sd->o_scroll, &x, &y);
-    enna_list_selected_geometry_get(sd->o_smart, &xedje, &yedje, NULL, &hedje);
-    evas_object_geometry_get(sd->o_box, NULL, &ybox, NULL, &hbox);
-    y = (yedje + hedje / 2 - ybox - sd->h / 2 + sd->y);
-    enna_scrollframe_child_pos_set(sd->o_scroll, x , y);
+    it = eina_list_nth(sd->items, n);
+    if (!it) return;
+
+    elm_genlist_item_selected_set(it->item, 1);
+
 }
 
 static void list_set_item(Smart_Data *sd, int start, int up, int step)

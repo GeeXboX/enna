@@ -48,7 +48,8 @@ struct _Smart_Data
     Evas_Object *o_forward;
     Evas_Object *o_next;
     Evas_Object *o_stop;
-    Ecore_Event_Handler *start_event_handler;
+    Evas_Object *o_btn_box;
+    Ecore_Event_Handler *play_event_handler;
     Ecore_Event_Handler *stop_event_handler;
     Ecore_Event_Handler *next_event_handler;
     Ecore_Event_Handler *prev_event_handler;
@@ -262,7 +263,7 @@ _smart_init(void)
 static void
 _smart_add(Evas_Object * obj)
 {
-    Evas_Object *o;
+    Evas_Object *ic, *bt;
     Smart_Data *sd;
     Evas *evas;
     sd = calloc(1, sizeof(Smart_Data));
@@ -279,49 +280,84 @@ _smart_add(Evas_Object * obj)
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "mediacontrol");
     evas_object_show(sd->o_edje);
 
-    o= enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_play");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.play",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_play_cb, sd);
-    sd->o_play=o;
+    sd->o_btn_box = elm_box_add(obj);
+    elm_box_homogenous_set(sd->o_btn_box, 0);
+    elm_box_horizontal_set(sd->o_btn_box, 1);
+    evas_object_size_hint_align_set(sd->o_btn_box, 0, 0.5);
+    evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_btn_box);
 
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_pause");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.pause",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_pause_cb, sd);
-    sd->o_pause=o;
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _button_clicked_play_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
 
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_prev");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.prev",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_prev_cb, sd);
-    sd->o_prev=o;
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_pause");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _button_clicked_pause_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
 
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_rewind");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.rewind",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_rewind_cb, sd);
-    sd->o_rewind=o;
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_prev");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _button_clicked_prev_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
 
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_forward");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.forward",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_forward_cb, sd);
-    sd->o_forward=o;
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_rewind");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _button_clicked_rewind_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
 
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_next");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.next",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_next_cb, sd);
-    sd->o_next=o;
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_forward");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _button_clicked_forward_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
 
-    o = enna_button_add(evas);
-    enna_button_icon_set(o, "icon/mp_stop");
-    edje_object_part_swallow(sd->o_edje,"mediacontrol.swallow.stop",o);
-    evas_object_smart_callback_add(o, "clicked", _button_clicked_stop_cb, sd);
-    sd->o_stop=o;
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_next");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _button_clicked_next_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
 
-    sd->start_event_handler = ecore_event_handler_add(
+    ic = elm_icon_add(obj);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_stop");
+    elm_icon_scale_set(ic, 0, 0);
+    bt = elm_button_add(obj);
+    evas_object_smart_callback_add(bt, "clicked", _button_clicked_stop_cb, sd);
+    elm_button_icon_set(bt, ic);
+    elm_box_pack_end(sd->o_btn_box, bt);
+    evas_object_show(bt);
+    evas_object_show(ic);
+
+    sd->play_event_handler = ecore_event_handler_add(
              ENNA_EVENT_MEDIAPLAYER_START, _start_cb, sd);
     sd->stop_event_handler = ecore_event_handler_add(
              ENNA_EVENT_MEDIAPLAYER_STOP, _stop_cb, sd);
@@ -353,7 +389,7 @@ _smart_del(Evas_Object * obj)
     if (!sd)
         return;
 
-    ecore_event_handler_del(sd->start_event_handler);
+    ecore_event_handler_del(sd->play_event_handler);
     ecore_event_handler_del(sd->stop_event_handler);
     ecore_event_handler_del(sd->next_event_handler);
     ecore_event_handler_del(sd->prev_event_handler);

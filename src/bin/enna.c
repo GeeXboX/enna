@@ -43,7 +43,6 @@ static char *theme_name = NULL;
 static unsigned int app_w = 1280;
 static unsigned int app_h = 720;
 static int run_fullscreen = 0;
-static int run_gl = 0;
 
 /* Callbacks */
 
@@ -162,7 +161,7 @@ static void _list_engines()
 
 /* Functions */
 
-static int _enna_init(int run_gl)
+static int _enna_init()
 {
     char tmp[PATH_MAX];
 
@@ -242,6 +241,7 @@ static void _create_gui()
 
     o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "enna");
+    elm_theme_extension_add(enna_config_theme_get());
     evas_object_resize(o, app_w, app_h);
     evas_object_move(o, 0, 0);
     evas_object_show(o);
@@ -479,21 +479,19 @@ static int parse_command_line(int argc, char **argv)
     return 0;
 }
 
-int main(int arc, char **arv)
+int main(int argc, char **argv)
 {
-    if (parse_command_line(arc, arv) < 0)
+    if (parse_command_line(argc, argv) < 0)
         return 0;
 
-    ecore_evas_init();
-    ecore_file_init();
-    edje_init();
+    elm_init(argc, argv);
 
     /* Must be called first */
     enna_config_init();
 
     enna = calloc(1, sizeof(Enna));
 
-    if (!_enna_init(run_gl))
+    if (!_enna_init())
         return 0;
 
     ecore_main_loop_begin();
