@@ -86,15 +86,12 @@ void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * cl
     API_ENTRY return;
 
     it = calloc(1, sizeof(List_Item));
-
     it->item = elm_genlist_item_append (sd->o_list, class, class_data,
 	NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL );
 
     it->func = func;
     it->data = data;
-
     evas_object_smart_callback_add(sd->o_list, "clicked", _item_activated, sd);
-
     sd->items = eina_list_append(sd->items, it);
 }
 
@@ -158,32 +155,6 @@ void *enna_list_selected_data_get(Evas_Object *obj)
     return NULL;
 }
 
-void enna_list_selected_geometry_get(Evas_Object *obj, Evas_Coord *x,
-        Evas_Coord *y, Evas_Coord *w, Evas_Coord *h)
-{
-     API_ENTRY return;
-}
-
-int enna_list_selected_count_get(Evas_Object *obj)
-{
-    Eina_List *l = NULL;
-    int count = 0;
-
-    API_ENTRY
-    return 0;
-    if (!sd->items)
-        return 0;
-    for (l = sd->items; l; l = l->next)
-    {
-        Enna_List_Item *si = NULL;
-
-        if (!(si = l->data))
-            continue;
-        if (si->selected)
-            count++;
-    }
-    return count;
-}
 
 
 void enna_list_event_key_down(Evas_Object *obj, void *event_info)
@@ -249,36 +220,7 @@ static void _smart_add(Evas_Object *obj)
 
 static int _letter_timer_cb(void *data)
 {
-    Smart_Data *sd;
-    int i;
-    Eina_List *l;
 
-    sd = data;
-
-    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
-    sd->letter_mode = 0;
-    for (i = 0, l = sd->items; l; l = l->next, i++)
-    {
-        char *label;
-        char *letter;
-        Enna_List_Item *si;
-        si = l->data;
-        label = (char*)enna_listitem_label_get(si->o_base);
-        letter = (char*)edje_object_part_text_get(sd->o_edje,
-                "enna.text.letter");
-        if ((letter && label) && (letter[0] == label[0] || letter[0]
-                == label[0] + 32 || letter[0] + 32 == label[0] ))
-        {
-            /*Evas_Coord x, y, h;
-            //FIXME
-            enna_list_selected_set(sd->o_smart, i);
-            evas_object_geometry_get(sd->o_box, &x, NULL, NULL, &h);
-            y = h/eina_list_count(sd->items) * (i-3);
-
-            enna_scrollframe_child_pos_set(sd->o_scroll, x, y);*/
-            break;
-        }
-    }
     return 0;
 }
 static void _smart_del(Evas_Object *obj)
@@ -358,22 +300,9 @@ static void _smart_clip_unset(Evas_Object *obj)
 
 static void _smart_reconfigure(Smart_Data *sd)
 {
-    Evas_Coord mh, mw,  h = 0;
-    Eina_List *l;
 
     evas_object_move(sd->o_edje, sd->x, sd->y);
     evas_object_resize(sd->o_edje, sd->w, sd->h);
-
-    for (l = sd->items; l; l = l->next)
-    {
-        Enna_List_Item *si = l->data;
-        enna_listitem_min_size_get(si->o_base, &mw, &mh);
-        evas_object_size_hint_min_set(si->o_base, sd->w, mh);
-        evas_object_size_hint_align_set(si->o_base, 0, 0.5);
-        evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
-        h += mh;
-    }
-
 }
 
 static void list_item_select(Smart_Data *sd, int n)
@@ -391,7 +320,6 @@ static void list_item_select(Smart_Data *sd, int n)
 
 static void list_set_item(Smart_Data *sd, int start, int up, int step)
 {
-    Enna_List_Item *si;
     int n, ns;
 
     ns = start;
@@ -406,7 +334,6 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
             break;
         }
         n = up ? n + step : n - step;
-        si = eina_list_nth(sd->items, n);
     } while (0);
 
     if (n != ns)
@@ -415,29 +342,7 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
 
 static void list_jump_to_ascii(Smart_Data *sd, char k)
 {
-    Eina_List *l;
-    int i = 0;
 
-    l = sd->items;
-    while (l)
-    {
-        Enna_List_Item *item;
-        Enna_Vfs_File *file;
-        item = eina_list_data_get(l);
-        if (!item)
-            continue;
-        file = (Enna_Vfs_File *) item->data2;
-        if (!file)
-            continue;
-
-        if (tolower(file->label[0]) == k)
-            break;
-        l = l->next;
-        i++;
-    }
-
-    if (i != eina_list_count(sd->items))
-        list_item_select(sd, i);
 }
 
 static char list_get_letter_from_key(char key)
@@ -497,7 +402,6 @@ static void list_get_alpha_from_digit(Smart_Data *sd, char key)
 static void _smart_event_key_down(Smart_Data *sd, void *event_info)
 {
     Evas_Event_Key_Down *ev;
-    Enna_List_Item *si;
     enna_key_t keycode;
     int ns;
 
@@ -528,15 +432,14 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
         case ENNA_KEY_OK:
         case ENNA_KEY_SPACE:
         {
-            if (!sd->on_hold)
-            {
-                si = eina_list_nth(sd->items, 0);
-                if (si)
-                {
-                    if (si->func)
-                        si->func(si->data, si->data2);
-                }
-            }
+
+	    List_Item *it = eina_list_nth(sd->items, 0);
+	    if (it)
+	    {
+		if (it->func)
+		    it->func(it->data);
+	    }
+
         }
             break;
         case ENNA_KEY_2:
