@@ -534,7 +534,7 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_SPACE:
     {
 	/* FIXME */
-	_browse(sd/*, enna_list_selected_data2_get(sd->o_list)*/);
+	_browse(enna_list_selected_data_get(sd->o_list));
 	break;
     }
     default:
