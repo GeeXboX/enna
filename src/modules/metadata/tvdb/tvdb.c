@@ -76,7 +76,7 @@ tvdb_parse (Enna_Metadata *meta)
               "Search Reply: %s", data.buffer);
 
     /* parse the XML answer */
-    doc = xmlReadMemory (data.buffer, data.size, NULL, NULL, 0);
+    doc = get_xml_doc_from_memory (data.buffer);
     free (data.buffer);
     if (!doc)
         goto error;
