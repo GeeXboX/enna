@@ -384,7 +384,7 @@ static void list_item_select(Smart_Data *sd, int n)
     if (!it) return;
 
     printf("n : %d\n", n);
-
+    elm_genlist_item_show(it->item);
     elm_genlist_item_selected_set(it->item, 1);
 
 }
