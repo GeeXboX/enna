@@ -287,7 +287,7 @@ static void _create_gui()
     em = enna_module_open("video", ENNA_MODULE_ACTIVITY, enna->evas);
     enna_module_enable(em);
 #endif
-#ifdef BUILD_ACTIVITY_GAMES
+#if defined(BUILD_ACTIVITY_GAMES) && defined(BUILD_EFREET)
     em = enna_module_open("games", ENNA_MODULE_ACTIVITY, enna->evas);
     enna_module_enable(em);
 #endif
