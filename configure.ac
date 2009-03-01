@@ -62,6 +62,19 @@ AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
 # Activity Modules #
 ####################
 
+# Games
+want_activity_games="yes"
+AC_MSG_CHECKING(whether games activity module is to be built)
+AC_ARG_ENABLE(activity-games,
+  AS_HELP_STRING([--enable-activity-games],[Enable Games Activity Module]),
+  [ want_activity_games=$enableval ]
+)
+AC_MSG_RESULT($want_activity_games)
+AM_CONDITIONAL(BUILD_ACTIVITY_GAMES, test "x$want_activity_games" = "xyes")
+if test "x$want_activity_games" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_GAMES, 1, [Games Activity])
+fi
+
 # Music
 want_activity_music="yes"
 AC_MSG_CHECKING(whether music activity module is to be built)
@@ -556,6 +569,31 @@ if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
 
+# efreet
+want_efreet="auto"
+have_efreet="no"
+AC_MSG_CHECKING(whether efreet support is to be built)
+AC_ARG_ENABLE(efreet,
+    AS_HELP_STRING([--enable-efreet],[Enable efreet support]),
+    [ want_efreet=$enableval ]
+)
+AC_MSG_RESULT($want_efreet)
+if test "x$want_efreet" = "xyes" -o "x$want_efreet" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [EFREET],
+    [efreet],
+    [
+      AC_DEFINE(BUILD_EFREET, 1, [efreet support])
+      have_efreet="yes"
+    ],
+    [
+      if test "x$want_efreet" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([efreet not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_EFREET, test "x$have_efreet" = "xyes")
 
 AC_CONFIG_FILES([
 Makefile
@@ -563,6 +601,7 @@ src/Makefile
 src/bin/Makefile
 src/modules/Makefile
 src/modules/activity/Makefile
+src/modules/activity/games/Makefile
 src/modules/activity/music/Makefile
 src/modules/activity/photo/Makefile
 src/modules/activity/video/Makefile
@@ -605,6 +644,7 @@ echo
 echo
 echo "Supported Activity Modules:"
 echo
+echo "  games............................ : $want_activity_games"
 echo "  music............................ : $want_activity_music"
 echo "  photo............................ : $want_activity_photo"
 echo "  video............................ : $want_activity_video"
@@ -648,6 +688,7 @@ echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libexif.......................... : $have_libexif"
 echo "  libxml2.......................... : $have_libxml2"
+echo "  efreet........................... : $have_efreet"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo
