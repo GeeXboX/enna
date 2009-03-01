@@ -1,0 +1,525 @@
+#include "enna.h"
+#include "xml_utils.h"
+#include "url_utils.h"
+
+#include <time.h>
+
+#define ENNA_MODULE_NAME "weather"
+
+#define WEATHER_QUERY         "http://www.google.com/ig/api?weather=%s&hl=%s"
+#define MAX_URL_SIZE          1024
+
+#define TIMER_TEMPO           20
+
+typedef enum {
+    TEMP_CELCIUS,
+    TEMP_FAHRENHEIT
+} temp_type_t;
+
+typedef struct _Enna_Module_Weather {
+    Evas *e;
+    Evas_Object *edje;
+    Enna_Module *em;
+    Ecore_Timer *timer;
+    Evas_Object *bg;
+    Evas_Object *icon;
+    Evas_Object *icon_d1, *icon_d2, *icon_d3, *icon_d4;
+    int counter;
+    char *city;
+    char *lang;
+    temp_type_t temp;
+} Enna_Module_Weather;
+
+static Enna_Module_Weather *mod;
+
+/****************************************************************************/
+/*                        Google Weather API                                */
+/****************************************************************************/
+
+static const struct {
+    const char *icon;
+    const char *data;
+} weather_icon_mapping[] = {
+    { "weather/cloudy",           "/partly_cloudy.gif"         },
+    { "weather/foggy",            "/haze.gif"                  },
+    { "weather/heavy_rain",       "/rain.gif"                  },
+    { "weather/light_snow",       "/chance_of_snow.gif"        },
+    { "weather/rain",             "/chance_of_rain.gif"        },
+    { "weather/snow",             "/snow.gif"                  },
+    { "weather/clouds",           "/cloudy.gif"                },
+    { "weather/light_clouds",     "/mostly_sunny.gif"          },
+    { "weather/mostly_cloudy",    "/mostly_cloudy.gif"         },
+    { "weather/sunny",            "/sunny.gif"                 },
+    { "weather/windy",            "/flurries.gif"              },
+#if 0
+    /* matches to be found */
+    { "weather/ice",              "/"                          },
+    { "weather/rain_storm",       "/"                          },
+    { "weather/showers",          "/"                          },
+    { "weather/sun_rain",         "/"                          },
+    { "weather/sun_snow",         "/"                          },
+    { "weather/sun_storm",        "/"                          },
+#endif
+    { NULL,                       NULL }
+};
+
+static void
+get_unit_system (xmlDocPtr doc)
+{
+    xmlChar *tmp;
+    xmlNode *n;
+
+    if (!doc)
+        return;
+
+    n = get_node_xml_tree (xmlDocGetRootElement (doc),
+                           "forecast_information");
+    if (!n)
+        return;
+
+    tmp = get_attr_value_from_xml_tree (n, "unit_system", "data");
+    if (!tmp)
+        return;
+
+    if (!xmlStrcmp ((unsigned char *) "SI", tmp))
+        mod->temp = TEMP_CELCIUS;
+    else
+        mod->temp = TEMP_FAHRENHEIT;
+}
+
+
+static void
+set_field (xmlNode *n, char *prop, char *extra, char *field)
+{
+    xmlChar *tmp;
+    char val[256];
+
+    if (!n || !prop || !field)
+        return;
+
+    tmp = get_attr_value_from_xml_tree (n, prop, "data");
+    if (!tmp)
+        return;
+
+    memset (val, '\0', sizeof (val));
+    if (extra)
+        snprintf (val, sizeof (val), "%s%s", tmp, extra);
+    else
+        snprintf (val, sizeof (val), "%s", tmp);
+
+    edje_object_part_text_set (mod->edje, field, val);
+}
+
+static void
+set_picture (Evas_Object **old,
+             const char *img, const char *field, const char *program)
+{
+    Evas_Object *obj;
+
+    if (!img || !field)
+        return;
+
+    obj = edje_object_add (mod->em->evas);
+    edje_object_file_set (obj, enna_config_theme_get (), img);
+    edje_object_part_swallow (mod->edje, field, obj);
+    if (program)
+        edje_object_signal_emit (mod->edje, program, "enna");
+    evas_object_del (*old);
+    *old = obj;
+}
+
+static void
+weather_set_icon (Evas_Object *obj, char *data, char *field)
+{
+    int i;
+
+    if (!data || !field)
+        goto error_set_icon;
+
+    for (i = 0; weather_icon_mapping[i].icon; i++)
+        if (strstr (data, weather_icon_mapping[i].data))
+        {
+            set_picture (&obj, weather_icon_mapping[i].icon, field, NULL);
+            return;
+        }
+
+ error_set_icon:
+    enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+              "Unable to determine an icon match for '%s'", data);
+    set_picture (&obj, "weather/unknown", field, NULL);
+}
+
+static void
+fill_current_frame (xmlDocPtr doc)
+{
+    xmlNode *n;
+    xmlChar *tmp;
+
+    if (!doc)
+        return;
+
+    /* check for forecast information node */
+    n = get_node_xml_tree (xmlDocGetRootElement (doc),
+                           "forecast_information");
+    if (!n)
+        goto current_conditions_node;
+
+    set_field (n, "city", NULL, "frame.current.city");
+    set_field (n, "current_date_time", NULL, "frame.current.date");
+
+ current_conditions_node:
+    /* check for current conditions node */
+    n = get_node_xml_tree (xmlDocGetRootElement (doc),
+                           "current_conditions");
+    if (!n)
+        return;
+
+    set_field (n, "condition", NULL, "frame.current.condition");
+
+    if (mod->temp == TEMP_CELCIUS)
+        set_field (n, "temp_c", "°C", "frame.current.temp");
+    else if (mod->temp == TEMP_FAHRENHEIT)
+        set_field (n, "temp_f", "°F", "frame.current.temp");
+
+    set_field (n, "humidity", NULL, "frame.current.humidity");
+
+    tmp = get_attr_value_from_xml_tree (n, "icon", "data");
+    weather_set_icon (mod->icon, (char * ) tmp, "frame.current.icon");
+
+    set_field (n, "wind_condition", NULL, "frame.current.wind");
+}
+
+static void
+fill_forecast_frame (xmlDocPtr doc)
+{
+    char *temp = (mod->temp == TEMP_CELCIUS) ? "°C" : "°F";
+    xmlNode *n;
+    int i;
+
+    if (!doc)
+        return;
+
+    /* check for forecast information node */
+    n = get_node_xml_tree (xmlDocGetRootElement (doc),
+                           "forecast_conditions");
+    if (!n)
+        return;
+
+    for (i = 0; i < 4; i++)
+    {
+        char field[128];
+        Evas_Object *icon = NULL;
+        xmlChar *tmp;
+
+        if (i == 0)
+            icon = mod->icon_d1;
+        else if (i == 1)
+            icon = mod->icon_d2;
+        else if (i == 2)
+            icon = mod->icon_d3;
+        else if (i == 3)
+            icon = mod->icon_d4;
+
+        memset (field, '\0', sizeof (field));
+        snprintf (field, sizeof (field), "frame.forecast.day%d", i + 1);
+        set_field (n, "day_of_week", NULL, field);
+
+        memset (field, '\0', sizeof (field));
+        snprintf (field, sizeof (field),
+                  "frame.forecast.day%d.low.text", i + 1);
+        set_field (n, "low", temp, field);
+
+        memset (field, '\0', sizeof (field));
+        snprintf (field, sizeof (field),
+                  "frame.forecast.day%d.high.text", i + 1);
+        set_field (n, "high", temp, field);
+
+
+        tmp = get_attr_value_from_xml_tree (n, "icon", "data");
+        memset (field, '\0', sizeof (field));
+        snprintf (field, sizeof (field),
+                  "frame.forecast.day%d.icon", i + 1);
+        weather_set_icon (icon, (char * ) tmp, field);
+
+        memset (field, '\0', sizeof (field));
+        snprintf (field, sizeof (field),
+                  "frame.forecast.day%d.conditions", i + 1);
+        set_field (n, "condition", NULL, field);
+
+        n = n->next;
+    }
+}
+
+static void
+google_weather_search (void)
+{
+    char url[MAX_URL_SIZE];
+    url_data_t data;
+    CURL *curl;
+    xmlDocPtr doc = NULL;
+    xmlNode *n;
+
+    curl_global_init (CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init ();
+    if (!curl)
+        goto error;
+
+    /* proceed with Google Weather API request */
+    memset (url, '\0', MAX_URL_SIZE);
+    snprintf (url, MAX_URL_SIZE, WEATHER_QUERY,
+              curl_easy_escape (curl, mod->city, strlen (mod->city)),
+              mod->lang);
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Search Request: %s", url);
+
+    data = url_get_data (curl, url);
+    if (data.status != CURLE_OK)
+        goto error;
+
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+              "Search Reply: %s", data.buffer);
+
+    /* parse the XML answer */
+    doc = get_xml_doc_from_memory (data.buffer);
+    free (data.buffer);
+    if (!doc)
+        goto error;
+
+    /* check for existing city */
+    n = get_node_xml_tree (xmlDocGetRootElement (doc), "problem_cause");
+    if (n)
+    {
+        enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                  "The requested city (%s) can't be found.", mod->city);
+        goto error;
+    }
+
+    get_unit_system (doc);
+    fill_current_frame (doc);
+    fill_forecast_frame (doc);
+
+ error:
+    if (doc)
+    {
+        xmlFreeDoc (doc);
+        doc = NULL;
+    }
+    curl_global_cleanup ();
+}
+
+/****************************************************************************/
+/*                        Private Module API                                */
+/****************************************************************************/
+
+static void
+create_gui (void)
+{
+    mod->edje = edje_object_add (mod->em->evas);
+    edje_object_file_set (mod->edje,
+                          enna_config_theme_get (), "module/weather");
+}
+
+static void
+parse_config (void)
+{
+    Enna_Config_Data *cfgdata;
+    Eina_List *l;
+
+    cfgdata = enna_config_module_pair_get (ENNA_MODULE_NAME);
+    if (!cfgdata)
+        return;
+
+    for (l = cfgdata->pair; l; l = l->next)
+    {
+        Config_Pair *pair = l->data;
+
+        if (!strcmp (pair->key, "city"))
+        {
+            char *city = NULL;
+            enna_config_value_store (&city, pair->key,
+                                     ENNA_CONFIG_STRING, pair);
+
+            if (city)
+            {
+                ENNA_FREE (mod->city);
+                mod->city = strdup (city);
+            }
+        }
+        else if (!strcmp (pair->key, "lang"))
+        {
+            char *lang = NULL;
+            enna_config_value_store (&lang, pair->key,
+                                     ENNA_CONFIG_STRING, pair);
+
+            if (lang)
+            {
+                ENNA_FREE (mod->lang);
+                mod->lang = strdup (lang);
+            }
+        }
+    }
+}
+
+static void
+set_background (int id)
+{
+    char *array[] = {
+        "weather/spring",
+        "weather/summer",
+        "weather/fall",
+        "weather/winter"
+    };
+
+    if (id < 0 || id > 4)
+        return;
+
+    set_picture (&mod->bg, array[id], "weather.bg", "bg,show");
+}
+
+static int
+background_cb (void *data)
+{
+    mod->counter++;
+    if ((mod->counter % 4) == 0)
+        mod->counter = 0;
+
+    set_background (mod->counter);
+
+    /* keep running */
+    return 1;
+}
+
+
+static void
+update_background (void)
+{
+    ENNA_TIMER_DEL (mod->timer);
+    mod->timer = ecore_timer_add (TIMER_TEMPO, background_cb, NULL);
+}
+
+static void
+set_default_background (void)
+{
+    time_t t;
+    struct tm *ti;
+    int season = 0;
+
+    t = time (NULL);
+    ti = localtime (&t);
+
+    /* spring: March - May */
+    if (ti->tm_mon >= 0 && ti->tm_mon <= 4)
+        season = 0;
+    /* summer: June - August */
+    else if (ti->tm_mon >= 5 && ti->tm_mon <= 7)
+        season = 1;
+    /* fall: September - November */
+    else if (ti->tm_mon >= 8 && ti->tm_mon <= 10)
+        season = 2;
+    /* winter: December - February */
+    else if (ti->tm_mon >= 11 || ti->tm_mon <= 1)
+        season = 3;
+
+    set_background (season);
+}
+
+static void
+_class_init (int dummy)
+{
+    parse_config ();
+    create_gui ();
+    set_default_background ();
+    enna_content_append (ENNA_MODULE_NAME, mod->edje);
+}
+
+static void
+_class_shutdown (int dummy)
+{
+    ENNA_TIMER_DEL (mod->timer);
+    ENNA_OBJECT_DEL (mod->bg);
+    ENNA_OBJECT_DEL (mod->icon);
+    ENNA_OBJECT_DEL (mod->icon_d1);
+    ENNA_OBJECT_DEL (mod->icon_d2);
+    ENNA_OBJECT_DEL (mod->icon_d3);
+    ENNA_OBJECT_DEL (mod->icon_d4);
+    ENNA_OBJECT_DEL (mod->edje);
+}
+
+static void
+_class_show (int dummy)
+{
+    update_background ();
+    google_weather_search ();
+    edje_object_signal_emit (mod->edje, "weather,show", "enna");
+}
+
+static void
+_class_hide (int dummy)
+{
+    edje_object_signal_emit (mod->edje, "weather,hide", "enna");
+}
+
+static void
+_class_event (void *event_info)
+{
+    Evas_Event_Key_Down *ev = event_info;
+    enna_key_t key = enna_get_key (ev);
+
+    if (key != ENNA_KEY_CANCEL)
+        return;
+
+    enna_content_hide ();
+    enna_mainmenu_show (enna->o_mainmenu);
+}
+
+static Enna_Class_Activity class = {
+    ENNA_MODULE_NAME,
+    1,
+    ENNA_MODULE_NAME,
+    NULL,
+    "icon/weather",
+    {
+        _class_init,
+        _class_shutdown,
+        _class_show,
+        _class_hide,
+        _class_event
+    },
+    NULL
+};
+
+/****************************************************************************/
+/*                         Public Module API                                */
+/****************************************************************************/
+
+Enna_Module_Api module_api =
+{
+    ENNA_MODULE_VERSION,
+    ENNA_MODULE_ACTIVITY,
+    "activity_weather"
+};
+
+void
+module_init (Enna_Module *em)
+{
+    if (!em)
+        return;
+
+    mod = calloc (1, sizeof (Enna_Module_Weather));
+    mod->em = em;
+    mod->city = strdup ("New York");
+    mod->lang = strdup ("en");
+    mod->temp = TEMP_CELCIUS;
+    em->mod = mod;
+
+    enna_activity_add (&class);
+}
+
+void
+module_shutdown (Enna_Module *em)
+{
+    ENNA_TIMER_DEL (mod->timer);
+    ENNA_FREE (mod->city);
+    ENNA_FREE (mod->lang);
+    evas_object_del (mod->edje);
+    free (mod);
+}

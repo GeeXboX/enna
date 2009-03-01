@@ -56,6 +56,10 @@ path_photo=file:///path/to/server/Medias/Photos,Server,icon/dev/nfs
 [netstreams]
 stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv
 
+[weather]
+city=New York
+lang=en
+
 [lms]
 path=file:///path/to/Music
 path=file:///path/to/server/Medias/Music

@@ -101,6 +101,19 @@ if test "x$want_activity_video" = "xyes"; then
   AC_DEFINE(BUILD_ACTIVITY_VIDEO, 1, [Video Activity])
 fi
 
+# Weather
+want_activity_weather="yes"
+AC_MSG_CHECKING(whether weather activity module is to be built)
+AC_ARG_ENABLE(activity-weather,
+  AS_HELP_STRING([--enable-activity-weather],[Enable Weather Activity Module]),
+  [ want_activity_weather=$enableval ]
+)
+AC_MSG_RESULT($want_activity_weather)
+AM_CONDITIONAL(BUILD_ACTIVITY_WEATHER, test "x$want_activity_weather" = "xyes")
+if test "x$want_activity_weather" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_WEATHER, 1, [Weather Activity])
+fi
+
 ###################
 # Backend Modules #
 ###################
@@ -528,6 +541,7 @@ src/modules/activity/Makefile
 src/modules/activity/music/Makefile
 src/modules/activity/photo/Makefile
 src/modules/activity/video/Makefile
+src/modules/activity/weather/Makefile
 src/modules/backend/Makefile
 src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
@@ -568,6 +582,7 @@ echo
 echo "  music............................ : $want_activity_music"
 echo "  photo............................ : $want_activity_photo"
 echo "  video............................ : $want_activity_video"
+echo "  weather.......................... : $want_activity_weather"
 echo
 echo "Supported Backends Modules:"
 echo
