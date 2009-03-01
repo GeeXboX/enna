@@ -30,7 +30,7 @@ static Eina_List * browse_list(void)
 
     chunk = url_get_data(mod->curl, SHOUTCAST_LIST);
 
-    doc = xmlReadMemory(chunk.buffer, chunk.size, NULL, NULL, 0);
+    doc = get_xml_doc_from_memory (chunk.buffer);
     if (!doc)
         return NULL;
 

@@ -287,6 +287,14 @@ static void _create_gui()
     em = enna_module_open("video", ENNA_MODULE_ACTIVITY, enna->evas);
     enna_module_enable(em);
 #endif
+#ifdef BUILD_ACTIVITY_GAMES
+    em = enna_module_open("games", ENNA_MODULE_ACTIVITY, enna->evas);
+    enna_module_enable(em);
+#endif
+#ifdef BUILD_ACTIVITY_WEATHER
+    em = enna_module_open("weather", ENNA_MODULE_ACTIVITY, enna->evas);
+    enna_module_enable(em);
+#endif
 
 #ifdef BUILD_BROWSER_LMS
     em = enna_module_open("lms", ENNA_MODULE_BROWSER, enna->evas);
@@ -354,6 +362,8 @@ static void _create_gui()
     enna_activity_init("music");
     enna_activity_init("video");
     enna_activity_init("photo");
+    enna_activity_init("games");
+    enna_activity_init("weather");
 
     enna_mainmenu_load_from_activities(enna->o_mainmenu);
     enna_mainmenu_select_nth(enna->o_mainmenu, 0);
@@ -375,6 +385,8 @@ static void _enna_shutdown()
     enna_activity_del("music");
     enna_activity_del("video");
     enna_activity_del("photo");
+    enna_activity_del("games");
+    enna_activity_del("weather");
     enna_input_shutdown();
     enna_config_shutdown();
     enna_module_shutdown();

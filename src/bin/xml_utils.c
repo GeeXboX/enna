@@ -1,6 +1,20 @@
 #include "enna.h"
 #include "xml_utils.h"
 
+xmlDocPtr
+get_xml_doc_from_memory (char *buffer)
+{
+    xmlDocPtr doc = NULL;
+
+    if (!buffer)
+        return NULL;
+
+    doc = xmlReadMemory (buffer, strlen (buffer), NULL, NULL,
+                         XML_PARSE_RECOVER |
+                         XML_PARSE_NOERROR | XML_PARSE_NOWARNING);
+    return doc;
+}
+
 xmlNode * get_node_xml_tree(xmlNode *root, const char *prop)
 {
     xmlNode *n, *children_node;
@@ -65,5 +79,35 @@ get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
         return xmlNodeGetContent (n);
     }
     
+    return NULL;
+}
+
+xmlChar *
+get_attr_value_from_xml_tree (xmlNode *root,
+                              const char *prop, const char *attr_name)
+{
+    xmlNode *n, *node;
+    xmlAttr *attr;
+
+    node = get_node_xml_tree (root, prop);
+    if (!node)
+        return NULL;
+
+    for (n = node; n; n = n->next)
+    {
+        xmlChar *content;
+
+        attr = n->properties;
+        if (!attr || !attr->children)
+            continue;
+
+        if (xmlStrcmp ((unsigned char *) attr_name, attr->name) != 0)
+            continue;
+
+        content = xmlNodeGetContent (attr->children);
+        if (content)
+            return content;
+    }
+
     return NULL;
 }

@@ -65,7 +65,7 @@ static char * amazon_cover_get(char *search_type, char *keywords,
              "Search Reply: %s", data.buffer);
 
     /* 4. Parse the answer to get ASIN value */
-    doc = xmlReadMemory(data.buffer, data.size, NULL, NULL, 0);
+    doc = get_xml_doc_from_memory (data.buffer);
     free(data.buffer);
 
     if (!doc)

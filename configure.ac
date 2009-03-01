@@ -63,6 +63,19 @@ AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
 # Activity Modules #
 ####################
 
+# Games
+want_activity_games="yes"
+AC_MSG_CHECKING(whether games activity module is to be built)
+AC_ARG_ENABLE(activity-games,
+  AS_HELP_STRING([--enable-activity-games],[Enable Games Activity Module]),
+  [ want_activity_games=$enableval ]
+)
+AC_MSG_RESULT($want_activity_games)
+AM_CONDITIONAL(BUILD_ACTIVITY_GAMES, test "x$want_activity_games" = "xyes")
+if test "x$want_activity_games" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_GAMES, 1, [Games Activity])
+fi
+
 # Music
 want_activity_music="yes"
 AC_MSG_CHECKING(whether music activity module is to be built)
@@ -100,6 +113,19 @@ AC_MSG_RESULT($want_activity_video)
 AM_CONDITIONAL(BUILD_ACTIVITY_VIDEO, test "x$want_activity_video" = "xyes")
 if test "x$want_activity_video" = "xyes"; then
   AC_DEFINE(BUILD_ACTIVITY_VIDEO, 1, [Video Activity])
+fi
+
+# Weather
+want_activity_weather="yes"
+AC_MSG_CHECKING(whether weather activity module is to be built)
+AC_ARG_ENABLE(activity-weather,
+  AS_HELP_STRING([--enable-activity-weather],[Enable Weather Activity Module]),
+  [ want_activity_weather=$enableval ]
+)
+AC_MSG_RESULT($want_activity_weather)
+AM_CONDITIONAL(BUILD_ACTIVITY_WEATHER, test "x$want_activity_weather" = "xyes")
+if test "x$want_activity_weather" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_WEATHER, 1, [Weather Activity])
 fi
 
 ###################
@@ -162,6 +188,19 @@ AM_CONDITIONAL(BUILD_BACKEND_LIBPLAYER, test "x$have_backend_libplayer" = "xyes"
 # Browser Modules #
 ###################
 
+# DVD Video
+want_browser_dvd="yes"
+AC_MSG_CHECKING(whether dvd video browser module is to be built)
+AC_ARG_ENABLE(browser-dvd,
+  AS_HELP_STRING([--enable-browser-dvd],[Enable DVD Video Browser Module]),
+  [ want_browser_dvd=$enableval ]
+)
+AC_MSG_RESULT($want_browser_dvd)
+AM_CONDITIONAL(BUILD_BROWSER_DVD, test "x$want_browser_dvd" = "xyes")
+if test "x$want_browser_dvd" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_DVD, 1, [Dvd Video Browser])
+fi
+
 # Light Media Scanner (LMS)
 want_browser_lms="auto"
 have_browser_lms="no"
@@ -187,32 +226,6 @@ if test "x$want_browser_lms" = "xyes" -o "x$want_browser_lms" = "xauto"; then
   )
 fi
 AM_CONDITIONAL(BUILD_BROWSER_LMS, test "x$have_browser_lms" = "xyes")
-
-# Valhalla Scanner
-want_browser_valhalla="auto"
-have_browser_valhalla="no"
-AC_MSG_CHECKING(whether Valhalla browser is to be built)
-AC_ARG_ENABLE(browser_valhalla,
-  AS_HELP_STRING([--enable-browser-valhalla],[Enable Valhalla Browser Module]),
-  [ want_browser_valhalla=$enableval ]
-)
-AC_MSG_RESULT($want_browser_valhalla)
-if test "x$want_browser_valhalla" = "xyes" -o "x$want_browser_valhalla" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [VALHALLA],
-    [libvalhalla],
-    [
-      AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
-      have_browser_valhalla="yes"
-    ],
-    [
-      if test "x$want_browser_valhalla" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([valhalla not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_BROWSER_VALHALLA, test "x$have_browser_valhalla" = "xyes")
 
 # Local Files
 want_browser_localfiles="yes"
@@ -279,19 +292,31 @@ if test "x$want_browser_upnp" = "xyes" -o "x$want_browser_upnp" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_BROWSER_UPNP, test "x$have_browser_upnp" = "xyes")
 
-# DVD Video
-want_browser_dvd="yes"
-AC_MSG_CHECKING(whether dvd video browser module is to be built)
-AC_ARG_ENABLE(browser-dvd,
-  AS_HELP_STRING([--enable-browser-dvd],[Enable DVD Video Browser Module]),
-  [ want_browser_dvd=$enableval ]
+# Valhalla Scanner
+want_browser_valhalla="auto"
+have_browser_valhalla="no"
+AC_MSG_CHECKING(whether Valhalla browser is to be built)
+AC_ARG_ENABLE(browser_valhalla,
+  AS_HELP_STRING([--enable-browser-valhalla],[Enable Valhalla Browser Module]),
+  [ want_browser_valhalla=$enableval ]
 )
-AC_MSG_RESULT($want_browser_dvd)
-AM_CONDITIONAL(BUILD_BROWSER_DVD, test "x$want_browser_dvd" = "xyes")
-if test "x$want_browser_dvd" = "xyes"; then
-  AC_DEFINE(BUILD_BROWSER_DVD, 1, [Dvd Video Browser])
+AC_MSG_RESULT($want_browser_valhalla)
+if test "x$want_browser_valhalla" = "xyes" -o "x$want_browser_valhalla" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [VALHALLA],
+    [libvalhalla],
+    [
+      AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
+      have_browser_valhalla="yes"
+    ],
+    [
+      if test "x$want_browser_valhalla" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([valhalla not found (strict dependencies checking)])
+      fi
+    ]
+  )
 fi
-
+AM_CONDITIONAL(BUILD_BROWSER_VALHALLA, test "x$have_browser_valhalla" = "xyes")
 
 #################
 # Input Modules #
@@ -545,6 +570,31 @@ if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
 
+# efreet
+want_efreet="auto"
+have_efreet="no"
+AC_MSG_CHECKING(whether efreet support is to be built)
+AC_ARG_ENABLE(efreet,
+    AS_HELP_STRING([--enable-efreet],[Enable efreet support]),
+    [ want_efreet=$enableval ]
+)
+AC_MSG_RESULT($want_efreet)
+if test "x$want_efreet" = "xyes" -o "x$want_efreet" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [EFREET],
+    [efreet],
+    [
+      AC_DEFINE(BUILD_EFREET, 1, [efreet support])
+      have_efreet="yes"
+    ],
+    [
+      if test "x$want_efreet" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([efreet not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_EFREET, test "x$have_efreet" = "xyes")
 
 AC_CONFIG_FILES([
 Makefile
@@ -552,20 +602,22 @@ src/Makefile
 src/bin/Makefile
 src/modules/Makefile
 src/modules/activity/Makefile
+src/modules/activity/games/Makefile
 src/modules/activity/music/Makefile
 src/modules/activity/photo/Makefile
 src/modules/activity/video/Makefile
+src/modules/activity/weather/Makefile
 src/modules/backend/Makefile
 src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
 src/modules/browser/Makefile
+src/modules/browser/dvd/Makefile
 src/modules/browser/lms/Makefile
-src/modules/browser/valhalla/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
 src/modules/browser/shoutcast/Makefile
 src/modules/browser/upnp/Makefile
-src/modules/browser/dvd/Makefile
+src/modules/browser/valhalla/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/metadata/Makefile
@@ -593,9 +645,11 @@ echo
 echo
 echo "Supported Activity Modules:"
 echo
+echo "  games............................ : $want_activity_games"
 echo "  music............................ : $want_activity_music"
 echo "  photo............................ : $want_activity_photo"
 echo "  video............................ : $want_activity_video"
+echo "  weather.......................... : $want_activity_weather"
 echo
 echo "Supported Backends Modules:"
 echo
@@ -604,13 +658,13 @@ echo "  libplayer........................ : $have_backend_libplayer"
 echo
 echo "Supported Browser Modules:"
 echo
+echo "  DVD Video........................ : $want_browser_dvd"
 echo "  Light Media Scanner.............. : $have_browser_lms"
-echo "  Valhalla Scanner................. : $have_browser_valhalla"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  SHOUTcast........................ : $want_browser_shoutcast"
 echo "  UPnP/DLNA........................ : $have_browser_upnp"
-echo "  DVD Video........................ : $want_browser_dvd"
+echo "  Valhalla Scanner................. : $have_browser_valhalla"
 echo
 echo "Supported Input Modules:"
 echo
@@ -635,6 +689,7 @@ echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libexif.......................... : $have_libexif"
 echo "  libxml2.......................... : $have_libxml2"
+echo "  efreet........................... : $have_efreet"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo
