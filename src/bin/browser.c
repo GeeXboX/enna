@@ -319,7 +319,7 @@ static void _smart_clip_unset(Evas_Object * obj)
     evas_object_clip_unset(sd->o_edje);
 }
 
-static  void _browse (void *data, Evas_Object *obj, void *event_info)
+static  void _browse (void *data)
 {
     Smart_Data *sd;
     Browse_Data *bd = data;
@@ -534,7 +534,7 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_SPACE:
     {
 	/* FIXME */
-	_browse(sd, NULL, NULL/*, enna_list_selected_data2_get(sd->o_list)*/);
+	_browse(sd/*, enna_list_selected_data2_get(sd->o_list)*/);
 	break;
     }
     default:

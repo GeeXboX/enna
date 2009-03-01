@@ -11,6 +11,15 @@
 #define SMART_NAME "enna_list"
 
 typedef struct _Smart_Data Smart_Data;
+typedef struct _List_Item List_Item;
+
+struct _List_Item
+{
+    void *data;
+    void (*func) (void *data);
+    Elm_Genlist_Item *item;
+};
+
 struct _Smart_Data
 {
     Evas_Coord x, y, w, h, iw, ih;
@@ -51,15 +60,43 @@ enna_list_add(Evas *evas)
     return evas_object_smart_add(evas, _e_smart);
 }
 
-void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, void (*func) (void *data, Evas_Object *obj, void *event_info), void *data)
+void _item_activated(void *data, Evas_Object *obj, void *event_info)
 {
-    Elm_Genlist_Item *item;
+    Smart_Data *sd = data;
+    Elm_Genlist_Item *item = event_info;
+    List_Item *it = NULL;
+    Eina_List *l;
+
+    if (!sd) return;
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+	if (it->item == item)
+	{
+	    printf("Activate item\n");
+	    it->func(it->data);
+	    return;
+	}
+    }
+}
+
+void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, void (*func) (void *data),  void *data)
+{
+
+    List_Item *it;
     API_ENTRY return;
 
-    item = elm_genlist_item_append (sd->o_list, class, class_data,
-	NULL, ELM_GENLIST_ITEM_NONE, func, data );
+    it = calloc(1, sizeof(List_Item));
 
-    sd->items = eina_list_append(sd->items, item);
+    it->item = elm_genlist_item_append (sd->o_list, class, class_data,
+	NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL );
+
+    it->func = func;
+    it->data = data;
+
+    evas_object_smart_callback_add(sd->o_list, "clicked", _item_activated, sd);
+
+    sd->items = eina_list_append(sd->items, it);
 }
 
 void enna_list_selected_set(Evas_Object *obj, int n)
@@ -68,8 +105,9 @@ void enna_list_selected_set(Evas_Object *obj, int n)
     Eina_List *l = NULL;
     int i;
 
-    API_ENTRY
     return;
+
+    API_ENTRY return;
     if (!sd->items)
         return;
 
@@ -347,10 +385,20 @@ static int _letter_timer_cb(void *data)
 }
 static void _smart_del(Evas_Object *obj)
 {
-    INTERNAL_ENTRY ;
+    Eina_List *list;
+    Eina_List *l;
+    Eina_List *l_prev;
+    List_Item *it;
+
+    INTERNAL_ENTRY;
 
     evas_object_del(sd->o_list);
     evas_object_del(sd->o_edje);
+    EINA_LIST_REVERSE_FOREACH_SAFE(sd->items, l, l_prev, it)
+    {
+	free(it);
+	list = eina_list_remove_list(list, l);
+    }
     free(sd);
 }
 
@@ -432,13 +480,13 @@ static void _smart_reconfigure(Smart_Data *sd)
 
 static void list_item_select(Smart_Data *sd, int n)
 {
-/*    Elm_Genlist_Item *it;
+    List_Item *it;
 
     it = eina_list_nth(sd->items, n);
     if (!it) return;
 
-    elm_genlist_item_selected_set(it, 1);
-*/
+    elm_genlist_item_selected_set(it->item, 1);
+
 }
 
 static void list_set_item(Smart_Data *sd, int start, int up, int step)

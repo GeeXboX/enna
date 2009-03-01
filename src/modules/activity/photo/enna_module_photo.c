@@ -12,7 +12,7 @@ static void _create_gui();
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
-static void _browse(void *data, void *data2);
+static void _browse(void *data);
 
 static void _photo_info_fs();
 typedef enum _PHOTO_STATE PHOTO_STATE;
@@ -225,7 +225,7 @@ static void _photo_info_fs()
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
 }
 
-
+/*
 static void _create_slideshow_gui()
 {
     Evas_Object *o;
@@ -245,6 +245,7 @@ static void _create_slideshow_gui()
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
 
 }
+*/
 
 static void
 _picture_selected_cb (void *data, Evas_Object *obj, void *event_info)
@@ -329,7 +330,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     free(ev);
 }
 
-static void _browse(void *data, void *data2)
+static void _browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
 
@@ -366,7 +367,7 @@ _create_menu()
     edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_PHOTO);
-    EINA_LIST_FOREACH(l, categories, cat)
+    EINA_LIST_FOREACH(categories, l, cat)
     {
    	Photo_Item_Class_Data *item;
 
@@ -440,7 +441,7 @@ static void _class_event(void *event_info)
 	case ENNA_KEY_RIGHT:
 	case ENNA_KEY_OK:
 	case ENNA_KEY_SPACE:
-	    _browse(enna_list_selected_data_get(mod->o_menu), NULL);
+	    _browse(enna_list_selected_data_get(mod->o_menu));
 	    break;
 	default:
 	    enna_list_event_key_down(mod->o_menu, event_info);
@@ -536,6 +537,48 @@ class =
   { _class_init, _class_shutdown, _class_show, _class_hide,
     _class_event }, NULL };
 
+
+/* Class Item interface */
+static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *part)
+{
+    const Photo_Item_Class_Data *item = data;
+
+    if (!item) return NULL;
+
+    return strdup(item->label);
+}
+
+static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
+{
+    const Photo_Item_Class_Data *item = data;
+
+    if (!item) return NULL;
+
+    if (!strcmp(part, "elm.swallow.icon"))
+     {
+	 Evas_Object *ic;
+
+	 ic = elm_icon_add(obj);
+	 elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+	 evas_object_size_hint_min_set(ic, 64, 64);
+	 evas_object_show(ic);
+	 return ic;
+     }
+
+   return NULL;
+
+}
+
+static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
+{
+   return 0;
+}
+
+static void _genlist_del(const void *data, Evas_Object *obj)
+{
+}
+
+
 /*****************************************************************************/
 /*                          Public Module API                                */
 /*****************************************************************************/
@@ -555,6 +598,15 @@ void module_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Photo));
     mod->em = em;
     em->mod = mod;
+
+     /* Create Class Item */
+    mod->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
+
+    mod->item_class->item_style     = "default";
+    mod->item_class->func.label_get = _genlist_label_get;
+    mod->item_class->func.icon_get  = _genlist_icon_get;
+    mod->item_class->func.state_get = _genlist_state_get;
+    mod->item_class->func.del       = _genlist_del;
 
     enna_activity_add(&class);
 }

@@ -14,7 +14,7 @@
 static void _create_menu();
 static void _create_gui();
 static void _create_mediaplayer_gui();
-static void _browse(void *data, void *data2);
+static void _browse(void *data);
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
@@ -169,7 +169,7 @@ _class_event(void *event_info)
 	case ENNA_KEY_RIGHT:
 	case ENNA_KEY_OK:
 	case ENNA_KEY_SPACE:
-	    _browse(enna_list_selected_data_get(mod->o_list), NULL);
+	    _browse(enna_list_selected_data_get(mod->o_list));
 	    break;
 	default:
 	    enna_list_event_key_down(mod->o_list, event_info);
@@ -270,7 +270,7 @@ static void
 _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 {
     int n;
-    char *label ;
+    const char *label ;
 
     n = enna_location_count(mod->o_location) - 1;
     label = enna_location_label_get_nth(mod->o_location, n);
@@ -318,7 +318,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_browse(void *data, void *data2)
+_browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
 
@@ -442,7 +442,7 @@ _create_menu()
         enna_list_append(o, mod->item_class, item, _browse, cat);
     }
 
-    enna_list_selected_set(o, 0);
+    //enna_list_selected_set(o, 0);
     mod->o_list = o;
     edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
@@ -492,7 +492,7 @@ static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *
 
 static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
 {
-    Music_Item_Class_Data *item = data;
+    const Music_Item_Class_Data *item = data;
 
     if (!item) return NULL;
 
