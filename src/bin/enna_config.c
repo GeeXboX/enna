@@ -98,6 +98,10 @@
     "[netstreams]\n"							\
     "stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv\n" \
     "\n"								\
+    "[weather]\n"                                                       \
+    "city=New York\n"                                                   \
+    "lang=en\n"                                                         \
+    "\n"                                                                \
     "[valhalla]"							\
     "path=file:///path/to/Music"					\
     "path=file:///path/to/server/Medias/Music"				\

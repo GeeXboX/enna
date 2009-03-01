@@ -28,6 +28,7 @@ collections
 #include "content.edc"
 #include "music_video.edc"
 #include "photo.edc"
+#include "weather.edc"
 #include "icons.edc"
 #include "list.edc"
 #include "browser.edc"

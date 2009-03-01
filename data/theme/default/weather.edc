@@ -1,0 +1,895 @@
+images {
+   image: "frame.png" COMP;
+   image: "progress_bar_content.png" COMP;
+}
+
+group {
+   name: "module/weather";
+
+/**********/
+/* Styles */
+/**********/
+
+   styles {
+      style {
+         name: "weather_style";
+         base: "font=content_bd color=#A0D026 color2=#A0D026A0 style=GLOW";
+      }
+   }
+
+   color_classes {
+      color_class {
+         name:  "weather_header";
+         color: 160 208 38 255;
+         color2: 0 0 0 128;
+      }
+   }
+
+   parts {
+
+/**********/
+/* Module */
+/**********/
+
+      part {
+         name: "weather.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+            visible: 0;
+         }
+         description {
+            state: "show" 0.0;
+            color : 255 255 255 255;
+            visible: 1;
+         }
+      }
+
+/**************/
+/* Background */
+/**************/
+
+      part {
+         name: "weather.bg.clip";
+         clip_to: "weather.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+            visible: 0;
+            rel1 { relative: 0.0 0.0; to: "weather.clip"; };
+            rel2 { relative: 1.0 1.0; to: "weather.clip"; };
+         }
+         description {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+	    color: 255 255 255 255;
+            visible: 1;
+         }
+      }
+
+      part {
+         name: "weather.bg";
+         clip_to: "weather.bg.clip";
+         type: SWALLOW;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.0 0.0; to: "weather.bg.clip"; }
+            rel2 { relative: 1.0 1.0; to: "weather.bg.clip"; }
+         }
+      }
+
+/**************/
+/* Left Panel */
+/**************/
+
+     part {
+         name: "frame.current.clip";
+         clip_to: "weather.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.10 0.10; to: "weather.clip"; }
+            rel2 { relative: 0.45 0.85; to: "weather.clip"; }
+            color : 255 255 255 255;
+            visible: 0;
+         }
+         description {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+	    color: 255 255 255 255;
+            visible: 1;
+         }
+      }
+
+      part {
+         name: "frame.current";
+         clip_to: "frame.current.clip";
+         type: IMAGE;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.10 0.10; }
+            rel2 { relative: 0.45 0.85; }
+            image { normal: "frame.png"; }
+         }
+      }
+
+      part {
+	 name: "frame.current.city";
+         clip_to: "frame.current.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "City";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.05;
+            }
+	 }
+      }
+
+      part {
+         name: "frame.current.spacer1";
+         clip_to: "frame.current.clip";
+         type: IMAGE;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.10 0.14; to: "frame.current.clip"; }
+            rel2 { relative: 0.90 0.16; to: "frame.current.clip"; }
+            image { normal: "progress_bar_content.png"; }
+         }
+      }
+
+      part {
+	 name: "frame.current.temp";
+         clip_to: "frame.current.clip";
+         type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "Temp";
+               font:     "content_bd";
+               size:     65;
+               align:    0.15 0.25;
+            }
+	 }
+      }
+
+      part {
+         name: "frame.current.icon";
+         clip_to: "frame.current.clip";
+         type: SWALLOW;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.55 0.16; to: "frame.current.clip"; }
+            rel2 { relative: 0.95 0.46; to: "frame.current.clip"; }
+         }
+      }
+
+      part {
+	 name: "frame.current.condition";
+         clip_to: "frame.current.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "condition";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.55;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.current.humidity";
+         clip_to: "frame.current.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "Humidity: N/A";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.7;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.current.wind";
+         clip_to: "frame.current.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "Wind: N/A";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.8;
+            }
+	 }
+      }
+
+      part {
+         name: "frame.current.spacer2";
+         clip_to: "frame.current.clip";
+         type: IMAGE;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.10 0.84; to: "frame.current.clip"; }
+            rel2 { relative: 0.90 0.86; to: "frame.current.clip"; }
+            image { normal: "progress_bar_content.png"; }
+         }
+      }
+
+      part {
+	 name: "frame.current.date";
+         clip_to: "frame.current.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "date";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.95;
+            }
+	 }
+      }
+
+
+/***************/
+/* Right Panel */
+/***************/
+
+     part {
+         name: "frame.forecast.clip";
+         clip_to: "weather.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.55 0.10; to: "weather.clip"; }
+            rel2 { relative: 0.90 0.85; to: "weather.clip"; }
+            color : 255 255 255 255;
+            visible: 0;
+         }
+         description {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+	    color: 255 255 255 255;
+            visible: 1;
+         }
+      }
+
+      part {
+         name: "frame.forecast";
+         clip_to: "frame.forecast.clip";
+         type: IMAGE;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.55 0.10; }
+            rel2 { relative: 0.90 0.85; }
+            image { normal: "frame.png"; }
+         }
+      }
+
+/* Day 1 */
+
+      part {
+	 name: "frame.forecast.day1";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Day 1";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.03;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day1.low";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Min:";
+               font:     "content_bd";
+               size:     15;
+               align:    0.10 0.09;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day1.low.text";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "N/A";
+               font:     "content_bd";
+               size:     15;
+               align:    0.25 0.09;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day1.high";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Max:";
+               font:     "content_bd";
+               size:     15;
+               align:    0.10 0.15;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day1.high.text";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "N/A";
+               font:     "content_bd";
+               size:     15;
+               align:    0.25 0.15;
+            }
+	 }
+      }
+
+      part {
+         name: "frame.forecast.day1.icon";
+         clip_to: "frame.forecast.clip";
+         type: SWALLOW;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.70 0.06; to: "frame.forecast.clip"; }
+            rel2 { relative: 0.90 0.22; to: "frame.forecast.clip"; }
+         }
+      }
+
+      part {
+	 name: "frame.forecast.day1.conditions";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "conditions";
+               font:     "content";
+               size:     15;
+               align:    0.5 0.20;
+            }
+	 }
+      }
+
+/* Day 2 */
+
+      part {
+	 name: "frame.forecast.day2";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Day 2";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.28;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day2.low";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Min:";
+               font:     "content_bd";
+               size:     15;
+               align:    0.10 0.34;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day2.low.text";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "N/A";
+               font:     "content_bd";
+               size:     15;
+               align:    0.25 0.34;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day2.high";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Max:";
+               font:     "content_bd";
+               size:     15;
+               align:    0.10 0.40;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day2.high.text";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "N/A";
+               font:     "content_bd";
+               size:     15;
+               align:    0.25 0.40;
+            }
+	 }
+      }
+
+      part {
+         name: "frame.forecast.day2.icon";
+         clip_to: "frame.forecast.clip";
+         type: SWALLOW;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.70 0.30; to: "frame.forecast.clip"; }
+            rel2 { relative: 0.90 0.46; to: "frame.forecast.clip"; }
+         }
+      }
+
+      part {
+	 name: "frame.forecast.day2.conditions";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "conditions";
+               font:     "content";
+               size:     15;
+               align:    0.5 0.45;
+            }
+	 }
+      }
+
+/* Day 3 */
+
+      part {
+	 name: "frame.forecast.day3";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Day 3";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.53;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day3.low";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Min:";
+               font:     "content_bd";
+               size:     15;
+               align:    0.10 0.59;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day3.low.text";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "N/A";
+               font:     "content_bd";
+               size:     15;
+               align:    0.25 0.59;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day3.high";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Max:";
+               font:     "content_bd";
+               size:     15;
+               align:    0.10 0.65;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day3.high.text";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "N/A";
+               font:     "content_bd";
+               size:     15;
+               align:    0.25 0.65;
+            }
+	 }
+      }
+
+      part {
+         name: "frame.forecast.day3.icon";
+         clip_to: "frame.forecast.clip";
+         type: SWALLOW;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.70 0.53; to: "frame.forecast.clip"; }
+            rel2 { relative: 0.90 0.69; to: "frame.forecast.clip"; }
+         }
+      }
+
+      part {
+	 name: "frame.forecast.day3.conditions";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "conditions";
+               font:     "content";
+               size:     15;
+               align:    0.5 0.70;
+            }
+	 }
+      }
+
+/* Day 4 */
+
+      part {
+	 name: "frame.forecast.day4";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Day 4";
+               font:     "content_bd";
+               size:     25;
+               align:    0.5 0.78;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day4.low";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Min:";
+               font:     "content_bd";
+               size:     15;
+               align:    0.10 0.84;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day4.low.text";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "N/A";
+               font:     "content_bd";
+               size:     15;
+               align:    0.25 0.84;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day4.high";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color_class: "weather_header";
+	    text {
+               text:     "Max:";
+               font:     "content_bd";
+               size:     15;
+               align:    0.10 0.90;
+            }
+	 }
+      }
+
+      part {
+	 name: "frame.forecast.day4.high.text";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "N/A";
+               font:     "content_bd";
+               size:     15;
+               align:    0.25 0.90;
+            }
+	 }
+      }
+
+      part {
+         name: "frame.forecast.day4.icon";
+         clip_to: "frame.forecast.clip";
+         type: SWALLOW;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1 { relative: 0.70 0.77; to: "frame.forecast.clip"; }
+            rel2 { relative: 0.90 0.93; to: "frame.forecast.clip"; }
+         }
+      }
+
+      part {
+	 name: "frame.forecast.day4.conditions";
+         clip_to: "frame.forecast.clip";
+	 type: TEXT;
+         effect: GLOW;
+	 mouse_events: 0;
+	 description {
+	    state: "default" 0.0;
+	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+            color: 255 255 255 255;
+	    text {
+               text:     "conditions";
+               font:     "content";
+               size:     15;
+               align:    0.5 0.95;
+            }
+	 }
+      }
+
+   }
+
+/************/
+/* Programs */
+/************/
+
+   programs {
+      program {
+         name: "weather,show";
+         signal: "weather,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "weather.clip";
+         target: "frame.current.clip";
+         target: "frame.forecast.clip";
+     }
+      program {
+         name: "weather,hide";
+         signal: "weather,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "weather.clip";
+         target: "frame.current.clip";
+         target: "frame.forecast.clip";
+      }
+      program {
+         name: "bg,show";
+         signal: "bg,show";
+         source: "enna";
+         action: STATE_SET "show" 0.0;
+         transition: SINUSOIDAL 1.0;
+         target: "weather.bg.clip";
+      }
+      program {
+         name: "bg,hide";
+         signal: "bg,hide";
+         source: "enna";
+         action: STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 1.0;
+         target: "weather.bg.clip";
+      }
+   }
+}
