@@ -293,13 +293,15 @@ static Eina_List *_browse_root(void)
 
 static Eina_List *_class_browse_up(const char *path, void *cookie)
 {
+    int64_t id;
+    int rc;
+
     mod->level = BROWSER_LEVEL_ROOT;
 
     if (!path)
         return _browse_root();
 
-    int64_t id;
-    int rc = sscanf(path, "%i/%"PRIi64, (int *) &mod->level, &id);
+    rc = sscanf(path, "%i/%"PRIi64, (int *) &mod->level, &id);
 
     if (rc != 2)
         return NULL;
