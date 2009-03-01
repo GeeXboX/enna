@@ -22,12 +22,11 @@ struct _List_Item
 
 struct _Smart_Data
 {
-    Evas_Coord x, y, w, h, iw, ih;
+    Evas_Coord x, y, w, h;
     Evas_Object *o_smart;
     Evas_Object *o_edje;
     Evas_Object *o_list;
     Eina_List *items;
-    int selected;
     unsigned char on_hold : 1;
     unsigned int letter_mode;
     Ecore_Timer *letter_timer;
@@ -101,167 +100,68 @@ void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * cl
 
 void enna_list_selected_set(Evas_Object *obj, int n)
 {
-    Enna_List_Item *si = NULL;
-    Eina_List *l = NULL;
-    int i;
-
-    return;
 
     API_ENTRY return;
-    if (!sd->items)
-        return;
-
-    if (sd->selected == n)
-	return;
-
-    i = eina_list_count(sd->items);
-    if (n >= i)
-        n = i - 1;
-    else if (n < 0)
-        n = 0;
-
-    for (l = sd->items; l; l = l->next)
-    {
-        if (!(si = l->data))
-            continue;
-        if (!si->selected)
-            continue;
-        enna_listitem_unselect(si->o_base);
-        si->selected = 0;
-    }
-    sd->selected = -1;
-    if (!(si = eina_list_nth(sd->items, n)))
-        return;
-
-    si->selected = 1;
-    sd->selected = n;
-    evas_object_raise(si->o_base);
-    enna_listitem_select(si->o_base);
-    if (si->func_hilight)
-        si->func_hilight(si->data, si->data2);
-
-
+    list_item_select(sd, n);
 }
 
 int enna_list_jump_label(Evas_Object *obj, const char *label)
 {
-    Enna_List_Item *si = NULL;
-    Eina_List *l = NULL;
-    int i;
 
-    enna_log(ENNA_MSG_EVENT, NULL, "enna_list_jump_label %s", label);
-
-    API_ENTRY return -1;
-
-    if (!sd->items || !label)
-        return -1;
-
-    sd->selected = -1;
-    enna_log(ENNA_MSG_EVENT, NULL, "enna_list_jump_label %d", eina_list_count(sd->items));
-    for (l = sd->items, i = 0; l; l = l->next, i++)
-    {
-        if (!(si = l->data))
-            continue;
-
-        if (!strcmp(enna_listitem_label_get(si->o_base), label))
-        {
-   	    list_item_select(sd, i);
-            enna_log(ENNA_MSG_EVENT, NULL, "label get : %s",
-                    enna_listitem_label_get(si->o_base));
-            break;
-        }
-
-    }
-    return sd->selected;
-
+    return -1;
 }
 
 void enna_list_jump_nth(Evas_Object *obj, int n)
 {
-    Enna_List_Item *si = NULL;
-    Eina_List *l = NULL;
-    int i;
-    Evas_Coord x, y, w, h;
-
-    API_ENTRY
-    return;
-    if (!sd->items)
-        return;
-
-    i = eina_list_count(sd->items);
-    if (n >= i)
-        n = i - 1;
-    else if (n < 0)
-        n = 0;
-
-    for (l = sd->items; l; l = l->next)
-    {
-        if (!(si = l->data))
-            continue;
-        if (!si->selected)
-            continue;
-        enna_listitem_unselect(si->o_base);
-        si->selected = 0;
-    }
-    sd->selected = -1;
-    if (!(si = eina_list_nth(sd->items, n)))
-        return;
-
-    si->selected = 1;
-    sd->selected = n;
-    evas_object_raise(si->o_base);
-    enna_listitem_select(si->o_base);
-    evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
-    /* FIXME
-       enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);*/
-    if (si->func_hilight)
-        si->func_hilight(si->data, si->data2);
 
 }
 
 int enna_list_selected_get(Evas_Object *obj)
 {
-    API_ENTRY
+    Eina_List *l;
+    List_Item *it;
+    int i = 0;
+
+    API_ENTRY return -1;
+
+    printf("selected get\n");
+
+    if (!sd->items) return -1;
+    EINA_LIST_FOREACH(sd->items,l, it)
+    {
+	if ( elm_genlist_item_selected_get (it->item))
+	{
+	    printf("Selected item : %d\n", i);
+	    return i;
+	}
+	i++;
+    }
     return -1;
-    if (!sd->items)
-        return -1;
-    return sd->selected;
 }
 
-void * enna_list_selected_data_get(Evas_Object *obj)
+void *enna_list_selected_data_get(Evas_Object *obj)
 {
-    Enna_List_Item *si = NULL;
+    Eina_List *l;
+    List_Item *it;
 
-    API_ENTRY
-    return NULL;
-    if (!sd->items)
-        return NULL;
-    if (sd->selected < 0)
-        return NULL;
-    si = eina_list_nth(sd->items, sd->selected);
-    if (si)
-        return si->data;
+    API_ENTRY return NULL;
+
+    if (!sd->items) return NULL;
+
+    EINA_LIST_FOREACH(sd->items,l, it)
+    {
+	if ( elm_genlist_item_selected_get (it->item))
+	{
+	    return it->data;
+	}
+    }
     return NULL;
 }
 
 void enna_list_selected_geometry_get(Evas_Object *obj, Evas_Coord *x,
         Evas_Coord *y, Evas_Coord *w, Evas_Coord *h)
 {
-    Enna_List_Item *si = NULL;
-
-    API_ENTRY
-    return;
-    if (!sd->items)
-        return;
-    if (sd->selected < 0)
-        return;
-    if (!(si = eina_list_nth(sd->items, sd->selected)))
-        return;
-
-    edje_object_calc_force(si->o_base);
-    evas_object_geometry_get(si->o_base, x, y, w, h);
-    if (x)*x -= sd->x;
-    if (y)*y -= sd->y;
+     API_ENTRY return;
 }
 
 int enna_list_selected_count_get(Evas_Object *obj)
@@ -331,8 +231,6 @@ static void _smart_add(Evas_Object *obj)
 
     sd->o_smart = obj;
     sd->x = sd->y = sd->w = sd->h = 0;
-    sd->iw = sd->ih = 48;
-    sd->selected = -1;
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/list");
@@ -385,7 +283,7 @@ static int _letter_timer_cb(void *data)
 }
 static void _smart_del(Evas_Object *obj)
 {
-    Eina_List *list;
+    Eina_List *list = NULL;
     Eina_List *l;
     Eina_List *l_prev;
     List_Item *it;
@@ -484,6 +382,8 @@ static void list_item_select(Smart_Data *sd, int n)
 
     it = eina_list_nth(sd->items, n);
     if (!it) return;
+
+    printf("n : %d\n", n);
 
     elm_genlist_item_selected_set(it->item, 1);
 
@@ -602,7 +502,7 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
     int ns;
 
     ev = event_info;
-    ns = sd->selected;
+    ns = enna_list_selected_get(sd->o_smart);
     keycode = enna_get_key(ev);
 
     switch (keycode)
@@ -630,7 +530,7 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
         {
             if (!sd->on_hold)
             {
-                si = eina_list_nth(sd->items, sd->selected);
+                si = eina_list_nth(sd->items, 0);
                 if (si)
                 {
                     if (si->func)
