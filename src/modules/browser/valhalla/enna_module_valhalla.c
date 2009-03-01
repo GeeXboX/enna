@@ -92,7 +92,7 @@ static void _vfs_add_file(Eina_List **list,
 {
     Enna_Vfs_File *f;
     char buf[PATH_BUFFER];
-    char title[32];
+    char title[256];
     char *it;
 
     snprintf(buf, sizeof(buf), "file://%s", file->path);
