@@ -452,7 +452,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 	    bd->file = f;
 	    bd->sd = sd;
 
-	    enna_list_append(sd->o_list, sd->item_class, item, _browse, bd);
+	    enna_list_append(sd->o_list, sd->item_class, item, item->label, _browse, bd);
 
         }
 	if (direction)
@@ -468,7 +468,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 	item = calloc(1, sizeof(Browser_Item_Class_Data));
 	item->icon = eina_stringshare_add("icon_nofile");
 	item->label = eina_stringshare_add("No media found !");
-	enna_list_append(sd->o_list, sd->item_class, item, NULL, NULL);
+	enna_list_append(sd->o_list, sd->item_class, item, item->label, NULL, NULL);
 	enna_list_selected_set(sd->o_list, 0);
     }
     else

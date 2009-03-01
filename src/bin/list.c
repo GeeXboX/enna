@@ -18,6 +18,7 @@ struct _List_Item
     void *data;
     void (*func) (void *data);
     Elm_Genlist_Item *item;
+    const char *label;
 };
 
 struct _Smart_Data
@@ -47,8 +48,8 @@ static void _smart_clip_set(Evas_Object *obj, Evas_Object *clip);
 static void _smart_clip_unset(Evas_Object *obj);
 static void _smart_reconfigure(Smart_Data *sd);
 static void _smart_event_key_down(Smart_Data *sd, void *event_info);
+static void _smart_select_item(Smart_Data *sd, int n);
 static int _letter_timer_cb(void *data);
-static void list_item_select(Smart_Data *sd, int n);
 
 static Evas_Smart *_e_smart = NULL;
 
@@ -79,7 +80,7 @@ void _item_activated(void *data, Evas_Object *obj, void *event_info)
     }
 }
 
-void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, void (*func) (void *data),  void *data)
+void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, const char *label, void (*func) (void *data),  void *data)
 {
 
     List_Item *it;
@@ -91,6 +92,7 @@ void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * cl
 
     it->func = func;
     it->data = data;
+    it->label = eina_stringshare_add(label);
     evas_object_smart_callback_add(sd->o_list, "clicked", _item_activated, sd);
     sd->items = eina_list_append(sd->items, it);
 }
@@ -99,18 +101,38 @@ void enna_list_selected_set(Evas_Object *obj, int n)
 {
 
     API_ENTRY return;
-    list_item_select(sd, n);
+    _smart_select_item(sd, n);
 }
 
 int enna_list_jump_label(Evas_Object *obj, const char *label)
 {
+    List_Item *it = NULL;
+    Eina_List *l;
+    int i = 0;
+
+    API_ENTRY return -1;
+
+    if (!sd) return -1;
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+	if (!strcmp(it->label, label))
+	{
+	    printf(" label : %s [%i]\n", label, i);
+	    _smart_select_item(sd, i);
+	    return i;
+	}
+	i++;
+    }
 
     return -1;
 }
 
 void enna_list_jump_nth(Evas_Object *obj, int n)
 {
+    API_ENTRY return;
 
+    _smart_select_item(sd, n);
 }
 
 int enna_list_selected_get(Evas_Object *obj)
@@ -305,17 +327,15 @@ static void _smart_reconfigure(Smart_Data *sd)
     evas_object_resize(sd->o_edje, sd->w, sd->h);
 }
 
-static void list_item_select(Smart_Data *sd, int n)
+static void _smart_select_item(Smart_Data *sd, int n)
 {
     List_Item *it;
 
     it = eina_list_nth(sd->items, n);
     if (!it) return;
 
-    printf("n : %d\n", n);
     elm_genlist_item_show(it->item);
     elm_genlist_item_selected_set(it->item, 1);
-
 }
 
 static void list_set_item(Smart_Data *sd, int start, int up, int step)
@@ -337,7 +357,7 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
     } while (0);
 
     if (n != ns)
-        list_item_select(sd, n);
+        _smart_select_item(sd, n);
 }
 
 static void list_jump_to_ascii(Smart_Data *sd, char k)

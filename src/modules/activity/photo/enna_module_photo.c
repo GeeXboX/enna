@@ -374,7 +374,7 @@ _create_menu()
 	item = calloc(1, sizeof(Photo_Item_Class_Data));
 	item->icon = eina_stringshare_add(cat->icon);
 	item->label = eina_stringshare_add(cat->label);
-        enna_list_append(o, mod->item_class, item, _browse, cat);
+        enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
     }
 
 

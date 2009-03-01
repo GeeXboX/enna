@@ -94,7 +94,7 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
 		    item = calloc(1, sizeof(Game_Item_Class_Data));
 		    item->icon = eina_stringshare_add(iconpath);
 		    item->label = eina_stringshare_add(desktop->name);
-		    enna_list_append(list, mod->item_class, item, _play, desktop->exec);
+		    enna_list_append(list, mod->item_class, item, item->label, _play, desktop->exec);
                     break;
                 }
             }
