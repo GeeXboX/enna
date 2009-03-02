@@ -14,20 +14,17 @@ int enna_module_init(void)
 {
     if (!path_group)
     {
-        Ecore_List *l;
+        Eina_List *mod, *l;
         char *p;
         path_group = ecore_path_group_new();
 
         ecore_path_group_add(path_group, PACKAGE_LIB_DIR"/enna/modules/");
         enna_log (ENNA_MSG_INFO, NULL,
                   "Plugin Directory: %s", PACKAGE_LIB_DIR"/enna/modules/");
-        l = ecore_plugin_available_get(path_group);
-        ecore_list_first_goto(l);
-        enna_log(ENNA_MSG_INFO, NULL, "Available Plugins:");
-        while ((p = ecore_list_next(l)))
-        {
-            enna_log(ENNA_MSG_INFO, NULL, "\t * %s", p);
-        }
+        mod = ecore_plugin_available_get(path_group);
+	enna_log(ENNA_MSG_INFO, NULL, "Available Plugins:");
+	EINA_LIST_FOREACH(l, mod, p)
+	    enna_log(ENNA_MSG_INFO, NULL, "\t * %s", p);
         return 0;
     }
     return -1;
@@ -123,7 +120,7 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
     case ENNA_MODULE_ACTIVITY:
       module_class = "activity";
       break;
-      
+
     case ENNA_MODULE_BACKEND:
       module_class = "backend";
       break;
