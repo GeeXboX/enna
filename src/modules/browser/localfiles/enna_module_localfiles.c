@@ -84,11 +84,12 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
     }
     else if (strstr(path, "file://"))
     {
-        Ecore_List *files = NULL;
+        Eina_List *files = NULL;
+	Eina_List *l;
         char *filename = NULL;
         Eina_List *files_list = NULL;
         Eina_List *dirs_list = NULL;
-        Eina_List *l;
+
         char dir[PATH_MAX];
 
         files = ecore_file_ls(path+7);
@@ -97,11 +98,9 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
 	if (!files)
 	    return NULL;
 
-	ecore_list_sort(files, ECORE_COMPARE_CB(strcasecmp), ECORE_SORT_MIN);
-        filename = ecore_list_first_goto(files);
-
-        while ((filename = (char *)ecore_list_next(files)) != NULL)
-        {
+	eina_list_sort(files, 0, EINA_COMPARE_CB(strcasecmp));
+	EINA_LIST_FOREACH(l, files, filename)
+	{
             sprintf(dir, "%s/%s", path, filename);
             if (filename[0] == '.')
                 continue;
