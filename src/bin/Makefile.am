@@ -30,7 +30,6 @@ switcher.c\
 location.c\
 mediaplayer.c\
 event_key.c\
-list_item.c\
 xml_utils.c\
 url_utils.c\
 md5.c\
@@ -67,7 +66,6 @@ switcher.h\
 location.h\
 mediaplayer.h\
 event_key.h\
-list_item.h\
 xml_utils.h\
 url_utils.h\
 md5.h\

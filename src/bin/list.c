@@ -247,9 +247,9 @@ static void _smart_add(Evas_Object *obj)
 static int _letter_timer_cb(void *data)
 {
     Smart_Data *sd;
-    Eina_List *l;
-    List_Item *it;
+
     sd = data;
+    if (!sd) return 0;
 
     edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
     sd->letter_mode = 0;
