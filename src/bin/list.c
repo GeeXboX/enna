@@ -4,10 +4,6 @@
 #include "enna.h"
 #include "list.h"
 
-#define thumbscroll_friction 1.0
-#define thumbscroll_momentum_threshhold 100
-#define thumbscroll_threshhold 16
-
 #define SMART_NAME "enna_list"
 
 typedef struct _Smart_Data Smart_Data;
@@ -27,6 +23,7 @@ struct _Smart_Data
     Evas_Object *o_smart;
     Evas_Object *o_edje;
     Evas_Object *o_list;
+    Evas_Object *o_letter;
     Eina_List *items;
     unsigned char on_hold : 1;
     unsigned int letter_mode;
@@ -50,6 +47,7 @@ static void _smart_reconfigure(Smart_Data *sd);
 static void _smart_event_key_down(Smart_Data *sd, void *event_info);
 static void _smart_select_item(Smart_Data *sd, int n);
 static int _letter_timer_cb(void *data);
+static void _smart_jump_to_ascii(Smart_Data *sd, char k);
 
 static Evas_Smart *_e_smart = NULL;
 
@@ -234,6 +232,12 @@ static void _smart_add(Evas_Object *obj)
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
 
+    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
+    sd->o_letter =  elm_button_add(obj);
+    elm_button_label_set(sd->o_letter, "");
+    elm_object_scale_set(sd->o_letter, 6.0);
+    evas_object_show(sd->o_letter);
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.letter", sd->o_letter);
 
     evas_object_smart_member_add(sd->o_edje, obj);
 
@@ -242,9 +246,16 @@ static void _smart_add(Evas_Object *obj)
 
 static int _letter_timer_cb(void *data)
 {
+    Smart_Data *sd;
+    Eina_List *l;
+    List_Item *it;
+    sd = data;
 
+    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
+    sd->letter_mode = 0;
     return 0;
 }
+
 static void _smart_del(Evas_Object *obj)
 {
     Eina_List *list = NULL;
@@ -360,9 +371,23 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
         _smart_select_item(sd, n);
 }
 
-static void list_jump_to_ascii(Smart_Data *sd, char k)
+static void _smart_jump_to_ascii(Smart_Data *sd, char k)
 {
+    List_Item *it = NULL;
+    Eina_List *l;
+    int i = 0;
 
+    if (!sd) return;
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+	if (it->label[0] == k)
+	{
+	    _smart_select_item(sd, i);
+	    return;
+	}
+	i++;
+    }
 }
 
 static char list_get_letter_from_key(char key)
@@ -383,40 +408,39 @@ static char list_get_letter_from_key(char key)
 static void list_get_alpha_from_digit(Smart_Data *sd, char key)
 {
     char letter[2];
+    int mod = 0;
 
-    letter[0] = list_get_letter_from_key(key);
-    letter[1] = '\0';
-
-    sd->letter_mode = 1;
-
-    if (!sd->letter_mode)
+    if (isdigit(key))
     {
-        sd->letter_event_nbr = 0;
-        sd->letter_key = key;
+
+	letter[0] = list_get_letter_from_key(key);
+	letter[1] = '\0';
+	mod = (key == '7' || key == '9') ? 4 : 3;
+	if (sd->letter_key == key)
+	    sd->letter_event_nbr = (sd->letter_event_nbr + 1) % mod;
+	else
+	{
+	    sd->letter_event_nbr = 0;
+	    sd->letter_key = key;
+	}
+
+	letter[0] += sd->letter_event_nbr;
     }
     else
     {
-        int mod;
-
-        ecore_timer_del(sd->letter_timer);
-        mod = (key == '7' || key == '9') ? 4 : 3;
-
-        if (sd->letter_key == key)
-            sd->letter_event_nbr = (sd->letter_event_nbr + 1) % mod;
-        else
-        {
-            sd->letter_event_nbr = 0;
-            sd->letter_key = key;
-        }
-
-        letter[0] += sd->letter_event_nbr;
+	letter[0] = key;
+	letter[1] = '\0';
     }
 
+    sd->letter_mode = 1;
+
+    ENNA_TIMER_DEL(sd->letter_timer);
+
     edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
-    enna_log(ENNA_MSG_EVENT, NULL, "letter : %s", letter);
+    elm_button_label_set(sd->o_letter, letter);
     edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
     sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
-    list_jump_to_ascii(sd, letter[0]);
+    _smart_jump_to_ascii(sd, letter[0]);
 }
 
 static void _smart_event_key_down(Smart_Data *sd, void *event_info)
@@ -476,12 +500,11 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
         }
             break;
         default:
-            if (enna_key_is_alpha(keycode))
-            {
-                char k = enna_key_get_alpha(keycode);
-                list_jump_to_ascii(sd, k);
-            }
-            break;
+	{
+            char key = enna_key_get_alpha(keycode);
+            list_get_alpha_from_digit(sd, key);
+        }
+	break;
     }
 
     sd->on_hold = 0;
