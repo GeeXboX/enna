@@ -70,9 +70,9 @@ images {
           description {
              state: "default" 0.0;
              rel1.to: "clip.list";
-             rel1.relative: 0.1 0.01;
+             rel1.relative: 0.1 0.0;
              rel2.to: "clip.list";
-             rel2.relative: 0.9 0.99;
+             rel2.relative: 0.9 1.0;
           }
        }
 
@@ -83,10 +83,10 @@ images {
           clip_to: "clip.content";
           description {
              state: "default" 0.0;
-          rel1.to: "clip.content";
-          rel1.relative: 0.1 0.01;
+             rel1.to: "clip.content";
+             rel1.relative: 0.1 0.0;
              rel2.to: "clip.content";
-             rel2.relative: 0.9 0.99;
+             rel2.relative: 0.9 1.0;
           }
        }
 

@@ -231,7 +231,7 @@ static void _smart_add(Evas_Object *obj)
     edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
     sd->o_letter =  elm_button_add(obj);
     elm_button_label_set(sd->o_letter, "");
-    elm_object_scale_set(sd->o_letter, 6.0);
+    elm_object_scale_set(sd->o_letter, 2.0);
     evas_object_show(sd->o_letter);
     edje_object_part_swallow(sd->o_edje, "enna.swallow.letter", sd->o_letter);
 
