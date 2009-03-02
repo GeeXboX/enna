@@ -113,7 +113,7 @@ group {
             state: "default" 0.0;
             rel1 { relative: 0.10 0.10; }
             rel2 { relative: 0.45 0.85; }
-            image { normal: "frame.png"; }
+            image { normal: "frame.png"; border: 50 50 50 50;}
          }
       }
 

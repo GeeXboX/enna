@@ -54,7 +54,6 @@ struct _Smart_Data
     Evas_Object *o_scroll;
     Evas_Object *o_table;
     Eina_List *pictures;
-    Evas_Object *o_cont;
     Evas_Object *o_box;
     Eina_List *items;
     int nb;
@@ -137,7 +136,7 @@ void enna_carousel_object_append(Evas_Object *obj, Evas_Object *child, const cha
     edje_object_part_swallow(o_edje, "enna.swallow.content", child);
     evas_object_event_callback_add(o_edje, EVAS_CALLBACK_MOUSE_DOWN,
             _smart_event_mouse_down, pi);
-    enna_box_pack_end(sd->o_box, o_edje);
+    elm_box_pack_end(sd->o_box, o_edje);
     evas_object_size_hint_min_set(o_edje, ow, oh);
 }
 
@@ -438,10 +437,9 @@ static void _smart_add(Evas_Object * obj)
     enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
             ENNA_SCROLLFRAME_POLICY_OFF);
 
-    sd->o_box = enna_box_add(evas_object_evas_get(obj));
-    enna_box_homogenous_set(sd->o_box, 1);
-    enna_box_orientation_set(sd->o_box, 1);
-    enna_box_pack_end(sd->o_cont, sd->o_box);
+    sd->o_box = elm_box_add(obj);
+    elm_box_homogenous_set(sd->o_box, 1);
+    elm_box_horizontal_set(sd->o_box, 1);
     evas_object_show(sd->o_box);
     enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
 
@@ -457,7 +455,6 @@ static void _smart_del(Evas_Object * obj)
     if (!sd)
         return;
     evas_object_del(sd->o_scroll);
-    evas_object_del(sd->o_cont);
 
     evas_object_del(sd->o_box);
     while (sd->items)

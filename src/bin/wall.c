@@ -196,7 +196,7 @@ void enna_wall_picture_append(Evas_Object *obj, const char *filename)
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
             _smart_event_mouse_down, pi);
 
-    enna_box_pack_end(sd->o_box[pi->row], o);
+    elm_box_pack_end(sd->o_box[pi->row], o);
     evas_object_size_hint_min_set(o, ow, oh);
     evas_object_size_hint_align_set(o, 0, 0);
 }
@@ -611,18 +611,18 @@ static void _smart_add(Evas_Object * obj)
     enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_ON,
             ENNA_SCROLLFRAME_POLICY_ON);
 
-    sd->o_cont = enna_box_add(evas_object_evas_get(obj));
-    enna_box_homogenous_set(sd->o_cont, 0);
-    enna_box_orientation_set(sd->o_cont, 0);
+    sd->o_cont = elm_box_add(sd->o_scroll);
+    elm_box_homogenous_set(sd->o_cont, 0);
+    elm_box_horizontal_set(sd->o_cont, 0);
     evas_object_show(sd->o_cont);
     enna_scrollframe_child_set(sd->o_scroll, sd->o_cont);
 
     for (i = 0; i < 3; i++)
     {
-        sd->o_box[i] = enna_box_add(evas_object_evas_get(obj));
-        enna_box_homogenous_set(sd->o_box[i], 0);
-        enna_box_orientation_set(sd->o_box[i], 1);
-        enna_box_pack_end(sd->o_cont, sd->o_box[i]);
+        sd->o_box[i] = elm_box_add(sd->o_cont);
+        elm_box_homogenous_set(sd->o_box[i], 0);
+        elm_box_horizontal_set(sd->o_box[i], 1);
+        elm_box_pack_end(sd->o_cont, sd->o_box[i]);
         evas_object_show(sd->o_box[i]);
     }
 

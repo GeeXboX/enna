@@ -205,8 +205,10 @@ group {
             rel2 {relative: 0.65  0.65;};
          }
       }
-      part { name: "letter_bg";
+      part { name: "enna.swallow.letter";
          mouse_events: 0;
+         clip_to: "enna.clip.letter";
+         type: SWALLOW;
          description { state: "default" 0.0;
             visible: 1;
             color: 255 255 255 50;
@@ -214,43 +216,39 @@ group {
             rel1.to: "enna.clip.letter";
             rel2.relative: 1 1;
             rel2.to: "enna.clip.letter";
-            image {
-               normal: "letter_bg.png";
-               border: 22 22 22 22;
-            }
          }
 
       }
-      part {
-	 name:           "enna.text.letter";
-	 type:           TEXT;
-         clip_to: "enna.clip.letter";
-	 mouse_events:   0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 {
-               relative: 0 0;
-               to: "enna.clip.letter";
-               offset: 22 22;
-	    }
-	    rel2 {
-	       relative: 1 1;
-	       to: "enna.clip.letter";
-               offset: -23 -23;
-	    }
-            color: 200 200 200 200;
-            color3: 128 128 128 200;
-            align: 0.5 0.5;
-	    text {
-               text:     "Item Label";
-               font:     "content";
-               size:     50;
-               fit: 0 1;
-               min: 0 0;
-               max: 0 0;
-            }
-	 }
-      }
+  /*     part { */
+/* 	 name:           "enna.text.letter"; */
+/* 	 type:           TEXT; */
+/*          clip_to: "enna.clip.letter"; */
+/* 	 mouse_events:   0; */
+/* 	 description { */
+/* 	    state: "default" 0.0; */
+/* 	    rel1 { */
+/*                relative: 0 0; */
+/*                to: "enna.clip.letter"; */
+/*                offset: 22 22; */
+/* 	    } */
+/* 	    rel2 { */
+/* 	       relative: 1 1; */
+/* 	       to: "enna.clip.letter"; */
+/*                offset: -23 -23; */
+/* 	    } */
+/*             color: 200 200 200 200; */
+/*             color3: 128 128 128 200; */
+/*             align: 0.5 0.5; */
+/* 	    text { */
+/*                text:     "Item Label"; */
+/*                font:     "content"; */
+/*                size:     50; */
+/*                fit: 0 1; */
+/*                min: 0 0; */
+/*                max: 0 0; */
+/*             } */
+/* 	 } */
+/*       } */
 
    }
    programs{

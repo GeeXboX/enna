@@ -13,7 +13,6 @@ enna.c\
 enna_config.c\
 utils.c\
 metadata.c\
-box.c\
 mainmenu.c\
 background.c\
 module.c\
@@ -27,12 +26,10 @@ content.c\
 pan.c\
 scrollframe.c\
 wall.c\
-button.c\
 switcher.c\
 location.c\
 mediaplayer.c\
 event_key.c\
-list_item.c\
 xml_utils.c\
 url_utils.c\
 md5.c\
@@ -52,7 +49,6 @@ enna_inc.h\
 enna_config.h\
 utils.h\
 metadata.h\
-box.h\
 mainmenu.h\
 background.h\
 module.h\
@@ -66,12 +62,10 @@ content.h\
 pan.h\
 scrollframe.h\
 wall.h\
-button.h\
 switcher.h\
 location.h\
 mediaplayer.h\
 event_key.h\
-list_item.h\
 xml_utils.h\
 url_utils.h\
 md5.h\

@@ -44,6 +44,20 @@
 #define SMART_NAME "Enna_Browser"
 
 typedef struct _Smart_Data Smart_Data;
+typedef struct _Browser_Item_Class_Data Browser_Item_Class_Data;
+typedef struct _Browse_Data Browse_Data;
+
+struct _Browse_Data
+{
+    Enna_Vfs_File *file;
+    Smart_Data *sd;
+};
+
+struct _Browser_Item_Class_Data
+{
+    const char *icon;
+    const char *label;
+};
 
 struct _Smart_Data
 {
@@ -56,6 +70,7 @@ struct _Smart_Data
     Enna_Vfs_File *file;
     Evas *evas;
     char *prev;
+    Elm_Genlist_Item_Class *item_class;
     unsigned char accept_ev : 1;
     unsigned char show_file : 1;
 };
@@ -113,6 +128,47 @@ static void _smart_reconfigure(Smart_Data * sd)
 
 }
 
+/* Class Item interface */
+static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *part)
+{
+    const Browser_Item_Class_Data *item = data;
+
+    if (!item) return NULL;
+
+    return strdup(item->label);
+}
+
+static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
+{
+    const Browser_Item_Class_Data *item = data;
+
+    if (!item) return NULL;
+
+    if (!strcmp(part, "elm.swallow.icon"))
+     {
+	 Evas_Object *ic;
+
+	 ic = elm_icon_add(obj);
+	 elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+	 evas_object_size_hint_min_set(ic, 64, 64);
+	 evas_object_show(ic);
+	 return ic;
+     }
+
+   return NULL;
+
+}
+
+static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
+{
+   return 0;
+}
+
+static void _genlist_del(const void *data, Evas_Object *obj)
+{
+}
+
+
 static void _smart_init(void)
 {
     if (_smart)
@@ -151,6 +207,14 @@ static void _smart_add(Evas_Object * obj)
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
     edje_object_signal_emit(sd->o_list, "list,right,now", "enna");
+
+    sd->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
+
+    sd->item_class->item_style     = "default";
+    sd->item_class->func.label_get = _genlist_label_get;
+    sd->item_class->func.icon_get  = _genlist_icon_get;
+    sd->item_class->func.state_get = _genlist_state_get;
+    sd->item_class->func.del       = _genlist_del;
 
     sd->x = 0;
     sd->y = 0;
@@ -255,14 +319,18 @@ static void _smart_clip_unset(Evas_Object * obj)
     evas_object_clip_unset(sd->o_edje);
 }
 
-static void _browse(void *data, void *data2)
+static  void _browse (void *data)
 {
-    Smart_Data *sd = data;
+    Smart_Data *sd;
+    Browse_Data *bd = data;
+
+    sd = bd->sd;
+    sd->file = bd->file;
 
     if (!sd || !sd->vfs)
         return;
 
-    sd->file = data2;
+    /* FIXME : List / Gen List */
     sd->accept_ev = 0;
     if (sd->vfs->func.class_browse_up)
     {
@@ -356,9 +424,10 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
         {
             Enna_Vfs_File *f;
             Evas_Object *icon = NULL;
-            Evas_Object *item = NULL;
-
+            Browser_Item_Class_Data *item = NULL;
+	    Browse_Data *bd;
             f = l->data;
+
 
 	    if (!f->is_directory && !sd->show_file)
 		continue;
@@ -374,10 +443,17 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
                 edje_object_file_set(icon, enna_config_theme_get(), f->icon);
             }
 
-            item = enna_listitem_add(sd->evas);
-            enna_listitem_create_simple(item, icon, f->label);
-	    //sd->file = f;
-            enna_list_append(sd->o_list, item, _browse, NULL, sd, f);
+
+	    item = calloc(1, sizeof(Browser_Item_Class_Data));
+	    item->icon = eina_stringshare_add(f->icon);
+	    item->label = eina_stringshare_add(f->label);
+
+	    bd = calloc(1, sizeof(Browse_Data));
+	    bd->file = f;
+	    bd->sd = sd;
+
+	    enna_list_append(sd->o_list, sd->item_class, item, item->label, _browse, bd);
+
         }
 	if (direction)
 	    evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
@@ -387,13 +463,12 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     else if (!direction)
     {
         /* No files returned : create no media item */
-        Evas_Object *icon;
-        Evas_Object *item;
-        icon = edje_object_add(sd->evas);
-        edje_object_file_set(icon, enna_config_theme_get(), "icon_nofile");
-        item = enna_listitem_add(sd->evas);
-        enna_listitem_create_simple(item, icon, "No Media found!");
-        enna_list_append(sd->o_list, item, NULL, NULL, NULL, NULL);
+	Browser_Item_Class_Data *item;
+
+	item = calloc(1, sizeof(Browser_Item_Class_Data));
+	item->icon = eina_stringshare_add("icon_nofile");
+	item->label = eina_stringshare_add("No media found !");
+	enna_list_append(sd->o_list, sd->item_class, item, item->label, NULL, NULL);
 	enna_list_selected_set(sd->o_list, 0);
     }
     else
@@ -457,8 +532,11 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_RIGHT:
     case ENNA_KEY_OK:
     case ENNA_KEY_SPACE:
-	_browse(sd, enna_list_selected_data2_get(sd->o_list));
+    {
+	/* FIXME */
+	_browse(enna_list_selected_data_get(sd->o_list));
 	break;
+    }
     default:
 	enna_list_event_key_down(sd->o_list, event_info);
     }

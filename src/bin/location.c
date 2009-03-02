@@ -125,7 +125,7 @@ void enna_location_append(Evas_Object *obj, const char *label,
 
     mh = sd->h ? sd->h : 64;
 
-    enna_box_pack_end(sd->o_box, si->o_base);
+    elm_box_pack_end(sd->o_box, si->o_base);
     evas_object_size_hint_min_set(si->o_base, mw, mh);
     evas_object_size_hint_align_set(si->o_base, 0, 0.5);
     evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
@@ -143,7 +143,7 @@ void enna_location_append(Evas_Object *obj, const char *label,
             _smart_event_mouse_up, si);
 
     evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
-    enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
+    elm_scroller_region_show(sd->o_scroll, x, y, w, h);
 
     evas_object_show(si->o_base);
 }
@@ -160,9 +160,9 @@ static void _location_hide_end(void *data, Evas_Object *o, const char *sig,
 
     sd = si->sd;
     sd->items = eina_list_remove(sd->items, si);
-    enna_box_unpack(si->o_base);
+//    elm_box_unpack(si->o_base);
     evas_object_geometry_get(si->o_base, &x, &y, &w, &h);
-     enna_scrollframe_child_region_show(sd->o_scroll, x, y, w, h);
+     elm_scroller_region_show(sd->o_scroll, x, y, w, h);
      edje_object_signal_callback_del(si->o_base, "location,hide,end", "edje",
        _location_hide_end);
      evas_object_del(si->o_icon);
@@ -246,9 +246,9 @@ static void _smart_add(Evas_Object * obj)
     if (!sd)
         return;
 
-    sd->o_box = enna_box_add(evas_object_evas_get(obj));
-    enna_box_homogenous_set(sd->o_box, 0);
-    enna_box_orientation_set(sd->o_box, 1);
+    sd->o_box = elm_box_add(obj);
+    elm_box_homogenous_set(sd->o_box, 0);
+    elm_box_horizontal_set(sd->o_box, 1);
     evas_object_size_hint_align_set(sd->o_box, 0, 0.5);
     evas_object_size_hint_weight_set(sd->o_box, 1.0, 0.0);
 
@@ -257,10 +257,10 @@ static void _smart_add(Evas_Object * obj)
     sd->w = 0;
     sd->h = 0;
     sd->items = NULL;
-    sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
-    enna_scrollframe_child_set(sd->o_scroll, sd->o_box);
-    enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_OFF,
-	ENNA_SCROLLFRAME_POLICY_OFF);
+    sd->o_scroll = elm_scroller_add(obj);
+    elm_scroller_content_set(sd->o_scroll, sd->o_box);
+//    elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_OFF,
+//	ELM_SCROLLER_POLICY_OFF);
     sd->smart_obj = obj;
     evas_object_smart_member_add(sd->o_scroll, obj);
     evas_object_smart_data_set(obj, sd);
