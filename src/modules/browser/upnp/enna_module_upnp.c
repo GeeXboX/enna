@@ -32,7 +32,7 @@ typedef struct Enna_Module_UPnP_s
     Evas *e;
     Enna_Module *em;
     pthread_mutex_t mutex;
-    Ecore_List *devices;
+    Eina_List *devices;
     Ecore_Idler *idler;
     GMainContext *mctx;
     GUPnPContext *ctx;
@@ -370,7 +370,8 @@ browse_server_list (const char *uri, int parent)
 {
     upnp_media_server_t *srv = NULL;
     char udn[512], id[256], parent_id[256];
-    int i, res, count;
+    int res;
+    Eina_List *l;
 
     memset (udn, '\0', sizeof (udn));
     memset (id, '\0', sizeof (id));
@@ -382,18 +383,9 @@ browse_server_list (const char *uri, int parent)
     if (res != 3)
         return NULL;
 
-    count = ecore_list_count (mod->devices);
-    for (i = 0; i < count; i++)
-    {
-        srv = ecore_list_index_goto (mod->devices, i);
-        if (!srv)
-            continue;
-
-        if (!strcmp (srv->udn, udn))
+    EINA_LIST_FOREACH(mod->devices, l, srv)
+	if (!strcmp (srv->udn, udn))
             break;
-
-        srv = NULL;
-    }
 
     /* no server to browse */
     if (!srv)
@@ -406,18 +398,14 @@ static Eina_List *
 upnp_list_mediaservers (void)
 {
     Eina_List *servers = NULL;
-    int i, count;
+    Eina_List *l;
+    upnp_media_server_t *srv;
 
-    count = ecore_list_count (mod->devices);
-    for (i = 0; i < count; i++)
+    EINA_LIST_FOREACH(mod->devices, l, srv)
     {
-        upnp_media_server_t *srv;
+
         char name[256], uri[1024];
         Enna_Vfs_File *f;
-
-        srv = ecore_list_index_goto (mod->devices, i);
-        if (!srv)
-            continue;
 
         memset (name, '\0', sizeof (name));
         snprintf (name, sizeof (name), "%s (%s)", srv->name, srv->model);
@@ -441,6 +429,7 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
     char *name, *model;
     upnp_media_server_t *srv;
     GUPnPServiceInfo *si;
+    Eina_List *l;
 
     type = gupnp_device_info_get_device_type (GUPNP_DEVICE_INFO (proxy));
     if (!g_pattern_match_simple (UPNP_MEDIA_SERVER, type))
@@ -452,9 +441,8 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
     model = gupnp_device_info_get_model_name (GUPNP_DEVICE_INFO (proxy));
 
     /* check if device is already known */
-    ecore_list_first_goto (mod->devices);
-    while ((srv = ecore_list_next (mod->devices)))
-        if (!strcmp (srv->location, location))
+    EINA_LIST_FOREACH(mod->devices, l, srv)
+	if (!strcmp (srv->location, location))
             return;
 
     srv = calloc (1, sizeof (upnp_media_server_t));
@@ -468,7 +456,7 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
     srv->model = strdup (model);
 
     pthread_mutex_lock (&mod->mutex);
-    ecore_list_append (mod->devices, srv);
+    mod->devices = eina_list_append (mod->devices, srv);
     pthread_mutex_unlock (&mod->mutex);
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -555,10 +543,6 @@ void module_init (Enna_Module *em)
     g_type_init ();
 
     pthread_mutex_init (&mod->mutex, NULL);
-    mod->devices = ecore_list_new ();
-    ecore_list_free_cb_set (mod->devices,
-                            ECORE_FREE_CB (upnp_media_server_free));
-
 
     /* bind upnp context to ecore */
     mod->mctx = g_main_context_default ();
@@ -592,12 +576,16 @@ void module_init (Enna_Module *em)
 void module_shutdown (Enna_Module *em)
 {
     Enna_Module_UPnP *mod;
+    upnp_media_server_t *srv;
+    Eina_List *l;
 
     mod = em->mod;
 
     gssdp_resource_browser_set_active
         (GSSDP_RESOURCE_BROWSER (mod->cp), FALSE);
 
+    EINA_LIST_FOREACH(mod->devices, l, srv)
+	upnp_media_server_free(srv);
     g_object_unref (mod->cp);
     g_object_unref (mod->ctx);
 

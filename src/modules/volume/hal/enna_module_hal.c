@@ -54,7 +54,7 @@ ehal_remove_storage (char *udi)
     if (!udi)
         return;
 
-    EINA_LIST_FOREACH(l, mod->storages, s)
+    EINA_LIST_FOREACH(mod->storages, l, s)
     {
         if (!strcmp (s->udi, udi))
             storage_free (s);
@@ -78,7 +78,7 @@ ehal_find_storages (void *data, void *reply, DBusError *error)
         return;
     }
 
-    EINA_LIST_FOREACH(l, ret->strings, udi)
+    EINA_LIST_FOREACH(ret->strings, l, udi)
 	ehal_add_storage (udi);
 }
 
@@ -253,7 +253,7 @@ ehal_remove_volume (char *udi)
     if (!udi)
         return;
 
-    EINA_LIST_FOREACH(l, mod->volumes, v);
+    EINA_LIST_FOREACH(mod->volumes, l, v);
     {
         if (v->udi && !strcmp (v->udi, udi))
         {
@@ -283,7 +283,7 @@ ehal_find_volumes (void *data, void *reply, DBusError *error)
         return;
     }
 
-    EINA_LIST_FOREACH(l, ret->strings, udi)
+    EINA_LIST_FOREACH(ret->strings, l, udi)
         ehal_add_volume (udi);
 }
 

@@ -207,7 +207,7 @@ volume_find (Eina_List *list, const char *udi)
     if (!udi)
         return NULL;
 
-    EINA_LIST_FOREACH(l, list, v)
+    EINA_LIST_FOREACH(list, l, v)
 	if (!volume_find_helper(v, udi))
 	    break;
 
