@@ -224,6 +224,7 @@ static void _smart_add(Evas_Object *obj)
     sd->o_list = elm_genlist_add(obj);
     evas_object_size_hint_weight_set(sd->o_list, 1.0, 1.0);
     evas_object_show(sd->o_list);
+    elm_object_scale_set(sd->o_list, 2.0);
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
 
