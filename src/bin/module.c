@@ -23,7 +23,7 @@ int enna_module_init(void)
                   "Plugin Directory: %s", PACKAGE_LIB_DIR"/enna/modules/");
         mod = ecore_plugin_available_get(path_group);
 	enna_log(ENNA_MSG_INFO, NULL, "Available Plugins:");
-	EINA_LIST_FOREACH(l, mod, p)
+	EINA_LIST_FOREACH(mod, l, p)
 	    enna_log(ENNA_MSG_INFO, NULL, "\t * %s", p);
         return 0;
     }
