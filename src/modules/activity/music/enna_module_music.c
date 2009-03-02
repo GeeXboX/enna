@@ -322,6 +322,8 @@ _browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
 
+    if (!vfs) return;
+
     mod->accept_ev = 0;
     mod->o_browser = enna_browser_add(mod->em->evas);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
@@ -438,11 +440,10 @@ _create_menu()
 	item = calloc(1, sizeof(Music_Item_Class_Data));
 	item->icon = eina_stringshare_add(cat->icon);
 	item->label = eina_stringshare_add(cat->label);
-	printf("cat->label : %s\n", cat->label);
         enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
     }
 
-    //enna_list_selected_set(o, 0);
+    enna_list_selected_set(o, 0);
     mod->o_list = o;
     edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);

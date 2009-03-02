@@ -325,6 +325,8 @@ _browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
 
+    if (!vfs) return;
+
     mod->o_browser = enna_browser_add(mod->em->evas);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);

@@ -71,7 +71,6 @@ void _item_activated(void *data, Evas_Object *obj, void *event_info)
     {
 	if (it->item == item)
 	{
-	    printf("Activate item\n");
 	    it->func(it->data);
 	    return;
 	}
@@ -116,7 +115,6 @@ int enna_list_jump_label(Evas_Object *obj, const char *label)
     {
 	if (!strcmp(it->label, label))
 	{
-	    printf(" label : %s [%i]\n", label, i);
 	    _smart_select_item(sd, i);
 	    return i;
 	}
@@ -141,14 +139,11 @@ int enna_list_selected_get(Evas_Object *obj)
 
     API_ENTRY return -1;
 
-    printf("selected get\n");
-
     if (!sd->items) return -1;
     EINA_LIST_FOREACH(sd->items,l, it)
     {
 	if ( elm_genlist_item_selected_get (it->item))
 	{
-	    printf("Selected item : %d\n", i);
 	    return i;
 	}
 	i++;

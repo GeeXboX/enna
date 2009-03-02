@@ -250,7 +250,6 @@ static void _create_slideshow_gui()
 static void
 _picture_selected_cb (void *data, Evas_Object *obj, void *event_info)
 {
-    printf("_photo_info_fs\n");
     _photo_info_fs();
 }
 
@@ -333,6 +332,8 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 static void _browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
+
+    if(!vfs) return;
 
     mod->o_browser = enna_browser_add(mod->em->evas);
     enna_browser_show_file_set(mod->o_browser, 0);
