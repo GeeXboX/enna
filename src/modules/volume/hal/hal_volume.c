@@ -199,13 +199,17 @@ volume_find_helper (volume_t *v, const char *udi)
 }
 
 volume_t *
-volume_find (Ecore_List *list, const char *udi)
+volume_find (Eina_List *list, const char *udi)
 {
     volume_t *v = NULL;
+    Eina_List *l;
 
     if (!udi)
         return NULL;
 
-    v = ecore_list_find (list, ECORE_COMPARE_CB (volume_find_helper), udi);
+    EINA_LIST_FOREACH(l, list, v)
+	if (!volume_find_helper(v, udi))
+	    break;
+
     return v;
 }

@@ -24,8 +24,8 @@ typedef struct _Enna_Module_Hal
     LibHalContext *ctx;
     DBusError error;
 
-    Ecore_List *storages;
-    Ecore_List *volumes;
+    Eina_List *storages;
+    Eina_List *volumes;
 } Enna_Module_Hal;
 
 static Enna_Module_Hal *mod;
@@ -43,26 +43,29 @@ ehal_add_storage (char *udi)
         return;
 
     s = storage_append (mod->ctx, udi);
-    ecore_list_append (mod->storages, s);
+    mod->storages = eina_list_append (mod->storages, s);
 }
 
 static void
 ehal_remove_storage (char *udi)
 {
     storage_t *s;
-
+    Eina_List *l;
     if (!udi)
         return;
 
-    s = ecore_list_first_goto (mod->storages);
-    while ((s = ecore_list_next (mod->storages)))
+    EINA_LIST_FOREACH(l, mod->storages, s)
+    {
         if (!strcmp (s->udi, udi))
             storage_free (s);
+    }
+
 }
 
 static void
 ehal_find_storages (void *data, void *reply, DBusError *error)
 {
+    Eina_List *l;
     E_Hal_Manager_Find_Device_By_Capability_Return *ret = reply;
     char *udi;
 
@@ -75,9 +78,8 @@ ehal_find_storages (void *data, void *reply, DBusError *error)
         return;
     }
 
-    ecore_list_first_goto (ret->strings);
-    while ((udi = ecore_list_next (ret->strings)))
-        ehal_add_storage (udi);
+    EINA_LIST_FOREACH(l, ret->strings, udi)
+	ehal_add_storage (udi);
 }
 
 static void
@@ -239,7 +241,7 @@ ehal_add_volume (char *udi)
             v->s = s;
     }
 
-    ecore_list_append (mod->volumes, v);
+    mod->volumes = eina_list_append (mod->volumes, v);
     vfs_add_volume_entry (v);
 }
 
@@ -247,12 +249,11 @@ static void
 ehal_remove_volume (char *udi)
 {
     volume_t *v;
-
+    Eina_List *l;
     if (!udi)
         return;
 
-    v = ecore_list_first_goto (mod->volumes);
-    while ((v = ecore_list_next (mod->volumes)))
+    EINA_LIST_FOREACH(l, mod->volumes, v);
     {
         if (v->udi && !strcmp (v->udi, udi))
         {
@@ -269,6 +270,7 @@ ehal_remove_volume (char *udi)
 static void
 ehal_find_volumes (void *data, void *reply, DBusError *error)
 {
+    Eina_List *l;
     E_Hal_Manager_Find_Device_By_Capability_Return *ret = reply;
     char *udi;
 
@@ -281,8 +283,7 @@ ehal_find_volumes (void *data, void *reply, DBusError *error)
         return;
     }
 
-    ecore_list_first_goto (ret->strings);
-    while ((udi = ecore_list_next (ret->strings)))
+    EINA_LIST_FOREACH(l, ret->strings, udi)
         ehal_add_volume (udi);
 }
 
@@ -378,11 +379,9 @@ module_init (Enna_Module *em)
     libhal_ctx_set_dbus_connection (mod->ctx, mod->conn);
     libhal_ctx_init (mod->ctx, &mod->error);
 
-    mod->storages = ecore_list_new ();
-    ecore_list_free_cb_set (mod->storages, ECORE_FREE_CB (storage_free));
+    mod->storages = NULL;
 
-    mod->volumes = ecore_list_new ();
-    ecore_list_free_cb_set (mod->volumes, ECORE_FREE_CB (volume_free));
+    mod->volumes = NULL;
 
     e_hal_manager_find_device_by_capability (mod->dbus,
                                              EHAL_STORAGE_NAME,

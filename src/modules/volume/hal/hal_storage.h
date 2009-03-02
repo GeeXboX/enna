@@ -22,6 +22,6 @@ typedef struct storage_s {
 
 void storage_free (storage_t *s);
 storage_t *storage_append (LibHalContext *ctx, const char *udi);
-storage_t * storage_find (Ecore_List *list, const char *udi);
+storage_t * storage_find (Eina_List *list, const char *udi);
 
 #endif /* HAL_STORAGE_H */

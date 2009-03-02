@@ -47,7 +47,7 @@ static storage_t *
 storage_new (void)
 {
     storage_t *s;
-    
+
     s = calloc (1, sizeof (storage_t));
 
     return s;
@@ -83,7 +83,7 @@ storage_get_properties (storage_t *s)
 {
     LibHalDriveBus bus;
     int i;
-    
+
     if (!s)
         return;
 
@@ -137,20 +137,20 @@ storage_append (LibHalContext *ctx, const char *udi)
 {
     storage_t *s;
     LibHalDrive *drv;
-    
+
     if (!ctx || !udi)
         return NULL;
 
     drv = libhal_drive_from_udi (ctx, udi);
     if (!drv)
         return NULL;
-    
+
     s = storage_new ();
     s->drv = drv;
     s->udi = strdup (udi);
 
     storage_get_properties (s);
-    
+
     return s;
 }
 
@@ -163,13 +163,16 @@ storage_find_helper (storage_t *s, const char *udi)
 }
 
 storage_t *
-storage_find (Ecore_List *list, const char *udi)
+storage_find (Eina_List *list, const char *udi)
 {
     storage_t *s = NULL;
-
+    Eina_List *l;
     if (!udi)
         return NULL;
-    
-    s = ecore_list_find (list, ECORE_COMPARE_CB (storage_find_helper), udi);
+
+    EINA_LIST_FOREACH(l, list, s)
+	if (!storage_find_helper(s, udi))
+	     break;
+
     return s;
 }

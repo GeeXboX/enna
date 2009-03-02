@@ -36,6 +36,6 @@ typedef struct volume_s {
 
 void volume_free (volume_t *v);
 volume_t *volume_append (LibHalContext *ctx, const char *udi);
-volume_t *volume_find (Ecore_List *list, const char *udi);
+volume_t *volume_find (Eina_List *list, const char *udi);
 
 #endif /* HAL_VOLUME_H */
