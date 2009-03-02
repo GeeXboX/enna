@@ -267,6 +267,7 @@ static void _smart_del(Evas_Object *obj)
 
     evas_object_del(sd->o_list);
     evas_object_del(sd->o_edje);
+    evas_object_del(sd->o_letter);
     EINA_LIST_REVERSE_FOREACH_SAFE(sd->items, l, l_prev, it)
     {
 	free(it);
