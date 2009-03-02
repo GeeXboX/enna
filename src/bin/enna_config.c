@@ -340,6 +340,8 @@ static Eina_Hash * _config_load_conf(char *conffile, int size)
     Eina_Hash *config = NULL;
     Enna_Config_Data *config_data;
 
+    config = eina_hash_string_superfast_new (NULL);
+
     while (current_line < conffile + size)
     {
         char *eol = strchr(current_line, '\n');
