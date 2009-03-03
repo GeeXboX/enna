@@ -147,7 +147,7 @@ static void _exif_parse_metadata(const char *filename)
 
   mod->exif.o_exif = edje_object_add(mod->em->evas);
   edje_object_file_set(mod->exif.o_exif, enna_config_theme_get(), "exif/data");
-  mod->exif.o_scroll = enna_scrollframe_add(mod->em->evas);
+  mod->exif.o_scroll = elm_scroller_add(mod->o_edje);
   edje_object_part_swallow(mod->o_preview, "enna.swallow.exif", mod->exif.o_scroll);
   d = exif_data_new_from_file(filename);
   exif_data_foreach_content(d, _exif_data_foreach_func, NULL);
@@ -156,7 +156,7 @@ static void _exif_parse_metadata(const char *filename)
   edje_object_size_min_calc(mod->exif.o_exif, &mw, &mh);
   evas_object_resize(mod->exif.o_exif, mw, mh);
   evas_object_size_hint_min_set(mod->exif.o_exif, mw, mh);
-  enna_scrollframe_child_set(mod->exif.o_scroll, mod->exif.o_exif);
+  elm_scroller_content_set(mod->exif.o_scroll, mod->exif.o_exif);
 }
 #endif
 
