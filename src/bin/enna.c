@@ -65,7 +65,19 @@ static void _event_bg_key_down_cb(void *data, Evas *e, Evas_Object *obj, void *e
         return;
 
     if (key == ENNA_KEY_QUIT)
-        ecore_main_loop_quit();
+    {
+	Evas_Object *inwin, *lb;
+
+	inwin = elm_win_inwin_add(enna->o_edje);
+	evas_object_show(inwin);
+	lb = elm_label_add(inwin);
+	elm_label_label_set(lb,
+	    "Are you sure you want to <b>quit</b> Enna ?");
+	elm_win_inwin_content_set(inwin, lb);
+	evas_object_show(lb);
+	evas_object_resize(inwin, 320, 240);
+        //ecore_main_loop_quit();
+    }
 
     if (key == ENNA_KEY_FULLSCREEN)
     {
