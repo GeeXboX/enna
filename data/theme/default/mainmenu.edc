@@ -362,7 +362,7 @@ group
             state: "selected" 0.0;
             inherit: "default" 0.0;
             visible: 1;
-            color: 255 255 255 128;
+            color: 255 255 255 255;
             rel1
             {
                relative: 0.0 0.0;
@@ -394,7 +394,7 @@ group
          {   state: "selected" 0.0;
             inherit: "default" 0.0;
             visible: 1;
-            color: 255 255 255 50;
+            color: 255 255 255 255;
          }
       }
       part
