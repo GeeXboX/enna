@@ -114,17 +114,22 @@ static void
 set_picture (Evas_Object **old,
              const char *img, const char *field, const char *program)
 {
-    Evas_Object *obj;
+    Evas_Object *obj, *old_obj;
 
     if (!img || !field)
         return;
 
     obj = edje_object_add (mod->em->evas);
     edje_object_file_set (obj, enna_config_theme_get (), img);
+
+    old_obj = edje_object_part_swallow_get(mod->edje, field);
+    edje_object_part_unswallow(mod->edje, old_obj);
+    ENNA_OBJECT_DEL(old_obj);
+
     edje_object_part_swallow (mod->edje, field, obj);
     if (program)
         edje_object_signal_emit (mod->edje, program, "enna");
-    evas_object_del (*old);
+
     *old = obj;
 }
 
