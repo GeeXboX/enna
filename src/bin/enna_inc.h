@@ -14,8 +14,6 @@
 #include "volumes.h"
 #include "image.h"
 #include "content.h"
-#include "pan.h"
-#include "scrollframe.h"
 #include "list.h"
 #include "browser.h"
 #include "wall.h"

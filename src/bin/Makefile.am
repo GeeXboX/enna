@@ -23,8 +23,6 @@ image.c\
 list.c\
 browser.c\
 content.c\
-pan.c\
-scrollframe.c\
 wall.c\
 switcher.c\
 location.c\
@@ -59,8 +57,6 @@ image.h\
 list.h\
 browser.h\
 content.h\
-pan.h\
-scrollframe.h\
 wall.h\
 switcher.h\
 location.h\
