@@ -301,14 +301,13 @@ static void _wall_left_select(Evas_Object *obj)
     pi = eina_list_nth(sd->items[sd->row_sel], col);
     if (pi)
     {
-	Evas_Coord x, y;
-	Evas_Coord xedje, yedje, wedje, xbox;
+	Evas_Coord x, xedje, wedje, xbox;
 
-	enna_scrollframe_child_pos_get(sd->o_scroll, NULL, &y);
-	evas_object_geometry_get(pi->o_edje, &xedje, &yedje, &wedje, NULL);
+	evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
 	evas_object_geometry_get(sd->o_box[sd->row_sel], &xbox, NULL, NULL, NULL);
 	x = (xedje + wedje / 2 - xbox - sd->w / 2 );
-	enna_scrollframe_child_pos_set(sd->o_scroll, x , y);
+	elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
+
 	_smart_item_select(sd, pi);
 	if (ppi) _smart_item_unselect(sd, ppi);
     }
@@ -336,14 +335,13 @@ static void _wall_right_select(Evas_Object *obj)
     pi = eina_list_nth(sd->items[sd->row_sel], col);
     if (pi)
     {
-	Evas_Coord x, y;
-	Evas_Coord xedje, yedje, wedje, xbox;
+	Evas_Coord x, xedje, wedje, xbox;
 
-	enna_scrollframe_child_pos_get(sd->o_scroll, NULL, &y);
-	evas_object_geometry_get(pi->o_edje, &xedje, &yedje, &wedje, NULL);
+	evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
 	evas_object_geometry_get(sd->o_box[sd->row_sel], &xbox, NULL, NULL, NULL);
-	x = (xedje + wedje / 2 - xbox - sd->w / 2 );
-	enna_scrollframe_child_pos_set(sd->o_scroll, x , y);
+	x = (xedje + wedje / 2 - xbox + sd->w / 2 );
+	elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
+
 	_smart_item_select(sd, pi);
 	if (ppi) _smart_item_unselect(sd, ppi);
     }
@@ -605,17 +603,14 @@ static void _smart_add(Evas_Object * obj)
         return;
     sd->obj = obj;
     sd->nb = -1;
-    sd->o_scroll = enna_scrollframe_add(evas_object_evas_get(obj));
-    evas_object_move(sd->o_scroll, 0, 0);
+    sd->o_scroll = elm_scroller_add(obj);
     evas_object_show(sd->o_scroll);
-    enna_scrollframe_policy_set(sd->o_scroll, ENNA_SCROLLFRAME_POLICY_ON,
-            ENNA_SCROLLFRAME_POLICY_ON);
 
     sd->o_cont = elm_box_add(sd->o_scroll);
     elm_box_homogenous_set(sd->o_cont, 0);
     elm_box_horizontal_set(sd->o_cont, 0);
     evas_object_show(sd->o_cont);
-    enna_scrollframe_child_set(sd->o_scroll, sd->o_cont);
+    elm_scroller_content_set(sd->o_scroll, sd->o_cont);
 
     for (i = 0; i < 3; i++)
     {
