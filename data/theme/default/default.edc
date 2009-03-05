@@ -33,8 +33,6 @@ collections
 #include "icons.edc"
 #include "list.edc"
 #include "browser.edc"
-#include "scrollframe.edc"
-#include "button.edc"
 #include "location.edc"
 #include "mediaplayer.edc"
 #include "video_info.edc"
@@ -128,7 +126,58 @@ collections
                rel2{relative: 1 1;};
             }
          }
+          part
+          {
+             name: "popup.clip";
+             type: RECT;
+             mouse_events: 1;
+             description
+             {
+                visible: 0;
+                state: "default" 0.0;
 
-
+                rel1.relative: 0.5 0.5;
+                rel2.relative: 0.5 0.5;
+             }
+             description
+             {
+                visible: 1;
+                state: "show" 0.0;
+                rel1.relative: 0.5 0.5;
+                rel1.offset: -320 -240;
+                rel2.relative: 0.5 0.5;
+                rel2.offset: 320 240;
+             }
+          }
+          part {
+             name: "enna.swallow.popup";
+             type: SWALLOW;
+             clip_to: "popup.clip";
+             description
+             {
+                state: "default" 0.0;
+             }
+          }
       }
-
+      programs {
+         program
+         {
+            name: "popup,show";
+            signal: "popup,show";
+            source: "enna";
+            action: STATE_SET "show" 0.0;
+            transition: DECELERATE 0.5;
+            target: "popup.clip";
+         }
+         program
+         {
+            name: "popup,hide";
+            signal: "popup,hide";
+            source: "enna";
+            action: STATE_SET "default" 0.0;
+            transition: ACCELERATE 0.5;
+            target: "popup.clip";
+         }
+      }
+   }
+}

@@ -66,8 +66,18 @@ static void _event_bg_key_down_cb(void *data, Evas *e, Evas_Object *obj, void *e
 
     if (key == ENNA_KEY_QUIT)
     {
+	Evas_Object *inwin, *lb;
 
-	ecore_main_loop_quit();
+	inwin = elm_frame_add(enna->o_edje);
+	evas_object_show(inwin);
+	edje_object_part_swallow(enna->o_edje, "enna.swallow.popup",inwin);
+	edje_object_signal_emit(enna->o_edje, "popup,show", "enna");
+	/*lb = elm_label_add(enna->o_edje);
+	elm_label_label_set(lb, "Are you sure you want to quit Enna ?");
+	elm_win_inwin_content_set(inwin, lb);
+	evas_object_show(lb);*/
+
+        //ecore_main_loop_quit();
     }
 
     if (key == ENNA_KEY_FULLSCREEN)

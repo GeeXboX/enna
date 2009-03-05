@@ -5,6 +5,9 @@ images
    image: "menu_sel_bg.png" COMP;
    image: "menu_sel_fg.png" COMP;
    image: "title_bar.png" COMP;
+   image: "bt_shine.png" COMP;
+   image: "bt_hilight.png" COMP;
+   image: "sel_fg.png" COMP;
 }
 
 group
@@ -300,6 +303,7 @@ group
             }
          }
       }
+
    }
    programs
    {
@@ -321,6 +325,8 @@ group
          transition: ACCELERATE 0.5;
          target: "enna.clip.mainmenu";
       }
+
+
    }
    program
    {   name: "init";
