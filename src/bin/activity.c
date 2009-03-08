@@ -51,6 +51,17 @@ int enna_activity_del(const char *name)
     return -1;
 }
 
+void enna_activity_del_all (void)
+{
+    Eina_List *l;
+
+    for (l = _enna_activities; l; l = l->next)
+    {
+        Enna_Class_Activity *act = l->data;
+        _enna_activities = eina_list_remove(_enna_activities, act);
+    }
+}
+
 /**
  * @brief Get list of activities registred
  * @return Eina_List of activities

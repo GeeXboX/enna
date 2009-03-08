@@ -25,6 +25,7 @@ struct _Enna_Class_Activity
 
 int enna_activity_add(Enna_Class_Activity *class);
 int enna_activity_del(const char *name);
+void enna_activity_del_all (void);
 Eina_List *enna_activities_get(void);
 int enna_activity_init(const char *name);
 int enna_activity_show(const char *name);
