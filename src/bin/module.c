@@ -178,32 +178,31 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
     snprintf(module_name, sizeof(module_name), "%s_%s", module_class, name);
     enna_log (ENNA_MSG_INFO, NULL, "Try to load %s", module_name);
     plugin = ecore_plugin_load(path_group, module_name, NULL);
-    if (plugin)
+    if (!plugin)
     {
-        m->api = ecore_plugin_symbol_get(plugin, "module_api");
-        if (!m->api || m->api->version != ENNA_MODULE_VERSION )
-        {
-            /* FIXME: popup error message */
-            /* Module version doesn't match enna version */
-            enna_log (ENNA_MSG_WARNING, NULL,
-                      "Bad module version, unload %s module", m->api->name);
-            ecore_plugin_unload(plugin);
-            return NULL;
-        }
-        m->func.init = ecore_plugin_symbol_get(plugin, "module_init");
-        m->func.shutdown = ecore_plugin_symbol_get(plugin, "module_shutdown");
-        m->name = m->api->name;
-        enna_log (ENNA_MSG_INFO, NULL,
-                  "Module \'%s\' loaded succesfully", m->api->name);
-        m->enabled = 0;
-        m->plugin = plugin;
-        m->evas = evas;
-        _enna_modules = eina_list_append(_enna_modules, m);
-        return m;
-    }
-    else
         enna_log (ENNA_MSG_WARNING, NULL, "Unable to load module %s", name);
+        return NULL;
+    }
 
-    return NULL;
+    m->api = ecore_plugin_symbol_get(plugin, "module_api");
+    if (!m->api || m->api->version != ENNA_MODULE_VERSION )
+    {
+        /* FIXME: popup error message */
+        /* Module version doesn't match enna version */
+        enna_log (ENNA_MSG_WARNING, NULL,
+                  "Bad module version, unload %s module", m->api->name);
+        ecore_plugin_unload(plugin);
+        return NULL;
+    }
+    m->func.init = ecore_plugin_symbol_get(plugin, "module_init");
+    m->func.shutdown = ecore_plugin_symbol_get(plugin, "module_shutdown");
+    m->name = m->api->name;
+    enna_log (ENNA_MSG_INFO, NULL,
+              "Module \'%s\' loaded succesfully", m->api->name);
+    m->enabled = 0;
+    m->plugin = plugin;
+    m->evas = evas;
+    _enna_modules = eina_list_append(_enna_modules, m);
+    return m;
 }
 
