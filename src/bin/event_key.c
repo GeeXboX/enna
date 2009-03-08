@@ -199,8 +199,10 @@ int enna_input_class_register(Enna_Module *module, Enna_Class_Input *class)
         if (module == item->module)
         {
             item->class = class;
-            class->func.class_init(0);
-            class->func.class_event_cb_set(_event_cb, item);
+            if (class && class->func.class_init)
+                class->func.class_init(0);
+            if (class && class->func.class_event_cb_set)
+                class->func.class_event_cb_set(_event_cb, item);
 
             return 0;
         }
