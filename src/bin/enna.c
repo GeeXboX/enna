@@ -246,7 +246,7 @@ static int _enna_init(void)
     return 1;
 }
 
-static void _create_gui()
+static void _create_gui(void)
 {
     Evas_Object *o;
 //    Evas_Coord w, h;
@@ -401,7 +401,7 @@ static void _create_gui()
 
 }
 
-static void _enna_shutdown()
+static void _enna_shutdown(void)
 {
     enna_activity_del_all ();
     enna_input_shutdown();
@@ -419,19 +419,19 @@ static void _enna_shutdown()
     ENNA_FREE(enna);
 }
 
-static unsigned char _opt_geometry_parse(const char *optarg, unsigned int *pw, unsigned int *ph)
+static void _opt_geometry_parse(const char *optarg, unsigned int *pw, unsigned int *ph)
 {
     int w = 0, h = 0;
 
     if (sscanf(optarg, "%dx%d", &w, &h) != 2)
     {
-	return 0;
+	return;
     }
     else
     {
 	if (pw) *pw = w;
 	if (ph) *ph = h;
-	return 1;
+	return;
     }
 }
 
