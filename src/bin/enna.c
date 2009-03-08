@@ -417,7 +417,7 @@ static void usage(char *binname)
     printf("  -t, (--theme):   Specify theme name to be used.\n");
     printf("  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n");
     printf("  -V, (--version): Display Enna version number.\n");
-    exit(0);
+    exit(EXIT_SUCCESS);
 }
 
 static int parse_command_line(int argc, char **argv)
@@ -482,7 +482,7 @@ static int parse_command_line(int argc, char **argv)
 int main(int argc, char **argv)
 {
     if (parse_command_line(argc, argv) < 0)
-        return 0;
+        return EXIT_SUCCESS;
 
     elm_init(argc, argv);
 
@@ -492,12 +492,12 @@ int main(int argc, char **argv)
     enna = calloc(1, sizeof(Enna));
 
     if (!_enna_init())
-        return 0;
+        return EXIT_FAILURE;
 
     ecore_main_loop_begin();
 
     _enna_shutdown();
     enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
