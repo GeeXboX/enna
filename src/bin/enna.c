@@ -155,9 +155,23 @@ static void _list_engines(void)
 
 /* Functions */
 
+static const struct {
+    const char *name;
+    enna_msg_level_t lvl;
+} msg_level_mapping[] = {
+    { "none",       ENNA_MSG_NONE     },
+    { "event",      ENNA_MSG_EVENT    },
+    { "info",       ENNA_MSG_INFO     },
+    { "warning",    ENNA_MSG_WARNING  },
+    { "error",      ENNA_MSG_ERROR    },
+    { "critical",   ENNA_MSG_CRITICAL },
+    { NULL,         0                 }
+};
+
 static int _enna_init(void)
 {
     char tmp[PATH_MAX];
+    int i;
 
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
@@ -175,18 +189,12 @@ static int _enna_init(void)
 
     if (enna_config->verbosity)
     {
-        if (!strcmp(enna_config->verbosity, "none"))
-            enna->lvl = ENNA_MSG_NONE;
-        else if (!strcmp(enna_config->verbosity, "event"))
-            enna->lvl = ENNA_MSG_EVENT;
-        else if (!strcmp(enna_config->verbosity, "info"))
-            enna->lvl = ENNA_MSG_INFO;
-        else if (!strcmp(enna_config->verbosity, "warning"))
-            enna->lvl = ENNA_MSG_WARNING;
-        else if (!strcmp(enna_config->verbosity, "error"))
-            enna->lvl = ENNA_MSG_ERROR;
-        else if (!strcmp(enna_config->verbosity, "critical"))
-            enna->lvl = ENNA_MSG_CRITICAL;
+        for (i = 0; msg_level_mapping[i].name; i++)
+            if (!strcmp (enna_config->verbosity, msg_level_mapping[i].name))
+            {
+                enna->lvl = msg_level_mapping[i].lvl;
+                break;
+            }
     }
 
     enna->ee = ecore_evas_new(enna_config->engine, 0, 0, 1, 1, NULL);
