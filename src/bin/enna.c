@@ -400,15 +400,10 @@ static void _opt_geometry_parse(const char *optarg,
     int w = 0, h = 0;
 
     if (sscanf(optarg, "%dx%d", &w, &h) != 2)
-    {
 	return;
-    }
-    else
-    {
-	if (pw) *pw = w;
-	if (ph) *ph = h;
-	return;
-    }
+
+    if (pw) *pw = w;
+    if (ph) *ph = h;
 }
 
 static void usage(char *binname)
