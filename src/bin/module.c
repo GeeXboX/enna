@@ -31,6 +31,53 @@ int enna_module_init(void)
     return 0;
 }
 
+static const struct {
+    const char *type_name;
+    _Enna_Module_Type type;
+} module_class_mapping[] = {
+    { "activity",       ENNA_MODULE_ACTIVITY  },
+    { "backend",        ENNA_MODULE_BACKEND   },
+    { "browser",        ENNA_MODULE_BROWSER   },
+    { "metadata",       ENNA_MODULE_METADATA  },
+    { "volume",         ENNA_MODULE_VOLUME    },
+    { "input",          ENNA_MODULE_INPUT     },
+    { NULL,             ENNA_MODULE_UNKNOWN   }
+};
+
+void enna_module_load_all (Evas *evas)
+{
+    Eina_List *mod, *l;
+    char *p;
+
+    if (!evas)
+        return;
+
+    mod = ecore_plugin_available_get (path_group);
+    EINA_LIST_FOREACH (mod, l, p) {
+        Enna_Module *em;
+        _Enna_Module_Type type = ENNA_MODULE_UNKNOWN;
+        char tp[64], name[128];
+        int res, i;
+
+        if (!p)
+            continue;
+
+        res = sscanf (p, "%[^_]_%s", tp, name);
+        if (res != 2)
+            continue;
+
+        for (i = 0; module_class_mapping[i].type_name; i++)
+            if (!strcmp (tp, module_class_mapping[i].type_name))
+            {
+                type = module_class_mapping[i].type;
+                break;
+            }
+
+        em = enna_module_open (name, type, enna->evas);
+        enna_module_enable (em);
+    }
+}
+
 /**
  * @brief Free all modules registered and delete Ecore_Path_Group
  * @return 1 if succes 0 otherwise

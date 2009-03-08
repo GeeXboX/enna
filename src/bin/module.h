@@ -43,6 +43,7 @@ struct _Enna_Module_Api
 
 int enna_module_init(void);
 int enna_module_shutdown(void);
+void enna_module_load_all (Evas *evas);
 Enna_Module *enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas);
 int enna_module_enable(Enna_Module *m);
 int enna_module_disable(Enna_Module *m);
