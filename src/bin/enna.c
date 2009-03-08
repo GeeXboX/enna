@@ -391,7 +391,6 @@ static void _create_gui()
     enna_mainmenu_load_from_activities(enna->o_mainmenu);
     enna_mainmenu_select_nth(enna->o_mainmenu, 0);
 
-    enna_content_select("music");
     enna_content_hide();
     enna_mainmenu_show(enna->o_mainmenu);
 
