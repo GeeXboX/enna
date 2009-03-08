@@ -44,8 +44,6 @@ static unsigned int app_w = 1280;
 static unsigned int app_h = 720;
 static int run_fullscreen = 0;
 
-/* Callbacks */
-
 /* Functions */
 static void _create_gui(void);
 
@@ -58,28 +56,12 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
 
     key = enna_get_key(event);
 
-    /*if (key == ENNA_KEY_UNKNOWN)
-     return 0;*/
-
     enna = (Enna *) data;
     if (!enna)
         return;
 
     if (key == ENNA_KEY_QUIT)
-    {
-	/*Evas_Object *inwin, *lb;
-
-	inwin = elm_frame_add(enna->o_edje);
-	evas_object_show(inwin);
-	edje_object_part_swallow(enna->o_edje, "enna.swallow.popup",inwin);
-	edje_object_signal_emit(enna->o_edje, "popup,show", "enna");
-	lb = elm_label_add(enna->o_edje);
-	elm_label_label_set(lb, "Are you sure you want to quit Enna ?");
-	elm_frame_content_set(inwin, lb);
-	evas_object_show(lb);*/
-
         ecore_main_loop_quit();
-    }
 
     if (key == ENNA_KEY_FULLSCREEN)
     {
@@ -123,8 +105,6 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
             {
                 enna_content_hide();
                 enna_mainmenu_show(enna->o_mainmenu);
-                //edje_object_signal_emit(enna->o_edje, "mainmenu,show", "enna");
-                //edje_object_signal_emit(enna->o_edje, "module,hide", "enna");
                 break;
             }
             default:
@@ -134,8 +114,8 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
                 break;
         }
     }
-    return;
 }
+
 static void _resize_viewport_cb(Ecore_Evas * ee)
 {
     Evas_Coord w, h, x, y;
@@ -182,7 +162,6 @@ static int _enna_init(void)
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
 
-
     enna_module_init();
 
     sprintf(tmp, "%s/.enna", enna->home);
@@ -222,9 +201,7 @@ static int _enna_init(void)
     }
 
     if (ecore_str_has_extension(enna_config->engine, "_x11"))
-    {
 	enna->ee_winid = (Ecore_X_Window) ecore_evas_window_get(enna->ee);
-    }
 
     enna->use_network = enna_config->use_network;
     enna->use_covers = enna_config->use_covers;
@@ -250,7 +227,6 @@ static int _enna_init(void)
 static void _create_gui(void)
 {
     Evas_Object *o;
-//    Evas_Coord w, h;
     Enna_Module *em;
 
     o = edje_object_add(enna->evas);
@@ -277,8 +253,6 @@ static void _create_gui(void)
     evas_object_focus_set(enna->o_edje, 1);
 
     evas_object_event_callback_add(enna->o_edje, EVAS_CALLBACK_KEY_DOWN, _event_bg_key_down_cb, enna);
-
-//    ecore_event_handler_add(ECORE_X_EVENT_KEY_DOWN, _event_bg_key_down_cb, enna);
 
     ecore_evas_callback_resize_set(enna->ee, _resize_viewport_cb);
     /* Create Content Object */
