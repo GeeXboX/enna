@@ -45,8 +45,14 @@ int enna_activity_del(const char *name)
     for (l = _enna_activities; l; l = l->next)
     {
         act = l->data;
-        _enna_activities = eina_list_remove(_enna_activities, act);
-        return 0;
+        if (!act)
+            continue;
+
+        if (!strcmp (act->name, name))
+        {
+            _enna_activities = eina_list_remove(_enna_activities, act);
+            return 0;
+        }
     }
     return -1;
 }
