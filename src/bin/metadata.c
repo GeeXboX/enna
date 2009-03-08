@@ -114,7 +114,7 @@ enna_metadata_video_desc (void)
     Eet_Data_Descriptor *edd;
 
     edd = EDD_NEW (Enna_Metadata_Video);
-       
+
     EDD_ADD (_Video, codec,     STRING);
     EDD_ADD (_Video, width,     INT);
     EDD_ADD (_Video, height,    INT);
@@ -133,7 +133,7 @@ enna_metadata_music_desc (void)
     Eet_Data_Descriptor *edd;
 
     edd = EDD_NEW (Enna_Metadata_Music);
-    
+
     EDD_ADD (_Music, artist,     STRING);
     EDD_ADD (_Music, album,      STRING);
     EDD_ADD (_Music, year,       STRING);
@@ -147,7 +147,7 @@ enna_metadata_music_desc (void)
     EDD_ADD (_Music, bitrate,    INT);
     EDD_ADD (_Music, channels,   INT);
     EDD_ADD (_Music, samplerate, INT);
-    
+
     return edd;
 }
 
@@ -181,17 +181,17 @@ enna_metadata_desc (void)
     edd_music = enna_metadata_music_desc ();
     EET_DATA_DESCRIPTOR_ADD_SUB (edd, Enna_Metadata,
                                  "music", music, edd_music);
-    
+
     return edd;
 }
-    
+
 static Enna_Metadata *
 enna_metadata_load_from_eet (char *md5)
 {
     Enna_Metadata *m = NULL;
     Eet_Data_Descriptor *edd;
     char file[1024];
-    
+
     if (!md5)
         return NULL;
 
@@ -201,7 +201,7 @@ enna_metadata_load_from_eet (char *md5)
     memset (file, '\0', sizeof (file));
     snprintf (file, sizeof (file), "%s/.enna/%s/%s.eet",
               enna_util_user_home_get (), PATH_METADATA, md5);
-    
+
     ef = eet_open (file, EET_FILE_MODE_READ);
     if (!ef)
         return NULL;
@@ -213,7 +213,7 @@ enna_metadata_load_from_eet (char *md5)
         eet_data_descriptor_free (edd);
         return NULL;
     }
-    
+
 #if DEBUG == 1
     enna_metadata_dump (m);
 #endif
@@ -229,26 +229,26 @@ enna_metadata_save_to_eet (Enna_Metadata *m)
 {
     Eet_Data_Descriptor *edd;
     char file[1024];
-    
+
     if (!m)
         return;
 
     memset (file, '\0', sizeof (file));
     snprintf (file, sizeof (file), "%s/.enna/%s/%s.eet",
               enna_util_user_home_get (), PATH_METADATA, m->md5);
-    
+
     ef = eet_open (file, EET_FILE_MODE_WRITE);
     if (!ef)
         return;
 
     enna_log (ENNA_MSG_EVENT, MODULE_NAME,
               "Trying to save %s to EET.\n", m->md5);
-              
+
     edd = enna_metadata_desc ();
     if (!eet_data_write (ef, edd, m->md5, m, EET_DO_COMPRESS))
         enna_log (ENNA_MSG_WARNING, MODULE_NAME,
                   "Error writing EET data.\n");
-    
+
     eet_data_descriptor_free (edd);
     eet_close (ef);
 }
@@ -258,7 +258,7 @@ enna_metadata_new (char *uri)
 {
     Enna_Metadata *m;
     char *md5;
-    
+
     if (!uri)
       return NULL;
 
@@ -267,7 +267,7 @@ enna_metadata_new (char *uri)
     free (md5);
     if (m)
         return m;
-    
+
     m = calloc(1, sizeof(Enna_Metadata));
     m->video = calloc(1, sizeof(Enna_Metadata_Video));
     m->music = calloc(1, sizeof(Enna_Metadata_Music));
@@ -276,7 +276,7 @@ enna_metadata_new (char *uri)
     m->uri = strdup (uri);
     m->md5 = md5sum (uri);
     m->parsed = 0;
-    
+
     return m;
 }
 
@@ -318,7 +318,7 @@ void
 enna_metadata_init (void)
 {
     char dst[1024];
-            
+
     /* try to create backdrops directory storage */
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
@@ -352,7 +352,7 @@ void
 enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords)
 {
     char key[1024];
-    
+
     if (!meta || !keywords)
         return;
 
@@ -374,7 +374,7 @@ void
 enna_metadata_add_category (Enna_Metadata *meta, char *category)
 {
     char cat[1024];
-    
+
     if (!meta || !category)
         return;
 
@@ -393,7 +393,7 @@ void
 enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber)
 {
     Eina_List *tmp;
-    
+
     if (!grabber || !grabber->name)
         return;
 
@@ -403,11 +403,11 @@ enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber)
 
         if (tmp)
             g = (Enna_Metadata_Grabber *) tmp->data;
-        
+
         if (g && !strcmp (g->name, grabber->name))
             return; /* already added grabber */
     } while ((tmp = eina_list_next (tmp)));
-    
+
     metadata_grabbers = eina_list_append (metadata_grabbers, grabber);
 }
 
@@ -415,7 +415,7 @@ void
 enna_metadata_remove_grabber (char *name)
 {
     Eina_List *tmp;
-    
+
     if (!name)
         return;
 
@@ -425,7 +425,7 @@ enna_metadata_remove_grabber (char *name)
 
         if (tmp)
             g = (Enna_Metadata_Grabber *) tmp->data;
-        
+
         if (g && !strcmp (g->name, name))
         {
             tmp = eina_list_remove (tmp, g);
@@ -445,7 +445,7 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
     /* avoid parsing the same resource twice */
     if (meta->parsed)
         return;
-    
+
     for (i = ENNA_GRABBER_PRIORITY_MAX; i < ENNA_GRABBER_PRIORITY_MIN; i++)
     {
         Eina_List *tmp;
@@ -462,11 +462,11 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
             /* check for grabber's priority */
             if (g->priority != i)
                 continue;
-            
+
             /* check if network is allowed */
             if (g->require_network && !enna->use_network)
                 continue;
-            
+
             /* check if grabber has the requested capabilities */
             if (g->caps & caps)
                 g->grab (meta, caps);
