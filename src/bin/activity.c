@@ -86,7 +86,7 @@ void enna_activity_del_all (void)
  * @brief Get list of activities registred
  * @return Eina_List of activities
  */
- Eina_List *
+Eina_List *
 enna_activities_get(void)
 {
     return _enna_activities;
