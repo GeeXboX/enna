@@ -154,7 +154,8 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
     Ecore_Plugin *plugin;
     Enna_Module *m;
     char module_name[4096];
-    char *module_class;
+    const char *module_class = NULL;
+    int i;
 
     if (!name || !evas) return NULL;
 
@@ -167,35 +168,13 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
         return NULL;
     }
 
-    switch (type)
-    {
-    case ENNA_MODULE_ACTIVITY:
-      module_class = "activity";
-      break;
+    for (i = 0; module_class_mapping[i].type_name; i++)
+        if (type == module_class_mapping[i].type)
+        {
+            module_class = module_class_mapping[i].type_name;
+            break;
+        }
 
-    case ENNA_MODULE_BACKEND:
-      module_class = "backend";
-      break;
-
-    case ENNA_MODULE_BROWSER:
-      module_class = "browser";
-      break;
-
-    case ENNA_MODULE_METADATA:
-      module_class = "metadata";
-      break;
-
-    case ENNA_MODULE_VOLUME:
-      module_class = "volume";
-      break;
-
-    case ENNA_MODULE_INPUT:
-      module_class = "input";
-      break;
-
-    default:
-      return NULL;
-    }
     snprintf(module_name, sizeof(module_name), "%s_%s", module_class, name);
     enna_log (ENNA_MSG_INFO, NULL, "Try to load %s", module_name);
     plugin = ecore_plugin_load(path_group, module_name, NULL);
