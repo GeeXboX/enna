@@ -50,7 +50,8 @@ static int run_fullscreen = 0;
 static void _create_gui(void);
 
 /* Calbacks */
-static void _event_bg_key_down_cb(void *data, Evas *e, Evas_Object *obj, void *event)
+static void _event_bg_key_down_cb(void *data, Evas *e,
+                                  Evas_Object *obj, void *event)
 {
     Enna *enna;
     enna_key_t key;
@@ -419,7 +420,8 @@ static void _enna_shutdown(void)
     ENNA_FREE(enna);
 }
 
-static void _opt_geometry_parse(const char *optarg, unsigned int *pw, unsigned int *ph)
+static void _opt_geometry_parse(const char *optarg,
+                                unsigned int *pw, unsigned int *ph)
 {
     int w = 0, h = 0;
 
