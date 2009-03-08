@@ -73,6 +73,10 @@ void enna_module_load_all (Evas *evas)
                 break;
             }
 
+        /* backend modules are handled a different way */
+        if (type == ENNA_MODULE_BACKEND)
+            continue;
+
         em = enna_module_open (name, type, enna->evas);
         enna_module_enable (em);
     }
