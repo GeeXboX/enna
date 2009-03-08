@@ -83,7 +83,7 @@ static const struct
     { "x",            0,              ENNA_KEY_X             },
     { "y",            0,              ENNA_KEY_Y             },
     { "z",            0,              ENNA_KEY_Z             },
-    { NULL,           0,             ENNA_KEY_UNKNOWN       }
+    { NULL,           0,              ENNA_KEY_UNKNOWN       }
 };
 
 /* Static functions */
