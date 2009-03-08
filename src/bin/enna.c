@@ -403,12 +403,7 @@ static void _create_gui()
 
 static void _enna_shutdown()
 {
-
-    enna_activity_del("music");
-    enna_activity_del("video");
-    enna_activity_del("photo");
-    enna_activity_del("games");
-    enna_activity_del("weather");
+    enna_activity_del_all ();
     enna_input_shutdown();
     enna_config_shutdown();
     enna_module_shutdown();
