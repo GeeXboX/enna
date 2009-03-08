@@ -57,6 +57,10 @@ int enna_activity_del(const char *name)
     return -1;
 }
 
+/**
+ * @brief Unregister all existing activities
+ * @return -1 if error occurs, 0 otherwise
+ */
 void enna_activity_del_all (void)
 {
     Eina_List *l;
