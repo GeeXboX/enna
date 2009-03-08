@@ -372,11 +372,21 @@ static void _create_gui()
     enna_metadata_init ();
 
     /* Load mainmenu items */
+#ifdef BUILD_ACTIVITY_MUSIC
     enna_activity_init("music");
+#endif
+#ifdef BUILD_ACTIVITY_VIDEO
     enna_activity_init("video");
+#endif
+#ifdef BUILD_ACTIVITY_PHOTO
     enna_activity_init("photo");
+#endif
+#if defined(BUILD_ACTIVITY_GAMES) && defined(BUILD_EFREET)
     enna_activity_init("games");
+#endif
+#ifdef BUILD_ACTIVITY_WEATHER
     enna_activity_init("weather");
+#endif
 
     enna_mainmenu_load_from_activities(enna->o_mainmenu);
     enna_mainmenu_select_nth(enna->o_mainmenu, 0);
