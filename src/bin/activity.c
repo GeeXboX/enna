@@ -30,7 +30,7 @@ int enna_activity_add(Enna_Class_Activity *class)
 }
 
 /**
- * @brief Register new activity
+ * @brief Unregister an existing activity
  * @param em enna module
  * @return -1 if error occurs, 0 otherwise
  */
