@@ -29,6 +29,27 @@ int enna_activity_add(Enna_Class_Activity *class)
     return 0;
 }
 
+static Enna_Class_Activity * enna_get_activity(const char *name)
+{
+    Eina_List *l;
+    Enna_Class_Activity *act;
+
+    if (!name)
+        return NULL;
+
+    for (l = _enna_activities; l; l = l->next)
+    {
+        act = l->data;
+        if (!act)
+            continue;
+
+        if (act->name && !strcmp(act->name, name))
+            return act;
+    }
+
+    return NULL;
+}
+
 /**
  * @brief Unregister an existing activity
  * @param em enna module
@@ -80,27 +101,6 @@ void enna_activity_del_all (void)
 enna_activities_get(void)
 {
     return _enna_activities;
-}
-
-static Enna_Class_Activity * enna_get_activity(const char *name)
-{
-    Eina_List *l;
-    Enna_Class_Activity *act;
-
-    if (!name)
-        return NULL;
-
-    for (l = _enna_activities; l; l = l->next)
-    {
-        act = l->data;
-        if (!act)
-            continue;
-
-        if (act->name && !strcmp(act->name, name))
-            return act;
-    }
-
-    return NULL;
 }
 
 int enna_activity_init(const char *name)
