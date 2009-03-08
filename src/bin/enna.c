@@ -153,7 +153,7 @@ static void _cb_delete(void *data, Evas *e, Evas_Object *obj, void *einfo)
     ecore_main_loop_quit();
 }
 
-static void _list_engines()
+static void _list_engines(void)
 {
     Eina_List  *lst;
     Eina_List  *n;
@@ -174,7 +174,7 @@ static void _list_engines()
 
 /* Functions */
 
-static int _enna_init()
+static int _enna_init(void)
 {
     char tmp[PATH_MAX];
 
