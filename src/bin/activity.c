@@ -3,6 +3,20 @@
 
 static Eina_List *_enna_activities = NULL;
 
+static int _sort_cb(const void *d1, const void *d2)
+{
+    const Enna_Class_Activity *act1 = d1;
+    const Enna_Class_Activity *act2 = d2;
+
+    if (!act1->name)
+        return 1;
+
+    if (!act2->name)
+        return -1;
+
+    return strcasecmp(act1->name, act2->name);
+}
+
 /**
  * @brief Register new activity
  * @param em enna module
@@ -26,6 +40,9 @@ int enna_activity_add(Enna_Class_Activity *class)
         }
     }
     _enna_activities = eina_list_append(_enna_activities, class);
+    _enna_activities = eina_list_sort(_enna_activities,
+                                      eina_list_count(_enna_activities),
+                                      _sort_cb);
     return 0;
 }
 
