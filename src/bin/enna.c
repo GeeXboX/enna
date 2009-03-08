@@ -235,7 +235,6 @@ static int _enna_init(void)
 static void _create_gui(void)
 {
     Evas_Object *o;
-    Enna_Module *em;
 
     o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "enna");
@@ -268,91 +267,13 @@ static void _create_gui(void)
     edje_object_part_swallow(enna->o_edje, "enna.swallow.module", o);
     enna->o_content = o;
 
+    /* Init various stuff */
     enna_volumes_init();
-
-    /* Create Modules */
-#ifdef BUILD_ACTIVITY_MUSIC
-    em = enna_module_open("music", ENNA_MODULE_ACTIVITY, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_ACTIVITY_PHOTO
-    em = enna_module_open("photo", ENNA_MODULE_ACTIVITY, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_ACTIVITY_VIDEO
-    em = enna_module_open("video", ENNA_MODULE_ACTIVITY, enna->evas);
-    enna_module_enable(em);
-#endif
-#if defined(BUILD_ACTIVITY_GAMES) && defined(BUILD_EFREET)
-    em = enna_module_open("games", ENNA_MODULE_ACTIVITY, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_ACTIVITY_WEATHER
-    em = enna_module_open("weather", ENNA_MODULE_ACTIVITY, enna->evas);
-    enna_module_enable(em);
-#endif
-
-#ifdef BUILD_BROWSER_LMS
-    em = enna_module_open("lms", ENNA_MODULE_BROWSER, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_BROWSER_VALHALLA
-    em = enna_module_open("valhalla", ENNA_MODULE_BROWSER, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_BROWSER_LOCALFILES
-    em = enna_module_open("localfiles", ENNA_MODULE_BROWSER, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_BROWSER_NETSTREAMS
-    em = enna_module_open("netstreams", ENNA_MODULE_BROWSER, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_BROWSER_SHOUTCAST
-    em = enna_module_open("shoutcast", ENNA_MODULE_BROWSER, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_BROWSER_UPNP
-    em = enna_module_open("upnp", ENNA_MODULE_BROWSER, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_BROWSER_DVD
-    em = enna_module_open("dvd", ENNA_MODULE_BROWSER, enna->evas);
-    enna_module_enable(em);
-#endif
-
-#ifdef BUILD_METADATA_AMAZON
-    em = enna_module_open("amazon", ENNA_MODULE_METADATA, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_METADATA_LIBPLAYER
-    em = enna_module_open("libplayer", ENNA_MODULE_METADATA, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_METADATA_LOCALFILES
-    em = enna_module_open("localfiles", ENNA_MODULE_METADATA, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_METADATA_TMDB
-    em = enna_module_open("tmdb", ENNA_MODULE_METADATA, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_METADATA_TVDB
-    em = enna_module_open("tvdb", ENNA_MODULE_METADATA, enna->evas);
-    enna_module_enable(em);
-#endif
-
-#ifdef BUILD_VOLUME_HAL
-    em = enna_module_open("hal", ENNA_MODULE_VOLUME, enna->evas);
-    enna_module_enable(em);
-#endif
-#ifdef BUILD_VOLUME_MTAB
-    em = enna_module_open("mtab", ENNA_MODULE_VOLUME, enna->evas);
-    enna_module_enable(em);
-#endif
-
-    /* Init Metadatas */
     enna_metadata_init ();
+    enna_mediaplayer_init();
+
+    /* Load available modules */
+    enna_module_load_all(enna->evas);
 
     /* Load mainmenu items */
 #ifdef BUILD_ACTIVITY_MUSIC
@@ -378,10 +299,6 @@ static void _create_gui(void)
     enna_mainmenu_show(enna->o_mainmenu);
 
     ecore_evas_show(enna->ee);
-
-    /* Initialize and load mediaplayer modules */
-    enna_mediaplayer_init();
-
 }
 
 static void _enna_shutdown(void)
