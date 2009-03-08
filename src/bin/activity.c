@@ -57,25 +57,14 @@ static Enna_Class_Activity * enna_get_activity(const char *name)
  */
 int enna_activity_del(const char *name)
 {
-    Eina_List *l;
     Enna_Class_Activity *act;
 
-    if (!name)
+    act = enna_get_activity (name);
+    if (!act)
         return -1;
 
-    for (l = _enna_activities; l; l = l->next)
-    {
-        act = l->data;
-        if (!act)
-            continue;
-
-        if (act->name && !strcmp (act->name, name))
-        {
-            _enna_activities = eina_list_remove(_enna_activities, act);
-            return 0;
-        }
-    }
-    return -1;
+    _enna_activities = eina_list_remove(_enna_activities, act);
+    return 0;
 }
 
 /**
