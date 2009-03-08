@@ -346,7 +346,7 @@ enna_mediaplayer_playlist_count(Enna_Playlist *enna_playlist)
 int
 enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class)
 {
-    if (!class)
+    if (!class || !_mediaplayer)
         return -1;
     _mediaplayer->class = class;
     if (class->func.class_init)
