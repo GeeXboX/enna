@@ -49,7 +49,7 @@ static void _create_gui(void);
 
 /* Calbacks */
 static void _event_bg_key_down_cb(void *data, Evas *e,
-                                  Evas_Object *obj, void *event)
+    Evas_Object *obj, void *event)
 {
     Enna *enna;
     enna_key_t key;
@@ -73,47 +73,47 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     {
         switch (key)
         {
-            case ENNA_KEY_MENU:
-            {
-                enna_content_show();
-                enna_mainmenu_hide(enna->o_mainmenu);
-                edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-                break;
-            }
-            case ENNA_KEY_RIGHT:
-            case ENNA_KEY_LEFT:
-	    case ENNA_KEY_UP:
-	    case ENNA_KEY_DOWN:
-            {
-                enna_mainmenu_event_feed(enna->o_mainmenu, event);
-                break;
-            }
-            case ENNA_KEY_OK:
-            case ENNA_KEY_SPACE:
-            {
-                enna_mainmenu_activate_nth(enna->o_mainmenu,
-		    enna_mainmenu_selected_get(enna->o_mainmenu));
-                break;
-            }
-            default:
-                break;
+	case ENNA_KEY_MENU:
+	{
+	    enna_content_show();
+	    enna_mainmenu_hide(enna->o_mainmenu);
+	    edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+	    break;
+	}
+	case ENNA_KEY_RIGHT:
+	case ENNA_KEY_LEFT:
+	case ENNA_KEY_UP:
+	case ENNA_KEY_DOWN:
+	{
+	    enna_mainmenu_event_feed(enna->o_mainmenu, event);
+	    break;
+	}
+	case ENNA_KEY_OK:
+	case ENNA_KEY_SPACE:
+	{
+	    enna_mainmenu_activate_nth(enna->o_mainmenu,
+		enna_mainmenu_selected_get(enna->o_mainmenu));
+	    break;
+	}
+	default:
+	    break;
         }
     }
     else
     {
         switch (key)
         {
-            case ENNA_KEY_MENU:
-            {
-                enna_content_hide();
-                enna_mainmenu_show(enna->o_mainmenu);
-                break;
-            }
-            default:
-                enna_activity_event(
-                        enna_mainmenu_selected_activity_get(enna->o_mainmenu),
-                        event);
-                break;
+	case ENNA_KEY_MENU:
+	{
+	    enna_content_hide();
+	    enna_mainmenu_show(enna->o_mainmenu);
+	    break;
+	}
+	default:
+	    enna_activity_event(
+		enna_mainmenu_selected_activity_get(enna->o_mainmenu),
+		event);
+	    break;
         }
     }
 }
@@ -218,7 +218,7 @@ static int _enna_init(void)
     enna->use_snapshots = enna_config->use_snapshots;
 
     ecore_evas_fullscreen_set(enna->ee, enna_config->fullscreen
-            | run_fullscreen);
+	| run_fullscreen);
 
     ecore_evas_title_set(enna->ee, "enna HTPC");
     ecore_evas_name_class_set(enna->ee, "enna", "enna");
@@ -322,7 +322,7 @@ static void _enna_shutdown(void)
 }
 
 static void _opt_geometry_parse(const char *optarg,
-                                unsigned int *pw, unsigned int *ph)
+    unsigned int *pw, unsigned int *ph)
 {
     int w = 0, h = 0;
 
@@ -352,14 +352,15 @@ static int parse_command_line(int argc, char **argv)
     int c, index;
     char short_options[] = "Vhfc:t:b:g:";
     struct option long_options [] =
-    {
-    { "help", no_argument, 0, 'h' },
-    { "version", no_argument, 0, 'V' },
-    { "fs", no_argument, 0, 'f' },
-    { "config", required_argument, 0, 'c' },
-    { "theme", required_argument, 0, 't' },
-    { "geometry", required_argument, 0, 'g'},
-    { 0, 0, 0, 0 } };
+	{
+	    { "help", no_argument, 0, 'h' },
+	    { "version", no_argument, 0, 'V' },
+	    { "fs", no_argument, 0, 'f' },
+	    { "config", required_argument, 0, 'c' },
+	    { "theme", required_argument, 0, 't' },
+	    { "geometry", required_argument, 0, 'g'},
+	    { 0, 0, 0, 0 }
+	};
 
     /* command line argument processing */
     while (1)
