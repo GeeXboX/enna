@@ -41,6 +41,8 @@
     if ((!obj) || (!sd) || (evas_object_type_get(obj)		\
 	    && strcmp(evas_object_type_get(obj), SMART_NAME)))	\
 
+#define MAX_PER_ROW 4
+
 typedef struct _Smart_Data Smart_Data;
 typedef struct _Smart_Item Smart_Item;
 
@@ -150,7 +152,7 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
 
     // FIXME : Ugly !
     i++;
-    if (i > 3)
+    if (i == MAX_PER_ROW)
     {
 	j++;
 	i = 0;
