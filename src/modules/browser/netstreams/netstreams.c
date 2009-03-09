@@ -274,16 +274,36 @@ static void class_init(const char *name, netstreams_priv_t **priv,
     }
 }
 
-static Enna_Class_Vfs class_music =
-{ "netstreams_music", 1, "Browse Network Streams", NULL, "icon/music",
-{ NULL, NULL, browse_up_music, browse_down_music, vfs_get_music,
-}, NULL
+static Enna_Class_Vfs class_music = {
+    "netstreams_music",
+    1,
+    "Browse Network Streams",
+    NULL,
+    "icon/music",
+    {
+        NULL,
+        NULL,
+        browse_up_music,
+        browse_down_music,
+        vfs_get_music,
+    },
+    NULL
 };
 
-static Enna_Class_Vfs class_video =
-{ "netstreams_video", 1, "Browse Network Streams", NULL, "icon/video",
-{ NULL, NULL, browse_up_video, browse_down_video, vfs_get_video,
-}, NULL
+static Enna_Class_Vfs class_video = {
+    "netstreams_video",
+    1,
+    "Browse Network Streams",
+    NULL,
+    "icon/video",
+    {
+        NULL,
+        NULL,
+        browse_up_video,
+        browse_down_video,
+        vfs_get_video,
+    },
+    NULL
 };
 
 /* Module interface */
