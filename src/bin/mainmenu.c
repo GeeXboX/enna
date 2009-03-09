@@ -261,9 +261,79 @@ Enna_Class_Activity *enna_mainmenu_selected_activity_get(Evas_Object *obj)
 }
 
 
+void enna_mainmenu_select_next(Evas_Object *obj)
+{
+    Smart_Item *new, *prev;
+    int ns = 0;
+
+    API_ENTRY return;
+
+    ns = sd->selected;
+    prev = eina_list_nth(sd->items, ns);
+    if (!prev)
+        return;
+    ns++;
+    new = eina_list_nth(sd->items, ns);
+    if (!new)
+    {
+        ns = 0;
+        new = eina_list_nth(sd->items, ns);
+        if (!new)
+            return;
+    }
+    sd->selected = ns;
+    edje_object_signal_emit(new->o_base, "select", "enna");
+    edje_object_signal_emit(prev->o_base, "unselect", "enna");
+
+}
+
+void enna_mainmenu_select_prev(Evas_Object *obj)
+{
+    Smart_Item *new, *prev;
+    int ns = 0;
+
+    API_ENTRY return;
+
+    ns = sd->selected;
+    prev = eina_list_nth(sd->items, ns);
+    if (!prev)
+        return;
+    ns--;
+    new = eina_list_nth(sd->items, ns);
+    if (!new)
+    {
+        ns = eina_list_count(sd->items)-1;
+        new = eina_list_nth(sd->items, ns);
+        if (!new)
+            return;
+    }
+    sd->selected = ns;
+    edje_object_signal_emit(new->o_base, "select", "enna");
+    edje_object_signal_emit(prev->o_base, "unselect", "enna");
+
+}
+
 void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
 {
     API_ENTRY return;
+
+    enna_key_t key;
+
+    key = enna_get_key(event_info);
+    switch (key)
+    {
+
+    case ENNA_KEY_RIGHT:
+	printf("next\n");
+	enna_mainmenu_select_next(obj);
+	break;
+    case ENNA_KEY_LEFT:
+	printf("prev\n");
+	enna_mainmenu_select_prev(obj);
+	break;
+    default:
+	break;
+    }
 
 //    enna_carousel_event_feed(sd->o_carousel, event_info);
 }
