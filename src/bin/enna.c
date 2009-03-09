@@ -83,7 +83,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
             case ENNA_KEY_RIGHT:
             case ENNA_KEY_LEFT:
 	    case ENNA_KEY_UP:
-	    case ENA_KEy_DOWN:
+	    case ENNA_KEY_DOWN:
             {
                 enna_mainmenu_event_feed(enna->o_mainmenu, event);
                 break;
