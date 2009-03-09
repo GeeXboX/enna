@@ -50,9 +50,9 @@ typedef struct _Enna_Module_Photo
 	Evas_Object *o_exif;
 	char *str;
     }exif;
-    Elm_Genlist_Item_Class *item_class;
-#endif
 
+#endif
+    Elm_Genlist_Item_Class *item_class;
 } Enna_Module_Photo;
 
 static Enna_Module_Photo *mod;
