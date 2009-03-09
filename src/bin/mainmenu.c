@@ -319,6 +319,7 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_RIGHT:
 	enna_mainmenu_select_next(obj);
 	break;
+    case ENNA_KEY_LEFT:
 	enna_mainmenu_select_prev(obj);
 	break;
     default:
