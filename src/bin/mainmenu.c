@@ -303,7 +303,7 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
     API_ENTRY return;
 
     enna_key_t key;
-    int el;
+    int n, el;
 
     key = enna_get_key(event_info);
     switch (key)
@@ -320,8 +320,11 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
         enna_mainmenu_select_nth(obj, el - MAX_PER_ROW);
         break;
     case ENNA_KEY_DOWN:
+        n = enna_mainmenu_get_nr_items(obj);
         el = enna_mainmenu_selected_get(obj);
-        enna_mainmenu_select_nth(obj, el + MAX_PER_ROW);
+        /* go to element below or last one of row if none */
+        enna_mainmenu_select_nth(obj, (el + MAX_PER_ROW >= n) ?
+                                 n - 1 : el + MAX_PER_ROW);
         break;
     default:
 	break;
