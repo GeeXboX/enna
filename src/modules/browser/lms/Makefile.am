@@ -21,7 +21,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = browser_lms.la
 
 browser_lms_la_SOURCES= \
-enna_module_lms.c
+lms.c
 
 browser_lms_la_LIBADD = @ENNA_LIBS@ @LMS_LIBS@
 browser_lms_la_LDFLAGS = -module -avoid-version

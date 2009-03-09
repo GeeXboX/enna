@@ -21,7 +21,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = browser_netstreams.la
 
 browser_netstreams_la_SOURCES= \
-enna_module_netstreams.c
+netstreams.c
 
 browser_netstreams_la_LIBADD = @ENNA_LIBS@
 browser_netstreams_la_LDFLAGS = -module -avoid-version

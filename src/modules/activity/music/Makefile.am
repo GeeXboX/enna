@@ -21,8 +21,8 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = activity_music.la
 
 activity_music_la_SOURCES= \
-enna_module_music.c \
-enna_module_music.h \
+music.c \
+music.h \
 smart_player.c\
 smart_player.h
 

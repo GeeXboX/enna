@@ -23,7 +23,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = metadata_amazon.la
 
 metadata_amazon_la_SOURCES= \
-enna_module_amazon.c
+amazon.c
 
 metadata_amazon_la_LIBADD = @ENNA_LIBS@ @LIBCURL_LIBS@ @LIBXML2_LIBS@
 metadata_amazon_la_LDFLAGS = -module -avoid-version

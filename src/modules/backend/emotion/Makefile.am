@@ -19,7 +19,7 @@ pkgdir =$(libdir)/enna/modules
 pkg_LTLIBRARIES = backend_emotion.la
 
 backend_emotion_la_SOURCES = \
-enna_module_emotion.c
+emotion.c
 
 backend_emotion_la_LIBADD = @ENNA_LIBS@ @EMOTION_LIBS@
 backend_emotion_la_LDFLAGS = -module -avoid-version

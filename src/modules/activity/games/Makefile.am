@@ -22,7 +22,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = activity_games.la
 
 activity_games_la_SOURCES= \
-enna_module_games.c
+games.c
 
 activity_games_la_LIBADD = @ENNA_LIBS@ @EFREET_LIBS@
 activity_games_la_LDFLAGS = -module -avoid-version

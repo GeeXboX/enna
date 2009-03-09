@@ -21,7 +21,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = activity_video.la
 
 activity_video_la_SOURCES= \
-enna_module_video.c\
+video.c\
 smart_player.c\
 smart_player.h
 

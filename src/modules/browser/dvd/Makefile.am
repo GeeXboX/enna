@@ -21,7 +21,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = browser_dvd.la
 
 browser_dvd_la_SOURCES= \
-enna_module_dvd.c
+dvd.c
 
 browser_dvd_la_LIBADD = @ENNA_LIBS@
 browser_dvd_la_LDFLAGS = -module -avoid-version

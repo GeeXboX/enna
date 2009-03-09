@@ -21,7 +21,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = browser_shoutcast.la
 
 browser_shoutcast_la_SOURCES= \
-enna_module_shoutcast.c
+shoutcast.c
 
 browser_shoutcast_la_LIBADD = @ENNA_LIBS@ @LIBCURL_LIBS@ @LIBXML2_LIBS@
 browser_shoutcast_la_LDFLAGS = -module -avoid-version
