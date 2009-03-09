@@ -324,18 +324,14 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
     {
 
     case ENNA_KEY_RIGHT:
-	printf("next\n");
 	enna_mainmenu_select_next(obj);
 	break;
-    case ENNA_KEY_LEFT:
-	printf("prev\n");
 	enna_mainmenu_select_prev(obj);
 	break;
     default:
 	break;
     }
 
-//    enna_carousel_event_feed(sd->o_carousel, event_info);
 }
 
 void enna_mainmenu_show(Evas_Object *obj)
