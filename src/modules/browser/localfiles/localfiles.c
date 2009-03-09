@@ -98,7 +98,7 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
 	if (!files)
 	    return NULL;
 
-	eina_list_sort(files, 0, EINA_COMPARE_CB(strcasecmp));
+	files = eina_list_sort(files, eina_list_count(files), EINA_COMPARE_CB(strcasecmp));
 	EINA_LIST_FOREACH(files, l, filename)
 	{
             sprintf(dir, "%s/%s", path, filename);
