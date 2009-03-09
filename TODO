@@ -14,8 +14,6 @@
       -> Define slideshow effect/timeout in config file.
 
  * Audio module
-      -> Add overlay menu in audio player with control buttons
-         (play/pause, prev/next, volume up/down)
       -> Do not display empty metadata in audio player if none is found
          in current stream: display filename instead.
       -> Finish shoutcast support so that non-local streams can be played back.
@@ -23,8 +21,7 @@
       -> Playing now edje
       -> Cancel timer of mediaplayer when browsing directory with mouse
 
-
- * Video module (based on music one)
+ * Video module
       -> Add video support to emotion backend
       -> Support Volume
 
@@ -39,7 +36,6 @@
 
 
  * Bugs
-     -> libcurl and libxml2 are not checked in configure.in
      -> Remove item when location bar is clicked
      -> When using 'back' in audio/video player, ui comes back to menu but
         timer renders media player view again after a few seconds.
@@ -76,8 +72,7 @@
 [Priority 8]
 
   * Playlist
-  * Radio Web
-  * Write custom media library plugin (lms equivalent) using libplayer
+  * Web Radio
 
 [Priority 0]
 
