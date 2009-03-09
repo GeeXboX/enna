@@ -124,7 +124,6 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
 {
     FILE *f;
     char tmp[] = "/tmp/enna-netstreams-XXXXXX";
-    url_data_t chunk;
     char *file, *header;
     Eina_List *streams = NULL;
     int n, dl = 1;
@@ -135,6 +134,8 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
     /* download playlist */
     if (dl)
     {
+        url_data_t chunk;
+
         file = mktemp(tmp);
         chunk = url_get_data(mod->curl, (char *) path);
         if (chunk.status != CURLE_OK)
