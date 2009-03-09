@@ -253,8 +253,7 @@ Enna_Class_Activity *enna_mainmenu_selected_activity_get(Evas_Object *obj)
     return si->act;
 }
 
-
-void enna_mainmenu_select_next(Evas_Object *obj)
+static void enna_mainmenu_select_sibbling (Evas_Object *obj, int way)
 {
     Smart_Item *new, *prev;
     int ns = 0;
@@ -265,11 +264,11 @@ void enna_mainmenu_select_next(Evas_Object *obj)
     prev = eina_list_nth(sd->items, ns);
     if (!prev)
         return;
-    ns++;
+    if (way) ns--; else ns++;
     new = eina_list_nth(sd->items, ns);
     if (!new)
     {
-        ns = 0;
+        ns = way ? eina_list_count(sd->items) - 1 : 0;
         new = eina_list_nth(sd->items, ns);
         if (!new)
             return;
@@ -277,33 +276,16 @@ void enna_mainmenu_select_next(Evas_Object *obj)
     sd->selected = ns;
     edje_object_signal_emit(new->o_base, "select", "enna");
     edje_object_signal_emit(prev->o_base, "unselect", "enna");
+}
 
+void enna_mainmenu_select_next(Evas_Object *obj)
+{
+    enna_mainmenu_select_sibbling (obj, 0);
 }
 
 void enna_mainmenu_select_prev(Evas_Object *obj)
 {
-    Smart_Item *new, *prev;
-    int ns = 0;
-
-    API_ENTRY return;
-
-    ns = sd->selected;
-    prev = eina_list_nth(sd->items, ns);
-    if (!prev)
-        return;
-    ns--;
-    new = eina_list_nth(sd->items, ns);
-    if (!new)
-    {
-        ns = eina_list_count(sd->items)-1;
-        new = eina_list_nth(sd->items, ns);
-        if (!new)
-            return;
-    }
-    sd->selected = ns;
-    edje_object_signal_emit(new->o_base, "select", "enna");
-    edje_object_signal_emit(prev->o_base, "unselect", "enna");
-
+    enna_mainmenu_select_sibbling (obj, 1);
 }
 
 void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
