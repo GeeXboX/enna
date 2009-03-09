@@ -101,10 +101,7 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
         const char *label, Enna_Class_Activity *act, void (*func) (void *data), void *data)
 {
     Smart_Item *si;
-    Evas_Coord mw = 0, mh = 0;
     Evas_Object *ic;
-    const char *tmp;
-
     static int i = 0;
     static int j = 0;
 
@@ -171,7 +168,6 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
     for (l = activities; l; l = l->next)
     {
         Enna_Class_Activity *act;
-        Evas_Object *icon = NULL;
 	const char *icon_name = NULL;
         act = l->data;
 
@@ -435,7 +431,6 @@ static void _smart_add(Evas_Object * obj)
     Evas_Object *o, *ic, *bt;
     Evas *e;
 
-    char *tmp = NULL;
     sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
