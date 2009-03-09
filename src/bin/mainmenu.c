@@ -214,6 +214,14 @@ void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
     }
 }
 
+static int enna_mainmenu_get_nr_items(Evas_Object *obj)
+{
+    API_ENTRY
+	return 0;
+
+    return eina_list_count(sd->items);
+}
+
 int enna_mainmenu_selected_get(Evas_Object *obj)
 {
     API_ENTRY return -1;
