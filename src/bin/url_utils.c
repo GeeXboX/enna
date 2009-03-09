@@ -31,6 +31,7 @@ url_data_t url_get_data(CURL *curl, char *url)
       return chunk;
     
     curl_easy_setopt(curl, CURLOPT_URL, url);
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, url_buffer_get);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
 
