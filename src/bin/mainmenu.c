@@ -130,7 +130,7 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
     evas_object_show(ic);
     si->o_icon = ic;
     if (ic)
-        edje_object_part_swallow(si->o_base, "enna.swallow.icon", ic);
+        edje_object_part_swallow(si->o_base, "enna.swallow.content", ic);
 
     si->func = func;
     si->data = data;
@@ -242,9 +242,9 @@ void enna_mainmenu_select_nth(Evas_Object *obj, int nth)
         return;
 
     sd->selected = nth;
-    edje_object_signal_emit(new->o_base, "enna,state,selected", "enna");
+    edje_object_signal_emit(new->o_base, "select", "enna");
     if (new != prev)
-        edje_object_signal_emit(prev->o_base, "enna,state,unselected", "enna");
+        edje_object_signal_emit(prev->o_base, "unselect", "enna");
 
 }
 
@@ -578,8 +578,8 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, vo
     {
         if (l->data == si)
         {
-            edje_object_signal_emit(si->o_base, "enna,state,selected", "enna");
-            edje_object_signal_emit(prev->o_base, "enna,state,unselected",
+            edje_object_signal_emit(si->o_base, "select", "enna");
+            edje_object_signal_emit(prev->o_base, "unselect",
 		"enna");
             sd->selected = i;
             break;

@@ -101,9 +101,9 @@ group
             state: "default" 0.0;
             //max: 1920 256;
             rel1
-            {   relative: 0 0.2;to: "bg";to: enna.clip.mainmenu;};
+            {   relative: 0 0;to: "bg";to: enna.clip.mainmenu;};
             rel2
-            {   relative: 1.0 0.7;to: "bg";to: enna.clip.mainmenu;};
+            {   relative: 1.0 1.0;to: "bg";to: enna.clip.mainmenu;};
          }
       }
       part
@@ -342,6 +342,8 @@ group
 group
 {
    name: "enna/mainmenu/item";
+min: 32 32;
+max: 512 512;
    parts
    {
       part
