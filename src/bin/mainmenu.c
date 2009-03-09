@@ -158,7 +158,6 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
 	j++;
 	i = 0;
     }
-    printf("%d %d\n", i, j);
 
 }
 
@@ -178,13 +177,11 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
 
         if (act->icon)
         {
-	    printf("act->icon : %s\n", act->icon);
 	    icon_name = eina_stringshare_add(act->icon);
         }
         else if (act->icon_file)
         {
 
-	    printf("act->icon_file : %s\n", act->icon_file);
 	    icon_name = eina_stringshare_add(act->icon_file);
         }
         enna_mainmenu_append(obj, icon_name, act->name, act, _smart_activate_cb, act);
