@@ -324,6 +324,9 @@ static  void _browse (void *data)
     Smart_Data *sd;
     Browse_Data *bd = data;
 
+    if (!bd)
+      return;
+
     sd = bd->sd;
     sd->file = bd->file;
 
