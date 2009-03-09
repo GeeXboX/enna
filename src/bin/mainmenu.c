@@ -151,6 +151,7 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
 	_smart_event_mouse_down, si);
     evas_object_show(si->o_base);
 
+    // FIXME : Ugly !
     i++;
     if (i > 3)
     {
@@ -186,8 +187,6 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
 	    printf("act->icon_file : %s\n", act->icon_file);
 	    icon_name = eina_stringshare_add(act->icon_file);
         }
-
-
         enna_mainmenu_append(obj, icon_name, act->name, act, _smart_activate_cb, act);
     }
 
