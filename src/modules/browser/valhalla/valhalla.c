@@ -100,7 +100,7 @@ static void _vfs_add_file(Eina_List **list,
 
     if (file->track)
         snprintf(title, sizeof(title),
-                 "%u - %s", file->track, file->title ? file->title : it + 1);
+                 "%s - %s", file->track, file->title ? file->title : it + 1);
     else
         snprintf(title, sizeof(title),
                  "%s", file->title ? file->title : it + 1);
