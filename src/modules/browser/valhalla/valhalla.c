@@ -387,11 +387,23 @@ static Enna_Vfs_File *_class_vfs_get(void *cookie)
     char str[64];
     int64_t id;
 
-    if (mod->level == BROWSER_LEVEL_AUTHOR_LIST_ALBUM ||
-        mod->level == BROWSER_LEVEL_GENRE_LIST_ALBUM)
+    switch (mod->level)
+    {
+    case BROWSER_LEVEL_AUTHOR_LIST_ALBUM:
+    case BROWSER_LEVEL_GENRE_LIST_ALBUM:
         id = mod->prev_id2;
-    else
+        break;
+
+    case BROWSER_LEVEL_ALBUM_LIST:
+    case BROWSER_LEVEL_AUTHOR_LIST:
+    case BROWSER_LEVEL_GENRE_LIST:
         id = mod->prev_id1;
+        break;
+
+    default:
+        id = 0;
+        break;
+    }
 
     snprintf(str, sizeof(str), "%i/%"PRIi64, mod->level, id);
     return enna_vfs_create_directory(str, NULL, NULL, NULL);
