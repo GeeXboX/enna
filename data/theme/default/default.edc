@@ -1,4 +1,4 @@
-#define COMP LOSSY 100
+#define COMP LOSSY 80
 
 images{
 }
