@@ -85,7 +85,7 @@
     "#verbosity=\n"							\
     "\n"								\
     "# Metadata module (video)\n"					\
-    "blacklist_keywords=1080p,720p,ctu,divx,dvdrip,dvdscr,fqm,hdtv,lol,notv,pdtv,screencam,screener,vtv,x264,xvid,dsr,dimension,2hd,fov,dot,booya,proper,sys,crimson,etach,repack,caph,xor,0tv,mainevent,reseed,pushercrew\n" \
+    "blacklist_keywords=0tv,1080p,2hd,720p,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,etach,fov,fqm,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid\n" \
     "\n"								\
     "[localfiles]\n"							\
     "path_music=file:///path/to/Music,Music,icon/favorite\n"			\
