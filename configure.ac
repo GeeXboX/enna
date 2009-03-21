@@ -11,6 +11,7 @@ AC_ISC_POSIX
 AM_INIT_AUTOMAKE(1.6 dist-bzip2)
 AC_CONFIG_HEADERS([config.h])
 
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_PROG_CC
 AC_PROG_CC
@@ -596,7 +597,11 @@ if test "x$want_efreet" = "xyes" -o "x$want_efreet" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_EFREET, test "x$have_efreet" = "xyes")
 
+SHAVE_INIT([.], [enable])
+
 AC_CONFIG_FILES([
+shave
+shave-libtool
 Makefile
 src/Makefile
 src/bin/Makefile

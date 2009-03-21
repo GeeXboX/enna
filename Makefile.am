@@ -14,4 +14,4 @@ dist-hook:
 	done
 
 
-ACLOCAL_AMFLAGS =
+ACLOCAL_AMFLAGS = -I m4
