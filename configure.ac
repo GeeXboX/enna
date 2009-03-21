@@ -606,6 +606,32 @@ if test "x$want_libxml2" = "xyes" -o "x$want_libxml2" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LIBXML2, test "x$have_libxml2" = "xyes")
 
+# libxrandr
+want_libxrandr="auto"
+have_libxrandr="no"
+AC_MSG_CHECKING(whether libxrandr support is to be built)
+AC_ARG_ENABLE(libxrandr,
+    AS_HELP_STRING([--enable-libxrandr],[Enable libxrandr support]),
+    [ want_libxrandr=$enableval ]
+)
+AC_MSG_RESULT($want_libxrandr)
+if test "x$want_libxrandr" = "xyes" -o "x$want_libxrandr" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LIBXRANDR],
+    [xrandr],
+    [
+      AC_DEFINE(BUILD_LIBXRANDR, 1, [libxrandr support])
+      have_libxrandr="yes"
+    ],
+    [
+      if test "x$want_libxrandr" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libxrandr not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_LIBXRANDR, test "x$have_libxrandr" = "xyes")
+
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
@@ -710,6 +736,7 @@ echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libexif.......................... : $have_libexif"
 echo "  libxml2.......................... : $have_libxml2"
+echo "  libxrandr........................ : $have_libxrandr"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo
