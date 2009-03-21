@@ -22,6 +22,10 @@ if BUILD_BROWSER_VALHALLA
 INCLUDES += @VALHALLA_CFLAGS@
 endif
 
+if BUILD_LIBXRANDR
+INCLUDES += @LIBXRANDR_CFLAGS@
+endif
+
 if BUILD_ACTIVITY_INFOS
 
 pkgdir = $(libdir)/enna/modules
@@ -34,6 +38,10 @@ infos.c
 activity_infos_la_LIBADD = @ENNA_LIBS@
 activity_infos_la_LDFLAGS = -module -avoid-version
 activity_infos_la_DEPENDENCIES = $(top_builddir)/config.h
+
+if BUILD_LIBXRANDR
+activity_infos_la_LIBAD = @ENNA_LIBS@ @LIBXRANDR_LIBS@
+endif
 
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/activity_$(MODULE).*

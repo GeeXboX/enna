@@ -16,7 +16,9 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 
+#ifdef BUILD_LIBXRANDR
 #include <X11/extensions/Xrandr.h>
+#endif
 
 #ifdef BUILD_BACKEND_LIBPLAYER
 #include <player.h>
@@ -125,6 +127,7 @@ get_uname (buffer_t *b)
   buffer_append (b, "<br>");
 }
 
+#ifdef BUILD_LIBXRANDR
 static void
 get_resolution (buffer_t *b)
 {
@@ -159,6 +162,7 @@ get_resolution (buffer_t *b)
                   rate, minWidth, minHeight, maxWidth, maxHeight);
   buffer_append (b, "<br>");
 }
+#endif
 
 static void
 get_network (buffer_t *b)
@@ -258,7 +262,9 @@ set_system_information (buffer_t *b)
     buffer_append (b, "<c>System Information</c><br><br>");
     get_distribution (b);
     get_uname (b);
+#ifdef BUILD_LIBXRANDR
     get_resolution (b);
+#endif
     get_network (b);
     get_default_gw (b);
 }
