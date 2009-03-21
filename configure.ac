@@ -476,6 +476,32 @@ fi
 # Librairies #
 ##############
 
+# efreet
+want_efreet="auto"
+have_efreet="no"
+AC_MSG_CHECKING(whether efreet support is to be built)
+AC_ARG_ENABLE(efreet,
+    AS_HELP_STRING([--enable-efreet],[Enable efreet support]),
+    [ want_efreet=$enableval ]
+)
+AC_MSG_RESULT($want_efreet)
+if test "x$want_efreet" = "xyes" -o "x$want_efreet" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [EFREET],
+    [efreet],
+    [
+      AC_DEFINE(BUILD_EFREET, 1, [efreet support])
+      have_efreet="yes"
+    ],
+    [
+      if test "x$want_efreet" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([efreet not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_EFREET, test "x$have_efreet" = "xyes")
+
 # libcddb
 want_libcddb="auto"
 have_libcddb="no"
@@ -584,32 +610,6 @@ if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
 
-# efreet
-want_efreet="auto"
-have_efreet="no"
-AC_MSG_CHECKING(whether efreet support is to be built)
-AC_ARG_ENABLE(efreet,
-    AS_HELP_STRING([--enable-efreet],[Enable efreet support]),
-    [ want_efreet=$enableval ]
-)
-AC_MSG_RESULT($want_efreet)
-if test "x$want_efreet" = "xyes" -o "x$want_efreet" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [EFREET],
-    [efreet],
-    [
-      AC_DEFINE(BUILD_EFREET, 1, [efreet support])
-      have_efreet="yes"
-    ],
-    [
-      if test "x$want_efreet" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([efreet not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_EFREET, test "x$have_efreet" = "xyes")
-
 SHAVE_INIT([.], [enable])
 
 AC_CONFIG_FILES([
@@ -705,11 +705,11 @@ echo "  mtab............................. : $want_volume_mtab"
 echo
 echo "Optional linked-in librairies:"
 echo
+echo "  efreet........................... : $have_efreet"
 echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libexif.......................... : $have_libexif"
 echo "  libxml2.......................... : $have_libxml2"
-echo "  efreet........................... : $have_efreet"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo
