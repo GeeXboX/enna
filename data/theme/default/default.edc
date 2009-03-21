@@ -39,6 +39,7 @@ collections
 #include "slideshow.edc"
 #include "picture.edc"
 #include "mediacontrol.edc"
+#include "elm.edc"
 
    group {
       name: "enna";

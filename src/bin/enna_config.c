@@ -222,6 +222,14 @@ void enna_config_init()
             enna_util_user_home_get());
     hash_config = _config_load_conf_file(filename);
     eina_hash_foreach(hash_config, _hash_foreach, NULL);
+
+    if (enna_config->theme)
+    {
+	printf("Theme : %s\n", enna_config->theme);
+	elm_theme_overlay_add(
+	    enna_config_theme_file_get(enna_config->theme));
+    }
+
 }
 
 void enna_config_shutdown()
