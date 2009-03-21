@@ -8,13 +8,14 @@ static int _sort_cb(const void *d1, const void *d2)
     const Enna_Class_Activity *act1 = d1;
     const Enna_Class_Activity *act2 = d2;
 
-    if (!act1->name)
-        return 1;
+    printf("act1 %d act2 %d\n", act1->pri, act2->pri);
 
-    if (!act2->name)
-        return -1;
-
-    return strcasecmp(act1->name, act2->name);
+    if (act1->pri > act2->pri)
+	return 1;
+    else if (act1->pri < act2->pri)
+	return -1;
+    else
+	return strcasecmp(act1->name, act2->name);
 }
 
 /**
@@ -24,25 +25,14 @@ static int _sort_cb(const void *d1, const void *d2)
  */
 int enna_activity_add(Enna_Class_Activity *class)
 {
-    Eina_List *l;
-    Enna_Class_Activity *act;
-
     if (!class)
         return -1;
-    for (l = _enna_activities; l; l = l->next)
-    {
-        act = l->data;
-        if (act->pri > class->pri)
-        {
-            _enna_activities = eina_list_prepend_relative_list(
-                    _enna_activities, class, l);
-            return 0;
-        }
-    }
+ 
     _enna_activities = eina_list_append(_enna_activities, class);
     _enna_activities = eina_list_sort(_enna_activities,
-                                      eina_list_count(_enna_activities),
-                                      _sort_cb);
+	eina_list_count(_enna_activities),
+	_sort_cb);
+
     return 0;
 }
 
