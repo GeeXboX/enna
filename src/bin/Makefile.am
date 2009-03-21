@@ -12,6 +12,7 @@ enna_SOURCES = \
 enna.c\
 enna_config.c\
 utils.c\
+buffer.c\
 metadata.c\
 mainmenu.c\
 background.c\
@@ -46,6 +47,7 @@ enna.h\
 enna_inc.h\
 enna_config.h\
 utils.h\
+buffer.h\
 metadata.h\
 mainmenu.h\
 background.h\
