@@ -278,6 +278,9 @@ static void _create_gui(void)
     enna_module_load_all(enna->evas);
 
     /* Load mainmenu items */
+#ifdef BUILD_ACTIVITY_INFOS
+    enna_activity_init("infos");
+#endif
 #ifdef BUILD_ACTIVITY_MUSIC
     enna_activity_init("music");
 #endif

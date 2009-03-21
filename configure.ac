@@ -64,6 +64,19 @@ AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
 # Activity Modules #
 ####################
 
+# Infos
+want_activity_infos="yes"
+AC_MSG_CHECKING(whether information activity module is to be built)
+AC_ARG_ENABLE(activity-infos,
+  AS_HELP_STRING([--enable-activity-infos],[Enable Infos Activity Module]),
+  [ want_activity_info=$enableval ]
+)
+AC_MSG_RESULT($want_activity_info)
+AM_CONDITIONAL(BUILD_ACTIVITY_INFOS, test "x$want_activity_infos" = "xyes")
+if test "x$want_activity_infos" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_INFOS, 1, [Infos Activity])
+fi
+
 # Games
 want_activity_games="yes"
 AC_MSG_CHECKING(whether games activity module is to be built)
@@ -607,6 +620,7 @@ src/Makefile
 src/bin/Makefile
 src/modules/Makefile
 src/modules/activity/Makefile
+src/modules/activity/infos/Makefile
 src/modules/activity/games/Makefile
 src/modules/activity/music/Makefile
 src/modules/activity/photo/Makefile
@@ -650,6 +664,7 @@ echo
 echo
 echo "Supported Activity Modules:"
 echo
+echo "  infos............................ : $want_activity_infos"
 echo "  games............................ : $want_activity_games"
 echo "  music............................ : $want_activity_music"
 echo "  photo............................ : $want_activity_photo"
