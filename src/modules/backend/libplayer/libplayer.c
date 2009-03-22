@@ -77,7 +77,7 @@ static void _class_init(int dummy)
 static void _class_shutdown(int dummy)
 {
     int i;
-    
+
     if (mod->uri)
         free(mod->uri);
     if (mod->label)
@@ -506,13 +506,13 @@ void module_init(Enna_Module *em)
         mod->players[PLAYER_TYPE_MPLAYER] =
             player_init(PLAYER_TYPE_MPLAYER, ao, vo, verbosity, enna->ee_winid, _event_cb);
     }
-    
+
     if (type == PLAYER_TYPE_XINE || dvd_type == PLAYER_TYPE_XINE) {
         use_xine = 1;
         mod->players[PLAYER_TYPE_XINE] =
             player_init(PLAYER_TYPE_XINE, ao, vo, verbosity, enna->ee_winid, _event_cb);
     }
-    
+
     if ((use_mplayer && !mod->players[PLAYER_TYPE_MPLAYER]) || (use_xine && !mod->players[PLAYER_TYPE_XINE]))
     {
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
@@ -527,7 +527,6 @@ void module_init(Enna_Module *em)
     mod->dvd_type = dvd_type;
     mod->player = mod->players[type];
     mod->player_type = type;
-    
 }
 
 void module_shutdown(Enna_Module *em)
