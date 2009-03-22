@@ -1,0 +1,61 @@
+Enna maintainers
+================
+
+Below is a list of the people maintaining different parts of the Enna code.
+
+Project Leader
+==============
+
+Nicolas Aguirre
+  final design decisions
+
+Core
+====
+
+  Activity:                               Nicolas Aguirre
+  Configuration:                          Nicolas Aguirre
+  Media Player:                           Mathieu Schroeter
+  Modules/Plugins:                        Nicolas Aguirre
+  Metadata:                               Benjamin Zores
+  Theme:                                  Nicolas Aguirre
+  Utilities:                              Benjamin Zores
+  VFS:                                    Nicolas Aguirre
+  Widgets:                                Nicolas Aguirre
+
+Modules
+=======
+
+  Activity:
+    Games:                                Davide Cavalca
+    Information:                          Benjamin Zores
+    Music:                                Nicolas Aguirre
+    Photo:                                Nicolas Aguirre
+    Video:                                Nicolas Aguirre
+    Weather:                              Benjamin Zores
+
+  Backend:
+    Emotion:                              Nicolas Aguirre
+    libplayer:                            Mathieu Schroeter
+
+  Browser:
+    DVD:                                  Nicolas Aguirre
+    Light Media Scanner:                  Nicolas Aguirre
+    Local Files:                          Nicolas Aguirre
+    Net Streams:                          Benjamin Zores
+    ShoutCAST:                            Benjamin Zores
+    UPnP:                                 Benjamin Zores
+    Valhalla:                             Mathieu Schroeter
+
+  Input:
+    LIRC:                                 Nicolas Aguirre
+
+  Metadata:
+    Amazon.com:                           Benjamin Zores
+    libplayer:                            Mathieu Schroeter
+    Local Files:                          Benjamin Zores
+    The Movie DB:                         Benjamin Zores
+    TV DB:                                Benjamin Zores
+
+  Volume:
+    HAL:                                  Benjamin Zores
+    mtab:                                 Benjamin Zores
