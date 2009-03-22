@@ -79,7 +79,12 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         return;
 
     if (key == ENNA_KEY_QUIT)
-        ecore_main_loop_quit();
+	{
+		if (enna->do_quit)
+            ecore_main_loop_quit();
+	    else
+		    enna_mainmenu_quitdiag(enna->o_mainmenu);
+	}
 
     if (key == ENNA_KEY_FULLSCREEN)
     {
@@ -87,7 +92,25 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
 	ecore_evas_fullscreen_set(enna->ee, run_fullscreen);
     }
 
-    if (enna_mainmenu_visible(enna->o_mainmenu))
+	if (enna_quitdiag_visible(enna->o_mainmenu))
+	{
+		switch (key)
+		{
+			case ENNA_KEY_Y:
+			case ENNA_KEY_STOP:
+				enna->do_quit = 1;
+    			evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
+				break;
+			case ENNA_KEY_OK:
+			case ENNA_KEY_MENU:
+			case ENNA_KEY_CANCEL:
+			case ENNA_KEY_N:
+				enna->do_quit = 0;
+				enna_mainmenu_quitdiag(enna->o_mainmenu);
+				break;
+		}
+	}
+	else if (enna_mainmenu_visible(enna->o_mainmenu))
     {
         switch (key)
         {
@@ -195,6 +218,8 @@ static int _enna_init(void)
 
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
+
+    enna->do_quit = 0;
 
     enna_module_init();
 
@@ -450,3 +475,4 @@ int main(int argc, char **argv)
 
     return EXIT_SUCCESS;
 }
+

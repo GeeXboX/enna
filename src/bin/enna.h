@@ -119,6 +119,7 @@ struct _Enna
     int use_network;
     int use_covers;
     int use_snapshots;
+    int do_quit;
 };
 
 extern Enna *enna;
