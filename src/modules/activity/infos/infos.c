@@ -110,7 +110,8 @@ get_distribution (buffer_t *b)
         free (id);
     if (release)
         free (release);
-    fclose (f);
+    if (f)
+        fclose (f);
 }
 
 static void
