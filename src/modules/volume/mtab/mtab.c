@@ -27,10 +27,14 @@
  *
  */
 
-#include "enna.h"
-
 #include <stdio.h>
+#include <string.h>
 #include <mntent.h>
+
+#include "enna.h"
+#include "module.h"
+#include "volumes.h"
+#include "logs.h"
 
 #define ENNA_MODULE_NAME   "mtab"
 

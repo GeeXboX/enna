@@ -30,6 +30,8 @@
 #ifndef MODULE_H
 #define MODULE_H
 
+#include <Ecore_Data.h>
+
 #include "enna.h"
 
 #define ENNA_MODULE_VERSION 1

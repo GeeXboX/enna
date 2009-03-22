@@ -27,8 +27,20 @@
  *
  */
 
+#include <string.h>
+
+#include <Ecore.h>
+#include <Ecore_File.h>
+#include <Ecore_Data.h>
+#include <Edje.h>
+#include <Elementary.h>
+
 #include "enna.h"
+#include "enna_config.h"
 #include "wall.h"
+#include "image.h"
+#include "logs.h"
+#include "event_key.h"
 
 #define SMART_NAME "enna_wall"
 

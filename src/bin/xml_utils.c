@@ -27,6 +27,8 @@
  *
  */
 
+#include <string.h>
+
 #include "enna.h"
 #include "xml_utils.h"
 

@@ -27,6 +27,17 @@
  *
  */
 
+#include <string.h>
+
+#include <Edje.h>
+#include <Ecore_File.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "metadata.h"
+#include "image.h"
+#include "logs.h"
+#include "mediaplayer.h"
 #include "smart_player.h"
 
 #define ENNA_MODULE_NAME "video"

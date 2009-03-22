@@ -27,7 +27,16 @@
  *
  */
 
+#include <string.h>
+
+#include <Ecore.h>
+#include <Ecore_Data.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "mediaplayer.h"
+#include "module.h"
+#include "logs.h"
 
 typedef struct list_item_s
 {

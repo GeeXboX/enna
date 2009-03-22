@@ -27,6 +27,8 @@
  *
  */
 
+#include <string.h>
+
 #include "enna.h"
 #include "activity.h"
 
@@ -36,8 +38,6 @@ static int _sort_cb(const void *d1, const void *d2)
 {
     const Enna_Class_Activity *act1 = d1;
     const Enna_Class_Activity *act2 = d2;
-
-    printf("act1 %d act2 %d\n", act1->pri, act2->pri);
 
     if (act1->pri > act2->pri)
 	return 1;

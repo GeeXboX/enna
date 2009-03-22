@@ -27,9 +27,20 @@
  *
  */
 
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 #include "enna.h"
+#include "module.h"
+#include "metadata.h"
 #include "xml_utils.h"
 #include "url_utils.h"
+#include "md5.h"
+#include "logs.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME "metadata_amazon"
 #define ENNA_GRABBER_NAME "amazon"

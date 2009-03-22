@@ -31,6 +31,7 @@
 #define EVENT_KEY_H
 
 #include "enna.h"
+#include "module.h"
 
 typedef enum
 {

@@ -27,7 +27,16 @@
  *
  */
 
+#include <string.h>
+#include <time.h>
+
+#include <Ecore.h>
+#include <Edje.h>
+
+#include "enna_config.h"
 #include "slideshow.h"
+#include "image.h"
+#include "logs.h"
 
 #define SMART_NAME "slideshow"
 

@@ -27,7 +27,15 @@
  *
  */
 
+#include <string.h>
+
+#include <Ecore_File.h>
+
 #include "enna.h"
+#include "module.h"
+#include "metadata.h"
+#include "logs.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME "metadata_localfiles"
 #define ENNA_GRABBER_NAME "localfiles"

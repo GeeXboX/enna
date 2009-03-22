@@ -30,6 +30,8 @@
 #ifndef BROWSER_H
 #define BROWSER_H
 
+#include "vfs.h"
+
 typedef struct _Browser_Selected_File_Data Browser_Selected_File_Data;
 
 struct _Browser_Selected_File_Data

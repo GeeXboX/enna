@@ -27,9 +27,23 @@
  *
  */
 
-#include "enna.h"
-#include <efreet/Efreet.h>
 #include <dirent.h>
+
+#include <Ecore_File.h>
+#include <Ecore_Str.h>
+#include <Edje.h>
+#include <efreet/Efreet.h>
+#include <Elementary.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "module.h"
+#include "logs.h"
+#include "list.h"
+#include "utils.h"
+#include "content.h"
+#include "mainmenu.h"
+#include "event_key.h"
 
 #define ENNA_MODULE_NAME "games"
 

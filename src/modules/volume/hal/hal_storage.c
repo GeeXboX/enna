@@ -33,6 +33,7 @@
 #include <libhal-storage.h>
 
 #include "enna.h"
+#include "logs.h"
 #include "hal_storage.h"
 
 #define ENNA_MODULE_NAME   "hal-storage"

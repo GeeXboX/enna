@@ -27,7 +27,13 @@
  *
  */
 
+#include <string.h>
+
+#include <Edje.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "switcher.h"
 
 #define SMART_NAME "enna_switcher"
 

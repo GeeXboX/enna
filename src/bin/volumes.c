@@ -27,7 +27,14 @@
  *
  */
 
+#include <stdlib.h>
+#include <string.h>
+
+#include <Ecore.h>
+
 #include "enna.h"
+#include "volumes.h"
+#include "logs.h"
 
 static Eina_Hash *_volumes = NULL;
 

@@ -27,7 +27,23 @@
  *
  */
 
+#include <string.h>
+
+#include <Edje.h>
+#include <Elementary.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "vfs.h"
+#include "wall.h"
+#include "image.h"
+#include "browser.h"
+#include "slideshow.h"
+#include "list.h"
+#include "content.h"
+#include "mainmenu.h"
+#include "event_key.h"
+
 #ifdef BUILD_LIBEXIF
 #include "libexif/exif-data.h"
 #endif

@@ -27,7 +27,15 @@
  *
  */
 
+#include <string.h>
+
+#include <Ecore.h>
+#include <Ecore_File.h>
+
 #include "enna.h"
+#include "module.h"
+#include "vfs.h"
+#include "volumes.h"
 
 #define ENNA_MODULE_NAME "dvd"
 

@@ -27,11 +27,21 @@
  *
  */
 
+#include <string.h>
+#include <time.h>
+
+#include <Ecore.h>
+#include <Edje.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "activity.h"
 #include "xml_utils.h"
 #include "url_utils.h"
-
-#include <time.h>
+#include "event_key.h"
+#include "logs.h"
+#include "content.h"
+#include "mainmenu.h"
 
 #define ENNA_MODULE_NAME "weather"
 

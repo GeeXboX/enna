@@ -27,8 +27,12 @@
  *
  */
 
-/* derived from e_icon */
+#include <string.h>
 
+#include <Edje.h>
+
+#include "activity.h"
+#include "enna_config.h"
 #include "content.h"
 
 Evas_Object *_content = NULL;

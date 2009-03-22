@@ -27,8 +27,19 @@
  *
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+
+#include <Eina.h>
+#include <Ecore_Str.h>
+#include <Edje.h>
+
 #include "enna.h"
+#include "enna_config.h"
 #include "utils.h"
+#include "vfs.h"
 
 char * enna_util_user_home_get()
 {

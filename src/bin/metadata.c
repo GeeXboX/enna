@@ -27,7 +27,19 @@
  *
  */
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include <Eina.h>
+#include <Ecore_File.h>
+#include <Eet.h>
+
 #include "enna.h"
+#include "metadata.h"
+#include "logs.h"
+#include "utils.h"
+#include "md5.h"
 
 #define MODULE_NAME "enna"
 

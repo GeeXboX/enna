@@ -27,8 +27,19 @@
  *
  */
 
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+#include <Ecore_File.h>
+
 #include "enna.h"
 #include "url_utils.h"
+#include "logs.h"
 
 #define ENNA_MODULE_NAME        "enna"
 

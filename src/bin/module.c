@@ -27,7 +27,14 @@
  *
  */
 
+#include <string.h>
+
+#include <Eina.h>
+#include <Ecore_Data.h>
+
 #include "enna.h"
+#include "module.h"
+#include "logs.h"
 
 static Eina_List *_enna_modules = NULL;
 static Ecore_Path_Group *path_group = NULL;

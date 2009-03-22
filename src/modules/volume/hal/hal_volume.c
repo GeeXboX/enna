@@ -33,6 +33,8 @@
 #include <libhal-storage.h>
 
 #include "enna.h"
+#include "volumes.h"
+#include "logs.h"
 #include "hal_storage.h"
 #include "hal_volume.h"
 

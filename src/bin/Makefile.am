@@ -44,7 +44,6 @@ enna_LDFLAGS = -rdynamic
 
 EXTRA_DIST= \
 enna.h\
-enna_inc.h\
 enna_config.h\
 utils.h\
 buffer.h\

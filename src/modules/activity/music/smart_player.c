@@ -27,6 +27,14 @@
  *
  */
 
+#include <Edje.h>
+#include <Elementary.h>
+
+#include "enna_config.h"
+#include "list.h"
+#include "image.h"
+#include "metadata.h"
+#include "mediaplayer.h"
 #include "smart_player.h"
 #include "mediacontrol.h"
 

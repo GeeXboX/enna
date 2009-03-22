@@ -27,9 +27,15 @@
  *
  */
 
+#include <string.h>
+
 #include "enna.h"
+#include "module.h"
+#include "metadata.h"
 #include "xml_utils.h"
 #include "url_utils.h"
+#include "logs.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME        "metadata_tvdb"
 #define ENNA_GRABBER_NAME       "tvdb"

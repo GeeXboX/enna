@@ -27,7 +27,14 @@
  *
  */
 
+#include <Edje.h>
+#include <Elementary.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "mediaplayer.h"
+#include "mediacontrol.h"
+#include "logs.h"
 
 #define SMART_NAME "enna_MEDIACONTROL"
 

@@ -27,8 +27,22 @@
  *
  */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#include <Eina.h>
+#include <Ecore_File.h>
+#include <Ecore_Str.h>
+#include <Elementary.h>
+
 #include "enna.h"
 #include "enna_config.h"
+#include "utils.h"
+#include "logs.h"
 
 #define DEFAULT_FILE							\
     "[enna]\n"								\

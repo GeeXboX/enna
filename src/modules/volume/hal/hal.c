@@ -27,12 +27,17 @@
  *
  */
 
-#include "enna.h"
+#include <string.h>
 #include <E_Hal.h>
 #include <dbus/dbus.h>
 #include <libhal.h>
 #include <libhal-storage.h>
 
+#include "enna.h"
+#include "module.h"
+#include "vfs.h"
+#include "volumes.h"
+#include "logs.h"
 #include "hal_storage.h"
 #include "hal_volume.h"
 

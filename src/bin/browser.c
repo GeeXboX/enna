@@ -36,8 +36,18 @@
  *
  */
 
-#include "enna.h"
+#include <string.h>
 
+#include <Elementary.h>
+#include <Edje.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "browser.h"
+#include "list.h"
+#include "image.h"
+#include "logs.h"
+#include "event_key.h"
 
 #define SMART_NAME "Enna_Browser"
 

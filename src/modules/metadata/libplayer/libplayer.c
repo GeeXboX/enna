@@ -28,9 +28,20 @@
  */
 
 #define _GNU_SOURCE
-#include "enna.h"
-#include "codecs.h"
+#include <sys/types.h>
+#include <string.h>
+#include <ctype.h>
+
+#include <Ecore_File.h>
 #include <player.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "module.h"
+#include "metadata.h"
+#include "codecs.h"
+#include "utils.h"
+#include "logs.h"
 
 #define ENNA_MODULE_NAME        "metadata_libplayer"
 #define ENNA_GRABBER_NAME       "libplayer"

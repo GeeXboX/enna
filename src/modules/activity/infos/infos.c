@@ -27,16 +27,14 @@
  *
  */
 
-#include "enna.h"
-
-#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <string.h>
-#include <stdlib.h>
 #include <net/if.h>
 #include <net/route.h>
 #include <sys/ioctl.h>
@@ -44,6 +42,16 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
+
+#include <Edje.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "content.h"
+#include "mainmenu.h"
+#include "module.h"
+#include "buffer.h"
+#include "event_key.h"
 
 #ifdef BUILD_LIBXRANDR
 #include <X11/extensions/Xrandr.h>

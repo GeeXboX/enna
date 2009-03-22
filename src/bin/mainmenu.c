@@ -27,8 +27,17 @@
  *
  */
 
-#include "mainmenu.h"
+#include <string.h>
+
+#include <Eina.h>
+#include <Edje.h>
+#include <Elementary.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "mainmenu.h"
+#include "content.h"
+#include "event_key.h"
 
 #define SMART_NAME "enna_mainmenu"
 #define API_ENTRY						\

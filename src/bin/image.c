@@ -29,6 +29,7 @@
 
 #include "enna.h"
 #include "image.h"
+#include "utils.h"
 
 #define SMART_NAME "enna_image"
 

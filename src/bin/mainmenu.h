@@ -30,7 +30,8 @@
 #ifndef MAINMENU_H
 #define MAINMENU_H
 
-#include "enna.h"
+//#include "enna.h"
+#include "activity.h"
 
 Evas_Object *enna_mainmenu_add(Evas * evas);
 

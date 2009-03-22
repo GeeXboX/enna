@@ -36,6 +36,7 @@
 #include <linux/cdrom.h>
 
 #include "enna.h"
+#include "logs.h"
 #include "parser_cdda.h"
 
 #define MODULE_NAME "cdda"

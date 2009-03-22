@@ -30,33 +30,10 @@
 #ifndef ENNA_H
 #define ENNA_H
 
-#include <Eina.h>
-#include <Evas.h>
-#include <Ecore.h>
-#include <Ecore_File.h>
-#include <Ecore_Data.h>
-#include <Ecore_Txt.h>
-#include <Ecore_Str.h>
-#include <Ecore_X.h>
-#include <Edje.h>
 #include <Ecore_Evas.h>
-#include <Eet.h>
-#include <Elementary.h>
 
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <fnmatch.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <pwd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <math.h>
-#include <ctype.h>
+#include "config.h"
 
-#include "enna_inc.h"
 
 //#define ENNA_DEBUG0
 #define ENNA_DEBUG 2

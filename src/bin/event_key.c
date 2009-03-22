@@ -27,10 +27,15 @@
  *
  */
 
+#include <string.h>
 #include <ctype.h>
+
+#include <Ecore.h>
+#include <Ecore_Data.h>
 
 #include "enna.h"
 #include "event_key.h"
+#include "logs.h"
 
 typedef struct _Input_Module_Item Input_Module_Item;
 struct _Input_Module_Item

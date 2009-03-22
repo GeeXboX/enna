@@ -27,8 +27,15 @@
  *
  */
 
-/* derived from e_icon */
+#include <string.h>
+
+#include <Edje.h>
+#include <Elementary.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "event_key.h"
+#include "logs.h"
 
 #define SMART_NAME "enna_carousel"
 

@@ -27,7 +27,13 @@
  *
  */
 
+#include <string.h>
+
+#include <Edje.h>
+#include <Elementary.h>
+
 #include "enna.h"
+#include "enna_config.h"
 #include "location.h"
 
 #define SMART_NAME "enna_location"

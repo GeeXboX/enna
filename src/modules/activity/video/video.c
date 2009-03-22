@@ -27,7 +27,23 @@
  *
  */
 
+#include <Edje.h>
+#include <Elementary.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "module.h"
+#include "activity.h"
+#include "content.h"
+#include "mainmenu.h"
+#include "logs.h"
+#include "vfs.h"
+#include "list.h"
+#include "browser.h"
+#include "location.h"
+#include "switcher.h"
+#include "mediaplayer.h"
+#include "event_key.h"
 #include "smart_player.h"
 
 #define ENNA_MODULE_NAME "video"

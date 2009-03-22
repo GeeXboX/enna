@@ -27,8 +27,18 @@
  *
  */
 
-#include "enna.h"
+#include <sys/types.h>
+#include <string.h>
+
+#include <Ecore.h>
+#include <Ecore_X.h>
 #include <player.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "module.h"
+#include "logs.h"
+#include "mediaplayer.h"
 
 #define ENNA_MODULE_NAME "libplayer"
 

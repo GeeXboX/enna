@@ -27,7 +27,21 @@
  *
  */
 
+#include <Edje.h>
+#include <Elementary.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "activity.h"
+#include "vfs.h"
+#include "mediaplayer.h"
+#include "location.h"
+#include "mainmenu.h"
+#include "content.h"
+#include "list.h"
+#include "browser.h"
+#include "logs.h"
+#include "event_key.h"
 #include "smart_player.h"
 
 #define ENNA_MODULE_NAME "music"

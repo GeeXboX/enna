@@ -27,9 +27,10 @@
  *
  */
 
-#include "enna.h"
-
 #include <inttypes.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdio.h>
 
 #define MD5_SIZE 33
 #define MD5_SUM_SIZE 16

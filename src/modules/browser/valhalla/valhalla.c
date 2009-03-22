@@ -27,8 +27,16 @@
  *
  */
 
-#include "enna.h"
+#include <string.h>
+
 #include <valhalla.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "module.h"
+#include "vfs.h"
+#include "logs.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME "valhalla"
 

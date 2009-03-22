@@ -29,9 +29,29 @@
 
 #define _GNU_SOURCE
 #include <getopt.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <Edje.h>
+#include <Ecore.h>
+#include <Ecore_File.h>
+#include <Ecore_Str.h>
+#include <Elementary.h>
 
 #include "enna.h"
-#include "enna_inc.h"
+#include "enna_config.h"
+#include "utils.h"
+#include "mainmenu.h"
+#include "background.h"
+#include "module.h"
+#include "content.h"
+#include "event_key.h"
+#include "logs.h"
+#include "volumes.h"
+#include "metadata.h"
+#include "mediaplayer.h"
+
+//#include "enna_inc.h"
 
 /* Global Variable Enna *enna*/
 Enna *enna;

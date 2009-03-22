@@ -27,8 +27,17 @@
  *
  */
 
+#include <string.h>
+#include <unistd.h>
+
+#include <Ecore_File.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "module.h"
 #include "url_utils.h"
+#include "vfs.h"
+#include "logs.h"
 
 #define ENNA_MODULE_NAME "netstreams"
 

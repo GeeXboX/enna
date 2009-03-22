@@ -27,9 +27,14 @@
  *
  */
 
+#include <string.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "module.h"
 #include "xml_utils.h"
 #include "url_utils.h"
+#include "vfs.h"
 
 #define ENNA_MODULE_NAME "shoutcast"
 

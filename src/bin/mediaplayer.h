@@ -31,6 +31,7 @@
 #define MEDIAPLAYER_H
 
 #include "enna.h"
+#include "metadata.h"
 
 typedef enum
 {

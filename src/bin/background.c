@@ -27,8 +27,11 @@
  *
  */
 
-#include "background.h"
+#include <Edje.h>
+
 #include "enna.h"
+#include "enna_config.h"
+#include "background.h"
 
 #define SMART_NAME "enna_background"
 
