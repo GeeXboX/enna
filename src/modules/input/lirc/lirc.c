@@ -56,7 +56,6 @@ struct _Enna_Module_Lirc
     Enna_Module *em;
     int fd;
     Ecore_Fd_Handler *fd_handler;
-    const char *config_filename;
     struct lirc_config *lirc_config;
     void (*event_cb)(void *data, char *event);
     void *event_cb_data;
@@ -97,7 +96,6 @@ static int _lirc_code_received(void *data, Ecore_Fd_Handler * fd_handler)
 static void _class_init(int dummy)
 {
     int fd;
-    char cfg_file[4096];
     struct lirc_config *config;
 
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "class LIRC INPUT init");
@@ -109,9 +107,7 @@ static void _class_init(int dummy)
         return;
     }
 
-    snprintf(cfg_file, sizeof(cfg_file), "%s/.lircrc",
-            enna_util_user_home_get());
-    if (lirc_readconfig(cfg_file, &config, NULL) != 0)
+    if (lirc_readconfig(NULL, &config, NULL) != 0)
     {
         lirc_deinit();
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
@@ -119,7 +115,6 @@ static void _class_init(int dummy)
         return;
     }
 
-    mod->config_filename = evas_stringshare_add(cfg_file);
     mod->lirc_config = config;
     fcntl(fd, F_SETFL, O_NONBLOCK);
     fcntl(fd, F_SETFD, FD_CLOEXEC);
@@ -142,7 +137,6 @@ static void _class_shutdown(int dummy)
 
         lirc_freeconfig(mod->lirc_config);
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "class LIRC INPUT shutdown");
-        evas_stringshare_del(mod->config_filename);
         ecore_main_fd_handler_del(mod->fd_handler);
         lirc_deinit();
     }
