@@ -344,6 +344,75 @@ static void _class_event_cb_set(void (*event_cb)(void *data,
     mod->event_cb = event_cb;
 }
 
+static void _class_send_key(enna_key_t key)
+{
+    player_vdr_t vdr_keymap[] = {
+        [ENNA_KEY_MENU]       = PLAYER_VDR_MENU,
+        [ENNA_KEY_QUIT]       = PLAYER_VDR_POWER,
+        [ENNA_KEY_LEFT]       = PLAYER_VDR_LEFT,
+        [ENNA_KEY_RIGHT]      = PLAYER_VDR_RIGHT,
+        [ENNA_KEY_UP]         = PLAYER_VDR_UP,
+        [ENNA_KEY_DOWN]       = PLAYER_VDR_DOWN,
+        [ENNA_KEY_HOME]       = PLAYER_VDR_PREVIOUS,
+        [ENNA_KEY_END]        = PLAYER_VDR_NEXT,
+        [ENNA_KEY_PAGE_UP]    = PLAYER_VDR_CHANNELPLUS,
+        [ENNA_KEY_PAGE_DOWN]  = PLAYER_VDR_CHANNELMINUS,
+        [ENNA_KEY_OK]         = PLAYER_VDR_OK,
+        [ENNA_KEY_CANCEL]     = PLAYER_VDR_BACK,
+        [ENNA_KEY_SPACE]      = PLAYER_VDR_INFO,
+        [ENNA_KEY_0]          = PLAYER_VDR_0,
+        [ENNA_KEY_1]          = PLAYER_VDR_1,
+        [ENNA_KEY_2]          = PLAYER_VDR_2,
+        [ENNA_KEY_3]          = PLAYER_VDR_3,
+        [ENNA_KEY_4]          = PLAYER_VDR_4,
+        [ENNA_KEY_5]          = PLAYER_VDR_5,
+        [ENNA_KEY_6]          = PLAYER_VDR_6,
+        [ENNA_KEY_7]          = PLAYER_VDR_7,
+        [ENNA_KEY_8]          = PLAYER_VDR_8,
+        [ENNA_KEY_9]          = PLAYER_VDR_9,
+        [ENNA_KEY_Q]          = PLAYER_VDR_RED,
+        [ENNA_KEY_W]          = PLAYER_VDR_GREEN,
+        [ENNA_KEY_E]          = PLAYER_VDR_YELLOW,
+        [ENNA_KEY_R]          = PLAYER_VDR_BLUE,
+        [ENNA_KEY_A]          = PLAYER_VDR_PLAY,
+        [ENNA_KEY_S]          = PLAYER_VDR_PAUSE,
+        [ENNA_KEY_D]          = PLAYER_VDR_STOP,
+        [ENNA_KEY_F]          = PLAYER_VDR_RECORD,
+        [ENNA_KEY_G]          = PLAYER_VDR_CHANNELPREVIOUS,
+        [ENNA_KEY_H]          = PLAYER_VDR_USER_1,
+        [ENNA_KEY_J]          = PLAYER_VDR_USER_2,
+        [ENNA_KEY_K]          = PLAYER_VDR_USER_3,
+        [ENNA_KEY_L]          = PLAYER_VDR_USER_4,
+        [ENNA_KEY_Z]          = PLAYER_VDR_FASTREW,
+        [ENNA_KEY_X]          = PLAYER_VDR_FASTFWD,
+        [ENNA_KEY_C]          = PLAYER_VDR_AUDIO,
+        [ENNA_KEY_V]          = PLAYER_VDR_SUBTITLES,
+        [ENNA_KEY_B]          = PLAYER_VDR_VOLPLUS,
+        [ENNA_KEY_N]          = PLAYER_VDR_VOLMINUS,
+        [ENNA_KEY_M]          = PLAYER_VDR_MUTE,
+        [ENNA_KEY_T]          = PLAYER_VDR_SCHEDULE,
+        [ENNA_KEY_Y]          = PLAYER_VDR_CHANNELS,
+        [ENNA_KEY_U]          = PLAYER_VDR_TIMERS,
+        [ENNA_KEY_I]          = PLAYER_VDR_RECORDINGS,
+        [ENNA_KEY_O]          = PLAYER_VDR_SETUP,
+        [ENNA_KEY_P]          = PLAYER_VDR_COMMANDS,
+    };
+
+    if (strncmp(mod->uri, URI_TYPE_VDR, strlen(URI_TYPE_VDR)) &&
+        strncmp(mod->uri, URI_TYPE_NETVDR, strlen(URI_TYPE_NETVDR)))
+        return;
+
+    switch(key)
+    {
+    case ENNA_KEY_UNKNOWN:
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                 "Unknown key pressed %i", key);
+        break;
+    default:
+        player_vdr(mod->player, vdr_keymap[key]);
+    }
+}
+
 static void _pipe_read(void *data, void *buf, unsigned int nbyte)
 {
     enna_mediaplayer_event_t *event = buf;
@@ -402,7 +471,8 @@ static Enna_Class_MediaplayerBackend class = {
         _class_length_get,
         _class_video_resize,
         _class_event_cb_set,
-        NULL
+        NULL,
+        _class_send_key,
     }
 };
 

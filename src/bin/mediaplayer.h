@@ -31,7 +31,7 @@
 #define MEDIAPLAYER_H
 
 #include "enna.h"
-#include "metadata.h"
+#include "event_key.h"
 
 typedef enum
 {
@@ -80,6 +80,7 @@ struct _Enna_Class_MediaplayerBackend
         void (*class_video_resize)(int x, int y, int w, int h);
         void (*class_event_cb_set)(void (*event_cb)(void*data, enna_mediaplayer_event_t event), void *data);
         Evas_Object *(*class_video_obj_get)(void);
+        void (*class_send_key)(enna_key_t key);
     } func;
 };
 
@@ -129,4 +130,5 @@ PLAY_STATE enna_mediaplayer_state_get(void);
 Enna_Playlist *enna_mediaplayer_playlist_create(void);
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist);
+void enna_mediaplayer_send_key(enna_key_t key);
 #endif /* MEDIAPLAYER_H */
