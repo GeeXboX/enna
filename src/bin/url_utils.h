@@ -43,7 +43,7 @@ typedef struct url_data_s
 
 url_data_t url_get_data(CURL *curl, char *url);
 
-void url_escape_string(char *outbuf, const char *inbuf);
+char *url_escape_string(CURL *curl, const char *buf);
 
 void url_save_to_disk (CURL *curl, char *src, char *dst);
 

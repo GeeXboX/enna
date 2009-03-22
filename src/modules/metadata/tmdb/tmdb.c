@@ -84,8 +84,7 @@ tmdb_parse (Enna_Metadata *meta)
         return;
     
     /* get HTTP compliant keywords */
-    escaped_keywords = calloc (1, 2 * strlen (meta->keywords));
-    url_escape_string (escaped_keywords, meta->keywords);
+    escaped_keywords = url_escape_string (mod->curl, meta->keywords);
 
     /* proceed with TMDB search request */
     memset (url, '\0', MAX_URL_SIZE);
