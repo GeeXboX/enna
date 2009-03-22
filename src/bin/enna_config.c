@@ -72,6 +72,7 @@
     "\n"								\
     "#gstreamer,mplayer,vlc,xine\n"					\
     "#type=\n"								\
+    "#dvd_type=\n"							\
     "\n"								\
     "#auto,x11,xv,gl,fb\n"						\
     "#video_out=\n"							\
