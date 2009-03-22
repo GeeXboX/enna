@@ -38,7 +38,6 @@
 #include "metadata.h"
 #include "xml_utils.h"
 #include "url_utils.h"
-#include "md5.h"
 #include "logs.h"
 #include "utils.h"
 

@@ -39,7 +39,6 @@
 #include "metadata.h"
 #include "logs.h"
 #include "utils.h"
-#include "md5.h"
 
 #define MODULE_NAME "enna"
 

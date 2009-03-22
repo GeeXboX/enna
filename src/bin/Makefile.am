@@ -31,7 +31,6 @@ mediaplayer.c\
 event_key.c\
 xml_utils.c\
 url_utils.c\
-md5.c\
 logs.c\
 parser_cdda.c\
 slideshow.c\
@@ -65,7 +64,6 @@ mediaplayer.h\
 event_key.h\
 xml_utils.h\
 url_utils.h\
-md5.h\
 logs.h\
 parser_cdda.h\
 slideshow.h\
