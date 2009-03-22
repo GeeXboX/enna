@@ -413,3 +413,13 @@ enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist)
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
     }
 }
+
+void
+enna_mediaplayer_send_key(enna_key_t key)
+{
+    if (_mediaplayer->class)
+    {
+        if (_mediaplayer->class->func.class_send_key)
+            _mediaplayer->class->func.class_send_key(key);
+    }
+}
