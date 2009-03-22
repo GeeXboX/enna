@@ -79,15 +79,24 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
             {
                 if(!strncmp(cat, "Game", strlen("Game")))
                 {
-                    char *iconpath;
+                    char *iconpath = NULL;
                     Game_Item_Class_Data *item;
 
                     if (ecore_file_can_read(desktop->icon))
                     {
                         iconpath = desktop->icon;
                     } else {
-                        //FIXME fails with icons like "gnome-nibbles"
-                        iconpath = efreet_icon_path_find(NULL, desktop->icon, 16);
+                        Eina_List *theme_list;
+                        Eina_List *l;
+                        Efreet_Icon_Theme *theme;
+                        
+                        theme_list = efreet_icon_theme_list_get();
+                        EINA_LIST_FOREACH(theme_list, l, theme)
+                        {
+                            iconpath = efreet_icon_path_find((theme->name).name, desktop->icon, 64);
+                            if(iconpath)
+                                break;
+                        }
                     }
 
                     item = calloc(1, sizeof(Game_Item_Class_Data));
@@ -231,7 +240,8 @@ static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const 
 	 Evas_Object *ic;
 
 	 ic = elm_icon_add(obj);
-	 elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+	 elm_icon_file_set(ic, item->icon, NULL);
+     
 	 evas_object_size_hint_min_set(ic, 64, 64);
 	 evas_object_show(ic);
 	 return ic;
