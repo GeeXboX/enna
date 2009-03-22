@@ -27,8 +27,18 @@
  *
  */
 
-#include "enna.h"
+#include <unistd.h>
+#include <fcntl.h>
+
 #include <lirc/lirc_client.h>
+
+#include <Ecore.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "logs.h"
+#include "event_key.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME "lirc"
 
