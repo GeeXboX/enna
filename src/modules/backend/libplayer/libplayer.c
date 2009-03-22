@@ -35,6 +35,7 @@
 #define URI_TYPE_FTP      "ftp://"
 #define URI_TYPE_HTTP     "http://"
 #define URI_TYPE_MMS      "mms://"
+#define URI_TYPE_NETVDR   "netvdr://"
 #define URI_TYPE_RTP      "rtp://"
 #define URI_TYPE_RTSP     "rtsp://"
 #define URI_TYPE_SMB      "smb://"
@@ -43,6 +44,7 @@
 #define URI_TYPE_UNSV     "unsv://"
 #define URI_TYPE_DVD      "dvd://"
 #define URI_TYPE_DVDNAV   "dvdnav://"
+#define URI_TYPE_VDR      "vdr:/"
 
 #define MAX_PLAYERS 4
 
@@ -59,6 +61,7 @@ typedef struct _Enna_Module_libplayer
     player_type_t player_type;
     player_type_t default_type;
     player_type_t dvd_type;
+    player_type_t tv_type;
     Ecore_Event_Handler *key_down_event_handler;
     Ecore_Pipe *pipe;
 } Enna_Module_libplayer;
@@ -153,6 +156,26 @@ static mrl_t * set_dvd_stream(const char *uri, mrl_resource_t type)
     return mrl;
 }
 
+static mrl_t * set_tv_stream(const char *device, const char *driver, mrl_resource_t type)
+{
+    mrl_t *mrl;
+    mrl_resource_tv_args_t *args;
+
+    args = calloc(1, sizeof(mrl_resource_tv_args_t));
+
+    if (type == MRL_RESOURCE_VDR)
+    {
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "VDR stream; device: '%s' driver: '%s'", device, driver);
+        if(device)
+            args->device = strdup(device);
+        if(driver)
+            args->driver = strdup(driver);
+    }
+
+    mrl = mrl_new(mod->player, type, args);
+    return mrl;
+}
+
 static mrl_t * set_local_stream(const char *uri)
 {
     mrl_t *mrl;
@@ -177,6 +200,11 @@ static int _class_file_set(const char *uri, const char *label)
         mrl = set_network_stream(uri, MRL_RESOURCE_HTTP);
     else if (!strncmp(uri, URI_TYPE_MMS, strlen(URI_TYPE_MMS)))
         mrl = set_network_stream(uri, MRL_RESOURCE_MMS);
+    else if (!strncmp(uri, URI_TYPE_NETVDR, strlen(URI_TYPE_NETVDR)))
+    {
+         mrl = set_network_stream(uri, MRL_RESOURCE_NETVDR);
+         player_type = mod->tv_type;
+    }
     else if (!strncmp(uri, URI_TYPE_RTP, strlen(URI_TYPE_RTP)))
         mrl = set_network_stream(uri, MRL_RESOURCE_RTP);
     else if (!strncmp(uri, URI_TYPE_RTSP, strlen(URI_TYPE_RTSP)))
@@ -197,6 +225,26 @@ static int _class_file_set(const char *uri, const char *label)
     } else if (!strncmp(uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV))) {
         mrl = set_dvd_stream(uri, MRL_RESOURCE_DVDNAV);
         player_type = mod->dvd_type;
+    }
+
+    /* Try TV */
+    else if (!strncmp(uri, URI_TYPE_VDR, strlen(URI_TYPE_VDR))) {
+        char *device = NULL;
+        char *driver = strstr(uri, "#");
+        size_t device_len = strlen(uri) - strlen(URI_TYPE_VDR);
+
+        if (driver)
+        {
+            device_len -= strlen(driver);
+            driver++;
+            device = malloc(device_len);
+            strncpy(device, uri + strlen(URI_TYPE_VDR), device_len);
+        }
+        else if (device_len)
+            device = strdup(uri + strlen(URI_TYPE_VDR));
+
+        mrl = set_tv_stream(device, driver, MRL_RESOURCE_VDR);
+        player_type = mod->tv_type;
     }
 
     /* default is local files */
@@ -366,6 +414,7 @@ void module_init(Enna_Module *em)
 
     player_type_t type = PLAYER_TYPE_MPLAYER;
     player_type_t dvd_type = PLAYER_TYPE_XINE;
+    player_type_t tv_type = PLAYER_TYPE_XINE;
     player_vo_t vo = PLAYER_VO_AUTO;
     player_ao_t ao = PLAYER_AO_AUTO;
     player_verbosity_level_t verbosity = PLAYER_MSG_WARNING;
@@ -424,6 +473,24 @@ void module_init(Enna_Module *em)
                 else
                     enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
                              "   - unknown dvd_type, 'xine' used instead");
+            }
+            else if (!strcmp("tv_type", pair->key))
+            {
+                enna_config_value_store(&value, "tv_type",
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * tv_type: %s", value);
+
+                if (!strcmp("gstreamer", value))
+                    tv_type = PLAYER_TYPE_GSTREAMER;
+                else if (!strcmp("mplayer", value))
+                    tv_type = PLAYER_TYPE_MPLAYER;
+                else if (!strcmp("vlc", value))
+                    tv_type = PLAYER_TYPE_VLC;
+                else if (!strcmp("xine", value))
+                    tv_type = PLAYER_TYPE_XINE;
+                else
+                    enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                             "   - unknown tv_type, 'xine' used instead");
             }
             else if (!strcmp("video_out", pair->key))
             {
@@ -501,13 +568,13 @@ void module_init(Enna_Module *em)
         ecore_event_handler_add(ECORE_X_EVENT_KEY_DOWN, _x_event_key_down, NULL);
     mod->pipe = ecore_pipe_add(_pipe_read, NULL);
 
-    if (type == PLAYER_TYPE_MPLAYER || dvd_type == PLAYER_TYPE_MPLAYER) {
+    if (type == PLAYER_TYPE_MPLAYER || dvd_type == PLAYER_TYPE_MPLAYER || tv_type == PLAYER_TYPE_MPLAYER) {
         use_mplayer = 1;
         mod->players[PLAYER_TYPE_MPLAYER] =
             player_init(PLAYER_TYPE_MPLAYER, ao, vo, verbosity, enna->ee_winid, _event_cb);
     }
 
-    if (type == PLAYER_TYPE_XINE || dvd_type == PLAYER_TYPE_XINE) {
+    if (type == PLAYER_TYPE_XINE || dvd_type == PLAYER_TYPE_XINE || tv_type == PLAYER_TYPE_XINE) {
         use_xine = 1;
         mod->players[PLAYER_TYPE_XINE] =
             player_init(PLAYER_TYPE_XINE, ao, vo, verbosity, enna->ee_winid, _event_cb);
@@ -525,6 +592,7 @@ void module_init(Enna_Module *em)
     mod->label = NULL;
     mod->default_type = type;
     mod->dvd_type = dvd_type;
+    mod->tv_type = tv_type;
     mod->player = mod->players[type];
     mod->player_type = type;
 }
