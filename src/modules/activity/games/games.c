@@ -196,7 +196,7 @@ static Enna_Class_Activity
 class =
 {
     "games",
-    1,
+    10,
     "games",
     NULL,
     "icon/games",
