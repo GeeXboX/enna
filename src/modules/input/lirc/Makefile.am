@@ -21,7 +21,7 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = input_lirc.la
 
 input_lirc_la_SOURCES= \
-enna_module_lirc.c
+lirc.c
 
 input_lirc_la_LIBADD = @ENNA_LIBS@ @LIRC_LIBS@
 input_lirc_la_LDFLAGS = -module -avoid-version
