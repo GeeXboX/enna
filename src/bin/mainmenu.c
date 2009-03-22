@@ -38,6 +38,7 @@
 #include "mainmenu.h"
 #include "content.h"
 #include "event_key.h"
+#include "logs.h"
 
 #define SMART_NAME "enna_mainmenu"
 #define API_ENTRY						\

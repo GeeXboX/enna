@@ -51,8 +51,6 @@
 #include "metadata.h"
 #include "mediaplayer.h"
 
-//#include "enna_inc.h"
-
 /* Global Variable Enna *enna*/
 Enna *enna;
 
@@ -97,7 +95,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
 		switch (key)
 		{
 			case ENNA_KEY_Y:
-			case ENNA_KEY_STOP:
+			case ENNA_KEY_QUIT:
 				enna->do_quit = 1;
     			evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
 				break;
@@ -108,6 +106,8 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
 				enna->do_quit = 0;
 				enna_mainmenu_quitdiag(enna->o_mainmenu);
 				break;
+                        default:
+                                break;
 		}
 	}
 	else if (enna_mainmenu_visible(enna->o_mainmenu))
