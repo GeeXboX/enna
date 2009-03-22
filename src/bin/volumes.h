@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_VOLUMES_H__
-#define __ENNA_VOLUMES_H__
+#ifndef VOLUMES_H
+#define VOLUMES_H
 
 #include "enna.h"
 
@@ -52,4 +52,4 @@ void enna_volumes_append(const char *type, Enna_Volume *v);
 void enna_volumes_remove(const char *type, Enna_Volume *v);
 Eina_List *enna_volumes_get(const char *type);
 
-#endif
+#endif /* VOLUMES_H */

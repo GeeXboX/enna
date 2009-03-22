@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef ENNA_LIST_H
-#define ENNA_LIST_H
+#ifndef LIST_H
+#define LIST_H
 
 #include "enna.h"
 
@@ -40,5 +40,5 @@ void * enna_list_selected_data_get(Evas_Object *obj);
 int enna_list_jump_label(Evas_Object *obj, const char *label);
 void enna_list_jump_nth(Evas_Object *obj, int n);
 void enna_list_event_key_down(Evas_Object *obj, void *event_info);
-#endif
+#endif /* LIST_H */
 

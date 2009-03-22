@@ -27,9 +27,9 @@
  *
  */
 
-#ifndef _ENNA_SMARTNAME_H
-#define _ENNA_SMARTNAME_H
+#ifndef SMART_TEMPLATE_H
+#define SMART_TEMPLATE_H
 
 Evas_Object *enna_SMARTNAME_add(Evas * evas);
 
-#endif
+#endif /* SMART_TEMPLATE_H */

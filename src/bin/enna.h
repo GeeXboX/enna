@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef ENNA_H_
-#define ENNA_H_
+#ifndef ENNA_H
+#define ENNA_H
 
 #include <Eina.h>
 #include <Evas.h>
@@ -146,4 +146,4 @@ struct _Enna
 
 extern Enna *enna;
 
-#endif
+#endif /* ENNA_H */

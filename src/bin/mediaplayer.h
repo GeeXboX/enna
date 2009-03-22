@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_MEDIAPLAYER_H__
-#define __ENNA_MEDIAPLAYER_H__
+#ifndef MEDIAPLAYER_H
+#define MEDIAPLAYER_H
 
 #include "enna.h"
 
@@ -128,4 +128,4 @@ PLAY_STATE enna_mediaplayer_state_get(void);
 Enna_Playlist *enna_mediaplayer_playlist_create(void);
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist);
-#endif
+#endif /* MEDIAPLAYER_H */

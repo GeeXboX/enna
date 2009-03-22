@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_REFLECTION_H
-#define _ENNA_REFLECTION_H
+#ifndef REFLECTION_H
+#define REFLECTION_H
 
 #include "enna.h"
 
@@ -49,4 +49,4 @@ EAPI void           enna_reflection_data_set(Evas_Object * obj, void *data,
 					     int w, int h);
 EAPI void          *enna_reflection_data_get(Evas_Object * obj, int *w, int *h);
 
-#endif
+#endif /* REFLECTION_H */

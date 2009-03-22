@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_URL_UTILS_H__
-#define __ENNA_URL_UTILS_H__
+#ifndef URL_UTILS_H
+#define URL_UTILS_H
 
 #include <curl/curl.h>
 #include <curl/types.h>
@@ -47,4 +47,4 @@ void url_escape_string(char *outbuf, const char *inbuf);
 
 void url_save_to_disk (CURL *curl, char *src, char *dst);
 
-#endif
+#endif /* URL_UTILS_H */

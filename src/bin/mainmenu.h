@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_MAINMENU_H_
-#define _ENNA_MAINMENU_H_
+#ifndef MAINMENU_H
+#define MAINMENU_H
 
 #include "enna.h"
 
@@ -47,4 +47,4 @@ void enna_mainmenu_hide(Evas_Object *obj);
 unsigned char enna_mainmenu_visible(Evas_Object *obj);
 void enna_mainmenu_activate_nth(Evas_Object *obj, int nth);
 int enna_mainmenu_selected_get(Evas_Object *obj);
-#endif
+#endif /* MAINMENU_H */

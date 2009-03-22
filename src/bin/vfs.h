@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_VFS_H__
-#define __ENNA_VFS_H__
+#ifndef VFS_H
+#define VFS_H
 
 #include "enna.h"
 
@@ -80,4 +80,4 @@ Eina_List *enna_vfs_get(ENNA_VFS_CAPS type);
 Enna_Vfs_File *enna_vfs_create_file (const char *uri, const char *label, const char *icon, const char *icon_file);
 Enna_Vfs_File *enna_vfs_create_directory (const char *uri, const char *label, const char *icon, const char *icon_file);
 void enna_vfs_remove(Enna_Vfs_File *f);
-#endif
+#endif /* VFS_H */

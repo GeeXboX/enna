@@ -27,9 +27,9 @@
  *
  */
 
-#ifndef __ENNA_MD5_H__
-#define __ENNA_MD5_H__
+#ifndef MD5_H
+#define MD5_H
 
 char *md5sum (char *str);
 
-#endif
+#endif /* MD5_H */

@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_CAROUSEL_H
-#define _ENNA_CAROUSEL_H
+#ifndef CAROUSEL_H
+#define CAROUSEL_H
 
 #include "enna.h"
 
@@ -41,4 +41,4 @@ void enna_carousel_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *
 Evas_Object *enna_carousel_selected_object_get(Evas_Object *obj);
 int enna_carousel_selected_get(Evas_Object *obj);
 
-#endif
+#endif /* CAROUSEL_H */

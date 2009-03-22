@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_METADATA_H__
-#define __ENNA_METADATA_H__
+#ifndef METADATA_H
+#define METADATA_H
 
 typedef struct _Enna_Metadata Enna_Metadata;
 typedef struct _Enna_Metadata_Video Enna_Metadata_Video;
@@ -121,4 +121,4 @@ void enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber);
 void enna_metadata_remove_grabber (char *name);
 void enna_metadata_grab (Enna_Metadata *meta, int caps);
 
-#endif
+#endif /* METADATA_H */

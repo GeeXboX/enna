@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_BROWSER_H
-#define _ENNA_BROWSER_H
+#ifndef BROWSER_H
+#define BROWSER_H
 
 typedef struct _Browser_Selected_File_Data Browser_Selected_File_Data;
 
@@ -45,4 +45,4 @@ void            enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs);
 void            enna_browser_show_file_set(Evas_Object *obj, unsigned char show);
 void            enna_browser_event_feed(Evas_Object *obj, void *event_info);
 int             enna_browser_select_label(Evas_Object *obj, const char *label);
-#endif
+#endif /* BROWSER_H */

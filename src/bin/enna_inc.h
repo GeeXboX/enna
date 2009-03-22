@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_INC_H_
-#define _ENNA_INC_H_
+#ifndef ENNA_INC_H
+#define ENNA_INC_H
 
 #include "config.h"
 
@@ -58,4 +58,4 @@
 #include "carousel.h"
 #include "reflection.h"
 
-#endif
+#endif /* ENNA_INC_H */

@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_SMART_PLAYER_H__
-#define __ENNA_SMART_PLAYER_H__
+#ifndef SMART_PLAYER_H
+#define SMART_PLAYER_H
 
 #include "enna.h"
 
@@ -41,4 +41,4 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
         Enna_Metadata *metadata);
 void enna_smart_player_show_video(Evas_Object *obj);
 void enna_smart_player_hide_video(Evas_Object *obj);
-#endif
+#endif /* SMART_PLAYER_H */

@@ -27,11 +27,11 @@
  *
  */
 
-#ifndef _ENNA_BACKGROUND_H_
-#define _ENNA_BACKGROUND_H_
+#ifndef BACKGROUND_H
+#define BACKGROUND_H
 
 #include "enna.h"
 
 Evas_Object * enna_background_add(Evas * evas);
 
-#endif
+#endif /* BACKGROUND_H */

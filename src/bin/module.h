@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_MODULE_H_
-#define _ENNA_MODULE_H_
+#ifndef MODULE_H
+#define MODULE_H
 
 #include "enna.h"
 
@@ -77,4 +77,4 @@ Enna_Module *enna_module_open(const char *name, _Enna_Module_Type type, Evas *ev
 int enna_module_enable(Enna_Module *m);
 int enna_module_disable(Enna_Module *m);
 
-#endif
+#endif /* MODULE_H */

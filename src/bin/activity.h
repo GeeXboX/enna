@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_ACTIVITY_H_
-#define _ENNA_ACTIVITY_H_
+#ifndef ACTIVITY_H
+#define ACTIVITY_H
 
 typedef enum _ENNA_CLASS_TYPE ENNA_CLASS_TYPE;
 
@@ -62,4 +62,4 @@ int enna_activity_shutdown(const char *name);
 int enna_activity_hide(const char *name);
 int enna_activity_event(Enna_Class_Activity *act, void *event_info);
 
-#endif
+#endif /* ACTIVITY_H */

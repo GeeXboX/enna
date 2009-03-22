@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_SLIDESHOW_H__
-#define __ENNA_SLIDESHOW_H__
+#ifndef SLIDESHOW_H
+#define SLIDESHOW_H
 
 #include "enna.h"
 
@@ -37,4 +37,4 @@ void enna_slideshow_image_append(Evas_Object *obj, const char *filename);
 int enna_slideshow_next(void *data);
 int enna_slideshow_prev(void *data);
 void enna_slideshow_play(void *data);
-#endif
+#endif /* SLIDESHOW_H */

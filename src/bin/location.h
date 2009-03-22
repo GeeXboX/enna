@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_LOCATION_H__
-#define __ENNA_LOCATION_H__
+#ifndef LOCATION_H
+#define LOCATION_H
 
 #include "enna.h"
 
@@ -38,4 +38,4 @@ void enna_location_append(Evas_Object *obj, const char *label,
 void enna_location_remove_nth(Evas_Object *obj, int n);
 int enna_location_count(Evas_Object *obj);
 const char *enna_location_label_get_nth(Evas_Object *obj, int n);
-#endif
+#endif /* LOCATION_H */

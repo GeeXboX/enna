@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _EVENT_KEY_H_
-#define _EVENT_KEY_H_
+#ifndef EVENT_KEY_H
+#define EVENT_KEY_H
 
 #include "enna.h"
 
@@ -119,4 +119,4 @@ void enna_input_shutdown();
 int
         enna_input_class_register(Enna_Module *module, Enna_Class_Input *class);
 
-#endif /* _EVENT_KEY_H_ */
+#endif /* EVENT_KEY_H */

@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_XMLUTILS_H__
-#define __ENNA_XMLUTILS_H__
+#ifndef XML_UTILS_H
+#define XML_UTILS_H
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -42,4 +42,4 @@ xmlChar *get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
 xmlChar *get_attr_value_from_xml_tree (xmlNode *root, const char *prop,
                                        const char *attr_name);
 
-#endif
+#endif /* XML_UTILS_H */

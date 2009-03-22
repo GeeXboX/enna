@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef __ENNA_LOGS_H__
-#define __ENNA_LOGS_H__
+#ifndef LOGS_H
+#define LOGS_H
 
 #include "enna.h"
 
@@ -38,4 +38,4 @@ void elog(int level, const char *module, char *file, int line,
 #define enna_log(level,module,fmt,arg...) \
         elog(level,module,__FILE__,__LINE__,fmt,##arg)
 
-#endif /* __ENNA_LOGS_H__ */
+#endif /* LOGS_H */

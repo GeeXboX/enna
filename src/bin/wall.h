@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_WALL_H
-#define _ENNA_WALL_H
+#ifndef WALL_H
+#define WALL_H
 
 #include "enna.h"
 
@@ -39,4 +39,4 @@ void enna_wall_event_feed(Evas_Object *obj, void *event_info);
 void enna_wall_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *w, int *h);
 const char *enna_wall_selected_filename_get(Evas_Object *obj);
 
-#endif
+#endif /* WALL_H */

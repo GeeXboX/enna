@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef _ENNA_CONFIG_H_
-#define _ENNA_CONFIG_H_
+#ifndef ENNA_CONFIG_H
+#define ENNA_CONFIG_H
 
 typedef struct _Enna_Config Enna_Config;
 typedef struct _Enna_Config_Data Enna_Config_Data;
@@ -84,4 +84,4 @@ void enna_config_value_store(void *var, char *section,
 Enna_Config_Data *enna_config_module_pair_get(const char *module_name);
 void enna_config_init(void);
 void enna_config_shutdown(void);
-#endif
+#endif /* ENNA_CONFIG_H */
