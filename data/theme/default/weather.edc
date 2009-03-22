@@ -177,6 +177,8 @@ group {
          mouse_events: 0;
          description {
             state: "default" 0.0;
+            aspect: 1 1;
+            aspect_preference: HORIZONTAL;
             rel1 { relative: 0.55 0.16; to: "frame.current.clip"; }
             rel2 { relative: 0.95 0.46; to: "frame.current.clip"; }
          }
@@ -421,6 +423,8 @@ group {
          mouse_events: 0;
          description {
             state: "default" 0.0;
+            aspect: 1 1;
+            aspect_preference: HORIZONTAL;
             rel1 { relative: 0.70 0.06; to: "frame.forecast.clip"; }
             rel2 { relative: 0.90 0.22; to: "frame.forecast.clip"; }
          }
@@ -555,6 +559,8 @@ group {
          mouse_events: 0;
          description {
             state: "default" 0.0;
+            aspect: 1 1;
+            aspect_preference: HORIZONTAL;
             rel1 { relative: 0.70 0.30; to: "frame.forecast.clip"; }
             rel2 { relative: 0.90 0.46; to: "frame.forecast.clip"; }
          }
@@ -689,6 +695,8 @@ group {
          mouse_events: 0;
          description {
             state: "default" 0.0;
+            aspect: 1 1;
+            aspect_preference: HORIZONTAL;
             rel1 { relative: 0.70 0.53; to: "frame.forecast.clip"; }
             rel2 { relative: 0.90 0.69; to: "frame.forecast.clip"; }
          }
@@ -823,6 +831,8 @@ group {
          mouse_events: 0;
          description {
             state: "default" 0.0;
+            aspect: 1 1;
+            aspect_preference: HORIZONTAL;
             rel1 { relative: 0.70 0.77; to: "frame.forecast.clip"; }
             rel2 { relative: 0.90 0.93; to: "frame.forecast.clip"; }
          }
