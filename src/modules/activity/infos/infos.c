@@ -54,6 +54,7 @@
 #include "event_key.h"
 
 #ifdef BUILD_LIBXRANDR
+#include <X11/Xutil.h>
 #include <X11/extensions/Xrandr.h>
 #endif
 

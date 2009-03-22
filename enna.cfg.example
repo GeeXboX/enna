@@ -32,6 +32,8 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 
 #gstreamer,mplayer,vlc,xine
 #type=
+#dvd_type=
+#tv_type=
 
 #auto,x11,xv,gl,fb
 #video_out=
