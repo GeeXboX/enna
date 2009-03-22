@@ -684,7 +684,7 @@
                rel1 {
                   to_x:     "elm.swallow.icon";
                   relative: 1.0  0.0;
-                  offset:   0 4;
+                  offset:   16 4;
                }
                rel2 {
                   to_x:     "elm.swallow.end";
