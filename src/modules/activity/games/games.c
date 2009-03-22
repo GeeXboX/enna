@@ -71,30 +71,29 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
         sprintf(dsfile, "%s/%s", dir_path, dp->d_name);
         desktop = efreet_desktop_get(dsfile);
         if ((desktop = efreet_desktop_get(dsfile)))
-	{
+        {
             Eina_List *l;
             const char *cat;
 
             EINA_LIST_FOREACH(desktop->categories, l, cat)
-	    {
+            {
                 if(!strncmp(cat, "Game", strlen("Game")))
-		{
+                {
                     char *iconpath;
-		    Game_Item_Class_Data *item;
+                    Game_Item_Class_Data *item;
 
                     if (ecore_file_can_read(desktop->icon))
-		    {
+                    {
                         iconpath = desktop->icon;
-                    } else
-		    {
+                    } else {
                         //FIXME fails with icons like "gnome-nibbles"
                         iconpath = efreet_icon_path_find(NULL, desktop->icon, 16);
                     }
 
-		    item = calloc(1, sizeof(Game_Item_Class_Data));
-		    item->icon = eina_stringshare_add(iconpath);
-		    item->label = eina_stringshare_add(desktop->name);
-		    enna_list_append(list, mod->item_class, item, item->label, _play, desktop->exec);
+                    item = calloc(1, sizeof(Game_Item_Class_Data));
+                    item->icon = eina_stringshare_add(iconpath);
+                    item->label = eina_stringshare_add(desktop->name);
+                    enna_list_append(list, mod->item_class, item, item->label, _play, desktop->exec);
                     break;
                 }
             }
