@@ -218,7 +218,7 @@ int
 enna_mediaplayer_next(Enna_Playlist *enna_playlist)
 {
     list_item_t *item;
-
+    
     enna_playlist->selected++;
     if (enna_playlist->selected > eina_list_count(enna_playlist->playlist) - 1)
     {
@@ -235,7 +235,7 @@ enna_mediaplayer_next(Enna_Playlist *enna_playlist)
         enna_mediaplayer_play(enna_playlist);
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_NEXT, NULL, NULL, NULL);
     }
-
+    
     return 0;
 }
 
