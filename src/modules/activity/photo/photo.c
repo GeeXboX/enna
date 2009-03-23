@@ -316,6 +316,7 @@ static void
 _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 {
 //    nothing to do here anymore
+    printf("browse Down\n");
 }
 
 static void
@@ -338,7 +339,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 
         EINA_LIST_FOREACH(ev->files, l, f)
         {
-            if (!ecore_file_is_dir(f->uri + 7))
+            if (!f->is_directory)
             {
                 enna_wall_picture_append(mod->o_wall, f->uri);
             }
@@ -355,7 +356,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
         {
             edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
             mod->state = WALL_VIEW;
-        }
+	}
 
     }
     else

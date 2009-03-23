@@ -350,8 +350,15 @@ static  void _browse(void *data)
         {
             /* File selected is a directory */
             sd->files = sd->vfs->func.class_browse_up(sd->file->uri, sd->vfs->cookie);
-            ev->files = sd->files;
-
+	    /* No media found */
+            if (!eina_list_count(sd->files))
+	    {
+		sd->file = enna_vfs_create_directory(sd->file->uri, "No media found !", "icon_nofile", NULL);
+		sd->files = NULL;
+		sd->files = eina_list_append(sd->files,sd->file);
+	    }
+	    ev->file = sd->file;
+	    ev->files = sd->files;
             evas_object_smart_callback_call (sd->obj, "selected", ev);
         }
         else if (sd->show_file)
@@ -476,17 +483,6 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 
         }
         evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
-        enna_list_selected_set(sd->o_list, 0);
-    }
-    else if (!direction)
-    {
-        /* No files returned : create no media item */
-        Browser_Item_Class_Data *item;
-
-        item = calloc(1, sizeof(Browser_Item_Class_Data));
-        item->icon = eina_stringshare_add("icon_nofile");
-        item->label = eina_stringshare_add("No media found !");
-        enna_list_append(sd->o_list, sd->item_class, item, item->label, NULL, NULL);
         enna_list_selected_set(sd->o_list, 0);
     }
     else
