@@ -651,6 +651,10 @@ static void _smart_del(Evas_Object * obj)
             Picture_Item *pi = sd->items[i]->data;
             sd->items[i] = eina_list_remove_list(sd->items[i], sd->items[i]);
             evas_object_del(pi->o_edje);
+
+	    enna_image_preload(pi->o_pict, 1);
+	    evas_object_smart_callback_del(pi->o_pict, "preload", _wall_image_preload_cb);
+
             evas_object_del(pi->o_pict);
             free(pi);
         }
