@@ -285,10 +285,21 @@ static void _enna_slideshow_smart_init(void)
     if (_e_smart)
         return;
     static const Evas_Smart_Class sc =
-    { SMART_NAME, EVAS_SMART_CLASS_VERSION, _smart_add, _smart_del,
-            _smart_move, _smart_resize, _smart_show, _smart_hide,
-            _smart_color_set, _smart_clip_set, _smart_clip_unset, NULL,
-            NULL };
+    {
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _smart_add,
+        _smart_del,
+        _smart_move,
+        _smart_resize,
+        _smart_show,
+        _smart_hide,
+        _smart_color_set,
+        _smart_clip_set,
+        _smart_clip_unset,
+        NULL,
+        NULL
+    };
     _e_smart = evas_smart_class_new(&sc);
 }
 

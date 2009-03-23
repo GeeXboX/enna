@@ -298,7 +298,7 @@ static void _smart_add(Evas_Object * obj)
     evas_object_smart_member_add(sd->obj, obj);
     evas_object_smart_data_set(obj, sd);
     evas_object_event_callback_add(sd->obj, EVAS_CALLBACK_IMAGE_PRELOADED,
-	_enna_image_preload_cb, sd);
+        _enna_image_preload_cb, sd);
 
 }
 

@@ -125,14 +125,11 @@ static const struct
 
 static void _event_cb(void *data, char *event)
 {
-
     if (!event)
         return;
 
     evas_event_feed_key_down(enna->evas, event, event, event, NULL, ecore_time_get(), data);
     enna_log(ENNA_MSG_EVENT, NULL, "LIRC event : %s", event);
-
-
 }
 
 /* Public Functions */
@@ -151,23 +148,23 @@ enna_get_key (void *event)
     for (i = 0; enna_keymap[i].keyname; i++)
 
     {
-	/* Test First if modifer is set and is different than "None"*/
-	if (enna_keymap[i].modifier
-	    && evas_key_modifier_is_set (ev->modifiers, enna_keymap[i].modifier)
-	    && !strcmp (enna_keymap[i].keyname, ev->key) )
-	{
-	    enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : [%s] + %s",
-		enna_keymap[i].modifier,
-		enna_keymap[i] );
-	    return enna_keymap[i].keycode;
-	}
-	/* Else just test if keyname match */
-	else if (!enna_keymap[i].modifier && !strcmp (enna_keymap[i].keyname, ev->key))
-	{
-	    enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : %s",
-		enna_keymap[i] );
-	    return enna_keymap[i].keycode;
-	}
+        /* Test First if modifer is set and is different than "None"*/
+        if (enna_keymap[i].modifier
+            && evas_key_modifier_is_set (ev->modifiers, enna_keymap[i].modifier)
+            && !strcmp (enna_keymap[i].keyname, ev->key) )
+        {
+            enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : [%s] + %s",
+                enna_keymap[i].modifier,
+                enna_keymap[i] );
+            return enna_keymap[i].keycode;
+        }
+        /* Else just test if keyname match */
+        else if (!enna_keymap[i].modifier && !strcmp (enna_keymap[i].keyname, ev->key))
+        {
+            enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : %s",
+                enna_keymap[i] );
+            return enna_keymap[i].keycode;
+        }
     }
 
     return ENNA_KEY_UNKNOWN;

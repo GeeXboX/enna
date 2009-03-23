@@ -129,10 +129,10 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
     si->act = act;
     si->o_base = edje_object_add(evas_object_evas_get(sd->o_edje));
     edje_object_file_set(si->o_base, enna_config_theme_get(),
-	"enna/mainmenu/item");
+        "enna/mainmenu/item");
 
     if (label)
-	edje_object_part_text_set(si->o_base, "enna.text.label", label);
+        edje_object_part_text_set(si->o_base, "enna.text.label", label);
 
     ic = elm_icon_add(obj);
     elm_icon_file_set(ic, enna_config_theme_get(), icon);
@@ -157,17 +157,17 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
 
 
     evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
-	_smart_event_mouse_up, si);
+        _smart_event_mouse_up, si);
     evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_DOWN,
-	_smart_event_mouse_down, si);
+        _smart_event_mouse_down, si);
     evas_object_show(si->o_base);
 
     // FIXME : Ugly !
     i++;
     if (i == MAX_PER_ROW)
     {
-	j++;
-	i = 0;
+        j++;
+        i = 0;
     }
 
 }
@@ -182,17 +182,17 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
     for (l = activities; l; l = l->next)
     {
         Enna_Class_Activity *act;
-	const char *icon_name = NULL;
+        const char *icon_name = NULL;
         act = l->data;
 
         if (act->icon)
         {
-	    icon_name = eina_stringshare_add(act->icon);
+            icon_name = eina_stringshare_add(act->icon);
         }
         else if (act->icon_file)
         {
 
-	    icon_name = eina_stringshare_add(act->icon_file);
+            icon_name = eina_stringshare_add(act->icon_file);
         }
         enna_mainmenu_append(obj, icon_name, act->name, act, _smart_activate_cb, act);
     }
@@ -203,14 +203,13 @@ void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
 {
     Smart_Item *si;
     API_ENTRY
-	return;
+        return;
 
     si = eina_list_nth(sd->items, nth);
     if (!si)
         return;
     if (si->func)
     {
-
         Evas_Object *icon;
         si->func(si->data);
         /* Unswallow and delete previous icons */
@@ -229,7 +228,7 @@ void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
 static int enna_mainmenu_get_nr_items(Evas_Object *obj)
 {
     API_ENTRY
-	return 0;
+        return 0;
 
     return eina_list_count(sd->items);
 }
@@ -270,7 +269,7 @@ Enna_Class_Activity *enna_mainmenu_selected_activity_get(Evas_Object *obj)
     si = eina_list_nth(sd->items, sd->selected);
 
     if (!si)
-	return NULL;
+        return NULL;
 
     return si->act;
 }
@@ -320,13 +319,12 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
     key = enna_get_key(event_info);
     switch (key)
     {
-
     case ENNA_KEY_RIGHT:
-	enna_mainmenu_select_next(obj);
-	break;
+        enna_mainmenu_select_next(obj);
+        break;
     case ENNA_KEY_LEFT:
-	enna_mainmenu_select_prev(obj);
-	break;
+        enna_mainmenu_select_prev(obj);
+        break;
     case ENNA_KEY_UP:
         el = enna_mainmenu_selected_get(obj);
         enna_mainmenu_select_nth(obj, el - MAX_PER_ROW);
@@ -339,7 +337,7 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
                                  n - 1 : el + MAX_PER_ROW);
         break;
     default:
-	break;
+        break;
     }
 
 }
@@ -383,7 +381,7 @@ unsigned char enna_mainmenu_visible(Evas_Object *obj)
 unsigned char enna_quitdiag_visible(Evas_Object *obj)
 {
     API_ENTRY return 0;
-	return evas_object_visible_get(sd->o_quitdiag_box);
+    return evas_object_visible_get(sd->o_quitdiag_box);
 }
 
 /* local subsystem globals */
@@ -401,17 +399,17 @@ static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_in
 
 static void _quitdiag_yes_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	enna->do_quit = 1;
-	enna_log(ENNA_MSG_WARNING, "quitdiag button clicked", "button: yes");
+    enna->do_quit = 1;
+    enna_log(ENNA_MSG_WARNING, "quitdiag button clicked", "button: yes");
     evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
 }
 
 static void _quitdiag_no_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	Smart_Data* sd = data;
-	enna->do_quit = 0;
-	edje_object_signal_emit (sd->o_edje, "quitdiag,hide", "enna");
-	enna_log(ENNA_MSG_WARNING, "quitdiag button clicked", "button: no");
+    Smart_Data* sd = data;
+    enna->do_quit = 0;
+    edje_object_signal_emit (sd->o_edje, "quitdiag,hide", "enna");
+    enna_log(ENNA_MSG_WARNING, "quitdiag button clicked", "button: no");
 }
 
 static void _smart_activate_cb(void *data)
@@ -445,21 +443,21 @@ static void _smart_init(void)
     if (_e_smart)
         return;
     static const Evas_Smart_Class sc =
-	{
-	    SMART_NAME,
-	    EVAS_SMART_CLASS_VERSION,
-	    _smart_add,
-	    _smart_del,
-	    _smart_move,
-	    _smart_resize,
-	    _smart_show,
-	    _smart_hide,
-	    _smart_color_set,
-	    _smart_clip_set,
-	    _smart_clip_unset,
-	    NULL,
-	    NULL
-	};
+    {
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _smart_add,
+        _smart_del,
+        _smart_move,
+        _smart_resize,
+        _smart_show,
+        _smart_hide,
+        _smart_color_set,
+        _smart_clip_set,
+        _smart_clip_unset,
+        NULL,
+        NULL
+    };
     _e_smart = evas_smart_class_new(&sc);
 }
 
@@ -520,35 +518,35 @@ static void _smart_add(Evas_Object * obj)
     evas_object_show(bt);
     evas_object_show(ic);
 
-	/* Add Quit Dialog */
+        /* Add Quit Dialog */
     bx = elm_box_add(obj);
-	sd->o_quitdiag_box = bx;
+    sd->o_quitdiag_box = bx;
     elm_box_horizontal_set(bx, 1);
     edje_object_part_swallow(sd->o_edje, "enna.quitdiag.buttonbox", bx);
-	evas_object_show(bx);
+    evas_object_show(bx);
 
-	bt = elm_button_add(sd->o_edje);
-	sd->o_quitdiag_yes_button=bt;
+    bt = elm_button_add(sd->o_edje);
+    sd->o_quitdiag_yes_button=bt;
     evas_object_smart_callback_add(bt, "clicked", _quitdiag_yes_clicked_cb, sd);
-	elm_button_label_set(bt, "(Y)es, I want to quit.");
-	ic = elm_icon_add(sd->o_edje);
-	elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_stop");
-	elm_button_icon_set(bt, ic);
-	elm_object_scale_set(bt, 2.0);
-	elm_box_pack_end(sd->o_quitdiag_box, bt);
-	evas_object_show(bt);
+    elm_button_label_set(bt, "(Y)es, I want to quit.");
+    ic = elm_icon_add(sd->o_edje);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_stop");
+    elm_button_icon_set(bt, ic);
+    elm_object_scale_set(bt, 2.0);
+    elm_box_pack_end(sd->o_quitdiag_box, bt);
+    evas_object_show(bt);
 
-	bt = elm_button_add(sd->o_edje);
-	sd->o_quitdiag_no_button=bt;
+    bt = elm_button_add(sd->o_edje);
+    sd->o_quitdiag_no_button=bt;
     evas_object_smart_callback_add(bt, "clicked", _quitdiag_no_clicked_cb, sd);
-	elm_button_label_set(bt, "(N)o, I want to stay.");
-	ic = elm_icon_add(sd->o_edje);
-	elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
-	elm_button_icon_set(bt, ic);
-	elm_object_scale_set(bt, 2.0);
-	elm_box_pack_end(sd->o_quitdiag_box, bt);
-	evas_object_show(bt);
-	evas_object_show(sd->o_quitdiag_box);
+    elm_button_label_set(bt, "(N)o, I want to stay.");
+    ic = elm_icon_add(sd->o_edje);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
+    elm_button_icon_set(bt, ic);
+    elm_object_scale_set(bt, 2.0);
+    elm_box_pack_end(sd->o_quitdiag_box, bt);
+    evas_object_show(bt);
+    evas_object_show(sd->o_quitdiag_box);
 
     sd->o_smart = obj;
     evas_object_smart_member_add(sd->o_edje, obj);
@@ -707,8 +705,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, vo
         if (l->data == si)
         {
             edje_object_signal_emit(si->o_base, "select", "enna");
-            edje_object_signal_emit(prev->o_base, "unselect",
-		"enna");
+            edje_object_signal_emit(prev->o_base, "unselect", "enna");
             sd->selected = i;
             break;
         }
@@ -718,13 +715,13 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, vo
 
 void enna_mainmenu_quitdiag(Evas_Object *obj)
 {
-	char msg[50];
-	char quitdiag_active;
+    char msg[50];
+    char quitdiag_active;
     API_ENTRY return;
 
-	quitdiag_active=evas_object_visible_get(sd->o_quitdiag_box);
-	strncpy(msg, quitdiag_active?"quitdiag,hide":"quitdiag,show", sizeof(msg));
-	edje_object_signal_emit (sd->o_edje, msg, "enna");
-	quitdiag_active=!quitdiag_active;
+    quitdiag_active=evas_object_visible_get(sd->o_quitdiag_box);
+    strncpy(msg, quitdiag_active?"quitdiag,hide":"quitdiag,show", sizeof(msg));
+    edje_object_signal_emit (sd->o_edje, msg, "enna");
+    quitdiag_active=!quitdiag_active;
 }
 

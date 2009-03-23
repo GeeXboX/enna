@@ -40,11 +40,11 @@ static int _sort_cb(const void *d1, const void *d2)
     const Enna_Class_Activity *act2 = d2;
 
     if (act1->pri > act2->pri)
-	return 1;
+        return 1;
     else if (act1->pri < act2->pri)
-	return -1;
+        return -1;
     else
-	return strcasecmp(act1->name, act2->name);
+        return strcasecmp(act1->name, act2->name);
 }
 
 /**
@@ -56,11 +56,11 @@ int enna_activity_add(Enna_Class_Activity *class)
 {
     if (!class)
         return -1;
- 
+
     _enna_activities = eina_list_append(_enna_activities, class);
     _enna_activities = eina_list_sort(_enna_activities,
-	eina_list_count(_enna_activities),
-	_sort_cb);
+        eina_list_count(_enna_activities),
+        _sort_cb);
 
     return 0;
 }
@@ -195,4 +195,3 @@ int enna_activity_event(Enna_Class_Activity *act, void *event_info)
 
     return 0;
 }
-

@@ -78,7 +78,7 @@ enna_reflection_file_set(Evas_Object * obj, const char *file)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     /* smart code here */
     evas_object_image_load_size_set(sd->obj, 800, 800);
     evas_object_image_file_set(sd->obj, file, NULL);
@@ -94,7 +94,7 @@ enna_reflection_file_get(Evas_Object * obj)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return NULL;
+        return NULL;
 
     evas_object_image_file_get(sd->obj, &file, NULL);
     return file;
@@ -107,7 +107,7 @@ enna_reflection_smooth_scale_set(Evas_Object * obj, int smooth)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
 
     evas_object_image_smooth_scale_set(sd->obj, smooth);
     evas_object_image_smooth_scale_set(sd->reflection, smooth);
@@ -121,7 +121,7 @@ enna_reflection_smooth_scale_get(Evas_Object * obj)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return 0;
+        return 0;
 
     return evas_object_image_smooth_scale_get(sd->obj);
 }
@@ -133,7 +133,7 @@ enna_reflection_alpha_set(Evas_Object * obj, int alpha)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     evas_object_image_alpha_set(sd->obj, alpha);
     evas_object_image_alpha_set(sd->reflection, alpha);
 }
@@ -145,7 +145,7 @@ enna_reflection_alpha_get(Evas_Object * obj)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return 0;
+        return 0;
 
     return evas_object_image_alpha_get(sd->obj);
 }
@@ -158,7 +158,7 @@ enna_reflection_size_get(Evas_Object * obj, int *w, int *h)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
 
     evas_object_image_size_get(sd->obj, w, h);
     evas_object_image_size_get(sd->reflection, &rw, &rh);
@@ -174,7 +174,7 @@ enna_reflection_fill_inside_get(Evas_Object * obj)
 
     sd = evas_object_smart_data_get(obj);
     if (sd->fill_inside)
-	return 1;
+        return 1;
     return 0;
 }
 
@@ -185,10 +185,10 @@ enna_reflection_fill_inside_set(Evas_Object * obj, int fill_inside)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     if (((sd->fill_inside) && (fill_inside)) ||
-	((!sd->fill_inside) && (!fill_inside)))
-	return;
+        ((!sd->fill_inside) && (!fill_inside)))
+        return;
     sd->fill_inside = fill_inside;
     _enna_reflection_smart_reconfigure(sd);
 }
@@ -200,7 +200,7 @@ enna_reflection_data_set(Evas_Object * obj, void *data, int w, int h)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     evas_object_image_size_set(sd->obj, w, h);
     evas_object_image_data_copy_set(sd->obj, data);
 }
@@ -212,7 +212,7 @@ enna_reflection_data_get(Evas_Object * obj, int *w, int *h)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return NULL;
+        return NULL;
     evas_object_image_size_get(sd->obj, w, h);
     return evas_object_image_data_get(sd->obj, 0);
 }
@@ -252,10 +252,10 @@ _enna_reflection_smart_reconfigure(E_Smart_Data * sd)
     evas_object_image_size_get(sd->obj, &w, &h);
 
     if (!old_pixels)
-	return;
+        return;
 
     if (sd->pixels)
-	free(sd->pixels);
+        free(sd->pixels);
 
     sd->pixels = malloc(sizeof(int) * w * h * 2/3);
 
@@ -263,27 +263,27 @@ _enna_reflection_smart_reconfigure(E_Smart_Data * sd)
     alpha = 80;
     for (i = 0; i < h * 2/3; i++)
     {
-	for (j = 0; j < w; j++)
-	{
-	    /* Premul :
-	     * r_old = r_vrai * (a_old / 255)
-	     * r_new = r_vrai * a_new / 255
-	     * donc r_new = r_old * a_new / a_old
-	     * r_old = Red Value of old_pixels
-	     */
-	    alpha_old = (0xFF000000 & old_pixels[i * w + j] >> 24);
+        for (j = 0; j < w; j++)
+        {
+            /* Premul :
+             * r_old = r_vrai * (a_old / 255)
+             * r_new = r_vrai * a_new / 255
+             * donc r_new = r_old * a_new / a_old
+             * r_old = Red Value of old_pixels
+             */
+            alpha_old = (0xFF000000 & old_pixels[i * w + j] >> 24);
 
-	    if (alpha_old == 0)
-		alpha_old = 255;
+            if (alpha_old == 0)
+                alpha_old = 255;
 
-	    sd->pixels[i * w + j] = (alpha << 24) |
-		(((unsigned char)((0x00FF0000 & old_pixels[(h - i - 1) * w + j]) >> 16) * alpha /    alpha_old) << 16)
-		| (((unsigned char)((0x0000FF00 & old_pixels[(h - i - 1) * w + j]) >> 8) * alpha / alpha_old) << 8)
-		| (((unsigned char)((0x000000FF & old_pixels[(h - i - 1) * w + j]) >> 0) * alpha / alpha_old) << 0);
-	}
-	alpha--;
-	if (alpha <= 0)
-	    alpha = 0;
+            sd->pixels[i * w + j] = (alpha << 24) |
+                (((unsigned char)((0x00FF0000 & old_pixels[(h - i - 1) * w + j]) >> 16) * alpha /    alpha_old) << 16)
+                | (((unsigned char)((0x0000FF00 & old_pixels[(h - i - 1) * w + j]) >> 8) * alpha / alpha_old) << 8)
+                | (((unsigned char)((0x000000FF & old_pixels[(h - i - 1) * w + j]) >> 0) * alpha / alpha_old) << 0);
+        }
+        alpha--;
+        if (alpha <= 0)
+            alpha = 0;
 
     }
     /* Set pixels */
@@ -297,20 +297,20 @@ static void
 _enna_reflection_smart_init(void)
 {
     if (_e_smart)
-	return;
+        return;
     static const Evas_Smart_Class sc = {
-	SMART_NAME,
-	EVAS_SMART_CLASS_VERSION,
-	_e_smart_add,
-	_e_smart_del,
-	_e_smart_move,
-	_e_smart_resize,
-	_e_smart_show,
-	_e_smart_hide,
-	_e_smart_color_set,
-	_e_smart_clip_set,
-	_e_smart_clip_unset,
-	NULL
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _e_smart_add,
+        _e_smart_del,
+        _e_smart_move,
+        _e_smart_resize,
+        _e_smart_show,
+        _e_smart_hide,
+        _e_smart_color_set,
+        _e_smart_clip_set,
+        _e_smart_clip_unset,
+        NULL
     };
     _e_smart = evas_smart_class_new(&sc);
 }
@@ -322,7 +322,7 @@ _e_smart_add(Evas_Object * obj)
 
     sd = calloc(1, sizeof(E_Smart_Data));
     if (!sd)
-	return;
+        return;
     sd->obj = evas_object_image_add(evas_object_evas_get(obj));
     sd->reflection = evas_object_image_add(evas_object_evas_get(obj));
     sd->x = 0;
@@ -346,7 +346,7 @@ _e_smart_del(Evas_Object * obj)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     evas_object_del(sd->obj);
     evas_object_del(sd->reflection);
     free(sd->pixels);
@@ -360,9 +360,9 @@ _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     if ((sd->x == x) && (sd->y == y))
-	return;
+        return;
     sd->x = x;
     sd->y = y;
     _enna_reflection_smart_reconfigure(sd);
@@ -375,9 +375,9 @@ _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     if ((sd->w == w) && (sd->h == h))
-	return;
+        return;
     sd->w = w;
     sd->h = h;
     _enna_reflection_smart_reconfigure(sd);
@@ -390,7 +390,7 @@ _e_smart_show(Evas_Object * obj)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     evas_object_show(sd->obj);
     evas_object_show(sd->reflection);
 
@@ -403,7 +403,7 @@ _e_smart_hide(Evas_Object * obj)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     evas_object_hide(sd->obj);
     evas_object_hide(sd->reflection);
 }
@@ -415,7 +415,7 @@ _e_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     evas_object_color_set(sd->obj, r, g, b, a);
     evas_object_color_set(sd->reflection, r, g, b, a);
 }
@@ -427,7 +427,7 @@ _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return evas_object_clip_set(sd->obj, clip);
+        return evas_object_clip_set(sd->obj, clip);
     evas_object_clip_set(sd->reflection, clip);
 }
 
@@ -438,7 +438,7 @@ _e_smart_clip_unset(Evas_Object * obj)
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
-	return;
+        return;
     evas_object_clip_unset(sd->obj);
     evas_object_clip_unset(sd->reflection);
 }

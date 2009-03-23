@@ -102,7 +102,6 @@ Evas_Object * enna_carousel_add(Evas * evas)
 
 void enna_carousel_object_append(Evas_Object *obj, Evas_Object *child, const char *label)
 {
-
     Evas_Coord ow, oh;
     Evas_Object *o_edje;
     Carousel_Item *pi;
@@ -156,13 +155,13 @@ void enna_carousel_event_feed(Evas_Object *obj, void *event_info)
     switch (key)
     {
     case ENNA_KEY_LEFT:
-	_carousel_left_select(obj);
-	break;
+        _carousel_left_select(obj);
+        break;
     case ENNA_KEY_RIGHT:
-	_carousel_right_select(obj);
-	break;
+        _carousel_right_select(obj);
+        break;
     default:
-	break;
+        break;
     }
 
 
@@ -205,11 +204,11 @@ void enna_carousel_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *
     for (l = sd->items; l; l = l->next)
     {
         Carousel_Item *pi = l->data;
-	if (pi->selected)
-	{
-	    evas_object_geometry_get(pi->o_child, x, y, w, h);
-	    return;
-	}
+        if (pi->selected)
+        {
+            evas_object_geometry_get(pi->o_child, x, y, w, h);
+            return;
+        }
     }
 }
 
@@ -220,10 +219,10 @@ Evas_Object * enna_carousel_selected_object_get(Evas_Object *obj)
     for (l = sd->items; l; l = l->next)
     {
         Carousel_Item *pi = l->data;
-	if (pi->selected)
-	{
-	    return pi->o_child;
-	}
+        if (pi->selected)
+        {
+            return pi->o_child;
+        }
     }
     return NULL;
 }
@@ -236,10 +235,10 @@ int enna_carousel_selected_get(Evas_Object *obj)
     for (l = sd->items, i = 0; l; l = l->next, i++)
     {
         Carousel_Item *pi = l->data;
-	if (pi->selected)
-	{
-	    return i;
-	}
+        if (pi->selected)
+        {
+            return i;
+        }
     }
     return -1;
 }
@@ -264,20 +263,19 @@ static void _carousel_left_select(Evas_Object *obj)
     else
     {
         col--;
-
     }
     pi = eina_list_nth(sd->items, col);
     if (pi)
     {
-	Evas_Coord x, xedje, wedje, xbox;
+        Evas_Coord x, xedje, wedje, xbox;
 
-	evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
-	evas_object_geometry_get(sd->o_box, &xbox, NULL, NULL, NULL);
-	x = (xedje + wedje / 2 - xbox - sd->w / 2 );
-	elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
+        evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
+        evas_object_geometry_get(sd->o_box, &xbox, NULL, NULL, NULL);
+        x = (xedje + wedje / 2 - xbox - sd->w / 2 );
+        elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
 
-	_smart_item_select(sd, pi);
-	if (ppi) _smart_item_unselect(sd, ppi);
+        _smart_item_select(sd, pi);
+        if (ppi) _smart_item_unselect(sd, ppi);
     }
 
 }
@@ -303,15 +301,15 @@ static void _carousel_right_select(Evas_Object *obj)
     pi = eina_list_nth(sd->items, col);
     if (pi)
     {
-	Evas_Coord x, xedje, wedje, xbox;
+        Evas_Coord x, xedje, wedje, xbox;
 
-	evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
-	evas_object_geometry_get(sd->o_box, &xbox, NULL, NULL, NULL);
-	x = (xedje + wedje / 2 - xbox + sd->w / 2 );
-	elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
+        evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
+        evas_object_geometry_get(sd->o_box, &xbox, NULL, NULL, NULL);
+        x = (xedje + wedje / 2 - xbox + sd->w / 2 );
+        elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
 
-	_smart_item_select(sd, pi);
-	if (ppi) _smart_item_unselect(sd, ppi);
+        _smart_item_select(sd, pi);
+        if (ppi) _smart_item_unselect(sd, ppi);
     }
 
 }
@@ -321,15 +319,14 @@ static Carousel_Item *_smart_selected_item_get(Smart_Data *sd, int *col)
     Eina_List *l;
     int j;
 
-
     for (l = sd->items, j = 0; l; l = l->next, j++)
     {
-	Carousel_Item *pi = l->data;
-	if (pi->selected)
-	{
-	    if (col) *col = j;
-	    return pi;
-	}
+        Carousel_Item *pi = l->data;
+        if (pi->selected)
+        {
+            if (col) *col = j;
+            return pi;
+        }
     }
 
     return NULL;
@@ -386,17 +383,15 @@ static void _smart_reconfigure(Smart_Data * sd)
 
     EINA_LIST_FOREACH(sd->items, l, it)
     {
-	evas_object_size_hint_aspect_get(it->o_child, &apref, &aw, &ah);
+        evas_object_size_hint_aspect_get(it->o_child, &apref, &aw, &ah);
 
-	if (ah) ratio = (float)aw /(float)ah;
-	else ratio = 1.0;
-	oh = sd->h;
-	ow = oh * ratio;
-	edje_extern_object_min_size_set(it->o_edje, ow, oh);
-	evas_object_size_hint_min_set(it->o_edje, ow, oh);
+        if (ah) ratio = (float)aw /(float)ah;
+        else ratio = 1.0;
+        oh = sd->h;
+        ow = oh * ratio;
+        edje_extern_object_min_size_set(it->o_edje, ow, oh);
+        evas_object_size_hint_min_set(it->o_edje, ow, oh);
     }
-
-
 
     evas_object_size_hint_min_get(sd->o_box, &w, &h);
 
@@ -459,12 +454,12 @@ static void _smart_del(Evas_Object * obj)
     evas_object_del(sd->o_box);
     while (sd->items)
     {
-	Carousel_Item *pi = sd->items->data;
-	sd->items = eina_list_remove_list(sd->items, sd->items);
-	evas_object_del(pi->o_edje);
-	evas_object_del(pi->o_child);
-	eina_stringshare_del(pi->label);
-	free(pi);
+        Carousel_Item *pi = sd->items->data;
+        sd->items = eina_list_remove_list(sd->items, sd->items);
+        evas_object_del(pi->o_edje);
+        evas_object_del(pi->o_child);
+        eina_stringshare_del(pi->label);
+        free(pi);
     }
 
     evas_object_del(sd->o_scroll);
@@ -548,4 +543,3 @@ static void _smart_clip_unset(Evas_Object * obj)
         return;
     evas_object_clip_unset(sd->o_scroll);
 }
-

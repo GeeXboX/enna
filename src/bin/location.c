@@ -104,7 +104,7 @@ void enna_location_append(Evas_Object *obj, const char *label,
 
 
     edje_object_file_set(si->o_base, enna_config_theme_get(),
-	"enna/location/item");
+        "enna/location/item");
 
     if (label)
         edje_object_part_text_set(si->o_base, "enna.text.label", label);
@@ -217,9 +217,9 @@ static void _enna_location_smart_reconfigure(Smart_Data * sd)
 
     for (l = sd->items; l; l = l->next)
     {
-	Enna_Location_Item *si = l->data;
-	evas_object_size_hint_min_get(si->o_base, &mw, NULL);
-	w+= mw;
+        Enna_Location_Item *si = l->data;
+        evas_object_size_hint_min_get(si->o_base, &mw, NULL);
+        w+= mw;
     }
 
     evas_object_resize(sd->o_box, w, sd->h);
@@ -233,10 +233,21 @@ static void _enna_location_smart_init(void)
     if (_e_smart)
         return;
     static const Evas_Smart_Class sc =
-    { SMART_NAME, EVAS_SMART_CLASS_VERSION, _smart_add, _smart_del,
-            _smart_move, _smart_resize, _smart_show, _smart_hide,
-            _smart_color_set, _smart_clip_set, _smart_clip_unset, NULL,
-            NULL };
+    {
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _smart_add,
+        _smart_del,
+        _smart_move,
+        _smart_resize,
+        _smart_show,
+        _smart_hide,
+        _smart_color_set,
+        _smart_clip_set,
+        _smart_clip_unset,
+        NULL,
+        NULL
+    };
     _e_smart = evas_smart_class_new(&sc);
 }
 
@@ -262,7 +273,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_scroll = elm_scroller_add(obj);
     elm_scroller_content_set(sd->o_scroll, sd->o_box);
 //    elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_OFF,
-//	ELM_SCROLLER_POLICY_OFF);
+//        ELM_SCROLLER_POLICY_OFF);
     sd->smart_obj = obj;
     evas_object_smart_member_add(sd->o_scroll, obj);
     evas_object_smart_data_set(obj, sd);
@@ -281,11 +292,11 @@ static void _smart_del(Evas_Object * obj)
 
     while (sd->items)
     {
-	Enna_Location_Item *si = sd->items->data;
-	sd->items = eina_list_remove_list(sd->items, sd->items);
-	evas_object_del(si->o_base);
-	evas_object_del(si->o_icon);
-	free(si);
+        Enna_Location_Item *si = sd->items->data;
+        sd->items = eina_list_remove_list(sd->items, sd->items);
+        evas_object_del(si->o_base);
+        evas_object_del(si->o_icon);
+        free(si);
     }
     free(sd);
 }

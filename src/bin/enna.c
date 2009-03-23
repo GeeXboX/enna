@@ -77,84 +77,84 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         return;
 
     if (key == ENNA_KEY_QUIT)
-	{
-		if (enna->do_quit)
+    {
+        if (enna->do_quit)
             ecore_main_loop_quit();
-	    else
-		    enna_mainmenu_quitdiag(enna->o_mainmenu);
-	}
+        else
+            enna_mainmenu_quitdiag(enna->o_mainmenu);
+    }
 
     if (key == ENNA_KEY_FULLSCREEN)
     {
-	run_fullscreen = ~run_fullscreen;
-	ecore_evas_fullscreen_set(enna->ee, run_fullscreen);
+        run_fullscreen = ~run_fullscreen;
+        ecore_evas_fullscreen_set(enna->ee, run_fullscreen);
     }
 
-	if (enna_quitdiag_visible(enna->o_mainmenu))
-	{
-		switch (key)
-		{
-			case ENNA_KEY_Y:
-			case ENNA_KEY_QUIT:
-				enna->do_quit = 1;
-    			evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
-				break;
-			case ENNA_KEY_OK:
-			case ENNA_KEY_MENU:
-			case ENNA_KEY_CANCEL:
-			case ENNA_KEY_N:
-				enna->do_quit = 0;
-				enna_mainmenu_quitdiag(enna->o_mainmenu);
-				break;
-                        default:
-                                break;
-		}
-	}
-	else if (enna_mainmenu_visible(enna->o_mainmenu))
+    if (enna_quitdiag_visible(enna->o_mainmenu))
     {
         switch (key)
         {
-	case ENNA_KEY_MENU:
-	{
-	    enna_content_show();
-	    enna_mainmenu_hide(enna->o_mainmenu);
-	    edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-	    break;
-	}
-	case ENNA_KEY_RIGHT:
-	case ENNA_KEY_LEFT:
-	case ENNA_KEY_UP:
-	case ENNA_KEY_DOWN:
-	{
-	    enna_mainmenu_event_feed(enna->o_mainmenu, event);
-	    break;
-	}
-	case ENNA_KEY_OK:
-	case ENNA_KEY_SPACE:
-	{
-	    enna_mainmenu_activate_nth(enna->o_mainmenu,
-		enna_mainmenu_selected_get(enna->o_mainmenu));
-	    break;
-	}
-	default:
-	    break;
+            case ENNA_KEY_Y:
+            case ENNA_KEY_QUIT:
+                enna->do_quit = 1;
+                evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
+                break;
+            case ENNA_KEY_OK:
+            case ENNA_KEY_MENU:
+            case ENNA_KEY_CANCEL:
+            case ENNA_KEY_N:
+                enna->do_quit = 0;
+                enna_mainmenu_quitdiag(enna->o_mainmenu);
+                break;
+            default:
+                break;
+        }
+    }
+    else if (enna_mainmenu_visible(enna->o_mainmenu))
+    {
+        switch (key)
+        {
+    case ENNA_KEY_MENU:
+    {
+        enna_content_show();
+        enna_mainmenu_hide(enna->o_mainmenu);
+        edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+        break;
+    }
+    case ENNA_KEY_RIGHT:
+    case ENNA_KEY_LEFT:
+    case ENNA_KEY_UP:
+    case ENNA_KEY_DOWN:
+    {
+        enna_mainmenu_event_feed(enna->o_mainmenu, event);
+        break;
+    }
+    case ENNA_KEY_OK:
+    case ENNA_KEY_SPACE:
+    {
+        enna_mainmenu_activate_nth(enna->o_mainmenu,
+        enna_mainmenu_selected_get(enna->o_mainmenu));
+        break;
+    }
+    default:
+        break;
         }
     }
     else
     {
         switch (key)
         {
-	case ENNA_KEY_MENU:
-	{
-	    enna_content_hide();
-	    enna_mainmenu_show(enna->o_mainmenu);
-	    break;
-	}
-	default:
-	    enna_activity_event(
-		enna_mainmenu_selected_activity_get(enna->o_mainmenu),
-		event);
-	    break;
+    case ENNA_KEY_MENU:
+    {
+        enna_content_hide();
+        enna_mainmenu_show(enna->o_mainmenu);
+        break;
+    }
+    default:
+        enna_activity_event(
+        enna_mainmenu_selected_activity_get(enna->o_mainmenu),
+        event);
+        break;
         }
     }
 }
@@ -247,21 +247,21 @@ static int _enna_init(void)
     if (!enna->ee)
     {
         enna_log(ENNA_MSG_CRITICAL, NULL,
-	    "Can not create Ecore Evas with %s engine!",
-	    enna_config->engine);
-	_list_engines();
+            "Can not create Ecore Evas with %s engine!",
+            enna_config->engine);
+        _list_engines();
         return 0;
     }
 
     if (ecore_str_has_extension(enna_config->engine, "_x11"))
-	enna->ee_winid = (Ecore_X_Window) ecore_evas_window_get(enna->ee);
+        enna->ee_winid = (Ecore_X_Window) ecore_evas_window_get(enna->ee);
 
     enna->use_network = enna_config->use_network;
     enna->use_covers = enna_config->use_covers;
     enna->use_snapshots = enna_config->use_snapshots;
 
     ecore_evas_fullscreen_set(enna->ee, enna_config->fullscreen
-	| run_fullscreen);
+        | run_fullscreen);
 
     ecore_evas_title_set(enna->ee, "enna HTPC");
     ecore_evas_name_class_set(enna->ee, "enna", "enna");
@@ -373,7 +373,7 @@ static void _opt_geometry_parse(const char *optarg,
     int w = 0, h = 0;
 
     if (sscanf(optarg, "%dx%d", &w, &h) != 2)
-	return;
+        return;
 
     if (pw) *pw = w;
     if (ph) *ph = h;
@@ -398,15 +398,15 @@ static int parse_command_line(int argc, char **argv)
     int c, index;
     char short_options[] = "Vhfc:t:b:g:";
     struct option long_options [] =
-	{
-	    { "help", no_argument, 0, 'h' },
-	    { "version", no_argument, 0, 'V' },
-	    { "fs", no_argument, 0, 'f' },
-	    { "config", required_argument, 0, 'c' },
-	    { "theme", required_argument, 0, 't' },
-	    { "geometry", required_argument, 0, 'g'},
-	    { 0, 0, 0, 0 }
-	};
+    {
+        { "help", no_argument, 0, 'h' },
+        { "version", no_argument, 0, 'V' },
+        { "fs", no_argument, 0, 'f' },
+        { "config", required_argument, 0, 'c' },
+        { "theme", required_argument, 0, 't' },
+        { "geometry", required_argument, 0, 'g'},
+        { 0, 0, 0, 0 }
+    };
 
     /* command line argument processing */
     while (1)
@@ -418,35 +418,35 @@ static int parse_command_line(int argc, char **argv)
 
         switch (c)
         {
-	case 0:
-	    /* opt = long_options[index].name; */
-	    break;
+        case 0:
+            /* opt = long_options[index].name; */
+            break;
 
-	case '?':
-	case 'h':
-	    usage(argv[0]);
-	    return -1;
+        case '?':
+        case 'h':
+            usage(argv[0]);
+            return -1;
 
-	case 'V':
-	    break;
+        case 'V':
+            break;
 
-	case 'f':
-	    run_fullscreen = 1;
-	    break;
+        case 'f':
+            run_fullscreen = 1;
+            break;
 
-	case 'c':
-	    conffile = strdup(optarg);
-	    break;
+        case 'c':
+            conffile = strdup(optarg);
+            break;
 
-	case 't':
-	    theme_name = strdup(optarg);
-	    break;
-	case 'g':
-	    _opt_geometry_parse(optarg, &app_w, &app_h);
-	    break;
-	default:
-	    usage(argv[0]);
-	    return -1;
+        case 't':
+            theme_name = strdup(optarg);
+            break;
+        case 'g':
+            _opt_geometry_parse(optarg, &app_w, &app_h);
+            break;
+        default:
+            usage(argv[0]);
+            return -1;
         }
     }
 

@@ -105,7 +105,7 @@ int enna_content_select(const char *name)
 
         if (!strcmp(name, e->name))
         {
-	    new = e;
+            new = e;
             e->selected = 1;
         }
         else if (e->selected)
@@ -166,5 +166,3 @@ void enna_content_show()
         }
     }
 }
-
-

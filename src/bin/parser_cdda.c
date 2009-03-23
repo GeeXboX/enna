@@ -81,7 +81,7 @@ void
 cdda_free (cdda_t *c)
 {
   int i;
-  
+
   if (!c)
     return;
 
@@ -93,7 +93,7 @@ cdda_free (cdda_t *c)
     free (c->ext_data);
   if (c->genre)
     free (c->genre);
-  
+
   for (i = 0; i < c->total_tracks; i++)
     cdda_track_free (c->tracks[i]);
   free (c->tracks);
@@ -111,7 +111,7 @@ cd_read_toc (cdda_t *cd, const char *dev)
 
   if (!cd || !dev)
     return 1;
-  
+
   drive = open (dev, O_RDONLY | O_NONBLOCK);
   if (drive < 0)
     return 1;
@@ -122,15 +122,15 @@ cd_read_toc (cdda_t *cd, const char *dev)
 
   cd->total_tracks = last;
   cd->tracks = calloc (cd->total_tracks + 1, sizeof (cdda_track_t *));
-  
+
   for (i = first; i <= last; i++)
   {
     struct cdrom_tocentry tocentry;
     cdda_track_t *track;
-    
+
     tocentry.cdte_track = (i == last) ? 0xAA : i + 1;
     tocentry.cdte_format = CDROM_MSF;
-    
+
     ioctl (drive, CDROMREADTOCENTRY, &tocentry);
 
     track         = cdda_track_new (); 
@@ -171,7 +171,7 @@ cd_get_discid (cdda_t *cd)
 
   if (!cd)
     return;
-  
+
   for (i = 0; i < cd->total_tracks; i++)
     n += cd_do_checksum ((cd->tracks[i]->min * 60) + cd->tracks[i]->sec);
 
@@ -187,9 +187,9 @@ cd_identify (const char *dev)
 {
   cdda_t *cd;
   int err;
-  
+
   cd = cdda_new ();
-  
+
   err = cd_read_toc (cd, dev);
   if (err)
   {
@@ -198,7 +198,7 @@ cd_identify (const char *dev)
   }
 
   cd_get_discid (cd);
-  
+
   return cd;
 
  err_cd_read_toc:
@@ -213,7 +213,7 @@ cd_get_metadata (cdda_t *cd, cddb_disc_t *disc)
 {
   if (!cd || !disc)
     return;
-    
+
   if (cddb_disc_get_artist (disc))
     cd->artist = strdup (cddb_disc_get_artist (disc));
   if (cddb_disc_get_title (disc))
@@ -232,7 +232,7 @@ cd_get_tracks (cdda_t *cd, cddb_disc_t *disc)
 {
   cddb_track_t *track;
   int i = 0;
-  
+
   if (!cd || !disc)
     return;
 
@@ -262,7 +262,7 @@ parse_cddb (cdda_t *cd)
 
   if (!cd)
     return;
-  
+
   libcddb_init ();
   conn = cddb_new ();
   disc = cddb_disc_new ();
@@ -286,7 +286,7 @@ static void
 cd_get_tracks (cdda_t *cd)
 {
   int i;
-  
+
   if (!cd)
     return;
 
@@ -311,7 +311,7 @@ static void
 cd_display_info (cdda_t *cd)
 {
   int i;
-  
+
   if (!cd)
     return;
 
@@ -336,7 +336,7 @@ parse_cdda (const char *device)
 
   if (!device)
     return NULL;
-  
+
   cd = cd_identify (device);
 
 #ifdef BUILD_LIBCDDB
@@ -344,8 +344,8 @@ parse_cdda (const char *device)
 #else
   cd_get_tracks (cd);
 #endif
-  
+
   cd_display_info (cd);
-  
+
   return 0;
 }

@@ -84,7 +84,7 @@ get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
 {
     xmlNode *n, *node;
     xmlAttr *attr;
-    
+
     node = get_node_xml_tree (root, prop);
     if (!node)
         return NULL;
@@ -92,7 +92,7 @@ get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
     for (n = node; n; n = n->next)
     {
         xmlChar *content;
-        
+
         attr = n->properties;
         if (!attr || !attr->children)
             continue;
@@ -106,10 +106,10 @@ get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
 
         if (xmlStrcmp ((unsigned char *) attr_value, content) != 0)
             continue;
-        
+
         return xmlNodeGetContent (n);
     }
-    
+
     return NULL;
 }
 
