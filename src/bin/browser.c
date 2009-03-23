@@ -324,7 +324,7 @@ static void _smart_clip_unset(Evas_Object * obj)
     evas_object_clip_unset(sd->o_edje);
 }
 
-static  void _browse (void *data)
+static  void _browse(void *data)
 {
     Smart_Data *sd;
     Browse_Data *bd = data;
@@ -376,8 +376,10 @@ static  void _browse (void *data)
     }
 }
 
-static void _browse_down(Smart_Data *sd)
+static void _browse_down(void *data)
 {
+    Smart_Data *sd = data;
+
     if (!sd) return;
 
     sd->accept_ev = 0;
@@ -385,10 +387,20 @@ static void _browse_down(Smart_Data *sd)
     if (sd->vfs && sd->vfs->func.class_browse_down)
     {
         sd->files = sd->vfs->func.class_browse_down(sd->vfs->cookie);
+        sd->file = sd->vfs->func.class_vfs_get(sd->vfs->cookie);
         if (!sd->files)
         {
             evas_object_smart_callback_call (sd->obj, "root", NULL);
             return;
+        }
+        else
+        {
+            Browser_Selected_File_Data *ev = calloc(1, sizeof(Browser_Selected_File_Data));
+            ev->vfs = sd->vfs;
+            ev->file = sd->file;
+            ev->files = sd->files;
+
+            evas_object_smart_callback_call(sd->obj, "selected", ev);
         }
 
         /* Clear list and add new items */
@@ -463,10 +475,8 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             enna_list_append(sd->o_list, sd->item_class, item, item->label, _browse, bd);
 
         }
-        if (direction)
-            evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
-        else
-            enna_list_selected_set(sd->o_list, 0);
+        evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
+        enna_list_selected_set(sd->o_list, 0);
     }
     else if (!direction)
     {

@@ -315,8 +315,7 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 static void
 _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 {
-    evas_object_smart_callback_del(mod->o_wall, "selected", _picture_selected_cb);
-    ENNA_OBJECT_DEL(mod->o_wall);
+//    nothing to do here anymore
 }
 
 static void

@@ -139,7 +139,7 @@ int enna_list_jump_label(Evas_Object *obj, const char *label)
 
     API_ENTRY return -1;
 
-    if (!sd) return -1;
+    if (!sd || !label) return -1;
 
     EINA_LIST_FOREACH(sd->items, l, it)
     {
