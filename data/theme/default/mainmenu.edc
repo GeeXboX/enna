@@ -101,9 +101,9 @@ group
             state: "default" 0.0;
             //max: 1920 256;
             rel1
-            {   relative: 0 0;to: "bg";to: enna.clip.mainmenu;};
+            {   relative: 0.02 0.02;to: enna.clip.mainmenu;};
             rel2
-            {   relative: 1.0 1.0;to: "bg";to: enna.clip.mainmenu;};
+            {   relative: 0.98 0.98;to: enna.clip.mainmenu;};
          }
       }
       part
