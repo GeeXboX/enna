@@ -123,7 +123,7 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
     else if (strstr(path, "file://"))
     {
         Eina_List *files = NULL;
-	Eina_List *l;
+        Eina_List *l;
         char *filename = NULL;
         Eina_List *files_list = NULL;
         Eina_List *dirs_list = NULL;
@@ -132,13 +132,13 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
 
         files = ecore_file_ls(path+7);
 
-	/* If no file found return immediatly*/
-	if (!files)
-	    return NULL;
+        /* If no file found return immediatly*/
+        if (!files)
+            return NULL;
 
-	files = eina_list_sort(files, eina_list_count(files), EINA_COMPARE_CB(strcasecmp));
-	EINA_LIST_FOREACH(files, l, filename)
-	{
+        files = eina_list_sort(files, eina_list_count(files), EINA_COMPARE_CB(strcasecmp));
+        EINA_LIST_FOREACH(files, l, filename)
+        {
             sprintf(dir, "%s/%s", path, filename);
             if (filename[0] == '.')
                 continue;
@@ -160,7 +160,7 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
             else if (enna_util_uri_has_extension(dir, caps))
             {
                 Enna_Vfs_File *f;
-		f = enna_vfs_create_file(dir, filename, icon, NULL);
+                f = enna_vfs_create_file(dir, filename, icon, NULL);
                 files_list = eina_list_append(files_list, f);
             }
         }
@@ -176,7 +176,6 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
     }
 
     return NULL;
-
 }
 
 #ifdef BUILD_ACTIVITY_MUSIC
@@ -223,7 +222,7 @@ static Eina_List * _class_browse_down(Class_Private_Data *data,
                 Root_Directories *root;
 
                 root = l->data;
-		file = enna_vfs_create_directory(root->uri, root->label,
+                file = enna_vfs_create_directory(root->uri, root->label,
                         root->icon ? root->icon : "icon/hd", NULL);
                 files = eina_list_append(files, file);
             }
@@ -328,15 +327,15 @@ static int _add_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "file://"))
     {
-	root = calloc(1, sizeof(Root_Directories));
+        root = calloc(1, sizeof(Root_Directories));
 
-	root->uri = strdup(v->uri);
-	root->label = strdup(v->label);
-	root->icon = strdup(v->icon);
+        root->uri = strdup(v->uri);
+        root->label = strdup(v->label);
+        root->icon = strdup(v->icon);
 
-	enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "add : %s", root->label);
-	priv->config->root_directories = eina_list_append(
-	    priv->config->root_directories, root);
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "add : %s", root->label);
+        priv->config->root_directories = eina_list_append(
+            priv->config->root_directories, root);
     }
     return 1;
 }
@@ -348,9 +347,9 @@ static int _remove_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "file://"))
     {
-	Root_Directories *root;
-	Eina_List *l;
-	EINA_LIST_FOREACH(priv->config->root_directories, l, root)
+        Root_Directories *root;
+        Eina_List *l;
+        EINA_LIST_FOREACH(priv->config->root_directories, l, root)
             {
                 if (!strcmp(root->label, v->label))
                 {
@@ -429,11 +428,12 @@ static Enna_Class_Vfs class_music = {
     "Browse Local Devices",
     NULL,
     "icon/hd",
-    { NULL,
-      NULL,
-      _class_browse_up_music,
-      _class_browse_down_music,
-      _class_vfs_get_music,
+    {
+        NULL,
+        NULL,
+        _class_browse_up_music,
+        _class_browse_down_music,
+        _class_vfs_get_music,
     },
     NULL
 };
@@ -446,11 +446,12 @@ static Enna_Class_Vfs class_video = {
     "Browse Local Devices",
     NULL,
     "icon/hd",
-    { NULL,
-      NULL,
-      _class_browse_up_video,
-      _class_browse_down_video,
-      _class_vfs_get_video,
+    {
+        NULL,
+        NULL,
+        _class_browse_up_video,
+        _class_browse_down_video,
+        _class_vfs_get_video,
     },
     NULL
 };
@@ -463,11 +464,12 @@ static Enna_Class_Vfs class_photo = {
     "Browse Local Devices",
     NULL,
     "icon/hd",
-    { NULL,
-      NULL,
-      _class_browse_up_photo,
-      _class_browse_down_photo,
-      _class_vfs_get_photo,
+    {
+        NULL,
+        NULL,
+        _class_browse_up_photo,
+        _class_browse_down_photo,
+        _class_vfs_get_photo,
     },
     NULL
 };

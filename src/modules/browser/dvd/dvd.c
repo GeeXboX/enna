@@ -80,8 +80,8 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
 {
 
     return enna_vfs_create_directory(mod->dvd->uri,
-	ecore_file_file_get(mod->dvd->uri),
-	evas_stringshare_add("icon/dvd"), NULL);
+        ecore_file_file_get(mod->dvd->uri),
+        evas_stringshare_add("icon/dvd"), NULL);
 }
 
 
@@ -93,11 +93,11 @@ static Enna_Class_Vfs class_dvd = {
     NULL,
     "icon/dev/dvd",
     {
-	NULL,
-	NULL,
-	_class_browse_up,
-	_class_browse_down,
-	_class_vfs_get,
+        NULL,
+        NULL,
+        _class_browse_up,
+        _class_browse_down,
+        _class_vfs_get,
     },
     NULL
 };
@@ -108,8 +108,8 @@ static int _add_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "dvd://"))
     {
-	printf("Dvd added\n");
-	enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
+        printf("Dvd added\n");
+        enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
     }
     return 1;
 }
@@ -120,8 +120,8 @@ static int _remove_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "dvd://"))
     {
-	printf("DVD Removes\n");
-	enna_vfs_class_remove("dvd", ENNA_CAPS_VIDEO);
+        printf("DVD Removes\n");
+        enna_vfs_class_remove("dvd", ENNA_CAPS_VIDEO);
     }
     return 1;
 }
@@ -148,16 +148,12 @@ void module_init(Enna_Module *em)
 
     mod->dvd = calloc(1, sizeof(Class_Private_Data));
 
-
-
     mod->dvd->volume_add_handler =
         ecore_event_handler_add(ENNA_EVENT_VOLUME_ADDED,
-	    _add_volumes_cb, mod->dvd);
+            _add_volumes_cb, mod->dvd);
     mod->dvd->volume_remove_handler =
         ecore_event_handler_add(ENNA_EVENT_VOLUME_REMOVED,
-	    _remove_volumes_cb, mod->dvd);
-
-
+            _remove_volumes_cb, mod->dvd);
 }
 
 void module_shutdown(Enna_Module *em)
@@ -166,5 +162,4 @@ void module_shutdown(Enna_Module *em)
 
     mod = em->mod;
     free(mod->dvd);
-
 }

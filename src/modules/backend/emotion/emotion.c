@@ -129,25 +129,25 @@ static void _eos_cb(void *data, Evas_Object * obj, void *event_info)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "End of stream");
     if (mod->event_cb)
-	mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
+        mod->event_cb(mod->event_cb_data, ENNA_MP_EVENT_EOF);
 }
 
 static Enna_Class_MediaplayerBackend class = {
     "emotion",
     1,
     {
-	_class_init,
-	_class_shutdown,
-	_class_file_set,
-	_class_play,
-	_class_seek,
-	_class_stop,
-	_class_pause,
-	_class_position_get,
-	_class_length_get,
-	NULL,
-	_class_event_cb_set,
-	_class_video_obj_get
+        _class_init,
+        _class_shutdown,
+        _class_file_set,
+        _class_play,
+        _class_seek,
+        _class_stop,
+        _class_pause,
+        _class_position_get,
+        _class_length_get,
+        NULL,
+        _class_event_cb_set,
+        _class_video_obj_get
     }
 };
 
@@ -168,7 +168,7 @@ void module_init(Enna_Module *em)
     char *value = NULL;
 
     if (!em)
-	return;
+        return;
 
     mod = calloc(1, sizeof(Enna_Module_Emotion));
 
@@ -181,8 +181,8 @@ void module_init(Enna_Module *em)
 
     if (cfgdata)
     {
-	Eina_List *l;
-	for (l = cfgdata->pair; l; l = l->next)
+        Eina_List *l;
+        for (l = cfgdata->pair; l; l = l->next)
         {
             Config_Pair *pair = l->data;
 
@@ -193,16 +193,16 @@ void module_init(Enna_Module *em)
                 enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * type: %s", value);
 
                 if ((!strcmp("gstreamer", value)) ||(!strcmp("xine", value)) || (!strcmp("vlc", value)))
-		    mod->plugin = eina_stringshare_add(value);
-		else
-		{
+                    mod->plugin = eina_stringshare_add(value);
+                else
+                {
                     enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
                             "   - unknown type, 'gstreamer' used instead");
-		    mod->plugin = eina_stringshare_add("gstreamer");
-		}
+                    mod->plugin = eina_stringshare_add("gstreamer");
+                }
             }
 
-	}
+        }
     }
 
     mod->em = em;
@@ -212,7 +212,7 @@ void module_init(Enna_Module *em)
     if (!emotion_object_init(mod->o_emotion, mod->plugin))
     {
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-	    "could not initialize %s plugin for emotion", mod->plugin);
+            "could not initialize %s plugin for emotion", mod->plugin);
         return;
     }
     evas_object_smart_callback_add(mod->o_emotion, "decode_stop", _eos_cb, NULL);

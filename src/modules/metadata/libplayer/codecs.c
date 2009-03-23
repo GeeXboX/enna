@@ -437,7 +437,7 @@ get_codec_name (char *codec_id)
 
     if (!codec_id)
         return strdup ("");
-  
+
     for (i = 0; codecs_mapping[i].codec_id; i++)
         if (!strcmp (codec_id, codecs_mapping[i].codec_id))
             return strdup (codecs_mapping[i].codec_name);

@@ -175,9 +175,20 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
 }
 
 static Enna_Class_Vfs class_shoutcast =
-{ "shoutcast", 1, "SHOUTcast Streaming", NULL, "icon/shoutcast",
-{ NULL, NULL, _class_browse_up, _class_browse_down, _class_vfs_get,
-}, NULL
+{
+    "shoutcast",
+    1,
+    "SHOUTcast Streaming",
+    NULL,
+    "icon/shoutcast",
+    {
+        NULL,
+        NULL,
+        _class_browse_up,
+        _class_browse_down,
+        _class_vfs_get,
+    },
+    NULL
 };
 
 /* Module interface */

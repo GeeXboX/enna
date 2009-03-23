@@ -130,7 +130,7 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
                         Eina_List *theme_list;
                         Eina_List *l;
                         Efreet_Icon_Theme *theme;
-                        
+
                         theme_list = efreet_icon_theme_list_get();
                         EINA_LIST_FOREACH(theme_list, l, theme)
                         {
@@ -251,11 +251,11 @@ class =
     NULL,
     "icon/games",
     {
-	_class_init,
-	_class_shutdown,
-	_class_show,
-	_class_hide,
-	_class_event
+        _class_init,
+        _class_shutdown,
+        _class_show,
+        _class_hide,
+        _class_event
     },
     NULL
 };
@@ -277,19 +277,18 @@ static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const 
     if (!item) return NULL;
 
     if (!strcmp(part, "elm.swallow.icon"))
-     {
-	 Evas_Object *ic;
+    {
+        Evas_Object *ic;
 
-	 ic = elm_icon_add(obj);
-	 elm_icon_file_set(ic, item->icon, NULL);
-     
-	 evas_object_size_hint_min_set(ic, 64, 64);
-	 evas_object_show(ic);
-	 return ic;
-     }
+        ic = elm_icon_add(obj);
+        elm_icon_file_set(ic, item->icon, NULL);
 
-   return NULL;
+        evas_object_size_hint_min_set(ic, 64, 64);
+        evas_object_show(ic);
+        return ic;
+    }
 
+    return NULL;
 }
 
 static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)

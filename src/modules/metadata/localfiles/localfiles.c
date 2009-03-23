@@ -86,7 +86,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
     const char *filename = NULL;
     char cover[1024];
     int i, j;
-    
+
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Trying to get cover from picture files");
 
@@ -96,7 +96,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
     filename = ecore_file_file_get (meta->uri);
     if (!filename)
         goto out;
-    
+
     dir = ecore_file_dir_get (meta->uri);
     if (!ecore_file_can_read (dir))
         goto out;
@@ -140,7 +140,7 @@ localfiles_grab (Enna_Metadata *meta, int caps)
     /* do not grab if already known */
     if (meta->cover)
         return;
-    
+
     cover_get_from_saved_file (meta);
     if (meta->cover)
         goto cover_found;

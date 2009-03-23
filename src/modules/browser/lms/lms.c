@@ -116,9 +116,20 @@ Enna_Module_Api module_api =
 };
 
 static Enna_Class_Vfs class =
-{ "lms", 1, "Browse Library", NULL, "icon/library",
-{ NULL, NULL, _class_browse_up, _class_browse_down, _class_vfs_get,
-}, NULL
+{
+    "lms",
+    1,
+    "Browse Library",
+    NULL,
+    "icon/library",
+    {
+        NULL,
+        NULL,
+        _class_browse_up,
+        _class_browse_down,
+        _class_vfs_get,
+    },
+    NULL
 };
 
 #if 0
@@ -691,7 +702,6 @@ static Eina_List * _browse_artists_root()
 
 static Eina_List *_class_browse_up(const char *path, void *cookie)
 {
-
     /* Display LMS ROOT menu*/
     if (!path)
     {

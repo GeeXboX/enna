@@ -108,13 +108,13 @@ volume_free (volume_t *v)
     ENNA_FREE (v->mount_point);
     if (v->enna_volume)
     {
-	Enna_Volume *ev = v->enna_volume;
-	eina_stringshare_del(ev->name);
-	eina_stringshare_del(ev->label);
-	eina_stringshare_del(ev->icon);
-	eina_stringshare_del(ev->type);
-	eina_stringshare_del(ev->uri);
-	free(ev);
+        Enna_Volume *ev = v->enna_volume;
+        eina_stringshare_del(ev->name);
+        eina_stringshare_del(ev->label);
+        eina_stringshare_del(ev->icon);
+        eina_stringshare_del(ev->type);
+        eina_stringshare_del(ev->uri);
+        free(ev);
     }
     free (v);
 }
@@ -239,8 +239,8 @@ volume_find (Eina_List *list, const char *udi)
         return NULL;
 
     EINA_LIST_FOREACH(list, l, v)
-	if (!volume_find_helper(v, udi))
-	    break;
+        if (!volume_find_helper(v, udi))
+            break;
 
     return v;
 }

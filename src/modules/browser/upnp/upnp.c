@@ -402,7 +402,7 @@ browse_server_list (const char *uri, int parent)
         return NULL;
 
     EINA_LIST_FOREACH(mod->devices, l, srv)
-	if (!strcmp (srv->udn, udn))
+        if (!strcmp (srv->udn, udn))
             break;
 
     /* no server to browse */
@@ -460,7 +460,7 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
 
     /* check if device is already known */
     EINA_LIST_FOREACH(mod->devices, l, srv)
-	if (!strcmp (srv->location, location))
+        if (!strcmp (srv->location, location))
             return;
 
     srv = calloc (1, sizeof (upnp_media_server_t));
@@ -603,7 +603,7 @@ void module_shutdown (Enna_Module *em)
         (GSSDP_RESOURCE_BROWSER (mod->cp), FALSE);
 
     EINA_LIST_FOREACH(mod->devices, l, srv)
-	upnp_media_server_free(srv);
+        upnp_media_server_free(srv);
     g_object_unref (mod->cp);
     g_object_unref (mod->ctx);
 

@@ -227,22 +227,22 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     mn = (int) ((len - (h * 3600)) / 60);
 
     snprintf(buf, sizeof(buf),
-	"<hilight>Size<tab><tab><tab></hilight>:<tab>%.2f MB<br>"
-	"<hilight>Length<tab><tab></hilight>:<tab>%.2d h %.2d mn<br>"
-	"<hilight>Video Codec<tab></hilight>:<tab>%s<br>"
-	"<hilight>Size<tab><tab><tab></hilight>:<tab>%dx%d<br>"
-	"<hilight>Framerate<tab></hilight>:<tab>%.2f fps<br>"
-	"<hilight>Audio Codec<tab></hilight>:<tab>%s<br>"
-	"<hilight>Bitrate<tab><tab></hilight>:<tab>%i kbps<br>"
-	"<hilight>Samplerate</hilight><tab>:<tab>%i Hz<br>",
-	metadata->size / 1024.0 / 1024.0,
-	h, mn,
-	metadata->video->codec,
-	metadata->video->width, metadata->video->height,
-	metadata->video->framerate,
-	metadata->music->codec,
-	metadata->music->bitrate / 1000,
-	metadata->music->samplerate);
+        "<hilight>Size<tab><tab><tab></hilight>:<tab>%.2f MB<br>"
+        "<hilight>Length<tab><tab></hilight>:<tab>%.2d h %.2d mn<br>"
+        "<hilight>Video Codec<tab></hilight>:<tab>%s<br>"
+        "<hilight>Size<tab><tab><tab></hilight>:<tab>%dx%d<br>"
+        "<hilight>Framerate<tab></hilight>:<tab>%.2f fps<br>"
+        "<hilight>Audio Codec<tab></hilight>:<tab>%s<br>"
+        "<hilight>Bitrate<tab><tab></hilight>:<tab>%i kbps<br>"
+        "<hilight>Samplerate</hilight><tab>:<tab>%i Hz<br>",
+        metadata->size / 1024.0 / 1024.0,
+        h, mn,
+        metadata->video->codec,
+        metadata->video->width, metadata->video->height,
+        metadata->video->framerate,
+        metadata->music->codec,
+        metadata->music->bitrate / 1000,
+        metadata->music->samplerate);
 
     edje_object_part_text_set(sd->o_edje, "enna.text", buf);
 }
@@ -267,9 +267,20 @@ static void _enna_mediaplayer_smart_init(void)
     if (_e_smart)
         return;
     static const Evas_Smart_Class sc =
-    { SMART_NAME, EVAS_SMART_CLASS_VERSION, _e_smart_add, _e_smart_del,
-            _e_smart_move, _e_smart_resize, _e_smart_show, _e_smart_hide,
-            _e_smart_color_set, _e_smart_clip_set, _e_smart_clip_unset, NULL };
+    {
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _e_smart_add,
+        _e_smart_del,
+        _e_smart_move,
+        _e_smart_resize,
+        _e_smart_show,
+        _e_smart_hide,
+        _e_smart_color_set,
+        _e_smart_clip_set,
+        _e_smart_clip_unset,
+        NULL
+    };
     _e_smart = evas_smart_class_new(&sc);
 }
 
@@ -289,7 +300,6 @@ static void _e_smart_add(Evas_Object * obj)
     sd->h = 0;
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
-
 }
 
 static void _e_smart_del(Evas_Object * obj)

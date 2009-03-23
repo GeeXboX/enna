@@ -93,7 +93,6 @@ ehal_remove_storage (char *udi)
         if (!strcmp (s->udi, udi))
             storage_free (s);
     }
-
 }
 
 static void
@@ -113,7 +112,7 @@ ehal_find_storages (void *data, void *reply, DBusError *error)
     }
 
     EINA_LIST_FOREACH(ret->strings, l, udi)
-	ehal_add_storage (udi);
+        ehal_add_storage (udi);
 }
 
 static void
@@ -191,49 +190,49 @@ vfs_add_volume_entry (volume_t *v)
         }
 
         icon = eina_stringshare_add(ic);
-	type =  eina_stringshare_add("file://");
-	snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
-	uri = eina_stringshare_add(tmp);
+        type =  eina_stringshare_add("file://");
+        snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+        uri = eina_stringshare_add(tmp);
         break;
 
     case VOLUME_TYPE_CD:
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
         icon =  eina_stringshare_add("icon/dev/cdrom");
-	type =  eina_stringshare_add("file://");
-	snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
-	uri = eina_stringshare_add(tmp);
+        type =  eina_stringshare_add("file://");
+        snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+        uri = eina_stringshare_add(tmp);
         break;
 
     case VOLUME_TYPE_CDDA:
         caps = ENNA_CAPS_MUSIC;
         icon =  eina_stringshare_add("icon/dev/cdda2");
-	type =  eina_stringshare_add("cdda://");
-	uri  =  eina_stringshare_add("cdda://");
+        type =  eina_stringshare_add("cdda://");
+        uri  =  eina_stringshare_add("cdda://");
         break;
 
     case VOLUME_TYPE_DVD:
         caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
         icon =  eina_stringshare_add("icon/dev/dvd");
-	type =  eina_stringshare_add("file://");
-	snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
-	uri = eina_stringshare_add(tmp);
+        type =  eina_stringshare_add("file://");
+        snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+        uri = eina_stringshare_add(tmp);
 
         break;
 
     case VOLUME_TYPE_DVD_VIDEO:
         caps = ENNA_CAPS_VIDEO;
         icon =  eina_stringshare_add("icon/dev/dvd");
-	type =  eina_stringshare_add("dvd://"); /* Need a way to manage dvdnav:// !*/
-	uri  =  eina_stringshare_add("dvd://"); /* Need a way to manage dvdnav:// !*/
+        type =  eina_stringshare_add("dvd://"); /* Need a way to manage dvdnav:// !*/
+        uri  =  eina_stringshare_add("dvd://"); /* Need a way to manage dvdnav:// !*/
         break;
 
     case VOLUME_TYPE_VCD:
     case VOLUME_TYPE_SVCD:
         caps = ENNA_CAPS_VIDEO;
         icon = eina_stringshare_add("icon/dev/cdrom");
-	type =  eina_stringshare_add("vcd://");
-	uri =  eina_stringshare_add("vcd://");
-	break;
+        type =  eina_stringshare_add("vcd://");
+        uri =  eina_stringshare_add("vcd://");
+        break;
     }
 
     /* get volume displayed name/label */
@@ -291,11 +290,11 @@ ehal_remove_volume (char *udi)
     {
         if (v->udi && !strcmp (v->udi, udi))
         {
-	    if (v->enna_volume)
-	    {
-		enna_volumes_remove(v->enna_volume->type, v->enna_volume);
-		printf("remove volume : %s\n", v->enna_volume->label);
-	    }
+            if (v->enna_volume)
+            {
+                enna_volumes_remove(v->enna_volume->type, v->enna_volume);
+                printf("remove volume : %s\n", v->enna_volume->label);
+            }
             volume_free (v);
         }
     }

@@ -202,8 +202,8 @@ storage_find (Eina_List *list, const char *udi)
         return NULL;
 
     EINA_LIST_FOREACH(list, l, s)
-	if (!storage_find_helper(s, udi))
-	     break;
+        if (!storage_find_helper(s, udi))
+             break;
 
     return s;
 }

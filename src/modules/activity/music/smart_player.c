@@ -139,20 +139,20 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     {
         /* FIXME : add edje cb at end of cover transition to switch properly covers*/
 
-//	sd->o_cover = enna_reflection_add(evas_object_evas_get(sd->o_edje));
+//        sd->o_cover = enna_reflection_add(evas_object_evas_get(sd->o_edje));
         sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-	//enna_reflection_fill_inside_set(sd->o_cover, 0);
-	enna_image_fill_inside_set(sd->o_cover, 0);
+        //enna_reflection_fill_inside_set(sd->o_cover, 0);
+        enna_image_fill_inside_set(sd->o_cover, 0);
         //enna_reflection_file_set(sd->o_cover, meta->cover);
-	enna_image_file_set(sd->o_cover, meta->cover);
+        enna_image_file_set(sd->o_cover, meta->cover);
         edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
         edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
 
     }
     else
     {
-	sd->o_cover = edje_object_add(evas_object_evas_get(sd->o_edje));
-	edje_object_file_set(sd->o_cover, enna_config_theme_get(), "icon/unknown_cover");
+        sd->o_cover = edje_object_add(evas_object_evas_get(sd->o_edje));
+        edje_object_file_set(sd->o_cover, enna_config_theme_get(), "icon/unknown_cover");
         edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
         edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
     }
@@ -173,7 +173,6 @@ static void _enna_mediaplayer_smart_reconfigure(Smart_Data * sd)
 
     evas_object_move(sd->o_edje, x, y);
     evas_object_resize(sd->o_edje, w, h);
-
 }
 
 static void _enna_mediaplayer_smart_init(void)
@@ -182,19 +181,19 @@ static void _enna_mediaplayer_smart_init(void)
         return;
     static const Evas_Smart_Class sc =
     {
-	SMART_NAME,
-	EVAS_SMART_CLASS_VERSION,
-	_smart_add,
-	_smart_del,
-	_smart_move,
-	_smart_resize,
-	_smart_show,
-	_smart_hide,
-	_smart_color_set,
-	_smart_clip_set,
-	_smart_clip_unset,
-	NULL,
-	NULL
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _smart_add,
+        _smart_del,
+        _smart_move,
+        _smart_resize,
+        _smart_show,
+        _smart_hide,
+        _smart_color_set,
+        _smart_clip_set,
+        _smart_clip_unset,
+        NULL,
+        NULL
     };
     _smart = evas_smart_class_new(&sc);
 }

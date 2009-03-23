@@ -131,35 +131,35 @@ static mrl_t * set_dvd_stream(const char *uri, mrl_resource_t type)
     meta = mrl_get_metadata_dvd (mod->player, mrl, (uint8_t *) &prop);
     if (meta)
     {
-	enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Meta DVD VolumeID: %s", meta);
-	free (meta);
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Meta DVD VolumeID: %s", meta);
+        free (meta);
     }
 
     if (prop)
     {
-	int i;
+        int i;
 
-	enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Meta DVD Titles: %i", prop);
+        enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Meta DVD Titles: %i", prop);
 
-	for (i = 1; i <= prop; i++)
-	{
-	    uint32_t chapters, angles, length;
+        for (i = 1; i <= prop; i++)
+        {
+            uint32_t chapters, angles, length;
 
-	    chapters = mrl_get_metadata_dvd_title (mod->player, mrl, i,
-		MRL_METADATA_DVD_TITLE_CHAPTERS);
-	    angles = mrl_get_metadata_dvd_title (mod->player, mrl, i,
-		MRL_METADATA_DVD_TITLE_ANGLES);
-	    length = mrl_get_metadata_dvd_title (mod->player, mrl, i,
-		MRL_METADATA_DVD_TITLE_LENGTH);
+            chapters = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+                MRL_METADATA_DVD_TITLE_CHAPTERS);
+            angles = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+                MRL_METADATA_DVD_TITLE_ANGLES);
+            length = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+                MRL_METADATA_DVD_TITLE_LENGTH);
 
-	    enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,"Meta DVD Title %i (%.2f sec), Chapters: %i, Angles: %i",
-		i, length / 1000.0, chapters, angles);
-	    if (length > tmp)
-	    {
-		tmp = length;
-		title = i;
-	    }
-	}
+            enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,"Meta DVD Title %i (%.2f sec), Chapters: %i, Angles: %i",
+                i, length / 1000.0, chapters, angles);
+            if (length > tmp)
+            {
+                tmp = length;
+                title = i;
+            }
+        }
     }
     args->title_start = title;
 
@@ -212,8 +212,8 @@ static int _class_file_set(const char *uri, const char *label)
         mrl = set_network_stream(uri, MRL_RESOURCE_MMS);
     else if (!strncmp(uri, URI_TYPE_NETVDR, strlen(URI_TYPE_NETVDR)))
     {
-         mrl = set_network_stream(uri, MRL_RESOURCE_NETVDR);
-         player_type = mod->tv_type;
+        mrl = set_network_stream(uri, MRL_RESOURCE_NETVDR);
+        player_type = mod->tv_type;
     }
     else if (!strncmp(uri, URI_TYPE_RTP, strlen(URI_TYPE_RTP)))
         mrl = set_network_stream(uri, MRL_RESOURCE_RTP);

@@ -155,141 +155,141 @@ get_distribution (buffer_t *b)
 static void
 get_uname (buffer_t *b)
 {
-  struct utsname name;
+    struct utsname name;
 
-  buffer_append (b, "<hilight>OS: </hilight>");
-  if (uname (&name) == -1)
-      buffer_append (b, BUF_DEFAULT);
-  else
-      buffer_appendf (b, "%s %s for %s",
-                      name.sysname, name.release, name.machine);
-  buffer_append (b, "<br>");
+    buffer_append (b, "<hilight>OS: </hilight>");
+    if (uname (&name) == -1)
+        buffer_append (b, BUF_DEFAULT);
+    else
+        buffer_appendf (b, "%s %s for %s",
+                        name.sysname, name.release, name.machine);
+    buffer_append (b, "<br>");
 }
 
 #ifdef BUILD_LIBXRANDR
 static void
 get_resolution (buffer_t *b)
 {
-  XRRScreenConfiguration *sc;
-  Window root;
-  Display *dpy;
-  short rate;
-  int screen;
-  int minWidth, maxWidth, minHeight, maxHeight;
+    XRRScreenConfiguration *sc;
+    Window root;
+    Display *dpy;
+    short rate;
+    int screen;
+    int minWidth, maxWidth, minHeight, maxHeight;
 
-  dpy = XOpenDisplay (":0.0");
-  if (!dpy)
-    return;
+    dpy = XOpenDisplay (":0.0");
+    if (!dpy)
+        return;
 
-  screen = DefaultScreen (dpy);
-  if (screen >= ScreenCount (dpy))
-    return;
+    screen = DefaultScreen (dpy);
+    if (screen >= ScreenCount (dpy))
+        return;
 
-  root = RootWindow (dpy, screen);
+    root = RootWindow (dpy, screen);
 
-  sc = XRRGetScreenInfo (dpy, root);
-  if (!sc)
-    return;
+    sc = XRRGetScreenInfo (dpy, root);
+    if (!sc)
+        return;
 
-  rate = XRRConfigCurrentRate (sc);
-  XRRGetScreenSizeRange (dpy, root,
-                         &minWidth, &minHeight, &maxWidth, &maxHeight);
+    rate = XRRConfigCurrentRate (sc);
+    XRRGetScreenSizeRange (dpy, root,
+                           &minWidth, &minHeight, &maxWidth, &maxHeight);
 
-  buffer_append (b, "<hilight>Screen Resolution: </hilight>");
-  buffer_appendf (b, "%dx%d at %d Hz (min: %dx%d, max: %dx%d)",
-                  DisplayWidth (dpy, screen), DisplayHeight (dpy, screen),
-                  rate, minWidth, minHeight, maxWidth, maxHeight);
-  buffer_append (b, "<br>");
+    buffer_append (b, "<hilight>Screen Resolution: </hilight>");
+    buffer_appendf (b, "%dx%d at %d Hz (min: %dx%d, max: %dx%d)",
+                    DisplayWidth (dpy, screen), DisplayHeight (dpy, screen),
+                    rate, minWidth, minHeight, maxWidth, maxHeight);
+    buffer_append (b, "<br>");
 }
 #endif
 
 static void
 get_network (buffer_t *b)
 {
-  int s, n, i;
-  struct ifreq *ifr;
-  struct ifconf ifc;
-  char buf[1024];
+    int s, n, i;
+    struct ifreq *ifr;
+    struct ifconf ifc;
+    char buf[1024];
 
-  buffer_append (b, "<hilight>Available network interfaces:</hilight><br>");
+    buffer_append (b, "<hilight>Available network interfaces:</hilight><br>");
 
-  /* get a socket handle. */
-  s = socket (AF_INET, SOCK_STREAM, 0);
-  if (s < 0)
-    return;
+    /* get a socket handle. */
+    s = socket (AF_INET, SOCK_STREAM, 0);
+    if (s < 0)
+        return;
 
-  /* query available interfaces. */
-  ifc.ifc_len = sizeof (buf);
-  ifc.ifc_buf = buf;
-  if (ioctl (s, SIOCGIFCONF, &ifc) < 0)
-    goto err_net;
+    /* query available interfaces. */
+    ifc.ifc_len = sizeof (buf);
+    ifc.ifc_buf = buf;
+    if (ioctl (s, SIOCGIFCONF, &ifc) < 0)
+        goto err_net;
 
-  /* iterate through the list of interfaces. */
-  ifr = ifc.ifc_req;
-  n = ifc.ifc_len / sizeof (struct ifreq);
-  for (i = 0; i < n; i++)
-  {
-    struct ifreq *item = &ifr[i];
+    /* iterate through the list of interfaces. */
+    ifr = ifc.ifc_req;
+    n = ifc.ifc_len / sizeof (struct ifreq);
+    for (i = 0; i < n; i++)
+    {
+        struct ifreq *item = &ifr[i];
 
-    /* discard loopback interface */
-    if (!strcmp (item->ifr_name, "lo"))
-      continue;
+        /* discard loopback interface */
+        if (!strcmp (item->ifr_name, "lo"))
+          continue;
 
-    /* show the device name and IP address */
-    buffer_appendf (b, "  * %s (IP: %s, ", item->ifr_name,
-              inet_ntoa (((struct sockaddr_in *)&item->ifr_addr)->sin_addr));
+        /* show the device name and IP address */
+        buffer_appendf (b, "  * %s (IP: %s, ", item->ifr_name,
+                inet_ntoa (((struct sockaddr_in *)&item->ifr_addr)->sin_addr));
 
-    if (ioctl (s, SIOCGIFNETMASK, item) < 0)
-      continue;
+        if (ioctl (s, SIOCGIFNETMASK, item) < 0)
+            continue;
 
-    buffer_appendf (b, "Netmask: %s<br>",
-           inet_ntoa (((struct sockaddr_in *)&item->ifr_netmask)->sin_addr));
-  }
+        buffer_appendf (b, "Netmask: %s<br>",
+              inet_ntoa (((struct sockaddr_in *)&item->ifr_netmask)->sin_addr));
+    }
 
  err_net:
-  close (s);
+    close (s);
 }
 
 static void
 get_default_gw (buffer_t *b)
 {
-  char devname[64];
-  unsigned long d, g, m;
-  int flgs, ref, use, metric, mtu, win, ir;
-  FILE *fp;
+    char devname[64];
+    unsigned long d, g, m;
+    int flgs, ref, use, metric, mtu, win, ir;
+    FILE *fp;
 
-  fp = fopen ("/proc/net/route", "r");
-  if (!fp)
-    return;
+    fp = fopen ("/proc/net/route", "r");
+    if (!fp)
+        return;
 
-  if (fscanf (fp, "%*[^\n]\n") < 0) /* Skip the first line. */
-    return;
+    if (fscanf (fp, "%*[^\n]\n") < 0) /* Skip the first line. */
+        return;
 
-  buffer_append (b, "<hilight>Default Gateway: </hilight>");
+    buffer_append (b, "<hilight>Default Gateway: </hilight>");
 
-  while (1)
-  {
-    struct in_addr gw;
-    int r;
+    while (1)
+    {
+        struct in_addr gw;
+        int r;
 
-    r = fscanf (fp, "%63s%lx%lx%X%d%d%d%lx%d%d%d\n",
-                devname, &d, &g, &flgs, &ref, &use, &metric, &m,
-                &mtu, &win, &ir);
+        r = fscanf (fp, "%63s%lx%lx%X%d%d%d%lx%d%d%d\n",
+                    devname, &d, &g, &flgs, &ref, &use, &metric, &m,
+                    &mtu, &win, &ir);
 
-    if (r != 11)
-      if ((r < 0) && feof (fp))
+        if (r != 11)
+            if ((r < 0) && feof (fp))
+                break;
+
+        /* we only care about default gateway */
+        if (d != 0)
+            continue;
+
+        gw.s_addr = g;
+        buffer_appendf (b, "%s<br>", inet_ntoa (gw));
         break;
+    }
 
-    /* we only care about default gateway */
-    if (d != 0)
-      continue;
-
-    gw.s_addr = g;
-    buffer_appendf (b, "%s<br>", inet_ntoa (gw));
-    break;
-  }
-
-  fclose (fp);
+    fclose (fp);
 }
 
 static void

@@ -234,10 +234,10 @@ amazon_grab (Enna_Metadata *meta, int caps)
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Grabbing info from %s", meta->uri);
-    
+
     /* Format the keywords */
     escaped_keywords = url_escape_string (mod->curl, meta->keywords);
-            
+
     cover = amazon_cover_get (search_type, meta->keywords, escaped_keywords);
     if (cover)
     {

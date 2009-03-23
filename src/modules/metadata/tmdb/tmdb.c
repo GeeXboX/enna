@@ -75,14 +75,14 @@ tmdb_parse (Enna_Metadata *meta)
 
     xmlDocPtr doc = NULL;
     xmlChar *tmp;
-    
+
     if (!meta || !meta->keywords)
         return;
 
     /* TMDB only has sense on video files */
     if (meta->type != ENNA_METADATA_VIDEO)
         return;
-    
+
     /* get HTTP compliant keywords */
     escaped_keywords = url_escape_string (mod->curl, meta->keywords);
 
@@ -172,7 +172,7 @@ tmdb_parse (Enna_Metadata *meta)
             xmlFree (tmp);
         }
     }
-    
+
     /* fetch movie year of production */
     if (!meta->year)
     {
@@ -199,7 +199,7 @@ tmdb_parse (Enna_Metadata *meta)
         {
             if (!cat)
                 break;
-            
+
             tmp = get_prop_value_from_xml_tree (cat, "name");
             if (tmp)
             {
@@ -219,12 +219,12 @@ tmdb_parse (Enna_Metadata *meta)
         if (tmp)
         {
             char cover[1024];
-                        
+
             snprintf (cover, sizeof (cover), "%s/.enna/%s/%s.png",
                       enna_util_user_home_get(), PATH_COVERS, meta->md5);
             url_save_to_disk (mod->curl, (char *) tmp, cover);
             xmlFree (tmp);
-            
+
             meta->cover = strdup (cover);
         }
     }
@@ -238,16 +238,16 @@ tmdb_parse (Enna_Metadata *meta)
         if (tmp)
         {
             char back[1024];
-                        
+
             snprintf (back, sizeof (back), "%s/.enna/%s/%s.png",
                       enna_util_user_home_get(), PATH_BACKDROPS, meta->md5);
             url_save_to_disk (mod->curl, (char *) tmp, back);
             xmlFree (tmp);
-            
+
             meta->backdrop = strdup (back);
         }
     }
-    
+
  error:
     if (doc)
         xmlFreeDoc (doc);

@@ -89,9 +89,9 @@ typedef struct _Enna_Module_Photo
     Enna_Module *em;
 #ifdef BUILD_LIBEXIF
     struct {
-	Evas_Object *o_scroll;
-	Evas_Object *o_exif;
-	char *str;
+        Evas_Object *o_scroll;
+        Evas_Object *o_exif;
+        char *str;
     }exif;
 
 #endif
@@ -109,7 +109,6 @@ static void _photo_info_delete_cb(void *data,
     const char *emission,
     const char *source)
 {
-
     Evas_Object *o_pict;
 
 
@@ -128,7 +127,6 @@ static void _photo_info_delete_cb(void *data,
     mod->state = WALL_VIEW;
 }
 
-
 static void _photo_info_delete()
 {
     edje_object_signal_callback_add(mod->o_preview, "done","", _photo_info_delete_cb, NULL);
@@ -136,7 +134,6 @@ static void _photo_info_delete()
     edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
     edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
 }
-
 
 #ifdef BUILD_LIBEXIF
 static void _exif_content_foreach_func(ExifEntry *entry, void *callback_data)
@@ -148,8 +145,8 @@ static void _exif_content_foreach_func(ExifEntry *entry, void *callback_data)
 
   exif_entry_get_value(entry, buf, sizeof(buf));
   snprintf(buf_txtblk, sizeof(buf_txtblk), "<hilight>%s</hilight> : %s<br>",
-	 exif_tag_get_name(entry->tag),
-	 exif_entry_get_value(entry, buf, sizeof(buf)));
+         exif_tag_get_name(entry->tag),
+         exif_entry_get_value(entry, buf, sizeof(buf)));
 
   if (!mod->exif.str)
       len = strlen(buf_txtblk) + 1;
@@ -296,7 +293,6 @@ _picture_selected_cb (void *data, Evas_Object *obj, void *event_info)
     _photo_info_fs();
 }
 
-
 static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
@@ -335,37 +331,36 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 
     if (ev->file->is_directory)
     {
-	ENNA_OBJECT_DEL(mod->o_wall);
-	mod->o_wall = enna_wall_add(mod->em->evas);
-	evas_object_smart_callback_add(mod->o_wall, "selected", _picture_selected_cb, NULL);
+        ENNA_OBJECT_DEL(mod->o_wall);
+        mod->o_wall = enna_wall_add(mod->em->evas);
+        evas_object_smart_callback_add(mod->o_wall, "selected", _picture_selected_cb, NULL);
 
-	evas_object_show(mod->o_wall);
+        evas_object_show(mod->o_wall);
 
-	EINA_LIST_FOREACH(ev->files, l, f)
-	{
-	    if (!ecore_file_is_dir(f->uri + 7))
-	    {
-		enna_wall_picture_append(mod->o_wall, f->uri);
-	    }
-	    else
-	    {
-		count++;
-	    }
-	}
-	edje_object_part_swallow(mod->o_edje, "enna.swallow.wall", mod->o_wall);
-	edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
-	enna_wall_select_nth(mod->o_wall, 0, 0);
+        EINA_LIST_FOREACH(ev->files, l, f)
+        {
+            if (!ecore_file_is_dir(f->uri + 7))
+            {
+                enna_wall_picture_append(mod->o_wall, f->uri);
+            }
+            else
+            {
+                count++;
+            }
+        }
+        edje_object_part_swallow(mod->o_edje, "enna.swallow.wall", mod->o_wall);
+        edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
+        enna_wall_select_nth(mod->o_wall, 0, 0);
 
-	if (!count)
-	{
-	    edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
-	    mod->state = WALL_VIEW;
-	}
+        if (!count)
+        {
+            edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
+            mod->state = WALL_VIEW;
+        }
 
     }
     else
     {
-
 
     }
 
@@ -383,7 +378,6 @@ static void _browse(void *data)
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
-
 
     mod->state = BROWSER_VIEW;
 
@@ -413,14 +407,13 @@ _create_menu()
     categories = enna_vfs_get(ENNA_CAPS_PHOTO);
     EINA_LIST_FOREACH(categories, l, cat)
     {
-   	Photo_Item_Class_Data *item;
+        Photo_Item_Class_Data *item;
 
-	item = calloc(1, sizeof(Photo_Item_Class_Data));
-	item->icon = eina_stringshare_add(cat->icon);
-	item->label = eina_stringshare_add(cat->label);
+        item = calloc(1, sizeof(Photo_Item_Class_Data));
+        item->icon = eina_stringshare_add(cat->icon);
+        item->label = eina_stringshare_add(cat->label);
         enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
     }
-
 
     enna_list_selected_set(o, 0);
     mod->o_menu = o;
@@ -430,7 +423,6 @@ _create_menu()
 
 static void _create_gui(void)
 {
-
     /* Set default state */
     mod->state = MENU_VIEW;
 
@@ -439,7 +431,6 @@ static void _create_gui(void)
     edje_object_file_set(mod->o_edje, enna_config_theme_get(), "module/photo");
 
     _create_menu();
-
 }
 
 /*****************************************************************************/
@@ -475,111 +466,122 @@ static void _class_event(void *event_info)
     switch (mod->state)
     {
     case MENU_VIEW:
-	switch (key)
-	{
-	case ENNA_KEY_LEFT:
-	case ENNA_KEY_CANCEL:
-	    enna_content_hide();
-	    enna_mainmenu_show(enna->o_mainmenu);
-	    break;
-	case ENNA_KEY_RIGHT:
-	case ENNA_KEY_OK:
-	case ENNA_KEY_SPACE:
-	    _browse(enna_list_selected_data_get(mod->o_menu));
-	    break;
-	default:
-	    enna_list_event_key_down(mod->o_menu, event_info);
-	}
-	break;
+        switch (key)
+        {
+        case ENNA_KEY_LEFT:
+        case ENNA_KEY_CANCEL:
+            enna_content_hide();
+            enna_mainmenu_show(enna->o_mainmenu);
+            break;
+        case ENNA_KEY_RIGHT:
+        case ENNA_KEY_OK:
+        case ENNA_KEY_SPACE:
+            _browse(enna_list_selected_data_get(mod->o_menu));
+            break;
+        default:
+            enna_list_event_key_down(mod->o_menu, event_info);
+        }
+        break;
     case BROWSER_VIEW:
-	switch (key)
-	{
-	case ENNA_KEY_RIGHT:
-	case ENNA_KEY_LEFT:
-	    mod->state = WALL_VIEW;
-	    edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
-	    break;
-	default:
-	    enna_browser_event_feed(mod->o_browser, event_info);
-	}
-	break;
+        switch (key)
+        {
+        case ENNA_KEY_RIGHT:
+        case ENNA_KEY_LEFT:
+            mod->state = WALL_VIEW;
+            edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
+            break;
+        default:
+            enna_browser_event_feed(mod->o_browser, event_info);
+        }
+        break;
     case WALL_VIEW:
-	switch (key)
-	{
-	case ENNA_KEY_CANCEL:
+        switch (key)
+        {
+        case ENNA_KEY_CANCEL:
 
-	    edje_object_signal_emit(mod->o_edje, "browser,show", "enna");
-	    mod->state = BROWSER_VIEW;
-	    break;
+            edje_object_signal_emit(mod->o_edje, "browser,show", "enna");
+            mod->state = BROWSER_VIEW;
+            break;
 
-	case ENNA_KEY_OK:
-	case ENNA_KEY_SPACE:
-	    _photo_info_fs();
-	    break;
-	case ENNA_KEY_RIGHT:
-	case ENNA_KEY_LEFT:
-	case ENNA_KEY_UP:
-	case ENNA_KEY_DOWN:
-	    enna_wall_event_feed(mod->o_wall, ev);
-	default:
-	    break;
+        case ENNA_KEY_OK:
+        case ENNA_KEY_SPACE:
+            _photo_info_fs();
+            break;
+        case ENNA_KEY_RIGHT:
+        case ENNA_KEY_LEFT:
+        case ENNA_KEY_UP:
+        case ENNA_KEY_DOWN:
+            enna_wall_event_feed(mod->o_wall, ev);
+        default:
+            break;
 
-	}
-	break;
+        }
+        break;
     case WALL_PREVIEW:
-	switch (key)
-	{
-	case ENNA_KEY_CANCEL:
-	    _photo_info_delete();
-	    break;
+        switch (key)
+        {
+        case ENNA_KEY_CANCEL:
+            _photo_info_delete();
+            break;
 #ifdef BUILD_LIBEXIF
-	case ENNA_KEY_UP:
-	    edje_object_signal_emit(mod->o_preview, "show,exif", "enna");
-	    break;
-	case ENNA_KEY_DOWN:
-	    edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
-	    break;
+        case ENNA_KEY_UP:
+            edje_object_signal_emit(mod->o_preview, "show,exif", "enna");
+            break;
+        case ENNA_KEY_DOWN:
+            edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
+            break;
 #endif
-	default:
-	    break;
+        default:
+            break;
 
-	}
-	break;
+        }
+        break;
     case SLIDESHOW_VIEW:
-	switch (key)
-	{
-	case ENNA_KEY_CANCEL:
-	    evas_object_del(mod->o_slideshow);
-	    mod->state = WALL_VIEW;
-	    edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
-	    edje_object_signal_emit(mod->o_edje, "list,show", "enna");
-	    break;
-	case ENNA_KEY_RIGHT:
-	    enna_slideshow_next(mod->o_slideshow);
-	    break;
-	case ENNA_KEY_LEFT:
-	    enna_slideshow_prev(mod->o_slideshow);
-	    break;
-	case ENNA_KEY_OK:
-	case ENNA_KEY_SPACE:
-	    enna_slideshow_play(mod->o_slideshow);
+        switch (key)
+        {
+        case ENNA_KEY_CANCEL:
+            evas_object_del(mod->o_slideshow);
+            mod->state = WALL_VIEW;
+            edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
+            edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+            break;
+        case ENNA_KEY_RIGHT:
+            enna_slideshow_next(mod->o_slideshow);
+            break;
+        case ENNA_KEY_LEFT:
+            enna_slideshow_prev(mod->o_slideshow);
+            break;
+        case ENNA_KEY_OK:
+        case ENNA_KEY_SPACE:
+            enna_slideshow_play(mod->o_slideshow);
 
-	    break;
-	default:
-	    break;
-	}
-	break;
+            break;
+        default:
+            break;
+        }
+        break;
     default:
-	break;
+        break;
     }
 
 }
 
-static Enna_Class_Activity
-class =
-{ "photo", 1, "photo", NULL, "icon/photo",
-  { _class_init, _class_shutdown, _class_show, _class_hide,
-    _class_event }, NULL };
+static Enna_Class_Activity class =
+{
+    "photo",
+    1,
+    "photo",
+    NULL,
+    "icon/photo",
+    {
+        _class_init,
+        _class_shutdown,
+        _class_show,
+        _class_hide,
+        _class_event
+    },
+    NULL
+};
 
 
 /* Class Item interface */
@@ -599,18 +601,17 @@ static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const 
     if (!item) return NULL;
 
     if (!strcmp(part, "elm.swallow.icon"))
-     {
-	 Evas_Object *ic;
+    {
+        Evas_Object *ic;
 
-	 ic = elm_icon_add(obj);
-	 elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
-	 evas_object_size_hint_min_set(ic, 64, 64);
-	 evas_object_show(ic);
-	 return ic;
-     }
+        ic = elm_icon_add(obj);
+        elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+        evas_object_size_hint_min_set(ic, 64, 64);
+        evas_object_show(ic);
+        return ic;
+    }
 
-   return NULL;
-
+    return NULL;
 }
 
 static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
