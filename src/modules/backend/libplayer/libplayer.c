@@ -110,7 +110,11 @@ static mrl_t * set_network_stream(const char *uri, mrl_resource_t type)
 
     args = calloc(1, sizeof(mrl_resource_network_args_t));
     args->url = strdup(uri);
-    mrl = mrl_new(mod->player, type, args);
+
+    if (type == MRL_RESOURCE_NETVDR)
+        mrl = mrl_new(mod->players[mod->tv_type], type, args);
+    else
+        mrl = mrl_new(mod->players[mod->default_type], type, args);
 
     return mrl;
 
@@ -126,9 +130,9 @@ static mrl_t * set_dvd_stream(const char *uri, mrl_resource_t type)
     int title = 0;
 
     args = calloc(1, sizeof(mrl_resource_videodisc_args_t));
-    mrl = mrl_new(mod->player, type, args);
+    mrl = mrl_new(mod->players[mod->dvd_type], type, args);
 
-    meta = mrl_get_metadata_dvd (mod->player, mrl, (uint8_t *) &prop);
+    meta = mrl_get_metadata_dvd (mod->players[mod->dvd_type], mrl, (uint8_t *) &prop);
     if (meta)
     {
         enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME, "Meta DVD VolumeID: %s", meta);
@@ -145,11 +149,11 @@ static mrl_t * set_dvd_stream(const char *uri, mrl_resource_t type)
         {
             uint32_t chapters, angles, length;
 
-            chapters = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+            chapters = mrl_get_metadata_dvd_title (mod->players[mod->dvd_type], mrl, i,
                 MRL_METADATA_DVD_TITLE_CHAPTERS);
-            angles = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+            angles = mrl_get_metadata_dvd_title (mod->players[mod->dvd_type], mrl, i,
                 MRL_METADATA_DVD_TITLE_ANGLES);
-            length = mrl_get_metadata_dvd_title (mod->player, mrl, i,
+            length = mrl_get_metadata_dvd_title (mod->players[mod->dvd_type], mrl, i,
                 MRL_METADATA_DVD_TITLE_LENGTH);
 
             enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,"Meta DVD Title %i (%.2f sec), Chapters: %i, Angles: %i",
@@ -182,7 +186,7 @@ static mrl_t * set_tv_stream(const char *device, const char *driver, mrl_resourc
             args->driver = strdup(driver);
     }
 
-    mrl = mrl_new(mod->player, type, args);
+    mrl = mrl_new(mod->players[mod->tv_type], type, args);
     return mrl;
 }
 
@@ -193,7 +197,7 @@ static mrl_t * set_local_stream(const char *uri)
 
     args = calloc(1, sizeof(mrl_resource_local_args_t));
     args->location = strdup(uri);
-    mrl = mrl_new(mod->player, MRL_RESOURCE_FILE, args);
+    mrl = mrl_new(mod->players[mod->default_type], MRL_RESOURCE_FILE, args);
 
     return mrl;
 }
