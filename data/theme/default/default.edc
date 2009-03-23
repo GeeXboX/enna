@@ -180,5 +180,6 @@ collections
             transition: ACCELERATE 0.5;
             target: "popup.clip";
          }
+      }
    }
 }
