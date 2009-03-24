@@ -120,7 +120,7 @@ void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * cl
     it->func = func;
     it->data = data;
     it->label = eina_stringshare_add(label);
-    evas_object_smart_callback_add(sd->o_list, "clicked", _item_activated, sd);
+    
     sd->items = eina_list_append(sd->items, it);
 }
 
@@ -264,6 +264,8 @@ static void _smart_add(Evas_Object *obj)
     elm_object_scale_set(sd->o_letter, 6.0);
     evas_object_show(sd->o_letter);
     edje_object_part_swallow(sd->o_edje, "enna.swallow.letter", sd->o_letter);
+
+    evas_object_smart_callback_add(sd->o_list, "clicked", _item_activated, sd);
 
     evas_object_smart_member_add(sd->o_edje, obj);
 
