@@ -86,7 +86,7 @@ static valhalla_db_file_where_t *_args_add(valhalla_db_file_where_t **args)
     }
     else
     {
-        new = *args;;
+        new = *args;
         for (; new->next; new = new->next)
             ;
         new->next = calloc(1, sizeof(valhalla_db_file_where_t));
