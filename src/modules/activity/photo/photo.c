@@ -316,7 +316,6 @@ static void
 _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 {
 //    nothing to do here anymore
-    printf("browse Down\n");
 }
 
 static void
