@@ -236,6 +236,7 @@ _class_event(void *event_info)
     case VIDEOPLAYER_VIEW:
         switch (key)
         {
+        case ENNA_KEY_QUIT:
         case ENNA_KEY_CANCEL:
         case ENNA_KEY_OK:
         _return_to_video_info_gui();
