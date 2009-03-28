@@ -110,7 +110,7 @@ static const struct
     { "p",            0,              ENNA_KEY_P             },
     { "q",            0,              ENNA_KEY_Q             },
     { "r",            0,              ENNA_KEY_R             },
-    { "s",            0,              ENNA_KEY_STOP          },
+    { "s",            0,              ENNA_KEY_S             },
     { "t",            0,              ENNA_KEY_T             },
     { "u",            0,              ENNA_KEY_U             },
     { "v",            0,              ENNA_KEY_V             },
