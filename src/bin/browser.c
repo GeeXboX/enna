@@ -350,15 +350,15 @@ static  void _browse(void *data)
         {
             /* File selected is a directory */
             sd->files = sd->vfs->func.class_browse_up(sd->file->uri, sd->vfs->cookie);
-	    /* No media found */
+            /* No media found */
             if (!eina_list_count(sd->files))
-	    {
-		sd->file = enna_vfs_create_directory(sd->file->uri, "No media found !", "icon_nofile", NULL);
-		sd->files = NULL;
-		sd->files = eina_list_append(sd->files,sd->file);
-	    }
-	    ev->file = sd->file;
-	    ev->files = sd->files;
+            {
+                sd->file = enna_vfs_create_directory(sd->file->uri, "No media found !", "icon_nofile", NULL);
+                sd->files = NULL;
+                sd->files = eina_list_append(sd->files,sd->file);
+            }
+            ev->file = sd->file;
+            ev->files = sd->files;
             evas_object_smart_callback_call (sd->obj, "selected", ev);
         }
         else if (sd->show_file)
