@@ -522,7 +522,7 @@ _class_vfs_get (void *cookie)
 
 static Enna_Class_Vfs class_upnp = {
     ENNA_MODULE_NAME,
-    1,
+    10,
     "UPnP/DLNA Media Servers",
     NULL,
     "icon/upnp",
