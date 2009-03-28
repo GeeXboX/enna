@@ -76,14 +76,6 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     if (!enna)
         return;
 
-    if (key == ENNA_KEY_QUIT)
-    {
-        if (enna->do_quit)
-            ecore_main_loop_quit();
-        else
-            enna_mainmenu_quitdiag(enna->o_mainmenu);
-    }
-
     if (key == ENNA_KEY_FULLSCREEN)
     {
         run_fullscreen = ~run_fullscreen;
@@ -97,14 +89,12 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         case ENNA_KEY_Y:
         case ENNA_KEY_QUIT:
             enna->do_quit = 1;
-            evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
             break;
         case ENNA_KEY_OK:
         case ENNA_KEY_MENU:
         case ENNA_KEY_CANCEL:
         case ENNA_KEY_N:
             enna->do_quit = 0;
-            enna_mainmenu_quitdiag(enna->o_mainmenu);
             break;
         default:
             break;
@@ -154,6 +144,14 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
             enna_activity_event(enna_mainmenu_selected_activity_get(enna->o_mainmenu), event);
             break;
         }
+    }
+
+    if (key == ENNA_KEY_QUIT)
+    {
+        if (enna->do_quit)
+            ecore_main_loop_quit();
+        else
+            enna_mainmenu_quitdiag(enna->o_mainmenu);
     }
 }
 
