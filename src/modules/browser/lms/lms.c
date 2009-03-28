@@ -118,7 +118,7 @@ Enna_Module_Api module_api =
 static Enna_Class_Vfs class =
 {
     "lms",
-    1,
+    10,
     "Browse Library",
     NULL,
     "icon/library",
