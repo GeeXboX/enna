@@ -297,6 +297,8 @@ _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _button_clicked_play_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
@@ -307,6 +309,8 @@ _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _button_clicked_pause_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
@@ -317,6 +321,8 @@ _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _button_clicked_prev_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
@@ -327,6 +333,8 @@ _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _button_clicked_rewind_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
@@ -337,6 +345,8 @@ _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _button_clicked_forward_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
@@ -347,6 +357,8 @@ _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _button_clicked_next_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
@@ -357,6 +369,8 @@ _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _button_clicked_stop_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
