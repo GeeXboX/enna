@@ -599,7 +599,7 @@ Enna_Module_Api module_api =
 static Enna_Class_Vfs class =
 {
     ENNA_MODULE_NAME,
-    1,
+    2,
     "Media Library",
     NULL,
     "icon/library",
