@@ -94,6 +94,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         case ENNA_KEY_MENU:
         case ENNA_KEY_CANCEL:
             do_quit = 0;
+            enna_mainmenu_quitdiag(enna->o_mainmenu);
             break;
         default:
             break;
