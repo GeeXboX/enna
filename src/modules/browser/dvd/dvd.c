@@ -88,7 +88,7 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
 
 static Enna_Class_Vfs class_dvd = {
     "dvd_dvd",
-    1,
+    0,
     "Watch DVD Video",
     NULL,
     "icon/dev/dvd",
