@@ -545,7 +545,10 @@ static int _em_valhalla_init(void)
         valhalla_suffix_add(mod->valhalla, ext);
     }
     if (music_ext)
+    {
         eina_list_free(music_ext);
+        music_ext = NULL;
+    }
 
     /* Add paths */
     for (l = path; l; l = l->next)
@@ -554,7 +557,10 @@ static int _em_valhalla_init(void)
         valhalla_path_add(mod->valhalla, str, 1);
     }
     if (path)
+    {
         eina_list_free(path);
+        path = NULL;
+    }
 
     rc = valhalla_run(mod->valhalla, scan_loop, scan_sleep, scan_priority);
     if (rc)
