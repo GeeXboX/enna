@@ -399,7 +399,6 @@ static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_in
 
 static void _quitdiag_yes_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    enna->do_quit = 1;
     enna_log(ENNA_MSG_INFO, NULL, "quitdiag button: yes");
     evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
 }
@@ -407,7 +406,6 @@ static void _quitdiag_yes_clicked_cb(void *data, Evas_Object *obj, void *event_i
 static void _quitdiag_no_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data* sd = data;
-    enna->do_quit = 0;
     edje_object_signal_emit (sd->o_edje, "quitdiag,hide", "enna");
     enna_log(ENNA_MSG_INFO, NULL, "quitdiag button: no");
 }

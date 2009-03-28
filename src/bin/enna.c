@@ -69,6 +69,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
 {
     Enna *enna;
     enna_key_t key;
+    int do_quit = 0;
 
     key = enna_get_key(event);
 
@@ -87,12 +88,12 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         switch (key)
         {
         case ENNA_KEY_QUIT:
-            enna->do_quit = 1;
+            do_quit = 1;
             break;
         case ENNA_KEY_OK:
         case ENNA_KEY_MENU:
         case ENNA_KEY_CANCEL:
-            enna->do_quit = 0;
+            do_quit = 0;
             break;
         default:
             break;
@@ -146,7 +147,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
 
     if (key == ENNA_KEY_QUIT)
     {
-        if (enna->do_quit)
+        if (do_quit)
             ecore_main_loop_quit();
         else
             enna_mainmenu_quitdiag(enna->o_mainmenu);
@@ -212,8 +213,6 @@ static int _enna_init(void)
 
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
-
-    enna->do_quit = 0;
 
     enna_module_init();
 
