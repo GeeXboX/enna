@@ -168,7 +168,7 @@ static void _resize_viewport_cb(Ecore_Evas * ee)
     ecore_evas_resize(enna->ee, w, h);
 }
 
-static void _cb_delete(void *data, Evas *e, Evas_Object *obj, void *einfo)
+static void _cb_delete(Ecore_Evas *ee)
 {
     ecore_main_loop_quit();
 }
@@ -282,8 +282,7 @@ static void _create_gui(void)
     evas_object_move(o, 0, 0);
     evas_object_show(o);
     ecore_evas_resize(enna->ee, app_w, app_h);
-    ecore_evas_object_associate(enna->ee, o, 0);
-    evas_object_event_callback_add(o, EVAS_CALLBACK_FREE, _cb_delete, NULL);
+
     enna->o_edje = o;
 
     /* Create Background Object */
@@ -301,6 +300,7 @@ static void _create_gui(void)
     evas_object_event_callback_add(enna->o_edje, EVAS_CALLBACK_KEY_DOWN, _event_bg_key_down_cb, enna);
 
     ecore_evas_callback_resize_set(enna->ee, _resize_viewport_cb);
+    ecore_evas_callback_delete_request_set(enna->ee, _cb_delete);
     /* Create Content Object */
     o = enna_content_add(enna->evas);
     edje_object_part_swallow(enna->o_edje, "enna.swallow.module", o);
