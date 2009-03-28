@@ -86,14 +86,12 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     {
         switch (key)
         {
-        case ENNA_KEY_Y:
         case ENNA_KEY_QUIT:
             enna->do_quit = 1;
             break;
         case ENNA_KEY_OK:
         case ENNA_KEY_MENU:
         case ENNA_KEY_CANCEL:
-        case ENNA_KEY_N:
             enna->do_quit = 0;
             break;
         default:

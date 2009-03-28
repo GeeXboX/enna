@@ -528,7 +528,7 @@ static void _smart_add(Evas_Object * obj)
     bt = elm_button_add(sd->o_edje);
     sd->o_quitdiag_yes_button=bt;
     evas_object_smart_callback_add(bt, "clicked", _quitdiag_yes_clicked_cb, sd);
-    elm_button_label_set(bt, "(Y)es, I want to quit.");
+    elm_button_label_set(bt, "Yes, I want to quit.");
     ic = elm_icon_add(sd->o_edje);
     elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_stop");
     elm_button_icon_set(bt, ic);
@@ -539,7 +539,7 @@ static void _smart_add(Evas_Object * obj)
     bt = elm_button_add(sd->o_edje);
     sd->o_quitdiag_no_button=bt;
     evas_object_smart_callback_add(bt, "clicked", _quitdiag_no_clicked_cb, sd);
-    elm_button_label_set(bt, "(N)o, I want to stay.");
+    elm_button_label_set(bt, "No, I want to stay.");
     ic = elm_icon_add(sd->o_edje);
     elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
     elm_button_icon_set(bt, ic);
