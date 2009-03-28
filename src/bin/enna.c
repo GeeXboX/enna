@@ -94,67 +94,65 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     {
         switch (key)
         {
-            case ENNA_KEY_Y:
-            case ENNA_KEY_QUIT:
-                enna->do_quit = 1;
-                evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
-                break;
-            case ENNA_KEY_OK:
-            case ENNA_KEY_MENU:
-            case ENNA_KEY_CANCEL:
-            case ENNA_KEY_N:
-                enna->do_quit = 0;
-                enna_mainmenu_quitdiag(enna->o_mainmenu);
-                break;
-            default:
-                break;
+        case ENNA_KEY_Y:
+        case ENNA_KEY_QUIT:
+            enna->do_quit = 1;
+            evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
+            break;
+        case ENNA_KEY_OK:
+        case ENNA_KEY_MENU:
+        case ENNA_KEY_CANCEL:
+        case ENNA_KEY_N:
+            enna->do_quit = 0;
+            enna_mainmenu_quitdiag(enna->o_mainmenu);
+            break;
+        default:
+            break;
         }
     }
     else if (enna_mainmenu_visible(enna->o_mainmenu))
     {
         switch (key)
         {
-    case ENNA_KEY_MENU:
-    {
-        enna_content_show();
-        enna_mainmenu_hide(enna->o_mainmenu);
-        edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
-        break;
-    }
-    case ENNA_KEY_RIGHT:
-    case ENNA_KEY_LEFT:
-    case ENNA_KEY_UP:
-    case ENNA_KEY_DOWN:
-    {
-        enna_mainmenu_event_feed(enna->o_mainmenu, event);
-        break;
-    }
-    case ENNA_KEY_OK:
-    case ENNA_KEY_SPACE:
-    {
-        enna_mainmenu_activate_nth(enna->o_mainmenu,
-        enna_mainmenu_selected_get(enna->o_mainmenu));
-        break;
-    }
-    default:
-        break;
+        case ENNA_KEY_MENU:
+        {
+            enna_content_show();
+            enna_mainmenu_hide(enna->o_mainmenu);
+            edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+            break;
+        }
+        case ENNA_KEY_RIGHT:
+        case ENNA_KEY_LEFT:
+        case ENNA_KEY_UP:
+        case ENNA_KEY_DOWN:
+        {
+            enna_mainmenu_event_feed(enna->o_mainmenu, event);
+            break;
+        }
+        case ENNA_KEY_OK:
+        case ENNA_KEY_SPACE:
+        {
+            enna_mainmenu_activate_nth(enna->o_mainmenu,
+            enna_mainmenu_selected_get(enna->o_mainmenu));
+            break;
+        }
+        default:
+            break;
         }
     }
     else
     {
         switch (key)
         {
-    case ENNA_KEY_MENU:
-    {
-        enna_content_hide();
-        enna_mainmenu_show(enna->o_mainmenu);
-        break;
-    }
-    default:
-        enna_activity_event(
-        enna_mainmenu_selected_activity_get(enna->o_mainmenu),
-        event);
-        break;
+        case ENNA_KEY_MENU:
+        {
+            enna_content_hide();
+            enna_mainmenu_show(enna->o_mainmenu);
+            break;
+        }
+        default:
+            enna_activity_event(enna_mainmenu_selected_activity_get(enna->o_mainmenu), event);
+            break;
         }
     }
 }
