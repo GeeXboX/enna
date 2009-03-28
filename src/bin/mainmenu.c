@@ -47,7 +47,7 @@
     if ((!obj) || (!sd) || (evas_object_type_get(obj)		\
 	    && strcmp(evas_object_type_get(obj), SMART_NAME)))	\
 
-#define MAX_PER_ROW 4
+#define MAX_PER_ROW 3
 
 typedef struct _Smart_Data Smart_Data;
 typedef struct _Smart_Item Smart_Item;

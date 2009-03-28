@@ -101,9 +101,9 @@ group
             state: "default" 0.0;
             //max: 1920 256;
             rel1
-            {   relative: 0.02 0.02;to: enna.clip.mainmenu;};
+            {   relative: 0.2 0.2;to: enna.clip.mainmenu;};
             rel2
-            {   relative: 0.98 0.98;to: enna.clip.mainmenu;};
+            {   relative: 0.8 0.8;to: enna.clip.mainmenu;};
          }
       }
       part
@@ -494,7 +494,7 @@ max: 512 512;
          {
             state: "default" 0.0;
             aspect: 1.0 1.0;
-            aspect_preference: HORIZONTAL;
+            aspect_preference: VERTICAL;
             rel1.to: "bg";
             rel1.relative: 0.1 0.1;
             rel2.to: "bg";
