@@ -239,7 +239,7 @@ _class_event(void *event_info)
         case ENNA_KEY_QUIT:
         case ENNA_KEY_CANCEL:
         case ENNA_KEY_OK:
-        _return_to_video_info_gui();
+            _return_to_video_info_gui();
             break;
         case ENNA_KEY_SPACE:
             enna_mediaplayer_play(mod->enna_playlist);
