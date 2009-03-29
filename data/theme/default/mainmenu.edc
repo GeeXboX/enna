@@ -167,8 +167,9 @@ group
             visible: 1;
             state: "default" 0.0;
             align: 1 0.5;
-            rel1.relative: 0.7 0;
+            rel1.relative: 1 0;
             rel1.to: "titlebar.zone";
+            rel1.offset: -300 0;
             rel2.relative: 1 1;
             rel2.to: "titlebar.zone";
          }
@@ -184,8 +185,9 @@ group
             state: "default" 0.0;
             rel1.relative: 0 0;
             rel1.to: "titlebar.zone";
-            rel2.relative: 0.3 1;
+            rel2.relative: 0 1;
             rel2.to: "titlebar.zone";
+            rel2.offset: 128 0;
          }
       }
       part
@@ -203,15 +205,15 @@ group
             //      fixed:    1 1;
             rel1
             {
-               relative: 0.1 0.1;
+               relative: 1 0;
                to: titlebar.iconbox;
-               //offset: 4 5;
+               offset: -60 4;
             }
             rel2
             {
-               relative: 0.1 0.9;
+               relative: 1.0 1.0;
                to: titlebar.iconbox;
-               //offset: 4 -19;
+               offset: -5 -5;
             }
          }
       }
@@ -226,15 +228,15 @@ group
             state: "default" 0.0;
             rel1
             {
-               to_x: "titlebar.swallow.icon";
-               to_y: titlebar.iconbox;
-               relative: 1.0 0;
+               to: "titlebar.swallow.icon";
+               relative: 0 0;
+               offset: -256 0;
             }
             rel2
             {
-               relative: 1 1;
-               to: titlebar.iconbox;
-               offset: -10 0;
+               relative: 0 1;
+               to: titlebar.swallow.icon;
+               offset: -8 0;
             }
             color: 200 200 200 200;
             text
@@ -259,11 +261,13 @@ group
             {
                relative: 0 0;
                to: titlebar.buttonbox;
+               offset: 4 4;
             }
             rel2
             {
                relative: 1.0 1.0;
                to: titlebar.buttonbox;
+               offset: -5 -5;
             }
          }
       }

@@ -358,7 +358,7 @@ void enna_mainmenu_show(Evas_Object *obj)
     edje_object_part_unswallow(sd->o_edje, icon);
     ENNA_OBJECT_DEL(icon);
 
-    edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "Enna");
+    edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "enna");
 
 }
 
@@ -492,7 +492,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_btn_box = elm_box_add(obj);
     elm_box_homogenous_set(sd->o_btn_box, 0);
     elm_box_horizontal_set(sd->o_btn_box, 1);
-    evas_object_size_hint_align_set(sd->o_btn_box, 0, 0.5);
+    evas_object_size_hint_align_set(sd->o_btn_box, 0, 0.0);
     evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
     edje_object_part_swallow(sd->o_edje, "titlebar.swallow.button", sd->o_btn_box);
 
@@ -502,6 +502,8 @@ static void _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _home_button_clicked_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
@@ -512,6 +514,8 @@ static void _smart_add(Evas_Object * obj)
     bt = elm_button_add(obj);
     evas_object_smart_callback_add(bt, "clicked", _back_button_clicked_cb, sd);
     elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);
     elm_box_pack_end(sd->o_btn_box, bt);
     evas_object_show(bt);
     evas_object_show(ic);
