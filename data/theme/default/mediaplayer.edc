@@ -186,7 +186,22 @@ group {
 
          }
       }
-
+      part {
+         name: "shadow_cover";
+         type: IMAGE;
+         clip_to: "enna.clip.cover";
+         mouse_events: 0;
+         description
+         {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1 { relative: 0.0 0.0; to: "enna.clip.cover"; }
+            rel2 { relative: 1.0 1.0; to: "enna.clip.cover"; }
+            image.normal: "shadow.png";
+            image.border: 14 14 14 14;
+         }
+      }
       part {
          name: "enna.swallow.cover";
          type: SWALLOW;
@@ -197,10 +212,11 @@ group {
             state: "default" 0.0;
             color: 255 255 255 255;
             rel1 {
-               to: "enna.clip.cover";
+               to: "shadow_cover";
             }
             rel2 {
-               to: "enna.clip.cover";
+               to: "shadow_cover";
+               offset: -13 -13;
             }
          }
       }

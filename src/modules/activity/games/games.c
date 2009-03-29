@@ -205,6 +205,7 @@ static void _class_shutdown(int dummy)
 static void _class_show(int dummy)
 {
     edje_object_signal_emit(mod->o_edje, "module,show", "enna");
+    printf("show\n");
 }
 
 static void _class_hide(int dummy)
