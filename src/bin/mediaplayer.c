@@ -190,7 +190,6 @@ int
 enna_mediaplayer_stop(void)
 {
 
-    printf("Stop\n");
     if (_mediaplayer->class)
     {
         if (_mediaplayer->class->func.class_stop)
