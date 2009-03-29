@@ -173,7 +173,7 @@ enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist,int n)
     if (n < 0 || n > eina_list_count(enna_playlist->playlist) - 1)
         return -1;
     item = eina_list_nth(enna_playlist->playlist, n);
-    enna_log(ENNA_MSG_INFO, NULL, "select %d", n);
+    enna_log(ENNA_MSG_EVENT, NULL, "select %d", n);
     if (item && item->uri && _mediaplayer->class && _mediaplayer->class->func.class_file_set)
         _mediaplayer->class->func.class_file_set(item->uri, item->label);
     enna_playlist->selected = n;
@@ -226,7 +226,7 @@ enna_mediaplayer_next(Enna_Playlist *enna_playlist)
         return -1;
     }
     item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
-    enna_log(ENNA_MSG_INFO, NULL, "select %d", enna_playlist->selected);
+    enna_log(ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
     if (item)
     {
         enna_mediaplayer_stop();
@@ -251,7 +251,7 @@ enna_mediaplayer_prev(Enna_Playlist *enna_playlist)
         return -1;
     }
     item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
-    enna_log(ENNA_MSG_INFO, NULL, "select %d", enna_playlist->selected);
+    enna_log(ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
     if (item)
     {
         enna_mediaplayer_stop();
@@ -290,7 +290,7 @@ enna_mediaplayer_length_get(void)
 int
 enna_mediaplayer_seek(double percent)
 {
-    enna_log(ENNA_MSG_INFO, NULL, "Seeking to: %d%%", (int) (100 * percent));
+    enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %d%%", (int) (100 * percent));
     if (_mediaplayer->play_state == PAUSE || _mediaplayer->play_state
             == PLAYING)
     {
@@ -384,7 +384,7 @@ _event_cb(void *data, enna_mediaplayer_event_t event)
     switch (event)
     {
         case ENNA_MP_EVENT_EOF:
-            enna_log(ENNA_MSG_INFO, NULL, "End of stream");
+            enna_log(ENNA_MSG_EVENT, NULL, "End of stream");
             ecore_event_add(ENNA_EVENT_MEDIAPLAYER_EOS, NULL, NULL, NULL);
             break;
         default:
