@@ -4,5 +4,6 @@ infos\
 games\
 music\
 photo\
+tv\
 video\
 weather

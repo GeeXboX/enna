@@ -116,6 +116,19 @@ if test "x$want_activity_photo" = "xyes"; then
   AC_DEFINE(BUILD_ACTIVITY_PHOTO, 1, [Photo Activity])
 fi
 
+# TV
+want_activity_tv="yes"
+AC_MSG_CHECKING(whether tv activity module is to be built)
+AC_ARG_ENABLE(activity-tv,
+  AS_HELP_STRING([--enable-activity-tv],[Enable TV Activity Module]),
+  [ want_activity_tv=$enableval ]
+)
+AC_MSG_RESULT($want_activity_tv)
+AM_CONDITIONAL(BUILD_ACTIVITY_TV, test "x$want_activity_tv" = "xyes")
+if test "x$want_activity_tv" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_TV, 1, [TV  Activity])
+fi
+
 # Video
 want_activity_video="yes"
 AC_MSG_CHECKING(whether video activity module is to be built)
@@ -650,6 +663,7 @@ src/modules/activity/infos/Makefile
 src/modules/activity/games/Makefile
 src/modules/activity/music/Makefile
 src/modules/activity/photo/Makefile
+src/modules/activity/tv/Makefile
 src/modules/activity/video/Makefile
 src/modules/activity/weather/Makefile
 src/modules/backend/Makefile
@@ -694,6 +708,7 @@ echo "  infos............................ : $want_activity_infos"
 echo "  games............................ : $want_activity_games"
 echo "  music............................ : $want_activity_music"
 echo "  photo............................ : $want_activity_photo"
+echo "  tv............................... : $want_activity_tv"
 echo "  video............................ : $want_activity_video"
 echo "  weather.......................... : $want_activity_weather"
 echo

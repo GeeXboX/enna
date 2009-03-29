@@ -321,6 +321,9 @@ static void _create_gui(void)
 #ifdef BUILD_ACTIVITY_MUSIC
     enna_activity_init("music");
 #endif
+#if defined(BUILD_ACTIVITY_TV)
+    enna_activity_init("tv");
+#endif
 #ifdef BUILD_ACTIVITY_VIDEO
     enna_activity_init("video");
 #endif
