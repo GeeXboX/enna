@@ -350,7 +350,7 @@ static void _class_event_cb_set(void (*event_cb)(void *data,
 
 static void _class_send_key(enna_key_t key)
 {
-    player_vdr_t vdr_keymap[] = {
+    const player_vdr_t vdr_keymap[] = {
         [ENNA_KEY_MENU]       = PLAYER_VDR_MENU,
         [ENNA_KEY_QUIT]       = PLAYER_VDR_POWER,
         [ENNA_KEY_LEFT]       = PLAYER_VDR_LEFT,
