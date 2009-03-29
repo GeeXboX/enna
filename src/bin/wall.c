@@ -291,7 +291,7 @@ Eina_List* enna_wall_get_filenames(Evas_Object* obj)
     API_ENTRY return NULL;
 
     Eina_List *l, *files = NULL;
-    char *fname = NULL;
+    const  char *fname = NULL;
     Picture_Item *pi;
     int row;
 
@@ -301,7 +301,7 @@ Eina_List* enna_wall_get_filenames(Evas_Object* obj)
         {
             pi = l->data;
             fname = enna_image_file_get(pi->o_pict);
-            files = eina_list_append(files, fname);//enna_image_file_get(pi->o_pict));
+            files = eina_list_append(files, fname);
         }
     }
 

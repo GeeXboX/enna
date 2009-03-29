@@ -291,11 +291,13 @@ static void _create_slideshow_gui()
 void _slideshow_add_files()
 {
     Eina_List *files = NULL;
+    Eina_List *l;
+    const char *filename;
 
-    files=enna_wall_get_filenames(mod->o_wall);
-    for (files; files; files=files->next)
+    files = enna_wall_get_filenames(mod->o_wall);
+    EINA_LIST_FOREACH(files, l, filename)
     {
-        enna_slideshow_image_append(mod->o_slideshow, (char*)files->data);
+        enna_slideshow_image_append(mod->o_slideshow, filename);
     }
     eina_list_free(files);
 }
