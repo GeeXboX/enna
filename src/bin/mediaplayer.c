@@ -109,8 +109,9 @@ enna_mediaplayer_init(void)
     ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new();
     return 0;
 }
+
 void
-enna_mediaplayer_shutdown()
+enna_mediaplayer_shutdown(void)
 {
     free(_mediaplayer);
 }
