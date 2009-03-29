@@ -214,52 +214,46 @@ enna_mediaplayer_pause(void)
     return 0;
 }
 
-int
-enna_mediaplayer_next(Enna_Playlist *enna_playlist)
+static void
+enna_mediaplayer_change (Enna_Playlist *enna_playlist, int type)
 {
     list_item_t *item;
 
+    item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
+    enna_log(ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
+    if (item)
+    {
+        enna_mediaplayer_stop();
+        if (item->uri && _mediaplayer->class && _mediaplayer->class->func.class_file_set)
+            _mediaplayer->class->func.class_file_set(item->uri, item->label);
+        enna_mediaplayer_play(enna_playlist);
+        ecore_event_add(type, NULL, NULL, NULL);
+    }
+}
+
+int
+enna_mediaplayer_next(Enna_Playlist *enna_playlist)
+{
     enna_playlist->selected++;
     if (enna_playlist->selected > eina_list_count(enna_playlist->playlist) - 1)
     {
         enna_playlist->selected--;
         return -1;
     }
-    item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
-    enna_log(ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
-    if (item)
-    {
-        enna_mediaplayer_stop();
-        if (item->uri && _mediaplayer->class && _mediaplayer->class->func.class_file_set)
-            _mediaplayer->class->func.class_file_set(item->uri, item->label);
-        enna_mediaplayer_play(enna_playlist);
-        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_NEXT, NULL, NULL, NULL);
-    }
-
+    enna_mediaplayer_change(enna_playlist, ENNA_EVENT_MEDIAPLAYER_NEXT);
     return 0;
 }
 
 int
 enna_mediaplayer_prev(Enna_Playlist *enna_playlist)
 {
-    list_item_t *item;
-
     enna_playlist->selected--;
     if (enna_playlist->selected < 0)
     {
             enna_playlist->selected = 0;
         return -1;
     }
-    item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
-    enna_log(ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
-    if (item)
-    {
-        enna_mediaplayer_stop();
-        if (item->uri && _mediaplayer->class && _mediaplayer->class->func.class_file_set)
-            _mediaplayer->class->func.class_file_set(item->uri, item->label);
-        enna_mediaplayer_play(enna_playlist);
-        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_PREV, NULL, NULL, NULL);
-    }
+    enna_mediaplayer_change(enna_playlist, ENNA_EVENT_MEDIAPLAYER_PREV);
     return 0;
 }
 
