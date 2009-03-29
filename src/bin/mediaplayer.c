@@ -250,7 +250,7 @@ enna_mediaplayer_prev(Enna_Playlist *enna_playlist)
     enna_playlist->selected--;
     if (enna_playlist->selected < 0)
     {
-            enna_playlist->selected = 0;
+        enna_playlist->selected = 0;
         return -1;
     }
     enna_mediaplayer_change(enna_playlist, ENNA_EVENT_MEDIAPLAYER_PREV);
