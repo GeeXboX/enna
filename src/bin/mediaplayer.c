@@ -189,8 +189,6 @@ enna_mediaplayer_selected_get(Enna_Playlist *enna_playlist)
 int
 enna_mediaplayer_stop(void)
 {
-
-    printf("Stop\n");
     if (_mediaplayer->class)
     {
         if (_mediaplayer->class->func.class_stop)
