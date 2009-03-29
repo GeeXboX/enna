@@ -74,6 +74,7 @@ url_data_t url_get_data(CURL *curl, char *url)
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, url_buffer_get);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);
 
     chunk.status = curl_easy_perform(curl);
 
