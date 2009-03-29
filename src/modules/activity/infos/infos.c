@@ -242,7 +242,7 @@ get_network (buffer_t *b)
         if (ioctl (s, SIOCGIFNETMASK, item) < 0)
             continue;
 
-        buffer_appendf (b, "Netmask: %s<br>",
+        buffer_appendf (b, "Netmask: %s)<br>",
               inet_ntoa (((struct sockaddr_in *)&item->ifr_netmask)->sin_addr));
     }
 
