@@ -406,6 +406,9 @@ static void _class_send_key(enna_key_t key)
         strncmp(mod->uri, URI_TYPE_NETVDR, strlen(URI_TYPE_NETVDR)))
         return;
 
+    if (key >= ARRAY_NB_ELEMENTS(vdr_keymap) || key < 0)
+        return;
+
     switch(key)
     {
     case ENNA_KEY_UNKNOWN:
