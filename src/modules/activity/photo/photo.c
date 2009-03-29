@@ -265,7 +265,10 @@ static void _photo_info_fs()
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
 }
 
-/*
+/* #############################################################
+   #               slideshow helpers                           #
+   ############################################################# */
+
 static void _create_slideshow_gui()
 {
     Evas_Object *o;
@@ -283,9 +286,19 @@ static void _create_slideshow_gui()
     //edje_object_signal_emit(mod->o_edje, "slideshow,show", "enna");
     edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
-
 }
-*/
+
+void _slideshow_add_files()
+{
+    Eina_List *files = NULL;
+
+    files=enna_wall_get_filenames(mod->o_wall);
+    for (files; files; files=files->next)
+    {
+        enna_slideshow_image_append(mod->o_slideshow, (char*)files->data);
+    }
+    eina_list_free(files);
+}
 
 static void
 _picture_selected_cb (void *data, Evas_Object *obj, void *event_info)
@@ -387,6 +400,7 @@ static void _browse(void *data)
     edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "browser,show", "enna");
     edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
+    edje_object_signal_emit(mod->o_edje, "slideshow,hide", "enna");
 
     evas_object_del(mod->o_menu);
     mod->o_menu = NULL;
@@ -511,6 +525,7 @@ static void _class_event(void *event_info)
         case ENNA_KEY_UP:
         case ENNA_KEY_DOWN:
             enna_wall_event_feed(mod->o_wall, ev);
+            break;
         default:
             break;
 
@@ -530,6 +545,11 @@ static void _class_event(void *event_info)
             edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
             break;
 #endif
+        case ENNA_KEY_OK:
+            _create_slideshow_gui();
+            _slideshow_add_files();
+            enna_slideshow_play(mod->o_slideshow);
+            break;
         default:
             break;
 
@@ -553,7 +573,6 @@ static void _class_event(void *event_info)
         case ENNA_KEY_OK:
         case ENNA_KEY_SPACE:
             enna_slideshow_play(mod->o_slideshow);
-
             break;
         default:
             break;

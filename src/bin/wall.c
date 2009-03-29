@@ -133,6 +133,7 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
     evas_object_show(pi->o_edje);
 
 }
+
 void enna_wall_picture_append(Evas_Object *obj, const char *filename)
 {
 
@@ -283,6 +284,28 @@ const char * enna_wall_selected_filename_get(Evas_Object *obj)
         }
     }
     return NULL;
+}
+
+Eina_List* enna_wall_get_filenames(Evas_Object* obj)
+{
+    API_ENTRY return NULL;
+
+    Eina_List *l, *files = NULL;
+    char *fname = NULL;
+    Picture_Item *pi;
+    int row;
+
+    for (row=0; row<3; row++)
+    {
+        for (l = sd->items[row]; l; l = l->next)
+        {
+            pi = l->data;
+            fname = enna_image_file_get(pi->o_pict);
+            files = eina_list_append(files, fname);//enna_image_file_get(pi->o_pict));
+        }
+    }
+
+    return files;
 }
 
 /* local subsystem globals */

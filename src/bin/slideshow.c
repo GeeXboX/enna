@@ -103,12 +103,11 @@ void enna_slideshow_image_append(Evas_Object *obj, const char *filename)
 
     o = enna_image_add(evas_object_evas_get(obj));
     enna_log(ENNA_MSG_EVENT, NULL, "append : %s", filename);
-    enna_image_file_set(o, filename+7);
+    enna_image_file_set(o, filename);
     enna_image_size_get(o, &w, &h);
     enna_image_load_size_set(o, w, h);
 
     sd->playlist = eina_list_append(sd->playlist, o);
-
 }
 
 int enna_slideshow_next(void *data)
