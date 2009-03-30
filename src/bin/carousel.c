@@ -80,15 +80,6 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         void *event_info);
 static void _smart_reconfigure(Smart_Data * sd);
 static void _smart_init(void);
-static void _smart_add(Evas_Object * obj);
-static void _smart_del(Evas_Object * obj);
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y);
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h);
-static void _smart_show(Evas_Object * obj);
-static void _smart_hide(Evas_Object * obj);
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip);
-static void _smart_clip_unset(Evas_Object * obj);
 
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
@@ -408,28 +399,6 @@ static void _smart_reconfigure(Smart_Data * sd)
     evas_object_resize(sd->o_scroll, sd->w, sd->h);
 }
 
-static void _smart_init(void)
-{
-    static const Evas_Smart_Class sc = {
-       SMART_NAME,
-       EVAS_SMART_CLASS_VERSION,
-       _smart_add,
-       _smart_del,
-       _smart_move,
-       _smart_resize,
-       _smart_show,
-       _smart_hide,
-       _smart_color_set,
-       _smart_clip_set,
-       _smart_clip_unset,
-       NULL,
-       NULL
-    };
-
-    if (!_smart)
-       _smart = evas_smart_class_new(&sc);
-}
-
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
@@ -522,4 +491,26 @@ static void _smart_clip_unset(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     evas_object_clip_unset(sd->o_scroll);
+}
+
+static void _smart_init(void)
+{
+    static const Evas_Smart_Class sc = {
+       SMART_NAME,
+       EVAS_SMART_CLASS_VERSION,
+       _smart_add,
+       _smart_del,
+       _smart_move,
+       _smart_resize,
+       _smart_show,
+       _smart_hide,
+       _smart_color_set,
+       _smart_clip_set,
+       _smart_clip_unset,
+       NULL,
+       NULL
+    };
+
+    if (!_smart)
+       _smart = evas_smart_class_new(&sc);
 }
