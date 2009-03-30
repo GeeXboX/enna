@@ -69,12 +69,7 @@ enna_image_add(Evas * evas)
 
 void enna_image_file_set(Evas_Object * obj, const char *file)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
-    /* smart code here */
+    INTERNAL_ENTRY;
     /*evas_object_image_load_size_set(sd->obj, 32, 32);*/
     evas_object_image_file_set(sd->obj, file, NULL);
     _enna_image_smart_reconfigure(sd);
@@ -95,12 +90,7 @@ const char * enna_image_file_get(Evas_Object * obj)
 
 void enna_image_smooth_scale_set(Evas_Object * obj, int smooth)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
-
+    INTERNAL_ENTRY;
     evas_object_image_smooth_scale_set(sd->obj, smooth);
 }
 
@@ -117,11 +107,7 @@ int enna_image_smooth_scale_get(Evas_Object * obj)
 
 void enna_image_alpha_set(Evas_Object * obj, int alpha)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_image_alpha_set(sd->obj, alpha);
 }
 
@@ -138,23 +124,14 @@ int enna_image_alpha_get(Evas_Object * obj)
 
 void enna_image_load_size_set(Evas_Object * obj, int w, int h)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
-
+    INTERNAL_ENTRY;
     evas_object_image_load_size_set(sd->obj, w, h);
 }
 
 void enna_image_size_get(Evas_Object * obj, int *w, int *h)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
-    return evas_object_image_size_get(sd->obj, w, h);
+    INTERNAL_ENTRY;
+    evas_object_image_size_get(sd->obj, w, h);
 }
 
 int enna_image_fill_inside_get(Evas_Object * obj)
@@ -169,11 +146,8 @@ int enna_image_fill_inside_get(Evas_Object * obj)
 
 void enna_image_fill_inside_set(Evas_Object * obj, int fill_inside)
 {
-    Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if (((sd->fill_inside) && (fill_inside)) || ((!sd->fill_inside)
             && (!fill_inside)))
         return;
@@ -183,11 +157,7 @@ void enna_image_fill_inside_set(Evas_Object * obj, int fill_inside)
 
 void enna_image_data_set(Evas_Object * obj, void *data, int w, int h)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_image_size_set(sd->obj, w, h);
     evas_object_image_data_copy_set(sd->obj, data);
 }
@@ -205,12 +175,7 @@ void * enna_image_data_get(Evas_Object * obj, int *w, int *h)
 
 void enna_image_preload(Evas_Object *obj, Evas_Bool cancel)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
-
+    INTERNAL_ENTRY;
     evas_object_image_preload(sd->obj, cancel);
 }
 
@@ -304,22 +269,15 @@ static void _smart_add(Evas_Object * obj)
 
 static void _smart_del(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_del(sd->obj);
     free(sd);
 }
 
 static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
-    Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if ((sd->x == x) && (sd->y == y))
         return;
     sd->x = x;
@@ -329,11 +287,8 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 
 static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
-    Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if ((sd->w == w) && (sd->h == h))
         return;
     sd->w = w;
@@ -343,50 +298,30 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
 static void _smart_show(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_show(sd->obj);
 }
 
 static void _smart_hide(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_hide(sd->obj);
 }
 
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_color_set(sd->obj, r, g, b, a);
 }
 
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_clip_set(sd->obj, clip);
 }
 
 static void _smart_clip_unset(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_clip_unset(sd->obj);
 }
