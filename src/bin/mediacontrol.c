@@ -414,7 +414,6 @@ _smart_hide(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     evas_object_hide(sd->o_edje);
-
 }
 
 static void
