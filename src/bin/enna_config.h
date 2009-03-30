@@ -56,7 +56,6 @@ struct _Enna_Config
     const char *engine;
     const char *backend;
     const char *verbosity;
-    /* Module Music */
     Eina_List *music_local_root_directories;
     Eina_List *music_filters;
     Eina_List *video_filters;

@@ -242,7 +242,7 @@ get_network (buffer_t *b)
         if (ioctl (s, SIOCGIFNETMASK, item) < 0)
             continue;
 
-        buffer_appendf (b, "Netmask: %s<br>",
+        buffer_appendf (b, "Netmask: %s)<br>",
               inet_ntoa (((struct sockaddr_in *)&item->ifr_netmask)->sin_addr));
     }
 
@@ -255,7 +255,7 @@ get_default_gw (buffer_t *b)
 {
     char devname[64];
     unsigned long d, g, m;
-    int flgs, ref, use, metric, mtu, win, ir;
+    int res, flgs, ref, use, metric, mtu, win, ir;
     FILE *fp;
 
     fp = fopen ("/proc/net/route", "r");
@@ -266,6 +266,7 @@ get_default_gw (buffer_t *b)
         return;
 
     buffer_append (b, "<hilight>Default Gateway: </hilight>");
+    res = 0;
 
     while (1)
     {
@@ -286,8 +287,12 @@ get_default_gw (buffer_t *b)
 
         gw.s_addr = g;
         buffer_appendf (b, "%s<br>", inet_ntoa (gw));
+        res = 1;
         break;
     }
+
+    if (!res)
+       buffer_append (b, "None<br>");
 
     fclose (fp);
 }

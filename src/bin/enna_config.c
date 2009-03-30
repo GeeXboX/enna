@@ -65,8 +65,8 @@
     "#located at /usr/share/enna/theme/default.edj\n"			\
     "theme=default\n"							\
     "\n"								\
-    "#software_x11,xrender_x11,opengl_x11,software_x11_16\n"						\
-    "engine=software_x11\n"							\
+    "#software_x11,xrender_x11,opengl_x11,software_x11_16\n"		\
+    "engine=software_x11\n"						\
     "\n"								\
     "#libplayer,emotion\n"						\
     "backend=libplayer\n"						\
@@ -102,7 +102,7 @@
     "blacklist_keywords=0tv,1080p,2hd,720p,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,etach,fov,fqm,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid\n" \
     "\n"								\
     "[localfiles]\n"							\
-    "path_music=file:///path/to/Music,Music,icon/favorite\n"			\
+    "path_music=file:///path/to/Music,Music,icon/favorite\n"		\
     "path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs\n" \
     "path_video=file:///path/to/Videos,Videos,icon/favorite\n"		\
     "path_video=file:///path/to/server/Medias/Videos,Server,icon/dev/nfs\n" \
@@ -161,22 +161,19 @@ const char * enna_config_theme_get()
 
 const char * enna_config_theme_file_get(const char *s)
 {
+    char tmp[4096];
+
     if (!s)
         return NULL;
 
     if (s[0] == '/')
         return s;
-    else
-    {
-        char tmp[4096];
-        snprintf(tmp, sizeof(tmp), PACKAGE_DATA_DIR "/enna/theme/%s.edj", s);
-        if (!ecore_file_exists(tmp))
-        return PACKAGE_DATA_DIR
-        "/enna/theme/default.edj";
-        else
-        return strdup(tmp);
-    }
-    return NULL;
+
+    snprintf(tmp, sizeof(tmp), PACKAGE_DATA_DIR "/enna/theme/%s.edj", s);
+    if (!ecore_file_exists(tmp))
+       return PACKAGE_DATA_DIR "/enna/theme/default.edj";
+
+    return strdup(tmp);
 }
 
 void enna_config_value_store(void *var, char *section,
@@ -232,7 +229,7 @@ enna_config_module_pair_get(const char *module_name)
     return eina_hash_find(hash_config, module_name);
 }
 
-void enna_config_init()
+void enna_config_init(void)
 {
     char filename[4096];
 
@@ -251,7 +248,7 @@ void enna_config_init()
 
 }
 
-void enna_config_shutdown()
+void enna_config_shutdown(void)
 {
 
 }
@@ -334,13 +331,6 @@ static Eina_Hash * _config_load_conf_file(char *filename)
     }
 
     conffile = malloc(st.st_size);
-
-    if (!conffile)
-    {
-        enna_log(ENNA_MSG_ERROR, NULL, "Cannot malloc %d bytes",
-                (int)st.st_size);
-        return NULL;
-    }
 
     if ((fd = open(filename, O_RDONLY)) < 0)
     {

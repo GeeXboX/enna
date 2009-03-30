@@ -132,7 +132,7 @@ int enna_module_shutdown(void)
 
         if (m->enabled)
         {
-            enna_log(ENNA_MSG_INFO, NULL, "disable module : %s", m->name);
+            enna_log(ENNA_MSG_EVENT, NULL, "disable module : %s", m->name);
             enna_module_disable(m);
         }
         ecore_plugin_unload(m->plugin);
@@ -210,7 +210,7 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
         }
 
     snprintf(module_name, sizeof(module_name), "%s_%s", module_class, name);
-    enna_log (ENNA_MSG_INFO, NULL, "Try to load %s", module_name);
+    enna_log (ENNA_MSG_EVENT, NULL, "Try to load %s", module_name);
     plugin = ecore_plugin_load(path_group, module_name, NULL);
     if (!plugin)
     {

@@ -43,8 +43,8 @@ static int _sort_cb(const void *d1, const void *d2)
         return 1;
     else if (act1->pri < act2->pri)
         return -1;
-    else
-        return strcasecmp(act1->name, act2->name);
+
+    return strcasecmp(act1->name, act2->name);
 }
 
 /**
@@ -128,70 +128,29 @@ enna_activities_get(void)
     return _enna_activities;
 }
 
-int enna_activity_init(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity(name);
-    if (!act)
-        return -1;
-
-    if (act->func.class_init)
-        act->func.class_init(0);
-
-    return 0;
+#define ACTIVITY_FUNC(func, ...) \
+int enna_activity_##func(const char *name) \
+{ \
+    Enna_Class_Activity *act; \
+    \
+    act = enna_get_activity(name); \
+    if (!act) \
+       return -1; \
+    \
+    ACTIVITY_CLASS(func, __VA_ARGS__); \
+    return 0; \
 }
 
-int enna_activity_show(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity(name);
-    if (!act)
-        return -1;
-
-    if (act->func.class_show)
-        act->func.class_show(0);
-
-    return 0;
-}
-
-int enna_activity_shutdown(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity(name);
-    if (!act)
-        return -1;
-
-    if (act->func.class_shutdown)
-        act->func.class_shutdown(0);
-
-    return 0;
-}
-
-int enna_activity_hide(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity(name);
-    if (!act)
-        return -1;
-
-    if (act->func.class_hide)
-        act->func.class_hide(0);
-
-    return 0;
-}
+ACTIVITY_FUNC(init, 0);
+ACTIVITY_FUNC(shutdown, 0);
+ACTIVITY_FUNC(show, 0);
+ACTIVITY_FUNC(hide, 0);
 
 int enna_activity_event(Enna_Class_Activity *act, void *event_info)
 {
-
     if (!act)
         return -1;
 
-    if (act->func.class_event)
-        act->func.class_event(event_info);
-
+    ACTIVITY_CLASS(event, event_info);
     return 0;
 }

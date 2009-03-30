@@ -190,7 +190,7 @@ char enna_key_get_alpha(enna_key_t key)
     return ' ';
 }
 
-void enna_input_init()
+void enna_input_init(void)
 {
 #ifdef BUILD_INPUT_LIRC
     Enna_Module *em;
@@ -212,7 +212,7 @@ void enna_input_init()
 
 }
 
-void enna_input_shutdown()
+void enna_input_shutdown(void)
 {
     Eina_List *l = NULL;
 
