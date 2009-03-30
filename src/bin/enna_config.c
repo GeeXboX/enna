@@ -156,22 +156,19 @@ const char * enna_config_theme_get()
 
 const char * enna_config_theme_file_get(const char *s)
 {
+    char tmp[4096];
+
     if (!s)
         return NULL;
 
     if (s[0] == '/')
         return s;
-    else
-    {
-        char tmp[4096];
-        snprintf(tmp, sizeof(tmp), PACKAGE_DATA_DIR "/enna/theme/%s.edj", s);
-        if (!ecore_file_exists(tmp))
-        return PACKAGE_DATA_DIR
-        "/enna/theme/default.edj";
-        else
-        return strdup(tmp);
-    }
-    return NULL;
+
+    snprintf(tmp, sizeof(tmp), PACKAGE_DATA_DIR "/enna/theme/%s.edj", s);
+    if (!ecore_file_exists(tmp))
+       return PACKAGE_DATA_DIR "/enna/theme/default.edj";
+
+    return strdup(tmp);
 }
 
 void enna_config_value_store(void *var, char *section,
