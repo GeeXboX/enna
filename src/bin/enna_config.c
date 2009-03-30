@@ -327,13 +327,6 @@ static Eina_Hash * _config_load_conf_file(char *filename)
 
     conffile = malloc(st.st_size);
 
-    if (!conffile)
-    {
-        enna_log(ENNA_MSG_ERROR, NULL, "Cannot malloc %d bytes",
-                (int)st.st_size);
-        return NULL;
-    }
-
     if ((fd = open(filename, O_RDONLY)) < 0)
     {
         enna_log(ENNA_MSG_ERROR, NULL, "Cannot open file");
