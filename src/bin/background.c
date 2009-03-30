@@ -35,15 +35,13 @@
 
 #define SMART_NAME "enna_background"
 
-typedef struct _smart_Data Smart_Data;
-
-struct _smart_Data
+typedef struct _smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *obj;
     Evas_Object *o_bg;
     Evas_Object *o_edje;
-};
+} Smart_Data;
 
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
