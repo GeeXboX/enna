@@ -129,7 +129,7 @@ int enna_content_select(const char *name)
     return 0;
 }
 
-void enna_content_hide()
+void enna_content_hide(void)
 {
     Eina_List *l;
 
@@ -148,7 +148,7 @@ void enna_content_hide()
     }
 }
 
-void enna_content_show()
+void enna_content_show(void)
 {
     Eina_List *l;
 
