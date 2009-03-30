@@ -136,9 +136,7 @@ int enna_activity_init(const char *name)
     if (!act)
         return -1;
 
-    if (act->func.class_init)
-        act->func.class_init(0);
-
+    ACTIVITY_CLASS(init, 0);
     return 0;
 }
 
@@ -150,9 +148,7 @@ int enna_activity_show(const char *name)
     if (!act)
         return -1;
 
-    if (act->func.class_show)
-        act->func.class_show(0);
-
+    ACTIVITY_CLASS(show, 0);
     return 0;
 }
 
@@ -164,9 +160,7 @@ int enna_activity_shutdown(const char *name)
     if (!act)
         return -1;
 
-    if (act->func.class_shutdown)
-        act->func.class_shutdown(0);
-
+    ACTIVITY_CLASS(shutdown, 0);
     return 0;
 }
 
@@ -178,9 +172,7 @@ int enna_activity_hide(const char *name)
     if (!act)
         return -1;
 
-    if (act->func.class_hide)
-        act->func.class_hide(0);
-
+    ACTIVITY_CLASS(hide, 0);
     return 0;
 }
 
@@ -190,8 +182,6 @@ int enna_activity_event(Enna_Class_Activity *act, void *event_info)
     if (!act)
         return -1;
 
-    if (act->func.class_event)
-        act->func.class_event(event_info);
-
+    ACTIVITY_CLASS(event, event_info);
     return 0;
 }
