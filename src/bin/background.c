@@ -151,8 +151,6 @@ static void _smart_clip_unset(Evas_Object * obj)
 
 static void _enna_background_smart_init(void)
 {
-    if (_e_smart)
-        return;
     static const Evas_Smart_Class sc =
     {
         SMART_NAME,
@@ -169,7 +167,8 @@ static void _enna_background_smart_init(void)
         NULL,
         NULL
     };
-    _e_smart = evas_smart_class_new(&sc);
+    if (!_e_smart)
+       _e_smart = evas_smart_class_new(&sc);
 }
 
 /* externally accessible functions */
