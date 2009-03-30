@@ -393,13 +393,13 @@ static int parse_command_line(int argc, char **argv)
     char short_options[] = "Vhfc:t:b:g:";
     struct option long_options [] =
     {
-        { "help", no_argument, 0, 'h' },
-        { "version", no_argument, 0, 'V' },
-        { "fs", no_argument, 0, 'f' },
-        { "config", required_argument, 0, 'c' },
-        { "theme", required_argument, 0, 't' },
-        { "geometry", required_argument, 0, 'g'},
-        { 0, 0, 0, 0 }
+        { "help",          no_argument,       0, 'h' },
+        { "version",       no_argument,       0, 'V' },
+        { "fs",            no_argument,       0, 'f' },
+        { "config",        required_argument, 0, 'c' },
+        { "theme",         required_argument, 0, 't' },
+        { "geometry",      required_argument, 0, 'g' },
+        { 0,               0,                 0,  0  }
     };
 
     /* command line argument processing */
