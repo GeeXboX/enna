@@ -178,7 +178,6 @@ int enna_activity_hide(const char *name)
 
 int enna_activity_event(Enna_Class_Activity *act, void *event_info)
 {
-
     if (!act)
         return -1;
 
