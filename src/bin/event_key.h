@@ -116,8 +116,8 @@ int ENNA_EVENT_INPUT_KEY_DOWN;
 enna_key_t enna_get_key (void *event);
 int enna_key_is_alpha(enna_key_t key);
 char enna_key_get_alpha(enna_key_t key);
-void enna_input_init();
-void enna_input_shutdown();
+void enna_input_init(void);
+void enna_input_shutdown(void);
 int
         enna_input_class_register(Enna_Module *module, Enna_Class_Input *class);
 
