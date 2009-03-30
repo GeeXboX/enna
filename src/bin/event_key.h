@@ -54,6 +54,8 @@ typedef enum
     ENNA_KEY_CANCEL,
     ENNA_KEY_SPACE,
     ENNA_KEY_FULLSCREEN,
+    ENNA_KEY_PLUS,
+    ENNA_KEY_MINUS,
 
     ENNA_KEY_0,
     ENNA_KEY_1,
