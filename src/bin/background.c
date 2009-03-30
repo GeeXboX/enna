@@ -45,29 +45,8 @@ struct _smart_Data
     Evas_Object *o_edje;
 };
 
-/* local subsystem functions */
-static void _enna_background_smart_reconfigure(Smart_Data * sd);
-static void _enna_background_smart_init(void);
-static void _smart_add(Evas_Object * obj);
-static void _smart_del(Evas_Object * obj);
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y);
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h);
-static void _smart_show(Evas_Object * obj);
-static void _smart_hide(Evas_Object * obj);
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip);
-static void _smart_clip_unset(Evas_Object * obj);
-
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
-
-/* externally accessible functions */
-Evas_Object *
-enna_background_add(Evas * evas)
-{
-    _enna_background_smart_init();
-    return evas_object_smart_add(evas, _e_smart);
-}
 
 /* local subsystem globals */
 static void _enna_background_smart_reconfigure(Smart_Data * sd)
@@ -76,29 +55,6 @@ static void _enna_background_smart_reconfigure(Smart_Data * sd)
     evas_object_resize(sd->o_bg, sd->w, sd->h);
     evas_object_move(sd->o_edje, sd->x, sd->y);
     evas_object_resize(sd->o_edje, sd->w, sd->h);
-}
-
-static void _enna_background_smart_init(void)
-{
-    if (_e_smart)
-        return;
-    static const Evas_Smart_Class sc =
-    {
-        SMART_NAME,
-        EVAS_SMART_CLASS_VERSION,
-        _smart_add,
-        _smart_del,
-        _smart_move,
-        _smart_resize,
-        _smart_show,
-        _smart_hide,
-        _smart_color_set,
-        _smart_clip_set,
-        _smart_clip_unset,
-        NULL,
-        NULL
-    };
-    _e_smart = evas_smart_class_new(&sc);
 }
 
 static void _smart_add(Evas_Object * obj)
@@ -191,4 +147,35 @@ static void _smart_clip_unset(Evas_Object * obj)
     INTERNAL_ENTRY;
     evas_object_clip_unset(sd->o_bg);
     evas_object_clip_unset(sd->o_edje);
+}
+
+static void _enna_background_smart_init(void)
+{
+    if (_e_smart)
+        return;
+    static const Evas_Smart_Class sc =
+    {
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _smart_add,
+        _smart_del,
+        _smart_move,
+        _smart_resize,
+        _smart_show,
+        _smart_hide,
+        _smart_color_set,
+        _smart_clip_set,
+        _smart_clip_unset,
+        NULL,
+        NULL
+    };
+    _e_smart = evas_smart_class_new(&sc);
+}
+
+/* externally accessible functions */
+Evas_Object *
+enna_background_add(Evas * evas)
+{
+    _enna_background_smart_init();
+    return evas_object_smart_add(evas, _e_smart);
 }
