@@ -65,8 +65,8 @@
     "#located at /usr/share/enna/theme/default.edj\n"			\
     "theme=default\n"							\
     "\n"								\
-    "#software_x11,xrender_x11,opengl_x11,software_x11_16\n"						\
-    "engine=software_x11\n"							\
+    "#software_x11,xrender_x11,opengl_x11,software_x11_16\n"		\
+    "engine=software_x11\n"						\
     "\n"								\
     "#libplayer,emotion\n"						\
     "backend=libplayer\n"						\
@@ -102,7 +102,7 @@
     "blacklist_keywords=0tv,1080p,2hd,720p,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,etach,fov,fqm,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid\n" \
     "\n"								\
     "[localfiles]\n"							\
-    "path_music=file:///path/to/Music,Music,icon/favorite\n"			\
+    "path_music=file:///path/to/Music,Music,icon/favorite\n"		\
     "path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs\n" \
     "path_video=file:///path/to/Videos,Videos,icon/favorite\n"		\
     "path_video=file:///path/to/server/Medias/Videos,Server,icon/dev/nfs\n" \
