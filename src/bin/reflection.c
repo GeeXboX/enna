@@ -47,29 +47,9 @@ struct _Smart_Data
 /* local subsystem functions */
 static void         _enna_reflection_smart_reconfigure(Smart_Data * sd);
 static void         _enna_reflection_smart_init(void);
-static void         _e_smart_add(Evas_Object * obj);
-static void         _e_smart_del(Evas_Object * obj);
-static void         _e_smart_move(Evas_Object * obj, Evas_Coord x,
-    Evas_Coord y);
-static void         _e_smart_resize(Evas_Object * obj, Evas_Coord w,
-    Evas_Coord h);
-static void         _e_smart_show(Evas_Object * obj);
-static void         _e_smart_hide(Evas_Object * obj);
-static void         _e_smart_color_set(Evas_Object * obj, int r, int g,
-    int b, int a);
-static void         _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip);
-static void         _e_smart_clip_unset(Evas_Object * obj);
 
 /* local subsystem globals */
 static Evas_Smart  *_e_smart = NULL;
-
-/* externally accessible functions */
-EAPI Evas_Object   *
-enna_reflection_add(Evas * evas)
-{
-    _enna_reflection_smart_init();
-    return evas_object_smart_add(evas, _e_smart);
-}
 
 EAPI void
 enna_reflection_file_set(Evas_Object * obj, const char *file)
@@ -267,28 +247,6 @@ _enna_reflection_smart_reconfigure(Smart_Data * sd)
 }
 
 static void
-_enna_reflection_smart_init(void)
-{
-    if (_e_smart)
-        return;
-    static const Evas_Smart_Class sc = {
-        SMART_NAME,
-        EVAS_SMART_CLASS_VERSION,
-        _e_smart_add,
-        _e_smart_del,
-        _e_smart_move,
-        _e_smart_resize,
-        _e_smart_show,
-        _e_smart_hide,
-        _e_smart_color_set,
-        _e_smart_clip_set,
-        _e_smart_clip_unset,
-        NULL
-    };
-    _e_smart = evas_smart_class_new(&sc);
-}
-
-static void
 _e_smart_add(Evas_Object * obj)
 {
     Smart_Data       *sd;
@@ -386,3 +344,34 @@ _e_smart_clip_unset(Evas_Object * obj)
     evas_object_clip_unset(sd->obj);
     evas_object_clip_unset(sd->reflection);
 }
+
+static void
+_enna_reflection_smart_init(void)
+{
+    static const Evas_Smart_Class sc = {
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _e_smart_add,
+        _e_smart_del,
+        _e_smart_move,
+        _e_smart_resize,
+        _e_smart_show,
+        _e_smart_hide,
+        _e_smart_color_set,
+        _e_smart_clip_set,
+        _e_smart_clip_unset,
+        NULL
+    };
+
+    if (!_e_smart)
+       _e_smart = evas_smart_class_new(&sc);
+}
+
+/* externally accessible functions */
+EAPI Evas_Object   *
+enna_reflection_add(Evas * evas)
+{
+    _enna_reflection_smart_init();
+    return evas_object_smart_add(evas, _e_smart);
+}
+
