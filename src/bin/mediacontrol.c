@@ -441,8 +441,6 @@ _smart_clip_unset(Evas_Object * obj)
 static void
 _smart_init(void)
 {
-    if (_smart)
-        return;
     static const Evas_Smart_Class sc =
     {
         SMART_NAME,
@@ -459,7 +457,8 @@ _smart_init(void)
         NULL,
         NULL
     };
-    _smart = evas_smart_class_new(&sc);
+    if (!_smart)
+       _smart = evas_smart_class_new(&sc);
 }
 
 /* externally accessible functions */
