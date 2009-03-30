@@ -35,7 +35,7 @@
 
 #define SMART_NAME "enna_background"
 
-typedef struct _smart_Data E_Smart_Data;
+typedef struct _smart_Data Smart_Data;
 
 struct _smart_Data
 {
@@ -46,7 +46,7 @@ struct _smart_Data
 };
 
 /* local subsystem functions */
-static void _enna_background_smart_reconfigure(E_Smart_Data * sd);
+static void _enna_background_smart_reconfigure(Smart_Data * sd);
 static void _enna_background_smart_init(void);
 static void _smart_add(Evas_Object * obj);
 static void _smart_del(Evas_Object * obj);
@@ -70,7 +70,7 @@ enna_background_add(Evas * evas)
 }
 
 /* local subsystem globals */
-static void _enna_background_smart_reconfigure(E_Smart_Data * sd)
+static void _enna_background_smart_reconfigure(Smart_Data * sd)
 {
     evas_object_move(sd->o_bg, sd->x, sd->y);
     evas_object_resize(sd->o_bg, sd->w, sd->h);
@@ -103,10 +103,10 @@ static void _enna_background_smart_init(void)
 
 static void _smart_add(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     Evas *e;
 
-    sd = calloc(1, sizeof(E_Smart_Data));
+    sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
 
@@ -132,11 +132,7 @@ static void _smart_add(Evas_Object * obj)
 
 static void _smart_del(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_del(sd->o_bg);
     evas_object_del(sd->o_edje);
     free(sd);
@@ -144,11 +140,8 @@ static void _smart_del(Evas_Object * obj)
 
 static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
-    E_Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if ((sd->x == x) && (sd->y == y))
         return;
     sd->x = x;
@@ -158,11 +151,8 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 
 static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
-    E_Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if ((sd->w == w) && (sd->h == h))
         return;
     sd->w = w;
@@ -172,54 +162,33 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
 static void _smart_show(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_show(sd->o_bg);
     evas_object_show(sd->o_edje);
 }
 
 static void _smart_hide(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_hide(sd->o_bg);
     evas_object_hide(sd->o_edje);
-
 }
 
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
-    E_Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
 }
 
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
-    E_Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_clip_set(sd->o_bg, clip);
     evas_object_clip_set(sd->o_edje, clip);
 }
 
 static void _smart_clip_unset(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_clip_unset(sd->o_bg);
     evas_object_clip_unset(sd->o_edje);
 }
