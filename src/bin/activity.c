@@ -43,8 +43,8 @@ static int _sort_cb(const void *d1, const void *d2)
         return 1;
     else if (act1->pri < act2->pri)
         return -1;
-    else
-        return strcasecmp(act1->name, act2->name);
+
+    return strcasecmp(act1->name, act2->name);
 }
 
 /**
