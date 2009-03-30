@@ -224,7 +224,7 @@ enna_config_module_pair_get(const char *module_name)
     return eina_hash_find(hash_config, module_name);
 }
 
-void enna_config_init()
+void enna_config_init(void)
 {
     char filename[4096];
 
@@ -243,7 +243,7 @@ void enna_config_init()
 
 }
 
-void enna_config_shutdown()
+void enna_config_shutdown(void)
 {
 
 }
