@@ -129,7 +129,7 @@ int enna_content_select(const char *name)
     return 0;
 }
 
-void enna_content_hide(void)
+static void enna_content_update(int show)
 {
     Eina_List *l;
 
@@ -142,27 +142,21 @@ void enna_content_hide(void)
             continue;
         if (e->selected)
         {
-            enna_activity_hide(e->name);
+            if (show)
+               enna_activity_show(e->name);
+            else
+               enna_activity_hide(e->name);
             return;
         }
     }
 }
 
+void enna_content_hide(void)
+{
+   enna_content_update(0);
+}
+
 void enna_content_show(void)
 {
-    Eina_List *l;
-
-    for (l = _enna_contents; l; l = l->next)
-    {
-        Enna_Content_Element *e;
-        e = l->data;
-
-        if (!e)
-            continue;
-        if (e->selected)
-        {
-            enna_activity_show(e->name);
-            return;
-        }
-    }
+   enna_content_update(1);
 }
