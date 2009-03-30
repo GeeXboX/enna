@@ -128,53 +128,23 @@ enna_activities_get(void)
     return _enna_activities;
 }
 
-int enna_activity_init(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity(name);
-    if (!act)
-        return -1;
-
-    ACTIVITY_CLASS(init, 0);
-    return 0;
+#define ACTIVITY_FUNC(func, ...) \
+int enna_activity_##func(const char *name) \
+{ \
+    Enna_Class_Activity *act; \
+    \
+    act = enna_get_activity(name); \
+    if (!act) \
+       return -1; \
+    \
+    ACTIVITY_CLASS(func, __VA_ARGS__); \
+    return 0; \
 }
 
-int enna_activity_show(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity(name);
-    if (!act)
-        return -1;
-
-    ACTIVITY_CLASS(show, 0);
-    return 0;
-}
-
-int enna_activity_shutdown(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity(name);
-    if (!act)
-        return -1;
-
-    ACTIVITY_CLASS(shutdown, 0);
-    return 0;
-}
-
-int enna_activity_hide(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity(name);
-    if (!act)
-        return -1;
-
-    ACTIVITY_CLASS(hide, 0);
-    return 0;
-}
+ACTIVITY_FUNC(init, 0);
+ACTIVITY_FUNC(shutdown, 0);
+ACTIVITY_FUNC(show, 0);
+ACTIVITY_FUNC(hide, 0);
 
 int enna_activity_event(Enna_Class_Activity *act, void *event_info)
 {
