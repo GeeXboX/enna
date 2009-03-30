@@ -184,10 +184,17 @@ char enna_key_get_alpha(enna_key_t key)
     int i;
 
     for (i = 0; enna_keymap[i].keyname; i++)
+    {
         if (enna_keymap[i].keycode == key)
-            return enna_keymap[i].keyname[0];
+	{
+	    if (strlen(enna_keymap[i].keyname) == 1)
+		return enna_keymap[i].keyname[0];
+	    else
+		return 0;
+	}
+    }
 
-    return ' ';
+    return 0;
 }
 
 void enna_input_init()

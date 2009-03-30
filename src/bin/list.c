@@ -120,7 +120,7 @@ void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * cl
     it->func = func;
     it->data = data;
     it->label = eina_stringshare_add(label);
-    
+
     sd->items = eina_list_append(sd->items, it);
 }
 
@@ -530,7 +530,8 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
         default:
         {
             char key = enna_key_get_alpha(keycode);
-            list_get_alpha_from_digit(sd, key);
+	    if (key)
+		list_get_alpha_from_digit(sd, key);
         }
         break;
     }
