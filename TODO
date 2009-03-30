@@ -25,15 +25,10 @@
       -> Add video support to emotion backend
       -> Support Volume
 
- * Show QUIT menu on exit
-
  * Add Simple Widgets
       -> Checkbox
       -> Slider
       -> TextBox
-
- * Add Module system
-
 
  * Bugs
      -> Remove item when location bar is clicked
@@ -62,7 +57,6 @@
 
  * Configuration Module
       -> Add configuration infrastructure for modules
-      -> Register config per module
       -> Add Main menu item for configuration
       -> Create GUI for config from registred modules
       -> Add an option to enable/disable Internet usage
