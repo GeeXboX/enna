@@ -63,12 +63,8 @@ enna_reflection_file_set(Evas_Object * obj, const char *file)
 EAPI const char    *
 enna_reflection_file_get(Evas_Object * obj)
 {
-    Smart_Data       *sd;
     const char         *file;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return NULL;
+    INTERNAL_ENTRY_RETURN NULL;
 
     evas_object_image_file_get(sd->obj, &file, NULL);
     return file;
@@ -85,12 +81,7 @@ enna_reflection_smooth_scale_set(Evas_Object * obj, int smooth)
 EAPI int
 enna_reflection_smooth_scale_get(Evas_Object * obj)
 {
-    Smart_Data       *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return 0;
-
+    INTERNAL_ENTRY_RETURN 0;
     return evas_object_image_smooth_scale_get(sd->obj);
 }
 
@@ -105,12 +96,7 @@ enna_reflection_alpha_set(Evas_Object * obj, int alpha)
 EAPI int
 enna_reflection_alpha_get(Evas_Object * obj)
 {
-    Smart_Data       *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return 0;
-
+    INTERNAL_ENTRY_RETURN 0;
     return evas_object_image_alpha_get(sd->obj);
 }
 
@@ -130,12 +116,8 @@ enna_reflection_size_get(Evas_Object * obj, int *w, int *h)
 EAPI int
 enna_reflection_fill_inside_get(Evas_Object * obj)
 {
-    Smart_Data       *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (sd->fill_inside)
-        return 1;
-    return 0;
+    INTERNAL_ENTRY_RETURN 0;
+    return (sd->fill_inside) ? 1 : 0;
 }
 
 EAPI void
@@ -161,11 +143,7 @@ enna_reflection_data_set(Evas_Object * obj, void *data, int w, int h)
 EAPI void          *
 enna_reflection_data_get(Evas_Object * obj, int *w, int *h)
 {
-    Smart_Data       *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return NULL;
+    INTERNAL_ENTRY_RETURN NULL;
     evas_object_image_size_get(sd->obj, w, h);
     return evas_object_image_data_get(sd->obj, 0);
 }
