@@ -157,7 +157,7 @@ _button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
+_button_clicked_seek_cb(void *data, Evas_Object *obj, void *event_info, int fw)
 {
     Smart_Data * sd;
     sd = (Smart_Data *) data;
@@ -165,19 +165,22 @@ _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
     double length;
     length = enna_mediaplayer_length_get();
     pos = enna_mediaplayer_position_get();
-    enna_mediaplayer_seek((pos/length)-(sd->seek_step/100));
+    if (fw)
+       enna_mediaplayer_seek((pos/length)+(sd->seek_step/100));
+    else
+       enna_mediaplayer_seek((pos/length)-(sd->seek_step/100));
+}
+
+static void
+_button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    _button_clicked_seek_cb (data, obj, event_info, 0);
 }
 
 static void
 _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    Smart_Data * sd;
-    sd = (Smart_Data *) data;
-    double pos;
-    double length;
-    length = enna_mediaplayer_length_get();
-    pos = enna_mediaplayer_position_get();
-    enna_mediaplayer_seek((pos/length)+(sd->seek_step/100));
+    _button_clicked_seek_cb (data, obj, event_info, 1);
 }
 
 static void
