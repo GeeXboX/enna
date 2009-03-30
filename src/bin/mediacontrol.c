@@ -221,6 +221,19 @@ _smart_reconfigure(Smart_Data * sd)
 
 }
 
+#define ELM_ADD(icon, cb)                                            \
+    ic = elm_icon_add(obj);                                          \
+    elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
+    elm_icon_scale_set(ic, 0, 0);                                    \
+    bt = elm_button_add(obj);                                        \
+    evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
+    elm_button_icon_set(bt, ic);                                     \
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);                  \
+    evas_object_size_hint_align_set(bt, -1.0, -1.0);                 \
+    elm_box_pack_end(sd->o_btn_box, bt);                             \
+    evas_object_show(bt);                                            \
+    evas_object_show(ic);                                            \
+
 static void
 _smart_add(Evas_Object * obj)
 {
@@ -248,89 +261,13 @@ _smart_add(Evas_Object * obj)
     evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_btn_box);
 
-    ic = elm_icon_add(obj);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
-    elm_icon_scale_set(ic, 0, 0);
-    bt = elm_button_add(obj);
-    evas_object_smart_callback_add(bt, "clicked", _button_clicked_play_cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);
-    elm_box_pack_end(sd->o_btn_box, bt);
-    evas_object_show(bt);
-    evas_object_show(ic);
-
-    ic = elm_icon_add(obj);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_pause");
-    elm_icon_scale_set(ic, 0, 0);
-    bt = elm_button_add(obj);
-    evas_object_smart_callback_add(bt, "clicked", _button_clicked_pause_cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);
-    elm_box_pack_end(sd->o_btn_box, bt);
-    evas_object_show(bt);
-    evas_object_show(ic);
-
-    ic = elm_icon_add(obj);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_prev");
-    elm_icon_scale_set(ic, 0, 0);
-    bt = elm_button_add(obj);
-    evas_object_smart_callback_add(bt, "clicked", _button_clicked_prev_cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);
-    elm_box_pack_end(sd->o_btn_box, bt);
-    evas_object_show(bt);
-    evas_object_show(ic);
-
-    ic = elm_icon_add(obj);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_rewind");
-    elm_icon_scale_set(ic, 0, 0);
-    bt = elm_button_add(obj);
-    evas_object_smart_callback_add(bt, "clicked", _button_clicked_rewind_cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);
-    elm_box_pack_end(sd->o_btn_box, bt);
-    evas_object_show(bt);
-    evas_object_show(ic);
-
-    ic = elm_icon_add(obj);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_forward");
-    elm_icon_scale_set(ic, 0, 0);
-    bt = elm_button_add(obj);
-    evas_object_smart_callback_add(bt, "clicked", _button_clicked_forward_cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);
-    elm_box_pack_end(sd->o_btn_box, bt);
-    evas_object_show(bt);
-    evas_object_show(ic);
-
-    ic = elm_icon_add(obj);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_next");
-    elm_icon_scale_set(ic, 0, 0);
-    bt = elm_button_add(obj);
-    evas_object_smart_callback_add(bt, "clicked", _button_clicked_next_cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);
-    elm_box_pack_end(sd->o_btn_box, bt);
-    evas_object_show(bt);
-    evas_object_show(ic);
-
-    ic = elm_icon_add(obj);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_stop");
-    elm_icon_scale_set(ic, 0, 0);
-    bt = elm_button_add(obj);
-    evas_object_smart_callback_add(bt, "clicked", _button_clicked_stop_cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);
-    elm_box_pack_end(sd->o_btn_box, bt);
-    evas_object_show(bt);
-    evas_object_show(ic);
+    ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+    ELM_ADD ("icon/mp_pause",   _button_clicked_pause_cb);
+    ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
+    ELM_ADD ("icon/mp_rewind",  _button_clicked_rewind_cb);
+    ELM_ADD ("icon/mp_forward", _button_clicked_forward_cb);
+    ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
+    ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
 
     sd->play_event_handler = ecore_event_handler_add(
              ENNA_EVENT_MEDIAPLAYER_START, _start_cb, sd);
