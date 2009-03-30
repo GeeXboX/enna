@@ -360,10 +360,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     si = data;
     sd = si->sd;
 
-    if (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD)
-        sd->on_hold = 1;
-    else
-        sd->on_hold = 0;
+    sd->on_hold = (ev->event_flags & EVAS_EVENT_FLAG_ON_HOLD) ? 1 : 0;
 
     if (!sd->items)
         return;
