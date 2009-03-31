@@ -250,7 +250,7 @@ _smart_add(Evas_Object * obj)
     sd->y = 0;
     sd->w = 0;
     sd->h = 0;
-    sd->seek_step = 2;
+    sd->seek_step = 2.0;
     evas=evas_object_evas_get(obj);
 
     sd->o_edje = edje_object_add(evas);
