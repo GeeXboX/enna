@@ -85,8 +85,7 @@ void enna_smart_player_show_video(Evas_Object *obj)
 {
     Evas_Object *o_video;
 
-    API_ENTRY
-    ;
+    API_ENTRY;
 
     o_video = enna_mediaplayer_video_obj_get();
     if (o_video)
@@ -99,8 +98,7 @@ void enna_smart_player_hide_video(Evas_Object *obj)
 {
     Evas_Object *o_video;
 
-    API_ENTRY
-    ;
+    API_ENTRY;
 
     o_video = enna_mediaplayer_video_obj_get();
     if (o_video)
@@ -289,10 +287,7 @@ static void _e_smart_add(Evas_Object * obj)
 
 static void _e_smart_del(Evas_Object * obj)
 {
-    Smart_Data *sd;
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     ENNA_OBJECT_DEL(sd->o_snapshot);
     ENNA_OBJECT_DEL(sd->o_snapshot_old);
     ENNA_OBJECT_DEL(sd->o_cover);
@@ -303,11 +298,8 @@ static void _e_smart_del(Evas_Object * obj)
 
 static void _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
-    Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if ((sd->x == x) && (sd->y == y))
         return;
     sd->x = x;
@@ -317,11 +309,8 @@ static void _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 
 static void _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
-    Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if ((sd->w == w) && (sd->h == h))
         return;
     sd->w = w;
@@ -332,50 +321,30 @@ static void _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
 static void _e_smart_show(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_show(sd->o_edje);
 }
 
 static void _e_smart_hide(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_hide(sd->o_edje);
 }
 
 static void _e_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_color_set(sd->o_edje, r, g, b, a);
 }
 
 static void _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_clip_set(sd->o_edje, clip);
 }
 
 static void _e_smart_clip_unset(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_clip_unset(sd->o_edje);
 }
