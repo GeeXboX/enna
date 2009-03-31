@@ -75,9 +75,10 @@ void url_free (url_t url)
     curl_global_cleanup ();
 }
 
-url_data_t url_get_data(CURL *curl, char *url)
+url_data_t url_get_data(url_t handler, char *url)
 {
     url_data_t chunk;
+    CURL *curl = (CURL *) handler;
 
     chunk.buffer = NULL; /* we expect realloc(NULL, size) to work */
     chunk.size = 0; /* no data at this point */
@@ -97,8 +98,10 @@ url_data_t url_get_data(CURL *curl, char *url)
     return chunk;
 }
 
-char *url_escape_string(CURL *curl, const char *buf)
+char *url_escape_string(url_t handler, const char *buf)
 {
+    CURL *curl = (CURL *) handler;
+
     if (!curl || !buf)
         return NULL;
 
@@ -106,10 +109,11 @@ char *url_escape_string(CURL *curl, const char *buf)
 }
 
 void
-url_save_to_disk (CURL *curl, char *src, char *dst)
+url_save_to_disk (url_t handler, char *src, char *dst)
 {
     url_data_t data;
     int n, fd;
+    CURL *curl = (CURL *) handler;
 
     if (!curl || !src || !dst)
         return;
