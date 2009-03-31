@@ -52,6 +52,8 @@
                         ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);\
     enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
 
+#define SEEK_STEP 2.0 /* percent */
+
 static void _create_menu();
 static void _create_gui();
 static void _create_mediaplayer_gui();
@@ -235,6 +237,22 @@ _class_event(void *event_info)
         case ENNA_KEY_DOWN:
             enna_mediaplayer_next(mod->enna_playlist);
             break;
+        case ENNA_KEY_LEFT:
+        {
+            double pos, length;
+            length = enna_mediaplayer_length_get();
+            pos = enna_mediaplayer_position_get();
+            enna_mediaplayer_seek((pos/length)-(SEEK_STEP/100));
+            break;
+        }
+        case ENNA_KEY_RIGHT:
+        {
+            double pos, length;
+            length = enna_mediaplayer_length_get();
+            pos = enna_mediaplayer_position_get();
+            enna_mediaplayer_seek((pos/length)+(SEEK_STEP/100));
+            break;
+        }
         case ENNA_KEY_CANCEL:
             ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
             mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
