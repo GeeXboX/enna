@@ -181,8 +181,8 @@ group {
 	    text {
                text:     "Title";
                font:     "content_bd";
-               size:     45;
-               align: 0.5 0.5;
+               size:     20;
+               align: 0.05 0.5;
 
             }
 	 }
