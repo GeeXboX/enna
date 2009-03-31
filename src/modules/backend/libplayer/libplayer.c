@@ -75,6 +75,7 @@ typedef struct _Enna_Module_libplayer
     player_type_t tv_type;
     Ecore_Event_Handler *key_down_event_handler;
     Ecore_Event_Handler *mouse_button_event_handler;
+    Ecore_Event_Handler *mouse_move_event_handler;
     Ecore_Pipe *pipe;
 } Enna_Module_libplayer;
 
@@ -99,6 +100,7 @@ static void _class_shutdown(int dummy)
         free(mod->label);
     ecore_event_handler_del(mod->key_down_event_handler);
     ecore_event_handler_del(mod->mouse_button_event_handler);
+    ecore_event_handler_del(mod->mouse_move_event_handler);
     ecore_pipe_del(mod->pipe);
     player_playback_stop(mod->player);
     for (i = 0; i < MAX_PLAYERS; i++)
@@ -491,6 +493,23 @@ static int _event_mouse_button(void *data, int type, void *event)
 }
 
 
+static int _event_mouse_move(void *data, int type, void *event)
+{
+    Ecore_Event_Mouse_Move *e = event;
+
+    /* Broadcast mouse position only for dvd player and only if libplayer window is on screen*/
+    if ( (e->window == enna->ee_winid) ||
+	!mod->uri ||
+	strncmp(mod->uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
+        return 1;
+
+    /* Send mouse position to libplayer*/
+    player_set_mouse_position(mod->players[mod->dvd_type], e->x, e->y);
+
+    return 1;
+}
+
+
 
 static Enna_Class_MediaplayerBackend class = {
     "libplayer",
@@ -684,6 +703,8 @@ void module_init(Enna_Module *em)
         ecore_event_handler_add(ECORE_EVENT_KEY_DOWN, _event_key_down, NULL);
     mod->mouse_button_event_handler =
 	ecore_event_handler_add(ECORE_EVENT_MOUSE_BUTTON_DOWN, _event_mouse_button, NULL);
+    mod->mouse_move_event_handler =
+	ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE, _event_mouse_move, NULL);
 
     mod->pipe = ecore_pipe_add(_pipe_read, NULL);
 
