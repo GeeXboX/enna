@@ -48,7 +48,7 @@ typedef struct Enna_Module_Music_s
 {
     Evas *e;
     Enna_Module *em;
-    CURL *curl;
+    url_t handler;
 } Enna_Module_Music;
 
 static Enna_Module_Music *mod;
@@ -60,7 +60,7 @@ static Eina_List * browse_list(void)
     xmlNode *list, *n;
     Eina_List *files = NULL;
 
-    chunk = url_get_data(mod->curl, SHOUTCAST_LIST);
+    chunk = url_get_data(mod->handler, SHOUTCAST_LIST);
 
     doc = get_xml_doc_from_memory (chunk.buffer);
     if (!doc)
@@ -105,7 +105,7 @@ static Eina_List * browse_by_genre(const char *path)
 
     memset(url, '\0', MAX_URL);
     snprintf(url, MAX_URL, "%s%s", SHOUTCAST_STATION, genre);
-    chunk = url_get_data(mod->curl, url);
+    chunk = url_get_data(mod->handler, url);
 
     doc = xmlReadMemory(chunk.buffer, chunk.size, NULL, NULL, 0);
     if (!doc)
@@ -209,8 +209,7 @@ void module_init(Enna_Module *em)
     mod->em = em;
     em->mod = mod;
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    mod->curl = curl_easy_init();
+    mod->handler = url_new();
 
     enna_vfs_append("shoutcast", ENNA_CAPS_MUSIC, &class_shoutcast);
 }
@@ -219,7 +218,5 @@ void module_shutdown(Enna_Module *em)
 {
     Enna_Module_Music *mod = em->mod;
 
-    if (mod->curl)
-        curl_easy_cleanup(mod->curl);
-    curl_global_cleanup();
+    url_free (mod->handler);
 }

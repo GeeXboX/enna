@@ -30,10 +30,6 @@
 #ifndef URL_UTILS_H
 #define URL_UTILS_H
 
-#include <curl/curl.h>
-#include <curl/types.h>
-#include <curl/easy.h>
-
 typedef struct url_data_s
 {
     int status;
@@ -41,10 +37,16 @@ typedef struct url_data_s
     size_t size;
 } url_data_t;
 
-url_data_t url_get_data(CURL *curl, char *url);
+typedef void * url_t;
 
-char *url_escape_string(CURL *curl, const char *buf);
+url_t url_new (void);
 
-void url_save_to_disk (CURL *curl, char *src, char *dst);
+void url_free (url_t url);
+
+url_data_t url_get_data(url_t handler, char *url);
+
+char *url_escape_string(url_t handler, const char *buf);
+
+void url_save_to_disk (url_t handler, char *src, char *dst);
 
 #endif /* URL_UTILS_H */

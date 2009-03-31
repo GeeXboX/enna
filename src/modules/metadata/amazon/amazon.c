@@ -61,7 +61,7 @@ typedef struct _Enna_Module_Amazon
 {
     Evas *evas;
     Enna_Module *em;
-    CURL *curl;
+    url_t handler;
 } Enna_Module_Amazon;
 
 static Enna_Module_Amazon *mod;
@@ -94,8 +94,8 @@ static char * amazon_cover_get(char *search_type, char *keywords,
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Search Request: %s", url);
 
     /* 3. Perform request */
-    data = url_get_data(mod->curl, url);
-    if (data.status != CURLE_OK)
+    data = url_get_data(mod->handler, url);
+    if (data.status != 0)
         return NULL;
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -130,8 +130,8 @@ static char * amazon_cover_get(char *search_type, char *keywords,
              "Cover Search Request: %s", url);
 
     /* 6. Perform request */
-    data = url_get_data(mod->curl, url);
-    if (data.status != CURLE_OK)
+    data = url_get_data(mod->handler, url);
+    if (data.status != 0)
         return NULL;
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Cover Search Reply: %s",
@@ -177,8 +177,8 @@ static char * amazon_cover_get(char *search_type, char *keywords,
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Saving %s to %s", cover_url,
             cover);
 
-    data = url_get_data(mod->curl, (char *) cover_url);
-    if (data.status != CURLE_OK)
+    data = url_get_data(mod->handler, (char *) cover_url);
+    if (data.status != 0)
     {
         enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
                 "Unable to download requested cover file");
@@ -236,7 +236,7 @@ amazon_grab (Enna_Metadata *meta, int caps)
               "Grabbing info from %s", meta->uri);
 
     /* Format the keywords */
-    escaped_keywords = url_escape_string (mod->curl, meta->keywords);
+    escaped_keywords = url_escape_string (mod->handler, meta->keywords);
 
     cover = amazon_cover_get (search_type, meta->keywords, escaped_keywords);
     if (cover)
@@ -277,16 +277,13 @@ void module_init(Enna_Module *em)
     mod->em = em;
     mod->evas = em->evas;
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    mod->curl = curl_easy_init();
+    mod->handler = url_new();
     enna_metadata_add_grabber (&grabber);
 }
 
 void module_shutdown(Enna_Module *em)
 {
     //enna_metadata_remove_grabber (ENNA_GRABBER_NAME);
-    if (mod->curl)
-        curl_easy_cleanup(mod->curl);
-    curl_global_cleanup();
+    url_free (mod->handler);
     free(mod);
 }

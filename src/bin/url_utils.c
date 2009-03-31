@@ -35,6 +35,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <curl/curl.h>
+#include <curl/types.h>
+#include <curl/easy.h>
+
 #include <Ecore_File.h>
 
 #include "enna.h"
@@ -59,9 +63,26 @@ static size_t url_buffer_get(void *ptr, size_t size, size_t nmemb, void *data)
     return realsize;
 }
 
-url_data_t url_get_data(CURL *curl, char *url)
+url_t url_new (void)
+{
+    CURL *curl;
+
+    curl_global_init (CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init ();
+    return (url_t) curl;
+}
+
+void url_free (url_t url)
+{
+    if (url)
+        curl_easy_cleanup ((CURL *) url);
+    curl_global_cleanup ();
+}
+
+url_data_t url_get_data(url_t handler, char *url)
 {
     url_data_t chunk;
+    CURL *curl = (CURL *) handler;
 
     chunk.buffer = NULL; /* we expect realloc(NULL, size) to work */
     chunk.size = 0; /* no data at this point */
@@ -74,14 +95,17 @@ url_data_t url_get_data(CURL *curl, char *url)
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, url_buffer_get);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);
 
     chunk.status = curl_easy_perform(curl);
 
     return chunk;
 }
 
-char *url_escape_string(CURL *curl, const char *buf)
+char *url_escape_string(url_t handler, const char *buf)
 {
+    CURL *curl = (CURL *) handler;
+
     if (!curl || !buf)
         return NULL;
 
@@ -89,10 +113,11 @@ char *url_escape_string(CURL *curl, const char *buf)
 }
 
 void
-url_save_to_disk (CURL *curl, char *src, char *dst)
+url_save_to_disk (url_t handler, char *src, char *dst)
 {
     url_data_t data;
     int n, fd;
+    CURL *curl = (CURL *) handler;
 
     if (!curl || !src || !dst)
         return;

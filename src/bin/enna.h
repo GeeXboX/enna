@@ -87,6 +87,12 @@
    if (!sd) \
       return;
 
+#define INTERNAL_ENTRY_RETURN                           \
+   Smart_Data *sd;                                      \
+   sd = evas_object_smart_data_get(obj);                \
+   if (!sd) \
+      return
+
 
 typedef enum
 {

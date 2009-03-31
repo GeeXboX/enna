@@ -34,6 +34,10 @@ typedef enum _ENNA_CLASS_TYPE ENNA_CLASS_TYPE;
 
 typedef struct _Enna_Class_Activity Enna_Class_Activity;
 
+#define ACTIVITY_CLASS(name, ...) \
+   if (act && act->func.class_##name) \
+      act->func.class_##name(__VA_ARGS__)
+
 struct _Enna_Class_Activity
 {
     const char *name;

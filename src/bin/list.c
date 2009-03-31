@@ -318,8 +318,7 @@ static void _smart_hide(Evas_Object *obj)
 
 static void _smart_move(Evas_Object *obj, Evas_Coord x, Evas_Coord y)
 {
-    INTERNAL_ENTRY
-    ;
+    INTERNAL_ENTRY;
     if ((sd->x == x) && (sd->y == y))
         return;
     sd->x = x;
@@ -329,8 +328,7 @@ static void _smart_move(Evas_Object *obj, Evas_Coord x, Evas_Coord y)
 
 static void _smart_resize(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
 {
-    INTERNAL_ENTRY
-    ;
+    INTERNAL_ENTRY;
     if ((sd->w == w) && (sd->h == h))
         return;
     sd->w = w;
@@ -341,28 +339,24 @@ static void _smart_resize(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
 
 static void _smart_color_set(Evas_Object *obj, int r, int g, int b, int a)
 {
-    INTERNAL_ENTRY
-    ;
+    INTERNAL_ENTRY;
     evas_object_color_set(sd->o_edje, r, g, b, a);
 }
 
 static void _smart_clip_set(Evas_Object *obj, Evas_Object *clip)
 {
-    INTERNAL_ENTRY
-    ;
+    INTERNAL_ENTRY;
     evas_object_clip_set(sd->o_edje, clip);
 }
 
 static void _smart_clip_unset(Evas_Object *obj)
 {
-    INTERNAL_ENTRY
-    ;
+    INTERNAL_ENTRY;
     evas_object_clip_unset(sd->o_edje);
 }
 
 static void _smart_reconfigure(Smart_Data *sd)
 {
-
     evas_object_move(sd->o_edje, sd->x, sd->y);
     evas_object_resize(sd->o_edje, sd->w, sd->h);
 }

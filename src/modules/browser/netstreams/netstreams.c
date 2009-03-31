@@ -64,7 +64,7 @@ typedef struct Enna_Module_Netstreams_s
 {
     Evas *e;
     Enna_Module *em;
-    CURL *curl;
+    url_t handler;
     netstreams_priv_t *music;
     netstreams_priv_t *video;
 } Enna_Module_Netstreams;
@@ -175,8 +175,8 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
         url_data_t chunk;
 
         file = mktemp(tmp);
-        chunk = url_get_data(mod->curl, (char *) path);
-        if (chunk.status != CURLE_OK)
+        chunk = url_get_data(mod->handler, (char *) path);
+        if (chunk.status != 0)
           return NULL;
 
         f = fopen(file, "w");
@@ -363,8 +363,7 @@ void module_init(Enna_Module *em)
     mod->em = em;
     em->mod = mod;
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    mod->curl = curl_easy_init();
+    mod->handler = url_new();
 
     class_init("netstreams_music", &mod->music, ENNA_CAPS_MUSIC, &class_music,
             "stream_music");
@@ -380,7 +379,5 @@ void module_shutdown(Enna_Module *em)
     free(mod->music);
     free(mod->video);
 
-    if (mod->curl)
-        curl_easy_cleanup(mod->curl);
-    curl_global_cleanup();
+    url_free(mod->handler);
 }

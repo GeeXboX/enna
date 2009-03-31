@@ -699,8 +699,12 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
-echo "Build theme........................ : $build_theme"
+eval echo "Installation Path.................. : $exec_prefix"
+eval echo "\  Binaries......................... : $exec_prefix/bin"
+eval echo "\  Modules.......................... : $exec_prefix/lib/enna/modules"
+eval echo "\  Theme............................ : $exec_prefix/share/enna/theme"
 echo
+echo "Build theme........................ : $build_theme"
 echo
 echo "Supported Activity Modules:"
 echo

@@ -69,26 +69,9 @@ static void _random_transition(Smart_Data *sd);
 static void _edje_cb(void *data, Evas_Object *obj, const char *emission,
         const char *source);
 static void _switch_images(Smart_Data * sd, Evas_Object * new_slide);
-static void _smart_add(Evas_Object * obj);
-static void _smart_del(Evas_Object * obj);
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y);
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h);
-static void _smart_show(Evas_Object * obj);
-static void _smart_hide(Evas_Object * obj);
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip);
-static void _smart_clip_unset(Evas_Object * obj);
 
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
-
-/* externally accessible functions */
-Evas_Object *
-enna_slideshow_add(Evas * evas)
-{
-    _enna_slideshow_smart_init();
-    return evas_object_smart_add(evas, _e_smart);
-}
 
 void enna_slideshow_image_append(Evas_Object *obj, const char *filename)
 {
@@ -279,29 +262,6 @@ static void _enna_slideshow_smart_reconfigure(Smart_Data * sd)
 
 }
 
-static void _enna_slideshow_smart_init(void)
-{
-    if (_e_smart)
-        return;
-    static const Evas_Smart_Class sc =
-    {
-        SMART_NAME,
-        EVAS_SMART_CLASS_VERSION,
-        _smart_add,
-        _smart_del,
-        _smart_move,
-        _smart_resize,
-        _smart_show,
-        _smart_hide,
-        _smart_color_set,
-        _smart_clip_set,
-        _smart_clip_unset,
-        NULL,
-        NULL
-    };
-    _e_smart = evas_smart_class_new(&sc);
-}
-
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
@@ -336,12 +296,8 @@ static void _smart_add(Evas_Object * obj)
 
 static void _smart_del(Evas_Object * obj)
 {
-    Smart_Data *sd;
     Eina_List *l;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
 
     for (l = sd->playlist; l; l = l->next)
         evas_object_del(l->data);
@@ -353,11 +309,8 @@ static void _smart_del(Evas_Object * obj)
 
 static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
-    Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if ((sd->x == x) && (sd->y == y))
         return;
     sd->x = x;
@@ -367,11 +320,8 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 
 static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
-    Smart_Data *sd;
+    INTERNAL_ENTRY;
 
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
     if ((sd->w == w) && (sd->h == h))
         return;
     sd->w = w;
@@ -381,50 +331,62 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
 static void _smart_show(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_show(sd->o_edje);
 }
 
 static void _smart_hide(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_hide(sd->o_edje);
 }
 
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_color_set(sd->o_edje, r, g, b, a);
 }
 
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_clip_set(sd->o_edje, clip);
 }
 
 static void _smart_clip_unset(Evas_Object * obj)
 {
-    Smart_Data *sd;
-
-    sd = evas_object_smart_data_get(obj);
-    if (!sd)
-        return;
+    INTERNAL_ENTRY;
     evas_object_clip_unset(sd->o_edje);
 }
+
+static void _enna_slideshow_smart_init(void)
+{
+    static const Evas_Smart_Class sc =
+    {
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _smart_add,
+        _smart_del,
+        _smart_move,
+        _smart_resize,
+        _smart_show,
+        _smart_hide,
+        _smart_color_set,
+        _smart_clip_set,
+        _smart_clip_unset,
+        NULL,
+        NULL
+    };
+
+    if (!_e_smart)
+       _e_smart = evas_smart_class_new(&sc);
+}
+
+/* externally accessible functions */
+Evas_Object *
+enna_slideshow_add(Evas * evas)
+{
+    _enna_slideshow_smart_init();
+    return evas_object_smart_add(evas, _e_smart);
+}
+
