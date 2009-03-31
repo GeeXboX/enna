@@ -122,8 +122,15 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
 
     if (!metadata)
         return;
-    edje_object_part_text_set(sd->o_edje, "enna.text.title",
-                              metadata->title ? metadata->title : "");
+    if (metadata->title)
+        edje_object_part_text_set(sd->o_edje,
+                                  "enna.text.title", metadata->title);
+    else if (metadata->uri)
+        edje_object_part_text_set(sd->o_edje, "enna.text.title",
+                                  ecore_file_file_get(metadata->uri));
+    else
+        edje_object_part_text_set(sd->o_edje, "enna.text.title", "");
+
     edje_object_part_text_set(sd->o_edje, "enna.text.album",
                               metadata->music->album ? metadata->music->album : "");
     edje_object_part_text_set(sd->o_edje, "enna.text.artist",

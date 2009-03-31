@@ -52,6 +52,8 @@
                         ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);\
     enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
 
+#define SEEK_STEP 2.0 /* percent */
+
 static void _create_menu();
 static void _create_gui();
 static void _create_mediaplayer_gui();
@@ -62,8 +64,6 @@ static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_i
 
 static void _menu_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
 
-static void _next_song(void);
-static void _prev_song(void);
 static int _show_mediaplayer_cb(void *data);
 
 static void _class_init(int dummy);
@@ -231,12 +231,28 @@ _class_event(void *event_info)
         case ENNA_KEY_SPACE:
             enna_mediaplayer_play(mod->enna_playlist);
             break;
-        case ENNA_KEY_RIGHT:
-            _next_song();
+        case ENNA_KEY_UP:
+            enna_mediaplayer_prev(mod->enna_playlist);
+            break;
+        case ENNA_KEY_DOWN:
+            enna_mediaplayer_next(mod->enna_playlist);
             break;
         case ENNA_KEY_LEFT:
-            _prev_song();
+        {
+            double pos, length;
+            length = enna_mediaplayer_length_get();
+            pos = enna_mediaplayer_position_get();
+            enna_mediaplayer_seek((pos/length)-(SEEK_STEP/100));
             break;
+        }
+        case ENNA_KEY_RIGHT:
+        {
+            double pos, length;
+            length = enna_mediaplayer_length_get();
+            pos = enna_mediaplayer_position_get();
+            enna_mediaplayer_seek((pos/length)+(SEEK_STEP/100));
+            break;
+        }
         case ENNA_KEY_CANCEL:
             ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
             mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
@@ -411,23 +427,11 @@ _update_position_timer(void *data)
     return 1;
 }
 
-static void
-_next_song()
-{
-    enna_mediaplayer_next(mod->enna_playlist);
-}
-
-static void
-_prev_song()
-{
-    enna_mediaplayer_prev(mod->enna_playlist);
-}
-
 static int
 _eos_cb(void *data, int type, void *event)
 {
-    /* EOS received, update metadata */
-    _next_song();
+  /* EOS received, update metadata */
+    enna_mediaplayer_next(mod->enna_playlist);
     return 1;
 }
 
