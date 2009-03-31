@@ -213,7 +213,7 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
         "<hilight>Size<tab><tab><tab></hilight>:<tab>%.2f MB<br>"
         "<hilight>Length<tab><tab></hilight>:<tab>%.2d h %.2d mn<br>"
         "<hilight>Video Codec<tab></hilight>:<tab>%s<br>"
-        "<hilight>Size<tab><tab><tab></hilight>:<tab>%dx%d<br>"
+        "<hilight>Resolution<tab></hilight>:<tab>%dx%d<br>"
         "<hilight>Framerate<tab></hilight>:<tab>%.2f fps<br>"
         "<hilight>Audio Codec<tab></hilight>:<tab>%s<br>"
         "<hilight>Bitrate<tab><tab></hilight>:<tab>%i kbps<br>"
