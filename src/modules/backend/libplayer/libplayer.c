@@ -31,7 +31,8 @@
 #include <string.h>
 
 #include <Ecore.h>
-#include <Ecore_X.h>
+#include <Ecore_Input.h>
+
 #include <player.h>
 
 #include "enna.h"
@@ -73,6 +74,7 @@ typedef struct _Enna_Module_libplayer
     player_type_t dvd_type;
     player_type_t tv_type;
     Ecore_Event_Handler *key_down_event_handler;
+    Ecore_Event_Handler *mouse_button_event_handler;
     Ecore_Pipe *pipe;
 } Enna_Module_libplayer;
 
@@ -96,6 +98,7 @@ static void _class_shutdown(int dummy)
     if (mod->label)
         free(mod->label);
     ecore_event_handler_del(mod->key_down_event_handler);
+    ecore_event_handler_del(mod->mouse_button_event_handler);
     ecore_pipe_del(mod->pipe);
     player_playback_stop(mod->player);
     for (i = 0; i < MAX_PLAYERS; i++)
@@ -129,7 +132,10 @@ static mrl_t * set_dvd_stream(const char *uri, mrl_resource_t type)
     int tmp = 0;
     int title = 0;
 
+    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Load DVD Video : %s\n", uri);
+
     args = calloc(1, sizeof(mrl_resource_videodisc_args_t));
+    /*args->device = strdup("/dev/sr0");*/
     mrl = mrl_new(mod->players[mod->dvd_type], type, args);
 
     meta = mrl_get_metadata_dvd (mod->players[mod->dvd_type], mrl, (uint8_t *) &prop);
@@ -206,6 +212,8 @@ static int _class_file_set(const char *uri, const char *label)
 {
     mrl_t *mrl = NULL;
     player_type_t player_type = mod->default_type;
+
+    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Try to load : %s\n", uri);
 
     /* try network streams */
     if (!strncmp(uri, URI_TYPE_FTP, strlen(URI_TYPE_FTP)))
@@ -443,26 +451,45 @@ static int _event_cb(player_event_t e, void *data)
     return 0;
 }
 
-static int _x_event_key_down(void *data, int type, void *event)
+static int _event_key_down(void *data, int type, void *event)
 {
-    Ecore_X_Event_Key_Down *e;
+    Ecore_Event_Key *e;
     e = event;
     /*
        HACK !
-       If e->win is the same than enna winid, don't manage this event
+       If e->window is the same than enna winid, don't manage this event
        ecore_evas_x will do this for us.
-       But if e->win is different than enna winid event are sent to
+       But if e->window is different than enna winid event are sent to
        libplayer subwindow and we must broadcast this event to Evas
     */
-    if (e->win != enna->ee_winid)
+    if (e->window != enna->ee_winid)
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                 "Ecore_X_Event_Key_Down %s", e->keyname);
-        evas_event_feed_key_down(enna->evas, e->keyname, e->keysymbol,
-                                 e->key_compose, NULL, e->time, NULL);
+                 "Ecore_Event_Key_Down %s", e->keyname);
+        evas_event_feed_key_down(enna->evas, e->keyname, e->key,
+                                 e->compose, NULL, e->timestamp, NULL);
     }
    return 1;
 }
+
+static int _event_mouse_button(void *data, int type, void *event)
+{
+    Ecore_Event_Mouse_Button *e = event;
+
+
+    /* Broadcast mouse position only for dvd player and only if libplayer window is on screen*/
+    if ( (e->window != enna->ee_winid) || !mod->uri || strncmp(mod->uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
+        return 1;
+    /* Set mouse position and send mouseclick event */
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+	"Send Mouse click %d %d, uri : %s\n", e->x, e->y, mod->uri);
+
+    player_set_mouse_position(mod->players[mod->dvd_type], e->root.x, e->root.y);
+    player_dvd_nav (mod->players[mod->dvd_type], PLAYER_DVDNAV_MOUSECLICK );
+    return 1;
+}
+
+
 
 static Enna_Class_MediaplayerBackend class = {
     "libplayer",
@@ -653,7 +680,10 @@ void module_init(Enna_Module *em)
     mod->evas = em->evas;
 
     mod->key_down_event_handler =
-        ecore_event_handler_add(ECORE_X_EVENT_KEY_DOWN, _x_event_key_down, NULL);
+        ecore_event_handler_add(ECORE_EVENT_KEY_DOWN, _event_key_down, NULL);
+    mod->mouse_button_event_handler =
+	ecore_event_handler_add(ECORE_EVENT_MOUSE_BUTTON_DOWN, _event_mouse_button, NULL);
+
     mod->pipe = ecore_pipe_add(_pipe_read, NULL);
 
     if (type == PLAYER_TYPE_MPLAYER || dvd_type == PLAYER_TYPE_MPLAYER || tv_type == PLAYER_TYPE_MPLAYER) {
