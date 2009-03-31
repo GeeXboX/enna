@@ -44,24 +44,9 @@
 
 #define SMART_NAME "smart_player"
 
-#undef API_ENTRY
-#define API_ENTRY \
-   E_Smart_Data *sd; \
-   sd = evas_object_smart_data_get(obj); \
-   if ((!obj) || (!sd) || \
-     (evas_object_type_get(obj) && \
-     strcmp(evas_object_type_get(obj), SMART_NAME)))
+typedef struct _Smart_Data Smart_Data;
 
-#undef INTERNAL_ENTRY
-#define INTERNAL_ENTRY \
-   E_Smart_Data *sd; \
-   sd = evas_object_smart_data_get(obj); \
-   if (!sd) \
-      return;
-
-typedef struct _E_Smart_Data E_Smart_Data;
-
-struct _E_Smart_Data
+struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
@@ -73,7 +58,7 @@ struct _E_Smart_Data
 };
 
 /* local subsystem functions */
-static void _enna_mediaplayer_smart_reconfigure(E_Smart_Data * sd);
+static void _enna_mediaplayer_smart_reconfigure(Smart_Data * sd);
 static void _enna_mediaplayer_smart_init(void);
 static void _e_smart_add(Evas_Object * obj);
 static void _e_smart_del(Evas_Object * obj);
@@ -248,7 +233,7 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
 }
 
 /* local subsystem globals */
-static void _enna_mediaplayer_smart_reconfigure(E_Smart_Data * sd)
+static void _enna_mediaplayer_smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
 
@@ -286,9 +271,9 @@ static void _enna_mediaplayer_smart_init(void)
 
 static void _e_smart_add(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
-    sd = calloc(1, sizeof(E_Smart_Data));
+    sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
@@ -304,7 +289,7 @@ static void _e_smart_add(Evas_Object * obj)
 
 static void _e_smart_del(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
     sd = evas_object_smart_data_get(obj);
     if (!sd)
         return;
@@ -318,7 +303,7 @@ static void _e_smart_del(Evas_Object * obj)
 
 static void _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -332,7 +317,7 @@ static void _e_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 
 static void _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -347,7 +332,7 @@ static void _e_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 
 static void _e_smart_show(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -357,7 +342,7 @@ static void _e_smart_show(Evas_Object * obj)
 
 static void _e_smart_hide(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -367,7 +352,7 @@ static void _e_smart_hide(Evas_Object * obj)
 
 static void _e_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -377,7 +362,7 @@ static void _e_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 
 static void _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
@@ -387,7 +372,7 @@ static void _e_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 
 static void _e_smart_clip_unset(Evas_Object * obj)
 {
-    E_Smart_Data *sd;
+    Smart_Data *sd;
 
     sd = evas_object_smart_data_get(obj);
     if (!sd)
