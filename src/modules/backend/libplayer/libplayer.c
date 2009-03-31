@@ -135,7 +135,7 @@ static mrl_t * set_dvd_stream(const char *uri, mrl_resource_t type)
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Load DVD Video : %s\n", uri);
 
     args = calloc(1, sizeof(mrl_resource_videodisc_args_t));
-    /*args->device = strdup("/dev/sr0");*/
+    args->device = strdup("/dev/sr0");
     mrl = mrl_new(mod->players[mod->dvd_type], type, args);
 
     meta = mrl_get_metadata_dvd (mod->players[mod->dvd_type], mrl, (uint8_t *) &prop);
@@ -476,15 +476,16 @@ static int _event_mouse_button(void *data, int type, void *event)
 {
     Ecore_Event_Mouse_Button *e = event;
 
-
     /* Broadcast mouse position only for dvd player and only if libplayer window is on screen*/
-    if ( (e->window != enna->ee_winid) || !mod->uri || strncmp(mod->uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
+    if ( (e->window == enna->ee_winid) ||
+	!mod->uri ||
+	strncmp(mod->uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
         return 1;
-    /* Set mouse position and send mouseclick event */
-    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-	"Send Mouse click %d %d, uri : %s\n", e->x, e->y, mod->uri);
 
-    player_set_mouse_position(mod->players[mod->dvd_type], e->root.x, e->root.y);
+    /* Set mouse position and send mouseclick event */
+    printf(/*ENNA_MSG_EVENT, ENNA_MODULE_NAME,*/
+	"Send Mouse click %d %d, uri : %s\n", e->x, e->y, mod->uri);
+    player_set_mouse_position(mod->players[mod->dvd_type], e->x, e->y);
     player_dvd_nav (mod->players[mod->dvd_type], PLAYER_DVDNAV_MOUSECLICK );
     return 1;
 }
