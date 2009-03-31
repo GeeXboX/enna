@@ -61,7 +61,7 @@
 typedef struct _Enna_Metadata_Tvdb {
     Evas *evas;
     Enna_Module *em;
-    CURL *curl;
+    url_t handler;
 } Enna_Metadata_Tvdb;
 
 static Enna_Metadata_Tvdb *mod;
@@ -89,7 +89,7 @@ tvdb_parse (Enna_Metadata *meta)
         return;
 
     /* get HTTP compliant keywords */
-    escaped_keywords = url_escape_string (mod->curl, meta->keywords);
+    escaped_keywords = url_escape_string (mod->handler, meta->keywords);
 
     /* proceed with TVDB search request */
     memset (url, '\0', MAX_URL_SIZE);
@@ -98,8 +98,8 @@ tvdb_parse (Enna_Metadata *meta)
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Search Request: %s", url);
 
-    data = url_get_data (mod->curl, url);
-    if (data.status != CURLE_OK)
+    data = url_get_data (mod->handler, url);
+    if (data.status != 0)
         goto error;
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -136,8 +136,8 @@ tvdb_parse (Enna_Metadata *meta)
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Info Request: %s", url);
 
-    data = url_get_data (mod->curl, url);
-    if (data.status != CURLE_OK)
+    data = url_get_data (mod->handler, url);
+    if (data.status != 0)
         goto error;
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -217,7 +217,7 @@ tvdb_parse (Enna_Metadata *meta)
 
             snprintf (cover, sizeof (cover), "%s/.enna/%s/%s.png",
                       enna_util_user_home_get(), PATH_COVERS, meta->md5);
-            url_save_to_disk (mod->curl, tmp_url, cover);
+            url_save_to_disk (mod->handler, tmp_url, cover);
             xmlFree (tmp);
 
             meta->cover = strdup (cover);
@@ -241,7 +241,7 @@ tvdb_parse (Enna_Metadata *meta)
 
             snprintf (cover, sizeof (cover), "%s/.enna/%s/%s.png",
                       enna_util_user_home_get(), PATH_BACKDROPS, meta->md5);
-            url_save_to_disk (mod->curl, tmp_url, cover);
+            url_save_to_disk (mod->handler, tmp_url, cover);
             xmlFree (tmp);
 
             meta->backdrop = strdup (cover);
@@ -300,16 +300,13 @@ module_init (Enna_Module *em)
     mod->em = em;
     mod->evas = em->evas;
 
-    curl_global_init (CURL_GLOBAL_DEFAULT);
-    mod->curl = curl_easy_init ();
+    mod->handler = url_new ();
     enna_metadata_add_grabber (&grabber);
 }
 
 void
 module_shutdown (Enna_Module *em)
 {
-    if (mod->curl)
-        curl_easy_cleanup (mod->curl);
-    curl_global_cleanup ();
+    url_free (mod->handler);
     free (mod);
 }

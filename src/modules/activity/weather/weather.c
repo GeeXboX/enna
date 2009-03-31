@@ -299,24 +299,22 @@ google_weather_search (void)
 {
     char url[MAX_URL_SIZE];
     url_data_t data;
-    CURL *curl;
+    url_t handler;
     xmlDocPtr doc = NULL;
     xmlNode *n;
 
-    curl_global_init (CURL_GLOBAL_DEFAULT);
-    curl = curl_easy_init ();
-    if (!curl)
+    handler = url_new ();
+    if (!handler)
         goto error;
 
     /* proceed with Google Weather API request */
     memset (url, '\0', MAX_URL_SIZE);
     snprintf (url, MAX_URL_SIZE, WEATHER_QUERY,
-              curl_easy_escape (curl, mod->city, strlen (mod->city)),
-              mod->lang);
+              url_escape_string (handler, mod->city), mod->lang);
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Search Request: %s", url);
 
-    data = url_get_data (curl, url);
-    if (data.status != CURLE_OK)
+    data = url_get_data (handler, url);
+    if (data.status != 0)
         goto error;
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -347,7 +345,7 @@ google_weather_search (void)
         xmlFreeDoc (doc);
         doc = NULL;
     }
-    curl_global_cleanup ();
+    url_free (handler);
 }
 
 /****************************************************************************/

@@ -30,10 +30,6 @@
 #ifndef URL_UTILS_H
 #define URL_UTILS_H
 
-#include <curl/curl.h>
-#include <curl/types.h>
-#include <curl/easy.h>
-
 typedef struct url_data_s
 {
     int status;
