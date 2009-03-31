@@ -328,6 +328,64 @@ static void _wall_h_select(Evas_Object *obj, int pos)
     }
 }
 
+static void _wall_v_select(Evas_Object *obj, int pos)
+{
+    Picture_Item *pi, *ppi;
+    Eina_List *l;
+    Evas_Coord sx, x;
+    int i;
+    int row, col;
+
+    API_ENTRY
+    return;
+
+    ppi = NULL;
+    pi = NULL;
+    sx = 0;
+    x = 0;
+
+    if (sd->down.now && sd->down.momentum_animator)
+    {
+        ecore_animator_del(sd->down.momentum_animator);
+        sd->down.momentum_animator = NULL;
+    }
+
+    ppi = _smart_selected_item_get(sd, &row, &col);
+    if (ppi)
+    {
+        evas_object_geometry_get(ppi->o_edje, &sx, NULL, NULL, NULL);
+        _smart_item_unselect(sd, ppi);
+    }
+
+    if (pos)
+    {
+        row++;
+        row %= 3;
+    }
+    else
+    {
+        row--;
+        if (row < 0)
+            row = 2;
+    }
+    sd->row_sel = row;
+
+    for (l = sd->items[sd->row_sel], i = 0; l; l = l->next, ++i)
+    {
+        pi = l->data;
+        evas_object_geometry_get(pi->o_edje, &x, NULL, NULL, NULL);
+        if (x >= sx)
+        {
+            _smart_item_select(sd, pi);
+            return;
+        }
+    }
+
+    pi = eina_list_data_get(eina_list_last(sd->items[sd->row_sel]));
+    if (pi)
+        _smart_item_select(sd, pi);
+}
+
 ///////////////////// LEFT /////////////////////
 static void _wall_left_select(Evas_Object *obj)
 {
@@ -343,100 +401,12 @@ static void _wall_right_select(Evas_Object *obj)
 ///////////////////// UP /////////////////////
 static void _wall_up_select(Evas_Object *obj)
 {
-    Picture_Item *pi, *ppi;
-    Eina_List *l;
-    Evas_Coord sx, x;
-    int i;
-    int row, col;
-
-    API_ENTRY
-    return;
-
-    ppi = NULL;
-    pi = NULL;
-    sx = 0;
-    x = 0;
-
-    if (sd->down.now && sd->down.momentum_animator)
-    {
-        ecore_animator_del(sd->down.momentum_animator);
-        sd->down.momentum_animator = NULL;
-    }
-
-    ppi = _smart_selected_item_get(sd, &row, &col);
-    if (ppi)
-    {
-        evas_object_geometry_get(ppi->o_edje, &sx, NULL, NULL, NULL);
-        _smart_item_unselect(sd, ppi);
-    }
-
-    row--;
-    if (row < 0)
-        row = 2;
-    sd->row_sel = row;
-
-    for (l = sd->items[sd->row_sel], i = 0; l; l = l->next, ++i)
-    {
-        pi = l->data;
-        evas_object_geometry_get(pi->o_edje, &x, NULL, NULL, NULL);
-        if (x >= sx)
-        {
-            _smart_item_select(sd, pi);
-            return;
-        }
-    }
-
-    pi = eina_list_data_get(eina_list_last(sd->items[sd->row_sel]));
-    if (pi)
-        _smart_item_select(sd, pi);
+    _wall_v_select (obj, 0);
 }
 ///////////////////// DOWN /////////////////////
 static void _wall_down_select(Evas_Object *obj)
 {
-    Picture_Item *pi, *ppi;
-    Eina_List *l;
-    Evas_Coord sx, x;
-    int i;
-    int row, col;
-
-    API_ENTRY
-    return;
-
-    ppi = NULL;
-    pi = NULL;
-    sx = 0;
-    x = 0;
-
-    if (sd->down.now && sd->down.momentum_animator)
-    {
-        ecore_animator_del(sd->down.momentum_animator);
-        sd->down.momentum_animator = NULL;
-    }
-
-    ppi = _smart_selected_item_get(sd, &row, &col);
-    if (ppi)
-    {
-        evas_object_geometry_get(ppi->o_edje, &sx, NULL, NULL, NULL);
-        _smart_item_unselect(sd, ppi);
-    }
-    row ++;
-    row %= 3;
-    sd->row_sel = row;
-    for (l = sd->items[sd->row_sel], i = 0; l; l = l->next, ++i)
-    {
-        Picture_Item *pi;
-        pi = l->data;
-        evas_object_geometry_get(pi->o_edje, &x, NULL, NULL, NULL);
-        if (x >= sx)
-        {
-            _smart_item_select(sd, pi);
-            return;
-        }
-    }
-
-    pi = eina_list_data_get(eina_list_last(sd->items[sd->row_sel]));
-    if (pi)
-        _smart_item_select(sd, pi);
+    _wall_v_select (obj, 1);
 }
 
 static Picture_Item *_smart_selected_item_get(Smart_Data *sd, int *row,
