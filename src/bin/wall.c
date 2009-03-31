@@ -386,24 +386,21 @@ static void _wall_v_select(Evas_Object *obj, int pos)
         _smart_item_select(sd, pi);
 }
 
-///////////////////// LEFT /////////////////////
 static void _wall_left_select(Evas_Object *obj)
 {
     _wall_h_select (obj, 0);
 }
 
-///////////////////// RIGHT /////////////////////
 static void _wall_right_select(Evas_Object *obj)
 {
     _wall_h_select (obj, 1);
 }
 
-///////////////////// UP /////////////////////
 static void _wall_up_select(Evas_Object *obj)
 {
     _wall_v_select (obj, 0);
 }
-///////////////////// DOWN /////////////////////
+
 static void _wall_down_select(Evas_Object *obj)
 {
     _wall_v_select (obj, 1);
