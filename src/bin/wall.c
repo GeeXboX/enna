@@ -292,75 +292,52 @@ Eina_List* enna_wall_get_filenames(Evas_Object* obj)
 }
 
 /* local subsystem globals */
+static void _wall_h_select(Evas_Object *obj, int pos)
+{
+    Picture_Item *pi, *ppi;
+    int row, col;
 
+    API_ENTRY return;
+
+    ppi = _smart_selected_item_get(sd, &row, &col);
+    if (!ppi)
+        col = 0;
+    else
+    {
+        if (pos)
+            col++;
+        else
+            col--;
+    }
+
+    pi = eina_list_nth(sd->items[sd->row_sel], col);
+    if (pi)
+    {
+        Evas_Coord x, xedje, wedje, xbox;
+
+        evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
+        evas_object_geometry_get(sd->o_box[sd->row_sel], &xbox, NULL, NULL, NULL);
+        if (pos)
+            x = (xedje + wedje / 2 - xbox + sd->w / 2 );
+        else
+            x = (xedje + wedje / 2 - xbox - sd->w / 2 );
+        elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
+
+        _smart_item_select(sd, pi);
+        if (ppi) _smart_item_unselect(sd, ppi);
+    }
+}
 
 ///////////////////// LEFT /////////////////////
 static void _wall_left_select(Evas_Object *obj)
 {
-    Picture_Item *pi, *ppi;
-    int row, col;
-
-    API_ENTRY return;
-
-    ppi = _smart_selected_item_get(sd, &row, &col);
-
-    if (!ppi)
-    {
-        col = 0;
-    }
-    else
-    {
-        col--;
-
-    }
-    pi = eina_list_nth(sd->items[sd->row_sel], col);
-    if (pi)
-    {
-        Evas_Coord x, xedje, wedje, xbox;
-
-        evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
-        evas_object_geometry_get(sd->o_box[sd->row_sel], &xbox, NULL, NULL, NULL);
-        x = (xedje + wedje / 2 - xbox - sd->w / 2 );
-        elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
-
-        _smart_item_select(sd, pi);
-        if (ppi) _smart_item_unselect(sd, ppi);
-    }
-
+    _wall_h_select (obj, 0);
 }
-
 
 ///////////////////// RIGHT /////////////////////
 static void _wall_right_select(Evas_Object *obj)
 {
-    Picture_Item *pi, *ppi;
-    int row, col;
-
-    API_ENTRY return;
-
-    ppi = _smart_selected_item_get(sd, &row, &col);
-    if (!ppi)
-    {
-        col = 0;
-    }
-    else
-    {
-        col++;
-    }
-    pi = eina_list_nth(sd->items[sd->row_sel], col);
-    if (pi)
-    {
-        Evas_Coord x, xedje, wedje, xbox;
-
-        evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
-        evas_object_geometry_get(sd->o_box[sd->row_sel], &xbox, NULL, NULL, NULL);
-        x = (xedje + wedje / 2 - xbox + sd->w / 2 );
-        elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
-
-        _smart_item_select(sd, pi);
-        if (ppi) _smart_item_unselect(sd, ppi);
-    }
-
+    _wall_h_select (obj, 1);
 }
 
 ///////////////////// UP /////////////////////
