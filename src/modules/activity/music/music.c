@@ -229,11 +229,11 @@ _class_event(void *event_info)
         case ENNA_KEY_SPACE:
             enna_mediaplayer_play(mod->enna_playlist);
             break;
-        case ENNA_KEY_RIGHT:
-            enna_mediaplayer_next(mod->enna_playlist);
-            break;
-        case ENNA_KEY_LEFT:
+        case ENNA_KEY_UP:
             enna_mediaplayer_prev(mod->enna_playlist);
+            break;
+        case ENNA_KEY_DOWN:
+            enna_mediaplayer_next(mod->enna_playlist);
             break;
         case ENNA_KEY_CANCEL:
             ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
