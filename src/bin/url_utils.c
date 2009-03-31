@@ -59,6 +59,22 @@ static size_t url_buffer_get(void *ptr, size_t size, size_t nmemb, void *data)
     return realsize;
 }
 
+url_t url_new (void)
+{
+    CURL *curl;
+
+    curl_global_init (CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init ();
+    return (url_t) curl;
+}
+
+void url_free (url_t url)
+{
+    if (url)
+        curl_easy_cleanup ((CURL *) url);
+    curl_global_cleanup ();
+}
+
 url_data_t url_get_data(CURL *curl, char *url)
 {
     url_data_t chunk;

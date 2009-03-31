@@ -41,6 +41,12 @@ typedef struct url_data_s
     size_t size;
 } url_data_t;
 
+typedef void * url_t;
+
+url_t url_new (void);
+
+void url_free (url_t url);
+
 url_data_t url_get_data(CURL *curl, char *url);
 
 char *url_escape_string(CURL *curl, const char *buf);
