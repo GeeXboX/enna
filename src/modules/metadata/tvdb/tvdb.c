@@ -206,7 +206,7 @@ tvdb_parse (Enna_Metadata *meta)
         tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
                                             "poster");
 
-        if (tmp)
+        if (tmp && *tmp != 0)
         {
             char tmp_url[MAX_URL_SIZE];
             char cover[MAX_URL_SIZE];
@@ -230,7 +230,7 @@ tvdb_parse (Enna_Metadata *meta)
         tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
                                             "fanart");
 
-        if (tmp)
+        if (tmp && *tmp != 0)
         {
             char tmp_url[MAX_URL_SIZE];
             char cover[MAX_URL_SIZE];
