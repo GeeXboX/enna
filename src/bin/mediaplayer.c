@@ -1029,9 +1029,3 @@ enna_mediaplayer_send_key (enna_key_t key)
 {
     mp_send_key (key);
 }
-
-int
-enna_mediaplayer_backend_register(Enna_Class_MediaplayerBackend *class)
-{
-    return 0;
-}
