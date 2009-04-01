@@ -113,7 +113,6 @@ static int _add_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "dvd://"))
     {
-	printf("dvd device : %s\n", v->device);
 	mod->dvd->device = eina_stringshare_add(v->device);
         enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
     }
