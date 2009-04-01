@@ -329,7 +329,7 @@ cd_display_info (cdda_t *cd)
 }
 
 cdda_t *
-parse_cdda (const char *device)
+cdda_parse (const char *device)
 {
     cdda_t *cd;
 
