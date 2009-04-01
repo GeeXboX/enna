@@ -389,7 +389,6 @@ _create_videoplayer_gui()
     edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
     enna_mediaplayer_stop();
     enna_mediaplayer_play(mod->enna_playlist);
-    enna_smart_player_show_video(mod->o_mediaplayer);
     mod->state = VIDEOPLAYER_VIEW;
 }
 
@@ -504,7 +503,6 @@ static void
 _return_to_video_info_gui()
 {
     enna_mediaplayer_stop();
-    enna_smart_player_hide_video(mod->o_mediaplayer);
     mod->state = VIDEO_INFO_VIEW;
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show",
     "enna");

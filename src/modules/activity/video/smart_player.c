@@ -60,33 +60,6 @@ struct _Smart_Data
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
 
-void enna_smart_player_show_video(Evas_Object *obj)
-{
-    Evas_Object *o_video;
-
-    API_ENTRY;
-
-    o_video = enna_mediaplayer_video_obj_get();
-    if (o_video)
-        edje_object_part_swallow(enna->o_edje, "enna.swallow.fullscreen",
-                o_video);
-
-}
-
-void enna_smart_player_hide_video(Evas_Object *obj)
-{
-    Evas_Object *o_video;
-
-    API_ENTRY;
-
-    o_video = enna_mediaplayer_video_obj_get();
-    if (o_video)
-    {
-        edje_object_part_unswallow(enna->o_edje, o_video);
-        evas_object_hide(o_video);
-    }
-}
-
 void enna_smart_player_snapshot_set(Evas_Object *obj,
                                          Enna_Metadata *metadata)
 {

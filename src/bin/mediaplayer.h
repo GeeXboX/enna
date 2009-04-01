@@ -94,7 +94,6 @@ int enna_mediaplayer_playlist_load(const char *filename);
 int enna_mediaplayer_playlist_save(const char *filename);
 void enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist);
 int enna_mediaplayer_playlist_count(Enna_Playlist *enna_playlist);
-Evas_Object *enna_mediaplayer_video_obj_get(void);
 PLAY_STATE enna_mediaplayer_state_get(void);
 Enna_Playlist *enna_mediaplayer_playlist_create(void);
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist);

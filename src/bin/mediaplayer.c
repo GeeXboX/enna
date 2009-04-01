@@ -985,12 +985,6 @@ enna_mediaplayer_playlist_count (Enna_Playlist *enna_playlist)
     return eina_list_count (enna_playlist->playlist);
 }
 
-Evas_Object *
-enna_mediaplayer_video_obj_get (void)
-{
-    return NULL;
-}
-
 PLAY_STATE
 enna_mediaplayer_state_get (void)
 {
