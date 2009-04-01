@@ -346,5 +346,5 @@ parse_cdda (const char *device)
 
     cd_display_info (cd);
 
-    return 0;
+    return cd;
 }
