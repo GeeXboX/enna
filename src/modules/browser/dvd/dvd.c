@@ -44,6 +44,7 @@
 typedef struct _Class_Private_Data
 {
     const char *uri;
+    const char *device;
     unsigned char state;
     Ecore_Event_Handler *volume_add_handler;
     Ecore_Event_Handler *volume_remove_handler;
@@ -63,9 +64,13 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
 {
     Enna_Vfs_File *f;
     Eina_List *l = NULL;
-    f = enna_vfs_create_file("dvd://", "Play", "icon/video", NULL);
+    char uri[4096];
+
+    snprintf(uri, sizeof(uri), "dvd://%s", mod->dvd->device);
+    f = enna_vfs_create_file(uri, "Play", "icon/video", NULL);
     l = eina_list_append(l, f);
-    f = enna_vfs_create_file("dvdnav://", "Play (With Menus)", "icon/video", NULL);
+    snprintf(uri, sizeof(uri), "dvdnav://%s", mod->dvd->device);
+    f = enna_vfs_create_file(uri, "Play (With Menus)", "icon/video", NULL);
     l = eina_list_append(l, f);
     return l;
 }
@@ -108,6 +113,8 @@ static int _add_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "dvd://"))
     {
+	printf("dvd device : %s\n", v->device);
+	mod->dvd->device = eina_stringshare_add(v->device);
         enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
     }
     return 1;

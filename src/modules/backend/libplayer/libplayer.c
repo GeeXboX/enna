@@ -133,10 +133,14 @@ static mrl_t * set_dvd_stream(const char *uri, mrl_resource_t type)
     uint32_t prop = 0;
     int tmp = 0;
     int title = 0;
+    char *device;
 
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Load DVD Video : %s\n", uri);
 
     args = calloc(1, sizeof(mrl_resource_videodisc_args_t));
+    device = strstr(uri, "://");
+    if ( device ) args->device = strdup(device+3);
+
     mrl = mrl_new(mod->players[mod->dvd_type], type, args);
 
     meta = mrl_get_metadata_dvd (mod->players[mod->dvd_type], mrl, (uint8_t *) &prop);
