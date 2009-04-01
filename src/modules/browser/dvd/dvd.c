@@ -115,6 +115,7 @@ static int _add_volumes_cb(void *data, int type, void *event)
     {
 	mod->dvd->device = eina_stringshare_add(v->device);
         enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
+	ecore_event_add(ENNA_EVENT_REFRESH_BROWSER, event, NULL, NULL);
     }
     return 1;
 }
@@ -126,6 +127,7 @@ static int _remove_volumes_cb(void *data, int type, void *event)
     if (!strcmp(v->type, "dvd://"))
     {
         enna_vfs_class_remove("dvd", ENNA_CAPS_VIDEO);
+	ecore_event_add(ENNA_EVENT_REFRESH_BROWSER, event, NULL, NULL);
     }
     return 1;
 }
