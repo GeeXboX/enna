@@ -141,7 +141,7 @@ get_distribution (buffer_t *b)
     if (f)
     {
         id = strdup ("Debian");
-        id[strlen (id) - 1] = '\0';
+        id[strlen (id)] = '\0';
         while (fgets (buffer, BUF_LEN, f))
         {
             release = strdup (buffer);
