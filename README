@@ -13,7 +13,6 @@ Core dependencies :
 
 Module dependencies (optional):
 
-* Emotion
 * Libplayer (can be found on geexbox server : http://libplayer.geexbox.org/)
 * LightMediaScanner (can be found here : http://lms.garage.maemo.org/)
 * Lirc (http://www.lirc.org/)

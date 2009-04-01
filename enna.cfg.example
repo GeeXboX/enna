@@ -18,7 +18,7 @@ theme=default
 #software_x11,xrender_x11,opengl_x11,software_x11_16
 engine=software_x11
 
-#libplayer,emotion
+#libplayer
 backend=libplayer
 
 music_ext=3gp,aac,ape,apl,flac,m4a,mac,mka,mp2,mp3,mp4,mpc,ogg,ra,wav,wma
