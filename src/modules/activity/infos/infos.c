@@ -69,6 +69,7 @@
 #define BUF_LEN 1024
 #define BUF_DEFAULT "Unknown"
 #define LSB_FILE "/etc/lsb-release"
+#define DEBIAN_VERSION_FILE "/etc/debian_version"
 #define DISTRIB_ID "DISTRIB_ID="
 #define DISTRIB_ID_LEN strlen (DISTRIB_ID)
 #define DISTRIB_RELEASE "DISTRIB_RELEASE="
@@ -133,6 +134,18 @@ get_distribution (buffer_t *b)
                 release = strdup (buffer + DISTRIB_RELEASE_LEN);
                 release[strlen (release) - 1] = '\0';
             }
+            memset (buffer, '\0', BUF_LEN);
+        }
+    }
+    f = fopen (DEBIAN_VERSION_FILE, "r");
+    if (f)
+    {
+        id = strdup ("Debian");
+        id[strlen (id) - 1] = '\0';
+        while (fgets (buffer, BUF_LEN, f))
+        {
+            release = strdup (buffer);
+            release[strlen (release) - 1] = '\0';
             memset (buffer, '\0', BUF_LEN);
         }
     }
