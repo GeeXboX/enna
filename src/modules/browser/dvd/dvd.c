@@ -108,7 +108,6 @@ static int _add_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "dvd://"))
     {
-        printf("Dvd added\n");
         enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
     }
     return 1;
@@ -120,7 +119,6 @@ static int _remove_volumes_cb(void *data, int type, void *event)
 
     if (!strcmp(v->type, "dvd://"))
     {
-        printf("DVD Removes\n");
         enna_vfs_class_remove("dvd", ENNA_CAPS_VIDEO);
     }
     return 1;
