@@ -376,6 +376,18 @@ static void _opt_geometry_parse(const char *optarg,
     if (ph) *ph = h;
 }
 
+static int exit_signal(void *data, int type, void *e)
+{
+    Ecore_Event_Signal_Exit *event = e;
+
+    fprintf(stderr, "Enna got exit signal [interrupt=%u, quit=%u, terminate=%u]\n",
+	event->interrupt, event->quit, event->terminate);
+
+    ecore_main_loop_quit();
+    return 1;
+}
+
+
 static void usage(char *binname)
 {
     printf("Enna MediaCenter\n");
@@ -461,6 +473,8 @@ int main(int argc, char **argv)
     enna_config_init();
 
     enna = calloc(1, sizeof(Enna));
+
+    ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_signal, enna);
 
     if (!_enna_init())
         return EXIT_FAILURE;
