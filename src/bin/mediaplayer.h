@@ -36,7 +36,6 @@
 
 typedef enum
 {
-    ENNA_BACKEND_EMOTION,
     ENNA_BACKEND_LIBPLAYER,
 } enna_mediaplayer_backend_t;
 

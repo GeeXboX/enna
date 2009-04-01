@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DEFAULT_SYSROOT="/usr"
-COMPONENTS="eina ecore edje edje_editor edje_viewer eet embryo emotion esmart etk evas"
+COMPONENTS="eina ecore edje edje_editor edje_viewer eet embryo esmart etk evas"
 SVN_DIR="/tmp/E17-svn"
 SVN_URL="http://svn.enlightenment.org/svn/e/trunk/"
 
@@ -91,13 +91,7 @@ cd ..
 
 cd esmart
 ./autogen.sh
-./configure --prefix="$BUILD_DIR"
-make install
-cd ..
-
-cd emotion
-./autogen.sh
-./configure --prefix="$BUILD_DIR"
+./configure --prnefix="$BUILD_DIR"
 make install
 cd ..
 

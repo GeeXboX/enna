@@ -1,5 +1,3 @@
 MAINTAINERCLEANFILES = Makefile.in
 
-SUBDIRS = \
-emotion \
-libplayer
+SUBDIRS = libplayer
