@@ -913,6 +913,29 @@ enna_mediaplayer_position_get (void)
         mp_position_get (): 0.0;
 }
 
+int
+enna_mediaplayer_position_set (double position)
+{
+    enna_log (ENNA_MSG_EVENT, NULL, "Seeking to: %f seconds", position);
+
+    if (mp->play_state == PAUSE || mp->play_state == PLAYING)
+    {
+        Enna_Event_Mediaplayer_Seek_Data *ev;
+
+        ev = calloc (1, sizeof (Enna_Event_Mediaplayer_Seek_Data));
+        if (!ev)
+            return 0;
+
+        ev->seek_value = position;
+        ecore_event_add (ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
+        player_playback_seek (mp->player,
+                              position, PLAYER_PB_SEEK_ABSOLUTE);
+
+    }
+
+    return 0;
+}
+
 double
 enna_mediaplayer_length_get (void)
 {
