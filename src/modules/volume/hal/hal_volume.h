@@ -55,6 +55,7 @@ typedef struct volume_s {
     char *partition_label;
     int mounted;
     char *mount_point;
+    char *device;
     unsigned long size;
 
     storage_t *s;

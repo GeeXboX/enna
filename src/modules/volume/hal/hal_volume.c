@@ -106,6 +106,7 @@ volume_free (volume_t *v)
     ENNA_FREE (v->fstype);
     ENNA_FREE (v->partition_label);
     ENNA_FREE (v->mount_point);
+    ENNA_FREE (v->device);
     if (v->enna_volume)
     {
         Enna_Volume *ev = v->enna_volume;
@@ -180,6 +181,9 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
     v->mounted = libhal_volume_is_mounted (v->vol);
     if (v->mounted && libhal_volume_get_mount_point (v->vol))
         v->mount_point = strdup (libhal_volume_get_mount_point (v->vol));
+
+    if (libhal_volume_get_device_file (v->vol))
+	v->device =  strdup (libhal_volume_get_device_file (v->vol));
 
     v->size = libhal_volume_get_size (v->vol);
 
