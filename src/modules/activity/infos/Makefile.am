@@ -12,11 +12,7 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules/$(MODULE) \
 -I$(top_srcdir)/src/bin \
 -I$(top_srcdir)/src/modules \
-@ENNA_CFLAGS@
-
-if BUILD_BACKEND_LIBPLAYER
-INCLUDES += @LIBPLAYER_CFLAGS@
-endif
+@ENNA_CFLAGS@ @LIBPLAYER_CFLAGS@
 
 if BUILD_BROWSER_VALHALLA
 INCLUDES += @VALHALLA_CFLAGS@

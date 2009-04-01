@@ -70,7 +70,6 @@ static const struct {
     _Enna_Module_Type type;
 } module_class_mapping[] = {
     { "activity",       ENNA_MODULE_ACTIVITY  },
-    { "backend",        ENNA_MODULE_BACKEND   },
     { "browser",        ENNA_MODULE_BROWSER   },
     { "metadata",       ENNA_MODULE_METADATA  },
     { "volume",         ENNA_MODULE_VOLUME    },
@@ -106,10 +105,6 @@ void enna_module_load_all (Evas *evas)
                 type = module_class_mapping[i].type;
                 break;
             }
-
-        /* backend modules are handled a different way */
-        if (type == ENNA_MODULE_BACKEND)
-            continue;
 
         em = enna_module_open (name, type, enna->evas);
         enna_module_enable (em);
