@@ -159,32 +159,6 @@ fi
 # Backend Modules #
 ###################
 
-# Emotion
-want_backend_emotion="auto"
-have_backend_emotion="no"
-AC_MSG_CHECKING(whether emotion backend is to be built)
-AC_ARG_ENABLE(backend-emotion,
-  AS_HELP_STRING([--enable-backend-emotion],[Enable Emotion media backend]),
-  [ want_backend_emotion=$enableval ]
-)
-AC_MSG_RESULT($want_backend_emotion)
-if test "x$want_backend_emotion" = "xyes" -o "x$want_backend_emotion" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [EMOTION],
-    [emotion],
-    [
-      AC_DEFINE(BUILD_BACKEND_EMOTION, 1, [Emotion media backend])
-      have_backend_emotion="yes"
-    ],
-    [
-      if test "x$want_backend_emotion" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([Emotion not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_BACKEND_EMOTION, test "x$have_backend_emotion" = "xyes")
-
 # libplayer
 want_backend_libplayer="auto"
 have_backend_libplayer="no"
@@ -667,7 +641,6 @@ src/modules/activity/tv/Makefile
 src/modules/activity/video/Makefile
 src/modules/activity/weather/Makefile
 src/modules/backend/Makefile
-src/modules/backend/emotion/Makefile
 src/modules/backend/libplayer/Makefile
 src/modules/browser/Makefile
 src/modules/browser/dvd/Makefile
@@ -718,7 +691,6 @@ echo "  weather.......................... : $want_activity_weather"
 echo
 echo "Supported Backends Modules:"
 echo
-echo "  emotion.......................... : $have_backend_emotion"
 echo "  libplayer........................ : $have_backend_libplayer"
 echo
 echo "Supported Browser Modules:"
