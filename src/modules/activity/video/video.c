@@ -294,7 +294,7 @@ _seek_video(double value)
     if (seek <= 1.0 && seek >= 0.0)
         enna_mediaplayer_seek(seek);
 
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Seek value : %f", seek);
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Seek value : %f", seek);
 }
 
 static void
