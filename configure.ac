@@ -160,6 +160,19 @@ fi
 # Browser Modules #
 ###################
 
+# Audio CD (CDDA)
+want_browser_cdda="yes"
+AC_MSG_CHECKING(whether cdda browser module is to be built)
+AC_ARG_ENABLE(browser-cdda,
+  AS_HELP_STRING([--enable-browser-cdda],[Enable CDDA Browser Module]),
+  [ want_browser_cdda=$enableval ]
+)
+AC_MSG_RESULT($want_browser_cdda)
+AM_CONDITIONAL(BUILD_BROWSER_CDDA, test "x$want_browser_cdda" = "xyes")
+if test "x$want_browser_cdda" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_CDDA, 1, [CDDA Browser])
+fi
+
 # DVD Video
 want_browser_dvd="yes"
 AC_MSG_CHECKING(whether dvd video browser module is to be built)
@@ -612,6 +625,7 @@ src/modules/activity/tv/Makefile
 src/modules/activity/video/Makefile
 src/modules/activity/weather/Makefile
 src/modules/browser/Makefile
+src/modules/browser/cdda/Makefile
 src/modules/browser/dvd/Makefile
 src/modules/browser/lms/Makefile
 src/modules/browser/localfiles/Makefile
@@ -660,6 +674,7 @@ echo "  weather.......................... : $want_activity_weather"
 echo
 echo "Supported Browser Modules:"
 echo
+echo "  Audio CD......................... : $want_browser_cdda"
 echo "  DVD Video........................ : $want_browser_dvd"
 echo "  Light Media Scanner.............. : $have_browser_lms"
 echo "  Local files...................... : $want_browser_localfiles"

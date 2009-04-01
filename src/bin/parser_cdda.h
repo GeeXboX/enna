@@ -49,7 +49,7 @@ typedef struct cdda_s {
   cdda_track_t **tracks;
 } cdda_t;
 
-cdda_t *parse_cdda (const char *device);
+cdda_t *cdda_parse (const char *device);
 void cdda_free (cdda_t *c);
 
 #endif /* PARSER_CDDA_H */
