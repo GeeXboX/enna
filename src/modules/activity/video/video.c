@@ -45,6 +45,7 @@
 #include "mediaplayer.h"
 #include "event_key.h"
 #include "smart_player.h"
+#include "volumes.h"
 
 #define ENNA_MODULE_NAME "video"
 
@@ -103,6 +104,7 @@ struct _Enna_Module_Video
     VIDEO_STATE state;
     Ecore_Timer *timer_show_mediaplayer;
     Ecore_Event_Handler *eos_event_handler;
+    Ecore_Event_Handler *browser_refresh_handler;
     Enna_Playlist *enna_playlist;
     Elm_Genlist_Item_Class *item_class;
 };
@@ -612,6 +614,18 @@ static void _genlist_del(const void *data, Evas_Object *obj)
 {
 }
 
+static int
+_refresh_browser_cb(void *data, int type, void *event)
+{
+    if (mod->state == MENU_VIEW)
+    {
+	ENNA_OBJECT_DEL(mod->o_list);
+	mod->o_list = NULL;
+	_create_menu();
+    }
+    return 1;
+}
+
 /* Module interface */
 
 static int
@@ -630,6 +644,8 @@ em_init(Enna_Module *em)
     mod->item_class->func.state_get = _genlist_state_get;
     mod->item_class->func.del       = _genlist_del;
 
+    mod->browser_refresh_handler =
+	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, _refresh_browser_cb, NULL);
     enna_activity_add(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
     return 1;
@@ -638,6 +654,7 @@ em_init(Enna_Module *em)
 static int
 em_shutdown(Enna_Module *em)
 {
+    ecore_event_handler_del(mod->browser_refresh_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
