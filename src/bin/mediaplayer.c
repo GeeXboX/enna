@@ -42,8 +42,6 @@
 #include "module.h"
 #include "logs.h"
 
-#define ENNA_MODULE_NAME "libplayer"
-
 #define URI_TYPE_FTP      "ftp://"
 #define URI_TYPE_HTTP     "http://"
 #define URI_TYPE_MMS      "mms://"
