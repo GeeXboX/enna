@@ -107,6 +107,7 @@ enna_metadata_dump (Enna_Metadata *m)
     printf (" -- Title: %s\n",      m->title);
     printf (" -- Size: %d\n",       m->size);
     printf (" -- Length: %d\n",     m->length);
+    printf (" -- Position: %f\n",   m->position);
     printf (" -- Overview: %s\n",   m->overview);
     printf (" -- Runtime: %d\n",    m->runtime);
     printf (" -- Year: %d\n",       m->year);
@@ -205,6 +206,7 @@ enna_metadata_desc (void)
     EDD_ADD (, title,       STRING);
     EDD_ADD (, size,        INT);
     EDD_ADD (, length,      INT);
+    EDD_ADD (, position,    DOUBLE);
     EDD_ADD (, overview,    STRING);
     EDD_ADD (, runtime,     INT);
     EDD_ADD (, year,        INT);
@@ -277,6 +279,7 @@ enna_metadata_save_to_eet (Enna_Metadata *m)
     snprintf (file, sizeof (file), "%s/.enna/%s/%s.eet",
               enna_util_user_home_get (), PATH_METADATA, m->md5);
 
+    ecore_file_unlink (file);
     ef = eet_open (file, EET_FILE_MODE_WRITE);
     if (!ef)
         return;
@@ -514,5 +517,15 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
     }
 
     meta->parsed = 1;
+    enna_metadata_save_to_eet (meta);
+}
+
+void
+enna_metadata_set_position (Enna_Metadata *meta, double position)
+{
+    if (!meta)
+        return;
+
+    meta->position = position;
     enna_metadata_save_to_eet (meta);
 }
