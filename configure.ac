@@ -45,6 +45,7 @@ PKG_CHECK_MODULES([ENNA],
    embryo >= 0.9.1
    edje >= 0.5.0
    elementary
+   libplayer
   ]
 )
 
@@ -154,62 +155,6 @@ AM_CONDITIONAL(BUILD_ACTIVITY_WEATHER, test "x$want_activity_weather" = "xyes")
 if test "x$want_activity_weather" = "xyes"; then
   AC_DEFINE(BUILD_ACTIVITY_WEATHER, 1, [Weather Activity])
 fi
-
-###################
-# Backend Modules #
-###################
-
-# Emotion
-want_backend_emotion="auto"
-have_backend_emotion="no"
-AC_MSG_CHECKING(whether emotion backend is to be built)
-AC_ARG_ENABLE(backend-emotion,
-  AS_HELP_STRING([--enable-backend-emotion],[Enable Emotion media backend]),
-  [ want_backend_emotion=$enableval ]
-)
-AC_MSG_RESULT($want_backend_emotion)
-if test "x$want_backend_emotion" = "xyes" -o "x$want_backend_emotion" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [EMOTION],
-    [emotion],
-    [
-      AC_DEFINE(BUILD_BACKEND_EMOTION, 1, [Emotion media backend])
-      have_backend_emotion="yes"
-    ],
-    [
-      if test "x$want_backend_emotion" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([Emotion not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_BACKEND_EMOTION, test "x$have_backend_emotion" = "xyes")
-
-# libplayer
-want_backend_libplayer="auto"
-have_backend_libplayer="no"
-AC_MSG_CHECKING(whether libplayer backend is to be built)
-AC_ARG_ENABLE(backend-libplayer,
-    AS_HELP_STRING([--enable-backend-libplayer],[Enable libplayer media backend]),
-    [ want_backend_libplayer=$enableval ]
-)
-AC_MSG_RESULT($want_backend_libplayer)
-if test "x$want_backend_libplayer" = "xyes" -o "x$want_backend_libplayer" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LIBPLAYER],
-    [libplayer],
-    [
-      AC_DEFINE(BUILD_BACKEND_LIBPLAYER, 1, [libplayer media backend])
-      have_backend_libplayer="yes"
-    ],
-    [
-      if test "x$want_backend_libplayer" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([libplayer not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_BACKEND_LIBPLAYER, test "x$have_backend_libplayer" = "xyes")
 
 ###################
 # Browser Modules #
@@ -666,9 +611,6 @@ src/modules/activity/photo/Makefile
 src/modules/activity/tv/Makefile
 src/modules/activity/video/Makefile
 src/modules/activity/weather/Makefile
-src/modules/backend/Makefile
-src/modules/backend/emotion/Makefile
-src/modules/backend/libplayer/Makefile
 src/modules/browser/Makefile
 src/modules/browser/dvd/Makefile
 src/modules/browser/lms/Makefile
@@ -715,11 +657,6 @@ echo "  photo............................ : $want_activity_photo"
 echo "  tv............................... : $want_activity_tv"
 echo "  video............................ : $want_activity_video"
 echo "  weather.......................... : $want_activity_weather"
-echo
-echo "Supported Backends Modules:"
-echo
-echo "  emotion.......................... : $have_backend_emotion"
-echo "  libplayer........................ : $have_backend_libplayer"
 echo
 echo "Supported Browser Modules:"
 echo

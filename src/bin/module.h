@@ -42,7 +42,6 @@ typedef struct _Enna_Module_Api Enna_Module_Api;
 typedef enum {
     ENNA_MODULE_UNKNOWN,
     ENNA_MODULE_ACTIVITY,
-    ENNA_MODULE_BACKEND,
     ENNA_MODULE_BROWSER,
     ENNA_MODULE_METADATA,
     ENNA_MODULE_VOLUME,

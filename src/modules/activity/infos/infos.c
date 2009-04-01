@@ -58,9 +58,7 @@
 #include <X11/extensions/Xrandr.h>
 #endif
 
-#ifdef BUILD_BACKEND_LIBPLAYER
 #include <player.h>
-#endif
 
 #ifdef BUILD_BROWSER_VALHALLA
 #include <valhalla.h>
@@ -97,10 +95,8 @@ set_enna_information (buffer_t *b)
 
     buffer_append (b, "<c>Enna Information</c><br><br>");
     buffer_appendf (b, "<hilight>Enna: </hilight>%s<br>", VERSION);
-#ifdef BUILD_BACKEND_LIBPLAYER
     buffer_appendf (b, "<hilight>libplayer: </hilight>%s<br>",
                     LIBPLAYER_VERSION);
-#endif
 #ifdef BUILD_BROWSER_VALHALLA
     buffer_appendf (b, "<hilight>libvalhalla: </hilight>%s<br>",
                     LIBVALHALLA_VERSION_STR);
