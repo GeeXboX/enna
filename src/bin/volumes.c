@@ -38,6 +38,10 @@
 
 static Eina_Hash *_volumes = NULL;
 
+int ENNA_EVENT_VOLUME_ADDED;
+int ENNA_EVENT_VOLUME_REMOVED;
+int ENNA_EVENT_REFRESH_BROWSER;
+
 void _hash_data_free_cb(void *data)
 {
     Eina_List *l;
@@ -65,6 +69,7 @@ void enna_volumes_init(void)
     _volumes = NULL;
     ENNA_EVENT_VOLUME_ADDED = ecore_event_type_new();
     ENNA_EVENT_VOLUME_REMOVED = ecore_event_type_new();
+    ENNA_EVENT_REFRESH_BROWSER = ecore_event_type_new();
     _volumes = eina_hash_pointer_new(_hash_data_free_cb);
 }
 

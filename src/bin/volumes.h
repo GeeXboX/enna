@@ -44,8 +44,9 @@ struct _Enna_Volume
     const char *device; /* Physical device : /dev/sda1 ... */
 };
 
-int ENNA_EVENT_VOLUME_ADDED;
-int ENNA_EVENT_VOLUME_REMOVED;
+extern int ENNA_EVENT_VOLUME_ADDED;
+extern int ENNA_EVENT_VOLUME_REMOVED;
+extern int ENNA_EVENT_REFRESH_BROWSER;
 
 void enna_volumes_init(void);
 void enna_volumes_shutdown(void);
