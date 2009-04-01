@@ -36,6 +36,7 @@
 #include "module.h"
 #include "vfs.h"
 #include "volumes.h"
+#include "parser_cdda.h"
 
 #define ENNA_MODULE_NAME "cdda"
 
@@ -65,10 +66,19 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
     Enna_Vfs_File *f;
     Eina_List *l = NULL;
     char uri[4096];
+    cdda_t *cd;
+    int i;
 
-    snprintf(uri, sizeof(uri), "cdda://%s", mod->cdda->device);
-    f = enna_vfs_create_file(uri, "Play", "icon/video", NULL);
-    l = eina_list_append(l, f);
+    cd = cdda_parse(mod->cdda->device);
+    if (!cd) return NULL;
+    for (i = 0; i < cd->total_tracks; i++)
+    {
+	snprintf(uri, sizeof(uri), "cdda://%d", i);
+	f = enna_vfs_create_file(eina_stringshare_add(uri), cd->tracks[i]->name, "icon/video", NULL);
+	l = eina_list_append(l, f);
+    }
+    cdda_free(cd);
+
     return l;
 }
 
@@ -111,6 +121,7 @@ static int _add_volumes_cb(void *data, int type, void *event)
     if (!strcmp(v->type, "cdda://"))
     {
 	mod->cdda->device = eina_stringshare_add(v->device);
+	printf("mod->cdda->device %s", mod->cdda->device);
         enna_vfs_append("cdda", ENNA_CAPS_MUSIC, &class_cdda);
 	ecore_event_add(ENNA_EVENT_REFRESH_BROWSER, NULL, NULL, NULL);
     }
