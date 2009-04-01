@@ -132,6 +132,7 @@ get_distribution (buffer_t *b)
             }
             memset (buffer, '\0', BUF_LEN);
         }
+        fclose (f);
     }
     f = fopen (DEBIAN_VERSION_FILE, "r");
     if (f)
@@ -144,6 +145,7 @@ get_distribution (buffer_t *b)
             release[strlen (release) - 1] = '\0';
             memset (buffer, '\0', BUF_LEN);
         }
+        fclose (f);
     }
 
     buffer_append (b, "<hilight>Distribution: </hilight>");
@@ -157,8 +159,6 @@ get_distribution (buffer_t *b)
         free (id);
     if (release)
         free (release);
-    if (f)
-        fclose (f);
 }
 
 static void
