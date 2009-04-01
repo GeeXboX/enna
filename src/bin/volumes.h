@@ -41,6 +41,7 @@ struct _Enna_Volume
     const char *icon; /* edje or file icon*/
     const char *uri;  /* Uri of root : file:///media/disk-1 or cdda:// */
     const char *type; /* Uri type : cdda:// dvdnav:// file:// ...*/
+    const char *device; /* Physical device : /dev/sda1 ... */
 };
 
 int ENNA_EVENT_VOLUME_ADDED;

@@ -253,6 +253,7 @@ vfs_add_volume_entry (volume_t *v)
     evol->icon = eina_stringshare_add(icon);
     evol->type = eina_stringshare_add(type);
     evol->uri = eina_stringshare_add(uri);
+    evol->device = eina_stringshare_add(v->device);
     enna_volumes_append(evol->type, evol);
     v->enna_volume = evol;
 }
