@@ -385,10 +385,14 @@ _browse(void *data)
 static void
 _create_videoplayer_gui()
 {
+    Enna_Metadata *m;
+
+    m = enna_mediaplayer_metadata_get(mod->enna_playlist);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
     enna_mediaplayer_stop();
     enna_mediaplayer_play(mod->enna_playlist);
+    enna_mediaplayer_position_set(m->position);
     mod->state = VIDEOPLAYER_VIEW;
 }
 
@@ -502,6 +506,12 @@ _create_video_info_gui()
 static void
 _return_to_video_info_gui()
 {
+    Enna_Metadata *m;
+    double pos;
+
+    m = enna_mediaplayer_metadata_get(mod->enna_playlist);
+    pos = enna_mediaplayer_position_get();
+    enna_metadata_set_position (m, pos);
     enna_mediaplayer_stop();
     mod->state = VIDEO_INFO_VIEW;
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show",
