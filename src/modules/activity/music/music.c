@@ -67,7 +67,6 @@ static void _menu_transition_left_end_cb(void *data, Evas_Object *o, const char 
 static int _show_mediaplayer_cb(void *data);
 
 static void _class_init(int dummy);
-static void _class_shutdown(int dummy);
 static void _class_show(int dummy);
 static void _class_hide(int dummy);
 static void _class_event(void *event_info);
@@ -136,7 +135,7 @@ static Enna_Class_Activity class =
     "icon/music",
     {
         _class_init,
-        _class_shutdown,
+        NULL,
         _class_show,
         _class_hide,
         _class_event
@@ -149,11 +148,6 @@ _class_init(int dummy)
 {
     _create_gui();
     enna_content_append("music", mod->o_edje);
-}
-
-static void
-_class_shutdown(int dummy)
-{
 }
 
 static void

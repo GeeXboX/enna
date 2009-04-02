@@ -65,7 +65,6 @@ static void _browse(void *data);
 static int _eos_cb(void *data, int type, void *event);
 static int _show_mediaplayer_cb(void *data);
 static void _class_init(int dummy);
-static void _class_shutdown(int dummy);
 static void _class_show(int dummy);
 static void _class_hide(int dummy);
 static void _class_event(void *event_info);
@@ -127,7 +126,7 @@ static Enna_Class_Activity class =
     "icon/video",
     {
         _class_init,
-        _class_shutdown,
+        NULL,
         _class_show,
         _class_hide,
         _class_event
@@ -140,11 +139,6 @@ _class_init(int dummy)
 {
     _create_gui();
     enna_content_append("video", mod->o_edje);
-}
-
-static void
-_class_shutdown(int dummy)
-{
 }
 
 static void

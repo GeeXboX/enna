@@ -458,11 +458,6 @@ static void _class_init(int dummy)
     enna_content_append("photo", mod->o_edje);
 }
 
-static void _class_shutdown(int dummy)
-{
-
-}
-
 static void _class_show(int dummy)
 {
     edje_object_signal_emit(mod->o_edje, "module,show", "enna");
@@ -595,7 +590,7 @@ static Enna_Class_Activity class =
     "icon/photo",
     {
         _class_init,
-        _class_shutdown,
+        NULL,
         _class_show,
         _class_hide,
         _class_event
