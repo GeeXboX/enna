@@ -55,6 +55,7 @@
 #define URI_TYPE_DVD      "dvd://"
 #define URI_TYPE_DVDNAV   "dvdnav://"
 #define URI_TYPE_VDR      "vdr:/"
+#define URI_TYPE_CDDA     "cdda://"
 
 #define MAX_PLAYERS 4
 
@@ -286,6 +287,22 @@ set_tv_stream (const char *device, const char *driver, mrl_resource_t type)
 }
 
 static mrl_t *
+set_cdda_stream (const char *uri, mrl_resource_t type)
+{
+    mrl_t *mrl;
+    mrl_resource_cd_args_t *args;
+    char device[16];
+    int track;
+    args = calloc (1, sizeof (mrl_resource_cd_args_t));
+
+    sscanf(uri, "cdda://%d/%s", &track, device);
+    args->device = strdup(device);
+    args->track_start = track;
+    mrl = mrl_new (mp->player, type, args);
+    return mrl;
+}
+
+static mrl_t *
 set_local_stream (const char *uri)
 {
     mrl_t *mrl;
@@ -363,7 +380,11 @@ mp_file_set (const char *uri, const char *label)
         mrl = set_tv_stream (device, driver, MRL_RESOURCE_VDR);
         player_type = mp->tv_type;
     }
-
+    /* Try CD Audio */
+    else if (!strncmp (uri, URI_TYPE_CDDA, strlen(URI_TYPE_CDDA)))
+    {
+        mrl = set_cdda_stream (uri, MRL_RESOURCE_CDDA);
+    }
     /* default is local files */
     if (!mrl)
         mrl = set_local_stream (uri);
