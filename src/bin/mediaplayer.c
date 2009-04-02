@@ -1050,3 +1050,41 @@ enna_mediaplayer_send_key (enna_key_t key)
 {
     mp_send_key (key);
 }
+
+int
+enna_mediaplayer_get_volume (void)
+{
+    return player_audio_volume_get (mp->player);
+}
+
+void
+enna_mediaplayer_set_volume (int value)
+{
+    player_audio_volume_set (mp->player, value);
+}
+
+#define VOLUME_STEP 5 /* percent */
+
+void
+enna_mediaplayer_default_increase_volume (void)
+{
+    int vol = enna_mediaplayer_get_volume ();
+    player_audio_volume_set (mp->player, vol + VOLUME_STEP);
+}
+
+void
+enna_mediaplayer_default_decrease_volume (void)
+{
+    int vol = enna_mediaplayer_get_volume ();
+    player_audio_volume_set (mp->player, vol - VOLUME_STEP);
+}
+
+void
+enna_mediaplayer_mute (void)
+{
+    player_mute_t m;
+
+    m = player_audio_mute_get (mp->player);
+    player_audio_mute_set (mp->player, (m == PLAYER_MUTE_ON) ?
+                           PLAYER_MUTE_OFF : PLAYER_MUTE_ON);
+}

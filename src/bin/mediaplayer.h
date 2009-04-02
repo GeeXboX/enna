@@ -100,4 +100,9 @@ Enna_Playlist *enna_mediaplayer_playlist_create(void);
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_send_key(enna_key_t key);
+int enna_mediaplayer_get_volume (void);
+void enna_mediaplayer_set_volume (int volume);
+void enna_mediaplayer_default_increase_volume (void);
+void enna_mediaplayer_default_decrease_volume (void);
+void enna_mediaplayer_mute (void);
 #endif /* MEDIAPLAYER_H */
