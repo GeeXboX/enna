@@ -256,7 +256,6 @@ _class_event(void *event_info)
         case ENNA_KEY_CANCEL:
             ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
             mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
-            enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Add timer 10s");
             edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
             edje_object_signal_emit(mod->o_edje, "content,show", "enna");
             if (mod->o_browser)
