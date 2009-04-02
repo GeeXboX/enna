@@ -54,6 +54,8 @@
 
 #define SEEK_STEP 2.0 /* percent */
 
+#define TIMER_VALUE 10
+
 static void _create_menu();
 static void _create_gui();
 static void _create_mediaplayer_gui();
@@ -198,7 +200,7 @@ _class_event(void *event_info)
         if (mod->o_mediaplayer)
         {
             ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-            mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
+            mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
         }
         switch (key)
         {
@@ -220,7 +222,7 @@ _class_event(void *event_info)
         if (mod->o_mediaplayer)
         {
             ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-            mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
+            mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
         }
         enna_browser_event_feed(mod->o_browser, event_info);
         break;
@@ -255,7 +257,7 @@ _class_event(void *event_info)
         }
         case ENNA_KEY_CANCEL:
             ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-            mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
+            mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
             edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
             edje_object_signal_emit(mod->o_edje, "content,show", "enna");
             if (mod->o_browser)
@@ -299,7 +301,7 @@ static void _event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Remove Timer");
         ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
+        mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
     }
 }
 
