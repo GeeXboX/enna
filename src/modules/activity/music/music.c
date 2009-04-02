@@ -265,6 +265,7 @@ _class_event(void *event_info)
                 mod->state = MENU_VIEW;
             break;
         case ENNA_KEY_STOP:
+        case ENNA_KEY_S:
             enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
             ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
             mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
