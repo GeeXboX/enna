@@ -59,7 +59,6 @@ struct _Smart_Data
     Ecore_Event_Handler *pause_event_handler;
     Ecore_Event_Handler *unpause_event_handler;
     Ecore_Event_Handler *seek_event_handler;
-    float seek_step; /*percent value*/
 };
 
 /* local subsystem functions */
@@ -157,30 +156,15 @@ _button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_button_clicked_seek_cb(void *data, Evas_Object *obj, void *event_info, int fw)
-{
-    Smart_Data * sd;
-    sd = (Smart_Data *) data;
-    double pos;
-    double length;
-    length = enna_mediaplayer_length_get();
-    pos = enna_mediaplayer_position_get();
-    if (fw)
-       enna_mediaplayer_seek((pos/length)+(sd->seek_step/100));
-    else
-       enna_mediaplayer_seek((pos/length)-(sd->seek_step/100));
-}
-
-static void
 _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    _button_clicked_seek_cb (data, obj, event_info, 0);
+    enna_mediaplayer_default_seek_backward ();
 }
 
 static void
 _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    _button_clicked_seek_cb (data, obj, event_info, 1);
+    enna_mediaplayer_default_seek_forward ();
 }
 
 static void
@@ -250,7 +234,6 @@ _smart_add(Evas_Object * obj)
     sd->y = 0;
     sd->w = 0;
     sd->h = 0;
-    sd->seek_step = 2.0;
     evas=evas_object_evas_get(obj);
 
     sd->o_edje = edje_object_add(evas);
