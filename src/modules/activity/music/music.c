@@ -274,6 +274,9 @@ _class_event(void *event_info)
             else
                 mod->state = MENU_VIEW;
             break;
+        case ENNA_KEY_M:
+            enna_mediaplayer_mute ();
+            break;
         default:
             break;
         }
