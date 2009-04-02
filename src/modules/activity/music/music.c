@@ -277,6 +277,12 @@ _class_event(void *event_info)
         case ENNA_KEY_M:
             enna_mediaplayer_mute ();
             break;
+        case ENNA_KEY_PLUS:
+            enna_mediaplayer_default_increase_volume ();
+            break;
+        case ENNA_KEY_MINUS:
+            enna_mediaplayer_default_decrease_volume ();
+            break;
         default:
             break;
         }
