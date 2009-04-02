@@ -6,14 +6,26 @@ Version 0.3.0 is a new version rewrite from scratch.
 
 Core dependencies :
 
+* Eina
 * Eet 1.0.0
 * Evas
 * Ecore
+* Embryo
 * Edje
+* Elementary
+* Libplayer (can be found on geexbox server : http://libplayer.geexbox.org/)
 
 Module dependencies (optional):
 
-* Libplayer (can be found on geexbox server : http://libplayer.geexbox.org/)
+* e_dbus / e_hal
+* efreet
+* gUPnP
+* libcddb
+* libcurl
+* libexif
+* libvalhalla (http://hg.geexbox.org/libvalhalla/)
+* libxml2
+* libxrandr
 * LightMediaScanner (can be found here : http://lms.garage.maemo.org/)
 * Lirc (http://www.lirc.org/)
 

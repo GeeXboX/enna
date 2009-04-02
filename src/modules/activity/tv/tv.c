@@ -60,11 +60,6 @@ static void _class_init(int dummy)
     enna_content_append("tv", mod->o_background);
 }
 
-static void _class_shutdown(int dummy)
-{
-
-}
-
 static void _class_show(int dummy)
 {
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "starting playback");
@@ -105,7 +100,7 @@ static Enna_Class_Activity class =
     "icon/tv",
     {
     _class_init,
-    _class_shutdown,
+    NULL,
     _class_show,
     _class_hide,
     _class_event

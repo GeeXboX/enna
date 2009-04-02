@@ -53,7 +53,7 @@
                         ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);\
     enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
 
-#define SEEK_STEP 2.0 /* percent */
+#define TIMER_VALUE 30
 
 static void _create_menu();
 static void _create_gui();
@@ -68,7 +68,6 @@ static void _menu_transition_left_end_cb(void *data, Evas_Object *o, const char 
 static int _show_mediaplayer_cb(void *data);
 
 static void _class_init(int dummy);
-static void _class_shutdown(int dummy);
 static void _class_show(int dummy);
 static void _class_hide(int dummy);
 static void _class_event(void *event_info);
@@ -138,7 +137,7 @@ static Enna_Class_Activity class =
     "icon/music",
     {
         _class_init,
-        _class_shutdown,
+        NULL,
         _class_show,
         _class_hide,
         _class_event
@@ -151,11 +150,6 @@ _class_init(int dummy)
 {
     _create_gui();
     enna_content_append("music", mod->o_edje);
-}
-
-static void
-_class_shutdown(int dummy)
-{
 }
 
 static void
@@ -185,6 +179,96 @@ _class_hide(int dummy)
 }
 
 static void
+_class_event_menu_view(enna_key_t key, void *event_info)
+{
+    if (mod->o_mediaplayer)
+    {
+        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+        mod->timer_show_mediaplayer =
+            ecore_timer_add (TIMER_VALUE, _show_mediaplayer_cb, NULL);
+    }
+
+    switch (key)
+    {
+    case ENNA_KEY_LEFT:
+    case ENNA_KEY_CANCEL:
+        enna_content_hide();
+        enna_mainmenu_show(enna->o_mainmenu);
+        break;
+    case ENNA_KEY_RIGHT:
+    case ENNA_KEY_OK:
+    case ENNA_KEY_SPACE:
+        _browse(enna_list_selected_data_get(mod->o_list));
+        break;
+    default:
+        enna_list_event_key_down(mod->o_list, event_info);
+
+    }
+}
+
+static void
+_class_event_browser_view(enna_key_t key, void *event_info)
+{
+    if (mod->o_mediaplayer)
+    {
+        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+        mod->timer_show_mediaplayer =
+            ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
+    }
+    enna_browser_event_feed(mod->o_browser, event_info);
+}
+
+static void
+_class_event_mediaplayer_view(enna_key_t key, void *event_info)
+{
+    switch (key)
+    {
+    case ENNA_KEY_OK:
+    case ENNA_KEY_SPACE:
+        enna_mediaplayer_play(mod->enna_playlist);
+        break;
+    case ENNA_KEY_UP:
+        enna_mediaplayer_prev(mod->enna_playlist);
+        break;
+    case ENNA_KEY_DOWN:
+        enna_mediaplayer_next(mod->enna_playlist);
+        break;
+    case ENNA_KEY_LEFT:
+        enna_mediaplayer_default_seek_backward ();
+        break;
+    case ENNA_KEY_RIGHT:
+        enna_mediaplayer_default_seek_forward ();
+        break;
+    case ENNA_KEY_CANCEL:
+        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+        mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
+        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
+        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
+        mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
+        break;
+    case ENNA_KEY_STOP:
+    case ENNA_KEY_S:
+        enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
+        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
+        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
+        mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
+        break;
+    case ENNA_KEY_M:
+        enna_mediaplayer_mute ();
+        break;
+    case ENNA_KEY_PLUS:
+        enna_mediaplayer_default_increase_volume ();
+        break;
+    case ENNA_KEY_MINUS:
+        enna_mediaplayer_default_decrease_volume ();
+        break;
+    default:
+        break;
+    }
+}
+
+static void
 _class_event(void *event_info)
 {
     Evas_Event_Key_Down *ev = event_info;
@@ -197,90 +281,13 @@ _class_event(void *event_info)
     switch (mod->state)
     {
     case MENU_VIEW:
-        if (mod->o_mediaplayer)
-        {
-            ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-            mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
-        }
-        switch (key)
-        {
-        case ENNA_KEY_LEFT:
-        case ENNA_KEY_CANCEL:
-            enna_content_hide();
-            enna_mainmenu_show(enna->o_mainmenu);
-            break;
-        case ENNA_KEY_RIGHT:
-        case ENNA_KEY_OK:
-        case ENNA_KEY_SPACE:
-            _browse(enna_list_selected_data_get(mod->o_list));
-            break;
-        default:
-            enna_list_event_key_down(mod->o_list, event_info);
-        }
+        _class_event_menu_view (key, event_info);
         break;
     case BROWSER_VIEW:
-        if (mod->o_mediaplayer)
-        {
-            ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-            mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
-        }
-        enna_browser_event_feed(mod->o_browser, event_info);
+        _class_event_browser_view (key, event_info);
         break;
     case MEDIAPLAYER_VIEW:
-        switch (key)
-        {
-        case ENNA_KEY_OK:
-        case ENNA_KEY_SPACE:
-            enna_mediaplayer_play(mod->enna_playlist);
-            break;
-        case ENNA_KEY_UP:
-            enna_mediaplayer_prev(mod->enna_playlist);
-            break;
-        case ENNA_KEY_DOWN:
-            enna_mediaplayer_next(mod->enna_playlist);
-            break;
-        case ENNA_KEY_LEFT:
-        {
-            double pos, length;
-            length = enna_mediaplayer_length_get();
-            pos = enna_mediaplayer_position_get();
-            enna_mediaplayer_seek((pos/length)-(SEEK_STEP/100));
-            break;
-        }
-        case ENNA_KEY_RIGHT:
-        {
-            double pos, length;
-            length = enna_mediaplayer_length_get();
-            pos = enna_mediaplayer_position_get();
-            enna_mediaplayer_seek((pos/length)+(SEEK_STEP/100));
-            break;
-        }
-        case ENNA_KEY_CANCEL:
-            ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-            mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
-            enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Add timer 10s");
-            edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
-            edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-            if (mod->o_browser)
-                mod->state = BROWSER_VIEW;
-            else
-                mod->state = MENU_VIEW;
-            break;
-        case ENNA_KEY_STOP:
-            enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
-            ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-            mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
-            enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Add timer 10s");
-            edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
-            edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-            if (mod->o_browser)
-                mod->state = BROWSER_VIEW;
-            else
-                mod->state = MENU_VIEW;
-            break;
-        default:
-            break;
-        }
+        _class_event_mediaplayer_view (key, event_info);
         break;
     default:
         break;
@@ -294,7 +301,7 @@ static void _event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Remove Timer");
         ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
+        mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
     }
 }
 

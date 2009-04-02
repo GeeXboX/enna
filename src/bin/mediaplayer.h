@@ -90,6 +90,8 @@ double enna_mediaplayer_position_get(void);
 int enna_mediaplayer_position_set (double position);
 double enna_mediaplayer_length_get(void);
 int enna_mediaplayer_seek(double percent);
+void enna_mediaplayer_default_seek_backward (void);
+void enna_mediaplayer_default_seek_forward (void);
 void enna_mediaplayer_video_resize(int x, int y, int w, int h);
 int enna_mediaplayer_playlist_load(const char *filename);
 int enna_mediaplayer_playlist_save(const char *filename);
@@ -100,4 +102,9 @@ Enna_Playlist *enna_mediaplayer_playlist_create(void);
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_send_key(enna_key_t key);
+int enna_mediaplayer_get_volume (void);
+void enna_mediaplayer_set_volume (int volume);
+void enna_mediaplayer_default_increase_volume (void);
+void enna_mediaplayer_default_decrease_volume (void);
+void enna_mediaplayer_mute (void);
 #endif /* MEDIAPLAYER_H */
