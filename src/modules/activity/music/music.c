@@ -54,7 +54,7 @@
 
 #define SEEK_STEP 2.0 /* percent */
 
-#define TIMER_VALUE 10
+#define TIMER_VALUE 30
 
 static void _create_menu();
 static void _create_gui();
