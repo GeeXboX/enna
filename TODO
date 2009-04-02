@@ -6,7 +6,6 @@
       -> Add next/prev/pause/stop control and increase/decrease time
    between 2 pictures.
       -> Add State info with OSD
-      -> fullscreen mode
       -> Preload previous and next pictures
       -> hide photo after transition : add program in edje to send signal
    when transition is finished.
@@ -14,15 +13,12 @@
       -> Define slideshow effect/timeout in config file.
 
  * Audio module
-      -> Do not display empty metadata in audio player if none is found
-         in current stream: display filename instead.
       -> Finish shoutcast support so that non-local streams can be played back.
       -> Support Volume
       -> Playing now edje
       -> Cancel timer of mediaplayer when browsing directory with mouse
 
  * Video module
-      -> Add video support to emotion backend
       -> Support Volume
 
  * Add Simple Widgets
