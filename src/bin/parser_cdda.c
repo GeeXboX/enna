@@ -133,7 +133,7 @@ cd_read_toc (cdda_t *cd, const char *dev)
 
         ioctl (drive, CDROMREADTOCENTRY, &tocentry);
 
-        track         = cdda_track_new (); 
+        track         = cdda_track_new ();
         track->min    = tocentry.cdte_addr.msf.minute;
         track->sec    = tocentry.cdte_addr.msf.second;
         track->frame  = tocentry.cdte_addr.msf.frame;
@@ -150,7 +150,7 @@ cd_read_toc (cdda_t *cd, const char *dev)
     return 0;
 }
 
-static unsigned int 
+static unsigned int
 cd_do_checksum (int n)
 {
     unsigned int ret = 0;
@@ -164,7 +164,7 @@ cd_do_checksum (int n)
     return ret;
 }
 
-static void 
+static void
 cd_get_discid (cdda_t *cd)
 {
     unsigned int i, t, n = 0;
@@ -315,22 +315,21 @@ cd_display_info (cdda_t *cd)
     if (!cd)
         return;
 
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "DiscID: %ld\n", cd->id);
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Artist: %s\n", cd->artist);
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Title: %s\n", cd->title);
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Ext.Data: %s\n", cd->ext_data);
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Genre: %s\n", cd->genre);
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Year: %d\n", cd->year);
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Length: %d seconds\n", cd->length);
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "\n");
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Tracks:\n");
-
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "DiscID: %ld", cd->id);
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Artist: %s", cd->artist);
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Title: %s", cd->title);
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Ext.Data: %s", cd->ext_data);
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Genre: %s", cd->genre);
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Year: %d", cd->year);
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Length: %d seconds", cd->length);
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "");
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "Tracks:");
     for (i = 0; i < cd->total_tracks; i++)
-        enna_log (ENNA_MSG_INFO, MODULE_NAME, "  %s\n", cd->tracks[i]->name);
+        enna_log (ENNA_MSG_INFO, MODULE_NAME, "  %s", cd->tracks[i]->name);
 }
 
 cdda_t *
-parse_cdda (const char *device)
+cdda_parse (const char *device)
 {
     cdda_t *cd;
 
@@ -347,5 +346,5 @@ parse_cdda (const char *device)
 
     cd_display_info (cd);
 
-    return 0;
+    return cd;
 }

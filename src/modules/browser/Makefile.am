@@ -1,2 +1,2 @@
-SUBDIRS = dvd lms localfiles netstreams shoutcast upnp valhalla
+SUBDIRS = cdda dvd lms localfiles netstreams shoutcast upnp valhalla
 
