@@ -90,6 +90,8 @@ double enna_mediaplayer_position_get(void);
 int enna_mediaplayer_position_set (double position);
 double enna_mediaplayer_length_get(void);
 int enna_mediaplayer_seek(double percent);
+void enna_mediaplayer_default_seek_backward (void);
+void enna_mediaplayer_default_seek_forward (void);
 void enna_mediaplayer_video_resize(int x, int y, int w, int h);
 int enna_mediaplayer_playlist_load(const char *filename);
 int enna_mediaplayer_playlist_save(const char *filename);

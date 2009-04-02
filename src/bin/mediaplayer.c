@@ -965,6 +965,26 @@ enna_mediaplayer_seek (double percent)
     return 0;
 }
 
+#define SEEK_STEP 2.0 /* percent */
+
+void
+enna_mediaplayer_default_seek_backward (void)
+{
+    double pos, length;
+    length = enna_mediaplayer_length_get ();
+    pos = enna_mediaplayer_position_get ();
+    enna_mediaplayer_seek ((pos / length) - (SEEK_STEP / 100));
+}
+
+void
+enna_mediaplayer_default_seek_forward (void)
+{
+    double pos, length;
+    length = enna_mediaplayer_length_get ();
+    pos = enna_mediaplayer_position_get ();
+    enna_mediaplayer_seek ((pos / length) + (SEEK_STEP / 100));
+}
+
 void
 enna_mediaplayer_video_resize (int x, int y, int w, int h)
 {
