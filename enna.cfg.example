@@ -62,7 +62,7 @@ stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/f
 # Default: 'vdr:/' (autodetect local VDR)
 # Local VDR: 'vdr://tmp/vdr-xine/stream#demux:mpeg_pes
 # Remote VDR: 'netvdr://192.168.1.1:18701
-#vdr=
+#vdr_uri=
 
 [weather]
 city=New York

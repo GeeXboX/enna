@@ -112,7 +112,7 @@
     "# Default: 'vdr:/' (autodetect local VDR)\n"			\
     "# Local VDR: 'vdr://tmp/vdr-xine/stream#demux:mpeg_pes\n"		\
     "# Remote VDR: 'netvdr://192.168.1.1:18701\n"			\
-    "#vdr=\n"								\
+    "#vdr_uri=\n"							\
     "[weather]\n"                                                       \
     "city=New York\n"                                                   \
     "lang=en\n"                                                         \
