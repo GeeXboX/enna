@@ -73,8 +73,15 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
     if (!cd) return NULL;
     for (i = 0; i < cd->total_tracks; i++)
     {
+        char trk[128];
+
 	snprintf(uri, sizeof(uri), "cdda://%d/%s", i+1, mod->cdda->device);
-	f = enna_vfs_create_file(eina_stringshare_add(uri), cd->tracks[i]->name, "icon/video", NULL);
+        if (cd->tracks[i]->name)
+            snprintf (trk, sizeof (trk), "%s", cd->tracks[i]->name);
+        else
+            snprintf (trk, sizeof (trk), "Track %d", i + 1);
+        f = enna_vfs_create_file(eina_stringshare_add(uri),
+                                 trk, "icon/video", NULL);
 	l = eina_list_append(l, f);
     }
     cdda_free(cd);
