@@ -143,7 +143,7 @@ int enna_list_jump_label(Evas_Object *obj, const char *label)
 
     EINA_LIST_FOREACH(sd->items, l, it)
     {
-        if (!strcmp(it->label, label))
+        if (it->label && !strcmp(it->label, label))
         {
             _smart_select_item(sd, i);
             return i;
