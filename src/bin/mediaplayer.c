@@ -298,6 +298,7 @@ set_cdda_stream (const char *uri, mrl_resource_t type)
     sscanf(uri, "cdda://%d/%s", &track, device);
     args->device = strdup(device);
     args->track_start = track;
+    args->track_end = track;
     mrl = mrl_new (mp->player, type, args);
     return mrl;
 }

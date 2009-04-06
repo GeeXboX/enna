@@ -74,7 +74,7 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
     for (i = 0; i < cd->total_tracks; i++)
     {
 	snprintf(uri, sizeof(uri), "cdda://%d/%s", i+1, mod->cdda->device);
-	f = enna_vfs_create_file(eina_stringshare_add(uri), cd->tracks[i]->name, "icon/video", NULL);
+	f = enna_vfs_create_file(eina_stringshare_add(uri), cd->tracks[i]->name, "icon/music", NULL);
 	l = eina_list_append(l, f);
     }
     cdda_free(cd);
