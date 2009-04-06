@@ -322,7 +322,7 @@ mp_file_set (const char *uri, const char *label)
     mrl_t *mrl = NULL;
     player_type_t player_type = mp->default_type;
 
-    enna_log (ENNA_MSG_INFO, NULL, "Try to load : %s\n", uri);
+    enna_log (ENNA_MSG_INFO, NULL, "Try to load : %s, %s\n", uri, label);
 
     /* try network streams */
     if (!strncmp (uri, URI_TYPE_FTP, strlen (URI_TYPE_FTP)))
