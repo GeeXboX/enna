@@ -179,7 +179,7 @@ cd_get_discid (cdda_t *cd)
          + cd->tracks[cd->total_tracks]->sec) -
         ((cd->tracks[0]->min * 60) + cd->tracks[0]->sec);
 
-    cd->id = ((n % 0xFF) << 24 | t << 8 | cd->total_tracks);
+    cd->id = (((unsigned long) n % 0xFF) << 24 | t << 8 | cd->total_tracks);
 }
 
 static cdda_t *
@@ -315,7 +315,7 @@ cd_display_info (cdda_t *cd)
     if (!cd)
         return;
 
-    enna_log (ENNA_MSG_INFO, MODULE_NAME, "DiscID: %ld", cd->id);
+    enna_log (ENNA_MSG_INFO, MODULE_NAME, "DiscID: %lu", cd->id);
     enna_log (ENNA_MSG_INFO, MODULE_NAME, "Artist: %s", cd->artist);
     enna_log (ENNA_MSG_INFO, MODULE_NAME, "Title: %s", cd->title);
     enna_log (ENNA_MSG_INFO, MODULE_NAME, "Ext.Data: %s", cd->ext_data);
