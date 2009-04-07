@@ -163,7 +163,7 @@ event_mouse_button (void *data, int type, void *event)
 
     /* Set mouse position and send mouseclick event */
     enna_log (ENNA_MSG_EVENT, NULL,
-              "Send Mouse click %d %d, uri : %s\n", e->x, e->y, mp->uri);
+              "Send Mouse click %d %d, uri : %s", e->x, e->y, mp->uri);
     player_set_mouse_position (mp->players[mp->dvd_type], e->x, e->y);
     player_dvd_nav (mp->players[mp->dvd_type], PLAYER_DVDNAV_MOUSECLICK);
     return 1;
@@ -213,7 +213,7 @@ set_dvd_stream (const char *uri, mrl_resource_t type)
     int title = 0;
     char *device;
 
-    enna_log (ENNA_MSG_INFO, NULL, "Load DVD Video : %s\n", uri);
+    enna_log (ENNA_MSG_INFO, NULL, "Load DVD Video : %s", uri);
 
     args = calloc (1, sizeof (mrl_resource_videodisc_args_t));
     device = strstr (uri, "://");
@@ -322,7 +322,7 @@ mp_file_set (const char *uri, const char *label)
     mrl_t *mrl = NULL;
     player_type_t player_type = mp->default_type;
 
-    enna_log (ENNA_MSG_INFO, NULL, "Try to load : %s, %s\n", uri, label);
+    enna_log (ENNA_MSG_INFO, NULL, "Try to load : %s, %s", uri, label);
 
     /* try network streams */
     if (!strncmp (uri, URI_TYPE_FTP, strlen (URI_TYPE_FTP)))
