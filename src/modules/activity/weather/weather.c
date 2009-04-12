@@ -90,10 +90,10 @@ static const struct {
     { "weather/mostly_cloudy",    "/mostly_cloudy.gif"         },
     { "weather/sunny",            "/sunny.gif"                 },
     { "weather/windy",            "/flurries.gif"              },
+    { "weather/rain_storm",       "/chance_of_storm.gif"       },
 #if 0
     /* matches to be found */
     { "weather/ice",              "/"                          },
-    { "weather/rain_storm",       "/"                          },
     { "weather/showers",          "/"                          },
     { "weather/sun_rain",         "/"                          },
     { "weather/sun_snow",         "/"                          },
