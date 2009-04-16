@@ -546,7 +546,8 @@ static int _em_valhalla_init(void)
     }
     if (music_ext)
     {
-        eina_list_free(music_ext);
+        EINA_LIST_FREE(music_ext, value);
+            free(value);
         music_ext = NULL;
     }
 
@@ -558,7 +559,8 @@ static int _em_valhalla_init(void)
     }
     if (path)
     {
-        eina_list_free(path);
+        EINA_LIST_FREE(path, value);
+            free(value);
         path = NULL;
     }
 
@@ -578,10 +580,10 @@ static int _em_valhalla_init(void)
  err:
     enna_log(ENNA_MSG_ERROR,
              ENNA_MODULE_NAME, "valhalla module initialization");
-    if (music_ext)
-        eina_list_free(music_ext);
-    if (path)
-        eina_list_free(path);
+    EINA_LIST_FREE(music_ext, value);
+        free(value);
+    EINA_LIST_FREE(path, value);
+        free(value);
     return -1;
 }
 
