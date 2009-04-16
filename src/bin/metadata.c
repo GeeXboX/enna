@@ -238,7 +238,7 @@ enna_metadata_load_from_eet (char *md5)
         return NULL;
 
     enna_log (ENNA_MSG_EVENT, MODULE_NAME,
-              "Trying to load %s from EET.\n", md5);
+              "Trying to load %s from EET.", md5);
 
     memset (file, '\0', sizeof (file));
     snprintf (file, sizeof (file), "%s/.enna/%s/%s.eet",
@@ -285,12 +285,12 @@ enna_metadata_save_to_eet (Enna_Metadata *m)
         return;
 
     enna_log (ENNA_MSG_EVENT, MODULE_NAME,
-              "Trying to save %s to EET.\n", m->md5);
+              "Trying to save %s to EET.", m->md5);
 
     edd = enna_metadata_desc ();
     if (!eet_data_write (ef, edd, m->md5, m, EET_DO_COMPRESS))
         enna_log (ENNA_MSG_WARNING, MODULE_NAME,
-                  "Error writing EET data.\n");
+                  "Error writing EET data.");
 
     eet_data_descriptor_free (edd);
     eet_close (ef);

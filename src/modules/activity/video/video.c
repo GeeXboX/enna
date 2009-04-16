@@ -331,23 +331,23 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 
     if (ev->file->is_directory)
     {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s\n", ev->file->uri);
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
         enna_location_append(mod->o_location, ev->file->label, NULL, NULL, NULL, NULL);
     }
     else
     {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s\n", ev->file->uri);
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s", ev->file->uri);
         enna_mediaplayer_playlist_clear(mod->enna_playlist);
         /* File selected, create mediaplayer */
         EINA_LIST_FOREACH(ev->files, l, f)
         {
             if (!f->is_directory)
             {
-                enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Append : %s %s to playlist\n", f->label, f->uri);
+                enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Append : %s %s to playlist", f->label, f->uri);
                 enna_mediaplayer_uri_append(mod->enna_playlist,f->uri, f->label);
                 if (!strcmp(f->uri, ev->file->uri))
                 {
-                    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Select : %s %d in playlist\n", f->uri, i);
+                    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Select : %s %d in playlist", f->uri, i);
                     enna_mediaplayer_select_nth(mod->enna_playlist,i);
                 }
                 i++;

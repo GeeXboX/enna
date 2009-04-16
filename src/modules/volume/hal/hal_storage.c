@@ -157,8 +157,7 @@ storage_get_properties (storage_t *s)
               "  drive_type: %s\n" \
               "  model: %s\n" \
               "  vendor: %s\n" \
-              "  serial: %s\n" \
-              "\n",
+              "  serial: %s\n",
               s->udi, s->bus, s->drive_type, s->model, s->vendor, s->serial);
 }
 

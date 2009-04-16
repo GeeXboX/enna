@@ -205,7 +205,7 @@ didl_process_object (xmlNode *e, char *udn)
         f = enna_vfs_create_directory (uri, title, "icon/directory", NULL);
 
         enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "DIDL container '%s' (id: %s, parent_id: %s, uri: %s)\n",
+                  "DIDL container '%s' (id: %s, parent_id: %s, uri: %s)",
                   title, id, parent_id, uri);
     }
     else
@@ -247,7 +247,7 @@ didl_process_object (xmlNode *e, char *udn)
         f = enna_vfs_create_file (uri, title, icon, NULL);
 
         enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "DIDL item '%s' (id: %s, parent_id: %s, uri: %s)\n",
+                  "DIDL item '%s' (id: %s, parent_id: %s, uri: %s)",
                   title, id, parent_id, uri);
 
     err_no_uri:
@@ -275,7 +275,7 @@ didl_process (char *didl, char *udn)
     if (!doc)
     {
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "Unable to parse DIDL-Lite XML:\n%s\n", didl);
+                  "Unable to parse DIDL-Lite XML:\n%s", didl);
         return NULL;
     }
 
@@ -284,7 +284,7 @@ didl_process (char *didl, char *udn)
     if (!element)
     {
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "No 'DIDL-Lite' node found.\n");
+                  "No 'DIDL-Lite' node found.");
         xmlFreeDoc (doc);
         return NULL;
     }
@@ -350,7 +350,7 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
 
         info = GUPNP_SERVICE_INFO (srv->content_dir);
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "Failed to browse '%s': %s\n",
+                  "Failed to browse '%s': %s",
                   gupnp_service_info_get_location (info), error->message);
         g_error_free (error);
         goto err;
@@ -478,7 +478,7 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
     pthread_mutex_unlock (&mod->mutex);
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-              "Found news UPnP device '%s (%s)'\n", name, model);
+              "Found news UPnP device '%s (%s)'", name, model);
 }
 
 static Eina_List *

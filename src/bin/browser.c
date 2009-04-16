@@ -506,7 +506,7 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
         _list_transition_right_end_cb);
 
-    enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s\n", ev->key);
+    enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s", ev->key);
     switch (key)
     {
     case ENNA_KEY_LEFT:

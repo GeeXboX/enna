@@ -197,8 +197,7 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
               "  label: %s\n" \
               "  partition_label: %s\n" \
               "  mounted: %d\n" \
-              "  mount_point: %s\n" \
-              "\n",
+              "  mount_point: %s\n",
               v->udi, v->parent, v->cd_type, v->cd_content_type, v->fstype,
               v->label, v->partition_label, v->mounted, v->mount_point);
 }

@@ -193,7 +193,7 @@ cd_identify (const char *dev)
     err = cd_read_toc (cd, dev);
     if (err)
     {
-        enna_log (ENNA_MSG_ERROR, MODULE_NAME, "Unable to read CD TOC.\n");
+        enna_log (ENNA_MSG_ERROR, MODULE_NAME, "Unable to read CD TOC.");
         goto err_cd_read_toc;
     }
 

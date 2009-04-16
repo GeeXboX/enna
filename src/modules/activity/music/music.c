@@ -168,7 +168,7 @@ _class_show(int dummy)
         break;
     default:
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-            "Error State Unknown in music module\n");
+            "Error State Unknown in music module");
     }
 }
 
@@ -273,7 +273,7 @@ _class_event(void *event_info)
 {
     Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key(ev);
-    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %s\n",
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %s",
         ev->key);
 
     if (!mod->accept_ev) return;
@@ -369,12 +369,12 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 
     if (ev->file->is_directory)
     {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s\n", ev->file->uri);
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
         enna_location_append(mod->o_location, ev->file->label, NULL, NULL, NULL, NULL);
     }
     else
     {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s\n", ev->file->uri);
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s", ev->file->uri);
         enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
         /* File selected, create mediaplayer */
         EINA_LIST_FOREACH(ev->files, l, f)
