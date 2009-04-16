@@ -166,7 +166,7 @@ enna_get_key (void *event)
         else if (!enna_keymap[i].modifier && !strcmp (enna_keymap[i].keyname, ev->key))
         {
             enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : %s",
-                enna_keymap[i] );
+                enna_keymap[i].keyname );
             return enna_keymap[i].keycode;
         }
     }
