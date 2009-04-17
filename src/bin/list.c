@@ -281,7 +281,8 @@ static int _letter_timer_cb(void *data)
 
     edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
     sd->letter_mode = 0;
-    return 0;
+    ENNA_TIMER_DEL(sd->letter_timer);
+    return ECORE_CALLBACK_CANCEL;
 }
 
 static void _smart_del(Evas_Object *obj)
@@ -377,18 +378,14 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
     int n, ns;
 
     ns = start;
-    n = ns;
-    do
-    {
-        int i = up ? eina_list_count(sd->items) - 1 : 0;
+    n = start;
 
-        if (n == i)
-        {
-            n = ns;
-            break;
-        }
-        n = up ? n + step : n - step;
-    } while (0);
+    int boundary = up ? eina_list_count(sd->items) - 1 : 0;
+
+    if (n == boundary)
+        n = ns;
+
+    n = up ? n + step : n - step;
 
     if (n != ns)
         _smart_select_item(sd, n);
@@ -404,7 +401,7 @@ static void _smart_jump_to_ascii(Smart_Data *sd, char k)
 
     EINA_LIST_FOREACH(sd->items, l, it)
     {
-        if (it->label[0] == k)
+        if (it->label[0] == k || it->label[0] == k - 32)
         {
             _smart_select_item(sd, i);
             return;
@@ -524,8 +521,8 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
         default:
         {
             char key = enna_key_get_alpha(keycode);
-	    if (key)
-		list_get_alpha_from_digit(sd, key);
+            if (key)
+                list_get_alpha_from_digit(sd, key);
         }
         break;
     }
