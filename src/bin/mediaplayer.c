@@ -1094,13 +1094,13 @@ enna_mediaplayer_send_key (enna_key_t key)
 }
 
 int
-enna_mediaplayer_get_volume (void)
+enna_mediaplayer_volume_get (void)
 {
     return player_audio_volume_get (mp->player);
 }
 
 void
-enna_mediaplayer_set_volume (int value)
+enna_mediaplayer_volume_set (int value)
 {
     player_audio_volume_set (mp->player, value);
 }
@@ -1110,14 +1110,14 @@ enna_mediaplayer_set_volume (int value)
 void
 enna_mediaplayer_default_increase_volume (void)
 {
-    int vol = enna_mediaplayer_get_volume ();
+    int vol = enna_mediaplayer_volume_get ();
     player_audio_volume_set (mp->player, vol + VOLUME_STEP);
 }
 
 void
 enna_mediaplayer_default_decrease_volume (void)
 {
-    int vol = enna_mediaplayer_get_volume ();
+    int vol = enna_mediaplayer_volume_get ();
     player_audio_volume_set (mp->player, vol - VOLUME_STEP);
 }
 
@@ -1129,4 +1129,15 @@ enna_mediaplayer_mute (void)
     m = player_audio_mute_get (mp->player);
     player_audio_mute_set (mp->player, (m == PLAYER_MUTE_ON) ?
                            PLAYER_MUTE_OFF : PLAYER_MUTE_ON);
+}
+
+int
+enna_mediaplayer_mute_get (void)
+{
+    player_mute_t m;
+    m = player_audio_mute_get (mp->player);
+    if (m == PLAYER_MUTE_ON)
+	return 1;
+    else
+	return 0;
 }
