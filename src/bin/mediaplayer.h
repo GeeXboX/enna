@@ -48,6 +48,7 @@ enum _PLAY_STATE
     STOPPED
 };
 
+
 typedef struct _Enna_Event_Mediaplayer_Seek_Data Enna_Event_Mediaplayer_Seek_Data;
 
 struct _Enna_Event_Mediaplayer_Seek_Data
@@ -102,9 +103,10 @@ Enna_Playlist *enna_mediaplayer_playlist_create(void);
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_send_key(enna_key_t key);
-int enna_mediaplayer_get_volume (void);
-void enna_mediaplayer_set_volume (int volume);
+int enna_mediaplayer_volume_get (void);
+void enna_mediaplayer_volume_set (int volume);
 void enna_mediaplayer_default_increase_volume (void);
 void enna_mediaplayer_default_decrease_volume (void);
 void enna_mediaplayer_mute (void);
+int enna_mediaplayer_mute_get (void);
 #endif /* MEDIAPLAYER_H */

@@ -486,7 +486,6 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     else if (ppi == pi)
     {
         // Click on picture already selected, send the selected event */
-        printf("Send selected callback\n");
         evas_object_smart_callback_call(pi->sd->obj, "selected", NULL);
         return;
     }
@@ -670,7 +669,7 @@ static void _smart_init(void)
         NULL,
         NULL
     };
-    
+
     if (!_smart)
         _smart = evas_smart_class_new(&sc);
 }

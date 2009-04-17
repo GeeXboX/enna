@@ -237,7 +237,7 @@ void enna_config_init(void)
 
     if (enna_config->theme)
     {
-        printf("Theme : %s\n", enna_config->theme);
+        enna_log(ENNA_MSG_INFO, NULL, "Theme : %s\n", enna_config->theme);
         elm_theme_overlay_add(
             enna_config_theme_file_get(enna_config->theme));
     }

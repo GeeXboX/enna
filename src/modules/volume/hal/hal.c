@@ -294,7 +294,6 @@ ehal_remove_volume (char *udi)
             if (v->enna_volume)
             {
                 enna_volumes_remove(v->enna_volume->type, v->enna_volume);
-                printf("remove volume : %s\n", v->enna_volume->label);
             }
             volume_free (v);
         }
