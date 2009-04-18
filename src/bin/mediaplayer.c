@@ -842,15 +842,10 @@ enna_mediaplayer_play(Enna_Playlist *enna_playlist)
 int
 enna_mediaplayer_select_nth (Enna_Playlist *enna_playlist,int n)
 {
-    list_item_t *item;
-
     if (n < 0 || n > eina_list_count (enna_playlist->playlist) - 1)
         return -1;
 
-    item = eina_list_nth (enna_playlist->playlist, n);
     enna_log (ENNA_MSG_EVENT, NULL, "select %d", n);
-    if (item && item->uri)
-        mp_file_set (item->uri, item->label);
     enna_playlist->selected = n;
 
     return 0;
@@ -893,8 +888,6 @@ enna_mediaplayer_change (Enna_Playlist *enna_playlist, int type)
         return;
 
     enna_mediaplayer_stop ();
-    if (item->uri)
-        mp_file_set (item->uri, item->label);
     enna_mediaplayer_play (enna_playlist);
     ecore_event_add (type, NULL, NULL, NULL);
 }
