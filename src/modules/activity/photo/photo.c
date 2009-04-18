@@ -43,6 +43,7 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "event_key.h"
+#include "logs.h"
 
 #ifdef BUILD_LIBEXIF
 #include "libexif/exif-data.h"
@@ -110,7 +111,6 @@ static void _photo_info_delete_cb(void *data,
     const char *source)
 {
     Evas_Object *o_pict;
-
 
     edje_object_signal_callback_del(mod->o_preview, "done", "", _photo_info_delete_cb);
     o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
@@ -209,16 +209,19 @@ static void _photo_info_fs()
     Edje_Message_Int_Set *msg;
     const char *filename;
 
-    mod->state = WALL_PREVIEW;
-
     /* Prepare edje message */
     msg = calloc(1,sizeof(Edje_Message_Int_Set) - sizeof(int) + (4 * sizeof(int)));
     msg->count = 4;
 
-
     enna_wall_selected_geometry_get(mod->o_wall, &x2, &y2, &w2, &h2);
     filename = enna_wall_selected_filename_get(mod->o_wall);
     if (!filename) return;
+
+    o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
+    if (o_pict) //user clicked too fast, preview already there or in progress
+        return;
+
+    mod->state = WALL_PREVIEW;
 
     o_pict = enna_image_add(mod->em->evas);
     enna_image_file_set(o_pict, filename);
@@ -556,6 +559,7 @@ static void _class_event(void *event_info)
         switch (key)
         {
         case ENNA_KEY_CANCEL:
+            _photo_info_delete();
             evas_object_del(mod->o_slideshow);
             mod->state = WALL_VIEW;
             edje_object_signal_emit(mod->o_edje, "wall,show", "enna");

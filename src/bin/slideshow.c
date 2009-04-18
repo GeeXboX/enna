@@ -219,7 +219,6 @@ static void _random_transition(Smart_Data *sd)
 static void _edje_cb(void *data, Evas_Object *obj, const char *emission,
         const char *source)
 {
-
     Smart_Data *sd = (Smart_Data*)data;
 
     if (!strcmp(emission, "done"))
@@ -303,6 +302,9 @@ static void _smart_del(Evas_Object * obj)
         evas_object_del(l->data);
 
     evas_object_del(sd->o_edje);
+    evas_object_del(sd->old_slide);
+    evas_object_del(sd->slide);
+    evas_object_del(sd->o_transition);
     ecore_timer_del(sd->timer);
     free(sd);
 }
