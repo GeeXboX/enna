@@ -502,10 +502,12 @@ _update_position_timer(void *data)
     {
         double pos;
         double length;
+        double percent;
 
         length = enna_mediaplayer_length_get();
         pos = enna_mediaplayer_position_get();
-        enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
+        percent = (double) enna_mediaplayer_position_percent_get() / 100.0;
+        enna_smart_player_position_set(mod->o_mediaplayer, pos, length, percent);
         enna_log(ENNA_MSG_EVENT, NULL, "Position %f %f",pos,length);
     }
     return 1;
@@ -760,6 +762,6 @@ _seek_cb(void *data, int type, void *event)
     percent=ev->seek_value;
     length = enna_mediaplayer_length_get();
     pos=length*percent;
-    enna_smart_player_position_set(mod->o_mediaplayer, pos, length);
+    enna_smart_player_position_set(mod->o_mediaplayer, pos, length, percent);
     return 1;
 }

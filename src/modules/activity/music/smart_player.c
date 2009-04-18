@@ -63,10 +63,9 @@ static void _drag_bar_seek_cb(void *data, Evas_Object *obj,
 }
 
 void enna_smart_player_position_set(Evas_Object *obj, double pos,
-        double len)
+        double len, double percent)
 {
     long ph, pm, ps, lh, lm, ls;
-    double fraction;
     char buf[256];
     char buf2[256];
     API_ENTRY
@@ -80,14 +79,10 @@ void enna_smart_player_position_set(Evas_Object *obj, double pos,
     ps = pos - (pm * 60);
     snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
     snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
-    if (len)
-        fraction = pos / len;
-    else
-        fraction = 0.0;
 
     edje_object_part_text_set(sd->o_edje, "enna.text.length", buf2);
     edje_object_part_text_set(sd->o_edje, "enna.text.position", buf);
-    edje_object_part_drag_value_set(sd->o_edje, "enna.dragable.pos", fraction,
+    edje_object_part_drag_value_set(sd->o_edje, "enna.dragable.pos", percent,
             0.0);
 }
 
