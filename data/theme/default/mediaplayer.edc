@@ -41,7 +41,7 @@ group {
             color: 255 255 255 255;
             align: 0 0.5;
 	    text {
-               text:     "Artist";
+               text:     "Title";
                font:     "content_bd";
                size:     45;
                align: 0 0.5;
