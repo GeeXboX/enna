@@ -1003,7 +1003,7 @@ enna_mediaplayer_default_seek_backward (void)
 {
     int pos;
     pos = enna_mediaplayer_position_percent_get ();
-    enna_mediaplayer_seek ((pos - SEEK_STEP) / 100);
+    enna_mediaplayer_seek (((double) pos - SEEK_STEP) / 100.0);
 }
 
 void
@@ -1011,7 +1011,7 @@ enna_mediaplayer_default_seek_forward (void)
 {
     int pos;
     pos = enna_mediaplayer_position_percent_get ();
-    enna_mediaplayer_seek ((pos + SEEK_STEP) / 100);
+    enna_mediaplayer_seek (((double) pos + SEEK_STEP) / 100.0);
 }
 
 void
