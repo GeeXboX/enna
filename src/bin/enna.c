@@ -374,7 +374,7 @@ static void _create_gui(void)
 
     o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/cursor");
-    ecore_evas_object_cursor_set(enna->ee, o, 1, 1, 1);
+    ecore_evas_object_cursor_set(enna->ee, o, 1, 7, 5);
     evas_object_show(o);
     enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, o);
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOVE, _mousemove_cb, NULL);
