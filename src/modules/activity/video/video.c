@@ -284,7 +284,6 @@ _seek_video(double value)
 
     pos = enna_mediaplayer_position_percent_get();
     seek = (double) pos / 100.0 + value;
-    if (seek <= 1.0 && seek >= 0.0)
         enna_mediaplayer_seek(seek);
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Seek value : %f", seek);
