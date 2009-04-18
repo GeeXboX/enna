@@ -279,14 +279,11 @@ _show_mediaplayer_cb(void *data)
 static void
 _seek_video(double value)
 {
-    double pos = 0.0;
-    double len = 0.0;
+    int pos = 0;
     double seek = 0.0;
 
-    pos = enna_mediaplayer_position_get();
-    len = enna_mediaplayer_length_get();
-    if (len)
-        seek = (pos / len) + value;
+    pos = enna_mediaplayer_position_percent_get();
+    seek = (double) pos / 100.0 + value;
     if (seek <= 1.0 && seek >= 0.0)
         enna_mediaplayer_seek(seek);
 

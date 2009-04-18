@@ -454,6 +454,15 @@ mp_position_get (void)
     return time_pos < 0.0 ? 0.0 : time_pos;
 }
 
+static int
+mp_position_percent_get (void)
+{
+    int percent_pos = 0;
+
+    percent_pos = player_get_percent_pos (mp->player);
+    return percent_pos < 0 ? 0 : percent_pos;
+}
+
 static double
 mp_length_get (void)
 {
@@ -929,6 +938,13 @@ enna_mediaplayer_position_get (void)
 }
 
 int
+enna_mediaplayer_position_percent_get (void)
+{
+    return (mp->play_state == PAUSE || mp->play_state == PLAYING) ?
+            mp_position_percent_get () : 0;
+}
+
+int
 enna_mediaplayer_position_set (double position)
 {
     enna_log (ENNA_MSG_EVENT, NULL, "Seeking to: %f seconds", position);
@@ -985,19 +1001,17 @@ enna_mediaplayer_seek (double percent)
 void
 enna_mediaplayer_default_seek_backward (void)
 {
-    double pos, length;
-    length = enna_mediaplayer_length_get ();
-    pos = enna_mediaplayer_position_get ();
-    enna_mediaplayer_seek ((pos / length) - (SEEK_STEP / 100));
+    int pos;
+    pos = enna_mediaplayer_position_percent_get ();
+    enna_mediaplayer_seek ((pos - SEEK_STEP) / 100);
 }
 
 void
 enna_mediaplayer_default_seek_forward (void)
 {
-    double pos, length;
-    length = enna_mediaplayer_length_get ();
-    pos = enna_mediaplayer_position_get ();
-    enna_mediaplayer_seek ((pos / length) + (SEEK_STEP / 100));
+    int pos;
+    pos = enna_mediaplayer_position_percent_get ();
+    enna_mediaplayer_seek ((pos + SEEK_STEP) / 100);
 }
 
 void
