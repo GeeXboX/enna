@@ -51,6 +51,8 @@
 #include "metadata.h"
 #include "mediaplayer.h"
 
+#define ENNA_MOUSE_IDLE_TIMEOUT 10 //seconds after which the mouse pointer disappears
+
 /* Global Variable Enna *enna*/
 Enna *enna;
 
@@ -63,7 +65,32 @@ static int run_fullscreen = 0;
 /* Functions */
 static void _create_gui(void);
 
-/* Calbacks */
+/* Callbacks */
+static int _mouse_idle_timer_cb(void *data)
+{
+    Evas_Object *cursor = (Evas_Object*)data;
+    edje_object_signal_emit(cursor, "cursor,hide", "enna");
+    enna->cursor_is_shown=0;
+    enna_log(ENNA_MSG_EVENT, NULL, "hiding cursor.");
+    ENNA_TIMER_DEL(enna->mouse_idle_timer);
+    return ECORE_CALLBACK_CANCEL;
+}
+
+void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    if (!enna->cursor_is_shown)
+    {
+        edje_object_signal_emit(obj, "cursor,show", "enna");
+        enna->cursor_is_shown=1;
+        enna_log(ENNA_MSG_EVENT, NULL, "unhiding cursor.", evas_object_visible_get(obj));
+    }
+    ENNA_TIMER_DEL(enna->mouse_idle_timer);
+    if (enna->mouse_idle_timer)
+      ecore_timer_interval_set(enna->mouse_idle_timer, ENNA_MOUSE_IDLE_TIMEOUT);
+    else
+      enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, obj);
+}
+
 static void _event_bg_key_down_cb(void *data, Evas *e,
     Evas_Object *obj, void *event)
 {
@@ -344,10 +371,21 @@ static void _create_gui(void)
     enna_mainmenu_show(enna->o_mainmenu);
 
     ecore_evas_show(enna->ee);
+
+    o = edje_object_add(enna->evas);
+    edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/cursor");
+    ecore_evas_object_cursor_set(enna->ee, o, 1, 1, 1);
+    evas_object_show(o);
+    enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, o);
+    evas_object_event_callback_add(o, EVAS_CALLBACK_MOVE, _mousemove_cb, NULL);
+    enna->cursor_is_shown=1;
+    enna->o_cursor = o;
 }
 
 static void _enna_shutdown(void)
 {
+    ENNA_TIMER_DEL(enna->mouse_idle_timer);
+
     enna_activity_del_all ();
     enna_input_shutdown();
     enna_config_shutdown();

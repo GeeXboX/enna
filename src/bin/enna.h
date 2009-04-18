@@ -31,6 +31,7 @@
 #define ENNA_H
 
 #include <Ecore_Evas.h>
+#include <Ecore.h>
 
 #include "config.h"
 
@@ -121,10 +122,13 @@ struct _Enna
     Evas_Object *o_edje; /**< Main edje. */
     Evas_Object *o_mainmenu; /**< Top menu. */
     Evas_Object *o_content; /** Edje Object to swallow content */
+    Evas_Object *o_cursor; /** Edje Object for mouse cursor */
     enna_msg_level_t lvl; /**< Error message level */
     int use_network;
     int use_covers;
     int use_snapshots;
+    int cursor_is_shown;
+    Ecore_Timer *mouse_idle_timer;
 };
 
 extern Enna *enna;
