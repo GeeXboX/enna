@@ -31,7 +31,7 @@ group
          if (minute < 10) snprintf(buf2, 3, "0%d", minute);
          else             snprintf(buf2, 3, "%d", minute);
 
-         snprintf(buf4, 11, "%i/%i/%i", day, month, year)
+         snprintf(buf4, 11, "%i/%i/%i", year, month, day)
 
             snprintf(buf3, 20, "%s | %s:%s", buf4, buf1, buf2);
          set_text(PART:"titlebar.date", buf3);
