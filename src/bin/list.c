@@ -294,14 +294,16 @@ static void _smart_del(Evas_Object *obj)
 
     INTERNAL_ENTRY;
 
-    evas_object_del(sd->o_list);
+
     evas_object_del(sd->o_edje);
     evas_object_del(sd->o_letter);
     EINA_LIST_REVERSE_FOREACH_SAFE(sd->items, l, l_prev, it)
     {
+	elm_genlist_item_del(it->item);
         free(it);
         list = eina_list_remove_list(list, l);
     }
+    evas_object_del(sd->o_list);
     free(sd);
 }
 
