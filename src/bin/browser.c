@@ -408,9 +408,15 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     edje_object_calc_force(sd->o_edje);
 
     if (direction == 0)
+    {
+
         edje_object_signal_emit(sd->o_edje, "list,right,now", "enna");
+    }
     else
+    {
+	evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
         edje_object_signal_emit(sd->o_edje, "list,left,now", "enna");
+    }
 
     if (eina_list_count(files))
     {
@@ -452,7 +458,6 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             enna_list_append(sd->o_list, sd->item_class, item, item->label, _browse, bd);
 
         }
-        evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
         enna_list_selected_set(sd->o_list, 0);
     }
     else
