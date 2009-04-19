@@ -303,6 +303,7 @@ static void _smart_del(Evas_Object *obj)
         free(it);
         list = eina_list_remove_list(list, l);
     }
+    elm_genlist_clear(sd->o_list);
     evas_object_del(sd->o_list);
     free(sd);
 }
