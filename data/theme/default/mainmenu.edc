@@ -618,7 +618,8 @@ group
          {
             state: "default" 0.0;
             aspect: 0.71875 0.71875;
-            rel2.offset: 50 50;
+            //original pointer image is 23x32px, scaled here by 1.5
+            rel2.offset: 34 48;
             aspect_preference: BOTH;
             visible: 1;
             color: 255 255 255 255;
