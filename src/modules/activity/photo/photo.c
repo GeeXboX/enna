@@ -192,6 +192,10 @@ static void _exif_parse_metadata(const char *filename)
   d = exif_data_new_from_file(filename);
   exif_data_foreach_content(d, _exif_data_foreach_func, NULL);
   exif_data_unref(d);
+
+  if (!mod->exif.str)
+      mod->exif.str=strdup("No exif information found.");
+
   edje_object_part_text_set(mod->exif.o_exif, "enna.text.exif", mod->exif.str);
   edje_object_size_min_calc(mod->exif.o_exif, &mw, &mh);
   evas_object_resize(mod->exif.o_exif, mw, mh);
@@ -547,7 +551,9 @@ static void _class_event(void *event_info)
 #endif
         case ENNA_KEY_RIGHT:
         case ENNA_KEY_LEFT:
-            enna_wall_event_feed(mod->o_wall, ev);
+            //FIXME: should be made possible to switch to prev/next pic right here
+            _photo_info_delete();
+            break;
         case ENNA_KEY_OK:
             _create_slideshow_gui();
             _slideshow_add_files();
