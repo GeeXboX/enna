@@ -370,15 +370,6 @@ static void _browse_down(void *data)
             evas_object_smart_callback_call (sd->obj, "root", NULL);
             return;
         }
-        else
-        {
-            Browser_Selected_File_Data *ev = calloc(1, sizeof(Browser_Selected_File_Data));
-            ev->vfs = sd->vfs;
-            ev->file = sd->file;
-            ev->files = sd->files;
-
-            evas_object_smart_callback_call(sd->obj, "selected", ev);
-        }
 
         /* Clear list and add new items */
         edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
