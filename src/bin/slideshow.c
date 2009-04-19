@@ -139,8 +139,7 @@ int enna_slideshow_prev(void *data)
         if (sd->state == PLAY)
         {
             sd->state = PAUSE;
-            ecore_timer_del(sd->timer);
-            sd->timer = NULL;
+            ENNA_TIMER_DEL(sd->timer);
         }
         _switch_images(sd, o);
         return 1;
@@ -174,8 +173,7 @@ void enna_slideshow_play(void *data)
 
         /* Pause */
         sd->state = PAUSE;
-        ecore_timer_del(sd->timer);
-        sd->timer = NULL;
+        ENNA_TIMER_DEL(sd->timer);
     }
 
 }
@@ -305,7 +303,7 @@ static void _smart_del(Evas_Object * obj)
     evas_object_del(sd->old_slide);
     evas_object_del(sd->slide);
     evas_object_del(sd->o_transition);
-    ecore_timer_del(sd->timer);
+    ENNA_TIMER_DEL(sd->timer);
     free(sd);
 }
 

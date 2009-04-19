@@ -545,6 +545,9 @@ static void _class_event(void *event_info)
             edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
             break;
 #endif
+        case ENNA_KEY_RIGHT:
+        case ENNA_KEY_LEFT:
+            enna_wall_event_feed(mod->o_wall, ev);
         case ENNA_KEY_OK:
             _create_slideshow_gui();
             _slideshow_add_files();
