@@ -192,6 +192,10 @@ static void _exif_parse_metadata(const char *filename)
   d = exif_data_new_from_file(filename);
   exif_data_foreach_content(d, _exif_data_foreach_func, NULL);
   exif_data_unref(d);
+
+  if (!mod->exif.str)
+      mod->exif.str=strdup("No exif information found.");
+
   edje_object_part_text_set(mod->exif.o_exif, "enna.text.exif", mod->exif.str);
   edje_object_size_min_calc(mod->exif.o_exif, &mw, &mh);
   evas_object_resize(mod->exif.o_exif, mw, mh);
