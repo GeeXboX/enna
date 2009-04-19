@@ -40,17 +40,17 @@
 
 typedef struct _Smart_Data Smart_Data;
 
+typedef struct _Smart_Btn_Item
+{
+    Evas_Object *bt;
+    Evas_Object *ic;
+}Smart_Btn_Item;
+
 struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
-    Evas_Object *o_play;
-    Evas_Object *o_pause;
-    Evas_Object *o_prev;
-    Evas_Object *o_rewind;
-    Evas_Object *o_forward;
-    Evas_Object *o_next;
-    Evas_Object *o_stop;
+    Eina_List *btns;
     Evas_Object *o_btn_box;
     Ecore_Event_Handler *play_event_handler;
     Ecore_Event_Handler *stop_event_handler;
@@ -220,6 +220,10 @@ _smart_reconfigure(Smart_Data * sd)
     elm_box_pack_end(sd->o_btn_box, bt);                             \
     evas_object_show(bt);                                            \
     evas_object_show(ic);                                            \
+    it = calloc(1, sizeof(Smart_Btn_Item));			     \
+    it->bt = bt;						     \
+    it->ic = ic;						     \
+    sd->btns = eina_list_append(sd->btns, it);			     \
 
 static void
 _smart_add(Evas_Object * obj)
@@ -227,9 +231,11 @@ _smart_add(Evas_Object * obj)
     Evas_Object *ic, *bt;
     Smart_Data *sd;
     Evas *evas;
+    Smart_Btn_Item *it;
+
     sd = calloc(1, sizeof(Smart_Data));
-    if (!sd)
-        return;
+    if (!sd) return;
+
     sd->x = 0;
     sd->y = 0;
     sd->w = 0;
@@ -290,14 +296,15 @@ _smart_del(Evas_Object * obj)
     ecore_event_handler_del(sd->pause_event_handler);
     ecore_event_handler_del(sd->unpause_event_handler);
     ecore_event_handler_del(sd->seek_event_handler);
-    evas_object_del(sd->o_play);
-    evas_object_del(sd->o_pause);
-    evas_object_del(sd->o_prev);
-    evas_object_del(sd->o_rewind);
-    evas_object_del(sd->o_forward);
-    evas_object_del(sd->o_next);
-    evas_object_del(sd->o_stop);
-    evas_object_del(sd->o_edje);
+    while (sd->btns)
+    {
+        Smart_Btn_Item *it = sd->btns->data;
+        sd->btns = eina_list_remove_list(sd->btns, sd->btns);
+        evas_object_del(it->ic);
+        evas_object_del(it->bt);
+        free(it);
+    }
+    evas_object_del(sd->o_btn_box);
     free(sd);
 }
 
