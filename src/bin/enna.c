@@ -244,12 +244,12 @@ static int _enna_init(void)
 
     enna_module_init();
 
-    sprintf(tmp, "%s/.enna", enna->home);
+    snprintf(tmp, sizeof(tmp), "%s/.enna", enna->home);
 
     if (!ecore_file_exists(tmp))
         ecore_file_mkdir(tmp);
 
-    sprintf(tmp, "%s/.enna/covers", enna->home);
+    snprintf(tmp, sizeof(tmp), "%s/.enna/covers", enna->home);
     if (!ecore_file_exists(tmp))
         ecore_file_mkdir(tmp);
 

@@ -306,7 +306,7 @@ static Eina_Hash * _config_load_conf_file(char *filename)
     if (stat(filename, &st))
     {
         enna_log(ENNA_MSG_WARNING, NULL, "Cannot stat file %s", filename);
-        sprintf(tmp, "%s/.enna", enna_util_user_home_get());
+        snprintf(tmp, sizeof(tmp), "%s/.enna", enna_util_user_home_get());
         if (!ecore_file_is_dir(tmp))
             ecore_file_mkdir(tmp);
 
