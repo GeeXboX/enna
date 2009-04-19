@@ -547,7 +547,9 @@ static void _class_event(void *event_info)
 #endif
         case ENNA_KEY_RIGHT:
         case ENNA_KEY_LEFT:
-            enna_wall_event_feed(mod->o_wall, ev);
+            //FIXME: should be made possible to switch to prev/next pic right here
+            _photo_info_delete();
+            break;
         case ENNA_KEY_OK:
             _create_slideshow_gui();
             _slideshow_add_files();
