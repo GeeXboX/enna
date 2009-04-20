@@ -95,8 +95,6 @@ void enna_location_append(Evas_Object *obj, const char *label,
 
     si = ENNA_NEW(Enna_Location_Item, 1);
 
-
-
     si->sd = sd;
     si->o_base = edje_object_add(evas_object_evas_get(sd->o_box));
     edje_object_file_set(si->o_base, enna_config_theme_get(), "enna/location/item");
@@ -108,10 +106,8 @@ void enna_location_append(Evas_Object *obj, const char *label,
     edje_object_size_min_calc(si->o_base, &mw, &mh);
     mh = sd->h ? sd->h : 64;
     evas_object_size_hint_min_set(si->o_base, mw, mh);
-    evas_object_size_hint_max_set(si->o_base, mw, mh);
-    evas_object_size_hint_weight_set(si->o_base, -1.0, 1.0);
-    evas_object_size_hint_align_set(si->o_base, 0.0, -1.0);
-    evas_object_box_append(sd->o_box, si->o_base);
+    evas_object_size_hint_align_set(si->o_base, -1.0, -1.0);
+    elm_table_pack(sd->o_box, si->o_base, evas_list_count(sd->items) - 1, 0, 1 , 1);
     evas_object_lower(si->o_base);
     edje_object_signal_emit(si->o_base, "location,show", "enna");
     evas_object_show(si->o_base);
@@ -202,24 +198,13 @@ static void _smart_add(Evas_Object * obj)
     if (!sd)
         return;
 
-    sd->o_box = evas_object_box_add(evas_object_evas_get(obj));
+    sd->o_box = elm_table_add(obj);
     evas_object_box_layout_set(sd->o_box, evas_object_box_layout_horizontal, NULL, NULL);
-    evas_object_box_align_set(sd->o_box, 0, 0.5);
-    evas_object_box_padding_set(sd->o_box, 0, 0);
-//    elm_box_homogenous_set(sd->o_box, 0);
-//    elm_box_horizontal_set(sd->o_box, 1);
-//    evas_object_size_hint_align_set(sd->o_box, -1.0, -1.0);
-//    evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
-
     sd->x = 0;
     sd->y = 0;
     sd->w = 0;
     sd->h = 0;
     sd->items = NULL;
-//    sd->o_scroll = elm_scroller_add(obj);
-//    elm_scroller_content_set(sd->o_scroll, sd->o_box);
-//    elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_OFF,
-//        ELM_SCROLLER_POLICY_OFF);
     sd->smart_obj = obj;
     evas_object_smart_member_add(sd->o_box, obj);
     evas_object_smart_data_set(obj, sd);
@@ -229,7 +214,6 @@ static void _smart_del(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
 
-//    evas_object_del(sd->o_scroll);
     evas_object_del(sd->o_box);
 
     while (sd->items)
