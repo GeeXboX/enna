@@ -792,9 +792,9 @@ enna_mediaplayer_shutdown(void)
 
     ENNA_FREE (mp->uri);
     ENNA_FREE (mp->label);
-    ecore_event_handler_del (mp->key_down_event_handler);
-    ecore_event_handler_del (mp->mouse_button_event_handler);
-    ecore_event_handler_del (mp->mouse_move_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mp->key_down_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mp->mouse_button_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mp->mouse_move_event_handler);
     ecore_pipe_del (mp->pipe);
     player_playback_stop (mp->player);
     for (i = 0; i < MAX_PLAYERS; i++)

@@ -465,8 +465,7 @@ _create_video_info_gui()
     ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
     mod->o_mediaplayer_old = NULL;
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
-    if (mod->eos_event_handler)
-        ecore_event_handler_del(mod->eos_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->eos_event_handler);
     mod->eos_event_handler = ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
 
     o = enna_switcher_add(mod->em->evas);
@@ -644,7 +643,7 @@ em_init(Enna_Module *em)
 static int
 em_shutdown(Enna_Module *em)
 {
-    ecore_event_handler_del(mod->browser_refresh_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
