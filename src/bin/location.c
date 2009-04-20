@@ -199,7 +199,6 @@ static void _smart_add(Evas_Object * obj)
         return;
 
     sd->o_box = elm_table_add(obj);
-    evas_object_box_layout_set(sd->o_box, evas_object_box_layout_horizontal, NULL, NULL);
     sd->x = 0;
     sd->y = 0;
     sd->w = 0;
