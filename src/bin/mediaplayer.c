@@ -546,7 +546,7 @@ mp_send_key (enna_key_t key)
         [ENNA_KEY_P]          = PLAYER_VDR_COMMANDS,
     };
 
-    if (strncmp (mp->uri, URI_TYPE_VDR, strlen (URI_TYPE_VDR)) &&
+    if (mp->uri && strncmp (mp->uri, URI_TYPE_VDR, strlen (URI_TYPE_VDR)) &&
         strncmp (mp->uri, URI_TYPE_NETVDR, strlen (URI_TYPE_NETVDR)))
         return;
 
