@@ -225,7 +225,7 @@ static void _smart_add(Evas_Object * obj)
     sd->y = 0;
     sd->w = 0;
     sd->h = 0;
-    sd->accept_ev = 0;
+    sd->accept_ev = 1;
     sd->show_file = 1;
     evas_object_smart_member_add(sd->o_edje, obj);
     sd->obj = obj;
@@ -294,6 +294,19 @@ static void _smart_clip_unset(Evas_Object * obj)
     evas_object_clip_unset(sd->o_edje);
 }
 
+static void
+_list_transition_default_end_cb(void *data, Evas_Object *o, const char *sig, const char *src)
+{
+    Smart_Data *sd = data;
+    if (!data) return;
+
+    printf("accept ev\n");
+    sd->accept_ev = 1;
+    enna_list_selected_set(sd->o_list, 0);
+    edje_object_signal_callback_del(sd->o_edje, "list,transition,default,end", "edje",
+	_list_transition_default_end_cb);
+}
+
 static  void _browse(void *data)
 {
     Smart_Data *sd;
@@ -309,6 +322,7 @@ static  void _browse(void *data)
         return;
 
     /* FIXME : List / Gen List */
+    printf("refuse event (browse)\n");
     sd->accept_ev = 0;
     if (sd->vfs->func.class_browse_up)
     {
@@ -358,7 +372,7 @@ static void _browse_down(void *data)
     Smart_Data *sd = data;
 
     if (!sd) return;
-
+    printf("refuse event (browse down)\n");
     sd->accept_ev = 0;
 
     if (sd->vfs && sd->vfs->func.class_browse_down)
@@ -391,6 +405,9 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     else
         edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
             _list_transition_right_end_cb);
+
+    edje_object_signal_callback_add(sd->o_edje, "list,transition,default,end", "edje",
+	_list_transition_default_end_cb, sd);
 
     ENNA_OBJECT_DEL(sd->o_list);
 
@@ -449,7 +466,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             enna_list_append(sd->o_list, sd->item_class, item, item->label, _browse, bd);
 
         }
-        enna_list_selected_set(sd->o_list, 0);
+
     }
     else
     {
@@ -458,7 +475,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 
     }
     edje_object_signal_emit(sd->o_edje, "list,default", "enna");
-    sd->accept_ev = 1;
+    //sd->accept_ev = 1;
 }
 
 static void
@@ -497,6 +514,11 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
 
     API_ENTRY return;
 
+    if (!sd->accept_ev)
+    {
+	printf("event refused\n");
+	return;
+    }
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
         _list_transition_left_end_cb);
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",

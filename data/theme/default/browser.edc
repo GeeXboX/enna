@@ -79,10 +79,15 @@ group
          action:  STATE_SET "default" 0.0;
          transition: "ACCELERATE" 0.3;
          target: "clip";
+         after: "transition,default";
       }
       program {
          name: "transition,end";
          action: SIGNAL_EMIT "list,transition,end" "edje";
+      }
+      program {
+         name: "transition,default";
+         action: SIGNAL_EMIT "list,transition,default,end" "edje";
       }
 
    }
