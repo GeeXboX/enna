@@ -289,13 +289,13 @@ _smart_del(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
 
-    ecore_event_handler_del(sd->play_event_handler);
-    ecore_event_handler_del(sd->stop_event_handler);
-    ecore_event_handler_del(sd->next_event_handler);
-    ecore_event_handler_del(sd->prev_event_handler);
-    ecore_event_handler_del(sd->pause_event_handler);
-    ecore_event_handler_del(sd->unpause_event_handler);
-    ecore_event_handler_del(sd->seek_event_handler);
+    ENNA_EVENT_HANDLER_DEL(sd->play_event_handler);
+    ENNA_EVENT_HANDLER_DEL(sd->stop_event_handler);
+    ENNA_EVENT_HANDLER_DEL(sd->next_event_handler);
+    ENNA_EVENT_HANDLER_DEL(sd->prev_event_handler);
+    ENNA_EVENT_HANDLER_DEL(sd->pause_event_handler);
+    ENNA_EVENT_HANDLER_DEL(sd->unpause_event_handler);
+    ENNA_EVENT_HANDLER_DEL(sd->seek_event_handler);
     while (sd->btns)
     {
         Smart_Btn_Item *it = sd->btns->data;

@@ -71,6 +71,13 @@
         timer = NULL;                                   \
     }                                                   \
 
+#define ENNA_EVENT_HANDLER_DEL(event_handler)           \
+    if (event_handler)                                  \
+    {                                                   \
+        ecore_event_handler_del(event_handler);         \
+        event_handler = NULL;                           \
+    }                                                   \
+
 #define ENNA_OBJECT_DEL(obj)                            \
     if (obj)                                            \
         evas_object_del(obj);                           \

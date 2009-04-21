@@ -528,15 +528,14 @@ _create_mediaplayer_gui()
 
     mod->state = MEDIAPLAYER_VIEW;
 
+    ENNA_TIMER_DEL(mod->timer);
+    ENNA_EVENT_HANDLER_DEL(mod->eos_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->next_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->prev_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->seek_event_handler);
+
     if (mod->o_mediaplayer)
-    {
-        ENNA_TIMER_DEL(mod->timer);
-        ecore_event_handler_del(mod->eos_event_handler);
         evas_object_del(mod->o_mediaplayer);
-        ecore_event_handler_del(mod->next_event_handler);
-        ecore_event_handler_del(mod->prev_event_handler);
-        ecore_event_handler_del(mod->seek_event_handler);
-    }
 
     mod->eos_event_handler = ecore_event_handler_add(
             ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
@@ -705,7 +704,7 @@ em_init(Enna_Module *em)
 static int
 em_shutdown(Enna_Module *em)
 {
-    ecore_event_handler_del(mod->browser_refresh_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
