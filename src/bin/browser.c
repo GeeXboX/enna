@@ -300,7 +300,6 @@ _list_transition_default_end_cb(void *data, Evas_Object *o, const char *sig, con
     Smart_Data *sd = data;
     if (!data) return;
 
-    printf("accept ev\n");
     sd->accept_ev = 1;
     enna_list_selected_set(sd->o_list, 0);
     edje_object_signal_callback_del(sd->o_edje, "list,transition,default,end", "edje",
@@ -322,7 +321,6 @@ static  void _browse(void *data)
         return;
 
     /* FIXME : List / Gen List */
-    printf("refuse event (browse)\n");
     sd->accept_ev = 0;
     if (sd->vfs->func.class_browse_up)
     {
@@ -372,7 +370,7 @@ static void _browse_down(void *data)
     Smart_Data *sd = data;
 
     if (!sd) return;
-    printf("refuse event (browse down)\n");
+
     sd->accept_ev = 0;
 
     if (sd->vfs && sd->vfs->func.class_browse_down)
@@ -514,11 +512,8 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
 
     API_ENTRY return;
 
-    if (!sd->accept_ev)
-    {
-	printf("event refused\n");
-	return;
-    }
+    if (!sd->accept_ev) return;
+
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
         _list_transition_left_end_cb);
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
