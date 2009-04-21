@@ -82,7 +82,6 @@ static void _class_event(void *event_info)
     switch (key) 
     { 
         case ENNA_KEY_MENU:
-        case ENNA_KEY_CANCEL:
             enna_content_hide();
             enna_mainmenu_show(enna->o_mainmenu);
             break;
