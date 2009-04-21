@@ -35,7 +35,6 @@ logs.c\
 parser_cdda.c\
 slideshow.c\
 mediacontrol.c\
-carousel.c\
 reflection.c
 
 enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@ @LIBCDDB_LIBS@ @LIBPLAYER_LIBS@
@@ -68,7 +67,6 @@ logs.h\
 parser_cdda.h\
 slideshow.h\
 mediacontrol.h\
-carousel.h\
 reflection.h
 
 
