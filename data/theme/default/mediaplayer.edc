@@ -1,3 +1,5 @@
+#define COVER_X 0.35
+
 images {
    image: "cd_case_reflect.png" COMP;
    image: "cd_case.png" COMP;
@@ -21,22 +23,57 @@ group {
             visible: 1;
          }
       }
+     part {
+         name: "infos.zone";
+         type: RECT;
+         clip_to: "enna.clip.player";
+         description{
+            rel1 {
+               to_x: "event";
+               to_y: "mediacontrol.zone";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to: "event";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part {
+         name: "mediacontrol.zone";
+         type: RECT;
+         clip_to: "enna.clip.player";
+         description{
+            rel1 {
+               to_x: "event";
+               to_y: "enna.clip.cover";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to_x: "event";
+               to_y: "enna.clip.cover";
+               relative: 1.0 0.3;
+            }
+         }
+      }
+
       part {
 	 name:    "enna.text.title";
-         clip_to: "enna.clip.player";
+         clip_to: "infos.zone";
 	 type:           TEXT;
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
 
             rel1 {
-               relative: 0  0;
-               to: "enna.text.artist";
-               offset: 0 -70;
+               relative: 0  0.10;
+               to: "infos.zone";
 	    }
 	    rel2 {
-               relative: 1.0 0;
-               to: "enna.text.artist";
+
+               relative: 1.0 0.1;
+               to: "infos.zone";
+               offset: 0 50;
             }
             color: 255 255 255 255;
             align: 0 0.5;
@@ -50,19 +87,19 @@ group {
       }
       part {
 	 name:    "enna.text.artist";
-         clip_to: "enna.clip.player";
+         clip_to: "infos.zone";
 	 type:           TEXT;
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
 	    rel1 {
-               relative: 0  0;
-               to: "enna.text.album";
-               offset: 0 -70;
+               relative: 0.0 1.0;
+               to: "enna.text.title";
 	    }
 	    rel2 {
-               relative: 1.0 0;
-               to: "enna.text.album";
+              relative: 1.0 1.0;
+               to: "enna.text.title";
+               offset: 0 40;
             }
             color: 180 180 180 255;
             align: 1 0.5;
@@ -76,24 +113,22 @@ group {
       }
       part {
 	 name:           "enna.text.album";
-         clip_to: "enna.clip.player";
+         clip_to: "infos.zone";
 	 type:           TEXT;
 	 mouse_events:   0;
 	 description {
 	    state: "default" 0.0;
 	    rel1 {
-	       relative: 0.0  0.0;
-               to:     "event";
-               offset: 0 -70;
+               relative: 0 1.0;
+               to: "enna.text.artist";
+
 	    }
 	    rel2 {
-	       relative: 1.0  -0.2;
-               to:     "event";
-               offset: 0 -70;
-
-	    }
+              relative: 1 1.0;
+               to: "enna.text.artist";
+               offset: 0 40;
+            }
             color: 180 180 180 255;
-
 	    text {
                text:     "Album";
                font:     "content";
@@ -111,7 +146,7 @@ group {
 	    state: "default" 0.0;
 	    rel1 {
 	       to:     "event";
-	       relative: 0.0  0.5;
+	       relative: 0.0  0.6;
                offset: 0 -10;
 	    }
 	    rel2 {
@@ -171,11 +206,11 @@ group {
             aspect_preference: HORIZONTAL;
             rel1{
                relative: 0 0;
-               offset: 32 32;
+               offset: 16 16;
             }
             rel2{
-               relative: 0.33 1.0;
-               offset: -33 -33;
+               relative: COVER_X 1.0;
+               offset: -15 -15;
             }
          }
          description {
@@ -331,22 +366,19 @@ group {
             color: 255 255 255 255;
 	 }
       }
+
       part {
          name: "enna.swallow.mediacontrol";
          type: SWALLOW;
-         clip_to: "enna.clip.player";
-         description { state: "default" 0;
-            rel1 {
-               to_x: "progress_bar_clip";
-               relative: 0.0 0.80;
-               relative: 0 1;
-               offset: 0 -64;
-            }
-            rel2 {
-               to_x: "progress_bar_clip";
-               relative: 1.0 0.80;
-               offset: 0 64;
-            }
+         clip_to: "mediacontrol.zone";
+         description {
+            state: "default" 0;
+            rel1.to: "mediacontrol.zone";
+            rel1.relative: 0 0.5;
+            rel1.offset: 0 -31;
+            rel2.to: "mediacontrol.zone";
+            rel2.relative: 1 0.5;
+            rel2.offset: 0 32;
          }
       }
       part
@@ -362,13 +394,13 @@ group {
             color: 255 255 255 0;
             rel1
             {
-               to_y: "enna.swallow.cover";
-               relative: 0.33 1.0;
+               to_y: "enna.clip.cover";
+               relative: COVER_X 1.0;
                offset: 64 -32;
             }
             rel2
             {
-               to_y: "enna.swallow.cover";
+               to_y: "enna.clip.cover";
                relative: 1.0 1.0;
                offset: -64 0;
             }
