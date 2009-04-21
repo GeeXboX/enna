@@ -14,9 +14,7 @@
 
  * Audio module
       -> Finish shoutcast support so that non-local streams can be played back.
-      -> Support Volume
       -> Playing now edje
-      -> Cancel timer of mediaplayer when browsing directory with mouse
 
  * Video module
       -> Support Volume
@@ -27,7 +25,6 @@
       -> TextBox
 
  * Bugs
-     -> Remove item when location bar is clicked
      -> When using 'back' in audio/video player, ui comes back to menu but
         timer renders media player view again after a few seconds.
      -> 4:3 videos are cropped when displayed on a 16:10 window.
