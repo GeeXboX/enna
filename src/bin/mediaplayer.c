@@ -191,6 +191,8 @@ set_network_stream (const char *uri, mrl_resource_t type)
     mrl_t *mrl;
     mrl_resource_network_args_t *args;
 
+    enna_log (ENNA_MSG_INFO, NULL, "Load Network Stream : %s", uri);
+
     args = calloc (1, sizeof (mrl_resource_network_args_t));
     args->url = strdup (uri);
 
