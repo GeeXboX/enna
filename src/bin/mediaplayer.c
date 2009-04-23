@@ -850,7 +850,7 @@ enna_mediaplayer_shutdown(void)
     ENNA_EVENT_HANDLER_DEL(mp->mouse_button_event_handler);
     ENNA_EVENT_HANDLER_DEL(mp->mouse_move_event_handler);
     if (mp->pipe)
-    ecore_pipe_del (mp->pipe);
+        ecore_pipe_del (mp->pipe);
     player_playback_stop (mp->player);
     for (i = 0; i < MAX_PLAYERS; i++)
         if (mp->players[i])
