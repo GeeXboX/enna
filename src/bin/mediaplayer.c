@@ -567,6 +567,36 @@ mp_send_key (enna_key_t key)
 
 /* externally accessible functions */
 int
+enna_mediaplayer_supported_uri_type (enna_mediaplayer_uri_type_t type)
+{
+    struct {
+        const mrl_resource_t res;
+        player_type_t p_type;
+    } type_list[] = {
+        [ENNA_MP_URI_TYPE_CDDA]   = { MRL_RESOURCE_CDDA,    mp->default_type },
+        [ENNA_MP_URI_TYPE_DVD]    = { MRL_RESOURCE_DVD,     mp->dvd_type     },
+        [ENNA_MP_URI_TYPE_DVDNAV] = { MRL_RESOURCE_DVDNAV,  mp->dvd_type     },
+        [ENNA_MP_URI_TYPE_FTP]    = { MRL_RESOURCE_FTP,     mp->default_type },
+        [ENNA_MP_URI_TYPE_HTTP]   = { MRL_RESOURCE_HTTP,    mp->default_type },
+        [ENNA_MP_URI_TYPE_MMS]    = { MRL_RESOURCE_MMS,     mp->default_type },
+        [ENNA_MP_URI_TYPE_NETVDR] = { MRL_RESOURCE_NETVDR,  mp->tv_type      },
+        [ENNA_MP_URI_TYPE_RTP]    = { MRL_RESOURCE_RTP,     mp->default_type },
+        [ENNA_MP_URI_TYPE_RTSP]   = { MRL_RESOURCE_RTSP,    mp->default_type },
+        [ENNA_MP_URI_TYPE_SMB]    = { MRL_RESOURCE_SMB,     mp->default_type },
+        [ENNA_MP_URI_TYPE_TCP]    = { MRL_RESOURCE_TCP,     mp->default_type },
+        [ENNA_MP_URI_TYPE_UDP]    = { MRL_RESOURCE_UDP,     mp->default_type },
+        [ENNA_MP_URI_TYPE_UNSV]   = { MRL_RESOURCE_UNSV,    mp->default_type },
+        [ENNA_MP_URI_TYPE_VDR]    = { MRL_RESOURCE_VDR,     mp->tv_type      },
+    };
+
+    if (type >= ARRAY_NB_ELEMENTS (type_list) || type < 0)
+        return 0;
+
+    return libplayer_wrapper_supported_res (type_list[type].p_type,
+                                            type_list[type].res);
+}
+
+int
 enna_mediaplayer_init (void)
 {
     Enna_Config_Data *cfgdata;
