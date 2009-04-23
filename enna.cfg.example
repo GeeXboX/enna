@@ -87,3 +87,8 @@ path=file:///path/to/server/Medias/Music
 parser=mp3,ogg,flac,rm,dummy
 slave_timeout=1000
 commit_interval=100
+
+[podcast]
+#stream=stream url
+stream=http://example.com/podcast.xml
+

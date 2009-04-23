@@ -238,6 +238,19 @@ if test "x$want_browser_netstreams" = "xyes"; then
   AC_DEFINE(BUILD_BROWSER_NETSTREAMS, 1, [NetStreams Browser])
 fi
 
+# Podcast
+want_browser_podcasts="yes"
+AC_MSG_CHECKING(whether podcasts browser module is to be built)
+AC_ARG_ENABLE(browser-podcasts,
+  AS_HELP_STRING([--enable-browser-podcasts],[Enable Podcasts Browser Module]),
+  [ want_browser_podcasts=$enableval ]
+)
+AC_MSG_RESULT($want_browser_podcasts)
+AM_CONDITIONAL(BUILD_BROWSER_PODCASTS, test "x$want_browser_podcasts" = "xyes")
+if test "x$want_browser_podcasts" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_PODCASTS, 1, [Podcasts Browser])
+fi
+
 # SHOUTcast
 want_browser_shoutcast="yes"
 AC_MSG_CHECKING(whether shoutcast browser module is to be built)
@@ -630,6 +643,7 @@ src/modules/browser/dvd/Makefile
 src/modules/browser/lms/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
+src/modules/browser/podcasts/Makefile
 src/modules/browser/shoutcast/Makefile
 src/modules/browser/upnp/Makefile
 src/modules/browser/valhalla/Makefile
@@ -679,6 +693,7 @@ echo "  DVD Video........................ : $want_browser_dvd"
 echo "  Light Media Scanner.............. : $have_browser_lms"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
+echo "  Podcasts......................... : $want_browser_podcasts"
 echo "  SHOUTcast........................ : $want_browser_shoutcast"
 echo "  UPnP/DLNA........................ : $have_browser_upnp"
 echo "  Valhalla Scanner................. : $have_browser_valhalla"
