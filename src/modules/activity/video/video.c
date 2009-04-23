@@ -68,7 +68,6 @@ static void _class_init(int dummy);
 static void _class_show(int dummy);
 static void _class_hide(int dummy);
 static void _class_event(void *event_info);
-static void _class_grabbing_finished(void *metadata);
 static int em_init(Enna_Module *em);
 static int em_shutdown(Enna_Module *em);
 
@@ -107,11 +106,9 @@ struct _Enna_Module_Video
     Ecore_Event_Handler *browser_refresh_handler;
     Enna_Playlist *enna_playlist;
     Elm_Genlist_Item_Class *item_class;
-    char *o_current_uri;
 };
 
 static Enna_Module_Video *mod;
-
 
 Enna_Module_Api module_api =
 {
@@ -132,8 +129,7 @@ static Enna_Class_Activity class =
         NULL,
         _class_show,
         _class_hide,
-        _class_event,
-	_class_grabbing_finished
+        _class_event
     },
     NULL
 };
@@ -265,21 +261,6 @@ _class_event(void *event_info)
     }
 }
 
-static void 
-_class_grabbing_finished(void *a)
-{
-    Enna_Metadata *m = (Enna_Metadata*)(*((unsigned int*)a));
-    Evas_Object *o = mod->o_mediaplayer;
-    
-    if (mod->o_current_uri && strcmp(mod->o_current_uri, m->uri))
-        return;
-    
-    enna_smart_player_snapshot_set(o, m);
-    enna_smart_player_cover_set(o, m);
-    enna_smart_player_metadata_set(o, m);
-    enna_metadata_free (m);
-}
-
 static int
 _show_mediaplayer_cb(void *data)
 {
@@ -364,10 +345,6 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
                 {
                     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Select : %s %d in playlist", f->uri, i);
                     enna_mediaplayer_select_nth(mod->enna_playlist,i);
-                    
-                    if (mod->o_current_uri)
-                        free (mod->o_current_uri);
-                    mod->o_current_uri = strdup(f->uri);
                 }
                 i++;
             }
@@ -423,7 +400,6 @@ static void
 _video_info_prev()
 {
     int n;
-    Enna_Metadata_Request *r = NULL;
     n = enna_mediaplayer_selected_get(mod->enna_playlist);
 
     if (n > 0)
@@ -439,11 +415,11 @@ _video_info_prev()
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
         m = enna_mediaplayer_metadata_get(mod->enna_playlist);
-	r = calloc(sizeof(Enna_Metadata_Request), 1);
-	r->metadata = m;
-	r->caps =  ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER;
-	enna_metadata_grab_request(r);
-       
+        enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER);
+        enna_smart_player_snapshot_set(o, m);
+        enna_smart_player_cover_set(o, m);
+        enna_smart_player_metadata_set(o, m);
+        enna_metadata_free(m);
         mod->o_mediaplayer_old = mod->o_mediaplayer;
         mod->o_mediaplayer = o;
         enna_switcher_objects_switch(mod->o_switcher, o);
@@ -454,8 +430,6 @@ static void
 _video_info_next()
 {
     int n;
-    Enna_Metadata_Request *r = NULL;
-    
     n = enna_mediaplayer_selected_get(mod->enna_playlist);
 
     if (n < enna_mediaplayer_playlist_count(mod->enna_playlist) - 1)
@@ -471,12 +445,11 @@ _video_info_next()
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
         m = enna_mediaplayer_metadata_get(mod->enna_playlist);
-
-	r = calloc(sizeof(Enna_Metadata_Request), 1);
-	r->metadata = m;
-	r->caps =  ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER;
-	enna_metadata_grab_request(r);
-
+        enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER);
+        enna_smart_player_snapshot_set(o, m);
+        enna_smart_player_cover_set(o, m);
+        enna_smart_player_metadata_set(o, m);
+        enna_metadata_free(m);
         mod->o_mediaplayer_old = mod->o_mediaplayer;
         mod->o_mediaplayer = o;
         enna_switcher_objects_switch(mod->o_switcher, o);
@@ -488,7 +461,6 @@ _create_video_info_gui()
 {
     Evas_Object *o;
     Enna_Metadata *m;
-    Enna_Metadata_Request *r;
 
     ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
     mod->o_mediaplayer_old = NULL;
@@ -507,12 +479,11 @@ _create_video_info_gui()
 
     m = enna_mediaplayer_metadata_get(mod->enna_playlist);
     enna_log (ENNA_MSG_INFO, NULL, "Metadata get");
-
-    r = calloc(sizeof(Enna_Metadata_Request), 1);
-    r->metadata = m;
-    r->caps =  ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER;
-    enna_metadata_grab_request(r);
-
+    enna_metadata_grab (m, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER);
+    enna_smart_player_snapshot_set(mod->o_mediaplayer, m);
+    enna_smart_player_cover_set(mod->o_mediaplayer, m);
+    enna_smart_player_metadata_set(mod->o_mediaplayer, m);
+    enna_metadata_free(m);
 
     enna_switcher_objects_switch(mod->o_switcher, mod->o_mediaplayer);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", mod->o_switcher);

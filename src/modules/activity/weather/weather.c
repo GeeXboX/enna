@@ -79,18 +79,18 @@ static const struct {
     const char *icon;
     const char *data;
 } weather_icon_mapping[] = {
-    { "weather/cloudy",           "/partly_cloudy.gif"         },
-    { "weather/foggy",            "/haze.gif"                  },
-    { "weather/heavy_rain",       "/rain.gif"                  },
-    { "weather/light_snow",       "/chance_of_snow.gif"        },
-    { "weather/rain",             "/chance_of_rain.gif"        },
-    { "weather/snow",             "/snow.gif"                  },
-    { "weather/clouds",           "/cloudy.gif"                },
-    { "weather/light_clouds",     "/mostly_sunny.gif"          },
-    { "weather/mostly_cloudy",    "/mostly_cloudy.gif"         },
-    { "weather/sunny",            "/sunny.gif"                 },
-    { "weather/windy",            "/flurries.gif"              },
-    { "weather/rain_storm",       "/chance_of_storm.gif"       },
+    { "weather/cloudy",           "/partly_cloudy.png"         },
+    { "weather/foggy",            "/haze.png"                  },
+    { "weather/heavy_rain",       "/rain.png"                  },
+    { "weather/light_snow",       "/chance_of_snow.png"        },
+    { "weather/rain",             "/chance_of_rain.png"        },
+    { "weather/snow",             "/snow.png"                  },
+    { "weather/clouds",           "/cloudy.png"                },
+    { "weather/light_clouds",     "/mostly_sunny.png"          },
+    { "weather/mostly_cloudy",    "/mostly_cloudy.png"         },
+    { "weather/sunny",            "/sunny.png"                 },
+    { "weather/windy",            "/flurries.png"              },
+    { "weather/rain_storm",       "/chance_of_storm.png"       },
 #if 0
     /* matches to be found */
     { "weather/ice",              "/"                          },

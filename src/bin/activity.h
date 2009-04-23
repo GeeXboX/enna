@@ -52,7 +52,6 @@ struct _Enna_Class_Activity
         void (*class_show)(int dummy);
         void (*class_hide)(int dummy);
         void (*class_event)(void *event_info);
-        void (*class_grabbing_finished)(void *metadata);
     } func;
     Eina_List *categories;
 };
