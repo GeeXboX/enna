@@ -154,7 +154,10 @@ static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const 
         Evas_Object *ic;
 
         ic = elm_icon_add(obj);
-        elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+	if (item->icon && item->icon[0] == '/')
+	    elm_icon_file_set(ic, item->icon, NULL);
+	else
+	    elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
         evas_object_size_hint_min_set(ic, 64, 64);
         evas_object_show(ic);
         return ic;
@@ -165,7 +168,7 @@ static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const 
 
 static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
 {
-   return 0;
+    return 0;
 }
 
 static void _genlist_del(const void *data, Evas_Object *obj)
@@ -178,21 +181,21 @@ static void _smart_init(void)
     if (_smart)
         return;
     static const Evas_Smart_Class sc =
-    {
-        SMART_NAME,
-        EVAS_SMART_CLASS_VERSION,
-        _smart_add,
-        _smart_del,
-        _smart_move,
-        _smart_resize,
-        _smart_show,
-        _smart_hide,
-        _smart_color_set,
-        _smart_clip_set,
-        _smart_clip_unset,
-        NULL,
-        NULL
-    };
+	{
+	    SMART_NAME,
+	    EVAS_SMART_CLASS_VERSION,
+	    _smart_add,
+	    _smart_del,
+	    _smart_move,
+	    _smart_resize,
+	    _smart_show,
+	    _smart_hide,
+	    _smart_color_set,
+	    _smart_clip_set,
+	    _smart_clip_unset,
+	    NULL,
+	    NULL
+	};
     _smart = evas_smart_class_new(&sc);
 }
 
@@ -312,7 +315,7 @@ static  void _browse(void *data)
     Browse_Data *bd = data;
 
     if (!bd)
-      return;
+	return;
 
     sd = bd->sd;
     sd->file = bd->file;
@@ -349,7 +352,7 @@ static  void _browse(void *data)
             Enna_Vfs_File *prev_vfs;
             char *prev_uri;
             prev_vfs = sd->vfs->func.class_vfs_get(sd->vfs->cookie);
-            prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
+	    prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
             sd->files = sd->vfs->func.class_browse_up(prev_uri, sd->vfs->cookie);
             ENNA_FREE(prev_uri);
             ev->files = sd->files;
@@ -360,7 +363,7 @@ static  void _browse(void *data)
 
         /* Clear list and add new items */
         edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
-                _list_transition_left_end_cb, sd);
+	    _list_transition_left_end_cb, sd);
         edje_object_signal_emit(sd->o_edje, "list,left", "enna");
     }
 }
