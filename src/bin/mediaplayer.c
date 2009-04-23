@@ -42,6 +42,9 @@
 #include "module.h"
 #include "logs.h"
 
+#define URI_TYPE_CDDA     "cdda://"
+#define URI_TYPE_DVD      "dvd://"
+#define URI_TYPE_DVDNAV   "dvdnav://"
 #define URI_TYPE_FTP      "ftp://"
 #define URI_TYPE_HTTP     "http://"
 #define URI_TYPE_MMS      "mms://"
@@ -52,10 +55,7 @@
 #define URI_TYPE_TCP      "tcp://"
 #define URI_TYPE_UDP      "udp://"
 #define URI_TYPE_UNSV     "unsv://"
-#define URI_TYPE_DVD      "dvd://"
-#define URI_TYPE_DVDNAV   "dvdnav://"
 #define URI_TYPE_VDR      "vdr:/"
-#define URI_TYPE_CDDA     "cdda://"
 
 #define MAX_PLAYERS 4
 
