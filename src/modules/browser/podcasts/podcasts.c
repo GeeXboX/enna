@@ -40,7 +40,6 @@ typedef struct _Item
 typedef struct _Channel
 {
     char *url;
-    unsigned char active : 1;
     char *title;
     char *link;
     char *description;
@@ -79,7 +78,7 @@ static Enna_Module_Podcast *mod;
 #define GET_PROP_VALUE(var, prop)					\
     tmp = get_prop_value_from_xml_tree (n , prop);			\
     if (tmp) var = strdup ((char *) tmp);				\
-    if (tmp) enna_log (ENNA_EVENT_INFO, ENNA_MODULE_NAME,		\
+    if (tmp) enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,		\
 	" --- " prop " : %s", tmp);					\
 
 /*
@@ -141,7 +140,7 @@ static void _prepare_channel(Channel *ch)
     char *md5;
     xmlDocPtr doc = NULL;
 
-    if (!ch || !ch->url || !ch->active) return;
+    if (!ch || !ch->url) return;
 
     /* Compute MD5 Sum based on url */
     md5 = md5sum (ch->url);
@@ -211,9 +210,7 @@ static void _read_configuration()
 
                     ch = calloc(1, sizeof(Channel));
                     ch->url = strdup(eina_list_nth(dir_data, 0));
-		    ch->active = atoi(eina_list_nth(dir_data, 1));
-		    if (ch->active)
-			enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+		    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
 			    "Podcast stream found : %s", ch->url);
 		    _prepare_channel(ch);
 		    mod->channels = eina_list_append(mod->channels, ch);

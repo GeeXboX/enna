@@ -90,5 +90,5 @@ commit_interval=100
 
 [podcast]
 #stream=stream url
-stream=http://example.com/podcast.xml,1
+stream=http://example.com/podcast.xml
 
