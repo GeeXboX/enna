@@ -129,6 +129,10 @@ void module_init(Enna_Module *em)
     if (!em)
         return;
 
+    if (!enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_VDR) ||
+        !enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_NETVDR))
+        return;
+
     /* Load Config file values */
     cfgdata = enna_config_module_pair_get("tv");
 
@@ -180,6 +184,9 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
+    if (!mod)
+        return;
+
     ENNA_OBJECT_DEL(mod->o_background);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
