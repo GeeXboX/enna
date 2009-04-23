@@ -42,6 +42,9 @@
 #include "module.h"
 #include "logs.h"
 
+#define URI_TYPE_CDDA     "cdda://"
+#define URI_TYPE_DVD      "dvd://"
+#define URI_TYPE_DVDNAV   "dvdnav://"
 #define URI_TYPE_FTP      "ftp://"
 #define URI_TYPE_HTTP     "http://"
 #define URI_TYPE_MMS      "mms://"
@@ -52,10 +55,7 @@
 #define URI_TYPE_TCP      "tcp://"
 #define URI_TYPE_UDP      "udp://"
 #define URI_TYPE_UNSV     "unsv://"
-#define URI_TYPE_DVD      "dvd://"
-#define URI_TYPE_DVDNAV   "dvdnav://"
 #define URI_TYPE_VDR      "vdr:/"
-#define URI_TYPE_CDDA     "cdda://"
 
 #define MAX_PLAYERS 4
 
@@ -567,6 +567,46 @@ mp_send_key (enna_key_t key)
 
 /* externally accessible functions */
 int
+enna_mediaplayer_supported_uri_type (enna_mediaplayer_uri_type_t type)
+{
+    struct {
+        const mrl_resource_t res;
+        player_type_t p_type;
+    } type_list[] = {
+        [ENNA_MP_URI_TYPE_CDDA]   = { MRL_RESOURCE_CDDA,    mp->default_type },
+        [ENNA_MP_URI_TYPE_DVD]    = { MRL_RESOURCE_DVD,     mp->dvd_type     },
+        [ENNA_MP_URI_TYPE_DVDNAV] = { MRL_RESOURCE_DVDNAV,  mp->dvd_type     },
+        [ENNA_MP_URI_TYPE_FTP]    = { MRL_RESOURCE_FTP,     mp->default_type },
+        [ENNA_MP_URI_TYPE_HTTP]   = { MRL_RESOURCE_HTTP,    mp->default_type },
+        [ENNA_MP_URI_TYPE_MMS]    = { MRL_RESOURCE_MMS,     mp->default_type },
+        [ENNA_MP_URI_TYPE_NETVDR] = { MRL_RESOURCE_NETVDR,  mp->tv_type      },
+        [ENNA_MP_URI_TYPE_RTP]    = { MRL_RESOURCE_RTP,     mp->default_type },
+        [ENNA_MP_URI_TYPE_RTSP]   = { MRL_RESOURCE_RTSP,    mp->default_type },
+        [ENNA_MP_URI_TYPE_SMB]    = { MRL_RESOURCE_SMB,     mp->default_type },
+        [ENNA_MP_URI_TYPE_TCP]    = { MRL_RESOURCE_TCP,     mp->default_type },
+        [ENNA_MP_URI_TYPE_UDP]    = { MRL_RESOURCE_UDP,     mp->default_type },
+        [ENNA_MP_URI_TYPE_UNSV]   = { MRL_RESOURCE_UNSV,    mp->default_type },
+        [ENNA_MP_URI_TYPE_VDR]    = { MRL_RESOURCE_VDR,     mp->tv_type      },
+    };
+
+    if (type >= ARRAY_NB_ELEMENTS (type_list) || type < 0)
+        return 0;
+
+    return libplayer_wrapper_supported_res (type_list[type].p_type,
+                                            type_list[type].res);
+}
+
+#define ENNA_MP_PLAYER_INIT(type)                                            \
+    do                                                                       \
+    {                                                                        \
+        mp->players[type] =                                                  \
+            player_init (type, ao, vo, verbosity, enna->ee_winid, event_cb); \
+        if (!mp->players[type])                                              \
+            goto err;                                                        \
+    }                                                                        \
+    while (0)
+
+int
 enna_mediaplayer_init (void)
 {
     Enna_Config_Data *cfgdata;
@@ -579,10 +619,7 @@ enna_mediaplayer_init (void)
     player_ao_t ao = PLAYER_AO_AUTO;
     player_verbosity_level_t verbosity = PLAYER_MSG_WARNING;
 
-    int use_mplayer = 0;
-    int use_xine = 0;
-
-    mp = calloc (1, sizeof (Enna_Mediaplayer));
+    int dvd_set = 0, tv_set = 0;
 
     /* Load Config file values */
     cfgdata = enna_config_module_pair_get ("libplayer");
@@ -634,6 +671,7 @@ enna_mediaplayer_init (void)
                 else
                     enna_log (ENNA_MSG_WARNING, NULL,
                               "   - unknown dvd_type, 'xine' used instead");
+                dvd_set = 1;
             }
             else if (!strcmp ("tv_type", pair->key))
             {
@@ -653,6 +691,7 @@ enna_mediaplayer_init (void)
                 else
                     enna_log (ENNA_MSG_WARNING, NULL,
                               "   - unknown tv_type, 'xine' used instead");
+                tv_set = 1;
             }
             else if (!strcmp ("video_out", pair->key))
             {
@@ -723,6 +762,33 @@ enna_mediaplayer_init (void)
         enna_log (ENNA_MSG_INFO, NULL,
                   " * use all parameters by default");
 
+    /* Main player type is mandatory! */
+    if (!libplayer_wrapper_enabled (type))
+        goto err;
+
+    /*
+     * When dvd_type or tv_type are set in the enna.cfg config file, then
+     * these values are used. But if the wrapper is not enabled in libplayer,
+     * an error is returned.
+     * Otherwise, if nothing is changed by the user but the wrapper is not
+     * enabled, then the main type is used instead.
+     */
+    if (dvd_type != type && !libplayer_wrapper_enabled (dvd_type))
+    {
+        if (dvd_set)
+              goto err;
+        dvd_type = type;
+    }
+
+    if (tv_type != type && !libplayer_wrapper_enabled (tv_type))
+    {
+        if (tv_set)
+            goto err;
+        tv_type = type;
+    }
+
+    mp = calloc (1, sizeof (Enna_Mediaplayer));
+
     mp->key_down_event_handler =
         ecore_event_handler_add (ECORE_EVENT_KEY_DOWN, event_key_down, NULL);
     mp->mouse_button_event_handler =
@@ -734,33 +800,11 @@ enna_mediaplayer_init (void)
 
     mp->pipe = ecore_pipe_add (pipe_read, NULL);
 
-    if (type == PLAYER_TYPE_MPLAYER ||
-        dvd_type == PLAYER_TYPE_MPLAYER ||
-        tv_type == PLAYER_TYPE_MPLAYER)
-    {
-        use_mplayer = 1;
-        mp->players[PLAYER_TYPE_MPLAYER] =
-            player_init (PLAYER_TYPE_MPLAYER, ao, vo,
-                         verbosity, enna->ee_winid, event_cb);
-    }
-
-    if (type == PLAYER_TYPE_XINE ||
-        dvd_type == PLAYER_TYPE_XINE ||
-        tv_type == PLAYER_TYPE_XINE)
-    {
-        use_xine = 1;
-        mp->players[PLAYER_TYPE_XINE] =
-            player_init (PLAYER_TYPE_XINE, ao, vo,
-                         verbosity, enna->ee_winid, event_cb);
-    }
-
-    if ((use_mplayer && !mp->players[PLAYER_TYPE_MPLAYER]) ||
-        (use_xine && !mp->players[PLAYER_TYPE_XINE]))
-    {
-        enna_log (ENNA_MSG_ERROR, NULL,
-                  "Mediaplayer initialization");
-        return 1;
-    }
+    ENNA_MP_PLAYER_INIT (type);
+    if (dvd_type != type)
+        ENNA_MP_PLAYER_INIT (dvd_type);
+    if (tv_type != type && tv_type != dvd_type)
+        ENNA_MP_PLAYER_INIT (tv_type);
 
     mp_event_cb_set (_event_cb, NULL);
 
@@ -784,6 +828,11 @@ enna_mediaplayer_init (void)
     ENNA_EVENT_MEDIAPLAYER_NEXT = ecore_event_type_new ();
     ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new ();
 
+    return 1;
+
+ err:
+    enna_log (ENNA_MSG_ERROR, NULL, "Mediaplayer initialization");
+    enna_mediaplayer_shutdown ();
     return 0;
 }
 
@@ -792,17 +841,21 @@ enna_mediaplayer_shutdown(void)
 {
     int i;
 
+    if (!mp)
+        return;
+
     ENNA_FREE (mp->uri);
     ENNA_FREE (mp->label);
     ENNA_EVENT_HANDLER_DEL(mp->key_down_event_handler);
     ENNA_EVENT_HANDLER_DEL(mp->mouse_button_event_handler);
     ENNA_EVENT_HANDLER_DEL(mp->mouse_move_event_handler);
-    ecore_pipe_del (mp->pipe);
+    if (mp->pipe)
+        ecore_pipe_del (mp->pipe);
     player_playback_stop (mp->player);
     for (i = 0; i < MAX_PLAYERS; i++)
         if (mp->players[i])
             player_uninit (mp->players[i]);
-    free (mp);
+    ENNA_FREE (mp);
 }
 
 void

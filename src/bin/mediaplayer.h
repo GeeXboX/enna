@@ -39,6 +39,24 @@ typedef enum
     ENNA_MP_EVENT_EOF,
 } enna_mediaplayer_event_t;
 
+typedef enum
+{
+    ENNA_MP_URI_TYPE_CDDA,
+    ENNA_MP_URI_TYPE_DVD,
+    ENNA_MP_URI_TYPE_DVDNAV,
+    ENNA_MP_URI_TYPE_FTP,
+    ENNA_MP_URI_TYPE_HTTP,
+    ENNA_MP_URI_TYPE_MMS,
+    ENNA_MP_URI_TYPE_NETVDR,
+    ENNA_MP_URI_TYPE_RTP,
+    ENNA_MP_URI_TYPE_RTSP,
+    ENNA_MP_URI_TYPE_SMB,
+    ENNA_MP_URI_TYPE_TCP,
+    ENNA_MP_URI_TYPE_UDP,
+    ENNA_MP_URI_TYPE_UNSV,
+    ENNA_MP_URI_TYPE_VDR,
+} enna_mediaplayer_uri_type_t;
+
 typedef enum _PLAY_STATE PLAY_STATE;
 
 enum _PLAY_STATE
@@ -76,6 +94,7 @@ int ENNA_EVENT_MEDIAPLAYER_NEXT;
 int ENNA_EVENT_MEDIAPLAYER_SEEK;
 
 /* Mediaplayer API functions */
+int enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type);
 int enna_mediaplayer_init(void);
 void enna_mediaplayer_shutdown(void);
 void enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,const char *uri, const char *label);
