@@ -1,18 +1,24 @@
 ///////////////////////////////////////////////////////////////////////////////
    group { name: "elm/scroller/base/default";
       script {
-	 public sbvis_v, sbvis_h, sbvis_timer;
+	 public sbvis_v, sbvis_h, sbalways_v, sbalways_h, sbvis_timer;
 	 public timer0(val) {
 	    new v;
 	    v = get_int(sbvis_v);
 	    if (v) {
-	       emit("do-hide-vbar", "");
-	       set_int(sbvis_v, 0);
+               v = get_int(sbalways_v);
+               if (!v) {
+                  emit("do-hide-vbar", "");
+                  set_int(sbvis_v, 0);
+               }
 	    }
 	    v = get_int(sbvis_h);
 	    if (v) {
-	       emit("do-hide-hbar", "");
-	       set_int(sbvis_h, 0);
+               v = get_int(sbalways_h);
+               if (!v) {
+                  emit("do-hide-hbar", "");
+                  set_int(sbvis_h, 0);
+               }
 	    }
 	    set_int(sbvis_timer, 0);
 	    return 0;
@@ -30,7 +36,7 @@
 	    type: RECT;
 	    description { state: "default" 0.0;
 	       rel1.offset: 1 1;
-	       rel2.offset: -20 -20;
+	       rel2.offset: -2 -2;
 	       color: 255 255 255 0;
 	    }
 	 }
@@ -47,11 +53,11 @@
 	    type: SWALLOW;
 	    description { state: "default" 0.0;
 	       rel1.offset: 1 1;
-	       rel2.offset: -20 -20;
+	       rel2.offset: -2 -2;
 	    }
 	 }
-         part { name: "vbar_clip";
-            type: RECT;
+	 part { name: "sb_vbar_clip_master";
+	    type: RECT;
 	    mouse_events: 0;
 	    description { state: "default" 0.0;
 	    }
@@ -59,11 +65,11 @@
 	       visible: 0;
 	       color: 255 255 255 0;
 	    }
-         }
+	 }
 	 part { name: "sb_vbar_clip";
+            clip_to: "sb_vbar_clip_master";
 	    type: RECT;
 	    mouse_events: 0;
-            clip_to: "vbar_clip";
 	    description { state: "default" 0.0;
 	    }
 	    description { state: "hidden" 0.0;
@@ -158,8 +164,9 @@
 	       }
 	    }
 	 }
-         part { name: "hbar_clip";
-            type: RECT;
+
+	 part { name: "sb_hbar_clip_master";
+	    type: RECT;
 	    mouse_events: 0;
 	    description { state: "default" 0.0;
 	    }
@@ -167,12 +174,11 @@
 	       visible: 0;
 	       color: 255 255 255 0;
 	    }
-         }
-
+	 }
 	 part { name: "sb_hbar_clip";
+            clip_to: "sb_hbar_clip_master";
 	    type: RECT;
 	    mouse_events: 0;
-            clip_to: "hbar_clip";
 	    description { state: "default" 0.0;
 	    }
 	    description { state: "hidden" 0.0;
@@ -277,6 +283,8 @@
 	       set_state(PART:"sb_vbar_clip", "hidden", 0.0);
 	       set_int(sbvis_h, 0);
 	       set_int(sbvis_v, 0);
+	       set_int(sbalways_v, 0);
+	       set_int(sbalways_h, 0);
 	       set_int(sbvis_timer, 0);
 	    }
 	 }
@@ -285,31 +293,44 @@
 	    signal: "elm,action,show,vbar";
 	    source: "elm";
             action:  STATE_SET "default" 0.0;
-            transition: LINEAR 1.0;
-            target: "vbar_clip";
+            target: "sb_vbar_clip_master";
 	 }
 	 program { name: "vbar_hide";
 	    signal: "elm,action,hide,vbar";
 	    source: "elm";
-            action:  STATE_SET "hiddent" 0.0;
-            transition: LINEAR 1.0;
-            target: "vbar_clip";
+            action:  STATE_SET "hidden" 0.0;
+            target: "sb_vbar_clip_master";
 	 }
-	 program { name: "hbar_show";
-	    signal: "elm,action,show,hbar";
+	 program { name: "vbar_show_always";
+	    signal: "elm,action,show_always,vbar";
 	    source: "elm";
-            action:  STATE_SET "default" 0.0;
-            transition: LINEAR 1.0;
-            target: "hbar_clip";
+            script {
+               new v;
+               v = get_int(sbvis_v);
+               v |= get_int(sbalways_v);
+               if (!v) {
+                  set_int(sbalways_v, 1);
+                  emit("do-show-vbar", "");
+                  set_int(sbvis_v, 1);
+               }
+            }
 	 }
-	 program { name: "hbar_hide";
-	    signal: "elm,action,hide,hbar";
+	 program { name: "vbar_show_notalways";
+	    signal: "elm,action,show_notalways,vbar";
 	    source: "elm";
-            action:  STATE_SET "hiddent" 0.0;
-            transition: LINEAR 1.0;
-            target: "hbar_clip";
+            script {
+               new v;
+               v = get_int(sbalways_v);
+               if (v) {
+                  set_int(sbalways_v, 0);
+                  v = get_int(sbvis_v);
+                  if (!v) {
+                     emit("do-hide-vbar", "");
+                     set_int(sbvis_v, 0);
+                  }
+               }
+            }
 	 }
-
 	 program { name: "sb_vbar_show";
 	    signal: "do-show-vbar";
 	    source: "";
@@ -323,6 +344,49 @@
 	    action:  STATE_SET "hidden" 0.0;
 	    transition: LINEAR 1.0;
 	    target: "sb_vbar_clip";
+	 }
+
+	 program { name: "hbar_show";
+	    signal: "elm,action,show,hbar";
+	    source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "sb_hbar_clip_master";
+	 }
+	 program { name: "hbar_hide";
+	    signal: "elm,action,hide,hbar";
+	    source: "elm";
+            action:  STATE_SET "hidden" 0.0;
+            target: "sb_hbar_clip_master";
+	 }
+	 program { name: "hbar_show_always";
+	    signal: "elm,action,show_always,hbar";
+	    source: "elm";
+            script {
+               new v;
+               v = get_int(sbvis_h);
+               v |= get_int(sbalways_h);
+               if (!v) {
+                  set_int(sbalways_h, 1);
+                  emit("do-show-hbar", "");
+                  set_int(sbvis_h, 1);
+               }
+            }
+	 }
+	 program { name: "hbar_show_notalways";
+	    signal: "elm,action,show_notalways,hbar";
+	    source: "elm";
+            script {
+               new v;
+               v = get_int(sbalways_h);
+               if (v) {
+                  set_int(sbalways_h, 0);
+                  v = get_int(sbvis_h);
+                  if (!v) {
+                     emit("do-hide-hbar", "");
+                     set_int(sbvis_h, 0);
+                  }
+               }
+            }
 	 }
 	 program { name: "sb_hbar_show";
 	    signal: "do-show-hbar";
@@ -338,20 +402,22 @@
 	    transition: LINEAR 1.0;
 	    target: "sb_hbar_clip";
 	 }
+
 	 program { name: "scroll";
 	    signal: "elm,action,scroll";
 	    source: "elm";
-	    action:  STATE_SET "default" 0.0;
 	    script {
 	       new v;
 	       v = get_int(sbvis_v);
+               v |= get_int(sbalways_v);
 	       if (!v) {
-		  emit("do-show-vbar", "");
-		  set_int(sbvis_v, 1);
+                  emit("do-show-vbar", "");
+                  set_int(sbvis_v, 1);
 	       }
 	       v = get_int(sbvis_h);
+               v |= get_int(sbalways_h);
 	       if (!v) {
-		  emit("do-show-hbar", "");
+                  emit("do-show-hbar", "");
 		  set_int(sbvis_h, 1);
 	       }
 	       v = get_int(sbvis_timer);
