@@ -196,26 +196,20 @@ static void _read_configuration()
     {
 	if (!strcmp(pair->key, "stream"))
         {
-            Eina_List *dir_data;
-            enna_config_value_store(&dir_data, "stream",
-		ENNA_CONFIG_STRING_LIST, pair);
+            char *value;
+            enna_config_value_store(&value, "stream",
+		ENNA_CONFIG_STRING, pair);
 
-            if (dir_data)
+            if (value)
             {
-                if (eina_list_count(dir_data) != 2)
-                    continue;
-                else
-                {
-                    Channel *ch;
+		Channel *ch;
 
-                    ch = calloc(1, sizeof(Channel));
-                    ch->url = strdup(eina_list_nth(dir_data, 0));
-		    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-			    "Podcast stream found : %s", ch->url);
-		    _prepare_channel(ch);
-		    mod->channels = eina_list_append(mod->channels, ch);
-
-                }
+		ch = calloc(1, sizeof(Channel));
+		ch->url = strdup(value);
+		enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+		    "Podcast stream found : %s", ch->url);
+		_prepare_channel(ch);
+		mod->channels = eina_list_append(mod->channels, ch);
             }
         }
     }
