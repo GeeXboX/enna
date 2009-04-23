@@ -759,7 +759,7 @@ enna_mediaplayer_init (void)
     {
         enna_log (ENNA_MSG_ERROR, NULL,
                   "Mediaplayer initialization");
-        return 1;
+        return 0;
     }
 
     mp_event_cb_set (_event_cb, NULL);
@@ -784,7 +784,7 @@ enna_mediaplayer_init (void)
     ENNA_EVENT_MEDIAPLAYER_NEXT = ecore_event_type_new ();
     ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new ();
 
-    return 0;
+    return 1;
 }
 
 void

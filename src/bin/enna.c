@@ -63,7 +63,7 @@ static unsigned int app_h = 720;
 static int run_fullscreen = 0;
 
 /* Functions */
-static void _create_gui(void);
+static int _create_gui(void);
 
 /* Callbacks */
 static int _mouse_idle_timer_cb(void *data)
@@ -292,13 +292,15 @@ static int _enna_init(void)
 
     evas_data_attach_set(enna->evas, enna);
 
-    _create_gui();
+    if (!_create_gui())
+        return 0;
+
     ecore_evas_show(enna->ee);
     enna_input_init();
     return 1;
 }
 
-static void _create_gui(void)
+static int _create_gui(void)
 {
     Evas_Object *o;
 
@@ -336,7 +338,8 @@ static void _create_gui(void)
     /* Init various stuff */
     enna_volumes_init();
     enna_metadata_init ();
-    enna_mediaplayer_init();
+    if (!enna_mediaplayer_init())
+        return 0;
 
     /* Load available modules */
     enna_module_load_all(enna->evas);
@@ -381,6 +384,8 @@ static void _create_gui(void)
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOVE, _mousemove_cb, NULL);
     enna->cursor_is_shown=1;
     enna->o_cursor = o;
+
+    return 1;
 }
 
 static void _enna_shutdown(void)
