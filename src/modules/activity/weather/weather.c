@@ -81,6 +81,7 @@ static const struct {
 } weather_icon_mapping[] = {
     { "weather/cloudy",           "/partly_cloudy.gif"         },
     { "weather/foggy",            "/haze.gif"                  },
+    { "weather/foggy",            "/fog.gif"                   },
     { "weather/heavy_rain",       "/rain.gif"                  },
     { "weather/light_snow",       "/chance_of_snow.gif"        },
     { "weather/rain",             "/chance_of_rain.gif"        },
