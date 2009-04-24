@@ -234,6 +234,24 @@ static const struct {
     { NULL,         0                 }
 };
 
+
+static void
+pipe_grabber_read (void *data, void *buf, unsigned int nbyte)
+{
+  Enna_Class_Activity *a = NULL;
+
+  
+  a = enna_mainmenu_selected_activity_get(enna->o_mainmenu);
+  if (!a)
+    return;
+  
+  if (a->func.class_grabbing_finished) 
+    a->func.class_grabbing_finished(buf);
+  
+}
+
+
+
 static int _enna_init(void)
 {
     char tmp[PATH_MAX];
@@ -297,8 +315,13 @@ static int _enna_init(void)
 
     ecore_evas_show(enna->ee);
     enna_input_init();
+
+    grabber_start_thread();
+    enna->pipe_grabber = ecore_pipe_add (pipe_grabber_read, NULL);
+
     return 1;
 }
+
 
 static int _create_gui(void)
 {

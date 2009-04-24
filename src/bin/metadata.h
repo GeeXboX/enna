@@ -113,6 +113,14 @@ struct _Enna_Metadata_Grabber
     void (* grab) (Enna_Metadata *meta, int caps);
 };
 
+struct _Enna_Metadata_Request 
+{
+  Enna_Metadata *metadata;
+  int caps;
+};
+
+typedef struct _Enna_Metadata_Request Enna_Metadata_Request;
+
 void enna_metadata_init (void);
 Enna_Metadata *enna_metadata_new(char *uri);
 void enna_metadata_free(Enna_Metadata *m);
@@ -122,5 +130,11 @@ void enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber);
 void enna_metadata_remove_grabber (char *name);
 void enna_metadata_grab (Enna_Metadata *meta, int caps);
 void enna_metadata_set_position (Enna_Metadata *meta, double position);
+int  enna_metadata_grab_request(Enna_Metadata_Request *m);
+
+int grabber_start_thread();
+int grabber_stop_thread();
+
+
 
 #endif /* METADATA_H */

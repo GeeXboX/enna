@@ -27,17 +27,32 @@
  *
  */
 
-#ifndef SMART_PLAYER_H
-#define SMART_PLAYER_H
 
-#include "enna.h"
+#ifndef   	EVENTS_STACK_H_
+# define   	EVENTS_STACK_H_
 
-Evas_Object *enna_smart_player_add(Evas * evas);
-void enna_smart_player_snapshot_set(Evas_Object *obj,
-                                         Enna_Metadata *metadata);
-void enna_smart_player_cover_set(Evas_Object *obj,
-                                      Enna_Metadata *metadata);
-void enna_smart_player_metadata_set(Evas_Object *obj,
-        Enna_Metadata *metadata);
-void enna_smart_player_set_temp_title(Evas_Object *obj, const char *uri);
-#endif /* SMART_PLAYER_H */
+#include <semaphore.h>
+typedef struct event_elt_s {
+  void *data;
+  struct event_elt_s *next;
+} event_elt_t;
+
+
+typedef struct events_stack_s {
+  event_elt_t *list;
+  sem_t semid;
+  pthread_mutex_t m; /*mutex on stack*/
+  int nbevts;
+} events_stack_t;
+
+
+events_stack_t *events_stack_create();
+
+void events_stack_destroy(events_stack_t *stack);
+
+int events_stack_push_event(events_stack_t *stack, event_elt_t *elt);
+
+event_elt_t * events_stack_pop_event(events_stack_t *stack);
+
+
+#endif 	    /* !EVENTS_STACK_H_ */

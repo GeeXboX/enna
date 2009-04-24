@@ -30,6 +30,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include <errno.h>
 
 #include <Eina.h>
 #include <Ecore_File.h>
@@ -39,6 +41,7 @@
 #include "metadata.h"
 #include "logs.h"
 #include "utils.h"
+#include "events_stack.h"
 
 #define MODULE_NAME "enna"
 
@@ -52,6 +55,10 @@
 
 static Eina_List *metadata_grabbers = NULL;
 static Eet_File *ef;
+static pthread_t grabber_thread_id = -1;
+static events_stack_t *estack = NULL;
+
+extern Enna *enna;
 
 #if DEBUG == 1
 static void
@@ -325,7 +332,6 @@ enna_metadata_new (char *uri)
 
 void enna_metadata_free(Enna_Metadata *m)
 {
-
     if (!m)
         return;
 
@@ -528,4 +534,85 @@ enna_metadata_set_position (Enna_Metadata *meta, double position)
 
     meta->position = position;
     enna_metadata_save_to_eet (meta);
+}
+
+
+void *
+grabber_thread(void *arg)
+{
+    event_elt_t * evt = NULL;
+    Enna_Metadata_Request *r = NULL;
+    
+    estack = events_stack_create();
+    if (!estack)
+    {
+        enna_log (ENNA_MSG_ERROR, MODULE_NAME, "grabber thread cannot allocate events stack");
+        return NULL; 
+    }
+    
+    for (;;) 
+    {
+        unsigned int addr;
+        r = NULL;
+
+        evt = events_stack_pop_event(estack);
+        if (!evt)
+            continue;
+        
+        r = (Enna_Metadata_Request*) evt->data;
+        
+        free (evt);
+        
+        if (!r)
+            continue;
+        
+        enna_metadata_grab (r->metadata, r->caps);
+        
+        addr = (unsigned int )(r->metadata);
+        ecore_pipe_write (enna->pipe_grabber, &addr, sizeof (unsigned int*));
+	free (r);
+    }
+    
+    events_stack_destroy(estack);
+    return NULL;
+}
+
+int 
+grabber_start_thread(void)
+{
+    if (grabber_thread_id != -1)
+        return -1;
+    
+    if (pthread_create(&grabber_thread_id, NULL, grabber_thread, NULL)) 
+    {
+        enna_log (ENNA_MSG_ERROR, MODULE_NAME, "Cannot start grabber thread - cause : %s", strerror(errno));
+        return -1;
+    }
+    return 0;
+}
+
+int 
+grabber_stop_thread(void)
+{
+    if (grabber_thread_id  == -1)
+      return 0;
+    
+    if (pthread_cancel(grabber_thread_id)) 
+    {
+        enna_log (ENNA_MSG_ERROR, MODULE_NAME, "grabber thread cannot be stopped - cause : %s", strerror(errno));
+        return -1;
+    }
+    
+    return 0;
+}
+
+
+int 
+enna_metadata_grab_request(Enna_Metadata_Request *r)
+{
+    event_elt_t *e = NULL;
+
+    e = calloc(sizeof(event_elt_t), 1);
+    e->data = r;
+    return events_stack_push_event(estack, e);
 }

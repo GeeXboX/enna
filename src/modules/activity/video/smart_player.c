@@ -137,6 +137,12 @@ void enna_smart_player_cover_set(Evas_Object *obj,
     }
 }
 
+void enna_smart_player_set_temp_title(Evas_Object *obj, const char *uri)
+{
+  API_ENTRY return;
+  edje_object_part_text_set(sd->o_edje, "enna.text.title", ecore_file_file_get(uri));
+}
+
 void enna_smart_player_metadata_set(Evas_Object *obj,
         Enna_Metadata *metadata)
 {

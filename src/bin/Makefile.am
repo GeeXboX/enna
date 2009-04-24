@@ -35,7 +35,8 @@ logs.c\
 parser_cdda.c\
 slideshow.c\
 mediacontrol.c\
-reflection.c
+reflection.c\
+events_stack.c
 
 enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@ @LIBCDDB_LIBS@ @LIBPLAYER_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -67,6 +68,7 @@ logs.h\
 parser_cdda.h\
 slideshow.h\
 mediacontrol.h\
-reflection.h
+reflection.h\
+events_stack.c
 
 

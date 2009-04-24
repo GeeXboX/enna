@@ -858,6 +858,17 @@ enna_mediaplayer_shutdown(void)
     ENNA_FREE (mp);
 }
 
+char *enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
+{
+  list_item_t *item;
+  
+  item = eina_list_nth (enna_playlist->playlist, enna_playlist->selected);
+  if (!item->uri) 
+    return NULL;
+  return strdup (item->uri);
+}
+
+
 void
 enna_mediaplayer_uri_append (Enna_Playlist *enna_playlist,
                              const char *uri, const char *label)

@@ -136,6 +136,7 @@ struct _Enna
     int use_snapshots;
     int cursor_is_shown;
     Ecore_Timer *mouse_idle_timer;
+    Ecore_Pipe *pipe_grabber;
 };
 
 extern Enna *enna;
