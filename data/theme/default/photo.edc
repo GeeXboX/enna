@@ -200,7 +200,7 @@ group {
          signal: "wall,show";
          source:  "enna";
          action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
+         transition: SINUSOIDAL 0.2;
          target: "enna.clip.wall";
       }
       program {
@@ -208,7 +208,7 @@ group {
          signal: "wall,hide";
          source:  "enna";
          action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
+         transition: SINUSOIDAL 0.2;
          target: "enna.clip.wall";
       }
       program {

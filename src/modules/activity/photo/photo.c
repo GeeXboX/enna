@@ -86,6 +86,7 @@ typedef struct _Enna_Module_Photo
     Evas_Object *o_wall;
     Evas_Object *o_preview;
     Evas_Object *o_slideshow;
+    Ecore_Timer *sel_timer;
     PHOTO_STATE state;
     Enna_Module *em;
 #ifdef BUILD_LIBEXIF
@@ -204,34 +205,29 @@ static void _exif_parse_metadata(const char *filename)
 }
 #endif
 
-static void _photo_info_fs()
+
+
+static int
+_show_sel_image(void *data)
 {
-    Evas_Object *o_edje;
+    const char *filename = data;
     Evas_Object *o_pict;
     Evas_Coord x1,y1,w1,h1, x2,y2,w2,h2;
     Evas_Coord xi,yi,wi,hi, xf,yf,wf,hf;
     Edje_Message_Int_Set *msg;
-    const char *filename;
+    Evas_Object *o_edje;
 
     /* Prepare edje message */
     msg = calloc(1,sizeof(Edje_Message_Int_Set) - sizeof(int) + (4 * sizeof(int)));
     msg->count = 4;
 
     enna_wall_selected_geometry_get(mod->o_wall, &x2, &y2, &w2, &h2);
-    filename = enna_wall_selected_filename_get(mod->o_wall);
-    if (!filename) return;
 
-    o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
-    if (o_pict) //user clicked too fast, preview already there or in progress
-        return;
-
-    mod->state = WALL_PREVIEW;
-
-    o_pict = enna_image_add(mod->em->evas);
-    enna_image_file_set(o_pict, filename);
-    enna_image_fill_inside_set(o_pict, 0);
-
-    enna_image_preload(o_pict, 0);
+    o_pict = elm_image_add(mod->o_edje);
+    elm_image_file_set(o_pict, filename, NULL);
+    elm_image_no_scale_set(o_pict, 1);
+    elm_image_smooth_set(o_pict, 1);
+    elm_image_scale_set(o_pict, 1, 1);
 
     o_edje = edje_object_add(mod->em->evas);
     edje_object_file_set(o_edje, enna_config_theme_get(), "enna/picture/info");
@@ -249,7 +245,7 @@ static void _photo_info_fs()
     msg->val[1] = yf;
     msg->val[2] = wf;
     msg->val[3] = hf;
-    enna_image_load_size_set(o_pict, wf, hf);
+
     edje_object_message_send(o_edje, EDJE_MESSAGE_INT_SET, 2, msg);
 
     /* Set custom state : size and position of actual thumbnail */
@@ -269,7 +265,25 @@ static void _photo_info_fs()
     _exif_parse_metadata(filename);
 #endif
     edje_object_signal_emit(mod->o_preview, "show", "enna");
+    mod->sel_timer = NULL;
+    return 0;
+}
+
+static void _photo_info_fs()
+{
+    const char *filename;
+    Evas_Object *o_pict;
+
+    filename = enna_wall_selected_filename_get(mod->o_wall);
+    if (!filename) return;
+
+    o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
+    if (o_pict) //user clicked too fast, preview already there or in progress
+        return;
+
+    mod->state = WALL_PREVIEW;
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
+    mod->sel_timer = ecore_timer_add(0.2, _show_sel_image, filename);
 }
 
 /* #############################################################
