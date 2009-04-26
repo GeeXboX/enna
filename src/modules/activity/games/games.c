@@ -247,7 +247,7 @@ class =
 {
     "games",
     10,
-    "games",
+    "Games",
     NULL,
     "icon/games",
     {

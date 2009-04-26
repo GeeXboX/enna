@@ -517,7 +517,7 @@ _class_event (void *event_info)
 static Enna_Class_Activity class = {
     ENNA_MODULE_NAME,
     10,
-    ENNA_MODULE_NAME,
+    "Weather",
     NULL,
     "icon/weather",
     {

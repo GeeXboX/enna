@@ -188,7 +188,7 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
 
             icon_name = eina_stringshare_add(act->icon_file);
         }
-        enna_mainmenu_append(obj, icon_name, act->name, act, _smart_activate_cb, act);
+        enna_mainmenu_append(obj, icon_name, act->label, act, _smart_activate_cb, act);
     }
 
 }

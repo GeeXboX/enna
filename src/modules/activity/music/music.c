@@ -135,7 +135,7 @@ static Enna_Class_Activity class =
 {
     "music",
     1,
-    "music",
+    "Music",
     NULL,
     "icon/music",
     {

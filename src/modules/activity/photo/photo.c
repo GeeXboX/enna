@@ -612,7 +612,7 @@ static Enna_Class_Activity class =
 {
     "photo",
     1,
-    "photo",
+    "Photo",
     NULL,
     "icon/photo",
     {

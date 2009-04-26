@@ -79,8 +79,8 @@ static void _class_event(void *event_info)
     Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key(ev);
 
-    switch (key) 
-    { 
+    switch (key)
+    {
         case ENNA_KEY_MENU:
             enna_content_hide();
             enna_mainmenu_show(enna->o_mainmenu);
@@ -95,7 +95,7 @@ static Enna_Class_Activity class =
 {
     "tv",
     1,
-    "tv",
+    "Television",
     NULL,
     "icon/tv",
     {

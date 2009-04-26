@@ -102,9 +102,9 @@ group
             state: "default" 0.0;
             //max: 1920 256;
             rel1
-            {   relative: 0.2 0.2;to: enna.clip.mainmenu;};
+            {   relative: 0.1 0;to: enna.clip.mainmenu;};
             rel2
-            {   relative: 0.8 0.8;to: enna.clip.mainmenu;};
+            {   relative: 0.9 1.0;to: enna.clip.mainmenu;};
          }
       }
       part
@@ -637,7 +637,7 @@ group
    programs
    {
       program
-      {   
+      {
          name: "cursor,show";
          signal: "cursor,show";
          source: "enna";
@@ -646,7 +646,7 @@ group
          target: "cursor";
       }
       program
-      {   
+      {
          name: "cursor,hide";
          signal: "cursor,hide";
          source: "enna";

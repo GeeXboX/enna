@@ -124,7 +124,7 @@ static Enna_Class_Activity class =
 {
     "video",
     1,
-    "video",
+    "Video",
     NULL,
     "icon/video",
     {
@@ -265,7 +265,7 @@ _class_event(void *event_info)
     }
 }
 
-static void 
+static void
 _class_grabbing_finished(void *a)
 {
     Enna_Metadata *m = (Enna_Metadata*)(*((unsigned int*)a));
@@ -364,7 +364,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
                 {
                     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Select : %s %d in playlist", f->uri, i);
                     enna_mediaplayer_select_nth(mod->enna_playlist,i);
-                    
+
                     if (mod->o_current_uri)
                         free (mod->o_current_uri);
                     mod->o_current_uri = strdup(f->uri);
@@ -432,7 +432,7 @@ _video_info_prev()
         Evas_Object *o;
 	char *uri = NULL;
         n--;
-	
+
         enna_mediaplayer_select_nth(mod->enna_playlist,n);
 
         ENNA_OBJECT_DEL(mod->o_mediaplayer_old);
@@ -455,7 +455,7 @@ _video_info_prev()
 	enna_metadata_grab_request(r);
 
 	enna_smart_player_set_temp_title(o, uri);
-       
+
         mod->o_mediaplayer_old = mod->o_mediaplayer;
         mod->o_mediaplayer = o;
         enna_switcher_objects_switch(mod->o_switcher, o);
@@ -467,10 +467,10 @@ _video_info_next()
 {
     int n;
     Enna_Metadata_Request *r = NULL;
-   
+
     n = enna_mediaplayer_selected_get(mod->enna_playlist);
 
-    
+
     if (n < enna_mediaplayer_playlist_count(mod->enna_playlist) - 1)
     {
         Enna_Metadata *m;
@@ -484,7 +484,7 @@ _video_info_next()
         enna_mediaplayer_select_nth(mod->enna_playlist,n);
         o = enna_smart_player_add(mod->em->evas);
         evas_object_show(o);
-	
+
 	uri  = enna_mediaplayer_get_current_uri(mod->enna_playlist);
 	if (uri) {
 	  if (mod->o_current_uri)
@@ -500,7 +500,7 @@ _video_info_next()
 	enna_metadata_grab_request(r);
 
 	enna_smart_player_set_temp_title(o, uri);
-	
+
         mod->o_mediaplayer_old = mod->o_mediaplayer;
         mod->o_mediaplayer = o;
         enna_switcher_objects_switch(mod->o_switcher, o);
@@ -539,7 +539,7 @@ _create_video_info_gui()
     enna_metadata_grab_request(r);
 
     enna_smart_player_set_temp_title(o, mod->o_current_uri);
-    
+
     enna_switcher_objects_switch(mod->o_switcher, mod->o_mediaplayer);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", mod->o_switcher);
 
