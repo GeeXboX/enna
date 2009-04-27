@@ -9,12 +9,28 @@ images
    image: "bt_hilight.png" COMP;
    image: "sel_fg.png" COMP;
    image: "pointer.png" COMP;
+   image: "frame.png" COMP;
 }
+
+
 
 group
 {
    name: "enna/mainmenu";
    //min: 32 32;
+
+   styles {
+      style {
+         name: "style_quitdiag";
+         base: "font=content font_size=14 align=left color=#FFF wrap=word";
+         tag:  "br" "\n";
+         tag:  "hilight" "+ font_size=18 font=content_bd color=#A0D026";
+         tag:  "b" "+ font=conten_bd";
+         tag:  "tab" "\t";
+         tag:  "c" "+ align=center font_size=24 font=content_bd color=#A0D026A0 color2=#A0D026A0 style=GLOW";
+      }
+   }
+
    script
    {
       public clock_cb(val)
@@ -322,52 +338,154 @@ group
          description
          {
             state: "show" 0.0;
-            rel1.relative: 0.0 0.0;
-            rel2.relative: 1.0 1.0;
+            inherit: "default" 0.0;
+            visible: 1;
          }
       }
       part
       {
-         name: "enna.quitdiag";
+         name: "enna.quitdiag.bg";
          type: RECT;
          clip_to: "enna.clip.quitdiag";
          description
          {
             state: "default" 0.0;
+            visible: 0;
             color: 100 100 100 0;
+            rel1.to: "enna.clip.quitdiag";
+            rel2.to: "enna.clip.quitdiag";
             rel1.relative: 0.0 0.0;
             rel2.relative: 1.0 1.0;
          }
          description
          {
             state: "show" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
             color: 100 100 100 200;
+         }
+      }
+      part
+      {
+         name: "enna.quitdiag.clip.inner";
+         type: RECT;
+         clip_to: "enna.quitdiag.clip.inner";
+         description
+         {
+            state: "default" 0.0;
+            visible: 0;
+            rel1.to: "enna.clip.quitdiag";
+            rel2.to: "enna.clip.quitdiag";
+            rel1.relative: 0.5 0.5;
+            rel2.relative: 0.5 0.5;
+            rel1.offset: -200 -100;
+            rel2.offset: 200 100;
+         }
+         description
+         {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part
+      {
+         name: "enna.quitdiag.bg.inner";
+         type: RECT;
+         clip_to: "enna.quitdiag.clip.inner";
+         description
+         {
+            state: "default" 0.0;
+            visible: 0;
+            rel1.to: "enna.clip.quitdiag";
+            rel2.to: "enna.clip.quitdiag";
             rel1.relative: 0.0 0.0;
             rel2.relative: 1.0 1.0;
+            color: 0 00 00 0;
+         }
+         description
+         {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 00 00 00 100;
+         }
+      }
+      part
+      {
+         name: "enna.quitdiag.frame";
+         type: IMAGE;
+         mouse_events: 0;
+         clip_to: "enna.clip.quitdiag";
+         description
+         {
+            state: "default" 0.0;
+            rel1.to: "enna.quitdiag.clip.inner";
+            rel2.to: "enna.quitdiag.clip.inner";
+            rel1.relative: 0.0 0.0;
+            rel2.relative: 1.0 1.0;
+            rel1.offset: -10 -10;
+            rel2.offset: 10 10;
+            image
+            {
+               normal: "frame.png";
+               border: 50 50 50 50;
+            }
+         }
+      }
+      part 
+      {
+         name: "enna.text.quit_deny_msgs";
+         clip_to: "enna.quitdiag.clip.inner";
+         type: TEXTBLOCK;
+         effect: SOFT_SHADOW;
+         mouse_events: 0;
+         scale: 1;
+         description 
+         {
+            state: "default" 0.0;
+            rel1.to: "enna.quitdiag.clip.inner";
+            rel2.to: "enna.quitdiag.clip.inner";
+            rel1.relative: 0.0 0.0;
+            rel2.relative: 1.0 0.8;
+            rel1.offset: 20 20;
+            rel2.offset: -20 -20;
+            color: 255 255 255 255;
+            align: 0 0.5;
+            text 
+            {
+               text: "...no activity seems busy right now.";
+               style: style_quitdiag;
+               min: 0 0;
+            }
+         }
+         description 
+         {
+            state: "show" 0.0;
+            visible: 1;
+            color: 0 255 0 255;
+            inherit: "default" 0.0;
          }
       }
       part
       {
          name: "enna.quitdiag.buttonbox";
          type: SWALLOW;
-         clip_to: "enna.clip.quitdiag";
+         clip_to: "enna.quitdiag.clip.inner";
          description
          {
             state: "default" 0.0;
-			visible: 0;
-            rel1.relative: 0.1 0.1;
-            rel2.relative: 0.9 0.9;
-            rel1.to: "enna.clip.quitdiag";
-            rel2.to: "enna.clip.quitdiag";
+            visible: 0;
+            rel1.relative: 0.0 0.8;
+            rel2.relative: 1.0 1.0;
+            rel1.to: "enna.quitdiag.clip.inner";
+            rel2.to: "enna.quitdiag.clip.inner";
          }
          description
          {
             state: "show" 0.0;
-			visible: 1;
-            rel1.relative: 0.1 0.1;
-            rel2.relative: 0.9 0.9;
-            rel1.to: "enna.clip.quitdiag";
-            rel2.to: "enna.clip.quitdiag";
+            inherit: "default" 0.0;
+            visible: 1;
          }
       }
    }
@@ -399,8 +517,11 @@ group
          action: STATE_SET "show" 0.0;
          transition: LINEAR 0.5;
          target: "enna.clip.quitdiag";
-         target: "enna.quitdiag";
+         target: "enna.quitdiag.bg";
+         target: "enna.quitdiag.clip.inner";
+         target: "enna.quitdiag.bg.inner";
          target: "enna.quitdiag.buttonbox";
+         target: "enna.text.quit_deny_msgs";
       }
       program
       {
@@ -410,8 +531,11 @@ group
          action: STATE_SET "default" 0.0;
          transition: LINEAR 0.5;
          target: "enna.clip.quitdiag";
-         target: "enna.quitdiag";
+         target: "enna.quitdiag.bg";
+         target: "enna.quitdiag.clip.inner";
+         target: "enna.quitdiag.bg.inner";
          target: "enna.quitdiag.buttonbox";
+         target: "enna.text.quit_deny_msgs";
       }
    }
    program

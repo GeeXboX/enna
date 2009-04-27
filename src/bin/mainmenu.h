@@ -48,5 +48,5 @@ unsigned char enna_mainmenu_visible(Evas_Object *obj);
 unsigned char enna_quitdiag_visible(Evas_Object *obj);
 void enna_mainmenu_activate_nth(Evas_Object *obj, int nth);
 int enna_mainmenu_selected_get(Evas_Object *obj);
-void enna_mainmenu_quitdiag(Evas_Object *obj);
+void enna_mainmenu_quitdiag(Evas_Object *obj, const char *quit_deny_text);
 #endif /* MAINMENU_H */

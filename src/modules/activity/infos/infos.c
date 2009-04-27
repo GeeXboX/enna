@@ -389,6 +389,7 @@ static Enna_Class_Activity class = {
     "icon/infos",
     {
         _class_init,
+        NULL,
         _class_shutdown,
         _class_show,
         _class_hide,

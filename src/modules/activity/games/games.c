@@ -252,6 +252,7 @@ class =
     "icon/games",
     {
         _class_init,
+        NULL,
         _class_shutdown,
         _class_show,
         _class_hide,

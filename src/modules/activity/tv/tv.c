@@ -60,6 +60,13 @@ static void _class_init(int dummy)
     enna_content_append("tv", mod->o_background);
 }
 
+static const char* _class_quit_request(int dummy)
+{
+    //in case there's a recording still ongoing, return the according text
+    //return value's memory must be freed by module
+    return NULL;
+}
+
 static void _class_show(int dummy)
 {
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "starting playback");
@@ -100,6 +107,7 @@ static Enna_Class_Activity class =
     "icon/tv",
     {
     _class_init,
+    _class_quit_request,
     NULL,
     _class_show,
     _class_hide,

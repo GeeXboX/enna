@@ -121,7 +121,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         case ENNA_KEY_MENU:
         case ENNA_KEY_CANCEL:
             do_quit = 0;
-            enna_mainmenu_quitdiag(enna->o_mainmenu);
+            enna_mainmenu_quitdiag(enna->o_mainmenu, enna_activity_request_quit_all());
             break;
         default:
             break;
@@ -131,7 +131,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     {
         switch (key)
         {
-        case ENNA_KEY_MENU:
+            case ENNA_KEY_MENU:
         {
             enna_content_show();
             enna_mainmenu_hide(enna->o_mainmenu);
@@ -178,7 +178,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         if (do_quit)
             ecore_main_loop_quit();
         else
-            enna_mainmenu_quitdiag(enna->o_mainmenu);
+            enna_mainmenu_quitdiag(enna->o_mainmenu, enna_activity_request_quit_all());
     }
 }
 

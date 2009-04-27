@@ -142,6 +142,7 @@ int enna_activity_##func(const char *name) \
 }
 
 ACTIVITY_FUNC(init, 0);
+ACTIVITY_FUNC(quit_request, 0);
 ACTIVITY_FUNC(shutdown, 0);
 ACTIVITY_FUNC(show, 0);
 ACTIVITY_FUNC(hide, 0);
@@ -153,4 +154,27 @@ int enna_activity_event(Enna_Class_Activity *act, void *event_info)
 
     ACTIVITY_CLASS(event, event_info);
     return 0;
+}
+
+const char *enna_activity_request_quit_all(void)
+{
+    Eina_List *l;
+    const char *quit_deny_text = NULL;
+    int len=0;
+
+    for (l = _enna_activities; l; l = l->next)
+    {
+        Enna_Class_Activity *act = l->data;
+        const char *quit_deny_msg;
+        const char *text;
+        if (act->func.class_quit_request && (quit_deny_msg=act->func.class_quit_request(0)))
+        {
+            len+=(strlen(act->name)+strlen(quit_deny_msg)+26);
+            text=calloc(1, len);
+            snprintf(text, len, "%s<hilight>%s%s:</hilight> %s", quit_deny_text?quit_deny_text:"", quit_deny_text?"<br>":"", act->name, quit_deny_msg);
+            if (quit_deny_text) free(quit_deny_text);
+            quit_deny_text=text;
+        }
+    }
+    return quit_deny_text;
 }

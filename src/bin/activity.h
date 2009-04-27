@@ -48,6 +48,7 @@ struct _Enna_Class_Activity
     struct
     {
         void (*class_init)(int dummy);
+        const char*  (*class_quit_request)(int dummy);
         void (*class_shutdown)(int dummy);
         void (*class_show)(int dummy);
         void (*class_hide)(int dummy);
@@ -63,6 +64,7 @@ void enna_activity_del_all (void);
 Eina_List *enna_activities_get(void);
 int enna_activity_init(const char *name);
 int enna_activity_show(const char *name);
+const char *enna_activity_request_quit_all(void);
 int enna_activity_shutdown(const char *name);
 int enna_activity_hide(const char *name);
 int enna_activity_event(Enna_Class_Activity *act, void *event_info);

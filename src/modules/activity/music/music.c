@@ -141,6 +141,7 @@ static Enna_Class_Activity class =
     {
         _class_init,
         NULL,
+        NULL,
         _class_show,
         _class_hide,
         _class_event

@@ -678,13 +678,15 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, vo
 
 }
 
-void enna_mainmenu_quitdiag(Evas_Object *obj)
+void enna_mainmenu_quitdiag(Evas_Object *obj, const char *quit_deny_text)
 {
     char msg[50];
     char quitdiag_active;
     API_ENTRY return;
 
     quitdiag_active=evas_object_visible_get(sd->o_quitdiag_box);
+    if (!quitdiag_active && quit_deny_text)
+        edje_object_part_text_set(sd->o_edje, "enna.text.quit_deny_msgs", quit_deny_text?quit_deny_text:"...no activity seems busy right now.");
     strncpy(msg, quitdiag_active?"quitdiag,hide":"quitdiag,show", sizeof(msg));
     edje_object_signal_emit (sd->o_edje, msg, "enna");
     quitdiag_active=!quitdiag_active;
