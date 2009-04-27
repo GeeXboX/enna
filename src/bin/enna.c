@@ -240,14 +240,14 @@ pipe_grabber_read (void *data, void *buf, unsigned int nbyte)
 {
   Enna_Class_Activity *a = NULL;
 
-  
+
   a = enna_mainmenu_selected_activity_get(enna->o_mainmenu);
   if (!a)
     return;
-  
-  if (a->func.class_grabbing_finished) 
+
+  if (a->func.class_grabbing_finished)
     a->func.class_grabbing_finished(buf);
-  
+
 }
 
 
@@ -538,7 +538,8 @@ int main(int argc, char **argv)
 
     /* Must be called first */
     enna_config_init();
-
+    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n", enna_config->log_file);
+    enna_log_init(enna_config->log_file);
     enna = calloc(1, sizeof(Enna));
 
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_signal, enna);
@@ -549,8 +550,8 @@ int main(int argc, char **argv)
     ecore_main_loop_begin();
 
     _enna_shutdown();
-    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !");
-
+    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !\n");
+    enna_log_shutdown();
     return EXIT_SUCCESS;
 }
 

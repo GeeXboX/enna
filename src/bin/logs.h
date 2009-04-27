@@ -32,10 +32,12 @@
 
 #include "enna.h"
 
-void elog(int level, const char *module, char *file, int line,
+int enna_log_init(const char *filename);
+void enna_log_print(int level, const char *module, char *file, int line,
         const char *format, ...);
+void enna_log_shutdown(void);
 
 #define enna_log(level,module,fmt,arg...) \
-        elog(level,module,__FILE__,__LINE__,fmt,##arg)
+        enna_log_print(level,module,__FILE__,__LINE__,fmt,##arg)
 
 #endif /* LOGS_H */

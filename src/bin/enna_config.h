@@ -60,6 +60,7 @@ struct _Enna_Config
     Eina_List *music_filters;
     Eina_List *video_filters;
     Eina_List *photo_filters;
+    const char *log_file;
 };
 
 struct _Enna_Config_Data

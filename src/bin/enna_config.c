@@ -288,6 +288,8 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
                     ENNA_CONFIG_STRING_LIST, pair);
             enna_config_value_store(&enna_config->photo_filters, "photo_ext",
                     ENNA_CONFIG_STRING_LIST, pair);
+	    enna_config_value_store(&enna_config->log_file, "log_file",
+		    ENNA_CONFIG_STRING, pair);
         }
     }
 

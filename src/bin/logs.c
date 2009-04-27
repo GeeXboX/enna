@@ -44,9 +44,31 @@
 #define F_BLUE   COLOR(34)
 #define B_RED    COLOR(41)
 
-void elog(int level, const char *module, char *file, int line,
+
+static FILE *fp = NULL;
+static int refcount = 0;
+
+int enna_log_init(const char *filename)
+{
+
+    if (refcount > 1)
+	return 0;
+
+    if (filename)
+    {
+	fp = fopen(filename, "w");
+	if (!fp)
+	    return 0;
+    }
+
+    refcount++;
+    return 1;
+}
+
+void enna_log_print(int level, const char *module, char *file, int line,
           const char *format, ...)
 {
+    FILE *f;
     static const char const *c[] =
     {
         [ENNA_MSG_EVENT]    = F_BLUE,
@@ -88,10 +110,29 @@ void elog(int level, const char *module, char *file, int line,
     else
         prefix = DEFAULT_MODULE_NAME "/";
 
-    fprintf (stderr, "[" BOLD "%s%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
-             prefix ? prefix : "", module, file, line, c[level], l[level]);
+    if (!fp)
+    {
+	f = stderr;
+	fprintf (f, "[" BOLD "%s%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
+	    prefix ? prefix : "", module, file, line, c[level], l[level]);
+    }
+    else
+    {
+	f = fp;
+	fprintf (f, "[%s%s] [%s:%d] %s: ",
+	    prefix ? prefix : "", module, file, line, l[level]);
+    }
 
-    vfprintf (stderr, format, va);
-    fprintf (stderr, "\n");
+    vfprintf (f, format, va);
+    fprintf (f, "\n");
     va_end (va);
+}
+
+void enna_log_shutdown(void)
+{
+    if (fp)
+    {
+	fclose(fp);
+    }
+    refcount--;
 }
