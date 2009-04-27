@@ -80,7 +80,7 @@
     "# and 'warning' verbosity. Change these parameters only if that is really\n" \
     "# necessary.\n"							\
     "\n"								\
-    "#gstreamer,mplayer,vlc,xine\n"					\
+    "#mplayer,xine\n"							\
     "#type=\n"								\
     "#dvd_type=\n"							\
     "#tv_type=\n"							\

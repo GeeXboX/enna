@@ -30,7 +30,7 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 # and 'warning' verbosity. Change these parameters only if that is really
 # necessary.
 
-#gstreamer,mplayer,vlc,xine
+#mplayer,xine
 #type=
 #dvd_type=
 #tv_type=
