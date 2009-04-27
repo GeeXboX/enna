@@ -776,7 +776,7 @@ enna_mediaplayer_init (void)
     if (dvd_type != type && !libplayer_wrapper_enabled (dvd_type))
     {
         if (dvd_set)
-              goto err;
+            goto err;
         dvd_type = type;
     }
 
