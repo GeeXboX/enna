@@ -265,7 +265,7 @@ libplayer_grab (Enna_Metadata *meta, int caps)
             meta->music->artist = mrl_get_metadata (mod->player, NULL,
                                                     MRL_METADATA_ARTIST);
             if(type == MRL_TYPE_AUDIO)
-            enna_metadata_add_keywords (meta, meta->music->artist);
+                enna_metadata_add_keywords (meta, meta->music->artist);
         }
 
         if (!meta->music->album)
@@ -273,7 +273,7 @@ libplayer_grab (Enna_Metadata *meta, int caps)
             meta->music->album = mrl_get_metadata (mod->player, NULL,
                                                    MRL_METADATA_ALBUM);
             if(type == MRL_TYPE_AUDIO)
-            enna_metadata_add_keywords (meta, meta->music->album);
+                enna_metadata_add_keywords (meta, meta->music->album);
         }
 
         if (!meta->music->year)
