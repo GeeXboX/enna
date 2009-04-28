@@ -387,6 +387,19 @@ if test "x$want_metadata_localfiles" = "xyes"; then
   AC_DEFINE(BUILD_METADATA_LOCALFILES, 1, [Local Files Metadata])
 fi
 
+# NFO Reader
+want_metadata_nfo="yes"
+AC_MSG_CHECKING(whether NFO reader metadata module is to be built)
+AC_ARG_ENABLE(metadata-nfo,
+  AS_HELP_STRING([--enable-metadata-nfo],[Enable NFO Reader Metadata Module]),
+  [ want_metadata_nfo=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_nfo)
+AM_CONDITIONAL(BUILD_METADATA_NFO, test "x$want_metadata_nfo" = "xyes")
+if test "x$want_metadata_nfo" = "xyes"; then
+  AC_DEFINE(BUILD_METADATA_NFO, 1, [NFO Reader Metadata])
+fi
+
 # TheMovieDB.org (TMDB)
 want_metadata_tmdb="yes"
 AC_MSG_CHECKING(whether themoviedb.org metadata module is to be built)
@@ -653,6 +666,7 @@ src/modules/metadata/Makefile
 src/modules/metadata/amazon/Makefile
 src/modules/metadata/libplayer/Makefile
 src/modules/metadata/localfiles/Makefile
+src/modules/metadata/nfo/Makefile
 src/modules/metadata/tmdb/Makefile
 src/modules/metadata/tvdb/Makefile
 src/modules/volume/Makefile
@@ -707,6 +721,7 @@ echo
 echo "  Amazon.com....................... : $want_metadata_amazon"
 echo "  libplayer........................ : $have_metadata_libplayer"
 echo "  Local files...................... : $want_metadata_localfiles"
+echo "  NFO Reader....................... : $want_metadata_nfo"
 echo "  TheMovieDB.org................... : $want_metadata_tmdb"
 echo "  TheTVDB.com...................... : $want_metadata_tvdb"
 echo

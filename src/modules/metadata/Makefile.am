@@ -4,5 +4,6 @@ SUBDIRS = \
 amazon\
 libplayer\
 localfiles\
+nfo\
 tmdb \
 tvdb
