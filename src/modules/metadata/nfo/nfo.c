@@ -34,6 +34,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include <Ecore_File.h>
+
 #include "enna.h"
 #include "module.h"
 #include "metadata.h"
@@ -195,9 +197,49 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
         tmp = get_prop_value_from_xml_tree (movie, "title");
         if (tmp)
         {
-            xmlChar *season = NULL, *episode = NULL;
+            xmlChar *show_title = NULL, *season = NULL, *episode = NULL;
+
             if (tvshow)
             {
+                char *cwd;
+                char dir_nfo[1024];
+
+                cwd = ecore_file_dir_get (filename);
+                if (cwd)
+                {
+                    memset (dir_nfo, '\0', sizeof (dir_nfo));
+                    snprintf (dir_nfo, sizeof (dir_nfo),
+                              "%s/../tvshow.nfo", cwd);
+
+                    stat (dir_nfo, &st);
+                    if (S_ISREG (st.st_mode))
+                    {
+                        xmlDocPtr ds = NULL;
+                        xmlNode *tvshow = NULL;
+
+                        buf = calloc (1, st.st_size + 1);
+                        fd = open (dir_nfo, O_RDONLY);
+                        n = read (fd, buf, st.st_size);
+                        close (fd);
+
+                        /* parse its XML content */
+                        ds = get_xml_doc_from_memory (buf);
+                        free (buf);
+
+                        if (doc)
+                            tvshow =
+                                get_node_xml_tree (xmlDocGetRootElement (ds),
+                                                   "tvshow");
+
+                        if (tvshow)
+                            show_title =
+                                get_prop_value_from_xml_tree (tvshow,
+                                                              "title");
+
+                        xmlFreeDoc (ds);
+                    }
+                }
+
                 season = get_prop_value_from_xml_tree (movie, "season");
                 episode = get_prop_value_from_xml_tree (movie, "episode");
             }
@@ -207,9 +249,15 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
                 char title[1024];
 
                 memset (title, '\0', sizeof (title));
-                snprintf (title, sizeof (title), "S%.2dE%.2d - %s",
-                          atoi ((char *) season),
-                          atoi ((char *) episode), tmp);
+                if (show_title)
+                    snprintf (title, sizeof (title), "%s - S%.2dE%.2d - %s",
+                              (char *) show_title, atoi ((char *) season),
+                              atoi ((char *) episode), tmp);
+                else
+                    snprintf (title, sizeof (title), "S%.2dE%.2d - %s",
+                              atoi ((char *) season),
+                              atoi ((char *) episode), tmp);
+
                 meta->title = strdup (title);
 
                 if (season)
