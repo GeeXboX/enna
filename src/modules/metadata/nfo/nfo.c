@@ -138,6 +138,31 @@ nfo_parse_stream_audio (Enna_Metadata *meta, xmlNode *audio)
 }
 
 static void
+nfo_get_tvshow_art (Enna_Metadata *meta,
+                    const char *filename, const char *art)
+{
+    char *cwd;
+    char show_art[1024];
+    struct stat st;
+    int err;
+
+    /* check if backdrop already exists */
+    if (meta->backdrop)
+        return;
+
+    cwd = ecore_file_dir_get (filename);
+    if (!cwd)
+        return;
+
+    memset (show_art, '\0', sizeof (show_art));
+    snprintf (show_art, sizeof (show_art), "%s/%s", cwd, art);
+
+    err = stat (show_art, &st);
+    if (!err && S_ISREG (st.st_mode))
+        meta->backdrop = strdup (show_art);
+}
+
+static void
 nfo_parse (Enna_Metadata *meta, const char *filename)
 {
     xmlDocPtr doc = NULL;
@@ -312,6 +337,11 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
             xmlFree (tmp);
         }
     }
+
+    /* special hack to retrieve tv show cover if none exists for the file */
+    /* NB: localfiles grabber has already been passed */
+    if (tvshow)
+        nfo_get_tvshow_art (meta, filename, "../fanart.jpg");
 
  error:
     if (doc)
