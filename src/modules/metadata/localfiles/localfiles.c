@@ -27,6 +27,7 @@
  *
  */
 
+#define _GNU_SOURCE
 #include <string.h>
 
 #include <Ecore_File.h>
@@ -103,9 +104,16 @@ cover_get_from_picture_file (Enna_Metadata *meta)
 
     for (i = 0; i < ARRAY_NB_ELEMENTS (known_extensions); i++)
     {
+        char *f, *x;
+        x = strrchr (filename, '.');
+        if (!x)
+            continue;
+
+        f = strndup (filename, strlen (filename) - strlen (x));
         memset (cover, '\0', sizeof (cover));
-        snprintf (cover, sizeof (cover), "%s/%s.%s", dir, filename,
+        snprintf (cover, sizeof (cover), "%s/%s.%s", dir, f,
                   known_extensions[i]);
+        free (f);
 
         if (ecore_file_exists (cover))
         {
