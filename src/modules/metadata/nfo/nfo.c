@@ -146,6 +146,7 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
     char *buf;
     ssize_t n;
     int fd;
+    int tvshow = 0;
 
     /* read NFO file */
     stat (filename, &st);
@@ -163,6 +164,7 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
     movie = get_node_xml_tree (xmlDocGetRootElement (doc), "movie");
     if (!movie)
     {
+        tvshow = 1;
         movie = get_node_xml_tree (xmlDocGetRootElement (doc),
                                    "episodedetails");
         if (!movie)
