@@ -83,7 +83,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
     const char *known_extensions[] =
     { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "tbn", "TBN" };
 
-    char *dir = NULL;
+    char *s, *dir = NULL;
     const char *filename = NULL;
     char cover[1024];
     int i, j;
@@ -99,7 +99,11 @@ cover_get_from_picture_file (Enna_Metadata *meta)
         goto out;
 
     dir = ecore_file_dir_get (meta->uri);
-    if (!ecore_file_can_read (dir))
+    s = strchr (dir, '/');
+    if (!s)
+        goto out;
+
+    if (ecore_file_can_read (s + 1))
         goto out;
 
     for (i = 0; i < ARRAY_NB_ELEMENTS (known_extensions); i++)
@@ -111,7 +115,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
 
         f = strndup (filename, strlen (filename) - strlen (x));
         memset (cover, '\0', sizeof (cover));
-        snprintf (cover, sizeof (cover), "%s/%s.%s", dir, f,
+        snprintf (cover, sizeof (cover), "%s/%s.%s", s + 1, f,
                   known_extensions[i]);
         free (f);
 
@@ -124,7 +128,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
         for (j = 0; j < ARRAY_NB_ELEMENTS (known_filenames); j++)
         {
             memset (cover, '\0', sizeof (cover));
-            snprintf (cover, sizeof (cover), "%s/%s.%s", dir,
+            snprintf (cover, sizeof (cover), "%s/%s.%s", s + 1,
                       known_filenames[j], known_extensions[i]);
 
             if (!ecore_file_exists (cover))
