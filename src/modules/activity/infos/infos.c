@@ -134,6 +134,7 @@ get_distribution (buffer_t *b)
         }
         fclose (f);
     }
+    if(!id || !release) {
     f = fopen (DEBIAN_VERSION_FILE, "r");
     if (f)
     {
@@ -146,6 +147,7 @@ get_distribution (buffer_t *b)
             memset (buffer, '\0', BUF_LEN);
         }
         fclose (f);
+    }
     }
 
     buffer_append (b, "<hilight>Distribution: </hilight>");
