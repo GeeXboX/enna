@@ -11,6 +11,9 @@ use_covers=1
 #0,1
 use_snapshots=1
 
+#0,1
+metadata_cache=1
+
 #/home/user/theme.edj for specific file or just 'default' if theme is
 #located at /usr/share/enna/theme/default.edj
 theme=default

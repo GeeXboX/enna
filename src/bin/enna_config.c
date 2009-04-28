@@ -60,6 +60,8 @@
     "\n"								\
     "#0,1\n"								\
     "use_snapshots=1\n"							\
+    "#0,1\n"								\
+    "metadata_cache=1\n"						\
     "\n"								\
     "#/home/user/theme.edj for specific file or just 'default' if theme is\n" \
     "#located at /usr/share/enna/theme/default.edj\n"			\
@@ -275,6 +277,10 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
             enna_config->use_snapshots = 1;
             enna_config_value_store(&enna_config->use_snapshots,
                                     "use_snapshots",
+                                    ENNA_CONFIG_INT, pair);
+            enna_config->metadata_cache = 1;
+            enna_config_value_store(&enna_config->metadata_cache,
+                                    "metadata_cache",
                                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->engine, "engine",
                     ENNA_CONFIG_STRING, pair);

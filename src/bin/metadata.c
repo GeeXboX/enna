@@ -244,6 +244,9 @@ enna_metadata_load_from_eet (char *md5)
     if (!md5)
         return NULL;
 
+    if (!enna->metadata_cache)
+        return NULL;
+
     enna_log (ENNA_MSG_EVENT, MODULE_NAME,
               "Trying to load %s from EET.", md5);
 
@@ -280,6 +283,9 @@ enna_metadata_save_to_eet (Enna_Metadata *m)
     char file[1024];
 
     if (!m)
+        return;
+
+    if (!enna->metadata_cache)
         return;
 
     memset (file, '\0', sizeof (file));

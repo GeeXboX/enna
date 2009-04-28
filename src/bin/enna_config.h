@@ -53,6 +53,7 @@ struct _Enna_Config
     int use_network;
     int use_covers;
     int use_snapshots;
+    int metadata_cache;
     const char *engine;
     const char *backend;
     const char *verbosity;

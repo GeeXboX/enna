@@ -134,6 +134,7 @@ struct _Enna
     int use_network;
     int use_covers;
     int use_snapshots;
+    int metadata_cache;
     int cursor_is_shown;
     Ecore_Timer *mouse_idle_timer;
     Ecore_Pipe *pipe_grabber;

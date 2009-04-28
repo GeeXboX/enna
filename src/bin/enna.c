@@ -298,6 +298,7 @@ static int _enna_init(void)
     enna->use_network = enna_config->use_network;
     enna->use_covers = enna_config->use_covers;
     enna->use_snapshots = enna_config->use_snapshots;
+    enna->metadata_cache = enna_config->metadata_cache;
 
     ecore_evas_fullscreen_set(enna->ee, enna_config->fullscreen
         | run_fullscreen);
