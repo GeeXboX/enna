@@ -172,11 +172,11 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
     struct stat st;
     char *buf;
     ssize_t n;
-    int fd;
+    int err, fd;
     int tvshow = 0;
 
     /* read NFO file */
-    stat (filename, &st);
+    err = stat (filename, &st);
     buf = calloc (1, st.st_size + 1);
     fd = open (filename, O_RDONLY);
     n = read (fd, buf, st.st_size);
@@ -236,8 +236,8 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
                     snprintf (dir_nfo, sizeof (dir_nfo),
                               "%s/../tvshow.nfo", cwd);
 
-                    stat (dir_nfo, &st);
-                    if (S_ISREG (st.st_mode))
+                    err = stat (dir_nfo, &st);
+                    if (!err && S_ISREG (st.st_mode))
                     {
                         xmlDocPtr ds = NULL;
                         xmlNode *tvshow = NULL;
