@@ -135,19 +135,19 @@ get_distribution (buffer_t *b)
         fclose (f);
     }
     if(!id || !release) {
-    f = fopen (DEBIAN_VERSION_FILE, "r");
-    if (f)
-    {
-        id = strdup ("Debian");
-        id[strlen (id)] = '\0';
-        while (fgets (buffer, BUF_LEN, f))
-        {
-            release = strdup (buffer);
-            release[strlen (release) - 1] = '\0';
-            memset (buffer, '\0', BUF_LEN);
-        }
-        fclose (f);
-    }
+      f = fopen (DEBIAN_VERSION_FILE, "r");
+      if (f)
+      {
+          id = strdup ("Debian");
+          id[strlen (id)] = '\0';
+          while (fgets (buffer, BUF_LEN, f))
+          {
+              release = strdup (buffer);
+              release[strlen (release) - 1] = '\0';
+              memset (buffer, '\0', BUF_LEN);
+          }
+          fclose (f);
+      }
     }
 
     buffer_append (b, "<hilight>Distribution: </hilight>");
