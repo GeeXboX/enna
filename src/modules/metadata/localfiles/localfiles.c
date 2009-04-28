@@ -129,7 +129,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
         if (S_ISREG (st.st_mode))
         {
             meta->cover = strdup (cover);
-            goto out;
+            goto art;
         }
 
         for (j = 0; j < ARRAY_NB_ELEMENTS (known_filenames); j++)
@@ -143,10 +143,35 @@ cover_get_from_picture_file (Enna_Metadata *meta)
                 continue;
 
             meta->cover = strdup (cover);
-            goto out;
+            goto art;
         }
     }
 
+ art:
+    /* try to load fanart */
+    for (i = 0; i < ARRAY_NB_ELEMENTS (known_extensions); i++)
+    {
+        char art[1024];
+        char *f, *x;
+
+        x = strrchr (filename, '.');
+        if (!x)
+            continue;
+
+        f = strndup (filename, strlen (filename) - strlen (x));
+        memset (art, '\0', sizeof (art));
+        snprintf (art, sizeof (art), "%s/%s-fanart.%s", s + 1, f,
+                  known_extensions[i]);
+        free (f);
+
+        stat (art, &st);
+        if (S_ISREG (st.st_mode))
+        {
+            ENNA_FREE (meta->backdrop);
+            meta->backdrop = strdup (art);
+            break;
+        }
+    }
  out:
     ENNA_FREE (dir);
 }
