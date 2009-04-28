@@ -162,7 +162,12 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
 
     movie = get_node_xml_tree (xmlDocGetRootElement (doc), "movie");
     if (!movie)
-        goto error;
+    {
+        movie = get_node_xml_tree (xmlDocGetRootElement (doc),
+                                   "episodedetails");
+        if (!movie)
+            goto error;
+    }
 
     fileinfo = get_node_xml_tree (movie, "fileinfo");
     if (!fileinfo)
