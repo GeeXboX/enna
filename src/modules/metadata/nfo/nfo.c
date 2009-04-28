@@ -44,7 +44,7 @@
 
 #define ENNA_MODULE_NAME        "metadata_nfo"
 #define ENNA_GRABBER_NAME       "nfo"
-#define ENNA_GRABBER_PRIORITY   1
+#define ENNA_GRABBER_PRIORITY   2
 
 typedef struct _Enna_Metadata_Nfo
 {

@@ -43,7 +43,7 @@
 
 #define ENNA_MODULE_NAME "metadata_amazon"
 #define ENNA_GRABBER_NAME "amazon"
-#define ENNA_GRABBER_PRIORITY   4
+#define ENNA_GRABBER_PRIORITY   5
 
 #define MAX_URL_SIZE        1024
 #define MAX_KEYWORD_SIZE    1024
