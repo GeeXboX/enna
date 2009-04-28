@@ -81,7 +81,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
     { "cover", "front" };
 
     const char *known_extensions[] =
-    { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };
+    { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "tbn", "TBN" };
 
     char *dir = NULL;
     const char *filename = NULL;
