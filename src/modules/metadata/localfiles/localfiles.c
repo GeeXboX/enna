@@ -121,7 +121,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
 
         f = strndup (filename, strlen (filename) - strlen (x));
         memset (cover, '\0', sizeof (cover));
-        snprintf (cover, sizeof (cover), "%s/%s.%s", s + 1, f,
+        snprintf (cover, sizeof (cover), "%s/%s.%s", s + 2, f,
                   known_extensions[i]);
         free (f);
 
@@ -135,7 +135,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
         for (j = 0; j < ARRAY_NB_ELEMENTS (known_filenames); j++)
         {
             memset (cover, '\0', sizeof (cover));
-            snprintf (cover, sizeof (cover), "%s/%s.%s", s + 1,
+            snprintf (cover, sizeof (cover), "%s/%s.%s", s + 2,
                       known_filenames[j], known_extensions[i]);
 
             stat (cover, &st);
@@ -160,7 +160,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
 
         f = strndup (filename, strlen (filename) - strlen (x));
         memset (art, '\0', sizeof (art));
-        snprintf (art, sizeof (art), "%s/%s-fanart.%s", s + 1, f,
+        snprintf (art, sizeof (art), "%s/%s-fanart.%s", s + 2, f,
                   known_extensions[i]);
         free (f);
 
