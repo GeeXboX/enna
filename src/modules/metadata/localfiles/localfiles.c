@@ -29,6 +29,9 @@
 
 #define _GNU_SOURCE
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include <Ecore_File.h>
 
@@ -77,6 +80,8 @@ cover_get_from_saved_file (Enna_Metadata *meta)
 static void
 cover_get_from_picture_file (Enna_Metadata *meta)
 {
+    struct stat st;
+
     const char *known_filenames[] =
     { "cover", "front" };
 
@@ -103,7 +108,8 @@ cover_get_from_picture_file (Enna_Metadata *meta)
     if (!s)
         goto out;
 
-    if (ecore_file_can_read (s + 1))
+    stat (s, &st);
+    if (!S_ISDIR (st.st_mode))
         goto out;
 
     for (i = 0; i < ARRAY_NB_ELEMENTS (known_extensions); i++)
@@ -119,7 +125,8 @@ cover_get_from_picture_file (Enna_Metadata *meta)
                   known_extensions[i]);
         free (f);
 
-        if (ecore_file_exists (cover))
+        stat (cover, &st);
+        if (S_ISREG (st.st_mode))
         {
             meta->cover = strdup (cover);
             goto out;
@@ -131,7 +138,8 @@ cover_get_from_picture_file (Enna_Metadata *meta)
             snprintf (cover, sizeof (cover), "%s/%s.%s", s + 1,
                       known_filenames[j], known_extensions[i]);
 
-            if (!ecore_file_exists (cover))
+            stat (cover, &st);
+            if (!S_ISREG (st.st_mode))
                 continue;
 
             meta->cover = strdup (cover);
