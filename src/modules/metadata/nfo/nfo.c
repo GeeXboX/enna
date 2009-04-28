@@ -195,7 +195,31 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
         tmp = get_prop_value_from_xml_tree (movie, "title");
         if (tmp)
         {
-            meta->title = strdup ((char *) tmp);
+            xmlChar *season = NULL, *episode = NULL;
+            if (tvshow)
+            {
+                season = get_prop_value_from_xml_tree (movie, "season");
+                episode = get_prop_value_from_xml_tree (movie, "episode");
+            }
+
+            if (season && episode)
+            {
+                char title[1024];
+
+                memset (title, '\0', sizeof (title));
+                snprintf (title, sizeof (title), "S%.2dE%.2d - %s",
+                          atoi ((char *) season),
+                          atoi ((char *) episode), tmp);
+                meta->title = strdup (title);
+
+                if (season)
+                    xmlFree (season);
+                if (episode)
+                    xmlFree (episode);
+            }
+            else
+                meta->title = strdup ((char *) tmp);
+
             enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                       "Title: %s", meta->title);
             xmlFree (tmp);
