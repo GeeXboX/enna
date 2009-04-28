@@ -259,6 +259,12 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
     if (!strcmp(key, "enna"))
     {
         config_data = data;
+
+        enna_config->use_network = 1;
+        enna_config->use_covers = 1;
+        enna_config->use_snapshots = 1;
+        enna_config->metadata_cache = 1;
+
         for (l = config_data->pair; l; l = l->next)
         {
             Config_Pair *pair = l->data;
@@ -268,17 +274,13 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
                     = enna_config_theme_file_get(enna_config->theme);
             enna_config_value_store(&enna_config->fullscreen, "fullscreen",
                     ENNA_CONFIG_INT, pair);
-            enna_config->use_network = 1;
             enna_config_value_store(&enna_config->use_network, "use_network",
                     ENNA_CONFIG_INT, pair);
-            enna_config->use_covers = 1;
             enna_config_value_store(&enna_config->use_covers, "use_covers",
                     ENNA_CONFIG_INT, pair);
-            enna_config->use_snapshots = 1;
             enna_config_value_store(&enna_config->use_snapshots,
                                     "use_snapshots",
                                     ENNA_CONFIG_INT, pair);
-            enna_config->metadata_cache = 1;
             enna_config_value_store(&enna_config->metadata_cache,
                                     "metadata_cache",
                                     ENNA_CONFIG_INT, pair);
