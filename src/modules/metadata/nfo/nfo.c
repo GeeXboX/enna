@@ -227,11 +227,12 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
             if (tvshow)
             {
                 char *cwd;
-                char dir_nfo[1024];
 
                 cwd = ecore_file_dir_get (filename);
                 if (cwd)
                 {
+                    char dir_nfo[1024];
+
                     memset (dir_nfo, '\0', sizeof (dir_nfo));
                     snprintf (dir_nfo, sizeof (dir_nfo),
                               "%s/../tvshow.nfo", cwd);
