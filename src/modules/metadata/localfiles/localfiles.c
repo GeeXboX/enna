@@ -91,7 +91,7 @@ cover_get_from_picture_file (Enna_Metadata *meta)
     char *s, *dir = NULL;
     const char *filename = NULL;
     char cover[1024];
-    int i, j;
+    int i, j, err;
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Trying to get cover from picture files");
@@ -108,8 +108,8 @@ cover_get_from_picture_file (Enna_Metadata *meta)
     if (!s)
         goto out;
 
-    stat (s, &st);
-    if (!S_ISDIR (st.st_mode))
+    err = stat (s, &st);
+    if (err || !S_ISDIR (st.st_mode))
         goto out;
 
     for (i = 0; i < ARRAY_NB_ELEMENTS (known_extensions); i++)
@@ -125,8 +125,8 @@ cover_get_from_picture_file (Enna_Metadata *meta)
                   known_extensions[i]);
         free (f);
 
-        stat (cover, &st);
-        if (S_ISREG (st.st_mode))
+        err = stat (cover, &st);
+        if (!err && S_ISREG (st.st_mode))
         {
             meta->cover = strdup (cover);
             goto art;
@@ -138,8 +138,8 @@ cover_get_from_picture_file (Enna_Metadata *meta)
             snprintf (cover, sizeof (cover), "%s/%s.%s", s + 2,
                       known_filenames[j], known_extensions[i]);
 
-            stat (cover, &st);
-            if (!S_ISREG (st.st_mode))
+            err = stat (cover, &st);
+            if (err || !S_ISREG (st.st_mode))
                 continue;
 
             meta->cover = strdup (cover);
@@ -164,8 +164,8 @@ cover_get_from_picture_file (Enna_Metadata *meta)
                   known_extensions[i]);
         free (f);
 
-        stat (art, &st);
-        if (S_ISREG (st.st_mode))
+        err = stat (art, &st);
+        if (!err && S_ISREG (st.st_mode))
         {
             ENNA_FREE (meta->backdrop);
             meta->backdrop = strdup (art);
