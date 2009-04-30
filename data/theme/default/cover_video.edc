@@ -14,7 +14,7 @@ group
             rel1.to: "bg";
             rel2.to: "bg";
             rel1.offset: -15 -15;
-            mv rel2.offset: 31 31;
+            rel2.offset: 31 31;
             image
             {
                normal: "menu_sel_fg.png";
