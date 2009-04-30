@@ -202,7 +202,7 @@ static void _view_cover_h_select(Evas_Object *obj, int pos)
 {
     Smart_Item *si, *ssi;
     int nth;
-   printf("Seelct %d\n", pos);
+
     API_ENTRY return;
 
     ssi = _smart_selected_item_get(sd, &nth);
