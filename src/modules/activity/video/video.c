@@ -104,6 +104,7 @@ struct _Enna_Module_Video
     Enna_Module *em;
     VIDEO_STATE state;
     Ecore_Timer *timer_show_mediaplayer;
+    Ecore_Timer *timer_backdrop;
     Ecore_Event_Handler *eos_event_handler;
     Ecore_Event_Handler *browser_refresh_handler;
     Enna_Playlist *enna_playlist;
@@ -281,7 +282,7 @@ _class_grabbing_finished(void *a)
 
 /*    if (mod->o_current_uri && strcmp(mod->o_current_uri, m->uri)) */
     /*     return; */
-    enna_backdrop_snapshot_set(o, m);
+    //enna_backdrop_snapshot_set(o, m);
     /* enna_smart_player_snapshot_set(o, m); */
     /* enna_smart_player_cover_set(o, m); */
     /* enna_smart_player_metadata_set(o, m); */
@@ -389,17 +390,46 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     free(ev);
 }
 
+static int _backdrop_show_cb(void *data)
+{
+    Enna_Metadata *m = data;
+    Evas_Object *o;
+    char *snap_file = NULL;
+
+    if (!m)
+    {
+	mod->timer_backdrop = NULL;
+	return 0;
+    }
+
+    snap_file = m->backdrop ? m->backdrop : m->snapshot;
+    if (!snap_file)
+    {
+	mod->timer_backdrop = NULL;
+	return 0;
+    }
+
+    mod->o_backdrop_old = mod->o_backdrop;
+    mod->o_backdrop = enna_backdrop_add(mod->em->evas);
+    enna_backdrop_snapshot_set(mod->o_backdrop, m);
+    evas_object_show(mod->o_backdrop);
+    /* FIXME bug when _backdrop_show_cb is called before switcher transition is finished */
+    enna_switcher_objects_switch(mod->o_switcher, mod->o_backdrop);
+    evas_object_show(mod->o_switcher);
+    edje_object_part_swallow(mod->o_edje, "enna.swallow.backdrop", mod->o_switcher);
+
+    mod->timer_backdrop = NULL;
+    return 0;
+}
+
 static void
 _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 {
-    /* TODO : Create Backdrop in a Timer (0.2s) */
+
     Enna_Metadata *m;
     Browser_Selected_File_Data *ev = event_info;
-    Evas_Object *o;
-    Eina_Bool ret;
-    char *snap_file = NULL;
     Enna_Metadata_Request *r;
-
+    const char *label;
     if (!ev || !ev->file) return;
 
     m = enna_metadata_new(ev->file->uri);
@@ -408,18 +438,18 @@ _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
     r->caps =  ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER;
     enna_metadata_grab_request(r);
 
-    snap_file = m->backdrop ? m->backdrop : m->snapshot;
-    printf("Snap file : %s\n", snap_file);
-    if (!snap_file) return;
+    label = m->title ? m->title : ev->file->label;
+    printf("set label : %s\n", label);
+    edje_object_part_text_set(mod->o_edje, "enna.text.label", label);
 
-    mod->o_backdrop_old = mod->o_backdrop;
-    mod->o_backdrop = enna_backdrop_add(mod->em->evas);
-    enna_backdrop_snapshot_set(mod->o_backdrop, m);
-    evas_object_show(mod->o_backdrop);
-    enna_switcher_objects_switch(mod->o_switcher, mod->o_backdrop);
-    evas_object_show(mod->o_switcher);
-    printf("mod->o_switcher : %p\n", mod->o_switcher);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.backdrop", mod->o_switcher);
+    if (mod->timer_backdrop)
+    {
+	/* FIXME : Memory leak m previously malloc is not freed */
+	ecore_timer_del(mod->timer_backdrop);
+	mod->timer_backdrop = NULL;
+    }
+
+    mod->timer_backdrop = ecore_timer_add(0.3, _backdrop_show_cb, m);
 
 }
 
