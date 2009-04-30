@@ -34,6 +34,7 @@
 #include "enna_config.h"
 #include "metadata.h"
 #include "logs.h"
+#include "image.h"
 
 #define SMART_NAME "enna_backdrop"
 
@@ -188,7 +189,6 @@ enna_backdrop_snapshot_set(Evas_Object *obj, Enna_Metadata *metadata)
     printf("snapshot set : %s\n", snap_file);
     if (snap_file)
     {
-	Eina_Bool ret;
 	Evas_Object *o_img_old;
         enna_log(ENNA_MSG_INFO, SMART_NAME, "snapshot filename : %s", snap_file);
 
@@ -197,7 +197,7 @@ enna_backdrop_snapshot_set(Evas_Object *obj, Enna_Metadata *metadata)
 	sd->o_img = enna_image_add(evas_object_evas_get(sd->o_edje));
 	enna_image_fill_inside_set(sd->o_img, 0);
 
-	ret = enna_image_file_set(sd->o_img, snap_file);
+	enna_image_file_set(sd->o_img, snap_file);
 
         edje_object_part_swallow(sd->o_edje,
                                  "enna.swallow.content", sd->o_img);
