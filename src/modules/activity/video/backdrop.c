@@ -192,7 +192,6 @@ enna_backdrop_snapshot_set(Evas_Object *obj, Enna_Metadata *metadata)
 	Evas_Object *o_img_old;
         enna_log(ENNA_MSG_INFO, SMART_NAME, "snapshot filename : %s", snap_file);
 
-        /* FIXME : add edje cb at end of snapshot transition to switch properly snapshots*/
         o_img_old = sd->o_img;
 	sd->o_img = enna_image_add(evas_object_evas_get(sd->o_edje));
 	enna_image_fill_inside_set(sd->o_img, 0);
