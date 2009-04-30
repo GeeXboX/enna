@@ -44,6 +44,7 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "browser.h"
+#include "view_cover.h"
 #include "list.h"
 #include "image.h"
 #include "logs.h"
@@ -72,7 +73,7 @@ struct _Smart_Data
     Evas_Coord x, y, w, h;
     Evas_Object *obj;
     Evas_Object *o_edje;
-    Evas_Object *o_list;
+    Evas_Object *o_view;
     Eina_List *files;
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
@@ -81,6 +82,21 @@ struct _Smart_Data
     Elm_Genlist_Item_Class *item_class;
     unsigned char accept_ev : 1;
     unsigned char show_file : 1;
+    struct
+    {
+	Evas_Object * (*view_add)(Smart_Data *sd);
+	void (*view_append)(
+	    Evas_Object *view,
+	    Elm_Genlist_Item_Class *class,
+	    void * class_data,
+	    const char *icon,
+	    const char *label,
+	    void (*func) (void *data),
+	    void *data);
+	void * (*view_selected_data_get)(Evas_Object *view);
+	int (*view_jump_label)(Evas_Object *view, const char *label);
+	void (*view_key_down)(Evas_Object *view, void *even_info);
+    }view_funcs;
 };
 
 
@@ -88,6 +104,7 @@ struct _Smart_Data
 /* local subsystem functions */
 static void _list_transition_right_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
 static void _list_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
+static void _view_hilight_cb (void *data, Evas_Object *obj, void *event_info);
 
 static void _smart_reconfigure(Smart_Data * sd);
 static void _smart_init(void);
@@ -104,37 +121,10 @@ static void _smart_clip_unset(Evas_Object * obj);
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
 
-/* externally accessible functions */
-Evas_Object *
-enna_browser_add(Evas * evas)
-{
-    _smart_init();
-    return evas_object_smart_add(evas, _smart);
-}
+/* Browser View */
 
-void enna_browser_show_file_set(Evas_Object *obj, unsigned char show)
-{
-    API_ENTRY return;
-
-    sd->show_file = show;
-}
-
-/* local subsystem globals */
-static void _smart_reconfigure(Smart_Data * sd)
-{
-    Evas_Coord x, y, w, h;
-
-    x = sd->x;
-    y = sd->y;
-    w = sd->w;
-    h = sd->h;
-
-    evas_object_move(sd->o_edje, x, y);
-    evas_object_resize(sd->o_edje, w, h);
-}
-
-/* Class Item interface */
-static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *part)
+/* List View */
+static char *_view_list_label_get(const void *data, Evas_Object *obj, const char *part)
 {
     const Browser_Item_Class_Data *item = data;
 
@@ -143,7 +133,7 @@ static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *
     return strdup(item->label);
 }
 
-static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
+static Evas_Object *_view_list_icon_get(const void *data, Evas_Object *obj, const char *part)
 {
     const Browser_Item_Class_Data *item = data;
 
@@ -166,15 +156,183 @@ static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const 
     return NULL;
 }
 
-static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
+static Evas_Bool _view_list_state_get(const void *data, Evas_Object *obj, const char *part)
 {
     return 0;
 }
 
-static void _genlist_del(const void *data, Evas_Object *obj)
+static void _view_list_del(const void *data, Evas_Object *obj)
 {
 }
 
+static Evas_Object *
+_browser_view_list_add(Smart_Data *sd)
+{
+    Evas_Object *view;
+
+    if (!sd) return NULL;
+
+    view = enna_list_add(sd->evas);
+
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", view);
+    /* View */
+    edje_object_signal_emit(view, "list,right,now", "enna");
+
+    sd->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
+
+    sd->item_class->item_style     = "default";
+    sd->item_class->func.label_get = _view_list_label_get;
+    sd->item_class->func.icon_get  = _view_list_icon_get;
+    sd->item_class->func.state_get = _view_list_state_get;
+    sd->item_class->func.del       = _view_list_del;
+
+    return view;
+}
+
+
+static void
+_browser_view_list_append(
+    Evas_Object *view,
+    Elm_Genlist_Item_Class *class,
+    void * class_data,
+    const char *icon,
+    const char *label,
+    void (*func) (void *data),
+    void *data)
+{
+
+    enna_list_append (view, class, class_data, label, func, data );
+}
+
+
+static Evas_Object *
+_browser_view_cover_add(Smart_Data *sd)
+{
+    Evas_Object *view;
+
+    if (!sd) return NULL;
+
+    view = enna_view_cover_add(evas_object_evas_get(sd->o_edje));
+    evas_object_show(view);
+
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", view);
+    evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
+    return view;
+}
+
+static void
+_browser_view_cover_append(
+    Evas_Object *view,
+    Elm_Genlist_Item_Class *class,
+    void * class_data,
+    const char *icon,
+    const char *label,
+    void (*func) (void *data),
+    void *data)
+{
+    enna_view_cover_append(view, icon, label, data);
+}
+
+static int
+_browser_view_cover_jump_label(Evas_Object *view, const char *label)
+{
+    return 0;
+}
+
+
+
+/* externally accessible functions */
+Evas_Object *
+enna_browser_add(Evas * evas)
+{
+    _smart_init();
+    return evas_object_smart_add(evas, _smart);
+}
+
+static void
+_view_hilight_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    Browser_Selected_File_Data *ev;
+    Browse_Data *bd = event_info;
+
+    if (!sd || !bd) return;
+
+    ev = calloc(1, sizeof(Browser_Selected_File_Data));
+    ev->file = bd->file;
+    ev->files = NULL;
+
+    evas_object_smart_callback_call (sd->obj, "hilight", ev);
+}
+
+void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
+{
+    API_ENTRY return;
+
+    switch(view_type)
+    {
+    case ENNA_BROWSER_VIEW_LIST:
+	sd->view_funcs.view_add = _browser_view_list_add;
+	sd->view_funcs.view_append =  _browser_view_list_append;
+	sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
+	sd->view_funcs.view_jump_label =  enna_list_jump_label;
+	sd->view_funcs.view_key_down = enna_list_event_key_down;
+	break;
+    case ENNA_BROWSER_VIEW_COVER:
+	sd->view_funcs.view_add = _browser_view_cover_add;
+	sd->view_funcs.view_append =  _browser_view_cover_append;
+	sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
+	sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
+	sd->view_funcs.view_key_down = enna_view_cover_event_feed;
+	break;
+    default:
+	break;
+    }
+    evas_object_smart_callback_del(sd->o_view, "hilight", _view_hilight_cb);
+    ENNA_OBJECT_DEL(sd->o_view);
+    sd->o_view = sd->view_funcs.view_add(sd);
+
+}
+
+void enna_browser_show_file_set(Evas_Object *obj, unsigned char show)
+{
+    API_ENTRY return;
+
+    sd->show_file = show;
+}
+
+int
+enna_browser_select_label(Evas_Object *obj, const char *label)
+{
+
+    API_ENTRY return -1;
+
+    if (!sd || !sd->o_view) return -1;
+
+    if (sd->view_funcs.view_jump_label)
+	sd->view_funcs.view_jump_label(sd->o_view, label);
+
+    return 0;
+
+}
+
+
+
+/* local subsystem globals */
+static void _smart_reconfigure(Smart_Data * sd)
+{
+    Evas_Coord x, y, w, h;
+
+    x = sd->x;
+    y = sd->y;
+    w = sd->w;
+    h = sd->h;
+
+    evas_object_move(sd->o_edje, x, y);
+    evas_object_resize(sd->o_edje, w, h);
+}
+
+/* Class Item interface */
 
 static void _smart_init(void)
 {
@@ -199,6 +357,8 @@ static void _smart_init(void)
     _smart = evas_smart_class_new(&sc);
 }
 
+
+
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
@@ -211,23 +371,15 @@ static void _smart_add(Evas_Object * obj)
     sd->o_edje = edje_object_add(sd->evas);
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/browser");
 
-    sd->o_list = enna_list_add(sd->evas);
+    sd->view_funcs.view_add = _browser_view_list_add;
+    sd->view_funcs.view_append =  _browser_view_list_append;
+    sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
+    sd->view_funcs.view_jump_label =  enna_list_jump_label;
+    sd->view_funcs.view_key_down = enna_list_event_key_down;
 
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
-    edje_object_signal_emit(sd->o_list, "list,right,now", "enna");
+    sd->o_view = sd->view_funcs.view_add(sd);
+    evas_object_smart_callback_add(sd->o_view, "hilight", _view_hilight_cb, sd);
 
-    sd->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
-
-    sd->item_class->item_style     = "default";
-    sd->item_class->func.label_get = _genlist_label_get;
-    sd->item_class->func.icon_get  = _genlist_icon_get;
-    sd->item_class->func.state_get = _genlist_state_get;
-    sd->item_class->func.del       = _genlist_del;
-
-    sd->x = 0;
-    sd->y = 0;
-    sd->w = 0;
-    sd->h = 0;
     sd->accept_ev = 1;
     sd->show_file = 1;
     evas_object_smart_member_add(sd->o_edje, obj);
@@ -240,7 +392,7 @@ static void _smart_del(Evas_Object * obj)
     INTERNAL_ENTRY;
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje", _list_transition_right_end_cb);
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje", _list_transition_left_end_cb);
-    ENNA_OBJECT_DEL(sd->o_list);
+    ENNA_OBJECT_DEL(sd->o_view);
     evas_object_del(sd->o_edje);
     free(sd);
 }
@@ -304,7 +456,8 @@ _list_transition_default_end_cb(void *data, Evas_Object *o, const char *sig, con
     if (!data) return;
 
     sd->accept_ev = 1;
-    enna_list_selected_set(sd->o_list, 0);
+
+    enna_list_selected_set(sd->o_view, 0);
     edje_object_signal_callback_del(sd->o_edje, "list,transition,default,end", "edje",
 	_list_transition_default_end_cb);
 }
@@ -410,11 +563,8 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     edje_object_signal_callback_add(sd->o_edje, "list,transition,default,end", "edje",
 	_list_transition_default_end_cb, sd);
 
-    ENNA_OBJECT_DEL(sd->o_list);
-
-    sd->o_list = enna_list_add(sd->evas);
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
-    edje_object_calc_force(sd->o_edje);
+    ENNA_OBJECT_DEL(sd->o_view);
+    sd->o_view = sd->view_funcs.view_add(sd);
 
     if (direction == 0)
     {
@@ -463,9 +613,8 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             bd = calloc(1, sizeof(Browse_Data));
             bd->file = f;
             bd->sd = sd;
-
-            enna_list_append(sd->o_list, sd->item_class, item, item->label, _browse, bd);
-
+	    sd->view_funcs.view_append(sd->o_view, sd->item_class,
+		item, item->icon, item->label, _browse, bd);
         }
 
     }
@@ -525,31 +674,18 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s", ev->key);
     switch (key)
     {
-    case ENNA_KEY_LEFT:
     case ENNA_KEY_CANCEL:
         _browse_down(sd);
         break;
-    case ENNA_KEY_RIGHT:
     case ENNA_KEY_OK:
     case ENNA_KEY_SPACE:
     {
         /* FIXME */
-        _browse(enna_list_selected_data_get(sd->o_list));
+        _browse(sd->view_funcs.view_selected_data_get(sd->o_view));
         break;
     }
     default:
-        enna_list_event_key_down(sd->o_list, event_info);
+	sd->view_funcs.view_key_down(sd->o_view, event_info);
     }
 }
 
-int
-enna_browser_select_label(Evas_Object *obj, const char *label)
-{
-
-    API_ENTRY return -1;
-
-    if (!sd || !sd->o_list) return -1;
-
-    return enna_list_jump_label(sd->o_list, label);
-
-}
