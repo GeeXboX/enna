@@ -38,30 +38,14 @@ group
          {
             state: "default" 0.0;
             color: 255 255 255 0;
-            rel1
-            {
-               relative: 0.0 0.0;
-               offset: 10 10;
-            }
-            rel2
-            {
-               relative: 1.0 1.0;
-               offset: -9 -9;
 
-            }
          }
          description
          {
             state: "select" 0.0;
             inherit: "default" 0.0;
-            rel1
-            {
-               relative: -0.2 -0.4;
-            }
-            rel2
-            {
-               relative: 1.2 1;
-            }
+            rel1.offset: -7 -15;
+            rel2.offset: 8 0;
          }
       }
       part {
@@ -99,13 +83,6 @@ group
             image.normal: "shadow.png";
             image.border: 14 14 14 14;
          }
-         description
-         {
-            state: "select" 0.0;
-            inherit: "default" 0.0;
-            visible: 1;
-            color: 255 255 255 255;
-         }
       }
       part
       {
@@ -119,14 +96,11 @@ group
             {
                relative: 0.0 0.0;
                to: "bg";
-               offset: 3 3;
             }
             rel2
             {
                relative: 1.0 1.0;
                to: "bg";
-               offset: -3 -3;
-
             }
          }
       }
@@ -157,7 +131,6 @@ group
          transition: LINEAR 0.2;
          target: "bg";
          target: "fg";
-         target: "shadow.picture";
       }
       program
       {   name: "unsel";
@@ -167,7 +140,6 @@ group
          transition: LINEAR 0.1;
          target: "bg";
          target: "fg";
-         target: "shadow.picture";
       }
       program
       {   name: "shadow,show";
@@ -193,29 +165,8 @@ group { name: "enna/covervideo";
          type: SWALLOW;
          description{
             state: default 0.0;
-            rel1.relative : 0 0;
-            rel2.relative: 1 1;
-            rel2.offset: 0 -48;
          }
       }
-      part { name: "enna.text.label";
-         type: TEXT;
-         effect:        SOFT_SHADOW;
-         description{
-            state: default 0.0;
-            rel1.relative: 0 1;
-            rel1.offset: 0 -48;
-            rel2.offset: 1 1;
-            color: 224 224 224 255;
-            color3: 0 0 0 64;
-            text {
-               font:     "content";
-               size:     26;
-               min:      1 1;
-               align:    0.5 0;
-            }
 
-         }
-      }
    }
 }
