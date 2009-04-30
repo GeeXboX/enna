@@ -186,7 +186,7 @@ enna_backdrop_snapshot_set(Evas_Object *obj, Enna_Metadata *metadata)
         return;
 
     snap_file = metadata->backdrop ? metadata->backdrop : metadata->snapshot;
-    printf("snapshot set : %s\n", snap_file);
+
     if (snap_file)
     {
 	Evas_Object *o_img_old;
