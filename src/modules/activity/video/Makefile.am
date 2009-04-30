@@ -23,7 +23,9 @@ pkg_LTLIBRARIES = activity_video.la
 activity_video_la_SOURCES= \
 video.c\
 smart_player.c\
-smart_player.h
+smart_player.h\
+backdrop.c\
+backdrop.h
 
 activity_video_la_LIBADD = @ENNA_LIBS@
 activity_video_la_LDFLAGS = -module -avoid-version
