@@ -433,6 +433,10 @@ enna_metadata_add_category (Enna_Metadata *meta, char *category)
     if (!meta || !category)
         return;
 
+    /* check that the category hasn't already been added to list */
+    if (meta->categories && strstr (meta->categories, category))
+      return;
+
     if (!meta->categories)
         meta->categories = strdup (category);
     else
