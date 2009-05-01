@@ -77,8 +77,7 @@ struct _Preload_Data
 };
 
 /* local subsystem functions */
-static void _view_cover_left_select(Evas_Object *obj);
-static void _view_cover_right_select(Evas_Object *obj);
+static void _view_cover_h_select(Evas_Object *obj, int pos);
 static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth);
 static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si);
 static void _smart_item_select(Smart_Data *sd, Smart_Item *si);
@@ -157,10 +156,10 @@ void enna_view_cover_event_feed(Evas_Object *obj, void *event_info)
     switch (key)
     {
     case ENNA_KEY_LEFT:
-        _view_cover_left_select(obj);
+        _view_cover_h_select (obj, 0);
         break;
     case ENNA_KEY_RIGHT:
-        _view_cover_right_select(obj);
+        _view_cover_h_select (obj, 1);
         break;
     default:
         break;
@@ -226,16 +225,6 @@ static void _view_cover_h_select(Evas_Object *obj, int pos)
 	if (ssi) _smart_item_unselect(sd, ssi);
     }
 
-}
-
-static void _view_cover_left_select(Evas_Object *obj)
-{
-    _view_cover_h_select (obj, 0);
-}
-
-static void _view_cover_right_select(Evas_Object *obj)
-{
-    _view_cover_h_select (obj, 1);
 }
 
 static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth)
