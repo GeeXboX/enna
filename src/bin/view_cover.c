@@ -190,11 +190,7 @@ void *enna_view_cover_selected_data_get(Evas_Object *obj)
     API_ENTRY return NULL;
 
     si = _smart_selected_item_get(sd, NULL);
-    if (si)
-	return si->data;
-    else
-	return NULL;
-
+    return si ? si->data : NULL;
 }
 
 /* local subsystem globals */
