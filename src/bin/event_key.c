@@ -134,6 +134,8 @@ static void _event_cb(void *data, char *event)
 
     evas_event_feed_key_down(enna->evas, event, event, event, NULL, ecore_time_get(), data);
     enna_log(ENNA_MSG_EVENT, NULL, "LIRC event : %s", event);
+
+    enna_idle_timer_renew();
 }
 
 /* Public Functions */

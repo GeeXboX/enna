@@ -66,6 +66,27 @@ static int run_fullscreen = 0;
 static int _create_gui(void);
 
 /* Callbacks */
+static int _idle_timer_cb(void *data)
+{
+    if (enna_mediaplayer_state_get() == PLAYING)
+    {
+        enna_log(ENNA_MSG_INFO, "idle-timer", "still playing, renewing idle timer");
+        return ECORE_CALLBACK_RENEW;
+    }
+    else if (enna_activity_request_quit_all())
+    {
+        enna_log(ENNA_MSG_INFO, "idle-timer", "at least one activity's busy, renewing idle timer");
+        return ECORE_CALLBACK_RENEW;
+    }
+
+    enna_log(ENNA_MSG_INFO, "timer", "enna seems to be idle, sending quit msg and waiting 20s");
+
+    evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), NULL);
+    ecore_timer_interval_set(enna->idle_timer, 20);
+
+    return ECORE_CALLBACK_RENEW;
+}
+
 static int _mouse_idle_timer_cb(void *data)
 {
     Evas_Object *cursor = (Evas_Object*)data;
@@ -83,6 +104,7 @@ void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
         edje_object_signal_emit(obj, "cursor,show", "enna");
         enna->cursor_is_shown=1;
         enna_log(ENNA_MSG_EVENT, NULL, "unhiding cursor.", evas_object_visible_get(obj));
+        enna_idle_timer_renew();
     }
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     if (enna->mouse_idle_timer)
@@ -97,6 +119,8 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     Enna *enna;
     enna_key_t key;
     int do_quit = 0;
+
+    enna_idle_timer_renew();
 
     key = enna_get_key(event);
 
@@ -399,6 +423,9 @@ static int _create_gui(void)
 
     ecore_evas_show(enna->ee);
 
+    enna->idle_timer = NULL;
+    enna_idle_timer_renew();
+
     o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/cursor");
     // hot_x/hot_y are about 4px/3px in original image which is scaled by 1.5
@@ -414,6 +441,7 @@ static int _create_gui(void)
 
 static void _enna_shutdown(void)
 {
+    ENNA_TIMER_DEL(enna->idle_timer);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
 
     enna_activity_del_all ();
@@ -442,6 +470,18 @@ static void _opt_geometry_parse(const char *optarg,
 
     if (pw) *pw = w;
     if (ph) *ph = h;
+}
+
+void enna_idle_timer_renew(void)
+{
+    if (enna_config->idle_timeout)
+    {
+        if (enna->idle_timer) { ENNA_TIMER_DEL(enna->idle_timer) }
+        else 
+            enna_log(ENNA_MSG_INFO, "timer", "setting up idle timer to %i minutes", enna_config->idle_timeout);
+        if (!(enna->idle_timer = ecore_timer_add(enna_config->idle_timeout*60, _idle_timer_cb, NULL)))
+            enna_log(ENNA_MSG_CRITICAL, "timer", "adding timer failed!");
+    }
 }
 
 static int exit_signal(void *data, int type, void *e)

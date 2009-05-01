@@ -63,6 +63,8 @@
     "#0,1\n"								\
     "metadata_cache=1\n"						\
     "\n"								\
+    "idle_timeout=0\n"							\
+    "\n"								\
     "#/home/user/theme.edj for specific file or just 'default' if theme is\n" \
     "#located at /usr/share/enna/theme/default.edj\n"			\
     "theme=default\n"							\
@@ -272,6 +274,8 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
                     ENNA_CONFIG_STRING, pair);
             enna_config->theme_file
                     = enna_config_theme_file_get(enna_config->theme);
+            enna_config_value_store(&enna_config->idle_timeout, "idle_timeout",
+                    ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->fullscreen, "fullscreen",
                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->use_network, "use_network",

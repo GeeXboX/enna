@@ -49,6 +49,7 @@ struct _Enna_Config
     /* Theme */
     const char *theme;
     const char *theme_file;
+    int idle_timeout;
     int fullscreen;
     int use_network;
     int use_covers;

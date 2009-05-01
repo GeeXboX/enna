@@ -101,7 +101,6 @@
    if (!sd) \
       return
 
-
 typedef enum
 {
     ENNA_MSG_NONE, /* no error messages */
@@ -137,9 +136,12 @@ struct _Enna
     int metadata_cache;
     int cursor_is_shown;
     Ecore_Timer *mouse_idle_timer;
+    Ecore_Timer *idle_timer;
     Ecore_Pipe *pipe_grabber;
 };
 
 extern Enna *enna;
+
+void enna_idle_timer_renew(void);
 
 #endif /* ENNA_H */
