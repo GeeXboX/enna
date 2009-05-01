@@ -208,13 +208,6 @@ allocine_parse (Enna_Metadata *meta)
         }
     }
 
-    if (!allocine_movie)
-    {
-        enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                  "Unable to find the item using alternative title");
-	goto error;
-    }
-
     /* fetch movie alternative title */
     if (!meta->alternative_title)
     {
