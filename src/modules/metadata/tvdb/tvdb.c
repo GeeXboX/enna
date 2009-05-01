@@ -39,7 +39,7 @@
 
 #define ENNA_MODULE_NAME        "metadata_tvdb"
 #define ENNA_GRABBER_NAME       "tvdb"
-#define ENNA_GRABBER_PRIORITY   4
+#define ENNA_GRABBER_PRIORITY   5
 
 #define PATH_BACKDROPS          "backdrops"
 #define PATH_COVERS             "covers"
