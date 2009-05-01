@@ -58,14 +58,16 @@
 
 #define ENNA_MODULE_NAME "video"
 
-static void _create_menu(void);
-static void _return_to_video_info_gui();
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info);
-static void _seek_video(double value);
 static void _browse(void *data);
+
+static void _create_menu(void);
+static void _return_to_video_info_gui();
+static void _seek_video(double value);
+
 static int _eos_cb(void *data, int type, void *event);
 static int _show_mediaplayer_cb(void *data);
 
@@ -132,19 +134,6 @@ menu_view_event (enna_key_t key, void *event_info)
 }
 
 static void
-browser_view_event (void *event_info)
-{
-    if (mod->o_mediaplayer)
-    {
-        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer =
-            ecore_timer_add (10, _show_mediaplayer_cb, NULL);
-    }
-
-    enna_browser_event_feed (mod->o_browser, event_info);
-}
-
-static void
 videoplayer_view_event (enna_key_t key)
 {
     switch (key)
@@ -203,174 +192,12 @@ _seek_video(double value)
 }
 
 static void
-_browser_root_cb (void *data, Evas_Object *obj, void *event_info)
-{
-    mod->state = MENU_VIEW;
-    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
-    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
-    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
-    evas_object_smart_callback_del(mod->o_browser, "hilight", _browser_hilight_cb);
-    ENNA_OBJECT_DEL(mod->o_browser);
-    ENNA_OBJECT_DEL(mod->o_switcher);
-    mod->o_switcher = NULL;
-    mod->o_browser = NULL;
-    _create_menu();
-    enna_location_remove_nth(mod->o_location,enna_location_count(mod->o_location) - 1);
-}
-
-static void
-_browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
-{
-    int n;
-    const char *label ;
-
-    n = enna_location_count(mod->o_location) - 1;
-    label = enna_location_label_get_nth(mod->o_location, n);
-    enna_browser_select_label(mod->o_browser, label);
-    enna_location_remove_nth(mod->o_location, n);
-}
-
-
-static void
-_browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
-{
-    int i = 0;
-    Enna_Vfs_File *f;
-    Eina_List *l;
-    Browser_Selected_File_Data *ev = event_info;
-
-    if (!ev || !ev->file) return;
-
-    if (ev->file->is_directory)
-    {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
-        enna_location_append(mod->o_location, ev->file->label, NULL, NULL, NULL, NULL);
-    }
-    else
-    {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s", ev->file->uri);
-        enna_mediaplayer_playlist_clear(mod->enna_playlist);
-        /* File selected, create mediaplayer */
-        EINA_LIST_FOREACH(ev->files, l, f)
-        {
-            if (!f->is_directory)
-            {
-                enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Append : %s %s to playlist", f->label, f->uri);
-                enna_mediaplayer_uri_append(mod->enna_playlist,f->uri, f->label);
-                if (!strcmp(f->uri, ev->file->uri))
-                {
-                    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Select : %s %d in playlist", f->uri, i);
-                    enna_mediaplayer_select_nth(mod->enna_playlist,i);
-
-                    if (mod->o_current_uri)
-                        free (mod->o_current_uri);
-                    mod->o_current_uri = strdup(f->uri);
-                }
-                i++;
-            }
-        }
-	enna_mediaplayer_play(mod->enna_playlist);
-//	enna_mediaplayer_position_set(m->position);
-    }
-    free(ev);
-}
-
-static int _backdrop_show_cb(void *data)
-{
-    Enna_Metadata *m = data;
-    char *snap_file = NULL;
-
-    if (!m)
-    {
-	mod->timer_backdrop = NULL;
-	return 0;
-    }
-
-    snap_file = m->backdrop ? m->backdrop : m->snapshot;
-    if (!snap_file)
-    {
-	mod->timer_backdrop = NULL;
-	return 0;
-    }
-
-    mod->o_backdrop_old = mod->o_backdrop;
-    mod->o_backdrop = enna_backdrop_add(mod->em->evas);
-    enna_backdrop_snapshot_set(mod->o_backdrop, m);
-    evas_object_show(mod->o_backdrop);
-    /* FIXME bug when _backdrop_show_cb is called before switcher transition is finished */
-    enna_switcher_objects_switch(mod->o_switcher, mod->o_backdrop);
-    evas_object_show(mod->o_switcher);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.backdrop", mod->o_switcher);
-
-    mod->timer_backdrop = NULL;
-    return 0;
-}
-
-static void
-_browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
-{
-
-    Enna_Metadata *m;
-    Browser_Selected_File_Data *ev = event_info;
-    Enna_Metadata_Request *r;
-    const char *label;
-    if (!ev || !ev->file) return;
-
-    m = enna_metadata_new(ev->file->uri);
-    r = calloc(sizeof(Enna_Metadata_Request), 1);
-    r->metadata = m;
-    r->caps =  ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_VIDEO | ENNA_GRABBER_CAP_COVER;
-    enna_metadata_grab_request(r);
-
-    label = m->title ? m->title : ev->file->label;
-    edje_object_part_text_set(mod->o_edje, "enna.text.label", label);
-
-    if (mod->timer_backdrop)
-    {
-	/* FIXME : Memory leak m previously malloc is not freed */
-	ecore_timer_del(mod->timer_backdrop);
-	mod->timer_backdrop = NULL;
-    }
-
-    mod->timer_backdrop = ecore_timer_add(0.3, _backdrop_show_cb, m);
-
-}
-
-
-static void
 _switcher_transition_done_cb(void *data, Evas_Object *obj, void *event_info)
 {
     ENNA_OBJECT_DEL(mod->o_backdrop_old);
     mod->o_backdrop_old = NULL;
 }
 
-static void
-_browse(void *data)
-{
-    Enna_Class_Vfs *vfs = data;
-
-    if (!vfs) return;
-
-    mod->o_browser = enna_browser_add(mod->em->evas);
-
-    enna_browser_view_add(mod->o_browser, ENNA_BROWSER_VIEW_COVER);
-    evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
-    evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
-    evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
-    evas_object_smart_callback_add(mod->o_browser, "hilight", _browser_hilight_cb, NULL);
-    evas_object_show(mod->o_browser);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.browser", mod->o_browser);
-    enna_browser_root_set(mod->o_browser, vfs);
-    evas_object_del(mod->o_list);
-    mod->o_list = NULL;
-    enna_location_append(mod->o_location, vfs->label, NULL, NULL, NULL, NULL);
-    mod->state = BROWSER_VIEW;
-    edje_object_signal_emit(mod->o_edje, "location,hide", "enna");
-
-    mod->o_switcher = enna_switcher_add(mod->em->evas);
-    evas_object_smart_callback_add( mod->o_switcher, "transition_done", _switcher_transition_done_cb, mod);
-
-}
 static void
 _return_to_video_info_gui()
 {
@@ -393,16 +220,226 @@ _eos_cb(void *data, int type, void *event)
     return 1;
 }
 
+/****************************************************************************/
+/*                                Browser                                   */
+/****************************************************************************/
+
+static void
+browser_view_event (void *event_info)
+{
+    if (mod->o_mediaplayer)
+    {
+        ENNA_TIMER_DEL (mod->timer_show_mediaplayer);
+        mod->timer_show_mediaplayer =
+            ecore_timer_add (10, _show_mediaplayer_cb, NULL);
+    }
+
+    enna_browser_event_feed (mod->o_browser, event_info);
+}
+
 static int
-_refresh_browser_cb(void *data, int type, void *event)
+_refresh_browser_cb (void *data, int type, void *event)
 {
     if (mod->state == MENU_VIEW)
     {
 	ENNA_OBJECT_DEL(mod->o_list);
 	mod->o_list = NULL;
-	_create_menu();
+	_create_menu ();
     }
+
     return 1;
+}
+
+static void
+_browser_root_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    mod->state = MENU_VIEW;
+    evas_object_smart_callback_del (mod->o_browser,
+                                    "root", _browser_root_cb);
+    evas_object_smart_callback_del (mod->o_browser,
+                                    "selected", _browser_selected_cb);
+    evas_object_smart_callback_del (mod->o_browser,
+                                    "browse_down", _browser_browse_down_cb);
+    evas_object_smart_callback_del (mod->o_browser,
+                                    "hilight", _browser_hilight_cb);
+
+    ENNA_OBJECT_DEL (mod->o_browser);
+    ENNA_OBJECT_DEL (mod->o_switcher);
+    mod->o_switcher = NULL;
+    mod->o_browser = NULL;
+
+    _create_menu ();
+    enna_location_remove_nth (mod->o_location,
+                              enna_location_count (mod->o_location) - 1);
+}
+
+static void
+_browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    int n;
+    const char *label ;
+
+    n = enna_location_count (mod->o_location) - 1;
+    label = enna_location_label_get_nth (mod->o_location, n);
+    enna_browser_select_label (mod->o_browser, label);
+    enna_location_remove_nth (mod->o_location, n);
+}
+
+static void
+_browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    int i = 0;
+    Enna_Vfs_File *f;
+    Eina_List *l;
+    Browser_Selected_File_Data *ev = event_info;
+
+    if (!ev || !ev->file) return;
+
+    if (ev->file->is_directory)
+    {
+        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                  "Directory Selected %s", ev->file->uri);
+        enna_location_append (mod->o_location, ev->file->label,
+                              NULL, NULL, NULL, NULL);
+    }
+    else
+    {
+        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                  "File Selected %s", ev->file->uri);
+        enna_mediaplayer_playlist_clear (mod->enna_playlist);
+
+        /* File selected, create mediaplayer */
+        EINA_LIST_FOREACH(ev->files, l, f)
+        {
+            if (!f->is_directory)
+            {
+                enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                          "Append : %s %s to playlist", f->label, f->uri);
+                enna_mediaplayer_uri_append (mod->enna_playlist,
+                                             f->uri, f->label);
+
+                if (!strcmp (f->uri, ev->file->uri))
+                {
+                    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                              "Select : %s %d in playlist", f->uri, i);
+                    enna_mediaplayer_select_nth (mod->enna_playlist,i);
+
+                    if (mod->o_current_uri)
+                        free (mod->o_current_uri);
+                    mod->o_current_uri = strdup(f->uri);
+                }
+                i++;
+            }
+        }
+
+	enna_mediaplayer_play (mod->enna_playlist);
+//	enna_mediaplayer_position_set (m->position);
+    }
+    free (ev);
+}
+
+static int
+_backdrop_show_cb (void *data)
+{
+    Enna_Metadata *m = data;
+    char *snap_file = NULL;
+
+    if (!m)
+    {
+	mod->timer_backdrop = NULL;
+	return 0;
+    }
+
+    snap_file = m->backdrop ? m->backdrop : m->snapshot;
+    if (!snap_file)
+    {
+	mod->timer_backdrop = NULL;
+	return 0;
+    }
+
+    mod->o_backdrop_old = mod->o_backdrop;
+    mod->o_backdrop = enna_backdrop_add (mod->em->evas);
+    enna_backdrop_snapshot_set (mod->o_backdrop, m);
+    evas_object_show (mod->o_backdrop);
+
+    /* FIXME bug when _backdrop_show_cb is called before
+       switcher transition is finished */
+    enna_switcher_objects_switch (mod->o_switcher, mod->o_backdrop);
+    evas_object_show (mod->o_switcher);
+    edje_object_part_swallow (mod->o_edje,
+                              "enna.swallow.backdrop", mod->o_switcher);
+
+    mod->timer_backdrop = NULL;
+
+    return 0;
+}
+
+static void
+_browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    Enna_Metadata *m;
+    Browser_Selected_File_Data *ev = event_info;
+    Enna_Metadata_Request *r;
+    const char *label;
+
+    if (!ev || !ev->file)
+        return;
+
+    m = enna_metadata_new (ev->file->uri);
+    r = calloc (sizeof (Enna_Metadata_Request), 1);
+    r->metadata = m;
+    r->caps  = ENNA_GRABBER_CAP_AUDIO;
+    r->caps |= ENNA_GRABBER_CAP_VIDEO;
+    r->caps |= ENNA_GRABBER_CAP_COVER;
+    enna_metadata_grab_request (r);
+
+    label = m->title ? m->title : ev->file->label;
+    edje_object_part_text_set (mod->o_edje, "enna.text.label", label);
+
+    if (mod->timer_backdrop)
+    {
+	/* FIXME : Memory leak m previously malloc is not freed */
+	ecore_timer_del (mod->timer_backdrop);
+	mod->timer_backdrop = NULL;
+    }
+
+    mod->timer_backdrop = ecore_timer_add (0.3, _backdrop_show_cb, m);
+}
+
+static void
+_browse (void *data)
+{
+    Enna_Class_Vfs *vfs = data;
+
+    if (!vfs)
+        return;
+
+    mod->o_browser = enna_browser_add (mod->em->evas);
+
+    enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_COVER);
+    evas_object_smart_callback_add (mod->o_browser,
+                                   "root", _browser_root_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser,
+                                    "selected", _browser_selected_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser, "browse_down",
+                                    _browser_browse_down_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser, "hilight",
+                                    _browser_hilight_cb, NULL);
+    evas_object_show (mod->o_browser);
+
+    edje_object_part_swallow (mod->o_edje,
+                              "enna.swallow.browser", mod->o_browser);
+    enna_browser_root_set (mod->o_browser, vfs);
+    evas_object_del (mod->o_list);
+    mod->o_list = NULL;
+    enna_location_append (mod->o_location,
+                          vfs->label, NULL, NULL, NULL, NULL);
+    mod->state = BROWSER_VIEW;
+    edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
+
+    mod->o_switcher = enna_switcher_add (mod->em->evas);
+    evas_object_smart_callback_add (mod->o_switcher, "transition_done",
+                                    _switcher_transition_done_cb, mod);
 }
 
 /****************************************************************************/
