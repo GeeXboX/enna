@@ -122,13 +122,13 @@ search_allocine_movie (xmlDocPtr doc, char *xpath_body, Enna_Metadata *meta)
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "One result has been found");
 
-    error_results_xpath :
-	if (results_xpath_request)
-	    xmlXPathFreeObject (results_xpath_request);
+ error_results_xpath:
+    if (results_xpath_request)
+        xmlXPathFreeObject (results_xpath_request);
 
-    error_xpath_query :
-        if (xpath_query)
-	    xmlFree (xpath_query);
+ error_xpath_query:
+    if (xpath_query)
+        xmlFree (xpath_query);
 
     return allocine_movie_result;
 }
