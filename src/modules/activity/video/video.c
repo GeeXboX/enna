@@ -232,6 +232,12 @@ _backdrop_show_cb (void *data)
 	return 0;
     }
 
+    if (m->type != ENNA_METADATA_VIDEO)
+    {
+        ENNA_TIMER_DEL (mod->timer_backdrop);
+	return 0;
+    }
+
     snap_file = m->backdrop ? m->backdrop : m->snapshot;
     if (!snap_file)
     {
