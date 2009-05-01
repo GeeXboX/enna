@@ -41,6 +41,7 @@
 #include "image.h"
 #include "logs.h"
 #include "event_key.h"
+#include "view_cover.h"
 
 #define SMART_NAME "enna_view_cover"
 
