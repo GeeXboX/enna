@@ -126,11 +126,11 @@ void enna_view_cover_append(Evas_Object *obj, const char *icon, const char *labe
     if (icon && icon[0] != '/')
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       enna_config_theme_get (), icon,
-                                      128, 128, "shadow,hide");
+                                      64, 64, "shadow,hide");
     else
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       icon, NULL,
-                                      128, 128 * 3/2, "shadow,show");
+                                      64, 64 * 3/2, "shadow,show");
 
     elm_box_pack_end(sd->o_box, o);
     si->o_pict = o_pict;
