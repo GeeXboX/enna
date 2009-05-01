@@ -74,8 +74,6 @@ static void _class_show(int dummy);
 static void _class_hide(int dummy);
 static void _class_event(void *event_info);
 static void _class_grabbing_finished(void *metadata);
-static int em_init(Enna_Module *em);
-static int em_shutdown(Enna_Module *em);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
 typedef enum _VIDEO_STATE VIDEO_STATE;
@@ -600,7 +598,7 @@ _refresh_browser_cb(void *data, int type, void *event)
 
 /* Module interface */
 
-static int
+static void
 em_init(Enna_Module *em)
 {
     mod = calloc(1, sizeof(Enna_Module_Video));
@@ -620,10 +618,9 @@ em_init(Enna_Module *em)
 	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, _refresh_browser_cb, NULL);
     enna_activity_add(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
-    return 1;
 }
 
-static int
+static void
 em_shutdown(Enna_Module *em)
 {
     ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
@@ -639,7 +636,6 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
-    return 1;
 }
 
 void
@@ -648,8 +644,7 @@ module_init(Enna_Module *em)
     if (!em)
         return;
 
-    if (!em_init(em))
-        return;
+    em_init(em);
 }
 
 void
