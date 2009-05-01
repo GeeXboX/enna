@@ -426,6 +426,19 @@ if test "x$want_metadata_tvdb" = "xyes"; then
   AC_DEFINE(BUILD_METADATA_TVDB, 1, [TheTVDB.com Metadata])
 fi
 
+# Allocine
+want_metadata_allocine="yes"
+AC_MSG_CHECKING(whether allocine.fr metadata module is to be built)
+AC_ARG_ENABLE(metadata-allocine,
+  AS_HELP_STRING([--enable-metadata-allocine],[Enable Allocine Metadata Module]),
+  [ want_metadata_allocine=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_allocine)
+AM_CONDITIONAL(BUILD_METADATA_ALLOCINE, test "x$want_metadata_allocine" = "xyes")
+if test "x$want_metadata_allocine" = "xyes"; then
+  AC_DEFINE(BUILD_METADATA_ALLOCINE, 1, [Allocine.fr Metadata])
+fi
+
 ##################
 # Volume Modules #
 ##################
@@ -669,6 +682,7 @@ src/modules/metadata/localfiles/Makefile
 src/modules/metadata/nfo/Makefile
 src/modules/metadata/tmdb/Makefile
 src/modules/metadata/tvdb/Makefile
+src/modules/metadata/allocine/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
@@ -724,6 +738,7 @@ echo "  Local files...................... : $want_metadata_localfiles"
 echo "  NFO Reader....................... : $want_metadata_nfo"
 echo "  TheMovieDB.org................... : $want_metadata_tmdb"
 echo "  TheTVDB.com...................... : $want_metadata_tvdb"
+echo "  Allocine.fr...................... : $want_metadata_allocine"
 echo
 echo "Supported Volume Modules:"
 echo
