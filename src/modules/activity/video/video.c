@@ -400,6 +400,9 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
     enna_metadata_grab_request (r);
 
     label = m->title ? m->title : ev->file->label;
+    if (m->type != ENNA_METADATA_VIDEO)
+        label = ev->file->label;
+
     edje_object_part_text_set (mod->o_edje, "enna.text.label", label);
 
     edje_object_part_text_set (mod->o_edje, "enna.text.category",
