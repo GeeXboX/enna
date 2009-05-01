@@ -443,45 +443,6 @@ _create_gui()
     mod->o_location = o;
 }
 
-/* Class Item interface */
-static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Video_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    return strdup(item->label);
-}
-
-static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Video_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    if (!strcmp(part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
-
-        ic = elm_icon_add(obj);
-        elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
-        evas_object_size_hint_min_set(ic, 64, 64);
-        evas_object_show(ic);
-        return ic;
-    }
-
-    return NULL;
-}
-
-static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
-{
-   return 0;
-}
-
-static void _genlist_del(const void *data, Evas_Object *obj)
-{
-}
-
 static int
 _refresh_browser_cb(void *data, int type, void *event)
 {
@@ -492,6 +453,52 @@ _refresh_browser_cb(void *data, int type, void *event)
 	_create_menu();
     }
     return 1;
+}
+
+/****************************************************************************/
+/*                           List Management                               */
+/****************************************************************************/
+
+static char *
+_genlist_label_get (const void *data, Evas_Object *obj, const char *part)
+{
+    const Video_Item_Class_Data *item = data;
+
+    return item ? strdup (item->label) : NULL;
+}
+
+static Evas_Object *
+_genlist_icon_get (const void *data, Evas_Object *obj, const char *part)
+{
+    const Video_Item_Class_Data *item = data;
+
+    if (!item)
+        return NULL;
+
+    if (!strcmp (part, "elm.swallow.icon"))
+    {
+        Evas_Object *ic;
+
+        ic = elm_icon_add (obj);
+        elm_icon_file_set (ic, enna_config_theme_get (), item->icon);
+        evas_object_size_hint_min_set (ic, 64, 64);
+        evas_object_show (ic);
+        return ic;
+    }
+
+    return NULL;
+}
+
+static Evas_Bool
+_genlist_state_get (const void *data, Evas_Object *obj, const char *part)
+{
+    return 0;
+}
+
+static void
+_genlist_del(const void *data, Evas_Object *obj)
+{
+    /* not yet implemented */
 }
 
 /****************************************************************************/
