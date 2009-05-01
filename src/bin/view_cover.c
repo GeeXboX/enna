@@ -158,10 +158,10 @@ void enna_view_cover_event_feed(Evas_Object *obj, void *event_info)
     enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s", ev->key);
     switch (key)
     {
-    case ENNA_KEY_UP:
+    case ENNA_KEY_LEFT:
         _view_cover_left_select(obj);
         break;
-    case ENNA_KEY_DOWN:
+    case ENNA_KEY_RIGHT:
         _view_cover_right_select(obj);
         break;
     default:
