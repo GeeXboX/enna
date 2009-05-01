@@ -58,8 +58,7 @@
 
 #define ENNA_MODULE_NAME "video"
 
-static void _create_menu();
-static void _create_gui();
+static void _create_menu(void);
 static void _return_to_video_info_gui();
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
@@ -394,8 +393,24 @@ _eos_cb(void *data, int type, void *event)
     return 1;
 }
 
+static int
+_refresh_browser_cb(void *data, int type, void *event)
+{
+    if (mod->state == MENU_VIEW)
+    {
+	ENNA_OBJECT_DEL(mod->o_list);
+	mod->o_list = NULL;
+	_create_menu();
+    }
+    return 1;
+}
+
+/****************************************************************************/
+/*                                  GUI                                     */
+/****************************************************************************/
+
 static void
-_create_menu()
+_create_menu (void)
 {
     Evas_Object *o;
     Eina_List *l, *categories;
@@ -424,7 +439,7 @@ _create_menu()
 }
 
 static void
-_create_gui()
+_create_gui (void)
 {
     Evas_Object *o;
     Evas_Object *icon;
@@ -441,18 +456,6 @@ _create_gui()
     edje_object_file_set(icon, enna_config_theme_get(), "icon/video_mini");
     enna_location_append(o, "Video", icon, NULL, NULL, NULL);
     mod->o_location = o;
-}
-
-static int
-_refresh_browser_cb(void *data, int type, void *event)
-{
-    if (mod->state == MENU_VIEW)
-    {
-	ENNA_OBJECT_DEL(mod->o_list);
-	mod->o_list = NULL;
-	_create_menu();
-    }
-    return 1;
 }
 
 /****************************************************************************/
