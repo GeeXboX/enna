@@ -251,7 +251,7 @@ _backdrop_show_cb (void *data)
     edje_object_part_swallow (mod->o_edje,
                               "enna.swallow.backdrop", mod->o_switcher);
 
-    mod->timer_backdrop = NULL;
+    ENNA_TIMER_DEL (mod->timer_backdrop);
 
     return 0;
 }
