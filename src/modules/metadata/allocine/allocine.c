@@ -281,12 +281,12 @@ allocine_parse (Enna_Metadata *meta)
         }
     }
 
-    error:
-        if (allocine_movie)
-            xmlFreeNode (allocine_movie);
-        if (doc)
-            xmlFreeDoc (doc);
-        ENNA_FREE (escaped_keywords);
+ error:
+    if (allocine_movie)
+        xmlFreeNode (allocine_movie);
+    if (doc)
+        xmlFreeDoc (doc);
+    ENNA_FREE (escaped_keywords);
 }
 
 /****************************************************************************/
