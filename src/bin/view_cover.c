@@ -154,7 +154,6 @@ void enna_view_cover_event_feed(Evas_Object *obj, void *event_info)
 
     API_ENTRY return;
 
-    enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s", ev->key);
     switch (key)
     {
     case ENNA_KEY_LEFT:
