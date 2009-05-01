@@ -383,7 +383,7 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
 static void
 browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_Metadata *m;
+    Enna_Metadata *m = NULL;
     Browser_Selected_File_Data *ev = event_info;
     Enna_Metadata_Request *r;
     const char *label;
@@ -391,22 +391,24 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
     if (!ev || !ev->file)
         return;
 
-    m = enna_metadata_new (ev->file->uri);
-    r = calloc (1, sizeof (Enna_Metadata_Request));
-    r->metadata = m;
-    r->caps  = ENNA_GRABBER_CAP_AUDIO;
-    r->caps |= ENNA_GRABBER_CAP_VIDEO;
-    r->caps |= ENNA_GRABBER_CAP_COVER;
-    enna_metadata_grab_request (r);
-
-    label = m->title ? m->title : ev->file->label;
-    if (m->type != ENNA_METADATA_VIDEO)
+    if (!ev->file->is_directory)
+    {
+        m = enna_metadata_new (ev->file->uri);
+        r = calloc (1, sizeof (Enna_Metadata_Request));
+        r->metadata = m;
+        r->caps  = ENNA_GRABBER_CAP_AUDIO;
+        r->caps |= ENNA_GRABBER_CAP_VIDEO;
+        r->caps |= ENNA_GRABBER_CAP_COVER;
+        enna_metadata_grab_request (r);
+        label = m->title ? m->title : ev->file->label;
+    }
+    else
         label = ev->file->label;
 
     edje_object_part_text_set (mod->o_edje, "enna.text.label", label);
-
     edje_object_part_text_set (mod->o_edje, "enna.text.category",
-                               m->categories ? m->categories : "");
+                               (m && m->categories) ? m->categories : "");
+
 
     if (mod->timer_backdrop)
     {
