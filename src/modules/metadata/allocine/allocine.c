@@ -95,9 +95,8 @@ search_allocine_movie (xmlDocPtr doc, char *xpath_body, Enna_Metadata *meta)
     snprintf (xpath, MAX_XPATH_QUERY_SIZE, xpath_body, keywords);
     free (keywords);
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-              "Multiple results with allocine grabber, searching with the XPath\
-              request: \"%s\"",
-	      xpath);
+              "Multiple results with allocine grabber, " \
+              "searching with the XPath request: \"%s\"", xpath);
 
     xpath_query = xmlCharStrndup (xpath, MAX_XPATH_QUERY_SIZE);
 
@@ -199,7 +198,8 @@ allocine_parse (Enna_Metadata *meta)
         enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
                   "Unable to find the item using title");
         /* we try to search the right node using the alternative title */
-        allocine_movie = search_allocine_movie (doc,XPATH_QUERY_ALTER_TITLE,meta);
+        allocine_movie =
+            search_allocine_movie (doc, XPATH_QUERY_ALTER_TITLE, meta);
         if (!allocine_movie)
         {
             enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
