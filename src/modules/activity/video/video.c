@@ -58,11 +58,11 @@
 
 #define ENNA_MODULE_NAME "video"
 
-static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
-static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
-static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
-static void _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info);
-static void _browse(void *data);
+static void browser_cb_root (void *data, Evas_Object *obj, void *event_info);
+static void browser_cb_select (void *data, Evas_Object *obj, void *event_info);
+static void browser_cb_enter (void *data, Evas_Object *obj, void *event_info);
+static void browser_cb_hl (void *data, Evas_Object *obj, void *event_info);
+static void browse (void *data);
 
 static void _create_menu(void);
 static void _return_to_video_info_gui();
@@ -125,7 +125,7 @@ menu_view_event (enna_key_t key, void *event_info)
     case ENNA_KEY_RIGHT:
     case ENNA_KEY_OK:
     case ENNA_KEY_SPACE:
-        _browse (enna_list_selected_data_get(mod->o_list));
+        browse (enna_list_selected_data_get(mod->o_list));
         break;
     default:
         enna_list_event_key_down(mod->o_list, event_info);
@@ -238,7 +238,7 @@ browser_view_event (void *event_info)
 }
 
 static int
-_refresh_browser_cb (void *data, int type, void *event)
+browser_cb_refresh (void *data, int type, void *event)
 {
     if (mod->state == MENU_VIEW)
     {
@@ -251,17 +251,17 @@ _refresh_browser_cb (void *data, int type, void *event)
 }
 
 static void
-_browser_root_cb (void *data, Evas_Object *obj, void *event_info)
+browser_cb_root (void *data, Evas_Object *obj, void *event_info)
 {
     mod->state = MENU_VIEW;
     evas_object_smart_callback_del (mod->o_browser,
-                                    "root", _browser_root_cb);
+                                    "root", browser_cb_root);
     evas_object_smart_callback_del (mod->o_browser,
-                                    "selected", _browser_selected_cb);
+                                    "selected", browser_cb_select);
     evas_object_smart_callback_del (mod->o_browser,
-                                    "browse_down", _browser_browse_down_cb);
+                                    "browse_down", browser_cb_enter);
     evas_object_smart_callback_del (mod->o_browser,
-                                    "hilight", _browser_hilight_cb);
+                                    "hilight", browser_cb_hl);
 
     ENNA_OBJECT_DEL (mod->o_browser);
     ENNA_OBJECT_DEL (mod->o_switcher);
@@ -274,7 +274,7 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
+browser_cb_enter (void *data, Evas_Object *obj, void *event_info)
 {
     int n;
     const char *label ;
@@ -286,7 +286,7 @@ _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
+browser_cb_select (void *data, Evas_Object *obj, void *event_info)
 {
     int i = 0;
     Enna_Vfs_File *f;
@@ -375,7 +375,7 @@ _backdrop_show_cb (void *data)
 }
 
 static void
-_browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
+browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
 {
     Enna_Metadata *m;
     Browser_Selected_File_Data *ev = event_info;
@@ -407,7 +407,7 @@ _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_browse (void *data)
+browse (void *data)
 {
     Enna_Class_Vfs *vfs = data;
 
@@ -418,13 +418,13 @@ _browse (void *data)
 
     enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_COVER);
     evas_object_smart_callback_add (mod->o_browser,
-                                   "root", _browser_root_cb, NULL);
+                                   "root", browser_cb_root, NULL);
     evas_object_smart_callback_add (mod->o_browser,
-                                    "selected", _browser_selected_cb, NULL);
+                                    "selected", browser_cb_select, NULL);
     evas_object_smart_callback_add (mod->o_browser, "browse_down",
-                                    _browser_browse_down_cb, NULL);
+                                    browser_cb_enter, NULL);
     evas_object_smart_callback_add (mod->o_browser, "hilight",
-                                    _browser_hilight_cb, NULL);
+                                    browser_cb_hl, NULL);
     evas_object_show (mod->o_browser);
 
     edje_object_part_swallow (mod->o_edje,
@@ -465,7 +465,7 @@ _create_menu (void)
         item = calloc(1, sizeof(Video_Item_Class_Data));
         item->icon = eina_stringshare_add(cat->icon);
         item->label = eina_stringshare_add(cat->label);
-        enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
+        enna_list_append(o, mod->item_class, item, item->label, browse, cat);
     }
 
     enna_list_selected_set(o, 0);
@@ -648,7 +648,7 @@ em_init(Enna_Module *em)
     mod->item_class->func.del       = _genlist_del;
 
     mod->browser_refresh_handler =
-	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, _refresh_browser_cb, NULL);
+	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, browser_cb_refresh, NULL);
     enna_activity_add(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
 }
@@ -659,10 +659,10 @@ em_shutdown(Enna_Module *em)
     ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
-    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
-    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
-    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
-    evas_object_smart_callback_del(mod->o_browser, "hilight", _browser_hilight_cb);
+    evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
+    evas_object_smart_callback_del(mod->o_browser, "selected", browser_cb_select);
+    evas_object_smart_callback_del(mod->o_browser, "browse_down", browser_cb_enter);
+    evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hl);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_location);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
