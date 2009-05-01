@@ -565,12 +565,6 @@ _class_event (void *event_info)
     }
 }
 
-static void
-_class_grabbing_finished (void *a)
-{
-
-}
-
 static Enna_Class_Activity class =
 {
     "video",
@@ -584,7 +578,7 @@ static Enna_Class_Activity class =
         _class_show,
         _class_hide,
         _class_event,
-	_class_grabbing_finished
+	NULL
     },
     NULL
 };
