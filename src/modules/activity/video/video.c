@@ -386,7 +386,7 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
         return;
 
     m = enna_metadata_new (ev->file->uri);
-    r = calloc (sizeof (Enna_Metadata_Request), 1);
+    r = calloc (1, sizeof (Enna_Metadata_Request));
     r->metadata = m;
     r->caps  = ENNA_GRABBER_CAP_AUDIO;
     r->caps |= ENNA_GRABBER_CAP_VIDEO;
