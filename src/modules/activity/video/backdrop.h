@@ -33,7 +33,6 @@
 #include "enna.h"
 
 Evas_Object *enna_backdrop_add(Evas * evas);
-void enna_backdrop_snapshot_set(Evas_Object *obj,
-    Enna_Metadata *metadata);
+void enna_backdrop_set(Evas_Object *obj, char *file);
 
 #endif /* BACKDROP_H */

@@ -172,19 +172,13 @@ enna_backdrop_add(Evas * evas)
 }
 
 void
-enna_backdrop_snapshot_set(Evas_Object *obj, Enna_Metadata *metadata)
+enna_backdrop_set (Evas_Object *obj, char *file)
 {
-    char *snap_file = NULL;
     Evas_Object *o_img_old;
 
     API_ENTRY return;
 
-    if (!metadata)
-        return;
-
-    snap_file = metadata->backdrop ? metadata->backdrop : metadata->snapshot;
-
-    if (!snap_file)
+    if (!file)
     {
         edje_object_signal_emit(sd->o_edje, "snapshot,hide", "enna");
         evas_object_del(sd->o_img);
@@ -192,12 +186,12 @@ enna_backdrop_snapshot_set(Evas_Object *obj, Enna_Metadata *metadata)
     }
 
     enna_log(ENNA_MSG_EVENT, SMART_NAME,
-             "using snapshot filename : %s", snap_file);
+             "using backdrop filename: %s", file);
     o_img_old = sd->o_img;
     sd->o_img = enna_image_add(evas_object_evas_get(sd->o_edje));
     enna_image_fill_inside_set(sd->o_img, 0);
 
-    enna_image_file_set(sd->o_img, snap_file);
+    enna_image_file_set(sd->o_img, file);
 
     edje_object_part_swallow(sd->o_edje,
                              "enna.swallow.content", sd->o_img);

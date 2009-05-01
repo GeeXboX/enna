@@ -241,7 +241,7 @@ _backdrop_show_cb (void *data)
 
     mod->o_backdrop_old = mod->o_backdrop;
     mod->o_backdrop = enna_backdrop_add (mod->em->evas);
-    enna_backdrop_snapshot_set (mod->o_backdrop, m);
+    enna_backdrop_set (mod->o_backdrop, snap_file);
     evas_object_show (mod->o_backdrop);
 
     /* FIXME bug when _backdrop_show_cb is called before
