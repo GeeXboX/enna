@@ -175,6 +175,7 @@ void
 enna_backdrop_snapshot_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
     char *snap_file = NULL;
+    Evas_Object *o_img_old;
 
     API_ENTRY return;
 
@@ -183,26 +184,23 @@ enna_backdrop_snapshot_set(Evas_Object *obj, Enna_Metadata *metadata)
 
     snap_file = metadata->backdrop ? metadata->backdrop : metadata->snapshot;
 
-    if (snap_file)
-    {
-	Evas_Object *o_img_old;
-        enna_log(ENNA_MSG_INFO, SMART_NAME, "snapshot filename : %s", snap_file);
-
-        o_img_old = sd->o_img;
-	sd->o_img = enna_image_add(evas_object_evas_get(sd->o_edje));
-	enna_image_fill_inside_set(sd->o_img, 0);
-
-	enna_image_file_set(sd->o_img, snap_file);
-
-        edje_object_part_swallow(sd->o_edje,
-                                 "enna.swallow.content", sd->o_img);
-        edje_object_signal_emit(sd->o_edje, "snapshot,show", "enna");
-        evas_object_del(o_img_old);
-	evas_object_show(sd->o_img);
-    }
-    else
+    if (!snap_file)
     {
         edje_object_signal_emit(sd->o_edje, "snapshot,hide", "enna");
         evas_object_del(sd->o_img);
+        return;
     }
+
+    enna_log(ENNA_MSG_INFO, SMART_NAME, "snapshot filename : %s", snap_file);
+    o_img_old = sd->o_img;
+    sd->o_img = enna_image_add(evas_object_evas_get(sd->o_edje));
+    enna_image_fill_inside_set(sd->o_img, 0);
+
+    enna_image_file_set(sd->o_img, snap_file);
+
+    edje_object_part_swallow(sd->o_edje,
+                             "enna.swallow.content", sd->o_img);
+    edje_object_signal_emit(sd->o_edje, "snapshot,show", "enna");
+    evas_object_del(o_img_old);
+    evas_object_show(sd->o_img);
 }
