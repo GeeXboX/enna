@@ -142,8 +142,6 @@ void enna_view_cover_append(Evas_Object *obj, const char *icon, const char *labe
 
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
             _smart_event_mouse_down, si);
-
-
 }
 
 void enna_view_cover_event_feed(Evas_Object *obj, void *event_info)
@@ -177,8 +175,6 @@ void enna_view_cover_select_nth(Evas_Object *obj, int nth)
 
     _smart_item_unselect(sd, _smart_selected_item_get(sd, NULL));
     _smart_item_select(sd, si);
-
-
 }
 
 void *enna_view_cover_selected_data_get(Evas_Object *obj)
@@ -248,7 +244,6 @@ static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth)
 
 static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si)
 {
-
     if (!si || !si->selected) return;
 
     si->selected = 0;
@@ -266,7 +261,6 @@ static void _smart_item_select(Smart_Data *sd, Smart_Item *si)
     evas_object_raise(si->o_edje);
     evas_object_smart_callback_call (sd->obj, "hilight", si->data);
     edje_object_part_text_set(sd->o_edje, "enna.text.label", si->label);
-
 }
 
 static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
@@ -277,19 +271,16 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     if (!si) return;
     _smart_item_unselect(si->sd, _smart_selected_item_get(si->sd, NULL));
     _smart_item_select(si->sd, si);
-
 }
 
 static void _smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
 
-
     x = sd->x;
     y = sd->y;
     w = sd->w;
     h = sd->h;
-
 
     evas_object_move(sd->o_edje, sd->x, sd->y);
     evas_object_resize(sd->o_edje, sd->w, sd->h);
@@ -318,7 +309,6 @@ static void _smart_add(Evas_Object * obj)
     evas_object_show(sd->o_box);
     evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
     elm_scroller_content_set(sd->o_scroll, sd->o_box);
-
 
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
