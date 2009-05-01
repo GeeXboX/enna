@@ -53,7 +53,12 @@
 	    type: SWALLOW;
 	    description { state: "default" 0.0;
 	       rel1.offset: 1 1;
+
 	       rel2.offset: -2 -2;
+               rel2.to_x: "sb_vbar";
+               rel2.to_y: "sb_hbar";
+               rel2.relative: 0 0;
+
 	    }
 	 }
 	 part { name: "sb_vbar_clip_master";
@@ -418,7 +423,7 @@
                v |= get_int(sbalways_h);
 	       if (!v) {
                   emit("do-show-hbar", "");
-		  set_int(sbvis_h, 1);
+                  set_int(sbvis_h, 1);
 	       }
 	       v = get_int(sbvis_timer);
 	       if (v > 0) cancel_timer(v);
