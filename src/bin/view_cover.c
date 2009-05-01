@@ -84,7 +84,6 @@ static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si);
 static void _smart_item_select(Smart_Data *sd, Smart_Item *si);
 static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         void *event_info);
-static void _smart_reconfigure(Smart_Data * sd);
 
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
