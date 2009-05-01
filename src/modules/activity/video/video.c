@@ -228,14 +228,14 @@ _backdrop_show_cb (void *data)
 
     if (!m)
     {
-	mod->timer_backdrop = NULL;
+        ENNA_TIMER_DEL (mod->timer_backdrop);
 	return 0;
     }
 
     snap_file = m->backdrop ? m->backdrop : m->snapshot;
     if (!snap_file)
     {
-	mod->timer_backdrop = NULL;
+        ENNA_TIMER_DEL (mod->timer_backdrop);
 	return 0;
     }
 
