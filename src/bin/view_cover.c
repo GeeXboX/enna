@@ -89,6 +89,26 @@ static void _smart_reconfigure(Smart_Data * sd);
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
 
+static void
+enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
+                              const char *file, const char *group,
+                              Evas_Coord w, Evas_Coord h,
+                              char *signal)
+{
+    elm_image_file_set (p, file, group);
+    elm_image_no_scale_set (p, 1);
+    elm_image_smooth_set (p, 1);
+
+    /* Fit container but keep aspect ratio */
+    elm_image_scale_set (p, 1, 1);
+    evas_object_size_hint_min_set (o, w, h);
+    evas_object_size_hint_align_set (o, 1, 1);
+    evas_object_show (p);
+    edje_object_part_swallow (o, "enna.swallow.icon", p);
+    edje_object_signal_emit (e, signal, "enna");
+    evas_object_show (o);
+}
+
 void enna_view_cover_append(Evas_Object *obj, const char *icon, const char *label, void *data)
 {
     Evas_Object *o, *o_pict;
@@ -104,34 +124,16 @@ void enna_view_cover_append(Evas_Object *obj, const char *icon, const char *labe
     si->label = eina_stringshare_add(label);
     o_pict = elm_image_add(sd->o_scroll);
     si->data = data;
+
     if (icon && icon[0] != '/')
-    {
-	elm_image_file_set(o_pict, enna_config_theme_get(), icon);
-	elm_image_no_scale_set(o_pict, 1);
-	elm_image_smooth_set(o_pict, 1);
-	/* Fit container but keep aspect ratio */
-	elm_image_scale_set(o_pict, 1, 1);
-	evas_object_size_hint_min_set(o, 128, 128);
-	evas_object_size_hint_align_set(o, 1, 1);
-	evas_object_show(o_pict);
-	edje_object_part_swallow(o, "enna.swallow.icon", o_pict);
-	edje_object_signal_emit(si->o_edje, "shadow,hide", "enna");
-	evas_object_show(o);
-    }
+        enna_view_cover_display_icon (o, o_pict, si->o_edje,
+                                      enna_config_theme_get (), icon,
+                                      128, 128, "shadow,hide");
     else
-    {
-	elm_image_file_set(o_pict, icon, NULL);
-	elm_image_no_scale_set(o_pict, 1);
-	elm_image_smooth_set(o_pict, 1);
-	/* Fit container but keep aspect ratio */
-	elm_image_scale_set(o_pict, 1, 1);
-	evas_object_size_hint_min_set(o, 128, 128*3/2);
-	evas_object_size_hint_align_set(o, 1, 1);
-	evas_object_show(o_pict);
-	edje_object_part_swallow(o, "enna.swallow.icon", o_pict);
-	edje_object_signal_emit(si->o_edje, "shadow,show", "enna");
-	evas_object_show(o);
-    }
+        enna_view_cover_display_icon (o, o_pict, si->o_edje,
+                                      icon, NULL,
+                                      128, 128 * 3/2, "shadow,show");
+
     elm_box_pack_end(sd->o_box, o);
     si->o_pict = o_pict;
     si->o_edje = o;
