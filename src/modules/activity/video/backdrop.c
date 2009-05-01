@@ -47,10 +47,6 @@ struct _Smart_Data
     Evas_Object *o_img;
 };
 
-/* local subsystem functions */
-static void _smart_reconfigure(Smart_Data * sd);
-static void _smart_init(void);
-
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
 
