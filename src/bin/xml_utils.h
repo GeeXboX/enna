@@ -32,6 +32,7 @@
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <libxml/xpath.h>
 
 xmlDocPtr get_xml_doc_from_memory (char *buffer);
 xmlNode *get_node_xml_tree(xmlNode *root, const char *prop);
@@ -41,5 +42,6 @@ xmlChar *get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
                                                const char *attr_value);
 xmlChar *get_attr_value_from_xml_tree (xmlNode *root, const char *prop,
                                        const char *attr_name);
+xmlXPathObjectPtr get_xnodes_from_xml_tree (xmlDocPtr doc, xmlChar *xpath);
 
 #endif /* XML_UTILS_H */

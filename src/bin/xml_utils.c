@@ -142,3 +142,30 @@ get_attr_value_from_xml_tree (xmlNode *root,
 
     return NULL;
 }
+
+
+xmlXPathObjectPtr 
+get_xnodes_from_xml_tree (xmlDocPtr doc, xmlChar *xpath)
+{	
+    xmlXPathContextPtr context;
+    xmlXPathObjectPtr result;
+
+    context = xmlXPathNewContext(doc);
+
+    if (!context) 
+        return NULL;
+
+    result = xmlXPathEvalExpression(xpath, context);
+    xmlXPathFreeContext(context);
+
+    if (!result) 
+        return NULL;
+
+    if(xmlXPathNodeSetIsEmpty(result->nodesetval))
+    {
+        xmlXPathFreeObject(result);
+	return NULL;
+    }
+
+    return result;
+}
