@@ -93,6 +93,7 @@ search_allocine_movie (xmlDocPtr doc, char *xpath_body, Enna_Metadata *meta)
     /* setting the xpath query */
     memset (xpath, '\0', MAX_XPATH_QUERY_SIZE);
     snprintf (xpath, MAX_XPATH_QUERY_SIZE, xpath_body, keywords);
+    free (keywords);
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Multiple results with allocine grabber, searching with the XPath\
               request: \"%s\"",
