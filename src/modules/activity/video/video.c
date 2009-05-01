@@ -220,6 +220,42 @@ _eos_cb(void *data, int type, void *event)
     return 1;
 }
 
+static int
+_backdrop_show_cb (void *data)
+{
+    Enna_Metadata *m = data;
+    char *snap_file = NULL;
+
+    if (!m)
+    {
+	mod->timer_backdrop = NULL;
+	return 0;
+    }
+
+    snap_file = m->backdrop ? m->backdrop : m->snapshot;
+    if (!snap_file)
+    {
+	mod->timer_backdrop = NULL;
+	return 0;
+    }
+
+    mod->o_backdrop_old = mod->o_backdrop;
+    mod->o_backdrop = enna_backdrop_add (mod->em->evas);
+    enna_backdrop_snapshot_set (mod->o_backdrop, m);
+    evas_object_show (mod->o_backdrop);
+
+    /* FIXME bug when _backdrop_show_cb is called before
+       switcher transition is finished */
+    enna_switcher_objects_switch (mod->o_switcher, mod->o_backdrop);
+    evas_object_show (mod->o_switcher);
+    edje_object_part_swallow (mod->o_edje,
+                              "enna.swallow.backdrop", mod->o_switcher);
+
+    mod->timer_backdrop = NULL;
+
+    return 0;
+}
+
 /****************************************************************************/
 /*                                Browser                                   */
 /****************************************************************************/
@@ -336,42 +372,6 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
 //	enna_mediaplayer_position_set (m->position);
     }
     free (ev);
-}
-
-static int
-_backdrop_show_cb (void *data)
-{
-    Enna_Metadata *m = data;
-    char *snap_file = NULL;
-
-    if (!m)
-    {
-	mod->timer_backdrop = NULL;
-	return 0;
-    }
-
-    snap_file = m->backdrop ? m->backdrop : m->snapshot;
-    if (!snap_file)
-    {
-	mod->timer_backdrop = NULL;
-	return 0;
-    }
-
-    mod->o_backdrop_old = mod->o_backdrop;
-    mod->o_backdrop = enna_backdrop_add (mod->em->evas);
-    enna_backdrop_snapshot_set (mod->o_backdrop, m);
-    evas_object_show (mod->o_backdrop);
-
-    /* FIXME bug when _backdrop_show_cb is called before
-       switcher transition is finished */
-    enna_switcher_objects_switch (mod->o_switcher, mod->o_backdrop);
-    evas_object_show (mod->o_switcher);
-    edje_object_part_swallow (mod->o_edje,
-                              "enna.swallow.backdrop", mod->o_switcher);
-
-    mod->timer_backdrop = NULL;
-
-    return 0;
 }
 
 static void
