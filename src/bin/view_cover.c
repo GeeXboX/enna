@@ -79,8 +79,6 @@ struct _Preload_Data
 /* local subsystem functions */
 static void _view_cover_left_select(Evas_Object *obj);
 static void _view_cover_right_select(Evas_Object *obj);
-static void _view_cover_up_select(Evas_Object *obj);
-static void _view_cover_down_select(Evas_Object *obj);
 static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth);
 static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si);
 static void _smart_item_select(Smart_Data *sd, Smart_Item *si);
