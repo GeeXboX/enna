@@ -69,11 +69,6 @@ static void _seek_video(double value);
 static void _browse(void *data);
 static int _eos_cb(void *data, int type, void *event);
 static int _show_mediaplayer_cb(void *data);
-static void _class_init(int dummy);
-static void _class_show(int dummy);
-static void _class_hide(int dummy);
-static void _class_event(void *event_info);
-static void _class_grabbing_finished(void *metadata);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
 typedef enum _VIDEO_STATE VIDEO_STATE;
@@ -115,75 +110,6 @@ struct _Enna_Module_Video
 };
 
 static Enna_Module_Video *mod;
-
-
-Enna_Module_Api module_api =
-{
-    ENNA_MODULE_VERSION,
-    ENNA_MODULE_ACTIVITY,
-    "activity_video"
-};
-
-static Enna_Class_Activity class =
-{
-    "video",
-    1,
-    "Video",
-    NULL,
-    "icon/video",
-    {
-        _class_init,
-        NULL,
-        _class_show,
-        _class_hide,
-        _class_event,
-	_class_grabbing_finished
-    },
-    NULL
-};
-
-static void
-_class_init(int dummy)
-{
-    _create_gui();
-    enna_content_append("video", mod->o_edje);
-}
-
-static void
-_class_show(int dummy)
-{
-    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
-    switch (mod->state)
-    {
-    case BROWSER_VIEW:
-	edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
-	edje_object_signal_emit(mod->o_edje, "location,hide", "enna");
-
-    case MENU_VIEW:
-        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
-	edje_object_signal_emit(mod->o_edje, "location,show", "enna");
-
-        break;
-/*    case VIDEO_INFO_VIEW:
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
-	edje_object_signal_emit(mod->o_edje, "location,hide", "enna");
-        break;*/
-    case VIDEOPLAYER_VIEW:
-        break;
-    default:
-        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME, "State Unknown in video module");
-    }
-
-}
-
-static void
-_class_hide(int dummy)
-{
-    edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
-}
 
 static void
 menu_view_event (enna_key_t key, void *event_info)
@@ -247,34 +173,6 @@ videoplayer_view_event (enna_key_t key)
     default:
         break;
     }
-}
-
-static void
-_class_event(void *event_info)
-{
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key(ev);
-
-    switch (mod->state)
-    {
-    case MENU_VIEW:
-        menu_view_event (key, event_info);
-        break;
-    case BROWSER_VIEW:
-        browser_view_event (event_info);
-        break;
-    case VIDEOPLAYER_VIEW:
-        videoplayer_view_event (key);
-        break;
-    default:
-        break;
-    }
-}
-
-static void
-_class_grabbing_finished(void *a)
-{
-
 }
 
 static int
@@ -596,7 +494,100 @@ _refresh_browser_cb(void *data, int type, void *event)
     return 1;
 }
 
-/* Module interface */
+/****************************************************************************/
+/*                         Private Module API                               */
+/****************************************************************************/
+
+static void
+_class_init (int dummy)
+{
+    _create_gui ();
+    enna_content_append ("video", mod->o_edje);
+}
+
+static void
+_class_show (int dummy)
+{
+    edje_object_signal_emit (mod->o_edje, "module,show", "enna");
+
+    switch (mod->state)
+    {
+    case BROWSER_VIEW:
+	edje_object_signal_emit (mod->o_edje, "content,show", "enna");
+        edje_object_signal_emit (mod->o_edje, "mediaplayer,hide", "enna");
+	edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
+
+    case MENU_VIEW:
+        edje_object_signal_emit (mod->o_edje, "content,show", "enna");
+        edje_object_signal_emit (mod->o_edje, "mediaplayer,hide", "enna");
+	edje_object_signal_emit (mod->o_edje, "location,show", "enna");
+
+        break;
+/*    case VIDEO_INFO_VIEW:
+        edje_object_signal_emit (mod->o_edje, "mediaplayer,show", "enna");
+        edje_object_signal_emit (mod->o_edje, "content,hide", "enna");
+	edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
+        break;
+*/
+    case VIDEOPLAYER_VIEW:
+        break;
+    default:
+        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                  "State Unknown in video module");
+    }
+}
+
+static void
+_class_hide (int dummy)
+{
+    edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
+}
+
+static void
+_class_event (void *event_info)
+{
+    Evas_Event_Key_Down *ev = event_info;
+    enna_key_t key = enna_get_key (ev);
+
+    switch (mod->state)
+    {
+    case MENU_VIEW:
+        menu_view_event (key, event_info);
+        break;
+    case BROWSER_VIEW:
+        browser_view_event (event_info);
+        break;
+    case VIDEOPLAYER_VIEW:
+        videoplayer_view_event (key);
+        break;
+    default:
+        break;
+    }
+}
+
+static void
+_class_grabbing_finished (void *a)
+{
+
+}
+
+static Enna_Class_Activity class =
+{
+    "video",
+    1,
+    "Video",
+    NULL,
+    "icon/video",
+    {
+        _class_init,
+        NULL,
+        _class_show,
+        _class_hide,
+        _class_event,
+	_class_grabbing_finished
+    },
+    NULL
+};
 
 static void
 em_init(Enna_Module *em)
@@ -637,6 +628,17 @@ em_shutdown(Enna_Module *em)
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
 }
+
+/****************************************************************************/
+/*                         Public Module API                                */
+/****************************************************************************/
+
+Enna_Module_Api module_api =
+{
+    ENNA_MODULE_VERSION,
+    ENNA_MODULE_ACTIVITY,
+    "activity_video"
+};
 
 void
 module_init(Enna_Module *em)
