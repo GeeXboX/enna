@@ -96,6 +96,7 @@ struct _Smart_Data
 	void * (*view_selected_data_get)(Evas_Object *view);
 	int (*view_jump_label)(Evas_Object *view, const char *label);
 	void (*view_key_down)(Evas_Object *view, void *even_info);
+	void (*view_select_nth)(Evas_Object *obj, int nth);
     }view_funcs;
 };
 
@@ -277,6 +278,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
 	sd->view_funcs.view_jump_label =  enna_list_jump_label;
 	sd->view_funcs.view_key_down = enna_list_event_key_down;
+	sd->view_funcs.view_select_nth = enna_list_selected_set;
 	break;
     case ENNA_BROWSER_VIEW_COVER:
 	sd->view_funcs.view_add = _browser_view_cover_add;
@@ -284,6 +286,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
 	sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
 	sd->view_funcs.view_key_down = enna_view_cover_event_feed;
+	sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
 	break;
     default:
 	break;
@@ -376,6 +379,7 @@ static void _smart_add(Evas_Object * obj)
     sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
     sd->view_funcs.view_jump_label =  enna_list_jump_label;
     sd->view_funcs.view_key_down = enna_list_event_key_down;
+    sd->view_funcs.view_select_nth = enna_list_selected_set;
 
     sd->o_view = sd->view_funcs.view_add(sd);
     evas_object_smart_callback_add(sd->o_view, "hilight", _view_hilight_cb, sd);
@@ -457,7 +461,7 @@ _list_transition_default_end_cb(void *data, Evas_Object *o, const char *sig, con
 
     sd->accept_ev = 1;
 
-    enna_list_selected_set(sd->o_view, 0);
+    sd->view_funcs.view_select_nth(sd->o_view, 0);
     edje_object_signal_callback_del(sd->o_edje, "list,transition,default,end", "edje",
 	_list_transition_default_end_cb);
 }
