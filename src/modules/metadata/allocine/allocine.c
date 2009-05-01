@@ -68,7 +68,7 @@ static xmlNodePtr
 search_allocine_movie (xmlDocPtr doc, char *xpath_body, Enna_Metadata *meta)
 {
     char xpath[MAX_XPATH_QUERY_SIZE];
-    
+
     xmlChar *xpath_query;
     xmlXPathObjectPtr results_xpath_request = NULL;
     xmlNodeSetPtr nodeset_results_xpath = NULL;
@@ -107,19 +107,18 @@ search_allocine_movie (xmlDocPtr doc, char *xpath_body, Enna_Metadata *meta)
 
     if (!results_xpath_request)
         goto error_results_xpath;
-                                 
+
     nodeset_results_xpath = results_xpath_request->nodesetval;
 
     if (!nodeset_results_xpath || !nodeset_results_xpath->nodeNr)
         goto error_results_xpath;
-          
-   
+
     /* get Allocine movie node */
     if (!nodeset_results_xpath->nodeTab[0])
         goto error_results_xpath;
     allocine_movie_result = xmlCopyNode (nodeset_results_xpath->nodeTab[0], 1);
-       
-    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,                   
+
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "One result has been found");
 
     error_results_xpath :
@@ -131,7 +130,7 @@ search_allocine_movie (xmlDocPtr doc, char *xpath_body, Enna_Metadata *meta)
 	    xmlFree (xpath_query);
 
     return allocine_movie_result;
-}         
+}
 
 static void
 allocine_parse (Enna_Metadata *meta)
@@ -168,7 +167,7 @@ allocine_parse (Enna_Metadata *meta)
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Search Reply: %s", data.buffer);
-    
+
     /* parse the XML answer */
     doc = get_xml_doc_from_memory (data.buffer);
     free (data.buffer);
@@ -184,7 +183,7 @@ allocine_parse (Enna_Metadata *meta)
                   "Unable to find the item \"%s\"", escaped_keywords);
         goto error;
     }
-    
+
     /* if there is no result goto error */
     if (!xmlStrcmp ((unsigned char *) tmp, (unsigned char *) "0"))
         goto error;
