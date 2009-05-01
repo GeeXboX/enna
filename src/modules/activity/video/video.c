@@ -188,6 +188,70 @@ _class_hide(int dummy)
 }
 
 static void
+menu_view_event (enna_key_t key, void *event_info)
+{
+    switch (key)
+    {
+    case ENNA_KEY_LEFT:
+    case ENNA_KEY_CANCEL:
+        enna_content_hide ();
+        enna_mainmenu_show (enna->o_mainmenu);
+        break;
+    case ENNA_KEY_RIGHT:
+    case ENNA_KEY_OK:
+    case ENNA_KEY_SPACE:
+        _browse (enna_list_selected_data_get(mod->o_list));
+        break;
+    default:
+        enna_list_event_key_down(mod->o_list, event_info);
+        break;
+    }
+}
+
+static void
+browser_view_event (void *event_info)
+{
+    if (mod->o_mediaplayer)
+    {
+        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+        mod->timer_show_mediaplayer =
+            ecore_timer_add (10, _show_mediaplayer_cb, NULL);
+    }
+
+    enna_browser_event_feed (mod->o_browser, event_info);
+}
+
+static void
+videoplayer_view_event (enna_key_t key)
+{
+    switch (key)
+    {
+    case ENNA_KEY_QUIT:
+    case ENNA_KEY_CANCEL:
+    case ENNA_KEY_OK:
+        _return_to_video_info_gui ();
+        break;
+    case ENNA_KEY_SPACE:
+        enna_mediaplayer_play (mod->enna_playlist);
+        break;
+    case ENNA_KEY_RIGHT:
+        _seek_video (+0.01);
+        break;
+    case ENNA_KEY_LEFT:
+        _seek_video (-0.01);
+        break;
+    case ENNA_KEY_UP:
+        _seek_video (+0.05);
+        break;
+    case ENNA_KEY_DOWN:
+        _seek_video (-0.05);
+        break;
+    default:
+        break;
+    }
+}
+
+static void
 _class_event(void *event_info)
 {
     Evas_Event_Key_Down *ev = event_info;
@@ -196,56 +260,13 @@ _class_event(void *event_info)
     switch (mod->state)
     {
     case MENU_VIEW:
-        switch (key)
-        {
-        case ENNA_KEY_LEFT:
-        case ENNA_KEY_CANCEL:
-            enna_content_hide();
-            enna_mainmenu_show(enna->o_mainmenu);
-            break;
-        case ENNA_KEY_RIGHT:
-        case ENNA_KEY_OK:
-        case ENNA_KEY_SPACE:
-            _browse(enna_list_selected_data_get(mod->o_list));
-            break;
-        default:
-	    enna_list_event_key_down(mod->o_list, event_info);
-        }
+        menu_view_event (key, event_info);
         break;
     case BROWSER_VIEW:
-        if (mod->o_mediaplayer)
-        {
-            ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-            mod->timer_show_mediaplayer = ecore_timer_add(10,_show_mediaplayer_cb, NULL);
-        }
-        enna_browser_event_feed(mod->o_browser, event_info);
+        browser_view_event (event_info);
         break;
     case VIDEOPLAYER_VIEW:
-        switch (key)
-        {
-        case ENNA_KEY_QUIT:
-        case ENNA_KEY_CANCEL:
-        case ENNA_KEY_OK:
-            _return_to_video_info_gui();
-            break;
-        case ENNA_KEY_SPACE:
-            enna_mediaplayer_play(mod->enna_playlist);
-            break;
-        case ENNA_KEY_RIGHT:
-            _seek_video(+0.01);
-            break;
-        case ENNA_KEY_LEFT:
-            _seek_video(-0.01);
-            break;
-        case ENNA_KEY_UP:
-            _seek_video(+0.05);
-            break;
-        case ENNA_KEY_DOWN:
-            _seek_video(-0.05);
-            break;
-        default:
-            break;
-        }
+        videoplayer_view_event (key);
         break;
     default:
         break;
