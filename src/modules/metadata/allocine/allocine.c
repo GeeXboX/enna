@@ -208,6 +208,18 @@ allocine_parse (Enna_Metadata *meta)
         }
     }
 
+    /* fetch movie title */
+    tmp = get_prop_value_from_xml_tree (allocine_movie, "title");
+    if (tmp)
+    {
+        /* special trick to retrieve english title,
+         *  used by next grabbers to find cover and backdrops.
+         */
+        free (meta->keywords);
+        meta->keywords = strdup ((char *) tmp);
+        xmlFree (tmp);
+    }
+
     /* fetch movie alternative title */
     if (!meta->alternative_title)
     {
