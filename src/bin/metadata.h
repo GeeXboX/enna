@@ -80,6 +80,7 @@ struct _Enna_Metadata
     char *md5;
     char *keywords;
     char *title;
+    char *alternative_title;
     int size; /* in Bytes */
     int length; /* in seconds */
     double position; /* in seconds */

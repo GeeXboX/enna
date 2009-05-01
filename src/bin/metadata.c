@@ -107,22 +107,23 @@ enna_metadata_dump (Enna_Metadata *m)
         return;
 
     printf ("*** Metadata:\n");
-    printf (" -- Type: %d\n",       m->type);
-    printf (" -- URI: %s\n",        m->uri);
-    printf (" -- MD5: %s\n",        m->md5);
-    printf (" -- Keywords: %s\n",   m->keywords);
-    printf (" -- Title: %s\n",      m->title);
-    printf (" -- Size: %d\n",       m->size);
-    printf (" -- Length: %d\n",     m->length);
-    printf (" -- Position: %f\n",   m->position);
-    printf (" -- Overview: %s\n",   m->overview);
-    printf (" -- Runtime: %d\n",    m->runtime);
-    printf (" -- Year: %d\n",       m->year);
-    printf (" -- Categories: %s\n", m->categories);
-    printf (" -- Cover: %s\n",      m->cover);
-    printf (" -- Snapshot: %s\n",   m->snapshot);
-    printf (" -- Backdrop: %s\n",   m->backdrop);
-    printf (" -- Parsed: %d\n",     m->parsed);
+    printf (" -- Type: %d\n",              m->type);
+    printf (" -- URI: %s\n",               m->uri);
+    printf (" -- MD5: %s\n",               m->md5);
+    printf (" -- Keywords: %s\n",          m->keywords);
+    printf (" -- Title: %s\n",             m->title);
+    printf (" -- Alternative title: %s\n", m->alternative_title);
+    printf (" -- Size: %d\n",              m->size);
+    printf (" -- Length: %d\n",            m->length);
+    printf (" -- Position: %f\n",          m->position);
+    printf (" -- Overview: %s\n",          m->overview);
+    printf (" -- Runtime: %d\n",           m->runtime);
+    printf (" -- Year: %d\n",              m->year);
+    printf (" -- Categories: %s\n",        m->categories);
+    printf (" -- Cover: %s\n",             m->cover);
+    printf (" -- Snapshot: %s\n",          m->snapshot);
+    printf (" -- Backdrop: %s\n",          m->backdrop);
+    printf (" -- Parsed: %d\n",            m->parsed);
 
     enna_metadata_video_dump (m->video);
     enna_metadata_music_dump (m->music);
@@ -211,6 +212,7 @@ enna_metadata_desc (void)
     EDD_ADD (, md5,         STRING);
     EDD_ADD (, keywords,    STRING);
     EDD_ADD (, title,       STRING);
+    EDD_ADD (, alternative_title,  STRING);
     EDD_ADD (, size,        INT);
     EDD_ADD (, length,      INT);
     EDD_ADD (, position,    DOUBLE);
@@ -345,6 +347,7 @@ void enna_metadata_free(Enna_Metadata *m)
     ENNA_FREE(m->md5);
     ENNA_FREE(m->keywords);
     ENNA_FREE(m->title);
+    ENNA_FREE(m->alternative_title); 
     ENNA_FREE(m->overview);
     ENNA_FREE(m->categories);
     ENNA_FREE(m->cover);
