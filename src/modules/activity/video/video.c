@@ -590,12 +590,7 @@ _class_show (int dummy)
 	edje_object_signal_emit (mod->o_edje, "location,show", "enna");
 
         break;
-/*    case VIDEO_INFO_VIEW:
-        edje_object_signal_emit (mod->o_edje, "mediaplayer,show", "enna");
-        edje_object_signal_emit (mod->o_edje, "content,hide", "enna");
-	edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
-        break;
-*/
+
     case VIDEOPLAYER_VIEW:
         break;
     default:
