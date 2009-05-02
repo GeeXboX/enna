@@ -53,7 +53,6 @@
 #ifdef LOCATION
 #include "location.h"
 #endif
-#include "switcher.h"
 #include "mediaplayer.h"
 #include "event_key.h"
 #include "smart_player.h"
@@ -104,13 +103,10 @@ struct _Enna_Module_Video
     Evas_Object *o_location;
 #endif
     Evas_Object *o_backdrop;
-    Evas_Object *o_backdrop_old;
-    Evas_Object *o_switcher;
     Evas_Object *o_mediaplayer;
     Enna_Module *em;
     VIDEO_STATE state;
     Ecore_Timer *timer_show_mediaplayer;
-    Ecore_Timer *timer_backdrop;
     Ecore_Event_Handler *eos_event_handler;
     Ecore_Event_Handler *browser_refresh_handler;
     Enna_Playlist *enna_playlist;
@@ -200,13 +196,6 @@ _seek_video(double value)
 }
 
 static void
-_switcher_transition_done_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    ENNA_OBJECT_DEL(mod->o_backdrop_old);
-    mod->o_backdrop_old = NULL;
-}
-
-static void
 _return_to_video_info_gui()
 {
     Enna_Metadata *m;
@@ -228,10 +217,9 @@ _eos_cb(void *data, int type, void *event)
     return 1;
 }
 
-static int
-_backdrop_show_cb (void *data)
+static void
+backdrop_show (Enna_Metadata *m)
 {
-    Enna_Metadata *m = data;
     char *snap_file = NULL;
     int from_vfs = 1;
 
@@ -251,26 +239,12 @@ _backdrop_show_cb (void *data)
       snap_file = (m && m->backdrop) ? m->backdrop : m->snapshot;
 
     if (!snap_file)
-    {
-        ENNA_TIMER_DEL (mod->timer_backdrop);
-	return 0;
-    }
+	return;
 
-    mod->o_backdrop_old = mod->o_backdrop;
-    mod->o_backdrop = enna_backdrop_add (mod->em->evas);
     enna_backdrop_set (mod->o_backdrop, snap_file, from_vfs);
     evas_object_show (mod->o_backdrop);
-
-    /* FIXME bug when _backdrop_show_cb is called before
-       switcher transition is finished */
-    enna_switcher_objects_switch (mod->o_switcher, mod->o_backdrop);
-    evas_object_show (mod->o_switcher);
     edje_object_part_swallow (mod->o_edje,
-                              "enna.swallow.backdrop", mod->o_switcher);
-
-    ENNA_TIMER_DEL (mod->timer_backdrop);
-
-    return 0;
+                              "enna.swallow.backdrop", mod->o_backdrop);
 }
 
 /****************************************************************************/
@@ -319,8 +293,6 @@ browser_cb_root (void *data, Evas_Object *obj, void *event_info)
                                     "hilight", browser_cb_hl);
 
     ENNA_OBJECT_DEL (mod->o_browser);
-    ENNA_OBJECT_DEL (mod->o_switcher);
-    mod->o_switcher = NULL;
     mod->o_browser = NULL;
 
     _create_menu ();
@@ -428,15 +400,7 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
     edje_object_part_text_set (mod->o_edje, "enna.text.category",
                                (m && m->categories) ? m->categories : "");
 
-
-    if (mod->timer_backdrop)
-    {
-	/* FIXME : Memory leak m previously malloc is not freed */
-	ecore_timer_del (mod->timer_backdrop);
-	mod->timer_backdrop = NULL;
-    }
-
-    mod->timer_backdrop = ecore_timer_add (0.3, _backdrop_show_cb, m);
+    backdrop_show (m);
 }
 
 static void
@@ -476,10 +440,6 @@ browse (void *data)
     edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
 #endif
     edje_object_signal_emit(mod->o_edje, "tile,show", "enna");
-
-    mod->o_switcher = enna_switcher_add (mod->em->evas);
-    evas_object_smart_callback_add (mod->o_switcher, "transition_done",
-                                    _switcher_transition_done_cb, mod);
 }
 
 /****************************************************************************/
@@ -694,6 +654,7 @@ em_init(Enna_Module *em)
     mod->item_class->func.state_get = _genlist_state_get;
     mod->item_class->func.del       = _genlist_del;
 
+    mod->o_backdrop = enna_backdrop_add (mod->em->evas);
     mod->browser_refresh_handler =
 	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, browser_cb_refresh, NULL);
     enna_activity_add(&class);
@@ -719,10 +680,7 @@ em_shutdown(Enna_Module *em)
 #endif
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
-    ENNA_TIMER_DEL(mod->timer_backdrop);
     ENNA_OBJECT_DEL(mod->o_backdrop);
-    ENNA_OBJECT_DEL(mod->o_backdrop_old);
-    ENNA_OBJECT_DEL(mod->o_switcher);
     ENNA_FREE(mod->o_current_uri);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
