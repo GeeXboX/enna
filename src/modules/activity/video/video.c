@@ -35,6 +35,8 @@
  * EOS is not used !!!!
  */
 
+#undef LOCATION
+
 #include <Edje.h>
 #include <Elementary.h>
 
@@ -48,7 +50,9 @@
 #include "vfs.h"
 #include "list.h"
 #include "browser.h"
+#ifdef LOCATION
 #include "location.h"
+#endif
 #include "switcher.h"
 #include "mediaplayer.h"
 #include "event_key.h"
@@ -60,7 +64,9 @@
 
 static void browser_cb_root (void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_select (void *data, Evas_Object *obj, void *event_info);
+#ifdef LOCATION
 static void browser_cb_enter (void *data, Evas_Object *obj, void *event_info);
+#endif
 static void browser_cb_hl (void *data, Evas_Object *obj, void *event_info);
 static void browse (void *data);
 
@@ -94,7 +100,9 @@ struct _Enna_Module_Video
     Evas_Object *o_edje;
     Evas_Object *o_list;
     Evas_Object *o_browser;
+#ifdef LOCATION
     Evas_Object *o_location;
+#endif
     Evas_Object *o_backdrop;
     Evas_Object *o_backdrop_old;
     Evas_Object *o_switcher;
@@ -303,8 +311,10 @@ browser_cb_root (void *data, Evas_Object *obj, void *event_info)
                                     "root", browser_cb_root);
     evas_object_smart_callback_del (mod->o_browser,
                                     "selected", browser_cb_select);
+#ifdef LOCATION
     evas_object_smart_callback_del (mod->o_browser,
                                     "browse_down", browser_cb_enter);
+#endif
     evas_object_smart_callback_del (mod->o_browser,
                                     "hilight", browser_cb_hl);
 
@@ -314,10 +324,13 @@ browser_cb_root (void *data, Evas_Object *obj, void *event_info)
     mod->o_browser = NULL;
 
     _create_menu ();
+#ifdef LOCATION
     enna_location_remove_nth (mod->o_location,
                               enna_location_count (mod->o_location) - 1);
+#endif
 }
 
+#ifdef LOCATION
 static void
 browser_cb_enter (void *data, Evas_Object *obj, void *event_info)
 {
@@ -329,6 +342,7 @@ browser_cb_enter (void *data, Evas_Object *obj, void *event_info)
     enna_browser_select_label (mod->o_browser, label);
     enna_location_remove_nth (mod->o_location, n);
 }
+#endif
 
 static void
 browser_cb_select (void *data, Evas_Object *obj, void *event_info)
@@ -344,8 +358,10 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
     {
         enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                   "Directory Selected %s", ev->file->uri);
+#ifdef LOCATION
         enna_location_append (mod->o_location, ev->file->label,
                               NULL, NULL, NULL, NULL);
+#endif
     }
     else
     {
@@ -438,8 +454,10 @@ browse (void *data)
                                    "root", browser_cb_root, NULL);
     evas_object_smart_callback_add (mod->o_browser,
                                     "selected", browser_cb_select, NULL);
+#ifdef LOCATION
     evas_object_smart_callback_add (mod->o_browser, "browse_down",
                                     browser_cb_enter, NULL);
+#endif
     evas_object_smart_callback_add (mod->o_browser, "hilight",
                                     browser_cb_hl, NULL);
     evas_object_show (mod->o_browser);
@@ -449,10 +467,14 @@ browse (void *data)
     enna_browser_root_set (mod->o_browser, vfs);
     evas_object_del (mod->o_list);
     mod->o_list = NULL;
+#ifdef LOCATION
     enna_location_append (mod->o_location,
                           vfs->label, NULL, NULL, NULL, NULL);
+#endif
     mod->state = BROWSER_VIEW;
+#ifdef LOCATION
     edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
+#endif
     edje_object_signal_emit(mod->o_edje, "tile,show", "enna");
 
     mod->o_switcher = enna_switcher_add (mod->em->evas);
@@ -490,7 +512,9 @@ _create_menu (void)
     mod->o_list = o;
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
+#ifdef LOCATION
     edje_object_signal_emit(mod->o_edje, "location,show", "enna");
+#endif
     edje_object_signal_emit(mod->o_edje, "tile,hide", "enna");
     enna_backdrop_set (mod->o_backdrop, NULL, 0);
 }
@@ -499,13 +523,16 @@ static void
 _create_gui (void)
 {
     Evas_Object *o;
+#ifdef LOCATION
     Evas_Object *icon;
+#endif
 
     mod->state = MENU_VIEW;
     o = edje_object_add(mod->em->evas);
     edje_object_file_set(o, enna_config_theme_get(), "module/video");
     mod->o_edje = o;
     _create_menu();
+#ifdef LOCATION
     /* Create Location bar */
     o = enna_location_add(mod->em->evas);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
@@ -513,6 +540,7 @@ _create_gui (void)
     edje_object_file_set(icon, enna_config_theme_get(), "icon/video_mini");
     enna_location_append(o, "Video", icon, NULL, NULL, NULL);
     mod->o_location = o;
+#endif
 }
 
 /****************************************************************************/
@@ -582,12 +610,16 @@ _class_show (int dummy)
     case BROWSER_VIEW:
 	edje_object_signal_emit (mod->o_edje, "content,show", "enna");
         edje_object_signal_emit (mod->o_edje, "mediaplayer,hide", "enna");
-	edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
+#ifdef LOCATION
+        edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
+#endif
 
     case MENU_VIEW:
         edje_object_signal_emit (mod->o_edje, "content,show", "enna");
         edje_object_signal_emit (mod->o_edje, "mediaplayer,hide", "enna");
+#ifdef LOCATION
 	edje_object_signal_emit (mod->o_edje, "location,show", "enna");
+#endif
 
         break;
 
@@ -676,10 +708,14 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
     evas_object_smart_callback_del(mod->o_browser, "selected", browser_cb_select);
+#ifdef LOCATION
     evas_object_smart_callback_del(mod->o_browser, "browse_down", browser_cb_enter);
+#endif
     evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hl);
     ENNA_OBJECT_DEL(mod->o_browser);
+#ifdef LOCATION
     ENNA_OBJECT_DEL(mod->o_location);
+#endif
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
