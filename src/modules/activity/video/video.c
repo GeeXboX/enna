@@ -492,6 +492,7 @@ _create_menu (void)
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
     edje_object_signal_emit(mod->o_edje, "location,show", "enna");
     edje_object_signal_emit(mod->o_edje, "tile,hide", "enna");
+    enna_backdrop_set (mod->o_backdrop, NULL, 0);
 }
 
 static void
