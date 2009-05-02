@@ -225,20 +225,23 @@ _backdrop_show_cb (void *data)
 {
     Enna_Metadata *m = data;
     char *snap_file = NULL;
+    int from_vfs = 1;
 
     if (!m)
     {
-        ENNA_TIMER_DEL (mod->timer_backdrop);
-	return 0;
+        snap_file = "backdrop/default";
+        from_vfs = 0;
     }
 
-    if (m->type != ENNA_METADATA_VIDEO)
+    if (m && m->type != ENNA_METADATA_VIDEO)
     {
-        ENNA_TIMER_DEL (mod->timer_backdrop);
-	return 0;
+        snap_file = "backdrop/default";
+        from_vfs = 0;
     }
 
-    snap_file = m->backdrop ? m->backdrop : m->snapshot;
+    if (!snap_file)
+      snap_file = (m && m->backdrop) ? m->backdrop : m->snapshot;
+
     if (!snap_file)
     {
         ENNA_TIMER_DEL (mod->timer_backdrop);
@@ -247,7 +250,7 @@ _backdrop_show_cb (void *data)
 
     mod->o_backdrop_old = mod->o_backdrop;
     mod->o_backdrop = enna_backdrop_add (mod->em->evas);
-    enna_backdrop_set (mod->o_backdrop, snap_file);
+    enna_backdrop_set (mod->o_backdrop, snap_file, from_vfs);
     evas_object_show (mod->o_backdrop);
 
     /* FIXME bug when _backdrop_show_cb is called before
