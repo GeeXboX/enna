@@ -205,8 +205,8 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
     if (dl)
         unlink(file);
 
-    data->prev_uri = data->uri;
     data->uri = evas_stringshare_add(path);
+    data->prev_uri = data->uri;
 
     return streams;
 }
