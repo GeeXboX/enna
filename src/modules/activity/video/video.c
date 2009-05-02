@@ -502,6 +502,7 @@ _create_menu (void)
     edje_object_signal_emit(mod->o_edje, "location,show", "enna");
 #endif
     edje_object_signal_emit(mod->o_edje, "tile,hide", "enna");
+    panel_infos_display (0);
     enna_backdrop_set (mod->o_backdrop, NULL, 0);
 }
 
