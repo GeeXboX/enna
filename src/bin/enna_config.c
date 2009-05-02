@@ -44,108 +44,103 @@
 #include "utils.h"
 #include "logs.h"
 
-#define DEFAULT_FILE							\
-    "[enna]\n"								\
-    "#none,event,info,warning,error,critical\n"				\
-    "verbosity=info\n"							\
-    "log_file=/var/log/enna.log\n"							\
-    "\n"								\
-    "\n"								\
-    "#0,1\n"								\
-    "fullscreen=0\n"							\
-    "\n"								\
-    "#0,1\n"								\
-    "use_network=1\n"							\
-    "\n"								\
-    "use_covers=1\n"							\
-    "\n"								\
-    "#0,1\n"								\
-    "use_snapshots=1\n"							\
-    "#0,1\n"								\
-    "metadata_cache=1\n"						\
-    "\n"								\
-    "idle_timeout=0\n"							\
-    "\n"								\
+#define DEFAULT_FILE \
+    "[enna]\n" \
+    "#none,event,info,warning,error,critical\n" \
+    "verbosity=info\n" \
+    "log_file=/var/log/enna.log\n" \
+    "\n" \
+    "\n" \
+    "#0,1\n" \
+    "fullscreen=0\n" \
+    "\n" \
+    "#0,1\n" \
+    "use_network=1\n" \
+    "\n" \
+    "use_covers=1\n" \
+    "\n" \
+    "#0,1\n" \
+    "use_snapshots=1\n" \
+    "#0,1\n" \
+    "metadata_cache=1\n" \
+    "\n" \
+    "idle_timeout=0\n" \
+    "\n" \
     "#/home/user/theme.edj for specific file or just 'default' if theme is\n" \
-    "#located at /usr/share/enna/theme/default.edj\n"			\
-    "theme=default\n"							\
-    "\n"								\
-    "#software_x11,xrender_x11,opengl_x11,software_x11_16\n"		\
-    "engine=software_x11\n"						\
-    "\n"								\
-    "#libplayer\n"						\
-    "backend=libplayer\n"						\
-    "\n"								\
+    "#located at /usr/share/enna/theme/default.edj\n" \
+    "theme=default\n" \
+    "\n" \
+    "#software_x11,xrender_x11,opengl_x11,software_x11_16\n" \
+    "engine=software_x11\n" \
+    "\n" \
+    "#libplayer\n" \
+    "backend=libplayer\n" \
+    "\n" \
     "music_ext=3gp,aac,ape,apl,flac,m4a,mac,mka,mp2,mp3,mp4,mpc,ogg,ra,wav,wma\n" \
     "video_ext=asf,avi,divx,dvr-ms,evo,flc,fli,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m\n" \
-    "photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm\n"				\
-    "\n"								\
-    "[libplayer]\n"							\
+    "photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm\n" \
+    "\n" \
+    "[libplayer]\n" \
     "# Values by default are 'mplayer' type, 'auto' video_out, 'auto' audio_out\n" \
     "# and 'warning' verbosity. Change these parameters only if that is really\n" \
-    "# necessary.\n"							\
-    "\n"								\
-    "#mplayer,xine\n"							\
-    "#type=\n"								\
-    "#dvd_type=\n"							\
-    "#tv_type=\n"							\
-    "\n"								\
-    "#auto,x11,xv,gl,fb\n"						\
-    "#video_out=\n"							\
-    "\n"								\
-    "#auto,alsa,oss\n"							\
-    "#audio_out=\n"							\
-    "\n"								\
-    "#verbose,info,warning,error,critical,none\n"			\
-    "#verbosity=\n"							\
-    "\n"								\
-    "# Metadata module (video)\n"					\
+    "# necessary.\n" \
+    "\n" \
+    "#mplayer,xine\n" \
+    "#type=\n" \
+    "#dvd_type=\n" \
+    "#tv_type=\n" \
+    "\n" \
+    "#auto,x11,xv,gl,fb\n" \
+    "#video_out=\n" \
+    "\n" \
+    "#auto,alsa,oss\n" \
+    "#audio_out=\n" \
+    "\n" \
+    "#verbose,info,warning,error,critical,none\n" \
+    "#verbosity=\n" \
+    "\n" \
+    "# Metadata module (video)\n" \
     "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid\n" \
-    "\n"								\
-    "[localfiles]\n"							\
-    "path_music=file:///path/to/Music,Music,icon/favorite\n"		\
+    "\n" \
+    "[localfiles]\n" \
+    "path_music=file:///path/to/Music,Music,icon/favorite\n" \
     "path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs\n" \
-    "path_video=file:///path/to/Videos,Videos,icon/favorite\n"		\
+    "path_video=file:///path/to/Videos,Videos,icon/favorite\n" \
     "path_video=file:///path/to/server/Medias/Videos,Server,icon/dev/nfs\n" \
-    "path_photo=file:///path/to/Photos,Photos,icon/favorite\n"		\
+    "path_photo=file:///path/to/Photos,Photos,icon/favorite\n" \
     "path_photo=file:///path/to/server/Medias/Photos,Server,icon/dev/nfs\n" \
-    "\n"								\
-    "[netstreams]\n"							\
+    "\n" \
+    "[netstreams]\n" \
     "stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv\n" \
-    "\n"								\
-    "[tv]\n"								\
-    "# Default: 'vdr:/' (autodetect local VDR)\n"			\
-    "# Local VDR: 'vdr://tmp/vdr-xine/stream#demux:mpeg_pes\n"		\
-    "# Remote VDR: 'netvdr://192.168.1.1:18701\n"			\
-    "#vdr_uri=\n"							\
-    "[weather]\n"                                                       \
-    "city=New York\n"                                                   \
-    "lang=en\n"                                                         \
-    "\n"                                                                \
-    "[valhalla]"							\
-    "path=file:///path/to/Music"					\
-    "path=file:///path/to/server/Medias/Music"				\
-    "verbosity=info"							\
-    "parser_number=2"							\
-    "commit_interval=128"						\
-    "# <=0 for infinite"						\
-    "scan_loop=-1"							\
-    "# time [sec] for sleeping between loops"				\
-    "scan_sleep=900"							\
-    "# 0: normal, -20: higher, 19 lower\n"				\
-    "scan_priority=19\n"						\
-    "\n"								\
-    "[lms]\n"								\
-    "path=file:///path/to/Music\n"					\
-    "path=file:///path/to/server/Medias/Music\n"			\
-    "parser=mp3,ogg,flac,rm,dummy\n"					\
-    "slave_timeout=1000\n"						\
-    "commit_interval=100\n"						\
-
-
-
-
-
+    "\n" \
+    "[tv]\n" \
+    "# Default: 'vdr:/' (autodetect local VDR)\n" \
+    "# Local VDR: 'vdr://tmp/vdr-xine/stream#demux:mpeg_pes\n" \
+    "# Remote VDR: 'netvdr://192.168.1.1:18701\n" \
+    "#vdr_uri=\n" \
+    "[weather]\n" \
+    "city=New York\n" \
+    "lang=en\n" \
+    "\n" \
+    "[valhalla]" \
+    "path=file:///path/to/Music" \
+    "path=file:///path/to/server/Medias/Music" \
+    "verbosity=info" \
+    "parser_number=2" \
+    "commit_interval=128" \
+    "# <=0 for infinite" \
+    "scan_loop=-1" \
+    "# time [sec] for sleeping between loops" \
+    "scan_sleep=900" \
+    "# 0: normal, -20: higher, 19 lower\n" \
+    "scan_priority=19\n" \
+    "\n" \
+    "[lms]\n" \
+    "path=file:///path/to/Music\n" \
+    "path=file:///path/to/server/Medias/Music\n" \
+    "parser=mp3,ogg,flac,rm,dummy\n" \
+    "slave_timeout=1000\n" \
+    "commit_interval=100\n" \
 
 
 static Eina_Hash *hash_config;
