@@ -453,6 +453,7 @@ browse (void *data)
                           vfs->label, NULL, NULL, NULL, NULL);
     mod->state = BROWSER_VIEW;
     edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "tile,show", "enna");
 
     mod->o_switcher = enna_switcher_add (mod->em->evas);
     evas_object_smart_callback_add (mod->o_switcher, "transition_done",
@@ -490,6 +491,7 @@ _create_menu (void)
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
     edje_object_signal_emit(mod->o_edje, "location,show", "enna");
+    edje_object_signal_emit(mod->o_edje, "tile,hide", "enna");
 }
 
 static void
