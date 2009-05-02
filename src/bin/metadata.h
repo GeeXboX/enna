@@ -88,6 +88,13 @@ struct _Enna_Metadata
     int runtime;
     int year;
     char *categories;
+    int rating; /* from 0 (lowest) to 5 (highest) */
+    int budget; /* in dollars */
+    char *country;
+    char *writer;
+    char *director;
+    char *actors;
+    char *studio;
     char *cover;
     char *snapshot;
     char *backdrop;
