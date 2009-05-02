@@ -220,7 +220,7 @@ enna_metadata_desc (void)
     EDD_ADD (, keywords,    STRING);
     EDD_ADD (, title,       STRING);
     EDD_ADD (, alternative_title,  STRING);
-    EDD_ADD (, size,        INT);
+    EDD_ADD (, size,        LONG_LONG);
     EDD_ADD (, length,      INT);
     EDD_ADD (, position,    DOUBLE);
     EDD_ADD (, overview,    STRING);
