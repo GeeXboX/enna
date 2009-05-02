@@ -9,6 +9,7 @@ syntax: regexp
 ^.*\.la$
 ^.*\.lai$
 ^.*\.lo$
+^.*\.loT$
 ^.*\.so$
 ^.*\.Tpo$
 
