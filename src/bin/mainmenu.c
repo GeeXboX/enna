@@ -211,7 +211,7 @@ void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
         edje_object_part_unswallow(sd->o_edje, icon);
         ENNA_OBJECT_DEL(icon);
 
-        edje_object_part_text_set(sd->o_edje, "titlebar.text.label", si->act->name);
+        edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "");
         icon = edje_object_add(evas_object_evas_get(sd->o_edje));
         edje_object_file_set(icon, enna_config_theme_get(),si->act->icon);
         edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
