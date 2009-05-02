@@ -358,7 +358,10 @@ panel_infos_set_cover (Enna_Metadata *m)
       file = m->cover;
 
     if (!file)
-	return;
+    {
+        file = "backdrop/default";
+        from_vfs = 0;
+    }
 
     if (from_vfs)
     {
