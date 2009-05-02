@@ -59,6 +59,8 @@
 #include "smart_player.h"
 #include "backdrop.h"
 #include "volumes.h"
+#include "buffer.h"
+#include "metadata.h"
 
 #define ENNA_MODULE_NAME "video"
 
@@ -253,6 +255,85 @@ backdrop_show (Enna_Metadata *m)
 /****************************************************************************/
 /*                          Information Panel                               */
 /****************************************************************************/
+
+static void
+panel_infos_set_text (Enna_Metadata *m)
+{
+    buffer_t *buf;
+
+    if (!m)
+    {
+        edje_object_part_text_set (mod->o_edje, "infos.panel.textblock",
+                                   "No such information ...");
+        return;
+    }
+
+    if (m && m->type != ENNA_METADATA_VIDEO)
+    {
+        edje_object_part_text_set (mod->o_edje, "infos.panel.textblock",
+                                   "No such information ...");
+        return;
+    }
+
+    buf = buffer_new ();
+
+    buffer_append (buf, "<h4><hl><gl><b>");
+    if (m->alternative_title || m->title)
+        buffer_appendf (buf, "%s", m->alternative_title ?
+                        m->alternative_title : m->title);
+    else if (m->keywords)
+        buffer_appendf (buf, "%s", m->keywords);
+    else
+        buffer_appendf (buf, "%s", m->uri);
+    buffer_append (buf, "</b></gl></hl></h4><br>");
+
+    if (m->categories)
+        buffer_appendf (buf, "<h2><gl>%s</gl></h2><br>", m->categories);
+
+    if (m->year)
+        buffer_appendf (buf, "%d", m->year);
+
+    if (m->runtime || m->length)
+    {
+        int hh, mm;
+
+        if (m->year)
+            buffer_append (buf, " - ");
+
+        if (m->runtime)
+        {
+            hh = (int) (m->runtime / 60);
+            mm = (int) (m->runtime - 60 * hh);
+        }
+        else if (m->length)
+        {
+            hh = (int) (m->length / 3600 / 1000);
+            mm = (int) ((m->length / 60 / 1000) - (60 * hh));
+        }
+
+        if (hh)
+            buffer_appendf (buf, "%.2d hour(s) ", hh);
+        if (mm)
+            buffer_appendf (buf, "%.2d minute(s)", mm);
+    }
+    buffer_append (buf, "<br><br>");
+
+    if (m->overview)
+        buffer_appendf (buf, "%s", m->overview);
+
+    buffer_append (buf, "<br><br>");
+    buffer_appendf (buf, "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>",
+                    m->video->codec, m->video->width,
+                    m->video->height, m->video->framerate);
+    buffer_appendf (buf, "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>",
+                    m->music->codec, m->music->channels,
+                    m->music->bitrate / 1000, m->music->samplerate);
+    buffer_appendf (buf, "<hl>Size: </hl> %.2f MB<br>",
+                    m->size / 1024.0 / 1024.0);
+
+    edje_object_part_text_set (mod->o_edje, "infos.panel.textblock", buf->buf);
+    buffer_free (buf);
+}
 
 static void
 panel_infos_set_cover (Enna_Metadata *m)
@@ -473,6 +554,7 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
 
     backdrop_show (m);
     panel_infos_set_cover (m);
+    panel_infos_set_text (m);
 }
 
 static void
