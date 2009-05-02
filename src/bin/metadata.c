@@ -448,6 +448,28 @@ enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords)
 }
 
 void
+enna_metadata_add_actors (Enna_Metadata *meta, char *actor)
+{
+    char act[1024];
+
+    if (!meta || !actor)
+        return;
+
+    if (!meta->actors)
+        meta->actors = strdup (actor);
+    else
+    {
+        memset (act, '\0', sizeof (act));
+        snprintf (act, sizeof (act), "%s, %s", meta->actors, actor);
+        free (meta->actors);
+        meta->actors = strdup (act);
+    }
+
+    enna_log (ENNA_MSG_EVENT, MODULE_NAME,
+              "Metadata actors set to '%s'", meta->actors);
+}
+
+void
 enna_metadata_add_category (Enna_Metadata *meta, char *category)
 {
     char cat[1024];
