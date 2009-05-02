@@ -7,6 +7,24 @@ images {
 }
  group {
     name: "module/video";
+
+    styles {
+       style {
+          name: "style.infos.video";
+          base: "font=content font_size=14 align=left color=#FFF wrap=word";
+          tag:  "b"   "+ font=content_bd";
+          tag:  "c"   "+ align=center";
+          tag:  "hl"  "+ color=#A0D026A0";
+          tag:  "gl"  "+ color2=#FFF style=SHADOW";
+          tag:  "h1"  "+ font_size=16";
+          tag:  "h2"  "+ font_size=20";
+          tag:  "h3"  "+ font_size=24";
+          tag:  "h4"  "+ font_size=30";
+          tag:  "br"  "\n";
+          tag:  "tab" "\t";
+       }
+    }
+
     parts {
        part {
           name: "clip.module";
@@ -292,6 +310,68 @@ images {
           }
        }
 
+       part {
+          name: "infos.panel.cover.shadow";
+          type: IMAGE;
+          description
+          {
+             state: "default" 0.0;
+             visible: 0;
+             image.normal: "shadow.png";
+          }
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+             rel1.relative: 0.05 0.10; rel1.to: "infos.panel";
+             rel2.relative: 0.30 0.90; rel2.to: "infos.panel";
+             image.normal: "shadow.png";
+             image.border: 14 14 14 14;
+          }
+       }
+       part {
+          name: "infos.panel.cover.swallow";
+          type: SWALLOW;
+          effect: SHADOW;
+          description {
+             state: default 0.0;
+             visible: 0;
+          }
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             rel1.to: "infos.panel.cover.shadow";
+             rel2.to: "infos.panel.cover.shadow"; rel2.offset: -13 -13;
+          }
+       }
+
+       part {
+          name: "infos.panel.textblock";
+	  type: TEXTBLOCK;
+          description {
+             state: default 0.0;
+             visible: 0;
+             color: 255 255 255 255;
+             rel1.relative: 0.35 0.10; rel1.to: "infos.panel";
+             rel2.relative: 0.95 0.90; rel2.to: "infos.panel";
+             text {
+		style: "style.infos.video";
+		min: 0 0;
+ 	     }
+          }
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+             rel1.relative: 0.35 0.10; rel1.to: "infos.panel";
+             rel2.relative: 0.95 0.90; rel2.to: "infos.panel";
+             text {
+		style: "style.infos.video";
+		min: 0 0;
+ 	     }
+	  }
+       }
+
     }
     programs {
        program {
@@ -427,6 +507,9 @@ images {
            action:  STATE_SET "show" 0.0;
            transition: "ACCELERATE" 0.3;
            target: "infos.panel";
+           target: "infos.panel.cover.shadow";
+           target: "infos.panel.cover.swallow";
+           target: "infos.panel.textblock";
        }
        program {
            name: "infos,hide";
@@ -435,6 +518,9 @@ images {
            action:  STATE_SET "default" 0.0;
            transition: "DECELERATE" 0.3;
            target: "infos.panel";
+           target: "infos.panel.cover.shadow";
+           target: "infos.panel.cover.swallow";
+           target: "infos.panel.textblock";
        }
 
     }
