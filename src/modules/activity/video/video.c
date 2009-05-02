@@ -112,6 +112,7 @@ struct _Enna_Module_Video
     Enna_Playlist *enna_playlist;
     Elm_Genlist_Item_Class *item_class;
     char *o_current_uri;
+    int infos_displayed;
 };
 
 static Enna_Module_Video *mod;
@@ -248,12 +249,37 @@ backdrop_show (Enna_Metadata *m)
 }
 
 /****************************************************************************/
+/*                          Information Panel                               */
+/****************************************************************************/
+
+static void
+panel_infos_display (int show)
+{
+    if (show)
+    {
+        edje_object_signal_emit (mod->o_edje, "infos,show", "enna");
+        mod->infos_displayed = 1;
+    }
+    else
+    {
+        edje_object_signal_emit (mod->o_edje, "infos,hide", "enna");
+        mod->infos_displayed = 0;
+    }
+}
+
+/****************************************************************************/
 /*                                Browser                                   */
 /****************************************************************************/
 
 static void
-browser_view_event (void *event_info)
+browser_view_event (enna_key_t key, void *event_info)
 {
+    if (key == ENNA_KEY_I)
+    {
+        panel_infos_display (!mod->infos_displayed);
+        return;
+    }
+
     if (mod->o_mediaplayer)
     {
         ENNA_TIMER_DEL (mod->timer_show_mediaplayer);
@@ -609,7 +635,7 @@ _class_event (void *event_info)
         menu_view_event (key, event_info);
         break;
     case BROWSER_VIEW:
-        browser_view_event (event_info);
+        browser_view_event (key, event_info);
         break;
     case VIDEOPLAYER_VIEW:
         videoplayer_view_event (key);
@@ -654,6 +680,7 @@ em_init(Enna_Module *em)
     mod->item_class->func.state_get = _genlist_state_get;
     mod->item_class->func.del       = _genlist_del;
 
+    mod->infos_displayed = 0;
     mod->o_backdrop = enna_backdrop_add (mod->em->evas);
     mod->browser_refresh_handler =
 	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, browser_cb_refresh, NULL);
