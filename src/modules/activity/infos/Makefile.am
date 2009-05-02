@@ -36,7 +36,7 @@ activity_infos_la_LDFLAGS = -module -avoid-version
 activity_infos_la_DEPENDENCIES = $(top_builddir)/config.h
 
 if BUILD_LIBXRANDR
-activity_infos_la_LIBAD = @ENNA_LIBS@ @LIBXRANDR_LIBS@
+activity_infos_la_LIBADD += @LIBXRANDR_LIBS@
 endif
 
 uninstall:
