@@ -1,6 +1,7 @@
 [enna]
 #none,event,info,warning,error,critical
 verbosity=info
+log_file=/var/log/enna.log
 
 #0,1
 fullscreen=0
