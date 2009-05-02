@@ -107,6 +107,7 @@ struct _Enna_Module_Video
 #endif
     Evas_Object *o_backdrop;
     Evas_Object *o_cover;
+    Evas_Object *o_rating;
     Evas_Object *o_mediaplayer;
     Enna_Module *em;
     VIDEO_STATE state;
@@ -382,6 +383,30 @@ panel_infos_set_cover (Enna_Metadata *m)
 }
 
 static void
+panel_infos_set_rating (Enna_Metadata *m)
+{
+    Evas_Object *rating = NULL;
+
+    if (m && m->type == ENNA_METADATA_VIDEO)
+    {
+        char rate[16];
+        int r;
+
+        r = MAX (m->rating, 0);
+        r = MIN (m->rating, 5);
+        memset (rate, '\0', sizeof (rate));
+        snprintf (rate, sizeof (rate), "rating/%d", r);
+        rating = edje_object_add (mod->em->evas);
+        edje_object_file_set (rating, enna_config_theme_get(), rate);
+    }
+
+    ENNA_OBJECT_DEL (mod->o_rating);
+    mod->o_rating = rating;
+    edje_object_part_swallow (mod->o_edje,
+                              "infos.panel.rating.swallow", mod->o_rating);
+}
+
+static void
 panel_infos_display (int show)
 {
     if (show)
@@ -558,6 +583,7 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
     backdrop_show (m);
     panel_infos_set_cover (m);
     panel_infos_set_text (m);
+    panel_infos_set_rating (m);
 }
 
 static void
@@ -841,6 +867,7 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_backdrop);
     ENNA_OBJECT_DEL(mod->o_cover);
+    ENNA_OBJECT_DEL(mod->o_rating);
     ENNA_FREE(mod->o_current_uri);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);

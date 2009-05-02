@@ -372,6 +372,21 @@ images {
 	  }
        }
 
+       part {
+          name: "infos.panel.rating.swallow";
+          type: SWALLOW;
+          description {
+             state: default 0.0;
+             visible: 0;
+          }
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             rel1.relative: 0.77 0.85; rel1.to: "infos.panel";
+             rel2.relative: 0.97 0.97; rel2.to: "infos.panel";
+          }
+       }
+
     }
     programs {
        program {
@@ -510,6 +525,7 @@ images {
            target: "infos.panel.cover.shadow";
            target: "infos.panel.cover.swallow";
            target: "infos.panel.textblock";
+           target: "infos.panel.rating.swallow";
        }
        program {
            name: "infos,hide";
@@ -521,6 +537,7 @@ images {
            target: "infos.panel.cover.shadow";
            target: "infos.panel.cover.swallow";
            target: "infos.panel.textblock";
+           target: "infos.panel.rating.swallow";
        }
 
     }

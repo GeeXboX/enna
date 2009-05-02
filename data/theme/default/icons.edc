@@ -109,3 +109,10 @@ STOCK_ICON("weather_sun_storm.png",         "weather/sun_storm");
 STOCK_ICON("weather_windy.png",             "weather/windy");
 
 STOCK_ICON("default_backdrop.png",          "backdrop/default");
+
+STOCK_ICON("rating0.png",                   "rating/0");
+STOCK_ICON("rating1.png",                   "rating/1");
+STOCK_ICON("rating2.png",                   "rating/2");
+STOCK_ICON("rating3.png",                   "rating/3");
+STOCK_ICON("rating4.png",                   "rating/4");
+STOCK_ICON("rating5.png",                   "rating/5");
