@@ -45,6 +45,7 @@
 #include "module.h"
 #include "activity.h"
 #include "content.h"
+#include "image.h"
 #include "mainmenu.h"
 #include "logs.h"
 #include "vfs.h"
@@ -103,6 +104,7 @@ struct _Enna_Module_Video
     Evas_Object *o_location;
 #endif
     Evas_Object *o_backdrop;
+    Evas_Object *o_cover;
     Evas_Object *o_mediaplayer;
     Enna_Module *em;
     VIDEO_STATE state;
@@ -251,6 +253,49 @@ backdrop_show (Enna_Metadata *m)
 /****************************************************************************/
 /*                          Information Panel                               */
 /****************************************************************************/
+
+static void
+panel_infos_set_cover (Enna_Metadata *m)
+{
+    Evas_Object *cover;
+    char *file = NULL;
+    int from_vfs = 1;
+
+    if (!m)
+    {
+        file = "backdrop/default";
+        from_vfs = 0;
+    }
+
+    if (m && m->type != ENNA_METADATA_VIDEO)
+    {
+        file = "backdrop/default";
+        from_vfs = 0;
+    }
+
+    if (!file)
+      file = m->cover;
+
+    if (!file)
+	return;
+
+    if (from_vfs)
+    {
+        cover = enna_image_add (mod->em->evas);
+        enna_image_fill_inside_set (cover, 0);
+        enna_image_file_set (cover, file);
+    }
+    else
+    {
+        cover = edje_object_add (mod->em->evas);
+        edje_object_file_set (cover, enna_config_theme_get(), file);
+    }
+
+    ENNA_OBJECT_DEL (mod->o_cover);
+    mod->o_cover = cover;
+    edje_object_part_swallow (mod->o_edje,
+                              "infos.panel.cover.swallow", mod->o_cover);
+}
 
 static void
 panel_infos_display (int show)
@@ -427,6 +472,7 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
                                (m && m->categories) ? m->categories : "");
 
     backdrop_show (m);
+    panel_infos_set_cover (m);
 }
 
 static void
@@ -709,6 +755,7 @@ em_shutdown(Enna_Module *em)
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_backdrop);
+    ENNA_OBJECT_DEL(mod->o_cover);
     ENNA_FREE(mod->o_current_uri);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
