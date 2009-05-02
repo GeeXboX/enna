@@ -704,6 +704,7 @@ static void
 em_shutdown(Enna_Module *em)
 {
     ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->eos_event_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
@@ -718,6 +719,11 @@ em_shutdown(Enna_Module *em)
 #endif
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
+    ENNA_TIMER_DEL(mod->timer_backdrop);
+    ENNA_OBJECT_DEL(mod->o_backdrop);
+    ENNA_OBJECT_DEL(mod->o_backdrop_old);
+    ENNA_OBJECT_DEL(mod->o_switcher);
+    ENNA_FREE(mod->o_current_uri);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
 }
