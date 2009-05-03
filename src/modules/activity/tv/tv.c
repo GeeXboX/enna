@@ -37,6 +37,11 @@
 #include "mainmenu.h"
 #include "mediaplayer.h"
 
+#ifdef BUILD_LIBSVDRP
+#include <time.h>
+#include "utils.h"
+#endif
+
 #define ENNA_MODULE_NAME "tv"
 
 typedef struct _Enna_Module_Tv
@@ -45,6 +50,10 @@ typedef struct _Enna_Module_Tv
     Evas_Object *o_background;
     Enna_Playlist *enna_playlist;
     Enna_Module *em;
+#ifdef BUILD_LIBSVDRP
+    svdrp_t *svdrp;
+    int timer_threshold;
+#endif
 } Enna_Module_Tv;
 
 static Enna_Module_Tv *mod;
@@ -62,8 +71,44 @@ static void _class_init(int dummy)
 
 static const char* _class_quit_request(int dummy)
 {
-    //in case there's a recording still ongoing, return the according text
-    //return value's memory must be freed by module
+#ifdef BUILD_LIBSVDRP
+    int ret;
+    int timer_id;
+    time_t start, now, diff;
+    
+    ret = svdrp_next_timer_event(mod->svdrp, &timer_id, &start);
+    
+    if (ret != SVDRP_OK)
+        return NULL;
+    
+    if (time(&now) == ((time_t) -1))
+        return NULL;
+    
+    diff = (now - start) / 60;
+    
+    if (diff <= mod->timer_threshold) /* recording in progess */
+    {
+        svdrp_timer_t timer;
+        
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "recording in progress");
+        
+        if(svdrp_get_timer(mod->svdrp, timer_id, &timer) == SVDRP_OK)
+        {
+            const char *format = diff < 0 ? 
+                                 "Timer '%s' is due to start in %i minute(s)" : 
+                                 "Currently recording '%s'";
+            size_t len = strlen(format) + strlen(timer.file) - 1;
+            char *msg = malloc (len);
+            
+            snprintf(msg, len, format, timer.file, -diff);
+            
+            return msg;
+        }
+        else
+           return strdup ("Recording in progress");
+    }
+#endif /* BUILD_LIBSVDRP */
+
     return NULL;
 }
 
@@ -133,6 +178,14 @@ void module_init(Enna_Module *em)
     char *value = NULL;
 
     char *vdr_uri = NULL;
+    
+#ifdef BUILD_LIBSVDRP
+    char *svdrp_host = NULL;
+    int svdrp_port = 0;
+    int svdrp_timeout = 0;
+    svdrp_verbosity_level_t svdrp_verb = 0;
+    int timer_threshold = 15;
+#endif /* BUILD_LIBSVDRP */    
 
     if (!em)
         return;
@@ -166,6 +219,50 @@ void module_init(Enna_Module *em)
                     vdr_uri = value;
                 }
             }
+#ifdef BUILD_LIBSVDRP
+            else if (!strcmp("svdrp_port", pair->key))
+            {
+                enna_config_value_store(&value, "svdrp_port",
+                                        ENNA_CONFIG_STRING, pair);
+
+                if (value)
+                    svdrp_port = atoi (value);
+            }
+            else if (!strcmp("svdrp_timeout", pair->key))
+            {
+                enna_config_value_store(&value, "svdrp_timeout",
+                                        ENNA_CONFIG_STRING, pair);
+
+                if (value)
+                    svdrp_timeout = atoi (value);
+            }
+            else if (!strcmp("svdrp_verbosity", pair->key))
+            {
+                enna_config_value_store(&value, "svdrp_verbosity",
+                                        ENNA_CONFIG_STRING, pair);
+
+                if (!strcmp("verbose", value))
+                    svdrp_verb = SVDRP_MSG_VERBOSE;
+                else if (!strcmp("info", value))
+                    svdrp_verb = SVDRP_MSG_INFO;
+                else if (!strcmp("warning", value))
+                    svdrp_verb = SVDRP_MSG_WARNING;
+                else if (!strcmp("error", value))
+                    svdrp_verb = SVDRP_MSG_ERROR;
+                else if (!strcmp("critical", value))
+                    svdrp_verb = SVDRP_MSG_CRITICAL;
+                else if (!strcmp("none", value))
+                    svdrp_verb = SVDRP_MSG_NONE;
+            }
+            else if (!strcmp("timer_quit_threshold", pair->key))
+            {
+                enna_config_value_store(&value, "timer_quit_threshold",
+                                        ENNA_CONFIG_STRING, pair);
+
+                if (value)
+                    timer_threshold = atoi (value);
+            }            
+#endif /* BUILD_LIBSVDRP */            
         }
     }
 
@@ -187,6 +284,46 @@ void module_init(Enna_Module *em)
     mod->enna_playlist = enna_mediaplayer_playlist_create();
     enna_mediaplayer_uri_append(mod->enna_playlist, vdr_uri, "vdr");
 
+#ifdef BUILD_LIBSVDRP
+    if (strstr(vdr_uri, "vdr:/"))
+        svdrp_host = "localhost";
+    else if (strstr(vdr_uri, "netvdr:/"))
+    { /* TODO needs testing */
+        char *p = vdr_uri + strlen("netvdr://");
+        char *q = strstr(vdr_uri, ":");
+        
+        svdrp_host = malloc (q - p);
+        strncpy(svdrp_host, p, q - p);
+    }
+    else
+    {
+        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 " * unknown vdr uri '%s'", vdr_uri);
+    }
+
+    if (!svdrp_port)
+    {
+        svdrp_port = SVDRP_DEFAULT_PORT;
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+            "   - no svdrp_port found, using '%i' instead", svdrp_port);
+    }
+    
+    if (!svdrp_timeout)
+    {
+        svdrp_timeout = SVDRP_DEFAULT_TIMEOUT;
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+            "   - no svdrp_timeout found, using '%i' instead", svdrp_timeout);
+    }   
+    
+    if (!svdrp_verb)
+        svdrp_verb = SVDRP_MSG_WARNING;
+    
+    mod->timer_threshold = timer_threshold;
+    
+    if (svdrp_host)
+        mod->svdrp = enna_svdrp_init(svdrp_host, svdrp_port, svdrp_timeout, svdrp_verb);
+#endif /* BUILD_LIBSVDRP */
+
     enna_activity_add(&class);
 }
 
@@ -197,5 +334,8 @@ void module_shutdown(Enna_Module *em)
 
     ENNA_OBJECT_DEL(mod->o_background);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
+#ifdef BUILD_LIBSVDRP
+    enna_svdrp_uninit();
+#endif
     free(mod);
 }
