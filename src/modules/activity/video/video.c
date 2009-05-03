@@ -443,6 +443,13 @@ panel_infos_set_text (Enna_Metadata *m)
     }
     buffer_append (buf, "<br><br>");
 
+    if (m->director)
+        buffer_appendf (buf, "Director: %s<br>", m->director);
+    if (m->actors)
+        buffer_appendf (buf, "Cast: %s<br>", m->actors);
+    if (m->director || m->actors)
+        buffer_append (buf, "<br>");
+
     if (m->overview)
         buffer_appendf (buf, "%s", m->overview);
 
