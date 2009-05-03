@@ -669,6 +669,7 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
             }
         }
 
+        mod->state = VIDEOPLAYER_VIEW;
 	enna_mediaplayer_play (mod->enna_playlist);
 //	enna_mediaplayer_position_set (m->position);
     }
