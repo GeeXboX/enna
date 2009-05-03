@@ -413,7 +413,7 @@ panel_infos_set_text (Enna_Metadata *m)
     buffer_append (buf, "</b></gl></hl></h4><br>");
 
     if (m->categories)
-        buffer_appendf (buf, "<h2><gl>%s</gl></h2><br>", m->categories);
+        buffer_appendf (buf, "<h2>%s</h2><br>", m->categories);
 
     if (m->year)
         buffer_appendf (buf, "%d", m->year);
