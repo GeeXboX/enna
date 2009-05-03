@@ -402,7 +402,7 @@ panel_infos_set_text (Enna_Metadata *m)
 
     buf = buffer_new ();
 
-    buffer_append (buf, "<h4><hl><gl><b>");
+    buffer_append (buf, "<h4><hl><sd><b>");
     if (m->alternative_title || m->title)
         buffer_appendf (buf, "%s", m->alternative_title ?
                         m->alternative_title : m->title);
@@ -410,7 +410,7 @@ panel_infos_set_text (Enna_Metadata *m)
         buffer_appendf (buf, "%s", m->keywords);
     else
         buffer_appendf (buf, "%s", m->uri);
-    buffer_append (buf, "</b></gl></hl></h4><br>");
+    buffer_append (buf, "</b></sd></hl></h4><br>");
 
     if (m->categories)
         buffer_appendf (buf, "<h2>%s</h2><br>", m->categories);
