@@ -84,7 +84,7 @@ static const char* _class_quit_request(int dummy)
     if (time(&now) == ((time_t) -1))
         return NULL;
     
-    diff = (now - start) / 60;
+    diff = (start - now) / 60;
     
     if (diff <= mod->timer_threshold) /* recording in progess */
     {
@@ -94,13 +94,13 @@ static const char* _class_quit_request(int dummy)
         
         if(svdrp_get_timer(mod->svdrp, timer_id, &timer) == SVDRP_OK)
         {
-            const char *format = diff < 0 ? 
+            const char *format = diff > 0 ? 
                                  "Timer '%s' is due to start in %i minute(s)" : 
                                  "Currently recording '%s'";
             size_t len = strlen(format) + strlen(timer.file) - 1;
             char *msg = malloc (len);
             
-            snprintf(msg, len, format, timer.file, -diff);
+            snprintf(msg, len, format, timer.file, diff);
             
             return msg;
         }
