@@ -22,8 +22,6 @@ pkg_LTLIBRARIES = activity_video.la
 
 activity_video_la_SOURCES= \
 video.c\
-smart_player.c\
-smart_player.h\
 backdrop.c\
 backdrop.h
 

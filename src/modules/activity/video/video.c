@@ -56,7 +56,6 @@
 #endif
 #include "mediaplayer.h"
 #include "event_key.h"
-#include "smart_player.h"
 #include "backdrop.h"
 #include "volumes.h"
 #include "buffer.h"
