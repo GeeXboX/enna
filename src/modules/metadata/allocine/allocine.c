@@ -293,6 +293,69 @@ allocine_parse (Enna_Metadata *meta)
         }
     }
 
+    /* fetch movie rating */
+    if (!meta->rating)
+    {
+        tmp = get_prop_value_from_xml_tree (allocine_movie, "popularity");
+        if (tmp)
+        {
+            /* allocine ranks from 0 to 4, we do from 0 to 5 */
+            meta->rating = atoi ((char *) tmp) + 1;
+            xmlFree (tmp);
+        }
+    }
+
+    /* fetch movie budget */
+    if (!meta->budget)
+    {
+        tmp = get_prop_value_from_xml_tree (allocine_movie, "budget");
+        if (tmp)
+        {
+            meta->budget = atoi ((char *) tmp);
+            xmlFree (tmp);
+        }
+    }
+
+    /* fetch movie people */
+    if (!meta->director || !meta->actors)
+    {
+        xmlNode *cat;
+
+        cat = get_node_xml_tree (allocine_movie, "person");
+        while (cat)
+        {
+            xmlChar *ch;
+
+            ch = get_attr_value_from_node (cat, "job");
+            if (!ch)
+                continue;
+
+            if (!strcmp ((char *) ch, "director"))
+            {
+                if (!meta->director)
+                {
+                    tmp = get_prop_value_from_xml_tree (cat, "name");
+                    if (tmp)
+                    {
+                        enna_metadata_add_category (meta, (char *) tmp);
+                        xmlFree (tmp);
+                    }
+                }
+            }
+            else if (!strcmp ((char *) ch, "actor"))
+            {
+                tmp = get_prop_value_from_xml_tree (cat, "name");
+                if (tmp)
+                {
+                    enna_metadata_add_actors (meta, (char *) tmp);
+                    xmlFree (tmp);
+                }
+            }
+            xmlFree (ch);
+            cat = cat->next;
+        }
+    }
+
  error:
     if (allocine_movie)
         xmlFreeNode (allocine_movie);
