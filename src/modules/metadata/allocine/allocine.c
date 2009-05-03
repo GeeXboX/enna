@@ -337,7 +337,7 @@ allocine_parse (Enna_Metadata *meta)
                     tmp = get_prop_value_from_xml_tree (cat, "name");
                     if (tmp)
                     {
-                        enna_metadata_add_category (meta, (char *) tmp);
+                        meta->director = strdup ((char *) tmp);
                         xmlFree (tmp);
                     }
                 }
