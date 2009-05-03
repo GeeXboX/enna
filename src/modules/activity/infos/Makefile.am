@@ -18,6 +18,10 @@ if BUILD_BROWSER_VALHALLA
 INCLUDES += @VALHALLA_CFLAGS@
 endif
 
+if BUILD_LIBSVDRP
+INCLUDES += @LIBSVDRP_CFLAGS@
+endif
+
 if BUILD_LIBXRANDR
 INCLUDES += @LIBXRANDR_CFLAGS@
 endif
@@ -34,6 +38,10 @@ infos.c
 activity_infos_la_LIBADD = @ENNA_LIBS@
 activity_infos_la_LDFLAGS = -module -avoid-version
 activity_infos_la_DEPENDENCIES = $(top_builddir)/config.h
+
+if BUILD_LIBSVDRP
+activity_infos_la_LIBADD += @LIBSVDRP_LIBS@
+endif
 
 if BUILD_LIBXRANDR
 activity_infos_la_LIBADD += @LIBXRANDR_LIBS@

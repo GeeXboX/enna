@@ -118,6 +118,20 @@
     "# Local VDR: 'vdr://tmp/vdr-xine/stream#demux:mpeg_pes\n" \
     "# Remote VDR: 'netvdr://192.168.1.1:18701\n" \
     "#vdr_uri=\n" \
+    "\n" \
+    "# Default: 2001\n" \
+    "#svdrp_port=\n" \
+    "\n" \
+    "# Default: 30\n" \
+    "#svdrp_timeout=\n" \
+    "\n" \
+    "#verbose,info,warning,error,critical,none\n" \
+    "#svdrp_verbosity=\n" \
+    "\n" \
+    "# Don't exit if a timer will fire before this value (in minutes)\n" \
+    "# Default: 15\n" \
+    "#timer_quit_threshold=\n" \
+    "\n" \
     "[weather]\n" \
     "city=New York\n" \
     "lang=en\n" \

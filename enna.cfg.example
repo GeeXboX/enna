@@ -68,6 +68,19 @@ stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/f
 # Remote VDR: 'netvdr://192.168.1.1:18701
 #vdr_uri=
 
+# Default: 2001
+#svdrp_port=
+
+# Default: 30
+#svdrp_timeout=
+
+#verbose,info,warning,error,critical,none
+#svdrp_verbosity=
+
+# Don't exit if a timer will fire before this value (in minutes)
+# Default: 15
+#timer_quit_threshold=
+
 [weather]
 city=New York
 lang=en
