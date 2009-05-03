@@ -42,6 +42,7 @@ xmlChar *get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
                                                const char *attr_value);
 xmlChar *get_attr_value_from_xml_tree (xmlNode *root, const char *prop,
                                        const char *attr_name);
+xmlChar *get_attr_value_from_node (xmlNode *node, const char *attr_name);
 xmlXPathObjectPtr get_xnodes_from_xml_tree (xmlDocPtr doc, xmlChar *xpath);
 
 #endif /* XML_UTILS_H */

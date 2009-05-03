@@ -143,6 +143,33 @@ get_attr_value_from_xml_tree (xmlNode *root,
     return NULL;
 }
 
+xmlChar *
+get_attr_value_from_node (xmlNode *node, const char *attr_name)
+{
+    xmlNode *n;
+    xmlAttr *attr;
+
+    if (!node || !attr_name)
+        return NULL;
+
+    for (n = node; n; n = n->next)
+    {
+        xmlChar *content;
+
+        attr = n->properties;
+        if (!attr || !attr->children)
+            continue;
+
+        if (xmlStrcmp ((unsigned char *) attr_name, attr->name) != 0)
+            continue;
+
+        content = xmlNodeGetContent (attr->children);
+        if (content)
+            return content;
+    }
+
+    return NULL;
+}
 
 xmlXPathObjectPtr 
 get_xnodes_from_xml_tree (xmlDocPtr doc, xmlChar *xpath)
