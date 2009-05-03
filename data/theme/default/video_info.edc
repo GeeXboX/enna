@@ -11,7 +11,7 @@ group {
          base: "font=content font_size=14 align=left color=#FFF wrap=word";
          tag:  "br" "\n";
          tag:  "hilight" "+ font_size=18 font=content_bd color=#A0D026";
-         tag:  "b" "+ font=conten_bd";
+         tag:  "b" "+ font=content_bd";
          tag:  "tab" "\t";
          tag:  "c" "+ align=center font_size=24 font=content_bd color=#A0D026A0 color2=#A0D026A0 style=GLOW";
       }
