@@ -15,7 +15,7 @@ images {
           tag:  "b"   "+ font=content_bd";
           tag:  "c"   "+ align=center";
           tag:  "hl"  "+ color=#A0D026A0";
-          tag:  "gl"  "+ color2=#FFF style=SHADOW";
+          tag:  "gl"  "+ style=glow glow_color=#000000ff";
           tag:  "ul"  "+ style=underline underline_color=#ffffffff";
           tag:  "h1"  "+ font_size=16";
           tag:  "h2"  "+ font_size=20";
