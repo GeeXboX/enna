@@ -53,6 +53,10 @@
 #include "buffer.h"
 #include "event_key.h"
 
+#ifdef BUILD_LIBSVDRP
+#include "utils.h"
+#endif
+
 #ifdef BUILD_LIBXRANDR
 #include <X11/Xutil.h>
 #include <X11/extensions/Xrandr.h>
@@ -100,6 +104,10 @@ set_enna_information (buffer_t *b)
 #ifdef BUILD_BROWSER_VALHALLA
     buffer_appendf (b, "<hilight>libvalhalla: </hilight>%s<br>",
                     LIBVALHALLA_VERSION_STR);
+#endif
+#ifdef BUILD_LIBSVDRP
+    buffer_appendf (b, "<hilight>libsvdrp: </hilight>%s<br>",
+                    LIBSVDRP_VERSION);
 #endif
     buffer_append (b, "<br>");
 }
@@ -214,6 +222,23 @@ get_resolution (buffer_t *b)
 }
 #endif
 
+#ifdef BUILD_LIBSVDRP
+static void
+get_vdr (buffer_t *b)
+{
+    svdrp_t *svdrp = enna_svdrp_get();
+
+    buffer_append (b, "<hilight>VDR:</hilight> ");
+    if (svdrp)
+        buffer_appendf(b, "connected to VDR %s on %s (%s)<br>",
+                       svdrp_get_property(svdrp, SVDRP_PROPERTY_VERSION),
+                       svdrp_get_property(svdrp, SVDRP_PROPERTY_NAME),
+                       svdrp_get_property(svdrp, SVDRP_PROPERTY_HOSTNAME));
+    else
+        buffer_append (b, "not connected<br>");
+}
+#endif
+
 static void
 get_network (buffer_t *b)
 {
@@ -317,6 +342,9 @@ set_system_information (buffer_t *b)
     buffer_append (b, "<c>System Information</c><br><br>");
     get_distribution (b);
     get_uname (b);
+#ifdef BUILD_LIBSVDRP
+    get_vdr (b);
+#endif
 #ifdef BUILD_LIBXRANDR
     get_resolution (b);
 #endif
