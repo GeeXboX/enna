@@ -23,6 +23,7 @@ Module dependencies (optional):
 * libcddb
 * libcurl
 * libexif
+* libsvdrp (http://hg.geexbox.org/libsvdrp/)
 * libvalhalla (http://hg.geexbox.org/libvalhalla/)
 * libxml2
 * libxrandr

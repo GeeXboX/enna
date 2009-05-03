@@ -39,4 +39,12 @@ unsigned int  enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h);
 void          enna_util_switch_objects(Evas_Object * container, Evas_Object * obj1, Evas_Object * obj2);
 unsigned char enna_util_uri_has_extension(const char *uri, int type);
 char *md5sum (char *str);
+
+#ifdef BUILD_LIBSVDRP
+#include <svdrp.h>
+svdrp_t *enna_svdrp_init (char* host, int port, int timeout, svdrp_verbosity_level_t verbosity);
+void enna_svdrp_uninit (void);
+svdrp_t *enna_svdrp_get (void);
+#endif
+
 #endif /* UTILS_H */

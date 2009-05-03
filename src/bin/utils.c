@@ -43,6 +43,10 @@
 #include "utils.h"
 #include "vfs.h"
 
+#ifdef BUILD_LIBSVDRP
+static svdrp_t *svdrp = NULL;
+#endif
+
 char * enna_util_user_home_get()
 {
     static char *home = NULL;
@@ -315,3 +319,22 @@ md5sum (char *str)
     return strdup (md5);
 }
 
+#ifdef BUILD_LIBSVDRP
+svdrp_t *enna_svdrp_init (char* host, int port, int timeout, svdrp_verbosity_level_t verbosity)
+{
+    svdrp = svdrp_open (host, port, timeout, verbosity);
+    
+    return svdrp;
+}
+
+void enna_svdrp_uninit (void)
+{
+    svdrp_close (svdrp);
+    svdrp = NULL;
+}
+
+svdrp_t *enna_svdrp_get (void)
+{
+    return svdrp;
+}
+#endif
