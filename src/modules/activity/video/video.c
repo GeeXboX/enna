@@ -171,6 +171,15 @@ videoplayer_view_event (enna_key_t key)
     case ENNA_KEY_DOWN:
         _seek_video (-0.05);
         break;
+    case ENNA_KEY_PLUS:
+        enna_mediaplayer_default_increase_volume ();
+        break;
+    case ENNA_KEY_MINUS:
+      enna_mediaplayer_default_decrease_volume ();
+        break;
+    case ENNA_KEY_M:
+        enna_mediaplayer_mute ();
+        break;
     default:
         break;
     }
