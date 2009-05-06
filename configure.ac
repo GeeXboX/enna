@@ -439,6 +439,19 @@ if test "x$want_metadata_tvdb" = "xyes"; then
   AC_DEFINE(BUILD_METADATA_TVDB, 1, [TheTVDB.com Metadata])
 fi
 
+# TheTVDB.org (TVDB)
+want_metadata_tvrage="yes"
+AC_MSG_CHECKING(whether tvrage.com metadata module is to be built)
+AC_ARG_ENABLE(metadata-tvrage,
+  AS_HELP_STRING([--enable-metadata-tvdrage],[Enable TvRage Metadata Module]),
+  [ want_metadata_tvrage=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_tvrage)
+AM_CONDITIONAL(BUILD_METADATA_TVRAGE, test "x$want_metadata_tvrage" = "xyes")
+if test "x$want_metadata_tvrage" = "xyes"; then
+  AC_DEFINE(BUILD_METADATA_TVRAGE, 1, [TvRage Metadata])
+fi
+
 ##################
 # Volume Modules #
 ##################
@@ -702,13 +715,14 @@ src/modules/browser/valhalla/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/metadata/Makefile
+src/modules/metadata/allocine/Makefile
 src/modules/metadata/amazon/Makefile
 src/modules/metadata/libplayer/Makefile
 src/modules/metadata/localfiles/Makefile
 src/modules/metadata/nfo/Makefile
 src/modules/metadata/tmdb/Makefile
 src/modules/metadata/tvdb/Makefile
-src/modules/metadata/allocine/Makefile
+src/modules/metadata/tvrage/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
@@ -765,6 +779,7 @@ echo "  Local files...................... : $want_metadata_localfiles"
 echo "  NFO Reader....................... : $want_metadata_nfo"
 echo "  TheMovieDB.org................... : $want_metadata_tmdb"
 echo "  TheTVDB.com...................... : $want_metadata_tvdb"
+echo "  TvRage.com.................... .. : $want_metadata_tvrage"
 echo
 echo "Supported Volume Modules:"
 echo

@@ -50,7 +50,7 @@
 #define PATH_METADATA           "metadata"
 #define PATH_SNAPSHOTS          "snapshots"
 
-#define DEBUG 0
+#define DEBUG 1
 #define EET_DO_COMPRESS 1
 
 static Eina_List *metadata_grabbers = NULL;
