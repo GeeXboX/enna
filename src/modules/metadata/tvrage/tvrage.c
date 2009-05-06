@@ -76,14 +76,14 @@ tvrage_parse (Enna_Metadata *meta)
     if (!meta || !meta->keywords)
         return;
 
-    /* TMDB only has sense on video files */
+    /* TVRage only has sense on video files */
     if (meta->type != ENNA_METADATA_VIDEO)
         return;
 
     /* get HTTP compliant keywords */
     escaped_keywords = url_escape_string (mod->handler, meta->keywords);
 
-    /* proceed with TVDB search request */
+    /* proceed with TVRage search request */
     memset (url, '\0', MAX_URL_SIZE);
     snprintf (url, MAX_URL_SIZE, TVRAGE_QUERY_SEARCH,
               TVRAGE_HOSTNAME, escaped_keywords);
@@ -112,7 +112,7 @@ tvrage_parse (Enna_Metadata *meta)
         goto error;
     }
 
-    /* get TVDB serie ID */
+    /* get TVRage show id */
     tmp = get_prop_value_from_xml_tree (n, "showid");
     if (!tmp)
         goto error;
@@ -120,7 +120,7 @@ tvrage_parse (Enna_Metadata *meta)
     xmlFreeDoc (doc);
     doc = NULL;
 
-    /* proceed with TVDB info request */
+    /* proceed with TVRage info request */
     memset (url, '\0', MAX_URL_SIZE);
     snprintf (url, MAX_URL_SIZE, TVRAGE_QUERY_INFO,
               TVRAGE_HOSTNAME, tmp);
