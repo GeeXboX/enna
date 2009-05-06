@@ -309,6 +309,7 @@ images {
              rel1.relative: 0.05 0.05;
              rel2.relative: 0.95 0.95;
              image.normal: "panel_info.png";
+             image.border: 48 48 120 120;
           }
        }
 
