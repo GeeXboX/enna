@@ -211,8 +211,6 @@ tvrage_parse (Enna_Metadata *meta)
         }
     }
 
-    enna_metadata_dump(meta);
-
  error:
     if (doc)
         xmlFreeDoc (doc);
