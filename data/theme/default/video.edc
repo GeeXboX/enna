@@ -345,10 +345,13 @@ images {
           description {
              state: "default" 0.0;
              visible: 1;
-             rel1.relative: 0.05 0.10; 
+             rel1.relative: 0 0; 
              rel1.to: "infos.panel";
-             rel2.relative: 0.30 0.90; 
+             rel1.offset: 64 64;
+             rel2.relative: 0.35 1.0;
+             rel2.offset: 0 -63; 
              rel2.to: "infos.panel";
+	           aspect: 0.75 0.75;
           }
        }
 
