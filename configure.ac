@@ -439,11 +439,11 @@ if test "x$want_metadata_tvdb" = "xyes"; then
   AC_DEFINE(BUILD_METADATA_TVDB, 1, [TheTVDB.com Metadata])
 fi
 
-# TheTVDB.org (TVDB)
+# TVRage.com
 want_metadata_tvrage="yes"
 AC_MSG_CHECKING(whether tvrage.com metadata module is to be built)
 AC_ARG_ENABLE(metadata-tvrage,
-  AS_HELP_STRING([--enable-metadata-tvdrage],[Enable TvRage Metadata Module]),
+  AS_HELP_STRING([--enable-metadata-tvrage],[Enable TvRage Metadata Module]),
   [ want_metadata_tvrage=$enableval ]
 )
 AC_MSG_RESULT($want_metadata_tvrage)
