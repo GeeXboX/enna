@@ -363,8 +363,12 @@ images {
              state: "show" 0.0;
              visible: 1;
              color: 255 255 255 255;
-             rel1.relative: 0.35 0.10; rel1.to: "infos.panel";
-             rel2.relative: 0.95 0.90; rel2.to: "infos.panel";
+             rel1.relative: 1 0; 
+             rel1.to: "infos.panel.cover.swallow";
+             rel1.offset: 32 0; 
+             rel2.relative: 1.0 1.0;
+             rel2.to: "infos.panel";
+             rel2.offset: -63 -63;
              text {
 		           style: "style.infos.video";
 		           min: 0 0;
