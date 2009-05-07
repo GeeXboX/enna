@@ -3,7 +3,6 @@ images {
    image: "location_panel_shadow.png" COMP;
    image: "browser_cover_bg.png" COMP;
    image: "filebrowser_tile.png" COMP;
-   image: "panel_info.png" COMP;
 }
  group {
     name: "module/video";
@@ -293,104 +292,7 @@ images {
            repeat_events: 1;
            description {state: "default" 0.0;}
        }
-       part {
-          name: "infos.panel.clip";
-          mouse_events: 0;
-          description {
-             state: "default" 0.0;
-             visible: 0;
-             color: 255 255 255 0;
-          }
-          description {
-             state: "show" 0.0;
-             visible: 1;
-             color: 255 255 255 255;
-          }     
-       }
-       part {
-          name: "infos.panel";
-          type: IMAGE;
-          clip_to: "infos.panel.clip";
-          mouse_events: 0;
-          description {
-             state: "default" 0.0;
-             visible: 1;
-             rel1.relative: 0.05 0.05;
-             rel2.relative: 0.95 0.95;
-             image.normal: "panel_info.png";
-             image.border: 48 48 120 120;
-          }
-       }
-
-       part {
-          name: "infos.panel.cover.shadow";
-          type: IMAGE;
-          clip_to: "infos.panel.clip";
-          description {
-             state: "default" 0.0;
-             visible: 1;
-             color: 255 255 255 255;
-             rel1.to: "infos.panel.cover.swallow";
-             rel2.to: "infos.panel.cover.swallow"; 
-             rel2.offset: 13 13;
-             image.normal: "shadow.png";
-             image.border: 14 14 14 14;
-          }
-       }
-       part {
-          name: "infos.panel.cover.swallow";
-          type: SWALLOW;
-          effect: SHADOW;
-          clip_to: "infos.panel.clip";
-          description {
-             state: "default" 0.0;
-             visible: 1;
-             rel1.relative: 0 0; 
-             rel1.to: "infos.panel";
-             rel1.offset: 64 64;
-             rel2.relative: 0.35 1.0;
-             rel2.offset: 0 -63; 
-             rel2.to: "infos.panel";
-	           aspect: 0.75 0.75;
-          }
-       }
-
-       part {
-          name: "infos.panel.textblock";
-	        type: TEXTBLOCK;
-          clip_to: "infos.panel.clip";
-          description {
-             state: "show" 0.0;
-             visible: 1;
-             color: 255 255 255 255;
-             rel1.relative: 1 0; 
-             rel1.to: "infos.panel.cover.swallow";
-             rel1.offset: 32 0; 
-             rel2.relative: 1.0 1.0;
-             rel2.to: "infos.panel";
-             rel2.offset: -63 -63;
-             text {
-		           style: "style.infos.video";
-		           min: 0 0;
- 	           }
-	        }
-       }
-
-       part {
-          name: "infos.panel.rating.swallow";
-          type: SWALLOW;
-          clip_to: "infos.panel.clip";
-          description {
-             state: "show" 0.0;
-             visible: 1;
-             aspect: 4.71 4.71;
-             aspect_preference: HORIZONTAL;
-             rel1.relative: 0.77 0.85; 
-             rel1.to: "infos.panel";
-             rel2.relative: 0.97 0.97; 
-             rel2.to: "infos.panel";
-          }
-       }
+     
 
        part {
           name: "infos.flags.video.swallow";
@@ -451,8 +353,33 @@ images {
              rel2.relative: 1.00 0.97;
           }
        }
-
-
+       part {
+          name: "infos.panel.clip";
+          mouse_events: 0;
+          clip_to: clip.module;
+          type: RECT;
+          description {
+             state: "default" 0.0;
+             visible: 0;
+             color: 255 255 255 0;
+          }
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+          }     
+       }
+       part {
+          name: "infos.panel.swallow";
+          mouse_events: 0;
+          clip_to: infos.panel.clip;
+          type: SWALLOW;
+          description {
+             state: "default" 0.0;
+             rel1.to: "infos.panel.clip";
+             rel2.to: "infos.panel.clip";
+          }    
+       }
     }
     programs {
        program {
