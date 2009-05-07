@@ -105,8 +105,7 @@ struct _Enna_Module_Video
     Evas_Object *o_location;
 #endif
     Evas_Object *o_backdrop;
-    Evas_Object *o_cover;
-    Evas_Object *o_rating;
+    Evas_Object *o_panel_infos;
     Evas_Object *o_flag_video;
     Evas_Object *o_flag_audio;
     Evas_Object *o_flag_studio;
@@ -377,165 +376,6 @@ infos_flags_set (Enna_Metadata *m)
     edje_object_part_swallow (mod->o_edje, "infos.flags.media.swallow", md);
 }
 
-/****************************************************************************/
-/*                          Information Panel                               */
-/****************************************************************************/
-
-static void
-panel_infos_set_text (Enna_Metadata *m)
-{
-    buffer_t *buf;
-
-    if (!m)
-    {
-        edje_object_part_text_set (mod->o_edje, "infos.panel.textblock",
-                                   "No such information ...");
-        return;
-    }
-
-    if (m && m->type != ENNA_METADATA_VIDEO)
-    {
-        edje_object_part_text_set (mod->o_edje, "infos.panel.textblock",
-                                   "No such information ...");
-        return;
-    }
-
-    buf = buffer_new ();
-
-    buffer_append (buf, "<h4><hl><sd><b>");
-    if (m->alternative_title || m->title)
-        buffer_appendf (buf, "%s", m->alternative_title ?
-                        m->alternative_title : m->title);
-    else if (m->keywords)
-        buffer_appendf (buf, "%s", m->keywords);
-    else
-        buffer_appendf (buf, "%s", m->uri);
-    buffer_append (buf, "</b></sd></hl></h4><br>");
-
-    if (m->categories)
-        buffer_appendf (buf, "<h2>%s</h2><br>", m->categories);
-
-    if (m->year)
-        buffer_appendf (buf, "%d", m->year);
-
-    if (m->runtime || m->length)
-    {
-        int hh, mm;
-
-        if (m->year)
-            buffer_append (buf, " - ");
-
-        if (m->runtime)
-        {
-            hh = (int) (m->runtime / 60);
-            mm = (int) (m->runtime - 60 * hh);
-        }
-        else if (m->length)
-        {
-            hh = (int) (m->length / 3600 / 1000);
-            mm = (int) ((m->length / 60 / 1000) - (60 * hh));
-        }
-
-        if (hh)
-            buffer_appendf (buf, "%.2d hour(s) ", hh);
-        if (mm)
-            buffer_appendf (buf, "%.2d minute(s)", mm);
-    }
-    buffer_append (buf, "<br><br>");
-
-    if (m->director)
-        buffer_appendf (buf, "<ul>Director:</ul> %s<br>", m->director);
-    if (m->actors)
-        buffer_appendf (buf, "<ul>Cast:</ul> %s<br>", m->actors);
-    if (m->director || m->actors)
-        buffer_append (buf, "<br>");
-
-    if (m->overview)
-        buffer_appendf (buf, "%s", m->overview);
-
-    buffer_append (buf, "<br><br>");
-    buffer_appendf (buf, "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>",
-                    m->video->codec, m->video->width,
-                    m->video->height, m->video->framerate);
-    buffer_appendf (buf, "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>",
-                    m->music->codec, m->music->channels,
-                    m->music->bitrate / 1000, m->music->samplerate);
-    buffer_appendf (buf, "<hl>Size: </hl> %.2f MB<br>",
-                    m->size / 1024.0 / 1024.0);
-
-    edje_object_part_text_set (mod->o_edje, "infos.panel.textblock", buf->buf);
-    buffer_free (buf);
-}
-
-static void
-panel_infos_set_cover (Enna_Metadata *m)
-{
-    Evas_Object *cover;
-    char *file = NULL;
-    int from_vfs = 1;
-
-    if (!m)
-    {
-        file = "backdrop/default";
-        from_vfs = 0;
-    }
-
-    if (m && m->type != ENNA_METADATA_VIDEO)
-    {
-        file = "backdrop/default";
-        from_vfs = 0;
-    }
-
-    if (!file)
-      file = m->cover;
-
-    if (!file)
-    {
-        file = "backdrop/default";
-        from_vfs = 0;
-    }
-
-    if (from_vfs)
-    {
-        cover = enna_image_add (mod->em->evas);
-        enna_image_fill_inside_set (cover, 0);
-        enna_image_file_set (cover, file);
-    }
-    else
-    {
-        cover = edje_object_add (mod->em->evas);
-        edje_object_file_set (cover, enna_config_theme_get(), file);
-    }
-
-    ENNA_OBJECT_DEL (mod->o_cover);
-    mod->o_cover = cover;
-    edje_object_part_swallow (mod->o_edje,
-                              "infos.panel.cover.swallow", mod->o_cover);
-}
-
-static void
-panel_infos_set_rating (Enna_Metadata *m)
-{
-    Evas_Object *rating = NULL;
-
-    if (m && m->type == ENNA_METADATA_VIDEO)
-    {
-        char rate[16];
-        int r;
-
-        r = MAX (m->rating, 0);
-        r = MIN (m->rating, 5);
-        memset (rate, '\0', sizeof (rate));
-        snprintf (rate, sizeof (rate), "rating/%d", r);
-        rating = edje_object_add (mod->em->evas);
-        edje_object_file_set (rating, enna_config_theme_get(), rate);
-    }
-
-    ENNA_OBJECT_DEL (mod->o_rating);
-    mod->o_rating = rating;
-    edje_object_part_swallow (mod->o_edje,
-                              "infos.panel.rating.swallow", mod->o_rating);
-}
 
 static void
 panel_infos_display (int show)
@@ -714,9 +554,9 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
 
     backdrop_show (m);
     infos_flags_set (m);
-    panel_infos_set_cover (m);
-    panel_infos_set_text (m);
-    panel_infos_set_rating (m);
+    //panel_infos_set_cover (m);
+    //panel_infos_set_text (m);
+    //panel_infos_set_rating (m);
 }
 
 static void
@@ -1001,8 +841,7 @@ em_shutdown(Enna_Module *em)
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_backdrop);
-    ENNA_OBJECT_DEL(mod->o_cover);
-    ENNA_OBJECT_DEL(mod->o_rating);
+    ENNA_OBJECT_DEL(mod->o_panel_infos);
     ENNA_OBJECT_DEL(mod->o_flag_video);
     ENNA_OBJECT_DEL(mod->o_flag_audio);
     ENNA_OBJECT_DEL(mod->o_flag_studio);
