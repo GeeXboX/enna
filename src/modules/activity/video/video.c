@@ -57,6 +57,7 @@
 #include "mediaplayer.h"
 #include "event_key.h"
 #include "backdrop.h"
+#include "panel_infos.h"
 #include "volumes.h"
 #include "buffer.h"
 #include "metadata.h"
@@ -68,7 +69,7 @@ static void browser_cb_select (void *data, Evas_Object *obj, void *event_info);
 #ifdef LOCATION
 static void browser_cb_enter (void *data, Evas_Object *obj, void *event_info);
 #endif
-static void browser_cb_hl (void *data, Evas_Object *obj, void *event_info);
+static void browser_cb_hilight (void *data, Evas_Object *obj, void *event_info);
 static void browse (void *data);
 
 static void _create_menu(void);
@@ -441,10 +442,13 @@ browser_cb_root (void *data, Evas_Object *obj, void *event_info)
                                     "browse_down", browser_cb_enter);
 #endif
     evas_object_smart_callback_del (mod->o_browser,
-                                    "hilight", browser_cb_hl);
+                                    "hilight", browser_cb_hilight);
 
     ENNA_OBJECT_DEL (mod->o_browser);
     mod->o_browser = NULL;
+
+    ENNA_OBJECT_DEL(mod->o_panel_infos);
+    mod->o_panel_infos = NULL;
 
     _create_menu ();
 #ifdef LOCATION
@@ -524,7 +528,7 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
+browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 {
     Enna_Metadata *m = NULL;
     Browser_Selected_File_Data *ev = event_info;
@@ -554,9 +558,10 @@ browser_cb_hl (void *data, Evas_Object *obj, void *event_info)
 
     backdrop_show (m);
     infos_flags_set (m);
-    //panel_infos_set_cover (m);
-    //panel_infos_set_text (m);
-    //panel_infos_set_rating (m);
+    
+    enna_panel_infos_set_cover(mod->o_panel_infos, m);
+    enna_panel_infos_set_text(mod->o_panel_infos, m);
+    enna_panel_infos_set_rating(mod->o_panel_infos, m);
 }
 
 static void
@@ -579,7 +584,7 @@ browse (void *data)
                                     browser_cb_enter, NULL);
 #endif
     evas_object_smart_callback_add (mod->o_browser, "hilight",
-                                    browser_cb_hl, NULL);
+                                    browser_cb_hilight, NULL);
     evas_object_show (mod->o_browser);
 
     edje_object_part_swallow (mod->o_edje,
@@ -587,6 +592,12 @@ browse (void *data)
     enna_browser_root_set (mod->o_browser, vfs);
     evas_object_del (mod->o_list);
     mod->o_list = NULL;
+    
+    ENNA_OBJECT_DEL(mod->o_panel_infos);
+    mod->o_panel_infos = enna_panel_infos_add(mod->em->evas);
+    edje_object_part_swallow (mod->o_edje,
+                              "infos.panel.swallow", mod->o_panel_infos);
+    
 #ifdef LOCATION
     enna_location_append (mod->o_location,
                           vfs->label, NULL, NULL, NULL, NULL);
@@ -833,7 +844,7 @@ em_shutdown(Enna_Module *em)
 #ifdef LOCATION
     evas_object_smart_callback_del(mod->o_browser, "browse_down", browser_cb_enter);
 #endif
-    evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hl);
+    evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hilight);
     ENNA_OBJECT_DEL(mod->o_browser);
 #ifdef LOCATION
     ENNA_OBJECT_DEL(mod->o_location);
