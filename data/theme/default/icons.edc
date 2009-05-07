@@ -108,7 +108,7 @@ STOCK_ICON("weather_sun_snow.png",          "weather/sun_snow");
 STOCK_ICON("weather_sun_storm.png",         "weather/sun_storm");
 STOCK_ICON("weather_windy.png",             "weather/windy");
 
-STOCK_ICON("default_backdrop.png",          "backdrop/default");
+//STOCK_ICON("default_backdrop.png",          "backdrop/default");
 
 STOCK_ICON("rating0.png",                   "rating/0");
 STOCK_ICON("rating1.png",                   "rating/1");
