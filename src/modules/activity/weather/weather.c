@@ -84,6 +84,7 @@ static const struct {
     { "weather/foggy",            "/fog"                       },
     { "weather/heavy_rain",       "/rain"                      },
     { "weather/light_snow",       "/chance_of_snow"            },
+    { "weather/rain",             "/mist"                      },
     { "weather/rain",             "/chance_of_rain"            },
     { "weather/snow",             "/snow"                      },
     { "weather/clouds",           "/cloudy"                    },
@@ -92,6 +93,7 @@ static const struct {
     { "weather/sunny",            "/sunny"                     },
     { "weather/windy",            "/flurries"                  },
     { "weather/rain_storm",       "/chance_of_storm"           },
+    { "weather/rain_storm",       "/thunderstorm"              },
 #if 0
     /* matches to be found */
     { "weather/ice",              "/"                          },
