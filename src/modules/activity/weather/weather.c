@@ -80,7 +80,7 @@ static const struct {
     const char *data;
 } weather_icon_mapping[] = {
     { "weather/cloudy",           "/partly_cloudy"             },
-    { "weather/foggy",            "/haze"                       },
+    { "weather/foggy",            "/haze"                      },
     { "weather/foggy",            "/fog"                       },
     { "weather/heavy_rain",       "/rain"                      },
     { "weather/light_snow",       "/chance_of_snow"            },
