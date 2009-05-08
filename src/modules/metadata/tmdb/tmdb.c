@@ -161,6 +161,32 @@ tmdb_parse (Enna_Metadata *meta)
     /* fetch movie year of production */
     xml_search_year (n, "release", &meta->year);
 
+    /* fetch movie rating */
+    xml_search_int (n, "rating", &meta->rating);
+    meta->rating /= 2;
+
+    /* fetch movie budget */
+    xml_search_int (n, "budget", &meta->budget);
+
+    /* fetch movie country */
+    if (!meta->country)
+    {
+        xmlNode *country;
+
+        country = get_node_xml_tree (n, "country");
+        if (country)
+        {
+            xmlChar *tmp;
+
+            tmp = get_prop_value_from_xml_tree (country, "short_name");
+            if (tmp)
+            {
+                meta->country = strdup ((char *) tmp);
+                xmlFree (tmp);
+            }
+        }
+    }
+
     /* fetch movie categories */
     if (!meta->categories)
     {
@@ -218,6 +244,49 @@ tmdb_parse (Enna_Metadata *meta)
             xmlFree (tmp);
 
             meta->backdrop = strdup (back);
+        }
+    }
+
+    /* fetch movie people */
+    if (!meta->director || !meta->actors)
+    {
+        xmlNode *cat;
+
+        cat = get_node_xml_tree (n, "people");
+        while (cat)
+        {
+            xmlChar *ch;
+
+            ch = get_attr_value_from_node (cat, "job");
+            if (!ch)
+                continue;
+
+            if (!strcmp ((char *) ch, "director"))
+                xml_search_str (cat, "name", &meta->director);
+            else if (!strcmp ((char *) ch, "actor"))
+            {
+                char *actor = NULL, *role = NULL;
+
+                xml_search_str (cat, "name", &actor);
+                xml_search_str (cat, "role", &role);
+
+                if (actor)
+                {
+                    char str[128];
+
+                    memset (str, '\0', sizeof (str));
+                    if (role)
+                        snprintf (str, sizeof (str), "%s (%s)", actor, role);
+                    else
+                        snprintf (str, sizeof (str), "%s", actor);
+                    enna_metadata_add_actors (meta, str);
+                }
+
+                ENNA_FREE (actor);
+                ENNA_FREE (role);
+            }
+            xmlFree (ch);
+            cat = cat->next;
         }
     }
 
