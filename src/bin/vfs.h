@@ -50,8 +50,6 @@ struct _Enna_Vfs_File
     char *icon;
     char *icon_file;
     unsigned char is_directory : 1;
-    unsigned char is_selected : 1;
-
 };
 
 struct _Enna_Class_Vfs

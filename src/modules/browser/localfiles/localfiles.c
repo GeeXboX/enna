@@ -149,13 +149,6 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
                 f = enna_vfs_create_directory(dir, filename, "icon/directory",
                                               NULL);
                 dirs_list = eina_list_append(dirs_list, f);
-                if (data->prev_uri)
-                {
-                    if (!strcmp(dir, data->prev_uri))
-                        f->is_selected = 1;
-                    else
-                        f->is_selected = 0;
-                }
             }
             else if (enna_util_uri_has_extension(dir, caps))
             {
