@@ -232,3 +232,27 @@ xml_search_int (xmlNode *n, const char *node, int *val)
 
     return 0;
 }
+
+int
+xml_search_year (xmlNode *n, const char *node, int *year)
+{
+    xmlChar *tmp;
+    int r, y, m, d;
+
+    if (*year)
+        return 1;
+
+    tmp = get_prop_value_from_xml_tree (n, node);
+    if (!tmp)
+        return 1;
+
+    r = sscanf ((char *) tmp, "%d-%d-%d", &y, &m, &d);
+    xmlFree (tmp);
+    if (r == 3)
+    {
+        *year = y;
+        return 0;
+    }
+
+    return 1;
+}
