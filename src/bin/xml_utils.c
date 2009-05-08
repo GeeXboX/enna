@@ -196,3 +196,39 @@ get_xnodes_from_xml_tree (xmlDocPtr doc, xmlChar *xpath)
 
     return result;
 }
+
+int
+xml_search_str (xmlNode *n, const char *node, char **str)
+{
+    xmlChar *tmp;
+
+    if (*str)
+        return 1;
+
+    tmp = get_prop_value_from_xml_tree (n, node);
+    if (!tmp)
+        return 1;
+
+    *str = strdup ((char *) tmp);
+    xmlFree (tmp);
+
+    return 0;
+}
+
+int
+xml_search_int (xmlNode *n, const char *node, int *val)
+{
+    xmlChar *tmp;
+
+    if (*val)
+        return 1;
+
+    tmp = get_prop_value_from_xml_tree (n, node);
+    if (!tmp)
+        return 1;
+
+    *val = atoi ((char *) tmp);
+    xmlFree (tmp);
+
+    return 0;
+}

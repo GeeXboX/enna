@@ -44,5 +44,7 @@ xmlChar *get_attr_value_from_xml_tree (xmlNode *root, const char *prop,
                                        const char *attr_name);
 xmlChar *get_attr_value_from_node (xmlNode *node, const char *attr_name);
 xmlXPathObjectPtr get_xnodes_from_xml_tree (xmlDocPtr doc, xmlChar *xpath);
+int xml_search_str (xmlNode *n, const char *node, char **str);
+int xml_search_int (xmlNode *n, const char *node, int *val);
 
 #endif /* XML_UTILS_H */
