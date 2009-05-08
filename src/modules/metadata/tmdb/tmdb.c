@@ -75,6 +75,7 @@ tmdb_parse (Enna_Metadata *meta)
 
     xmlDocPtr doc = NULL;
     xmlChar *tmp;
+    xmlNode *n;
 
     if (!meta || !meta->keywords)
         return;
@@ -149,44 +150,16 @@ tmdb_parse (Enna_Metadata *meta)
     if (!doc)
         goto error;
 
+    n = xmlDocGetRootElement (doc);
+
     /* fetch movie overview description */
-    if (!meta->overview)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "short_overview");
-        if (tmp)
-        {
-            meta->overview = strdup ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (n, "short_overview", &meta->overview);
 
     /* fetch movie runtime (in minutes) */
-    if (!meta->runtime)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "runtime");
-        if (tmp)
-        {
-            meta->runtime = atoi ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_int (n, "runtime", &meta->runtime);
 
     /* fetch movie year of production */
-    if (!meta->year)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "release");
-        if (tmp)
-        {
-            int r, y, m, d;
-            r = sscanf ((char *) tmp, "%d-%d-%d", &y, &m, &d);
-            xmlFree (tmp);
-            if (r == 3)
-                meta->year = y;
-        }
-    }
+    xml_search_year (n, "release", &meta->year);
 
     /* fetch movie categories */
     if (!meta->categories)
@@ -194,7 +167,7 @@ tmdb_parse (Enna_Metadata *meta)
         xmlNode *cat;
         int i;
 
-        cat = get_node_xml_tree (xmlDocGetRootElement (doc), "category");
+        cat = get_node_xml_tree (n, "category");
         for (i = 0; i < 4; i++)
         {
             if (!cat)
@@ -213,7 +186,7 @@ tmdb_parse (Enna_Metadata *meta)
     /* fetch movie poster/cover */
     if (!meta->cover)
     {
-        tmp = get_prop_value_from_xml_tree_by_attr (xmlDocGetRootElement (doc),
+        tmp = get_prop_value_from_xml_tree_by_attr (n,
                                                     "poster", "size", "cover");
 
         if (tmp)
@@ -232,7 +205,7 @@ tmdb_parse (Enna_Metadata *meta)
     /* fetch movie backdrop */
     if (!meta->backdrop)
     {
-        tmp = get_prop_value_from_xml_tree_by_attr (xmlDocGetRootElement (doc),
+        tmp = get_prop_value_from_xml_tree_by_attr (n,
                                                     "backdrop", "size", "mid");
 
         if (tmp)

@@ -141,11 +141,12 @@ tvrage_parse (Enna_Metadata *meta)
     if (!doc)
         goto error;
 
+    n = xmlDocGetRootElement (doc);
+
     /* fetch tv show french title (to be extended to language param) */
     if (!meta->alternative_title)
     {
-        tmp = get_prop_value_from_xml_tree_by_attr (xmlDocGetRootElement (doc),
-                                            "aka","country","FR");
+        tmp = get_prop_value_from_xml_tree_by_attr (n, "aka","country","FR");
         if (tmp)
         {
             meta->alternative_title = strdup ((char *) tmp);
@@ -153,41 +154,14 @@ tvrage_parse (Enna_Metadata *meta)
         }
     }
 
-   /* fetch tv show country */
-    if (!meta->country)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "origin_country");
-        if (tmp)
-        {
-            meta->country = strdup ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    /* fetch tv show country */
+    xml_search_str (n, "origin_country", &meta->country);
 
     /* fetch tv show studio */
-    if (!meta->studio)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "network");
-        if (tmp)
-        {
-            meta->studio = strdup ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (n, "network", &meta->studio);
 
     /* fetch tv show runtime (in minutes) */
-     if (!meta->runtime)
-     {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "runtime");
-        if (tmp)
-        {
-            meta->runtime = atoi ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_int (n, "runtime", &meta->runtime);
 
     /* fetch tv show categories */
     if (!meta->categories)
@@ -195,7 +169,7 @@ tvrage_parse (Enna_Metadata *meta)
         xmlNode *cat;
         int i;
 
-        cat = get_node_xml_tree (xmlDocGetRootElement (doc), "genre");
+        cat = get_node_xml_tree (n, "genre");
         for (i = 0; i < 4; i++)
         {
             if (!cat)

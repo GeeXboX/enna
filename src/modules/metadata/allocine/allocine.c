@@ -221,55 +221,17 @@ allocine_parse (Enna_Metadata *meta)
     }
 
     /* fetch movie alternative title */
-    if (!meta->alternative_title)
-    {
-        tmp = get_prop_value_from_xml_tree (allocine_movie,
-                                            "alternative_title");
-        if (tmp)
-        {
-            meta->alternative_title = strdup ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (allocine_movie, "alternative_title",
+                    &meta->alternative_title);
 
-     /* fetch movie overview description */
-    if (!meta->overview)
-    {
-        tmp = get_prop_value_from_xml_tree (allocine_movie,
-                                            "short_overview");
-        if (tmp)
-        {
-            meta->overview = strdup ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    /* fetch movie overview description */
+    xml_search_str (allocine_movie, "short_overview", &meta->overview);
 
     /* fetch movie runtime (in minutes) */
-    if (!meta->runtime)
-    {
-        tmp = get_prop_value_from_xml_tree (allocine_movie,
-                                            "runtime");
-        if (tmp)
-        {
-            meta->runtime = atoi ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_int (allocine_movie, "runtime", &meta->runtime);
 
     /* fetch movie year of production */
-    if (!meta->year)
-    {
-        tmp = get_prop_value_from_xml_tree (allocine_movie,
-                                            "release");
-        if (tmp)
-        {
-            int r, y, m, d;
-            r = sscanf ((char *) tmp, "%d-%d-%d", &y, &m, &d);
-            xmlFree (tmp);
-            if (r == 3)
-                meta->year = y;
-        }
-    }
+    xml_search_year (allocine_movie, "release", &meta->year);
 
     /* fetch movie categories */
     if (!meta->categories)
@@ -294,27 +256,13 @@ allocine_parse (Enna_Metadata *meta)
     }
 
     /* fetch movie rating */
-    if (!meta->rating)
-    {
-        tmp = get_prop_value_from_xml_tree (allocine_movie, "popularity");
-        if (tmp)
-        {
-            /* allocine ranks from 0 to 4, we do from 0 to 5 */
-            meta->rating = atoi ((char *) tmp) + 1;
-            xmlFree (tmp);
-        }
-    }
+    xml_search_int (allocine_movie, "popularity", &meta->rating);
+    /* allocine ranks from 0 to 4, we do from 0 to 5 */
+    if (meta->rating)
+      meta->rating++;
 
     /* fetch movie budget */
-    if (!meta->budget)
-    {
-        tmp = get_prop_value_from_xml_tree (allocine_movie, "budget");
-        if (tmp)
-        {
-            meta->budget = atoi ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_int (allocine_movie, "budget", &meta->budget);
 
     /* fetch movie people */
     if (!meta->director || !meta->actors)

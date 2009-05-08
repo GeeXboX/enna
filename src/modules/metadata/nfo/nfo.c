@@ -63,78 +63,16 @@ static Enna_Metadata_Nfo *mod;
 static void
 nfo_parse_stream_video (Enna_Metadata *meta, xmlNode *video)
 {
-    xmlChar *tmp;
-
-    /* video codec */
-    if (!meta->video->codec)
-    {
-        tmp = get_prop_value_from_xml_tree (video, "codec");
-        if (tmp)
-        {
-            meta->video->codec = strdup ((char *) tmp);
-            enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                      "Video Codec: %s", meta->video->codec);
-            xmlFree (tmp);
-        }
-    }
-
-    /* video width */
-    if (!meta->video->width)
-    {
-        tmp = get_prop_value_from_xml_tree (video, "width");
-        if (tmp)
-        {
-            meta->video->width = atoi ((char *) tmp);
-            enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                      "Video Width: %d", meta->video->width);
-            xmlFree (tmp);
-        }
-    }
-
-    /* video height */
-    if (!meta->video->height)
-    {
-        tmp = get_prop_value_from_xml_tree (video, "height");
-        if (tmp)
-        {
-            meta->video->height = atoi ((char *) tmp);
-            enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                      "Video Height: %d", meta->video->height);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (video, "codec",  &meta->video->codec);
+    xml_search_int (video, "width",  &meta->video->width);
+    xml_search_int (video, "height", &meta->video->height);
 }
 
 static void
 nfo_parse_stream_audio (Enna_Metadata *meta, xmlNode *audio)
 {
-    xmlChar *tmp;
-
-    /* audio codec */
-    if (!meta->music->codec)
-    {
-        tmp = get_prop_value_from_xml_tree (audio, "codec");
-        if (tmp)
-        {
-            meta->music->codec = strdup ((char *) tmp);
-            enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                      "Audio Codec: %s", meta->music->codec);
-            xmlFree (tmp);
-        }
-    }
-
-    /* audio channels */
-    if (!meta->music->channels)
-    {
-        tmp = get_prop_value_from_xml_tree (audio, "channels");
-        if (tmp)
-        {
-            meta->music->channels = atoi ((char *) tmp);
-            enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                      "Audio Channels: %d", meta->music->channels);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (audio, "codec",    &meta->music->codec);
+    xml_search_int (audio, "channels", &meta->music->channels);
 }
 
 static void
@@ -301,43 +239,13 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
     }
 
     /* plot */
-    if (!meta->overview)
-    {
-        tmp = get_prop_value_from_xml_tree (movie, "plot");
-        if (tmp)
-        {
-            meta->overview = strdup ((char *) tmp);
-            enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                      "Plot: %s", meta->overview);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (movie, "plot", &meta->overview);
 
     /* production year */
-    if (!meta->year)
-    {
-        tmp = get_prop_value_from_xml_tree (movie, "year");
-        if (tmp)
-        {
-            meta->year = atoi ((char *) tmp);
-            enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                      "Year: %d", meta->year);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_int (movie, "year", &meta->year);
 
     /* genre */
-    if (!meta->categories)
-    {
-        tmp = get_prop_value_from_xml_tree (movie, "genre");
-        if (tmp)
-        {
-            meta->categories = strdup ((char *) tmp);
-            enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                      "Genre: %s", meta->categories);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (movie, "genre", &meta->categories);
 
     /* special hack to retrieve tv show cover if none exists for the file */
     /* NB: localfiles grabber has already been passed */

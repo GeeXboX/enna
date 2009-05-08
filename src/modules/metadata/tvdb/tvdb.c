@@ -149,62 +149,24 @@ tvdb_parse (Enna_Metadata *meta)
     if (!doc)
         goto error;
 
+    n = xmlDocGetRootElement (doc);
+
     /* fetch movie overview description */
-    if (!meta->overview)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "Overview");
-        if (tmp)
-        {
-            meta->overview = strdup ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (n, "Overview", &meta->overview);
 
     /* fetch movie runtime (in minutes) */
-    if (!meta->runtime)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "Runtime");
-        if (tmp)
-        {
-            meta->runtime = atoi ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_int (n, "Runtime", &meta->runtime);
 
     /* fetch first air date */
-    if (!meta->year)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "FirstAired");
-        if (tmp)
-        {
-            int r, y, m, d;
-            r = sscanf ((char *) tmp, "%d-%d-%d", &y, &m, &d);
-            xmlFree (tmp);
-            if (r == 3)
-                meta->year = y;
-        }
-    }
+    xml_search_year (n, "FirstAired", &meta->year);
 
     /* fetch movie categories */
-    if (!meta->categories)
-    {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "Genre");
-        if (tmp)
-        {
-            meta->categories = strdup ((char *) tmp);
-            xmlFree (tmp);
-        }
-    }
+    xml_search_str (n, "Genre", &meta->categories);
 
     /* fetch movie poster/cover */
     if (!meta->cover)
     {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "poster");
+        tmp = get_prop_value_from_xml_tree (n, "poster");
 
         if (tmp && *tmp != 0)
         {
@@ -227,8 +189,7 @@ tvdb_parse (Enna_Metadata *meta)
     /* fetch movie backdrop */
     if (!meta->backdrop)
     {
-        tmp = get_prop_value_from_xml_tree (xmlDocGetRootElement (doc),
-                                            "fanart");
+        tmp = get_prop_value_from_xml_tree (n, "fanart");
 
         if (tmp && *tmp != 0)
         {
