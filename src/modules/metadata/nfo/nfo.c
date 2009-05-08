@@ -238,6 +238,13 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
         }
     }
 
+    /* rating */
+    xml_search_int (movie, "rating", &meta->rating);
+    meta->rating /= 2;
+
+    /* runtime */
+    xml_search_int (movie, "runtime", &meta->runtime);
+
     /* plot */
     xml_search_str (movie, "plot", &meta->overview);
 
@@ -246,6 +253,51 @@ nfo_parse (Enna_Metadata *meta, const char *filename)
 
     /* genre */
     xml_search_str (movie, "genre", &meta->categories);
+
+    /* director */
+    xml_search_str (movie, "director", &meta->director);
+
+    /* studio */
+    xml_search_str (movie, "studio", &meta->studio);
+
+    /* actors */
+    if (!meta->actors)
+    {
+        xmlNode *act;
+        int found = 0;
+
+        act = get_node_xml_tree (movie, "actor");
+        while (act && found < 5)
+        {
+            char *actor = NULL, *role = NULL;
+
+            if (strcmp ((char *) act->name, "actor"))
+            {
+                act = act->next;
+                continue;
+            }
+
+            xml_search_str (act, "name", &actor);
+            xml_search_str (act, "role", &role);
+
+            if (actor)
+            {
+                char str[128];
+
+                memset (str, '\0', sizeof (str));
+                if (role)
+                    snprintf (str, sizeof (str), "%s (%s)", actor, role);
+                else
+                    snprintf (str, sizeof (str), "%s", actor);
+                enna_metadata_add_actors (meta, str);
+                found++;
+            }
+
+            ENNA_FREE (actor);
+            ENNA_FREE (role);
+            act = act->next;
+        }
+    }
 
     /* special hack to retrieve tv show cover if none exists for the file */
     /* NB: localfiles grabber has already been passed */
