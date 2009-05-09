@@ -229,7 +229,7 @@ get_vdr (buffer_t *b)
     svdrp_t *svdrp = enna_svdrp_get();
 
     buffer_append (b, "<hilight>VDR:</hilight> ");
-    if (svdrp)
+    if (svdrp && svdrp_try_connect(svdrp))
         buffer_appendf(b, "connected to VDR %s on %s (%s)<br>",
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_VERSION),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_NAME),
