@@ -361,6 +361,19 @@ if test "x$want_metadata_amazon" = "xyes"; then
   AC_DEFINE(BUILD_METADATA_AMAZON, 1, [Amazon.com Metadata])
 fi
 
+# IMDB
+want_metadata_imdb="yes"
+AC_MSG_CHECKING(whether imdb.com metadata module is to be built)
+AC_ARG_ENABLE(metadata-imdb,
+  AS_HELP_STRING([--enable-metadata-imdb],[Enable IMDB Metadata Module]),
+  [ want_metadata_imdb=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_imdb)
+AM_CONDITIONAL(BUILD_METADATA_IMDB, test "x$want_metadata_imdb" = "xyes")
+if test "x$want_metadata_imdb" = "xyes"; then
+  AC_DEFINE(BUILD_METADATA_IMDB, 1, [Imdb.com Metadata])
+fi
+
 # libplayer
 want_metadata_libplayer="auto"
 have_metadata_libplayer="no"
@@ -717,6 +730,7 @@ src/modules/input/lirc/Makefile
 src/modules/metadata/Makefile
 src/modules/metadata/allocine/Makefile
 src/modules/metadata/amazon/Makefile
+src/modules/metadata/imdb/Makefile
 src/modules/metadata/libplayer/Makefile
 src/modules/metadata/localfiles/Makefile
 src/modules/metadata/nfo/Makefile
@@ -774,6 +788,7 @@ echo "Supported Metadata Modules:"
 echo
 echo "  Allocine.fr...................... : $want_metadata_allocine"
 echo "  Amazon.com....................... : $want_metadata_amazon"
+echo "  IMDB.com......................... : $want_metadata_imdb"
 echo "  libplayer........................ : $have_metadata_libplayer"
 echo "  Local files...................... : $want_metadata_localfiles"
 echo "  NFO Reader....................... : $want_metadata_nfo"
