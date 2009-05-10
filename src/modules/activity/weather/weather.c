@@ -27,7 +27,6 @@
  *
  */
 
-#include <locale.h>
 #include <string.h>
 #include <time.h>
 
@@ -43,6 +42,7 @@
 #include "logs.h"
 #include "content.h"
 #include "mainmenu.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME "weather"
 
@@ -536,27 +536,14 @@ Enna_Module_Api module_api =
 void
 module_init (Enna_Module *em)
 {
-    char *locale;
-
     if (!em)
         return;
 
     mod = calloc (1, sizeof (Enna_Module_Weather));
     mod->em = em;
+    mod->lang = get_lang();
     mod->city = strdup ("New York");
     mod->temp = TEMP_CELCIUS;
-
-    locale = setlocale(LC_ALL, "");
-    if (locale && (strncmp(locale, "C", 1) > 0))
-    {
-        mod->lang = malloc(3);
-        strncpy(mod->lang, locale, 2);
-        mod->lang[2] = '\0';
-        free (locale);
-    }
-    else
-        mod->lang = strdup ("en");
-
     em->mod = mod;
 
     enna_activity_add (&class);

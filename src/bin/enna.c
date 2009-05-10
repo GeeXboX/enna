@@ -29,7 +29,6 @@
 
 #define _GNU_SOURCE
 #include <getopt.h>
-#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -573,10 +572,7 @@ static int parse_command_line(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-    /* gettext i18n initialization */
-    setlocale(LC_ALL, "");
-    bindtextdomain(PACKAGE, LOCALEDIR);
-    textdomain(PACKAGE);
+    init_locale();
     
     if (parse_command_line(argc, argv) < 0)
         return EXIT_SUCCESS;

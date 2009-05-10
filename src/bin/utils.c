@@ -33,6 +33,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <locale.h>
 
 #include <Eina.h>
 #include <Ecore_Str.h>
@@ -46,6 +47,8 @@
 #ifdef BUILD_LIBSVDRP
 static svdrp_t *svdrp = NULL;
 #endif
+
+static char *mylocale = NULL;
 
 char * enna_util_user_home_get()
 {
@@ -317,6 +320,36 @@ md5sum (char *str)
     }
 
     return strdup (md5);
+}
+
+char *init_locale (void)
+{
+    mylocale = strdup(setlocale(LC_ALL, ""));
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+
+    return mylocale;
+}
+
+char *get_locale (void)
+{
+    return mylocale;
+}
+
+char *get_lang (void)
+{
+    char *lang;
+
+    if (mylocale && (strncmp(mylocale, "C", 1) > 0))
+    {
+        lang = malloc(3);
+        strncpy(lang, mylocale, 2);
+        lang[2] = '\0';
+    }
+    else
+        lang = strdup ("en");
+
+    return lang;
 }
 
 #ifdef BUILD_LIBSVDRP
