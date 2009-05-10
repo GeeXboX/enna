@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-05-10 15:24+0200\n"
-"PO-Revision-Date: 2009-05-10 15:00+0100\n"
+"POT-Creation-Date: 2009-05-10 16:42+0200\n"
+"PO-Revision-Date: 2009-05-10 16:06+0100\n"
 "Last-Translator: Davide Cavalca <davide125@tiscali.it>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -213,6 +213,50 @@ msgstr "Registrazione in corso"
 #: src/modules/activity/tv/tv.c:151
 msgid "Television"
 msgstr "Televisione"
+
+#: src/modules/activity/video/panel_infos.c:192
+#: src/modules/activity/video/panel_infos.c:199
+msgid "No such information ..."
+msgstr "Informazioni non trovate..."
+
+#: src/modules/activity/video/panel_infos.c:240
+#, c-format
+msgid "%.2d hour "
+msgid_plural "%.2d hours "
+msgstr[0] "%.2d ora "
+msgstr[1] "%.2d ore "
+
+#: src/modules/activity/video/panel_infos.c:242
+#, c-format
+msgid "%.2d minute"
+msgid_plural "%.2d minutes"
+msgstr[0] "%.2d minuto"
+msgstr[1] "%.2d minuti"
+
+#: src/modules/activity/video/panel_infos.c:247
+#, c-format
+msgid "<ul>Director:</ul> %s<br>"
+msgstr "<ul>Regista:</ul> %s<br>"
+
+#: src/modules/activity/video/panel_infos.c:249
+#, c-format
+msgid "<ul>Cast:</ul> %s<br>"
+msgstr "<ul>Attori:</ul> %s<br>"
+
+#: src/modules/activity/video/panel_infos.c:257
+#, c-format
+msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
+msgstr "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
+
+#: src/modules/activity/video/panel_infos.c:260
+#, c-format
+msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
+msgstr "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
+
+#: src/modules/activity/video/panel_infos.c:263
+#, c-format
+msgid "<hl>Size: </hl> %.2f MB<br>"
+msgstr "<hl>Dimensione: </hl> %.2f MB<br>"
 
 #: src/modules/activity/video/video.c:682
 #: src/modules/activity/video/video.c:807
@@ -479,30 +523,3 @@ msgstr "[NFS] %s su %s"
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s su %s"
 
-#~ msgid "No such information ..."
-#~ msgstr "Informazioni non trovate..."
-
-#~ msgid "%.2d hour "
-#~ msgid_plural "%.2d hours "
-#~ msgstr[0] "%.2d ora "
-#~ msgstr[1] "%.2d ore "
-
-#~ msgid "%.2d minute"
-#~ msgid_plural "%.2d minutes"
-#~ msgstr[0] "%.2d minuto"
-#~ msgstr[1] "%.2d minuti"
-
-#~ msgid "<ul>Director:</ul> %s<br>"
-#~ msgstr "<ul>Regista:</ul> %s<br>"
-
-#~ msgid "<ul>Cast:</ul> %s<br>"
-#~ msgstr "<ul>Attori:</ul> %s<br>"
-
-#~ msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
-#~ msgstr "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
-
-#~ msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
-#~ msgstr "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
-
-#~ msgid "<hl>Size: </hl> %.2f MB<br>"
-#~ msgstr "<hl>Dimensione: </hl> %.2f MB<br>"
