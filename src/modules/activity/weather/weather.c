@@ -27,6 +27,7 @@
  *
  */
 
+#include <locale.h>
 #include <string.h>
 #include <time.h>
 
@@ -389,18 +390,6 @@ parse_config (void)
                 mod->city = strdup (city);
             }
         }
-        else if (!strcmp (pair->key, "lang"))
-        {
-            char *lang = NULL;
-            enna_config_value_store (&lang, pair->key,
-                                     ENNA_CONFIG_STRING, pair);
-
-            if (lang)
-            {
-                ENNA_FREE (mod->lang);
-                mod->lang = strdup (lang);
-            }
-        }
     }
 }
 
@@ -547,14 +536,27 @@ Enna_Module_Api module_api =
 void
 module_init (Enna_Module *em)
 {
+    char *locale;
+
     if (!em)
         return;
 
     mod = calloc (1, sizeof (Enna_Module_Weather));
     mod->em = em;
     mod->city = strdup ("New York");
-    mod->lang = strdup ("en");
     mod->temp = TEMP_CELCIUS;
+
+    locale = setlocale(LC_ALL, "");
+    if (locale && (strncmp(locale, "C", 1) > 0))
+    {
+        mod->lang = malloc(3);
+        strncpy(mod->lang, locale, 2);
+        mod->lang[2] = '\0';
+        free (locale);
+    }
+    else
+        mod->lang = strdup ("en");
+
     em->mod = mod;
 
     enna_activity_add (&class);

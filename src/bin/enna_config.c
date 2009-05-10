@@ -134,7 +134,6 @@
     "\n" \
     "[weather]\n" \
     "city=New York\n" \
-    "lang=en\n" \
     "\n" \
     "[valhalla]" \
     "path=file:///path/to/Music" \
