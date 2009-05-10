@@ -330,7 +330,7 @@ enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
         r = MAX (m->rating, 0);
         r = MIN (m->rating, 5);
         memset (rate, '\0', sizeof (rate));
-        snprintf (rate, sizeof (rate), _("rating/%d"), r);
+        snprintf (rate, sizeof (rate), "rating/%d", r);
         rating = edje_object_add (evas_object_evas_get(sd->o_edje));
         edje_object_file_set (rating, enna_config_theme_get(), rate);
     }
