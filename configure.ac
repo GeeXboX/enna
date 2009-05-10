@@ -620,9 +620,9 @@ AM_CONDITIONAL(BUILD_LIBEXIF, test "x$have_libexif" = "xyes")
 want_libsvdrp="auto"
 have_libsvdrp="no"
 AC_MSG_CHECKING(whether libsvdrp support is to be built)
-AC_ARG_ENABLE(libexif,
+AC_ARG_ENABLE(libsvdrp,
     AS_HELP_STRING([--enable-libsvdrp],[Enable libsvdrp support]),
-    [ want_libexif=$enableval ]
+    [ want_libsvdrp=$enableval ]
 )
 AC_MSG_RESULT($want_libsvdrp)
 if test "x$want_libsvdrp" = "xyes" -o "x$want_libsvdrp" = "xauto"; then
