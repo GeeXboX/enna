@@ -8,6 +8,7 @@ src/modules/activity/infos/infos.c
 src/modules/activity/music/music.c
 src/modules/activity/photo/photo.c
 src/modules/activity/tv/tv.c
+src/modules/activity/video/panel_infos.c
 src/modules/activity/video/video.c
 src/modules/activity/weather/weather.c
 src/modules/browser/cdda/cdda.c
