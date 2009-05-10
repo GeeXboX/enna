@@ -34,7 +34,7 @@
 #include <Ecore.h>
 
 #include "config.h"
-
+#include "gettext.h"
 
 //#define ENNA_DEBUG0
 #define ENNA_DEBUG 2

@@ -32,6 +32,9 @@ define([AC_LIBTOOL_LANG_F77_CONFIG], [:])dnl
 
 AC_PROG_LIBTOOL
 
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.17])
+CFLAGS="$CFLAGS -DLOCALEDIR=\"\\\"$datadir/locale\\\"\""
 
 PKG_CHECK_MODULES([ENNA],
   [
@@ -704,6 +707,7 @@ AC_CONFIG_FILES([
 shave
 shave-libtool
 Makefile
+po/Makefile.in
 src/Makefile
 src/bin/Makefile
 src/modules/Makefile
@@ -757,6 +761,7 @@ eval echo "\  Modules.......................... : $exec_prefix/lib/enna/modules"
 eval echo "\  Theme............................ : $exec_prefix/share/enna/theme"
 echo
 echo "Build theme........................ : $build_theme"
+echo "NLS................................ : $USE_NLS"
 echo
 echo "Supported Activity Modules:"
 echo

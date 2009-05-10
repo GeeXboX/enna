@@ -44,23 +44,23 @@ static const struct {
     const char *name;
     LibHalVolumeDiscType type;
 } vol_disc_type_mapping[] = {
-    { "CD-ROM",                 LIBHAL_VOLUME_DISC_TYPE_CDROM             },
-    { "CD-R",                   LIBHAL_VOLUME_DISC_TYPE_CDR               },
-    { "CD-RW",                  LIBHAL_VOLUME_DISC_TYPE_CDRW              },
-    { "DVD-ROM",                LIBHAL_VOLUME_DISC_TYPE_DVDROM            },
-    { "DVD-RAM",                LIBHAL_VOLUME_DISC_TYPE_DVDRAM            },
-    { "DVD-R",                  LIBHAL_VOLUME_DISC_TYPE_DVDR              },
-    { "DVD-RW",                 LIBHAL_VOLUME_DISC_TYPE_DVDRW             },
-    { "DVD+R",                  LIBHAL_VOLUME_DISC_TYPE_DVDPLUSR          },
-    { "DVD+RW",                 LIBHAL_VOLUME_DISC_TYPE_DVDPLUSRW         },
-    { "DVD+R (DL)",             LIBHAL_VOLUME_DISC_TYPE_DVDPLUSR_DL       },
-    { "BD-ROM",                 LIBHAL_VOLUME_DISC_TYPE_BDROM             },
-    { "BD-R",                   LIBHAL_VOLUME_DISC_TYPE_BDR               },
-    { "BD-RE",                  LIBHAL_VOLUME_DISC_TYPE_BDRE              },
-    { "HD-DVD-ROM",             LIBHAL_VOLUME_DISC_TYPE_HDDVDROM          },
-    { "HD-DVD-R",               LIBHAL_VOLUME_DISC_TYPE_HDDVDR            },
-    { "HD-DVD-RW",              LIBHAL_VOLUME_DISC_TYPE_HDDVDRW           },
-    { "MagnetoOptical",         LIBHAL_VOLUME_DISC_TYPE_MO                },
+    { N_("CD-ROM"),                      LIBHAL_VOLUME_DISC_TYPE_CDROM       },
+    { N_("CD-R"),                        LIBHAL_VOLUME_DISC_TYPE_CDR         },
+    { N_("CD-RW"),                       LIBHAL_VOLUME_DISC_TYPE_CDRW        },
+    { N_("DVD-ROM"),                     LIBHAL_VOLUME_DISC_TYPE_DVDROM      },
+    { N_("DVD-RAM"),                     LIBHAL_VOLUME_DISC_TYPE_DVDRAM      },
+    { N_("DVD-R"),                       LIBHAL_VOLUME_DISC_TYPE_DVDR        },
+    { N_("DVD-RW"),                      LIBHAL_VOLUME_DISC_TYPE_DVDRW       },
+    { N_("DVD+R"),                       LIBHAL_VOLUME_DISC_TYPE_DVDPLUSR    },
+    { N_("DVD+RW"),                      LIBHAL_VOLUME_DISC_TYPE_DVDPLUSRW   },
+    { N_("DVD+R (DL)"),                  LIBHAL_VOLUME_DISC_TYPE_DVDPLUSR_DL },
+    { N_("BD-ROM"),                      LIBHAL_VOLUME_DISC_TYPE_BDROM       },
+    { N_("BD-R"),                        LIBHAL_VOLUME_DISC_TYPE_BDR         },
+    { N_("BD-RE"),                       LIBHAL_VOLUME_DISC_TYPE_BDRE        },
+    { N_("HD-DVD-ROM"),                  LIBHAL_VOLUME_DISC_TYPE_HDDVDROM    },
+    { N_("HD-DVD-R"),                    LIBHAL_VOLUME_DISC_TYPE_HDDVDR      },
+    { N_("HD-DVD-RW"),                   LIBHAL_VOLUME_DISC_TYPE_HDDVDRW     },
+    { N_("MagnetoOptical"),              LIBHAL_VOLUME_DISC_TYPE_MO          },
     { NULL }
 };
 
@@ -69,11 +69,11 @@ static const struct {
     const char *property;
     volume_type_t type;
 } vol_disc_mapping[] = {
-    { "CDDA",         "volume.disc.has_audio",   VOLUME_TYPE_CDDA         },
-    { "VCD",          "volume.disc.is_vcd",      VOLUME_TYPE_VCD          },
-    { "SVCD",         "volume.disc.is_svcd",     VOLUME_TYPE_SVCD         },
-    { "DVD",          "volume.disc.is_videodvd", VOLUME_TYPE_DVD_VIDEO    },
-    { "Data",         "volume.disc.has_data",    VOLUME_TYPE_CD           },
+    { N_("CDDA"),  "volume.disc.has_audio",    VOLUME_TYPE_CDDA              },
+    { N_("VCD"),   "volume.disc.is_vcd",       VOLUME_TYPE_VCD               },
+    { N_("SVCD"),  "volume.disc.is_svcd",      VOLUME_TYPE_SVCD              },
+    { N_("DVD"),   "volume.disc.is_videodvd",  VOLUME_TYPE_DVD_VIDEO         },
+    { N_("Data"),  "volume.disc.has_data",     VOLUME_TYPE_CD                },
     { NULL }
 };
 
@@ -147,7 +147,7 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
         for (i = 0; vol_disc_type_mapping[i].name; i++)
             if (vol_disc_type_mapping[i].type == type)
             {
-                v->cd_type = strdup (vol_disc_type_mapping[i].name);
+                v->cd_type = strdup (gettext(vol_disc_type_mapping[i].name));
                 break;
             }
 
@@ -161,7 +161,7 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
                     (ctx, udi, vol_disc_mapping[i].property, &error))
                 {
                     v->type = vol_disc_mapping[i].type;
-                    v->cd_content_type = strdup (vol_disc_mapping[i].name);
+                    v->cd_content_type = strdup (gettext(vol_disc_mapping[i].name));
                     break;
                 }
             }

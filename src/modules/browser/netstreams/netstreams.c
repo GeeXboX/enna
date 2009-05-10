@@ -316,7 +316,7 @@ static void class_init(const char *name, netstreams_priv_t **priv,
 static Enna_Class_Vfs class_music = {
     "netstreams_music",
     1,
-    "Browse Network Streams",
+    N_("Browse Network Streams"),
     NULL,
     "icon/music",
     {
@@ -332,7 +332,7 @@ static Enna_Class_Vfs class_music = {
 static Enna_Class_Vfs class_video = {
     "netstreams_video",
     1,
-    "Browse Network Streams",
+    N_("Browse Network Streams"),
     NULL,
     "icon/video",
     {

@@ -29,6 +29,7 @@
 
 #define _GNU_SOURCE
 #include <getopt.h>
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -327,7 +328,7 @@ static int _enna_init(void)
     ecore_evas_fullscreen_set(enna->ee, enna_config->fullscreen
         | run_fullscreen);
 
-    ecore_evas_title_set(enna->ee, "enna HTPC");
+    ecore_evas_title_set(enna->ee, _("enna HTPC"));
     ecore_evas_name_class_set(enna->ee, "enna", "enna");
     ecore_evas_borderless_set(enna->ee, 0);
     ecore_evas_shaped_set(enna->ee, 1);
@@ -498,15 +499,15 @@ static int exit_signal(void *data, int type, void *e)
 
 static void usage(char *binname)
 {
-    printf("Enna MediaCenter\n");
-    printf(" Usage: %s [options ...]\n", binname);
-    printf(" Available Options:\n");
-    printf("  -c, (--config):  Specify configuration file to be used.\n");
-    printf("  -f, (--fs):      Force Fullscreen mode.\n");
-    printf("  -h, (--help):    Display this help.\n");
-    printf("  -t, (--theme):   Specify theme name to be used.\n");
-    printf("  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n");
-    printf("  -V, (--version): Display Enna version number.\n");
+    printf(_("Enna MediaCenter\n"));
+    printf(_(" Usage: %s [options ...]\n"), binname);
+    printf(_(" Available Options:\n"));
+    printf(_("  -c, (--config):  Specify configuration file to be used.\n"));
+    printf(_("  -f, (--fs):      Force Fullscreen mode.\n"));
+    printf(_("  -h, (--help):    Display this help.\n"));
+    printf(_("  -t, (--theme):   Specify theme name to be used.\n"));
+    printf(_("  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"));
+    printf(_("  -V, (--version): Display Enna version number.\n"));
     exit(EXIT_SUCCESS);
 }
 
@@ -572,6 +573,11 @@ static int parse_command_line(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
+    /* gettext i18n initialization */
+    setlocale(LC_ALL, "");
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+    
     if (parse_command_line(argc, argv) < 0)
         return EXIT_SUCCESS;
 

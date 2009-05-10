@@ -305,19 +305,19 @@ static Eina_List *_browse_root(void)
     char str[64];
 
     snprintf(str, sizeof(str), "%i/0", BROWSER_LEVEL_AUTHOR);
-    file = enna_vfs_create_directory(str, "Artists", "icon/artist", NULL);
+    file = enna_vfs_create_directory(str, _("Artists"), "icon/artist", NULL);
     list = eina_list_append(list, file);
 
     snprintf(str, sizeof(str), "%i/0", BROWSER_LEVEL_ALBUM);
-    file = enna_vfs_create_directory(str, "Albums", "icon/album", NULL);
+    file = enna_vfs_create_directory(str, _("Albums"), "icon/album", NULL);
     list = eina_list_append(list, file);
 
     snprintf(str, sizeof(str), "%i/0", BROWSER_LEVEL_GENRE);
-    file = enna_vfs_create_directory(str, "Genres", "icon/genre", NULL);
+    file = enna_vfs_create_directory(str, _("Genres"), "icon/genre", NULL);
     list = eina_list_append(list, file);
 
     snprintf(str, sizeof(str), "%i/0", BROWSER_LEVEL_UNCLASSIFIED);
-    file = enna_vfs_create_directory(str, "Unclassified", "icon/other", NULL);
+    file = enna_vfs_create_directory(str, _("Unclassified"), "icon/other", NULL);
     list = eina_list_append(list, file);
 
     return list;
@@ -600,7 +600,7 @@ static Enna_Class_Vfs class =
 {
     ENNA_MODULE_NAME,
     2,
-    "Media Library",
+    N_("Media Library"),
     NULL,
     "icon/library",
     {

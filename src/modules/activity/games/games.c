@@ -247,7 +247,7 @@ class =
 {
     "games",
     10,
-    "Games",
+    N_("Games"),
     NULL,
     "icon/games",
     {

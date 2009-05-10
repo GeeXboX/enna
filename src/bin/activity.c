@@ -173,7 +173,7 @@ const char *enna_activity_request_quit_all(void)
         {
             len+=(strlen(act->name)+strlen(quit_deny_msg)+26);
             text=calloc(1, len);
-            snprintf(text, len, "%s<hilight>%s%s:</hilight> %s", quit_deny_text?quit_deny_text:"", quit_deny_text?"<br>":"", act->name, quit_deny_msg);
+            snprintf(text, len, _("%s<hilight>%s%s:</hilight> %s"), quit_deny_text?quit_deny_text:"", quit_deny_text?"<br>":"", act->name, quit_deny_msg);
             if (quit_deny_text) free(quit_deny_text);
             quit_deny_text=text;
         }

@@ -1,9 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src data
+SUBDIRS = po src data
 
-EXTRA_DIST = $(ennadoc_DATA)
+EXTRA_DIST = config.rpath  $(ennadoc_DATA)
 
 # Copy all the spec files. Of cource, only one is actually used.
 dist-hook:
@@ -13,5 +13,22 @@ dist-hook:
 		fi \
 	done
 
+update-pot:
+	$(MAKE) -C po $(AM_MAKEFLAGS) @PACKAGE@.pot-update
+
+update-po:
+	$(MAKE) -C po $(AM_MAKEFLAGS) update-po
+
+update-gmo:
+	$(MAKE) -C po $(AM_MAKEFLAGS) update-gmo
+
+force-update-gmo:
+	touch po/*.po
+	$(MAKE) -C po $(AM_MAKEFLAGS) update-gmo
+
+force-update-gmo-%:
+	touch po/`echo $@ | sed s/force-update-gmo-//`.po
+	$(MAKE) -C po $(AM_MAKEFLAGS) update-gmo
 
 ACLOCAL_AMFLAGS = -I m4
+.PHONY: update-pot update-po update-gmo force-update-gmo

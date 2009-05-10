@@ -119,7 +119,7 @@ static Enna_Class_Vfs class =
 {
     "lms",
     10,
-    "Browse Library",
+    N_("Browse Library"),
     NULL,
     "icon/library",
     {
@@ -666,14 +666,14 @@ static Eina_List * _browse_root()
     mod->state = ROOT;
     mod->vfs = NULL;
 
-    file = enna_vfs_create_directory("artists://", "Artists", "icon/artist",
+    file = enna_vfs_create_directory("artists://", _("Artists"), "icon/artist",
             NULL);
     entries = eina_list_append(entries, file);
 
-    file = enna_vfs_create_directory("albums://", "Albums", "icon/album", NULL);
+    file = enna_vfs_create_directory("albums://", _("Albums"), "icon/album", NULL);
     entries = eina_list_append(entries, file);
 
-    file = enna_vfs_create_directory("genres://", "Genres", "icon/genre", NULL);
+    file = enna_vfs_create_directory("genres://", _("Genres"), "icon/genre", NULL);
     entries = eina_list_append(entries, file);
 
     return entries;
@@ -686,7 +686,7 @@ static Eina_List * _browse_artists_root()
 
     mod->state = ARTISTS_ROOT;
     _vfs_free(mod->vfs);
-    mod->vfs = _vfs_set(strdup("artists://"), strdup("Artist"), NULL, 1, NULL);
+    mod->vfs = _vfs_set(strdup("artists://"), strdup(_("Artist")), NULL, 1, NULL);
     for (l = _audio_artists_list_get(); l; l = l->next)
     {
         Enna_Vfs_File *file;
@@ -719,7 +719,7 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
         mod->state = ALBUMS_ROOT;
         _vfs_free(mod->vfs);
         mod->vfs
-                = _vfs_set(strdup("albums://"), strdup("Album"), NULL, 1, NULL);
+                = _vfs_set(strdup("albums://"), strdup(_("Album")), NULL, 1, NULL);
         for (l = _audio_albums_list_get(); l; l = l->next)
         {
             Enna_Vfs_File *file;
@@ -740,7 +740,7 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
 
         mod->state = GENRES_ROOT;
         _vfs_free(mod->vfs);
-        mod->vfs = _vfs_set(strdup("genres://"), strdup("Genres"), NULL, 1,
+        mod->vfs = _vfs_set(strdup("genres://"), strdup(_("Genres")), NULL, 1,
                 NULL);
         for (l = _audio_genres_list_get(); l; l = l->next)
         {

@@ -95,8 +95,9 @@ static const char* _class_quit_request(int dummy)
         if(svdrp_get_timer(mod->svdrp, timer_id, &timer) == SVDRP_OK)
         {
             const char *format = diff > 0 ? 
-                                 "Timer '%s' is due to start in %i minute(s)" : 
-                                 "Currently recording '%s'";
+                                 ngettext("Timer '%s' is due to start in %i minute", 
+                                          "Timer '%s' is due to start in %i minutes", diff) :
+                                 _("Currently recording '%s'");
             size_t len = strlen(format) + strlen(timer.file) - 1;
             char *msg = malloc (len);
             
@@ -105,7 +106,7 @@ static const char* _class_quit_request(int dummy)
             return msg;
         }
         else
-           return strdup ("Recording in progress");
+           return strdup (_("Recording in progress"));
     }
 #endif /* BUILD_LIBSVDRP */
 
@@ -147,7 +148,7 @@ static Enna_Class_Activity class =
 {
     "tv",
     1,
-    "Television",
+    N_("Television"),
     NULL,
     "icon/tv",
     {

@@ -126,7 +126,7 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
         "enna/mainmenu/item");
 
     if (label)
-        edje_object_part_text_set(si->o_base, "enna.text.label", label);
+        edje_object_part_text_set(si->o_base, "enna.text.label", gettext(label));
 
     ic = elm_icon_add(obj);
     elm_icon_file_set(ic, enna_config_theme_get(), icon);
@@ -524,7 +524,7 @@ static void _smart_add(Evas_Object * obj)
     bt = elm_button_add(sd->o_edje);
     sd->o_quitdiag_yes_button=bt;
     evas_object_smart_callback_add(bt, "clicked", _quitdiag_yes_clicked_cb, sd);
-    elm_button_label_set(bt, "Yes, I want to quit.");
+    elm_button_label_set(bt, _("Yes, I want to quit."));
     ic = elm_icon_add(sd->o_edje);
     elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_stop");
     elm_button_icon_set(bt, ic);
@@ -535,7 +535,7 @@ static void _smart_add(Evas_Object * obj)
     bt = elm_button_add(sd->o_edje);
     sd->o_quitdiag_no_button=bt;
     evas_object_smart_callback_add(bt, "clicked", _quitdiag_no_clicked_cb, sd);
-    elm_button_label_set(bt, "No, I want to stay.");
+    elm_button_label_set(bt, _("No, I want to stay."));
     ic = elm_icon_add(sd->o_edje);
     elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
     elm_button_icon_set(bt, ic);
@@ -685,8 +685,8 @@ void enna_mainmenu_quitdiag(Evas_Object *obj, const char *quit_deny_text)
     API_ENTRY return;
 
     quitdiag_active=evas_object_visible_get(sd->o_quitdiag_box);
-    if (!quitdiag_active && quit_deny_text)
-        edje_object_part_text_set(sd->o_edje, "enna.text.quit_deny_msgs", quit_deny_text?quit_deny_text:"...no activity seems busy right now.");
+    if (!quitdiag_active)
+        edje_object_part_text_set(sd->o_edje, "enna.text.quit_deny_msgs", quit_deny_text?quit_deny_text:_("...no activity seems busy right now."));
     strncpy(msg, quitdiag_active?"quitdiag,hide":"quitdiag,show", sizeof(msg));
     edje_object_signal_emit (sd->o_edje, msg, "enna");
     quitdiag_active=!quitdiag_active;

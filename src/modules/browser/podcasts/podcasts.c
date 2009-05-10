@@ -309,7 +309,7 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
 static Enna_Class_Vfs class_podcast = {
     "podcast_podcast",
     1,
-    "Listen to Podcasts",
+    N_("Listen to Podcasts"),
     NULL,
     "icon/podcast",
     {

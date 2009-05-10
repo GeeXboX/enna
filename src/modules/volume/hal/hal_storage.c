@@ -42,12 +42,12 @@ static const struct {
     const char *name;
     LibHalDriveBus bus;
 } drv_bus_mapping[] = {
-    { "Unknown",                LIBHAL_DRIVE_BUS_UNKNOWN                  },
-    { "IDE",                    LIBHAL_DRIVE_BUS_IDE                      },
-    { "SCSI",                   LIBHAL_DRIVE_BUS_SCSI                     },
-    { "USB",                    LIBHAL_DRIVE_BUS_USB                      },
-    { "FireWire",               LIBHAL_DRIVE_BUS_IEEE1394                 },
-    { "CCW",                    LIBHAL_DRIVE_BUS_CCW                      },
+    { N_("Unknown"),                LIBHAL_DRIVE_BUS_UNKNOWN                 },
+    { N_("IDE"),                    LIBHAL_DRIVE_BUS_IDE                     },
+    { N_("SCSI"),                   LIBHAL_DRIVE_BUS_SCSI                    },
+    { N_("USB"),                    LIBHAL_DRIVE_BUS_USB                     },
+    { N_("FireWire"),               LIBHAL_DRIVE_BUS_IEEE1394                },
+    { N_("CCW"),                    LIBHAL_DRIVE_BUS_CCW                     },
     { NULL }
 };
 
@@ -55,21 +55,21 @@ static const struct {
     const char *name;
     LibHalDriveType type;
 } drv_type_mapping[] = {
-    { "Removable Disk",         LIBHAL_DRIVE_TYPE_REMOVABLE_DISK          },
-    { "Disk",                   LIBHAL_DRIVE_TYPE_DISK                    },
-    { "CD-ROM",                 LIBHAL_DRIVE_TYPE_CDROM                   },
-    { "Floppy",                 LIBHAL_DRIVE_TYPE_FLOPPY                  },
-    { "Tape",                   LIBHAL_DRIVE_TYPE_TAPE                    },
-    { "CompactFlash",           LIBHAL_DRIVE_TYPE_COMPACT_FLASH           },
-    { "MemoryStick",            LIBHAL_DRIVE_TYPE_MEMORY_STICK            },
-    { "SmartMedia",             LIBHAL_DRIVE_TYPE_SMART_MEDIA             },
-    { "SD/MMC",                 LIBHAL_DRIVE_TYPE_SD_MMC                  },
-    { "Camera",                 LIBHAL_DRIVE_TYPE_CAMERA                  },
-    { "Portable Audio Player",  LIBHAL_DRIVE_TYPE_PORTABLE_AUDIO_PLAYER   },
-    { "ZIP",                    LIBHAL_DRIVE_TYPE_ZIP                     },
-    { "JAZ",                    LIBHAL_DRIVE_TYPE_JAZ                     },
-    { "FlashKey",               LIBHAL_DRIVE_TYPE_FLASHKEY                },
-    { "MagnetoOptical",         LIBHAL_DRIVE_TYPE_MO                      },
+    { N_("Removable Disk"),         LIBHAL_DRIVE_TYPE_REMOVABLE_DISK         },
+    { N_("Disk"),                   LIBHAL_DRIVE_TYPE_DISK                   },
+    { N_("CD-ROM"),                 LIBHAL_DRIVE_TYPE_CDROM                  },
+    { N_("Floppy"),                 LIBHAL_DRIVE_TYPE_FLOPPY                 },
+    { N_("Tape"),                   LIBHAL_DRIVE_TYPE_TAPE                   },
+    { N_("CompactFlash"),           LIBHAL_DRIVE_TYPE_COMPACT_FLASH          },
+    { N_("MemoryStick"),            LIBHAL_DRIVE_TYPE_MEMORY_STICK           },
+    { N_("SmartMedia"),             LIBHAL_DRIVE_TYPE_SMART_MEDIA            },
+    { N_("SD/MMC"),                 LIBHAL_DRIVE_TYPE_SD_MMC                 },
+    { N_("Camera"),                 LIBHAL_DRIVE_TYPE_CAMERA                 },
+    { N_("Portable Audio Player"),  LIBHAL_DRIVE_TYPE_PORTABLE_AUDIO_PLAYER  },
+    { N_("ZIP"),                    LIBHAL_DRIVE_TYPE_ZIP                    },
+    { N_("JAZ"),                    LIBHAL_DRIVE_TYPE_JAZ                    },
+    { N_("FlashKey"),               LIBHAL_DRIVE_TYPE_FLASHKEY               },
+    { N_("MagnetoOptical"),         LIBHAL_DRIVE_TYPE_MO                     },
     { NULL }
 };
 
@@ -121,7 +121,7 @@ storage_get_properties (storage_t *s)
     for (i = 0; drv_bus_mapping[i].name; i++)
         if (drv_bus_mapping[i].bus == bus)
         {
-            s->bus = strdup (drv_bus_mapping[i].name);
+            s->bus = strdup (gettext(drv_bus_mapping[i].name));
             break;
         }
 
@@ -129,7 +129,7 @@ storage_get_properties (storage_t *s)
     for (i = 0; drv_type_mapping[i].name; i++)
         if (drv_type_mapping[i].type == s->type)
         {
-            s->drive_type = strdup (drv_type_mapping[i].name);
+            s->drive_type = strdup (gettext(drv_type_mapping[i].name));
             break;
         }
 

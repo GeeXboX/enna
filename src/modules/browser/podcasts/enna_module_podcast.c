@@ -41,9 +41,9 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
 {
     Enna_Vfs_File *f;
     Eina_List *l = NULL;
-    f = enna_vfs_create_file("podcast://", "Play", "icon/video", NULL);
+    f = enna_vfs_create_file("podcast://", _("Play"), "icon/video", NULL);
     l = eina_list_append(l, f);
-    f = enna_vfs_create_file("podcastnav://", "Play (With Menus)", "icon/video", NULL);
+    f = enna_vfs_create_file("podcastnav://", _("Play (With Menus)"), "icon/video", NULL);
     l = eina_list_append(l, f);
     return l;
 }
@@ -234,7 +234,7 @@ static int _remove_volumes_cb(void *data, int type, void *event)
 static Enna_Class_Vfs class_podcast = {
     "podcast_podcast",
     1,
-    "Watch PODCAST Video",
+    N_("Watch PODCAST Video"),
     NULL,
     "icon/dev/podcast",
     {

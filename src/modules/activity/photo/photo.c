@@ -195,7 +195,7 @@ static void _exif_parse_metadata(const char *filename)
   exif_data_unref(d);
 
   if (!mod->exif.str)
-      mod->exif.str=strdup("No exif information found.");
+      mod->exif.str=strdup(_("No exif information found."));
 
   edje_object_part_text_set(mod->exif.o_exif, "enna.text.exif", mod->exif.str);
   edje_object_size_min_calc(mod->exif.o_exif, &mw, &mh);
@@ -447,7 +447,7 @@ _create_menu()
 
         item = calloc(1, sizeof(Photo_Item_Class_Data));
         item->icon = eina_stringshare_add(cat->icon);
-        item->label = eina_stringshare_add(cat->label);
+        item->label = eina_stringshare_add(gettext(cat->label));
         enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
     }
 
@@ -612,7 +612,7 @@ static Enna_Class_Activity class =
 {
     "photo",
     1,
-    "Photo",
+    N_("Photo"),
     NULL,
     "icon/photo",
     {

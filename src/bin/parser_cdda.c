@@ -301,7 +301,7 @@ cd_get_tracks (cdda_t *cd)
         min = sec / 60;
         sec -= min * 60;
 
-        snprintf (name, 128, "Track #%02d (%02d:%02d)", i, min, sec);
+        snprintf (name, 128, _("Track #%02d (%02d:%02d)"), i, min, sec);
         cd->tracks[i-1]->name = strdup (name);
     }
 }

@@ -189,14 +189,14 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
     if (!m)
     {
         edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
-                                   "No such information ...");
+	    _("No such information ..."));
         return;
     }
 
     if (m && m->type != ENNA_METADATA_VIDEO)
     {
         edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
-                                   "No such information ...");
+	    _("No such information ..."));
         return;
     }
 
@@ -237,30 +237,30 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
         }
 
         if (hh)
-            buffer_appendf (buf, "%.2d hour(s) ", hh);
-        if (mm)
-            buffer_appendf (buf, "%.2d minute(s)", mm);
+            buffer_appendf (buf, ngettext("%.2d hour ", "%.2d hours ", hh), hh);
+	if (mm)
+            buffer_appendf (buf, ngettext("%.2d minute", "%.2d minutes", mm), mm);
     }
     buffer_append (buf, "<br><br>");
 
     if (m->director)
-        buffer_appendf (buf, "<ul>Director:</ul> %s<br>", m->director);
+	buffer_appendf (buf, _("<ul>Director:</ul> %s<br>"), m->director);
     if (m->actors)
-        buffer_appendf (buf, "<ul>Cast:</ul> %s<br>", m->actors);
+        buffer_appendf (buf, _("<ul>Cast:</ul> %s<br>"), m->actors);
     if (m->director || m->actors)
-        buffer_append (buf, "<br>");
+	buffer_append (buf, "<br>");
 
     if (m->overview)
         buffer_appendf (buf, "%s", m->overview);
 
     buffer_append (buf, "<br><br>");
-    buffer_appendf (buf, "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>",
+    buffer_appendf (buf, _("<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"),
                     m->video->codec, m->video->width,
                     m->video->height, m->video->framerate);
-    buffer_appendf (buf, "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>",
+    buffer_appendf (buf, _("<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"),
                     m->music->codec, m->music->channels,
                     m->music->bitrate / 1000, m->music->samplerate);
-    buffer_appendf (buf, "<hl>Size: </hl> %.2f MB<br>",
+    buffer_appendf (buf, _("<hl>Size: </hl> %.2f MB<br>"),
                     m->size / 1024.0 / 1024.0);
 
     edje_object_part_text_set (sd->o_edje, "infos.panel.textblock", buf->buf);
@@ -273,9 +273,9 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     Evas_Object *cover;
     char *file = NULL;
     int from_vfs = 1;
-    
+
     API_ENTRY return;
-    
+
     if (!m)
     {
         file = "backdrop/default";
@@ -319,9 +319,9 @@ void
 enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
 {
     Evas_Object *rating = NULL;
-    
+
     API_ENTRY return;
-    
+
     if (m && m->type == ENNA_METADATA_VIDEO)
     {
         char rate[16];
@@ -330,7 +330,7 @@ enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
         r = MAX (m->rating, 0);
         r = MIN (m->rating, 5);
         memset (rate, '\0', sizeof (rate));
-        snprintf (rate, sizeof (rate), "rating/%d", r);
+        snprintf (rate, sizeof (rate), _("rating/%d"), r);
         rating = edje_object_add (evas_object_evas_get(sd->o_edje));
         edje_object_file_set (rating, enna_config_theme_get(), rate);
     }

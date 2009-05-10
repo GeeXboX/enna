@@ -609,7 +609,7 @@ browse (void *data)
     
 #ifdef LOCATION
     enna_location_append (mod->o_location,
-                          vfs->label, NULL, NULL, NULL, NULL);
+                          gettext(vfs->label), NULL, NULL, NULL, NULL);
 #endif
     mod->state = BROWSER_VIEW;
 #ifdef LOCATION
@@ -641,7 +641,7 @@ _create_menu (void)
 
         item = calloc(1, sizeof(Video_Item_Class_Data));
         item->icon = eina_stringshare_add(cat->icon);
-        item->label = eina_stringshare_add(cat->label);
+        item->label = eina_stringshare_add(gettext(cat->label));
         enna_list_append(o, mod->item_class, item, item->label, browse, cat);
     }
 
@@ -679,7 +679,7 @@ _create_gui (void)
     edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
     icon = edje_object_add(mod->em->evas);
     edje_object_file_set(icon, enna_config_theme_get(), "icon/video_mini");
-    enna_location_append(o, "Video", icon, NULL, NULL, NULL);
+    enna_location_append(o, _("Video"), icon, NULL, NULL, NULL);
     mod->o_location = o;
 #endif
 }
@@ -804,7 +804,7 @@ static Enna_Class_Activity class =
 {
     "video",
     1,
-    "Video",
+    N_("Video"),
     NULL,
     "icon/video",
     {

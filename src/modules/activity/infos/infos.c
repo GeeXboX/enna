@@ -97,16 +97,16 @@ set_enna_information (buffer_t *b)
     if (!b)
         return;
 
-    buffer_append (b, "<c>Enna Information</c><br><br>");
-    buffer_appendf (b, "<hilight>Enna: </hilight>%s<br>", VERSION);
-    buffer_appendf (b, "<hilight>libplayer: </hilight>%s<br>",
+    buffer_append (b, _("<c>Enna Information</c><br><br>"));
+    buffer_appendf (b, _("<hilight>Enna: </hilight>%s<br>"), VERSION);
+    buffer_appendf (b, _("<hilight>libplayer: </hilight>%s<br>"),
                     LIBPLAYER_VERSION);
 #ifdef BUILD_BROWSER_VALHALLA
-    buffer_appendf (b, "<hilight>libvalhalla: </hilight>%s<br>",
+    buffer_appendf (b, _("<hilight>libvalhalla: </hilight>%s<br>"),
                     LIBVALHALLA_VERSION_STR);
 #endif
 #ifdef BUILD_LIBSVDRP
-    buffer_appendf (b, "<hilight>libsvdrp: </hilight>%s<br>",
+    buffer_appendf (b, _("<hilight>libsvdrp: </hilight>%s<br>"),
                     LIBSVDRP_VERSION);
 #endif
     buffer_append (b, "<br>");
@@ -158,7 +158,7 @@ get_distribution (buffer_t *b)
         }
     }
 
-    buffer_append (b, "<hilight>Distribution: </hilight>");
+    buffer_append (b, _("<hilight>Distribution: </hilight>"));
     if (id && release)
         buffer_appendf (b, "%s %s", id, release);
     else
@@ -176,7 +176,7 @@ get_uname (buffer_t *b)
 {
     struct utsname name;
 
-    buffer_append (b, "<hilight>OS: </hilight>");
+    buffer_append (b, _("<hilight>OS: </hilight>"));
     if (uname (&name) == -1)
         buffer_append (b, BUF_DEFAULT);
     else
@@ -214,8 +214,8 @@ get_resolution (buffer_t *b)
     XRRGetScreenSizeRange (dpy, root,
                            &minWidth, &minHeight, &maxWidth, &maxHeight);
 
-    buffer_append (b, "<hilight>Screen Resolution: </hilight>");
-    buffer_appendf (b, "%dx%d at %d Hz (min: %dx%d, max: %dx%d)",
+    buffer_append (b, _("<hilight>Screen Resolution: </hilight>"));
+    buffer_appendf (b, _("%dx%d at %d Hz (min: %dx%d, max: %dx%d)"),
                     DisplayWidth (dpy, screen), DisplayHeight (dpy, screen),
                     rate, minWidth, minHeight, maxWidth, maxHeight);
     buffer_append (b, "<br>");
@@ -228,14 +228,14 @@ get_vdr (buffer_t *b)
 {
     svdrp_t *svdrp = enna_svdrp_get();
 
-    buffer_append (b, "<hilight>VDR:</hilight> ");
+    buffer_append (b, _("<hilight>VDR:</hilight> "));
     if (svdrp && svdrp_try_connect(svdrp))
-        buffer_appendf(b, "connected to VDR %s on %s (%s)<br>",
+        buffer_appendf(b, _("connected to VDR %s on %s (%s)<br>"),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_VERSION),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_NAME),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_HOSTNAME));
     else
-        buffer_append (b, "not connected<br>");
+        buffer_append (b, _("not connected<br>"));
 }
 #endif
 
@@ -247,7 +247,7 @@ get_network (buffer_t *b)
     struct ifconf ifc;
     char buf[1024];
 
-    buffer_append (b, "<hilight>Available network interfaces:</hilight><br>");
+    buffer_append (b, _("<hilight>Available network interfaces:</hilight><br>"));
 
     /* get a socket handle. */
     s = socket (AF_INET, SOCK_STREAM, 0);
@@ -272,13 +272,13 @@ get_network (buffer_t *b)
           continue;
 
         /* show the device name and IP address */
-        buffer_appendf (b, "  * %s (IP: %s, ", item->ifr_name,
+        buffer_appendf (b, _("  * %s (IP: %s, "), item->ifr_name,
                 inet_ntoa (((struct sockaddr_in *)&item->ifr_addr)->sin_addr));
 
         if (ioctl (s, SIOCGIFNETMASK, item) < 0)
             continue;
 
-        buffer_appendf (b, "Netmask: %s)<br>",
+        buffer_appendf (b, _("Netmask: %s)<br>"),
               inet_ntoa (((struct sockaddr_in *)&item->ifr_netmask)->sin_addr));
     }
 
@@ -301,7 +301,7 @@ get_default_gw (buffer_t *b)
     if (fscanf (fp, "%*[^\n]\n") < 0) /* Skip the first line. */
         return;
 
-    buffer_append (b, "<hilight>Default Gateway: </hilight>");
+    buffer_append (b, _("<hilight>Default Gateway: </hilight>"));
     res = 0;
 
     while (1)
@@ -328,7 +328,7 @@ get_default_gw (buffer_t *b)
     }
 
     if (!res)
-       buffer_append (b, "None<br>");
+       buffer_append (b, _("None<br>"));
 
     fclose (fp);
 }
@@ -339,7 +339,7 @@ set_system_information (buffer_t *b)
     if (!b)
         return;
 
-    buffer_append (b, "<c>System Information</c><br><br>");
+    buffer_append (b, _("<c>System Information</c><br><br>"));
     get_distribution (b);
     get_uname (b);
 #ifdef BUILD_LIBSVDRP
@@ -412,7 +412,7 @@ _class_event (void *event_info)
 static Enna_Class_Activity class = {
     ENNA_MODULE_NAME,
     10,
-    "Infos",
+    N_("Infos"),
     NULL,
     "icon/infos",
     {

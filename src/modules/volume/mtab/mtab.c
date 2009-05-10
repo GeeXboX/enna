@@ -85,7 +85,7 @@ mtab_add_mnt (mtab_type_t t, char *fsname, char *dir)
         p = strchr (fsname, ':');
         strncpy (srv, fsname, p - fsname);
         strcpy (share, p + 1);
-        snprintf (name, sizeof (name), "[NFS] %s on %s", share, srv);
+        snprintf (name, sizeof (name), _("[NFS] %s on %s"), share, srv);
         icon = eina_stringshare_add ("icon/dev/nfs");
         break;
 
@@ -93,7 +93,7 @@ mtab_add_mnt (mtab_type_t t, char *fsname, char *dir)
         p = strchr (fsname + 2, '/');
         strncpy (srv, fsname + 2, p - (fsname + 2));
         strcpy (share, p + 1);
-        snprintf (name, sizeof (name), "[SAMBA] %s on %s", share, srv);
+        snprintf (name, sizeof (name), _("[SAMBA] %s on %s"), share, srv);
         icon = eina_stringshare_add ("icon/dev/samba");
         break;
 

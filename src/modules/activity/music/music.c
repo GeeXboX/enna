@@ -135,7 +135,7 @@ static Enna_Class_Activity class =
 {
     "music",
     1,
-    "Music",
+    N_("Music"),
     NULL,
     "icon/music",
     {
@@ -488,7 +488,7 @@ _browse(void *data)
     edje_object_part_swallow(mod->o_edje, "enna.swallow.browser", mod->o_browser);
     enna_browser_root_set(mod->o_browser, vfs);
 
-    enna_location_append(mod->o_location, vfs->label, NULL, NULL, NULL, NULL);
+    enna_location_append(mod->o_location, gettext(vfs->label), NULL, NULL, NULL, NULL);
     edje_object_signal_callback_add(mod->o_edje, "list,transition,end", "edje",
         _menu_transition_left_end_cb, NULL);
     edje_object_signal_emit(mod->o_edje, "list,left", "enna");
@@ -582,7 +582,7 @@ _create_menu()
 
         item = calloc(1, sizeof(Music_Item_Class_Data));
         item->icon = eina_stringshare_add(cat->icon);
-        item->label = eina_stringshare_add(cat->label);
+        item->label = eina_stringshare_add(gettext(cat->label));
         enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
     }
 
@@ -616,7 +616,7 @@ _create_gui()
 
     icon = edje_object_add(mod->em->evas);
     edje_object_file_set(icon, enna_config_theme_get(), "icon/music_mini");
-    enna_location_append(o, "Music", icon, NULL, NULL, NULL);
+    enna_location_append(o, _("Music"), icon, NULL, NULL, NULL);
     mod->o_location = o;
 
     evas_object_event_callback_add(mod->o_edje, EVAS_CALLBACK_MOUSE_DOWN,

@@ -178,7 +178,7 @@ static Enna_Class_Vfs class_shoutcast =
 {
     "shoutcast",
     10,
-    "SHOUTcast Streaming",
+    N_("SHOUTcast Streaming"),
     NULL,
     "icon/shoutcast",
     {
