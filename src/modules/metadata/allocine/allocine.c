@@ -41,6 +41,7 @@
 #define ENNA_MODULE_NAME         "metadata_allocine"
 #define ENNA_GRABBER_NAME        "allocine"
 #define ENNA_GRABBER_PRIORITY    4
+#define ENNA_GRABBER_LANGUAGE   "fr"
 
 #define MAX_URL_SIZE             1024
 #define MAX_XPATH_QUERY_SIZE     1024
@@ -321,6 +322,9 @@ allocine_grab (Enna_Metadata *meta, int caps)
 {
     if (!meta || !meta->keywords)
         return;
+
+    if (strcmp(get_lang(),ENNA_GRABBER_LANGUAGE))
+       return;
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Grabbing info from %s", meta->uri);
