@@ -29,6 +29,7 @@ Module dependencies (optional):
 * libxrandr
 * LightMediaScanner (can be found here : http://lms.garage.maemo.org/)
 * Lirc (http://www.lirc.org/)
+* gettext
 
 This program is in heavy development and you can of course participate
 
