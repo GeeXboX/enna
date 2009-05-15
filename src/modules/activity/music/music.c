@@ -44,6 +44,7 @@
 #include "event_key.h"
 #include "smart_player.h"
 #include "volumes.h"
+#include "panel_lyrics.h"
 
 #define ENNA_MODULE_NAME "music"
 #define METADATA_APPLY \
@@ -51,7 +52,8 @@
     metadata = enna_mediaplayer_metadata_get(mod->enna_playlist);\
     enna_metadata_grab (metadata,\
                         ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);\
-    enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
+    enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);\
+    enna_panel_lyrics_set_text(mod->o_panel_lyrics, metadata);
 
 #define TIMER_VALUE 30
 #define TIMER_VOLUME_VALUE 10
@@ -107,6 +109,7 @@ struct _Enna_Module_Music
     Evas_Object *o_location;
     Evas_Object *o_mediaplayer;
     Evas_Object *o_volume;
+    Evas_Object *o_panel_lyrics;
     Ecore_Timer *timer_volume;
     Ecore_Timer *timer;
     Enna_Module *em;
@@ -120,6 +123,7 @@ struct _Enna_Module_Music
     Enna_Playlist *enna_playlist;
     unsigned char  accept_ev : 1;
     Elm_Genlist_Item_Class *item_class;
+    int lyrics_displayed;
 };
 
 static Enna_Module_Music *mod;
@@ -297,6 +301,21 @@ _volume_core(enna_key_t key)
 }
 
 static void
+panel_lyrics_display (int show)
+{
+    if (show)
+    {
+        edje_object_signal_emit (mod->o_edje, "lyrics,show", "enna");
+        mod->lyrics_displayed = 1;
+    }
+    else
+    {
+        edje_object_signal_emit (mod->o_edje, "lyrics,hide", "enna");
+        mod->lyrics_displayed = 0;
+    }
+}
+
+static void
 _class_event_mediaplayer_view(enna_key_t key, void *event_info)
 {
 
@@ -338,6 +357,10 @@ _class_event_mediaplayer_view(enna_key_t key, void *event_info)
     case ENNA_KEY_MINUS:
 	_volume_core(key);
 	break;
+    case ENNA_KEY_I:
+        printf ("*********************** LYRICS: %p %d *****************\n", mod->o_panel_lyrics, !mod->lyrics_displayed);
+        panel_lyrics_display (!mod->lyrics_displayed);
+        break;
     default:
 	break;
     }
@@ -492,6 +515,11 @@ _browse(void *data)
     edje_object_signal_callback_add(mod->o_edje, "list,transition,end", "edje",
         _menu_transition_left_end_cb, NULL);
     edje_object_signal_emit(mod->o_edje, "list,left", "enna");
+
+    ENNA_OBJECT_DEL(mod->o_panel_lyrics);
+    mod->o_panel_lyrics = enna_panel_lyrics_add (mod->em->evas);
+    edje_object_part_swallow (mod->o_edje,
+                              "lyrics.panel.swallow", mod->o_panel_lyrics);
 }
 
 
@@ -574,6 +602,8 @@ _create_menu()
     /* Create List */
     ENNA_OBJECT_DEL(mod->o_browser);
     mod->o_browser = NULL;
+    ENNA_OBJECT_DEL(mod->o_panel_lyrics);
+    mod->o_panel_lyrics = NULL;
     o = enna_list_add(mod->em->evas);
     categories = enna_vfs_get(ENNA_CAPS_MUSIC);
     EINA_LIST_FOREACH(categories, l, cat)
@@ -712,6 +742,7 @@ em_shutdown(Enna_Module *em)
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
     evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
+    ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     ENNA_OBJECT_DEL(mod->o_location);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_TIMER_DEL(mod->timer);

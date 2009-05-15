@@ -1,0 +1,90 @@
+images {
+   image: "shadow.png" COMP;
+   image: "panel_info.png" COMP;
+}
+
+group {
+   name: "module/music/panel_lyrics";
+
+   parts {
+
+        part {
+          name: "lyrics.panel.clip";
+          mouse_events: 0;
+          description {
+             state: "default" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+          }
+       }
+
+       part {
+          name: "lyrics.panel.swallow";
+          mouse_events: 0;
+          clip_to: lyrics.panel.clip;
+          type: SWALLOW;
+          description {
+             state: "default" 0.0;
+             visible: 1;
+             rel1.to: "lyrics.panel.clip";
+             rel2.to: "lyrics.panel.clip";
+          }
+       }
+
+       part {
+          name: "lyrics.panel";
+          type: IMAGE;
+          clip_to: "lyrics.panel.clip";
+          mouse_events: 0;
+          description {
+             state: "default" 0.0;
+             visible: 1;
+             rel1.relative: 0.05 0.05;
+             rel2.relative: 0.95 0.95;
+             image.normal: "panel_info.png";
+             image.border: 48 48 120 120;
+          }
+       }
+
+       part {
+          name: "lyrics.panel.textblock";
+	  type: TEXTBLOCK;
+          clip_to: "lyrics.panel.clip";
+          description {
+              state: "show" 0.0;
+              visible: 1;
+              color: 255 255 255 255;
+              rel1.relative: 1 0;
+              rel1.to: "lyrics.panel.clip";
+              rel1.offset: 32 0;
+              rel2.relative: 1.0 1.0;
+              rel2.to: "lyrics.panel";
+              rel2.offset: -63 -63;
+              text {
+                  style: "style.infos.video";
+		  min: 0 0;
+ 	      }
+          }
+       }
+   }
+
+   programs {
+       program {
+           name: "lyrics,show";
+           signal: "lyrics,show";
+           source:  "enna";
+           action:  STATE_SET "show" 0.0;
+           transition: "SINUSOIDAL" 0.3;
+           target: "lyrics.panel.clip";
+       }
+       program {
+           name: "lyrics,hide";
+           signal: "lyrics,hide";
+           source:  "enna";
+           action:  STATE_SET "default" 0.0;
+           transition: "SINUSOIDAL" 0.3;
+           target: "lyrics.panel.clip";
+       }
+   }
+}
+

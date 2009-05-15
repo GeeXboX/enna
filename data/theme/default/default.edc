@@ -38,6 +38,7 @@ collections
 #include "location.edc"
 #include "mediaplayer.edc"
 #include "video_info.edc"
+#include "audio_lyrics.edc"
 #include "slideshow.edc"
 #include "picture.edc"
 #include "mediacontrol.edc"
