@@ -284,6 +284,8 @@ static int _enna_init(void)
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
 
+    init_locale();
+    
     enna_module_init();
 
     snprintf(tmp, sizeof(tmp), "%s/.enna", enna->home);
@@ -572,8 +574,6 @@ static int parse_command_line(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-    init_locale();
-    
     if (parse_command_line(argc, argv) < 0)
         return EXIT_SUCCESS;
 

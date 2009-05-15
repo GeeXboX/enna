@@ -40,6 +40,7 @@
 #include <Edje.h>
 
 #include "enna.h"
+#include "logs.h"
 #include "enna_config.h"
 #include "utils.h"
 #include "vfs.h"
@@ -324,7 +325,10 @@ md5sum (char *str)
 
 char *init_locale (void)
 {
-    mylocale = strdup(setlocale(LC_ALL, ""));
+    char *curlocale=setlocale(LC_ALL, "");
+    if (!curlocale)
+        enna_log(ENNA_MSG_WARNING, NULL, "unable to set locale, using 'C' instead.");
+    mylocale = curlocale?strdup(curlocale):setlocale(LC_ALL, "");
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 
