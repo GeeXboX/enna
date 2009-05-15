@@ -178,6 +178,9 @@ images {
              rel2 {relative: 1  1;to: "clip.module";}
           }
        }
+
+
+
        part {
        name: "event";
            mouse_events : 1;
@@ -185,6 +188,34 @@ images {
            description {state: "default" 0.0;}
        }
 
+      part {
+          name: "infos.panel.clip";
+          mouse_events: 0;
+          clip_to: clip.module;
+          type: RECT;
+          description {
+             state: "default" 0.0;
+             visible: 0;
+             color: 255 255 255 0;
+          }
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+          }
+       }
+
+       part {
+          name: "lyrics.panel.swallow";
+          mouse_events: 0;
+          clip_to: infos.panel.clip;
+          type: SWALLOW;
+          description {
+             state: "default" 0.0;
+             rel1.to: "infos.panel.clip";
+             rel2.to: "infos.panel.clip";
+          }
+       }
     }
     programs {
        program {
@@ -281,6 +312,22 @@ images {
        program {
           name: "transition,end";
           action: SIGNAL_EMIT "list,transition,end" "edje";
+       }
+      program {
+           name: "lyrics,show";
+           signal: "lyrics,show";
+           source:  "enna";
+           action:  STATE_SET "show" 0.0;
+           transition: "SINUSOIDAL" 0.3;
+           target: "infos.panel.clip";
+       }
+       program {
+           name: "lyrics,hide";
+           signal: "lyrics,hide";
+           source:  "enna";
+           action:  STATE_SET "default" 0.0;
+           transition: "SINUSOIDAL" 0.3;
+           target: "infos.panel.clip";
        }
     }
  }

@@ -358,7 +358,6 @@ _class_event_mediaplayer_view(enna_key_t key, void *event_info)
 	_volume_core(key);
 	break;
     case ENNA_KEY_I:
-        printf ("*********************** LYRICS: %p %d *****************\n", mod->o_panel_lyrics, !mod->lyrics_displayed);
         panel_lyrics_display (!mod->lyrics_displayed);
         break;
     default:
