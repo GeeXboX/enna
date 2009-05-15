@@ -127,6 +127,7 @@ enna_metadata_dump (Enna_Metadata *m)
     printf (" -- Director: %s\n",          m->director);
     printf (" -- Actors: %s\n",            m->actors);
     printf (" -- Studio: %s\n",            m->studio);
+    printf (" -- Lyrics: %s\n",            m->lyrics);
     printf (" -- Cover: %s\n",             m->cover);
     printf (" -- Snapshot: %s\n",          m->snapshot);
     printf (" -- Backdrop: %s\n",          m->backdrop);
@@ -234,6 +235,7 @@ enna_metadata_desc (void)
     EDD_ADD (, director,    STRING);
     EDD_ADD (, actors,      STRING);
     EDD_ADD (, studio,      STRING);
+    EDD_ADD (, lyrics,      STRING);
     EDD_ADD (, cover,       STRING);
     EDD_ADD (, snapshot,    STRING);
     EDD_ADD (, backdrop,    STRING);
@@ -369,6 +371,7 @@ void enna_metadata_free(Enna_Metadata *m)
     ENNA_FREE(m->director);
     ENNA_FREE(m->actors);
     ENNA_FREE(m->studio);
+    ENNA_FREE(m->lyrics);
     ENNA_FREE(m->cover);
     ENNA_FREE(m->snapshot);
     ENNA_FREE(m->backdrop);

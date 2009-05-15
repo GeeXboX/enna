@@ -95,6 +95,7 @@ struct _Enna_Metadata
     char *director;
     char *actors;
     char *studio;
+    char *lyrics;
     char *cover;
     char *snapshot;
     char *backdrop;
