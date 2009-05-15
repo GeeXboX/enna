@@ -403,6 +403,19 @@ if test "x$want_metadata_libplayer" = "xyes" -o "x$want_metadata_libplayer" = "x
 fi
 AM_CONDITIONAL(BUILD_METADATA_LIBPLAYER, test "x$have_metadata_libplayer" = "xyes")
 
+# LyricWiki.org
+want_metadata_lyricwiki="yes"
+AC_MSG_CHECKING(whether LyricWiki.org metadata module is to be built)
+AC_ARG_ENABLE(metadata-lyricwiki,
+  AS_HELP_STRING([--enable-metadata-lyricwiki],[Enable LyricWiki.org Module]),
+  [ want_metadata_lyricwiki=$enableval ]
+)
+AC_MSG_RESULT($want_metadata_lyricwiki)
+AM_CONDITIONAL(BUILD_METADATA_LYRICWIKI, test "x$want_metadata_lyricwiki" = "xyes")
+if test "x$want_metadata_lyricwiki" = "xyes"; then
+  AC_DEFINE(BUILD_METADATA_LYRICWIKI, 1, [LyricWiki.org Metadata])
+fi
+
 # Local Files
 want_metadata_localfiles="yes"
 AC_MSG_CHECKING(whether local files metadata module is to be built)
@@ -736,6 +749,7 @@ src/modules/metadata/allocine/Makefile
 src/modules/metadata/amazon/Makefile
 src/modules/metadata/imdb/Makefile
 src/modules/metadata/libplayer/Makefile
+src/modules/metadata/lyricwiki/Makefile
 src/modules/metadata/localfiles/Makefile
 src/modules/metadata/nfo/Makefile
 src/modules/metadata/tmdb/Makefile
@@ -795,6 +809,7 @@ echo "  Allocine.fr...................... : $want_metadata_allocine"
 echo "  Amazon.com....................... : $want_metadata_amazon"
 echo "  IMDB.com......................... : $want_metadata_imdb"
 echo "  libplayer........................ : $have_metadata_libplayer"
+echo "  LyricWiki.org.................... : $want_metadata_lyricwiki"
 echo "  Local files...................... : $want_metadata_localfiles"
 echo "  NFO Reader....................... : $want_metadata_nfo"
 echo "  TheMovieDB.org................... : $want_metadata_tmdb"

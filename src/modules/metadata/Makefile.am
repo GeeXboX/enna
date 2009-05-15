@@ -5,6 +5,7 @@ allocine\
 amazon\
 imdb\
 libplayer\
+lyricwiki\
 localfiles\
 nfo\
 tmdb\
