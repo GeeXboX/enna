@@ -326,9 +326,10 @@ md5sum (char *str)
 char *init_locale (void)
 {
     char *curlocale=setlocale(LC_ALL, "");
+    //FIXME: currently, logging will fail here 'cause log level isn't initialized yet but when called after that, help wouldn't get translated
     if (!curlocale)
         enna_log(ENNA_MSG_WARNING, NULL, "unable to set locale, using 'C' instead.");
-    mylocale = curlocale?strdup(curlocale):setlocale(LC_ALL, "");
+    mylocale = curlocale?strdup(curlocale):strdup(setlocale(LC_ALL, "C"));
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 
