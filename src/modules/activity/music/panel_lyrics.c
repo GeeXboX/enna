@@ -193,6 +193,7 @@ void
 enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
 {
     buffer_t *buf;
+    char *b;
 
     API_ENTRY return;
 
@@ -219,7 +220,15 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
 
     /* display song associated lyrics */
     buffer_append  (buf, "<br/>");
-    buffer_appendf (buf, "%s", m->lyrics);
+    b = m->lyrics;
+    while (*b)
+    {
+        if (*b == '\n')
+            buffer_append (buf, "<br>");
+        else
+            buffer_appendf (buf, "%c", *b);
+        (void) *b++;
+    }
 
     edje_object_part_text_set (sd->o_edje,
                                "lyrics.panel.textblock", buf->buf);
