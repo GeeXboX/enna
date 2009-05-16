@@ -52,8 +52,7 @@
     metadata = enna_mediaplayer_metadata_get(mod->enna_playlist);\
     enna_metadata_grab (metadata,\
                         ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);\
-    enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);\
-    enna_panel_lyrics_set_text(mod->o_panel_lyrics, metadata);
+    enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
 
 #define TIMER_VALUE 30
 #define TIMER_VOLUME_VALUE 10
@@ -305,11 +304,16 @@ panel_lyrics_display (int show)
 {
     if (show)
     {
+        Enna_Metadata *m;
+
+        m = enna_mediaplayer_metadata_get (mod->enna_playlist);
+        enna_panel_lyrics_set_text (mod->o_panel_lyrics, m);
         edje_object_signal_emit (mod->o_edje, "lyrics,show", "enna");
         mod->lyrics_displayed = 1;
     }
     else
     {
+        enna_panel_lyrics_set_text (mod->o_panel_lyrics, NULL);
         edje_object_signal_emit (mod->o_edje, "lyrics,hide", "enna");
         mod->lyrics_displayed = 0;
     }
