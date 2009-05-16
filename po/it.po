@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-05-10 16:42+0200\n"
+"POT-Creation-Date: 2009-05-16 12:57+0200\n"
 "PO-Revision-Date: 2009-05-10 16:06+0100\n"
 "Last-Translator: Davide Cavalca <davide125@tiscali.it>\n"
 "Language-Team: Italian\n"
@@ -25,53 +25,53 @@ msgstr "%s<hilight>%s%s:</hilight> %s"
 msgid "No media found !"
 msgstr "Nessun media trovato!"
 
-#: src/bin/enna.c:331
+#: src/bin/enna.c:332
 msgid "enna HTPC"
 msgstr "enna HTPC"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:503
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:504
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:505
 #, c-format
 msgid " Available Options:\n"
 msgstr "Opzioni disponibili:\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:508
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:509
+#: src/bin/enna.c:510
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:510
+#: src/bin/enna.c:511
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
@@ -181,8 +181,8 @@ msgstr "<c>Informazioni di sistema</c><br><br>"
 msgid "Infos"
 msgstr "Info"
 
-#: src/modules/activity/music/music.c:138
-#: src/modules/activity/music/music.c:619
+#: src/modules/activity/music/music.c:141
+#: src/modules/activity/music/music.c:652
 msgid "Music"
 msgstr "Musica"
 
@@ -214,46 +214,46 @@ msgstr "Registrazione in corso"
 msgid "Television"
 msgstr "Televisione"
 
-#: src/modules/activity/video/panel_infos.c:192
-#: src/modules/activity/video/panel_infos.c:199
+#: src/modules/activity/video/panel_infos.c:191
+#: src/modules/activity/video/panel_infos.c:198
 msgid "No such information ..."
 msgstr "Informazioni non trovate..."
 
-#: src/modules/activity/video/panel_infos.c:240
+#: src/modules/activity/video/panel_infos.c:239
 #, c-format
 msgid "%.2d hour "
 msgid_plural "%.2d hours "
 msgstr[0] "%.2d ora "
 msgstr[1] "%.2d ore "
 
-#: src/modules/activity/video/panel_infos.c:242
+#: src/modules/activity/video/panel_infos.c:241
 #, c-format
 msgid "%.2d minute"
 msgid_plural "%.2d minutes"
 msgstr[0] "%.2d minuto"
 msgstr[1] "%.2d minuti"
 
-#: src/modules/activity/video/panel_infos.c:247
+#: src/modules/activity/video/panel_infos.c:246
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr "<ul>Regista:</ul> %s<br>"
 
-#: src/modules/activity/video/panel_infos.c:249
+#: src/modules/activity/video/panel_infos.c:248
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr "<ul>Attori:</ul> %s<br>"
 
-#: src/modules/activity/video/panel_infos.c:257
+#: src/modules/activity/video/panel_infos.c:256
 #, c-format
 msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 msgstr "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 
-#: src/modules/activity/video/panel_infos.c:260
+#: src/modules/activity/video/panel_infos.c:259
 #, c-format
 msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 msgstr "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 
-#: src/modules/activity/video/panel_infos.c:263
+#: src/modules/activity/video/panel_infos.c:262
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Dimensione: </hl> %.2f MB<br>"
@@ -263,7 +263,7 @@ msgstr "<hl>Dimensione: </hl> %.2f MB<br>"
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/weather/weather.c:522
+#: src/modules/activity/weather/weather.c:511
 msgid "Weather"
 msgstr "Meteo"
 
@@ -522,4 +522,3 @@ msgstr "[NFS] %s su %s"
 #, c-format
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s su %s"
-
