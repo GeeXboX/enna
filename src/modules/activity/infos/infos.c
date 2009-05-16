@@ -73,6 +73,8 @@
 #define LSB_FILE "/etc/lsb-release"
 #define DEBIAN_VERSION_FILE "/etc/debian_version"
 #define DISTRIB_ID "DISTRIB_ID="
+#define E_DISTRIB_ID "Distributor ID:"
+#define E_RELEASE "Release:"
 #define DISTRIB_ID_LEN strlen (DISTRIB_ID)
 #define DISTRIB_RELEASE "DISTRIB_RELEASE="
 #define DISTRIB_RELEASE_LEN strlen (DISTRIB_RELEASE)
@@ -83,6 +85,8 @@ typedef struct _Enna_Module_Infos {
     Evas *e;
     Evas_Object *edje;
     Enna_Module *em;
+    char *lsb_distrib_id;
+    char *lsb_release;
 } Enna_Module_Infos;
 
 static Enna_Module_Infos *mod;
@@ -123,43 +127,51 @@ get_distribution (buffer_t *b)
     char buffer[BUF_LEN];
     char *id = NULL, *release = NULL;
 
-    f = fopen (LSB_FILE, "r");
-    if (f)
+
+    if (!mod->lsb_distrib_id || !mod->lsb_release)
+    //FIXME: i'm pretty sure that there's no need to try to read files 'cause the command lsb_release seems to be available anywhere
+    //if so, this can be stripped from here (Billy)
     {
-        while (fgets (buffer, BUF_LEN, f))
-        {
-            if (!strncmp (buffer, DISTRIB_ID, DISTRIB_ID_LEN))
-            {
-                id = strdup (buffer + DISTRIB_ID_LEN);
-                id[strlen (id) - 1] = '\0';
-            }
-            if (!strncmp (buffer, DISTRIB_RELEASE, DISTRIB_RELEASE_LEN))
-            {
-                release = strdup (buffer + DISTRIB_RELEASE_LEN);
-                release[strlen (release) - 1] = '\0';
-            }
-            memset (buffer, '\0', BUF_LEN);
-        }
-        fclose (f);
-    }
-    if(!id || !release) {
-        f = fopen (DEBIAN_VERSION_FILE, "r");
+        f = fopen (LSB_FILE, "r");
         if (f)
         {
-            id = strdup ("Debian");
-            id[strlen (id)] = '\0';
             while (fgets (buffer, BUF_LEN, f))
             {
-                release = strdup (buffer);
-                release[strlen (release) - 1] = '\0';
+                if (!strncmp (buffer, DISTRIB_ID, DISTRIB_ID_LEN))
+                {
+                    id = strdup (buffer + DISTRIB_ID_LEN);
+                    id[strlen (id) - 1] = '\0';
+                }
+                if (!strncmp (buffer, DISTRIB_RELEASE, DISTRIB_RELEASE_LEN))
+                {
+                    release = strdup (buffer + DISTRIB_RELEASE_LEN);
+                    release[strlen (release) - 1] = '\0';
+                }
                 memset (buffer, '\0', BUF_LEN);
             }
             fclose (f);
         }
+        if(!id || !release) {
+            f = fopen (DEBIAN_VERSION_FILE, "r");
+            if (f)
+            {
+                id = strdup ("Debian");
+                id[strlen (id)] = '\0';
+                while (fgets (buffer, BUF_LEN, f))
+                {
+                    release = strdup (buffer);
+                    release[strlen (release) - 1] = '\0';
+                    memset (buffer, '\0', BUF_LEN);
+                }
+                fclose (f);
+            }
+        }
     }
 
     buffer_append (b, _("<hilight>Distribution: </hilight>"));
-    if (id && release)
+    if (mod->lsb_distrib_id && mod->lsb_release)
+        buffer_appendf (b, "%s %s", mod->lsb_distrib_id, mod->lsb_release);
+    else if (id && release)
         buffer_appendf (b, "%s %s", id, release);
     else
         buffer_append (b, BUF_DEFAULT);
@@ -353,6 +365,46 @@ set_system_information (buffer_t *b)
 }
 
 /****************************************************************************/
+/*                        Event Callbacks                                   */
+/****************************************************************************/
+static int
+lsb_release_event_data(void *data, int type, void *event)
+{
+    Ecore_Exe_Event_Data *ev = event;
+    char *id, *release;
+    id = release = NULL;
+
+    if ((ev->lines) && (ev->lines[0].line))
+    {
+        int i;
+        for (i = 0; ev->lines[i].line; i++)
+        {
+            char *line= ev->lines[i].line;
+            if (!strncmp(line, E_DISTRIB_ID, strlen(E_DISTRIB_ID)))
+                id=line+strlen(E_DISTRIB_ID);
+            if (!strncmp(line, E_RELEASE, strlen(E_RELEASE)))
+                release=line+strlen(E_RELEASE);
+        }
+    }
+    while (id && (id[0]==' ' || id[0]=='\t')) id++;
+    while (release && (release[0]==' ' || release[0]=='\t')) release++;
+
+    if (id)
+    {
+        if (mod->lsb_distrib_id)
+            free(mod->lsb_distrib_id);
+        mod->lsb_distrib_id=strdup(id);
+    }
+    if (release)
+    {
+        if (mod->lsb_release)
+            free(mod->lsb_release);
+        mod->lsb_release=strdup(release);
+    }
+    return 0;
+}
+
+/****************************************************************************/
 /*                        Private Module API                                */
 /****************************************************************************/
 
@@ -367,6 +419,13 @@ create_gui (void)
 static void
 _class_init (int dummy)
 {
+    Ecore_Exe *lsb_release_exe;
+    Ecore_Event_Handler *lsb_release_data_handler;
+
+    mod->lsb_distrib_id = mod->lsb_release = NULL;
+    lsb_release_exe=ecore_exe_pipe_run("lsb_release -i -r", ECORE_EXE_PIPE_READ | ECORE_EXE_PIPE_READ_LINE_BUFFERED, NULL);
+    if (lsb_release_exe)
+        lsb_release_data_handler=ecore_event_handler_add(ECORE_EXE_EVENT_DATA, lsb_release_event_data, NULL);
     create_gui ();
     enna_content_append (ENNA_MODULE_NAME, mod->edje);
 }
@@ -375,6 +434,10 @@ static void
 _class_shutdown (int dummy)
 {
     ENNA_OBJECT_DEL (mod->edje);
+    if (mod->lsb_distrib_id)
+        free(mod->lsb_distrib_id);
+    if (mod->lsb_release)
+        free(mod->lsb_release);
 }
 
 static void
@@ -382,12 +445,11 @@ _class_show (int dummy)
 {
     buffer_t *b;
 
-    b = buffer_new ();
+    b = buffer_new();
     set_enna_information (b);
     set_system_information (b);
     edje_object_part_text_set (mod->edje, "infos.text", b->buf);
     edje_object_signal_emit (mod->edje, "infos,show", "enna");
-    buffer_free (b);
 }
 
 static void
