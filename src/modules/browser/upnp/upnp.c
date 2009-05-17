@@ -87,16 +87,11 @@ upnp_media_server_free (upnp_media_server_t *srv)
     g_object_unref (srv->info);
     g_object_unref (srv->content_dir);
 
-    if (srv->type)
-        free (srv->type);
-    if (srv->location)
-        free (srv->location);
-    if (srv->udn)
-        free (srv->udn);
-    if (srv->name)
-        free (srv->name);
-    if (srv->model)
-        free (srv->model);
+    ENNA_FREE (srv->type);
+    ENNA_FREE (srv->location);
+    ENNA_FREE (srv->udn);
+    ENNA_FREE (srv->name);
+    ENNA_FREE (srv->model);
     free (srv);
 }
 
