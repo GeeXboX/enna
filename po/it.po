@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-05-16 12:57+0200\n"
-"PO-Revision-Date: 2009-05-10 16:06+0100\n"
+"POT-Creation-Date: 2009-05-17 18:17+0200\n"
+"PO-Revision-Date: 2009-05-17 18:18+0100\n"
 "Last-Translator: Davide Cavalca <davide125@tiscali.it>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -25,53 +25,53 @@ msgstr "%s<hilight>%s%s:</hilight> %s"
 msgid "No media found !"
 msgstr "Nessun media trovato!"
 
-#: src/bin/enna.c:332
+#: src/bin/enna.c:330
 msgid "enna HTPC"
 msgstr "enna HTPC"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:501
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:502
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:503
 #, c-format
 msgid " Available Options:\n"
 msgstr "Opzioni disponibili:\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:504
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:508
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:509
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:510
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
@@ -97,87 +97,87 @@ msgstr "Traccia #%02d (%02d:%02d)"
 msgid "Games"
 msgstr "Giochi"
 
-#: src/modules/activity/infos/infos.c:100
+#: src/modules/activity/infos/infos.c:104
 msgid "<c>Enna Information</c><br><br>"
 msgstr "<c>Informazioni su Enna</c><br><br>"
 
-#: src/modules/activity/infos/infos.c:101
+#: src/modules/activity/infos/infos.c:105
 #, c-format
 msgid "<hilight>Enna: </hilight>%s<br>"
 msgstr "<hilight>Enna: </hilight>%s<br>"
 
-#: src/modules/activity/infos/infos.c:102
+#: src/modules/activity/infos/infos.c:106
 #, c-format
 msgid "<hilight>libplayer: </hilight>%s<br>"
 msgstr "<hilight>libplayer: </hilight>%s<br>"
 
-#: src/modules/activity/infos/infos.c:105
+#: src/modules/activity/infos/infos.c:109
 #, c-format
 msgid "<hilight>libvalhalla: </hilight>%s<br>"
 msgstr "<hilight>libvalhalla: </hilight>%s<br>"
 
-#: src/modules/activity/infos/infos.c:109
+#: src/modules/activity/infos/infos.c:113
 #, c-format
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
 msgstr "<hilight>libsvdrp: </hilight>%s<br>"
 
-#: src/modules/activity/infos/infos.c:161
+#: src/modules/activity/infos/infos.c:171
 msgid "<hilight>Distribution: </hilight>"
 msgstr "<hilight>Distribuzione: </hilight>"
 
-#: src/modules/activity/infos/infos.c:179
+#: src/modules/activity/infos/infos.c:191
 msgid "<hilight>OS: </hilight>"
 msgstr "<hilight>OS: </hilight>"
 
-#: src/modules/activity/infos/infos.c:217
+#: src/modules/activity/infos/infos.c:229
 msgid "<hilight>Screen Resolution: </hilight>"
 msgstr "<hilight>Risoluzione: </hilight>"
 
-#: src/modules/activity/infos/infos.c:218
+#: src/modules/activity/infos/infos.c:230
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
 msgstr "%dx%d a %d Hz (min: %dx%d, max: %dx%d)"
 
-#: src/modules/activity/infos/infos.c:231
+#: src/modules/activity/infos/infos.c:243
 msgid "<hilight>VDR:</hilight> "
 msgstr "<hilight>VDR:</hilight> "
 
-#: src/modules/activity/infos/infos.c:233
+#: src/modules/activity/infos/infos.c:245
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
 msgstr "connesso a VDR %s su %s (%s)<br>"
 
-#: src/modules/activity/infos/infos.c:238
+#: src/modules/activity/infos/infos.c:250
 msgid "not connected<br>"
 msgstr "non connesso<br>"
 
-#: src/modules/activity/infos/infos.c:250
+#: src/modules/activity/infos/infos.c:262
 msgid "<hilight>Available network interfaces:</hilight><br>"
 msgstr "<hilight>Interfacce di rete disponibili:</hilight><br>"
 
-#: src/modules/activity/infos/infos.c:275
+#: src/modules/activity/infos/infos.c:287
 #, c-format
 msgid "  * %s (IP: %s, "
 msgstr "  * %s (IP: %s, "
 
-#: src/modules/activity/infos/infos.c:281
+#: src/modules/activity/infos/infos.c:293
 #, c-format
 msgid "Netmask: %s)<br>"
 msgstr "Maschera: %s)<br>"
 
-#: src/modules/activity/infos/infos.c:304
+#: src/modules/activity/infos/infos.c:316
 msgid "<hilight>Default Gateway: </hilight>"
 msgstr "<hilight>Gateway: </hilight>"
 
-#: src/modules/activity/infos/infos.c:331
+#: src/modules/activity/infos/infos.c:343
 msgid "None<br>"
 msgstr "nessuna<br>"
 
-#: src/modules/activity/infos/infos.c:342
+#: src/modules/activity/infos/infos.c:354
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informazioni di sistema</c><br><br>"
 
-#: src/modules/activity/infos/infos.c:415
+#: src/modules/activity/infos/infos.c:477
 msgid "Infos"
 msgstr "Info"
 
@@ -185,6 +185,11 @@ msgstr "Info"
 #: src/modules/activity/music/music.c:652
 msgid "Music"
 msgstr "Musica"
+
+#: src/modules/activity/music/panel_lyrics.c:203
+#: src/modules/activity/music/panel_lyrics.c:210
+msgid "No lyrics found ..."
+msgstr "Nessun testo trovato..."
 
 #: src/modules/activity/photo/photo.c:198
 msgid "No exif information found."
