@@ -1,5 +1,6 @@
-#define COMP LOSSY 80
-
+//#define COMP RAW
+//#define COMP LOSSY 100
+#define COMP LOSSY 80 
 images{
 }
 
