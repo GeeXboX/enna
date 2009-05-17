@@ -41,7 +41,8 @@ slideshow.c\
 mediacontrol.c\
 reflection.c\
 events_stack.c\
-view_cover.c
+view_cover.c\
+popup.c
 
 enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@ @LIBCDDB_LIBS@ @LIBPLAYER_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -78,6 +79,6 @@ parser_cdda.h\
 slideshow.h\
 mediacontrol.h\
 reflection.h\
-events_stack.c
-
+events_stack.h\
+popup.h
 
