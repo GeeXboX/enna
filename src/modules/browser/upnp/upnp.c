@@ -27,12 +27,18 @@
  *
  */
 
-#include "enna.h"
-
 #include <libgupnp/gupnp-control-point.h>
 #include <libgupnp-av/gupnp-av.h>
 #include <string.h>
 #include <pthread.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "module.h"
+#include "vfs.h"
+#include "volumes.h"
+#include "logs.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME  "upnp"
 
