@@ -40,7 +40,6 @@
 #include <Edje.h>
 
 #include "enna.h"
-#include "logs.h"
 #include "enna_config.h"
 #include "utils.h"
 #include "vfs.h"
