@@ -286,8 +286,7 @@ didl_process (char *didl, char *udn)
     {
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
                   "No 'DIDL-Lite' node found.");
-        xmlFreeDoc (doc);
-        return NULL;
+        goto err_element;
     }
 
     for (element = element->children; element; element = element->next)
@@ -305,6 +304,7 @@ didl_process (char *didl, char *udn)
         }
     }
 
+ err_element:
     xmlFreeDoc (doc);
     return list;
 }
