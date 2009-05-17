@@ -10,8 +10,8 @@ images
    image: "sel_fg.png" COMP;
    image: "pointer.png" COMP;
    image: "frame.png" COMP;
-   image: "bt_shine_menuitem.png" COMP;
-   image: "bt_base_menuitem.png" COMP;
+   image: "bt_shine_menuitem.png" RAW;
+   image: "bt_base_menuitem.png" RAW;
 }
 
 
@@ -583,7 +583,7 @@ max: 512 512;
             aspect_preference: BOTH;
             image {
                normal: "bt_base_menuitem.png";
-               border: 20 20 20 20;
+               border: 8 8 8 8;
 	        }
 	      }
       }
