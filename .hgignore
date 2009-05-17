@@ -23,6 +23,7 @@ syntax: regexp
 ^config\.log$
 ^config\.rpath$
 ^config\.status$
+^config\.status\.lineno$
 ^config\.sub$
 ^configure$
 ^depcomp$
