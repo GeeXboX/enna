@@ -130,11 +130,26 @@ static void _no_cb(void *data)
     evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
 }
 
+static void _update_text(Smart_Data *sd)
+{
+    buffer_t *label;
+    const char *tmp;
+    
+    label = buffer_new();
+    buffer_append(label, "<h3><c>Are you sure you want to quit enna ?</c></h3><br>");
+    tmp =  enna_activity_request_quit_all();
+
+    if (tmp) buffer_appendf(label, "<h2>%s<h2>", tmp);
+    
+    edje_object_part_text_set(sd->o_edje, "enna.text.label", label->buf);
+    buffer_free(label);
+}
+
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
     List_Item_Data *it1, *it2;
-    buffer_t *label;
+
     
     sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
@@ -145,10 +160,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/exit");
     
-    label = buffer_new();
-    buffer_appendf(label, "Are you sure you want to quit enna ?<br>%s<br>", enna_activity_request_quit_all());
-    edje_object_part_text_set(sd->o_edje, "enna.text.label", label->buf);
-    
+
     sd->list = enna_list_add(evas_object_evas_get(sd->popup));
 
     sd->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
@@ -161,16 +173,18 @@ static void _smart_add(Evas_Object * obj)
       
     it1 = calloc(1, sizeof(List_Item_Data));
     it1->label = eina_stringshare_add("Yes, Quit Enna");
-    enna_list_append(sd->list, sd->item_class, it1, ("Yes, Quit Enna"), _no_cb, NULL);
+    enna_list_append(sd->list, sd->item_class, it1, ("Yes, Quit Enna"), _yes_cb, NULL);
     
     it2 = calloc(1, sizeof(List_Item_Data));
     it2->label = eina_stringshare_add("No, Continue using enna");
-    enna_list_append(sd->list, sd->item_class, it2, ("No, Continue using enna"), _yes_cb, NULL);
+    enna_list_append(sd->list, sd->item_class, it2, ("No, Continue using enna"), _no_cb, NULL);
     
     evas_object_size_hint_weight_set(sd->list, 1.0, 1.0);
     evas_object_show(sd->list);
     enna_list_selected_set(sd->list, 0);
     edje_object_part_swallow(sd->o_edje, "enna.content.swallow", sd->list);
+
+    _update_text(sd);
 
     enna_popup_content_set(sd->popup, sd->o_edje);
     
@@ -275,5 +289,11 @@ void enna_exit_event_feed(Evas_Object *obj,  void *event_info)
 {
     API_ENTRY return;
     enna_list_event_key_down(sd->list, event_info);
+}
+
+void enna_exit_update_text(Evas_Object *obj)
+{
+    API_ENTRY return;
+    _update_text(sd);
 }
 
