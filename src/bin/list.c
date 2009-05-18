@@ -499,7 +499,7 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
         case ENNA_KEY_SPACE:
         {
 
-            List_Item *it = eina_list_nth(sd->items, 0);
+            List_Item *it = eina_list_nth(sd->items, enna_list_selected_get(sd->o_smart));
             if (it)
             {
                 if (it->func)
