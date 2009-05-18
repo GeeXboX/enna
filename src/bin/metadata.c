@@ -552,6 +552,10 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
     if (meta->parsed)
         return;
 
+    /* do not grab metadata from non-local streams */
+    if (strncmp (meta->uri, "file://", 7))
+      return;
+
     for (i = ENNA_GRABBER_PRIORITY_MAX; i < ENNA_GRABBER_PRIORITY_MIN; i++)
     {
         Eina_List *tmp;
