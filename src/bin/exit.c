@@ -27,7 +27,10 @@
  *
  */
 
+#include <Edje.h>
+
 #include "enna.h"
+#include "enna_config.h"
 
 #define SMART_NAME "enna_exit"
 
@@ -36,7 +39,7 @@ typedef struct _Smart_Data Smart_Data;
 struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
-    Evas_Object *obj;
+    Evas_Object *o_edje;
 };
 
 /* local subsystem functions */
