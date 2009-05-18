@@ -2,17 +2,7 @@
 group {
    name: "enna/popup";
    parts {
-      part {
-         name: "bg_shadow";
-         type: IMAGE;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            image {
-               normal: "volume_bg_shadow.png";
-            }
-         }
-      }
+
       part {
          name: "bg";
          type: IMAGE;
@@ -21,6 +11,7 @@ group {
             state: "default" 0.0;
             image {
                normal: "volume_bg.png";
+               border: 60 60 60 60;
             }
          }
       }
@@ -30,6 +21,8 @@ group {
          mouse_events: 1;
          description {
             state: "default" 0.0;
+            rel1.offset: 63 63;
+            rel2.offset: -64 -64;
          }
       }   
    }

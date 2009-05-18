@@ -47,6 +47,7 @@ collections
 #include "volume.edc"
 #include "cover_video.edc"
 #include "popup.edc"
+#include "exit.edc"
 
    group {
       name: "enna";
