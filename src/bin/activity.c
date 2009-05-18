@@ -31,6 +31,7 @@
 
 #include "enna.h"
 #include "activity.h"
+#include "buffer.h"
 
 static Eina_List *_enna_activities = NULL;
 
@@ -159,24 +160,26 @@ int enna_activity_event(Enna_Class_Activity *act, void *event_info)
 const char *enna_activity_request_quit_all(void)
 {
     Eina_List *l;
-    char *quit_deny_text = NULL;
-    int len=0;
-
-    for (l = _enna_activities; l; l = l->next)
+    buffer_t *msg;   
+    Enna_Class_Activity *act;
+    const char *tmp;    
+    msg = buffer_new();
+    EINA_LIST_FOREACH(_enna_activities, l,  act)
     {
-        Enna_Class_Activity *act = l->data;
-        const char *quit_deny_msg = NULL;
-        char *text;
         if (act->func.class_quit_request)
-          quit_deny_msg = act->func.class_quit_request (0);
-        if (quit_deny_msg)
         {
-            len+=(strlen(act->name)+strlen(quit_deny_msg)+26);
-            text=calloc(1, len);
-            snprintf(text, len, _("%s<hilight>%s%s:</hilight> %s"), quit_deny_text?quit_deny_text:"", quit_deny_text?"<br>":"", act->name, quit_deny_msg);
-            if (quit_deny_text) free(quit_deny_text);
-            quit_deny_text=text;
+          tmp = act->func.class_quit_request (0);
+          printf("%s\n", tmp);
+          if (tmp)
+            buffer_appendf(msg, "%s<t> : <hilight>%s</hilight><br>", act->label, tmp);  
         }
     }
-    return quit_deny_text;
+    if (msg->buf)
+    {
+        tmp = strdup(msg->buf);
+        buffer_free(msg);
+        return tmp;
+    }
+    return NULL;                                                                                            
+    
 }
