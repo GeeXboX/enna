@@ -1,0 +1,39 @@
+
+group {
+   name: "enna/exit";
+   parts {
+
+       part {
+        name: "enna.text.label";
+        type:          TEXT;
+	    effect:        FAR_SHADOW;
+	    mouse_events:  0;
+	    scale: 1;
+	     description { state: "default" 0.0;
+	       visible: 1;
+	       rel1.relative: 0.0 0.0;
+	       rel2.relative: 1.0 0.15;
+	       color: 204 204 204 255;
+	       color3: 0 0 0 255;
+	       text {
+		        font:     "content";
+		        size:     24;
+		        min:      0 0;
+		        align:    0.5 0.5;
+	       }
+	    }
+      }
+      part {
+        name: "enna.content.swallow";
+        mouse_events: 1;
+        type: "SWALLOW";
+        description{
+           state: "default" 0.0;
+	       rel1.relative: 0.1 0.25;
+	       rel2.relative: 0.9 0.75;            
+        }
+      }
+   }
+}
+
+
