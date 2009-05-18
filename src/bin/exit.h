@@ -31,5 +31,6 @@
 #define EXIT_H
 
 Evas_Object *enna_exit_add(Evas * evas);
+void enna_exit_event_feed(Evas_Object *obj,  void *event_info);
 
 #endif /* EXIT_H */
