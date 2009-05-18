@@ -39,6 +39,7 @@
 #include "content.h"
 #include "event_key.h"
 #include "logs.h"
+#include "exit.h"
 
 #define SMART_NAME "enna_mainmenu"
 #define MAX_PER_ROW 3
@@ -55,12 +56,11 @@ struct _Smart_Data
     Evas_Object *o_home_button;
     Evas_Object *o_back_button;
     Evas_Object *o_btn_box;
-    Evas_Object *o_quitdiag_box;
-    Evas_Object *o_quitdiag_yes_button;
-    Evas_Object *o_quitdiag_no_button;
+    Evas_Object *o_exit;
     Eina_List *items;
     int selected;
     unsigned char visible : 1;
+    unsigned char exit_visible: 1;
 };
 
 struct _Smart_Item
@@ -77,8 +77,6 @@ struct _Smart_Item
 /* local subsystem functions */
 static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-static void _quitdiag_yes_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-static void _quitdiag_no_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 static void _smart_activate_cb (void *data);
 static void _smart_reconfigure(Smart_Data * sd);
 static void _smart_init(void);
@@ -309,31 +307,53 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
 
     enna_key_t key;
     int n, el;
-
     key = enna_get_key(event_info);
-    switch (key)
+    if (!sd->exit_visible)
     {
-    case ENNA_KEY_RIGHT:
-        enna_mainmenu_select_next(obj);
-        break;
-    case ENNA_KEY_LEFT:
-        enna_mainmenu_select_prev(obj);
-        break;
-    case ENNA_KEY_UP:
-        el = enna_mainmenu_selected_get(obj);
-        enna_mainmenu_select_nth(obj, el - MAX_PER_ROW);
-        break;
-    case ENNA_KEY_DOWN:
-        n = enna_mainmenu_get_nr_items(obj);
-        el = enna_mainmenu_selected_get(obj);
-        /* go to element below or last one of row if none */
-        enna_mainmenu_select_nth(obj, (el + MAX_PER_ROW >= n) ?
-                                 n - 1 : el + MAX_PER_ROW);
-        break;
-    default:
-        break;
+        
+        switch (key)
+        {
+        case ENNA_KEY_RIGHT:
+            enna_mainmenu_select_next(obj);
+            break;
+        case ENNA_KEY_LEFT:
+            enna_mainmenu_select_prev(obj);
+            break;
+        case ENNA_KEY_UP:
+            el = enna_mainmenu_selected_get(obj);
+            enna_mainmenu_select_nth(obj, el - MAX_PER_ROW);
+            break;
+        case ENNA_KEY_DOWN:
+            n = enna_mainmenu_get_nr_items(obj);
+            el = enna_mainmenu_selected_get(obj);
+            /* go to element below or last one of row if none */
+            enna_mainmenu_select_nth(obj, (el + MAX_PER_ROW >= n) ?
+                                     n - 1 : el + MAX_PER_ROW);
+            break;
+        case ENNA_KEY_OK:
+        case ENNA_KEY_SPACE:
+            enna_mainmenu_activate_nth(sd->o_smart, 
+                enna_mainmenu_selected_get(sd->o_smart));
+            break;
+        case ENNA_KEY_QUIT:
+            enna_mainmenu_exit_show(sd->o_smart);
+        default:
+            break;
+        }
     }
-
+    else
+    {
+        switch (key)
+        {
+        case ENNA_KEY_QUIT:
+        case ENNA_KEY_CANCEL:
+        case ENNA_KEY_MENU:
+            enna_mainmenu_exit_show(sd->o_smart);
+            break;
+        default:
+            enna_exit_event_feed(sd->o_exit, event_info);
+        }
+    }
 }
 
 void enna_mainmenu_show(Evas_Object *obj)
@@ -372,10 +392,10 @@ unsigned char enna_mainmenu_visible(Evas_Object *obj)
     return sd->visible;
 }
 
-unsigned char enna_quitdiag_visible(Evas_Object *obj)
+unsigned char enna_mainmenu_exit_visible(Evas_Object *obj)
 {
     API_ENTRY return 0;
-    return evas_object_visible_get(sd->o_quitdiag_box);
+    return sd->exit_visible;
 }
 
 /* local subsystem globals */
@@ -391,18 +411,6 @@ static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_in
     evas_event_feed_key_down(enna->evas, "BackSpace", "BackSpace", "BackSpace", NULL, ecore_time_get(), data);
 }
 
-static void _quitdiag_yes_clicked_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    enna_log(ENNA_MSG_INFO, NULL, "quitdiag button: yes");
-    evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
-}
-
-static void _quitdiag_no_clicked_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    Smart_Data* sd = data;
-    edje_object_signal_emit (sd->o_edje, "quitdiag,hide", "enna");
-    enna_log(ENNA_MSG_INFO, NULL, "quitdiag button: no");
-}
 
 static void _smart_activate_cb(void *data)
 {
@@ -456,7 +464,7 @@ static void _smart_init(void)
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
-    Evas_Object *o, *ic, *bt, *bx;
+    Evas_Object *o, *ic, *bt;
     Evas *e;
 
     sd = calloc(1, sizeof(Smart_Data));
@@ -473,6 +481,7 @@ static void _smart_add(Evas_Object * obj)
 
     sd->items = NULL;
     sd->visible = 0;
+    sd->exit_visible = 0;
     sd->selected = 0;
     o = edje_object_add(e);
     edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu");
@@ -514,35 +523,9 @@ static void _smart_add(Evas_Object * obj)
     evas_object_show(bt);
     evas_object_show(ic);
 
-        /* Add Quit Dialog */
-    bx = elm_box_add(obj);
-    sd->o_quitdiag_box = bx;
-    elm_box_horizontal_set(bx, 1);
-    edje_object_part_swallow(sd->o_edje, "enna.quitdiag.buttonbox", bx);
-    evas_object_show(bx);
-
-    bt = elm_button_add(sd->o_edje);
-    sd->o_quitdiag_yes_button=bt;
-    evas_object_smart_callback_add(bt, "clicked", _quitdiag_yes_clicked_cb, sd);
-    elm_button_label_set(bt, _("Yes, I want to quit."));
-    ic = elm_icon_add(sd->o_edje);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_stop");
-    elm_button_icon_set(bt, ic);
-    elm_object_scale_set(bt, 2.0);
-    elm_box_pack_end(sd->o_quitdiag_box, bt);
-    evas_object_show(bt);
-
-    bt = elm_button_add(sd->o_edje);
-    sd->o_quitdiag_no_button=bt;
-    evas_object_smart_callback_add(bt, "clicked", _quitdiag_no_clicked_cb, sd);
-    elm_button_label_set(bt, _("No, I want to stay."));
-    ic = elm_icon_add(sd->o_edje);
-    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
-    elm_button_icon_set(bt, ic);
-    elm_object_scale_set(bt, 2.0);
-    elm_box_pack_end(sd->o_quitdiag_box, bt);
-    evas_object_show(bt);
-    evas_object_show(sd->o_quitdiag_box);
+    /* Add exit Dialog */
+    sd->o_exit = enna_exit_add(evas_object_evas_get(sd->o_edje));
+    edje_object_part_swallow(sd->o_edje, "enna.exit.swallow", sd->o_exit);
 
     sd->o_smart = obj;
     evas_object_smart_member_add(sd->o_edje, obj);
@@ -565,9 +548,7 @@ static void _smart_del(Evas_Object * obj)
     evas_object_del(sd->o_edje);
     evas_object_del(sd->o_tbl);
     evas_object_del(sd->o_btn_box);
-    evas_object_del(sd->o_quitdiag_box);
-    evas_object_del(sd->o_quitdiag_yes_button);
-    evas_object_del(sd->o_quitdiag_no_button);
+    evas_object_del(sd->o_exit);
     free(sd);
 }
 
@@ -678,17 +659,15 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, vo
 
 }
 
-void enna_mainmenu_quitdiag(Evas_Object *obj, const char *quit_deny_text)
+void enna_mainmenu_exit_show(Evas_Object *obj)
 {
     char msg[50];
-    char quitdiag_active;
     API_ENTRY return;
 
-    quitdiag_active=evas_object_visible_get(sd->o_quitdiag_box);
-    if (!quitdiag_active)
-        edje_object_part_text_set(sd->o_edje, "enna.text.quit_deny_msgs", quit_deny_text?quit_deny_text:_("...no activity seems busy right now."));
-    strncpy(msg, quitdiag_active?"quitdiag,hide":"quitdiag,show", sizeof(msg));
+    sd->exit_visible = !sd->exit_visible;
+    if (sd->exit_visible) enna_exit_update_text(sd->o_exit);
+    strncpy(msg, sd->exit_visible ? "exit,show" : "exit,hide", sizeof(msg));
     edje_object_signal_emit (sd->o_edje, msg, "enna");
-    quitdiag_active=!quitdiag_active;
+
 }
 
