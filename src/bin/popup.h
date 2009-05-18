@@ -31,5 +31,6 @@
 #define POPUP_H
 
 Evas_Object *enna_popup_add(Evas * evas);
+void enna_popup_content_set(Evas_Object *obj, Evas_Object *content);
 
 #endif /* POPUP_H */

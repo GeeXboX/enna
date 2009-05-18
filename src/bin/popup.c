@@ -167,3 +167,11 @@ enna_popup_add(Evas * evas)
     return evas_object_smart_add(evas, _smart);
 }
 
+void 
+enna_popup_content_set(Evas_Object *obj, Evas_Object *content)
+{
+    API_ENTRY return;
+    edje_object_part_swallow(sd->o_edje, "enna.content.swallow", content);
+    evas_object_size_hint_min_set(content, sd->w, sd->h);
+}
+
