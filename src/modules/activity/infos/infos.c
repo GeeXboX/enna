@@ -450,6 +450,7 @@ _class_show (int dummy)
     set_system_information (b);
     edje_object_part_text_set (mod->edje, "infos.text", b->buf);
     edje_object_signal_emit (mod->edje, "infos,show", "enna");
+    buffer_free(b);
 }
 
 static void

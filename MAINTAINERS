@@ -54,8 +54,8 @@ Modules
     Amazon.com:                           Benjamin Zores
     IMDB.com:                             Davide Cavalca
     libplayer:                            Mathieu Schroeter
-    LyricWiki.org:                        Benjamin Zores
     Local Files:                          Benjamin Zores
+    LyricWiki.org:                        Benjamin Zores
     NFO Reader:                           Benjamin Zores
     The Movie DB:                         Benjamin Zores
     TV DB:                                Benjamin Zores
@@ -68,6 +68,7 @@ Modules
 Localizations
 =============
 
-  Italian:                                Davide Cavalca
   French:                                 Benjamin Zores
+  German:                                 Matthias Hölzer
+  Italian:                                Davide Cavalca
 

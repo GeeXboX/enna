@@ -6,6 +6,7 @@ src/bin/parser_cdda.c
 src/modules/activity/games/games.c
 src/modules/activity/infos/infos.c
 src/modules/activity/music/music.c
+src/modules/activity/music/panel_lyrics.c
 src/modules/activity/photo/photo.c
 src/modules/activity/tv/tv.c
 src/modules/activity/video/panel_infos.c

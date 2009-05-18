@@ -27,12 +27,18 @@
  *
  */
 
-#include "enna.h"
-
 #include <libgupnp/gupnp-control-point.h>
 #include <libgupnp-av/gupnp-av.h>
 #include <string.h>
 #include <pthread.h>
+
+#include "enna.h"
+#include "enna_config.h"
+#include "module.h"
+#include "vfs.h"
+#include "volumes.h"
+#include "logs.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME  "upnp"
 
@@ -56,6 +62,7 @@ typedef struct Enna_Module_UPnP_s
     GUPnPContext *ctx;
     GUPnPControlPoint *cp;
     char *prev_id;
+    char *pprev_id;
 } Enna_Module_UPnP;
 
 typedef struct upnp_media_server_s {
@@ -81,16 +88,11 @@ upnp_media_server_free (upnp_media_server_t *srv)
     g_object_unref (srv->info);
     g_object_unref (srv->content_dir);
 
-    if (srv->type)
-        free (srv->type);
-    if (srv->location)
-        free (srv->location);
-    if (srv->udn)
-        free (srv->udn);
-    if (srv->name)
-        free (srv->name);
-    if (srv->model)
-        free (srv->model);
+    ENNA_FREE (srv->type);
+    ENNA_FREE (srv->location);
+    ENNA_FREE (srv->udn);
+    ENNA_FREE (srv->name);
+    ENNA_FREE (srv->model);
     free (srv);
 }
 
@@ -285,8 +287,7 @@ didl_process (char *didl, char *udn)
     {
         enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
                   "No 'DIDL-Lite' node found.");
-        xmlFreeDoc (doc);
-        return NULL;
+        goto err_element;
     }
 
     for (element = element->children; element; element = element->next)
@@ -304,6 +305,7 @@ didl_process (char *didl, char *udn)
         }
     }
 
+ err_element:
     xmlFreeDoc (doc);
     return list;
 }
@@ -486,18 +488,25 @@ _class_browse_up (const char *id, void *cookie)
 {
     Eina_List *l;
 
-    ENNA_FREE (mod->prev_id);
     if (!id)
     {
         /* list available UPnP media servers */
         l = upnp_list_mediaservers ();
         ENNA_FREE (mod->prev_id);
-        mod->prev_id = NULL;
+        ENNA_FREE (mod->pprev_id);
     }
     else
     {
         /* browse content from media server */
         l = browse_server_list (id, 0);
+
+        if (mod->prev_id)
+        {
+            ENNA_FREE (mod->pprev_id);
+            mod->pprev_id = strdup (mod->prev_id);
+        }
+
+        ENNA_FREE (mod->prev_id);
         mod->prev_id = strdup (id);
     }
 
@@ -508,8 +517,25 @@ static Eina_List *
 _class_browse_down (void *cookie)
 {
     if (mod->prev_id)
-        return browse_server_list (mod->prev_id, 1);
+    {
+        Eina_List *l = NULL;
 
+        /* if we're at root of a media server, display list again */
+        if (mod->pprev_id && !strcmp (mod->prev_id, mod->pprev_id))
+            goto server_list;
+
+        /* otherwise browse back the previous level */
+        l = browse_server_list (mod->prev_id, 1);
+        ENNA_FREE (mod->prev_id);
+        if (mod->pprev_id)
+            mod->prev_id = strdup (mod->pprev_id);
+
+        return l;
+    }
+
+ server_list:
+    ENNA_FREE (mod->prev_id);
+    ENNA_FREE (mod->pprev_id);
     return upnp_list_mediaservers ();
 }
 
@@ -610,5 +636,6 @@ void module_shutdown (Enna_Module *em)
     ecore_idler_del (mod->idler);
 
     ENNA_FREE (mod->prev_id);
+    ENNA_FREE (mod->pprev_id);
     pthread_mutex_destroy (&mod->mutex);
 }
