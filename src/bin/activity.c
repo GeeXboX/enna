@@ -169,7 +169,6 @@ const char *enna_activity_request_quit_all(void)
         if (act->func.class_quit_request)
         {
           tmp = act->func.class_quit_request (0);
-          printf("%s\n", tmp);
           if (tmp)
             buffer_appendf(msg, "%s<t> : <hilight>%s</hilight><br>", act->label, tmp);  
         }
