@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-05-17 18:17+0200\n"
+"POT-Creation-Date: 2009-05-19 22:30+0200\n"
 "PO-Revision-Date: 2009-05-17 18:18+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -16,77 +16,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/bin/activity.c:176
-#, c-format
-msgid "%s<hilight>%s%s:</hilight> %s"
-msgstr "%s<hilight>%s%s:</hilight> %s"
-
 #: src/bin/browser.c:498
 msgid "No media found !"
 msgstr "Nessun media trovato!"
 
-#: src/bin/enna.c:330
+#: src/bin/enna.c:301
 msgid "enna HTPC"
 msgstr "enna HTPC"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:472
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:473
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:474
 #, c-format
 msgid " Available Options:\n"
 msgstr "Opzioni disponibili:\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:475
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:476
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:477
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:478
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:508
+#: src/bin/enna.c:479
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:509
+#: src/bin/enna.c:480
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
 
-#: src/bin/mainmenu.c:527
-msgid "Yes, I want to quit."
-msgstr "Sì, voglio uscire."
+#: src/bin/exit.c:139
+msgid "<h3><c>Are you sure you want to quit enna ?</c></h3><br>"
+msgstr ""
 
-#: src/bin/mainmenu.c:538
-msgid "No, I want to stay."
-msgstr "No, non voglio uscire."
+#: src/bin/exit.c:175 src/bin/exit.c:176
+msgid "Yes, Quit Enna"
+msgstr ""
 
-#: src/bin/mainmenu.c:689
-msgid "...no activity seems busy right now."
-msgstr "...nessuna attività sembra occupata al momento."
+#: src/bin/exit.c:179
+msgid "No, Continue using enna"
+msgstr ""
 
 #: src/bin/parser_cdda.c:304
 #, c-format
@@ -177,7 +172,7 @@ msgstr "nessuna<br>"
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informazioni di sistema</c><br><br>"
 
-#: src/modules/activity/infos/infos.c:477
+#: src/modules/activity/infos/infos.c:478
 msgid "Infos"
 msgstr "Info"
 
@@ -340,7 +335,7 @@ msgstr "Ascolta podcast"
 msgid "SHOUTcast Streaming"
 msgstr "Flussi SHOUTcast"
 
-#: src/modules/browser/upnp/upnp.c:526
+#: src/modules/browser/upnp/upnp.c:552
 msgid "UPnP/DLNA Media Servers"
 msgstr "UPnP/DLNA media server"
 
@@ -527,3 +522,15 @@ msgstr "[NFS] %s su %s"
 #, c-format
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s su %s"
+
+#~ msgid "%s<hilight>%s%s:</hilight> %s"
+#~ msgstr "%s<hilight>%s%s:</hilight> %s"
+
+#~ msgid "Yes, I want to quit."
+#~ msgstr "Sì, voglio uscire."
+
+#~ msgid "No, I want to stay."
+#~ msgstr "No, non voglio uscire."
+
+#~ msgid "...no activity seems busy right now."
+#~ msgstr "...nessuna attività sembra occupata al momento."

@@ -1,6 +1,7 @@
 src/bin/activity.c
 src/bin/browser.c
 src/bin/enna.c
+src/bin/exit.c
 src/bin/mainmenu.c
 src/bin/parser_cdda.c
 src/modules/activity/games/games.c
