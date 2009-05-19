@@ -79,10 +79,17 @@ static int _idle_timer_cb(void *data)
         return ECORE_CALLBACK_RENEW;
     }
 
-    enna_log(ENNA_MSG_INFO, "timer", "enna seems to be idle, sending quit msg and waiting 20s");
-
-    evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), NULL);
-    ecore_timer_interval_set(enna->idle_timer, 20);
+    if (enna_mainmenu_exit_visible(enna->o_mainmenu))
+    {
+        enna_log(ENNA_MSG_INFO, "timer", "gracetime is over, quitting enna.");
+        ecore_main_loop_quit();
+    }
+    else
+    {
+        enna_log(ENNA_MSG_INFO, "timer", "enna seems to be idle, sending quit msg and waiting 20s");
+        evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), NULL);
+        ecore_timer_interval_set(enna->idle_timer, 20);
+    }
 
     return ECORE_CALLBACK_RENEW;
 }
