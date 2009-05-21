@@ -175,10 +175,40 @@ videoplayer_view_event (enna_key_t key)
         enna_mediaplayer_default_increase_volume ();
         break;
     case ENNA_KEY_MINUS:
-      enna_mediaplayer_default_decrease_volume ();
+        enna_mediaplayer_default_decrease_volume ();
         break;
     case ENNA_KEY_M:
         enna_mediaplayer_mute ();
+        break;
+    case ENNA_KEY_S:
+        enna_mediaplayer_subtitle_set_visibility ();
+        break;
+    case ENNA_KEY_G:
+        enna_mediaplayer_subtitle_previous ();
+        break;
+    case ENNA_KEY_Y:
+        enna_mediaplayer_subtitle_next ();
+        break;
+    case ENNA_KEY_A:
+        enna_mediaplayer_subtitle_set_alignment ();
+        break;
+    case ENNA_KEY_T:
+        enna_mediaplayer_subtitle_increase_position ();
+        break;
+    case ENNA_KEY_R:
+        enna_mediaplayer_subtitle_decrease_position ();
+        break;
+    case ENNA_KEY_J:
+        enna_mediaplayer_subtitle_increase_scale ();
+        break;
+    case ENNA_KEY_I:
+        enna_mediaplayer_subtitle_decrease_scale ();
+        break;
+    case ENNA_KEY_X:
+        enna_mediaplayer_subtitle_increase_delay ();
+        break;
+    case ENNA_KEY_Z:
+        enna_mediaplayer_subtitle_decrease_delay ();
         break;
     default:
         break;

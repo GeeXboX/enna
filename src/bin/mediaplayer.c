@@ -76,6 +76,11 @@ struct _Enna_Mediaplayer
     void *event_cb_data;
     char *uri;
     char *label;
+    int subtitle_visibility;
+    int subtitle_alignment;
+    int subtitle_position;
+    int subtitle_scale;
+    int subtitle_delay;
     player_type_t player_type;
     player_type_t default_type;
     player_type_t dvd_type;
@@ -401,10 +406,19 @@ mp_file_set (const char *uri, const char *label)
     ENNA_FREE (mp->label);
     mp->label = label ? strdup (label) : NULL;
 
+    /* Initialization of subtitles variables */
+    mp->subtitle_visibility = 1;
+    mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_BOTTOM;
+    mp->subtitle_position = 100;
+    mp->subtitle_scale = 5;
+    mp->subtitle_delay = 0;
+
     mp->player_type = player_type;
     mp->player = mp->players[player_type];
 
     player_mrl_set (mp->player, mrl);
+
+    player_subtitle_set_visibility (mp->player,  mp->subtitle_visibility);
 
     return 0;
 }
@@ -1212,4 +1226,72 @@ enna_mediaplayer_mute_get (void)
 	return 1;
     else
 	return 0;
+}
+
+void 
+enna_mediaplayer_subtitle_set_visibility (void)
+{
+    mp->subtitle_visibility = !mp->subtitle_visibility;
+    player_subtitle_set_visibility (mp->player, mp->subtitle_visibility);
+}
+
+void 
+enna_mediaplayer_subtitle_previous (void)
+{
+    player_subtitle_prev (mp->player);
+}
+
+void 
+enna_mediaplayer_subtitle_next (void)
+{
+    player_subtitle_next (mp->player);
+}
+
+void 
+enna_mediaplayer_subtitle_set_alignment (void)
+{
+    mp->subtitle_alignment = (mp->subtitle_alignment + 1) % 3; 
+    player_subtitle_set_alignment (mp->player, mp->subtitle_alignment);
+}
+
+void 
+enna_mediaplayer_subtitle_increase_position (void)
+{
+    mp->subtitle_position += 1;
+    player_subtitle_set_position (mp->player, mp->subtitle_position);
+}
+
+void 
+enna_mediaplayer_subtitle_decrease_position (void)
+{
+    mp->subtitle_position -= 1;
+    player_subtitle_set_position (mp->player, mp->subtitle_position);
+}
+
+void 
+enna_mediaplayer_subtitle_increase_scale (void)
+{
+    mp->subtitle_scale += 1;
+    player_subtitle_scale  (mp->player, mp->subtitle_scale, 1);
+}
+
+void 
+enna_mediaplayer_subtitle_decrease_scale (void)
+{
+    mp->subtitle_scale -= 1;
+    player_subtitle_scale  (mp->player, mp->subtitle_scale, 1);
+}
+
+void 
+enna_mediaplayer_subtitle_increase_delay (void)
+{
+    mp->subtitle_delay += 100;
+    player_subtitle_set_delay  (mp->player, mp->subtitle_delay);
+}
+
+void 
+enna_mediaplayer_subtitle_decrease_delay (void)
+{
+    mp->subtitle_delay -= 100;
+    player_subtitle_set_delay  (mp->player, mp->subtitle_delay);
 }

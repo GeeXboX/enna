@@ -130,4 +130,14 @@ void enna_mediaplayer_default_decrease_volume (void);
 void enna_mediaplayer_mute (void);
 int enna_mediaplayer_mute_get (void);
 char *enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist);
+void enna_mediaplayer_subtitle_set_visibility (void);
+void enna_mediaplayer_subtitle_previous (void);
+void enna_mediaplayer_subtitle_next (void);
+void enna_mediaplayer_subtitle_set_alignment (void);
+void enna_mediaplayer_subtitle_increase_position (void);
+void enna_mediaplayer_subtitle_decrease_position (void);
+void enna_mediaplayer_subtitle_increase_scale (void);
+void enna_mediaplayer_subtitle_decrease_scale (void);
+void enna_mediaplayer_subtitle_increase_delay (void);
+void enna_mediaplayer_subtitle_decrease_delay (void);
 #endif /* MEDIAPLAYER_H */
