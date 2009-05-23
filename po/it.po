@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-05-19 22:30+0200\n"
-"PO-Revision-Date: 2009-05-17 18:18+0100\n"
+"POT-Creation-Date: 2009-05-23 09:17+0200\n"
+"PO-Revision-Date: 2009-05-23 09:18+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -62,9 +62,7 @@ msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 #: src/bin/enna.c:479
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry): specifica la geometria della finestra. "
-"(geometry=1280x720)\n"
+msgstr "  -g, (--geometry): specifica la geometria della finestra. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:480
 #, c-format
@@ -73,15 +71,16 @@ msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
 
 #: src/bin/exit.c:139
 msgid "<h3><c>Are you sure you want to quit enna ?</c></h3><br>"
-msgstr ""
+msgstr "<h3><c>Sei sicuro di voler uscire da Enna?</c></h3><br>"
 
-#: src/bin/exit.c:175 src/bin/exit.c:176
+#: src/bin/exit.c:175
+#: src/bin/exit.c:176
 msgid "Yes, Quit Enna"
-msgstr ""
+msgstr "Sì, esci da Enna"
 
 #: src/bin/exit.c:179
 msgid "No, Continue using enna"
-msgstr ""
+msgstr "No, continua ad usare Enna"
 
 #: src/bin/parser_cdda.c:304
 #, c-format
@@ -299,7 +298,8 @@ msgstr "Artisti"
 msgid "Albums"
 msgstr "Album"
 
-#: src/modules/browser/lms/lms.c:676 src/modules/browser/lms/lms.c:743
+#: src/modules/browser/lms/lms.c:676
+#: src/modules/browser/lms/lms.c:743
 #: src/modules/browser/valhalla/valhalla.c:316
 msgid "Genres"
 msgstr "Generi"
@@ -523,14 +523,3 @@ msgstr "[NFS] %s su %s"
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s su %s"
 
-#~ msgid "%s<hilight>%s%s:</hilight> %s"
-#~ msgstr "%s<hilight>%s%s:</hilight> %s"
-
-#~ msgid "Yes, I want to quit."
-#~ msgstr "Sì, voglio uscire."
-
-#~ msgid "No, I want to stay."
-#~ msgstr "No, non voglio uscire."
-
-#~ msgid "...no activity seems busy right now."
-#~ msgstr "...nessuna attività sembra occupata al momento."
