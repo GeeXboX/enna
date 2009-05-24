@@ -59,6 +59,15 @@
 
 #define MAX_PLAYERS 4
 
+/* a/v controls */
+#define SEEK_STEP_DEFAULT         2.0 /* percent */
+#define VOLUME_STEP_DEFAULT       5 /* percent */
+#define SUB_VISIBILITY_DEFAULT    1
+#define SUB_ALIGNMENT_DEFAULT     PLAYER_SUB_ALIGNMENT_BOTTOM
+#define SUB_POSITION_DEFAULT      100
+#define SUB_SCALE_DEFAULT         5
+#define SUB_DELAY_DEFAULT         0
+
 typedef struct list_item_s
 {
     const char *uri;
@@ -407,11 +416,11 @@ mp_file_set (const char *uri, const char *label)
     mp->label = label ? strdup (label) : NULL;
 
     /* Initialization of subtitles variables */
-    mp->subtitle_visibility = 1;
-    mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_BOTTOM;
-    mp->subtitle_position = 100;
-    mp->subtitle_scale = 5;
-    mp->subtitle_delay = 0;
+    mp->subtitle_visibility = SUB_VISIBILITY_DEFAULT;
+    mp->subtitle_alignment = SUB_ALIGNMENT_DEFAULT;
+    mp->subtitle_position = SUB_POSITION_DEFAULT;
+    mp->subtitle_scale = SUB_SCALE_DEFAULT;
+    mp->subtitle_delay = SUB_DELAY_DEFAULT;
 
     mp->player_type = player_type;
     mp->player = mp->players[player_type];
@@ -1075,14 +1084,12 @@ enna_mediaplayer_seek (double percent)
     return 0;
 }
 
-#define SEEK_STEP 2.0 /* percent */
-
 void
 enna_mediaplayer_default_seek_backward (void)
 {
     int pos;
     pos = enna_mediaplayer_position_percent_get ();
-    enna_mediaplayer_seek (((double) pos - SEEK_STEP) / 100.0);
+    enna_mediaplayer_seek (((double) pos - SEEK_STEP_DEFAULT) / 100.0);
 }
 
 void
@@ -1090,7 +1097,7 @@ enna_mediaplayer_default_seek_forward (void)
 {
     int pos;
     pos = enna_mediaplayer_position_percent_get ();
-    enna_mediaplayer_seek (((double) pos + SEEK_STEP) / 100.0);
+    enna_mediaplayer_seek (((double) pos + SEEK_STEP_DEFAULT) / 100.0);
 }
 
 void
@@ -1191,20 +1198,18 @@ enna_mediaplayer_volume_set (int value)
     player_audio_volume_set (mp->player, value);
 }
 
-#define VOLUME_STEP 5 /* percent */
-
 void
 enna_mediaplayer_default_increase_volume (void)
 {
     int vol = enna_mediaplayer_volume_get ();
-    player_audio_volume_set (mp->player, vol + VOLUME_STEP);
+    player_audio_volume_set (mp->player, vol + VOLUME_STEP_DEFAULT);
 }
 
 void
 enna_mediaplayer_default_decrease_volume (void)
 {
     int vol = enna_mediaplayer_volume_get ();
-    player_audio_volume_set (mp->player, vol - VOLUME_STEP);
+    player_audio_volume_set (mp->player, vol - VOLUME_STEP_DEFAULT);
 }
 
 void
