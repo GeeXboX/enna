@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-05-19 22:30+0200\n"
+"POT-Creation-Date: 2009-05-24 15:13+0200\n"
 "PO-Revision-Date: 2009-05-10 17:11+0100\n"
 "Last-Translator: Benjamin Zores <ben@geexbox.org>\n"
 "Language-Team: French\n"
@@ -259,8 +259,8 @@ msgstr "<hl>Audio: </hl> %s, %d ch., %i kb/s, %d Hz<br>"
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Taille: </hl> %.2f Mo<br>"
 
-#: src/modules/activity/video/video.c:682
-#: src/modules/activity/video/video.c:807
+#: src/modules/activity/video/video.c:712
+#: src/modules/activity/video/video.c:837
 msgid "Video"
 msgstr "Vidéo"
 
