@@ -160,16 +160,16 @@ videoplayer_view_event (enna_key_t key)
         enna_mediaplayer_play (mod->enna_playlist);
         break;
     case ENNA_KEY_RIGHT:
-        _seek_video (+0.01);
+        _seek_video (+1);
         break;
     case ENNA_KEY_LEFT:
-        _seek_video (-0.01);
+        _seek_video (-1);
         break;
     case ENNA_KEY_UP:
-        _seek_video (+0.05);
+        _seek_video (+5);
         break;
     case ENNA_KEY_DOWN:
-        _seek_video (-0.05);
+        _seek_video (-5);
         break;
     case ENNA_KEY_PLUS:
         enna_mediaplayer_default_increase_volume ();
@@ -207,7 +207,7 @@ _seek_video(double value)
     double seek = 0.0;
 
     pos = enna_mediaplayer_position_percent_get();
-    seek = (double) pos / 100.0 + value;
+    seek = ((double) pos + value) / 100.0;
     enna_mediaplayer_seek(seek);
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Seek value : %f", seek);
