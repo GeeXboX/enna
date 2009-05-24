@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-05-24 15:13+0200\n"
+"POT-Creation-Date: 2009-05-25 00:28+0200\n"
 "PO-Revision-Date: 2009-05-10 17:11+0100\n"
 "Last-Translator: Benjamin Zores <ben@geexbox.org>\n"
 "Language-Team: French\n"
@@ -71,15 +71,15 @@ msgstr ""
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Affichage le numéro de version d'Enna.\n"
 
-#: src/bin/exit.c:139
-msgid "<h3><c>Are you sure you want to quit enna ?</c></h3><br>"
+#: src/bin/exit.c:135
+msgid "Are you sure you want to quit enna ?"
 msgstr ""
 
-#: src/bin/exit.c:175 src/bin/exit.c:176
+#: src/bin/exit.c:183 src/bin/exit.c:184
 msgid "Yes, Quit Enna"
 msgstr ""
 
-#: src/bin/exit.c:179
+#: src/bin/exit.c:186
 msgid "No, Continue using enna"
 msgstr ""
 
@@ -259,8 +259,8 @@ msgstr "<hl>Audio: </hl> %s, %d ch., %i kb/s, %d Hz<br>"
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Taille: </hl> %.2f Mo<br>"
 
-#: src/modules/activity/video/video.c:712
-#: src/modules/activity/video/video.c:837
+#: src/modules/activity/video/video.c:773
+#: src/modules/activity/video/video.c:898
 msgid "Video"
 msgstr "Vidéo"
 

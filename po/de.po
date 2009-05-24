@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-05-24 15:13+0200\n"
+"POT-Creation-Date: 2009-05-25 00:28+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Matthias Hölzer <n-billy@geexbox.org>\n"
 "Language-Team: German\n"
@@ -64,24 +64,23 @@ msgstr "  -t, (--theme):   Angegebenen theme Namen benutzen.\n"
 #: src/bin/enna.c:479
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry):Angegebene Fenster Geometrie verwenden. "
-"(geometrie=1280x720)\n"
+msgstr "  -g, (--geometry):Angegebene Fenster Geometrie verwenden. (geometrie=1280x720)\n"
 
 #: src/bin/enna.c:480
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna Version anzeiten version.\n"
 
-#: src/bin/exit.c:139
-msgid "<h3><c>Are you sure you want to quit enna ?</c></h3><br>"
-msgstr "<h3><c>Soll Enna wirklich beendet werden?</c></h3><br>"
+#: src/bin/exit.c:135
+msgid "Are you sure you want to quit enna ?"
+msgstr "Soll Enna wirklich beendet werden?"
 
-#: src/bin/exit.c:175 src/bin/exit.c:176
+#: src/bin/exit.c:183
+#: src/bin/exit.c:184
 msgid "Yes, Quit Enna"
 msgstr "Ja, Enna beenden"
 
-#: src/bin/exit.c:179
+#: src/bin/exit.c:186
 msgid "No, Continue using enna"
 msgstr "Nein, Enna weiter verwenden"
 
@@ -260,8 +259,8 @@ msgstr ""
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Größe: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video.c:712
-#: src/modules/activity/video/video.c:837
+#: src/modules/activity/video/video.c:773
+#: src/modules/activity/video/video.c:898
 msgid "Video"
 msgstr ""
 
@@ -301,7 +300,8 @@ msgstr "Künstler"
 msgid "Albums"
 msgstr "Alben"
 
-#: src/modules/browser/lms/lms.c:676 src/modules/browser/lms/lms.c:743
+#: src/modules/browser/lms/lms.c:676
+#: src/modules/browser/lms/lms.c:743
 #: src/modules/browser/valhalla/valhalla.c:316
 msgid "Genres"
 msgstr ""
@@ -527,9 +527,8 @@ msgstr ""
 
 #~ msgid "Yes, I want to quit."
 #~ msgstr "Ja, ich möchte beenden."
-
 #~ msgid "No, I want to stay."
 #~ msgstr "Nein, ich möchte bleiben."
-
 #~ msgid "...no activity seems busy right now."
 #~ msgstr "...keine Aktivität scheint gerade beschäftigt."
+
