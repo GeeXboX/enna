@@ -89,7 +89,7 @@ static Evas_Object *_list_icon_get(const void *data, Evas_Object *obj, const cha
 {
     const List_Item_Data *it = data;
 
-    if (!it->icon) return NULL;
+    if (!it || !it->icon) return NULL;
 
     if (!strcmp(part, "elm.swallow.icon"))
     {
