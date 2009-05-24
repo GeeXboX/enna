@@ -68,6 +68,14 @@ STOCK_ICON("dev_usb_stick.png",     "icon/dev/usbstick")
 
 STOCK_ICON("folder_favorites.png",  "icon/favorite")
 
+/* Generic Controls */
+STOCK_ICON("ctrl_back.png",         "ctrl/back")
+STOCK_ICON("ctrl_hibernate.png",    "ctrl/hibernate")
+STOCK_ICON("ctrl_ok.png",           "ctrl/ok")
+STOCK_ICON("ctrl_restart.png",      "ctrl/restart")
+STOCK_ICON("ctrl_shutdown.png",     "ctrl/shutdown")
+STOCK_ICON("ctrl_warning.png",      "ctrl/warning")
+
 /* File type icons */
 STOCK_ICON("icon_music.png", "icon/file/music")
 STOCK_ICON("icon_video.png", "icon/file/video")
