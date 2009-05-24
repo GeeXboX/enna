@@ -171,9 +171,10 @@ static void _smart_add(Evas_Object * obj)
     it1 = calloc(1, sizeof(List_Item_Data));
     it1->label = eina_stringshare_add(_("Yes, Quit Enna"));
     enna_list_append(sd->list, sd->item_class, it1, (_("Yes, Quit Enna")), _yes_cb, NULL);
-    
+    it1->icon = strdup ("ctrl/shutdown");
     it2 = calloc(1, sizeof(List_Item_Data));
     it2->label = eina_stringshare_add(_("No, Continue using enna"));
+    it2->icon = strdup ("ctrl/hibernate");
     enna_list_append(sd->list, sd->item_class, it2, _(("No, Continue using enna")), _no_cb, NULL);
     
     evas_object_size_hint_weight_set(sd->list, 1.0, 1.0);
