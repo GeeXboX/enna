@@ -383,6 +383,43 @@ images {
              rel2.to: "infos.panel.clip";
           }    
        }
+
+       part {
+          name: "resume.clip";
+          type: RECT;
+          description {
+             state: "default" 0.0;
+             visible: 0;
+             color: 0 0 0 0;
+          }
+          description {
+             state: "show" 0.0;
+             inherit: "default" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+          }
+       }
+       part {
+          name: "resume.bg";
+          type: RECT;
+          clip_to: "resume.clip";
+          description {
+             state: "default" 0.0;
+             color: 0 0 0 200;
+          }
+       }
+       part {
+         name: "enna.resume.swallow";
+         type: SWALLOW;
+         clip_to: "resume.clip";
+         description {
+             state: "default" 0.0;
+             rel1.relative: 0.2 0.2;
+             rel2.relative: 0.8 0.8;
+         }
+       }
+
+
     }
     programs {
        program {
@@ -549,6 +586,23 @@ images {
            target: "infos.flags.audio.swallow";
            target: "infos.flags.studio.swallow";
            target: "infos.flags.media.swallow";
+       }
+
+       program {
+           name: "resume,show";
+           signal: "resume,show";
+           source: "enna";
+           action: STATE_SET "show" 0.0;
+           transition: LINEAR 0.3;
+           target: "resume.clip";
+       }
+       program {
+           name: "resume,hide";
+           signal: "resume,hide";
+           source: "enna";
+           action: STATE_SET "default" 0.0;
+           transition: LINEAR 0.3;
+           target: "resume.clip";
        }
 
     }

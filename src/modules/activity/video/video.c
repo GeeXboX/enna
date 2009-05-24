@@ -58,6 +58,8 @@
 #include "event_key.h"
 #include "backdrop.h"
 #include "panel_infos.h"
+#include "video.h"
+#include "resume.h"
 #include "volumes.h"
 #include "buffer.h"
 #include "metadata.h"
@@ -107,6 +109,7 @@ struct _Enna_Module_Video
 #endif
     Evas_Object *o_backdrop;
     Evas_Object *o_panel_infos;
+    Evas_Object *o_resume;
     Evas_Object *o_flag_video;
     Evas_Object *o_flag_audio;
     Evas_Object *o_flag_studio;
@@ -121,6 +124,7 @@ struct _Enna_Module_Video
     Elm_Genlist_Item_Class *item_class;
     char *o_current_uri;
     int infos_displayed;
+    int resume_displayed;
 };
 
 static Enna_Module_Video *mod;
@@ -244,11 +248,27 @@ _seek_video(double value)
 }
 
 static void
+popup_resume_display (int show)
+{
+    if (show)
+    {
+        edje_object_signal_emit (mod->o_edje, "resume,show", "enna");
+        mod->resume_displayed = 1;
+    }
+    else
+    {
+        edje_object_signal_emit (mod->o_edje, "resume,hide", "enna");
+        mod->resume_displayed = 0;
+    }
+}
+
+static void
 _return_to_video_info_gui()
 {
     Enna_Metadata *m;
     double pos;
 
+    popup_resume_display (0);
     m = enna_mediaplayer_metadata_get(mod->enna_playlist);
     pos = enna_mediaplayer_position_get();
     enna_metadata_set_position (m, pos);
@@ -439,6 +459,16 @@ panel_infos_display (int show)
 static void
 browser_view_event (enna_key_t key, void *event_info)
 {
+    /* handle resume popup, if any */
+    if (mod->resume_displayed)
+    {
+        if (key == ENNA_KEY_CANCEL)
+            popup_resume_display (0);
+        else
+            video_resume_event_feed (mod->o_resume, event_info);
+        return;
+    }
+
     if (key == ENNA_KEY_I)
     {
         panel_infos_display (!mod->infos_displayed);
@@ -489,6 +519,9 @@ browser_cb_root (void *data, Evas_Object *obj, void *event_info)
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     mod->o_panel_infos = NULL;
 
+    ENNA_OBJECT_DEL(mod->o_resume);
+    mod->o_resume = NULL;
+
     _create_menu ();
 #ifdef LOCATION
     enna_location_remove_nth (mod->o_location,
@@ -509,6 +542,20 @@ browser_cb_enter (void *data, Evas_Object *obj, void *event_info)
     enna_location_remove_nth (mod->o_location, n);
 }
 #endif
+
+void
+movie_start_playback (int resume)
+{
+    mod->state = VIDEOPLAYER_VIEW;
+    enna_mediaplayer_play (mod->enna_playlist);
+    if (resume)
+    {
+        Enna_Metadata *m;
+        m = enna_mediaplayer_metadata_get (mod->enna_playlist);
+        enna_mediaplayer_position_set (m->position);
+    }
+    popup_resume_display (0);
+}
 
 static void
 browser_cb_select (void *data, Evas_Object *obj, void *event_info)
@@ -531,6 +578,8 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
     }
     else
     {
+        Enna_Metadata *m;
+
         enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                   "File Selected %s", ev->file->uri);
         enna_mediaplayer_playlist_clear (mod->enna_playlist);
@@ -559,9 +608,15 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
             }
         }
 
-        mod->state = VIDEOPLAYER_VIEW;
-	enna_mediaplayer_play (mod->enna_playlist);
-//	enna_mediaplayer_position_set (m->position);
+        /* fetch new stream's metadata */
+        m = enna_mediaplayer_metadata_get (mod->enna_playlist);
+        if (m->position)
+        {
+            /* stream has already been played once, show resume popup */
+            popup_resume_display (1);
+        }
+        else
+            movie_start_playback (0);
     }
     free (ev);
 }
@@ -636,7 +691,12 @@ browse (void *data)
     mod->o_panel_infos = enna_panel_infos_add(mod->em->evas);
     edje_object_part_swallow (mod->o_edje,
                               "infos.panel.swallow", mod->o_panel_infos);
-    
+
+    ENNA_OBJECT_DEL(mod->o_resume);
+    mod->o_resume = video_resume_add (mod->em->evas);
+    edje_object_part_swallow (mod->o_edje,
+                              "enna.resume.swallow", mod->o_resume);
+
 #ifdef LOCATION
     enna_location_append (mod->o_location,
                           gettext(vfs->label), NULL, NULL, NULL, NULL);
@@ -687,6 +747,7 @@ _create_menu (void)
     edje_object_part_text_set (mod->o_edje, "enna.text.label", "");
     edje_object_part_text_set (mod->o_edje, "enna.text.category", "");
     panel_infos_display (0);
+    popup_resume_display (0);
     enna_backdrop_set (mod->o_backdrop, NULL, 0);
 }
 
@@ -866,6 +927,7 @@ em_init(Enna_Module *em)
     mod->item_class->func.del       = _genlist_del;
 
     mod->infos_displayed = 0;
+    mod->resume_displayed = 0;
     mod->o_backdrop = enna_backdrop_add (mod->em->evas);
     mod->browser_refresh_handler =
 	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, browser_cb_refresh, NULL);
@@ -894,6 +956,7 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_backdrop);
     ENNA_OBJECT_DEL(mod->o_panel_infos);
+    ENNA_OBJECT_DEL(mod->o_resume);
     ENNA_OBJECT_DEL(mod->o_flag_video);
     ENNA_OBJECT_DEL(mod->o_flag_audio);
     ENNA_OBJECT_DEL(mod->o_flag_studio);
