@@ -82,9 +82,7 @@ static char *_list_label_get(const void *data, Evas_Object *obj, const char *par
 {
     const List_Item_Data *it = data;
     
-    if (!it->label) return NULL;
-
-    return strdup(it->label);
+    return (!it->label) ? strdup (it->label) : NULL;
 }
 
 static Evas_Object *_list_icon_get(const void *data, Evas_Object *obj, const char *part)
