@@ -88,24 +88,21 @@ static char *_list_label_get(const void *data, Evas_Object *obj, const char *par
 static Evas_Object *_list_icon_get(const void *data, Evas_Object *obj, const char *part)
 {
     const List_Item_Data *it = data;
+    Evas_Object *ic;
 
     if (!it || !it->icon) return NULL;
 
-    if (!strcmp(part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
+    if (strcmp(part, "elm.swallow.icon"))
+        return NULL;
 
-        ic = elm_icon_add(obj);
-	    if (it->icon && it->icon[0] == '/')
-	        elm_icon_file_set(ic, it->icon, NULL);
-	    else
-	        elm_icon_file_set(ic, enna_config_theme_get(), it->icon);
-            evas_object_size_hint_min_set(ic, 64, 64);
-            evas_object_show(ic);
-            return ic;
-    }
-
-    return NULL;
+    ic = elm_icon_add(obj);
+    if (it->icon && it->icon[0] == '/')
+        elm_icon_file_set(ic, it->icon, NULL);
+    else
+        elm_icon_file_set(ic, enna_config_theme_get(), it->icon);
+    evas_object_size_hint_min_set(ic, 64, 64);
+    evas_object_show(ic);
+    return ic;
 }
 
 static Evas_Bool _list_state_get(const void *data, Evas_Object *obj, const char *part)
