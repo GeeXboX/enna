@@ -142,6 +142,18 @@ static void _update_text(Smart_Data *sd)
     buffer_free(label);
 }
 
+static List_Item_Data *
+_create_list_item (char *label, char *icon)
+{
+    List_Item_Data *it;
+
+    it = calloc (1, sizeof (List_Item_Data));
+    it->label = eina_stringshare_add (label);
+    it->icon = strdup (icon);
+
+    return it;
+}
+
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
@@ -167,14 +179,11 @@ static void _smart_add(Evas_Object * obj)
     sd->item_class->func.icon_get  = _list_icon_get;
     sd->item_class->func.state_get = _list_state_get;
     sd->item_class->func.del       = _list_del;
-      
-    it1 = calloc(1, sizeof(List_Item_Data));
-    it1->label = eina_stringshare_add(_("Yes, Quit Enna"));
+
+    it1 = _create_list_item (_("Yes, Quit Enna"), "ctrl/shutdown");
     enna_list_append(sd->list, sd->item_class, it1, (_("Yes, Quit Enna")), _yes_cb, NULL);
-    it1->icon = strdup ("ctrl/shutdown");
-    it2 = calloc(1, sizeof(List_Item_Data));
-    it2->label = eina_stringshare_add(_("No, Continue using enna"));
-    it2->icon = strdup ("ctrl/hibernate");
+
+    it2 = _create_list_item (_("No, Continue using enna"), "ctrl/hibernate");
     enna_list_append(sd->list, sd->item_class, it2, _(("No, Continue using enna")), _no_cb, NULL);
     
     evas_object_size_hint_weight_set(sd->list, 1.0, 1.0);
