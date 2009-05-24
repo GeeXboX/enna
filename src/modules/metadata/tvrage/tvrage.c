@@ -32,7 +32,6 @@
 #include "enna.h"
 #include "module.h"
 #include "metadata.h"
-#include "metadata.c"
 #include "xml_utils.h"
 #include "url_utils.h"
 #include "logs.h"
