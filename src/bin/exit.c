@@ -131,7 +131,9 @@ static void _update_text(Smart_Data *sd)
     const char *tmp;
     
     label = buffer_new();
-    buffer_append(label, _("<h3><c>Are you sure you want to quit enna ?</c></h3><br>"));
+    buffer_append(label, "<h3><c>");
+    buffer_append(label, _("Are you sure you want to quit enna ?"));
+    buffer_append(label, "</c></h3><br>");
     tmp =  enna_activity_request_quit_all();
 
     if (tmp) buffer_appendf(label, "<h2>%s<h2>", tmp);
