@@ -27,6 +27,7 @@
  *
  */
 
+#define _GNU_SOURCE
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -80,6 +81,13 @@
 #define DISTRIB_RELEASE_LEN strlen (DISTRIB_RELEASE)
 
 #define ENNA_MODULE_NAME "infos"
+
+#define STR_CPU "processor"
+#define STR_MODEL "model name"
+#define STR_MHZ "cpu MHz"
+
+#define STR_MEM_TOTAL "MemTotal:"
+#define STR_MEM_ACTIVE "Active:"
 
 typedef struct _Enna_Module_Infos {
     Evas *e;
@@ -195,6 +203,130 @@ get_uname (buffer_t *b)
         buffer_appendf (b, "%s %s for %s",
                         name.sysname, name.release, name.machine);
     buffer_append (b, "<br>");
+}
+
+static void
+get_cpuinfos (buffer_t *b)
+{
+  FILE *f;
+  char buf[256] = { 0 };
+
+  f = fopen ("/proc/cpuinfo", "r");
+  if (!f)
+    return;
+
+  buffer_append (b, _("<hilight>Available CPUs: </hilight>"));
+  buffer_append (b, "<br>");
+  while (fgets (buf, sizeof (buf), f))
+  {
+    char *x;
+    buf[strlen (buf) - 1] = '\0';
+    if (!strncmp (buf, STR_CPU, strlen (STR_CPU)))
+    {
+      x = strchr (buf, ':');
+      buffer_appendf (b, " * CPU #%s: ", x + 2);
+    }
+    else if (!strncmp (buf, STR_MODEL, strlen (STR_MODEL)))
+    {
+      char *y;
+      x = strchr (buf, ':');
+      y = x + 2;
+      while (*y)
+      {
+	if (*y != ' ')
+	  buffer_appendf (b, "%c", *y);
+	else
+	{
+	  if (*(y + 1) != ' ')
+	    buffer_appendf (b, " ");
+	}
+	(void) *y++;
+      }
+    }
+    else if (!strncmp (buf, STR_MHZ, strlen (STR_MHZ)))
+    {
+      x = strchr (buf, ':');
+      buffer_appendf (b, _(", running at %d MHz"), (int) atof (x + 2));
+      buffer_append (b, "<br>");
+    }
+  }
+
+  fclose (f);
+}
+
+static void
+get_loadavg (buffer_t *b)
+{
+  FILE *f;
+  char buf[256] = { 0 };
+  char *ld, *x;
+  float load;
+  char *prev_locale;
+
+  f = fopen ("/proc/loadavg", "r");
+  if (!f)
+    return;
+
+  x = fgets (buf, sizeof (buf), f);
+  x = strchr (buf, ' ');
+  if (!x)
+    goto err_loadavg;
+
+  ld = strndup (buf, sizeof (x));
+  prev_locale = setlocale (LC_NUMERIC, NULL);
+  setlocale (LC_NUMERIC, "C");
+  load = strtod (ld, NULL) * 100;
+  setlocale (LC_NUMERIC, prev_locale);
+
+  buffer_append  (b, _("<hilight>CPU Load: </hilight>"));
+  buffer_appendf (b, "%d%%<br>", (int) load);
+
+ err_loadavg:
+  if (ld)
+    free (ld);
+  if (f)
+    fclose (f);
+}
+
+static void
+get_ram_usage (buffer_t *b)
+{
+  FILE *f;
+  char buf[256] = { 0 };
+  int mem_total = 0, mem_active = 0;
+
+  f = fopen ("/proc/meminfo", "r");
+  if (!f)
+    return;
+
+  while (fgets (buf, sizeof (buf), f))
+  {
+    if (!strncmp (buf, STR_MEM_TOTAL, strlen (STR_MEM_TOTAL)))
+    {
+      char *x;
+      /* remove the trailing ' kB' from buffer */
+      buf[strlen (buf) - 4] = '\0';
+      x = strrchr (buf, ' ');
+      if (x)
+	mem_total = atoi (x + 1) / 1024;
+    }
+    else if (!strncmp (buf, STR_MEM_ACTIVE, strlen (STR_MEM_ACTIVE)))
+    {
+      char *x;
+      /* remove the trailing ' kB' from buffer */
+      buf[strlen (buf) - 4] = '\0';
+      x = strrchr (buf, ' ');
+      if (x)
+	mem_active = atoi (x + 1) / 1024;
+    }
+  }
+
+  buffer_append (b, _("<hilight>Memory: </hilight>"));
+  buffer_appendf (b, _("%d MB used on %d MB total (%d%%)"),
+		  mem_active, mem_total,
+		  (int) (mem_active * 100 / mem_total));
+  buffer_append (b, "<br>");
+  fclose (f);
 }
 
 #ifdef BUILD_LIBXRANDR
@@ -354,6 +486,9 @@ set_system_information (buffer_t *b)
     buffer_append (b, _("<c>System Information</c><br><br>"));
     get_distribution (b);
     get_uname (b);
+    get_cpuinfos (b);
+    get_loadavg (b);
+    get_ram_usage (b);
 #ifdef BUILD_LIBSVDRP
     get_vdr (b);
 #endif
