@@ -184,6 +184,18 @@ videoplayer_view_event (enna_key_t key)
     case ENNA_KEY_M:
         enna_mediaplayer_mute ();
         break;
+    case ENNA_KEY_K:
+        enna_mediaplayer_audio_previous ();
+        break;
+    case ENNA_KEY_L:
+        enna_mediaplayer_audio_next ();
+        break;
+    case ENNA_KEY_P:
+        enna_mediaplayer_audio_increase_delay ();
+        break;
+    case ENNA_KEY_O:
+        enna_mediaplayer_audio_decrease_delay ();
+        break;
     case ENNA_KEY_S:
         enna_mediaplayer_subtitle_set_visibility ();
         break;

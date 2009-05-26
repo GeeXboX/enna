@@ -62,6 +62,7 @@
 /* a/v controls */
 #define SEEK_STEP_DEFAULT         2.0 /* percent */
 #define VOLUME_STEP_DEFAULT       5 /* percent */
+#define AUDIO_DELAY_DEFAULT       0
 #define SUB_VISIBILITY_DEFAULT    1
 #define SUB_ALIGNMENT_DEFAULT     PLAYER_SUB_ALIGNMENT_BOTTOM
 #define SUB_POSITION_DEFAULT      100
@@ -85,6 +86,7 @@ struct _Enna_Mediaplayer
     void *event_cb_data;
     char *uri;
     char *label;
+    int audio_delay;
     int subtitle_visibility;
     int subtitle_alignment;
     int subtitle_position;
@@ -414,6 +416,8 @@ mp_file_set (const char *uri, const char *label)
 
     ENNA_FREE (mp->label);
     mp->label = label ? strdup (label) : NULL;
+
+    mp->audio_delay = AUDIO_DELAY_DEFAULT;
 
     /* Initialization of subtitles variables */
     mp->subtitle_visibility = SUB_VISIBILITY_DEFAULT;
@@ -1231,6 +1235,32 @@ enna_mediaplayer_mute_get (void)
 	return 1;
     else
 	return 0;
+}
+
+void 
+enna_mediaplayer_audio_previous (void)
+{
+    player_audio_prev (mp->player);
+}
+
+void 
+enna_mediaplayer_audio_next (void)
+{
+    player_audio_next (mp->player);
+}
+
+void 
+enna_mediaplayer_audio_increase_delay (void)
+{
+    mp->audio_delay += 100;
+    player_audio_set_delay  (mp->player, mp->audio_delay, 0);
+}
+
+void 
+enna_mediaplayer_audio_decrease_delay (void)
+{
+    mp->audio_delay -= 100;
+    player_audio_set_delay  (mp->player, mp->audio_delay, 0);
 }
 
 void 
