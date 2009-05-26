@@ -226,6 +226,9 @@ videoplayer_view_event (enna_key_t key)
     case ENNA_KEY_Z:
         enna_mediaplayer_subtitle_decrease_delay ();
         break;
+    case ENNA_KEY_W:
+        enna_mediaplayer_set_framedrop ();
+        break;
     default:
         break;
     }

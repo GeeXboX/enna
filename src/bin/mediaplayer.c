@@ -68,6 +68,7 @@
 #define SUB_POSITION_DEFAULT      100
 #define SUB_SCALE_DEFAULT         5
 #define SUB_DELAY_DEFAULT         0
+#define FRAMEDROP_DEFAULT         PLAYER_FRAMEDROP_DISABLE
 
 typedef struct list_item_s
 {
@@ -92,6 +93,7 @@ struct _Enna_Mediaplayer
     int subtitle_position;
     int subtitle_scale;
     int subtitle_delay;
+    int framedrop;
     player_type_t player_type;
     player_type_t default_type;
     player_type_t dvd_type;
@@ -425,6 +427,8 @@ mp_file_set (const char *uri, const char *label)
     mp->subtitle_position = SUB_POSITION_DEFAULT;
     mp->subtitle_scale = SUB_SCALE_DEFAULT;
     mp->subtitle_delay = SUB_DELAY_DEFAULT;
+
+    mp->framedrop = FRAMEDROP_DEFAULT;
 
     mp->player_type = player_type;
     mp->player = mp->players[player_type];
@@ -1329,4 +1333,11 @@ enna_mediaplayer_subtitle_decrease_delay (void)
 {
     mp->subtitle_delay -= 100;
     player_subtitle_set_delay  (mp->player, mp->subtitle_delay);
+}
+
+void 
+enna_mediaplayer_set_framedrop (void)
+{
+    mp->framedrop = (mp->framedrop + 1) % 3; 
+    player_set_framedrop (mp->player, mp->framedrop);
 }

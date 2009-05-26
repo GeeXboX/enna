@@ -144,4 +144,5 @@ void enna_mediaplayer_subtitle_increase_scale (void);
 void enna_mediaplayer_subtitle_decrease_scale (void);
 void enna_mediaplayer_subtitle_increase_delay (void);
 void enna_mediaplayer_subtitle_decrease_delay (void);
+void enna_mediaplayer_set_framedrop (void);
 #endif /* MEDIAPLAYER_H */
