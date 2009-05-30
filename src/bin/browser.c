@@ -66,6 +66,7 @@ struct _Browser_Item_Class_Data
 {
     const char *icon;
     const char *label;
+    Evas_Object *ic;
 };
 
 struct _Smart_Data
@@ -136,7 +137,7 @@ static char *_view_list_label_get(const void *data, Evas_Object *obj, const char
 
 static Evas_Object *_view_list_icon_get(const void *data, Evas_Object *obj, const char *part)
 {
-    const Browser_Item_Class_Data *item = data;
+    Browser_Item_Class_Data *item = (Browser_Item_Class_Data *) data;
 
     if (!item) return NULL;
 
@@ -151,6 +152,7 @@ static Evas_Object *_view_list_icon_get(const void *data, Evas_Object *obj, cons
 	    elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
         evas_object_size_hint_min_set(ic, 64, 64);
         evas_object_show(ic);
+	item->ic = ic;
         return ic;
     }
 
@@ -164,6 +166,11 @@ static Evas_Bool _view_list_state_get(const void *data, Evas_Object *obj, const 
 
 static void _view_list_del(const void *data, Evas_Object *obj)
 {
+    const Browser_Item_Class_Data *item = data;
+
+    if (!item) return;
+
+    ENNA_OBJECT_DEL(item->ic);
 }
 
 static Evas_Object *
