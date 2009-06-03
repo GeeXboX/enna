@@ -21,7 +21,11 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = volume_hal.la
 
 volume_hal_la_SOURCES= \
-hal.c hal_storage.c hal_volume.c
+hal.c \
+hal_storage.c \
+hal_storage.h \
+hal_volume.c \
+hal_volume.h
 
 volume_hal_la_LIBADD = @ENNA_LIBS@ @EHAL_LIBS@
 volume_hal_la_LDFLAGS = -module -avoid-version

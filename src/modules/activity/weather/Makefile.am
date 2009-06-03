@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES = Makefile.in
 
-MODULE = video
+MODULE = weather
 
 # data files for the module
 filesdir = $(libdir)/enna/modules/

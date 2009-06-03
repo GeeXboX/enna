@@ -21,7 +21,9 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = metadata_libplayer.la
 
 metadata_libplayer_la_SOURCES= \
-libplayer.c codecs.c
+libplayer.c \
+codecs.c \
+codecs.h
 
 metadata_libplayer_la_LIBADD = @ENNA_LIBS@ @LIBPLAYER_LIBS@
 metadata_libplayer_la_LDFLAGS = -module -avoid-version

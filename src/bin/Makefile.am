@@ -81,6 +81,8 @@ slideshow.h\
 mediacontrol.h\
 reflection.h\
 events_stack.h\
+view_cover.h\
 popup.h\
-exit.h
+exit.h\
+gettext.h
 
