@@ -205,7 +205,7 @@ static Eina_List * parse_netstream(const char *path, netstreams_priv_t *data)
     if (dl)
         unlink(file);
 
-    data->uri = evas_stringshare_add(path);
+    data->uri = eina_stringshare_add(path);
     data->prev_uri = data->uri;
 
     return streams;
@@ -253,14 +253,14 @@ static Enna_Vfs_File * vfs_get_music(void *cookie)
 {
     return enna_vfs_create_directory(mod->music->uri,
             ecore_file_file_get(mod->music->uri),
-            evas_stringshare_add("icon/music"), NULL);
+            eina_stringshare_add("icon/music"), NULL);
 }
 
 static Enna_Vfs_File * vfs_get_video(void *cookie)
 {
     return enna_vfs_create_directory(mod->video->uri,
             ecore_file_file_get(mod->video->uri),
-            evas_stringshare_add("icon/video"), NULL);
+            eina_stringshare_add("icon/video"), NULL);
 }
 
 static void class_init(const char *name, netstreams_priv_t **priv,

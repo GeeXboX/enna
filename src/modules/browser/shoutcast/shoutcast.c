@@ -171,7 +171,7 @@ static Eina_List * _class_browse_down(void *cookie)
 static Enna_Vfs_File * _class_vfs_get(void *cookie)
 {
     return enna_vfs_create_directory(NULL, NULL,
-            evas_stringshare_add("icon/music"), NULL);
+            eina_stringshare_add("icon/music"), NULL);
 }
 
 static Enna_Class_Vfs class_shoutcast =

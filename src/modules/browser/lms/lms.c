@@ -899,9 +899,9 @@ static int em_init(Enna_Module *em)
 
     /* Set db filename */
     sprintf(tmp, "%s/.enna/%s", enna_util_user_home_get(), "enna_music.db");
-    mod->scanner->db_path = evas_stringshare_add(tmp) ;
+    mod->scanner->db_path = eina_stringshare_add(tmp) ;
     /* Set charset to UTF-8 */
-    mod->scanner->charset = evas_stringshare_add("iso-8859-1");
+    mod->scanner->charset = eina_stringshare_add("iso-8859-1");
     /* Set base path */
 
     /* Create lms, set params and start scann process */
@@ -1001,8 +1001,8 @@ error:
     enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
             "lms module initialisation");
     lms_free(mod->scanner->lms);
-    evas_stringshare_del(mod->scanner->db_path);
-    evas_stringshare_del(mod->scanner->charset);
+    eina_stringshare_del(mod->scanner->db_path);
+    eina_stringshare_del(mod->scanner->charset);
     ENNA_FREE(mod->scanner);
     return -1;
 }

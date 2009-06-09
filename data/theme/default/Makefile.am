@@ -149,7 +149,7 @@ images/icon_library.png \
 images/rating5.png \
 images/letter_bg.png \
 images/loading-6.png \
-images/weather_summer.png \
+images/weather_summer.jpeg \
 images/weather_sun_light_clouds.png \
 images/bt_hilight.png \
 images/dev_camera.png \
@@ -174,7 +174,7 @@ images/progress_bar.png \
 images/ctrl_warning.png \
 images/bt_base1.png \
 images/dev_usb_stick.png \
-images/weather_fall.png \
+images/weather_fall.jpeg \
 images/volume_bg_shadow.png \
 images/sb_runnerv.png \
 images/bt_sm_base1.png \
@@ -183,7 +183,7 @@ images/dev_cdda.png \
 images/icon_nofile.png \
 images/dev_dvd.png \
 images/weather_rain.png \
-images/weather_winter.png \
+images/weather_winter.jpeg \
 images/panel_left.png \
 images/panel_right.png \
 images/text_border.png \
@@ -195,7 +195,7 @@ images/panel_info.png \
 images/weather_ice.png \
 images/ctrl_shutdown.png \
 images/mp_play.png \
-images/weather_spring.png \
+images/weather_spring.jpeg \
 images/icon_photo.png \
 images/menu_sel_fg.png \
 images/sb_runnerh.png \

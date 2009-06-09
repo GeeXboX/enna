@@ -93,7 +93,7 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
 
     return enna_vfs_create_directory(mod->cdda->uri,
         ecore_file_file_get(mod->cdda->uri),
-        evas_stringshare_add("icon/cdda"), NULL);
+        eina_stringshare_add("icon/cdda"), NULL);
 }
 
 

@@ -543,7 +543,7 @@ static Enna_Vfs_File *
 _class_vfs_get (void *cookie)
 {
     return enna_vfs_create_directory (NULL, NULL,
-            evas_stringshare_add ("icon/upnp"), NULL);
+            eina_stringshare_add ("icon/upnp"), NULL);
 }
 
 static Enna_Class_Vfs class_upnp = {

@@ -114,8 +114,8 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
                                              root->icon : "icon/hd", NULL);
             files = eina_list_append(files, file);
         }
-        //evas_stringshare_del(data->prev_uri);
-        //evas_stringshare_del(data->uri);
+        //eina_stringshare_del(data->prev_uri);
+        //eina_stringshare_del(data->uri);
         data->prev_uri = NULL;
         data->uri = NULL;
         return files;
@@ -162,9 +162,9 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
         {
             dirs_list = eina_list_append(dirs_list, l->data);
         }
-        //evas_stringshare_del(data->prev_uri);
+        //eina_stringshare_del(data->prev_uri);
         data->prev_uri = data->uri;
-        data->uri = evas_stringshare_add(path);
+        data->uri = eina_stringshare_add(path);
         return dirs_list;
     }
 
@@ -234,7 +234,7 @@ static Eina_List * _class_browse_down(Class_Private_Data *data,
             *(p) = 0;
 
         files = _class_browse_up(path_tmp, caps, data, NULL);
-        data->uri = evas_stringshare_add(path_tmp);
+        data->uri = eina_stringshare_add(path_tmp);
         return files;
     }
 
@@ -270,19 +270,19 @@ static Enna_Vfs_File * _class_vfs_get(int type)
         case ENNA_CAPS_MUSIC:
             return enna_vfs_create_directory(mod->music->uri,
                     ecore_file_file_get(mod->music->uri),
-                    evas_stringshare_add("icon/music"), NULL);
+                    eina_stringshare_add("icon/music"), NULL);
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
         case ENNA_CAPS_VIDEO:
             return enna_vfs_create_directory(mod->video->uri,
                     ecore_file_file_get(mod->video->uri),
-                    evas_stringshare_add("icon/video"), NULL);
+                    eina_stringshare_add("icon/video"), NULL);
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
         case ENNA_CAPS_PHOTO:
             return enna_vfs_create_directory(mod->photo->uri,
                     ecore_file_file_get(mod->photo->uri),
-                    evas_stringshare_add("icon/photo"), NULL);
+                    eina_stringshare_add("icon/photo"), NULL);
 #endif
         default:
             break;
