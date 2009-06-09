@@ -49,11 +49,11 @@ static void _enna_image_smart_reconfigure(Smart_Data * sd);
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
 
-void enna_image_file_set(Evas_Object * obj, const char *file)
+void enna_image_file_set(Evas_Object * obj, const char *file, const char *key)
 {
     INTERNAL_ENTRY;
     /*evas_object_image_load_size_set(sd->obj, 32, 32);*/
-    evas_object_image_file_set(sd->obj, file, NULL);
+    evas_object_image_file_set(sd->obj, file, key);
     _enna_image_smart_reconfigure(sd);
 }
 

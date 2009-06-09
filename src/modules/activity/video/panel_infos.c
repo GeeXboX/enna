@@ -300,7 +300,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     {
         cover = enna_image_add (evas_object_evas_get(sd->o_edje));
         enna_image_fill_inside_set (cover, 0);
-        enna_image_file_set (cover, file);
+        enna_image_file_set (cover, file, NULL);
     }
     else
     {

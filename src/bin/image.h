@@ -33,7 +33,7 @@
 #include "enna.h"
 
 Evas_Object *enna_image_add(Evas * evas);
-void enna_image_file_set(Evas_Object * obj, const char *file);
+void enna_image_file_set(Evas_Object * obj, const char *file, const char *key);
 const char *enna_image_file_get(Evas_Object * obj);
 void enna_image_smooth_scale_set(Evas_Object * obj, int smooth);
 int enna_image_smooth_scale_get(Evas_Object * obj);

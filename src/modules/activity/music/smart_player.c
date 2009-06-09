@@ -124,7 +124,7 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
         //enna_reflection_fill_inside_set(sd->o_cover, 0);
         enna_image_fill_inside_set(sd->o_cover, 0);
         //enna_reflection_file_set(sd->o_cover, meta->cover);
-        enna_image_file_set(sd->o_cover, meta->cover);
+        enna_image_file_set(sd->o_cover, meta->cover, NULL);
         edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
         edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
 

@@ -193,7 +193,7 @@ enna_backdrop_set (Evas_Object *obj, char *file, int from_vfs)
     {
       sd->o_img = enna_image_add(evas_object_evas_get(sd->o_edje));
       enna_image_fill_inside_set(sd->o_img, 0);
-      enna_image_file_set(sd->o_img, file);
+      enna_image_file_set(sd->o_img, file, NULL);
     }
     else
     {

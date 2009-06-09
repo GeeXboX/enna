@@ -608,7 +608,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             if (f->icon_file && f->icon_file[0] == '/')
             {
                 icon = enna_image_add(sd->evas);
-                enna_image_file_set(icon, f->icon_file);
+                enna_image_file_set(icon, f->icon_file, NULL);
             }
             else
             {
