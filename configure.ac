@@ -45,6 +45,7 @@ PKG_CHECK_MODULES([ENNA],
    ecore-evas
    ecore-txt
    ecore-file
+   ecore-ipc
    embryo >= 0.9.1
    edje >= 0.5.0
    elementary

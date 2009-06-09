@@ -357,7 +357,7 @@ char *get_lang (void)
 svdrp_t *enna_svdrp_init (char* host, int port, int timeout, svdrp_verbosity_level_t verbosity)
 {
     svdrp = svdrp_open (host, port, timeout, verbosity);
-    
+
     return svdrp;
 }
 
@@ -372,3 +372,11 @@ svdrp_t *enna_svdrp_get (void)
     return svdrp;
 }
 #endif
+
+void enna_util_env_set(const char *var, const char *val)
+{
+    if (val)
+	setenv(var, val, 1);
+    else
+    	unsetenv(var);
+}

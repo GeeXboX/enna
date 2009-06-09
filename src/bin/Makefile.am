@@ -10,7 +10,7 @@ if BUILD_LIBSVDRP
 AM_CFLAGS += @LIBSVDRP_CFLAGS@
 endif
 
-bin_PROGRAMS = enna
+bin_PROGRAMS = enna enna_thumb
 
 enna_SOURCES = \
 enna.c\
@@ -43,7 +43,11 @@ reflection.c\
 events_stack.c\
 view_cover.c\
 popup.c\
-exit.c
+exit.c\
+thumb.c\
+ipc.c
+
+
 
 enna_LDADD = @ENNA_LIBS@ @LIBXML2_LIBS@ @LIBCURL_LIBS@ @LIBCDDB_LIBS@ @LIBPLAYER_LIBS@
 enna_LDFLAGS = -rdynamic
@@ -51,6 +55,13 @@ enna_LDFLAGS = -rdynamic
 if BUILD_LIBSVDRP
 enna_LDADD += @LIBSVDRP_LIBS@
 endif
+
+enna_thumb_SOURCES = \
+enna_thumb_main.c\
+utils.c
+
+enna_thumb_LDADD = @ENNA_LIBS@
+
 
 EXTRA_DIST= \
 enna.h\
@@ -84,5 +95,7 @@ events_stack.h\
 view_cover.h\
 popup.h\
 exit.h\
-gettext.h
+gettext.h\
+thumb.h\
+ipc.h
 

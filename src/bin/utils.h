@@ -30,6 +30,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <Evas.h>
+
 #define MMAX(a,b) ((a) > (b) ? (a) : (b))
 #define MMIN(a,b) ((a) > (b) ? (b) : (a))
 
@@ -49,5 +51,7 @@ svdrp_t *enna_svdrp_init (char* host, int port, int timeout, svdrp_verbosity_lev
 void enna_svdrp_uninit (void);
 svdrp_t *enna_svdrp_get (void);
 #endif
+
+void enna_util_env_set(const char *var, const char *val);
 
 #endif /* UTILS_H */
