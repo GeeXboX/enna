@@ -50,6 +50,7 @@
 #include "volumes.h"
 #include "metadata.h"
 #include "mediaplayer.h"
+#include "ipc.h"
 
 #define ENNA_MOUSE_IDLE_TIMEOUT 10 //seconds after which the mouse pointer disappears
 
@@ -139,7 +140,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         run_fullscreen = ~run_fullscreen;
         ecore_evas_fullscreen_set(enna->ee, run_fullscreen);
     }
-    
+
     if (enna_mainmenu_exit_visible(enna->o_mainmenu) || key == ENNA_KEY_QUIT)
     {
         enna_mainmenu_event_feed(enna->o_mainmenu, event);
@@ -311,7 +312,7 @@ static int _enna_init(void)
 
     ecore_evas_show(enna->ee);
     enna_input_init();
-
+    enna_ipc_init();
     grabber_start_thread();
     enna->pipe_grabber = ecore_pipe_add (pipe_grabber_read, NULL);
 
@@ -426,7 +427,7 @@ static void _enna_shutdown(void)
     edje_shutdown();
     ecore_file_shutdown();
     ecore_evas_shutdown();
-
+    enna_ipc_shutdown();
     ENNA_FREE(enna->home);
     ENNA_FREE(enna);
 }
@@ -448,7 +449,7 @@ void enna_idle_timer_renew(void)
     if (enna_config->idle_timeout)
     {
         if (enna->idle_timer) { ENNA_TIMER_DEL(enna->idle_timer) }
-        else 
+        else
             enna_log(ENNA_MSG_INFO, NULL, "setting up idle timer to %i minutes", enna_config->idle_timeout);
         if (!(enna->idle_timer = ecore_timer_add(enna_config->idle_timeout*60, _idle_timer_cb, NULL)))
             enna_log(ENNA_MSG_CRITICAL, NULL, "adding timer failed!");
@@ -544,7 +545,7 @@ static int parse_command_line(int argc, char **argv)
 int main(int argc, char **argv)
 {
     init_locale();
-    
+
     if (parse_command_line(argc, argv) < 0)
         return EXIT_SUCCESS;
 
