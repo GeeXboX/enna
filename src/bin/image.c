@@ -44,17 +44,102 @@ struct _Smart_Data
 };
 
 /* local subsystem functions */
-static void _enna_image_smart_reconfigure(Smart_Data * sd);
+static void _smart_reconfigure(Smart_Data * sd);
 
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
+
+static void
+_flip_horizontal(Smart_Data *sd)
+{
+    unsigned int   *data;
+    unsigned int   *p1, *p2, tmp;
+    int             x, y, iw, ih;
+
+    evas_object_image_size_get(sd->obj, &iw, &ih);
+    data = evas_object_image_data_get(sd->obj, 1);
+
+    for (y = 0; y < ih; y++)
+    {
+        p1 = data + (y * iw);
+        p2 = data + ((y + 1) * iw) - 1;
+        for (x = 0; x < (iw >> 1); x++)
+	{
+	    tmp = *p1;
+	    *p1 = *p2;
+	    *p2 = tmp;
+	    p1++;
+	    p2--;
+	}
+    }
+
+    evas_object_image_data_set(sd->obj, data);
+    evas_object_image_data_update_add(sd->obj, 0, 0, iw, ih);
+    _smart_reconfigure(sd);
+}
+
+static void
+_flip_vertical(Smart_Data *sd)
+{
+    unsigned int   *data;
+    unsigned int   *p1, *p2, tmp;
+    int             x, y, iw, ih;
+
+    evas_object_image_size_get(sd->obj, &iw, &ih);
+    data = evas_object_image_data_get(sd->obj, 1);
+
+    for (y = 0; y < (ih >> 1); y++)
+    {
+        p1 = data + (y * iw);
+        p2 = data + ((ih - 1 - y) * iw);
+        for (x = 0; x < iw; x++)
+	{
+	    tmp = *p1;
+	    *p1 = *p2;
+	    *p2 = tmp;
+	    p1++;
+	    p2++;
+	}
+    }
+
+    evas_object_image_data_set(sd->obj, data);
+    evas_object_image_data_update_add(sd->obj, 0, 0, iw, ih);
+    _smart_reconfigure(sd);
+}
+
+static void
+_rotate_180(Smart_Data *sd)
+{
+    unsigned int   *data;
+    unsigned int   *p1, *p2, tmp;
+    int             x, hw, iw, ih;
+
+    evas_object_image_size_get(sd->obj, &iw, &ih);
+    data = evas_object_image_data_get(sd->obj, 1);
+
+    hw = iw * ih;
+    x = (hw / 2);
+    p1 = data;
+    p2 = data + hw - 1;
+    for (; --x > 0;)
+    {
+        tmp = *p1;
+        *p1 = *p2;
+        *p2 = tmp;
+        p1++;
+        p2--;
+    }
+    evas_object_image_data_set(sd->obj, data);
+    evas_object_image_data_update_add(sd->obj, 0, 0, iw, ih);
+    _smart_reconfigure(sd);
+}
 
 void enna_image_file_set(Evas_Object * obj, const char *file, const char *key)
 {
     INTERNAL_ENTRY;
     /*evas_object_image_load_size_set(sd->obj, 32, 32);*/
     evas_object_image_file_set(sd->obj, file, key);
-    _enna_image_smart_reconfigure(sd);
+    _smart_reconfigure(sd);
 }
 
 const char * enna_image_file_get(Evas_Object * obj)
@@ -134,7 +219,7 @@ void enna_image_fill_inside_set(Evas_Object * obj, int fill_inside)
             && (!fill_inside)))
         return;
     sd->fill_inside = fill_inside;
-    _enna_image_smart_reconfigure(sd);
+    _smart_reconfigure(sd);
 }
 
 void enna_image_data_set(Evas_Object * obj, void *data, int w, int h)
@@ -161,8 +246,90 @@ void enna_image_preload(Evas_Object *obj, Evas_Bool cancel)
     evas_object_image_preload(sd->obj, cancel);
 }
 
+void enna_image_orient_set(Evas_Object *obj, Enna_Image_Orient orient)
+{
+    Smart_Data *sd;
+    Evas_Object *tmp;
+    unsigned int *data, *data2, *to, *from;
+    int x, y, w, hw, iw, ih;
+    const char *file, *key;
+
+    sd = evas_object_smart_data_get(obj);
+    if (!sd) return;
+    if (!strcmp(evas_object_type_get(sd->obj), "edje"))
+	return;
+
+    switch (orient)
+    {
+    case ENNA_IMAGE_FLIP_HORIZONTAL:
+	_flip_horizontal(sd);
+	return;
+    case ENNA_IMAGE_FLIP_VERTICAL:
+	_flip_vertical(sd);
+	return;
+    case ENNA_IMAGE_ROTATE_180_CW:
+	_rotate_180(sd);
+	return;
+    default:
+	break;
+    }
+
+    evas_object_image_size_get(sd->obj, &iw, &ih);
+    evas_object_image_file_get(sd->obj, &file, &key);
+    tmp = evas_object_image_add(evas_object_evas_get(sd->obj));
+    evas_object_image_file_set(tmp, file, key);
+    data2 = evas_object_image_data_get(tmp, 0);
+
+    w = ih;
+    ih = iw;
+    iw = w;
+    hw = w * ih;
+
+    evas_object_image_size_set(sd->obj, iw, ih);
+    data = evas_object_image_data_get(sd->obj, 1);
+    switch (orient)
+    {
+    case ENNA_IMAGE_FLIP_TRANSPOSE:
+	to = data;
+	hw = -hw + 1;
+	break;
+    case ENNA_IMAGE_FLIP_TRANSVERSE:
+	to = data + hw - 1;
+	w = -w;
+	hw = hw - 1;
+	break;
+    case ENNA_IMAGE_ROTATE_90_CW:
+	to = data + w - 1;
+	hw = -hw - 1;
+	break;
+    case ENNA_IMAGE_ROTATE_90_CCW:
+	to = data + hw - w;
+	w = -w;
+	hw = hw + 1;
+	break;
+    default:
+	to = NULL;
+	break;
+    }
+    from = data2;
+    for (x = iw; --x >= 0;)
+    {
+        for (y = ih; --y >= 0;)
+	{
+	    *to = *from;
+	    from++;
+	    to += w;
+	}
+        to += hw;
+    }
+    evas_object_del(tmp);
+    evas_object_image_data_set(sd->obj, data);
+    evas_object_image_data_update_add(sd->obj, 0, 0, iw, ih);
+    _smart_reconfigure(sd);
+}
+
 /* local subsystem globals */
-static void _enna_image_smart_reconfigure(Smart_Data * sd)
+static void _smart_reconfigure(Smart_Data * sd)
 {
     int iw, ih;
     Evas_Coord x, y, w, h;
@@ -191,12 +358,12 @@ static void _enna_image_smart_reconfigure(Smart_Data * sd)
     else
     {
         /*w = sd->w;
-        h = ((double)ih * w) / (double)iw;
-        if (h < sd->h)
-        {
-            h = sd->h;
-            w = ((double)iw * h) / (double)ih;
-        }*/
+	  h = ((double)ih * w) / (double)iw;
+	  if (h < sd->h)
+	  {
+	  h = sd->h;
+	  w = ((double)iw * h) / (double)ih;
+	  }*/
         evas_object_move(sd->obj, sd->x, sd->y);
         evas_object_image_fill_set(sd->obj, 0, 0, sd->w, sd->h);
         evas_object_resize(sd->obj, sd->w, sd->h);
@@ -252,7 +419,7 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
         return;
     sd->x = x;
     sd->y = y;
-    _enna_image_smart_reconfigure(sd);
+    _smart_reconfigure(sd);
 }
 
 static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
@@ -263,7 +430,7 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
         return;
     sd->w = w;
     sd->h = h;
-    _enna_image_smart_reconfigure(sd);
+    _smart_reconfigure(sd);
 }
 
 static void _smart_show(Evas_Object * obj)
@@ -299,23 +466,23 @@ static void _smart_clip_unset(Evas_Object * obj)
 static void _enna_image_smart_init(void)
 {
     static const Evas_Smart_Class sc = {
-       SMART_NAME,
-       EVAS_SMART_CLASS_VERSION,
-       _smart_add,
-       _smart_del,
-       _smart_move,
-       _smart_resize,
-       _smart_show,
-       _smart_hide,
-       _smart_color_set,
-       _smart_clip_set,
-       _smart_clip_unset,
-       NULL,
-       NULL
+	SMART_NAME,
+	EVAS_SMART_CLASS_VERSION,
+	_smart_add,
+	_smart_del,
+	_smart_move,
+	_smart_resize,
+	_smart_show,
+	_smart_hide,
+	_smart_color_set,
+	_smart_clip_set,
+	_smart_clip_unset,
+	NULL,
+	NULL
     };
 
     if (!_e_smart)
-       _e_smart = evas_smart_class_new(&sc);
+	_e_smart = evas_smart_class_new(&sc);
 }
 
 /* externally accessible functions */

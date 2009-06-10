@@ -32,6 +32,18 @@
 
 #include "enna.h"
 
+typedef enum _Enna_Image_Orient
+{
+    ENNA_IMAGE_ORIENT_NONE,
+    ENNA_IMAGE_ROTATE_90_CW,
+    ENNA_IMAGE_ROTATE_180_CW,
+    ENNA_IMAGE_ROTATE_90_CCW,
+    ENNA_IMAGE_FLIP_HORIZONTAL,
+    ENNA_IMAGE_FLIP_VERTICAL,
+    ENNA_IMAGE_FLIP_TRANSPOSE,
+    ENNA_IMAGE_FLIP_TRANSVERSE
+} Enna_Image_Orient;
+
 Evas_Object *enna_image_add(Evas * evas);
 void enna_image_file_set(Evas_Object * obj, const char *file, const char *key);
 const char *enna_image_file_get(Evas_Object * obj);
