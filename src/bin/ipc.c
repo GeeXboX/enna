@@ -76,12 +76,11 @@ enna_ipc_init(void)
 	     return 0;
 	  }
      }
-   snprintf(buf, sizeof(buf), "%s/enlightenment-%s/disp-%s-%i", tmp, user, disp, pid);
+   snprintf(buf, sizeof(buf), "%s/enna-%s/disp-%s-%i", tmp, user, disp, pid);
    _ipc_server = ecore_ipc_server_add(ECORE_IPC_LOCAL_SYSTEM, buf, 0, NULL);
    enna_util_env_set("ENNA_IPC_SOCKET", "");
    if (!_ipc_server) return 0;
    enna_util_env_set("ENNA_IPC_SOCKET", buf);
-   printf("<<<<<<<<<<<<<< INFO: ENNA_IPC_SOCKET=%s\n", buf);
    ecore_event_handler_add(ECORE_IPC_EVENT_CLIENT_ADD, _ipc_cb_client_add, NULL);
    ecore_event_handler_add(ECORE_IPC_EVENT_CLIENT_DEL, _ipc_cb_client_del, NULL);
    ecore_event_handler_add(ECORE_IPC_EVENT_CLIENT_DATA, _ipc_cb_client_data, NULL);
@@ -110,7 +109,6 @@ static int
 _ipc_cb_client_add(void *data, int type, void *event)
 {
    Ecore_Ipc_Event_Client_Add *e;
-   printf("<<<<<<<<<<<<<<<<Client add\n");
    e = event;
    if (ecore_ipc_client_server_get(e->client) != _ipc_server) return 1;
    return 1;
@@ -120,7 +118,6 @@ static int
 _ipc_cb_client_del(void *data, int type, void *event)
 {
    Ecore_Ipc_Event_Client_Del *e;
-   printf("<<<<<<<<<<<<<<<<<<<<<<<<<<<<Client del\n");
    e = event;
    if (ecore_ipc_client_server_get(e->client) != _ipc_server) return 1;
    /* delete client sruct */
@@ -132,7 +129,6 @@ static int
 _ipc_cb_client_data(void *data, int type, void *event)
 {
    Ecore_Ipc_Event_Client_Data *e;
-   printf("<<<<<<<<<<<<<<<<<<<<<client data\n");
    e = event;
    if (ecore_ipc_client_server_get(e->client) != _ipc_server) return 1;
    switch (e->major)
