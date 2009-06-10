@@ -78,7 +78,7 @@ enna_ipc_init(void)
      }
    snprintf(buf, sizeof(buf), "%s/enlightenment-%s/disp-%s-%i", tmp, user, disp, pid);
    _ipc_server = ecore_ipc_server_add(ECORE_IPC_LOCAL_SYSTEM, buf, 0, NULL);
-   enna_util_env_set("E_IPC_SOCKET", "");
+   enna_util_env_set("ENNA_IPC_SOCKET", "");
    if (!_ipc_server) return 0;
    enna_util_env_set("ENNA_IPC_SOCKET", buf);
    printf("<<<<<<<<<<<<<< INFO: ENNA_IPC_SOCKET=%s\n", buf);
