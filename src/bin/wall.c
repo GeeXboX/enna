@@ -208,7 +208,6 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
     elm_box_pack_end(pi->sd->o_box[pi->row], pi->o_edje);
     evas_object_show(pi->o_edje);
     edje_object_signal_emit(pi->o_edje, "thumb,show", "enna");
-    printf("send show\n");
 }
 
 void enna_wall_picture_append(Evas_Object *obj, const char *filename)
