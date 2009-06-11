@@ -129,6 +129,16 @@ enna_thumb_icon_size_set(Evas_Object *obj, int w, int h)
    eth->h = h;
 }
 
+EAPI const char*
+enna_thumb_file_get(Evas_Object *obj)
+{
+    Enna_Thumb *eth;
+
+    eth = evas_object_data_get(obj, "enna_thumbdata");
+    if (eth) return eth->file;
+    else return NULL;
+}
+
 EAPI void
 enna_thumb_icon_begin(Evas_Object *obj)
 {

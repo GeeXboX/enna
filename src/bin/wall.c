@@ -43,6 +43,10 @@
 #include "event_key.h"
 #include "thumb.h"
 
+#ifdef BUILD_LIBEXIF
+#include <libexif/exif-data.h>
+#endif
+
 #define SMART_NAME "enna_wall"
 
 typedef struct _Smart_Data Smart_Data;
@@ -106,6 +110,7 @@ static void _smart_reconfigure(Smart_Data * sd);
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
 
+
 static
 void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
 {
@@ -113,10 +118,62 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
     Evas_Coord w, h, ow, oh;
     int row, w0, w1, w2, h0, h1, h2;
     double f = 1.0;
+    int orientation = 0;
+#ifdef BUILD_LIBEXIF
+    ExifData  *exif;
+    ExifEntry *entry = NULL;
+    ExifByteOrder bo;
+#endif
 
     if (!pi) return;
-    enna_image_size_get(pi->o_pict, &w, &h);
 
+#ifdef BUILD_LIBEXIF
+    exif = exif_data_new_from_file(enna_thumb_file_get(pi->o_pict));
+    if (exif)
+    {
+	entry = exif_data_get_entry(exif, EXIF_TAG_ORIENTATION);
+	if (entry)
+	{
+	    bo = exif_data_get_byte_order(exif);
+	    orientation = exif_get_short(entry->data, bo);
+	}
+	exif_data_free(exif);
+    }
+#endif
+
+    if (orientation > 1 && orientation < 9)
+    {
+	Enna_Image_Orient t1 = ENNA_IMAGE_ORIENT_NONE;
+
+	switch (orientation)
+	{
+	case 2:		/* Horizontal flip */
+	    t1 = ENNA_IMAGE_FLIP_HORIZONTAL;
+	    break;
+	case 3:		/* Rotate 180 clockwise */
+	    t1 = ENNA_IMAGE_ROTATE_180_CW;
+	    break;
+	case 4:		/* Vertical flip */
+	    t1 = ENNA_IMAGE_FLIP_VERTICAL;
+	    break;
+	case 5:		/* Transpose */
+	    t1 = ENNA_IMAGE_FLIP_TRANSPOSE;
+	    break;
+	case 6:		/* Rotate 90 clockwise */
+	    t1 = ENNA_IMAGE_ROTATE_90_CW;
+	    break;
+	case 7:		/* Transverse */
+	    t1 = ENNA_IMAGE_FLIP_TRANSVERSE;
+	    break;
+	case 8:		/* Rotate 90 counter-clockwise */
+	    t1 = ENNA_IMAGE_ROTATE_90_CCW;
+	    break;
+	}
+	if (t1)
+	    enna_image_orient_set(pi->o_pict, t1);
+    }
+
+    enna_image_size_get(pi->o_pict, &w, &h);
     if (h)
 	f = (float)w/(float)h;
 
