@@ -44,7 +44,7 @@ static Ecore_Event_Handler *_exe_del_handler = NULL;
 static Ecore_Timer *_kill_timer = NULL;
 
 /* externally accessible functions */
-EAPI int
+int
 enna_thumb_init(void)
 {
     _exe_del_handler = ecore_event_handler_add(ECORE_EXE_EVENT_DEL,
@@ -54,7 +54,7 @@ enna_thumb_init(void)
     return 1;
 }
 
-EAPI int
+int
 enna_thumb_shutdown(void)
 {
     _thumb_thumbnailers_kill_cancel();
@@ -81,7 +81,7 @@ _thumb_preloaded(void *data, Evas_Object *obj, void *event)
     evas_object_smart_callback_call(data, "enna_thumb_gen", NULL);
 }
 
-EAPI Evas_Object *
+Evas_Object *
 enna_thumb_icon_add(Evas *evas)
 {
     Evas_Object *obj;
@@ -102,7 +102,7 @@ enna_thumb_icon_add(Evas *evas)
     return obj;
 }
 
-EAPI void
+void
 enna_thumb_icon_file_set(Evas_Object *obj, const char *file, const char *key)
 {
     Enna_Thumb *eth;
@@ -117,7 +117,7 @@ enna_thumb_icon_file_set(Evas_Object *obj, const char *file, const char *key)
     if (key) eth->key = eina_stringshare_add(key);
 }
 
-EAPI void
+void
 enna_thumb_icon_size_set(Evas_Object *obj, int w, int h)
 {
     Enna_Thumb *eth;
@@ -129,7 +129,8 @@ enna_thumb_icon_size_set(Evas_Object *obj, int w, int h)
     eth->h = h;
 }
 
-void enna_thumb_icon_size_get(Evas_Object *obj, int *w, int *h)
+void
+enna_thumb_icon_size_get(Evas_Object *obj, int *w, int *h)
 {
     Enna_Thumb *eth;
     Evas_Object *im;
@@ -146,7 +147,7 @@ void enna_thumb_icon_size_get(Evas_Object *obj, int *w, int *h)
 	enna_image_size_get(im, w, h);
 }
 
-EAPI const char*
+const char*
 enna_thumb_icon_file_get(Evas_Object *obj)
 {
     Enna_Thumb *eth;
@@ -170,7 +171,7 @@ enna_thumb_icon_orient_set(Evas_Object *obj, Enna_Image_Orient orient)
 
 }
 
-EAPI void
+void
 enna_thumb_icon_begin(Evas_Object *obj)
 {
     Enna_Thumb *eth, *eth2;
@@ -212,7 +213,7 @@ enna_thumb_icon_begin(Evas_Object *obj)
     _thumb_gen_begin(eth->objid, eth->file, eth->key, eth->w, eth->h);
 }
 
-EAPI void
+void
 enna_thumb_icon_end(Evas_Object *obj)
 {
     Enna_Thumb *eth;
@@ -233,7 +234,7 @@ enna_thumb_icon_end(Evas_Object *obj)
     }
 }
 
-EAPI void
+void
 enna_thumb_icon_rethumb(Evas_Object *obj)
 {
     Enna_Thumb *eth;
@@ -247,7 +248,7 @@ enna_thumb_icon_rethumb(Evas_Object *obj)
 }
 
 
-EAPI void
+void
 enna_thumb_client_data(Ecore_Ipc_Event_Client_Data *e)
 {
     int objid;
@@ -296,7 +297,7 @@ enna_thumb_client_data(Ecore_Ipc_Event_Client_Data *e)
     }
 }
 
-EAPI void
+void
 enna_thumb_client_del(Ecore_Ipc_Event_Client_Del *e)
 {
     if (!eina_list_data_find(_thumbnailers, e->client)) return;
