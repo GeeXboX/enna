@@ -129,14 +129,45 @@ enna_thumb_icon_size_set(Evas_Object *obj, int w, int h)
     eth->h = h;
 }
 
+void enna_thumb_icon_size_get(Evas_Object *obj, int *w, int *h)
+{
+    Enna_Thumb *eth;
+    Evas_Object *im;
+
+    eth = evas_object_data_get(obj, "enna_thumbdata");
+    if (!eth) return;
+    im = _thumb_hash_find(eth->objid);
+    if (!im)
+    {
+	if (w) *w = 0;
+	if (h) *h = 0;
+    }
+    else
+	enna_image_size_get(im, w, h);
+}
+
 EAPI const char*
-enna_thumb_file_get(Evas_Object *obj)
+enna_thumb_icon_file_get(Evas_Object *obj)
 {
     Enna_Thumb *eth;
 
     eth = evas_object_data_get(obj, "enna_thumbdata");
     if (eth) return eth->file;
     else return NULL;
+}
+
+void
+enna_thumb_icon_orient_set(Evas_Object *obj, Enna_Image_Orient orient)
+{
+    Enna_Thumb *eth;
+    Evas_Object *im;
+
+    eth = evas_object_data_get(obj, "enna_thumbdata");
+    if (!eth) return;
+    im = _thumb_hash_find(eth->objid);
+    if (!im) return;
+    enna_image_orient_set(im, orient);
+
 }
 
 EAPI void

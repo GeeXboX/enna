@@ -128,7 +128,7 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
     if (!pi) return;
 
 #ifdef BUILD_LIBEXIF
-    exif = exif_data_new_from_file(enna_thumb_file_get(pi->o_pict));
+    exif = exif_data_new_from_file(enna_thumb_icon_file_get(pi->o_pict));
     if (exif)
     {
 	entry = exif_data_get_entry(exif, EXIF_TAG_ORIENTATION);
@@ -170,10 +170,10 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
 	    break;
 	}
 	if (t1)
-	    enna_image_orient_set(pi->o_pict, t1);
+	    enna_thumb_icon_orient_set(pi->o_pict, t1);
     }
 
-    enna_image_size_get(pi->o_pict, &w, &h);
+    enna_thumb_icon_size_get(pi->o_pict, &w, &h);
     if (h)
 	f = (float)w/(float)h;
 
@@ -316,7 +316,7 @@ const char * enna_wall_selected_filename_get(Evas_Object *obj)
         Picture_Item *pi = l->data;
         if (pi->selected)
         {
-            return enna_image_file_get(pi->o_pict);
+            return enna_thumb_icon_file_get(pi->o_pict);
         }
     }
     return NULL;
@@ -336,7 +336,7 @@ Eina_List* enna_wall_get_filenames(Evas_Object* obj)
         for (l = sd->items[row]; l; l = l->next)
         {
             pi = l->data;
-            fname = enna_image_file_get(pi->o_pict);
+            fname = enna_thumb_icon_file_get(pi->o_pict);
             files = eina_list_append(files, fname);
         }
     }
@@ -639,8 +639,6 @@ static void _smart_del(Evas_Object * obj)
             Picture_Item *pi = sd->items[i]->data;
             sd->items[i] = eina_list_remove_list(sd->items[i], sd->items[i]);
             evas_object_del(pi->o_edje);
-
-            enna_image_preload(pi->o_pict, 1);
             evas_object_smart_callback_del(pi->o_pict, "enna_thumb_gen", _wall_image_preload_cb);
 	    enna_thumb_icon_end(pi->o_pict);
             evas_object_del(pi->o_pict);
