@@ -283,7 +283,7 @@ static void _photo_info_fs()
 
     mod->state = WALL_PREVIEW;
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
-    mod->sel_timer = ecore_timer_add(0.2, _show_sel_image, filename);
+    mod->sel_timer = ecore_timer_add(0.01, _show_sel_image, filename);
 }
 
 /* #############################################################

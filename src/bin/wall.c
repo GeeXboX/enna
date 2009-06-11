@@ -527,6 +527,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 {
     Picture_Item *pi, *ppi;
     int col, row;
+    Evas_Event_Mouse_Down *ev = event_info;
 
     pi = data;
 
@@ -536,10 +537,13 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         ppi->selected = 0;
         edje_object_signal_emit(ppi->o_edje, "unselect", "enna");
     }
+    else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
+    {
+	evas_object_smart_callback_call(pi->sd->obj, "selected", NULL);
+	return;
+    }
     else if (ppi == pi)
     {
-        // Click on picture already selected, send the selected event */
-        evas_object_smart_callback_call(pi->sd->obj, "selected", NULL);
         return;
     }
 
