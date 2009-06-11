@@ -158,7 +158,6 @@ enna_thumb_icon_begin(Evas_Object *obj)
 	     Ecore_Exe *exe;
 
 	     snprintf(buf, sizeof(buf), "/home/nico/usr/bin/enna_thumb --nice=%d", 20);
-	     printf("Launch : %s\n", buf);
 	     exe = ecore_exe_run(buf, NULL);
 	     _thumbnailers_exe = eina_list_append(_thumbnailers_exe, exe);
 	  }
@@ -225,8 +224,6 @@ enna_thumb_client_data(Ecore_Ipc_Event_Client_Data *e)
    Enna_Thumb *eth;
    Evas_Object *obj;
 
-   printf("<<<<<<<<<<<<<<<<<<<<<<Client data\n");
-
    if (!eina_list_data_find(_thumbnailers, e->client))
      _thumbnailers = eina_list_prepend(_thumbnailers, e->client);
    if (e->minor == 2)
@@ -246,7 +243,6 @@ enna_thumb_client_data(Ecore_Ipc_Event_Client_Data *e)
 		       eth->done = 1;
 		       if (_pending == 0) _thumb_thumbnailers_kill();
                        enna_image_preload(obj, 0);
-		       printf("icon : %s\n", icon);
 		       enna_image_file_set(obj, icon, "/thumbnail/data");
 		       evas_object_smart_callback_call(obj, "enna_thumb_gen", NULL);
 		    }
@@ -255,7 +251,6 @@ enna_thumb_client_data(Ecore_Ipc_Event_Client_Data *e)
      }
    if (e->minor == 1)
      {
-	 printf("<<<<<<<<<<<<<<<<<<<<< hello received\n");
 	/* hello message */
 	while (_thumb_queue)
 	  {
