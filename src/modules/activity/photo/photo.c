@@ -279,7 +279,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
         {
             if (!f->is_directory)
             {
-                enna_wall_picture_append(mod->o_wall, f->uri);
+                enna_wall_file_append(mod->o_wall, f);
             }
             else
             {
