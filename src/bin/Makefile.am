@@ -65,6 +65,10 @@ image.c
 
 enna_thumb_LDADD = @ENNA_LIBS@
 
+if BUILD_LIBSVDRP
+enna_thumb_LDADD += @LIBSVDRP_LIBS@
+endif
+
 
 EXTRA_DIST= \
 enna.h\
