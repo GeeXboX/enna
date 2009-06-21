@@ -105,6 +105,7 @@ struct _Enna_Mediaplayer
 };
 
 static Enna_Mediaplayer *mp = NULL;
+static Enna_Config_Video *config_video = NULL;
 
 static void
 _event_cb (void *data, enna_mediaplayer_event_t event)
@@ -336,6 +337,64 @@ set_local_stream (const char *uri)
     return mrl;
 }
 
+static void
+init_sub_align (void)
+{
+    if (!config_video || !config_video->sub_align ||
+        !strcmp(config_video->sub_align, "auto"))
+        mp->subtitle_alignment = SUB_ALIGNMENT_DEFAULT;
+    else if (!strcmp(config_video->sub_align, "bottom"))
+        mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_BOTTOM;
+    else if (!strcmp(config_video->sub_align, "middle"))
+        mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_CENTER;
+    else if (!strcmp(config_video->sub_align, "top"))
+        mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_TOP;	
+}
+
+static void
+init_sub_pos (void)
+{
+    if (!config_video || !config_video->sub_pos ||
+        !strcmp(config_video->sub_pos, "auto"))
+        mp->subtitle_position = SUB_POSITION_DEFAULT;
+    else
+        mp->subtitle_position = atoi (config_video->sub_pos); 
+}
+
+static void
+init_sub_scale (void)
+{
+    if (!config_video || !config_video->sub_scale ||
+        !strcmp(config_video->sub_scale, "auto"))
+        mp->subtitle_scale = SUB_SCALE_DEFAULT;
+    else
+        mp->subtitle_scale = atoi (config_video->sub_scale); 
+}
+
+static void
+init_sub_visibility (void)
+{
+    if (!config_video || !config_video->sub_visibility ||
+        !strcmp(config_video->sub_visibility, "auto"))
+        mp->subtitle_visibility = SUB_VISIBILITY_DEFAULT;
+    else if (!strcmp(config_video->sub_visibility, "no"))
+        mp->subtitle_visibility = 0;
+    else if (!strcmp(config_video->sub_visibility, "yes"))
+        mp->subtitle_visibility = 1;
+}
+
+static void
+init_framedrop (void)
+{
+    if (!config_video || !config_video->framedrop ||
+        !strcmp(config_video->framedrop, "no"))
+        mp->framedrop = FRAMEDROP_DEFAULT;
+    else if (!strcmp(config_video->framedrop, "soft"))
+        mp->framedrop = PLAYER_FRAMEDROP_SOFT;
+    else if (!strcmp(config_video->framedrop, "hard"))
+        mp->framedrop = PLAYER_FRAMEDROP_HARD;	 
+}
+
 static int
 mp_file_set (const char *uri, const char *label)
 {
@@ -420,22 +479,32 @@ mp_file_set (const char *uri, const char *label)
     mp->label = label ? strdup (label) : NULL;
 
     mp->audio_delay = AUDIO_DELAY_DEFAULT;
-
-    /* Initialization of subtitles variables */
-    mp->subtitle_visibility = SUB_VISIBILITY_DEFAULT;
-    mp->subtitle_alignment = SUB_ALIGNMENT_DEFAULT;
-    mp->subtitle_position = SUB_POSITION_DEFAULT;
-    mp->subtitle_scale = SUB_SCALE_DEFAULT;
     mp->subtitle_delay = SUB_DELAY_DEFAULT;
 
-    mp->framedrop = FRAMEDROP_DEFAULT;
+    /* Get the video configuration parameters from file */
+    config_video = enna_config_video_get();
+
+    /* Initialization of subtitles variables */
+    init_sub_align ();
+    init_sub_pos ();
+    init_sub_scale ();
+    init_framedrop ();
+    init_sub_visibility ();
 
     mp->player_type = player_type;
     mp->player = mp->players[player_type];
 
     player_mrl_set (mp->player, mrl);
 
+    if (mp->subtitle_alignment != SUB_ALIGNMENT_DEFAULT)
+        player_subtitle_set_alignment (mp->player, mp->subtitle_alignment);
+    if (mp->subtitle_position != SUB_POSITION_DEFAULT)
+        player_subtitle_set_position (mp->player, mp->subtitle_position);
+    if (mp->subtitle_scale != SUB_SCALE_DEFAULT)
+        player_subtitle_scale (mp->player, mp->subtitle_scale, 1);
     player_subtitle_set_visibility (mp->player,  mp->subtitle_visibility);
+    if (mp->framedrop != FRAMEDROP_DEFAULT)
+        player_set_framedrop (mp->player, mp->framedrop);
 
     return 0;
 }

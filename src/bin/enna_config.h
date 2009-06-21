@@ -32,6 +32,7 @@
 
 typedef struct _Enna_Config Enna_Config;
 typedef struct _Enna_Config_Data Enna_Config_Data;
+typedef struct _Enna_Config_Video Enna_Config_Video;
 
 typedef enum _ENNA_CONFIG_TYPE ENNA_CONFIG_TYPE;
 
@@ -51,6 +52,11 @@ struct _Enna_Config
     const char *theme_file;
     int idle_timeout;
     int fullscreen;
+    char *sub_align;
+    char *sub_pos;
+    char *sub_scale;
+    char *sub_visibility;
+    char *framedrop;
     int use_network;
     int use_covers;
     int use_snapshots;
@@ -71,6 +77,15 @@ struct _Enna_Config_Data
     Eina_List *pair;
 };
 
+struct _Enna_Config_Video
+{
+    char *sub_align;
+    char *sub_pos;
+    char *sub_scale;
+    char *sub_visibility;
+    char *framedrop;
+};
+
 struct _Config_Pair
 {
     char *key;
@@ -81,6 +96,7 @@ Enna_Config *enna_config;
 
 const char *enna_config_theme_get(void);
 const char *enna_config_theme_file_get(const char *s);
+Enna_Config_Video *enna_config_video_get(void);
 void enna_config_value_store(void *var, char *section,
         ENNA_CONFIG_TYPE type, Config_Pair *pair);
 Enna_Config_Data *enna_config_module_pair_get(const char *module_name);

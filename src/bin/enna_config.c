@@ -54,6 +54,21 @@
     "#0,1\n" \
     "fullscreen=0\n" \
     "\n" \
+    "#auto,top,middle,bottom\n" \
+    "sub_align=auto\n" \
+    "\n" \
+    "#auto (value set to 100 for bottom),M..N where M and N are integer\n" \
+    "sub_pos=auto\n" \
+    "\n" \
+    "#auto (value set to 5) ,M..N where M and N are integer\n" \
+    "sub_scale=auto\n" \
+    "\n" \
+    "#auto,yes,no\n" \
+    "sub_visibility=auto\n" \
+    "\n" \
+    "#no,soft,hard\n" \
+    "framedrop=no\n" \
+    "\n" \
     "#0,1\n" \
     "use_network=1\n" \
     "\n" \
@@ -189,6 +204,19 @@ const char * enna_config_theme_file_get(const char *s)
         return NULL;
 }
 
+Enna_Config_Video * enna_config_video_get()
+{
+    Enna_Config_Video *config_video = calloc(1, sizeof(Enna_Config_Video));;
+
+    config_video->sub_align = enna_config->sub_align;
+    config_video->sub_pos = enna_config->sub_pos;
+    config_video->sub_scale = enna_config->sub_scale;
+    config_video->sub_visibility = enna_config->sub_visibility;
+    config_video->framedrop = enna_config->framedrop;
+
+    return config_video;
+}
+
 void enna_config_value_store(void *var, char *section,
         ENNA_CONFIG_TYPE type, Config_Pair *pair)
 {
@@ -286,6 +314,12 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
         enna_config->use_snapshots = 1;
         enna_config->metadata_cache = 1;
 
+        enna_config->sub_align = "auto";
+        enna_config->sub_pos = "auto";
+        enna_config->sub_scale = "auto";
+        enna_config->sub_visibility = "auto";
+        enna_config->framedrop = "no";
+
         for (l = config_data->pair; l; l = l->next)
         {
             Config_Pair *pair = l->data;
@@ -295,6 +329,17 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->fullscreen, "fullscreen",
                     ENNA_CONFIG_INT, pair);
+            enna_config_value_store(&enna_config->sub_align, "sub_align",
+                    ENNA_CONFIG_STRING, pair);
+            enna_config_value_store(&enna_config->sub_pos, "sub_pos",
+                    ENNA_CONFIG_STRING, pair);
+            enna_config_value_store(&enna_config->sub_scale, "sub_scale",
+                    ENNA_CONFIG_STRING, pair);
+            enna_config_value_store(&enna_config->sub_visibility,
+	                            "sub_visibility",
+                                    ENNA_CONFIG_STRING, pair);
+            enna_config_value_store(&enna_config->framedrop, "framedrop",
+                    ENNA_CONFIG_STRING, pair);
             enna_config_value_store(&enna_config->use_network, "use_network",
                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->use_covers, "use_covers",

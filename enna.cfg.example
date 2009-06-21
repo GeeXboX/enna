@@ -6,6 +6,21 @@ log_file=/var/log/enna.log
 #0,1
 fullscreen=0
 
+#auto,top,middle,bottom
+sub_align=auto
+
+#auto (value set to 100 for bottom),M..N where M and N are integer
+sub_pos=auto
+
+#auto (value set to 5) ,M..N where M and N are integer
+sub_scale=auto
+
+#auto,yes,no
+sub_visibility=auto
+
+#no,soft,hard
+framedrop=no
+
 #0,1
 use_covers=1
 
