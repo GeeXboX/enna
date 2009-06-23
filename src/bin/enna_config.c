@@ -170,19 +170,22 @@ const char * enna_config_theme_get()
 
 const char * enna_config_theme_file_get(const char *s)
 {
-    char tmp[4096];
+    char tmp[4096] = "";
 
     if (!s)
         return NULL;
+    if (s[0]=='/') 
+        strncpy(tmp, s, 4096);
 
-    if (s[0] == '/')
-        return s;
-
-    snprintf(tmp, sizeof(tmp), PACKAGE_DATA_DIR "/enna/theme/%s.edj", s);
     if (!ecore_file_exists(tmp))
-       return PACKAGE_DATA_DIR "/enna/theme/default.edj";
+        snprintf(tmp, sizeof(tmp), PACKAGE_DATA_DIR "/enna/theme/%s.edj", s);
+    if (!ecore_file_exists(tmp))
+        snprintf(tmp, sizeof(tmp), PACKAGE_DATA_DIR "/enna/theme/default.edj");
 
-    return strdup(tmp);
+    if (ecore_file_exists(tmp))
+        return strdup(tmp);
+    else
+        return NULL;
 }
 
 void enna_config_value_store(void *var, char *section,
@@ -249,12 +252,17 @@ void enna_config_init(void)
     if (hash_config) eina_hash_foreach(hash_config, _hash_foreach, NULL);
     else enna_log(ENNA_MSG_WARNING, NULL, "couldn't load enna config file.");
 
-    if (enna_config->theme)
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "Theme : %s\n", enna_config->theme);
-        elm_theme_overlay_add(
-            enna_config_theme_file_get(enna_config->theme));
-    }
+    if (!enna_config->theme) 
+        enna_config->theme=strdup("default");
+    enna_config->theme_file
+        = enna_config_theme_file_get(enna_config->theme);
+
+    enna_log(ENNA_MSG_INFO, NULL, "Theme Name: %s", enna_config->theme);
+    enna_log(ENNA_MSG_INFO, NULL, "Theme File: %s", enna_config->theme_file);
+    if (enna_config->theme_file)
+        elm_theme_overlay_add(enna_config->theme_file);
+    else
+        enna_log(ENNA_MSG_CRITICAL, NULL, "couldn't load theme file!");
 
 }
 
@@ -282,8 +290,6 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
             Config_Pair *pair = l->data;
             enna_config_value_store(&enna_config->theme, "theme",
                     ENNA_CONFIG_STRING, pair);
-            enna_config->theme_file
-                    = enna_config_theme_file_get(enna_config->theme);
             enna_config_value_store(&enna_config->idle_timeout, "idle_timeout",
                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->fullscreen, "fullscreen",
