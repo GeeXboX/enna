@@ -170,7 +170,8 @@ const char * enna_config_theme_get()
 
 const char * enna_config_theme_file_get(const char *s)
 {
-    char tmp[4096] = "";
+    char tmp[4096];
+    memset(tmp, 0, sizeof(tmp));
 
     if (!s)
         return NULL;
