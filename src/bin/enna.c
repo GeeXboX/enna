@@ -288,6 +288,9 @@ static int _enna_init(void)
         return 0;
     }
 
+    if (enna_config->engine) free((void*)enna_config->engine);
+    enna_config->engine=strdup(ecore_evas_engine_name_get(enna->ee));
+
     if (ecore_str_has_extension(enna_config->engine, "_x11"))
         enna->ee_winid = (Ecore_X_Window) ecore_evas_window_get(enna->ee);
 
