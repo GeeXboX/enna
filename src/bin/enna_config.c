@@ -246,7 +246,8 @@ void enna_config_init(void)
     snprintf(filename, sizeof(filename), "%s/.enna/enna.cfg",
             enna_util_user_home_get());
     hash_config = _config_load_conf_file(filename);
-    eina_hash_foreach(hash_config, _hash_foreach, NULL);
+    if (hash_config) eina_hash_foreach(hash_config, _hash_foreach, NULL);
+    else enna_log(ENNA_MSG_WARNING, NULL, "couldn't load enna config file.");
 
     if (enna_config->theme)
     {
