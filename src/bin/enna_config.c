@@ -135,16 +135,16 @@
     "[weather]\n" \
     "city=New York\n" \
     "\n" \
-    "[valhalla]" \
-    "path=file:///path/to/Music" \
-    "path=file:///path/to/server/Medias/Music" \
-    "verbosity=info" \
-    "parser_number=2" \
-    "commit_interval=128" \
-    "# <=0 for infinite" \
-    "scan_loop=-1" \
-    "# time [sec] for sleeping between loops" \
-    "scan_sleep=900" \
+    "[valhalla]\n" \
+    "path=file:///path/to/Music\n" \
+    "path=file:///path/to/server/Medias/Music\n" \
+    "verbosity=info\n" \
+    "parser_number=2\n" \
+    "commit_interval=128\n" \
+    "# <=0 for infinite\n" \
+    "scan_loop=-1\n" \
+    "# time [sec] for sleeping between loops\n" \
+    "scan_sleep=900\n" \
     "# 0: normal, -20: higher, 19 lower\n" \
     "scan_priority=19\n" \
     "\n" \
