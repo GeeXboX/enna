@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-06-03 22:55+0200\n"
+"POT-Creation-Date: 2009-06-23 17:41+0200\n"
 "PO-Revision-Date: 2009-05-10 17:11+0100\n"
 "Last-Translator: Benjamin Zores <ben@geexbox.org>\n"
 "Language-Team: French\n"
@@ -20,53 +20,53 @@ msgstr ""
 msgid "No media found !"
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/bin/enna.c:301
+#: src/bin/enna.c:306
 msgid "enna HTPC"
 msgstr "enna HTPC"
 
-#: src/bin/enna.c:472
+#: src/bin/enna.c:477
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:473
+#: src/bin/enna.c:478
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Usage: %s [options ...]\n"
 
-#: src/bin/enna.c:474
+#: src/bin/enna.c:479
 #, c-format
 msgid " Available Options:\n"
 msgstr " Options disponibles:\n"
 
-#: src/bin/enna.c:475
+#: src/bin/enna.c:480
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Spécifie le fichier de configuration à utiliser.\n"
 
-#: src/bin/enna.c:476
+#: src/bin/enna.c:481
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      Forcer le mode plein écran.\n"
 
-#: src/bin/enna.c:477
+#: src/bin/enna.c:482
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Affichager cette aide.\n"
 
-#: src/bin/enna.c:478
+#: src/bin/enna.c:483
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Spécifie le nom du thème à utiliser.\n"
 
-#: src/bin/enna.c:479
+#: src/bin/enna.c:484
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): Spécifie la résolution de la fenêtre. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:480
+#: src/bin/enna.c:485
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Affichage le numéro de version d'Enna.\n"

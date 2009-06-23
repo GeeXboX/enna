@@ -32,6 +32,7 @@
 
 #include <Ecore_Evas.h>
 #include <Ecore.h>
+#include <Evas_Data.h>
 
 #include "config.h"
 #include "gettext.h"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-06-03 22:55+0200\n"
+"POT-Creation-Date: 2009-06-23 17:41+0200\n"
 "PO-Revision-Date: 2009-05-23 09:18+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -20,53 +20,53 @@ msgstr ""
 msgid "No media found !"
 msgstr "Nessun media trovato!"
 
-#: src/bin/enna.c:301
+#: src/bin/enna.c:306
 msgid "enna HTPC"
 msgstr "enna HTPC"
 
-#: src/bin/enna.c:472
+#: src/bin/enna.c:477
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:473
+#: src/bin/enna.c:478
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:474
+#: src/bin/enna.c:479
 #, c-format
 msgid " Available Options:\n"
 msgstr "Opzioni disponibili:\n"
 
-#: src/bin/enna.c:475
+#: src/bin/enna.c:480
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:476
+#: src/bin/enna.c:481
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:477
+#: src/bin/enna.c:482
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:478
+#: src/bin/enna.c:483
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:479
+#: src/bin/enna.c:484
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:480
+#: src/bin/enna.c:485
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
