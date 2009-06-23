@@ -293,6 +293,7 @@ static int _enna_init(void)
 
     if (ecore_str_has_extension(enna_config->engine, "_x11"))
         enna->ee_winid = (Ecore_X_Window) ecore_evas_window_get(enna->ee);
+    enna_log(ENNA_MSG_INFO, NULL, "Using engine: %s", enna_config->engine);
 
     enna->use_network = enna_config->use_network;
     enna->use_covers = enna_config->use_covers;
