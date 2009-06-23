@@ -91,10 +91,11 @@ void enna_log_print(int level, const char *module, char *file, int line,
     int verbosity;
     const char *prefix = NULL;
 
-    if (!enna || !format)
+    if (!format)
         return;
 
-    verbosity = enna->lvl;
+    if (enna) verbosity = enna->lvl;
+    else verbosity = ENNA_MSG_INFO;
 
     /* do we really want loging ? */
     if (verbosity == ENNA_MSG_NONE)
