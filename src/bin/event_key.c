@@ -71,6 +71,8 @@ static const struct
     { "space",        0,              ENNA_KEY_SPACE         },
     { "Escape",       0,              ENNA_KEY_QUIT          },
     { "Super_L",      0,              ENNA_KEY_MENU          },
+    { "Meta_L",       0,              ENNA_KEY_MENU          },
+    { "Hyper_L",      0,              ENNA_KEY_MENU          },
     { "plus",         0,              ENNA_KEY_PLUS          },
     { "KP_Add",       0,              ENNA_KEY_PLUS          },
     { "minus",        0,              ENNA_KEY_MINUS         },
