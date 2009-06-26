@@ -556,7 +556,8 @@ int main(int argc, char **argv)
     elm_init(argc, argv);
 
     /* Must be called first */
-    enna_config_init();
+    enna_config_init(conffile);
+    ENNA_FREE(conffile);
     enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n", enna_config->log_file);
     enna_log_init(enna_config->log_file);
     enna = calloc(1, sizeof(Enna));

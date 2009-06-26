@@ -270,16 +270,23 @@ enna_config_module_pair_get(const char *module_name)
     return eina_hash_find(hash_config, module_name);
 }
 
-void enna_config_init(void)
+void enna_config_init(const char* conffile)
 {
     char filename[4096];
 
     enna_config = calloc(1, sizeof(Enna_Config));
-    snprintf(filename, sizeof(filename), "%s/.enna/enna.cfg",
+    if (conffile)
+        snprintf(filename, sizeof(filename), "%s", conffile);
+    else
+        snprintf(filename, sizeof(filename), "%s/.enna/enna.cfg",
             enna_util_user_home_get());
+
     hash_config = _config_load_conf_file(filename);
-    if (hash_config) eina_hash_foreach(hash_config, _hash_foreach, NULL);
-    else enna_log(ENNA_MSG_WARNING, NULL, "couldn't load enna config file.");
+    if (hash_config) {
+        eina_hash_foreach(hash_config, _hash_foreach, NULL);
+        enna_log(ENNA_MSG_INFO, NULL, "using config file: %s.", filename);
+    }
+    else enna_log(ENNA_MSG_WARNING, NULL, "couldn't load enna config file: %s.", filename);
 
     if (!enna_config->theme) 
         enna_config->theme=strdup("default");

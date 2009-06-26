@@ -100,6 +100,6 @@ Enna_Config_Video *enna_config_video_get(void);
 void enna_config_value_store(void *var, char *section,
         ENNA_CONFIG_TYPE type, Config_Pair *pair);
 Enna_Config_Data *enna_config_module_pair_get(const char *module_name);
-void enna_config_init(void);
+void enna_config_init(const char* conffile);
 void enna_config_shutdown(void);
 #endif /* ENNA_CONFIG_H */
