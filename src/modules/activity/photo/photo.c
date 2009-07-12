@@ -205,6 +205,17 @@ static void _exif_parse_metadata(const char *filename)
 #endif
 
 
+static void
+_flip_picture (int way)
+{
+    Evas_Object *obj;
+
+    int w = way ? ELM_IMAGE_FLIP_HORIZONTAL : ELM_IMAGE_FLIP_VERTICAL;
+
+    obj = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
+    if (obj)
+        elm_image_orient_set (obj, w);
+}
 
 static int
 _show_sel_image(void *data)
@@ -562,6 +573,12 @@ static void _class_event(void *event_info)
         case ENNA_KEY_LEFT:
             //FIXME: should be made possible to switch to prev/next pic right here
             _photo_info_delete();
+            break;
+        case ENNA_KEY_V:
+            _flip_picture (0);
+            break;
+        case ENNA_KEY_H:
+            _flip_picture (1);
             break;
         case ENNA_KEY_OK:
             _create_slideshow_gui();
