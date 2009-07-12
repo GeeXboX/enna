@@ -97,6 +97,29 @@ void enna_slideshow_append_list(Evas_Object *obj, Eina_List *list)
     }
 }
 
+void enna_slideshow_set (Evas_Object *obj, const char *pos)
+{
+    Eina_List *l, *list;
+    const char *filename;
+    int i = 0;
+
+    API_ENTRY return;
+
+    if (!pos)
+        return;
+
+    list = sd->playlist;
+    EINA_LIST_FOREACH(list, l, filename)
+    {
+        if (!strcmp (filename, pos))
+        {
+            sd->playlist_id = i;
+            break;
+        }
+        i++;
+    }
+}
+
 static Evas_Object *
 enna_slideshow_create_img (Evas_Object *obj, const char *filename)
 {

@@ -37,6 +37,7 @@
 Evas_Object *enna_slideshow_add(Evas * evas);
 void enna_slideshow_append_img(Evas_Object *obj, const char *filename);
 void enna_slideshow_append_list(Evas_Object *obj, Eina_List *list);
+void enna_slideshow_set (Evas_Object *obj, const char *pos);
 int enna_slideshow_next(Evas_Object *obj);
 int enna_slideshow_prev(Evas_Object *obj);
 void enna_slideshow_play(Evas_Object *obj);

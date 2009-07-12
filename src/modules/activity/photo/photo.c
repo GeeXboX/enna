@@ -577,6 +577,8 @@ static void _class_event(void *event_info)
         case ENNA_KEY_OK:
             _create_slideshow_gui();
             _slideshow_add_files();
+            enna_slideshow_set (mod->o_slideshow,
+                                enna_wall_selected_filename_get (mod->o_wall));
             enna_slideshow_play(mod->o_slideshow);
             break;
         default:
