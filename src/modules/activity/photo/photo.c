@@ -45,6 +45,7 @@
 #include "event_key.h"
 #include "logs.h"
 #include "photo.h"
+#include "item_class.h"
 
 #ifdef BUILD_LIBEXIF
 #include "libexif/exif-data.h"
@@ -635,47 +636,6 @@ static Enna_Class_Activity class =
     NULL
 };
 
-
-/* Class Item interface */
-static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Photo_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    return strdup(item->label);
-}
-
-static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Photo_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    if (!strcmp(part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
-
-        ic = elm_icon_add(obj);
-        elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
-        evas_object_size_hint_min_set(ic, 64, 64);
-        evas_object_show(ic);
-        return ic;
-    }
-
-    return NULL;
-}
-
-static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
-{
-   return 0;
-}
-
-static void _genlist_del(const void *data, Evas_Object *obj)
-{
-}
-
-
 /*****************************************************************************/
 /*                          Public Module API                                */
 /*****************************************************************************/
@@ -696,15 +656,7 @@ void module_init(Enna_Module *em)
     mod->em = em;
     em->mod = mod;
 
-     /* Create Class Item */
-    mod->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
-
-    mod->item_class->item_style     = "default";
-    mod->item_class->func.label_get = _genlist_label_get;
-    mod->item_class->func.icon_get  = _genlist_icon_get;
-    mod->item_class->func.state_get = _genlist_state_get;
-    mod->item_class->func.del       = _genlist_del;
-
+    mod->item_class = photo_item_class_new ();
     enna_activity_add(&class);
 }
 
