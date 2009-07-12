@@ -506,7 +506,6 @@ browser_cb_refresh (void *data, int type, void *event)
     if (mod->state == MENU_VIEW)
     {
 	ENNA_OBJECT_DEL(mod->o_list);
-	mod->o_list = NULL;
 	_create_menu ();
     }
 
@@ -529,13 +528,8 @@ browser_cb_root (void *data, Evas_Object *obj, void *event_info)
                                     "hilight", browser_cb_hilight);
 
     ENNA_OBJECT_DEL (mod->o_browser);
-    mod->o_browser = NULL;
-
     ENNA_OBJECT_DEL(mod->o_panel_infos);
-    mod->o_panel_infos = NULL;
-
     ENNA_OBJECT_DEL(mod->o_resume);
-    mod->o_resume = NULL;
 
     _create_menu ();
 #ifdef LOCATION

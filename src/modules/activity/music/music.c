@@ -604,9 +604,7 @@ _create_menu()
 
     /* Create List */
     ENNA_OBJECT_DEL(mod->o_browser);
-    mod->o_browser = NULL;
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
-    mod->o_panel_lyrics = NULL;
     o = enna_list_add(mod->em->evas);
     categories = enna_vfs_get(ENNA_CAPS_MUSIC);
     EINA_LIST_FOREACH(categories, l, cat)
@@ -702,7 +700,6 @@ _refresh_browser_cb(void *data, int type, void *event)
     if (mod->state == MENU_VIEW)
     {
 	ENNA_OBJECT_DEL(mod->o_list);
-	mod->o_list = NULL;
 	_create_menu();
     }
     return 1;

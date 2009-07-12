@@ -374,16 +374,8 @@ void enna_mainmenu_show(Evas_Object *obj)
     ENNA_OBJECT_DEL(icon);
 
     edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "enna");
-    if (sd->o_home_button)
-    {
-	evas_object_del(sd->o_home_button);
-	sd->o_home_button = NULL;
-    }
-    if (sd->o_back_button)
-    {
-	evas_object_del(sd->o_back_button);
-	sd->o_home_button = NULL;
-    }
+    ENNA_OBJECT_DEL (sd->o_home_button);
+    ENNA_OBJECT_DEL (sd->o_back_button);
 }
 
 void enna_mainmenu_hide(Evas_Object *obj)
@@ -394,11 +386,8 @@ void enna_mainmenu_hide(Evas_Object *obj)
 
     sd->visible = 0;
     edje_object_signal_emit(sd->o_edje, "mainmenu,hide", "enna");
-    if (sd->o_home_button)
-	evas_object_del(sd->o_home_button);
-    if (sd->o_back_button)
-	evas_object_del(sd->o_back_button);
-
+    ENNA_OBJECT_DEL (sd->o_home_button);
+    ENNA_OBJECT_DEL (sd->o_back_button);
 
     sd->o_home_button = _add_button(sd, "icon/home_mini", _home_button_clicked_cb);
     elm_box_pack_start(sd->o_btn_box, sd->o_home_button);
