@@ -41,6 +41,7 @@
 #define SMART_NAME "slideshow"
 
 #define NB_TRANSITIONS_MAX 3.0
+#define SLIDESHOW_DEFAULT_TIMER 4 /* seconds */
 
 #define STOP 0
 #define PLAY 1
@@ -166,7 +167,7 @@ void enna_slideshow_play(void *data)
         sd->state = PLAY;
         o = eina_list_nth(sd->playlist, sd->playlist_id);
         _switch_images(sd, o);
-        sd->timer = ecore_timer_add(4, enna_slideshow_next, sd->obj);
+        sd->timer = ecore_timer_add(SLIDESHOW_DEFAULT_TIMER, enna_slideshow_next, sd->obj);
     }
     else
     {
