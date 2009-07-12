@@ -80,8 +80,10 @@
     }                                                   \
 
 #define ENNA_OBJECT_DEL(obj)                            \
-    if (obj)                                            \
+    if (obj) {                                          \
         evas_object_del(obj);                           \
+        obj = NULL;                                     \
+    }                                                   \
 
 #define API_ENTRY                                       \
    Smart_Data *sd;                                      \
