@@ -73,43 +73,66 @@ static void _switch_images(Smart_Data * sd, Evas_Object * new_slide);
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
 
-void enna_slideshow_image_append(Evas_Object *obj, const char *filename)
+void enna_slideshow_append_img(Evas_Object *obj, const char *filename)
+{
+    API_ENTRY return;
+
+    if (filename)
+        sd->playlist = eina_list_append (sd->playlist, strdup (filename));
+}
+
+void enna_slideshow_append_list(Evas_Object *obj, Eina_List *list)
+{
+    API_ENTRY return;
+
+    if (list)
+    {
+        Eina_List *l;
+        const char *filename;
+
+        EINA_LIST_FOREACH(list, l, filename)
+        {
+            enna_slideshow_append_img (obj, filename);
+        }
+    }
+}
+
+static Evas_Object *
+enna_slideshow_create_img (Evas_Object *obj, const char *filename)
 {
     Evas_Object *o;
     Evas_Coord w, h;
 
-    API_ENTRY
-    return;
-
     if (!filename)
-        return;
+        return NULL;
 
-    o = enna_image_add(evas_object_evas_get(obj));
-    enna_log(ENNA_MSG_EVENT, NULL, "append : %s", filename);
-    enna_image_file_set(o, filename, NULL);
-    enna_image_size_get(o, &w, &h);
-    enna_image_load_size_set(o, w, h);
+    o = enna_image_add (evas_object_evas_get (obj));
+    enna_log (ENNA_MSG_EVENT, NULL, "append : %s", filename);
+    enna_image_file_set (o, filename, NULL);
+    enna_image_size_get (o, &w, &h);
+    enna_image_load_size_set (o, w, h);
 
-    sd->playlist = eina_list_append(sd->playlist, o);
+    return o;
 }
 
-int enna_slideshow_next(void *data)
+int enna_slideshow_next (Evas_Object *obj)
 {
+    char *filename;
     Evas_Object *o;
-    Evas_Object * obj = (Evas_Object *) data;
 
     API_ENTRY
-    return 0;
+        return 0;
 
     if (sd->old_slide)
         return 1;
 
     sd->playlist_id++;
-    o = eina_list_nth(sd->playlist, sd->playlist_id);
+    filename = eina_list_nth (sd->playlist, sd->playlist_id);
 
+    o = enna_slideshow_create_img (obj, filename);
     if (o)
     {
-        _switch_images(sd, o);
+        _switch_images (sd, o);
         return 1;
     }
     else
@@ -117,23 +140,23 @@ int enna_slideshow_next(void *data)
         sd->playlist_id--;
         return 0;
     }
-    return 0;
 }
 
-int enna_slideshow_prev(void *data)
+int enna_slideshow_prev (Evas_Object *obj)
 {
     Evas_Object *o;
-    Evas_Object * obj = (Evas_Object *) data;
+    char *filename;
 
     API_ENTRY
-    return 0;
+        return 0;
 
     if (sd->old_slide)
         return 1;
 
     sd->playlist_id--;
-    o = eina_list_nth(sd->playlist, sd->playlist_id);
+    filename = eina_list_nth (sd->playlist, sd->playlist_id);
 
+    o = enna_slideshow_create_img (obj, filename);
     if (o)
     {
         if (sd->state == PLAY)
@@ -149,24 +172,33 @@ int enna_slideshow_prev(void *data)
         sd->playlist_id++;
         return 0;
     }
-    return 0;
 }
 
-void enna_slideshow_play(void *data)
+static int
+enna_slideshow_timer (void *data)
 {
-    Evas_Object *o;
-    Evas_Object * obj = (Evas_Object *) data;
+    Evas_Object *obj = data;
+    return enna_slideshow_next (obj);
+}
 
+void enna_slideshow_play(Evas_Object *obj)
+{
     API_ENTRY
     return;
 
     if (!sd->timer)
     {
+        char *filename;
+        Evas_Object *o;
+
         /* Play */
         sd->state = PLAY;
-        o = eina_list_nth(sd->playlist, sd->playlist_id);
-        _switch_images(sd, o);
-        sd->timer = ecore_timer_add(enna->slideshow_delay, enna_slideshow_next, sd->obj);
+        filename = eina_list_nth(sd->playlist, sd->playlist_id);
+        o = enna_slideshow_create_img (obj, filename);
+        if (o)
+            _switch_images(sd, o);
+        sd->timer = ecore_timer_add(enna->slideshow_delay,
+                                    enna_slideshow_timer, sd->obj);
     }
     else
     {
@@ -238,6 +270,7 @@ static void _switch_images(Smart_Data * sd, Evas_Object * new_slide)
     edje_object_part_swallow(sd->o_transition, "slide.1", sd->old_slide);
     edje_object_part_swallow(sd->o_transition, "slide.2", sd->slide);
     edje_object_signal_emit(sd->o_transition, "show,2", "enna");
+    ENNA_OBJECT_DEL (sd->old_slide);
 }
 
 static void _enna_slideshow_smart_reconfigure(Smart_Data * sd)
@@ -292,7 +325,7 @@ static void _smart_del(Evas_Object * obj)
     INTERNAL_ENTRY;
 
     for (l = sd->playlist; l; l = l->next)
-        evas_object_del(l->data);
+        ENNA_FREE (l->data);
 
     evas_object_del(sd->o_edje);
     evas_object_del(sd->old_slide);

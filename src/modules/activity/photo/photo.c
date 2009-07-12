@@ -320,15 +320,10 @@ static void _create_slideshow_gui()
 
 void _slideshow_add_files()
 {
-    Eina_List *files = NULL;
-    Eina_List *l;
-    const char *filename;
+    Eina_List *files;
 
-    files = enna_wall_get_filenames(mod->o_wall);
-    EINA_LIST_FOREACH(files, l, filename)
-    {
-        enna_slideshow_image_append(mod->o_slideshow, filename);
-    }
+    files = enna_wall_get_filenames (mod->o_wall);
+    enna_slideshow_append_list (mod->o_slideshow, files);
     eina_list_free(files);
 }
 

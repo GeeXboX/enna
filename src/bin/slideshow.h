@@ -35,8 +35,9 @@
 #define SLIDESHOW_DEFAULT_TIMER 5 /* seconds */
 
 Evas_Object *enna_slideshow_add(Evas * evas);
-void enna_slideshow_image_append(Evas_Object *obj, const char *filename);
-int enna_slideshow_next(void *data);
-int enna_slideshow_prev(void *data);
-void enna_slideshow_play(void *data);
+void enna_slideshow_append_img(Evas_Object *obj, const char *filename);
+void enna_slideshow_append_list(Evas_Object *obj, Eina_List *list);
+int enna_slideshow_next(Evas_Object *obj);
+int enna_slideshow_prev(Evas_Object *obj);
+void enna_slideshow_play(Evas_Object *obj);
 #endif /* SLIDESHOW_H */
