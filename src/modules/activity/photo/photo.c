@@ -306,8 +306,7 @@ static void _create_slideshow_gui()
 
     mod->state = SLIDESHOW_VIEW;
 
-    if (mod->o_slideshow)
-        evas_object_del(mod->o_slideshow);
+    ENNA_OBJECT_DEL (mod->o_slideshow);
 
     o = enna_slideshow_add(mod->em->evas);
     edje_object_part_swallow(enna->o_edje, "enna.swallow.fullscreen", o);
