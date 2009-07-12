@@ -611,27 +611,26 @@ static void _class_event(void *event_info)
 {
     Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key(ev);
+    int i;
 
-    switch (mod->state)
-    {
-    case MENU_VIEW:
-        photo_event_menu (event_info, key);
-        break;
-    case BROWSER_VIEW:
-        photo_event_browser (event_info, key);
-        break;
-    case WALL_VIEW:
-        photo_event_wall (event_info, key);
-        break;
-    case WALL_PREVIEW:
-        photo_event_preview (event_info, key);
-        break;
-    case SLIDESHOW_VIEW:
-        photo_event_slideshow (event_info, key);
-        break;
-    default:
-        break;
-    }
+    static const struct {
+        PHOTO_STATE state;
+        void (*event_handler) (void *event_info, enna_key_t key);
+    } evh [] = {
+        { MENU_VIEW,         &photo_event_menu        },
+        { BROWSER_VIEW,      &photo_event_browser     },
+        { WALL_VIEW,         &photo_event_wall        },
+        { WALL_PREVIEW,      &photo_event_preview     },
+        { SLIDESHOW_VIEW,    &photo_event_slideshow   },
+        { 0,                 NULL                     }
+    };
+
+    for (i = 0; evh[i].event_handler; i++)
+        if (mod->state == evh[i].state)
+        {
+            evh[i].event_handler (event_info, key);
+            break;
+        }
 }
 
 static Enna_Class_Activity class =
