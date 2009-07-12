@@ -182,8 +182,7 @@ static void _exif_parse_metadata(const char *filename)
 
   mod->exif.str = NULL;
 
-  if (mod->exif.o_exif)
-      evas_object_del(mod->exif.o_exif);
+  ENNA_OBJECT_DEL (mod->exif.o_exif);
 
   mod->exif.o_exif = edje_object_add(mod->em->evas);
   edje_object_file_set(mod->exif.o_exif, enna_config_theme_get(), "exif/data");
@@ -425,8 +424,7 @@ static void _browse(void *data)
     edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
     edje_object_signal_emit(mod->o_edje, "slideshow,hide", "enna");
 
-    evas_object_del(mod->o_menu);
-    mod->o_menu = NULL;
+    ENNA_OBJECT_DEL (mod->o_menu);
 }
 
 static void
@@ -591,7 +589,7 @@ static void _class_event(void *event_info)
         {
         case ENNA_KEY_CANCEL:
             _photo_info_delete();
-            evas_object_del(mod->o_slideshow);
+            ENNA_OBJECT_DEL (mod->o_slideshow);
             mod->state = WALL_VIEW;
             edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
             edje_object_signal_emit(mod->o_edje, "list,show", "enna");
@@ -709,7 +707,7 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
-    evas_object_del(mod->o_edje);
+    ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_wall);
     ENNA_OBJECT_DEL(mod->o_menu);
     ENNA_OBJECT_DEL(mod->o_browser);
