@@ -32,6 +32,8 @@
 
 #include "enna.h"
 
+#define SLIDESHOW_DEFAULT_TIMER 5 /* seconds */
+
 Evas_Object *enna_slideshow_add(Evas * evas);
 void enna_slideshow_image_append(Evas_Object *obj, const char *filename);
 int enna_slideshow_next(void *data);
