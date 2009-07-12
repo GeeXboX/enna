@@ -153,7 +153,7 @@ static void _exif_content_foreach_func(ExifEntry *entry, void *callback_data)
   if (mod->exif.str)
       len += strlen(mod->exif.str);
 
-  exif_str = (char*)calloc(len, sizeof(char));
+  exif_str = calloc(len, sizeof(char));
   if (mod->exif.str)
       strcpy(exif_str, mod->exif.str);
   strcat(exif_str, buf_txtblk);
