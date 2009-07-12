@@ -342,6 +342,7 @@ _class_event_mediaplayer_view(enna_key_t key, void *event_info)
 	enna_mediaplayer_default_seek_forward ();
 	break;
     case ENNA_KEY_CANCEL:
+        panel_lyrics_display (0);
 	ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
 	mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
 	edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
