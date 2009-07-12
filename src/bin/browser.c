@@ -166,7 +166,7 @@ static Evas_Bool _view_list_state_get(const void *data, Evas_Object *obj, const 
 
 static void _view_list_del(const void *data, Evas_Object *obj)
 {
-    const Browser_Item_Class_Data *item = data;
+    Browser_Item_Class_Data *item = (void *) data;
 
     if (!item) return;
 
