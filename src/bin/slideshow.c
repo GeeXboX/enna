@@ -187,7 +187,7 @@ static void _random_transition(Smart_Data *sd)
     if (!sd)
         return;
 
-    n = 1 + (int) ( 3.0 * rand() / (RAND_MAX + 1.0 ));
+    n = 1 + (int) ( NB_TRANSITIONS_MAX * rand() / (RAND_MAX + 1.0 ));
     if (sd->o_transition)
         evas_object_del(sd->o_transition);
     sd->o_transition = edje_object_add(evas_object_evas_get(sd->obj));
