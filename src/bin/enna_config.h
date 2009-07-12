@@ -61,6 +61,7 @@ struct _Enna_Config
     int use_covers;
     int use_snapshots;
     int metadata_cache;
+    int slideshow_delay;
     const char *engine;
     const char *backend;
     const char *verbosity;

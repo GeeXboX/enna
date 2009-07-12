@@ -166,7 +166,7 @@ void enna_slideshow_play(void *data)
         sd->state = PLAY;
         o = eina_list_nth(sd->playlist, sd->playlist_id);
         _switch_images(sd, o);
-        sd->timer = ecore_timer_add(SLIDESHOW_DEFAULT_TIMER, enna_slideshow_next, sd->obj);
+        sd->timer = ecore_timer_add(enna->slideshow_delay, enna_slideshow_next, sd->obj);
     }
     else
     {

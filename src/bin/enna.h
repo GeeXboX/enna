@@ -137,6 +137,7 @@ struct _Enna
     int use_covers;
     int use_snapshots;
     int metadata_cache;
+    int slideshow_delay;
     int cursor_is_shown;
     Ecore_Timer *mouse_idle_timer;
     Ecore_Timer *idle_timer;

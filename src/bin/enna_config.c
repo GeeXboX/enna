@@ -43,6 +43,7 @@
 #include "enna_config.h"
 #include "utils.h"
 #include "logs.h"
+#include "slideshow.h"
 
 #define DEFAULT_FILE \
     "[enna]\n" \
@@ -78,6 +79,8 @@
     "use_snapshots=1\n" \
     "#0,1\n" \
     "metadata_cache=1\n" \
+    "\n" \
+    "slideshow_delay=5\n" \
     "\n" \
     "idle_timeout=0\n" \
     "\n" \
@@ -320,6 +323,7 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
         enna_config->use_covers = 1;
         enna_config->use_snapshots = 1;
         enna_config->metadata_cache = 1;
+        enna_config->slideshow_delay = SLIDESHOW_DEFAULT_TIMER;
 
         enna_config->sub_align = "auto";
         enna_config->sub_pos = "auto";
@@ -356,6 +360,9 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
                                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->metadata_cache,
                                     "metadata_cache",
+                                    ENNA_CONFIG_INT, pair);
+            enna_config_value_store(&enna_config->slideshow_delay,
+                                    "slideshow_delay",
                                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->engine, "engine",
                     ENNA_CONFIG_STRING, pair);

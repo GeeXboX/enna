@@ -299,6 +299,7 @@ static int _enna_init(void)
     enna->use_covers = enna_config->use_covers;
     enna->use_snapshots = enna_config->use_snapshots;
     enna->metadata_cache = enna_config->metadata_cache;
+    enna->slideshow_delay = enna_config->slideshow_delay;
 
     ecore_evas_fullscreen_set(enna->ee, enna_config->fullscreen
         | run_fullscreen);
