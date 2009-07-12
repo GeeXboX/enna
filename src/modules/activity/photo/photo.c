@@ -467,6 +467,126 @@ static void _create_gui(void)
     _create_menu();
 }
 
+static void photo_event_menu (void *event_info, enna_key_t key)
+{
+    switch (key)
+    {
+    case ENNA_KEY_LEFT:
+    case ENNA_KEY_CANCEL:
+        enna_content_hide ();
+        enna_mainmenu_show (enna->o_mainmenu);
+        break;
+    case ENNA_KEY_RIGHT:
+    case ENNA_KEY_OK:
+    case ENNA_KEY_SPACE:
+        _browse (enna_list_selected_data_get(mod->o_menu));
+        break;
+    default:
+        enna_list_event_key_down(mod->o_menu, event_info);
+    }
+}
+
+static void photo_event_browser (void *event_info, enna_key_t key)
+{
+    switch (key)
+    {
+    case ENNA_KEY_RIGHT:
+    case ENNA_KEY_LEFT:
+        mod->state = WALL_VIEW;
+        edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
+        break;
+    default:
+        enna_browser_event_feed(mod->o_browser, event_info);
+    }
+}
+
+static void photo_event_wall (void *event_info, enna_key_t key)
+{
+    switch (key)
+    {
+    case ENNA_KEY_CANCEL:
+        edje_object_signal_emit(mod->o_edje, "browser,show", "enna");
+        mod->state = BROWSER_VIEW;
+        break;
+    case ENNA_KEY_OK:
+    case ENNA_KEY_SPACE:
+        _photo_info_fs();
+        break;
+    case ENNA_KEY_RIGHT:
+    case ENNA_KEY_LEFT:
+    case ENNA_KEY_UP:
+    case ENNA_KEY_DOWN:
+        enna_wall_event_feed(mod->o_wall, event_info);
+        break;
+    default:
+        break;
+    }
+}
+
+static void photo_event_preview (void *event_info, enna_key_t key)
+{
+    switch (key)
+    {
+    case ENNA_KEY_CANCEL:
+        _photo_info_delete();
+        break;
+#ifdef BUILD_LIBEXIF
+    case ENNA_KEY_UP:
+        edje_object_signal_emit(mod->o_preview, "show,exif", "enna");
+        break;
+    case ENNA_KEY_DOWN:
+        edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
+        break;
+#endif
+    case ENNA_KEY_RIGHT:
+    case ENNA_KEY_LEFT:
+        //FIXME: should be made possible to switch to prev/next pic right here
+        _photo_info_delete();
+        break;
+    case ENNA_KEY_V:
+        _flip_picture (0);
+        break;
+    case ENNA_KEY_H:
+        _flip_picture (1);
+        break;
+    case ENNA_KEY_OK:
+        _create_slideshow_gui();
+        _slideshow_add_files();
+        enna_slideshow_set (mod->o_slideshow,
+                            enna_wall_selected_filename_get (mod->o_wall));
+        enna_slideshow_play(mod->o_slideshow);
+        break;
+    default:
+        break;
+    }
+}
+
+static void photo_event_slideshow (void *event_info, enna_key_t key)
+{
+    switch (key)
+    {
+    case ENNA_KEY_CANCEL:
+        _photo_info_delete();
+        ENNA_OBJECT_DEL (mod->o_slideshow);
+        mod->state = WALL_VIEW;
+        edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
+        edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+        break;
+    case ENNA_KEY_RIGHT:
+        enna_slideshow_next(mod->o_slideshow);
+        break;
+    case ENNA_KEY_LEFT:
+        enna_slideshow_prev(mod->o_slideshow);
+        break;
+    case ENNA_KEY_OK:
+    case ENNA_KEY_SPACE:
+        enna_slideshow_play(mod->o_slideshow);
+        break;
+    default:
+        break;
+    }
+}
+
 /*****************************************************************************/
 /*                         Private Module API                                */
 /*****************************************************************************/
@@ -495,123 +615,23 @@ static void _class_event(void *event_info)
     switch (mod->state)
     {
     case MENU_VIEW:
-        switch (key)
-        {
-        case ENNA_KEY_LEFT:
-        case ENNA_KEY_CANCEL:
-            enna_content_hide();
-            enna_mainmenu_show(enna->o_mainmenu);
-            break;
-        case ENNA_KEY_RIGHT:
-        case ENNA_KEY_OK:
-        case ENNA_KEY_SPACE:
-            _browse(enna_list_selected_data_get(mod->o_menu));
-            break;
-        default:
-            enna_list_event_key_down(mod->o_menu, event_info);
-        }
+        photo_event_menu (event_info, key);
         break;
     case BROWSER_VIEW:
-        switch (key)
-        {
-        case ENNA_KEY_RIGHT:
-        case ENNA_KEY_LEFT:
-            mod->state = WALL_VIEW;
-            edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
-            break;
-        default:
-            enna_browser_event_feed(mod->o_browser, event_info);
-        }
+        photo_event_browser (event_info, key);
         break;
     case WALL_VIEW:
-        switch (key)
-        {
-        case ENNA_KEY_CANCEL:
-
-            edje_object_signal_emit(mod->o_edje, "browser,show", "enna");
-            mod->state = BROWSER_VIEW;
-            break;
-
-        case ENNA_KEY_OK:
-        case ENNA_KEY_SPACE:
-            _photo_info_fs();
-            break;
-        case ENNA_KEY_RIGHT:
-        case ENNA_KEY_LEFT:
-        case ENNA_KEY_UP:
-        case ENNA_KEY_DOWN:
-            enna_wall_event_feed(mod->o_wall, ev);
-            break;
-        default:
-            break;
-
-        }
+        photo_event_wall (event_info, key);
         break;
     case WALL_PREVIEW:
-        switch (key)
-        {
-        case ENNA_KEY_CANCEL:
-            _photo_info_delete();
-            break;
-#ifdef BUILD_LIBEXIF
-        case ENNA_KEY_UP:
-            edje_object_signal_emit(mod->o_preview, "show,exif", "enna");
-            break;
-        case ENNA_KEY_DOWN:
-            edje_object_signal_emit(mod->o_preview, "hide,exif", "enna");
-            break;
-#endif
-        case ENNA_KEY_RIGHT:
-        case ENNA_KEY_LEFT:
-            //FIXME: should be made possible to switch to prev/next pic right here
-            _photo_info_delete();
-            break;
-        case ENNA_KEY_V:
-            _flip_picture (0);
-            break;
-        case ENNA_KEY_H:
-            _flip_picture (1);
-            break;
-        case ENNA_KEY_OK:
-            _create_slideshow_gui();
-            _slideshow_add_files();
-            enna_slideshow_set (mod->o_slideshow,
-                                enna_wall_selected_filename_get (mod->o_wall));
-            enna_slideshow_play(mod->o_slideshow);
-            break;
-        default:
-            break;
-
-        }
+        photo_event_preview (event_info, key);
         break;
     case SLIDESHOW_VIEW:
-        switch (key)
-        {
-        case ENNA_KEY_CANCEL:
-            _photo_info_delete();
-            ENNA_OBJECT_DEL (mod->o_slideshow);
-            mod->state = WALL_VIEW;
-            edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
-            edje_object_signal_emit(mod->o_edje, "list,show", "enna");
-            break;
-        case ENNA_KEY_RIGHT:
-            enna_slideshow_next(mod->o_slideshow);
-            break;
-        case ENNA_KEY_LEFT:
-            enna_slideshow_prev(mod->o_slideshow);
-            break;
-        case ENNA_KEY_OK:
-        case ENNA_KEY_SPACE:
-            enna_slideshow_play(mod->o_slideshow);
-            break;
-        default:
-            break;
-        }
+        photo_event_slideshow (event_info, key);
         break;
     default:
         break;
     }
-
 }
 
 static Enna_Class_Activity class =
