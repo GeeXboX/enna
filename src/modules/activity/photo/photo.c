@@ -393,10 +393,6 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 	}
 
     }
-    else
-    {
-
-    }
 
     free(ev);
 }
