@@ -149,10 +149,9 @@ static void _exif_content_foreach_func(ExifEntry *entry, void *callback_data)
          exif_tag_get_name(entry->tag),
          exif_entry_get_value(entry, buf, sizeof(buf)));
 
-  if (!mod->exif.str)
-      len = strlen(buf_txtblk) + 1;
-  else
-      len = strlen(mod->exif.str) + strlen(buf_txtblk) + 1;
+  len = strlen(buf_txtblk) + 1;
+  if (mod->exif.str)
+      len += strlen(mod->exif.str);
 
   exif_str = (char*)calloc(len, sizeof(char));
   if (mod->exif.str)
