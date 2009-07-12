@@ -44,6 +44,7 @@
 #include "mainmenu.h"
 #include "event_key.h"
 #include "logs.h"
+#include "photo.h"
 
 #ifdef BUILD_LIBEXIF
 #include "libexif/exif-data.h"
@@ -59,23 +60,6 @@ static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_i
 static void _browse(void *data);
 
 static void _photo_info_fs();
-typedef enum _PHOTO_STATE PHOTO_STATE;
-typedef struct _Photo_Item_Class_Data Photo_Item_Class_Data;
-
-struct _Photo_Item_Class_Data
-{
-    const char *icon;
-    const char *label;
-};
-
-enum _PHOTO_STATE
-{
-    WALL_VIEW,
-    WALL_PREVIEW,
-    SLIDESHOW_VIEW,
-    MENU_VIEW,
-    BROWSER_VIEW
-};
 
 typedef struct _Enna_Module_Photo
 {

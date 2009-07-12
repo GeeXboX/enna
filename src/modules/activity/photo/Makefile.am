@@ -21,7 +21,8 @@ pkgdir = $(libdir)/enna/modules
 pkg_LTLIBRARIES = activity_photo.la
 
 activity_photo_la_SOURCES= \
-photo.c
+photo.c \
+photo.h
 
 activity_photo_la_LIBADD = @ENNA_LIBS@ @LIBEXIF_LIBS@
 activity_photo_la_LDFLAGS = -module -avoid-version
