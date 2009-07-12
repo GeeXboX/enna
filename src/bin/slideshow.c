@@ -183,32 +183,27 @@ void enna_slideshow_play(void *data)
 static void _random_transition(Smart_Data *sd)
 {
     unsigned int n;
+    static const char * transitions_array[(int) NB_TRANSITIONS_MAX] = {
+        "transitions/crossfade",
+        "transitions/vswipe",
+        "transitions/hslide"
+    };
 
     if (!sd)
         return;
 
     n = 1 + (int) ( NB_TRANSITIONS_MAX * rand() / (RAND_MAX + 1.0 ));
+    if (n > NB_TRANSITIONS_MAX)
+      n = NB_TRANSITIONS_MAX;
+
     if (sd->o_transition)
         evas_object_del(sd->o_transition);
     sd->o_transition = edje_object_add(evas_object_evas_get(sd->obj));
-    enna_log(ENNA_MSG_EVENT, NULL, "Transition n°%d", n);
-    switch (n)
-    {
-        case 1:
-            edje_object_file_set(sd->o_transition, enna_config_theme_get(),
-                    "transitions/crossfade");
-            break;
-        case 2:
-            edje_object_file_set(sd->o_transition, enna_config_theme_get(),
-                    "transitions/vswipe");
-            break;
-        case 3:
-            edje_object_file_set(sd->o_transition, enna_config_theme_get(),
-                    "transitions/hslide");
-            break;
-        default:
-            break;
-    }
+    enna_log(ENNA_MSG_EVENT, NULL, "Transition n°%d: %s",
+             n, transitions_array[n-1]);
+    edje_object_file_set(sd->o_transition, enna_config_theme_get(),
+                         transitions_array[n-1]);
+
     edje_object_part_swallow(sd->o_edje, "enna.swallow.transition",
             sd->o_transition);
     edje_object_signal_callback_add(sd->o_transition, "*", "*", _edje_cb, sd);
