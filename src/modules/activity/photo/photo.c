@@ -48,7 +48,7 @@
 #include "item_class.h"
 
 #ifdef BUILD_LIBEXIF
-#include "libexif/exif-data.h"
+#include <libexif/exif-data.h>
 #endif
 
 #define ENNA_MODULE_NAME "photo"
