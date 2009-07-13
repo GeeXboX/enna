@@ -24,7 +24,9 @@ activity_photo_la_SOURCES= \
 photo.c \
 photo.h \
 item_class.c \
-item_class.h
+item_class.h \
+exif.c \
+exif.h
 
 activity_photo_la_LIBADD = @ENNA_LIBS@ @LIBEXIF_LIBS@
 activity_photo_la_LDFLAGS = -module -avoid-version
