@@ -104,8 +104,7 @@ static void _photo_info_delete_cb(void *data,
 #ifdef BUILD_LIBEXIF
     ENNA_OBJECT_DEL(mod->exif.o_exif);
     ENNA_OBJECT_DEL(mod->exif.o_scroll);
-    free(mod->exif.str);
-    mod->exif.str = NULL;
+    ENNA_FREE(mod->exif.str);
 #endif
 
     ENNA_OBJECT_DEL(o_pict);
@@ -142,7 +141,7 @@ static void _exif_content_foreach_func(ExifEntry *entry, void *callback_data)
   if (mod->exif.str)
       strcpy(exif_str, mod->exif.str);
   strcat(exif_str, buf_txtblk);
-  free(mod->exif.str);
+  ENNA_FREE(mod->exif.str);
   mod->exif.str = exif_str;
 
 }
@@ -162,11 +161,7 @@ static void _exif_parse_metadata(const char *filename)
 
   if (!filename) return;
 
-  if (mod->exif.str)
-      free(mod->exif.str);
-
-  mod->exif.str = NULL;
-
+  ENNA_FREE (mod->exif.str);
   ENNA_OBJECT_DEL (mod->exif.o_exif);
 
   mod->exif.o_exif = edje_object_add(mod->em->evas);
