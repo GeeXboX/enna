@@ -330,9 +330,11 @@ _class_event_mediaplayer_view(enna_key_t key, void *event_info)
 	enna_mediaplayer_play(mod->enna_playlist);
 	break;
     case ENNA_KEY_UP:
+        panel_lyrics_display (0);
 	enna_mediaplayer_prev(mod->enna_playlist);
 	break;
     case ENNA_KEY_DOWN:
+        panel_lyrics_display (0);
 	enna_mediaplayer_next(mod->enna_playlist);
 	break;
     case ENNA_KEY_LEFT:
@@ -351,6 +353,7 @@ _class_event_mediaplayer_view(enna_key_t key, void *event_info)
 	break;
     case ENNA_KEY_STOP:
     case ENNA_KEY_S:
+        panel_lyrics_display (0);
 	enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
 	ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
 	edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
