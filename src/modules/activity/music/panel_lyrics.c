@@ -45,6 +45,8 @@ struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
+    Evas_Object *o_scroll;
+    Evas_Object *o_text;
 };
 
 /* local subsystem globals */
@@ -77,8 +79,20 @@ _smart_add (Evas_Object *obj)
     sd->o_edje = edje_object_add (evas_object_evas_get (obj));
     edje_object_file_set (sd->o_edje, enna_config_theme_get (),
                           "module/music/panel_lyrics");
+
+    sd->o_text = edje_object_add (evas_object_evas_get (obj));
+    edje_object_file_set (sd->o_text, enna_config_theme_get (),
+                          "module/music/panel_lyrics.textblock");
+
+    sd->o_scroll = elm_scroller_add (sd->o_edje);
+    edje_object_part_swallow(sd->o_edje, "content.swallow", sd->o_scroll);
+    elm_scroller_content_set (sd->o_scroll, sd->o_text);
+
     evas_object_show (sd->o_edje);
+    evas_object_show (sd->o_scroll);
+    evas_object_show (sd->o_text);
     evas_object_smart_member_add (sd->o_edje, obj);
+
     evas_object_smart_data_set (obj, sd);
 }
 
@@ -87,6 +101,8 @@ _smart_del (Evas_Object *obj)
 {
     INTERNAL_ENTRY;
     evas_object_del (sd->o_edje);
+    evas_object_del (sd->o_scroll);
+    evas_object_del (sd->o_text);
     free (sd);
 }
 
@@ -192,6 +208,7 @@ enna_panel_lyrics_add (Evas *evas)
 void
 enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
 {
+    Evas_Coord mw, mh;
     buffer_t *buf;
     char *b;
 
@@ -199,14 +216,14 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
 
     if (!m || !m->lyrics)
     {
-        edje_object_part_text_set (sd->o_edje, "lyrics.panel.textblock",
+        edje_object_part_text_set (sd->o_text, "lyrics.panel.textblock",
                                    _("No lyrics found ..."));
         return;
     }
 
     if (m && m->type != ENNA_METADATA_AUDIO)
     {
-        edje_object_part_text_set (sd->o_edje, "lyrics.panel.textblock",
+        edje_object_part_text_set (sd->o_text, "lyrics.panel.textblock",
                                    _("No lyrics found ..."));
         return;
     }
@@ -230,7 +247,13 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
         (void) *b++;
     }
 
-    edje_object_part_text_set (sd->o_edje,
+    edje_object_part_text_set (sd->o_text,
                                "lyrics.panel.textblock", buf->buf);
     buffer_free (buf);
+    edje_object_calc_force(sd->o_text);
+    edje_object_size_min_calc (sd->o_text, &mw, &mh);
+
+    printf("%d x %d\n", mw, mh);
+    evas_object_size_hint_min_set (sd->o_text, mw, mh);
+
 }

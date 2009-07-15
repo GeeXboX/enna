@@ -207,7 +207,8 @@ images {
 
        part {
           name: "lyrics.panel.swallow";
-          mouse_events: 0;
+          mouse_events: 1;
+          repeat_events: 1;
           clip_to: infos.panel.clip;
           type: SWALLOW;
           description {
