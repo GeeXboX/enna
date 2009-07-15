@@ -250,10 +250,8 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
     edje_object_part_text_set (sd->o_text,
                                "lyrics.panel.textblock", buf->buf);
     buffer_free (buf);
-    edje_object_calc_force(sd->o_text);
+    edje_object_calc_force (sd->o_text);
     edje_object_size_min_calc (sd->o_text, &mw, &mh);
-
-    printf("%d x %d\n", mw, mh);
     evas_object_size_hint_min_set (sd->o_text, mw, mh);
 
 }
