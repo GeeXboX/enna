@@ -348,7 +348,7 @@ init_sub_align (void)
     else if (!strcmp(config_video->sub_align, "middle"))
         mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_CENTER;
     else if (!strcmp(config_video->sub_align, "top"))
-        mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_TOP;	
+        mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_TOP;
 }
 
 static void
@@ -358,7 +358,7 @@ init_sub_pos (void)
         !strcmp(config_video->sub_pos, "auto"))
         mp->subtitle_position = SUB_POSITION_DEFAULT;
     else
-        mp->subtitle_position = atoi (config_video->sub_pos); 
+        mp->subtitle_position = atoi (config_video->sub_pos);
 }
 
 static void
@@ -368,7 +368,7 @@ init_sub_scale (void)
         !strcmp(config_video->sub_scale, "auto"))
         mp->subtitle_scale = SUB_SCALE_DEFAULT;
     else
-        mp->subtitle_scale = atoi (config_video->sub_scale); 
+        mp->subtitle_scale = atoi (config_video->sub_scale);
 }
 
 static void
@@ -392,7 +392,7 @@ init_framedrop (void)
     else if (!strcmp(config_video->framedrop, "soft"))
         mp->framedrop = PLAYER_FRAMEDROP_SOFT;
     else if (!strcmp(config_video->framedrop, "hard"))
-        mp->framedrop = PLAYER_FRAMEDROP_HARD;	 
+        mp->framedrop = PLAYER_FRAMEDROP_HARD;
 }
 
 static int
@@ -960,9 +960,9 @@ enna_mediaplayer_shutdown(void)
 char *enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
 {
   list_item_t *item;
-  
+
   item = eina_list_nth (enna_playlist->playlist, enna_playlist->selected);
-  if (!item->uri) 
+  if (!item->uri)
     return NULL;
   return strdup (item->uri);
 }
@@ -1310,103 +1310,103 @@ enna_mediaplayer_mute_get (void)
 	return 0;
 }
 
-void 
+void
 enna_mediaplayer_audio_previous (void)
 {
     player_audio_prev (mp->player);
 }
 
-void 
+void
 enna_mediaplayer_audio_next (void)
 {
     player_audio_next (mp->player);
 }
 
-void 
+void
 enna_mediaplayer_audio_increase_delay (void)
 {
     mp->audio_delay += 100;
     player_audio_set_delay  (mp->player, mp->audio_delay, 0);
 }
 
-void 
+void
 enna_mediaplayer_audio_decrease_delay (void)
 {
     mp->audio_delay -= 100;
     player_audio_set_delay  (mp->player, mp->audio_delay, 0);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_set_visibility (void)
 {
     mp->subtitle_visibility = !mp->subtitle_visibility;
     player_subtitle_set_visibility (mp->player, mp->subtitle_visibility);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_previous (void)
 {
     player_subtitle_prev (mp->player);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_next (void)
 {
     player_subtitle_next (mp->player);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_set_alignment (void)
 {
-    mp->subtitle_alignment = (mp->subtitle_alignment + 1) % 3; 
+    mp->subtitle_alignment = (mp->subtitle_alignment + 1) % 3;
     player_subtitle_set_alignment (mp->player, mp->subtitle_alignment);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_increase_position (void)
 {
     mp->subtitle_position += 1;
     player_subtitle_set_position (mp->player, mp->subtitle_position);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_decrease_position (void)
 {
     mp->subtitle_position -= 1;
     player_subtitle_set_position (mp->player, mp->subtitle_position);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_increase_scale (void)
 {
     mp->subtitle_scale += 1;
     player_subtitle_scale  (mp->player, mp->subtitle_scale, 1);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_decrease_scale (void)
 {
     mp->subtitle_scale -= 1;
     player_subtitle_scale  (mp->player, mp->subtitle_scale, 1);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_increase_delay (void)
 {
     mp->subtitle_delay += 100;
     player_subtitle_set_delay  (mp->player, mp->subtitle_delay);
 }
 
-void 
+void
 enna_mediaplayer_subtitle_decrease_delay (void)
 {
     mp->subtitle_delay -= 100;
     player_subtitle_set_delay  (mp->player, mp->subtitle_delay);
 }
 
-void 
+void
 enna_mediaplayer_set_framedrop (void)
 {
-    mp->framedrop = (mp->framedrop + 1) % 3; 
+    mp->framedrop = (mp->framedrop + 1) % 3;
     player_set_framedrop (mp->player, mp->framedrop);
 }

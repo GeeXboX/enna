@@ -240,7 +240,6 @@ _show_mediaplayer_cb(void *data)
     if (mod->o_mediaplayer)
     {
         mod->state = BROWSER_VIEW;
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
         edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
         ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
         mod->timer_show_mediaplayer = NULL;
@@ -283,14 +282,13 @@ _return_to_video_info_gui()
     Enna_Metadata *m;
     double pos;
 
+    ENNA_OBJECT_DEL(mod->o_mediaplayer);
     popup_resume_display (0);
     m = enna_mediaplayer_metadata_get(mod->enna_playlist);
     pos = enna_mediaplayer_position_get();
     enna_metadata_set_position (m, pos);
     enna_mediaplayer_stop();
     mod->state = BROWSER_VIEW;
-    edje_object_signal_emit(mod->o_edje, "mediaplayer,show",
-    "enna");
 }
 
 static int
@@ -552,10 +550,26 @@ browser_cb_enter (void *data, Evas_Object *obj, void *event_info)
 }
 #endif
 
+static void
+_mediaplayer_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Evas_Coord w, h, x, y;
+
+    evas_object_geometry_get(mod->o_mediaplayer, &x, &y, &w, &h);
+    enna_mediaplayer_video_resize(x, y, w, h);
+}
+
 void
 movie_start_playback (int resume)
 {
     mod->state = VIDEOPLAYER_VIEW;
+    ENNA_OBJECT_DEL (mod->o_mediaplayer);
+    mod->o_mediaplayer = evas_object_rectangle_add (mod->em->evas);
+    evas_object_color_set (mod->o_mediaplayer, 0, 0, 0, 255);
+    edje_object_part_swallow (enna->o_edje, "enna.swallow.fullscreen", mod->o_mediaplayer);
+    evas_object_event_callback_add (mod->o_mediaplayer, EVAS_CALLBACK_RESIZE,
+	_mediaplayer_resize_cb, NULL);
+
     enna_mediaplayer_play (mod->enna_playlist);
     if (resume)
     {
@@ -661,7 +675,7 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 
     backdrop_show (m);
     infos_flags_set (m);
-    
+
     enna_panel_infos_set_cover(mod->o_panel_infos, m);
     enna_panel_infos_set_text(mod->o_panel_infos, m);
     enna_panel_infos_set_rating(mod->o_panel_infos, m);
@@ -695,7 +709,7 @@ browse (void *data)
     enna_browser_root_set (mod->o_browser, vfs);
     evas_object_del (mod->o_list);
     mod->o_list = NULL;
-    
+
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     mod->o_panel_infos = enna_panel_infos_add(mod->em->evas);
     edje_object_part_swallow (mod->o_edje,
@@ -735,7 +749,7 @@ _create_menu (void)
 
     categories = enna_vfs_get(ENNA_CAPS_VIDEO);
     EINA_LIST_FOREACH(categories, l, cat)
-    { 
+    {
         Video_Item_Class_Data *item;
 
         item = calloc(1, sizeof(Video_Item_Class_Data));
@@ -850,14 +864,12 @@ _class_show (int dummy)
     {
     case BROWSER_VIEW:
 	edje_object_signal_emit (mod->o_edje, "content,show", "enna");
-        edje_object_signal_emit (mod->o_edje, "mediaplayer,hide", "enna");
 #ifdef LOCATION
         edje_object_signal_emit (mod->o_edje, "location,hide", "enna");
 #endif
 
     case MENU_VIEW:
         edje_object_signal_emit (mod->o_edje, "content,show", "enna");
-        edje_object_signal_emit (mod->o_edje, "mediaplayer,hide", "enna");
 #ifdef LOCATION
 	edje_object_signal_emit (mod->o_edje, "location,show", "enna");
 #endif
