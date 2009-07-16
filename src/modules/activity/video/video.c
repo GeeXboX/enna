@@ -952,6 +952,8 @@ em_init(Enna_Module *em)
     mod->o_backdrop = enna_backdrop_add (mod->em->evas);
     mod->browser_refresh_handler =
 	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, browser_cb_refresh, NULL);
+    mod->eos_event_handler =
+	ecore_event_handler_add (ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
     enna_activity_add(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
 }
