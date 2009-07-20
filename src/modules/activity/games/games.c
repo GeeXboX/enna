@@ -39,7 +39,7 @@
 #include "enna_config.h"
 #include "module.h"
 #include "logs.h"
-#include "list.h"
+#include "view_list.h"
 #include "utils.h"
 #include "content.h"
 #include "mainmenu.h"

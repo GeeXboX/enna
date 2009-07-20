@@ -30,8 +30,6 @@
 #ifndef MEDIACONTROL_H
 #define MEDIACONTROL_H
 
-#include "list.h"
-
 Evas_Object *enna_mediacontrol_add(Evas * evas,Enna_Playlist *enna_playlist);
 
 #endif /* MEDIACONTROL_H */

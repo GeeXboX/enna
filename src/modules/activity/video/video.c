@@ -49,7 +49,7 @@
 #include "mainmenu.h"
 #include "logs.h"
 #include "vfs.h"
-#include "list.h"
+#include "view_list.h"
 #include "browser.h"
 #ifdef LOCATION
 #include "location.h"

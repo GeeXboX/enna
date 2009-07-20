@@ -31,7 +31,7 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "list.h"
+#include "view_list.h"
 #include "popup.h"
 #include "buffer.h"
 #include "resume.h"

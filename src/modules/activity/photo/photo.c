@@ -39,7 +39,7 @@
 #include "image.h"
 #include "browser.h"
 #include "slideshow.h"
-#include "list.h"
+#include "view_list.h"
 #include "content.h"
 #include "mainmenu.h"
 #include "event_key.h"

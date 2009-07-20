@@ -38,7 +38,7 @@
 #include "location.h"
 #include "mainmenu.h"
 #include "content.h"
-#include "list.h"
+#include "view_list.h"
 #include "browser.h"
 #include "logs.h"
 #include "event_key.h"

@@ -31,7 +31,7 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "list.h"
+#include "view_list.h"
 #include "popup.h"
 #include "buffer.h"
 #include "activity.h"
@@ -81,7 +81,7 @@ static void _smart_reconfigure(Smart_Data * sd)
 static char *_list_label_get(const void *data, Evas_Object *obj, const char *part)
 {
     const List_Item_Data *it = data;
-    
+
     return (it->label) ? strdup (it->label) : NULL;
 }
 
@@ -129,7 +129,7 @@ static void _update_text(Smart_Data *sd)
 {
     buffer_t *label;
     const char *tmp;
-    
+
     label = buffer_new();
     buffer_append(label, "<h3><c>");
     buffer_append(label, _("Are you sure you want to quit enna ?"));
@@ -137,7 +137,7 @@ static void _update_text(Smart_Data *sd)
     tmp =  enna_activity_request_quit_all();
 
     if (tmp) buffer_appendf(label, "<h2>%s<h2>", tmp);
-    
+
     edje_object_part_text_set(sd->o_edje, "enna.text.label", label->buf);
     buffer_free(label);
 }
@@ -159,16 +159,16 @@ static void _smart_add(Evas_Object * obj)
     Smart_Data *sd;
     List_Item_Data *it1, *it2;
 
-    
+
     sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
-    
+
     sd->popup = enna_popup_add(evas_object_evas_get(obj));
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/exit");
-    
+
 
     sd->list = enna_list_add(evas_object_evas_get(sd->popup));
 
@@ -185,7 +185,7 @@ static void _smart_add(Evas_Object * obj)
 
     it2 = _create_list_item (_("No, Continue using enna"), "ctrl/hibernate");
     enna_list_append(sd->list, sd->item_class, it2, _(("No, Continue using enna")), _no_cb, NULL);
-    
+
     evas_object_size_hint_weight_set(sd->list, 1.0, 1.0);
     evas_object_show(sd->list);
     enna_list_selected_set(sd->list, 0);
@@ -194,10 +194,10 @@ static void _smart_add(Evas_Object * obj)
     _update_text(sd);
 
     enna_popup_content_set(sd->popup, sd->o_edje);
-    
+
     evas_object_smart_member_add(sd->popup, obj);
     evas_object_smart_data_set(obj, sd);
-    
+
 }
 
 static void _smart_del(Evas_Object * obj)

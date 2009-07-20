@@ -45,7 +45,7 @@
 #include "enna_config.h"
 #include "browser.h"
 #include "view_cover.h"
-#include "list.h"
+#include "view_list.h"
 #include "image.h"
 #include "logs.h"
 #include "event_key.h"
