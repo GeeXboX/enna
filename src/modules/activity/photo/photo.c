@@ -35,7 +35,7 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "vfs.h"
-#include "wall.h"
+#include "view_wall.h"
 #include "image.h"
 #include "browser.h"
 #include "slideshow.h"

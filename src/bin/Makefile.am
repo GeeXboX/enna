@@ -30,7 +30,7 @@ image.c\
 list.c\
 browser.c\
 content.c\
-wall.c\
+view_wall.c\
 switcher.c\
 location.c\
 mediaplayer.c\
@@ -86,7 +86,7 @@ image.h\
 list.h\
 browser.h\
 content.h\
-wall.h\
+view_wall.h\
 switcher.h\
 location.h\
 mediaplayer.h\

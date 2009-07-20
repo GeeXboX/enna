@@ -37,7 +37,6 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "wall.h"
 #include "image.h"
 #include "logs.h"
 #include "event_key.h"
