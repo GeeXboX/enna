@@ -308,10 +308,12 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
         edje_object_file_set (cover, enna_config_theme_get(), file);
     }
 
+
     ENNA_OBJECT_DEL (sd->o_cover);
     sd->o_cover = cover;
     edje_object_part_swallow (sd->o_edje,
                               "infos.panel.cover.swallow", sd->o_cover);
+    edje_object_signal_emit (sd->o_edje, strcmp(file, "backdrop/default") ?  "cover,show": "cover,hide", "enna");
 }
 
 void
