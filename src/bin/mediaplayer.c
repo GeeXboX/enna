@@ -801,6 +801,8 @@ enna_mediaplayer_init (void)
 
                 if (!strcmp ("auto", value))
                     vo = PLAYER_VO_AUTO;
+                else if (!strcmp ("vdpau", value))
+                    vo = PLAYER_VO_VDPAU;
                 else if (!strcmp ("x11", value))
                     vo = PLAYER_VO_X11;
                 else if (!strcmp ("xv", value))
