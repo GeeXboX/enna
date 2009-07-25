@@ -55,6 +55,7 @@ struct _Smart_Item
     Smart_Data *sd;
     const char *label;
     void *data;
+    void (*func) (void *data);
     unsigned char selected : 1;
 };
 
@@ -107,7 +108,8 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
     evas_object_show (o);
 }
 
-void enna_view_cover_append(Evas_Object *obj, const char *icon, const char *label, void *data)
+void enna_view_cover_append(Evas_Object *obj, Enna_Vfs_File *file,
+    void (*func) (void *data), void *data)
 {
     Evas_Object *o, *o_pict;
     Smart_Item *si;
@@ -119,17 +121,18 @@ void enna_view_cover_append(Evas_Object *obj, const char *icon, const char *labe
     sd->nb++;
     o = edje_object_add(evas_object_evas_get(sd->o_scroll));
     edje_object_file_set(o, enna_config_theme_get(), "enna/covervideo/item");
-    si->label = eina_stringshare_add(label);
+    si->label = eina_stringshare_add(file->label);
     o_pict = elm_image_add(sd->o_scroll);
     si->data = data;
+    si->func = func;
 
-    if (icon && icon[0] != '/')
+    if (file->icon && file->icon[0] != '/')
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
-                                      enna_config_theme_get (), icon,
+                                      enna_config_theme_get (), file->icon,
                                       64, 64, "shadow,hide");
     else
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
-                                      icon, NULL,
+                                      file->icon, NULL,
                                       64, 64 * 3/2, "shadow,show");
 
     elm_box_pack_end(sd->o_box, o);

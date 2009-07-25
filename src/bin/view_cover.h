@@ -31,6 +31,7 @@
 #define VIEW_COVER_H
 
 #include "enna.h"
+#include "vfs.h"
 
 Evas_Object * enna_view_cover_add(Evas * evas);
 void enna_view_cover_append(Evas_Object *obj, Enna_Vfs_File *file,
