@@ -53,14 +53,6 @@ static void _create_menu();
 static void _create_gui();
 
 typedef enum _GAMES_STATE GAMES_STATE;
-typedef struct _Game_Item_Class_Data Game_Item_Class_Data;
-
-struct _Game_Item_Class_Data
-{
-    const char *icon;
-    const char *label;
-};
-
 
 enum _GAMES_STATE
 {
@@ -75,7 +67,6 @@ typedef struct _Enna_Module_Games
     Evas_Object *o_menu;
     GAMES_STATE state;
     Enna_Module *em;
-    Elm_Genlist_Item_Class *item_class;
 } Enna_Module_Games;
 
 static Enna_Module_Games *mod;
@@ -121,7 +112,7 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
                 if(!strncmp(cat, "Game", strlen("Game")))
                 {
                     char *iconpath = NULL;
-                    Game_Item_Class_Data *item;
+                    Enna_Vfs_File *item;
 
                     if (ecore_file_can_read(desktop->icon))
                     {
@@ -140,10 +131,10 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
                         }
                     }
 
-                    item = calloc(1, sizeof(Game_Item_Class_Data));
-                    item->icon = eina_stringshare_add(iconpath);
-                    item->label = eina_stringshare_add(desktop->name);
-                    enna_list_append(list, mod->item_class, item, item->label, _play, desktop->exec);
+                    item = calloc(1, sizeof(Enna_Vfs_File));
+                    item->icon = (char*)eina_stringshare_add(iconpath);
+                    item->label = (char*)eina_stringshare_add(desktop->name);
+                    enna_list_file_append(list, item, _play, desktop->exec);
                     break;
                 }
             }
@@ -261,46 +252,6 @@ class =
     NULL
 };
 
-/* Class Item interface */
-static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Game_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    return strdup(item->label);
-}
-
-static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Game_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    if (!strcmp(part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
-
-        ic = elm_icon_add(obj);
-        elm_icon_file_set(ic, item->icon, NULL);
-
-        evas_object_size_hint_min_set(ic, 64, 64);
-        evas_object_show(ic);
-        return ic;
-    }
-
-    return NULL;
-}
-
-static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
-{
-   return 0;
-}
-
-static void _genlist_del(const void *data, Evas_Object *obj)
-{
-}
-
 /*****************************************************************************/
 /*                          Public Module API                                */
 /*****************************************************************************/
@@ -320,15 +271,6 @@ void module_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Games));
     mod->em = em;
     em->mod = mod;
-
-    /* Create Class Item */
-    mod->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
-
-    mod->item_class->item_style     = "default";
-    mod->item_class->func.label_get = _genlist_label_get;
-    mod->item_class->func.icon_get  = _genlist_icon_get;
-    mod->item_class->func.state_get = _genlist_state_get;
-    mod->item_class->func.del = _genlist_del;
 
     /* Add activity */
     enna_activity_add(&class);

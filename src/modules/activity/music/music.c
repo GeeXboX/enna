@@ -613,12 +613,12 @@ _create_menu()
     categories = enna_vfs_get(ENNA_CAPS_MUSIC);
     EINA_LIST_FOREACH(categories, l, cat)
     {
-        Music_Item_Class_Data *item;
+        Enna_Vfs_File *item;
 
-        item = calloc(1, sizeof(Music_Item_Class_Data));
-        item->icon = eina_stringshare_add(cat->icon);
-        item->label = eina_stringshare_add(gettext(cat->label));
-        enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
+        item = calloc(1, sizeof(Enna_Vfs_File));
+        item->icon = (char*)eina_stringshare_add(cat->icon);
+        item->label = (char*)eina_stringshare_add(gettext(cat->label));
+        enna_list_file_append(o, item, _browse, cat);
     }
 
     enna_list_selected_set(o, 0);
@@ -659,45 +659,6 @@ _create_gui()
 
 }
 
-/* Class Item interface */
-static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Music_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    return strdup(item->label);
-}
-
-static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Music_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    if (!strcmp(part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
-
-        ic = elm_icon_add(obj);
-        elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
-        evas_object_size_hint_min_set(ic, 64, 64);
-        evas_object_show(ic);
-        return ic;
-    }
-
-    return NULL;
-}
-
-static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
-{
-   return 0;
-}
-
-static void _genlist_del(const void *data, Evas_Object *obj)
-{
-}
-
 static int
 _refresh_browser_cb(void *data, int type, void *event)
 {
@@ -717,15 +678,6 @@ em_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Music));
     mod->em = em;
     em->mod = mod;
-
-    /* Create Class Item */
-    mod->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
-
-    mod->item_class->item_style     = "default";
-    mod->item_class->func.label_get = _genlist_label_get;
-    mod->item_class->func.icon_get  = _genlist_icon_get;
-    mod->item_class->func.state_get = _genlist_state_get;
-    mod->item_class->func.del       = _genlist_del;
 
     mod->browser_refresh_handler =
 	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, _refresh_browser_cb, NULL);

@@ -33,7 +33,8 @@
 #include "enna.h"
 
 Evas_Object * enna_view_cover_add(Evas * evas);
-void enna_view_cover_append(Evas_Object *obj, const char *icon, const char *label, void *data);
+void enna_view_cover_append(Evas_Object *obj, Enna_Vfs_File *file,
+     void (*func) (void *data), void *data);
 void enna_view_cover_event_feed(Evas_Object *obj, void *event_info);
 void enna_view_cover_select_nth(Evas_Object *obj, int col);
 void *enna_view_cover_selected_data_get(Evas_Object *obj);
