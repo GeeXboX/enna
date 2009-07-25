@@ -53,20 +53,12 @@
 #define SMART_NAME "Enna_Browser"
 
 typedef struct _Smart_Data Smart_Data;
-typedef struct _Browser_Item_Class_Data Browser_Item_Class_Data;
 typedef struct _Browse_Data Browse_Data;
 
 struct _Browse_Data
 {
     Enna_Vfs_File *file;
     Smart_Data *sd;
-};
-
-struct _Browser_Item_Class_Data
-{
-    const char *icon;
-    const char *label;
-    Evas_Object *ic;
 };
 
 struct _Smart_Data
@@ -536,10 +528,9 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
         {
             Enna_Vfs_File *f;
             Evas_Object *icon = NULL;
-            Browser_Item_Class_Data *item = NULL;
             Browse_Data *bd;
-            f = l->data;
 
+            f = l->data;
 
             if (!f->is_directory && !sd->show_file)
                 continue;
@@ -554,11 +545,6 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
                 icon = edje_object_add(sd->evas);
                 edje_object_file_set(icon, enna_config_theme_get(), f->icon);
             }
-
-
-            item = calloc(1, sizeof(Browser_Item_Class_Data));
-            item->icon = eina_stringshare_add(f->icon);
-            item->label = eina_stringshare_add(f->label);
 
             bd = calloc(1, sizeof(Browse_Data));
             bd->file = f;
