@@ -23,8 +23,6 @@ pkg_LTLIBRARIES = activity_photo.la
 activity_photo_la_SOURCES= \
 photo.c \
 photo.h \
-item_class.c \
-item_class.h \
 exif.c \
 exif.h
 

@@ -45,7 +45,6 @@
 #include "event_key.h"
 #include "logs.h"
 #include "photo.h"
-#include "item_class.h"
 #include "exif.h"
 
 #define ENNA_MODULE_NAME "photo"
@@ -72,7 +71,6 @@ typedef struct _Enna_Module_Photo
     PHOTO_STATE state;
     Enna_Module *em;
     photo_exif_t *exif;
-    Elm_Genlist_Item_Class *item_class;
 } Enna_Module_Photo;
 
 static Enna_Module_Photo *mod;
@@ -279,7 +277,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
         {
             if (!f->is_directory)
             {
-                enna_wall_file_append(mod->o_wall, f);
+                enna_wall_file_append(mod->o_wall, f, NULL, NULL);
             }
             else
             {
@@ -341,12 +339,12 @@ _create_menu()
     categories = enna_vfs_get(ENNA_CAPS_PHOTO);
     EINA_LIST_FOREACH(categories, l, cat)
     {
-        Photo_Item_Class_Data *item;
+        Enna_Vfs_File *item;
 
-        item = calloc(1, sizeof(Photo_Item_Class_Data));
-        item->icon = eina_stringshare_add(cat->icon);
-        item->label = eina_stringshare_add(gettext(cat->label));
-        enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
+        item = calloc(1, sizeof(Enna_Vfs_File));
+        item->icon = (char*)eina_stringshare_add(cat->icon);
+        item->label = (char*)eina_stringshare_add(gettext(cat->label));
+        enna_list_file_append(o, item, _browse, cat);
     }
 
     enna_list_selected_set(o, 0);
@@ -570,7 +568,6 @@ void module_init(Enna_Module *em)
     em->mod = mod;
     mod->exif = calloc (1, sizeof (photo_exif_t));
 
-    mod->item_class = photo_item_class_new ();
     enna_activity_add(&class);
 }
 
