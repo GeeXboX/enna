@@ -88,10 +88,7 @@ struct _Smart_Data
 	Evas_Object * (*view_add)(Smart_Data *sd);
 	void (*view_append)(
 	    Evas_Object *view,
-	    Elm_Genlist_Item_Class *class,
-	    void * class_data,
-	    const char *icon,
-	    const char *label,
+	    Enna_Vfs_File *file,
 	    void (*func) (void *data),
 	    void *data);
 	void * (*view_selected_data_get)(Evas_Object *view);
@@ -149,15 +146,12 @@ _browser_view_list_add(Smart_Data *sd)
 static void
 _browser_view_list_append(
     Evas_Object *view,
-    Elm_Genlist_Item_Class *class,
-    void * class_data,
-    const char *icon,
-    const char *label,
+    Enna_Vfs_File *file,
     void (*func) (void *data),
     void *data)
 {
 
-    enna_list_append (view, class, class_data, label, func, data );
+    enna_list_file_append (view, file, func, data );
 }
 
 
@@ -179,14 +173,11 @@ _browser_view_cover_add(Smart_Data *sd)
 static void
 _browser_view_cover_append(
     Evas_Object *view,
-    Elm_Genlist_Item_Class *class,
-    void * class_data,
-    const char *icon,
-    const char *label,
+    Enna_Vfs_File *file,
     void (*func) (void *data),
     void *data)
 {
-    enna_view_cover_append(view, icon, label, data);
+    enna_view_cover_append(view, file, func, data);
 }
 
 static int
@@ -572,8 +563,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             bd = calloc(1, sizeof(Browse_Data));
             bd->file = f;
             bd->sd = sd;
-	    sd->view_funcs.view_append(sd->o_view, sd->item_class,
-		item, item->icon, item->label, _browse, bd);
+	    sd->view_funcs.view_append(sd->o_view, f, _browse, bd);
         }
 
     }
