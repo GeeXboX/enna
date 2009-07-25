@@ -129,21 +129,7 @@ _browser_view_list_add(Smart_Data *sd)
     /* View */
     edje_object_signal_emit(view, "list,right,now", "enna");
 
-
-
     return view;
-}
-
-
-static void
-_browser_view_list_append(
-    Evas_Object *view,
-    Enna_Vfs_File *file,
-    void (*func) (void *data),
-    void *data)
-{
-
-    enna_list_file_append (view, file, func, data );
 }
 
 
@@ -162,15 +148,7 @@ _browser_view_cover_add(Smart_Data *sd)
     return view;
 }
 
-static void
-_browser_view_cover_append(
-    Evas_Object *view,
-    Enna_Vfs_File *file,
-    void (*func) (void *data),
-    void *data)
-{
-    enna_view_cover_append(view, file, func, data);
-}
+
 
 static int
 _browser_view_cover_jump_label(Evas_Object *view, const char *label)
@@ -212,7 +190,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
     {
     case ENNA_BROWSER_VIEW_LIST:
 	sd->view_funcs.view_add = _browser_view_list_add;
-	sd->view_funcs.view_append =  _browser_view_list_append;
+	sd->view_funcs.view_append =  enna_list_file_append;
 	sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
 	sd->view_funcs.view_jump_label =  enna_list_jump_label;
 	sd->view_funcs.view_key_down = enna_list_event_key_down;
@@ -220,7 +198,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	break;
     case ENNA_BROWSER_VIEW_COVER:
 	sd->view_funcs.view_add = _browser_view_cover_add;
-	sd->view_funcs.view_append =  _browser_view_cover_append;
+	sd->view_funcs.view_append =  enna_view_cover_file_append;
 	sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
 	sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
 	sd->view_funcs.view_key_down = enna_view_cover_event_feed;
@@ -313,7 +291,7 @@ static void _smart_add(Evas_Object * obj)
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/browser");
 
     sd->view_funcs.view_add = _browser_view_list_add;
-    sd->view_funcs.view_append =  _browser_view_list_append;
+    sd->view_funcs.view_append =  enna_list_file_append;
     sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
     sd->view_funcs.view_jump_label =  enna_list_jump_label;
     sd->view_funcs.view_key_down = enna_list_event_key_down;

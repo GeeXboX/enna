@@ -108,7 +108,7 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
     evas_object_show (o);
 }
 
-void enna_view_cover_append(Evas_Object *obj, Enna_Vfs_File *file,
+void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     void (*func) (void *data), void *data)
 {
     Evas_Object *o, *o_pict;
