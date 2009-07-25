@@ -224,7 +224,7 @@ static void _class_event(void *event_info)
                     _play(enna_list_selected_data_get(mod->o_menu));
                    break;
                 default:
-                   enna_list_event_key_down(mod->o_menu, event_info);
+                   enna_list_event_feed(mod->o_menu, event_info);
             }
             break;
         default:

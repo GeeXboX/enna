@@ -380,7 +380,7 @@ static void photo_event_menu (void *event_info, enna_key_t key)
         _browse (enna_list_selected_data_get(mod->o_menu));
         break;
     default:
-        enna_list_event_key_down(mod->o_menu, event_info);
+        enna_list_event_feed(mod->o_menu, event_info);
     }
 }
 

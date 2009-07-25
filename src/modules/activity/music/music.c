@@ -208,7 +208,7 @@ _class_event_menu_view(enna_key_t key, void *event_info)
         _browse(enna_list_selected_data_get(mod->o_list));
         break;
     default:
-        enna_list_event_key_down(mod->o_list, event_info);
+        enna_list_event_feed(mod->o_list, event_info);
 
     }
 }

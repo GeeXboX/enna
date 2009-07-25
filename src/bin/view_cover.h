@@ -36,8 +36,9 @@
 Evas_Object * enna_view_cover_add(Evas * evas);
 void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
      void (*func) (void *data), void *data);
-void enna_view_cover_event_feed(Evas_Object *obj, void *event_info);
 void enna_view_cover_select_nth(Evas_Object *obj, int nth);
+void enna_view_cover_event_feed(Evas_Object *obj, void *event_info);
+
 void *enna_view_cover_selected_data_get(Evas_Object *obj);
 
 #endif /* VIEW_COVER_H */

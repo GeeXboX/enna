@@ -202,10 +202,9 @@ void *enna_list_selected_data_get(Evas_Object *obj)
 
 
 
-void enna_list_event_key_down(Evas_Object *obj, void *event_info)
+void enna_list_event_feed(Evas_Object *obj, void *event_info)
 {
-    API_ENTRY
-    return;
+    API_ENTRY return;
     _smart_event_key_down(sd, event_info);
 }
 

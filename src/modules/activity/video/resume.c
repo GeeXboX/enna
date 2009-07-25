@@ -240,5 +240,5 @@ void
 video_resume_event_feed (Evas_Object *obj, void *event_info)
 {
     API_ENTRY return;
-    enna_list_event_key_down (sd->list, event_info);
+    enna_list_event_feed (sd->list, event_info);
 }

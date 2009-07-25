@@ -193,7 +193,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	sd->view_funcs.view_append =  enna_list_file_append;
 	sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
 	sd->view_funcs.view_jump_label =  enna_list_jump_label;
-	sd->view_funcs.view_key_down = enna_list_event_key_down;
+	sd->view_funcs.view_key_down = enna_list_event_feed;
 	sd->view_funcs.view_select_nth = enna_list_select_nth;
 	break;
     case ENNA_BROWSER_VIEW_COVER:
@@ -234,8 +234,6 @@ enna_browser_select_label(Evas_Object *obj, const char *label)
     return 0;
 
 }
-
-
 
 /* local subsystem globals */
 static void _smart_reconfigure(Smart_Data * sd)
@@ -294,7 +292,7 @@ static void _smart_add(Evas_Object * obj)
     sd->view_funcs.view_append =  enna_list_file_append;
     sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
     sd->view_funcs.view_jump_label =  enna_list_jump_label;
-    sd->view_funcs.view_key_down = enna_list_event_key_down;
+    sd->view_funcs.view_key_down = enna_list_event_feed;
     sd->view_funcs.view_select_nth = enna_list_select_nth;
 
     sd->o_view = sd->view_funcs.view_add(sd);
