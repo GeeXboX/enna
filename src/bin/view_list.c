@@ -125,11 +125,10 @@ void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func) (
     sd->items = eina_list_append(sd->items, it);
 }
 
-void enna_list_selected_set(Evas_Object *obj, int n)
+void enna_list_select_nth(Evas_Object *obj, int nth)
 {
-
     API_ENTRY return;
-    _smart_select_item(sd, n);
+    _smart_select_item(sd, nth);
 }
 
 int enna_list_jump_label(Evas_Object *obj, const char *label)

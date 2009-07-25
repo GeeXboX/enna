@@ -134,7 +134,7 @@ static void _smart_add(Evas_Object * obj)
 
     evas_object_size_hint_weight_set(sd->list, 1.0, 1.0);
     evas_object_show(sd->list);
-    enna_list_selected_set(sd->list, 0);
+    enna_list_select_nth(sd->list, 0);
     edje_object_part_swallow(sd->o_edje, "enna.content.swallow", sd->list);
 
     _update_text(sd);

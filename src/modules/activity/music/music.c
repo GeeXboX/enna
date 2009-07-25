@@ -621,7 +621,7 @@ _create_menu()
         enna_list_file_append(o, item, _browse, cat);
     }
 
-    enna_list_selected_set(o, 0);
+    enna_list_select_nth(o, 0);
     mod->o_list = o;
     edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);

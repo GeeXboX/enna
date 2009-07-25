@@ -34,8 +34,9 @@
 #include "vfs.h"
 
 Evas_Object *enna_list_add (Evas *evas);
-void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func) (void *data), void *data);
-void enna_list_selected_set(Evas_Object *obj, int n);
+void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+    void (*func) (void *data), void *data);
+void enna_list_select_nth(Evas_Object *obj, int nth);
 int enna_list_selected_get(Evas_Object *obj);
 void * enna_list_selected_data_get(Evas_Object *obj);
 int enna_list_jump_label(Evas_Object *obj, const char *label);

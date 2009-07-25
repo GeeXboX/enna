@@ -216,7 +216,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
 	sd->view_funcs.view_jump_label =  enna_list_jump_label;
 	sd->view_funcs.view_key_down = enna_list_event_key_down;
-	sd->view_funcs.view_select_nth = enna_list_selected_set;
+	sd->view_funcs.view_select_nth = enna_list_select_nth;
 	break;
     case ENNA_BROWSER_VIEW_COVER:
 	sd->view_funcs.view_add = _browser_view_cover_add;
@@ -317,7 +317,7 @@ static void _smart_add(Evas_Object * obj)
     sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
     sd->view_funcs.view_jump_label =  enna_list_jump_label;
     sd->view_funcs.view_key_down = enna_list_event_key_down;
-    sd->view_funcs.view_select_nth = enna_list_selected_set;
+    sd->view_funcs.view_select_nth = enna_list_select_nth;
 
     sd->o_view = sd->view_funcs.view_add(sd);
     evas_object_smart_callback_add(sd->o_view, "hilight", _view_hilight_cb, sd);
