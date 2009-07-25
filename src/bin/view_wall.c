@@ -246,6 +246,7 @@ void enna_wall_event_feed(Evas_Object *obj, void *event_info)
     enna_key_t key = enna_get_key(ev);
 
     API_ENTRY return;
+   printf("browser event feed\n");
 
      enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s", ev->key);
     switch (key)
@@ -282,6 +283,15 @@ void enna_wall_select_nth(Evas_Object *obj, int col, int row)
     _smart_item_select(sd, pi);
 
 
+}
+
+void *enna_wall_selected_data_get(Evas_Object *obj)
+{
+    Picture_Item *si;
+    API_ENTRY return NULL;
+
+    si = _smart_selected_item_get(sd, NULL, NULL);
+    return si ? si->data : NULL;
 }
 
 void enna_wall_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *w, int *h)
