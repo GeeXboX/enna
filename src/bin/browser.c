@@ -125,53 +125,7 @@ static Evas_Smart *_smart = NULL;
 
 /* Browser View */
 
-/* List View */
-static char *_view_list_label_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Browser_Item_Class_Data *item = data;
 
-    if (!item) return NULL;
-
-    return strdup(item->label);
-}
-
-static Evas_Object *_view_list_icon_get(const void *data, Evas_Object *obj, const char *part)
-{
-    Browser_Item_Class_Data *item = (Browser_Item_Class_Data *) data;
-
-    if (!item) return NULL;
-
-    if (!strcmp(part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
-
-        ic = elm_icon_add(obj);
-	if (item->icon && item->icon[0] == '/')
-	    elm_icon_file_set(ic, item->icon, NULL);
-	else
-	    elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
-        evas_object_size_hint_min_set(ic, 64, 64);
-        evas_object_show(ic);
-	item->ic = ic;
-        return ic;
-    }
-
-    return NULL;
-}
-
-static Evas_Bool _view_list_state_get(const void *data, Evas_Object *obj, const char *part)
-{
-    return 0;
-}
-
-static void _view_list_del(const void *data, Evas_Object *obj)
-{
-    Browser_Item_Class_Data *item = (void *) data;
-
-    if (!item) return;
-
-    ENNA_OBJECT_DEL(item->ic);
-}
 
 static Evas_Object *
 _browser_view_list_add(Smart_Data *sd)
@@ -186,13 +140,7 @@ _browser_view_list_add(Smart_Data *sd)
     /* View */
     edje_object_signal_emit(view, "list,right,now", "enna");
 
-    sd->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
 
-    sd->item_class->item_style     = "default";
-    sd->item_class->func.label_get = _view_list_label_get;
-    sd->item_class->func.icon_get  = _view_list_icon_get;
-    sd->item_class->func.state_get = _view_list_state_get;
-    sd->item_class->func.del       = _view_list_del;
 
     return view;
 }

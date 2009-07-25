@@ -31,9 +31,10 @@
 #define LIST_H
 
 #include "enna.h"
+#include "vfs.h"
 
 Evas_Object *enna_list_add (Evas *evas);
-void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, const char *label, void (*func) (void *data), void *data);
+void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func) (void *data), void *data);
 void enna_list_selected_set(Evas_Object *obj, int n);
 int enna_list_selected_get(Evas_Object *obj);
 void * enna_list_selected_data_get(Evas_Object *obj);

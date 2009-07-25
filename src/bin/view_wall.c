@@ -61,6 +61,8 @@ struct _Picture_Item
     Smart_Data *sd;
     unsigned char selected : 1;
     Enna_Vfs_File *file;
+    void *data;
+    void (*func) (void *data);
 };
 
 struct _Smart_Data
@@ -200,7 +202,8 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
     edje_object_signal_emit(pi->o_edje, "thumb,show", "enna");
 }
 
-void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file)
+void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+    void (*func) (void *data), void *data )
 {
     Evas_Object *o, *o_pict;
 
@@ -226,6 +229,8 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file)
 
     pi->o_pict = o_pict;
     pi->o_edje = o;
+    pi->data = data;
+    pi->func = func;
     pi->sd = sd;
 
 
