@@ -268,9 +268,9 @@ static Evas_Object *_view_list_icon_get(const void *data, Evas_Object *obj, cons
     return NULL;
 }
 
-static Evas_Bool _view_list_state_get(const void *data, Evas_Object *obj, const char *part)
+static Eina_Bool _view_list_state_get(const void *data, Evas_Object *obj, const char *part)
 {
-    return 0;
+    return EINA_FALSE;
 }
 
 static void _view_list_del(const void *data, Evas_Object *obj)

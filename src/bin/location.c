@@ -107,7 +107,7 @@ void enna_location_append(Evas_Object *obj, const char *label,
     mh = sd->h ? sd->h : 64;
     evas_object_size_hint_min_set(si->o_base, mw, mh);
     evas_object_size_hint_align_set(si->o_base, -1.0, -1.0);
-    elm_table_pack(sd->o_box, si->o_base, evas_list_count(sd->items) - 1, 0, 1 , 1);
+    elm_table_pack(sd->o_box, si->o_base, eina_list_count(sd->items) - 1, 0, 1 , 1);
     evas_object_lower(si->o_base);
     edje_object_signal_emit(si->o_base, "location,show", "enna");
     evas_object_show(si->o_base);
