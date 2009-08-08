@@ -303,14 +303,19 @@ static void _smart_add(Evas_Object * obj)
 
     sd->o_scroll = elm_scroller_add(obj);
     evas_object_show(sd->o_scroll);
+    elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
+    elm_scroller_bounce_set(sd->o_scroll, 0, 0);
 
     edje_object_part_swallow(sd->o_edje, "swallow.content", sd->o_scroll);
 
     sd->o_box = elm_box_add(sd->o_scroll);
     elm_box_homogenous_set(sd->o_box, 0);
     elm_box_horizontal_set(sd->o_box, 1);
-    evas_object_show(sd->o_box);
+    evas_object_size_hint_align_set(sd->o_box, 0.5, 0.5);
     evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
+
+    evas_object_show(sd->o_box);
+    evas_object_size_hint_weight_set(sd->o_scroll, 1.0, 1.0);
     elm_scroller_content_set(sd->o_scroll, sd->o_box);
 
     evas_object_smart_member_add(sd->o_edje, obj);
