@@ -298,7 +298,9 @@ static void _smart_add(Evas_Object *obj)
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/list");
 
     sd->o_list = elm_genlist_add(obj);
+    evas_object_size_hint_align_set(sd->o_list, -1.0, -1.0);
     evas_object_size_hint_weight_set(sd->o_list, 1.0, 1.0);
+    elm_genlist_horizontal_mode_set(sd->o_list, ELM_LIST_LIMIT);
     evas_object_show(sd->o_list);
     elm_object_scale_set(sd->o_list, 2.0);
 
