@@ -241,8 +241,8 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
     /* Delete objects */
     ENNA_OBJECT_DEL(mod->o_browser);
     evas_object_smart_callback_del(mod->o_wall, "selected", _picture_selected_cb);
-    ENNA_OBJECT_DEL(mod->o_wall);
-    edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
+    //ENNA_OBJECT_DEL(mod->o_wall);
+    //edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
 
     mod->o_browser = NULL;
@@ -264,7 +264,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     int count = 0;
 
     if (!ev || !ev->file) return;
-
+#if 0
     if (ev->file->is_directory)
     {
         ENNA_OBJECT_DEL(mod->o_wall);
@@ -295,7 +295,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 	}
 
     }
-
+#endif
     free(ev);
 }
 
@@ -309,7 +309,7 @@ static void _browse(void *data)
 
     enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_WALL);
 
-    enna_browser_show_file_set(mod->o_browser, 0);
+//    enna_browser_show_file_set(mod->o_browser, 0);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
@@ -322,7 +322,7 @@ static void _browse(void *data)
 
     edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "browser,show", "enna");
-    edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
+//    edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
     edje_object_signal_emit(mod->o_edje, "slideshow,hide", "enna");
 
     ENNA_OBJECT_DEL (mod->o_menu);
@@ -389,16 +389,16 @@ static void photo_event_menu (void *event_info, enna_key_t key)
 
 static void photo_event_browser (void *event_info, enna_key_t key)
 {
-    switch (key)
-    {
-    case ENNA_KEY_RIGHT:
-    case ENNA_KEY_LEFT:
-        mod->state = WALL_VIEW;
-        edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
-        break;
-    default:
+    //switch (key)
+    //{
+	//case ENNA_KEY_RIGHT:
+	//case ENNA_KEY_LEFT:
+        //mod->state = WALL_VIEW;
+        //edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
+        //break;
+    //default:
         enna_browser_event_feed(mod->o_browser, event_info);
-    }
+	//}
 }
 
 static void photo_event_wall (void *event_info, enna_key_t key)
