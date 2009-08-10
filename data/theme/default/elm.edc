@@ -766,7 +766,7 @@
                color3: 0 0 0 32;
                text {
                   font: "content";
-                  size: 10;
+                  size: 20;
                   min: 1 1;
 //                  min: 0 1;
                   align: 0.0 0.5;
