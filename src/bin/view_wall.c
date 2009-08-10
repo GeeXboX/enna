@@ -137,8 +137,9 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 	oh = h2;
     }
     //oh -= 8;
+    if (!oh) oh = h;
     ow = oh * f;
-
+    
     pi->row = row;
     pi->selected = 0;
 
@@ -230,46 +231,49 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     sd->nb++;
     pi->file = file;
     o = edje_object_add(evas_object_evas_get(sd->o_scroll));
-    edje_object_file_set(o, enna_config_theme_get(), "enna/picture/item");
-    edje_object_part_text_set(o, "enna.text.label", file->label);
 
     if (file->is_directory)
     {
-	Evas_Coord w,h;
-	o_pict = enna_image_add(evas_object_evas_get(obj));
-	enna_image_fill_inside_set(o_pict, 0);
+	    Evas_Coord w,h;
 
-	if (file->icon && file->icon[0] == '/')
-	    enna_image_file_set(o_pict, file->icon, NULL);
-	else
-	    enna_image_file_set(o_pict, enna_config_theme_get(), file->icon);
+        edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
+        edje_object_part_text_set(o, "enna.text.label", file->label);
 
-	pi->o_pict = o_pict;
-	pi->o_edje = o;
-	pi->data = data;
-	pi->func = func;
-	pi->sd = sd;
+	    o_pict = enna_image_add(evas_object_evas_get(obj));
+	    enna_image_fill_inside_set(o_pict, 0);
 
-	enna_image_size_get(o_pict, &w, &h);
-	printf("icon size : %d %d\n", w, h);
+	    if (file->icon && file->icon[0] == '/')
+	        enna_image_file_set(o_pict, file->icon, NULL);
+	    else
+	        enna_image_file_set(o_pict, enna_config_theme_get(), file->icon);
 
-	_wall_add_pict_to_wall(pi->sd, pi, 128, 128);
+	    pi->o_pict = o_pict;
+	    pi->o_edje = o;
+	    pi->data = data;
+	    pi->func = func;
+	    pi->sd = sd;
+
+	    enna_image_size_get(o_pict, &w, &h);
+	    printf("icon size : %d %d\n", w, h);
+
+	    _wall_add_pict_to_wall(pi->sd, pi, 128, 128);
     }
     else
     {
-	o_pict = enna_thumb_icon_add(evas_object_evas_get(sd->o_scroll));
-	enna_thumb_icon_file_set(o_pict, file->uri+7, "enna/thumbnails");
-	enna_thumb_icon_size_set(o_pict, 400, 400);
-	evas_object_show(o_pict);
+        edje_object_file_set(o, enna_config_theme_get(), "enna/picture/item");
+        edje_object_part_text_set(o, "enna.text.label", file->label);
+	    o_pict = enna_thumb_icon_add(evas_object_evas_get(sd->o_scroll));
+    	enna_thumb_icon_file_set(o_pict, file->uri+7, "enna/thumbnails");
+    	enna_thumb_icon_size_set(o_pict, 400, 400);
+    	evas_object_show(o_pict);
 
-	evas_object_smart_callback_add(o_pict, "enna_thumb_gen", _wall_image_preload_cb, pi);
-	pi->o_pict = o_pict;
+    	evas_object_smart_callback_add(o_pict, "enna_thumb_gen", _wall_image_preload_cb, pi);
+    	pi->o_pict = o_pict;
 
-	pi->o_edje = o;
-	pi->data = data;
-	pi->func = func;
-	pi->sd = sd;
-
+    	pi->o_edje = o;
+    	pi->data = data;
+    	pi->func = func;
+    	pi->sd = sd;
     }
 
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
@@ -645,7 +649,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_scroll = elm_scroller_add(obj);
 
     elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_bounce_set(sd->o_scroll, 0, 0);
+    //elm_scroller_bounce_set(sd->o_scroll, 0, 0);
 
     evas_object_show(sd->o_scroll);
 
