@@ -259,7 +259,7 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
         edje_object_part_text_set(o, "enna.text.label", file->label);
 	    o_pict = enna_thumb_icon_add(evas_object_evas_get(sd->o_scroll));
     	enna_thumb_icon_file_set(o_pict, file->uri+7, "enna/thumbnails");
-    	enna_thumb_icon_size_set(o_pict, 400, 400);
+    	enna_thumb_icon_size_set(o_pict, 256, 256);
     	evas_object_show(o_pict);
 
     	evas_object_smart_callback_add(o_pict, "enna_thumb_gen", _wall_image_preload_cb, pi);
@@ -663,9 +663,10 @@ static void _smart_add(Evas_Object * obj)
     evas_object_show(sd->o_scroll);
 
     sd->o_cont = elm_box_add(sd->o_scroll);
-    elm_box_homogenous_set(sd->o_cont, 0);
+    elm_box_homogenous_set(sd->o_cont, 1);
     elm_box_horizontal_set(sd->o_cont, 0);
 
+    
     evas_object_show(sd->o_cont);
     elm_scroller_content_set(sd->o_scroll, sd->o_cont);
 
