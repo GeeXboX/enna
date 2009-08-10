@@ -234,9 +234,7 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     if (file->is_directory)
     {
-	    Evas_Coord w,h;
-
-        edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
+	    edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
         edje_object_part_text_set(o, "enna.text.label", file->label);
 
 	    o_pict = elm_icon_add(obj);
