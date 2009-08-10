@@ -113,7 +113,7 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 
 
     if (h)
-	f = (float)w/(float)h;
+	    f = (float)w/(float)h;
 
     edje_object_part_swallow(pi->o_edje, "enna.swallow.content", pi->o_pict);
 
@@ -123,32 +123,28 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 
     if (w0 <= w1 && w0 <= w2)
     {
-	row = 0;
-	oh = h0;
+	    row = 0;
+	    oh = h0;
     }
     else if (w1 <= w2)
     {
         row = 1;
-	oh = h1;
+	    oh = h1;
     }
     else
     {
         row = 2;
-	oh = h2;
+	    oh = h2;
     }
-    //oh -= 8;
+
     if (!oh) oh = h;
     ow = oh * f;
     
     pi->row = row;
     pi->selected = 0;
 
-    printf("%d %d row = %d f = %f\n", ow, oh, row, f);
-
     sd->items[row] = eina_list_append(sd->items[row], pi);
-    evas_object_size_hint_weight_set(pi->o_edje, -1.0, 1.0);
     evas_object_size_hint_min_set(pi->o_edje, ow, oh);
-    evas_object_size_hint_align_set(pi->o_edje, -1.0, -1.0);
     evas_object_size_hint_aspect_set(pi->o_edje, EVAS_ASPECT_CONTROL_VERTICAL, ow, oh);
     elm_box_pack_end(sd->o_box[pi->row], pi->o_edje);
     
@@ -257,13 +253,7 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 	    pi->func = func;
 	    pi->sd = sd;
 
-	    //enna_image_size_get(o_pict, &w, &h);
-	    //printf("icon size : %d %d\n", w, h);
-	        
-//	    evas_object_resize(pi->o_pict, 512, 512);
-//	    evas_object_size_hint_weight_set(pi->o_pict, -1.0, -1.0);
-        //evas_object_size_hint_min_set(pi->o_pict, 96, 96);
-	    _wall_add_pict_to_wall(pi->sd, pi, 220, 220);
+	    _wall_add_pict_to_wall(pi->sd, pi, 1, 1);
     }
     else
     {
