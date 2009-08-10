@@ -51,6 +51,7 @@
 #include "metadata.h"
 #include "mediaplayer.h"
 #include "ipc.h"
+#include "vfs.h"
 
 #define ENNA_MOUSE_IDLE_TIMEOUT 10 //seconds after which the mouse pointer disappears
 
@@ -255,7 +256,8 @@ static int _enna_init(void)
 
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
-
+    
+    enna_vfs_init();
     enna_module_init();
 
     snprintf(tmp, sizeof(tmp), "%s/.enna", enna->home);

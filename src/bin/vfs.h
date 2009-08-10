@@ -70,7 +70,19 @@ struct _Enna_Class_Vfs
     void *cookie;
 
 };
-int enna_vfs_init(Evas *evas);
+
+typedef struct _Enna_Vfs_Class2
+{
+    const char *key;
+    int priority;
+    struct
+    {
+        Eina_List *(*browse_down)(Enna_Vfs_File *file);
+        Eina_List *(*browse_up)(Enna_Vfs_File *file);
+    }func;
+}Enna_Vfs_Class2;
+
+int enna_vfs_init();
 int enna_vfs_append(const char *name, unsigned char type,
         Enna_Class_Vfs *vfs);
 void enna_vfs_class_remove(const char *name, unsigned char type);
@@ -78,4 +90,14 @@ Eina_List *enna_vfs_get(ENNA_VFS_CAPS type);
 Enna_Vfs_File *enna_vfs_create_file (const char *uri, const char *label, const char *icon, const char *icon_file);
 Enna_Vfs_File *enna_vfs_create_directory (const char *uri, const char *label, const char *icon, const char *icon_file);
 void enna_vfs_remove(Enna_Vfs_File *f);
+
+/* New VFS system */
+Eina_Bool enna_vfs_uri_handler_add(const char *key, Enna_Vfs_Class2 *class);
+Eina_Bool enna_vfs_uri_handler_remove(const char *key);
+
+Eina_List *enna_vfs_browser_up(Enna_Vfs_File *file);
+Eina_List *enna_vfs_browse_down(Enna_Vfs_File *file);
+
+
+
 #endif /* VFS_H */

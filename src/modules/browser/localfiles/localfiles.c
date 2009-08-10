@@ -241,6 +241,17 @@ static Eina_List * _class_browse_down(Class_Private_Data *data,
     return NULL;
 }
 
+static Eina_List *_browse_down(Enna_Vfs_File *file)
+{
+    return _class_browse_down(mod->music, ENNA_CAPS_MUSIC);
+}
+
+
+static Eina_List *_browse_up(Enna_Vfs_File *file)
+{
+    return _class_browse_up(file->uri, ENNA_CAPS_MUSIC, mod->music, "icon/file/music");
+}
+
 #ifdef BUILD_ACTIVITY_MUSIC
 static Eina_List * _class_browse_down_music(void *cookie)
 {
@@ -414,6 +425,15 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 
 }
 
+static Enna_Vfs_Class2 music_class2 = {
+    "file://",
+    1,
+    {
+        _browse_up,
+        _browse_down,
+    }
+};
+
 #ifdef BUILD_ACTIVITY_MUSIC
 static Enna_Class_Vfs class_music = {
     "localfiles_music",
@@ -485,6 +505,8 @@ void module_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_LocalFiles));
     mod->em = em;
     em->mod = mod;
+
+    enna_vfs_uri_handler_add("file://", &music_class2);
 
 #ifdef BUILD_ACTIVITY_MUSIC
     __class_init("localfiles_music", &mod->music, ENNA_CAPS_MUSIC,
