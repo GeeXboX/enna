@@ -142,7 +142,6 @@ _browser_view_cover_add(Smart_Data *sd)
     if (!sd) return NULL;
 
     view = enna_view_cover_add(evas_object_evas_get(sd->o_edje));
-    evas_object_show(view);
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
@@ -157,7 +156,6 @@ _browser_view_wall_add(Smart_Data *sd)
     if (!sd) return NULL;
 
     view = enna_wall_add(evas_object_evas_get(sd->o_edje));
-    evas_object_show(view);
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
