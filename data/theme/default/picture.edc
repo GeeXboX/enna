@@ -173,7 +173,7 @@ group { name: "enna/picture/item";
       }
       program
       {   name: "sel1";
-         signal: "select1";
+         signal: "select";
          source: "enna";
          action: STATE_SET "select" 0.1;
          transition: LINEAR 0.2;

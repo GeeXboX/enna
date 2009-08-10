@@ -146,11 +146,15 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
     printf("%d %d row = %d f = %f\n", ow, oh, row, f);
 
     sd->items[row] = eina_list_append(sd->items[row], pi);
+    evas_object_size_hint_weight_set(pi->o_edje, -1.0, 1.0);
     evas_object_size_hint_min_set(pi->o_edje, ow, oh);
-    evas_object_size_hint_align_set(pi->o_edje, 0.5, 0.5);
+    evas_object_size_hint_align_set(pi->o_edje, -1.0, -1.0);
+    evas_object_size_hint_aspect_set(pi->o_edje, EVAS_ASPECT_CONTROL_VERTICAL, ow, oh);
     elm_box_pack_end(sd->o_box[pi->row], pi->o_edje);
+    
     evas_object_show(pi->o_edje);
     edje_object_signal_emit(pi->o_edje, "thumb,show", "enna");
+    evas_object_raise(pi->o_edje);
 }
 
 static
@@ -239,13 +243,13 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
         edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
         edje_object_part_text_set(o, "enna.text.label", file->label);
 
-	    o_pict = enna_image_add(evas_object_evas_get(obj));
+	    o_pict = elm_icon_add(obj);
 	    enna_image_fill_inside_set(o_pict, 0);
 
 	    if (file->icon && file->icon[0] == '/')
-	        enna_image_file_set(o_pict, file->icon, NULL);
+	        elm_icon_file_set(o_pict, file->icon, NULL);
 	    else
-	        enna_image_file_set(o_pict, enna_config_theme_get(), file->icon);
+	        elm_icon_file_set(o_pict, enna_config_theme_get(), file->icon);
 
 	    pi->o_pict = o_pict;
 	    pi->o_edje = o;
@@ -253,10 +257,13 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 	    pi->func = func;
 	    pi->sd = sd;
 
-	    enna_image_size_get(o_pict, &w, &h);
-	    printf("icon size : %d %d\n", w, h);
-
-	    _wall_add_pict_to_wall(pi->sd, pi, 128, 128);
+	    //enna_image_size_get(o_pict, &w, &h);
+	    //printf("icon size : %d %d\n", w, h);
+	        
+//	    evas_object_resize(pi->o_pict, 512, 512);
+//	    evas_object_size_hint_weight_set(pi->o_pict, -1.0, -1.0);
+        //evas_object_size_hint_min_set(pi->o_pict, 96, 96);
+	    _wall_add_pict_to_wall(pi->sd, pi, 220, 220);
     }
     else
     {
@@ -543,10 +550,13 @@ static void _smart_item_select(Smart_Data *sd, Picture_Item *pi)
     pi->selected = 1;
     evas_object_raise(pi->o_edje);
     evas_object_raise(pi->sd->o_box[pi->row]);
+
+    edje_object_signal_emit(pi->o_edje, "select", "enna");
+/*
     switch (pi->row)
     {
     case 0:
-        edje_object_signal_emit(pi->o_edje, "select0", "enna");
+        edje_object_signal_emit(pi->o_edje, "select", "enna");
         break;
     case 1:
         edje_object_signal_emit(pi->o_edje, "select1", "enna");
@@ -557,6 +567,7 @@ static void _smart_item_select(Smart_Data *sd, Picture_Item *pi)
     default:
         break;
     }
+*/
     sd->row_sel = pi->row;
 }
 
@@ -609,7 +620,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 static void _smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
-    Evas_Coord ow = 0;
+    Evas_Coord oh = 0;
 
     int i = 0;
 
@@ -618,18 +629,36 @@ static void _smart_reconfigure(Smart_Data * sd)
     w = sd->w;
     h = sd->h;
 
+    //elm_scroller_region_get(sd->o_scroll, NULL, NULL, NULL, &oh);
+    // FIXME : 8 for bottom scroll bar should be calculate or come from ELM scroll region
+    oh = sd->h / 3  - 8;
+
+
     for (i = 0; i < 3; i++)
     {
+        Eina_List *l;
+        Picture_Item *it;
+        Evas_Coord aw, ah;
+        Evas_Aspect_Control a;
         evas_object_size_hint_min_get(sd->o_box[i], &w, &h);
-        evas_object_resize(sd->o_box[i], w, sd->h / 3);
-        if (w > ow)
-            ow = w;
-        evas_object_size_hint_min_set(sd->o_box[i], w, sd->h / 3);
-        evas_object_size_hint_align_set(sd->o_box[i], 0, 0);
+        evas_object_resize(sd->o_box[i], w, oh);
+        evas_object_size_hint_min_set(sd->o_box[i], w, oh);
+        evas_object_size_hint_align_set(sd->o_box[i], 0, 0.5);
+        evas_object_size_hint_weight_set(sd->o_box[i], -1.0, -1.0);
+        EINA_LIST_FOREACH(sd->items[i], l, it)
+        {
+            evas_object_size_hint_aspect_get(it->o_edje, &a, &aw, &ah);
+            evas_object_size_hint_min_set(it->o_edje, (oh )* aw / ah, oh);
+        } 
+        
     }
 
+    
+
     evas_object_size_hint_min_get(sd->o_cont, &w, &h);
-    evas_object_resize(sd->o_cont, w, h);
+
+    //evas_object_size_hint_min_set(sd->o_cont, sd->w, sd->h);
+    evas_object_resize(sd->o_cont, w, h);   
 
     elm_scroller_content_min_limit(sd->o_scroll, sd->w, sd->h);
 

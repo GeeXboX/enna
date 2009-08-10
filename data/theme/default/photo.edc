@@ -131,8 +131,8 @@ group {
          description {
             state: "default" 0.0;
             color: 255 255 255 255;
-             rel1 {relative: 0 0; offset: 64 64;}
-             rel2 {relative: 1 1; offset: -63 -63;}
+             rel1 {relative: 0 0; /*offset: 64 64;*/}
+             rel2 {relative: 1 1; /*offset: -63 -63;*/}
          }
       }
 
