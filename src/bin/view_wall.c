@@ -639,19 +639,11 @@ static void _smart_reconfigure(Smart_Data * sd)
         {
             evas_object_size_hint_aspect_get(it->o_edje, &a, &aw, &ah);
             evas_object_size_hint_min_set(it->o_edje, (oh )* aw / ah, oh);
-        } 
-        
+        }      
     }
 
-    
-
     evas_object_size_hint_min_get(sd->o_cont, &w, &h);
-
-    //evas_object_size_hint_min_set(sd->o_cont, sd->w, sd->h);
-    evas_object_resize(sd->o_cont, w, h);   
-
-    elm_scroller_content_min_limit(sd->o_scroll, sd->w, sd->h);
-
+    evas_object_resize(sd->o_cont, w, h);
     evas_object_move(sd->o_scroll, sd->x, sd->y);
     evas_object_resize(sd->o_scroll, sd->w, sd->h);
 }
@@ -708,7 +700,7 @@ static void _smart_del(Evas_Object * obj)
             sd->items[i] = eina_list_remove_list(sd->items[i], sd->items[i]);
             evas_object_del(pi->o_edje);
             evas_object_smart_callback_del(pi->o_pict, "enna_thumb_gen", _wall_image_preload_cb);
-	    enna_thumb_icon_end(pi->o_pict);
+	        enna_thumb_icon_end(pi->o_pict);
             evas_object_del(pi->o_pict);
             free(pi);
         }
