@@ -147,7 +147,7 @@ static void _class_event(void *event_info)
 static Enna_Class_Activity class =
 {
     "tv",
-    1,
+    2,
     N_("Television"),
     NULL,
     "icon/tv",
