@@ -304,7 +304,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_scroll = elm_scroller_add(obj);
     evas_object_show(sd->o_scroll);
     elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_bounce_set(sd->o_scroll, 0, 0);
+    //elm_scroller_bounce_set(sd->o_scroll, 0, 0);
 
     edje_object_part_swallow(sd->o_edje, "swallow.content", sd->o_scroll);
 

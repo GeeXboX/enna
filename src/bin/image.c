@@ -369,7 +369,7 @@ static void _smart_reconfigure(Smart_Data * sd)
         evas_object_resize(sd->obj, sd->w, sd->h);
     }
 
-
+    printf("%d %d\n", sd->w, sd->h);
 }
 
 static void _enna_image_preload_cb(void *data, Evas *evas, Evas_Object *obj,

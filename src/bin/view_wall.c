@@ -121,6 +121,8 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
     evas_object_size_hint_min_get(sd->o_box[1], &w1, &h1);
     evas_object_size_hint_min_get(sd->o_box[2], &w2, &h2);
 
+   
+
     if (w0 <= w1 && w0 <= w2)
     {
 	row = 0;
@@ -137,7 +139,11 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 	oh = h2;
     }
     //oh -= 8;
+    if (!oh) oh = h;
+
     ow = oh * f;
+
+
 
     pi->row = row;
     pi->selected = 0;
@@ -236,22 +242,23 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     if (file->is_directory)
     {
 	Evas_Coord w,h;
-	o_pict = enna_image_add(evas_object_evas_get(obj));
-	enna_image_fill_inside_set(o_pict, 0);
+	o_pict = elm_icon_add(obj);
+	//enna_image_fill_inside_set(o_pict, 0);
 
 	if (file->icon && file->icon[0] == '/')
-	    enna_image_file_set(o_pict, file->icon, NULL);
+	    elm_icon_file_set(o_pict, file->icon, NULL);
 	else
-	    enna_image_file_set(o_pict, enna_config_theme_get(), file->icon);
-
+	    elm_icon_file_set(o_pict, enna_config_theme_get(), file->icon);
+	
+       
 	pi->o_pict = o_pict;
 	pi->o_edje = o;
 	pi->data = data;
 	pi->func = func;
 	pi->sd = sd;
-
-	enna_image_size_get(o_pict, &w, &h);
-	printf("icon size : %d %d\n", w, h);
+	evas_object_resize(o_pict, 128, 128);
+	//enna_image_size_get(o_pict, &w, &h);
+	evas_object_size_hint_min_set(o_pict, 128, 128);
 
 	_wall_add_pict_to_wall(pi->sd, pi, 128, 128);
     }
@@ -645,7 +652,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_scroll = elm_scroller_add(obj);
 
     elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_bounce_set(sd->o_scroll, 0, 0);
+    //elm_scroller_bounce_set(sd->o_scroll, 0, 0);
 
     evas_object_show(sd->o_scroll);
 
