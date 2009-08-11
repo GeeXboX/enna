@@ -361,7 +361,8 @@ const char * enna_wall_selected_filename_get(Evas_Object *obj)
     return NULL;
 }
 
-Eina_List* enna_wall_get_filenames(Evas_Object* obj)
+Eina_List*
+enna_wall_files_get(Evas_Object* obj)
 {
     API_ENTRY return NULL;
 

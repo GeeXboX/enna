@@ -78,16 +78,17 @@ struct _Smart_Data
     unsigned char show_file : 1;
     struct
     {
-	Evas_Object * (*view_add)(Smart_Data *sd);
-	void (*view_append)(
-	    Evas_Object *view,
-	    Enna_Vfs_File *file,
-	    void (*func) (void *data),
-	    void *data);
-	void * (*view_selected_data_get)(Evas_Object *view);
-	int (*view_jump_label)(Evas_Object *view, const char *label);
-	void (*view_key_down)(Evas_Object *view, void *even_info);
-	void (*view_select_nth)(Evas_Object *obj, int nth);
+	    Evas_Object * (*view_add)(Smart_Data *sd);
+	    void (*view_append)(
+	        Evas_Object *view,
+	        Enna_Vfs_File *file,
+	        void (*func) (void *data),
+	        void *data);
+	    void * (*view_selected_data_get)(Evas_Object *view);
+	    int (*view_jump_label)(Evas_Object *view, const char *label);
+	    void (*view_key_down)(Evas_Object *view, void *even_info);
+	    void (*view_select_nth)(Evas_Object *obj, int nth);
+	    Eina_List *(*view_files_get)(Evas_Object *obj);
     }view_funcs;
 };
 
@@ -206,29 +207,32 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
     switch(view_type)
     {
     case ENNA_BROWSER_VIEW_LIST:
-	sd->view_funcs.view_add = _browser_view_list_add;
-	sd->view_funcs.view_append =  enna_list_file_append;
-	sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
-	sd->view_funcs.view_jump_label =  enna_list_jump_label;
-	sd->view_funcs.view_key_down = enna_list_event_feed;
-	sd->view_funcs.view_select_nth = enna_list_select_nth;
-	break;
+	    sd->view_funcs.view_add = _browser_view_list_add;
+	    sd->view_funcs.view_append =  enna_list_file_append;
+	    sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
+	    sd->view_funcs.view_jump_label =  enna_list_jump_label;
+	    sd->view_funcs.view_key_down = enna_list_event_feed;
+	    sd->view_funcs.view_select_nth = enna_list_select_nth;
+	    sd->view_funcs.view_files_get = NULL;
+	    break;
     case ENNA_BROWSER_VIEW_COVER:
-	sd->view_funcs.view_add = _browser_view_cover_add;
-	sd->view_funcs.view_append =  enna_view_cover_file_append;
-	sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
-	sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
-	sd->view_funcs.view_key_down = enna_view_cover_event_feed;
-	sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
-	break;
+	    sd->view_funcs.view_add = _browser_view_cover_add;
+	    sd->view_funcs.view_append =  enna_view_cover_file_append;
+	    sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
+	    sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
+	    sd->view_funcs.view_key_down = enna_view_cover_event_feed;
+	    sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
+	    sd->view_funcs.view_files_get = NULL;
+	    break;
     case ENNA_BROWSER_VIEW_WALL:
-	sd->view_funcs.view_add = _browser_view_wall_add;
-	sd->view_funcs.view_append =  enna_wall_file_append;
-	sd->view_funcs.view_selected_data_get =  enna_wall_selected_data_get;
-	sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
-	sd->view_funcs.view_key_down = enna_wall_event_feed;
-	sd->view_funcs.view_select_nth = _browser_view_wall_select_nth;
-    default:
+	    sd->view_funcs.view_add = _browser_view_wall_add;
+	    sd->view_funcs.view_append =  enna_wall_file_append;
+	    sd->view_funcs.view_selected_data_get =  enna_wall_selected_data_get;
+	    sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
+	    sd->view_funcs.view_key_down = enna_wall_event_feed;
+	    sd->view_funcs.view_select_nth = _browser_view_wall_select_nth;
+	    sd->view_funcs.view_files_get = enna_wall_files_get;
+        default:
 	break;
     }
     evas_object_smart_callback_del(sd->o_view, "hilight", _view_hilight_cb);
@@ -257,6 +261,18 @@ enna_browser_select_label(Evas_Object *obj, const char *label)
 
     return 0;
 
+}
+
+Eina_List *
+enna_browser_files_get(Evas_Object *obj)
+{
+     API_ENTRY return NULL;
+     if (!sd->o_view) return NULL;
+     
+     if (sd->view_funcs.view_files_get)
+	    return sd->view_funcs.view_files_get(sd->o_view);
+
+     return NULL;
 }
 
 /* local subsystem globals */

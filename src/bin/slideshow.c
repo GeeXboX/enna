@@ -92,7 +92,8 @@ void enna_slideshow_append_list(Evas_Object *obj, Eina_List *list)
 
         EINA_LIST_FOREACH(list, l, filename)
         {
-            enna_slideshow_append_img (obj, filename);
+            if (filename)
+                enna_slideshow_append_img (obj, filename);
         }
     }
 }

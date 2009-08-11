@@ -132,8 +132,7 @@ static void _create_slideshow_gui()
 void _slideshow_add_files()
 {
     Eina_List *files = NULL;
-    /* FIXME files must be retrieved from browser */
-    //files = enna_wall_get_filenames (mod->o_wall);
+    files = enna_browser_files_get (mod->o_browser);
     enna_slideshow_append_list (mod->o_slideshow, files);
     eina_list_free(files);
 }
@@ -171,7 +170,10 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     if (!ev->file->is_directory)
     {
         /* File is selected, display it in slideshow mode */
-
+        _create_slideshow_gui();
+        _slideshow_add_files();
+        enna_slideshow_set(mod->o_slideshow, ev->file->uri + 7);
+        enna_slideshow_play(mod->o_slideshow);
     }
     free(ev);
 }
