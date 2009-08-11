@@ -88,6 +88,7 @@ static void _infos_create()
     mod->o_infos = enna_panel_infos_add (evas_object_evas_get(mod->o_edje));
     edje_object_part_swallow (mod->o_edje,
                               "infos.panel.swallow", mod->o_infos);   
+    edje_object_signal_emit (mod->o_edje, "infos,show", "enna");
 }
 
 
