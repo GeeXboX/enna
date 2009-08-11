@@ -216,14 +216,16 @@ enna_panel_infos_set_text (Evas_Object *obj, const char *filename)
     if (sd->str->len == 0)
         buffer_append (sd->str, _("No EXIF information found."));
 
-    edje_object_part_text_set (exif->o_exif, "enna.text.exif", exif->str->buf);
-    edje_object_size_min_calc (exif->o_exif, &mw, &mh);
+    printf("str buf : %s\n", sd->str->buf);
+    edje_object_part_text_set (sd->o_exif, "enna.text.exif", sd->str->buf);
+    edje_object_size_min_calc (sd->o_exif, &mw, &mh);
     evas_object_resize (sd->o_exif, mw, mh);
     evas_object_size_hint_min_set (sd->o_exif, mw, mh);
     elm_scroller_content_set (sd->o_scroll, sd->o_exif);
 #else
     edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
 	    _("No such information ..."));
+    printf("str buf : %s\n", sd->str->buf);
 #endif
 }
 
@@ -239,7 +241,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, const char *filename)
     o_pict = enna_image_add (evas_object_evas_get(sd->o_edje));
     enna_image_fill_inside_set (o_pict, 0);
     enna_image_file_set (o_pict, filename, NULL);
-    
+    printf("filename : %s\n", filename);
     ENNA_OBJECT_DEL (sd->o_pict);
     sd->o_pict = o_pict;
     edje_object_part_swallow (sd->o_edje,

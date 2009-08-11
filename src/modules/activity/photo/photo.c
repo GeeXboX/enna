@@ -68,6 +68,7 @@ typedef struct _Enna_Module_Photo
     PHOTO_STATE state;
     Enna_Module *em;
     photo_exif_t *exif;
+    int infos_displayed;
 } Enna_Module_Photo;
 
 static Enna_Module_Photo *mod;
@@ -76,21 +77,35 @@ static Enna_Module_Photo *mod;
 /*                             Photo Helpers                                */
 /****************************************************************************/
 
-static void _infos_delete()
+static void _delete_infos()
 {
     ENNA_OBJECT_DEL(mod->o_infos);
-    mod->state = BROWSER_VIEW;
 }
 
-static void _infos_create()
-{
-    mod->state = INFOS_VIEW;    
+static void _create_infos()
+{  
     mod->o_infos = enna_panel_infos_add (evas_object_evas_get(mod->o_edje));
     edje_object_part_swallow (mod->o_edje,
                               "infos.panel.swallow", mod->o_infos);   
-    edje_object_signal_emit (mod->o_edje, "infos,show", "enna");
+    edje_object_signal_emit (mod->o_edje, "infos,hide", "enna");
 }
 
+static void
+panel_infos_display (int show)
+{
+    if (show)
+    {
+        edje_object_signal_emit (mod->o_edje, "infos,show", "enna");
+        mod->infos_displayed = 1;
+        mod->state = INFOS_VIEW;  
+    }
+    else
+    {
+        edje_object_signal_emit (mod->o_edje, "infos,hide", "enna");
+        mod->infos_displayed = 0;
+        mod->state = BROWSER_VIEW;  
+    }
+}
 
 /* #############################################################
    #               slideshow helpers                           #
@@ -161,6 +176,21 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     free(ev);
 }
 
+static void
+_browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
+{
+    Browser_Selected_File_Data *ev = event_info;
+    printf("hilight %s\n", ev->file->uri);
+     if (!ev || !ev->file)
+        return;
+        
+     if (!ev->file->is_directory)
+        enna_panel_infos_set_cover(mod->o_infos, ev->file->uri + 7);
+     
+     enna_panel_infos_set_text(mod->o_infos, ev->file->uri + 7);
+}
+
+
 static void _browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
@@ -171,9 +201,10 @@ static void _browse(void *data)
 
     enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_WALL);
 
-    evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
-    evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
-    evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser, "root", _browser_root_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser, "selected", _browser_selected_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser, "hilight", _browser_hilight_cb, NULL);
 
     mod->state = BROWSER_VIEW;
 
@@ -227,6 +258,7 @@ static void _create_gui(void)
     edje_object_file_set(mod->o_edje, enna_config_theme_get(), "module/photo");
 
     _create_menu();
+    _create_infos();
 }
 
 static void photo_event_menu (void *event_info, enna_key_t key)
@@ -253,7 +285,7 @@ static void photo_event_browser (void *event_info, enna_key_t key)
     switch (key)
     {
 	case ENNA_KEY_I:
-	    _infos_create();
+	    panel_infos_display(1);
 	    break;
     default:
         enna_browser_event_feed(mod->o_browser, event_info);
@@ -266,7 +298,7 @@ static void photo_event_info (void *event_info, enna_key_t key)
     {
     case ENNA_KEY_CANCEL:
     case ENNA_KEY_I:
-        _infos_delete();
+        panel_infos_display(0);
         break;
     case ENNA_KEY_OK:
         _create_slideshow_gui();
@@ -392,6 +424,7 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
+    _delete_infos();
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);
     ENNA_OBJECT_DEL(mod->o_browser);
