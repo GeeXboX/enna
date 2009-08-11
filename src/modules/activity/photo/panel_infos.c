@@ -214,7 +214,7 @@ enna_panel_infos_set_text (Evas_Object *obj, const char *filename)
     exif_data_unref (d);
 
     if (sd->str->len == 0)
-      buffer_append (sd->str, _("No EXIF information found."));
+        buffer_append (sd->str, _("No EXIF information found."));
 
     edje_object_part_text_set (exif->o_exif, "enna.text.exif", exif->str->buf);
     edje_object_size_min_calc (exif->o_exif, &mw, &mh);
