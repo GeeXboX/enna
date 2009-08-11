@@ -56,15 +56,12 @@ static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info
 static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browse(void *data);
 
-static void _photo_info_fs();
-
 typedef struct _Enna_Module_Photo
 {
     Evas *e;
     Evas_Object *o_edje;
     Evas_Object *o_menu;
     Evas_Object *o_browser;
-    Evas_Object *o_wall;
     Evas_Object *o_preview;
     Evas_Object *o_slideshow;
     Ecore_Timer *sel_timer;
@@ -115,84 +112,6 @@ _flip_picture (int way)
         elm_image_orient_set (obj, w);
 }
 
-static int
-_show_sel_image(void *data)
-{
-    const char *filename = data;
-    Evas_Object *o_pict;
-    Evas_Coord x1,y1,w1,h1, x2,y2,w2,h2;
-    Evas_Coord xi,yi,wi,hi, xf,yf,wf,hf;
-    Edje_Message_Int_Set *msg;
-    Evas_Object *o_edje;
-
-    /* Prepare edje message */
-    msg = calloc(1,sizeof(Edje_Message_Int_Set) - sizeof(int) + (4 * sizeof(int)));
-    msg->count = 4;
-
-    enna_wall_selected_geometry_get(mod->o_wall, &x2, &y2, &w2, &h2);
-
-    o_pict = elm_image_add(mod->o_edje);
-    elm_image_file_set(o_pict, filename, NULL);
-    elm_image_no_scale_set(o_pict, 1);
-    elm_image_smooth_set(o_pict, 1);
-    elm_image_scale_set(o_pict, 1, 1);
-
-    o_edje = edje_object_add(mod->em->evas);
-    edje_object_file_set(o_edje, enna_config_theme_get(), "enna/picture/info");
-    edje_object_part_swallow(o_edje, "enna.swallow.content", o_pict);
-
-    /* Set Final state in fullscreen */
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.slideshow", o_edje);
-    evas_object_geometry_get(mod->o_edje, &x1, &y1, &w1, &h1);
-    hf = h1;
-    wf = hf * (float)w2 / (float)h2;
-    xf = w1 / 2 - wf / 2;
-    yf = h1 / 2 - hf / 2;
-
-    msg->val[0] = xf;
-    msg->val[1] = yf;
-    msg->val[2] = wf;
-    msg->val[3] = hf;
-
-    edje_object_message_send(o_edje, EDJE_MESSAGE_INT_SET, 2, msg);
-
-    /* Set custom state : size and position of actual thumbnail */
-    xi = x2 - x1;
-    yi = y2 - y1;
-    wi = w2;
-    hi = h2;
-    msg->val[0] = xi;
-    msg->val[1] = yi;
-    msg->val[2] = wi;
-    msg->val[3] = hi;
-    edje_object_message_send(o_edje, EDJE_MESSAGE_INT_SET, 1, msg);
-    free(msg);
-
-    mod->o_preview = o_edje;
-    photo_exif_parse_metadata (mod->em->evas, mod->o_edje,
-                               mod->o_preview, mod->exif, filename);
-    edje_object_signal_emit(mod->o_preview, "show", "enna");
-    mod->sel_timer = NULL;
-    return 0;
-}
-
-static void _photo_info_fs()
-{
-    const char *filename;
-    Evas_Object *o_pict;
-
-    filename = enna_wall_selected_filename_get(mod->o_wall);
-    if (!filename) return;
-
-    o_pict = edje_object_part_swallow_get(mod->o_preview, "enna.swallow.content");
-    if (o_pict) //user clicked too fast, preview already there or in progress
-        return;
-
-    mod->state = WALL_PREVIEW;
-    edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
-    mod->sel_timer = ecore_timer_add(0.01, _show_sel_image, filename);
-}
-
 /* #############################################################
    #               slideshow helpers                           #
    ############################################################# */
@@ -210,25 +129,20 @@ static void _create_slideshow_gui()
     evas_object_show(o);
     mod->o_slideshow = o;
 
-    //edje_object_signal_emit(mod->o_edje, "slideshow,show", "enna");
     edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
 }
 
+
 void _slideshow_add_files()
 {
-    Eina_List *files;
-
-    files = enna_wall_get_filenames (mod->o_wall);
+    Eina_List *files = NULL;
+    /* FIXME files must be retrieved from browser */
+    //files = enna_wall_get_filenames (mod->o_wall);
     enna_slideshow_append_list (mod->o_slideshow, files);
     eina_list_free(files);
 }
 
-static void
-_picture_selected_cb (void *data, Evas_Object *obj, void *event_info)
-{
-    _photo_info_fs();
-}
 
 static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
@@ -240,9 +154,6 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 
     /* Delete objects */
     ENNA_OBJECT_DEL(mod->o_browser);
-    evas_object_smart_callback_del(mod->o_wall, "selected", _picture_selected_cb);
-    //ENNA_OBJECT_DEL(mod->o_wall);
-    //edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
 
     mod->o_browser = NULL;
@@ -264,38 +175,12 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     int count = 0;
 
     if (!ev || !ev->file) return;
-#if 0
-    if (ev->file->is_directory)
+
+    if (!ev->file->is_directory)
     {
-        ENNA_OBJECT_DEL(mod->o_wall);
-        mod->o_wall = enna_wall_add(mod->em->evas);
-        evas_object_smart_callback_add(mod->o_wall, "selected", _picture_selected_cb, NULL);
-
-        evas_object_show(mod->o_wall);
-
-        EINA_LIST_FOREACH(ev->files, l, f)
-        {
-            if (!f->is_directory)
-            {
-                enna_wall_file_append(mod->o_wall, f, NULL, NULL);
-            }
-            else
-            {
-                count++;
-            }
-        }
-        edje_object_part_swallow(mod->o_edje, "enna.swallow.wall", mod->o_wall);
-        edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
-        enna_wall_select_nth(mod->o_wall, 0, 0);
-
-        if (!count)
-        {
-            edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
-            mod->state = WALL_VIEW;
-	}
+        /* File is selected, display it in slideshow mode */
 
     }
-#endif
     free(ev);
 }
 
@@ -309,7 +194,6 @@ static void _browse(void *data)
 
     enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_WALL);
 
-//    enna_browser_show_file_set(mod->o_browser, 0);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
@@ -411,13 +295,11 @@ static void photo_event_wall (void *event_info, enna_key_t key)
         break;
     case ENNA_KEY_OK:
     case ENNA_KEY_SPACE:
-        _photo_info_fs();
         break;
     case ENNA_KEY_RIGHT:
     case ENNA_KEY_LEFT:
     case ENNA_KEY_UP:
     case ENNA_KEY_DOWN:
-        enna_wall_event_feed(mod->o_wall, event_info);
         break;
     default:
         break;
@@ -451,8 +333,6 @@ static void photo_event_preview (void *event_info, enna_key_t key)
     case ENNA_KEY_OK:
         _create_slideshow_gui();
         _slideshow_add_files();
-        enna_slideshow_set (mod->o_slideshow,
-                            enna_wall_selected_filename_get (mod->o_wall));
         enna_slideshow_play(mod->o_slideshow);
         break;
     default:
@@ -577,7 +457,6 @@ void module_init(Enna_Module *em)
 void module_shutdown(Enna_Module *em)
 {
     ENNA_OBJECT_DEL(mod->o_edje);
-    ENNA_OBJECT_DEL(mod->o_wall);
     ENNA_OBJECT_DEL(mod->o_menu);
     ENNA_OBJECT_DEL(mod->o_browser);
     free(mod);
