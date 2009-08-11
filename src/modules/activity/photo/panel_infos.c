@@ -46,6 +46,7 @@ struct _Smart_Data
     Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
     Evas_Object *o_pict;
+    Evas_Object *o_exif;
     Evas_Object *o_scroll;
     buffer_t *str;
 };
@@ -80,13 +81,13 @@ static void _smart_add(Evas_Object * obj)
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "module/photo/panel_infos");
     evas_object_show(sd->o_edje);
     
-    sd->o_exif = edje_object_add (evas);
+    sd->o_exif = edje_object_add (evas_object_evas_get(obj));
     edje_object_file_set (sd->o_exif, enna_config_theme_get (), "exif/data");
 
-    sd->o_scroll = elm_scroller_add (edje);
-    edje_object_part_swallow (sd->o_edje, "enna.swallow.exif", exif->o_scroll);
+    sd->o_scroll = elm_scroller_add (sd->o_edje);
+    edje_object_part_swallow (sd->o_edje, "enna.swallow.exif", sd->o_scroll);
     
-    sd->text = buffer_new ();
+    sd->str = buffer_new ();
     
     elm_scroller_content_set (sd->o_scroll, sd->o_exif);
     
@@ -97,8 +98,11 @@ static void _smart_add(Evas_Object * obj)
 static void _smart_del(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    evas_object_del(sd->o_edje);
-    evas_object_del(sd->o_img);
+    ENNA_OBJECT_DEL(sd->o_edje);
+    ENNA_OBJECT_DEL(sd->o_exif);
+    ENNA_OBJECT_DEL(sd->o_scroll);
+    ENNA_OBJECT_DEL(sd->o_pict);
+    buffer_free(sd->str);
     free(sd);
 }
 
@@ -192,18 +196,19 @@ enna_panel_infos_add(Evas * evas)
 void
 enna_panel_infos_set_text (Evas_Object *obj, const char *filename)
 {
-    buffer_t *buf;
+#ifdef BUILD_LIBEXIF
+    ExifData *d;
+#endif
 
     API_ENTRY return;
 
-    if (!filename || !ecore_file_file_exists(filename))
+    if (!filename || !ecore_file_exists(filename))
     {
         edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
 	    _("No such information ..."));
         return;
     }
-
-
+#ifdef BUILD_LIBVEXIF
     d = exif_data_new_from_file (filename);
     exif_data_foreach_content (d, photo_exif_data_foreach_func, sd->str);
     exif_data_unref (d);
@@ -216,6 +221,10 @@ enna_panel_infos_set_text (Evas_Object *obj, const char *filename)
     evas_object_resize (sd->o_exif, mw, mh);
     evas_object_size_hint_min_set (sd->o_exif, mw, mh);
     elm_scroller_content_set (sd->o_scroll, sd->o_exif);
+#else
+    edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
+	    _("No such information ..."));
+#endif
 }
 
 void
