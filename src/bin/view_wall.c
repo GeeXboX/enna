@@ -557,6 +557,7 @@ static void _smart_item_select(Smart_Data *sd, Picture_Item *pi)
     }
 */
     sd->row_sel = pi->row;
+    evas_object_smart_callback_call (sd->obj, "hilight",pi->data);
 }
 
 static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
