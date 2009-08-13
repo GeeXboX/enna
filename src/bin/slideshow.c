@@ -38,6 +38,7 @@
 #include "slideshow.h"
 #include "image.h"
 #include "logs.h"
+#include "vfs.h"
 
 #define SMART_NAME "slideshow"
 
@@ -104,11 +105,11 @@ void enna_slideshow_append_list(Evas_Object *obj, Eina_List *list)
     if (list)
     {
         Eina_List *l;
-        const char *filename;
+        Enna_Vfs_File *file;
 
-        EINA_LIST_FOREACH(list, l, filename)
+        EINA_LIST_FOREACH(list, l, file)
         {
-            enna_slideshow_append_img (obj, filename);
+            enna_slideshow_append_img (obj, file->uri + 7);
         }
         
     }

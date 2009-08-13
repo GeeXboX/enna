@@ -134,7 +134,7 @@ void _slideshow_add_files()
     Eina_List *files = NULL;
     files = enna_browser_files_get (mod->o_browser);
     enna_slideshow_append_list (mod->o_slideshow, files);
-    eina_list_free(files);
+    eina_list_free (files);
 }
 
 
