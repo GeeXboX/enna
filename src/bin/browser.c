@@ -525,7 +525,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     }
     else
     {
-	evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
+	    evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
         edje_object_signal_emit(sd->o_edje, "list,left,now", "enna");
     }
 
@@ -559,7 +559,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             bd = calloc(1, sizeof(Browse_Data));
             bd->file = f;
             bd->sd = sd;
-	    sd->view_funcs.view_append(sd->o_view, f, _browse, bd);
+	        sd->view_funcs.view_append(sd->o_view, f, _browse, bd);
         }
 
     }
