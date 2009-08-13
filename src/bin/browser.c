@@ -213,7 +213,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_jump_label =  enna_list_jump_label;
 	    sd->view_funcs.view_key_down = enna_list_event_feed;
 	    sd->view_funcs.view_select_nth = enna_list_select_nth;
-	    sd->view_funcs.view_files_get = NULL;
+	    sd->view_funcs.view_files_get = enna_list_files_get;
 	    break;
     case ENNA_BROWSER_VIEW_COVER:
 	    sd->view_funcs.view_add = _browser_view_cover_add;
@@ -222,7 +222,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
 	    sd->view_funcs.view_key_down = enna_view_cover_event_feed;
 	    sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
-	    sd->view_funcs.view_files_get = NULL;
+	    sd->view_funcs.view_files_get = enna_view_cover_files_get;
 	    break;
     case ENNA_BROWSER_VIEW_WALL:
 	    sd->view_funcs.view_add = _browser_view_wall_add;

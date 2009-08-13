@@ -46,6 +46,7 @@ struct _List_Item
     void (*func) (void *data);
     Elm_Genlist_Item *item;
     const char *label;
+    Enna_Vfs_File *file;
 };
 
 struct _Smart_Data
@@ -121,7 +122,8 @@ void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func) (
     it->func = func;
     it->data = data;
     it->label = eina_stringshare_add(file->label);
-
+    it->file = file;
+    
     sd->items = eina_list_append(sd->items, it);
 }
 
@@ -129,6 +131,19 @@ void enna_list_select_nth(Evas_Object *obj, int nth)
 {
     API_ENTRY return;
     _smart_select_item(sd, nth);
+}
+
+Eina_List* enna_list_files_get(Evas_Object* obj)
+{
+    API_ENTRY return NULL;
+    Eina_List *files = NULL;
+    Eina_List *l;
+    List_Item *it;
+    
+    EINA_LIST_FOREACH(sd->items, l, it)
+        files = eina_list_append(files, it->file);
+        
+    return files;
 }
 
 int enna_list_jump_label(Evas_Object *obj, const char *label)

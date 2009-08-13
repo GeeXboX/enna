@@ -36,6 +36,7 @@
 Evas_Object *enna_list_add (Evas *evas);
 void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     void (*func) (void *data), void *data);
+Eina_List* enna_list_files_get(Evas_Object* obj);
 void enna_list_select_nth(Evas_Object *obj, int nth);
 void enna_list_event_feed(Evas_Object *obj, void *event_info);
 

@@ -54,6 +54,7 @@ struct _Smart_Item
     Evas_Object *o_pict; // Elm image object
     Smart_Data *sd;
     const char *label;
+    Enna_Vfs_File *file;
     void *data;
     void (*func) (void *data);
     unsigned char selected : 1;
@@ -125,7 +126,8 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     o_pict = elm_image_add(sd->o_scroll);
     si->data = data;
     si->func = func;
-
+    si->file = file;
+    
     if (file->icon && file->icon[0] != '/')
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       enna_config_theme_get (), file->icon,
@@ -178,6 +180,20 @@ void enna_view_cover_select_nth(Evas_Object *obj, int nth)
 
     _smart_item_unselect(sd, _smart_selected_item_get(sd, NULL));
     _smart_item_select(sd, si);
+}
+
+Eina_List* enna_view_cover_files_get(Evas_Object* obj)
+{
+    Eina_List *files = NULL;
+    Eina_List *l;
+    Smart_Item *it;
+    
+    API_ENTRY return NULL;
+    
+    EINA_LIST_FOREACH(sd->items, l, it)
+        files = eina_list_append(files, it->file);
+        
+    return files;
 }
 
 void *enna_view_cover_selected_data_get(Evas_Object *obj)

@@ -364,20 +364,17 @@ const char * enna_wall_selected_filename_get(Evas_Object *obj)
 Eina_List*
 enna_wall_files_get(Evas_Object* obj)
 {
-    API_ENTRY return NULL;
-
     Eina_List *l, *files = NULL;
-    const  char *fname = NULL;
     Picture_Item *pi;
     int row;
 
+    API_ENTRY return NULL;
+
     for (row=0; row<3; row++)
     {
-        for (l = sd->items[row]; l; l = l->next)
+        EINA_LIST_FOREACH(sd->items[row], l, pi)
         {
-            pi = l->data;
-            fname = enna_thumb_icon_file_get(pi->o_pict);
-            files = eina_list_append(files, fname);
+            files = eina_list_append(files, pi->file);
         }
     }
 
