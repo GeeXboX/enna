@@ -45,7 +45,6 @@ void enna_wall_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *w, i
 const char *enna_wall_selected_filename_get(Evas_Object *obj);
 
 int enna_wall_jump_label(Evas_Object *obj, const char *label);
-void enna_wall_jump_nth(Evas_Object *obj, int n);
 
 
 #endif /* WALL_H */

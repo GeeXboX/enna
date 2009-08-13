@@ -163,12 +163,6 @@ _browser_view_wall_add(Smart_Data *sd)
     return view;
 }
 
-static int
-_browser_view_cover_jump_label(Evas_Object *view, const char *label)
-{
-    return 0;
-}
-
 static void
 _browser_view_wall_select_nth(Evas_Object *view, int nth)
 {
@@ -219,7 +213,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_add = _browser_view_cover_add;
 	    sd->view_funcs.view_append =  enna_view_cover_file_append;
 	    sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
-	    sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
+	    sd->view_funcs.view_jump_label = enna_view_cover_jump_label;
 	    sd->view_funcs.view_key_down = enna_view_cover_event_feed;
 	    sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
 	    sd->view_funcs.view_files_get = enna_view_cover_files_get;
@@ -228,7 +222,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_add = _browser_view_wall_add;
 	    sd->view_funcs.view_append =  enna_wall_file_append;
 	    sd->view_funcs.view_selected_data_get =  enna_wall_selected_data_get;
-	    sd->view_funcs.view_jump_label =  _browser_view_cover_jump_label;
+	    sd->view_funcs.view_jump_label =  enna_view_cover_jump_label;
 	    sd->view_funcs.view_key_down = enna_wall_event_feed;
 	    sd->view_funcs.view_select_nth = _browser_view_wall_select_nth;
 	    sd->view_funcs.view_files_get = enna_wall_files_get;
@@ -463,7 +457,7 @@ static  void _browse(void *data)
             Enna_Vfs_File *prev_vfs;
             char *prev_uri;
             prev_vfs = sd->vfs->func.class_vfs_get(sd->vfs->cookie);
-	    prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
+	        prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
             sd->files = sd->vfs->func.class_browse_up(prev_uri, sd->vfs->cookie);
             ENNA_FREE(prev_uri);
             ev->files = sd->files;
