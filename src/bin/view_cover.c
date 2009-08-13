@@ -205,6 +205,29 @@ void *enna_view_cover_selected_data_get(Evas_Object *obj)
     return si ? si->data : NULL;
 }
 
+int enna_view_cover_jump_label(Evas_Object *obj, const char *label)
+{
+    Smart_Item *it = NULL;
+    Eina_List *l;
+    int i = 0;
+
+    API_ENTRY return -1;
+
+    if (!sd || !label) return -1;
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+        if (it->label && !strcmp(it->label, label))
+        {
+            enna_view_cover_select_nth(sd->obj, i);
+            return i;
+        }
+        i++;
+    }
+
+    return -1;
+}
+
 /* local subsystem globals */
 static void _view_cover_h_select(Evas_Object *obj, int pos)
 {

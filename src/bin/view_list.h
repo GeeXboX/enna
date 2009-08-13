@@ -39,8 +39,6 @@ void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 Eina_List* enna_list_files_get(Evas_Object* obj);
 void enna_list_select_nth(Evas_Object *obj, int nth);
 void enna_list_event_feed(Evas_Object *obj, void *event_info);
-
-int enna_list_selected_get(Evas_Object *obj);
 void * enna_list_selected_data_get(Evas_Object *obj);
 int enna_list_jump_label(Evas_Object *obj, const char *label);
 void enna_list_jump_nth(Evas_Object *obj, int n);

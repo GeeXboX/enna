@@ -330,22 +330,6 @@ void *enna_wall_selected_data_get(Evas_Object *obj)
     return si ? si->data : NULL;
 }
 
-void enna_wall_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *w, int *h)
-{
-    Eina_List *l;
-    API_ENTRY;
-
-    for (l = sd->items[sd->row_sel]; l; l = l->next)
-    {
-        Picture_Item *pi = l->data;
-        if (pi->selected)
-        {
-            evas_object_geometry_get(pi->o_pict, x, y, w, h);
-            return;
-        }
-    }
-}
-
 const char * enna_wall_selected_filename_get(Evas_Object *obj)
 {
     API_ENTRY;
@@ -379,6 +363,35 @@ enna_wall_files_get(Evas_Object* obj)
     }
 
     return files;
+}
+
+int enna_wall_jump_label(Evas_Object *obj, const char *label)
+{
+    Picture_Item *pi = NULL;
+    Eina_List *l;
+    int i = 0;
+    int row;
+    
+    API_ENTRY return -1;
+
+    if (!sd || !label) return -1;
+
+    for (row=0; row<3; row++)
+    {
+        EINA_LIST_FOREACH(sd->items[row], l, pi)
+        {
+            if (pi->file->label && !strcmp(pi->file->label, label))
+            {
+                enna_wall_select_nth(sd->obj, i, row);
+                return i;
+            }
+            i++;
+        }
+    }
+
+
+
+    return -1;
 }
 
 /* local subsystem globals */

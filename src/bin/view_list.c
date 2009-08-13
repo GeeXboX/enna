@@ -169,13 +169,6 @@ int enna_list_jump_label(Evas_Object *obj, const char *label)
     return -1;
 }
 
-void enna_list_jump_nth(Evas_Object *obj, int n)
-{
-    API_ENTRY return;
-
-    _smart_select_item(sd, n);
-}
-
 int enna_list_selected_get(Evas_Object *obj)
 {
     Eina_List *l;
