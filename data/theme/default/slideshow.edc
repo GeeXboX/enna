@@ -57,13 +57,61 @@ group {
         }
       }
       part {
+        name: "first_last.clip";
+        type: IMAGE;
+        description {
+            visible: 0;
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            rel1.relative: 0.5 0.5;
+            rel2.relative: 0.5 0.5;
+            rel1.offset: -64 -64;
+            rel2.offset: 63 63;
+        }
+        description{
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+        }
+      } 
+     part {
+        name: "first_last";
+        type: IMAGE;
+        clip_to: "first_last.clip";
+        description {
+            visible: 1;
+            state: "default" 0.0;
+            color: 255 255 255 255;
+            rel1.to: first_last.clip;
+            rel2.to: first_last.clip;
+            image {
+               normal: "picture_bar.png";
+               border: 32 32 32 32;
+            }
+        }
+      }
+      part{
+        name: "enna.swallow.first_last";
+        type: "SWALLOW";
+        clip_to: "first_last.clip";
+        description {
+            state: "default" 0.0;
+            rel1.to: "first_last.clip";
+            rel1.offset: 16 16;
+            rel2.to: "first_last.clip";
+            rel2.offset: -15 -15;
+        }
+      }
+      
+      part {
         name: "enna.swallow.content";
         type: SWALLOW;
         clip_to: "iconbar.clip";
         description {
             visible: 1;
             state: "default" 0.0;
-            color: 255 255 255 128;
+            color: 255 255 255 255;
             rel1.to: iconbar;
             rel2.to: iconbar;
             rel2.relative: 0.4 1.0;
@@ -139,6 +187,23 @@ group {
 	    action:  STATE_SET "show" 0.0;
 	    transition: SINUSOIDAL 1.0;
 	    target:  "iconbar.clip";
+    }
+    program{
+        name: "first_last,hide";
+        signal:  "first_last,hide";
+	    source:  "enna";
+	    action:  STATE_SET "default" 0.0;
+	    transition: SINUSOIDAL 1.0;
+	    target:  "first_last.clip";
+    }
+    program{
+        name: "first_last,pulse";
+        signal:  "first_last,pulse";
+	    source:  "enna";
+	    action:  STATE_SET "show" 0.0;
+	    transition: SINUSOIDAL 1.0;
+	    target:  "first_last.clip";
+	    after:  "first_last,hide";
     }
    }
 }

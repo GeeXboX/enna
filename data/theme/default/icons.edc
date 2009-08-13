@@ -89,6 +89,8 @@ STOCK_ICON("mp_prev.png",     "icon/mp_prev")
 STOCK_ICON("mp_rewind.png",     "icon/mp_rewind")
 STOCK_ICON("mp_forward.png",     "icon/mp_forward")
 STOCK_ICON("mp_stop.png",     "icon/mp_stop")
+STOCK_ICON("go-first.png",    "icon/go_first");
+STOCK_ICON("go-last.png",    "icon/go_last");
 
 /* Weather */
 STOCK_ICON("weather_spring.jpeg",           "weather/spring")

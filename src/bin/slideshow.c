@@ -72,6 +72,7 @@ struct _Smart_Data
     Eina_List *btns;
     Evas_Object *o_btn_box;
     Ecore_Timer *mouse_idle_timer;
+    Evas_Object *first_last;
 };
 
 /* local subsystem functions */
@@ -179,12 +180,16 @@ int enna_slideshow_next (Evas_Object *obj)
     if (o)
     {
         _switch_images (sd, o);
-        printf("update next\n");
         _update_infos (sd);
         return 1;
     }
     else
     {
+        ENNA_OBJECT_DEL(sd->first_last);
+        sd->first_last = elm_icon_add(sd->o_edje);
+        elm_icon_file_set(sd->first_last, enna_config_theme_get(), "icon/go_last");
+        edje_object_part_swallow(sd->o_edje, "enna.swallow.first_last", sd->first_last);
+        edje_object_signal_emit(sd->o_edje, "first_last,pulse", "enna");
         sd->playlist_id--;
         return 0;
     }
@@ -213,12 +218,16 @@ int enna_slideshow_prev (Evas_Object *obj)
             ENNA_TIMER_DEL(sd->timer);
         }
         _switch_images(sd, o);
-        printf("update prev\n");
         _update_infos (sd);
         return 1;
     }
     else
     {
+        ENNA_OBJECT_DEL(sd->first_last);
+        sd->first_last = elm_icon_add(sd->o_edje);
+        elm_icon_file_set(sd->first_last, enna_config_theme_get(), "icon/go_first");
+        edje_object_part_swallow(sd->o_edje, "enna.swallow.first_last", sd->first_last);
+        edje_object_signal_emit(sd->o_edje, "first_last,pulse", "enna");
         sd->playlist_id++;
         return 0;
     }
@@ -248,7 +257,6 @@ void enna_slideshow_play(Evas_Object *obj)
         if (o)
         {
             _switch_images(sd, o);
-            printf("update play\n");
             _update_infos (sd);
         }
         sd->timer = ecore_timer_add(enna->slideshow_delay,
