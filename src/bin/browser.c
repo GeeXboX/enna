@@ -251,7 +251,7 @@ enna_browser_select_label(Evas_Object *obj, const char *label)
     if (!sd || !sd->o_view) return -1;
 
     if (sd->view_funcs.view_jump_label)
-	sd->view_funcs.view_jump_label(sd->o_view, label);
+	    sd->view_funcs.view_jump_label(sd->o_view, label);
 
     return 0;
 

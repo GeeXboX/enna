@@ -155,17 +155,17 @@ int enna_list_jump_label(Evas_Object *obj, const char *label)
     API_ENTRY return -1;
 
     if (!sd || !label) return -1;
-
+    
     EINA_LIST_FOREACH(sd->items, l, it)
     {
-        if (it->label && !strcmp(it->label, label))
+         if (it->file->label && !strcmp(it->file->label, label))
         {
             _smart_select_item(sd, i);
-            return i;
+              return i;
         }
         i++;
     }
-
+    
     return -1;
 }
 
@@ -357,8 +357,7 @@ static void _smart_del(Evas_Object *obj)
     List_Item *it;
 
     INTERNAL_ENTRY;
-
-
+    
     evas_object_del(sd->o_edje);
     evas_object_del(sd->o_letter);
     EINA_LIST_REVERSE_FOREACH_SAFE(sd->items, l, l_prev, it)
