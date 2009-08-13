@@ -30,6 +30,7 @@
 #include <string.h>
 #include <time.h>
 
+#include <Elementary.h>
 #include <Ecore.h>
 #include <Edje.h>
 
@@ -46,7 +47,15 @@
 #define PLAY 1
 #define PAUSE 2
 
+#define SLIDESHOW_MOUSE_IDLE_TIMEOUT 5
+
 typedef struct _Smart_Data Smart_Data;
+
+typedef struct _Smart_Btn_Item
+{
+    Evas_Object *bt;
+    Evas_Object *ic;
+}Smart_Btn_Item;
 
 struct _Smart_Data
 {
@@ -60,6 +69,9 @@ struct _Smart_Data
     Evas_Object *old_slide;
     Evas_Object *slide;
     unsigned char state;
+    Eina_List *btns;
+    Evas_Object *o_btn_box;
+    Ecore_Timer *mouse_idle_timer;
 };
 
 /* local subsystem functions */
@@ -69,7 +81,7 @@ static void _random_transition(Smart_Data *sd);
 static void _edje_cb(void *data, Evas_Object *obj, const char *emission,
         const char *source);
 static void _switch_images(Smart_Data * sd, Evas_Object * new_slide);
-
+static void _update_infos (Smart_Data *sd);
 /* local subsystem globals */
 static Evas_Smart *_e_smart = NULL;
 
@@ -77,8 +89,11 @@ void enna_slideshow_append_img(Evas_Object *obj, const char *filename)
 {
     API_ENTRY return;
 
-    if (filename)
+    if (filename && !ecore_file_is_dir(filename))
+    {
         sd->playlist = eina_list_append (sd->playlist, strdup (filename));
+        sd->playlist = eina_list_sort(sd->playlist, eina_list_count(sd->playlist), EINA_COMPARE_CB(strcasecmp));
+    }   
 }
 
 void enna_slideshow_append_list(Evas_Object *obj, Eina_List *list)
@@ -92,32 +107,9 @@ void enna_slideshow_append_list(Evas_Object *obj, Eina_List *list)
 
         EINA_LIST_FOREACH(list, l, filename)
         {
-            if (filename)
-                enna_slideshow_append_img (obj, filename);
+            enna_slideshow_append_img (obj, filename);
         }
-    }
-}
-
-void enna_slideshow_set (Evas_Object *obj, const char *pos)
-{
-    Eina_List *l, *list;
-    const char *filename;
-    int i = 0;
-
-    API_ENTRY return;
-
-    if (!pos)
-        return;
-
-    list = sd->playlist;
-    EINA_LIST_FOREACH(list, l, filename)
-    {
-        if (!strcmp (filename, pos))
-        {
-            sd->playlist_id = i;
-            break;
-        }
-        i++;
+        
     }
 }
 
@@ -139,6 +131,36 @@ enna_slideshow_create_img (Evas_Object *obj, const char *filename)
     return o;
 }
 
+void enna_slideshow_set (Evas_Object *obj, const char *pos)
+{
+    Eina_List *l, *list;
+    const char *filename;
+    int i = 0;
+
+    API_ENTRY return;
+
+    if (!pos)
+        return;
+
+    list = sd->playlist;
+    EINA_LIST_FOREACH(list, l, filename)
+    {
+        if (!strcmp (filename, pos))
+        {
+            Evas_Object *o;
+            sd->playlist_id = i;
+            o = enna_slideshow_create_img (obj, filename);
+            if (o)
+            {
+                _switch_images (sd, o);
+                _update_infos (sd);
+            }
+            break;
+        }
+        i++;
+    }
+}
+
 int enna_slideshow_next (Evas_Object *obj)
 {
     char *filename;
@@ -157,6 +179,8 @@ int enna_slideshow_next (Evas_Object *obj)
     if (o)
     {
         _switch_images (sd, o);
+        printf("update next\n");
+        _update_infos (sd);
         return 1;
     }
     else
@@ -189,6 +213,8 @@ int enna_slideshow_prev (Evas_Object *obj)
             ENNA_TIMER_DEL(sd->timer);
         }
         _switch_images(sd, o);
+        printf("update prev\n");
+        _update_infos (sd);
         return 1;
     }
     else
@@ -220,7 +246,11 @@ void enna_slideshow_play(Evas_Object *obj)
         filename = eina_list_nth(sd->playlist, sd->playlist_id);
         o = enna_slideshow_create_img (obj, filename);
         if (o)
+        {
             _switch_images(sd, o);
+            printf("update play\n");
+            _update_infos (sd);
+        }
         sd->timer = ecore_timer_add(enna->slideshow_delay,
                                     enna_slideshow_timer, sd->obj);
     }
@@ -235,6 +265,19 @@ void enna_slideshow_play(Evas_Object *obj)
 }
 
 /* local subsystem globals */
+
+static void _update_infos (Smart_Data *sd)
+{
+    char buf[1024];
+        
+    snprintf (buf, sizeof(buf), "%d / %d", 
+        sd->playlist_id + 1, 
+        eina_list_count(sd->playlist));
+    edje_object_part_text_set (sd->o_edje, "number.text", buf);
+    edje_object_part_text_set (sd->o_edje, "filename.text", 
+        ecore_file_file_get(eina_list_nth(sd->playlist, sd->playlist_id)));
+    
+}
 
 static void _random_transition(Smart_Data *sd)
 {
@@ -311,10 +354,86 @@ static void _enna_slideshow_smart_reconfigure(Smart_Data * sd)
 
 }
 
+#define ELM_ADD(icon, cb)                                            \
+    ic = elm_icon_add(obj);                                          \
+    elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
+    elm_icon_scale_set(ic, 0, 0);                                    \
+    bt = elm_button_add(obj);                                        \
+    elm_button_style_set(bt, "simple");                              \
+    evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
+    elm_button_icon_set(bt, ic);                                     \
+    evas_object_size_hint_min_set(bt, 64, 64);                       \
+    evas_object_size_hint_weight_set(bt, 0.0, 1.0);                  \
+    evas_object_size_hint_align_set(bt, 0.5, 0.5);                   \
+    elm_box_pack_end(sd->o_btn_box, bt);                             \
+    evas_object_show(bt);                                            \
+    evas_object_show(ic);                                            \
+    it = calloc(1, sizeof(Smart_Btn_Item));			                 \
+    it->bt = bt;						                             \
+    it->ic = ic;						                             \
+    sd->btns = eina_list_append(sd->btns, it);			             \
+    
+static void
+_button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    enna_slideshow_play(sd->obj);
+}
+
+static void
+_button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    enna_slideshow_prev(sd->obj); 
+}
+
+static void
+_button_clicked_next_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    enna_slideshow_next(sd->obj);   
+}
+
+static void
+_button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    evas_event_feed_key_down(enna->evas, "BackSpace", "BackSpace", "BackSpace", NULL, ecore_time_get(), sd); 
+}
+
+static int _mouse_idle_timer_cb(void *data)
+{
+    Smart_Data *sd = data;
+
+    edje_object_signal_emit(sd->o_edje, "iconbar,hide", "enna");
+    enna_log(ENNA_MSG_EVENT, NULL, "hiding icon bar.");
+    ENNA_TIMER_DEL(sd->mouse_idle_timer);
+    return ECORE_CALLBACK_CANCEL;
+}
+
+static void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    if (!sd->mouse_idle_timer)
+    {
+        edje_object_signal_emit(sd->o_edje, "iconbar,show", "enna");
+        enna_log(ENNA_MSG_EVENT, NULL, "unhiding iconbar.");
+        sd->mouse_idle_timer = ecore_timer_add(SLIDESHOW_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, sd);
+    }
+    else
+    {
+        ENNA_TIMER_DEL(sd->mouse_idle_timer);
+        sd->mouse_idle_timer = ecore_timer_add(SLIDESHOW_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, sd);
+    }
+  
+}
+
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
-
+    Evas_Object *ic, *bt;
+    Smart_Btn_Item *it;
+        
     sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
@@ -340,7 +459,25 @@ static void _smart_add(Evas_Object * obj)
     sd->slide = NULL;
     sd->state = STOP;
     sd->o_transition = NULL;
+    
+    sd->o_btn_box = elm_box_add(sd->o_edje);
+    elm_box_homogenous_set(sd->o_btn_box, 0);
+    elm_box_horizontal_set(sd->o_btn_box, 1);
+    evas_object_size_hint_align_set(sd->o_btn_box, 0.5, 0.5);
+    evas_object_size_hint_weight_set(sd->o_btn_box, 0.0, -1.0);
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_btn_box);
+    
+    ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
+    ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+    ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
+    ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
+    
     _random_transition(sd);
+    edje_object_signal_emit(sd->o_edje, "iconbar,show", "enna");
+    enna_log(ENNA_MSG_EVENT, NULL, "unhiding iconbar.");
+    sd->mouse_idle_timer = ecore_timer_add(SLIDESHOW_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, sd);
+    evas_object_event_callback_add(sd->o_edje, EVAS_CALLBACK_MOUSE_MOVE, _mousemove_cb, sd);
+    evas_object_event_callback_add(sd->o_edje, EVAS_CALLBACK_MOUSE_DOWN, _mousemove_cb, sd);
 }
 
 static void _smart_del(Evas_Object * obj)
@@ -350,7 +487,15 @@ static void _smart_del(Evas_Object * obj)
 
     for (l = sd->playlist; l; l = l->next)
         ENNA_FREE (l->data);
-
+    while (sd->btns)
+    {
+        Smart_Btn_Item *it = sd->btns->data;
+        sd->btns = eina_list_remove_list(sd->btns, sd->btns);
+        evas_object_del(it->ic);
+        evas_object_del(it->bt);
+        free(it);
+    }
+    evas_object_del(sd->o_btn_box);
     evas_object_del(sd->o_edje);
     evas_object_del(sd->old_slide);
     evas_object_del(sd->slide);

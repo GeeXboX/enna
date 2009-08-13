@@ -173,7 +173,6 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
         _create_slideshow_gui();
         _slideshow_add_files();
         enna_slideshow_set(mod->o_slideshow, ev->file->uri + 7);
-        enna_slideshow_play(mod->o_slideshow);
     }
     free(ev);
 }
@@ -182,7 +181,7 @@ static void
 _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
-    printf("hilight %s\n", ev->file->uri);
+
      if (!ev || !ev->file)
         return;
         
@@ -305,7 +304,6 @@ static void photo_event_info (void *event_info, enna_key_t key)
     case ENNA_KEY_OK:
         _create_slideshow_gui();
         _slideshow_add_files();
-        enna_slideshow_play(mod->o_slideshow);
         break;
     default:
         break;

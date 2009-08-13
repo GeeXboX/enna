@@ -1,12 +1,14 @@
 images
 {
     image: "transition_vswipe_gap.png" COMP;
+    image: "picture_bar.png" COMP;
 }
 
 group {
    name: "transitions";
    parts {
       part {
+      mouse_events: 1;
       name: "bg";
       type: RECT;
          description {
@@ -22,6 +24,122 @@ group {
 	    color: 255 255 255 255;
          }
       }
+      part {
+        name: "iconbar.clip";
+        type: RECT;
+        description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            visible: 0;
+        }
+        description {
+            state: "show" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+        }
+      }
+      part {
+        name: "iconbar";
+        type: IMAGE;
+        clip_to: "iconbar.clip";
+        description {
+            visible: 1;
+            state: "default" 0.0;
+            color: 255 255 255 128;
+            rel1.relative: 0.0 0.8;
+            rel2.relative: 1.0 1.0;
+            rel1.offset: 32 0;
+            rel2.offset: -32 -32;
+            image {
+               normal: "picture_bar.png";
+               border: 32 32 32 32;
+            }
+        }
+      }
+      part {
+        name: "enna.swallow.content";
+        type: SWALLOW;
+        clip_to: "iconbar.clip";
+        description {
+            visible: 1;
+            state: "default" 0.0;
+            color: 255 255 255 128;
+            rel1.to: iconbar;
+            rel2.to: iconbar;
+            rel2.relative: 0.4 1.0;
+            rel1.offset: 8 8;
+            rel2.offset: -7 -7;
+        }
+      }
+      part {
+	    name:          "filename.text";
+	    type:          TEXT;
+	    effect:        SOFT_SHADOW;
+	    clip_to:       "iconbar.clip";
+	    mouse_events:  0;
+	    scale: 1;
+	    description { state: "default" 0.0;
+	       visible: 1;
+	       rel1.to: "enna.swallow.content";
+	       rel1.relative: 1.0 0.0;
+           rel1.offset: 0 4;
+           rel2.to: "iconbar";
+           rel2.relative: 0.8 1.0;
+	       rel2.offset: -5 -5;
+	       color: 224 224 224 255;
+	       color3: 0 0 0 64;
+	       text {
+    		  font:     "content";
+	    	  size:     20;
+	    	  min:      1 1;
+	    	  text:     "filename";
+	    	  align:    0.5 0.5;
+	       }
+	    }
+	    }   
+	     part {
+	    name:          "number.text";
+	    type:          TEXT;
+	    effect:        SOFT_SHADOW;
+	    mouse_events:  0;
+	    scale: 1;
+  	    clip_to:       "iconbar.clip";
+	    description { state: "default" 0.0;
+	       visible: 1;
+	       rel1.to: "filename.text";
+	       rel1.relative: 1.0 0.0;
+           rel1.offset: 0 4;
+           rel2.to: "iconbar";
+	       rel2.offset: -5 -5;
+	       color: 224 224 224 255;
+	       color3: 0 0 0 64;
+	       text {
+    		  font:     "content";
+	    	  size:     20;
+	    	  min:      1 1;
+	    	  align:    0.5 0.5;
+	    	  text: "1 / 1";
+	       }
+	    }
+	 }
+   }
+   programs{
+    program{
+        name: "iconbar,hide";
+        signal:  "iconbar,hide";
+	    source:  "enna";
+	    action:  STATE_SET "default" 0.0;
+	    transition: SINUSOIDAL 1.0;
+	    target:  "iconbar.clip";
+    }
+    program{
+        name: "iconbar,show";
+        signal:  "iconbar,show";
+	    source:  "enna";
+	    action:  STATE_SET "show" 0.0;
+	    transition: SINUSOIDAL 1.0;
+	    target:  "iconbar.clip";
+    }
    }
 }
 
