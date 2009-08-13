@@ -240,7 +240,7 @@ void enna_slideshow_play(Evas_Object *obj)
     {
         char *filename;
         Evas_Object *o;
-
+        Smart_Btn_Item *it;
         /* Play */
         sd->state = PLAY;
         filename = eina_list_nth(sd->playlist, sd->playlist_id);
@@ -253,13 +253,27 @@ void enna_slideshow_play(Evas_Object *obj)
         }
         sd->timer = ecore_timer_add(enna->slideshow_delay,
                                     enna_slideshow_timer, sd->obj);
+
+        it = eina_list_nth (sd->btns, 1);
+        ENNA_OBJECT_DEL(it->ic);
+        it->ic = elm_icon_add(sd->o_edje);
+        elm_icon_file_set(it->ic, enna_config_theme_get(), "icon/mp_pause");
+        elm_button_icon_set(it->bt, it->ic);
+        evas_object_size_hint_min_set(it->bt, 64, 64);
     }
     else
     {
-
+        Smart_Btn_Item *it;
+        it = eina_list_nth (sd->btns, 1);
+        ENNA_OBJECT_DEL(it->ic);
+        it->ic = elm_icon_add(sd->o_edje);
+        elm_icon_file_set(it->ic, enna_config_theme_get(), "icon/mp_play");
+        elm_button_icon_set(it->bt, it->ic);
+        evas_object_size_hint_min_set(it->bt, 64, 64);
         /* Pause */
         sd->state = PAUSE;
-        ENNA_TIMER_DEL(sd->timer);
+        ENNA_TIMER_DEL (sd->timer);
+        
     }
 
 }
