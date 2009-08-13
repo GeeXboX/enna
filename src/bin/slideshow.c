@@ -517,6 +517,7 @@ static void _smart_del(Evas_Object * obj)
         evas_object_del(it->bt);
         free(it);
     }
+    evas_object_del(sd->first_last);
     evas_object_del(sd->o_btn_box);
     evas_object_del(sd->o_edje);
     evas_object_del(sd->old_slide);
