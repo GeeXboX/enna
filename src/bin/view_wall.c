@@ -309,7 +309,8 @@ void enna_wall_event_feed(Evas_Object *obj, void *event_info)
 void enna_wall_select_nth(Evas_Object *obj, int col, int row)
 {
     Picture_Item *pi;
-
+    Evas_Coord xedje, wedje, xbox, x;
+    
     API_ENTRY;
 
     pi = eina_list_nth(sd->items[row], col);
@@ -317,6 +318,11 @@ void enna_wall_select_nth(Evas_Object *obj, int col, int row)
 
     _smart_item_unselect(sd, _smart_selected_item_get(sd, NULL, NULL));
     _smart_item_select(sd, pi);
+
+    evas_object_geometry_get(pi->o_edje, &xedje, NULL, &wedje, NULL);
+    evas_object_geometry_get(sd->o_box[sd->row_sel], &xbox, NULL, NULL, NULL);
+    x = (xedje + wedje / 2 - xbox + sd->w / 2 );
+    elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
 
 
 }
@@ -373,23 +379,23 @@ int enna_wall_jump_label(Evas_Object *obj, const char *label)
     int row;
     
     API_ENTRY return -1;
-
+    
     if (!sd || !label) return -1;
 
     for (row=0; row<3; row++)
     {
+        i = 0;
         EINA_LIST_FOREACH(sd->items[row], l, pi)
         {
             if (pi->file->label && !strcmp(pi->file->label, label))
             {
+                
                 enna_wall_select_nth(sd->obj, i, row);
                 return i;
             }
             i++;
         }
     }
-
-
 
     return -1;
 }
