@@ -557,22 +557,7 @@ static void _smart_item_select(Smart_Data *sd, Picture_Item *pi)
     evas_object_raise(pi->sd->o_box[pi->row]);
 
     edje_object_signal_emit(pi->o_edje, "select", "enna");
-/*
-    switch (pi->row)
-    {
-    case 0:
-        edje_object_signal_emit(pi->o_edje, "select", "enna");
-        break;
-    case 1:
-        edje_object_signal_emit(pi->o_edje, "select1", "enna");
-        break;
-    case 2:
-        edje_object_signal_emit(pi->o_edje, "select2", "enna");
-        break;
-    default:
-        break;
-    }
-*/
+
     sd->row_sel = pi->row;
     evas_object_smart_callback_call (sd->obj, "hilight",pi->data);
 }
@@ -594,32 +579,15 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     }
     else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
     {
-	evas_object_smart_callback_call(pi->sd->obj, "selected", NULL);
-	return;
+	    evas_object_smart_callback_call(pi->sd->obj, "selected", NULL);
+	    return;
     }
     else if (ppi == pi)
     {
         return;
     }
 
-    evas_object_raise(pi->sd->o_box[pi->row]);
-    evas_object_raise(pi->o_edje);
-    pi->selected = 1;
-    pi->sd->row_sel = pi->row;
-    switch (pi->row)
-    {
-    case 0:
-        edje_object_signal_emit(pi->o_edje, "select0", "enna");
-        break;
-    case 1:
-        edje_object_signal_emit(pi->o_edje, "select1", "enna");
-        break;
-    case 2:
-        edje_object_signal_emit(pi->o_edje, "select2", "enna");
-        break;
-    default:
-        break;
-    }
+    _smart_item_select(pi->sd, pi);
 
 }
 
