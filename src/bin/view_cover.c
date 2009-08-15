@@ -131,11 +131,11 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     if (file->icon && file->icon[0] != '/')
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       enna_config_theme_get (), file->icon,
-                                      64, 64, "shadow,hide");
+                                      96, 96, "shadow,hide");
     else
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       file->icon, NULL,
-                                      64, 64 * 3/2, "shadow,show");
+                                      96, 96 * 3/2, "shadow,show");
 
     elm_box_pack_end(sd->o_box, o);
     si->o_pict = o_pict;
