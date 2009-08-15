@@ -37,6 +37,43 @@ group
             rel2.to: "clip";
          }
       }
+      part {
+         name : "enna.clip.letter";
+         type: RECT;
+         mouse_events: 0;
+          description {
+             state: "default" 0.0;
+             color: 0 0 0 0;
+             visible: 1;
+             aspect_preference: BOTH;
+             aspect: 1 1;
+             rel1 {relative: 0.5 0.5;}
+             rel2 {relative: 0.5 0.5;};
+         }
+         description {
+            state: "show" 0.0;
+            visible: 1;
+            aspect_preference: BOTH;
+            aspect: 1 1;
+            color: 255 255 255 255;
+            rel1 {relative: 0.35 0.35;}
+            rel2 {relative: 0.65  0.65;};
+         }
+      }
+      part { name: "enna.swallow.letter";
+         mouse_events: 0;
+         clip_to: "enna.clip.letter";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 50;
+            rel1.relative: 0 0;
+            rel1.to: "enna.clip.letter";
+            rel2.relative: 1 1;
+            rel2.to: "enna.clip.letter";
+         }
+
+      }
    }
    programs
    {
@@ -88,6 +125,22 @@ group
       program {
          name: "transition,default";
          action: SIGNAL_EMIT "list,transition,default,end" "edje";
+      }
+       program {
+         name: "letter,show";
+         signal: "letter,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: "ACCELERATE" 0.3;
+         target: "enna.clip.letter";
+      }
+      program {
+         name: "letter,hide";
+         signal: "letter,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: "ACCELERATE" 0.3;
+         target: "enna.clip.letter";
       }
 
    }

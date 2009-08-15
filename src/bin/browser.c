@@ -68,6 +68,7 @@ struct _Smart_Data
     Evas_Object *obj;
     Evas_Object *o_edje;
     Evas_Object *o_view;
+    Evas_Object *o_letter;
     Eina_List *files;
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
@@ -75,6 +76,10 @@ struct _Smart_Data
     char *prev;
     Elm_Genlist_Item_Class *item_class;
     Eina_List *visited;
+    unsigned int letter_mode;
+    Ecore_Timer *letter_timer;
+    unsigned int letter_event_nbr;
+    char letter_key;
     unsigned char accept_ev : 1;
     unsigned char show_file : 1;
     struct
@@ -90,6 +95,7 @@ struct _Smart_Data
 	    void (*view_key_down)(Evas_Object *view, void *even_info);
 	    void (*view_select_nth)(Evas_Object *obj, int nth);
 	    Eina_List *(*view_files_get)(Evas_Object *obj);
+	    void (*view_jump_ascii)(Evas_Object *obj, char k);
     }view_funcs;
 };
 
@@ -209,6 +215,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_key_down = enna_list_event_feed;
 	    sd->view_funcs.view_select_nth = enna_list_select_nth;
 	    sd->view_funcs.view_files_get = enna_list_files_get;
+	    sd->view_funcs.view_jump_ascii = enna_list_jump_ascii;
 	    break;
     case ENNA_BROWSER_VIEW_COVER:
 	    sd->view_funcs.view_add = _browser_view_cover_add;
@@ -218,6 +225,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_key_down = enna_view_cover_event_feed;
 	    sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
 	    sd->view_funcs.view_files_get = enna_view_cover_files_get;
+	    sd->view_funcs.view_jump_ascii = enna_view_cover_jump_ascii;
 	    break;
     case ENNA_BROWSER_VIEW_WALL:
 	    sd->view_funcs.view_add = _browser_view_wall_add;
@@ -227,6 +235,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_key_down = enna_wall_event_feed;
 	    sd->view_funcs.view_select_nth = _browser_view_wall_select_nth;
 	    sd->view_funcs.view_files_get = enna_wall_files_get;
+  	    sd->view_funcs.view_jump_ascii = enna_wall_jump_ascii;
         default:
 	break;
     }
@@ -333,6 +342,13 @@ static void _smart_add(Evas_Object * obj)
     sd->o_view = sd->view_funcs.view_add(sd);
     evas_object_smart_callback_add(sd->o_view, "hilight", _view_hilight_cb, sd);
 
+    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
+    sd->o_letter =  elm_button_add(obj);
+    elm_button_label_set(sd->o_letter, "");
+    elm_object_scale_set(sd->o_letter, 6.0);
+    evas_object_show(sd->o_letter);
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.letter", sd->o_letter);
+
     sd->accept_ev = 1;
     sd->show_file = 1;
     evas_object_smart_member_add(sd->o_edje, obj);
@@ -347,6 +363,7 @@ static void _smart_del(Evas_Object * obj)
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje", _list_transition_left_end_cb);
     ENNA_OBJECT_DEL(sd->o_view);
     evas_object_del(sd->o_edje);
+    evas_object_del(sd->o_letter);
     free(sd);
 }
 
@@ -635,6 +652,18 @@ _list_transition_right_end_cb(void *data, Evas_Object *o, const char *sig, const
     _list_transition_core(data, 1);
 }
 
+static int _letter_timer_cb(void *data)
+{
+    Smart_Data *sd;
+
+    sd = data;
+    if (!sd) return 0;
+
+    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
+    sd->letter_mode = 0;
+    ENNA_TIMER_DEL(sd->letter_timer);
+    return ECORE_CALLBACK_CANCEL;
+}
 
 void enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
 {
@@ -650,6 +679,76 @@ void enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
         edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje", _list_transition_left_end_cb, sd);
         edje_object_signal_emit(sd->o_edje, "list,left", "enna");
     }
+}
+
+static char _get_letter_from_key(char key)
+{
+    switch (key)
+    {
+        case '7':
+            return 'P';
+        case '8':
+            return 'T';
+        case '9':
+            return 'W';
+        default:
+            return ((key - 50) * 3 + 65);
+    }
+}
+
+static void _jump_to_ascii(Smart_Data *sd, char k)
+{
+    if (!sd) return;
+
+     if (sd->view_funcs.view_jump_ascii)
+	    sd->view_funcs.view_jump_ascii(sd->o_view, k);
+/*
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+        if (it->label[0] == k || it->label[0] == k - 32)
+        {
+            _smart_select_item(sd, i);
+            return;
+        }
+        i++;
+    }*/
+}
+
+static void _get_alpha_from_digit(Smart_Data *sd, char key)
+{
+    char letter[2];
+    int mod = 0;
+
+    if (isdigit(key))
+    {
+        letter[0] = _get_letter_from_key(key);
+        letter[1] = '\0';
+        mod = (key == '7' || key == '9') ? 4 : 3;
+        if (sd->letter_key == key)
+            sd->letter_event_nbr = (sd->letter_event_nbr + 1) % mod;
+        else
+        {
+            sd->letter_event_nbr = 0;
+            sd->letter_key = key;
+        }
+
+        letter[0] += sd->letter_event_nbr;
+    }
+    else
+    {
+        letter[0] = key;
+        letter[1] = '\0';
+    }
+
+    sd->letter_mode = 1;
+
+    ENNA_TIMER_DEL(sd->letter_timer);
+
+    edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
+    elm_button_label_set(sd->o_letter, letter);
+    edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
+    sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
+    _jump_to_ascii(sd, letter[0]);
 }
 
 void enna_browser_event_feed(Evas_Object *obj, void *event_info)
@@ -679,8 +778,34 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
         _browse(sd->view_funcs.view_selected_data_get(sd->o_view));
         break;
     }
+    case ENNA_KEY_UP:
+    case ENNA_KEY_DOWN:
+    case ENNA_KEY_LEFT:
+    case ENNA_KEY_RIGHT:
+        if (sd->view_funcs.view_key_down)
+            sd->view_funcs.view_key_down(sd->o_view, event_info);
+        break;
+    
+    case ENNA_KEY_2:
+    case ENNA_KEY_3:
+    case ENNA_KEY_4:
+    case ENNA_KEY_5:
+    case ENNA_KEY_6:
+    case ENNA_KEY_7:
+    case ENNA_KEY_8:
+    case ENNA_KEY_9:
+        {
+            char k = ev->key[strlen(ev->key) - 1];
+            _get_alpha_from_digit(sd, k);
+        }
+        break;
     default:
-	sd->view_funcs.view_key_down(sd->o_view, event_info);
+        {
+            char k = enna_key_get_alpha(key);
+            if (k)
+                _get_alpha_from_digit(sd, k);
+        }
+        break;
     }
 }
 

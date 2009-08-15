@@ -41,5 +41,6 @@ void enna_view_cover_select_nth(Evas_Object *obj, int nth);
 void enna_view_cover_event_feed(Evas_Object *obj, void *event_info);
 void *enna_view_cover_selected_data_get(Evas_Object *obj);
 int enna_view_cover_jump_label(Evas_Object *obj, const char *label);
+void enna_view_cover_jump_ascii(Evas_Object *obj, char k);
 
 #endif /* VIEW_COVER_H */

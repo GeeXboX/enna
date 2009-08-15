@@ -400,6 +400,30 @@ int enna_wall_jump_label(Evas_Object *obj, const char *label)
     return -1;
 }
 
+void enna_wall_jump_ascii(Evas_Object *obj, char k)
+{
+    Picture_Item *pi;
+    Eina_List *l;
+    int i = 0, row;
+    
+    API_ENTRY return;
+
+    for (row=0; row<3; row++)
+    {
+        i = 0;
+        EINA_LIST_FOREACH(sd->items[row], l, pi)
+        {
+            if (pi->file->label[0] == k || pi->file->label[0] == k - 32)
+            {
+                
+                enna_wall_select_nth(sd->obj, i, row);
+                return;
+            }
+            i++;
+        }
+    }
+}
+
 /* local subsystem globals */
 static void _wall_h_select(Evas_Object *obj, int pos)
 {
