@@ -525,6 +525,7 @@ static void _smart_del(Evas_Object * obj)
     evas_object_del(sd->slide);
     evas_object_del(sd->o_transition);
     ENNA_TIMER_DEL(sd->timer);
+    ENNA_TIMER_DEL(sd->mouse_idle_timer);
     free(sd);
 }
 
