@@ -579,7 +579,8 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     }
     else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
     {
-	    evas_object_smart_callback_call(pi->sd->obj, "selected", NULL);
+        if (pi->func)
+            pi->func(pi->data);
 	    return;
     }
     else if (ppi == pi)
