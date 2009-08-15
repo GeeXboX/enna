@@ -73,15 +73,11 @@ struct _Smart_Data
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
     Evas *evas;
-    char *prev;
-    Elm_Genlist_Item_Class *item_class;
     Eina_List *visited;
     unsigned int letter_mode;
     Ecore_Timer *letter_timer;
     unsigned int letter_event_nbr;
     char letter_key;
-    unsigned char accept_ev : 1;
-    unsigned char show_file : 1;
     struct
     {
 	    Evas_Object * (*view_add)(Smart_Data *sd);
@@ -97,6 +93,8 @@ struct _Smart_Data
 	    Eina_List *(*view_files_get)(Evas_Object *obj);
 	    void (*view_jump_ascii)(Evas_Object *obj, char k);
     }view_funcs;
+    unsigned char accept_ev : 1;
+    unsigned char show_file : 1;
 };
 
 
