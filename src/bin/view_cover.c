@@ -309,9 +309,29 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         void *event_info)
 {
     Smart_Item *si = data;
+    Smart_Item *spi;
+    Evas_Event_Mouse_Down *ev = event_info;
 
     if (!si) return;
     _smart_item_unselect(si->sd, _smart_selected_item_get(si->sd, NULL));
+    _smart_item_select(si->sd, si);
+
+    spi = _smart_selected_item_get(si->sd, NULL);
+    if (spi && spi != si)
+    {
+        _smart_item_unselect(si->sd, _smart_selected_item_get(si->sd, NULL));
+    }
+    else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
+    {
+        if (si->func)
+            si->func(si->data);
+	    return;
+    }
+    else if (spi == si)
+    {
+        return;
+    }
+
     _smart_item_select(si->sd, si);
 }
 
