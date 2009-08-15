@@ -424,6 +424,28 @@ _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
     evas_event_feed_key_down(enna->evas, "BackSpace", "BackSpace", "BackSpace", NULL, ecore_time_get(), sd); 
 }
 
+static void
+_button_clicked_rotate_ccw_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    
+    if (!sd->slide) return;
+    
+    enna_image_orient_set(sd->slide, ENNA_IMAGE_ROTATE_90_CCW);    
+    
+    
+}
+
+static void
+_button_clicked_rotate_cw_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    
+    if (!sd->slide) return;
+    
+    enna_image_orient_set(sd->slide, ENNA_IMAGE_ROTATE_90_CW);   
+}
+
 static int _mouse_idle_timer_cb(void *data)
 {
     Smart_Data *sd = data;
@@ -494,6 +516,8 @@ static void _smart_add(Evas_Object * obj)
     ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
     ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
+    ELM_ADD ("icon/rotate_ccw", _button_clicked_rotate_ccw_cb);
+    ELM_ADD ("icon/rotate_cw",  _button_clicked_rotate_cw_cb);
     
     _random_transition(sd);
     edje_object_signal_emit(sd->o_edje, "iconbar,show", "enna");
