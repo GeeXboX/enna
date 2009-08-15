@@ -780,6 +780,10 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_DOWN:
     case ENNA_KEY_LEFT:
     case ENNA_KEY_RIGHT:
+    case ENNA_KEY_PAGE_UP:
+    case ENNA_KEY_PAGE_DOWN:
+    case ENNA_KEY_HOME:
+    case ENNA_KEY_END:
         if (sd->view_funcs.view_key_down)
             sd->view_funcs.view_key_down(sd->o_view, event_info);
         break;
