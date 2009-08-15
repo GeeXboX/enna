@@ -56,7 +56,6 @@ struct _Smart_Data
     Evas_Object *o_edje;
     Evas_Object *o_list;
     Eina_List *items;
-    unsigned char on_hold : 1;
     Elm_Genlist_Item_Class *item_class;
 };
 
@@ -321,7 +320,6 @@ static void _smart_add(Evas_Object *obj)
     evas_object_size_hint_weight_set(sd->o_list, 1.0, 1.0);
     elm_genlist_horizontal_mode_set(sd->o_list, ELM_LIST_LIMIT);
     evas_object_show(sd->o_list);
-    //elm_object_scale_set(sd->o_list, 2.0);
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
 
@@ -487,12 +485,9 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
                 if (it->func)
                     it->func(it->data);
             }
-
         }
             break;
        default:
             break;
     }
-
-    sd->on_hold = 0;
 }
