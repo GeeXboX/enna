@@ -184,6 +184,8 @@ _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 
      if (!ev || !ev->file)
         return;
+    
+     edje_object_part_text_set(mod->o_edje, "filename.text", ev->file->label);
         
      if (!ev->file->is_directory)
         enna_panel_infos_set_cover(mod->o_infos, ev->file->uri + 7);
