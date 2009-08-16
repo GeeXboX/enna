@@ -38,19 +38,19 @@ CFLAGS="$CFLAGS -DLOCALEDIR=\"\\\"$datadir/locale\\\"\""
 
 PKG_CHECK_MODULES([ENNA],
   [
-   eina-0 >= 0.0.1
+   eina-0 >= 0.0.2
    eet >= 1.0.0
    evas >= 0.9.9
-   ecore >= 0.9.9.40
-   ecore-evas
-   ecore-txt
-   ecore-file
-   ecore-ipc
-   embryo >= 0.9.1
-   edje >= 0.5.0
-   elementary
-   libplayer
-   dbus-1
+   ecore >= 0.9.9.040
+   ecore-evas >= 0.9.9.040
+   ecore-txt >= 0.9.9.040
+   ecore-file >= 0.9.9.040
+   ecore-ipc >= 0.9.9.040
+   embryo >= 0.9.9.040
+   edje >= 0.9.92.062
+   elementary >= 0.5.1.0
+   libplayer >= 0.0.1
+   dbus-1 >= 1.2.0
   ]
 )
 
@@ -307,7 +307,7 @@ AC_MSG_RESULT($want_browser_valhalla)
 if test "x$want_browser_valhalla" = "xyes" -o "x$want_browser_valhalla" = "xauto"; then
   PKG_CHECK_MODULES(
     [VALHALLA],
-    [libvalhalla],
+    [libvalhalla >= 0.0.1],
     [
       AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
       have_browser_valhalla="yes"
@@ -391,7 +391,7 @@ AC_MSG_RESULT($want_metadata_libplayer)
 if test "x$want_metadata_libplayer" = "xyes" -o "x$want_metadata_libplayer" = "xauto"; then
   PKG_CHECK_MODULES(
     [LIBPLAYER],
-    [libplayer],
+    [libplayer >= 0.0.1],
     [
       AC_DEFINE(BUILD_METADATA_LIBPLAYER, 1, [libplayer metadata module])
       have_metadata_libplayer="yes"
@@ -499,7 +499,7 @@ AC_MSG_RESULT($want_volume_hal)
 if test "x$want_volume_hal" = "xyes" -o "x$want_volume_hal" = "xauto"; then
   PKG_CHECK_MODULES(
     [EHAL],
-    [ehal hal-storage],
+    [ehal >=0.5.0.040  hal-storage >= 0.5.0],
     [
       AC_DEFINE(BUILD_VOLUME_HAL, 1, [HAL Volume])
       have_volume_hal="yes"
