@@ -139,7 +139,7 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 
     if (!oh) oh = h;
     ow = oh * f;
-    
+
     pi->row = row;
     pi->selected = 0;
 
@@ -147,7 +147,7 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
     evas_object_size_hint_min_set(pi->o_edje, ow, oh);
     evas_object_size_hint_aspect_set(pi->o_edje, EVAS_ASPECT_CONTROL_VERTICAL, ow, oh);
     elm_box_pack_end(sd->o_box[pi->row], pi->o_edje);
-    
+
     evas_object_show(pi->o_edje);
     edje_object_signal_emit(pi->o_edje, "thumb,show", "enna");
     evas_object_raise(pi->o_edje);
@@ -310,7 +310,7 @@ void enna_wall_select_nth(Evas_Object *obj, int col, int row)
 {
     Picture_Item *pi;
     Evas_Coord xedje, wedje, xbox, x;
-    
+
     API_ENTRY;
 
     pi = eina_list_nth(sd->items[row], col);
@@ -377,9 +377,9 @@ int enna_wall_jump_label(Evas_Object *obj, const char *label)
     Eina_List *l;
     int i = 0;
     int row;
-    
+
     API_ENTRY return -1;
-    
+
     if (!sd || !label) return -1;
 
     for (row=0; row<3; row++)
@@ -389,7 +389,7 @@ int enna_wall_jump_label(Evas_Object *obj, const char *label)
         {
             if (pi->file->label && !strcmp(pi->file->label, label))
             {
-                
+
                 enna_wall_select_nth(sd->obj, i, row);
                 return i;
             }
@@ -405,7 +405,7 @@ void enna_wall_jump_ascii(Evas_Object *obj, char k)
     Picture_Item *pi;
     Eina_List *l;
     int i = 0, row;
-    
+
     API_ENTRY return;
 
     for (row=0; row<3; row++)
@@ -415,7 +415,7 @@ void enna_wall_jump_ascii(Evas_Object *obj, char k)
         {
             if (pi->file->label[0] == k || pi->file->label[0] == k - 32)
             {
-                
+
                 enna_wall_select_nth(sd->obj, i, row);
                 return;
             }
@@ -648,7 +648,7 @@ static void _smart_reconfigure(Smart_Data * sd)
         {
             evas_object_size_hint_aspect_get(it->o_edje, &a, &aw, &ah);
             evas_object_size_hint_min_set(it->o_edje, (oh )* aw / ah, oh);
-        }      
+        }
     }
 
     evas_object_size_hint_min_get(sd->o_cont, &w, &h);
@@ -669,7 +669,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_scroll = elm_scroller_add(obj);
 
     elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
-    //elm_scroller_bounce_set(sd->o_scroll, 0, 0);
+    elm_scroller_bounce_set(sd->o_scroll, 0, 0);
 
     evas_object_show(sd->o_scroll);
 
@@ -677,7 +677,7 @@ static void _smart_add(Evas_Object * obj)
     elm_box_homogenous_set(sd->o_cont, 1);
     elm_box_horizontal_set(sd->o_cont, 0);
 
-    
+
     evas_object_show(sd->o_cont);
     elm_scroller_content_set(sd->o_scroll, sd->o_cont);
 

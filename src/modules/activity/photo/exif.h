@@ -44,7 +44,11 @@ typedef struct photo_exif_s {
 #endif
 } photo_exif_t;
 
+
+#ifdef BUILD_LIBEXIF
 void photo_exif_data_foreach_func (ExifContent *content, void *data);
+#endif
+
 void photo_exif_parse_metadata (Evas *evas, Evas_Object *edje,
                                 Evas_Object *preview, photo_exif_t *exif,
                                 const char *filename);
