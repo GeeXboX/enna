@@ -48,7 +48,7 @@ photo_exif_content_foreach_func (ExifEntry *entry, void *data)
 {
     char buf[BUF_SIZE] = { 0 };
     char buf_txtblk[BUF_SIZE] = { 0 };
-    photo_exif_t *exif = data;
+    buffer_t *exif = data;
 
     if (!exif)
         return;
@@ -59,7 +59,7 @@ photo_exif_content_foreach_func (ExifEntry *entry, void *data)
               exif_tag_get_name (entry->tag),
               exif_entry_get_value (entry, buf, BUF_SIZE));
 
-    buffer_appendf (exif->str, "%s", buf_txtblk);
+    buffer_appendf (exif, "%s", buf_txtblk);
 }
 
 void
