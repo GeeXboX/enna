@@ -127,7 +127,7 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     si->data = data;
     si->func = func;
     si->file = file;
-    
+
     if (file->icon && file->icon[0] != '/')
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       enna_config_theme_get (), file->icon,
@@ -187,12 +187,12 @@ Eina_List* enna_view_cover_files_get(Evas_Object* obj)
     Eina_List *files = NULL;
     Eina_List *l;
     Smart_Item *it;
-    
+
     API_ENTRY return NULL;
-    
+
     EINA_LIST_FOREACH(sd->items, l, it)
         files = eina_list_append(files, it->file);
-        
+
     return files;
 }
 
@@ -233,7 +233,7 @@ void enna_view_cover_jump_ascii(Evas_Object *obj, char k)
     Smart_Item *it;
     Eina_List *l;
     int i = 0;
-    
+
     API_ENTRY return;
 
     EINA_LIST_FOREACH(sd->items, l, it)
@@ -382,7 +382,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_scroll = elm_scroller_add(obj);
     evas_object_show(sd->o_scroll);
     elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
-    //elm_scroller_bounce_set(sd->o_scroll, 0, 0);
+    elm_scroller_bounce_set(sd->o_scroll, 0, 0);
 
     edje_object_part_swallow(sd->o_edje, "swallow.content", sd->o_scroll);
 
