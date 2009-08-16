@@ -57,6 +57,6 @@ int enna_image_fill_inside_get(Evas_Object * obj);
 void enna_image_fill_inside_set(Evas_Object * obj, int fill_inside);
 void enna_image_data_set(Evas_Object * obj, void *data, int w, int h);
 void *enna_image_data_get(Evas_Object * obj, int *w, int *h);
-void enna_image_preload(Evas_Object *obj, Evas_Bool cancel);
+void enna_image_preload(Evas_Object *obj, Eina_Bool cancel);
 void enna_image_orient_set(Evas_Object *obj, Enna_Image_Orient orient);
 #endif /* IMAGE_H */

@@ -27,18 +27,24 @@
  *
  */
 
-#ifndef LIST_H
-#define LIST_H
+#ifndef WALL_H
+#define WALL_H
 
 #include "enna.h"
+#include "vfs.h"
 
-Evas_Object *enna_list_add (Evas *evas);
-void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, const char *label, void (*func) (void *data), void *data);
-void enna_list_selected_set(Evas_Object *obj, int n);
-int enna_list_selected_get(Evas_Object *obj);
-void * enna_list_selected_data_get(Evas_Object *obj);
-int enna_list_jump_label(Evas_Object *obj, const char *label);
-void enna_list_jump_nth(Evas_Object *obj, int n);
-void enna_list_event_key_down(Evas_Object *obj, void *event_info);
-#endif /* LIST_H */
+Evas_Object *enna_wall_add(Evas * evas);
+void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+    void (*func) (void *data), void *data);
+Eina_List* enna_wall_files_get(Evas_Object* obj);
+void enna_wall_select_nth(Evas_Object *obj, int col, int row);
+void enna_wall_event_feed(Evas_Object *obj, void *event_info);
+void *enna_wall_selected_data_get(Evas_Object *obj);
 
+void enna_wall_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *w, int *h);
+const char *enna_wall_selected_filename_get(Evas_Object *obj);
+
+int enna_wall_jump_label(Evas_Object *obj, const char *label);
+void enna_wall_jump_ascii(Evas_Object *obj, char k);
+
+#endif /* WALL_H */

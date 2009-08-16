@@ -49,7 +49,7 @@
 #include "mainmenu.h"
 #include "logs.h"
 #include "vfs.h"
-#include "list.h"
+#include "view_list.h"
 #include "browser.h"
 #ifdef LOCATION
 #include "location.h"
@@ -83,13 +83,6 @@ static int _show_mediaplayer_cb(void *data);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
 typedef enum _VIDEO_STATE VIDEO_STATE;
-typedef struct _Video_Item_Class_Data Video_Item_Class_Data;
-
-struct _Video_Item_Class_Data
-{
-    const char *icon;
-    const char *label;
-};
 
 enum _VIDEO_STATE
 {
@@ -121,7 +114,6 @@ struct _Enna_Module_Video
     Ecore_Event_Handler *eos_event_handler;
     Ecore_Event_Handler *browser_refresh_handler;
     Enna_Playlist *enna_playlist;
-    Elm_Genlist_Item_Class *item_class;
     char *o_current_uri;
     int infos_displayed;
     int resume_displayed;
@@ -145,7 +137,7 @@ menu_view_event (enna_key_t key, void *event_info)
         browse (enna_list_selected_data_get(mod->o_list));
         break;
     default:
-        enna_list_event_key_down(mod->o_list, event_info);
+        enna_list_event_feed(mod->o_list, event_info);
         break;
     }
 }
@@ -750,15 +742,15 @@ _create_menu (void)
     categories = enna_vfs_get(ENNA_CAPS_VIDEO);
     EINA_LIST_FOREACH(categories, l, cat)
     {
-        Video_Item_Class_Data *item;
+        Enna_Vfs_File *item;
 
-        item = calloc(1, sizeof(Video_Item_Class_Data));
-        item->icon = eina_stringshare_add(cat->icon);
-        item->label = eina_stringshare_add(gettext(cat->label));
-        enna_list_append(o, mod->item_class, item, item->label, browse, cat);
+        item = calloc(1, sizeof(Enna_Vfs_File));
+        item->icon = (char*)eina_stringshare_add(cat->icon);
+        item->label = (char*)eina_stringshare_add(gettext(cat->label));
+        enna_list_file_append(o, item, browse, cat);
     }
 
-    enna_list_selected_set(o, 0);
+    enna_list_select_nth(o, 0);
     mod->o_list = o;
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
@@ -796,52 +788,6 @@ _create_gui (void)
     enna_location_append(o, _("Video"), icon, NULL, NULL, NULL);
     mod->o_location = o;
 #endif
-}
-
-/****************************************************************************/
-/*                           List Management                               */
-/****************************************************************************/
-
-static char *
-_genlist_label_get (const void *data, Evas_Object *obj, const char *part)
-{
-    const Video_Item_Class_Data *item = data;
-
-    return item ? strdup (item->label) : NULL;
-}
-
-static Evas_Object *
-_genlist_icon_get (const void *data, Evas_Object *obj, const char *part)
-{
-    const Video_Item_Class_Data *item = data;
-
-    if (!item)
-        return NULL;
-
-    if (!strcmp (part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
-
-        ic = elm_icon_add (obj);
-        elm_icon_file_set (ic, enna_config_theme_get (), item->icon);
-        evas_object_size_hint_min_set (ic, 64, 64);
-        evas_object_show (ic);
-        return ic;
-    }
-
-    return NULL;
-}
-
-static Evas_Bool
-_genlist_state_get (const void *data, Evas_Object *obj, const char *part)
-{
-    return 0;
-}
-
-static void
-_genlist_del(const void *data, Evas_Object *obj)
-{
-    /* not yet implemented */
 }
 
 /****************************************************************************/
@@ -937,15 +883,6 @@ em_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Video));
     mod->em = em;
     em->mod = mod;
-
-    /* Create Class Item */
-    mod->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
-
-    mod->item_class->item_style     = "default";
-    mod->item_class->func.label_get = _genlist_label_get;
-    mod->item_class->func.icon_get  = _genlist_icon_get;
-    mod->item_class->func.state_get = _genlist_state_get;
-    mod->item_class->func.del       = _genlist_del;
 
     mod->infos_displayed = 0;
     mod->resume_displayed = 0;

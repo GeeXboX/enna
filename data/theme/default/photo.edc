@@ -52,22 +52,6 @@ group {
             rel2 {relative: 1 1; ; to: "enna.clip.menu";}
          }
       }
-
-      /* Wall Clip */
-      part { name: "enna.clip.wall";
-         type: RECT;
-         mouse_events: 0;
-         clip_to: "enna.clip.module";
-         description {state: "default" 0.0;
-            color: 255 255 255 0;
-            visible: 0;
-         }
-         description{state: "show" 0.0;
-            color: 255 255 255 255;
-            visible: 1;
-         }
-      }
-
       /* Browser Clip */
       part { name: "enna.clip.browser";
          type: RECT;
@@ -78,48 +62,20 @@ group {
             visible: 0;
             rel1.relative: 0 1;
             rel1.to: "enna.clip.module";
-            rel2.relative: 1 1.5;
+            rel2.relative: 1 2.0;
             rel2.to: "enna.clip.module";
 
          }
          description{state: "show" 0.0;
             color: 255 255 255 255;
             visible: 1;
-            rel1.relative: 0 0.5; ;
+            rel1.relative: 0 0; ;
             rel1.to: "enna.clip.module";
             rel2.relative: 1 1;
             rel2.to: "enna.clip.module";
          }
       }
-
-      /* Wall part */
-      part {
-         name: "enna.swallow.wall";
-         type: SWALLOW;
-         mouse_events : 1;
-         clip_to: "enna.clip.wall";
-         description {
-            state: "default" 0.0;
-         }
-      }
-
-      /* Browser panel part */
-      part {
-         name: "list_panel_bg";
-         type: IMAGE;
-         mouse_events: 0;
-         clip_to: "enna.clip.browser";
-         description {
-            state: "default" 0.0;
-            rel1.to: "enna.clip.browser";
-            rel2.to: "enna.clip.browser";
-            image
-            {
-               normal: "panel_bottom.png";
-               border: 0 0 18 0;
-            }
-         }
-      }
+     
 
       part {
          name: "enna.swallow.browser";
@@ -129,9 +85,42 @@ group {
          description {
             state: "default" 0.0;
             color: 255 255 255 255;
-            rel1 {relative: 0 0; ;to: "enna.clip.browser";offset: 0 24;}
-            rel2 {relative: 1 1; ; to: "enna.clip.browser";}
+             rel1 {relative: 0 0; /*offset: 64 64;*/}
+             rel2 {relative: 1 1; offset: 0 -63;}
          }
+      }
+      
+      part {
+        name: "filename.bg";
+        clip_to: "enna.clip.browser";
+        description {
+            state: "default" 0.0;
+            rel1.relative: 0 1;
+            rel1.to: enna.swallow.browser;
+            rel1.offset: 0 -24;
+            image.normal: "panel_bottom.png";
+            image.border: 0 0 24 0;
+        }
+      }
+
+    part {
+        name: "filename.text";
+        clip_to: "enna.clip.browser";
+         type: "TEXT";
+	     description { 
+	        state: "default" 0.0;
+            rel1.to: filename.bg;
+            rel1.offset: 0 20;
+            rel2.to: filename.bg;
+            color: 204 204 204 255;
+            color3: 0 0 0 255;
+            text {
+                font:     "content";
+                size:     20;
+                min:      0 0;
+                align:    0.5 0.5;
+            }
+	    }
       }
 
       /* Slideshow Part */
@@ -144,7 +133,35 @@ group {
             state: "default" 0.0;
             color: 255 255 255 255;
          }
-      }
+       }
+       /* Panel infos part */
+	   part {
+          name: "infos.panel.clip";
+          mouse_events: 0;
+          clip_to: enna.clip.module;
+          type: RECT;
+          description {
+             state: "default" 0.0;
+             visible: 0;
+             color: 255 255 255 0;
+          }
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+          }
+       }
+       part {
+          name: "infos.panel.swallow";
+          mouse_events: 0;
+          clip_to: infos.panel.clip;
+          type: SWALLOW;
+          description {
+             state: "default" 0.0;
+             rel1.to: "infos.panel.clip";
+             rel2.to: "infos.panel.clip";
+          }
+       }
    }
    programs {
       program {
@@ -196,22 +213,6 @@ group {
          target: "enna.clip.menu";
       }
       program {
-         name: "wall,show";
-         signal: "wall,show";
-         source:  "enna";
-         action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.2;
-         target: "enna.clip.wall";
-      }
-      program {
-         name: "wall,hide";
-         signal: "wall,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.2;
-         target: "enna.clip.wall";
-      }
-      program {
          name: "slideshow,show";
          signal: "slideshow,show";
          source:  "enna";
@@ -227,5 +228,177 @@ group {
          transition: SINUSOIDAL 0.5;
          target: "enna.swallow.slideshow";
       }
+      program {
+           name: "infos,show";
+           signal: "infos,show";
+           source:  "enna";
+           action:  STATE_SET "show" 0.0;
+           transition: "SINUSOIDAL" 0.3;
+           target: "infos.panel.clip";
+       }
+       program {
+           name: "infos,hide";
+           signal: "infos,hide";
+           source:  "enna";
+           action:  STATE_SET "default" 0.0;
+           transition: "SINUSOIDAL" 0.3;
+           target: "infos.panel.clip";
+       }
    }
 }
+images {
+   image: "shadow.png" COMP;
+   image: "panel_info.png" COMP;
+}
+
+group {
+   name: "module/photo/panel_infos";
+   styles
+   {
+       style {
+          name: "style.infos.photo";
+          base: "font=content font_size=14 align=left color=#FFF wrap=word";
+          tag:  "b"   "+ font=content_bd";
+          tag:  "c"   "+ align=center";
+          tag:  "hl"  "+ color=#A0D026A0";
+          tag:  "sd"  "+ style=far_shadow shadow_color=#000000ff";
+          tag:  "gl"  "+ style=glow glow_color=#000000ff";
+          tag:  "ul"  "+ style=underline underline_color=#ffffffff";
+          tag:  "h1"  "+ font_size=16";
+          tag:  "h2"  "+ font_size=20";
+          tag:  "h3"  "+ font_size=24";
+          tag:  "h4"  "+ font_size=30";
+          tag:  "br"  "\n";
+          tag:  "tab" "\t";
+       }
+   }
+   parts {
+
+        part {
+          name: "infos.panel.clip";
+          mouse_events: 0;
+          description {
+             state: "default" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+          }
+       }
+       part {
+          name: "infos.panel";
+          type: IMAGE;
+          clip_to: "infos.panel.clip";
+          mouse_events: 0;
+          description {
+             state: "default" 0.0;
+             visible: 1;
+             rel1.relative: 0.05 0.05;
+             rel2.relative: 0.95 0.95;
+             image.normal: "panel_info.png";
+             image.border: 48 48 120 120;
+          }
+       }
+       part {
+          name: "cover.clip";
+          type: RECT;
+          clip_to: "infos.panel.clip";
+          description{
+             state: "default" 0.0;
+             visible: 0;
+             color: 255 255 255 0;
+          }
+          description{
+             state: "show" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+          }
+       }
+       part {
+          name: "infos.panel.cover.shadow";
+          type: IMAGE;
+          clip_to: "cover.clip";
+          description {
+             state: "default" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+             rel1.to: "infos.panel.cover.swallow";
+             rel2.to: "infos.panel.cover.swallow";
+             rel2.offset: 12 12;
+             image.normal: "shadow.png";
+             image.border: 14 14 14 14;
+          }
+       }
+
+       part {
+          name: "infos.panel.cover.swallow";
+          type: SWALLOW;
+          effect: SHADOW;
+          clip_to: "cover.clip";
+          description {
+             state: "default" 0.0;
+             visible: 1;
+             rel1.relative: 0 0;
+             rel1.to: "infos.panel";
+             rel1.offset: 64 64;
+             rel2.relative: 0.35 1.0;
+             rel2.offset: 0 -63;
+             rel2.to: "infos.panel";
+             aspect: 0.75 0.75;
+          }
+       }
+
+       part {
+          name: "infos.panel.textblock";
+	        type: TEXTBLOCK;
+          clip_to: "infos.panel.clip";
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             color: 255 255 255 255;
+             rel1.relative: 1 0;
+             rel1.to: "infos.panel.cover.swallow";
+             rel1.offset: 32 0;
+             rel2.relative: 1.0 1.0;
+             rel2.to: "infos.panel";
+             rel2.offset: -63 -63;
+             text {
+		           style: "style.infos.video";
+		           min: 0 0;
+ 	           }
+	        }
+       }
+
+       part {
+          name: "infos.panel.rating.swallow";
+          type: SWALLOW;
+          clip_to: "infos.panel.clip";
+          description {
+             state: "show" 0.0;
+             visible: 1;
+             aspect: 4.71 4.71;
+             aspect_preference: HORIZONTAL;
+             rel1.relative: 0.77 0.85;
+             rel1.to: "infos.panel";
+             rel2.relative: 0.97 0.97;
+             rel2.to: "infos.panel";
+          }
+       }
+   }
+   programs
+   {
+      program {
+          name: "cover,show";
+          signal: "cover,show";
+          source:  "enna";
+          action:  STATE_SET "show" 0.0;
+          target: "cover.clip";
+      }
+      program {
+         name: "cover,hide";
+         signal: "cover,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         target: "cover.clip";
+      }
+   }
+}
+

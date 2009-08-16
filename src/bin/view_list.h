@@ -27,68 +27,21 @@
  *
  */
 
-#include <string.h>
-
-#include <Edje.h>
-#include <Elementary.h>
+#ifndef LIST_H
+#define LIST_H
 
 #include "enna.h"
-#include "enna_config.h"
-#include "photo.h"
-#include "item_class.h"
+#include "vfs.h"
 
-static char *
-func_label_get (const void *data, Evas_Object *obj, const char *part)
-{
-    const Photo_Item_Class_Data *item = data;
+Evas_Object *enna_list_add (Evas *evas);
+void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+    void (*func) (void *data), void *data);
+Eina_List* enna_list_files_get(Evas_Object* obj);
+void enna_list_select_nth(Evas_Object *obj, int nth);
+void enna_list_event_feed(Evas_Object *obj, void *event_info);
+void * enna_list_selected_data_get(Evas_Object *obj);
+int enna_list_jump_label(Evas_Object *obj, const char *label);
+void enna_list_jump_ascii(Evas_Object *obj, char k);
 
-    return (item && item->label) ? strdup (item->label) : NULL;
-}
+#endif /* LIST_H */
 
-static Evas_Object *
-func_icon_get (const void *data, Evas_Object *obj, const char *part)
-{
-    const Photo_Item_Class_Data *item = data;
-    Evas_Object *ic;
-
-    if (!item)
-        return NULL;
-
-    if (strcmp (part, "elm.swallow.icon"))
-        return NULL;
-
-    ic = elm_icon_add (obj);
-    elm_icon_file_set (ic, enna_config_theme_get (), item->icon);
-    evas_object_size_hint_min_set (ic, 64, 64);
-    evas_object_show (ic);
-
-    return ic;
-}
-
-static Evas_Bool
-func_state_get (const void *data, Evas_Object *obj, const char *part)
-{
-    return 0;
-}
-
-static void
-func_del (const void *data, Evas_Object *obj)
-{
-    /* nothing to do */
-}
-
-Elm_Genlist_Item_Class *
-photo_item_class_new (void)
-{
-    Elm_Genlist_Item_Class *c;
-
-    c = calloc (1, sizeof (Elm_Genlist_Item_Class));
-
-    c->item_style     = "default";
-    c->func.label_get = func_label_get;
-    c->func.icon_get  = func_icon_get;
-    c->func.state_get = func_state_get;
-    c->func.del       = func_del;
-
-    return c;
-}

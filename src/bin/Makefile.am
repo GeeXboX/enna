@@ -27,10 +27,10 @@ activity.c\
 vfs.c\
 volumes.c\
 image.c\
-list.c\
 browser.c\
 content.c\
-wall.c\
+view_list.c\
+view_wall.c\
 switcher.c\
 location.c\
 mediaplayer.c\
@@ -83,10 +83,10 @@ vfs.h\
 volumes.h\
 activity.h\
 image.h\
-list.h\
 browser.h\
 content.h\
-wall.h\
+view_list.h\
+view_wall.h\
 switcher.h\
 location.h\
 mediaplayer.h\

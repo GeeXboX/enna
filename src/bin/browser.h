@@ -46,7 +46,8 @@ typedef enum _Enna_Browser_View_Type Enna_Browser_View_Type;
 enum _Enna_Browser_View_Type
 {
     ENNA_BROWSER_VIEW_LIST,
-    ENNA_BROWSER_VIEW_COVER
+    ENNA_BROWSER_VIEW_COVER,
+    ENNA_BROWSER_VIEW_WALL
 };
 
 Evas_Object    *enna_browser_add(Evas * evas);
@@ -55,4 +56,5 @@ void            enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs);
 void            enna_browser_show_file_set(Evas_Object *obj, unsigned char show);
 void            enna_browser_event_feed(Evas_Object *obj, void *event_info);
 int             enna_browser_select_label(Evas_Object *obj, const char *label);
+Eina_List      *enna_browser_files_get(Evas_Object *obj);
 #endif /* BROWSER_H */

@@ -31,7 +31,7 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "list.h"
+#include "view_list.h"
 #include "popup.h"
 #include "buffer.h"
 #include "resume.h"
@@ -40,13 +40,6 @@
 #define SMART_NAME "video_resume"
 
 typedef struct _Smart_Data Smart_Data;
-typedef struct _List_Item_Data List_Item_Data;
-
-struct _List_Item_Data
-{
-    const char *label;
-    const char *icon;
-};
 
 struct _Smart_Data
 {
@@ -54,7 +47,6 @@ struct _Smart_Data
     Evas_Object *popup;
     Evas_Object *o_edje;
     Evas_Object *list;
-    Elm_Genlist_Item_Class *item_class;
 };
 
 /* local subsystem globals */
@@ -75,51 +67,6 @@ _smart_reconfigure (Smart_Data * sd)
     evas_object_resize (sd->popup, w, h);
 }
 
-/* List View */
-static char *
-_list_label_get (const void *data, Evas_Object *obj, const char *part)
-{
-    const List_Item_Data *it = data;
-
-    return (it->label) ? strdup (it->label) : NULL;
-}
-
-static Evas_Object *
-_list_icon_get (const void *data, Evas_Object *obj, const char *part)
-{
-    const List_Item_Data *it = data;
-    Evas_Object *ic;
-
-    if (!it || !it->icon)
-        return NULL;
-
-    if (strcmp (part, "elm.swallow.icon"))
-        return NULL;
-
-    ic = elm_icon_add (obj);
-    if (it->icon && it->icon[0] == '/')
-        elm_icon_file_set (ic, it->icon, NULL);
-    else
-        elm_icon_file_set (ic, enna_config_theme_get (), it->icon);
-
-    evas_object_size_hint_min_set (ic, 64, 64);
-    evas_object_show (ic);
-
-    return ic;
-}
-
-static Evas_Bool
-_list_state_get (const void *data, Evas_Object *obj, const char *part)
-{
-    return 0;
-}
-
-static void
-_list_del (const void *data, Evas_Object *obj)
-{
-}
-
-
 static void
 cb_playback_resume (void *data)
 {
@@ -132,14 +79,14 @@ cb_playback_begin (void *data)
     movie_start_playback (0);
 }
 
-static List_Item_Data *
+static Enna_Vfs_File *
 _create_list_item (char *label, char *icon)
 {
-    List_Item_Data *it;
+    Enna_Vfs_File *it;
 
-    it = calloc (1, sizeof (List_Item_Data));
-    it->label = eina_stringshare_add (label);
-    it->icon = strdup (icon);
+    it = calloc (1, sizeof (Enna_Vfs_File));
+    it->label = (char*)eina_stringshare_add (label);
+    it->icon = (char*)eina_stringshare_add (icon);
 
     return it;
 }
@@ -148,7 +95,7 @@ static void
 _smart_add (Evas_Object * obj)
 {
     Smart_Data *sd;
-    List_Item_Data *it1, *it2;
+    Enna_Vfs_File *it1, *it2;
     buffer_t *label;
 
     sd = calloc (1, sizeof (Smart_Data));
@@ -160,13 +107,6 @@ _smart_add (Evas_Object * obj)
     edje_object_file_set (sd->o_edje, enna_config_theme_get (), "enna/exit");
     sd->list = enna_list_add (evas_object_evas_get (sd->popup));
 
-    sd->item_class = calloc (1, sizeof (Elm_Genlist_Item_Class));
-    sd->item_class->item_style     = "default";
-    sd->item_class->func.label_get = _list_label_get;
-    sd->item_class->func.icon_get  = _list_icon_get;
-    sd->item_class->func.state_get = _list_state_get;
-    sd->item_class->func.del       = _list_del;
-
     label = buffer_new ();
     buffer_append (label, "<h3><c>");
     buffer_append (label, _("Seems you already watched this movie once ..."));
@@ -176,17 +116,15 @@ _smart_add (Evas_Object * obj)
     buffer_free (label);
 
     it1 = _create_list_item (_("Resume movie playback"), "ctrl/ok");
-    enna_list_append (sd->list, sd->item_class, it1,
-                      NULL, cb_playback_resume, NULL);
+    enna_list_file_append (sd->list, it1, cb_playback_resume, NULL);
 
     it2 = _create_list_item (_("Start playing from beginning"),
                              "ctrl/restart");
-    enna_list_append (sd->list, sd->item_class, it2,
-                      NULL, cb_playback_begin, NULL);
+    enna_list_file_append (sd->list,it2, cb_playback_begin, NULL);
 
     evas_object_size_hint_weight_set (sd->list, 1.0, 1.0);
     evas_object_show (sd->list);
-    enna_list_selected_set (sd->list, 0);
+    enna_list_select_nth (sd->list, 0);
     edje_object_part_swallow (sd->o_edje, "enna.content.swallow", sd->list);
 
     enna_popup_content_set (sd->popup, sd->o_edje);
@@ -302,5 +240,5 @@ void
 video_resume_event_feed (Evas_Object *obj, void *event_info)
 {
     API_ENTRY return;
-    enna_list_event_key_down (sd->list, event_info);
+    enna_list_event_feed (sd->list, event_info);
 }

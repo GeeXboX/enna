@@ -31,8 +31,9 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "list.h"
+#include "view_list.h"
 #include "event_key.h"
+#include "vfs.h"
 
 #define SMART_NAME "enna_list"
 
@@ -45,6 +46,7 @@ struct _List_Item
     void (*func) (void *data);
     Elm_Genlist_Item *item;
     const char *label;
+    Enna_Vfs_File *file;
 };
 
 struct _Smart_Data
@@ -53,14 +55,8 @@ struct _Smart_Data
     Evas_Object *o_smart;
     Evas_Object *o_edje;
     Evas_Object *o_list;
-    Evas_Object *o_letter;
     Eina_List *items;
-    unsigned char on_hold : 1;
-    unsigned int letter_mode;
-    Ecore_Timer *letter_timer;
-    unsigned int letter_event_nbr;
-    char letter_key;
-
+    Elm_Genlist_Item_Class *item_class;
 };
 
 static void _smart_init(void);
@@ -76,8 +72,6 @@ static void _smart_clip_unset(Evas_Object *obj);
 static void _smart_reconfigure(Smart_Data *sd);
 static void _smart_event_key_down(Smart_Data *sd, void *event_info);
 static void _smart_select_item(Smart_Data *sd, int n);
-static int _letter_timer_cb(void *data);
-static void _smart_jump_to_ascii(Smart_Data *sd, char k);
 
 static Evas_Smart *_e_smart = NULL;
 
@@ -107,28 +101,41 @@ void _item_activated(void *data, Evas_Object *obj, void *event_info)
     }
 }
 
-void enna_list_append(Evas_Object *obj, Elm_Genlist_Item_Class *class, void * class_data, const char *label, void (*func) (void *data),  void *data)
+void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func) (void *data),  void *data)
 {
 
     List_Item *it;
     API_ENTRY return;
 
     it = calloc(1, sizeof(List_Item));
-    it->item = elm_genlist_item_append (sd->o_list, class, class_data,
+    it->item = elm_genlist_item_append (sd->o_list, sd->item_class, file,
         NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL );
 
     it->func = func;
     it->data = data;
-    it->label = eina_stringshare_add(label);
-
+    it->label = eina_stringshare_add(file->label);
+    it->file = file;
+    
     sd->items = eina_list_append(sd->items, it);
 }
 
-void enna_list_selected_set(Evas_Object *obj, int n)
+void enna_list_select_nth(Evas_Object *obj, int nth)
 {
-
     API_ENTRY return;
-    _smart_select_item(sd, n);
+    _smart_select_item(sd, nth);
+}
+
+Eina_List* enna_list_files_get(Evas_Object* obj)
+{
+    API_ENTRY return NULL;
+    Eina_List *files = NULL;
+    Eina_List *l;
+    List_Item *it;
+    
+    EINA_LIST_FOREACH(sd->items, l, it)
+        files = eina_list_append(files, it->file);
+        
+    return files;
 }
 
 int enna_list_jump_label(Evas_Object *obj, const char *label)
@@ -140,25 +147,18 @@ int enna_list_jump_label(Evas_Object *obj, const char *label)
     API_ENTRY return -1;
 
     if (!sd || !label) return -1;
-
+    
     EINA_LIST_FOREACH(sd->items, l, it)
     {
-        if (it->label && !strcmp(it->label, label))
+         if (it->file->label && !strcmp(it->file->label, label))
         {
             _smart_select_item(sd, i);
-            return i;
+              return i;
         }
         i++;
     }
-
+    
     return -1;
-}
-
-void enna_list_jump_nth(Evas_Object *obj, int n)
-{
-    API_ENTRY return;
-
-    _smart_select_item(sd, n);
 }
 
 int enna_list_selected_get(Evas_Object *obj)
@@ -202,11 +202,28 @@ void *enna_list_selected_data_get(Evas_Object *obj)
 
 
 
-void enna_list_event_key_down(Evas_Object *obj, void *event_info)
+void enna_list_event_feed(Evas_Object *obj, void *event_info)
 {
-    API_ENTRY
-    return;
+    API_ENTRY return;
     _smart_event_key_down(sd, event_info);
+}
+
+void enna_list_jump_ascii(Evas_Object *obj, char k)
+{
+    List_Item *it;
+    Eina_List *l;
+    int i = 0;
+    API_ENTRY return;
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+        if (it->label[0] == k || it->label[0] == k - 32)
+        {
+            _smart_select_item(sd, i);
+            return;
+        }
+        i++;
+    }
 }
 
 /* SMART FUNCTIONS */
@@ -235,6 +252,53 @@ static void _smart_init(void)
     }
 }
 
+/* List View */
+static char *_view_list_label_get(const void *data, Evas_Object *obj, const char *part)
+{
+    const Enna_Vfs_File *item = data;
+
+    if (!item) return NULL;
+
+    return strdup(item->label);
+}
+
+static Evas_Object *_view_list_icon_get(const void *data, Evas_Object *obj, const char *part)
+{
+    Enna_Vfs_File *item = (Enna_Vfs_File *) data;
+
+    if (!item) return NULL;
+
+    if (!strcmp(part, "elm.swallow.icon"))
+    {
+        Evas_Object *ic;
+
+        ic = elm_icon_add(obj);
+	if (item->icon && item->icon[0] == '/')
+	    elm_icon_file_set(ic, item->icon, NULL);
+	else
+	    elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+        evas_object_size_hint_min_set(ic, 64, 64);
+        evas_object_show(ic);
+//	item->ic = ic;
+        return ic;
+    }
+
+    return NULL;
+}
+
+static Eina_Bool _view_list_state_get(const void *data, Evas_Object *obj, const char *part)
+{
+    return EINA_FALSE;
+}
+
+static void _view_list_del(const void *data, Evas_Object *obj)
+{
+    Enna_Vfs_File *item = (void *) data;
+
+    if (!item) return;
+
+    //ENNA_OBJECT_DEL(item->ic);
+}
 
 static void _smart_add(Evas_Object *obj)
 {
@@ -252,37 +316,26 @@ static void _smart_add(Evas_Object *obj)
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/list");
 
     sd->o_list = elm_genlist_add(obj);
+    evas_object_size_hint_align_set(sd->o_list, -1.0, -1.0);
     evas_object_size_hint_weight_set(sd->o_list, 1.0, 1.0);
+    elm_genlist_horizontal_mode_set(sd->o_list, ELM_LIST_LIMIT);
     evas_object_show(sd->o_list);
-    elm_object_scale_set(sd->o_list, 2.0);
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", sd->o_list);
 
-    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
-    sd->o_letter =  elm_button_add(obj);
-    elm_button_label_set(sd->o_letter, "");
-    elm_object_scale_set(sd->o_letter, 6.0);
-    evas_object_show(sd->o_letter);
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.letter", sd->o_letter);
+    sd->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
+
+    sd->item_class->item_style     = "default";
+    sd->item_class->func.label_get = _view_list_label_get;
+    sd->item_class->func.icon_get  = _view_list_icon_get;
+    sd->item_class->func.state_get = _view_list_state_get;
+    sd->item_class->func.del       = _view_list_del;
 
     evas_object_smart_callback_add(sd->o_list, "clicked", _item_activated, sd);
 
     evas_object_smart_member_add(sd->o_edje, obj);
 
     evas_object_propagate_events_set(obj, 0);
-}
-
-static int _letter_timer_cb(void *data)
-{
-    Smart_Data *sd;
-
-    sd = data;
-    if (!sd) return 0;
-
-    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
-    sd->letter_mode = 0;
-    ENNA_TIMER_DEL(sd->letter_timer);
-    return ECORE_CALLBACK_CANCEL;
 }
 
 static void _smart_del(Evas_Object *obj)
@@ -293,10 +346,8 @@ static void _smart_del(Evas_Object *obj)
     List_Item *it;
 
     INTERNAL_ENTRY;
-
-
+    
     evas_object_del(sd->o_edje);
-    evas_object_del(sd->o_letter);
     EINA_LIST_REVERSE_FOREACH_SAFE(sd->items, l, l_prev, it)
     {
 	elm_genlist_item_del(it->item);
@@ -394,77 +445,6 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
         _smart_select_item(sd, n);
 }
 
-static void _smart_jump_to_ascii(Smart_Data *sd, char k)
-{
-    List_Item *it = NULL;
-    Eina_List *l;
-    int i = 0;
-
-    if (!sd) return;
-
-    EINA_LIST_FOREACH(sd->items, l, it)
-    {
-        if (it->label[0] == k || it->label[0] == k - 32)
-        {
-            _smart_select_item(sd, i);
-            return;
-        }
-        i++;
-    }
-}
-
-static char list_get_letter_from_key(char key)
-{
-    switch (key)
-    {
-        case '7':
-            return 'P';
-        case '8':
-            return 'T';
-        case '9':
-            return 'W';
-        default:
-            return ((key - 50) * 3 + 65);
-    }
-}
-
-static void list_get_alpha_from_digit(Smart_Data *sd, char key)
-{
-    char letter[2];
-    int mod = 0;
-
-    if (isdigit(key))
-    {
-        letter[0] = list_get_letter_from_key(key);
-        letter[1] = '\0';
-        mod = (key == '7' || key == '9') ? 4 : 3;
-        if (sd->letter_key == key)
-            sd->letter_event_nbr = (sd->letter_event_nbr + 1) % mod;
-        else
-        {
-            sd->letter_event_nbr = 0;
-            sd->letter_key = key;
-        }
-
-        letter[0] += sd->letter_event_nbr;
-    }
-    else
-    {
-        letter[0] = key;
-        letter[1] = '\0';
-    }
-
-    sd->letter_mode = 1;
-
-    ENNA_TIMER_DEL(sd->letter_timer);
-
-    edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
-    elm_button_label_set(sd->o_letter, letter);
-    edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
-    sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
-    _smart_jump_to_ascii(sd, letter[0]);
-}
-
 static void _smart_event_key_down(Smart_Data *sd, void *event_info)
 {
     Evas_Event_Key_Down *ev;
@@ -505,30 +485,9 @@ static void _smart_event_key_down(Smart_Data *sd, void *event_info)
                 if (it->func)
                     it->func(it->data);
             }
-
         }
             break;
-        case ENNA_KEY_2:
-        case ENNA_KEY_3:
-        case ENNA_KEY_4:
-        case ENNA_KEY_5:
-        case ENNA_KEY_6:
-        case ENNA_KEY_7:
-        case ENNA_KEY_8:
-        case ENNA_KEY_9:
-        {
-            char key = ev->key[strlen(ev->key) - 1];
-            list_get_alpha_from_digit(sd, key);
-        }
+       default:
             break;
-        default:
-        {
-            char key = enna_key_get_alpha(keycode);
-            if (key)
-                list_get_alpha_from_digit(sd, key);
-        }
-        break;
     }
-
-    sd->on_hold = 0;
 }

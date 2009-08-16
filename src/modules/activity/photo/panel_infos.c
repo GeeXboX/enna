@@ -27,30 +27,29 @@
  *
  */
 
-#include "Elementary.h"
+#include <Edje.h>
+#include <Elementary.h>
 
 #include "enna.h"
 #include "enna_config.h"
-#include "view_list.h"
-#include "popup.h"
+#include "metadata.h"
+#include "logs.h"
+#include "image.h"
 #include "buffer.h"
-#include "activity.h"
 
-#define SMART_NAME "enna_exit"
+#define SMART_NAME "enna_panel_infos"
 
 typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
-    Evas_Object *popup;
     Evas_Object *o_edje;
-    Evas_Object *list;
+    Evas_Object *o_pict;
+    Evas_Object *o_exif;
+    Evas_Object *o_scroll;
+    buffer_t *str;
 };
-
-/* local subsystem functions */
-static void _smart_reconfigure(Smart_Data * sd);
-static void _smart_init(void);
 
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
@@ -65,93 +64,45 @@ static void _smart_reconfigure(Smart_Data * sd)
     w = sd->w;
     h = sd->h;
 
-    evas_object_move(sd->popup, x, y);
-    evas_object_resize(sd->popup, w, h);
+    evas_object_move(sd->o_edje, x, y);
+    evas_object_resize(sd->o_edje, w, h);
 
-}
-
-static void _yes_cb(void *data)
-{
-    ecore_main_loop_quit();
-}
-
-static void _no_cb(void *data)
-{
-    evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
-}
-
-static void _update_text(Smart_Data *sd)
-{
-    buffer_t *label;
-    const char *tmp;
-
-    label = buffer_new();
-    buffer_append(label, "<h3><c>");
-    buffer_append(label, _("Are you sure you want to quit enna ?"));
-    buffer_append(label, "</c></h3><br>");
-    tmp =  enna_activity_request_quit_all();
-
-    if (tmp) buffer_appendf(label, "<h2>%s<h2>", tmp);
-
-    edje_object_part_text_set(sd->o_edje, "enna.text.label", label->buf);
-    buffer_free(label);
-}
-
-static Enna_Vfs_File *
-_create_list_item (char *label, char *icon)
-{
-    Enna_Vfs_File *it;
-
-    it = calloc (1, sizeof (Enna_Vfs_File));
-    it->label = (char*)eina_stringshare_add (label);
-    it->icon = (char*)eina_stringshare_add (icon);
-
-    return it;
 }
 
 static void _smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
-    Enna_Vfs_File *it1, *it2;
-
 
     sd = calloc(1, sizeof(Smart_Data));
     if (!sd)
         return;
 
-    sd->popup = enna_popup_add(evas_object_evas_get(obj));
-
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/exit");
+    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "module/photo/panel_infos");
+    evas_object_show(sd->o_edje);
+    
+    sd->o_exif = edje_object_add (evas_object_evas_get(obj));
+    edje_object_file_set (sd->o_exif, enna_config_theme_get (), "exif/data");
 
-    sd->list = enna_list_add(evas_object_evas_get(sd->popup));
-
-    it1 = _create_list_item (_("Yes, Quit Enna"), "ctrl/shutdown");
-    enna_list_file_append(sd->list, it1, _yes_cb, NULL);
-
-    it2 = _create_list_item (_("No, Continue using enna"), "ctrl/hibernate");
-    enna_list_file_append(sd->list, it2, _no_cb, NULL);
-
-    evas_object_size_hint_weight_set(sd->list, 1.0, 1.0);
-    evas_object_show(sd->list);
-    enna_list_select_nth(sd->list, 0);
-    edje_object_part_swallow(sd->o_edje, "enna.content.swallow", sd->list);
-
-    _update_text(sd);
-
-    enna_popup_content_set(sd->popup, sd->o_edje);
-
-    evas_object_smart_member_add(sd->popup, obj);
+    sd->o_scroll = elm_scroller_add (sd->o_edje);
+    edje_object_part_swallow (sd->o_edje, "enna.swallow.exif", sd->o_scroll);
+    
+    sd->str = buffer_new ();
+    
+    elm_scroller_content_set (sd->o_scroll, sd->o_exif);
+    
+    evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
-
 }
 
 static void _smart_del(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    evas_object_del(sd->list);
-    evas_object_del(sd->o_edje);
-    evas_object_del(sd->popup);
+    ENNA_OBJECT_DEL(sd->o_edje);
+    ENNA_OBJECT_DEL(sd->o_exif);
+    ENNA_OBJECT_DEL(sd->o_scroll);
+    ENNA_OBJECT_DEL(sd->o_pict);
+    buffer_free(sd->str);
     free(sd);
 }
 
@@ -180,31 +131,31 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 static void _smart_show(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    evas_object_show(sd->popup);
+    evas_object_show(sd->o_edje);
 }
 
 static void _smart_hide(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    evas_object_hide(sd->popup);
+    evas_object_hide(sd->o_edje);
 }
 
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
     INTERNAL_ENTRY;
-    evas_object_color_set(sd->popup, r, g, b, a);
+    evas_object_color_set(sd->o_edje, r, g, b, a);
 }
 
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
     INTERNAL_ENTRY;
-    evas_object_clip_set(sd->popup, clip);
+    evas_object_clip_set(sd->o_edje, clip);
 }
 
 static void _smart_clip_unset(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    evas_object_clip_unset(sd->popup);
+    evas_object_clip_unset(sd->o_edje);
 }
 
 static void _smart_init(void)
@@ -232,21 +183,66 @@ static void _smart_init(void)
 
 /* externally accessible functions */
 Evas_Object *
-enna_exit_add(Evas * evas)
+enna_panel_infos_add(Evas * evas)
 {
     _smart_init();
     return evas_object_smart_add(evas, _smart);
 }
 
-void enna_exit_event_feed(Evas_Object *obj,  void *event_info)
+/****************************************************************************/
+/*                          Information Panel                               */
+/****************************************************************************/
+
+void
+enna_panel_infos_set_text (Evas_Object *obj, const char *filename)
 {
+#ifdef BUILD_LIBEXIF
+    ExifData *d;
+#endif
+
     API_ENTRY return;
-    enna_list_event_feed(sd->list, event_info);
+
+    if (!filename || !ecore_file_exists(filename))
+    {
+        edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
+	    _("No such information ..."));
+        return;
+    }
+#ifdef BUILD_LIBVEXIF
+    d = exif_data_new_from_file (filename);
+    exif_data_foreach_content (d, photo_exif_data_foreach_func, sd->str);
+    exif_data_unref (d);
+
+    if (sd->str->len == 0)
+        buffer_append (sd->str, _("No EXIF information found."));
+
+    edje_object_part_text_set (sd->o_exif, "enna.text.exif", sd->str->buf);
+    edje_object_size_min_calc (sd->o_exif, &mw, &mh);
+    evas_object_resize (sd->o_exif, mw, mh);
+    evas_object_size_hint_min_set (sd->o_exif, mw, mh);
+    elm_scroller_content_set (sd->o_scroll, sd->o_exif);
+#else
+    edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
+	    _("No such information ..."));
+#endif
 }
 
-void enna_exit_update_text(Evas_Object *obj)
+void
+enna_panel_infos_set_cover(Evas_Object *obj, const char *filename)
 {
+    Evas_Object *o_pict;
+    
     API_ENTRY return;
-    _update_text(sd);
+
+    if (!filename) return;
+    
+    o_pict = enna_image_add (evas_object_evas_get(sd->o_edje));
+    enna_image_fill_inside_set (o_pict, 0);
+    enna_image_file_set (o_pict, filename, NULL);
+    ENNA_OBJECT_DEL (sd->o_pict);
+    sd->o_pict = o_pict;
+    edje_object_part_swallow (sd->o_edje,
+                              "infos.panel.cover.swallow", sd->o_pict);
+    edje_object_signal_emit (sd->o_edje, "cover,show", "enna");
 }
 

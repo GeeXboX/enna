@@ -38,7 +38,7 @@
 #include "location.h"
 #include "mainmenu.h"
 #include "content.h"
-#include "list.h"
+#include "view_list.h"
 #include "browser.h"
 #include "logs.h"
 #include "event_key.h"
@@ -208,7 +208,7 @@ _class_event_menu_view(enna_key_t key, void *event_info)
         _browse(enna_list_selected_data_get(mod->o_list));
         break;
     default:
-        enna_list_event_key_down(mod->o_list, event_info);
+        enna_list_event_feed(mod->o_list, event_info);
 
     }
 }
@@ -458,7 +458,7 @@ _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
 
     n = enna_location_count(mod->o_location) - 1;
     label = enna_location_label_get_nth(mod->o_location, n);
-    //enna_browser_select_label(mod->o_browser, label);
+    enna_browser_select_label(mod->o_browser, label);
     enna_location_remove_nth(mod->o_location, n);
 }
 
@@ -613,15 +613,15 @@ _create_menu()
     categories = enna_vfs_get(ENNA_CAPS_MUSIC);
     EINA_LIST_FOREACH(categories, l, cat)
     {
-        Music_Item_Class_Data *item;
+        Enna_Vfs_File *item;
 
-        item = calloc(1, sizeof(Music_Item_Class_Data));
-        item->icon = eina_stringshare_add(cat->icon);
-        item->label = eina_stringshare_add(gettext(cat->label));
-        enna_list_append(o, mod->item_class, item, item->label, _browse, cat);
+        item = calloc(1, sizeof(Enna_Vfs_File));
+        item->icon = (char*)eina_stringshare_add(cat->icon);
+        item->label = (char*)eina_stringshare_add(gettext(cat->label));
+        enna_list_file_append(o, item, _browse, cat);
     }
 
-    enna_list_selected_set(o, 0);
+    enna_list_select_nth(o, 0);
     mod->o_list = o;
     edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
@@ -659,45 +659,6 @@ _create_gui()
 
 }
 
-/* Class Item interface */
-static char *_genlist_label_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Music_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    return strdup(item->label);
-}
-
-static Evas_Object *_genlist_icon_get(const void *data, Evas_Object *obj, const char *part)
-{
-    const Music_Item_Class_Data *item = data;
-
-    if (!item) return NULL;
-
-    if (!strcmp(part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
-
-        ic = elm_icon_add(obj);
-        elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
-        evas_object_size_hint_min_set(ic, 64, 64);
-        evas_object_show(ic);
-        return ic;
-    }
-
-    return NULL;
-}
-
-static Evas_Bool _genlist_state_get(const void *data, Evas_Object *obj, const char *part)
-{
-   return 0;
-}
-
-static void _genlist_del(const void *data, Evas_Object *obj)
-{
-}
-
 static int
 _refresh_browser_cb(void *data, int type, void *event)
 {
@@ -717,15 +678,6 @@ em_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Music));
     mod->em = em;
     em->mod = mod;
-
-    /* Create Class Item */
-    mod->item_class = calloc(1, sizeof(Elm_Genlist_Item_Class));
-
-    mod->item_class->item_style     = "default";
-    mod->item_class->func.label_get = _genlist_label_get;
-    mod->item_class->func.icon_get  = _genlist_icon_get;
-    mod->item_class->func.state_get = _genlist_state_get;
-    mod->item_class->func.del       = _genlist_del;
 
     mod->browser_refresh_handler =
 	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, _refresh_browser_cb, NULL);

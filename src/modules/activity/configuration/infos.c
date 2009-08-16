@@ -552,7 +552,7 @@ create_gui (void)
 }
 
 static void
-_class_init (int dummy)
+_infos_init (int dummy)
 {
     Ecore_Exe *lsb_release_exe;
     Ecore_Event_Handler *lsb_release_data_handler;
@@ -566,7 +566,7 @@ _class_init (int dummy)
 }
 
 static void
-_class_shutdown (int dummy)
+_infos_shutdown (int dummy)
 {
     ENNA_OBJECT_DEL (mod->edje);
     if (mod->lsb_distrib_id)
@@ -575,82 +575,3 @@ _class_shutdown (int dummy)
         free(mod->lsb_release);
 }
 
-static void
-_class_show (int dummy)
-{
-    buffer_t *b;
-
-    b = buffer_new();
-    set_enna_information (b);
-    set_system_information (b);
-    edje_object_part_text_set (mod->edje, "infos.text", b->buf);
-    edje_object_signal_emit (mod->edje, "infos,show", "enna");
-    buffer_free(b);
-}
-
-static void
-_class_hide (int dummy)
-{
-    edje_object_signal_emit (mod->edje, "infos,hide", "enna");
-}
-
-static void
-_class_event (void *event_info)
-{
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key (ev);
-
-    if (key != ENNA_KEY_CANCEL)
-        return;
-
-    enna_content_hide ();
-    enna_mainmenu_show (enna->o_mainmenu);
-}
-
-static Enna_Class_Activity class = {
-    ENNA_MODULE_NAME,
-    10,
-    N_("Infos"),
-    NULL,
-    "icon/infos",
-    {
-        _class_init,
-        NULL,
-        _class_shutdown,
-        _class_show,
-        _class_hide,
-        _class_event
-    },
-    NULL
-};
-
-/****************************************************************************/
-/*                         Public Module API                                */
-/****************************************************************************/
-
-Enna_Module_Api module_api =
-{
-    ENNA_MODULE_VERSION,
-    ENNA_MODULE_ACTIVITY,
-    "activity_infos"
-};
-
-void
-module_init (Enna_Module *em)
-{
-    if (!em)
-        return;
-
-    mod = calloc (1, sizeof (Enna_Module_Infos));
-    mod->em = em;
-    em->mod = mod;
-
-    enna_activity_add (&class);
-}
-
-void
-module_shutdown (Enna_Module *em)
-{
-    evas_object_del (mod->edje);
-    free (mod);
-}

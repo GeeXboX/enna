@@ -42,11 +42,10 @@ typedef enum _PHOTO_STATE PHOTO_STATE;
 
 enum _PHOTO_STATE
 {
-    WALL_VIEW,
-    WALL_PREVIEW,
     SLIDESHOW_VIEW,
     MENU_VIEW,
-    BROWSER_VIEW
+    BROWSER_VIEW,
+    INFOS_VIEW
 };
 
 #endif /* PHOTO_H */

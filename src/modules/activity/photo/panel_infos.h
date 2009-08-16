@@ -27,17 +27,13 @@
  *
  */
 
-#ifndef WALL_H
-#define WALL_H
+#ifndef PANEL_INFO_H
+#define PANEL_INFO_H
 
 #include "enna.h"
 
-Evas_Object *enna_wall_add(Evas * evas);
-void enna_wall_picture_append(Evas_Object *obj, const char *filename);
-Eina_List* enna_wall_get_filenames(Evas_Object *obj);
-void enna_wall_select_nth(Evas_Object *obj, int col, int row);
-void enna_wall_event_feed(Evas_Object *obj, void *event_info);
-void enna_wall_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *w, int *h);
-const char *enna_wall_selected_filename_get(Evas_Object *obj);
+Evas_Object *enna_panel_infos_add(Evas * evas);
+void enna_panel_infos_set_text(Evas_Object *obj, char *text);
+void enna_panel_infos_set_cover(Evas_Object *obj, char *filename);
 
-#endif /* WALL_H */
+#endif /* PANEL_INFOS_H */
