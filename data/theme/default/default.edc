@@ -33,6 +33,7 @@ collections
 #include "photo.edc"
 #include "weather.edc"
 #include "infos.edc"
+#include "configuration.edc"
 #include "icons.edc"
 #include "list.edc"
 #include "browser.edc"

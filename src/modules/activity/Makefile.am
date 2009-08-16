@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES = Makefile.in
 SUBDIRS = \
-infos\
+configuration\
 games\
 music\
 photo\

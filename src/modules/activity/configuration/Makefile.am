@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES = Makefile.in
 
-MODULE = infos
+MODULE = configuration
 
 # data files for the module
 filesdir = $(libdir)/enna/modules/
@@ -26,25 +26,25 @@ if BUILD_LIBXRANDR
 INCLUDES += @LIBXRANDR_CFLAGS@
 endif
 
-if BUILD_ACTIVITY_INFOS
+if BUILD_ACTIVITY_configuration
 
 pkgdir = $(libdir)/enna/modules
 
-pkg_LTLIBRARIES = activity_infos.la
+pkg_LTLIBRARIES = activity_configuration.la
 
-activity_infos_la_SOURCES= \
-infos.c
+activity_configuration_la_SOURCES= \
+configuration.c
 
-activity_infos_la_LIBADD = @ENNA_LIBS@
-activity_infos_la_LDFLAGS = -module -avoid-version
-activity_infos_la_DEPENDENCIES = $(top_builddir)/config.h
+activity_configuration_la_LIBADD = @ENNA_LIBS@
+activity_configuration_la_LDFLAGS = -module -avoid-version
+activity_configuration_la_DEPENDENCIES = $(top_builddir)/config.h
 
 if BUILD_LIBSVDRP
-activity_infos_la_LIBADD += @LIBSVDRP_LIBS@
+activity_configuration_la_LIBADD += @LIBSVDRP_LIBS@
 endif
 
 if BUILD_LIBXRANDR
-activity_infos_la_LIBADD += @LIBXRANDR_LIBS@
+activity_configuration_la_LIBADD += @LIBXRANDR_LIBS@
 endif
 
 uninstall:
