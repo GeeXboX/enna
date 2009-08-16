@@ -485,12 +485,13 @@ max: 512 512;
 	       visible: 1;
 	       rel1.relative: 0.0 0.85;
 	       rel2.relative: 1.0 1.0;
-	       rel2.offset: 0 -12;
+	       rel1.offset: 4 0;
+	       rel2.offset: -4 -12;
 	       color: 204 204 204 255;
 	       color3: 0 0 0 255;
 	       text {
 		        font:     "content";
-		        size:     24;
+		        size:     20;
 		        min:      0 0;
 		        align:    0.5 0.5;
 	       }

@@ -38,19 +38,19 @@ CFLAGS="$CFLAGS -DLOCALEDIR=\"\\\"$datadir/locale\\\"\""
 
 PKG_CHECK_MODULES([ENNA],
   [
-   eina-0 >= 0.0.1
+   eina-0 >= 0.0.2
    eet >= 1.0.0
    evas >= 0.9.9
-   ecore >= 0.9.9.40
-   ecore-evas
-   ecore-txt
-   ecore-file
-   ecore-ipc
-   embryo >= 0.9.1
-   edje >= 0.5.0
-   elementary
-   libplayer
-   dbus-1
+   ecore >= 0.9.9.040
+   ecore-evas >= 0.9.9.040
+   ecore-txt >= 0.9.9.040
+   ecore-file >= 0.9.9.040
+   ecore-ipc >= 0.9.9.040
+   embryo >= 0.9.9.040
+   edje >= 0.9.92.062
+   elementary >= 0.5.1.0
+   libplayer >= 0.0.1
+   dbus-1 >= 1.2.0
   ]
 )
 
@@ -70,17 +70,17 @@ AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
 # Activity Modules #
 ####################
 
-# Infos
-want_activity_infos="yes"
+# Configuration
+want_activity_configuration="yes"
 AC_MSG_CHECKING(whether information activity module is to be built)
-AC_ARG_ENABLE(activity-infos,
-  AS_HELP_STRING([--enable-activity-infos],[Enable Infos Activity Module]),
+AC_ARG_ENABLE(activity-configuration,
+  AS_HELP_STRING([--enable-activity-configuration],[Enable configuration Activity Module]),
   [ want_activity_info=$enableval ]
 )
 AC_MSG_RESULT($want_activity_info)
-AM_CONDITIONAL(BUILD_ACTIVITY_INFOS, test "x$want_activity_infos" = "xyes")
-if test "x$want_activity_infos" = "xyes"; then
-  AC_DEFINE(BUILD_ACTIVITY_INFOS, 1, [Infos Activity])
+AM_CONDITIONAL(BUILD_ACTIVITY_configuration, test "x$want_activity_configuration" = "xyes")
+if test "x$want_activity_configuration" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_configuration, 1, [configuration Activity])
 fi
 
 # Games
@@ -307,7 +307,7 @@ AC_MSG_RESULT($want_browser_valhalla)
 if test "x$want_browser_valhalla" = "xyes" -o "x$want_browser_valhalla" = "xauto"; then
   PKG_CHECK_MODULES(
     [VALHALLA],
-    [libvalhalla],
+    [libvalhalla >= 0.0.1],
     [
       AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
       have_browser_valhalla="yes"
@@ -391,7 +391,7 @@ AC_MSG_RESULT($want_metadata_libplayer)
 if test "x$want_metadata_libplayer" = "xyes" -o "x$want_metadata_libplayer" = "xauto"; then
   PKG_CHECK_MODULES(
     [LIBPLAYER],
-    [libplayer],
+    [libplayer >= 0.0.1],
     [
       AC_DEFINE(BUILD_METADATA_LIBPLAYER, 1, [libplayer metadata module])
       have_metadata_libplayer="yes"
@@ -499,7 +499,7 @@ AC_MSG_RESULT($want_volume_hal)
 if test "x$want_volume_hal" = "xyes" -o "x$want_volume_hal" = "xauto"; then
   PKG_CHECK_MODULES(
     [EHAL],
-    [ehal hal-storage],
+    [ehal >=0.5.0.040  hal-storage >= 0.5.0],
     [
       AC_DEFINE(BUILD_VOLUME_HAL, 1, [HAL Volume])
       have_volume_hal="yes"
@@ -727,7 +727,7 @@ src/Makefile
 src/bin/Makefile
 src/modules/Makefile
 src/modules/activity/Makefile
-src/modules/activity/infos/Makefile
+src/modules/activity/configuration/Makefile
 src/modules/activity/games/Makefile
 src/modules/activity/music/Makefile
 src/modules/activity/photo/Makefile
@@ -781,7 +781,7 @@ echo "NLS................................ : $USE_NLS"
 echo
 echo "Supported Activity Modules:"
 echo
-echo "  infos............................ : $want_activity_infos"
+echo "  configuration.................... : $want_activity_configuration"
 echo "  games............................ : $want_activity_games"
 echo "  music............................ : $want_activity_music"
 echo "  photo............................ : $want_activity_photo"

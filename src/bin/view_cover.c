@@ -54,6 +54,7 @@ struct _Smart_Item
     Evas_Object *o_pict; // Elm image object
     Smart_Data *sd;
     const char *label;
+    Enna_Vfs_File *file;
     void *data;
     void (*func) (void *data);
     unsigned char selected : 1;
@@ -125,15 +126,16 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     o_pict = elm_image_add(sd->o_scroll);
     si->data = data;
     si->func = func;
-
+    si->file = file;
+    
     if (file->icon && file->icon[0] != '/')
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       enna_config_theme_get (), file->icon,
-                                      64, 64, "shadow,hide");
+                                      96, 96, "shadow,hide");
     else
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       file->icon, NULL,
-                                      64, 64 * 3/2, "shadow,show");
+                                      96, 96 * 3/2, "shadow,show");
 
     elm_box_pack_end(sd->o_box, o);
     si->o_pict = o_pict;
@@ -180,6 +182,20 @@ void enna_view_cover_select_nth(Evas_Object *obj, int nth)
     _smart_item_select(sd, si);
 }
 
+Eina_List* enna_view_cover_files_get(Evas_Object* obj)
+{
+    Eina_List *files = NULL;
+    Eina_List *l;
+    Smart_Item *it;
+    
+    API_ENTRY return NULL;
+    
+    EINA_LIST_FOREACH(sd->items, l, it)
+        files = eina_list_append(files, it->file);
+        
+    return files;
+}
+
 void *enna_view_cover_selected_data_get(Evas_Object *obj)
 {
     Smart_Item *si;
@@ -187,6 +203,48 @@ void *enna_view_cover_selected_data_get(Evas_Object *obj)
 
     si = _smart_selected_item_get(sd, NULL);
     return si ? si->data : NULL;
+}
+
+int enna_view_cover_jump_label(Evas_Object *obj, const char *label)
+{
+    Smart_Item *it = NULL;
+    Eina_List *l;
+    int i = 0;
+
+    API_ENTRY return -1;
+
+    if (!sd || !label) return -1;
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+        if (it->label && !strcmp(it->label, label))
+        {
+            enna_view_cover_select_nth(sd->obj, i);
+            return i;
+        }
+        i++;
+    }
+
+    return -1;
+}
+
+void enna_view_cover_jump_ascii(Evas_Object *obj, char k)
+{
+    Smart_Item *it;
+    Eina_List *l;
+    int i = 0;
+    
+    API_ENTRY return;
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+        if (it->label[0] == k || it->label[0] == k - 32)
+        {
+            enna_view_cover_select_nth(sd->obj, i);
+            return;
+        }
+        i++;
+    }
 }
 
 /* local subsystem globals */
@@ -270,9 +328,29 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
         void *event_info)
 {
     Smart_Item *si = data;
+    Smart_Item *spi;
+    Evas_Event_Mouse_Down *ev = event_info;
 
     if (!si) return;
     _smart_item_unselect(si->sd, _smart_selected_item_get(si->sd, NULL));
+    _smart_item_select(si->sd, si);
+
+    spi = _smart_selected_item_get(si->sd, NULL);
+    if (spi && spi != si)
+    {
+        _smart_item_unselect(si->sd, _smart_selected_item_get(si->sd, NULL));
+    }
+    else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
+    {
+        if (si->func)
+            si->func(si->data);
+	    return;
+    }
+    else if (spi == si)
+    {
+        return;
+    }
+
     _smart_item_select(si->sd, si);
 }
 

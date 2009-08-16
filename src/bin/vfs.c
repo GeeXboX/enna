@@ -36,8 +36,6 @@ static Eina_List *_enna_vfs_music = NULL;
 static Eina_List *_enna_vfs_video = NULL;
 static Eina_List *_enna_vfs_photo = NULL;
 
-static Eina_Hash *_uri_hash = NULL;
-
 /* local subsystem functions */
 
 static int _sort_cb(const void *d1, const void *d2)
@@ -54,9 +52,8 @@ static int _sort_cb(const void *d1, const void *d2)
 }
 
 /* externally accessible functions */
-int enna_vfs_init()
+int enna_vfs_init(Evas *evas)
 {
-    _uri_hash = eina_hash_string_superfast_new(NULL);
     return 0;
 }
 
@@ -163,61 +160,3 @@ void enna_vfs_remove(Enna_Vfs_File *f)
     ENNA_FREE(f->icon_file);
     ENNA_FREE(f);
 }
-
-static const char *_file_to_key(Enna_Vfs_File *file)
-{
-    char *str;
-    char *tmp;
-    const char *res;
-    
-    if (!file || !file->uri) return NULL;
-    
-    tmp = strdup(file->uri);
-    str = strstr(file->uri, "://");
-    if (!str) return NULL;
-    str[3] = '\0';
-    
-    res = eina_stringshare_add(tmp);
-    free(tmp);
-    return res;
-}
-
-Eina_Bool enna_vfs_uri_handler_add(const char *key, Enna_Vfs_Class2 *class)
-{
-    if (!key || !class) return EINA_FALSE;
-    
-    return eina_hash_add(_uri_hash, key, class);
-    
-}
-Eina_Bool enna_vfs_uri_handler_remove(const char *key)
-{
-    if (!key) return FALSE;
-    return eina_hash_del_by_key(_uri_hash, key);
-}
-
-Eina_List *enna_vfs_browse_up(Enna_Vfs_File *file)
-{
-    Enna_Vfs_Class2 *c;
-    const char *key;
-    if (!file || !file->uri) return NULL;
-    
-    key = _file_to_key(file);
-    c = eina_hash_find(_uri_hash, key);
-    if (!c || !c->func.browse_up) return NULL;
-    
-    return c->func.browse_up(file);
-}
-
-Eina_List *enna_vfs_browse_down(Enna_Vfs_File *file)
-{
-    Enna_Vfs_Class2 *c;
-    const char *key;
-    if (!file || !file->uri) return NULL;
-    
-    key = _file_to_key(file);
-    c = eina_hash_find(_uri_hash, key);
-    if (!c || !c->func.browse_down) return NULL;
-    
-    return c->func.browse_down(file);
-}
-

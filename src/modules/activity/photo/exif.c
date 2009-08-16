@@ -42,7 +42,8 @@
 #define BUF_SIZE 2048
 
 #ifdef BUILD_LIBEXIF
-static void
+
+void
 photo_exif_content_foreach_func (ExifEntry *entry, void *data)
 {
     char buf[BUF_SIZE] = { 0 };
@@ -61,7 +62,7 @@ photo_exif_content_foreach_func (ExifEntry *entry, void *data)
     buffer_appendf (exif->str, "%s", buf_txtblk);
 }
 
-static void
+void
 photo_exif_data_foreach_func (ExifContent *content, void *data)
 {
   exif_content_foreach_entry (content, photo_exif_content_foreach_func, data);

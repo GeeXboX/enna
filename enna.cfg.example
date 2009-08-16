@@ -56,7 +56,7 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 #dvd_type=
 #tv_type=
 
-#auto,x11,xv,gl,fb
+#auto,vdpau,x11,xv,gl,fb
 #video_out=
 
 #auto,alsa,oss

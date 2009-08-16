@@ -549,7 +549,7 @@ static int _em_valhalla_init(void)
     snprintf(db, sizeof(db),
              "%s/.enna/%s", enna_util_user_home_get(), "valhalla_music.db");
 
-    mod->valhalla = valhalla_init(db, parser_number, commit_interval);
+    mod->valhalla = valhalla_init(db, parser_number, 1, commit_interval);
     if (!mod->valhalla)
         goto err;
 
