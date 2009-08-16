@@ -32,6 +32,10 @@
 
 #include "buffer.h"
 
+#ifdef BUILD_LIBEXIF
+#include <libexif/exif-data.h>
+#endif
+
 typedef struct photo_exif_s {
 #ifdef BUILD_LIBEXIF
     Evas_Object *o_scroll;
@@ -40,6 +44,7 @@ typedef struct photo_exif_s {
 #endif
 } photo_exif_t;
 
+void photo_exif_data_foreach_func (ExifContent *content, void *data);
 void photo_exif_parse_metadata (Evas *evas, Evas_Object *edje,
                                 Evas_Object *preview, photo_exif_t *exif,
                                 const char *filename);
