@@ -12,6 +12,14 @@ syntax: regexp
 ^.*\.loT$
 ^.*\.so$
 ^.*\.Tpo$
+^.*\.orig$
+^.*\.rej$
+^.*\.bak$
+^.*\.old$
+^.*\.back$
+^.*\#$
+^.*\.diff$
+^.*\.patch$
 
 ^ABOUT-NLS$
 ^aclocal\.m4$
