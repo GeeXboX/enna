@@ -499,7 +499,7 @@ AC_MSG_RESULT($want_volume_hal)
 if test "x$want_volume_hal" = "xyes" -o "x$want_volume_hal" = "xauto"; then
   PKG_CHECK_MODULES(
     [EHAL],
-    [ehal >=0.5.0.040  hal-storage >= 0.5.0],
+    [ehal hal-storage],
     [
       AC_DEFINE(BUILD_VOLUME_HAL, 1, [HAL Volume])
       have_volume_hal="yes"
