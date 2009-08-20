@@ -109,7 +109,7 @@
   	preg_match_all ('#<title>(.+)</title>#SUmis', $data, $infos,PREG_SET_ORDER);
   	foreach ($infos[0] as $info)
   	{
-    	  $alternative_title = $document->CreateElement('alternative_title',(strip_tags(strip_allocine($info))));
+    	  $alternative_title = $document->CreateElement('alternative_title',htmlspecialchars(strip_tags(strip_allocine($info))));
 	  $at_attr = $document->CreateAttribute('lower');
 	  $textForAtAttr = $document->CreateTextNode(strtolower(strip_tags(strip_allocine($info))));
 	  $at_attr->appendChild($textForAtAttr);
@@ -118,9 +118,9 @@
 
         /* french title */
         if (preg_match_all('#<h3 class="SpProse">Titre original : <i>(.+)</i>#SUmis', $data,$infos, PREG_SET_ORDER) != 0)
-             $title = $document->CreateElement('title',strip_tags($infos[0][1]));
+             $title = $document->CreateElement('title',htmlspecialchars(strip_tags($infos[0][1])));
         else
-             $title = $document->CreateElement('title',$alternative_title->nodeValue);
+             $title = $document->CreateElement('title',htmlspecialchars($alternative_title->nodeValue));
 
         $t_attr = $document->CreateAttribute('lower');
         $textForTattr = $document->CreateTextNode(strtolower($title->nodeValue));
