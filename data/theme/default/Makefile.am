@@ -235,7 +235,8 @@ games.edc \
 icons.edc \
 location.edc \
 cover_video.edc \
-photo.edc
+photo.edc \
+configuration.edc
 
 
 
