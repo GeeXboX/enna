@@ -370,9 +370,10 @@ static int _create_gui(void)
     enna_module_load_all(enna->evas);
 
     /* Load mainmenu items */
-#ifdef BUILD_ACTIVITY_INFOS
-    enna_activity_init("infos");
-#endif
+    /*
+     * FIXME : Why are there static calls here, It should be
+     * completly dynamic as modules are already load dynamicly ?! It's stupid
+     */
 #ifdef BUILD_ACTIVITY_MUSIC
     enna_activity_init("music");
 #endif
@@ -390,6 +391,9 @@ static int _create_gui(void)
 #endif
 #ifdef BUILD_ACTIVITY_WEATHER
     enna_activity_init("weather");
+#endif
+#ifdef  BUILD_ACTIVITY_CONFIGURATION
+    enna_activity_init("configuration");
 #endif
 
     enna_mainmenu_load_from_activities(enna->o_mainmenu);

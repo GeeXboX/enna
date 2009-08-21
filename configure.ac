@@ -78,9 +78,9 @@ AC_ARG_ENABLE(activity-configuration,
   [ want_activity_info=$enableval ]
 )
 AC_MSG_RESULT($want_activity_info)
-AM_CONDITIONAL(BUILD_ACTIVITY_configuration, test "x$want_activity_configuration" = "xyes")
+AM_CONDITIONAL(BUILD_ACTIVITY_CONFIGURATION, test "x$want_activity_configuration" = "xyes")
 if test "x$want_activity_configuration" = "xyes"; then
-  AC_DEFINE(BUILD_ACTIVITY_configuration, 1, [configuration Activity])
+  AC_DEFINE(BUILD_ACTIVITY_CONFIGURATION, 1, [configuration Activity])
 fi
 
 # Games
