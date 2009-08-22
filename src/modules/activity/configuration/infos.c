@@ -27,6 +27,7 @@
  *
  */
 
+#include "enna.h"
 #define _GNU_SOURCE
 #include <string.h>
 #include <stdlib.h>
@@ -48,11 +49,8 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "content.h"
-#include "mainmenu.h"
-#include "module.h"
 #include "buffer.h"
-#include "event_key.h"
+
 
 #ifdef BUILD_LIBSVDRP
 #include "utils.h"
@@ -68,6 +66,9 @@
 #ifdef BUILD_BROWSER_VALHALLA
 #include <valhalla.h>
 #endif
+
+/* Refresh period : 2s */
+#define INFOS_REFRESH_PERIOD 2.0
 
 #define BUF_LEN 1024
 #define BUF_DEFAULT "Unknown"
@@ -89,15 +90,29 @@
 #define STR_MEM_TOTAL "MemTotal:"
 #define STR_MEM_ACTIVE "Active:"
 
-typedef struct _Enna_Module_Infos {
-    Evas *e;
-    Evas_Object *edje;
-    Enna_Module *em;
+#define SMART_NAME "enna_INFOS"
+
+typedef struct _Smart_Data Smart_Data;
+
+struct _Smart_Data
+{
+    Evas_Coord x, y, w, h;
+    Evas_Object *obj;
+    Evas_Object *o_edje;
+    Ecore_Timer *update_timer;
     char *lsb_distrib_id;
     char *lsb_release;
-} Enna_Module_Infos;
+    Ecore_Event_Handler *lsb_release_data_handler;
+    Ecore_Exe *lsb_release_exe;
+};
 
-static Enna_Module_Infos *mod;
+/* local subsystem functions */
+static void _smart_reconfigure(Smart_Data * sd);
+static void _smart_init(void);
+
+/* local subsystem globals */
+static Evas_Smart *_smart = NULL;
+
 
 /****************************************************************************/
 /*                       Enna Information API                               */
@@ -129,14 +144,14 @@ set_enna_information (buffer_t *b)
 /****************************************************************************/
 
 static void
-get_distribution (buffer_t *b)
+get_distribution (Smart_Data *sd, buffer_t *b)
 {
     FILE *f;
     char buffer[BUF_LEN];
     char *id = NULL, *release = NULL;
 
 
-    if (!mod->lsb_distrib_id || !mod->lsb_release)
+    if (!sd->lsb_distrib_id || !sd->lsb_release)
     //FIXME: i'm pretty sure that there's no need to try to read files 'cause the command lsb_release seems to be available anywhere
     //if so, this can be stripped from here (Billy)
     {
@@ -177,8 +192,8 @@ get_distribution (buffer_t *b)
     }
 
     buffer_append (b, _("<hilight>Distribution: </hilight>"));
-    if (mod->lsb_distrib_id && mod->lsb_release)
-        buffer_appendf (b, "%s %s", mod->lsb_distrib_id, mod->lsb_release);
+    if (sd->lsb_distrib_id && sd->lsb_release)
+        buffer_appendf (b, "%s %s", sd->lsb_distrib_id, sd->lsb_release);
     else if (id && release)
         buffer_appendf (b, "%s %s", id, release);
     else
@@ -478,13 +493,13 @@ get_default_gw (buffer_t *b)
 }
 
 static void
-set_system_information (buffer_t *b)
+set_system_information (Smart_Data *sd, buffer_t *b)
 {
     if (!b)
         return;
 
     buffer_append (b, _("<c>System Information</c><br><br>"));
-    get_distribution (b);
+    get_distribution (sd, b);
     get_uname (b);
     get_cpuinfos (b);
     get_loadavg (b);
@@ -505,6 +520,7 @@ set_system_information (buffer_t *b)
 static int
 lsb_release_event_data(void *data, int type, void *event)
 {
+    Smart_Data *sd = data;
     Ecore_Exe_Event_Data *ev = event;
     char *id, *release;
     id = release = NULL;
@@ -526,52 +542,166 @@ lsb_release_event_data(void *data, int type, void *event)
 
     if (id)
     {
-        if (mod->lsb_distrib_id)
-            free(mod->lsb_distrib_id);
-        mod->lsb_distrib_id=strdup(id);
+        if (sd->lsb_distrib_id)
+            free(sd->lsb_distrib_id);
+        sd->lsb_distrib_id=strdup(id);
     }
     if (release)
     {
-        if (mod->lsb_release)
-            free(mod->lsb_release);
-        mod->lsb_release=strdup(release);
+        if (sd->lsb_release)
+            free(sd->lsb_release);
+        sd->lsb_release=strdup(release);
     }
     return 0;
 }
 
-/****************************************************************************/
-/*                        Private Module API                                */
-/****************************************************************************/
-
-static void
-create_gui (void)
+static int
+_update_infos_cb(void *data)
 {
-    mod->edje = edje_object_add (mod->em->evas);
-    edje_object_file_set (mod->edje,
-                          enna_config_theme_get (), "module/infos");
+    buffer_t *b;
+    Smart_Data *sd = data;
+
+    b = buffer_new();
+    set_enna_information (b);
+    set_system_information (sd, b);
+    edje_object_part_text_set (sd->o_edje, "infos.text", b->buf);
+    edje_object_signal_emit (sd->o_edje, "infos,show", "enna");
+    buffer_free(b);
+
+    return 1;
 }
 
-static void
-_infos_init (int dummy)
+/* local subsystem globals */
+static void _smart_reconfigure(Smart_Data * sd)
 {
-    Ecore_Exe *lsb_release_exe;
-    Ecore_Event_Handler *lsb_release_data_handler;
+    Evas_Coord x, y, w, h;
 
-    mod->lsb_distrib_id = mod->lsb_release = NULL;
-    lsb_release_exe=ecore_exe_pipe_run("lsb_release -i -r", ECORE_EXE_PIPE_READ | ECORE_EXE_PIPE_READ_LINE_BUFFERED, NULL);
-    if (lsb_release_exe)
-        lsb_release_data_handler=ecore_event_handler_add(ECORE_EXE_EVENT_DATA, lsb_release_event_data, NULL);
-    create_gui ();
-    enna_content_append (ENNA_MODULE_NAME, mod->edje);
+    x = sd->x;
+    y = sd->y;
+    w = sd->w;
+    h = sd->h;
+
+    evas_object_move(sd->o_edje, x, y);
+    evas_object_resize(sd->o_edje, w, h);
+
 }
 
-static void
-_infos_shutdown (int dummy)
+static void _smart_add(Evas_Object * obj)
 {
-    ENNA_OBJECT_DEL (mod->edje);
-    if (mod->lsb_distrib_id)
-        free(mod->lsb_distrib_id);
-    if (mod->lsb_release)
-        free(mod->lsb_release);
+    Smart_Data *sd;
+
+    sd = calloc(1, sizeof(Smart_Data));
+    if (!sd)
+        return;
+    sd->o_edje = edje_object_add(evas_object_evas_get(obj));
+    edje_object_file_set (sd->o_edje,
+	enna_config_theme_get (), "module/infos");
+    sd->lsb_distrib_id = sd->lsb_release = NULL;
+    sd->lsb_release_exe=ecore_exe_pipe_run("lsb_release -i -r", ECORE_EXE_PIPE_READ | ECORE_EXE_PIPE_READ_LINE_BUFFERED, NULL);
+    if (sd->lsb_release_exe)
+        sd->lsb_release_data_handler=ecore_event_handler_add(ECORE_EXE_EVENT_DATA, lsb_release_event_data, sd);
+    _update_infos_cb(sd);
+    sd->update_timer = ecore_timer_add(INFOS_REFRESH_PERIOD, _update_infos_cb, sd);
+
+    sd->obj = obj;
+    evas_object_smart_member_add(sd->o_edje, obj);
+    evas_object_smart_data_set(obj, sd);
+}
+
+static void _smart_del(Evas_Object * obj)
+{
+    INTERNAL_ENTRY;
+    evas_object_del (sd->o_edje);
+    ENNA_TIMER_DEL (sd->update_timer);
+    ecore_exe_free(sd->lsb_release_exe);
+    ecore_event_handler_del (sd->lsb_release_data_handler);
+    if (sd->lsb_distrib_id)
+        free (sd->lsb_distrib_id);
+    if (sd->lsb_release)
+        free (sd->lsb_release);
+    free (sd);
+}
+
+static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
+{
+    INTERNAL_ENTRY;
+
+    if ((sd->x == x) && (sd->y == y))
+        return;
+    sd->x = x;
+    sd->y = y;
+    _smart_reconfigure(sd);
+}
+
+static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
+{
+    INTERNAL_ENTRY;
+
+    if ((sd->w == w) && (sd->h == h))
+        return;
+    sd->w = w;
+    sd->h = h;
+    _smart_reconfigure(sd);
+}
+
+static void _smart_show(Evas_Object * obj)
+{
+    INTERNAL_ENTRY;
+    evas_object_show(sd->o_edje);
+}
+
+static void _smart_hide(Evas_Object * obj)
+{
+    INTERNAL_ENTRY;
+    evas_object_hide(sd->o_edje);
+}
+
+static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
+{
+    INTERNAL_ENTRY;
+    evas_object_color_set(sd->o_edje, r, g, b, a);
+}
+
+static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
+{
+    INTERNAL_ENTRY;
+    evas_object_clip_set(sd->o_edje, clip);
+}
+
+static void _smart_clip_unset(Evas_Object * obj)
+{
+    INTERNAL_ENTRY;
+    evas_object_clip_unset(sd->o_edje);
+}
+
+static void _smart_init(void)
+{
+    static const Evas_Smart_Class sc =
+    {
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _smart_add,
+        _smart_del,
+        _smart_move,
+        _smart_resize,
+        _smart_show,
+        _smart_hide,
+        _smart_color_set,
+        _smart_clip_set,
+        _smart_clip_unset,
+        NULL,
+        NULL
+    };
+
+    if (!_smart)
+       _smart = evas_smart_class_new(&sc);
+}
+
+/* externally accessible functions */
+Evas_Object *
+enna_infos_add(Evas * evas)
+{
+    _smart_init();
+    return evas_object_smart_add(evas, _smart);
 }
 

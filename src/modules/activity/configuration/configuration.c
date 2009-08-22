@@ -28,117 +28,125 @@
  */
 
 #define _GNU_SOURCE
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/utsname.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <net/if.h>
-#include <net/route.h>
-#include <sys/ioctl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <arpa/inet.h>
 
+#include <Eina.h>
 #include <Edje.h>
 
 #include "enna.h"
+#include "event_key.h"
+#include "vfs.h"
 #include "enna_config.h"
+#include "view_wall.h"
 #include "content.h"
 #include "mainmenu.h"
-#include "module.h"
-#include "buffer.h"
-#include "event_key.h"
+#include "infos.h"
 
-#ifdef BUILD_LIBSVDRP
-#include "utils.h"
-#endif
+#define ENNA_MODULE_NAME "configuration"
 
-#ifdef BUILD_LIBXRANDR
-#include <X11/Xutil.h>
-#include <X11/extensions/Xrandr.h>
-#endif
+typedef enum _CONFIGURATION_STATE
+{
+    MENU_VIEW,
+    CONTENT_VIEW
+} CONFIGURATION_STATE;
 
-#include <player.h>
-
-#ifdef BUILD_BROWSER_VALHALLA
-#include <valhalla.h>
-#endif
-
-#define BUF_LEN 1024
-#define BUF_DEFAULT "Unknown"
-#define LSB_FILE "/etc/lsb-release"
-#define DEBIAN_VERSION_FILE "/etc/debian_version"
-#define DISTRIB_ID "DISTRIB_ID="
-#define E_DISTRIB_ID "Distributor ID:"
-#define E_RELEASE "Release:"
-#define DISTRIB_ID_LEN strlen (DISTRIB_ID)
-#define DISTRIB_RELEASE "DISTRIB_RELEASE="
-#define DISTRIB_RELEASE_LEN strlen (DISTRIB_RELEASE)
-
-#define ENNA_MODULE_NAME "infos"
-
-#define STR_CPU "processor"
-#define STR_MODEL "model name"
-#define STR_MHZ "cpu MHz"
-
-#define STR_MEM_TOTAL "MemTotal:"
-#define STR_MEM_ACTIVE "Active:"
-
-typedef struct _Enna_Module_Infos {
+typedef struct _Enna_Module_Configuration {
     Evas *e;
-    Evas_Object *edje;
+    Evas_Object *o_edje;
     Enna_Module *em;
-    char *lsb_distrib_id;
-    char *lsb_release;
-} Enna_Module_Infos;
+    Evas_Object *o_menu;
+    Evas_Object *o_content;
+    Eina_List *items;
+    CONFIGURATION_STATE state;
+} Enna_Module_Configuration;
 
-static Enna_Module_Infos *mod;
+static Enna_Module_Configuration *mod;
 
+static void _delete_menu(void);
 
 /****************************************************************************/
-/*                        Event Callbacks                                   */
+/*                            Callbacks                                     */
 /****************************************************************************/
+
+static void
+_infos_selected_cb(void *data)
+{
+    _delete_menu ();
+    ENNA_OBJECT_DEL (mod->o_content);
+    mod->o_content = enna_infos_add (mod->em->evas);
+    edje_object_part_swallow (mod->o_edje, "enna.swallow.content", mod->o_content);
+    mod->state = CONTENT_VIEW;
+}
 
 /****************************************************************************/
 /*                        Private Module API                                */
 /****************************************************************************/
 
 static void
-create_gui (void)
+_create_menu (void)
 {
-    mod->edje = edje_object_add (mod->em->evas);
-    edje_object_file_set (mod->edje,
-                          enna_config_theme_get (), "module/infos");
+    Enna_Vfs_File *it;
+
+    mod->state = MENU_VIEW;
+
+    mod->o_menu = enna_wall_add (mod->em->evas);
+    edje_object_part_swallow (mod->o_edje, "enna.swallow.content", mod->o_menu);
+
+    it = calloc (1, sizeof(Enna_Vfs_File));
+    it->icon = (char*)eina_stringshare_add ("icon/infos");
+    it->label = (char*)eina_stringshare_add (_("Infos"));
+    it->is_directory = 1;
+
+    enna_wall_file_append (mod->o_menu, it, _infos_selected_cb, NULL);
+    mod->items = eina_list_append (mod->items, it);
+
+    enna_wall_select_nth(mod->o_menu, 0, 0);
+
+}
+
+static void
+_delete_menu(void)
+{
+    Eina_List *l;
+
+    if (!mod->o_menu)
+	return;
+
+    for (l = mod->items; l; l = l->next)
+    {
+        Enna_Vfs_File *it = l->data;
+        mod->items = eina_list_remove(mod->items, it);
+    }
+    ENNA_OBJECT_DEL(mod->o_menu);
 }
 
 static void
 _class_init (int dummy)
 {
-    create_gui ();
-    enna_content_append (ENNA_MODULE_NAME, mod->edje);
+    mod->o_edje = edje_object_add (mod->em->evas);
+    edje_object_file_set (mod->o_edje,
+	enna_config_theme_get (), "module/configuration");
+    _create_menu ();
+    enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
 }
 
 static void
 _class_shutdown (int dummy)
 {
-    ENNA_OBJECT_DEL (mod->edje);
+    ENNA_OBJECT_DEL (mod->o_edje);
 }
 
 static void
 _class_show (int dummy)
 {
-    edje_object_signal_emit (mod->edje, "infos,show", "enna");
+    edje_object_signal_emit (mod->o_edje, "module,show", "enna");
+    edje_object_signal_emit (mod->o_edje, "content,show", "enna");
 }
 
 static void
 _class_hide (int dummy)
 {
-    edje_object_signal_emit (mod->edje, "infos,hide", "enna");
+    edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
+    edje_object_signal_emit (mod->o_edje, "content,hide", "enna");
 }
 
 static void
@@ -147,11 +155,30 @@ _class_event (void *event_info)
     Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key (ev);
 
-    if (key != ENNA_KEY_CANCEL)
-        return;
 
-    enna_content_hide ();
-    enna_mainmenu_show (enna->o_mainmenu);
+
+    switch (mod->state)
+    {
+    case CONTENT_VIEW:
+	if (key == ENNA_KEY_CANCEL)
+	{
+	    ENNA_OBJECT_DEL(mod->o_content);
+	    _create_menu();
+	}
+	break;
+    default:
+	if (key == ENNA_KEY_CANCEL)
+	{
+
+	    enna_content_hide ();
+	    enna_mainmenu_show (enna->o_mainmenu);
+	}
+	else
+	    enna_wall_event_feed(mod->o_menu, event_info);
+	break;
+    }
+
+
 }
 
 static Enna_Class_Activity class = {
@@ -179,7 +206,7 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     ENNA_MODULE_ACTIVITY,
-    "activity_configuration"
+    "configuration"
 };
 
 void
@@ -188,7 +215,7 @@ module_init (Enna_Module *em)
     if (!em)
         return;
 
-    mod = calloc (1, sizeof (Enna_Module_Infos));
+    mod = calloc (1, sizeof (Enna_Module_Configuration));
     mod->em = em;
     em->mod = mod;
 
@@ -198,7 +225,9 @@ module_init (Enna_Module *em)
 void
 module_shutdown (Enna_Module *em)
 {
-    evas_object_del (mod->edje);
+    evas_object_del (mod->o_edje);
+    _delete_menu ();
+    ENNA_OBJECT_DEL (mod->o_content);
     free (mod);
 }
 

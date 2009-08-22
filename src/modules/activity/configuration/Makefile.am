@@ -26,14 +26,16 @@ if BUILD_LIBXRANDR
 INCLUDES += @LIBXRANDR_CFLAGS@
 endif
 
-if BUILD_ACTIVITY_configuration
+if BUILD_ACTIVITY_CONFIGURATION
 
 pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_configuration.la
 
 activity_configuration_la_SOURCES= \
-configuration.c
+configuration.c \
+infos.c \
+infos.h
 
 activity_configuration_la_LIBADD = @ENNA_LIBS@
 activity_configuration_la_LDFLAGS = -module -avoid-version

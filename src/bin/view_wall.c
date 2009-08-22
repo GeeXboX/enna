@@ -299,6 +299,14 @@ void enna_wall_event_feed(Evas_Object *obj, void *event_info)
     case ENNA_KEY_DOWN:
         _wall_down_select(obj);
         break;
+    case ENNA_KEY_OK:
+    case ENNA_KEY_SPACE:
+    {
+	Picture_Item *pi = _smart_selected_item_get(sd, NULL, NULL);
+	if (pi && pi->func)
+	    pi->func(pi->data);
+    }
+
     default:
         break;
     }
