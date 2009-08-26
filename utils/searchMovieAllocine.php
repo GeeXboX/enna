@@ -141,22 +141,28 @@
         $people = $document->CreateElement ('people', '');
 
         /* director of movie */
-        if (preg_match_all('#<h3 class="SpProse">Réalisé par <a class="link1" href="/personne/fichepersonne_gen_cpersonne=(\d+)\.html">(.+)</a></h3></div>#SUmis',$data, $infos, PREG_SET_ORDER) != 0)
+        if (preg_match_all('#<h3 class="SpProse">Réalisé par <a class="link1" href="/personne/fichepersonne_gen_cpersonne=\d+\.html">.+</a>.+</div>#SUmis',$data, $infos, PREG_SET_ORDER) != 0)
         {
-            $person = $document->CreateElement ('person');
-            $job = $document->CreateAttribute ('job');
-            $textForAttr = $document->CreateTextNode ('director');
-            $job->appendChild ($textForAttr);
+            if (preg_match_all('#<a class="link1" href="/personne/fichepersonne_gen_cpersonne=(\d+)\.html">(.+)</a>#SUmis',$infos[0][0], $infos_supp, PREG_SET_ORDER) != 0)
+	    {
+	        foreach ($infos_supp as $info)
+	        {
+	            $person = $document->CreateElement ('person');
+	            $job = $document->CreateAttribute ('job');
+	            $textForAttr = $document->CreateTextNode ('director');
+	            $job->appendChild ($textForAttr);
 
-            $name = $document->createElement ('name', $infos[0][2]);
-            $role = $document->createElement ('role', '');
-            $url = $document->createElement ('url','http://www.allocine.fr/personne/fichepersonne_gen_cpersonne='.$infos[0][1].'.html');
+	            $name = $document->createElement ('name', $info[2]);
+	            $role = $document->createElement ('role', '');
+	            $url = $document->createElement ('url','http://www.allocine.fr/personne/fichepersonne_gen_cpersonne='.$info[1].'.html');
 
-            $person->appendChild ($job);
-            $person->appendChild ($name);
-            $person->appendChild ($role);
-            $person->appendChild ($url);
-            $people->appendChild ($person);
+	            $person->appendChild ($job);
+	            $person->appendChild ($name);
+	            $person->appendChild ($role);
+	            $person->appendChild ($url);
+	            $people->appendChild ($person);
+	        }
+	    }
         }
 
         /* actors information */
