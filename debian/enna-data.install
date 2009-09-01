@@ -1,0 +1,4 @@
+usr/share/applications/enna.desktop
+usr/share/pixmaps/enna.png
+usr/share/locale/*/LC_MESSAGES/*.mo
+usr/share/enna/theme/default.edj
