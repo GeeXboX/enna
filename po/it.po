@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-08-30 15:09+0200\n"
+"POT-Creation-Date: 2009-09-01 15:45+0200\n"
 "PO-Revision-Date: 2009-08-30 15:11+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -62,7 +62,9 @@ msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 #: src/bin/enna.c:489
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "  -g, (--geometry): specifica la geometria della finestra. (geometry=1280x720)\n"
+msgstr ""
+"  -g, (--geometry): specifica la geometria della finestra. "
+"(geometry=1280x720)\n"
 
 #: src/bin/enna.c:490
 #, c-format
@@ -292,12 +294,10 @@ msgid "Play Audio CD"
 msgstr "Riproduci CD audio"
 
 #: src/modules/browser/dvd/dvd.c:70
-#: src/modules/browser/podcasts/enna_module_podcast.c:44
 msgid "Play"
 msgstr "Riproduci"
 
 #: src/modules/browser/dvd/dvd.c:73
-#: src/modules/browser/podcasts/enna_module_podcast.c:46
 msgid "Play (With Menus)"
 msgstr "Riproduci (con menu)"
 
@@ -319,8 +319,7 @@ msgstr "Artisti"
 msgid "Albums"
 msgstr "Album"
 
-#: src/modules/browser/lms/lms.c:676
-#: src/modules/browser/lms/lms.c:743
+#: src/modules/browser/lms/lms.c:676 src/modules/browser/lms/lms.c:743
 #: src/modules/browser/valhalla/valhalla.c:316
 msgid "Genres"
 msgstr "Generi"
@@ -343,10 +342,6 @@ msgstr "Sfoglia dispositivi locali"
 #: src/modules/browser/netstreams/netstreams.c:335
 msgid "Browse Network Streams"
 msgstr "Sfoglia flussi di rete"
-
-#: src/modules/browser/podcasts/enna_module_podcast.c:237
-msgid "Watch PODCAST Video"
-msgstr "Guarda video podcast"
 
 #: src/modules/browser/podcasts/podcasts.c:312
 msgid "Listen to Podcasts"
@@ -544,6 +539,8 @@ msgstr "[NFS] %s su %s"
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s su %s"
 
+#~ msgid "Watch PODCAST Video"
+#~ msgstr "Guarda video podcast"
+
 #~ msgid "No exif information found."
 #~ msgstr "Informazioni exif non trovate."
-
