@@ -462,7 +462,8 @@ static int _em_valhalla_init(void)
     Enna_Config_Data *cfgdata;
     char *value = NULL;
     char db[PATH_BUFFER];
-    Eina_List *path = NULL, *music_ext = NULL, *l;
+    Eina_List *path = NULL, *l;
+    Eina_List *music_ext = NULL, *video_ext = NULL, *photo_ext = NULL;
     int parser_number   = 2;
     int commit_interval = 128;
     int scan_loop       = -1;
@@ -478,6 +479,10 @@ static int _em_valhalla_init(void)
         {
             Config_Pair *pair = list->data;
             enna_config_value_store (&music_ext, "music_ext",
+                                     ENNA_CONFIG_STRING_LIST, pair);
+            enna_config_value_store (&video_ext, "video_ext",
+                                     ENNA_CONFIG_STRING_LIST, pair);
+            enna_config_value_store (&photo_ext, "photo_ext",
                                      ENNA_CONFIG_STRING_LIST, pair);
         }
     }
@@ -563,6 +568,28 @@ static int _em_valhalla_init(void)
     {
         eina_list_free(music_ext);
         music_ext = NULL;
+    }
+
+    for (l = video_ext; l; l = l->next)
+    {
+        const char *ext = l->data;
+        valhalla_suffix_add(mod->valhalla, ext);
+    }
+    if (video_ext)
+    {
+        eina_list_free(video_ext);
+        video_ext = NULL;
+    }
+
+    for (l = photo_ext; l; l = l->next)
+    {
+        const char *ext = l->data;
+        valhalla_suffix_add(mod->valhalla, ext);
+    }
+    if (photo_ext)
+    {
+        eina_list_free(photo_ext);
+        photo_ext = NULL;
     }
 
     /* Add paths */
