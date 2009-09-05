@@ -62,7 +62,7 @@ struct _Enna_Config
     int use_snapshots;
     int metadata_cache;
     int slideshow_delay;
-    const char *engine;
+    char *engine;
     const char *backend;
     const char *verbosity;
     Eina_List *music_local_root_directories;
