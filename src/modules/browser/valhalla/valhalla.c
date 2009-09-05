@@ -547,7 +547,7 @@ static int _em_valhalla_init(void)
     valhalla_verbosity(verbosity);
 
     snprintf(db, sizeof(db),
-             "%s/.enna/%s", enna_util_user_home_get(), "valhalla_music.db");
+             "%s/.enna/%s", enna_util_user_home_get(), "media.db");
 
     mod->valhalla = valhalla_init(db, parser_number, 1, commit_interval);
     if (!mod->valhalla)
