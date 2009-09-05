@@ -30,6 +30,8 @@
 #ifndef ENNA_H
 #define ENNA_H
 
+#define _GNU_SOURCE
+
 #include <Ecore_Evas.h>
 #include <Ecore.h>
 
