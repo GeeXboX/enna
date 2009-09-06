@@ -36,6 +36,7 @@
 #include "logs.h"
 #include "image.h"
 #include "buffer.h"
+#include "utils.h"
 
 #define SMART_NAME "enna_panel_infos"
 
@@ -291,17 +292,23 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
 
     if (!m)
     {
-        file = "backdrop/default";
+        file = strdup ("backdrop/default");
         from_vfs = 0;
     }
 
     cv = enna_metadata_meta_get (m, "cover", 1);
-    if (!file)
-      file = cv;
+    if (!file && cv)
+    {
+        char dst[1024] = { 0 };
+
+        snprintf (dst, sizeof (dst), "%s/.enna/covers/%s",
+                  enna_util_user_home_get (), cv);
+        file = strdup (dst);
+    }
 
     if (!file)
     {
-        file = "backdrop/default";
+        file = strdup ("backdrop/default");
         from_vfs = 0;
     }
 
@@ -324,6 +331,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
                               "infos.panel.cover.swallow", sd->o_cover);
     edje_object_signal_emit (sd->o_edje, strcmp(file, "backdrop/default") ?  "cover,show": "cover,hide", "enna");
     ENNA_FREE (cv);
+    ENNA_FREE (file);
 }
 
 void
