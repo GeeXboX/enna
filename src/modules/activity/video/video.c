@@ -63,6 +63,7 @@
 #include "volumes.h"
 #include "buffer.h"
 #include "metadata.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME "video"
 
@@ -297,32 +298,33 @@ _eos_cb(void *data, int type, void *event)
 static void
 backdrop_show (Enna_Metadata *m)
 {
-    char *snap_file = NULL;
+    char *file = NULL;
     int from_vfs = 1;
-    char *backdrop, *snapshot;
+    char *backdrop;
 
     if (!m)
     {
-        snap_file = "backdrop/default";
+        file = strdup ("backdrop/default");
         from_vfs = 0;
     }
 
     backdrop = enna_metadata_meta_get (m, "backdrop", 1);
-    snapshot = enna_metadata_meta_get (m, "snapshot", 1);
-    if (!snap_file)
-      snap_file = backdrop ? backdrop : snapshot;
+    if (!file && backdrop)
+    {
+        char dst[1024] = { 0 };
 
-    if (!snap_file)
-	goto err;
+        snprintf (dst, sizeof (dst), "%s/.enna/backdrops/%s",
+                  enna_util_user_home_get (), backdrop);
+        file = strdup (dst);
+    }
 
-    enna_backdrop_set (mod->o_backdrop, snap_file, from_vfs);
+    enna_backdrop_set (mod->o_backdrop, file, from_vfs);
     evas_object_show (mod->o_backdrop);
     edje_object_part_swallow (mod->o_edje,
                               "enna.swallow.backdrop", mod->o_backdrop);
 
- err:
     ENNA_FREE (backdrop);
-    ENNA_FREE (snapshot);
+    ENNA_FREE (file);
 }
 
 /****************************************************************************/
