@@ -42,7 +42,6 @@ parser_cdda.c\
 slideshow.c\
 mediacontrol.c\
 reflection.c\
-events_stack.c\
 view_cover.c\
 popup.c\
 exit.c\
@@ -98,7 +97,6 @@ parser_cdda.h\
 slideshow.h\
 mediacontrol.h\
 reflection.h\
-events_stack.h\
 view_cover.h\
 popup.h\
 exit.h\

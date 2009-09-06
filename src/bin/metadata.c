@@ -44,7 +44,6 @@
 #include "metadata.h"
 #include "logs.h"
 #include "utils.h"
-#include "events_stack.h"
 #include "buffer.h"
 
 #define MODULE_NAME "enna"
@@ -66,10 +65,7 @@
 #define DEBUG 0
 #define EET_DO_COMPRESS 1
 
-static Eina_List *metadata_grabbers = NULL;
 static Eet_File *ef;
-static pthread_t grabber_thread_id = -1;
-static events_stack_t *estack = NULL;
 static valhalla_t *vh = NULL;
 
 extern Enna *enna;
@@ -731,100 +727,8 @@ enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords)
 }
 
 void
-enna_metadata_add_actors (Enna_Metadata *meta, char *actor)
-{
-    char act[1024];
-
-    if (!meta || !actor)
-        return;
-
-    if (!meta->actors)
-        meta->actors = strdup (actor);
-    else
-    {
-        memset (act, '\0', sizeof (act));
-        snprintf (act, sizeof (act), "%s, %s", meta->actors, actor);
-        free (meta->actors);
-        meta->actors = strdup (act);
-    }
-
-    enna_log (ENNA_MSG_EVENT, MODULE_NAME,
-              "Metadata actors set to '%s'", meta->actors);
-}
-
-void
-enna_metadata_add_category (Enna_Metadata *meta, char *category)
-{
-    char cat[1024];
-
-    if (!meta || !category)
-        return;
-
-    /* check that the category hasn't already been added to list */
-    if (meta->categories && strstr (meta->categories, category))
-      return;
-
-    if (!meta->categories)
-        meta->categories = strdup (category);
-    else
-    {
-        memset (cat, '\0', sizeof (cat));
-        snprintf (cat, sizeof (cat), "%s, %s", meta->categories, category);
-        free (meta->categories);
-        meta->categories = strdup (cat);
-    }
-}
-
-void
-enna_metadata_add_grabber (Enna_Metadata_Grabber *grabber)
-{
-    Eina_List *tmp;
-
-    if (!grabber || !grabber->name)
-        return;
-
-    tmp = eina_list_nth_list (metadata_grabbers, 0);
-    do {
-        Enna_Metadata_Grabber *g = NULL;
-
-        if (tmp)
-            g = (Enna_Metadata_Grabber *) tmp->data;
-
-        if (g && !strcmp (g->name, grabber->name))
-            return; /* already added grabber */
-    } while ((tmp = eina_list_next (tmp)));
-
-    metadata_grabbers = eina_list_append (metadata_grabbers, grabber);
-}
-
-void
-enna_metadata_remove_grabber (char *name)
-{
-    Eina_List *tmp;
-
-    if (!name)
-        return;
-
-    tmp = eina_list_nth_list (metadata_grabbers, 0);
-    do {
-        Enna_Metadata_Grabber *g = NULL;
-
-        if (tmp)
-            g = (Enna_Metadata_Grabber *) tmp->data;
-
-        if (g && !strcmp (g->name, name))
-        {
-            tmp = eina_list_remove (tmp, g);
-            return;
-        }
-    } while ((tmp = eina_list_next (tmp)));
-}
-
-void
 enna_metadata_grab (Enna_Metadata *meta, int caps)
 {
-    int i;
-
     if (!meta)
         return;
 
@@ -835,33 +739,6 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
     /* do not grab metadata from non-local streams */
     if (strncmp (meta->uri, "file://", 7))
       return;
-
-    for (i = ENNA_GRABBER_PRIORITY_MAX; i < ENNA_GRABBER_PRIORITY_MIN; i++)
-    {
-        Eina_List *tmp;
-
-        tmp = eina_list_nth_list (metadata_grabbers, 0);
-        do {
-            Enna_Metadata_Grabber *g = NULL;
-
-            if (tmp)
-                g = (Enna_Metadata_Grabber *) tmp->data;
-            if (!g)
-                continue;
-
-            /* check for grabber's priority */
-            if (g->priority != i)
-                continue;
-
-            /* check if network is allowed */
-            if (g->require_network && !enna->use_network)
-                continue;
-
-            /* check if grabber has the requested capabilities */
-            if (g->caps & caps)
-                g->grab (meta, caps);
-        } while ((tmp = eina_list_next (tmp)));
-    }
 
     meta->parsed = 1;
     enna_metadata_save_to_eet (meta);
@@ -875,85 +752,4 @@ enna_metadata_set_position (Enna_Metadata *meta, double position)
 
     meta->position = position;
     enna_metadata_save_to_eet (meta);
-}
-
-
-void *
-grabber_thread(void *arg)
-{
-    event_elt_t * evt = NULL;
-    Enna_Metadata_Request *r = NULL;
-    
-    estack = events_stack_create();
-    if (!estack)
-    {
-        enna_log (ENNA_MSG_ERROR, MODULE_NAME, "grabber thread cannot allocate events stack");
-        return NULL; 
-    }
-    
-    for (;;) 
-    {
-        unsigned int addr;
-        r = NULL;
-
-        evt = events_stack_pop_event(estack);
-        if (!evt)
-            continue;
-        
-        r = (Enna_Metadata_Request*) evt->data;
-        
-        free (evt);
-        
-        if (!r)
-            continue;
-        
-        enna_metadata_grab (r->metadata, r->caps);
-        
-        addr = (unsigned int )(r->metadata);
-        ecore_pipe_write (enna->pipe_grabber, &addr, sizeof (unsigned int*));
-	free (r);
-    }
-    
-    events_stack_destroy(estack);
-    return NULL;
-}
-
-int 
-grabber_start_thread(void)
-{
-    if (grabber_thread_id != -1)
-        return -1;
-    
-    if (pthread_create(&grabber_thread_id, NULL, grabber_thread, NULL)) 
-    {
-        enna_log (ENNA_MSG_ERROR, MODULE_NAME, "Cannot start grabber thread - cause : %s", strerror(errno));
-        return -1;
-    }
-    return 0;
-}
-
-int 
-grabber_stop_thread(void)
-{
-    if (grabber_thread_id  == -1)
-      return 0;
-    
-    if (pthread_cancel(grabber_thread_id)) 
-    {
-        enna_log (ENNA_MSG_ERROR, MODULE_NAME, "grabber thread cannot be stopped - cause : %s", strerror(errno));
-        return -1;
-    }
-    
-    return 0;
-}
-
-
-int 
-enna_metadata_grab_request(Enna_Metadata_Request *r)
-{
-    event_elt_t *e = NULL;
-
-    e = calloc(sizeof(event_elt_t), 1);
-    e->data = r;
-    return events_stack_push_event(estack, e);
 }

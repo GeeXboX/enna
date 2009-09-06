@@ -655,7 +655,7 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
         r->caps  = ENNA_GRABBER_CAP_AUDIO;
         r->caps |= ENNA_GRABBER_CAP_VIDEO;
         r->caps |= ENNA_GRABBER_CAP_COVER;
-        enna_metadata_grab_request (r);
+        //enna_metadata_grab_request (r);
         label = m->title ? m->title : ev->file->label;
     }
     else
