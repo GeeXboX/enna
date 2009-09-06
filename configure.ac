@@ -192,32 +192,6 @@ if test "x$want_browser_dvd" = "xyes"; then
   AC_DEFINE(BUILD_BROWSER_DVD, 1, [Dvd Video Browser])
 fi
 
-# Light Media Scanner (LMS)
-want_browser_lms="auto"
-have_browser_lms="no"
-AC_MSG_CHECKING(whether lms browser is to be built)
-AC_ARG_ENABLE(browser-lms,
-  AS_HELP_STRING([--enable-browser-lms],[Enable Light Media Scanner Browser Module]),
-  [ want_browser_lms=$enableval ]
-)
-AC_MSG_RESULT($want_browser_lms)
-if test "x$want_browser_lms" = "xyes" -o "x$want_browser_lms" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LMS],
-    [lightmediascanner],
-    [
-      AC_DEFINE(BUILD_BROWSER_LMS, 1, [Light media scanner Module])
-      have_browser_lms="yes"
-    ],
-    [
-      if test "x$want_browser_lms" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([Light media scanner not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_BROWSER_LMS, test "x$have_browser_lms" = "xyes")
-
 # Local Files
 want_browser_localfiles="yes"
 AC_MSG_CHECKING(whether localfiles browser module is to be built)
@@ -591,7 +565,6 @@ src/modules/activity/weather/Makefile
 src/modules/browser/Makefile
 src/modules/browser/cdda/Makefile
 src/modules/browser/dvd/Makefile
-src/modules/browser/lms/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
 src/modules/browser/podcasts/Makefile
@@ -636,7 +609,6 @@ echo "Supported Browser Modules:"
 echo
 echo "  Audio CD......................... : $want_browser_cdda"
 echo "  DVD Video........................ : $want_browser_dvd"
-echo "  Light Media Scanner.............. : $have_browser_lms"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  Podcasts......................... : $want_browser_podcasts"
