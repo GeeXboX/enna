@@ -622,6 +622,10 @@ static int _em_valhalla_init(void)
              ENNA_MODULE_NAME, "valhalla module initialization");
     if (music_ext)
         eina_list_free(music_ext);
+    if (video_ext)
+        eina_list_free(video_ext);
+    if (photo_ext)
+        eina_list_free(photo_ext);
     if (path)
         eina_list_free(path);
     return -1;
