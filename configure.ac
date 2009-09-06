@@ -50,6 +50,7 @@ PKG_CHECK_MODULES([ENNA],
    edje >= 0.9.92.062
    elementary >= 0.5.1.0
    libplayer >= 0.0.1
+   libvalhalla >= 0.0.1
    dbus-1 >= 1.2.0
   ]
 )
