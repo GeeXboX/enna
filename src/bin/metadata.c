@@ -77,6 +77,7 @@ enna_metadata_db_init (void)
     int scan_sleep      = ENNA_METADATA_DEFAULT_SCAN_SLEEP;
     int scan_priority   = ENNA_METADATA_DEFAULT_SCAN_PRIORITY;
     valhalla_verb_t verbosity = VALHALLA_MSG_WARNING;
+    char dst[1024];
 
     cfgdata = enna_config_module_pair_get("enna");
     if (cfgdata)
@@ -210,6 +211,17 @@ enna_metadata_db_init (void)
         eina_list_free(path);
         path = NULL;
     }
+
+    /* set file download destinations */
+    memset (dst, '\0', sizeof (dst));
+    snprintf (dst, sizeof (dst), "%s/.enna/%s",
+              enna_util_user_home_get (), PATH_COVERS);
+    valhalla_downloader_dest_set (vh, VALHALLA_DL_COVER, dst);
+
+    memset (dst, '\0', sizeof (dst));
+    snprintf (dst, sizeof (dst), "%s/.enna/%s",
+              enna_util_user_home_get (), PATH_BACKDROPS);
+    valhalla_downloader_dest_set (vh, VALHALLA_DL_BACKDROP, dst);
 
     rc = valhalla_run(vh, scan_loop, scan_sleep, scan_priority);
     if (rc)
