@@ -429,6 +429,7 @@ static void _enna_shutdown(void)
     enna_input_shutdown();
     enna_config_shutdown();
     enna_module_shutdown();
+    enna_metadata_shutdown();
     enna_mediaplayer_shutdown();
     evas_object_del(enna->o_background);
     evas_object_del(enna->o_edje);
