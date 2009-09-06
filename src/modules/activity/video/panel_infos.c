@@ -232,7 +232,9 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
 
         if (hh)
             buffer_appendf (buf, ngettext("%.2d hour ", "%.2d hours ", hh), hh);
-	if (mm)
+        if (hh && mm)
+            buffer_append (buf, " ");
+        if (mm)
             buffer_appendf (buf, ngettext("%.2d minute", "%.2d minutes", mm), mm);
     }
     buffer_append (buf, "<br><br>");
