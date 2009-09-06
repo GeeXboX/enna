@@ -45,6 +45,7 @@
 #include "logs.h"
 #include "utils.h"
 #include "events_stack.h"
+#include "buffer.h"
 
 #define MODULE_NAME "enna"
 
@@ -637,6 +638,74 @@ void *
 enna_metadata_get_db (void)
 {
     return &vh;
+}
+
+void *
+enna_metadata_meta_new (const char *file)
+{
+  valhalla_db_filemeta_t *m = NULL;
+  int shift = 0;
+
+  if (!vh || !file)
+      return NULL;
+
+  if (!strncmp (file, "file://", 7))
+      shift = 7;
+
+  enna_log (ENNA_MSG_EVENT,
+            MODULE_NAME, "Request for metadata on %s", file + shift);
+  valhalla_db_file_get (vh, 0, file + shift, NULL, &m);
+
+  return m;
+}
+
+void
+enna_metadata_meta_free (void *meta)
+{
+    valhalla_db_filemeta_t *m = meta;
+
+    if (m)
+        VALHALLA_DB_FILEMETA_FREE (m);
+}
+
+char *
+enna_metadata_meta_get (void *meta, const char *name, int max)
+{
+  valhalla_db_filemeta_t *m, *n;
+  int count = 0;
+  buffer_t *b;
+  char *str = NULL;
+
+  if (!meta || !name)
+      return NULL;
+
+  b = buffer_new ();
+  m = (valhalla_db_filemeta_t *) meta;
+  n = m;
+
+  while (n)
+  {
+      if (n->meta_name && !strcmp (n->meta_name, name))
+      {
+          if (count == 0)
+              buffer_append (b, n->data_value);
+          else
+              buffer_appendf (b, ", %s", n->data_value);
+          count++;
+          if (count >= max)
+              break;
+      }
+      n = n->next;
+  }
+
+  str = b->buf ? strdup (b->buf) : NULL;
+  if (str)
+      enna_log (ENNA_MSG_EVENT, MODULE_NAME,
+                "Requested metadata '%s' is associated to value '%s'",
+                name, str);
+  buffer_free (b);
+
+  return str;
 }
 
 void

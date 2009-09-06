@@ -133,6 +133,11 @@ typedef struct _Enna_Metadata_Request Enna_Metadata_Request;
 void enna_metadata_init (void);
 void enna_metadata_shutdown (void);
 void *enna_metadata_get_db (void);
+
+void *enna_metadata_meta_new (const char *file);
+char *enna_metadata_meta_get (void *meta, const char *name, int max);
+void  enna_metadata_meta_free (void *meta);
+
 Enna_Metadata *enna_metadata_new(char *uri);
 void enna_metadata_free(Enna_Metadata *m);
 void enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords);
