@@ -248,7 +248,7 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
     if (director || actors)
 	buffer_append (buf, "<br>");
 
-    overview = enna_metadata_meta_get (m, "synopsis", 5);
+    overview = enna_metadata_meta_get (m, "synopsis", 1);
     if (overview)
         buffer_appendf (buf, "%s", overview);
 
