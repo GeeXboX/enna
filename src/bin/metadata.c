@@ -56,7 +56,6 @@
 
 #define PATH_BACKDROPS          "backdrops"
 #define PATH_COVERS             "covers"
-#define PATH_SNAPSHOTS          "snapshots"
 
 #define PATH_BUFFER 4096
 
@@ -272,13 +271,6 @@ enna_metadata_init (void)
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
               enna_util_user_home_get (), PATH_COVERS);
-    if (!ecore_file_is_dir (dst))
-        ecore_file_mkdir (dst);
-
-    /* try to create snapshots directory storage */
-    memset (dst, '\0', sizeof (dst));
-    snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_SNAPSHOTS);
     if (!ecore_file_is_dir (dst))
         ecore_file_mkdir (dst);
 
