@@ -633,6 +633,12 @@ enna_metadata_shutdown (void)
     enna_metadata_db_uninit ();
 }
 
+void *
+enna_metadata_get_db (void)
+{
+    return &vh;
+}
+
 void
 enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords)
 {

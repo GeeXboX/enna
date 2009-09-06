@@ -32,11 +32,11 @@
 #include <valhalla.h>
 
 #include "enna.h"
-#include "enna_config.h"
 #include "module.h"
 #include "vfs.h"
 #include "logs.h"
 #include "utils.h"
+#include "metadata.h"
 
 #define ENNA_MODULE_NAME "valhalla"
 
@@ -456,181 +456,6 @@ static Enna_Vfs_File *_class_vfs_get(void *cookie)
     return mod->vfs;
 }
 
-static int _em_valhalla_init(void)
-{
-    int rc;
-    Enna_Config_Data *cfgdata;
-    char *value = NULL;
-    char db[PATH_BUFFER];
-    Eina_List *path = NULL, *l;
-    Eina_List *music_ext = NULL, *video_ext = NULL, *photo_ext = NULL;
-    int parser_number   = 2;
-    int commit_interval = 128;
-    int scan_loop       = -1;
-    int scan_sleep      = 900;
-    int scan_priority   = 19;
-    valhalla_verb_t verbosity = VALHALLA_MSG_WARNING;
-
-    cfgdata = enna_config_module_pair_get("enna");
-    if (cfgdata)
-    {
-        Eina_List *list;
-        for (list = cfgdata->pair; list; list = list->next)
-        {
-            Config_Pair *pair = list->data;
-            enna_config_value_store (&music_ext, "music_ext",
-                                     ENNA_CONFIG_STRING_LIST, pair);
-            enna_config_value_store (&video_ext, "video_ext",
-                                     ENNA_CONFIG_STRING_LIST, pair);
-            enna_config_value_store (&photo_ext, "photo_ext",
-                                     ENNA_CONFIG_STRING_LIST, pair);
-        }
-    }
-
-    cfgdata = enna_config_module_pair_get("valhalla");
-    if (cfgdata)
-    {
-        Eina_List *list;
-
-        for (list = cfgdata->pair; list; list = list->next)
-        {
-            Config_Pair *pair = list->data;
-
-            enna_config_value_store(&parser_number, "parser_number",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&commit_interval, "commit_interval",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&scan_loop, "scan_loop",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&scan_sleep, "scan_sleep",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&scan_priority, "scan_priority",
-                                    ENNA_CONFIG_INT, pair);
-
-            if (!strcmp("path", pair->key))
-            {
-                enna_config_value_store(&value, "path",
-                                        ENNA_CONFIG_STRING, pair);
-                if (strstr(value, "file://") == value)
-                    path = eina_list_append(path, value + 7);
-            }
-            else if (!strcmp("verbosity", pair->key))
-            {
-                enna_config_value_store(&value, "verbosity",
-                                        ENNA_CONFIG_STRING, pair);
-
-                if (!strcmp("verbose", value))
-                    verbosity = VALHALLA_MSG_VERBOSE;
-                else if (!strcmp("info", value))
-                    verbosity = VALHALLA_MSG_INFO;
-                else if (!strcmp("warning", value))
-                    verbosity = VALHALLA_MSG_WARNING;
-                else if (!strcmp("error", value))
-                    verbosity = VALHALLA_MSG_ERROR;
-                else if (!strcmp("critical", value))
-                    verbosity = VALHALLA_MSG_CRITICAL;
-                else if (!strcmp("none", value))
-                    verbosity = VALHALLA_MSG_NONE;
-            }
-        }
-    }
-
-    /* Configuration */
-    enna_log(ENNA_MSG_INFO,
-             ENNA_MODULE_NAME, "* parser number  : %i", parser_number);
-    enna_log(ENNA_MSG_INFO,
-             ENNA_MODULE_NAME, "* commit interval: %i", commit_interval);
-    enna_log(ENNA_MSG_INFO,
-             ENNA_MODULE_NAME, "* scan loop      : %i", scan_loop);
-    enna_log(ENNA_MSG_INFO,
-             ENNA_MODULE_NAME, "* scan sleep     : %i", scan_sleep);
-    enna_log(ENNA_MSG_INFO,
-             ENNA_MODULE_NAME, "* scan priority  : %i", scan_priority);
-    enna_log(ENNA_MSG_INFO,
-             ENNA_MODULE_NAME, "* verbosity      : %i", verbosity);
-
-    valhalla_verbosity(verbosity);
-
-    snprintf(db, sizeof(db),
-             "%s/.enna/%s", enna_util_user_home_get(), "media.db");
-
-    mod->valhalla = valhalla_init(db, parser_number, 1, commit_interval);
-    if (!mod->valhalla)
-        goto err;
-
-    /* Add file suffixes */
-    for (l = music_ext; l; l = l->next)
-    {
-        const char *ext = l->data;
-        valhalla_suffix_add(mod->valhalla, ext);
-    }
-    if (music_ext)
-    {
-        eina_list_free(music_ext);
-        music_ext = NULL;
-    }
-
-    for (l = video_ext; l; l = l->next)
-    {
-        const char *ext = l->data;
-        valhalla_suffix_add(mod->valhalla, ext);
-    }
-    if (video_ext)
-    {
-        eina_list_free(video_ext);
-        video_ext = NULL;
-    }
-
-    for (l = photo_ext; l; l = l->next)
-    {
-        const char *ext = l->data;
-        valhalla_suffix_add(mod->valhalla, ext);
-    }
-    if (photo_ext)
-    {
-        eina_list_free(photo_ext);
-        photo_ext = NULL;
-    }
-
-    /* Add paths */
-    for (l = path; l; l = l->next)
-    {
-        const char *str = l->data;
-        valhalla_path_add(mod->valhalla, str, 1);
-    }
-    if (path)
-    {
-        eina_list_free(path);
-        path = NULL;
-    }
-
-    rc = valhalla_run(mod->valhalla, scan_loop, scan_sleep, scan_priority);
-    if (rc)
-    {
-        enna_log(ENNA_MSG_ERROR,
-                 ENNA_MODULE_NAME, "valhalla returns error code: %i", rc);
-        valhalla_uninit(mod->valhalla);
-        mod->valhalla = NULL;
-        goto err;
-    }
-
-    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Valkyries are running");
-    return 0;
-
- err:
-    enna_log(ENNA_MSG_ERROR,
-             ENNA_MODULE_NAME, "valhalla module initialization");
-    if (music_ext)
-        eina_list_free(music_ext);
-    if (video_ext)
-        eina_list_free(video_ext);
-    if (photo_ext)
-        eina_list_free(photo_ext);
-    if (path)
-        eina_list_free(path);
-    return -1;
-}
-
 /*****************************************************************************/
 /*                          Public Module API                                */
 /*****************************************************************************/
@@ -673,8 +498,9 @@ void module_init(Enna_Module *em)
     mod->em = em;
     mod->evas = em->evas;
     mod->level = BROWSER_LEVEL_ROOT;
+    mod->valhalla = enna_metadata_get_db ();
 
-    if (_em_valhalla_init())
+    if (!mod->valhalla)
         return;
 
     enna_vfs_append(ENNA_MODULE_NAME, flags, &class);
@@ -682,7 +508,6 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
-    valhalla_uninit(mod->valhalla);
     free(mod);
     mod = NULL;
 }
