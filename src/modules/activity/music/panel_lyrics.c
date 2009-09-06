@@ -210,19 +210,22 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
 {
     Evas_Coord mw, mh;
     buffer_t *buf;
+    char *lyrics, *title;
     char *b;
 
     API_ENTRY return;
 
-    if (!m || !m->lyrics)
-    {
-        edje_object_part_text_set (sd->o_text, "lyrics.panel.textblock",
-                                   _("No lyrics found ..."));
-        return;
-    }
+    if (!m)
+      return;
 
-    if (m && m->type != ENNA_METADATA_AUDIO)
+    title = enna_metadata_meta_get (m, "title", 1);
+    if (!title)
+        return;
+
+    lyrics = enna_metadata_meta_get (m, "lyrics", 1);
+    if (!lyrics)
     {
+        free (title);
         edje_object_part_text_set (sd->o_text, "lyrics.panel.textblock",
                                    _("No lyrics found ..."));
         return;
@@ -232,12 +235,13 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
 
     /* display song name */
     buffer_append  (buf, "<h4><hl><sd><b>");
-    buffer_appendf (buf, "%s", m->title ? m->title : m->uri);
+    buffer_appendf (buf, "%s", title);
     buffer_append  (buf, "</b></sd></hl></h4><br>");
+    free (title);
 
     /* display song associated lyrics */
     buffer_append  (buf, "<br/>");
-    b = m->lyrics;
+    b = lyrics;
     while (*b)
     {
         if (*b == '\n')
@@ -246,6 +250,7 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
             buffer_appendf (buf, "%c", *b);
         (void) *b++;
     }
+    free (lyrics);
 
     edje_object_part_text_set (sd->o_text,
                                "lyrics.panel.textblock", buf->buf);
@@ -253,5 +258,4 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
     edje_object_calc_force (sd->o_text);
     edje_object_size_min_calc (sd->o_text, &mw, &mh);
     evas_object_size_hint_min_set (sd->o_text, mw, mh);
-
 }

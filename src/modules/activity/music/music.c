@@ -50,9 +50,8 @@
 #define METADATA_APPLY \
     Enna_Metadata *metadata;\
     metadata = enna_mediaplayer_metadata_get(mod->enna_playlist);\
-    enna_metadata_grab (metadata,\
-                        ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);\
-    enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);
+    enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);\
+    enna_metadata_meta_free(metadata);
 
 #define TIMER_VALUE 30
 #define TIMER_VOLUME_VALUE 10

@@ -1215,7 +1215,7 @@ enna_mediaplayer_metadata_get (Enna_Playlist *enna_playlist)
         return NULL;
 
     if (item->uri)
-        return enna_metadata_new ((char *) item->uri);
+        return enna_metadata_meta_new ((char *) item->uri);
 
     return NULL;
 }

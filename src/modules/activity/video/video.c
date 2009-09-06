@@ -299,6 +299,7 @@ backdrop_show (Enna_Metadata *m)
 {
     char *snap_file = NULL;
     int from_vfs = 1;
+    char *backdrop, *snapshot;
 
     if (!m)
     {
@@ -306,22 +307,22 @@ backdrop_show (Enna_Metadata *m)
         from_vfs = 0;
     }
 
-    if (m && m->type != ENNA_METADATA_VIDEO)
-    {
-        snap_file = "backdrop/default";
-        from_vfs = 0;
-    }
+    backdrop = enna_metadata_meta_get (m, "backdrop", 1);
+    snapshot = enna_metadata_meta_get (m, "snapshot", 1);
+    if (!snap_file)
+      snap_file = backdrop ? backdrop : snapshot;
 
     if (!snap_file)
-      snap_file = (m && m->backdrop) ? m->backdrop : m->snapshot;
-
-    if (!snap_file)
-	return;
+	goto err;
 
     enna_backdrop_set (mod->o_backdrop, snap_file, from_vfs);
     evas_object_show (mod->o_backdrop);
     edje_object_part_swallow (mod->o_edje,
                               "enna.swallow.backdrop", mod->o_backdrop);
+
+ err:
+    ENNA_FREE (backdrop);
+    ENNA_FREE (snapshot);
 }
 
 /****************************************************************************/
@@ -361,15 +362,15 @@ static const struct {
 static void
 infos_flags_set (Enna_Metadata *m)
 {
-    Evas_Object *v, *a, *s, *md;
+    Evas_Object *v = NULL, *a = NULL, *s = NULL, *md = NULL;
+#if 0
     const char *v_str = NULL, *a_str = NULL, *s_str = NULL, *m_str = NULL;
+#endif
 
     if (!m)
         goto flags_set;
 
-    if (m && m->type != ENNA_METADATA_VIDEO)
-        goto flags_set;
-
+#if 0
     /* try to guess video flag */
     if (m->video)
     {
@@ -422,6 +423,7 @@ infos_flags_set (Enna_Metadata *m)
     m_str = "flags/media/divx";
     md = edje_object_add (mod->em->evas);
     edje_object_file_set (md, enna_config_theme_get (), m_str);
+#endif
 
  flags_set:
     ENNA_OBJECT_DEL (mod->o_flag_video);
@@ -567,7 +569,9 @@ movie_start_playback (int resume)
     {
         Enna_Metadata *m;
         m = enna_mediaplayer_metadata_get (mod->enna_playlist);
+#if 0
         enna_mediaplayer_position_set (m->position);
+#endif
     }
     popup_resume_display (0);
 }
@@ -625,12 +629,14 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
 
         /* fetch new stream's metadata */
         m = enna_mediaplayer_metadata_get (mod->enna_playlist);
+#if 0
         if (m->position)
         {
             /* stream has already been played once, show resume popup */
             popup_resume_display (1);
         }
         else
+#endif
             movie_start_playback (0);
     }
     free (ev);
@@ -641,29 +647,22 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 {
     Enna_Metadata *m = NULL;
     Browser_Selected_File_Data *ev = event_info;
-    Enna_Metadata_Request *r;
     const char *label;
+    char *title = NULL, *categories;
 
     if (!ev || !ev->file)
         return;
 
     if (!ev->file->is_directory)
-    {
-        m = enna_metadata_new (ev->file->uri);
-        r = calloc (1, sizeof (Enna_Metadata_Request));
-        r->metadata = m;
-        r->caps  = ENNA_GRABBER_CAP_AUDIO;
-        r->caps |= ENNA_GRABBER_CAP_VIDEO;
-        r->caps |= ENNA_GRABBER_CAP_COVER;
-        //enna_metadata_grab_request (r);
-        label = m->title ? m->title : ev->file->label;
-    }
-    else
-        label = ev->file->label;
+        m = enna_metadata_meta_new (ev->file->uri);
 
+    title = enna_metadata_meta_get (m, "title", 1);
+    label = title ? title : ev->file->label;
+
+    categories = enna_metadata_meta_get (m, "category", 5);
     edje_object_part_text_set (mod->o_edje, "enna.text.label", label);
     edje_object_part_text_set (mod->o_edje, "enna.text.category",
-                               (m && m->categories) ? m->categories : "");
+                               categories ? categories : "");
 
     backdrop_show (m);
     infos_flags_set (m);
@@ -671,6 +670,10 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
     enna_panel_infos_set_cover(mod->o_panel_infos, m);
     enna_panel_infos_set_text(mod->o_panel_infos, m);
     enna_panel_infos_set_rating(mod->o_panel_infos, m);
+
+    ENNA_FREE (title);
+    ENNA_FREE (categories);
+    enna_metadata_meta_free (m);
 }
 
 static void

@@ -85,59 +85,49 @@ void enna_smart_player_position_set(Evas_Object *obj, double pos,
             0.0);
 }
 
-void enna_smart_player_metadata_set(Evas_Object *obj,
-        Enna_Metadata *metadata)
+static void metadata_set_text (Evas_Object *obj, Enna_Metadata *m,
+                               const char *name, const char *edje, int max)
 {
-    Enna_Metadata *meta;
+    char *str;
+
+    API_ENTRY;
+
+    str = enna_metadata_meta_get (m, name, max);
+    edje_object_part_text_set(sd->o_edje, edje, str ? str : "");
+    ENNA_FREE(str);
+}
+
+void enna_smart_player_metadata_set(Evas_Object *obj,
+                                    Enna_Metadata *metadata)
+{
+    char *cover;
 
     API_ENTRY;
 
     if (!metadata)
         return;
-    if (metadata->title)
-        edje_object_part_text_set(sd->o_edje,
-                                  "enna.text.title", metadata->title);
-    else if (metadata->uri)
-        edje_object_part_text_set(sd->o_edje, "enna.text.title",
-                                  ecore_file_file_get(metadata->uri));
-    else
-        edje_object_part_text_set(sd->o_edje, "enna.text.title", "");
 
-    edje_object_part_text_set(sd->o_edje, "enna.text.album",
-                              metadata->music->album ? metadata->music->album : "");
-    edje_object_part_text_set(sd->o_edje, "enna.text.artist",
-                              metadata->music->artist ? metadata->music->artist : "");
-
-    meta = enna_metadata_new (metadata->uri);
-    enna_metadata_add_keywords (meta, metadata->music->artist);
-    enna_metadata_add_keywords (meta, metadata->music->album);
-    enna_metadata_grab (meta, ENNA_GRABBER_CAP_AUDIO | ENNA_GRABBER_CAP_COVER);
+    metadata_set_text (obj, metadata, "title", "enna.text.title", 1);
+    metadata_set_text (obj, metadata, "album", "enna.text.album", 1);
+    metadata_set_text (obj, metadata, "author", "enna.text.artist", 1);
 
     ENNA_OBJECT_DEL(sd->o_cover);
-    if (meta && meta->cover)
+    cover = enna_metadata_meta_get (metadata, "cover", 1);
+    if (cover)
     {
-        /* FIXME : add edje cb at end of cover transition to switch properly covers*/
-
-//        sd->o_cover = enna_reflection_add(evas_object_evas_get(sd->o_edje));
         sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-        //enna_reflection_fill_inside_set(sd->o_cover, 0);
         enna_image_fill_inside_set(sd->o_cover, 0);
-        //enna_reflection_file_set(sd->o_cover, meta->cover);
-        enna_image_file_set(sd->o_cover, meta->cover, NULL);
-        edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
-        edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
-
+        enna_image_file_set(sd->o_cover, cover, NULL);
     }
     else
     {
         sd->o_cover = edje_object_add(evas_object_evas_get(sd->o_edje));
-        edje_object_file_set(sd->o_cover, enna_config_theme_get(), "icon/unknown_cover");
-        edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
-        edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
+        edje_object_file_set(sd->o_cover,
+                             enna_config_theme_get(), "icon/unknown_cover");
     }
-    enna_metadata_free(metadata);
-    enna_metadata_free(meta);
-
+    edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
+    edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
+    ENNA_FREE(cover);
 }
 
 /* local subsystem globals */

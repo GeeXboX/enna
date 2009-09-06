@@ -62,68 +62,6 @@
 
 static valhalla_t *vh = NULL;
 
-extern Enna *enna;
-
-Enna_Metadata *
-enna_metadata_new (char *uri)
-{
-    Enna_Metadata *m;
-
-    if (!uri)
-      return NULL;
-
-    m = calloc(1, sizeof(Enna_Metadata));
-    m->video = calloc(1, sizeof(Enna_Metadata_Video));
-    m->music = calloc(1, sizeof(Enna_Metadata_Music));
-
-    m->type = ENNA_METADATA_UNKNOWN;
-    m->uri = strdup (uri);
-    m->md5 = md5sum (uri);
-    m->parsed = 0;
-
-    return m;
-}
-
-void enna_metadata_free(Enna_Metadata *m)
-{
-    if (!m)
-        return;
-
-    ENNA_FREE(m->uri);
-    ENNA_FREE(m->md5);
-    ENNA_FREE(m->keywords);
-    ENNA_FREE(m->title);
-    ENNA_FREE(m->alternative_title); 
-    ENNA_FREE(m->overview);
-    ENNA_FREE(m->categories);
-    ENNA_FREE(m->country);
-    ENNA_FREE(m->writer);
-    ENNA_FREE(m->director);
-    ENNA_FREE(m->actors);
-    ENNA_FREE(m->studio);
-    ENNA_FREE(m->lyrics);
-    ENNA_FREE(m->cover);
-    ENNA_FREE(m->snapshot);
-    ENNA_FREE(m->backdrop);
-    if (m->video)
-    {
-        ENNA_FREE(m->video->codec);
-        free(m->video);
-    }
-    if (m->music)
-    {
-        ENNA_FREE(m->music->artist);
-        ENNA_FREE(m->music->album);
-        ENNA_FREE(m->music->year);
-        ENNA_FREE(m->music->genre);
-        ENNA_FREE(m->music->comment);
-        ENNA_FREE(m->music->discid);
-        ENNA_FREE(m->music->codec);
-        free(m->music);
-    }
-    free(m);
-}
-
 static void
 enna_metadata_db_init (void)
 {
@@ -349,7 +287,7 @@ enna_metadata_get_db (void)
     return &vh;
 }
 
-void *
+Enna_Metadata *
 enna_metadata_meta_new (const char *file)
 {
   valhalla_db_filemeta_t *m = NULL;
@@ -365,20 +303,20 @@ enna_metadata_meta_new (const char *file)
             MODULE_NAME, "Request for metadata on %s", file + shift);
   valhalla_db_file_get (vh, 0, file + shift, NULL, &m);
 
-  return m;
+  return (Enna_Metadata *) m;
 }
 
 void
-enna_metadata_meta_free (void *meta)
+enna_metadata_meta_free (Enna_Metadata *meta)
 {
-    valhalla_db_filemeta_t *m = meta;
+    valhalla_db_filemeta_t *m = (void *) meta;
 
     if (m)
         VALHALLA_DB_FILEMETA_FREE (m);
 }
 
 char *
-enna_metadata_meta_get (void *meta, const char *name, int max)
+enna_metadata_meta_get (Enna_Metadata *meta, const char *name, int max)
 {
   valhalla_db_filemeta_t *m, *n;
   int count = 0;
@@ -418,49 +356,7 @@ enna_metadata_meta_get (void *meta, const char *name, int max)
 }
 
 void
-enna_metadata_add_keywords (Enna_Metadata *meta, char *keywords)
-{
-    char key[1024];
-
-    if (!meta || !keywords)
-        return;
-
-    if (!meta->keywords)
-        meta->keywords = strdup (keywords);
-    else
-    {
-        memset (key, '\0', sizeof (key));
-        snprintf (key, sizeof (key), "%s %s", meta->keywords, keywords);
-        free (meta->keywords);
-        meta->keywords = strdup (key);
-    }
-
-    enna_log (ENNA_MSG_EVENT, MODULE_NAME,
-              "Metadata keywords set to '%s'", meta->keywords);
-}
-
-void
-enna_metadata_grab (Enna_Metadata *meta, int caps)
-{
-    if (!meta)
-        return;
-
-    /* avoid parsing the same resource twice */
-    if (meta->parsed)
-        return;
-
-    /* do not grab metadata from non-local streams */
-    if (strncmp (meta->uri, "file://", 7))
-      return;
-
-    meta->parsed = 1;
-}
-
-void
 enna_metadata_set_position (Enna_Metadata *meta, double position)
 {
-    if (!meta)
-        return;
-
-    meta->position = position;
+    /* to be implemented */
 }
