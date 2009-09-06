@@ -70,6 +70,7 @@ enna_metadata_db_init (void)
     char db[PATH_BUFFER];
     Eina_List *path = NULL, *l;
     Eina_List *music_ext = NULL, *video_ext = NULL, *photo_ext = NULL;
+    Eina_List *bl_words = NULL;
     int parser_number   = ENNA_METADATA_DEFAULT_PARSER_NUMBER;
     int commit_interval = ENNA_METADATA_DEFAULT_COMMIT_INTERVAL;
     int scan_loop       = ENNA_METADATA_DEFAULT_SCAN_LOOP;
@@ -90,6 +91,18 @@ enna_metadata_db_init (void)
             enna_config_value_store (&video_ext, "video_ext",
                                      ENNA_CONFIG_STRING_LIST, pair);
             enna_config_value_store (&photo_ext, "photo_ext",
+                                     ENNA_CONFIG_STRING_LIST, pair);
+        }
+    }
+
+    cfgdata = enna_config_module_pair_get("libplayer");
+    if (cfgdata)
+    {
+        Eina_List *list;
+        for (list = cfgdata->pair; list; list = list->next)
+        {
+            Config_Pair *pair = list->data;
+            enna_config_value_store (&bl_words, "blacklist_keywords",
                                      ENNA_CONFIG_STRING_LIST, pair);
         }
     }
@@ -211,6 +224,20 @@ enna_metadata_db_init (void)
         path = NULL;
     }
 
+    /* blacklist some keywords */
+    for (l = bl_words; l; l = l->next)
+    {
+        const char *keyword = l->data;
+        valhalla_bl_keyword_add (vh, keyword);
+        enna_log (ENNA_MSG_EVENT, MODULE_NAME,
+                  "Blacklisting '%s' from search", keyword);
+    }
+    if (bl_words)
+    {
+        eina_list_free(bl_words);
+        bl_words = NULL;
+    }
+
     /* set file download destinations */
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
@@ -244,6 +271,8 @@ enna_metadata_db_init (void)
         eina_list_free(video_ext);
     if (photo_ext)
         eina_list_free(photo_ext);
+    if (bl_words)
+        eina_list_free(bl_words);
     if (path)
         eina_list_free(path);
 }
