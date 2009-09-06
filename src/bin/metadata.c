@@ -388,6 +388,32 @@ enna_metadata_meta_get (Enna_Metadata *meta, const char *name, int max)
   return str;
 }
 
+char *
+enna_metadata_meta_get_all (Enna_Metadata *meta)
+{
+  valhalla_db_filemeta_t *m, *n;
+  buffer_t *b;
+  char *str = NULL;
+
+  if (!meta)
+      return NULL;
+
+  b = buffer_new ();
+  m = (valhalla_db_filemeta_t *) meta;
+  n = m;
+
+  while (n)
+  {
+      buffer_appendf (b, "%s: %s\n", n->meta_name, n->data_value);
+      n = n->next;
+  }
+
+  str = b->buf ? strdup (b->buf) : NULL;
+  buffer_free (b);
+
+  return str;
+}
+
 void
 enna_metadata_set_position (Enna_Metadata *meta, double position)
 {
