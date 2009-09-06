@@ -3,5 +3,4 @@ SUBDIRS = \
 activity\
 browser\
 input\
-metadata\
 volume

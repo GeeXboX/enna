@@ -337,153 +337,6 @@ if test "x$have_input_lirc" = "xyes"; then
 fi
 AM_CONDITIONAL(BUILD_INPUT_LIRC, test "x$have_input_lirc" = "xyes")
 
-####################
-# Metadata Modules #
-####################
-
-# Allocine
-want_metadata_allocine="yes"
-AC_MSG_CHECKING(whether allocine.fr metadata module is to be built)
-AC_ARG_ENABLE(metadata-allocine,
-  AS_HELP_STRING([--enable-metadata-allocine],[Enable Allocine Metadata Module]),
-  [ want_metadata_allocine=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_allocine)
-AM_CONDITIONAL(BUILD_METADATA_ALLOCINE, test "x$want_metadata_allocine" = "xyes")
-if test "x$want_metadata_allocine" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_ALLOCINE, 1, [Allocine.fr Metadata])
-fi
-
-# Amazon.com
-want_metadata_amazon="yes"
-AC_MSG_CHECKING(whether amazon.com metadata module is to be built)
-AC_ARG_ENABLE(metadata-amazon,
-  AS_HELP_STRING([--enable-metadata-amazon],[Enable Amazon Metadata Module]),
-  [ want_metadata_amazon=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_amazon)
-AM_CONDITIONAL(BUILD_METADATA_AMAZON, test "x$want_metadata_amazon" = "xyes")
-if test "x$want_metadata_amazon" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_AMAZON, 1, [Amazon.com Metadata])
-fi
-
-# IMDB
-want_metadata_imdb="yes"
-AC_MSG_CHECKING(whether imdb.com metadata module is to be built)
-AC_ARG_ENABLE(metadata-imdb,
-  AS_HELP_STRING([--enable-metadata-imdb],[Enable IMDB Metadata Module]),
-  [ want_metadata_imdb=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_imdb)
-AM_CONDITIONAL(BUILD_METADATA_IMDB, test "x$want_metadata_imdb" = "xyes")
-if test "x$want_metadata_imdb" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_IMDB, 1, [Imdb.com Metadata])
-fi
-
-# libplayer
-want_metadata_libplayer="auto"
-have_metadata_libplayer="no"
-AC_MSG_CHECKING(whether libplayer metadata is to be built)
-AC_ARG_ENABLE(metadata-libplayer,
-    AS_HELP_STRING([--enable-metadata-libplayer],[Enable libplayer Metadata module]),
-    [ want_metadata_libplayer=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_libplayer)
-if test "x$want_metadata_libplayer" = "xyes" -o "x$want_metadata_libplayer" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LIBPLAYER],
-    [libplayer >= 0.0.1],
-    [
-      AC_DEFINE(BUILD_METADATA_LIBPLAYER, 1, [libplayer metadata module])
-      have_metadata_libplayer="yes"
-    ],
-    [
-      if test "x$want_metadata_libplayer" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([libplayer not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_METADATA_LIBPLAYER, test "x$have_metadata_libplayer" = "xyes")
-
-# LyricWiki.org
-want_metadata_lyricwiki="yes"
-AC_MSG_CHECKING(whether LyricWiki.org metadata module is to be built)
-AC_ARG_ENABLE(metadata-lyricwiki,
-  AS_HELP_STRING([--enable-metadata-lyricwiki],[Enable LyricWiki.org Module]),
-  [ want_metadata_lyricwiki=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_lyricwiki)
-AM_CONDITIONAL(BUILD_METADATA_LYRICWIKI, test "x$want_metadata_lyricwiki" = "xyes")
-if test "x$want_metadata_lyricwiki" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_LYRICWIKI, 1, [LyricWiki.org Metadata])
-fi
-
-# Local Files
-want_metadata_localfiles="yes"
-AC_MSG_CHECKING(whether local files metadata module is to be built)
-AC_ARG_ENABLE(metadata-localfiles,
-  AS_HELP_STRING([--enable-metadata-localfiles],[Enable Local Files Metadata Module]),
-  [ want_metadata_localfiles=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_localfiles)
-AM_CONDITIONAL(BUILD_METADATA_LOCALFILES, test "x$want_metadata_localfiles" = "xyes")
-if test "x$want_metadata_localfiles" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_LOCALFILES, 1, [Local Files Metadata])
-fi
-
-# NFO Reader
-want_metadata_nfo="yes"
-AC_MSG_CHECKING(whether NFO reader metadata module is to be built)
-AC_ARG_ENABLE(metadata-nfo,
-  AS_HELP_STRING([--enable-metadata-nfo],[Enable NFO Reader Metadata Module]),
-  [ want_metadata_nfo=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_nfo)
-AM_CONDITIONAL(BUILD_METADATA_NFO, test "x$want_metadata_nfo" = "xyes")
-if test "x$want_metadata_nfo" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_NFO, 1, [NFO Reader Metadata])
-fi
-
-# TheMovieDB.org (TMDB)
-want_metadata_tmdb="yes"
-AC_MSG_CHECKING(whether themoviedb.org metadata module is to be built)
-AC_ARG_ENABLE(metadata-tmdb,
-  AS_HELP_STRING([--enable-metadata-tmdb],[Enable TheMovieDB Metadata Module]),
-  [ want_metadata_tmdb=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_tmdb)
-AM_CONDITIONAL(BUILD_METADATA_TMDB, test "x$want_metadata_tmdb" = "xyes")
-if test "x$want_metadata_tmdb" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_TMDB, 1, [TheMovieDB.org Metadata])
-fi
-
-# TheTVDB.org (TVDB)
-want_metadata_tvdb="yes"
-AC_MSG_CHECKING(whether thetvdb.com metadata module is to be built)
-AC_ARG_ENABLE(metadata-tvdb,
-  AS_HELP_STRING([--enable-metadata-tvdb],[Enable TheTVDB Metadata Module]),
-  [ want_metadata_tvdb=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_tvdb)
-AM_CONDITIONAL(BUILD_METADATA_TVDB, test "x$want_metadata_tvdb" = "xyes")
-if test "x$want_metadata_tvdb" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_TVDB, 1, [TheTVDB.com Metadata])
-fi
-
-# TVRage.com
-want_metadata_tvrage="yes"
-AC_MSG_CHECKING(whether tvrage.com metadata module is to be built)
-AC_ARG_ENABLE(metadata-tvrage,
-  AS_HELP_STRING([--enable-metadata-tvrage],[Enable TvRage Metadata Module]),
-  [ want_metadata_tvrage=$enableval ]
-)
-AC_MSG_RESULT($want_metadata_tvrage)
-AM_CONDITIONAL(BUILD_METADATA_TVRAGE, test "x$want_metadata_tvrage" = "xyes")
-if test "x$want_metadata_tvrage" = "xyes"; then
-  AC_DEFINE(BUILD_METADATA_TVRAGE, 1, [TvRage Metadata])
-fi
-
 ##################
 # Volume Modules #
 ##################
@@ -747,17 +600,6 @@ src/modules/browser/upnp/Makefile
 src/modules/browser/valhalla/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
-src/modules/metadata/Makefile
-src/modules/metadata/allocine/Makefile
-src/modules/metadata/amazon/Makefile
-src/modules/metadata/imdb/Makefile
-src/modules/metadata/libplayer/Makefile
-src/modules/metadata/lyricwiki/Makefile
-src/modules/metadata/localfiles/Makefile
-src/modules/metadata/nfo/Makefile
-src/modules/metadata/tmdb/Makefile
-src/modules/metadata/tvdb/Makefile
-src/modules/metadata/tvrage/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
@@ -805,19 +647,6 @@ echo
 echo "Supported Input Modules:"
 echo
 echo "  LIRC client...................... : $have_input_lirc"
-echo
-echo "Supported Metadata Modules:"
-echo
-echo "  Allocine.fr...................... : $want_metadata_allocine"
-echo "  Amazon.com....................... : $want_metadata_amazon"
-echo "  IMDB.com......................... : $want_metadata_imdb"
-echo "  libplayer........................ : $have_metadata_libplayer"
-echo "  LyricWiki.org.................... : $want_metadata_lyricwiki"
-echo "  Local files...................... : $want_metadata_localfiles"
-echo "  NFO Reader....................... : $want_metadata_nfo"
-echo "  TheMovieDB.org................... : $want_metadata_tmdb"
-echo "  TheTVDB.com...................... : $want_metadata_tvdb"
-echo "  TvRage.com.................... .. : $want_metadata_tvrage"
 echo
 echo "Supported Volume Modules:"
 echo
