@@ -35,7 +35,6 @@
 
 #include <Eina.h>
 #include <Ecore_File.h>
-#include <Eet.h>
 
 #include <valhalla.h>
 
@@ -57,300 +56,21 @@
 
 #define PATH_BACKDROPS          "backdrops"
 #define PATH_COVERS             "covers"
-#define PATH_METADATA           "metadata"
 #define PATH_SNAPSHOTS          "snapshots"
 
 #define PATH_BUFFER 4096
 
-#define DEBUG 0
-#define EET_DO_COMPRESS 1
-
-static Eet_File *ef;
 static valhalla_t *vh = NULL;
 
 extern Enna *enna;
-
-#if DEBUG == 1
-static void
-enna_metadata_video_dump (Enna_Metadata_Video *m)
-{
-    if (!m)
-        return;
-
-    printf ("*** Metadata Video:\n");
-    printf (" -- Codec: %s\n",      m->codec);
-    printf (" -- Width: %d\n",      m->width);
-    printf (" -- Height: %d\n",     m->height);
-    printf (" -- Aspect: %f\n",     m->aspect);
-    printf (" -- Channels: %d\n",   m->channels);
-    printf (" -- Streams: %d\n",    m->streams);
-    printf (" -- FrameRate: %f\n",  m->framerate);
-    printf (" -- BitRate: %d\n",    m->bitrate);
-}
-
-static void
-enna_metadata_music_dump (Enna_Metadata_Music *m)
-{
-    if (!m)
-        return;
-
-    printf ("*** Metadata Music:\n");
-    printf (" -- Artist: %s\n",      m->artist);
-    printf (" -- Album: %s\n",       m->album);
-    printf (" -- Year: %s\n",        m->year);
-    printf (" -- Genre: %s\n",       m->genre);
-    printf (" -- Comment: %s\n",     m->comment);
-    printf (" -- DiscID: %s\n",      m->discid);
-    printf (" -- Track: %d\n",       m->track);
-    printf (" -- Rating: %d\n",      m->rating);
-    printf (" -- Play_Count: %d\n",  m->play_count);
-    printf (" -- Codec: %s\n",       m->codec);
-    printf (" -- Bitrate: %d\n",     m->bitrate);
-    printf (" -- Channels: %d\n",    m->channels);
-    printf (" -- SampleRate: %d\n",  m->samplerate);
-}
-
-static void
-enna_metadata_dump (Enna_Metadata *m)
-{
-    if (!m)
-        return;
-
-    printf ("*** Metadata:\n");
-    printf (" -- Type: %d\n",              m->type);
-    printf (" -- URI: %s\n",               m->uri);
-    printf (" -- MD5: %s\n",               m->md5);
-    printf (" -- Keywords: %s\n",          m->keywords);
-    printf (" -- Title: %s\n",             m->title);
-    printf (" -- Alternative title: %s\n", m->alternative_title);
-    printf (" -- Size: %d\n",              m->size);
-    printf (" -- Length: %d\n",            m->length);
-    printf (" -- Position: %f\n",          m->position);
-    printf (" -- Overview: %s\n",          m->overview);
-    printf (" -- Runtime: %d\n",           m->runtime);
-    printf (" -- Year: %d\n",              m->year);
-    printf (" -- Categories: %s\n",        m->categories);
-    printf (" -- Rating (0/5): %d\n",      m->rating);
-    printf (" -- Budget: %d$\n",           m->budget);
-    printf (" -- Country: %s\n",           m->country);
-    printf (" -- Writer: %s\n",            m->writer);
-    printf (" -- Director: %s\n",          m->director);
-    printf (" -- Actors: %s\n",            m->actors);
-    printf (" -- Studio: %s\n",            m->studio);
-    printf (" -- Lyrics: %s\n",            m->lyrics);
-    printf (" -- Cover: %s\n",             m->cover);
-    printf (" -- Snapshot: %s\n",          m->snapshot);
-    printf (" -- Backdrop: %s\n",          m->backdrop);
-    printf (" -- Parsed: %d\n",            m->parsed);
-
-    enna_metadata_video_dump (m->video);
-    enna_metadata_music_dump (m->music);
-}
-#endif
-
-static Eina_Hash *
-eet_eina_hash_add (Eina_Hash *hash, const char *key, const void *data)
-{
-    if (!hash)
-        hash = eina_hash_string_superfast_new (NULL);
-
-    if (!hash)
-        return NULL;
-
-    eina_hash_add (hash, key, data);
-    return hash;
-}
-
-#define EDD_NEW(str) \
-  eet_data_descriptor_new (#str, sizeof (str), \
-                           (void *) eina_list_next, \
-                           (void *) eina_list_append, \
-                           (void *) eina_list_data_get, \
-                           (void *) eina_list_free, \
-                           (void *) eina_hash_foreach, \
-                           (void *) eet_eina_hash_add, \
-                           (void *) eina_hash_free)
-
-#define EDD_ADD(str, field, type) \
-  EET_DATA_DESCRIPTOR_ADD_BASIC (edd, Enna_Metadata##str, \
-                                 #field, field, EET_T_##type)
-
-static Eet_Data_Descriptor *
-enna_metadata_video_desc (void)
-{
-    Eet_Data_Descriptor *edd;
-
-    edd = EDD_NEW (Enna_Metadata_Video);
-
-    EDD_ADD (_Video, codec,     STRING);
-    EDD_ADD (_Video, width,     INT);
-    EDD_ADD (_Video, height,    INT);
-    EDD_ADD (_Video, aspect,    FLOAT);
-    EDD_ADD (_Video, channels,  INT);
-    EDD_ADD (_Video, streams,   INT);
-    EDD_ADD (_Video, framerate, FLOAT);
-    EDD_ADD (_Video, bitrate,   INT);
-
-    return edd;
-}
-
-static Eet_Data_Descriptor *
-enna_metadata_music_desc (void)
-{
-    Eet_Data_Descriptor *edd;
-
-    edd = EDD_NEW (Enna_Metadata_Music);
-
-    EDD_ADD (_Music, artist,     STRING);
-    EDD_ADD (_Music, album,      STRING);
-    EDD_ADD (_Music, year,       STRING);
-    EDD_ADD (_Music, genre,      STRING);
-    EDD_ADD (_Music, comment,    STRING);
-    EDD_ADD (_Music, discid,     STRING);
-    EDD_ADD (_Music, track,      INT);
-    EDD_ADD (_Music, rating,     INT);
-    EDD_ADD (_Music, play_count, INT);
-    EDD_ADD (_Music, codec,      STRING);
-    EDD_ADD (_Music, bitrate,    INT);
-    EDD_ADD (_Music, channels,   INT);
-    EDD_ADD (_Music, samplerate, INT);
-
-    return edd;
-}
-
-static Eet_Data_Descriptor *
-enna_metadata_desc (void)
-{
-    Eet_Data_Descriptor *edd, *edd_video, *edd_music;
-
-    edd = EDD_NEW (Enna_Metadata);
-
-    EDD_ADD (, type,        INT);
-    EDD_ADD (, uri,         STRING);
-    EDD_ADD (, md5,         STRING);
-    EDD_ADD (, keywords,    STRING);
-    EDD_ADD (, title,       STRING);
-    EDD_ADD (, alternative_title,  STRING);
-    EDD_ADD (, size,        LONG_LONG);
-    EDD_ADD (, length,      INT);
-    EDD_ADD (, position,    DOUBLE);
-    EDD_ADD (, overview,    STRING);
-    EDD_ADD (, runtime,     INT);
-    EDD_ADD (, year,        INT);
-    EDD_ADD (, categories,  STRING);
-    EDD_ADD (, rating,      INT);
-    EDD_ADD (, budget,      INT);
-    EDD_ADD (, country,     STRING);
-    EDD_ADD (, writer,      STRING);
-    EDD_ADD (, director,    STRING);
-    EDD_ADD (, actors,      STRING);
-    EDD_ADD (, studio,      STRING);
-    EDD_ADD (, lyrics,      STRING);
-    EDD_ADD (, cover,       STRING);
-    EDD_ADD (, snapshot,    STRING);
-    EDD_ADD (, backdrop,    STRING);
-    EDD_ADD (, parsed,      INT);
-
-    edd_video = enna_metadata_video_desc ();
-    EET_DATA_DESCRIPTOR_ADD_SUB (edd, Enna_Metadata,
-                                 "video", video, edd_video);
-
-    edd_music = enna_metadata_music_desc ();
-    EET_DATA_DESCRIPTOR_ADD_SUB (edd, Enna_Metadata,
-                                 "music", music, edd_music);
-
-    return edd;
-}
-
-static Enna_Metadata *
-enna_metadata_load_from_eet (char *md5)
-{
-    Enna_Metadata *m = NULL;
-    Eet_Data_Descriptor *edd;
-    char file[1024];
-
-    if (!md5)
-        return NULL;
-
-    if (!enna->metadata_cache)
-        return NULL;
-
-    enna_log (ENNA_MSG_EVENT, MODULE_NAME,
-              "Trying to load %s from EET.", md5);
-
-    memset (file, '\0', sizeof (file));
-    snprintf (file, sizeof (file), "%s/.enna/%s/%s.eet",
-              enna_util_user_home_get (), PATH_METADATA, md5);
-
-    ef = eet_open (file, EET_FILE_MODE_READ);
-    if (!ef)
-        return NULL;
-
-    edd = enna_metadata_desc ();
-    m = eet_data_read (ef, edd, md5);
-    if (!m)
-    {
-        eet_data_descriptor_free (edd);
-        return NULL;
-    }
-
-#if DEBUG == 1
-    enna_metadata_dump (m);
-#endif
-
-    eet_data_descriptor_free (edd);
-    eet_close (ef);
-
-    return m;
-}
-
-static void
-enna_metadata_save_to_eet (Enna_Metadata *m)
-{
-    Eet_Data_Descriptor *edd;
-    char file[1024];
-
-    if (!m)
-        return;
-
-    if (!enna->metadata_cache)
-        return;
-
-    memset (file, '\0', sizeof (file));
-    snprintf (file, sizeof (file), "%s/.enna/%s/%s.eet",
-              enna_util_user_home_get (), PATH_METADATA, m->md5);
-
-    ecore_file_unlink (file);
-    ef = eet_open (file, EET_FILE_MODE_WRITE);
-    if (!ef)
-        return;
-
-    enna_log (ENNA_MSG_EVENT, MODULE_NAME,
-              "Trying to save %s to EET.", m->md5);
-
-    edd = enna_metadata_desc ();
-    if (!eet_data_write (ef, edd, m->md5, m, EET_DO_COMPRESS))
-        enna_log (ENNA_MSG_WARNING, MODULE_NAME,
-                  "Error writing EET data.");
-
-    eet_data_descriptor_free (edd);
-    eet_close (ef);
-}
 
 Enna_Metadata *
 enna_metadata_new (char *uri)
 {
     Enna_Metadata *m;
-    char *md5;
 
     if (!uri)
       return NULL;
-
-    md5 = md5sum (uri);
-    m = enna_metadata_load_from_eet (md5);
-    free (md5);
-    if (m)
-        return m;
 
     m = calloc(1, sizeof(Enna_Metadata));
     m->video = calloc(1, sizeof(Enna_Metadata_Video));
@@ -605,13 +325,6 @@ enna_metadata_init (void)
     if (!ecore_file_is_dir (dst))
         ecore_file_mkdir (dst);
 
-    /* try to create metadata directory storage */
-    memset (dst, '\0', sizeof (dst));
-    snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_METADATA);
-    if (!ecore_file_is_dir (dst))
-        ecore_file_mkdir (dst);
-
     /* try to create snapshots directory storage */
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
@@ -741,7 +454,6 @@ enna_metadata_grab (Enna_Metadata *meta, int caps)
       return;
 
     meta->parsed = 1;
-    enna_metadata_save_to_eet (meta);
 }
 
 void
@@ -751,5 +463,4 @@ enna_metadata_set_position (Enna_Metadata *meta, double position)
         return;
 
     meta->position = position;
-    enna_metadata_save_to_eet (meta);
 }
