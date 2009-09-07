@@ -36,6 +36,7 @@
 #include "mediaplayer.h"
 #include "smart_player.h"
 #include "mediacontrol.h"
+#include "utils.h"
 
 #define SMART_NAME "smart_mediaplayer"
 
@@ -115,9 +116,13 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     cover = enna_metadata_meta_get (metadata, "cover", 1);
     if (cover)
     {
+        char cv[1024] = { 0 };
+
+        snprintf (cv, sizeof (cv), "%s/.enna/covers/%s",
+                  enna_util_user_home_get (), cover);
         sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
         enna_image_fill_inside_set(sd->o_cover, 0);
-        enna_image_file_set(sd->o_cover, cover, NULL);
+        enna_image_file_set(sd->o_cover, cv, NULL);
     }
     else
     {
