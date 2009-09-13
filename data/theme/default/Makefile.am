@@ -211,7 +211,7 @@ images/loading-2.png \
 images/go-first.png \
 images/go-last.png \
 images/icon_rotate_cw.png \
-images/icon_rotate_ccw.png \	
+images/icon_rotate_ccw.png \
 images/picture_bar.png \
 fonts/content.ttf \
 fonts/content_bold.ttf \
