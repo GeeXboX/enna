@@ -317,7 +317,7 @@ enna_metadata_shutdown (void)
 void *
 enna_metadata_get_db (void)
 {
-    return &vh;
+    return vh;
 }
 
 Enna_Metadata *
