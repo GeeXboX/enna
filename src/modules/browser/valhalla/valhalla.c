@@ -191,7 +191,7 @@ static Eina_List *_browse_author_list(int64_t id_m, int64_t id_d)
 
     /* files of the author without album */
     VALHALLA_DB_RESTRICT_LINK(r2, r1);
-    valhalla_db_filelist_get(mod->valhalla, VALHALLA_FILE_TYPE_NULL,
+    valhalla_db_filelist_get(mod->valhalla, VALHALLA_FILE_TYPE_AUDIO,
                              &r1, _result_file_cb, &list2);
 
     list1 = eina_list_sort(list1, eina_list_count(list1), _sort_cb);
@@ -257,7 +257,7 @@ static Eina_List *_browse_genre_list(int64_t id_m, int64_t id_d)
 
     /* files of the genre without album */
     VALHALLA_DB_RESTRICT_LINK(r2, r1);
-    valhalla_db_filelist_get(mod->valhalla, VALHALLA_FILE_TYPE_NULL,
+    valhalla_db_filelist_get(mod->valhalla, VALHALLA_FILE_TYPE_AUDIO,
                              &r1, _result_file_cb, &list2);
 
     list1 = eina_list_sort(list1, eina_list_count(list1), _sort_cb);
@@ -290,7 +290,7 @@ static Eina_List *_browse_unclassified_list(void)
 
     VALHALLA_DB_RESTRICT_LINK(r3, r2);
     VALHALLA_DB_RESTRICT_LINK(r2, r1);
-    valhalla_db_filelist_get(mod->valhalla, VALHALLA_FILE_TYPE_NULL,
+    valhalla_db_filelist_get(mod->valhalla, VALHALLA_FILE_TYPE_AUDIO,
                              &r1, _result_file_cb, &list);
 
     list = eina_list_sort(list, eina_list_count(list), _sort_cb);
