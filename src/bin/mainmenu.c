@@ -45,7 +45,7 @@
 #define MAX_PER_ROW 3
 
 typedef struct _Smart_Data Smart_Data;
-typedef struct _Smart_Item Smart_Item;
+typedef struct _Menu_Item Menu_Item;
 
 struct _Smart_Data
 {
@@ -63,7 +63,7 @@ struct _Smart_Data
     unsigned char exit_visible: 1;
 };
 
-struct _Smart_Item
+struct _Menu_Item
 {
     Smart_Data *sd;
     Evas_Object *o_base;
@@ -107,7 +107,7 @@ enna_mainmenu_add(Evas * evas)
 void enna_mainmenu_append(Evas_Object *obj, const char *icon,
         const char *label, Enna_Class_Activity *act, void (*func) (void *data), void *data)
 {
-    Smart_Item *si;
+    Menu_Item *it;
     Evas_Object *ic;
     static int i = 0;
     static int j = 0;
@@ -117,43 +117,43 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
     if (!act)
         return;
 
-    si = malloc(sizeof(Smart_Item));
-    si->sd = sd;
-    si->act = act;
-    si->o_base = edje_object_add(evas_object_evas_get(sd->o_edje));
-    edje_object_file_set(si->o_base, enna_config_theme_get(),
+    it = malloc(sizeof(Menu_Item));
+    it->sd = sd;
+    it->act = act;
+    it->o_base = edje_object_add(evas_object_evas_get(sd->o_edje));
+    edje_object_file_set(it->o_base, enna_config_theme_get(),
         "enna/mainmenu/item");
 
     if (label)
-        edje_object_part_text_set(si->o_base, "enna.text.label", gettext(label));
+        edje_object_part_text_set(it->o_base, "enna.text.label", gettext(label));
 
     ic = elm_icon_add(obj);
     elm_icon_file_set(ic, enna_config_theme_get(), icon);
     evas_object_size_hint_weight_set(ic, 1.0, 1.0);
     elm_icon_scale_set(ic, 0, 0);
     evas_object_show(ic);
-    si->o_icon = ic;
+    it->o_icon = ic;
     if (ic)
-        edje_object_part_swallow(si->o_base, "enna.swallow.content", ic);
+        edje_object_part_swallow(it->o_base, "enna.swallow.content", ic);
 
-    si->func = func;
-    si->data = data;
-    si->selected = 0;
-    sd->items = eina_list_append(sd->items, si);
+    it->func = func;
+    it->data = data;
+    it->selected = 0;
+    sd->items = eina_list_append(sd->items, it);
 
-    evas_object_show(si->o_base);
+    evas_object_show(it->o_base);
 
-    evas_object_size_hint_weight_set(si->o_base, 1.0, 1.0);
-    evas_object_size_hint_align_set(si->o_base, -1.0, -1.0);
+    evas_object_size_hint_weight_set(it->o_base, 1.0, 1.0);
+    evas_object_size_hint_align_set(it->o_base, -1.0, -1.0);
 
-    elm_table_pack(sd->o_tbl, si->o_base, i, j, 1, 1);
+    elm_table_pack(sd->o_tbl, it->o_base, i, j, 1, 1);
 
 
-    evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_UP,
-        _smart_event_mouse_up, si);
-    evas_object_event_callback_add(si->o_base, EVAS_CALLBACK_MOUSE_DOWN,
-        _smart_event_mouse_down, si);
-    evas_object_show(si->o_base);
+    evas_object_event_callback_add(it->o_base, EVAS_CALLBACK_MOUSE_UP,
+        _smart_event_mouse_up, it);
+    evas_object_event_callback_add(it->o_base, EVAS_CALLBACK_MOUSE_DOWN,
+        _smart_event_mouse_down, it);
+    evas_object_show(it->o_base);
 
     // FIXME : Ugly !
     i++;
@@ -194,17 +194,17 @@ void enna_mainmenu_load_from_activities(Evas_Object *obj)
 
 void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
 {
-    Smart_Item *si;
+    Menu_Item *it;
     API_ENTRY
         return;
 
-    si = eina_list_nth(sd->items, nth);
-    if (!si)
+    it = eina_list_nth(sd->items, nth);
+    if (!it)
         return;
-    if (si->func)
+    if (it->func)
     {
         Evas_Object *icon;
-        si->func(si->data);
+        it->func(it->data);
         /* Unswallow and delete previous icons */
         icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
         edje_object_part_unswallow(sd->o_edje, icon);
@@ -212,7 +212,7 @@ void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
 
         edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "");
         icon = edje_object_add(evas_object_evas_get(sd->o_edje));
-        edje_object_file_set(icon, enna_config_theme_get(),si->act->icon);
+        edje_object_file_set(icon, enna_config_theme_get(),it->act->icon);
         edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
         enna_mainmenu_hide(obj);
     }
@@ -234,7 +234,7 @@ int enna_mainmenu_selected_get(Evas_Object *obj)
 
 void enna_mainmenu_select_nth(Evas_Object *obj, int nth)
 {
-    Smart_Item *new, *prev;
+    Menu_Item *new, *prev;
 
     API_ENTRY return;
 
@@ -256,20 +256,20 @@ void enna_mainmenu_select_nth(Evas_Object *obj, int nth)
 
 Enna_Class_Activity *enna_mainmenu_selected_activity_get(Evas_Object *obj)
 {
-    Smart_Item *si;
+    Menu_Item *it;
     API_ENTRY return NULL;
 
-    si = eina_list_nth(sd->items, sd->selected);
+    it = eina_list_nth(sd->items, sd->selected);
 
-    if (!si)
+    if (!it)
         return NULL;
 
-    return si->act;
+    return it->act;
 }
 
 static void enna_mainmenu_select_sibbling (Evas_Object *obj, int way)
 {
-    Smart_Item *new, *prev;
+    Menu_Item *new, *prev;
     int ns = 0;
 
     API_ENTRY return;
@@ -542,10 +542,10 @@ static void _smart_del(Evas_Object * obj)
 
     for (l = sd->items; l; l = l->next)
     {
-        Smart_Item *si;
-        si = l->data;
-        evas_object_del(si->o_base);
-        evas_object_del(si->o_icon);
+        Menu_Item *it;
+        it = l->data;
+        evas_object_del(it->o_base);
+        evas_object_del(it->o_icon);
     }
     eina_list_free(sd->items);
     evas_object_del(sd->o_home_button);
@@ -613,20 +613,20 @@ static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void
 {
     Smart_Data *sd;
     Evas_Event_Mouse_Up *ev;
-    Smart_Item *si;
+    Menu_Item *it;
     Eina_List *l;
     int i;
 
     ev = event_info;
-    si = data;
-    sd = si->sd;
+    it = data;
+    sd = it->sd;
 
     if (!sd->items)
         return;
 
     for (l = sd->items, i = 0; l; l = l->next, i++)
     {
-        if (l->data == si)
+        if (l->data == it)
         {
             enna_mainmenu_activate_nth(sd->o_smart, i);
             break;
@@ -638,8 +638,8 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, vo
 {
     Smart_Data *sd;
     Evas_Event_Mouse_Down *ev;
-    Smart_Item *si;
-    Smart_Item *prev;
+    Menu_Item *si;
+    Menu_Item *prev;
     Eina_List *l = NULL;
     int i;
 
