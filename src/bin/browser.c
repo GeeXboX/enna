@@ -27,7 +27,7 @@
  *
  */
 
-/*
+/*_
  * Smart Callback event
  *
  * "root" this event is sent when root is browse
@@ -270,7 +270,7 @@ enna_browser_files_get(Evas_Object *obj)
 {
      API_ENTRY return NULL;
      if (!sd->o_view) return NULL;
-     
+
      if (sd->view_funcs.view_files_get)
 	    return sd->view_funcs.view_files_get(sd->o_view);
 
@@ -444,9 +444,9 @@ _list_transition_default_down_end_cb(void *data, Evas_Object *o, const char *sig
 
     /* Remove last entry in visited files*/
     sd->visited = eina_list_remove_list(sd->visited, eina_list_last(sd->visited));
-       
-       
-       
+
+
+
     if (last && last->label)
     {
         printf("will try to select : %s\n", last->label);
@@ -456,7 +456,7 @@ _list_transition_default_down_end_cb(void *data, Evas_Object *o, const char *sig
     }
     else
         sd->view_funcs.view_select_nth(sd->o_view, 0);
-        
+
     edje_object_signal_callback_del(sd->o_edje, "list,transition,default,end", "edje",
 	    _list_transition_default_down_end_cb);
 }
@@ -490,7 +490,7 @@ static  void _browse(void *data)
             /* No media found */
            if (!eina_list_count(sd->files))
             {
-               
+
                 sd->file = enna_vfs_create_directory(sd->file->uri, _("No media found !"), "icon_nofile", NULL);
                 sd->files = NULL;
                 sd->files = eina_list_append(sd->files,sd->file);
@@ -500,7 +500,7 @@ static  void _browse(void *data)
             {
                 ev->file = sd->file;
                 ev->files = sd->files;
-                evas_object_smart_callback_call (sd->obj, "selected", ev); 
+                evas_object_smart_callback_call (sd->obj, "selected", ev);
             }
         }
         else if (sd->show_file)
@@ -517,13 +517,13 @@ static  void _browse(void *data)
             evas_object_smart_callback_call (sd->obj, "selected", ev);
             return;
         }
-       
+
         /* Add last selected file in visited list */
         visited = calloc(1, sizeof(Enna_Vfs_File));
         visited->label = strdup(sd->file->label);
         visited->uri = strdup(sd->file->uri);
-        sd->visited = eina_list_append(sd->visited, visited);  
-        
+        sd->visited = eina_list_append(sd->visited, visited);
+
         /* Clear list and add new items */
         edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
 	    _list_transition_left_end_cb, sd);
@@ -553,7 +553,7 @@ static void _browse_down(void *data)
         edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
             _list_transition_right_end_cb, sd);
         edje_object_signal_emit(sd->o_edje, "list,right", "enna");
-       
+
     }
 }
 
@@ -578,7 +578,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
         edje_object_signal_callback_add(sd->o_edje, "list,transition,default,end", "edje",
 	        _list_transition_default_down_end_cb, sd);
     }
-   
+
 
     ENNA_OBJECT_DEL(sd->o_view);
     sd->o_view = sd->view_funcs.view_add(sd);
@@ -787,7 +787,7 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
         if (sd->view_funcs.view_key_down)
             sd->view_funcs.view_key_down(sd->o_view, event_info);
         break;
-    
+
     case ENNA_KEY_2:
     case ENNA_KEY_3:
     case ENNA_KEY_4:
