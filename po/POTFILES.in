@@ -16,7 +16,6 @@ src/modules/activity/video/video.c
 src/modules/activity/weather/weather.c
 src/modules/browser/cdda/cdda.c
 src/modules/browser/dvd/dvd.c
-src/modules/browser/lms/lms.c
 src/modules/browser/localfiles/localfiles.c
 src/modules/browser/netstreams/netstreams.c
 src/modules/browser/podcasts/podcasts.c
