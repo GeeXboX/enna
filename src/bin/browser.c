@@ -27,7 +27,7 @@
  *
  */
 
-/*_
+/*
  * Smart Callback event
  *
  * "root" this event is sent when root is browse
