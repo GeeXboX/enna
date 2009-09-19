@@ -1,5 +1,3 @@
-//#define COMP RAW
-//#define COMP LOSSY 100
 #define COMP LOSSY 80 
 images{
 }
@@ -50,150 +48,26 @@ collections
 #include "popup.edc"
 #include "exit.edc"
 
-   group {
-      name: "enna";
-      min: 1280 720;
+   group { name: "main_layout";
       parts {
-
-         part {
-            name: "enna.swallow.background";
+         /* background  */
+         part { name: "enna.background.swallow";
             type: SWALLOW;
-            mouse_events : 0;
-            description{
-               state: "default" 0.0;
-               color:  255 255 255 255;
-               rel1{relative: 0 0;};
-               rel2{relative: 1 1;};
-            }
+            mouse_events: 1;
+            description { state: "default" 0.0; }
          }
-         part {
-            name: "enna.swallow.module";
+         /* content */
+         part { name: "enna.content.swallow";
             type: SWALLOW;
-            clip_to: "enna.clip.module";
-            mouse_events : 1;
-            description{
-               state: "default" 0.0;
-               color:  255 255 255 255;
-               rel1{relative: 0 0;offset: 0 62;};
-               rel2{relative: 1 1;};
-            }
+            description { state: "default" 0.0;
+                rel1.offset: 0 60;
+            } 
          }
-         part {
-            name: "enna.swallow.mainmenu";
-            clip_to: "enna.clip.mainmenu";
+         /* mainmenu */
+         part { name: "enna.mainmenu.swallow";
             type: SWALLOW;
-            description{
-               state: "default" 0.0;
-               color: 255 255 255 255;
-               rel1{relative: 0 0;to: "enna.clip.mainmenu";};
-               rel2{relative: 1 1;to: "enna.clip.mainmenu";};
-            }
-         }
-        part {
-            name: "enna.swallow.fullscreen";
-            clip_to: "enna.clip.fullscreen";
-            type: SWALLOW;
-            description{
-               state: "default" 0.0;
-               color: 255 255 255 255;
-	        rel1{relative: 0 0;to: "enna.clip.mainmenu";};
-               rel2{relative: 1 1;to: "enna.clip.mainmenu";};
-            }
-         }
-         part {
-            name: "enna.clip.module";
-            type: RECT;
-            mouse_events : 0;
-            description{
-               state: "default" 0.0;
-               visible: 1;
-               color: 255 255 255 255;
-               rel1{relative: 0 0;};
-               rel2{relative: 1 1;};
-            }
-         }
-         part {
-            name: "enna.clip.mainmenu";
-            type: RECT;
-            mouse_events : 0;
-            description{
-               state: "default" 0.0;
-               visible: 1;
-               color: 255 255 255 255;
-               rel1{relative: 0 0;};
-               rel2{relative: 1 1;};
-            }
-         }
-	  part {
-            name: "enna.clip.fullscreen";
-            type: RECT;
-            mouse_events : 0;
-            description{
-               state: "default" 0.0;
-               visible: 1;
-               color: 255 255 255 255;
-               rel1{relative: 0 0;};
-               rel2{relative: 1 1;};
-            }
-         }
-          part
-          {
-             name: "popup.clip";
-             type: RECT;
-             mouse_events: 1;
-             description
-             {
-                visible: 0;
-                state: "default" 0.0;
-                color: 255 255 255 0;
-                rel1.relative: 0.5 0.5;
-                rel2.relative: 0.5 0.5;
-             }
-             description
-             {
-                visible: 1;
-                state: "show" 0.0;
-                color: 255 255 255 255;
-                rel1.relative: 0.5 0.5;
-                rel1.offset: -320 -240;
-                rel2.relative: 0.5 0.5;
-                rel2.offset: 320 240;
-             }
-          }
-          part {
-             name: "enna.swallow.popup";
-             type: SWALLOW;
-             clip_to: "popup.clip";
-             description
-             {
-                state: "default" 0.0;
-             }
-          }
-      }
-      programs {
-         program
-         {
-            name: "popup,show";
-            signal: "popup,show";
-            source: "enna";
-            action: STATE_SET "show" 0.0;
-            transition: DECELERATE 1.0;
-            target: "popup.clip";
-         }
-         program
-         {
-            name: "popup,hide";
-            signal: "popup,hide";
-            source: "enna";
-            action: STATE_SET "default" 0.0;
-            transition: ACCELERATE 1.0;
-            target: "popup.clip";
-            after: "hide,done";
-         }
-         program {
-            name:    "hide,done";
-            action:  SIGNAL_EMIT "hide,done" "";
+            description { state: "default" 0.0; }
          }
       }
-   }
+  }
 }

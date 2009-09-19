@@ -125,11 +125,12 @@ typedef struct _Enna Enna;
 struct _Enna
 {
     char *home; /**< Home directory ie $HOME/.enna. */
-    Ecore_Evas *ee; /**< Ecore_Evas. */
     Ecore_X_Window ee_winid; /**< Ecore_Evas WindowID */
     Evas *evas; /**< Main enna evas.  */
+    Evas_Object *win; /** Main elementary window. */
     Evas_Object *o_background;/**< Background object, it handles key down. */
-    Evas_Object *o_edje; /**< Main edje. */
+    //~ Evas_Object *o_edje; /**< Main edje. */ //TODO clean me around
+    Evas_Object *layout; /**< Main elementary layout widget. */
     Evas_Object *o_mainmenu; /**< Top menu. */
     Evas_Object *o_content; /** Edje Object to swallow content */
     Evas_Object *o_cursor; /** Edje Object for mouse cursor */

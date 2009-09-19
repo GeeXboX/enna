@@ -138,7 +138,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     if (key == ENNA_KEY_FULLSCREEN)
     {
         run_fullscreen = ~run_fullscreen;
-        ecore_evas_fullscreen_set(enna->ee, run_fullscreen);
+        elm_win_fullscreen_set(enna->win, run_fullscreen);
     }
 
     if (enna_mainmenu_exit_visible(enna->o_mainmenu) || key == ENNA_KEY_QUIT)
@@ -153,7 +153,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         {
             enna_content_show();
             enna_mainmenu_hide(enna->o_mainmenu);
-            edje_object_signal_emit(enna->o_edje, "mainmenu,hide", "enna");
+            edje_object_signal_emit(enna->o_background, "mainmenu,hide", "enna");
             break;
         }
         default:
@@ -178,20 +178,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     }
 }
 
-static void _resize_viewport_cb(Ecore_Evas * ee)
-{
-    Evas_Coord w, h, x, y;
-
-    if (!enna->ee)
-        return;
-
-    evas_output_viewport_get(enna->evas, &x, &y, &w, &h);
-    evas_object_resize(enna->o_edje, w, h);
-    evas_object_move(enna->o_edje, x, y);
-    ecore_evas_resize(enna->ee, w, h);
-}
-
-static void _cb_delete(Ecore_Evas *ee)
+static void _window_delete_cb(void *data, Evas_Object *obj, void *event_info)
 {
     ecore_main_loop_quit();
 }
@@ -202,14 +189,14 @@ static void _list_engines(void)
     Eina_List  *n;
     const char *engine;
 
-    enna_log(ENNA_MSG_CRITICAL, NULL, "supported engines:");
+    enna_log(ENNA_MSG_INFO, NULL, "Supported engines:");
 
     lst = ecore_evas_engines_get();
 
     EINA_LIST_FOREACH(lst, n, engine)
     {
         if (strcmp(engine, "buffer") != 0)
-            enna_log(ENNA_MSG_CRITICAL, NULL, "\t*%s", engine);
+            enna_log(ENNA_MSG_INFO, NULL, "\t* %s", engine);
     }
 
     ecore_evas_engines_free(lst);
@@ -259,86 +246,15 @@ static int _enna_init(void)
             }
     }
 
-    enna->ee = ecore_evas_new(enna_config->engine, 0, 0, 1, 1, NULL);
-
-    if (!enna->ee)
-    {
-        enna_log(ENNA_MSG_CRITICAL, NULL,
-            "Can not create Ecore Evas with %s engine!",
-            enna_config->engine);
-        _list_engines();
-        return 0;
-    }
-
-    ENNA_FREE(enna_config->engine);
-    enna_config->engine=strdup(ecore_evas_engine_name_get(enna->ee));
-
-    if (ecore_str_has_extension(enna_config->engine, "_x11"))
-        enna->ee_winid = (Ecore_X_Window) ecore_evas_window_get(enna->ee);
-    enna_log(ENNA_MSG_INFO, NULL, "Using engine: %s", enna_config->engine);
-
     enna->use_network = enna_config->use_network;
     enna->use_covers = enna_config->use_covers;
     enna->use_snapshots = enna_config->use_snapshots;
     enna->metadata_cache = enna_config->metadata_cache;
     enna->slideshow_delay = enna_config->slideshow_delay;
 
-    ecore_evas_fullscreen_set(enna->ee, enna_config->fullscreen
-        | run_fullscreen);
-
-    ecore_evas_title_set(enna->ee, _("enna HTPC"));
-    ecore_evas_name_class_set(enna->ee, "enna", "enna");
-    ecore_evas_borderless_set(enna->ee, 0);
-    ecore_evas_shaped_set(enna->ee, 1);
-    enna->evas = ecore_evas_get(enna->ee);
-
-    evas_data_attach_set(enna->evas, enna);
 
     if (!_create_gui())
         return 0;
-
-    ecore_evas_show(enna->ee);
-    enna_input_init();
-    enna_ipc_init();
-
-    return 1;
-}
-
-
-static int _create_gui(void)
-{
-    Evas_Object *o;
-
-    o = edje_object_add(enna->evas);
-    edje_object_file_set(o, enna_config_theme_get(), "enna");
-    elm_theme_extension_add(enna_config_theme_get());
-    evas_object_resize(o, app_w, app_h);
-    evas_object_move(o, 0, 0);
-    evas_object_show(o);
-    ecore_evas_resize(enna->ee, app_w, app_h);
-
-    enna->o_edje = o;
-
-    /* Create Background Object */
-    o = enna_background_add(enna->evas);
-    edje_object_part_swallow(enna->o_edje, "enna.swallow.background", o);
-    enna->o_background = o;
-    /* Create Mainmenu Object */
-    o = enna_mainmenu_add(enna->evas);
-    edje_object_part_swallow(enna->o_edje, "enna.swallow.mainmenu", o);
-    enna->o_mainmenu = o;
-
-    edje_object_signal_emit(enna->o_edje, "mainmenu,show", "enna");
-    evas_object_focus_set(enna->o_edje, 1);
-
-    evas_object_event_callback_add(enna->o_edje, EVAS_CALLBACK_KEY_DOWN, _event_bg_key_down_cb, enna);
-
-    ecore_evas_callback_resize_set(enna->ee, _resize_viewport_cb);
-    ecore_evas_callback_delete_request_set(enna->ee, _cb_delete);
-    /* Create Content Object */
-    o = enna_content_add(enna->evas);
-    edje_object_part_swallow(enna->o_edje, "enna.swallow.module", o);
-    enna->o_content = o;
 
     /* Init various stuff */
     enna_volumes_init();
@@ -382,20 +298,77 @@ static int _create_gui(void)
     enna_content_hide();
     enna_mainmenu_show(enna->o_mainmenu);
 
-    ecore_evas_show(enna->ee);
-
     enna->idle_timer = NULL;
     enna_idle_timer_renew();
 
-    o = edje_object_add(enna->evas);
-    edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/cursor");
+
+    evas_data_attach_set(enna->evas, enna); //TOD REMOVE ME
+
+    enna_input_init();
+    enna_ipc_init();
+
+    return 1;
+}
+
+static int _create_gui(void)
+{
+    // set custom elementary theme
+    elm_theme_extension_add(enna_config_theme_get());
+
+    // show supported engines
+    _list_engines();
+    printf("TODO: respect engine: %s\n", enna_config->engine); //TODO
+    enna_log(ENNA_MSG_INFO, NULL, "Using engine: %s", enna_config->engine); //FIXME
+    //~ ENNA_FREE(enna_config->engine);
+    //~ enna_config->engine=strdup(ecore_evas_engine_name_get(enna->ee));
+
+    // main window
+    enna->win = elm_win_add(NULL, "enna", ELM_WIN_BASIC);
+    elm_win_title_set(enna->win, "enna HTPC (elm)");
+    elm_win_fullscreen_set(enna->win, enna_config->fullscreen | run_fullscreen);
+    evas_object_smart_callback_add(enna->win, "delete-request", _window_delete_cb, NULL);
+
+    //~ ecore_evas_shaped_set(enna->ee, 1);  //TODO why this ???
+    enna->ee_winid = elm_win_xwindow_get(enna->win);
+    enna->evas = evas_object_evas_get(enna->win);
+
+    // main layout widget
+    enna->layout = elm_layout_add(enna->win);
+    elm_layout_file_set(enna->layout, enna_config_theme_get(), "main_layout");
+    evas_object_size_hint_weight_set(enna->layout, 1.0, 1.0);
+    elm_win_resize_object_add(enna->win, enna->layout);
+    evas_object_show(enna->layout);
+
+    // background
+    enna->o_background = enna_background_add(enna->evas);
+    elm_layout_content_set(enna->layout, "enna.background.swallow",
+                           enna->o_background);
+    evas_object_event_callback_add(enna->o_background, EVAS_CALLBACK_KEY_DOWN, _event_bg_key_down_cb, enna);
+    evas_object_focus_set(enna->o_background, 1);
+    
+    // mainmenu
+    enna->o_mainmenu = enna_mainmenu_add(enna->evas);
+    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow",
+                           enna->o_mainmenu);
+
+    // content
+    enna->o_content = enna_content_add(enna->evas);
+    elm_layout_content_set(enna->layout, "enna.content.swallow", enna->o_content);
+
+    // mouse pointer
+    enna->o_cursor = edje_object_add(enna->evas);
+    edje_object_file_set(enna->o_cursor, enna_config_theme_get(), "enna/mainmenu/cursor");  //TODO move cursor out of mainmenu
     // hot_x/hot_y are about 4px/3px in original image which is scaled by 1.5
-    ecore_evas_object_cursor_set(enna->ee, o, 1, 9, 6);
-    evas_object_show(o);
-    enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, o);
-    evas_object_event_callback_add(o, EVAS_CALLBACK_MOVE, _mousemove_cb, NULL);
+    elm_win_cursor_set(enna->win, enna->o_cursor, 9, 6);
+    evas_object_show(enna->o_cursor);
+    enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, enna->o_cursor);
+    evas_object_event_callback_add(enna->o_cursor, EVAS_CALLBACK_MOVE, _mousemove_cb, NULL);
     enna->cursor_is_shown=1;
-    enna->o_cursor = o;
+
+    // show all
+    evas_object_resize(enna->win, app_w, app_h);
+    evas_object_show(enna->win);
+    edje_object_signal_emit(enna->o_mainmenu, "mainmenu,show", "enna");
 
     return 1;
 }
@@ -412,8 +385,8 @@ static void _enna_shutdown(void)
     enna_metadata_shutdown();
     enna_mediaplayer_shutdown();
     evas_object_del(enna->o_background);
-    evas_object_del(enna->o_edje);
     evas_object_del(enna->o_mainmenu);
+    evas_object_del(enna->o_content);
     edje_shutdown();
     ecore_file_shutdown();
     ecore_evas_shutdown();

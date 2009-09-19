@@ -229,7 +229,7 @@ _volume_hide_done_cb(void *data,
     const char *emission,
     const char *source)
 {
-    edje_object_signal_callback_del(enna->o_edje, "hide,done", "*", _volume_hide_done_cb);
+    //~ edje_object_signal_callback_del(enna->o_edje, "hide,done", "*", _volume_hide_done_cb);
     ENNA_OBJECT_DEL(mod->o_volume);
     ENNA_TIMER_DEL(mod->timer_volume);
     mod->o_volume = NULL;
@@ -238,8 +238,8 @@ _volume_hide_done_cb(void *data,
 static int
 _volume_hide_cb(void *data)
 {
-    edje_object_signal_callback_add(enna->o_edje, "hide,done", "*", _volume_hide_done_cb, NULL);
-    edje_object_signal_emit(enna->o_edje, "popup,hide","enna");
+    //~ edje_object_signal_callback_add(enna->o_edje, "hide,done", "*", _volume_hide_done_cb, NULL);
+    //~ edje_object_signal_emit(enna->o_edje, "popup,hide","enna");
     return 0;
 }
 
@@ -266,14 +266,14 @@ _volume_core(enna_key_t key)
 	mod->timer_volume =ecore_timer_add(TIMER_VOLUME_VALUE, _volume_hide_cb, NULL);
 	mod->o_volume = edje_object_add(mod->em->evas);
 	edje_object_file_set(mod->o_volume, enna_config_theme_get(), "enna/volume");
-	edje_object_part_swallow(enna->o_edje, "enna.swallow.popup", mod->o_volume);
-	edje_object_signal_emit(enna->o_edje, "popup,show","enna");
+	//~ edje_object_part_swallow(enna->o_edje, "enna.swallow.popup", mod->o_volume);
+	//~ edje_object_signal_emit(enna->o_edje, "popup,show","enna");
 
     }
 
     /* Show volume popup */
-    edje_object_signal_callback_del(enna->o_edje, "hide,done", "*", _volume_hide_done_cb);
-    edje_object_signal_emit(enna->o_edje, "popup,show","enna");
+    //~ edje_object_signal_callback_del(enna->o_edje, "hide,done", "*", _volume_hide_done_cb);
+    //~ edje_object_signal_emit(enna->o_edje, "popup,show","enna");
     /* Reset Timer */
     ENNA_TIMER_DEL(mod->timer_volume);
     mod->timer_volume = ecore_timer_add(TIMER_VOLUME_VALUE, _volume_hide_cb, NULL);

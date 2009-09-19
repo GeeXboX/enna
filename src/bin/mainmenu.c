@@ -130,7 +130,6 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
     ic = elm_icon_add(obj);
     elm_icon_file_set(ic, enna_config_theme_get(), icon);
     evas_object_size_hint_weight_set(ic, 1.0, 1.0);
-    elm_icon_scale_set(ic, 0, 0);
     evas_object_show(ic);
     it->o_icon = ic;
     if (ic)

@@ -215,13 +215,13 @@ images/icon_rotate_ccw.png \
 images/picture_bar.png \
 fonts/content.ttf \
 fonts/content_bold.ttf \
+default.edc \
 music_video.edc \
 audio_lyrics.edc \
 video_info.edc \
 mediaplayer.edc \
 mainmenu.edc \
 content.edc \
-default.edc \
 mediacontrol.edc \
 picture.edc \
 weather.edc \
@@ -230,7 +230,6 @@ exit.edc \
 elm.edc \
 infos.edc \
 slideshow.edc \
-enna_widget_menubar.edc \
 list.edc \
 background.edc \
 video.edc \
