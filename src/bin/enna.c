@@ -302,6 +302,9 @@ static int _create_gui(void)
     elm_win_title_set(enna->win, "enna HTPC (elm)");
     elm_win_fullscreen_set(enna->win, enna_config->fullscreen | run_fullscreen);
     evas_object_smart_callback_add(enna->win, "delete-request", _window_delete_cb, NULL);
+    // main window also handle global key down event
+    evas_object_event_callback_add(enna->win, EVAS_CALLBACK_KEY_DOWN, _event_bg_key_down_cb, enna);
+    evas_object_focus_set(enna->win, 1);
 
     //~ ecore_evas_shaped_set(enna->ee, 1);  //TODO why this ???
     enna->ee_winid = elm_win_xwindow_get(enna->win);
@@ -314,13 +317,6 @@ static int _create_gui(void)
     elm_win_resize_object_add(enna->win, enna->layout);
     evas_object_show(enna->layout);
 
-    // background
-    enna->o_background = enna_background_add(enna->evas);
-    elm_layout_content_set(enna->layout, "enna.background.swallow",
-                           enna->o_background);
-    evas_object_event_callback_add(enna->o_background, EVAS_CALLBACK_KEY_DOWN, _event_bg_key_down_cb, enna);
-    evas_object_focus_set(enna->o_background, 1);
-    
     // mainmenu
     enna_mainmenu_add(enna->evas);
     

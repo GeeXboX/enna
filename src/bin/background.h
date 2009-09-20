@@ -30,8 +30,6 @@
 #ifndef BACKGROUND_H
 #define BACKGROUND_H
 
-#include "enna.h"
 
-Evas_Object * enna_background_add(Evas * evas);
 
 #endif /* BACKGROUND_H */

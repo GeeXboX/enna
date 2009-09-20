@@ -231,7 +231,6 @@ elm.edc \
 infos.edc \
 slideshow.edc \
 list.edc \
-background.edc \
 video.edc \
 popup.edc \
 volume.edc \

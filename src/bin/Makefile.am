@@ -21,7 +21,6 @@ utils.c\
 buffer.c\
 metadata.c\
 mainmenu.c\
-background.c\
 module.c\
 activity.c\
 vfs.c\
@@ -76,7 +75,6 @@ utils.h\
 buffer.h\
 metadata.h\
 mainmenu.h\
-background.h\
 module.h\
 vfs.h\
 volumes.h\
