@@ -161,6 +161,7 @@ _class_init(int dummy)
 static void
 _class_show(int dummy)
 {
+    enna_content_select(ENNA_MODULE_NAME);
     edje_object_signal_emit(mod->o_edje, "module,show", "enna");
     switch (mod->state)
     {

@@ -125,22 +125,33 @@ _delete_menu(void)
 static void
 _activity_init (int dummy)
 {
-    mod->o_edje = edje_object_add (mod->em->evas);
-    edje_object_file_set (mod->o_edje,
-        enna_config_theme_get (), "module/configuration");
-    _create_menu ();
-    enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
+    printf("**** ACTIVITY INIT ****\n");
 }
 
 static void
 _activity_shutdown (int dummy)
 {
+    printf("**** ACTIVITY SDOWN ****\n");
     ENNA_OBJECT_DEL (mod->o_edje);
 }
 
 static void
 _activity_show (int dummy)
 {
+    printf("**** ACTIVITY SHOW ****\n");
+
+    // create the content if not created
+    if (!mod->o_edje)
+    {
+        mod->o_edje = edje_object_add (mod->em->evas);
+        edje_object_file_set (mod->o_edje, enna_config_theme_get (),
+                              "module/configuration");
+        _create_menu ();
+        enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
+    }
+
+    enna_content_select(ENNA_MODULE_NAME);
+    
     edje_object_signal_emit (mod->o_edje, "module,show", "enna");
     edje_object_signal_emit (mod->o_edje, "content,show", "enna");
 }
@@ -148,6 +159,7 @@ _activity_show (int dummy)
 static void
 _activity_hide (int dummy)
 {
+    printf("**** ACTIVITY HIDE ****\n");
     edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
     edje_object_signal_emit (mod->o_edje, "content,hide", "enna");
 }
@@ -155,6 +167,7 @@ _activity_hide (int dummy)
 static void
 _activity_event (void *event_info)
 {
+    printf("**** ACTIVITY EVENT ****\n");
     Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key (ev);
 

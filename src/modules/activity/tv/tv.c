@@ -66,7 +66,7 @@ static void _class_init(int dummy)
 {
     mod->o_background = evas_object_rectangle_add(mod->em->evas);
     evas_object_color_set(mod->o_background, 0, 0, 0, 255);
-    enna_content_append("tv", mod->o_background);
+    enna_content_append(ENNA_MODULE_NAME, mod->o_background);
 }
 
 static const char* _class_quit_request(int dummy)
@@ -115,6 +115,7 @@ static const char* _class_quit_request(int dummy)
 
 static void _class_show(int dummy)
 {
+    enna_content_select(ENNA_MODULE_NAME);
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "starting playback");
     enna_mediaplayer_play(mod->enna_playlist);
     evas_object_show(mod->o_background);

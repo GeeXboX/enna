@@ -481,6 +481,7 @@ _class_shutdown (int dummy)
 static void
 _class_show (int dummy)
 {
+    enna_content_select(ENNA_MODULE_NAME);
     update_background ();
     google_weather_search ();
     edje_object_signal_emit (mod->edje, "weather,show", "enna");

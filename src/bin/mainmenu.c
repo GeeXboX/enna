@@ -217,7 +217,7 @@ enna_mainmenu_activate(Menu_Item *it)
     enna_mainmenu_hide();
     edje_object_part_text_set(elm_layout_edje_get(enna->layout),
                               "titlebar.text.label", "");
-printf("MAINMENU ACTIVATE %s\n", it->act->name);
+
     // update icon
     ENNA_OBJECT_DEL(sd->o_icon)
     sd->o_icon = elm_icon_add(enna->layout);
@@ -225,8 +225,9 @@ printf("MAINMENU ACTIVATE %s\n", it->act->name);
     evas_object_show(sd->o_icon);
     elm_layout_content_set(enna->layout, "titlebar.swallow.icon", sd->o_icon);
 
-    // run the action
-    enna_content_select(it->act->name);
+    // run the activity_show cb. that is responsable of showing the
+    // content using enna_content_select("name)
+    enna_activity_show(it->act->name);
 }
 
 void

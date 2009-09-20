@@ -88,7 +88,6 @@ int enna_content_append(const char *name, Evas_Object *content)
 
 int enna_content_select(const char *name)
 {
-
     Eina_List *l;
     Enna_Content_Element *new = NULL;
     Enna_Content_Element *prev = NULL;
@@ -123,7 +122,6 @@ int enna_content_select(const char *name)
     if (new)
     {
         edje_object_part_swallow(_content, "enna.swallow.content", new->content);
-        enna_activity_show(new->name);
     }
 
     return 0;

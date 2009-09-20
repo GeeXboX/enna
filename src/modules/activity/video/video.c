@@ -803,12 +803,13 @@ static void
 _class_init (int dummy)
 {
     _create_gui ();
-    enna_content_append ("video", mod->o_edje);
+    enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
 }
 
 static void
 _class_show (int dummy)
 {
+    enna_content_select(ENNA_MODULE_NAME);
     edje_object_signal_emit (mod->o_edje, "module,show", "enna");
 
     switch (mod->state)
