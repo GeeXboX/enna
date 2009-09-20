@@ -80,7 +80,7 @@ static int _idle_timer_cb(void *data)
         return ECORE_CALLBACK_RENEW;
     }
 
-    if (enna_mainmenu_exit_visible(enna->o_mainmenu))
+    if (enna_mainmenu_exit_visible())
     {
         enna_log(ENNA_MSG_INFO, NULL, "gracetime is over, quitting enna.");
         ecore_main_loop_quit();
@@ -141,23 +141,23 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         elm_win_fullscreen_set(enna->win, run_fullscreen);
     }
 
-    if (enna_mainmenu_exit_visible(enna->o_mainmenu) || key == ENNA_KEY_QUIT)
+    if (enna_mainmenu_exit_visible() || key == ENNA_KEY_QUIT)
     {
-        enna_mainmenu_event_feed(enna->o_mainmenu, event);
+        enna_mainmenu_event_feed(event);
     }
-    else if (enna_mainmenu_visible(enna->o_mainmenu))
+    else if (enna_mainmenu_visible())
     {
         switch (key)
         {
         case ENNA_KEY_MENU:
         {
             enna_content_show();
-            enna_mainmenu_hide(enna->o_mainmenu);
+            enna_mainmenu_hide();
             edje_object_signal_emit(enna->o_background, "mainmenu,hide", "enna");
             break;
         }
         default:
-            enna_mainmenu_event_feed(enna->o_mainmenu, event);
+            enna_mainmenu_event_feed(event);
             break;
         }
     }
@@ -168,11 +168,11 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         case ENNA_KEY_MENU:
         {
             enna_content_hide();
-            enna_mainmenu_show(enna->o_mainmenu);
+            enna_mainmenu_show();
             break;
         }
         default:
-            enna_activity_event(enna_mainmenu_selected_activity_get(enna->o_mainmenu), event);
+            enna_activity_event(enna_mainmenu_selected_activity_get(), event);
             break;
         }
     }
@@ -292,11 +292,11 @@ static int _enna_init(void)
     enna_activity_init("configuration");
 #endif
 
-    enna_mainmenu_load_from_activities(enna->o_mainmenu);
-    enna_mainmenu_select_nth(enna->o_mainmenu, 0);
+    enna_mainmenu_load_from_activities();
+    enna_mainmenu_select_nth(0);
 
     enna_content_hide();
-    enna_mainmenu_show(enna->o_mainmenu);
+    enna_mainmenu_show();
 
     enna->idle_timer = NULL;
     enna_idle_timer_renew();
@@ -347,10 +347,9 @@ static int _create_gui(void)
     evas_object_focus_set(enna->o_background, 1);
     
     // mainmenu
-    enna->o_mainmenu = enna_mainmenu_add(enna->evas);
-    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow",
-                           enna->o_mainmenu);
-
+    enna_mainmenu_add(enna->evas);
+    
+    
     // content
     enna->o_content = enna_content_add(enna->evas);
     elm_layout_content_set(enna->layout, "enna.content.swallow", enna->o_content);
@@ -368,7 +367,6 @@ static int _create_gui(void)
     // show all
     evas_object_resize(enna->win, app_w, app_h);
     evas_object_show(enna->win);
-    edje_object_signal_emit(enna->o_mainmenu, "mainmenu,show", "enna");
 
     return 1;
 }
@@ -385,7 +383,7 @@ static void _enna_shutdown(void)
     enna_metadata_shutdown();
     enna_mediaplayer_shutdown();
     evas_object_del(enna->o_background);
-    evas_object_del(enna->o_mainmenu);
+    enna_mainmenu_shutdown();
     evas_object_del(enna->o_content);
     edje_shutdown();
     ecore_file_shutdown();

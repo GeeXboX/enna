@@ -131,7 +131,7 @@ struct _Enna
     Evas_Object *o_background;/**< Background object, it handles key down. */
     //~ Evas_Object *o_edje; /**< Main edje. */ //TODO clean me around
     Evas_Object *layout; /**< Main elementary layout widget. */
-    Evas_Object *o_mainmenu; /**< Top menu. */
+    //~ Evas_Object *o_mainmenu; /**< Top menu. */
     Evas_Object *o_content; /** Edje Object to swallow content */
     Evas_Object *o_cursor; /** Edje Object for mouse cursor */
     enna_msg_level_t lvl; /**< Error message level */

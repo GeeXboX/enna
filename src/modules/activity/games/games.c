@@ -216,7 +216,7 @@ static void _class_event(void *event_info)
                 case ENNA_KEY_LEFT:
                 case ENNA_KEY_CANCEL:
                     enna_content_hide();
-                    enna_mainmenu_show(enna->o_mainmenu);
+                    enna_mainmenu_show();
                     break;
                 case ENNA_KEY_RIGHT:
                 case ENNA_KEY_OK:

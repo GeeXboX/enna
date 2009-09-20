@@ -41,22 +41,19 @@
 #include "logs.h"
 #include "exit.h"
 
-#define SMART_NAME "enna_mainmenu"
 #define MAX_PER_ROW 3
 
-typedef struct _Smart_Data Smart_Data;
+typedef struct _Menu_Data Menu_Data;
 typedef struct _Menu_Item Menu_Item;
 
-struct _Smart_Data
+struct _Menu_Data
 {
-    Evas_Coord x, y, w, h;
-    Evas_Object *o_smart;
-    Evas_Object *o_edje;
     Evas_Object *o_tbl;
     Evas_Object *o_home_button;
     Evas_Object *o_back_button;
     Evas_Object *o_btn_box;
     Evas_Object *o_exit;
+    Evas_Object *o_icon;
     Eina_List *items;
     int selected;
     unsigned char visible : 1;
@@ -65,94 +62,131 @@ struct _Smart_Data
 
 struct _Menu_Item
 {
-    Smart_Data *sd;
+    Menu_Data *sd;
     Evas_Object *o_base;
     Evas_Object *o_icon;
     void (*func)(void *data);
     void *data;
-    unsigned char selected : 1;
     Enna_Class_Activity *act;
 };
 
 /* local subsystem functions */
 static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-static Evas_Object *_add_button(Smart_Data *sd, const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info));
-static void _smart_activate_cb (void *data);
-static void _smart_reconfigure(Smart_Data * sd);
-static void _smart_init(void);
-static void _smart_add(Evas_Object * obj);
-static void _smart_del(Evas_Object * obj);
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y);
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h);
-static void _smart_show(Evas_Object * obj);
-static void _smart_hide(Evas_Object * obj);
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip);
-static void _smart_clip_unset(Evas_Object * obj);
-static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info);
-static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info);
+static Evas_Object *_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info));
+static void _item_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info);
+static void _item_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info);
+
 
 /* local subsystem globals */
-static Evas_Smart *_e_smart = NULL;
+static Menu_Data *sd = NULL;
 
 /* externally accessible functions */
 Evas_Object *
 enna_mainmenu_add(Evas * evas)
 {
-    _smart_init();
-    return evas_object_smart_add(evas, _e_smart);
+    if (sd) return sd->o_tbl;
+
+    sd = calloc(1, sizeof(Menu_Data));
+    if (!sd) return NULL;
+    sd->items = NULL;
+    sd->visible = 0;
+    sd->exit_visible = 0;
+    sd->selected = 0;
+
+    // main menu table
+    sd->o_tbl = elm_table_add(enna->layout);
+    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_tbl);
+
+    // button box
+    sd->o_btn_box = elm_box_add(enna->win);
+    elm_box_homogenous_set(sd->o_btn_box, 0);
+    elm_box_horizontal_set(sd->o_btn_box, 1);
+    evas_object_size_hint_align_set(sd->o_btn_box, -1.0, -1.0);
+    evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
+    evas_object_show(sd->o_btn_box);
+    elm_layout_content_set(enna->layout, "titlebar.swallow.button", sd->o_btn_box);
+    
+    sd->o_home_button = _add_button("icon/home_mini", _home_button_clicked_cb);
+    elm_box_pack_start(sd->o_btn_box, sd->o_home_button);
+
+    sd->o_back_button = _add_button("icon/arrow_left", _back_button_clicked_cb);
+    elm_box_pack_end(sd->o_btn_box, sd->o_back_button);
+
+    /* Add exit Dialog */
+    sd->o_exit = enna_exit_add(evas);
+    elm_layout_content_set(enna->layout, "enna.exit.swallow", sd->o_exit);
+
+    return sd->o_tbl;
 }
 
-void enna_mainmenu_append(Evas_Object *obj, const char *icon,
-        const char *label, Enna_Class_Activity *act, void (*func) (void *data), void *data)
+void
+enna_mainmenu_shutdown(void)
 {
     Menu_Item *it;
-    Evas_Object *ic;
+
+    EINA_LIST_FREE(sd->items, it)
+    {
+        ENNA_OBJECT_DEL(it->o_base);
+        ENNA_OBJECT_DEL(it->o_icon);
+        ENNA_FREE(it);
+    }
+    ENNA_OBJECT_DEL(sd->o_home_button);
+    ENNA_OBJECT_DEL(sd->o_back_button);
+    ENNA_OBJECT_DEL(sd->o_tbl);
+    ENNA_OBJECT_DEL(sd->o_btn_box);
+    ENNA_OBJECT_DEL(sd->o_exit);
+    ENNA_FREE(sd);
+}
+
+void
+enna_mainmenu_append(const char *icon, const char *label,
+                Enna_Class_Activity *act, void (*func) (void *data), void *data)
+{
+    Menu_Item *it;
     static int i = 0;
     static int j = 0;
 
-    API_ENTRY return;
-
-    if (!act)
-        return;
-
     it = malloc(sizeof(Menu_Item));
-    it->sd = sd;
+    if (!it) return;
     it->act = act;
-    it->o_base = edje_object_add(evas_object_evas_get(sd->o_edje));
-    edje_object_file_set(it->o_base, enna_config_theme_get(),
-        "enna/mainmenu/item");
+    it->o_base = edje_object_add(enna->evas);
+    edje_object_file_set(it->o_base, enna_config_theme_get(), "enna/mainmenu/item");
 
+    // label
     if (label)
         edje_object_part_text_set(it->o_base, "enna.text.label", gettext(label));
 
-    ic = elm_icon_add(obj);
-    elm_icon_file_set(ic, enna_config_theme_get(), icon);
-    evas_object_size_hint_weight_set(ic, 1.0, 1.0);
-    evas_object_show(ic);
-    it->o_icon = ic;
-    if (ic)
-        edje_object_part_swallow(it->o_base, "enna.swallow.content", ic);
+    // icon
+    if (icon)
+    {
+        Evas_Object *ic;
 
+        ic = elm_icon_add(enna->layout);
+        elm_icon_file_set(ic, enna_config_theme_get(), icon);
+        evas_object_size_hint_weight_set(ic, 1.0, 1.0);
+        evas_object_show(ic);
+        it->o_icon = ic;
+        if (ic)
+            edje_object_part_swallow(it->o_base, "enna.swallow.content", ic);
+    }
+
+    // item data
     it->func = func;
     it->data = data;
-    it->selected = 0;
     sd->items = eina_list_append(sd->items, it);
-
-    evas_object_show(it->o_base);
 
     evas_object_size_hint_weight_set(it->o_base, 1.0, 1.0);
     evas_object_size_hint_align_set(it->o_base, -1.0, -1.0);
 
     elm_table_pack(sd->o_tbl, it->o_base, i, j, 1, 1);
 
-
     evas_object_event_callback_add(it->o_base, EVAS_CALLBACK_MOUSE_UP,
-        _smart_event_mouse_up, it);
+                                   _item_event_mouse_up, it);
     evas_object_event_callback_add(it->o_base, EVAS_CALLBACK_MOUSE_DOWN,
-        _smart_event_mouse_down, it);
+                                   _item_event_mouse_down, it);
     evas_object_show(it->o_base);
+
 
     // FIXME : Ugly !
     i++;
@@ -161,117 +195,107 @@ void enna_mainmenu_append(Evas_Object *obj, const char *icon,
         j++;
         i = 0;
     }
-
 }
 
-void enna_mainmenu_load_from_activities(Evas_Object *obj)
+void
+enna_mainmenu_load_from_activities(void)
 {
     Eina_List *activities, *l;
-    API_ENTRY return;
+    Enna_Class_Activity *act;
 
     activities = enna_activities_get();
 
-    for (l = activities; l; l = l->next)
-    {
-        Enna_Class_Activity *act;
-        const char *icon_name = NULL;
-        act = l->data;
-
-        if (act->icon)
-        {
-            icon_name = eina_stringshare_add(act->icon);
-        }
-        else if (act->icon_file)
-        {
-
-            icon_name = eina_stringshare_add(act->icon_file);
-        }
-        enna_mainmenu_append(obj, icon_name, act->label, act, _smart_activate_cb, act);
-    }
-
+    EINA_LIST_FOREACH(activities, l, act)
+        enna_mainmenu_append(act->icon ? act->icon : act->icon_file,
+                             act->label, act, NULL, NULL);
 }
 
-void enna_mainmenu_activate_nth(Evas_Object *obj, int nth)
+void
+enna_mainmenu_activate(Menu_Item *it)
+{
+    // hide the mainmenu
+    enna_mainmenu_hide();
+    edje_object_part_text_set(elm_layout_edje_get(enna->layout),
+                              "titlebar.text.label", "");
+
+    // update icon
+    ENNA_OBJECT_DEL(sd->o_icon)
+    sd->o_icon = elm_icon_add(enna->layout);
+    elm_icon_file_set(sd->o_icon, enna_config_theme_get(), it->act->icon);
+    evas_object_show(sd->o_icon);
+    elm_layout_content_set(enna->layout, "titlebar.swallow.icon", sd->o_icon);
+
+    // run the action
+    enna_content_select(it->act->name);
+}
+
+void
+enna_mainmenu_activate_nth(int nth)
 {
     Menu_Item *it;
-    API_ENTRY
-        return;
+
+    if (!sd) return;
 
     it = eina_list_nth(sd->items, nth);
-    if (!it)
-        return;
-    if (it->func)
-    {
-        Evas_Object *icon;
-        it->func(it->data);
-        /* Unswallow and delete previous icons */
-        icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
-        edje_object_part_unswallow(sd->o_edje, icon);
-        ENNA_OBJECT_DEL(icon);
+    if (!it) return;
 
-        edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "");
-        icon = edje_object_add(evas_object_evas_get(sd->o_edje));
-        edje_object_file_set(icon, enna_config_theme_get(),it->act->icon);
-        edje_object_part_swallow(sd->o_edje, "titlebar.swallow.icon", icon);
-        enna_mainmenu_hide(obj);
-    }
+    enna_mainmenu_activate(it);
 }
 
-static int enna_mainmenu_get_nr_items(Evas_Object *obj)
+static int
+enna_mainmenu_get_nr_items()
 {
-    API_ENTRY
-        return 0;
+    if (!sd) return 0;
 
     return eina_list_count(sd->items);
 }
 
-int enna_mainmenu_selected_get(Evas_Object *obj)
+int
+enna_mainmenu_selected_get(void)
 {
-    API_ENTRY return -1;
+    if (!sd) return 0;
     return sd->selected;
 }
 
-void enna_mainmenu_select_nth(Evas_Object *obj, int nth)
+void
+enna_mainmenu_select_nth(int nth)
 {
     Menu_Item *new, *prev;
 
-    API_ENTRY return;
+    if (!sd) return;
 
     prev = eina_list_nth(sd->items, sd->selected);
-
-    if (!prev)
-        return;
+    if (!prev) return;
 
     new = eina_list_nth(sd->items, nth);
-    if (!new)
-        return;
+    if (!new) return;
 
     sd->selected = nth;
     edje_object_signal_emit(new->o_base, "select", "enna");
     if (new != prev)
         edje_object_signal_emit(prev->o_base, "unselect", "enna");
-
 }
 
-Enna_Class_Activity *enna_mainmenu_selected_activity_get(Evas_Object *obj)
+Enna_Class_Activity *
+enna_mainmenu_selected_activity_get(void)
 {
     Menu_Item *it;
-    API_ENTRY return NULL;
+
+    if (!sd) return NULL;
 
     it = eina_list_nth(sd->items, sd->selected);
-
-    if (!it)
-        return NULL;
+    if (!it) return NULL;
 
     return it->act;
 }
 
-static void enna_mainmenu_select_sibbling (Evas_Object *obj, int way)
+static void
+enna_mainmenu_select_sibbling (int way)
 {
     Menu_Item *new, *prev;
     int ns = 0;
 
-    API_ENTRY return;
+    if (!sd) return;
 
     ns = sd->selected;
     prev = eina_list_nth(sd->items, ns);
@@ -291,52 +315,54 @@ static void enna_mainmenu_select_sibbling (Evas_Object *obj, int way)
     edje_object_signal_emit(prev->o_base, "unselect", "enna");
 }
 
-void enna_mainmenu_select_next(Evas_Object *obj)
+void
+enna_mainmenu_select_next(void)
 {
-    enna_mainmenu_select_sibbling (obj, 0);
+    enna_mainmenu_select_sibbling (0);
 }
 
-void enna_mainmenu_select_prev(Evas_Object *obj)
+void
+enna_mainmenu_select_prev(void)
 {
-    enna_mainmenu_select_sibbling (obj, 1);
+    enna_mainmenu_select_sibbling (1);
 }
 
-void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
+void
+enna_mainmenu_event_feed(void *event_info)
 {
-    API_ENTRY return;
-
     enna_key_t key;
     int n, el;
+
+    if (!sd) return;
+
     key = enna_get_key(event_info);
     if (!sd->exit_visible)
     {
-
         switch (key)
         {
         case ENNA_KEY_RIGHT:
-            enna_mainmenu_select_next(obj);
+            enna_mainmenu_select_next();
             break;
         case ENNA_KEY_LEFT:
-            enna_mainmenu_select_prev(obj);
+            enna_mainmenu_select_prev();
             break;
         case ENNA_KEY_UP:
-            el = enna_mainmenu_selected_get(obj);
-            enna_mainmenu_select_nth(obj, el - MAX_PER_ROW);
+            el = enna_mainmenu_selected_get();
+            enna_mainmenu_select_nth(el - MAX_PER_ROW);
             break;
         case ENNA_KEY_DOWN:
-            n = enna_mainmenu_get_nr_items(obj);
-            el = enna_mainmenu_selected_get(obj);
+            n = enna_mainmenu_get_nr_items();
+            el = enna_mainmenu_selected_get();
             /* go to element below or last one of row if none */
-            enna_mainmenu_select_nth(obj, (el + MAX_PER_ROW >= n) ?
+            enna_mainmenu_select_nth((el + MAX_PER_ROW >= n) ?
                                      n - 1 : el + MAX_PER_ROW);
             break;
         case ENNA_KEY_OK:
         case ENNA_KEY_SPACE:
-            enna_mainmenu_activate_nth(sd->o_smart,
-                enna_mainmenu_selected_get(sd->o_smart));
+            enna_mainmenu_activate_nth(enna_mainmenu_selected_get());
             break;
         case ENNA_KEY_QUIT:
-            enna_mainmenu_exit_show(sd->o_smart);
+            enna_mainmenu_exit_show(NULL);
         default:
             break;
         }
@@ -348,7 +374,7 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
         case ENNA_KEY_QUIT:
         case ENNA_KEY_CANCEL:
         case ENNA_KEY_MENU:
-            enna_mainmenu_exit_show(sd->o_smart);
+            enna_mainmenu_exit_show(NULL);
             break;
         default:
             enna_exit_event_feed(sd->o_exit, event_info);
@@ -356,261 +382,81 @@ void enna_mainmenu_event_feed(Evas_Object *obj, void *event_info)
     }
 }
 
-void enna_mainmenu_show(Evas_Object *obj)
+void
+enna_mainmenu_show(void)
 {
-    Evas_Object *icon;
-
-    API_ENTRY return;
-    if (sd->visible)
-        return;
-
+    if (!sd) return;
     sd->visible = 1;
-    edje_object_signal_emit(sd->o_edje, "mainmenu,show", "enna");
 
-    /* Unswallow and delete previous icons */
-    icon = edje_object_part_swallow_get(sd->o_edje, "titlebar.swallow.icon");
-    edje_object_part_unswallow(sd->o_edje, icon);
-    ENNA_OBJECT_DEL(icon);
-
-    edje_object_part_text_set(sd->o_edje, "titlebar.text.label", "enna");
-    ENNA_OBJECT_DEL (sd->o_home_button);
-    ENNA_OBJECT_DEL (sd->o_back_button);
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+                            "mainmenu,show", "enna");
+    edje_object_part_text_set(elm_layout_edje_get(enna->layout),
+                              "titlebar.text.label", "enna");
+    ENNA_OBJECT_DEL(sd->o_icon);
 }
 
-void enna_mainmenu_hide(Evas_Object *obj)
+void
+enna_mainmenu_hide(void)
 {
-    API_ENTRY return;
-    if (!sd->visible)
-        return;
-
+    if (!sd) return;
     sd->visible = 0;
-    edje_object_signal_emit(sd->o_edje, "mainmenu,hide", "enna");
-    ENNA_OBJECT_DEL (sd->o_home_button);
-    ENNA_OBJECT_DEL (sd->o_back_button);
 
-    sd->o_home_button = _add_button(sd, "icon/home_mini", _home_button_clicked_cb);
-    elm_box_pack_start(sd->o_btn_box, sd->o_home_button);
-
-    sd->o_back_button = _add_button(sd, "icon/arrow_left", _back_button_clicked_cb);
-    elm_box_pack_end(sd->o_btn_box, sd->o_back_button);
-
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+                            "mainmenu,hide", "enna");
 }
 
-unsigned char enna_mainmenu_visible(Evas_Object *obj)
+unsigned char
+enna_mainmenu_visible(void)
 {
-    API_ENTRY return 0;
+    if (!sd) return 0;
     return sd->visible;
 }
 
-unsigned char enna_mainmenu_exit_visible(Evas_Object *obj)
+unsigned char
+enna_mainmenu_exit_visible(void)
 {
-    API_ENTRY return 0;
+    if (!sd) return 0;
     return sd->exit_visible;
 }
 
-/* local subsystem globals */
-
-static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+/* local subsystem functions */
+static void
+_home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    evas_event_feed_key_down(enna->evas, "Super_L", "Super_L", "Super_L", NULL, ecore_time_get(), data);
+    evas_event_feed_key_down(enna->evas, "Super_L", "Super_L", "Super_L",
+                             NULL, ecore_time_get(), data);
 }
 
-static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-
-    evas_event_feed_key_down(enna->evas, "BackSpace", "BackSpace", "BackSpace", NULL, ecore_time_get(), data);
+    evas_event_feed_key_down(enna->evas, "BackSpace", "BackSpace", "BackSpace",
+                             NULL, ecore_time_get(), data);
 }
 
-
-static void _smart_activate_cb(void *data)
-{
-    Enna_Class_Activity *act;
-
-    if (!data)
-        return;
-    act = data;
-
-    enna_content_select(act->name);
-
-}
-
-static void _smart_reconfigure(Smart_Data * sd)
-{
-    Evas_Coord x, y, w, h;
-
-    x = sd->x;
-    y = sd->y;
-    w = sd->w;
-    h = sd->h;
-
-    evas_object_move(sd->o_edje, x, y);
-    evas_object_resize(sd->o_edje, w, h);
-
-}
-
-static void _smart_init(void)
-{
-    if (_e_smart)
-        return;
-    static const Evas_Smart_Class sc =
-    {
-        SMART_NAME,
-        EVAS_SMART_CLASS_VERSION,
-        _smart_add,
-        _smart_del,
-        _smart_move,
-        _smart_resize,
-        _smart_show,
-        _smart_hide,
-        _smart_color_set,
-        _smart_clip_set,
-        _smart_clip_unset,
-        NULL,
-        NULL
-    };
-    _e_smart = evas_smart_class_new(&sc);
-}
-
-static Evas_Object *_add_button(Smart_Data *sd, const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info))
+static Evas_Object *
+_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info))
 {
     Evas_Object *ic, *bt;
-    ic = elm_icon_add(sd->o_edje);
+    
+    ic = elm_icon_add(enna->layout);
     elm_icon_file_set(ic, enna_config_theme_get(), icon_name);
-    elm_icon_scale_set(ic, 0, 0);
-    bt = elm_button_add(sd->o_edje);
+    evas_object_show(ic);
+    
+    bt = elm_button_add(enna->layout);
     evas_object_smart_callback_add(bt, "clicked", cb, sd);
     elm_button_icon_set(bt, ic);
     evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);
+    //~ evas_object_size_hint_align_set(bt, -1.0, -1.0);
+    evas_object_size_hint_min_set(bt, 55, 55);
     evas_object_show(bt);
-    evas_object_show(ic);
+
     return bt;
 }
 
-static void _smart_add(Evas_Object * obj)
+static void
+_item_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info)
 {
-    Smart_Data *sd;
-    Evas_Object *o;
-    Evas *e;
-
-    sd = calloc(1, sizeof(Smart_Data));
-    if (!sd)
-        return;
-
-    e = evas_object_evas_get(obj);
-
-    sd->o_edje = evas_object_image_add(e);
-    sd->x = 0;
-    sd->y = 0;
-    sd->w = 0;
-    sd->h = 0;
-
-    sd->items = NULL;
-    sd->visible = 0;
-    sd->exit_visible = 0;
-    sd->selected = 0;
-    o = edje_object_add(e);
-    edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu");
-    sd->o_edje = o;
-    evas_object_show(o);
-
-    o = elm_table_add(obj);
-    sd->o_tbl = o;
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.box", sd->o_tbl);
-
-    sd->o_btn_box = elm_box_add(obj);
-    elm_box_homogenous_set(sd->o_btn_box, 0);
-    elm_box_horizontal_set(sd->o_btn_box, 1);
-    evas_object_size_hint_align_set(sd->o_btn_box, 0, 0.0);
-    evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
-    edje_object_part_swallow(sd->o_edje, "titlebar.swallow.button", sd->o_btn_box);
-
-    /* Add exit Dialog */
-    sd->o_exit = enna_exit_add(evas_object_evas_get(sd->o_edje));
-    edje_object_part_swallow(sd->o_edje, "enna.exit.swallow", sd->o_exit);
-
-    sd->o_smart = obj;
-    evas_object_smart_member_add(sd->o_edje, obj);
-    evas_object_smart_data_set(obj, sd);
-}
-
-static void _smart_del(Evas_Object * obj)
-{
-    Eina_List *l;
-    INTERNAL_ENTRY;
-
-    for (l = sd->items; l; l = l->next)
-    {
-        Menu_Item *it;
-        it = l->data;
-        evas_object_del(it->o_base);
-        evas_object_del(it->o_icon);
-    }
-    eina_list_free(sd->items);
-    evas_object_del(sd->o_home_button);
-    evas_object_del(sd->o_back_button);
-    evas_object_del(sd->o_edje);
-    evas_object_del(sd->o_tbl);
-    evas_object_del(sd->o_btn_box);
-    evas_object_del(sd->o_exit);
-    free(sd);
-}
-
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
-{
-    INTERNAL_ENTRY;
-
-    if ((sd->x == x) && (sd->y == y))
-        return;
-    sd->x = x;
-    sd->y = y;
-    _smart_reconfigure(sd);
-}
-
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
-{
-    INTERNAL_ENTRY;
-
-    if ((sd->w == w) && (sd->h == h))
-        return;
-    sd->w = w;
-    sd->h = h;
-    _smart_reconfigure(sd);
-}
-
-static void _smart_show(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_show(sd->o_edje);
-}
-
-static void _smart_hide(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_hide(sd->o_edje);
-}
-
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
-{
-    INTERNAL_ENTRY;
-    evas_object_color_set(sd->o_edje, r, g, b, a);
-}
-
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
-{
-    INTERNAL_ENTRY;
-    evas_object_clip_set(sd->o_edje, clip);
-}
-
-static void _smart_clip_unset(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_clip_unset(sd->o_edje);
-}
-
-static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info)
-{
-    Smart_Data *sd;
     Evas_Event_Mouse_Up *ev;
     Menu_Item *it;
     Eina_List *l;
@@ -618,7 +464,6 @@ static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void
 
     ev = event_info;
     it = data;
-    sd = it->sd;
 
     if (!sd->items)
         return;
@@ -627,51 +472,48 @@ static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void
     {
         if (l->data == it)
         {
-            enna_mainmenu_activate_nth(sd->o_smart, i);
+            enna_mainmenu_activate(it);
             break;
         }
     }
 }
 
-static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info)
+static void
+_item_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info)
 {
-    Smart_Data *sd;
     Evas_Event_Mouse_Down *ev;
-    Menu_Item *si;
+    Menu_Item *it;
     Menu_Item *prev;
     Eina_List *l = NULL;
     int i;
 
     ev = event_info;
-    si = data;
-    sd = si->sd;
+    it = data;
 
-    if (!sd->items)
-        return;
+    if (!sd->items) return;
+
     prev = eina_list_nth(sd->items, sd->selected);
-
     for (i = 0, l = sd->items; l; l = l->next, i++)
     {
-        if (l->data == si)
+        if (l->data == it)
         {
-            edje_object_signal_emit(si->o_base, "select", "enna");
+            edje_object_signal_emit(it->o_base, "select", "enna");
             edje_object_signal_emit(prev->o_base, "unselect", "enna");
             sd->selected = i;
             break;
         }
     }
-
 }
 
-void enna_mainmenu_exit_show(Evas_Object *obj)
+void
+enna_mainmenu_exit_show(Evas_Object *obj)
 {
     char msg[50];
-    API_ENTRY return;
+
+    if (!sd) return;
 
     sd->exit_visible = !sd->exit_visible;
     if (sd->exit_visible) enna_exit_update_text(sd->o_exit);
     strncpy(msg, sd->exit_visible ? "exit,show" : "exit,hide", sizeof(msg));
-    edje_object_signal_emit (sd->o_edje, msg, "enna");
-
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout), msg, "enna");
 }
-

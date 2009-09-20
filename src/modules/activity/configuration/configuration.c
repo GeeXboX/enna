@@ -170,8 +170,8 @@ _class_event (void *event_info)
 	if (key == ENNA_KEY_CANCEL)
 	{
 
-	    enna_content_hide ();
-	    enna_mainmenu_show (enna->o_mainmenu);
+	    enna_content_hide();
+	    enna_mainmenu_show();
 	}
 	else
 	    enna_wall_event_feed(mod->o_menu, event_info);
