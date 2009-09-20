@@ -42,7 +42,6 @@
 #include "enna_config.h"
 #include "utils.h"
 #include "mainmenu.h"
-#include "background.h"
 #include "module.h"
 #include "content.h"
 #include "event_key.h"
@@ -327,7 +326,7 @@ static int _create_gui(void)
 
     // mouse pointer
     enna->o_cursor = edje_object_add(enna->evas);
-    edje_object_file_set(enna->o_cursor, enna_config_theme_get(), "enna/mainmenu/cursor");  //TODO move cursor out of mainmenu
+    edje_object_file_set(enna->o_cursor, enna_config_theme_get(), "enna/cursor");
     // hot_x/hot_y are about 4px/3px in original image which is scaled by 1.5
     elm_win_cursor_set(enna->win, enna->o_cursor, 9, 6);
     evas_object_show(enna->o_cursor);
