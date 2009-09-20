@@ -187,9 +187,11 @@ collections
             }
             part { name: "titlebar.swallow.button";
                 type: SWALLOW;
+                
                 mouse_events: 1;
                 clip_to: "titlebar.buttons.clip";
                 description { state: "default" 0.0;
+                fixed: 0 1;
                     rel1.to: "titlebar.buttons.clip";
                     rel2.to: "titlebar.buttons.clip";
                 }
