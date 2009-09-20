@@ -78,7 +78,7 @@ _infos_selected_cb(void *data)
 }
 
 /****************************************************************************/
-/*                        Private Module API                                */
+/*                        Private Module Functions                          */
 /****************************************************************************/
 
 static void
@@ -109,7 +109,7 @@ _delete_menu(void)
     Eina_List *l;
 
     if (!mod->o_menu)
-	return;
+        return;
 
     for (l = mod->items; l; l = l->next)
     {
@@ -119,66 +119,65 @@ _delete_menu(void)
     ENNA_OBJECT_DEL(mod->o_menu);
 }
 
+/****************************************************************************/
+/*                        Activity Class API                                */
+/****************************************************************************/
 static void
-_class_init (int dummy)
+_activity_init (int dummy)
 {
     mod->o_edje = edje_object_add (mod->em->evas);
     edje_object_file_set (mod->o_edje,
-	enna_config_theme_get (), "module/configuration");
+        enna_config_theme_get (), "module/configuration");
     _create_menu ();
     enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
 }
 
 static void
-_class_shutdown (int dummy)
+_activity_shutdown (int dummy)
 {
     ENNA_OBJECT_DEL (mod->o_edje);
 }
 
 static void
-_class_show (int dummy)
+_activity_show (int dummy)
 {
     edje_object_signal_emit (mod->o_edje, "module,show", "enna");
     edje_object_signal_emit (mod->o_edje, "content,show", "enna");
 }
 
 static void
-_class_hide (int dummy)
+_activity_hide (int dummy)
 {
     edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
     edje_object_signal_emit (mod->o_edje, "content,hide", "enna");
 }
 
 static void
-_class_event (void *event_info)
+_activity_event (void *event_info)
 {
     Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key (ev);
 
-
-
     switch (mod->state)
     {
     case CONTENT_VIEW:
-	if (key == ENNA_KEY_CANCEL)
-	{
-	    ENNA_OBJECT_DEL(mod->o_content);
-	    _create_menu();
-	}
-	break;
-    default:
-	if (key == ENNA_KEY_CANCEL)
-	{
-
-	    enna_content_hide();
-	    enna_mainmenu_show();
-	}
-	else
-	    enna_wall_event_feed(mod->o_menu, event_info);
-	break;
+    if (key == ENNA_KEY_CANCEL)
+    {
+        ENNA_OBJECT_DEL(mod->o_content);
+        _create_menu();
     }
+    break;
+    default:
+    if (key == ENNA_KEY_CANCEL)
+    {
 
-
+        enna_content_hide();
+        enna_mainmenu_show();
+    }
+    else
+        enna_wall_event_feed(mod->o_menu, event_info);
+    break;
+    }
 }
 
 static Enna_Class_Activity class = {
@@ -188,12 +187,12 @@ static Enna_Class_Activity class = {
     NULL,
     "icon/infos",
     {
-        _class_init,
+        _activity_init,
         NULL,
-        _class_shutdown,
-        _class_show,
-        _class_hide,
-        _class_event
+        _activity_shutdown,
+        _activity_show,
+        _activity_hide,
+        _activity_event
     },
     NULL
 };
