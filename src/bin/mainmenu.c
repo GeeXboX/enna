@@ -217,7 +217,7 @@ enna_mainmenu_activate(Menu_Item *it)
     enna_mainmenu_hide();
     edje_object_part_text_set(elm_layout_edje_get(enna->layout),
                               "titlebar.text.label", "");
-
+printf("MAINMENU ACTIVATE %s\n", it->act->name);
     // update icon
     ENNA_OBJECT_DEL(sd->o_icon)
     sd->o_icon = elm_icon_add(enna->layout);

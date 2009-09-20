@@ -49,5 +49,7 @@ unsigned char enna_mainmenu_visible(void);
 unsigned char enna_mainmenu_exit_visible(void);
 void enna_mainmenu_activate_nth(int nth);
 void enna_mainmenu_exit_show(Evas_Object *obj);
-#endif /* MAINMENU_H */
+void enna_mainmenu_shutdown(void);
 
+
+#endif /* MAINMENU_H */

@@ -221,6 +221,8 @@ static int _enna_init(void)
 {
     char tmp[PATH_MAX];
     int i;
+    Eina_List *l;
+    Enna_Class_Activity *a;
 
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
@@ -265,44 +267,17 @@ static int _enna_init(void)
     /* Load available modules */
     enna_module_load_all(enna->evas);
 
-    /* Load mainmenu items */
-    /*
-     * FIXME : Why are there static calls here, It should be
-     * completly dynamic as modules are already load dynamicly ?! It's stupid
-     */
-#ifdef BUILD_ACTIVITY_MUSIC
-    enna_activity_init("music");
-#endif
-#if defined(BUILD_ACTIVITY_TV)
-    enna_activity_init("tv");
-#endif
-#ifdef BUILD_ACTIVITY_VIDEO
-    enna_activity_init("video");
-#endif
-#ifdef BUILD_ACTIVITY_PHOTO
-    enna_activity_init("photo");
-#endif
-#if defined(BUILD_ACTIVITY_GAMES) && defined(BUILD_EFREET)
-    enna_activity_init("games");
-#endif
-#ifdef BUILD_ACTIVITY_WEATHER
-    enna_activity_init("weather");
-#endif
-#ifdef  BUILD_ACTIVITY_CONFIGURATION
-    enna_activity_init("configuration");
-#endif
+    /* Dinamically init activities */
+    EINA_LIST_FOREACH(enna_activities_get(), l, a)
+        enna_activity_init(a->name);
 
+    /* Fill mainmenu */
     enna_mainmenu_load_from_activities();
     enna_mainmenu_select_nth(0);
-
-    enna_content_hide();
     enna_mainmenu_show();
 
     enna->idle_timer = NULL;
     enna_idle_timer_renew();
-
-
-    evas_data_attach_set(enna->evas, enna); //TOD REMOVE ME
 
     enna_input_init();
     enna_ipc_init();
