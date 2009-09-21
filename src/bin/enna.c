@@ -328,7 +328,8 @@ static int _create_gui(void)
     enna->o_cursor = edje_object_add(enna->evas);
     edje_object_file_set(enna->o_cursor, enna_config_theme_get(), "enna/cursor");
     // hot_x/hot_y are about 4px/3px in original image which is scaled by 1.5
-    elm_win_cursor_set(enna->win, enna->o_cursor, 9, 6);
+    /* Comment until Dave patch elementary */
+    /*elm_win_cursor_set(enna->win, enna->o_cursor, 9, 6);*/
     evas_object_show(enna->o_cursor);
     enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, enna->o_cursor);
     evas_object_event_callback_add(enna->o_cursor, EVAS_CALLBACK_MOVE, _mousemove_cb, NULL);

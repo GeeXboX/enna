@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-09-01 15:45+0200\n"
+"POT-Creation-Date: 2009-09-21 20:35+0200\n"
 "PO-Revision-Date: 2009-08-30 15:11+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -20,53 +20,49 @@ msgstr ""
 msgid "No media found !"
 msgstr "Nessun media trovato!"
 
-#: src/bin/enna.c:307
-msgid "enna HTPC"
-msgstr "enna HTPC"
-
-#: src/bin/enna.c:482
+#: src/bin/enna.c:404
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:483
+#: src/bin/enna.c:405
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:484
+#: src/bin/enna.c:406
 #, c-format
 msgid " Available Options:\n"
 msgstr "Opzioni disponibili:\n"
 
-#: src/bin/enna.c:485
+#: src/bin/enna.c:407
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:486
+#: src/bin/enna.c:408
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:487
+#: src/bin/enna.c:409
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:488
+#: src/bin/enna.c:410
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:489
+#: src/bin/enna.c:411
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:490
+#: src/bin/enna.c:412
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
@@ -88,7 +84,7 @@ msgstr "No, continua ad usare Enna"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Traccia #%02d (%02d:%02d)"
 
-#: src/modules/activity/games/games.c:241
+#: src/modules/activity/games/games.c:246
 msgid "Games"
 msgstr "Giochi"
 
@@ -96,7 +92,7 @@ msgstr "Giochi"
 msgid "Infos"
 msgstr "Info"
 
-#: src/modules/activity/configuration/configuration.c:187
+#: src/modules/activity/configuration/configuration.c:199
 msgid "Configuration"
 msgstr "Impostazioni"
 
@@ -202,17 +198,16 @@ msgstr "nessuna<br>"
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informazioni di sistema</c><br><br>"
 
-#: src/modules/activity/music/music.c:141
+#: src/modules/activity/music/music.c:140
 #: src/modules/activity/music/music.c:654
 msgid "Music"
 msgstr "Musica"
 
-#: src/modules/activity/music/panel_lyrics.c:220
-#: src/modules/activity/music/panel_lyrics.c:227
+#: src/modules/activity/music/panel_lyrics.c:230
 msgid "No lyrics found ..."
 msgstr "Nessun testo trovato..."
 
-#: src/modules/activity/photo/photo.c:389
+#: src/modules/activity/photo/photo.c:390
 msgid "Photo"
 msgstr "Foto"
 
@@ -232,60 +227,59 @@ msgstr "Sto registrando '%s'"
 msgid "Recording in progress"
 msgstr "Registrazione in corso"
 
-#: src/modules/activity/tv/tv.c:151
+#: src/modules/activity/tv/tv.c:152
 msgid "Television"
 msgstr "Televisione"
 
-#: src/modules/activity/video/panel_infos.c:191
-#: src/modules/activity/video/panel_infos.c:198
+#: src/modules/activity/video/panel_infos.c:194
 msgid "No such information ..."
 msgstr "Informazioni non trovate..."
 
-#: src/modules/activity/video/panel_infos.c:239
+#: src/modules/activity/video/panel_infos.c:235
 #, c-format
 msgid "%.2d hour "
 msgid_plural "%.2d hours "
 msgstr[0] "%.2d ora "
 msgstr[1] "%.2d ore "
 
-#: src/modules/activity/video/panel_infos.c:241
+#: src/modules/activity/video/panel_infos.c:239
 #, c-format
 msgid "%.2d minute"
 msgid_plural "%.2d minutes"
 msgstr[0] "%.2d minuto"
 msgstr[1] "%.2d minuti"
 
-#: src/modules/activity/video/panel_infos.c:246
+#: src/modules/activity/video/panel_infos.c:245
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr "<ul>Regista:</ul> %s<br>"
 
-#: src/modules/activity/video/panel_infos.c:248
+#: src/modules/activity/video/panel_infos.c:249
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr "<ul>Attori:</ul> %s<br>"
 
-#: src/modules/activity/video/panel_infos.c:256
+#: src/modules/activity/video/panel_infos.c:260
 #, c-format
 msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 msgstr "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 
-#: src/modules/activity/video/panel_infos.c:259
+#: src/modules/activity/video/panel_infos.c:263
 #, c-format
 msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 msgstr "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 
-#: src/modules/activity/video/panel_infos.c:262
+#: src/modules/activity/video/panel_infos.c:266
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Dimensione: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video.c:788
-#: src/modules/activity/video/video.c:865
+#: src/modules/activity/video/video.c:793
+#: src/modules/activity/video/video.c:871
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/weather/weather.c:511
+#: src/modules/activity/weather/weather.c:512
 msgid "Weather"
 msgstr "Meteo"
 
@@ -304,33 +298,6 @@ msgstr "Riproduci (con menu)"
 #: src/modules/browser/dvd/dvd.c:97
 msgid "Watch DVD Video"
 msgstr "Guarda DVD Video"
-
-#: src/modules/browser/lms/lms.c:122
-msgid "Browse Library"
-msgstr "Sfoglia libreria"
-
-#: src/modules/browser/lms/lms.c:669
-#: src/modules/browser/valhalla/valhalla.c:308
-msgid "Artists"
-msgstr "Artisti"
-
-#: src/modules/browser/lms/lms.c:673
-#: src/modules/browser/valhalla/valhalla.c:312
-msgid "Albums"
-msgstr "Album"
-
-#: src/modules/browser/lms/lms.c:676 src/modules/browser/lms/lms.c:743
-#: src/modules/browser/valhalla/valhalla.c:316
-msgid "Genres"
-msgstr "Generi"
-
-#: src/modules/browser/lms/lms.c:689
-msgid "Artist"
-msgstr "Artista"
-
-#: src/modules/browser/lms/lms.c:722
-msgid "Album"
-msgstr "Album"
 
 #: src/modules/browser/localfiles/localfiles.c:421
 #: src/modules/browser/localfiles/localfiles.c:439
@@ -355,11 +322,23 @@ msgstr "Flussi SHOUTcast"
 msgid "UPnP/DLNA Media Servers"
 msgstr "UPnP/DLNA media server"
 
+#: src/modules/browser/valhalla/valhalla.c:308
+msgid "Artists"
+msgstr "Artisti"
+
+#: src/modules/browser/valhalla/valhalla.c:312
+msgid "Albums"
+msgstr "Album"
+
+#: src/modules/browser/valhalla/valhalla.c:316
+msgid "Genres"
+msgstr "Generi"
+
 #: src/modules/browser/valhalla/valhalla.c:320
 msgid "Unclassified"
 msgstr "Non classificato"
 
-#: src/modules/browser/valhalla/valhalla.c:618
+#: src/modules/browser/valhalla/valhalla.c:474
 msgid "Media Library"
 msgstr "Libreria dei media"
 
@@ -538,6 +517,18 @@ msgstr "[NFS] %s su %s"
 #, c-format
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s su %s"
+
+#~ msgid "enna HTPC"
+#~ msgstr "enna HTPC"
+
+#~ msgid "Browse Library"
+#~ msgstr "Sfoglia libreria"
+
+#~ msgid "Artist"
+#~ msgstr "Artista"
+
+#~ msgid "Album"
+#~ msgstr "Album"
 
 #~ msgid "Watch PODCAST Video"
 #~ msgstr "Guarda video podcast"
