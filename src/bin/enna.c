@@ -51,7 +51,9 @@
 #include "mediaplayer.h"
 #include "ipc.h"
 
-#define ENNA_MOUSE_IDLE_TIMEOUT 10 //seconds after which the mouse pointer disappears
+/* seconds after which the mouse pointer disappears*/
+#define ENNA_MOUSE_IDLE_TIMEOUT 10
+
 
 /* Global Variable Enna *enna*/
 Enna *enna;
@@ -75,7 +77,8 @@ static int _idle_timer_cb(void *data)
     }
     else if (enna_activity_request_quit_all())
     {
-        enna_log(ENNA_MSG_INFO, NULL, "at least one activity's busy, renewing idle timer");
+        enna_log(ENNA_MSG_INFO, NULL,
+                 "at least one activity's busy, renewing idle timer");
         return ECORE_CALLBACK_RENEW;
     }
 
@@ -86,8 +89,15 @@ static int _idle_timer_cb(void *data)
     }
     else
     {
-        enna_log(ENNA_MSG_INFO, NULL, "enna seems to be idle, sending quit msg and waiting 20s");
-        evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), NULL);
+        enna_log(ENNA_MSG_INFO, NULL,
+                 "enna seems to be idle, sending quit msg and waiting 20s");
+        evas_event_feed_key_down(enna->evas,
+                                 "Escape",
+                                 "Escape",
+                                 "Escape",
+                                 NULL,
+                                 ecore_time_get(),
+                                 NULL);
         ecore_timer_interval_set(enna->idle_timer, 20);
     }
 
@@ -110,18 +120,22 @@ void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
     {
         edje_object_signal_emit(obj, "cursor,show", "enna");
         enna->cursor_is_shown=1;
-        enna_log(ENNA_MSG_EVENT, NULL, "unhiding cursor.", evas_object_visible_get(obj));
+        enna_log(ENNA_MSG_EVENT, NULL, "unhiding cursor.",
+                 evas_object_visible_get(obj));
         enna_idle_timer_renew();
     }
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     if (enna->mouse_idle_timer)
-      ecore_timer_interval_set(enna->mouse_idle_timer, ENNA_MOUSE_IDLE_TIMEOUT);
+        ecore_timer_interval_set(enna->mouse_idle_timer, 
+                                 ENNA_MOUSE_IDLE_TIMEOUT);
     else
-      enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, obj);
+        enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
+                                                 _mouse_idle_timer_cb,
+                                                 obj);
 }
 
 static void _event_bg_key_down_cb(void *data, Evas *e,
-    Evas_Object *obj, void *event)
+                                  Evas_Object *obj, void *event)
 {
     Enna *enna;
     enna_key_t key;
@@ -152,7 +166,9 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         {
             enna_content_show();
             enna_mainmenu_hide();
-            edje_object_signal_emit(enna->o_background, "mainmenu,hide", "enna");
+            edje_object_signal_emit(enna->o_background,
+                                    "mainmenu,hide",
+                                    "enna");
             break;
         }
         default:
@@ -299,10 +315,13 @@ static int _create_gui(void)
     // main window
     enna->win = elm_win_add(NULL, "enna", ELM_WIN_BASIC);
     elm_win_title_set(enna->win, "enna HTPC (elm)");
-    elm_win_fullscreen_set(enna->win, enna_config->fullscreen | run_fullscreen);
-    evas_object_smart_callback_add(enna->win, "delete-request", _window_delete_cb, NULL);
+    elm_win_fullscreen_set(enna->win,
+                           enna_config->fullscreen | run_fullscreen);
+    evas_object_smart_callback_add(enna->win, "delete-request",
+                                   _window_delete_cb, NULL);
     // main window also handle global key down event
-    evas_object_event_callback_add(enna->win, EVAS_CALLBACK_KEY_DOWN, _event_bg_key_down_cb, enna);
+    evas_object_event_callback_add(enna->win, EVAS_CALLBACK_KEY_DOWN,
+                                   _event_bg_key_down_cb, enna);
     evas_object_focus_set(enna->win, 1);
 
     //~ ecore_evas_shaped_set(enna->ee, 1);  //TODO why this ???
@@ -322,17 +341,26 @@ static int _create_gui(void)
 
     // content
     enna->o_content = enna_content_add(enna->evas);
-    elm_layout_content_set(enna->layout, "enna.content.swallow", enna->o_content);
+    elm_layout_content_set(enna->layout,
+                           "enna.content.swallow",
+                           enna->o_content);
 
     // mouse pointer
     enna->o_cursor = edje_object_add(enna->evas);
-    edje_object_file_set(enna->o_cursor, enna_config_theme_get(), "enna/cursor");
+    edje_object_file_set(enna->o_cursor,
+                         enna_config_theme_get(),
+                         "enna/cursor");
     // hot_x/hot_y are about 4px/3px in original image which is scaled by 1.5
     /* Comment until Dave patch elementary */
     /*elm_win_cursor_set(enna->win, enna->o_cursor, 9, 6);*/
     evas_object_show(enna->o_cursor);
-    enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT, _mouse_idle_timer_cb, enna->o_cursor);
-    evas_object_event_callback_add(enna->o_cursor, EVAS_CALLBACK_MOVE, _mousemove_cb, NULL);
+    enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
+                                             _mouse_idle_timer_cb,
+                                             enna->o_cursor);
+    evas_object_event_callback_add(enna->o_cursor,
+                                   EVAS_CALLBACK_MOVE,
+                                   _mousemove_cb,
+                                   NULL);
     enna->cursor_is_shown=1;
 
     // show all
@@ -365,7 +393,7 @@ static void _enna_shutdown(void)
 }
 
 static void _opt_geometry_parse(const char *optarg,
-    unsigned int *pw, unsigned int *ph)
+                                unsigned int *pw, unsigned int *ph)
 {
     int w = 0, h = 0;
 
@@ -380,10 +408,14 @@ void enna_idle_timer_renew(void)
 {
     if (enna_config->idle_timeout)
     {
-        if (enna->idle_timer) { ENNA_TIMER_DEL(enna->idle_timer) }
+        if (enna->idle_timer) 
+            ENNA_TIMER_DEL(enna->idle_timer)
         else
-            enna_log(ENNA_MSG_INFO, NULL, "setting up idle timer to %i minutes", enna_config->idle_timeout);
-        if (!(enna->idle_timer = ecore_timer_add(enna_config->idle_timeout*60, _idle_timer_cb, NULL)))
+            enna_log(ENNA_MSG_INFO, NULL,
+                     "setting up idle timer to %i minutes",
+                     enna_config->idle_timeout);
+        if (!(enna->idle_timer = ecore_timer_add(enna_config->idle_timeout*60,
+                                                 _idle_timer_cb, NULL)))
             enna_log(ENNA_MSG_CRITICAL, NULL, "adding timer failed!");
     }
 }
@@ -392,8 +424,9 @@ static int exit_signal(void *data, int type, void *e)
 {
     Ecore_Event_Signal_Exit *event = e;
 
-    fprintf(stderr, "Enna got exit signal [interrupt=%u, quit=%u, terminate=%u]\n",
-	event->interrupt, event->quit, event->terminate);
+    fprintf(stderr,
+            "Enna got exit signal [interrupt=%u, quit=%u, terminate=%u]\n",
+            event->interrupt, event->quit, event->terminate);
 
     ecore_main_loop_quit();
     return 1;
@@ -419,15 +452,15 @@ static int parse_command_line(int argc, char **argv)
     int c, index;
     char short_options[] = "Vhfc:t:b:g:";
     struct option long_options [] =
-    {
-        { "help",          no_argument,       0, 'h' },
-        { "version",       no_argument,       0, 'V' },
-        { "fs",            no_argument,       0, 'f' },
-        { "config",        required_argument, 0, 'c' },
-        { "theme",         required_argument, 0, 't' },
-        { "geometry",      required_argument, 0, 'g' },
-        { 0,               0,                 0,  0  }
-    };
+        {
+            { "help",          no_argument,       0, 'h' },
+            { "version",       no_argument,       0, 'V' },
+            { "fs",            no_argument,       0, 'f' },
+            { "config",        required_argument, 0, 'c' },
+            { "theme",         required_argument, 0, 't' },
+            { "geometry",      required_argument, 0, 'g' },
+            { 0,               0,                 0,  0  }
+        };
 
     /* command line argument processing */
     while (1)
@@ -446,7 +479,7 @@ static int parse_command_line(int argc, char **argv)
         case '?':
         case 'h':
             usage(argv[0]);
-            return -1;
+        return -1;
 
         case 'V':
             break;
@@ -486,7 +519,8 @@ int main(int argc, char **argv)
     /* Must be called first */
     enna_config_init(conffile);
     ENNA_FREE(conffile);
-    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n", enna_config->log_file);
+    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n",
+             enna_config->log_file);
     enna_log_init(enna_config->log_file);
     enna = calloc(1, sizeof(Enna));
 
