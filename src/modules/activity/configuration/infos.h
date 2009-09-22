@@ -30,6 +30,8 @@
 #ifndef SYSTEM_INFOS_H
 #define SYSTEM_INFOS_H
 
-Evas_Object *enna_infos_add(Evas * evas);
+Evas_Object *info_panel_show(void *data);
+void info_panel_hide(void *data);
+
 
 #endif /* SYSTEM_INFOS_H */

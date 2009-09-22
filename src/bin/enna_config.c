@@ -539,3 +539,83 @@ static Eina_Hash * _config_load_conf(char *conffile, int size)
     free(conffile);
     return config;
 }
+
+/****************************************************************************/
+/*                        Config Panel Stuff                                */
+/****************************************************************************/
+
+Eina_List *_config_panels = NULL;
+
+/**
+ * @brief Register a new configuration panel
+ * @param label The label to show, with locale applied
+ * @param icon The name of the icon to use
+ * @param create_cb This is the function to call when the panel need to be showed
+ * @param destroy_cb This is the function to call when the panel need to be destroyed
+ * @param data This is the user data pointer, use as you like
+ * @return The object handler (needed to unregister)
+ *
+ * With this function modules (and not) can register item to be showed in
+ * the configuration panel. The use is quite simple: give in a label and the
+ * icon that rapresent your panel.
+ * You need to implement 2 functions:
+ * 
+ *  Evas_Object *create_cb(void *data)
+ *   This function must return the main Evas_Object of your panel
+ *   The data pointer is the data you set in the register function
+ *
+ *  void *destroy_cb(void *data)
+ *   In this function you must hide your panel, and possiby free some resource
+ * 
+ */
+Enna_Config_Panel *
+enna_config_panel_register(const char *label, const char *icon,
+                           Evas_Object *(*create_cb)(void *data),
+                           void (*destroy_cb)(void *data),
+                           void *data)
+{
+    Enna_Config_Panel *ecp;
+    printf("CONFIG PANEL REGISTER: %s\n", label);
+
+    if (!label) return NULL;
+
+    ecp = ENNA_NEW(Enna_Config_Panel, 1);
+    if (!ecp) return EINA_FALSE;
+    ecp->label = eina_stringshare_add(label);
+    ecp->icon = eina_stringshare_add(icon);
+    ecp->create_cb = create_cb;
+    ecp->destroy_cb = destroy_cb;
+    ecp->data = data;
+
+    _config_panels = eina_list_append(_config_panels, ecp);
+    //TODO here emit an event like ENNA_CONFIG_PANEL_CHANGED
+    return ecp;
+}
+
+/**
+ * @brief UnRegister a configuration panel
+ * @param destroy_cb This is the function to call when the panel need to be destroyed
+ * @return EINA_TRUE on success, EINA_FALSE otherwise.
+ *
+ * When you dont need the entry in the configuration panel use this function.
+ * You should do this at least on shoutdown
+ */
+Eina_Bool
+enna_config_panel_unregister(Enna_Config_Panel *ecp)
+{
+    if (!ecp) return EINA_FALSE;
+    printf("CONFIG PANEL UNREGISTER: %s\n", ecp->label);
+
+    _config_panels = eina_list_remove(_config_panels, ecp);
+    if (ecp->label) eina_stringshare_del(ecp->label);
+    if (ecp->icon) eina_stringshare_del(ecp->icon);
+    ENNA_FREE(ecp);
+    //TODO here emit an event like ENNA_CONFIG_PANEL_CHANGED
+    return EINA_TRUE;
+}
+
+Eina_List *
+enna_config_panel_list_get(void)
+{
+    return _config_panels;
+}
