@@ -33,6 +33,7 @@
 #include <lirc/lirc_client.h>
 
 #include <Ecore.h>
+#include <Elementary.h>
 
 #include "enna.h"
 #include "enna_config.h"
@@ -45,8 +46,7 @@
 static void _class_init(int dummy);
 static void _class_shutdown(int dummy);
 static void _class_event_cb_set(void (*event_cb)(void *data, char *event), void *data);
-static int em_init(Enna_Module *em);
-static int em_shutdown(Enna_Module *em);
+
 
 typedef struct _Enna_Module_Lirc Enna_Module_Lirc;
 
@@ -62,6 +62,8 @@ struct _Enna_Module_Lirc
 };
 
 static Enna_Module_Lirc *mod;
+static Enna_Config_Panel *_config_panel = NULL;
+static Evas_Object *_o_main = NULL;
 
 Enna_Module_Api module_api =
 {
@@ -142,36 +144,46 @@ static void _class_shutdown(int dummy)
     }
 }
 
+/* Config Panel */
+
+static Evas_Object *
+lirc_panel_show(void *data)
+{
+    _o_main = elm_label_add(enna->layout);
+    elm_label_label_set(_o_main, "Remote config panel !! TODO :P");
+    elm_object_scale_set(_o_main, 6.0);
+    evas_object_size_hint_align_set(_o_main, -1.0, -1.0);
+    evas_object_size_hint_weight_set(_o_main, 1.0, 1.0);
+    evas_object_show(_o_main);
+    
+    return _o_main;
+}
+
+static void
+lirc_panel_hide(void *data)
+{
+    ENNA_OBJECT_DEL(_o_main);
+}
+
 /* Module interface */
-
-static int em_init(Enna_Module *em)
-{
-
-    mod = calloc(1, sizeof(Enna_Module_Lirc));
-    mod->em = em;
-    em->mod = mod;
-
-    enna_input_class_register(em, &class);
-
-    return 1;
-}
-
-static int em_shutdown(Enna_Module *em)
-{
-
-    return 1;
-}
 
 void module_init(Enna_Module *em)
 {
     if (!em)
         return;
 
-    if (!em_init(em))
-        return;
+    mod = calloc(1, sizeof(Enna_Module_Lirc));
+    if (!mod) return;
+    mod->em = em;
+    em->mod = mod;
+
+    enna_input_class_register(em, &class);
+
+    _config_panel = enna_config_panel_register(_("Remote"), "icon/music",
+                                    lirc_panel_show, lirc_panel_hide, NULL);
 }
 
 void module_shutdown(Enna_Module *em)
 {
-    em_shutdown(em);
+    enna_config_panel_unregister(_config_panel);
 }
