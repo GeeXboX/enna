@@ -203,24 +203,9 @@ char enna_key_get_alpha(enna_key_t key)
 
 void enna_input_init(void)
 {
-#ifdef BUILD_INPUT_LIRC
-    Enna_Module *em;
-    Input_Module_Item *item;
-#endif
-
     /* Create Input event "Key Down" */
     ENNA_EVENT_INPUT_KEY_DOWN = ecore_event_type_new();
-
     _input_modules = NULL;
-
-#ifdef BUILD_INPUT_LIRC
-    em = enna_module_open("lirc", ENNA_MODULE_INPUT, enna->evas);
-    item = calloc(1, sizeof(Input_Module_Item));
-    item->module = em;
-    _input_modules = eina_list_append(_input_modules, item);
-    enna_module_enable(em);
-#endif
-
 }
 
 void enna_input_shutdown(void)
@@ -238,21 +223,20 @@ void enna_input_shutdown(void)
 
 int enna_input_class_register(Enna_Module *module, Enna_Class_Input *class)
 {
-    Eina_List *l = NULL;
+    Input_Module_Item *item;
 
-    for (l = _input_modules; l; l = l->next)
-    {
-        Input_Module_Item *item = l->data;
-        if (module == item->module)
-        {
-            item->class = class;
-            if (class && class->func.class_init)
-                class->func.class_init(0);
-            if (class && class->func.class_event_cb_set)
-                class->func.class_event_cb_set(_event_cb, item);
+    // create a new input class object
+    item = calloc(1, sizeof(Input_Module_Item));
+    if (!item) return -1;
+    item->module = module;
+    item->class = class;
+    _input_modules = eina_list_append(_input_modules, item);
 
-            return 0;
-        }
-    }
-    return -1;
+    // run the class 'init' function
+    if (class && class->func.class_init)
+        class->func.class_init(0);
+    if (class && class->func.class_event_cb_set)
+        class->func.class_event_cb_set(_event_cb, item);
+
+    return 0;
 }
