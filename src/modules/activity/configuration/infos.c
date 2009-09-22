@@ -68,7 +68,7 @@
 #endif
 
 /* Refresh period : 2s */
-#define INFOS_REFRESH_PERIOD 2.0
+#define INFOS_REFRESH_PERIOD 0.1 //TODO 2.0
 
 #define BUF_LEN 1024
 #define BUF_DEFAULT "Unknown"
@@ -90,28 +90,10 @@
 #define STR_MEM_TOTAL "MemTotal:"
 #define STR_MEM_ACTIVE "Active:"
 
-#define SMART_NAME "enna_INFOS"
 
-typedef struct _Smart_Data Smart_Data;
-
-struct _Smart_Data
-{
-    Evas_Coord x, y, w, h;
-    Evas_Object *obj;
-    Evas_Object *o_edje;
-    Ecore_Timer *update_timer;
-    char *lsb_distrib_id;
-    char *lsb_release;
-    Ecore_Event_Handler *lsb_release_data_handler;
-    Ecore_Exe *lsb_release_exe;
-};
-
-/* local subsystem functions */
-static void _smart_reconfigure(Smart_Data * sd);
-static void _smart_init(void);
-
-/* local subsystem globals */
-static Evas_Smart *_smart = NULL;
+/* local globals */
+static Evas_Object *o_edje = NULL;
+static Ecore_Timer *update_timer = NULL;
 
 
 /****************************************************************************/
@@ -144,14 +126,15 @@ set_enna_information (buffer_t *b)
 /****************************************************************************/
 
 static void
-get_distribution (Smart_Data *sd, buffer_t *b)
+get_distribution (buffer_t *b)
 {
     FILE *f;
     char buffer[BUF_LEN];
     char *id = NULL, *release = NULL;
+    static const char *lsb_distrib_id = NULL;
+    static const char *lsb_release = NULL;
 
-
-    if (!sd->lsb_distrib_id || !sd->lsb_release)
+    if (!lsb_distrib_id || !lsb_release)
     //FIXME: i'm pretty sure that there's no need to try to read files 'cause the command lsb_release seems to be available anywhere
     //if so, this can be stripped from here (Billy)
     {
@@ -192,8 +175,8 @@ get_distribution (Smart_Data *sd, buffer_t *b)
     }
 
     buffer_append (b, _("<hilight>Distribution: </hilight>"));
-    if (sd->lsb_distrib_id && sd->lsb_release)
-        buffer_appendf (b, "%s %s", sd->lsb_distrib_id, sd->lsb_release);
+    if (lsb_distrib_id && lsb_release)
+        buffer_appendf (b, "%s %s", lsb_distrib_id, lsb_release);
     else if (id && release)
         buffer_appendf (b, "%s %s", id, release);
     else
@@ -378,6 +361,7 @@ get_resolution (buffer_t *b)
                     DisplayWidth (dpy, screen), DisplayHeight (dpy, screen),
                     rate, minWidth, minHeight, maxWidth, maxHeight);
     buffer_append (b, "<br>");
+    XCloseDisplay(dpy);
 }
 #endif
 
@@ -493,13 +477,13 @@ get_default_gw (buffer_t *b)
 }
 
 static void
-set_system_information (Smart_Data *sd, buffer_t *b)
+set_system_information (buffer_t *b)
 {
     if (!b)
         return;
 
     buffer_append (b, _("<c>System Information</c><br><br>"));
-    get_distribution (sd, b);
+    get_distribution (b);
     get_uname (b);
     get_cpuinfos (b);
     get_loadavg (b);
@@ -514,207 +498,40 @@ set_system_information (Smart_Data *sd, buffer_t *b)
     get_default_gw (b);
 }
 
-/****************************************************************************/
-/*                        Event Callbacks                                   */
-/****************************************************************************/
-static int
-lsb_release_event_data(void *data, int type, void *event)
-{
-    Smart_Data *sd = data;
-    Ecore_Exe_Event_Data *ev = event;
-    char *id, *release;
-    id = release = NULL;
-
-    if ((ev->lines) && (ev->lines[0].line))
-    {
-        int i;
-        for (i = 0; ev->lines[i].line; i++)
-        {
-            char *line= ev->lines[i].line;
-            if (!strncmp(line, E_DISTRIB_ID, strlen(E_DISTRIB_ID)))
-                id=line+strlen(E_DISTRIB_ID);
-            if (!strncmp(line, E_RELEASE, strlen(E_RELEASE)))
-                release=line+strlen(E_RELEASE);
-        }
-    }
-    while (id && (id[0]==' ' || id[0]=='\t')) id++;
-    while (release && (release[0]==' ' || release[0]=='\t')) release++;
-
-    if (id)
-    {
-        if (sd->lsb_distrib_id)
-            free(sd->lsb_distrib_id);
-        sd->lsb_distrib_id=strdup(id);
-    }
-    if (release)
-    {
-        if (sd->lsb_release)
-            free(sd->lsb_release);
-        sd->lsb_release=strdup(release);
-    }
-    return 0;
-}
-
+/* ecore timer callback */
 static int
 _update_infos_cb(void *data)
 {
     buffer_t *b;
-    Smart_Data *sd = data;
-
+    Evas_Object *obj;
+printf("cb\n");
+    obj = data;
     b = buffer_new();
     set_enna_information (b);
-    set_system_information (sd, b);
-    edje_object_part_text_set (sd->o_edje, "infos.text", b->buf);
-    edje_object_signal_emit (sd->o_edje, "infos,show", "enna");
+    set_system_information (b);
+    edje_object_part_text_set (obj, "infos.text", b->buf);
+    edje_object_signal_emit (obj, "infos,show", "enna");
     buffer_free(b);
 
-    return 1;
-}
-
-/* local subsystem globals */
-static void _smart_reconfigure(Smart_Data * sd)
-{
-    Evas_Coord x, y, w, h;
-
-    x = sd->x;
-    y = sd->y;
-    w = sd->w;
-    h = sd->h;
-
-    evas_object_move(sd->o_edje, x, y);
-    evas_object_resize(sd->o_edje, w, h);
-
-}
-
-static void _smart_add(Evas_Object * obj)
-{
-    Smart_Data *sd;
-
-    sd = calloc(1, sizeof(Smart_Data));
-    if (!sd)
-        return;
-    sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-    edje_object_file_set (sd->o_edje,
-	enna_config_theme_get (), "module/infos");
-    sd->lsb_distrib_id = sd->lsb_release = NULL;
-    sd->lsb_release_exe=ecore_exe_pipe_run("lsb_release -i -r", ECORE_EXE_PIPE_READ | ECORE_EXE_PIPE_READ_LINE_BUFFERED, NULL);
-    if (sd->lsb_release_exe)
-        sd->lsb_release_data_handler=ecore_event_handler_add(ECORE_EXE_EVENT_DATA, lsb_release_event_data, sd);
-    _update_infos_cb(sd);
-    sd->update_timer = ecore_timer_add(INFOS_REFRESH_PERIOD, _update_infos_cb, sd);
-
-    sd->obj = obj;
-    evas_object_smart_member_add(sd->o_edje, obj);
-    evas_object_smart_data_set(obj, sd);
-}
-
-static void _smart_del(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_del (sd->o_edje);
-    ENNA_TIMER_DEL (sd->update_timer);
-    ecore_exe_free(sd->lsb_release_exe);
-    ecore_event_handler_del (sd->lsb_release_data_handler);
-    if (sd->lsb_distrib_id)
-        free (sd->lsb_distrib_id);
-    if (sd->lsb_release)
-        free (sd->lsb_release);
-    free (sd);
-}
-
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
-{
-    INTERNAL_ENTRY;
-
-    if ((sd->x == x) && (sd->y == y))
-        return;
-    sd->x = x;
-    sd->y = y;
-    _smart_reconfigure(sd);
-}
-
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
-{
-    INTERNAL_ENTRY;
-
-    if ((sd->w == w) && (sd->h == h))
-        return;
-    sd->w = w;
-    sd->h = h;
-    _smart_reconfigure(sd);
-}
-
-static void _smart_show(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_show(sd->o_edje);
-}
-
-static void _smart_hide(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_hide(sd->o_edje);
-}
-
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
-{
-    INTERNAL_ENTRY;
-    evas_object_color_set(sd->o_edje, r, g, b, a);
-}
-
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
-{
-    INTERNAL_ENTRY;
-    evas_object_clip_set(sd->o_edje, clip);
-}
-
-static void _smart_clip_unset(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_clip_unset(sd->o_edje);
-}
-
-static void _smart_init(void)
-{
-    static const Evas_Smart_Class sc =
-    {
-        SMART_NAME,
-        EVAS_SMART_CLASS_VERSION,
-        _smart_add,
-        _smart_del,
-        _smart_move,
-        _smart_resize,
-        _smart_show,
-        _smart_hide,
-        _smart_color_set,
-        _smart_clip_set,
-        _smart_clip_unset,
-        NULL,
-        NULL
-    };
-
-    if (!_smart)
-       _smart = evas_smart_class_new(&sc);
-}
-
-static Evas_Object *
-enna_infos_add(Evas * evas)
-{
-    _smart_init();
-    return evas_object_smart_add(evas, _smart);
+    return ECORE_CALLBACK_RENEW;
 }
 
 /* externally accessible functions */
-
 Evas_Object *info_panel_show(void *data)
 {
-    printf("SHOW CB\n");
+    // create the panel main object
+    o_edje = edje_object_add(enna->evas);
+    edje_object_file_set(o_edje, enna_config_theme_get (), "module/infos");
 
-    return enna_infos_add (enna->evas);
+    // update info once and fire the first callback
+    _update_infos_cb(o_edje);
+    update_timer = ecore_timer_add(INFOS_REFRESH_PERIOD, _update_infos_cb, o_edje);
+
+    return o_edje;
 }
 
 void info_panel_hide(void *data)
 {
-    printf("HIDE CB\n");
-
+    ENNA_TIMER_DEL(update_timer);
+    ENNA_OBJECT_DEL(o_edje);
 }
