@@ -575,7 +575,6 @@ enna_config_panel_register(const char *label, const char *icon,
                            void *data)
 {
     Enna_Config_Panel *ecp;
-    printf("CONFIG PANEL REGISTER: %s\n", label);
 
     if (!label) return NULL;
 
@@ -604,7 +603,6 @@ Eina_Bool
 enna_config_panel_unregister(Enna_Config_Panel *ecp)
 {
     if (!ecp) return EINA_FALSE;
-    printf("CONFIG PANEL UNREGISTER: %s\n", ecp->label);
 
     _config_panels = eina_list_remove(_config_panels, ecp);
     if (ecp->label) eina_stringshare_del(ecp->label);

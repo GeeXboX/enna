@@ -375,18 +375,19 @@ static void _enna_shutdown(void)
     ENNA_TIMER_DEL(enna->idle_timer);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
 
-    enna_activity_del_all ();
+    enna_activity_del_all();
     enna_input_shutdown();
     enna_config_shutdown();
     enna_module_shutdown();
     enna_metadata_shutdown();
     enna_mediaplayer_shutdown();
+
     evas_object_del(enna->o_background);
     enna_mainmenu_shutdown();
     evas_object_del(enna->o_content);
+
     edje_shutdown();
     ecore_file_shutdown();
-    ecore_evas_shutdown();
     enna_ipc_shutdown();
     ENNA_FREE(enna->home);
     ENNA_FREE(enna);
