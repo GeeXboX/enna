@@ -409,14 +409,20 @@ void enna_idle_timer_renew(void)
     if (enna_config->idle_timeout)
     {
         if (enna->idle_timer) 
+        {
             ENNA_TIMER_DEL(enna->idle_timer)
+        }
         else
+        {
             enna_log(ENNA_MSG_INFO, NULL,
                      "setting up idle timer to %i minutes",
                      enna_config->idle_timeout);
+        }
         if (!(enna->idle_timer = ecore_timer_add(enna_config->idle_timeout*60,
                                                  _idle_timer_cb, NULL)))
+        {
             enna_log(ENNA_MSG_CRITICAL, NULL, "adding timer failed!");
+        }
     }
 }
 
