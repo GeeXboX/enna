@@ -68,7 +68,7 @@
 #endif
 
 /* Refresh period : 2s */
-#define INFOS_REFRESH_PERIOD 0.1 //TODO 2.0
+#define INFOS_REFRESH_PERIOD 2.0
 
 #define BUF_LEN 1024
 #define BUF_DEFAULT "Unknown"
