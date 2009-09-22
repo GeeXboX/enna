@@ -60,6 +60,7 @@ typedef struct _Enna_Module_Configuration {
 } Enna_Module_Configuration;
 
 static Enna_Module_Configuration *mod;
+static Enna_Config_Panel *info1 = NULL;
 
 static void _delete_menu(void);
 
@@ -68,13 +69,24 @@ static void _delete_menu(void);
 /****************************************************************************/
 
 static void
-_infos_selected_cb(void *data)
+_item_selected_cb(void *data)
 {
+    Evas_Object *new = NULL;
+    Enna_Config_Panel *p = data;
+    printf("SELECTDE %s\n", p->label);
+
+    // run the create_cb from the Config_Panel
+    if (p->create_cb) new = (p->create_cb)(p->data);//TODO data*
+    if (!new) return;
+
     _delete_menu ();
     ENNA_OBJECT_DEL (mod->o_content);
-    mod->o_content = enna_infos_add (mod->em->evas);
-    edje_object_part_swallow (mod->o_edje, "enna.swallow.content", mod->o_content);
+
+    // Swalllow in the main content
+    // Is this the right way? bypassing enna_content?? is this safe??
+    edje_object_part_swallow (mod->o_edje, "enna.swallow.content", new);
     mod->state = CONTENT_VIEW;
+    mod->o_content = new;
 }
 
 /****************************************************************************/
@@ -85,22 +97,29 @@ static void
 _create_menu (void)
 {
     Enna_Vfs_File *it;
+    Eina_List *panels, *l;
+    Enna_Config_Panel *p;
 
     mod->state = MENU_VIEW;
 
     mod->o_menu = enna_wall_add (mod->em->evas);
     edje_object_part_swallow (mod->o_edje, "enna.swallow.content", mod->o_menu);
 
-    it = calloc (1, sizeof(Enna_Vfs_File));
-    it->icon = (char*)eina_stringshare_add ("icon/infos");
-    it->label = (char*)eina_stringshare_add (_("Infos"));
-    it->is_directory = 1;
+    // populate menu from config_panel
+    panels = enna_config_panel_list_get();
+    EINA_LIST_FOREACH(panels, l, p)
+    {
+        it = calloc (1, sizeof(Enna_Vfs_File));
+        it->icon = (char*)eina_stringshare_add (p->icon);
+        it->label = (char*)eina_stringshare_add (p->label);
+        it->is_directory = 1;
 
-    enna_wall_file_append (mod->o_menu, it, _infos_selected_cb, NULL);
-    mod->items = eina_list_append (mod->items, it);
+        enna_wall_file_append (mod->o_menu, it, _item_selected_cb, p);
+        mod->items = eina_list_append (mod->items, it);
+        //TODO Check where all this object are deleted
+    }
 
     enna_wall_select_nth(mod->o_menu, 0, 0);
-
 }
 
 static void
@@ -132,7 +151,6 @@ static void
 _activity_shutdown (int dummy)
 {
     printf("**** ACTIVITY SDOWN ****\n");
-    ENNA_OBJECT_DEL (mod->o_edje);
 }
 
 static void
@@ -140,7 +158,7 @@ _activity_show (int dummy)
 {
     printf("**** ACTIVITY SHOW ****\n");
 
-    // create the content if not created
+    // create the content if not created yet
     if (!mod->o_edje)
     {
         mod->o_edje = edje_object_add (mod->em->evas);
@@ -151,7 +169,7 @@ _activity_show (int dummy)
     }
 
     enna_content_select(ENNA_MODULE_NAME);
-    
+
     edje_object_signal_emit (mod->o_edje, "module,show", "enna");
     edje_object_signal_emit (mod->o_edje, "content,show", "enna");
 }
@@ -232,12 +250,18 @@ module_init (Enna_Module *em)
     em->mod = mod;
 
     enna_activity_add (&class);
+
+    info1 = enna_config_panel_register(_("Infos"), "icon/infos",
+                                    info_panel_show, info_panel_hide, NULL);
 }
 
 void
 module_shutdown (Enna_Module *em)
 {
-    evas_object_del (mod->o_edje);
+    enna_config_panel_unregister(info1);
+    enna_config_panel_unregister(info2);
+
+    ENNA_OBJECT_DEL (mod->o_edje);
     _delete_menu ();
     ENNA_OBJECT_DEL (mod->o_content);
     free (mod);

@@ -697,11 +697,24 @@ static void _smart_init(void)
        _smart = evas_smart_class_new(&sc);
 }
 
-/* externally accessible functions */
-Evas_Object *
+static Evas_Object *
 enna_infos_add(Evas * evas)
 {
     _smart_init();
     return evas_object_smart_add(evas, _smart);
 }
 
+/* externally accessible functions */
+
+Evas_Object *info_panel_show(void *data)
+{
+    printf("SHOW CB\n");
+
+    return enna_infos_add (enna->evas);
+}
+
+void info_panel_hide(void *data)
+{
+    printf("HIDE CB\n");
+
+}

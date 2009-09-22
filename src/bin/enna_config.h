@@ -103,4 +103,26 @@ void enna_config_value_store(void *var, char *section,
 Enna_Config_Data *enna_config_module_pair_get(const char *module_name);
 void enna_config_init(const char* conffile);
 void enna_config_shutdown(void);
+
+/****************************************************************************/
+/*                        Config Panel Stuff                                */
+/****************************************************************************/
+
+typedef struct _Enna_Config_Panel Enna_Config_Panel;
+struct _Enna_Config_Panel
+{
+    const char *label; /**< Label to show. with locale applied */
+    const char *icon;  /**< Name of the icon */
+    Evas_Object *(*create_cb)(void *data);  /**< Function to show/create a panel */
+    void (*destroy_cb)(void *data);  /**< Function to hide/destroy a panel */
+    void *data; /**< User data pointer */
+};
+
+Enna_Config_Panel *enna_config_panel_register(const char *label, const char *icon,
+                                        Evas_Object *(*create_cb)(void *data),
+                                        void (*destroy_cb)(void *data), void *data);
+Eina_Bool          enna_config_panel_unregister(Enna_Config_Panel *ecp);
+Eina_List         *enna_config_panel_list_get(void);
+
+
 #endif /* ENNA_CONFIG_H */
