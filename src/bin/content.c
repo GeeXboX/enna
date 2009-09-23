@@ -30,12 +30,11 @@
 #include <string.h>
 
 #include <Edje.h>
+#include <Elementary.h>
 
 #include "activity.h"
 #include "enna_config.h"
 #include "content.h"
-
-Evas_Object *_content = NULL;
 
 typedef struct _Enna_Content_Element Enna_Content_Element;
 
@@ -48,21 +47,11 @@ struct _Enna_Content_Element
 
 static Eina_List *_enna_contents = NULL;
 
-/* local subsystem functions */
 
 /* externally accessible functions */
-Evas_Object *
-enna_content_add(Evas *evas)
-{
-    Evas_Object *o;
 
-    o = edje_object_add(evas);
-    edje_object_file_set(o, enna_config_theme_get(), "content");
-    _content = o;
-    return o;
-}
-
-int enna_content_append(const char *name, Evas_Object *content)
+int
+enna_content_append(const char *name, Evas_Object *content)
 {
     Eina_List *l;
     Enna_Content_Element *elem;
@@ -86,7 +75,8 @@ int enna_content_append(const char *name, Evas_Object *content)
     return 0;
 }
 
-int enna_content_select(const char *name)
+int
+enna_content_select(const char *name)
 {
     Eina_List *l;
     Enna_Content_Element *new = NULL;
@@ -116,16 +106,17 @@ int enna_content_select(const char *name)
 
     if (prev)
     {
-        edje_object_part_unswallow(_content, prev->content);
         enna_activity_hide(prev->name);
     }
     if (new)
     {
-        edje_object_part_swallow(_content, "enna.swallow.content", new->content);
+        elm_layout_content_set(enna->layout, "enna.content.swallow", new->content);
     }
 
     return 0;
 }
+
+/* local subsystem functions */
 
 static void enna_content_update(int show)
 {

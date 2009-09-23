@@ -221,7 +221,6 @@ audio_lyrics.edc \
 video_info.edc \
 mediaplayer.edc \
 mainmenu.edc \
-content.edc \
 mediacontrol.edc \
 picture.edc \
 weather.edc \

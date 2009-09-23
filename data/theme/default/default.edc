@@ -28,7 +28,6 @@ spectra {
 collections
 {
 #include "mainmenu.edc"
-#include "content.edc"
 #include "music_video.edc"
 #include "video.edc"
 #include "games.edc"

@@ -338,13 +338,6 @@ static int _create_gui(void)
     // mainmenu
     enna_mainmenu_add(enna->evas);
 
-
-    // content
-    enna->o_content = enna_content_add(enna->evas);
-    elm_layout_content_set(enna->layout,
-                           "enna.content.swallow",
-                           enna->o_content);
-
     // mouse pointer
     enna->o_cursor = edje_object_add(enna->evas);
     edje_object_file_set(enna->o_cursor,
