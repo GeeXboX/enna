@@ -81,7 +81,7 @@
 #define DISTRIB_RELEASE "DISTRIB_RELEASE="
 #define DISTRIB_RELEASE_LEN strlen (DISTRIB_RELEASE)
 
-#define ENNA_MODULE_NAME "infos"
+#define ENNA_MODULE_NAME "infos" // NEEDED ??
 
 #define STR_CPU "processor"
 #define STR_MODEL "model name"

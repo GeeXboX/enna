@@ -34,10 +34,17 @@
 
 #include "enna.h"
 #include "module.h"
+#include "enna_config.h"
+#include "view_list.h"
 #include "logs.h"
 
 static Eina_List *_enna_modules = NULL;
 static Ecore_Path_Group *path_group = NULL;
+static Enna_Config_Panel *_config_panel = NULL;
+static Evas_Object *o_list = NULL;
+
+static Evas_Object *_config_panel_show(void *data);
+static void _config_panel_hide(void *data);
 
 /**
  * @brief Init Module, Save create Ecore_Path_Group and add default module path
@@ -61,6 +68,9 @@ int enna_module_init(void)
     enna_log(ENNA_MSG_INFO, NULL, "Available Plugins:");
     EINA_LIST_FOREACH(mod, l, p)
         enna_log(ENNA_MSG_INFO, NULL, "\t * %s", p);
+
+    _config_panel = enna_config_panel_register(_("Modules"), "icon/video",
+                                  _config_panel_show, _config_panel_hide, NULL);
 
     return 0;
 }
@@ -120,6 +130,8 @@ int enna_module_shutdown(void)
 {
     Eina_List *l;
 
+    enna_config_panel_unregister(_config_panel);
+
     for (l = _enna_modules; l; l = eina_list_remove(l, l->data))
     {
         Enna_Module *m;
@@ -144,6 +156,7 @@ int enna_module_shutdown(void)
 
 int enna_module_enable(Enna_Module *m)
 {
+    printf("ENABLE MODULE: %s\n", m->name);
     if (!m)
         return -1;
     if (m->enabled)
@@ -156,6 +169,7 @@ int enna_module_enable(Enna_Module *m)
 
 int enna_module_disable(Enna_Module *m)
 {
+    printf("DISABLE MODULE: %s\n", m->name);
     if (!m)
         return -1;
     if (!m->enabled)
@@ -235,3 +249,65 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
     return m;
 }
 
+/******************************************************************************/
+/*                     Config Panel Stuff                                     */
+/******************************************************************************/
+static void
+_list_selected_cb(void *data)
+{
+    Enna_Module *m;
+
+    m = data;
+    if (!m) return;
+
+    printf("SELECTED MOD: %s\n", m->name);
+    if (m->enabled)
+        enna_module_disable(m);
+    else
+        enna_module_enable(m);
+}
+
+
+static Evas_Object *
+_config_panel_show(void *data)
+{
+    Enna_Module *m;
+    Eina_List *l;
+
+    //~ printf("** Modules Panel Show **\n");
+    if (o_list) return o_list;
+    
+    // create list
+    o_list = enna_list_add(enna->evas);
+    evas_object_size_hint_align_set(o_list, -1.0, -1.0);
+    evas_object_size_hint_weight_set(o_list, 1.0, 1.0);
+    evas_object_show(o_list);
+
+    // populate list
+    EINA_LIST_FOREACH(_enna_modules, l, m)
+    {
+        Enna_Vfs_File *item;
+        char buf[1024];
+
+        item = calloc(1, sizeof(Enna_Vfs_File));
+        item->icon = (char*)eina_stringshare_add("icon/video");
+        snprintf(buf, sizeof(buf), "%s (%s)", m->name,
+                 m->enabled ? "running" : "stopped");
+        item->label = (char*)eina_stringshare_add(buf);
+        enna_list_file_append(o_list, item, _list_selected_cb, m);
+    }
+
+    enna_list_select_nth(o_list, 0);
+
+    return o_list;
+}
+
+static void
+_config_panel_hide(void *data)
+{
+    //~ printf("** Modules Panel Hide **\n");
+    ENNA_OBJECT_DEL(o_list);
+}
+
+
+    

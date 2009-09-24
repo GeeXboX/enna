@@ -95,7 +95,7 @@ void _item_activated(void *data, Evas_Object *obj, void *event_info)
     {
         if (it->item == item)
         {
-            it->func(it->data);
+            if (it->func) it->func(it->data);
             return;
         }
     }

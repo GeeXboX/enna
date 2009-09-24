@@ -64,7 +64,7 @@ struct _Enna_Module
     void *mod;
 };
 
-struct _Enna_Module_Api
+struct _Enna_Module_Api //TODO needed?
 {
     int version;
     _Enna_Module_Type type;
