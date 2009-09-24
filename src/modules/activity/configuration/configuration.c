@@ -50,7 +50,6 @@ typedef enum _CONFIGURATION_STATE
 } CONFIGURATION_STATE;
 
 typedef struct _Enna_Module_Configuration {
-    Evas *e;
     Evas_Object *o_edje;
     Evas_Object *o_menu;
     Enna_Config_Panel *selected;
@@ -61,7 +60,12 @@ typedef struct _Enna_Module_Configuration {
 static Enna_Module_Configuration *mod;
 static Enna_Config_Panel *info1 = NULL;
 
+static void _create_menu(void);
 static void _delete_menu(void);
+static void _show_subpanel(Enna_Config_Panel *p);
+static void _hide_subpanel(Enna_Config_Panel *p);
+
+
 
 /****************************************************************************/
 /*                            Callbacks                                     */
@@ -70,20 +74,11 @@ static void _delete_menu(void);
 static void
 _item_selected_cb(void *data)
 {
-    Evas_Object *new = NULL;
     Enna_Config_Panel *p = data;
 
-    // run the create_cb from the Config_Panel
-    if (p->create_cb) new = (p->create_cb)(p->data);
-    if (!new) return;
-
-    _delete_menu ();
-
-    // Swalllow-in the new panel
-    edje_object_part_swallow (mod->o_edje, "enna.swallow.content", new);
-    mod->state = CONTENT_VIEW;
-    mod->selected = p;
+    _show_subpanel(p);
 }
+
 
 /****************************************************************************/
 /*                        Private Module Functions                          */
@@ -95,12 +90,9 @@ _create_menu (void)
     Enna_Vfs_File *it;
     Eina_List *panels, *l;
     Enna_Config_Panel *p;
-
-    mod->state = MENU_VIEW;
-
+    
     mod->o_menu = enna_wall_add (enna->evas);
-    edje_object_part_swallow (mod->o_edje, "enna.swallow.content", mod->o_menu);
-
+    
     // populate menu from config_panel
     panels = enna_config_panel_list_get();
     EINA_LIST_FOREACH(panels, l, p)
@@ -115,6 +107,8 @@ _create_menu (void)
     }
 
     enna_wall_select_nth(mod->o_menu, 0, 0);
+    edje_object_part_swallow (mod->o_edje, "enna.swallow.menu", mod->o_menu);
+    mod->state = MENU_VIEW;
 }
 
 static void
@@ -129,6 +123,37 @@ _delete_menu(void)
 
     ENNA_OBJECT_DEL(mod->o_menu);
 }
+
+static void
+_show_subpanel(Enna_Config_Panel *p)
+{
+    Evas_Object *new = NULL;
+    
+    if (!p) return;
+    
+    // run the create_cb from the Config_Panel
+    if (p->create_cb) new = (p->create_cb)(p->data);
+    if (!new) return;
+
+    edje_object_part_swallow (mod->o_edje, "enna.swallow.content", new);
+    edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "content,show", "enna");
+
+    mod->state = CONTENT_VIEW;
+    mod->selected = p;
+}
+
+static void
+_hide_subpanel(Enna_Config_Panel *p)
+{
+    if (!p) return;
+    // run the destroy_cb from the Config_Panel
+    if (p && p->destroy_cb) (p->destroy_cb)(p->data);
+
+    mod->selected = NULL;
+    mod->state = MENU_VIEW;
+}
+
 
 /****************************************************************************/
 /*                        Activity Class API                                */
@@ -148,65 +173,55 @@ _activity_shutdown (int dummy)
 static void
 _activity_show (int dummy)
 {
-    //printf("**** ACTIVITY SHOW ****\n");
-
-    // create the content if not created yet
+    // create the enna_content if not created yet
     if (!mod->o_edje)
     {
         mod->o_edje = edje_object_add (enna->evas);
         edje_object_file_set (mod->o_edje, enna_config_theme_get (),
                               "module/configuration");
-        _create_menu ();
         enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
     }
 
-    enna_content_select(ENNA_MODULE_NAME);
+    // create the menu if not done yet
+    if (!mod->o_menu) _create_menu();
 
-    edje_object_signal_emit (mod->o_edje, "module,show", "enna");
-    edje_object_signal_emit (mod->o_edje, "content,show", "enna");
+    // show the module
+    enna_content_select(ENNA_MODULE_NAME);    
+    edje_object_signal_emit (mod->o_edje, "menu,show", "enna");
 }
 
 static void
 _activity_hide (int dummy)
 {
-    //printf("**** ACTIVITY HIDE ****\n");
-    edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
-    edje_object_signal_emit (mod->o_edje, "content,hide", "enna");
-    //TODO here we need to notify the hide to children panel, or they remain
-    // active also when not showed.
+    edje_object_signal_emit (mod->o_edje, "menu,hide", "enna");
+    _hide_subpanel(mod->selected);
 }
 
 static void
 _activity_event (void *event_info)
 {
-    //printf("**** ACTIVITY EVENT ****\n");
     Evas_Event_Key_Down *ev = event_info;
     enna_key_t key = enna_get_key (ev);
 
-    switch (mod->state)
+    if  (mod->state == CONTENT_VIEW)
     {
-    case CONTENT_VIEW:
         if (key == ENNA_KEY_CANCEL)
         {
-            // run the destroy_cb from the Config_Panel
-            Enna_Config_Panel *p = mod->selected;
-            if (p && p->destroy_cb) (p->destroy_cb)(p->data);
-            
-            mod->selected = NULL;
-            _create_menu();
+            _hide_subpanel(mod->selected);
+            edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
         }
-        break;
-    default:
+    }
+    else
+    {
         if (key == ENNA_KEY_CANCEL)
         {
-            //TODO here we need to notify the hide to children panel, or they remain
-            // active also when not showed.
             enna_content_hide();
             enna_mainmenu_show();
         }
         else
+        {
             enna_wall_event_feed(mod->o_menu, event_info);
-        break;
+        }
     }
 }
 
