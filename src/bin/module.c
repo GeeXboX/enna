@@ -36,6 +36,7 @@
 #include "module.h"
 #include "enna_config.h"
 #include "view_list.h"
+#include "input.h"
 #include "logs.h"
 
 static Eina_List *_enna_modules = NULL;
@@ -45,6 +46,7 @@ static Evas_Object *o_list = NULL;
 
 static Evas_Object *_config_panel_show(void *data);
 static void _config_panel_hide(void *data);
+static Ecore_Event_Handler *event_handler;
 
 /**
  * @brief Init Module, Save create Ecore_Path_Group and add default module path
@@ -267,6 +269,11 @@ _list_selected_cb(void *data)
         enna_module_enable(m);
 }
 
+int _input_events_cb(void *data, int type, void *event)
+{
+    printf("INPUT.. the new way!\n");
+    return ECORE_CALLBACK_RENEW;
+}
 
 static Evas_Object *
 _config_panel_show(void *data)
@@ -299,6 +306,9 @@ _config_panel_show(void *data)
 
     enna_list_select_nth(o_list, 0);
 
+    
+    event_handler = ecore_event_handler_add(ENNA_EVENT_INPUT, _input_events_cb, NULL); 
+
     return o_list;
 }
 
@@ -306,6 +316,7 @@ static void
 _config_panel_hide(void *data)
 {
     //~ printf("** Modules Panel Hide **\n");
+    ecore_event_handler_del(event_handler);
     ENNA_OBJECT_DEL(o_list);
 }
 

@@ -45,6 +45,7 @@
 #include "smart_player.h"
 #include "volumes.h"
 #include "panel_lyrics.h"
+#include "module.h"
 
 #define ENNA_MODULE_NAME "music"
 #define METADATA_APPLY \

@@ -47,6 +47,7 @@
 #include "photo.h"
 #include "exif.h"
 #include "panel_infos.h"
+#include "module.h"
 
 #define ENNA_MODULE_NAME "photo"
 

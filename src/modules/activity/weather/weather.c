@@ -43,6 +43,7 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "utils.h"
+#include "module.h"
 
 #define ENNA_MODULE_NAME "weather"
 

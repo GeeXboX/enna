@@ -50,6 +50,7 @@
 #include "metadata.h"
 #include "mediaplayer.h"
 #include "ipc.h"
+#include "input.h"
 
 /* seconds after which the mouse pointer disappears*/
 #define ENNA_MOUSE_IDLE_TIMEOUT 10
@@ -276,6 +277,8 @@ static int _enna_init(void)
     /* Init various stuff */
     enna_volumes_init();
     enna_metadata_init ();
+    enna_input_init();
+
     if (!enna_mediaplayer_init())
         return 0;
 
@@ -294,7 +297,6 @@ static int _enna_init(void)
     enna->idle_timer = NULL;
     enna_idle_timer_renew();
 
-    enna_input_init();
     enna_ipc_init();
 
     return 1;

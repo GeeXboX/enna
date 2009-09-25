@@ -45,7 +45,8 @@ view_cover.c\
 popup.c\
 exit.c\
 thumb.c\
-ipc.c
+ipc.c\
+input.c
 
 
 
@@ -100,5 +101,5 @@ popup.h\
 exit.h\
 gettext.h\
 thumb.h\
-ipc.h
-
+ipc.h\
+input.h

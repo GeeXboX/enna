@@ -35,16 +35,9 @@
 
 #include "enna.h"
 #include "event_key.h"
+#include "input.h"
 #include "logs.h"
 
-typedef struct _Input_Module_Item Input_Module_Item;
-struct _Input_Module_Item
-{
-    Enna_Module *module;
-    Enna_Class_Input *class;
-};
-
-static Eina_List *_input_modules;
 
 static const struct
 {
@@ -127,18 +120,6 @@ static const struct
     { NULL,           0,              ENNA_KEY_UNKNOWN       }
 };
 
-/* Static functions */
-
-static void _event_cb(void *data, char *event)
-{
-    if (!event)
-        return;
-
-    evas_event_feed_key_down(enna->evas, event, event, event, NULL, ecore_time_get(), data);
-    enna_log(ENNA_MSG_EVENT, NULL, "LIRC event : %s", event);
-
-    enna_idle_timer_renew();
-}
 
 /* Public Functions */
 
@@ -201,42 +182,3 @@ char enna_key_get_alpha(enna_key_t key)
     return 0;
 }
 
-void enna_input_init(void)
-{
-    /* Create Input event "Key Down" */
-    ENNA_EVENT_INPUT_KEY_DOWN = ecore_event_type_new();
-    _input_modules = NULL;
-}
-
-void enna_input_shutdown(void)
-{
-    Eina_List *l = NULL;
-
-    for (l = _input_modules; l; l = l->next)
-    {
-        Input_Module_Item *item = l->data;
-        item->class->func.class_shutdown(0);
-        enna_module_disable(item->module);
-    }
-    eina_list_free(_input_modules);
-}
-
-int enna_input_class_register(Enna_Module *module, Enna_Class_Input *class)
-{
-    Input_Module_Item *item;
-
-    // create a new input class object
-    item = calloc(1, sizeof(Input_Module_Item));
-    if (!item) return -1;
-    item->module = module;
-    item->class = class;
-    _input_modules = eina_list_append(_input_modules, item);
-
-    // run the class 'init' function
-    if (class && class->func.class_init)
-        class->func.class_init(0);
-    if (class && class->func.class_event_cb_set)
-        class->func.class_event_cb_set(_event_cb, item);
-
-    return 0;
-}

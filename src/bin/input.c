@@ -27,79 +27,49 @@
  *
  */
 
-#ifndef EVENT_KEY_H
-#define EVENT_KEY_H
+#include <string.h>
+#include <ctype.h>
+
+#include <Ecore.h>
+#include <Ecore_Data.h>
 
 #include "enna.h"
+#include "input.h"
 
-typedef enum
+
+/* Private Functions */
+static void
+_input_event_free_event_cb(void *data, void *ev)
 {
-    ENNA_KEY_UNKNOWN,
+    eina_stringshare_del(ev);
+}
 
-    ENNA_KEY_MENU,
-    ENNA_KEY_QUIT,
+/* Public Functions */
+void
+enna_input_init(void)
+{
+    /* Create Enna Input Event*/
+    ENNA_EVENT_INPUT = ecore_event_type_new();
+}
 
-    ENNA_KEY_LEFT,
-    ENNA_KEY_RIGHT,
-    ENNA_KEY_UP,
-    ENNA_KEY_DOWN,
+void
+enna_input_shutdown(void)
+{
+    
+}
 
-    ENNA_KEY_HOME,
-    ENNA_KEY_END,
-    ENNA_KEY_PAGE_UP,
-    ENNA_KEY_PAGE_DOWN,
-    ENNA_KEY_OK,
-    ENNA_KEY_STOP,
-    ENNA_KEY_CANCEL,
-    ENNA_KEY_SPACE,
-    ENNA_KEY_FULLSCREEN,
-    ENNA_KEY_PLUS,
-    ENNA_KEY_MINUS,
+Eina_Bool
+enna_input_event_emit(const char *event, void *data)
+{
+    printf("EMIT EVENT %s\n", event);
+    
+    // Old way (remove when all use the new way)
+    evas_event_feed_key_down(enna->evas, event, event, event, NULL, ecore_time_get(), data);
 
-    ENNA_KEY_0,
-    ENNA_KEY_1,
-    ENNA_KEY_2,
-    ENNA_KEY_3,
-    ENNA_KEY_4,
-    ENNA_KEY_5,
-    ENNA_KEY_6,
-    ENNA_KEY_7,
-    ENNA_KEY_8,
-    ENNA_KEY_9,
-
-    /* Alphabetical characters */
-    ENNA_KEY_A,
-    ENNA_KEY_B,
-    ENNA_KEY_C,
-    ENNA_KEY_D,
-    ENNA_KEY_E,
-    ENNA_KEY_F,
-    ENNA_KEY_G,
-    ENNA_KEY_H,
-    ENNA_KEY_I,
-    ENNA_KEY_J,
-    ENNA_KEY_K,
-    ENNA_KEY_L,
-    ENNA_KEY_M,
-    ENNA_KEY_N,
-    ENNA_KEY_O,
-    ENNA_KEY_P,
-    ENNA_KEY_Q,
-    ENNA_KEY_R,
-    ENNA_KEY_S,
-    ENNA_KEY_T,
-    ENNA_KEY_U,
-    ENNA_KEY_V,
-    ENNA_KEY_W,
-    ENNA_KEY_X,
-    ENNA_KEY_Y,
-    ENNA_KEY_Z,
-} enna_key_t;
-
-
-/* Enna Event API functions */
-enna_key_t enna_get_key (void *event);
-int enna_key_is_alpha(enna_key_t key);
-char enna_key_get_alpha(enna_key_t key);
-
-#endif /* EVENT_KEY_H */
+    // new way
+    ecore_event_add(ENNA_EVENT_INPUT, (void*)eina_stringshare_add(event),
+                    _input_event_free_event_cb, NULL);
+        
+    enna_idle_timer_renew();
+    return EINA_TRUE;
+}

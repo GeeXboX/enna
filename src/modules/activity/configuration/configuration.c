@@ -39,6 +39,7 @@
 #include "view_wall.h"
 #include "content.h"
 #include "mainmenu.h"
+#include "module.h"
 #include "infos.h"
 
 #define ENNA_MODULE_NAME "configuration"
