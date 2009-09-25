@@ -311,6 +311,19 @@ if test "x$have_input_lirc" = "xyes"; then
 fi
 AM_CONDITIONAL(BUILD_INPUT_LIRC, test "x$have_input_lirc" = "xyes")
 
+# KEYB
+want_input_keyboard="yes"
+AC_MSG_CHECKING(whether keyboard input module is to be built)
+AC_ARG_ENABLE(input-keyboard,
+  AS_HELP_STRING([--enable-input-keyboard],[Enable Keyboard Input Module]),
+  [ want_input_keyboard=$enableval ]
+)
+AC_MSG_RESULT($want_input_keyboard)
+AM_CONDITIONAL(BUILD_INPUT_KEYB, test "x$want_input_keyboard" = "xyes")
+if test "x$want_input_keyboard" = "xyes"; then
+  AC_DEFINE(BUILD_INPUT_KEYB, 1, [Keyboard Input])
+fi
+
 ##################
 # Volume Modules #
 ##################
@@ -573,6 +586,7 @@ src/modules/browser/upnp/Makefile
 src/modules/browser/valhalla/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
+src/modules/input/keyb/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
@@ -618,6 +632,7 @@ echo "  Valhalla Scanner................. : $have_browser_valhalla"
 echo
 echo "Supported Input Modules:"
 echo
+echo "  Keyboard client.................. : $want_input_keyboard"
 echo "  LIRC client...................... : $have_input_lirc"
 echo
 echo "Supported Volume Modules:"

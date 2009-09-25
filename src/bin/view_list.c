@@ -33,6 +33,7 @@
 #include "enna_config.h"
 #include "view_list.h"
 #include "event_key.h"
+#include "input.h"
 #include "vfs.h"
 
 #define SMART_NAME "enna_list"
@@ -200,13 +201,6 @@ void *enna_list_selected_data_get(Evas_Object *obj)
     return NULL;
 }
 
-
-
-void enna_list_event_feed(Evas_Object *obj, void *event_info)
-{
-    API_ENTRY return;
-    _smart_event_key_down(sd, event_info);
-}
 
 void enna_list_jump_ascii(Evas_Object *obj, char k)
 {
@@ -445,6 +439,56 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
         _smart_select_item(sd, n);
 }
 
+void enna_list_event_feed(Evas_Object *obj, void *event_info)
+{
+    API_ENTRY return;
+    _smart_event_key_down(sd, event_info);
+}
+
+void enna_list_input_feed(Evas_Object *obj, enna_input event)
+{
+    int ns;
+    API_ENTRY return;
+
+    ns = enna_list_selected_get(sd->o_smart);
+
+    switch (event)
+    {
+        case ENNA_INPUT_UP:
+            list_set_item(sd, ns, 0, 1);
+            break;
+        case ENNA_INPUT_PAGE_UP:
+            list_set_item(sd, ns, 0, 5);
+            break;
+        case ENNA_INPUT_DOWN:
+            list_set_item(sd, ns, 1, 1);
+            break;
+        case ENNA_INPUT_PAGE_DOWN:
+            list_set_item(sd, ns, 1, 5);
+            break;
+        case ENNA_INPUT_HOME:
+            list_set_item(sd, -1, 1, 1);
+            break;
+        //~ case ENNA_KEY_END:
+            //~ list_set_item(sd, eina_list_count(sd->items), 0, 1);
+            //~ break;
+        case ENNA_INPUT_OK:
+        //~ case ENNA_KEY_SPACE:
+        {
+            List_Item *it = eina_list_nth(sd->items, enna_list_selected_get(sd->o_smart));
+            if (it)
+            {
+                if (it->func)
+                    it->func(it->data);
+            }
+        }
+            break;
+       default:
+            break;
+    }
+}
+
+/* deprecated (use enna_list_input_feed() instead */
 static void _smart_event_key_down(Smart_Data *sd, void *event_info)
 {
     Evas_Event_Key_Down *ev;

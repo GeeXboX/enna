@@ -35,13 +35,14 @@
 
 #include "enna.h"
 #include "input.h"
+#include "logs.h"
 
 
 /* Private Functions */
 static void
 _input_event_free_event_cb(void *data, void *ev)
 {
-    eina_stringshare_del(ev);
+    
 }
 
 /* Public Functions */
@@ -59,15 +60,10 @@ enna_input_shutdown(void)
 }
 
 Eina_Bool
-enna_input_event_emit(const char *event, void *data)
+enna_input_event_emit(enna_input in)
 {
-    printf("EMIT EVENT %s\n", event);
-    
-    // Old way (remove when all use the new way)
-    evas_event_feed_key_down(enna->evas, event, event, event, NULL, ecore_time_get(), data);
-
-    // new way
-    ecore_event_add(ENNA_EVENT_INPUT, (void*)eina_stringshare_add(event),
+    enna_log(ENNA_MSG_INFO, NULL, "Input emit: %d", in);
+    ecore_event_add(ENNA_EVENT_INPUT, (void*)in,
                     _input_event_free_event_cb, NULL);
         
     enna_idle_timer_renew();

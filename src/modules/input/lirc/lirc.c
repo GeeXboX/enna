@@ -41,14 +41,13 @@
 #include "input.h"
 #include "module.h"
 
-#define ENNA_MODULE_NAME "lirc"
+#define ENNA_MODULE_NAME "input_lirc"
 
 
 typedef struct _Enna_Module_Lirc Enna_Module_Lirc;
 
 struct _Enna_Module_Lirc
 {
-    Evas *e;
     Enna_Module *em;
     Ecore_Fd_Handler *fd_handler;
     struct lirc_config *lirc_config;
@@ -66,6 +65,98 @@ Enna_Module_Api module_api =
 };
 
 
+static const struct
+{
+    const char *keyname;
+    enna_input input;
+} enna_lircmap[] = {
+    { "Left",         ENNA_INPUT_LEFT          },
+    { "Right",        ENNA_INPUT_RIGHT         },
+    { "Up",           ENNA_INPUT_UP            },
+    { "Down",         ENNA_INPUT_DOWN          },
+    { "Home",         ENNA_INPUT_HOME          },
+    { "Ok",           ENNA_INPUT_OK            },
+    //~ { "Prev",        0,              ENNA_KEY_PAGE_UP       },
+    //~ { "Next",         0,              ENNA_KEY_PAGE_DOWN     },
+    
+    //~ { "Stop",         0,              ENNA_KEY_STOP          },
+    //~ { "BackSpace",    0,              ENNA_KEY_CANCEL        },
+    //~ { "space",        0,              ENNA_KEY_SPACE         },
+    //~ { "Escape",       0,              ENNA_KEY_QUIT          },
+    //~ { "Super_L",      0,              ENNA_KEY_MENU          },
+    //~ { "Meta_L",       0,              ENNA_KEY_MENU          },
+    //~ { "Hyper_L",      0,              ENNA_KEY_MENU          },
+    //~ { "plus",         0,              ENNA_KEY_PLUS          },
+    //~ { "KP_Add",       0,              ENNA_KEY_PLUS          },
+    //~ { "minus",        0,              ENNA_KEY_MINUS         },
+    //~ { "KP_Subtract",  0,              ENNA_KEY_MINUS         },
+    //~ { "0",            0,              ENNA_KEY_0             },
+    //~ { "KP_0",         0,              ENNA_KEY_0             },
+    //~ { "1",            0,              ENNA_KEY_1             },
+    //~ { "KP_1",         0,              ENNA_KEY_1             },
+    //~ { "2",            0,              ENNA_KEY_2             },
+    //~ { "KP_2",         0,              ENNA_KEY_2             },
+    //~ { "3",            0,              ENNA_KEY_3             },
+    //~ { "KP_3",         0,              ENNA_KEY_3             },
+    //~ { "4",            0,              ENNA_KEY_4             },
+    //~ { "KP_4",         0,              ENNA_KEY_4             },
+    //~ { "5",            0,              ENNA_KEY_5             },
+    //~ { "KP_5",         0,              ENNA_KEY_5             },
+    //~ { "6",            0,              ENNA_KEY_6             },
+    //~ { "KP_6",         0,              ENNA_KEY_6             },
+    //~ { "7",            0,              ENNA_KEY_7             },
+    //~ { "KP_7",         0,              ENNA_KEY_7             },
+    //~ { "8",            0,              ENNA_KEY_8             },
+    //~ { "KP_8",         0,              ENNA_KEY_8             },
+    //~ { "9",            0,              ENNA_KEY_9             },
+    //~ { "KP_9",         0,              ENNA_KEY_9             },
+    //~ { "a",            0,              ENNA_KEY_A             },
+    //~ { "b",            0,              ENNA_KEY_B             },
+    //~ { "c",            0,              ENNA_KEY_C             },
+    //~ { "d",            0,              ENNA_KEY_D             },
+    //~ { "e",            0,              ENNA_KEY_E             },
+    //~ { "f",            "Control",      ENNA_KEY_FULLSCREEN    },
+    //~ { "f",            0,              ENNA_KEY_F             },
+    //~ { "g",            0,              ENNA_KEY_G             },
+    //~ { "h",            0,              ENNA_KEY_H             },
+    //~ { "i",            0,              ENNA_KEY_I             },
+    //~ { "j",            0,              ENNA_KEY_J             },
+    //~ { "k",            0,              ENNA_KEY_K             },
+    //~ { "l",            0,              ENNA_KEY_L             },
+    //~ { "m",            0,              ENNA_KEY_M             },
+    //~ { "n",            0,              ENNA_KEY_N             },
+    //~ { "o",            0,              ENNA_KEY_O             },
+    //~ { "p",            0,              ENNA_KEY_P             },
+    //~ { "q",            0,              ENNA_KEY_Q             },
+    //~ { "r",            0,              ENNA_KEY_R             },
+    //~ { "s",            0,              ENNA_KEY_S             },
+    //~ { "t",            0,              ENNA_KEY_T             },
+    //~ { "u",            0,              ENNA_KEY_U             },
+    //~ { "v",            0,              ENNA_KEY_V             },
+    //~ { "w",            0,              ENNA_KEY_W             },
+    //~ { "x",            0,              ENNA_KEY_X             },
+    //~ { "y",            0,              ENNA_KEY_Y             },
+    //~ { "z",            0,              ENNA_KEY_Z             },
+    { NULL,           ENNA_INPUT_UNKNOWN       }
+};
+
+
+static enna_input
+_get_input_from_event(const char *ev)
+{
+    int i;
+
+    for (i = 0; enna_lircmap[i].keyname; i++)
+    {
+        if (!strcmp(enna_lircmap[i].keyname, ev))
+          return enna_lircmap[i].input;
+    }
+
+    enna_log(ENNA_MSG_WARNING, NULL, "Unrecognized lirc key: '%s'", ev);
+    // TODO here we could print a list of recognized keys
+    return ENNA_INPUT_UNKNOWN;
+}
+
 static int _lirc_code_received(void *data, Ecore_Fd_Handler * fd_handler)
 {
     char *code, *event;
@@ -76,13 +167,15 @@ static int _lirc_code_received(void *data, Ecore_Fd_Handler * fd_handler)
         while ((ret = lirc_code2char(mod->lirc_config, code, &event)) == 0
                 && event != NULL)
         {
-            printf("LIRC %s\n", event);
-            enna_input_event_emit(event, data);
+            enna_input in;
+
+            in = _get_input_from_event(event);
+            if (in != ENNA_INPUT_UNKNOWN)
+                enna_input_event_emit(in);
         }
     }
     return 1;
 }
-
 
 /* Config Panel */
 

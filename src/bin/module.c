@@ -271,7 +271,8 @@ _list_selected_cb(void *data)
 
 int _input_events_cb(void *data, int type, void *event)
 {
-    printf("INPUT.. the new way!\n");
+    printf("INPUT.. the new way! %d\n", (enna_input)event);
+    enna_list_input_feed(o_list, (enna_input)event);
     return ECORE_CALLBACK_RENEW;
 }
 
@@ -281,7 +282,7 @@ _config_panel_show(void *data)
     Enna_Module *m;
     Eina_List *l;
 
-    //~ printf("** Modules Panel Show **\n");
+    printf("** Modules Panel Show **\n");
     if (o_list) return o_list;
     
     // create list
@@ -306,7 +307,7 @@ _config_panel_show(void *data)
 
     enna_list_select_nth(o_list, 0);
 
-    
+    if (!event_handler)
     event_handler = ecore_event_handler_add(ENNA_EVENT_INPUT, _input_events_cb, NULL); 
 
     return o_list;
@@ -315,8 +316,9 @@ _config_panel_show(void *data)
 static void
 _config_panel_hide(void *data)
 {
-    //~ printf("** Modules Panel Hide **\n");
+    printf("** Modules Panel Hide **\n");
     ecore_event_handler_del(event_handler);
+    event_handler = NULL;
     ENNA_OBJECT_DEL(o_list);
 }
 
