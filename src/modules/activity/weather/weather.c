@@ -495,16 +495,13 @@ _class_hide (int dummy)
 }
 
 static void
-_class_event (void *event_info)
+_class_event (void *event_info)//TODO
 {
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key (ev);
+    //~ if (key != ENNA_KEY_CANCEL)
+        //~ return;
 
-    if (key != ENNA_KEY_CANCEL)
-        return;
-
-    enna_content_hide();
-    enna_mainmenu_show();
+    //~ enna_content_hide();
+    //~ enna_mainmenu_show();
 }
 
 static Enna_Class_Activity class = {

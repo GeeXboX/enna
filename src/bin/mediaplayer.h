@@ -33,6 +33,7 @@
 #include "enna.h"
 #include "metadata.h"
 #include "event_key.h"
+#include "input.h"
 
 typedef enum
 {
@@ -122,7 +123,7 @@ PLAY_STATE enna_mediaplayer_state_get(void);
 Enna_Playlist *enna_mediaplayer_playlist_create(void);
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist);
-void enna_mediaplayer_send_key(enna_key_t key);
+void enna_mediaplayer_send_input (enna_input event);
 int enna_mediaplayer_volume_get (void);
 void enna_mediaplayer_volume_set (int volume);
 void enna_mediaplayer_default_increase_volume (void);

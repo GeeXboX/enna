@@ -128,19 +128,16 @@ static void _class_hide(int dummy)
     evas_object_hide(mod->o_background);
 }
 
-static void _class_event(void *event_info)
+static void _class_event(void *event)//TODO
 {
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key(ev);
-
-    switch (key)
+    switch ((enna_input)event)//TODO
     {
-        case ENNA_KEY_MENU:
-            enna_content_hide();
-            enna_mainmenu_show();
-            break;
+        //~ case ENNA_INPUT_MENU:
+            //~ enna_content_hide();
+            //~ enna_mainmenu_show();
+            //~ break;
         default:
-            enna_mediaplayer_send_key(key);
+            enna_mediaplayer_send_input((enna_input)event);//TODO
             break;
     }
 }

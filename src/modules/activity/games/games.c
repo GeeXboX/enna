@@ -44,6 +44,7 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "event_key.h"
+#include "input.h"
 
 #define ENNA_MODULE_NAME "games"
 
@@ -208,28 +209,24 @@ static void _class_hide(int dummy)
     edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
 }
 
-static void _class_event(void *event_info)
+static void _class_event(void *event)//TODO
 {
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key(ev);
-
     switch (mod->state)
     {
         case MENU_VIEW:
-            switch (key)
+            switch ((enna_input)event)//TODO
             {
-                case ENNA_KEY_LEFT:
-                case ENNA_KEY_CANCEL:
+                case ENNA_INPUT_LEFT:
+                case ENNA_INPUT_EXIT:
                     enna_content_hide();
                     enna_mainmenu_show();
                     break;
-                case ENNA_KEY_RIGHT:
-                case ENNA_KEY_OK:
-                case ENNA_KEY_SPACE:
+                case ENNA_INPUT_RIGHT:
+                case ENNA_INPUT_OK:
                     _play(enna_list_selected_data_get(mod->o_menu));
                    break;
                 default:
-                   enna_list_event_feed(mod->o_menu, event_info);
+                   enna_list_input_feed(mod->o_menu, (enna_input)event);//TODO
             }
             break;
         default:
