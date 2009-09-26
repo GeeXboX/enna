@@ -38,6 +38,7 @@
 #include "mainmenu.h"
 #include "content.h"
 #include "event_key.h"
+#include "input.h"
 #include "logs.h"
 #include "exit.h"
 
@@ -74,12 +75,14 @@ struct _Menu_Item
 static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 static Evas_Object *_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info));
+static Eina_Bool _input_events_cb(void *data, enna_input event);
 static void _item_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info);
 static void _item_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info);
 
 
 /* local subsystem globals */
 static Menu_Data *sd = NULL;
+static Input_Listener *listener = NULL;
 
 /* externally accessible functions */
 Evas_Object *
@@ -117,6 +120,9 @@ enna_mainmenu_add(Evas * evas)
     sd->o_exit = enna_exit_add(evas);
     elm_layout_content_set(enna->layout, "enna.exit.swallow", sd->o_exit);
 
+    /* connect to the input signal */
+    listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
+
     return sd->o_tbl;
 }
 
@@ -124,6 +130,8 @@ void
 enna_mainmenu_shutdown(void)
 {
     Menu_Item *it;
+
+    enna_input_listener_del(listener);
 
     EINA_LIST_FREE(sd->items, it)
     {
@@ -328,7 +336,7 @@ enna_mainmenu_select_prev(void)
     enna_mainmenu_select_sibbling (1);
 }
 
-void
+void // deprecated
 enna_mainmenu_event_feed(void *event_info)
 {
     enna_key_t key;
@@ -383,6 +391,87 @@ enna_mainmenu_event_feed(void *event_info)
     }
 }
 
+static Eina_Bool
+_input_events_cb(void *data, enna_input event)
+{
+    int el, n;
+    if (!sd) return ENNA_EVENT_CONTINUE;
+    
+    //~ printf("INPUT.. to mainmenu %d\n", (enna_input)event);
+
+    if (event == ENNA_INPUT_FULLSCREEN)
+    {
+        enna->run_fullscreen = ~enna->run_fullscreen;
+        elm_win_fullscreen_set(enna->win, enna->run_fullscreen);
+        return ENNA_EVENT_BLOCK;
+    }
+
+    if (sd->visible)
+    {
+        switch (event)
+        {
+            case ENNA_INPUT_RIGHT:
+                enna_mainmenu_select_next();
+                return ENNA_EVENT_BLOCK;
+                break;
+            case ENNA_INPUT_LEFT:
+                enna_mainmenu_select_prev();
+                return ENNA_EVENT_BLOCK;
+                break;
+            case ENNA_INPUT_UP:
+                el = enna_mainmenu_selected_get();
+                enna_mainmenu_select_nth(el - MAX_PER_ROW);
+                return ENNA_EVENT_BLOCK;
+                break;
+            case ENNA_INPUT_DOWN:
+                n = enna_mainmenu_get_nr_items();
+                el = enna_mainmenu_selected_get();
+                /* go to element below or last one of row if none */
+                enna_mainmenu_select_nth((el + MAX_PER_ROW >= n) ?
+                                         n - 1 : el + MAX_PER_ROW);
+                return ENNA_EVENT_BLOCK;
+                break;
+            case ENNA_INPUT_OK:
+                enna_mainmenu_activate_nth(enna_mainmenu_selected_get());
+                return ENNA_EVENT_BLOCK;
+                break;
+            default:
+                break;
+        }
+    }
+    switch (event)
+    {
+        case ENNA_INPUT_QUIT:
+            enna_mainmenu_exit_show(NULL);
+            return ENNA_EVENT_BLOCK;
+            break;
+        case ENNA_INPUT_EXIT:
+        case ENNA_INPUT_MENU:
+            //~ enna_mainmenu_exit_show(NULL);
+            enna_content_hide();
+            enna_mainmenu_show();
+            break;
+        default:
+            break;
+    }
+    
+    //~ else
+    //~ {
+        //~ switch ((enna_input)event)
+        //~ {
+        //~ case ENNA_INPUT_QUIT:
+        //~ case ENNA_INPUT_CANCEL:
+        //~ case ENNA_INPUT_MENU:
+            //~ enna_mainmenu_exit_show(NULL);
+            //~ break;
+        //~ default:
+            //~ enna_exit_event_feed(sd->o_exit, event_info);
+            //~ break;
+        //~ }
+    //~ }
+    return ENNA_EVENT_CONTINUE;
+}
+
 void
 enna_mainmenu_show(void)
 {
@@ -424,15 +513,13 @@ enna_mainmenu_exit_visible(void)
 static void
 _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    evas_event_feed_key_down(enna->evas, "Super_L", "Super_L", "Super_L",
-                             NULL, ecore_time_get(), data);
+    enna_input_event_emit(ENNA_INPUT_MENU);
 }
 
 static void
 _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    evas_event_feed_key_down(enna->evas, "BackSpace", "BackSpace", "BackSpace",
-                             NULL, ecore_time_get(), data);
+    enna_input_event_emit(ENNA_INPUT_EXIT);
 }
 
 static Evas_Object *

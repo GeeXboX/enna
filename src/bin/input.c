@@ -38,34 +38,78 @@
 #include "logs.h"
 
 
+struct _Input_Listener {
+    const char *name;
+    Eina_Bool (*func)(void *data, enna_input event);
+    void *data;
+};
+
+
+static Eina_List *_listeners = NULL;
+
 /* Private Functions */
-static void
-_input_event_free_event_cb(void *data, void *ev)
-{
-    
-}
 
 /* Public Functions */
 void
 enna_input_init(void)
 {
-    /* Create Enna Input Event*/
-    ENNA_EVENT_INPUT = ecore_event_type_new();
+   
 }
 
 void
 enna_input_shutdown(void)
 {
-    
+
 }
 
 Eina_Bool
 enna_input_event_emit(enna_input in)
 {
-    enna_log(ENNA_MSG_INFO, NULL, "Input emit: %d", in);
-    ecore_event_add(ENNA_EVENT_INPUT, (void*)in,
-                    _input_event_free_event_cb, NULL);
-        
+    Input_Listener *il;
+    Eina_List *l;
+    Eina_Bool ret;
+    
+    enna_log(ENNA_MSG_INFO, NULL, "Input emit: %d (listeners: %d)", in, eina_list_count(_listeners));
+
     enna_idle_timer_renew();
+    EINA_LIST_FOREACH(_listeners, l, il)
+    {
+        enna_log(ENNA_MSG_INFO, NULL, "  emit to: %s", il->name);
+        if (!il->func) continue;
+
+        ret = il->func(il->data, in);
+        if (ret == ENNA_EVENT_BLOCK)
+        {
+            enna_log(ENNA_MSG_INFO, NULL, "  emission stopped by: %s", il->name);
+            return EINA_TRUE;
+        }
+    }
+
     return EINA_TRUE;
+}
+
+Input_Listener *
+enna_input_listener_add(const char *name, Eina_Bool(*func)(void *data, enna_input event), void *data)
+{
+    Input_Listener *il;
+    enna_log(ENNA_MSG_INFO, NULL, "listener add: %s", name);
+    il = ENNA_NEW(Input_Listener, 1);
+    if (!il) return NULL;
+    il->name = eina_stringshare_add(name);
+    il->func = func;
+    il->data = data;
+
+    _listeners = eina_list_prepend(_listeners, il);
+
+    return il;
+}
+
+void
+enna_input_listener_del(Input_Listener *il)
+{
+    if (!il) return;
+    enna_log(ENNA_MSG_INFO, NULL, "listener del: %s", il->name);
+    _listeners = eina_list_remove(_listeners, il);
+    eina_stringshare_del(il->name);
+    ENNA_FREE(il);
 }

@@ -31,9 +31,12 @@
 #define ENNA_INPUT_H
 
 #include "enna.h"
+#include "input.h"
 
-/* Input ecore event */
-int ENNA_EVENT_INPUT;
+#define ENNA_EVENT_BLOCK ECORE_CALLBACK_CANCEL
+#define ENNA_EVENT_CONTINUE ECORE_CALLBACK_RENEW
+
+typedef struct _Input_Listener Input_Listener;
 
 typedef enum
 {
@@ -42,6 +45,7 @@ typedef enum
     ENNA_INPUT_MENU,
     ENNA_INPUT_QUIT,
     ENNA_INPUT_EXIT,
+    //~ ENNA_KEY_CANCEL, isn't the same as 'exit' ??
     ENNA_INPUT_OK,
 
     ENNA_INPUT_LEFT,
@@ -51,59 +55,69 @@ typedef enum
 
     ENNA_INPUT_HOME,
     ENNA_INPUT_END,
-    ENNA_INPUT_PAGE_UP,
-    ENNA_INPUT_PAGE_DOWN,
-    //~ ENNA_KEY_OK,
-    //~ ENNA_KEY_STOP,
-    //~ ENNA_KEY_CANCEL,
-    //~ ENNA_KEY_SPACE,
+
+    ENNA_INPUT_NEXT,
+    ENNA_INPUT_PREV,
+
+    ENNA_INPUT_PLAY,
+    ENNA_INPUT_STOP,
+    ENNA_INPUT_PAUSE,
+    ENNA_INPUT_FORWARD,
+    ENNA_INPUT_REWIND,
+
     ENNA_INPUT_FULLSCREEN,
-    //~ ENNA_KEY_PLUS,
-    //~ ENNA_KEY_MINUS,
-//~ 
-    //~ ENNA_KEY_0,
-    //~ ENNA_KEY_1,
-    //~ ENNA_KEY_2,
-    //~ ENNA_KEY_3,
-    //~ ENNA_KEY_4,
-    //~ ENNA_KEY_5,
-    //~ ENNA_KEY_6,
-    //~ ENNA_KEY_7,
-    //~ ENNA_KEY_8,
-    //~ ENNA_KEY_9,
-//~ 
-    //~ /* Alphabetical characters */
-    //~ ENNA_KEY_A,
-    //~ ENNA_KEY_B,
-    //~ ENNA_KEY_C,
-    //~ ENNA_KEY_D,
-    //~ ENNA_KEY_E,
-    //~ ENNA_KEY_F,
-    //~ ENNA_KEY_G,
-    //~ ENNA_KEY_H,
-    //~ ENNA_KEY_I,
-    //~ ENNA_KEY_J,
-    //~ ENNA_KEY_K,
-    //~ ENNA_KEY_L,
-    //~ ENNA_KEY_M,
-    //~ ENNA_KEY_N,
-    //~ ENNA_KEY_O,
-    //~ ENNA_KEY_P,
-    //~ ENNA_KEY_Q,
-    //~ ENNA_KEY_R,
-    //~ ENNA_KEY_S,
-    //~ ENNA_KEY_T,
-    //~ ENNA_KEY_U,
-    //~ ENNA_KEY_V,
-    //~ ENNA_KEY_W,
-    //~ ENNA_KEY_X,
-    //~ ENNA_KEY_Y,
-    //~ ENNA_KEY_Z,
+    ENNA_INPUT_PLUS,
+    ENNA_INPUT_MINUS,
+
+    ENNA_INPUT_KEY_0,
+    ENNA_INPUT_KEY_1,
+    ENNA_INPUT_KEY_2,
+    ENNA_INPUT_KEY_3,
+    ENNA_INPUT_KEY_4,
+    ENNA_INPUT_KEY_5,
+    ENNA_INPUT_KEY_6,
+    ENNA_INPUT_KEY_7,
+    ENNA_INPUT_KEY_8,
+    ENNA_INPUT_KEY_9,
+
+    /* Alphabetical characters */
+    ENNA_INPUT_KEY_A,
+    ENNA_INPUT_KEY_B,
+    ENNA_INPUT_KEY_C,
+    ENNA_INPUT_KEY_D,
+    ENNA_INPUT_KEY_E,
+    ENNA_INPUT_KEY_F,
+    ENNA_INPUT_KEY_G,
+    ENNA_INPUT_KEY_H,
+    ENNA_INPUT_KEY_I,
+    ENNA_INPUT_KEY_J,
+    ENNA_INPUT_KEY_K,
+    ENNA_INPUT_KEY_L,
+    ENNA_INPUT_KEY_M,
+    ENNA_INPUT_KEY_N,
+    ENNA_INPUT_KEY_O,
+    ENNA_INPUT_KEY_P,
+    ENNA_INPUT_KEY_Q,
+    ENNA_INPUT_KEY_R,
+    ENNA_INPUT_KEY_S,
+    ENNA_INPUT_KEY_T,
+    ENNA_INPUT_KEY_U,
+    ENNA_INPUT_KEY_V,
+    ENNA_INPUT_KEY_W,
+    ENNA_INPUT_KEY_X,
+    ENNA_INPUT_KEY_Y,
+    ENNA_INPUT_KEY_Z,
 } enna_input;
+
+
+
 
 /* Enna Event API functions */
 void enna_input_init(void);
 void enna_input_shutdown(void);
 Eina_Bool enna_input_event_emit(enna_input in);
+
+Input_Listener *enna_input_listener_add(const char *name, Eina_Bool (*func)(void *data, enna_input event), void *data);
+void enna_input_listener_del(Input_Listener *il);
 
 #endif /* ENNA_INPUT_H */

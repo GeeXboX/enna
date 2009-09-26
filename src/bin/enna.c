@@ -138,49 +138,14 @@ void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 static void _event_bg_key_down_cb(void *data, Evas *e,
                                   Evas_Object *obj, void *event)
 {
-    Enna *enna;
     enna_key_t key;
 
     enna_idle_timer_renew();
 
     key = enna_get_key(event);
 
-    enna = (Enna *) data;
-    if (!enna)
-        return;
-
-    if (key == ENNA_KEY_FULLSCREEN)
+    switch (key)
     {
-        run_fullscreen = ~run_fullscreen;
-        elm_win_fullscreen_set(enna->win, run_fullscreen);
-    }
-
-    if (enna_mainmenu_exit_visible() || key == ENNA_KEY_QUIT)
-    {
-        enna_mainmenu_event_feed(event);
-    }
-    else if (enna_mainmenu_visible())
-    {
-        switch (key)
-        {
-        case ENNA_KEY_MENU:
-        {
-            enna_content_show();
-            enna_mainmenu_hide();
-            edje_object_signal_emit(enna->o_background,
-                                    "mainmenu,hide",
-                                    "enna");
-            break;
-        }
-        default:
-            enna_mainmenu_event_feed(event);
-            break;
-        }
-    }
-    else
-    {
-        switch (key)
-        {
         case ENNA_KEY_MENU:
         {
             enna_content_hide();
@@ -190,8 +155,8 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
         default:
             enna_activity_event(enna_mainmenu_selected_activity_get(), event);
             break;
-        }
     }
+
 }
 
 static void _window_delete_cb(void *data, Evas_Object *obj, void *event_info)
@@ -243,6 +208,7 @@ static int _enna_init(void)
     enna->lvl = ENNA_MSG_INFO;
     enna->home = enna_util_user_home_get();
 
+    enna_input_init();
     enna_module_init();
 
     snprintf(tmp, sizeof(tmp), "%s/.enna", enna->home);
@@ -277,7 +243,6 @@ static int _enna_init(void)
     /* Init various stuff */
     enna_volumes_init();
     enna_metadata_init ();
-    enna_input_init();
 
     if (!enna_mediaplayer_init())
         return 0;
@@ -317,14 +282,14 @@ static int _create_gui(void)
     // main window
     enna->win = elm_win_add(NULL, "enna", ELM_WIN_BASIC);
     elm_win_title_set(enna->win, "enna HTPC (elm)");
-    elm_win_fullscreen_set(enna->win,
-                           enna_config->fullscreen | run_fullscreen);
+    enna->run_fullscreen = enna_config->fullscreen | run_fullscreen;
+    elm_win_fullscreen_set(enna->win, enna->run_fullscreen);
     evas_object_smart_callback_add(enna->win, "delete-request",
                                    _window_delete_cb, NULL);
     // main window also handle global key down event
-    evas_object_event_callback_add(enna->win, EVAS_CALLBACK_KEY_DOWN,
-                                   _event_bg_key_down_cb, enna);
-    evas_object_focus_set(enna->win, 1);
+    //~ evas_object_event_callback_add(enna->win, EVAS_CALLBACK_KEY_DOWN,
+                                   //~ _event_bg_key_down_cb, enna);
+    //~ evas_object_focus_set(enna->win, 1);
 
     //~ ecore_evas_shaped_set(enna->ee, 1);  //TODO why this ???
     enna->ee_winid = elm_win_xwindow_get(enna->win);

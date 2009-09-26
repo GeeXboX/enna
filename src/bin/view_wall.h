@@ -32,6 +32,7 @@
 
 #include "enna.h"
 #include "vfs.h"
+#include "input.h"
 
 Evas_Object *enna_wall_add(Evas * evas);
 void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
@@ -39,6 +40,7 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 Eina_List* enna_wall_files_get(Evas_Object* obj);
 void enna_wall_select_nth(Evas_Object *obj, int col, int row);
 void enna_wall_event_feed(Evas_Object *obj, void *event_info);
+Eina_Bool enna_wall_input_feed(Evas_Object *obj, enna_input ev);
 void *enna_wall_selected_data_get(Evas_Object *obj);
 
 void enna_wall_selected_geometry_get(Evas_Object *obj, int *x, int *y, int *w, int *h);

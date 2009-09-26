@@ -445,35 +445,42 @@ void enna_list_event_feed(Evas_Object *obj, void *event_info)
     _smart_event_key_down(sd, event_info);
 }
 
-void enna_list_input_feed(Evas_Object *obj, enna_input event)
+Eina_Bool
+enna_list_input_feed(Evas_Object *obj, enna_input event)
 {
     int ns;
-    API_ENTRY return;
+    API_ENTRY return ENNA_EVENT_CONTINUE;
 
+    printf("INPUT.. to list %d\n", event);
     ns = enna_list_selected_get(sd->o_smart);
 
     switch (event)
     {
         case ENNA_INPUT_UP:
             list_set_item(sd, ns, 0, 1);
+            return ENNA_EVENT_BLOCK;
             break;
-        case ENNA_INPUT_PAGE_UP:
+        case ENNA_INPUT_PREV:
             list_set_item(sd, ns, 0, 5);
+            return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_DOWN:
             list_set_item(sd, ns, 1, 1);
+            return ENNA_EVENT_BLOCK;
             break;
-        case ENNA_INPUT_PAGE_DOWN:
+        case ENNA_INPUT_NEXT:
             list_set_item(sd, ns, 1, 5);
+            return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_HOME:
             list_set_item(sd, -1, 1, 1);
+            return ENNA_EVENT_BLOCK;
             break;
-        //~ case ENNA_KEY_END:
-            //~ list_set_item(sd, eina_list_count(sd->items), 0, 1);
-            //~ break;
+        case ENNA_INPUT_END:
+            list_set_item(sd, eina_list_count(sd->items), 0, 1);
+            return ENNA_EVENT_BLOCK;
+            break;
         case ENNA_INPUT_OK:
-        //~ case ENNA_KEY_SPACE:
         {
             List_Item *it = eina_list_nth(sd->items, enna_list_selected_get(sd->o_smart));
             if (it)
@@ -482,10 +489,12 @@ void enna_list_input_feed(Evas_Object *obj, enna_input event)
                     it->func(it->data);
             }
         }
+            return ENNA_EVENT_BLOCK;
             break;
        default:
             break;
     }
+    return ENNA_EVENT_CONTINUE;
 }
 
 /* deprecated (use enna_list_input_feed() instead */
