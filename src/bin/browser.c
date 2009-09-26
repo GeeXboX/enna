@@ -727,6 +727,7 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
     switch (event)
     {
     case ENNA_INPUT_EXIT:
+    printf("EX\n");
         _browse_down(sd);
         break;
     case ENNA_INPUT_OK:

@@ -128,10 +128,10 @@ menu_view_event (enna_input event)
     switch (event)
     {
     case ENNA_INPUT_LEFT:
-    //~ case ENNA_INPUT_EXIT:
-        //~ enna_content_hide();
-        //~ enna_mainmenu_show();
-        //~ break;
+    case ENNA_INPUT_EXIT:
+        enna_content_hide();
+        enna_mainmenu_show();
+        break;
     case ENNA_INPUT_RIGHT:
     case ENNA_INPUT_OK:
         browse (enna_list_selected_data_get(mod->o_list));
@@ -464,7 +464,7 @@ panel_infos_display (int show)
 /****************************************************************************/
 
 static void
-browser_view_event (enna_input event) //TODO
+browser_view_event (enna_input event)
 {
     /* handle resume popup, if any */
     if (mod->resume_displayed)
@@ -841,18 +841,18 @@ _class_hide (int dummy)
 }
 
 static void
-_class_event (void *event)//TODO
+_class_event (enna_input event)
 {
     switch (mod->state)
     {
     case MENU_VIEW:
-        menu_view_event ((enna_input)event);
+        menu_view_event (event);
         break;
     case BROWSER_VIEW:
-        browser_view_event ((enna_input)event);
+        browser_view_event (event);
         break;
     case VIDEOPLAYER_VIEW:
-        videoplayer_view_event ((enna_input)event);
+        videoplayer_view_event (event);
         break;
     default:
         break;

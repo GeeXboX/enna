@@ -148,7 +148,7 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
     switch (key)
     {
         default:
-            enna_activity_event(enna_mainmenu_selected_activity_get(), event);
+            //~ enna_activity_event(enna_mainmenu_selected_activity_get(), event);
             break;
     }
 

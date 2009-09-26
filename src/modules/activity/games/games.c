@@ -209,12 +209,12 @@ static void _class_hide(int dummy)
     edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
 }
 
-static void _class_event(void *event)//TODO
+static void _class_event(enna_input event)
 {
     switch (mod->state)
     {
         case MENU_VIEW:
-            switch ((enna_input)event)//TODO
+            switch (event)
             {
                 case ENNA_INPUT_LEFT:
                 case ENNA_INPUT_EXIT:
@@ -226,7 +226,7 @@ static void _class_event(void *event)//TODO
                     _play(enna_list_selected_data_get(mod->o_menu));
                    break;
                 default:
-                   enna_list_input_feed(mod->o_menu, (enna_input)event);//TODO
+                   enna_list_input_feed(mod->o_menu, event);
             }
             break;
         default:

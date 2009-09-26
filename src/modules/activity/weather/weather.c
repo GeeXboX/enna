@@ -495,9 +495,9 @@ _class_hide (int dummy)
 }
 
 static void
-_class_event (void *event_info)//TODO
+_class_event (enna_input event)
 {
-    //~ if (key != ENNA_KEY_CANCEL)
+    //~ if (key != ENNA_INPUT_EXIT)
         //~ return;
 
     //~ enna_content_hide();

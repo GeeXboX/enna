@@ -30,6 +30,8 @@
 #ifndef ACTIVITY_H
 #define ACTIVITY_H
 
+#include "input.h"
+
 typedef enum _ENNA_CLASS_TYPE ENNA_CLASS_TYPE;
 
 typedef struct _Enna_Class_Activity Enna_Class_Activity;
@@ -52,7 +54,7 @@ struct _Enna_Class_Activity
         void (*class_shutdown)(int dummy);
         void (*class_show)(int dummy);
         void (*class_hide)(int dummy);
-        void (*class_event)(void *event_info);
+        void (*class_event)(enna_input event);
         void (*class_grabbing_finished)(void *metadata);
     } func;
     Eina_List *categories;
@@ -67,7 +69,7 @@ int enna_activity_show(const char *name);
 const char *enna_activity_request_quit_all(void);
 int enna_activity_shutdown(const char *name);
 int enna_activity_hide(const char *name);
-int enna_activity_event(Enna_Class_Activity *act, void *event_info);
+int enna_activity_event(Enna_Class_Activity *act, enna_input event);
 const char *enna_activity_request_quit_all(void);
 
 #endif /* ACTIVITY_H */

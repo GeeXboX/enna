@@ -270,10 +270,10 @@ static void photo_event_menu (enna_input event)
     switch (event)
     {
     case ENNA_INPUT_LEFT:
-    //~ case ENNA_INPUT_EXIT:
-        //~ enna_content_hide();
-        //~ enna_mainmenu_show();
-        //~ break;
+    case ENNA_INPUT_EXIT:
+        enna_content_hide();
+        enna_mainmenu_show();
+        break;
     case ENNA_INPUT_RIGHT:
     case ENNA_INPUT_OK:
         _browse (enna_list_selected_data_get(mod->o_menu));
@@ -357,7 +357,7 @@ static void _class_hide(int dummy)
     edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
 }
 
-static void _class_event(void *event)//TODO
+static void _class_event(enna_input event)
 {
     int i;
 
@@ -375,7 +375,7 @@ static void _class_event(void *event)//TODO
     for (i = 0; evh[i].event_handler; i++)
         if (mod->state == evh[i].state)
         {
-            evh[i].event_handler((enna_input)event);//TODO
+            evh[i].event_handler(event);
             break;
         }
 }

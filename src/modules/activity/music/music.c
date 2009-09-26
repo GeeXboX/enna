@@ -72,7 +72,7 @@ static int _show_mediaplayer_cb(void *data);
 static void _class_init(int dummy);
 static void _class_show(int dummy);
 static void _class_hide(int dummy);
-static void _class_event(void *event_info);
+static void _class_event(enna_input event);
 static int em_init(Enna_Module *em);
 static int em_shutdown(Enna_Module *em);
 
@@ -187,7 +187,7 @@ _class_hide(int dummy)
 }
 
 static void
-_class_event_menu_view(void *event) //TODO
+_class_event_menu_view(enna_input event)
 {
     if (mod->o_mediaplayer)
     {
@@ -196,7 +196,7 @@ _class_event_menu_view(void *event) //TODO
             ecore_timer_add (TIMER_VALUE, _show_mediaplayer_cb, NULL);
     }
 
-    switch ((int)(long)event) // TODO
+    switch (event)
     {
     case ENNA_INPUT_LEFT:
     case ENNA_INPUT_EXIT:
@@ -208,13 +208,13 @@ _class_event_menu_view(void *event) //TODO
         _browse(enna_list_selected_data_get(mod->o_list));
         break;
     default:
-        enna_list_input_feed(mod->o_list, (enna_input)event);//TODO
+        enna_list_input_feed(mod->o_list, event);
         break;
     }
 }
 
 static void
-_class_event_browser_view(void *event) //TODO
+_class_event_browser_view(enna_input event)
 {
     if (mod->o_mediaplayer)
     {
@@ -222,7 +222,7 @@ _class_event_browser_view(void *event) //TODO
         mod->timer_show_mediaplayer =
             ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
     }
-    enna_browser_input_feed(mod->o_browser, (enna_input)event); //TODO
+    enna_browser_input_feed(mod->o_browser, event);
 }
 
 static void
@@ -316,10 +316,10 @@ panel_lyrics_display (int show)
 }
 
 static void
-_class_event_mediaplayer_view(void *event) //TODO
+_class_event_mediaplayer_view(enna_input event)
 {
 
-    switch ((int)(long)event)//TODO
+    switch (event)
     {
     case ENNA_INPUT_OK:
         enna_mediaplayer_play(mod->enna_playlist);
@@ -358,7 +358,7 @@ _class_event_mediaplayer_view(void *event) //TODO
     case ENNA_INPUT_KEY_M:
     case ENNA_INPUT_PLUS:
     case ENNA_INPUT_MINUS:
-        _volume_core((enna_input)event);//TODO
+        _volume_core(event);
         break;
     case ENNA_INPUT_KEY_I:
         panel_lyrics_display (!mod->lyrics_displayed);
@@ -370,9 +370,9 @@ _class_event_mediaplayer_view(void *event) //TODO
 }
 
 static void
-_class_event(void *event) //TODO
+_class_event(enna_input event)
 {
-    enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME, "Key pressed music : %d", event);
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %d", event);
 
     if (!mod->accept_ev) return;
 

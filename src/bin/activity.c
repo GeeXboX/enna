@@ -148,12 +148,12 @@ ACTIVITY_FUNC(shutdown, 0);
 ACTIVITY_FUNC(show, 0);
 ACTIVITY_FUNC(hide, 0);
 
-int enna_activity_event(Enna_Class_Activity *act, void *event_info)
+int enna_activity_event(Enna_Class_Activity *act, enna_input event)
 {
     if (!act)
         return -1;
 
-    ACTIVITY_CLASS(event, event_info);
+    ACTIVITY_CLASS(event, event);
     return 0;
 }
 

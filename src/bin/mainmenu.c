@@ -379,20 +379,15 @@ _input_events_cb(void *data, enna_input event)
                 break;
         }
     }
-    switch (event)
+    else if (event == ENNA_INPUT_MENU)
     {
-        case ENNA_INPUT_EXIT:
-        case ENNA_INPUT_MENU:
-            enna_content_hide();
-            enna_mainmenu_show();
-            return ENNA_EVENT_BLOCK;
-            break;
-        default:
-            break;
+        enna_content_hide();
+        enna_mainmenu_show();
+        return ENNA_EVENT_BLOCK;
     }
     if (!sd->visible)
     {
-        enna_activity_event(enna_mainmenu_selected_activity_get(), (void*)event);//TODO
+        enna_activity_event(enna_mainmenu_selected_activity_get(), event);
     }
 
     return ENNA_EVENT_CONTINUE;

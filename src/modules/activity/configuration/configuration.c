@@ -61,7 +61,6 @@ typedef struct _Enna_Module_Configuration {
 
 static Enna_Module_Configuration *mod;
 static Enna_Config_Panel *info1 = NULL;
-static Input_Listener *_listener = NULL;
 
 
 
@@ -160,27 +159,6 @@ _hide_subpanel(Enna_Config_Panel *p)
     mod->state = MENU_VIEW;
 }
 
-static Eina_Bool
-_input_events_cb(void *data, enna_input event)
-{
-    //~ printf("INPUT.. to configuration %d\n", event);
-
-    // menu view
-    if (mod->state == MENU_VIEW)
-    {
-        return enna_wall_input_feed(mod->o_menu, event);
-    }
-    // subpanel view
-    else if (event == ENNA_INPUT_EXIT)
-    {
-        _hide_subpanel(mod->selected);
-        edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
-        return ENNA_EVENT_BLOCK;
-    }
-    
-    return ENNA_EVENT_CONTINUE;
-}
-
 /****************************************************************************/
 /*                        Activity Class API                                */
 /****************************************************************************/
@@ -214,49 +192,36 @@ _activity_show (int dummy)
     // show the module
     enna_content_select(ENNA_MODULE_NAME);    
     edje_object_signal_emit (mod->o_edje, "menu,show", "enna");
-
-
-    if (!_listener)
-        _listener = enna_input_listener_add("configuration",_input_events_cb, NULL);
-
 }
 
 static void
 _activity_hide (int dummy)
 {
-    enna_input_listener_del(_listener);
-    _listener = NULL;
     edje_object_signal_emit (mod->o_edje, "menu,hide", "enna");
     _hide_subpanel(mod->selected);
 }
 
-//~ static void
-//~ _activity_event (void *event_info)
-//~ {
-    //~ Evas_Event_Key_Down *ev = event_info;
-    //~ enna_key_t key = enna_get_key (ev);
-//~ 
-    //~ if  (mod->state == CONTENT_VIEW)
-    //~ {
-        //~ if (key == ENNA_KEY_CANCEL)
-        //~ {
-            //~ _hide_subpanel(mod->selected);
-            //~ edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
-        //~ }
-    //~ }
-    //~ else
-    //~ {
-        //~ if (key == ENNA_KEY_CANCEL)
-        //~ {
-            //~ enna_content_hide();
-            //~ enna_mainmenu_show();
-        //~ }
-        //~ else
-        //~ {
-            //~ enna_wall_event_feed(mod->o_menu, event_info);
-        //~ }
-    //~ }
-//~ }
+static void
+_activity_event (enna_input event)
+{
+    // menu view
+    if (mod->state == MENU_VIEW)
+    {
+        if (event == ENNA_INPUT_EXIT)
+        {
+            enna_content_hide();
+            enna_mainmenu_show();
+        }
+        else
+            enna_wall_input_feed(mod->o_menu, event);
+    }
+    // subpanel view
+    else if (event == ENNA_INPUT_EXIT)
+    {
+        _hide_subpanel(mod->selected);
+        edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
+    }
+}
 
 static Enna_Class_Activity class = {
     ENNA_MODULE_NAME,
@@ -270,7 +235,7 @@ static Enna_Class_Activity class = {
         _activity_shutdown,
         _activity_show,
         _activity_hide,
-        NULL//_activity_event
+        _activity_event
     },
     NULL
 };
