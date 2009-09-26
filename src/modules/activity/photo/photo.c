@@ -265,46 +265,45 @@ static void _create_gui(void)
     _create_infos();
 }
 
-static void photo_event_menu (void *event_info, enna_key_t key)
+static void photo_event_menu (enna_input event)
 {
-    switch (key)
+    switch (event)
     {
-    case ENNA_KEY_LEFT:
-    case ENNA_KEY_CANCEL:
-        enna_content_hide();
-        enna_mainmenu_show();
-        break;
-    case ENNA_KEY_RIGHT:
-    case ENNA_KEY_OK:
-    case ENNA_KEY_SPACE:
+    case ENNA_INPUT_LEFT:
+    //~ case ENNA_INPUT_EXIT:
+        //~ enna_content_hide();
+        //~ enna_mainmenu_show();
+        //~ break;
+    case ENNA_INPUT_RIGHT:
+    case ENNA_INPUT_OK:
         _browse (enna_list_selected_data_get(mod->o_menu));
         break;
     default:
-        enna_list_event_feed(mod->o_menu, event_info);
+        enna_list_input_feed(mod->o_menu, event);
     }
 }
 
-static void photo_event_browser (void *event_info, enna_key_t key)
+static void photo_event_browser (enna_input event)
 {
-    switch (key)
+    switch (event)
     {
-	case ENNA_KEY_I:
+	case ENNA_INPUT_KEY_I:
 	    panel_infos_display(1);
 	    break;
     default:
-        enna_browser_event_feed(mod->o_browser, event_info);
+        enna_browser_input_feed(mod->o_browser, event);
 	}
 }
 
-static void photo_event_info (void *event_info, enna_key_t key)
+static void photo_event_info (enna_input event)
 {
-    switch (key)
+    switch (event)
     {
-    case ENNA_KEY_CANCEL:
-    case ENNA_KEY_I:
+    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_KEY_I:
         panel_infos_display(0);
         break;
-    case ENNA_KEY_OK:
+    case ENNA_INPUT_OK:
         _create_slideshow_gui();
         _slideshow_add_files();
         break;
@@ -313,24 +312,23 @@ static void photo_event_info (void *event_info, enna_key_t key)
     }
 }
 
-static void photo_event_slideshow (void *event_info, enna_key_t key)
+static void photo_event_slideshow (enna_input event)
 {
-    switch (key)
+    switch (event)
     {
-    case ENNA_KEY_CANCEL:
+    case ENNA_INPUT_EXIT:
         ENNA_OBJECT_DEL (mod->o_slideshow);
         mod->state = BROWSER_VIEW;
         edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
         edje_object_signal_emit(mod->o_edje, "list,show", "enna");
         break;
-    case ENNA_KEY_RIGHT:
+    case ENNA_INPUT_RIGHT:
         enna_slideshow_next(mod->o_slideshow);
         break;
-    case ENNA_KEY_LEFT:
+    case ENNA_INPUT_LEFT:
         enna_slideshow_prev(mod->o_slideshow);
         break;
-    case ENNA_KEY_OK:
-    case ENNA_KEY_SPACE:
+    case ENNA_INPUT_OK:
         enna_slideshow_play(mod->o_slideshow);
         break;
     default:
@@ -359,15 +357,13 @@ static void _class_hide(int dummy)
     edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
 }
 
-static void _class_event(void *event_info)
+static void _class_event(void *event)//TODO
 {
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key(ev);
     int i;
 
     static const struct {
         PHOTO_STATE state;
-        void (*event_handler) (void *event_info, enna_key_t key);
+        void (*event_handler) (enna_input event);
     } evh [] = {
         { MENU_VIEW,         &photo_event_menu        },
         { BROWSER_VIEW,      &photo_event_browser     },
@@ -379,7 +375,7 @@ static void _class_event(void *event_info)
     for (i = 0; evh[i].event_handler; i++)
         if (mod->state == evh[i].state)
         {
-            evh[i].event_handler (event_info, key);
+            evh[i].event_handler((enna_input)event);//TODO
             break;
         }
 }

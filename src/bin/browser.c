@@ -727,11 +727,9 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
     switch (event)
     {
     case ENNA_INPUT_EXIT:
-    case ENNA_INPUT_LEFT:
         _browse_down(sd);
         break;
     case ENNA_INPUT_OK:
-    case ENNA_INPUT_RIGHT:
     {
         /* FIXME */
         _browse(sd->view_funcs.view_selected_data_get(sd->o_view));
@@ -739,6 +737,8 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
     }
     case ENNA_INPUT_UP:
     case ENNA_INPUT_DOWN:
+    case ENNA_INPUT_RIGHT:
+    case ENNA_INPUT_LEFT:
     case ENNA_INPUT_NEXT:
     case ENNA_INPUT_PREV:
     case ENNA_INPUT_HOME:
