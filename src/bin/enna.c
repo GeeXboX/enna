@@ -42,6 +42,7 @@
 #include "enna_config.h"
 #include "utils.h"
 #include "mainmenu.h"
+#include "exit.h"
 #include "module.h"
 #include "content.h"
 #include "event_key.h"
@@ -146,12 +147,6 @@ static void _event_bg_key_down_cb(void *data, Evas *e,
 
     switch (key)
     {
-        case ENNA_KEY_MENU:
-        {
-            enna_content_hide();
-            enna_mainmenu_show();
-            break;
-        }
         default:
             enna_activity_event(enna_mainmenu_selected_activity_get(), event);
             break;
@@ -304,6 +299,10 @@ static int _create_gui(void)
 
     // mainmenu
     enna_mainmenu_add(enna->evas);
+
+    // exit dialog */
+    elm_layout_content_set(enna->layout, "enna.exit.swallow",
+                           enna_exit_add(enna->evas));
 
     // mouse pointer
     enna->o_cursor = edje_object_add(enna->evas);

@@ -38,7 +38,6 @@ void enna_mainmenu_append(const char *icon, const char *label,
                Enna_Class_Activity *act, void (*func) (void *data), void *data);
 Enna_Class_Activity *enna_mainmenu_selected_activity_get(void);
 void enna_mainmenu_load_from_activities(void);
-void enna_mainmenu_event_feed(void *event_info);
 int enna_mainmenu_selected_get();
 void enna_mainmenu_select_next(void);
 void enna_mainmenu_select_prev(void);
@@ -48,7 +47,6 @@ void enna_mainmenu_hide(void);
 unsigned char enna_mainmenu_visible(void);
 unsigned char enna_mainmenu_exit_visible(void);
 void enna_mainmenu_activate_nth(int nth);
-void enna_mainmenu_exit_show(Evas_Object *obj);
 void enna_mainmenu_shutdown(void);
 
 

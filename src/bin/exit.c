@@ -35,6 +35,8 @@
 #include "popup.h"
 #include "buffer.h"
 #include "activity.h"
+#include "input.h"
+#include "exit.h"
 
 #define SMART_NAME "enna_exit"
 
@@ -46,6 +48,8 @@ struct _Smart_Data
     Evas_Object *popup;
     Evas_Object *o_edje;
     Evas_Object *list;
+    Input_Listener *listener;
+    Eina_Bool visible;
 };
 
 /* local subsystem functions */
@@ -77,7 +81,29 @@ static void _yes_cb(void *data)
 
 static void _no_cb(void *data)
 {
-    evas_event_feed_key_down(enna->evas, "Escape", "Escape", "Escape", NULL, ecore_time_get(), data);
+    Evas_Object *obj = data;
+
+    enna_exit_hide(obj);
+}
+
+static Eina_Bool
+_input_events_cb(void *data, enna_input event)
+{
+    Evas_Object *obj = data;
+    API_ENTRY return ENNA_EVENT_CONTINUE;
+
+    if (event == ENNA_INPUT_QUIT)
+    {
+        if (sd->visible) enna_exit_hide(obj);
+        else enna_exit_show(obj);
+        return ENNA_EVENT_BLOCK;
+    }
+    if (sd->visible)
+    {
+        enna_list_input_feed(sd->list, event);
+        return ENNA_EVENT_BLOCK;
+    }
+    return ENNA_EVENT_CONTINUE;
 }
 
 static void _update_text(Smart_Data *sd)
@@ -127,10 +153,10 @@ static void _smart_add(Evas_Object * obj)
     sd->list = enna_list_add(evas_object_evas_get(sd->popup));
 
     it1 = _create_list_item (_("Yes, Quit Enna"), "ctrl/shutdown");
-    enna_list_file_append(sd->list, it1, _yes_cb, NULL);
+    enna_list_file_append(sd->list, it1, _yes_cb, obj);
 
     it2 = _create_list_item (_("No, Continue using enna"), "ctrl/hibernate");
-    enna_list_file_append(sd->list, it2, _no_cb, NULL);
+    enna_list_file_append(sd->list, it2, _no_cb, obj);
 
     evas_object_size_hint_weight_set(sd->list, 1.0, 1.0);
     evas_object_show(sd->list);
@@ -144,11 +170,14 @@ static void _smart_add(Evas_Object * obj)
     evas_object_smart_member_add(sd->popup, obj);
     evas_object_smart_data_set(obj, sd);
 
+    /* connect to the input signal */
+    sd->listener = enna_input_listener_add("exit_dialog", _input_events_cb, obj);
 }
 
 static void _smart_del(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
+    enna_input_listener_del(sd->listener);
     evas_object_del(sd->list);
     evas_object_del(sd->o_edje);
     evas_object_del(sd->popup);
@@ -238,10 +267,24 @@ enna_exit_add(Evas * evas)
     return evas_object_smart_add(evas, _smart);
 }
 
-void enna_exit_event_feed(Evas_Object *obj,  void *event_info)
+void
+enna_exit_show(Evas_Object *obj)
 {
     API_ENTRY return;
-    enna_list_event_feed(sd->list, event_info);
+
+    if (sd->visible) enna_exit_update_text(obj);
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,show", "enna");
+    sd->visible = EINA_TRUE;
+    enna_input_listener_promote(sd->listener);
+}
+
+void
+enna_exit_hide(Evas_Object *obj)
+{
+    API_ENTRY return;
+
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,hide", "enna");
+    sd->visible = EINA_FALSE;
 }
 
 void enna_exit_update_text(Evas_Object *obj)

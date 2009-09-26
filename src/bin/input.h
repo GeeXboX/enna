@@ -118,6 +118,8 @@ void enna_input_shutdown(void);
 Eina_Bool enna_input_event_emit(enna_input in);
 
 Input_Listener *enna_input_listener_add(const char *name, Eina_Bool (*func)(void *data, enna_input event), void *data);
+void enna_input_listener_promote(Input_Listener *il);
+void enna_input_listener_demote(Input_Listener *il);
 void enna_input_listener_del(Input_Listener *il);
 
 #endif /* ENNA_INPUT_H */

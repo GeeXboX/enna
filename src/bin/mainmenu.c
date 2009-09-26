@@ -53,7 +53,6 @@ struct _Menu_Data
     Evas_Object *o_home_button;
     Evas_Object *o_back_button;
     Evas_Object *o_btn_box;
-    Evas_Object *o_exit;
     Evas_Object *o_icon;
     Eina_List *items;
     int selected;
@@ -116,11 +115,7 @@ enna_mainmenu_add(Evas * evas)
     sd->o_back_button = _add_button("icon/arrow_left", _back_button_clicked_cb);
     elm_box_pack_end(sd->o_btn_box, sd->o_back_button);
 
-    /* Add exit Dialog */
-    sd->o_exit = enna_exit_add(evas);
-    elm_layout_content_set(enna->layout, "enna.exit.swallow", sd->o_exit);
-
-    /* connect to the input signal */
+    // connect to the input signal
     listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
 
     return sd->o_tbl;
@@ -143,7 +138,6 @@ enna_mainmenu_shutdown(void)
     ENNA_OBJECT_DEL(sd->o_back_button);
     ENNA_OBJECT_DEL(sd->o_tbl);
     ENNA_OBJECT_DEL(sd->o_btn_box);
-    ENNA_OBJECT_DEL(sd->o_exit);
     ENNA_FREE(sd);
 }
 
@@ -336,60 +330,6 @@ enna_mainmenu_select_prev(void)
     enna_mainmenu_select_sibbling (1);
 }
 
-void // deprecated
-enna_mainmenu_event_feed(void *event_info)
-{
-    enna_key_t key;
-    int n, el;
-
-    if (!sd) return;
-
-    key = enna_get_key(event_info);
-    if (!sd->exit_visible)
-    {
-        switch (key)
-        {
-        case ENNA_KEY_RIGHT:
-            enna_mainmenu_select_next();
-            break;
-        case ENNA_KEY_LEFT:
-            enna_mainmenu_select_prev();
-            break;
-        case ENNA_KEY_UP:
-            el = enna_mainmenu_selected_get();
-            enna_mainmenu_select_nth(el - MAX_PER_ROW);
-            break;
-        case ENNA_KEY_DOWN:
-            n = enna_mainmenu_get_nr_items();
-            el = enna_mainmenu_selected_get();
-            /* go to element below or last one of row if none */
-            enna_mainmenu_select_nth((el + MAX_PER_ROW >= n) ?
-                                     n - 1 : el + MAX_PER_ROW);
-            break;
-        case ENNA_KEY_OK:
-        case ENNA_KEY_SPACE:
-            enna_mainmenu_activate_nth(enna_mainmenu_selected_get());
-            break;
-        case ENNA_KEY_QUIT:
-            enna_mainmenu_exit_show(NULL);
-        default:
-            break;
-        }
-    }
-    else
-    {
-        switch (key)
-        {
-        case ENNA_KEY_QUIT:
-        case ENNA_KEY_CANCEL:
-        case ENNA_KEY_MENU:
-            enna_mainmenu_exit_show(NULL);
-            break;
-        default:
-            enna_exit_event_feed(sd->o_exit, event_info);
-        }
-    }
-}
 
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
@@ -441,34 +381,16 @@ _input_events_cb(void *data, enna_input event)
     }
     switch (event)
     {
-        case ENNA_INPUT_QUIT:
-            enna_mainmenu_exit_show(NULL);
-            return ENNA_EVENT_BLOCK;
-            break;
         case ENNA_INPUT_EXIT:
         case ENNA_INPUT_MENU:
-            //~ enna_mainmenu_exit_show(NULL);
             enna_content_hide();
             enna_mainmenu_show();
+            return ENNA_EVENT_BLOCK;
             break;
         default:
             break;
     }
-    
-    //~ else
-    //~ {
-        //~ switch ((enna_input)event)
-        //~ {
-        //~ case ENNA_INPUT_QUIT:
-        //~ case ENNA_INPUT_CANCEL:
-        //~ case ENNA_INPUT_MENU:
-            //~ enna_mainmenu_exit_show(NULL);
-            //~ break;
-        //~ default:
-            //~ enna_exit_event_feed(sd->o_exit, event_info);
-            //~ break;
-        //~ }
-    //~ }
+
     return ENNA_EVENT_CONTINUE;
 }
 
@@ -593,15 +515,3 @@ _item_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_inf
     }
 }
 
-void
-enna_mainmenu_exit_show(Evas_Object *obj)
-{
-    char msg[50];
-
-    if (!sd) return;
-
-    sd->exit_visible = !sd->exit_visible;
-    if (sd->exit_visible) enna_exit_update_text(sd->o_exit);
-    strncpy(msg, sd->exit_visible ? "exit,show" : "exit,hide", sizeof(msg));
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout), msg, "enna");
-}

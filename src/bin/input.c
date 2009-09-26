@@ -105,6 +105,28 @@ enna_input_listener_add(const char *name, Eina_Bool(*func)(void *data, enna_inpu
 }
 
 void
+enna_input_listener_promote(Input_Listener *il)
+{
+    Eina_List *l;
+
+    l = eina_list_data_find_list(_listeners, il);
+    if (!l) return;
+
+    _listeners  = eina_list_promote_list(_listeners, l);
+}
+
+void
+enna_input_listener_demote(Input_Listener *il)
+{
+    Eina_List *l;
+
+    l = eina_list_data_find_list(_listeners, il);
+    if (!l) return;
+
+    _listeners  = eina_list_demote_list(_listeners, l);
+}
+
+void
 enna_input_listener_del(Input_Listener *il)
 {
     if (!il) return;
