@@ -55,7 +55,7 @@
     enna_metadata_meta_free(metadata);
 
 #define TIMER_VALUE 30
-#define TIMER_VOLUME_VALUE 10
+#define TIMER_VOLUME_VALUE 3
 
 static void _create_menu();
 static void _create_gui();
@@ -187,7 +187,7 @@ _class_hide(int dummy)
 }
 
 static void
-_class_event_menu_view(enna_key_t key, void *event_info)
+_class_event_menu_view(void *event) //TODO
 {
     if (mod->o_mediaplayer)
     {
@@ -196,26 +196,25 @@ _class_event_menu_view(enna_key_t key, void *event_info)
             ecore_timer_add (TIMER_VALUE, _show_mediaplayer_cb, NULL);
     }
 
-    switch (key)
+    switch ((int)(long)event) // TODO
     {
-    case ENNA_KEY_LEFT:
-    case ENNA_KEY_CANCEL:
+    case ENNA_INPUT_LEFT:
+    case ENNA_INPUT_EXIT:
         enna_content_hide();
         enna_mainmenu_show();
         break;
-    case ENNA_KEY_RIGHT:
-    case ENNA_KEY_OK:
-    case ENNA_KEY_SPACE:
+    case ENNA_INPUT_RIGHT:
+    case ENNA_INPUT_OK:
         _browse(enna_list_selected_data_get(mod->o_list));
         break;
     default:
-        enna_list_event_feed(mod->o_list, event_info);
-
+        enna_list_input_feed(mod->o_list, (enna_input)event);//TODO
+        break;
     }
 }
 
 static void
-_class_event_browser_view(enna_key_t key, void *event_info)
+_class_event_browser_view(void *event) //TODO
 {
     if (mod->o_mediaplayer)
     {
@@ -223,26 +222,27 @@ _class_event_browser_view(enna_key_t key, void *event_info)
         mod->timer_show_mediaplayer =
             ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
     }
-    enna_browser_event_feed(mod->o_browser, event_info);
+    enna_browser_input_feed(mod->o_browser, (enna_input)event); //TODO
 }
+
 static void
-_volume_hide_done_cb(void *data,
-    Evas_Object *obj,
-    const char *emission,
-    const char *source)
+_volume_hide_done_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
 {
-    //~ edje_object_signal_callback_del(enna->o_edje, "hide,done", "*", _volume_hide_done_cb);
+    edje_object_signal_callback_del(elm_layout_edje_get(enna->layout),
+                                    "hide,done", "*", _volume_hide_done_cb);
     ENNA_OBJECT_DEL(mod->o_volume);
-    ENNA_TIMER_DEL(mod->timer_volume);
     mod->o_volume = NULL;
 }
 
 static int
 _volume_hide_cb(void *data)
 {
-    //~ edje_object_signal_callback_add(enna->o_edje, "hide,done", "*", _volume_hide_done_cb, NULL);
-    //~ edje_object_signal_emit(enna->o_edje, "popup,hide","enna");
-    return 0;
+    edje_object_signal_callback_add(elm_layout_edje_get(enna->layout),
+                                    "popup,hide,done", "*",
+                                    _volume_hide_done_cb, NULL);
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "popup,hide","enna");
+    mod->timer_volume = NULL;
+    return ECORE_CALLBACK_CANCEL;
 }
 
 static void
@@ -259,42 +259,37 @@ _volume_gui_update()
 }
 
 static void
-_volume_core(enna_key_t key)
+_volume_core(enna_input event)
 {
     if (!mod->o_volume)
     {
-	/* Volume popup doesn't exists, create it */
-	ENNA_TIMER_DEL(mod->timer_volume);
-	mod->timer_volume =ecore_timer_add(TIMER_VOLUME_VALUE, _volume_hide_cb, NULL);
-	mod->o_volume = edje_object_add(mod->em->evas);
-	edje_object_file_set(mod->o_volume, enna_config_theme_get(), "enna/volume");
-	//~ edje_object_part_swallow(enna->o_edje, "enna.swallow.popup", mod->o_volume);
-	//~ edje_object_signal_emit(enna->o_edje, "popup,show","enna");
-
+        /* Volume popup doesn't exists, create it */
+        mod->o_volume = edje_object_add(mod->em->evas);
+        edje_object_file_set(mod->o_volume, enna_config_theme_get(), "enna/volume");
+        elm_layout_content_set(enna->layout, "enna.popup.swallow", mod->o_volume);
     }
 
     /* Show volume popup */
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "popup,show","enna");
     //~ edje_object_signal_callback_del(enna->o_edje, "hide,done", "*", _volume_hide_done_cb);
-    //~ edje_object_signal_emit(enna->o_edje, "popup,show","enna");
+
     /* Reset Timer */
     ENNA_TIMER_DEL(mod->timer_volume);
     mod->timer_volume = ecore_timer_add(TIMER_VOLUME_VALUE, _volume_hide_cb, NULL);
 
-
     /* Performs volume action*/
-    switch (key)
+    switch (event)
     {
-    case ENNA_KEY_M:
-	enna_mediaplayer_mute();
-
-	break;
-    case ENNA_KEY_PLUS:
-	enna_mediaplayer_default_increase_volume();
-	break;
-    case ENNA_KEY_MINUS:
-	enna_mediaplayer_default_decrease_volume();
+    case ENNA_INPUT_KEY_M:
+        enna_mediaplayer_mute();
+        break;
+    case ENNA_INPUT_PLUS:
+        enna_mediaplayer_default_increase_volume();
+        break;
+    case ENNA_INPUT_MINUS:
+        enna_mediaplayer_default_decrease_volume();
     default:
-	break;
+        break;
     }
     _volume_gui_update();
 
@@ -321,80 +316,76 @@ panel_lyrics_display (int show)
 }
 
 static void
-_class_event_mediaplayer_view(enna_key_t key, void *event_info)
+_class_event_mediaplayer_view(void *event) //TODO
 {
 
-    switch (key)
+    switch ((int)(long)event)//TODO
     {
-    case ENNA_KEY_OK:
-    case ENNA_KEY_SPACE:
-	enna_mediaplayer_play(mod->enna_playlist);
-	break;
-    case ENNA_KEY_UP:
+    case ENNA_INPUT_OK:
+        enna_mediaplayer_play(mod->enna_playlist);
+        break;
+    case ENNA_INPUT_UP:
         panel_lyrics_display (0);
-	enna_mediaplayer_prev(mod->enna_playlist);
-	break;
-    case ENNA_KEY_DOWN:
+        enna_mediaplayer_prev(mod->enna_playlist);
+        break;
+    case ENNA_INPUT_DOWN:
         panel_lyrics_display (0);
-	enna_mediaplayer_next(mod->enna_playlist);
-	break;
-    case ENNA_KEY_LEFT:
-	enna_mediaplayer_default_seek_backward ();
-	break;
-    case ENNA_KEY_RIGHT:
-	enna_mediaplayer_default_seek_forward ();
-	break;
-    case ENNA_KEY_CANCEL:
+        enna_mediaplayer_next(mod->enna_playlist);
+        break;
+    case ENNA_INPUT_LEFT:
+        enna_mediaplayer_default_seek_backward ();
+        break;
+    case ENNA_INPUT_RIGHT:
+        enna_mediaplayer_default_seek_forward ();
+        break;
+    case ENNA_INPUT_EXIT:
         panel_lyrics_display (0);
-	ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-	mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
-	edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
-	edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-	mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
-	break;
-    case ENNA_KEY_STOP:
-    case ENNA_KEY_S:
+        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+        mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
+        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
+        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
+        mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
+        break;
+    case ENNA_INPUT_STOP:
+    case ENNA_INPUT_KEY_S:
         panel_lyrics_display (0);
-	enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
-	ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-	edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
-	edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-	mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
-	break;
-    case ENNA_KEY_M:
-    case ENNA_KEY_PLUS:
-    case ENNA_KEY_MINUS:
-	_volume_core(key);
-	break;
-    case ENNA_KEY_I:
+        enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
+        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
+        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
+        mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
+        break;
+    case ENNA_INPUT_KEY_M:
+    case ENNA_INPUT_PLUS:
+    case ENNA_INPUT_MINUS:
+        _volume_core((enna_input)event);//TODO
+        break;
+    case ENNA_INPUT_KEY_I:
         panel_lyrics_display (!mod->lyrics_displayed);
         break;
     default:
-	break;
+        break;
     }
 
 }
 
 static void
-_class_event(void *event_info)
+_class_event(void *event) //TODO
 {
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key(ev);
-    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %s",
-        ev->key);
+    enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME, "Key pressed music : %d", event);
 
     if (!mod->accept_ev) return;
 
     switch (mod->state)
     {
     case MENU_VIEW:
-        _class_event_menu_view (key, event_info);
+        _class_event_menu_view (event);
         break;
     case BROWSER_VIEW:
-        _class_event_browser_view (key, event_info);
+        _class_event_browser_view (event);
         break;
     case MEDIAPLAYER_VIEW:
-        _class_event_mediaplayer_view (key, event_info);
+        _class_event_mediaplayer_view (event);
         break;
     default:
         break;
@@ -529,7 +520,6 @@ _browse(void *data)
     edje_object_part_swallow (mod->o_edje,
                               "lyrics.panel.swallow", mod->o_panel_lyrics);
 }
-
 
 
 static int

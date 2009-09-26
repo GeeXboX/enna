@@ -439,6 +439,7 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
         _smart_select_item(sd, n);
 }
 
+//deprecated. use enna_list_input_feed() instead
 void enna_list_event_feed(Evas_Object *obj, void *event_info)
 {
     API_ENTRY return;

@@ -50,6 +50,7 @@
 #include "image.h"
 #include "logs.h"
 #include "event_key.h"
+#include "input.h"
 
 #define SMART_NAME "Enna_Browser"
 
@@ -88,7 +89,7 @@ struct _Smart_Data
 	        void *data);
 	    void * (*view_selected_data_get)(Evas_Object *view);
 	    int (*view_jump_label)(Evas_Object *view, const char *label);
-	    void (*view_key_down)(Evas_Object *view, void *even_info);
+	    Eina_Bool (*view_key_down)(Evas_Object *view, enna_input event);
 	    void (*view_select_nth)(Evas_Object *obj, int nth);
 	    Eina_List *(*view_files_get)(Evas_Object *obj);
 	    void (*view_jump_ascii)(Evas_Object *obj, char k);
@@ -210,7 +211,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_append =  enna_list_file_append;
 	    sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
 	    sd->view_funcs.view_jump_label =  enna_list_jump_label;
-	    sd->view_funcs.view_key_down = enna_list_event_feed;
+	    sd->view_funcs.view_key_down = enna_list_input_feed;
 	    sd->view_funcs.view_select_nth = enna_list_select_nth;
 	    sd->view_funcs.view_files_get = enna_list_files_get;
 	    sd->view_funcs.view_jump_ascii = enna_list_jump_ascii;
@@ -220,7 +221,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_append =  enna_view_cover_file_append;
 	    sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
 	    sd->view_funcs.view_jump_label = enna_view_cover_jump_label;
-	    sd->view_funcs.view_key_down = enna_view_cover_event_feed;
+	    sd->view_funcs.view_key_down = enna_view_cover_input_feed;
 	    sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
 	    sd->view_funcs.view_files_get = enna_view_cover_files_get;
 	    sd->view_funcs.view_jump_ascii = enna_view_cover_jump_ascii;
@@ -230,7 +231,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	    sd->view_funcs.view_append =  enna_wall_file_append;
 	    sd->view_funcs.view_selected_data_get =  enna_wall_selected_data_get;
 	    sd->view_funcs.view_jump_label =  enna_wall_jump_label;
-	    sd->view_funcs.view_key_down = enna_wall_event_feed;
+	    sd->view_funcs.view_key_down = enna_wall_input_feed;
 	    sd->view_funcs.view_select_nth = _browser_view_wall_select_nth;
 	    sd->view_funcs.view_files_get = enna_wall_files_get;
   	    sd->view_funcs.view_jump_ascii = enna_wall_jump_ascii;
@@ -334,7 +335,7 @@ static void _smart_add(Evas_Object * obj)
     sd->view_funcs.view_append =  enna_list_file_append;
     sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
     sd->view_funcs.view_jump_label =  enna_list_jump_label;
-    sd->view_funcs.view_key_down = enna_list_event_feed;
+    sd->view_funcs.view_key_down = enna_list_input_feed;
     sd->view_funcs.view_select_nth = enna_list_select_nth;
 
     sd->o_view = sd->view_funcs.view_add(sd);
@@ -679,21 +680,6 @@ void enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
     }
 }
 
-static char _get_letter_from_key(char key)
-{
-    switch (key)
-    {
-        case '7':
-            return 'P';
-        case '8':
-            return 'T';
-        case '9':
-            return 'W';
-        default:
-            return ((key - 50) * 3 + 65);
-    }
-}
-
 static void _jump_to_ascii(Smart_Data *sd, char k)
 {
     if (!sd) return;
@@ -712,51 +698,25 @@ static void _jump_to_ascii(Smart_Data *sd, char k)
     }*/
 }
 
-static void _get_alpha_from_digit(Smart_Data *sd, char key)
+void
+_browser_letter_show(Smart_Data *sd, const char *letter)
 {
-    char letter[2];
-    int mod = 0;
-
-    if (isdigit(key))
-    {
-        letter[0] = _get_letter_from_key(key);
-        letter[1] = '\0';
-        mod = (key == '7' || key == '9') ? 4 : 3;
-        if (sd->letter_key == key)
-            sd->letter_event_nbr = (sd->letter_event_nbr + 1) % mod;
-        else
-        {
-            sd->letter_event_nbr = 0;
-            sd->letter_key = key;
-        }
-
-        letter[0] += sd->letter_event_nbr;
-    }
-    else
-    {
-        letter[0] = key;
-        letter[1] = '\0';
-    }
-
-    sd->letter_mode = 1;
-
     ENNA_TIMER_DEL(sd->letter_timer);
 
-    edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
     elm_button_label_set(sd->o_letter, letter);
     edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
+    edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
+
     sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
+
     _jump_to_ascii(sd, letter[0]);
 }
 
-void enna_browser_event_feed(Evas_Object *obj, void *event_info)
+void enna_browser_input_feed(Evas_Object *obj, enna_input event)
 {
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key(ev);
-
-
     API_ENTRY return;
 
+    printf("INPUT.. to browser %d\n", event);
     if (!sd->accept_ev) return;
 
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
@@ -764,49 +724,67 @@ void enna_browser_event_feed(Evas_Object *obj, void *event_info)
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
         _list_transition_right_end_cb);
 
-    switch (key)
+    switch (event)
     {
-    case ENNA_KEY_CANCEL:
+    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_LEFT:
         _browse_down(sd);
         break;
-    case ENNA_KEY_OK:
-    case ENNA_KEY_SPACE:
+    case ENNA_INPUT_OK:
+    case ENNA_INPUT_RIGHT:
     {
         /* FIXME */
         _browse(sd->view_funcs.view_selected_data_get(sd->o_view));
         break;
     }
-    case ENNA_KEY_UP:
-    case ENNA_KEY_DOWN:
-    case ENNA_KEY_LEFT:
-    case ENNA_KEY_RIGHT:
-    case ENNA_KEY_PAGE_UP:
-    case ENNA_KEY_PAGE_DOWN:
-    case ENNA_KEY_HOME:
-    case ENNA_KEY_END:
+    case ENNA_INPUT_UP:
+    case ENNA_INPUT_DOWN:
+    case ENNA_INPUT_NEXT:
+    case ENNA_INPUT_PREV:
+    case ENNA_INPUT_HOME:
+    case ENNA_INPUT_END:
         if (sd->view_funcs.view_key_down)
-            sd->view_funcs.view_key_down(sd->o_view, event_info);
+            sd->view_funcs.view_key_down(sd->o_view, event);
         break;
 
-    case ENNA_KEY_2:
-    case ENNA_KEY_3:
-    case ENNA_KEY_4:
-    case ENNA_KEY_5:
-    case ENNA_KEY_6:
-    case ENNA_KEY_7:
-    case ENNA_KEY_8:
-    case ENNA_KEY_9:
-        {
-            char k = ev->key[strlen(ev->key) - 1];
-            _get_alpha_from_digit(sd, k);
-        }
-        break;
+
+    case ENNA_INPUT_KEY_0: _browser_letter_show(sd, "0"); return; break;
+    case ENNA_INPUT_KEY_1: _browser_letter_show(sd, "1"); return; break;
+    case ENNA_INPUT_KEY_2: _browser_letter_show(sd, "2"); return; break;
+    case ENNA_INPUT_KEY_3: _browser_letter_show(sd, "3"); return; break;
+    case ENNA_INPUT_KEY_4: _browser_letter_show(sd, "4"); return; break;
+    case ENNA_INPUT_KEY_5: _browser_letter_show(sd, "5"); return; break;
+    case ENNA_INPUT_KEY_6: _browser_letter_show(sd, "6"); return; break;
+    case ENNA_INPUT_KEY_7: _browser_letter_show(sd, "7"); return; break;
+    case ENNA_INPUT_KEY_8: _browser_letter_show(sd, "8"); return; break;
+    case ENNA_INPUT_KEY_9: _browser_letter_show(sd, "9"); return; break;
+
+    case ENNA_INPUT_KEY_A: _browser_letter_show(sd, "a"); return; break;
+    case ENNA_INPUT_KEY_B: _browser_letter_show(sd, "b"); return; break;
+    case ENNA_INPUT_KEY_C: _browser_letter_show(sd, "c"); return; break;
+    case ENNA_INPUT_KEY_D: _browser_letter_show(sd, "d"); return; break;
+    case ENNA_INPUT_KEY_E: _browser_letter_show(sd, "e"); return; break;
+    case ENNA_INPUT_KEY_F: _browser_letter_show(sd, "f"); return; break;
+    case ENNA_INPUT_KEY_G: _browser_letter_show(sd, "g"); return; break;
+    case ENNA_INPUT_KEY_H: _browser_letter_show(sd, "h"); return; break;
+    case ENNA_INPUT_KEY_I: _browser_letter_show(sd, "i"); return; break;
+    case ENNA_INPUT_KEY_J: _browser_letter_show(sd, "j"); return; break;
+    case ENNA_INPUT_KEY_K: _browser_letter_show(sd, "k"); return; break;
+    case ENNA_INPUT_KEY_L: _browser_letter_show(sd, "l"); return; break;
+    case ENNA_INPUT_KEY_M: _browser_letter_show(sd, "m"); return; break;
+    case ENNA_INPUT_KEY_N: _browser_letter_show(sd, "n"); return; break;
+    case ENNA_INPUT_KEY_O: _browser_letter_show(sd, "o"); return; break;
+    case ENNA_INPUT_KEY_P: _browser_letter_show(sd, "p"); return; break;
+    case ENNA_INPUT_KEY_Q: _browser_letter_show(sd, "q"); return; break;
+    case ENNA_INPUT_KEY_R: _browser_letter_show(sd, "r"); return; break;
+    case ENNA_INPUT_KEY_S: _browser_letter_show(sd, "s"); return; break;
+    case ENNA_INPUT_KEY_T: _browser_letter_show(sd, "t"); return; break;
+    case ENNA_INPUT_KEY_U: _browser_letter_show(sd, "u"); return; break;
+    case ENNA_INPUT_KEY_V: _browser_letter_show(sd, "v"); return; break;
+    case ENNA_INPUT_KEY_W: _browser_letter_show(sd, "w"); return; break;
+    case ENNA_INPUT_KEY_Z: _browser_letter_show(sd, "z"); return; break;
+    
     default:
-        {
-            char k = enna_key_get_alpha(key);
-            if (k)
-                _get_alpha_from_digit(sd, k);
-        }
         break;
     }
 }

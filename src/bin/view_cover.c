@@ -40,6 +40,7 @@
 #include "image.h"
 #include "logs.h"
 #include "event_key.h"
+#include "input.h"
 #include "view_cover.h"
 
 #define SMART_NAME "enna_view_cover"
@@ -149,24 +150,26 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
             _smart_event_mouse_down, si);
 }
 
-void enna_view_cover_event_feed(Evas_Object *obj, void *event_info)
+Eina_Bool
+enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
 {
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key(ev);
+    API_ENTRY return ENNA_EVENT_CONTINUE;
 
-    API_ENTRY return;
-
-    switch (key)
+    switch (event)
     {
-    case ENNA_KEY_LEFT:
+    case ENNA_INPUT_LEFT:
         _view_cover_h_select (obj, 0);
+        return ENNA_EVENT_BLOCK;
         break;
-    case ENNA_KEY_RIGHT:
+    case ENNA_INPUT_RIGHT:
         _view_cover_h_select (obj, 1);
+        return ENNA_EVENT_BLOCK;
         break;
     default:
         break;
     }
+
+    return ENNA_EVENT_CONTINUE;
 }
 
 void enna_view_cover_select_nth(Evas_Object *obj, int nth)

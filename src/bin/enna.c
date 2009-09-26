@@ -300,7 +300,7 @@ static int _create_gui(void)
     // mainmenu
     enna_mainmenu_add(enna->evas);
 
-    // exit dialog */
+    // exit dialog
     elm_layout_content_set(enna->layout, "enna.exit.swallow",
                            enna_exit_add(enna->evas));
 

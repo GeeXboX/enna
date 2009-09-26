@@ -256,6 +256,29 @@ collections
                     }
                 }
             }
+            /* popup */
+            part { name : "popup.clip";
+                type: RECT;
+                description { state: "default" 0.0;
+                    color: 0 0 0 0;
+                    visible: 0;
+                    rel1.relative: 0.5 0.5;
+                    rel2.relative: 0.5 0.5;
+                }
+                description { state: "show" 0.0;
+                    color: 200 200 200 200;
+                    visible: 1;
+                }
+            }
+            part { name: "enna.popup.swallow";
+                type: SWALLOW;
+                clip_to: "popup.clip";
+                mouse_events: 1;
+                description { state: "default" 0.0;
+                    rel1.to: "popup.clip";
+                    rel2.to: "popup.clip";
+                }
+            }
             /* exit dialog */
             part { name: "exit.clip";
                 type: RECT;
@@ -315,6 +338,25 @@ collections
                 action: STATE_SET "default" 0.0;
                 transition: ACCELERATE 0.2;
                 target: "titlebar.buttons.clip";
+            }
+
+            program { name: "popup,show";
+                signal: "popup,show";
+                source: "enna";
+                action: STATE_SET "show" 0.0;
+                transition: LINEAR 0.3;
+                target: "popup.clip";
+            }
+            program { name: "popup,hide";
+                signal: "popup,hide";
+                source: "enna";
+                action: STATE_SET "default" 0.0;
+                transition: LINEAR 0.3;
+                target: "popup.clip";
+                after: "popup,hide,done";
+            }
+            program { name: "popup,hide,done";
+                action: SIGNAL_EMIT "popup,hide,done" "";
             }
             program { name: "exit,show";
                 signal: "exit,show";

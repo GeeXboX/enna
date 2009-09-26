@@ -390,6 +390,10 @@ _input_events_cb(void *data, enna_input event)
         default:
             break;
     }
+    if (!sd->visible)
+    {
+        enna_activity_event(enna_mainmenu_selected_activity_get(), (void*)event);//TODO
+    }
 
     return ENNA_EVENT_CONTINUE;
 }
