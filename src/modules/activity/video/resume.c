@@ -237,8 +237,8 @@ video_resume_add (Evas * evas)
 }
 
 void
-video_resume_event_feed (Evas_Object *obj, void *event_info)
+video_resume_input_feed (Evas_Object *obj, enna_input event)
 {
     API_ENTRY return;
-    enna_list_event_feed (sd->list, event_info);
+    enna_list_input_feed (sd->list, event);
 }

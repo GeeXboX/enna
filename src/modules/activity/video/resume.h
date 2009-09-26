@@ -31,6 +31,6 @@
 #define RESUME_H
 
 Evas_Object *video_resume_add (Evas * evas);
-void video_resume_event_feed (Evas_Object *obj, void *event_info);
+void video_resume_input_feed (Evas_Object *obj, enna_input event);
 
 #endif /* RESUME_H */
