@@ -259,12 +259,11 @@ Enna_Class_Activity *
 enna_mainmenu_selected_activity_get(void)
 {
     Menu_Item *it;
-
     if (!sd) return NULL;
 
-    it = eina_list_nth(sd->items, sd->selected);
-    if (!it) return NULL;
-
+    it = enna_view_cover_selected_data_get(sd->o_menu);
+    if (!it)
+        return NULL;
     return it->act;
 }
 
@@ -289,7 +288,8 @@ _input_events_cb(void *data, enna_input event)
             case ENNA_INPUT_UP:
             case ENNA_INPUT_DOWN:
             case ENNA_INPUT_OK:
-                return enna_view_cover_input_feed(sd->o_menu, event);
+                enna_view_cover_input_feed(sd->o_menu, event);
+                return ENNA_EVENT_BLOCK;
                 break;
             default:
                 break;
