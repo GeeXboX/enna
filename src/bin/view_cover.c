@@ -371,9 +371,8 @@ static void _smart_reconfigure(Smart_Data * sd)
     h = sd->h;
 
     elm_scroller_content_min_limit(sd->o_scroll, w, h);
-    evas_object_geometry_get(sd->o_scroll, NULL, NULL, &ow, &oh); 
+    evas_object_geometry_get(sd->o_scroll, NULL, NULL, &ow, &oh);
     oh -= 32;
-    printf("oh = %d\n", oh);
     evas_object_size_hint_min_set(sd->o_box, ow, oh);
     EINA_LIST_FOREACH(sd->items, l, si)
     {
