@@ -779,7 +779,7 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
     case ENNA_INPUT_KEY_V: _browser_letter_show(sd, "v"); return; break;
     case ENNA_INPUT_KEY_W: _browser_letter_show(sd, "w"); return; break;
     case ENNA_INPUT_KEY_Z: _browser_letter_show(sd, "z"); return; break;
-    
+
     default:
         break;
     }
