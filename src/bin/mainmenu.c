@@ -48,7 +48,7 @@ typedef struct _Menu_Item Menu_Item;
 
 struct _Menu_Data
 {
-    Evas_Object *o_tbl;
+    Evas_Object *o_menu;
     Evas_Object *o_home_button;
     Evas_Object *o_back_button;
     Evas_Object *o_btn_box;
@@ -86,7 +86,7 @@ static Input_Listener *listener = NULL;
 Evas_Object *
 enna_mainmenu_add(Evas * evas)
 {
-    if (sd) return sd->o_tbl;
+    if (sd) return sd->o_menu;
 
     sd = calloc(1, sizeof(Menu_Data));
     if (!sd) return NULL;
@@ -96,10 +96,10 @@ enna_mainmenu_add(Evas * evas)
     sd->selected = 0;
 
     // main menu table
-    //sd->o_tbl = elm_table_add(enna->layout);
+    //sd->o_menu = elm_table_add(enna->layout);
 
-    sd->o_tbl = enna_view_cover_add(evas_object_evas_get(enna->layout));
-    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_tbl);
+    sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout));
+    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
 
     // button box
     sd->o_btn_box = elm_box_add(enna->win);
@@ -119,7 +119,7 @@ enna_mainmenu_add(Evas * evas)
     // connect to the input signal
     listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
 
-    return sd->o_tbl;
+    return sd->o_menu;
 }
 
 void
@@ -137,7 +137,7 @@ enna_mainmenu_shutdown(void)
     }
     ENNA_OBJECT_DEL(sd->o_home_button);
     ENNA_OBJECT_DEL(sd->o_back_button);
-    ENNA_OBJECT_DEL(sd->o_tbl);
+    ENNA_OBJECT_DEL(sd->o_menu);
     ENNA_OBJECT_DEL(sd->o_btn_box);
     ENNA_FREE(sd);
 }
@@ -186,8 +186,8 @@ enna_mainmenu_append(const char *icon, const char *label,
     f = calloc(1, sizeof(Enna_Vfs_File));
     f->label = eina_stringshare_add(label);
     f->icon = eina_stringshare_add(icon);
-    enna_view_cover_file_append(sd->o_tbl, f, func, data);
-    //elm_table_pack(sd->o_tbl, it->o_base, i, j, 1, 1);
+    enna_view_cover_file_append(sd->o_menu, f, func, data);
+    //elm_table_pack(sd->o_menu, it->o_base, i, j, 1, 1);
 
     evas_object_event_callback_add(it->o_base, EVAS_CALLBACK_MOUSE_UP,
                                    _item_event_mouse_up, it);
@@ -367,7 +367,7 @@ _input_events_cb(void *data, enna_input event)
             case ENNA_INPUT_UP:
             case ENNA_INPUT_DOWN:
             case ENNA_INPUT_OK:
-                enna_view_cover_input_feed(sd->o_tbl, event);
+                enna_view_cover_input_feed(sd->o_menu, event);
                 return ENNA_EVENT_BLOCK;
                 break;
             default:
