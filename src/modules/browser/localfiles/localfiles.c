@@ -361,6 +361,8 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 {
     Class_Private_Data *data;
     Enna_Config_Data *cfgdata;
+    Root_Directories *root;
+    char buf[PATH_MAX + 7];
     Eina_List *l;
 
     data = calloc(1, sizeof(Class_Private_Data));
@@ -390,8 +392,6 @@ static void __class_init(const char *name, Class_Private_Data **priv,
                     continue;
                 else
                 {
-                    Root_Directories *root;
-
                     root = calloc(1, sizeof(Root_Directories));
                     root->uri = eina_list_nth(dir_data, 0);
                     root->label = eina_list_nth(dir_data, 1);
@@ -404,6 +404,16 @@ static void __class_init(const char *name, Class_Private_Data **priv,
             }
         }
     }
+    
+    // add home directory entry
+    root = ENNA_NEW(Root_Directories, 1);
+    snprintf(buf, sizeof(buf), "file://%s", enna_util_user_home_get());
+    root->uri = strdup(buf);
+    root->label = strdup("Home");
+    root->icon = strdup("icon/favorite");
+
+    data->config->root_directories = eina_list_append(
+                data->config->root_directories, root);
 
     data->volume_add_handler =
         ecore_event_handler_add(ENNA_EVENT_VOLUME_ADDED,
