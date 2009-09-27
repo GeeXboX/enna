@@ -29,6 +29,7 @@ image.c\
 browser.c\
 content.c\
 view_list.c\
+view_list2.c\
 view_wall.c\
 switcher.c\
 location.c\
@@ -83,6 +84,7 @@ image.h\
 browser.h\
 content.h\
 view_list.h\
+view_list2.h\
 view_wall.h\
 switcher.h\
 location.h\

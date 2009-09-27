@@ -37,6 +37,7 @@
 #include "input.h"
 #include "enna_config.h"
 #include "view_list.h"
+#include "view_list2.h"
 #include "input.h"
 #include "logs.h"
 
@@ -275,7 +276,7 @@ static Eina_Bool
 _input_events_cb(void *data, enna_input event)
 {
     //~ printf("INPUT.. to module! %d\n", event);
-    return enna_list_input_feed(o_list, event);
+    return enna_list2_input_feed(o_list, event);
 }
 
 static Evas_Object *
@@ -288,7 +289,7 @@ _config_panel_show(void *data)
     if (o_list) return o_list;
     
     // create list
-    o_list = enna_list_add(enna->evas);
+    o_list = enna_list2_add(enna->evas);
     evas_object_size_hint_align_set(o_list, -1.0, -1.0);
     evas_object_size_hint_weight_set(o_list, 1.0, 1.0);
     evas_object_show(o_list);
@@ -296,24 +297,15 @@ _config_panel_show(void *data)
     // populate list
     EINA_LIST_FOREACH(_enna_modules, l, m)
     {
-        Enna_Vfs_File *item;
-        char buf[1024];
-
-        item = calloc(1, sizeof(Enna_Vfs_File));
-        item->icon = (char*)eina_stringshare_add("icon/video");
-        snprintf(buf, sizeof(buf), "%s (%s)", m->name,
-                 m->enabled ? "running" : "stopped");
-        item->label = (char*)eina_stringshare_add(buf);
-        enna_list_file_append(o_list, item, _list_selected_cb, m);
+        enna_list2_append(o_list, m->name,
+                          m->enabled ? "Module enabled. press to disable" :
+                          "Module disabled. press to enable",
+                          "icon/video", _list_selected_cb, m); //TODO fixme
     }
-
-
-    //~ enna_list_select_nth(o_list, 0);
 
     if (!_listener)
         _listener = enna_input_listener_add("configuration/modules",
                                             _input_events_cb, NULL);
-
 
     return o_list;
 }

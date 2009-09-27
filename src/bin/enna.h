@@ -80,6 +80,13 @@
         event_handler = NULL;                           \
     }                                                   \
 
+#define ENNA_STRINGSHARE_DEL(string)                    \
+    if (string)                                         \
+    {                                                   \
+        eina_stringshare_del(string);                   \
+        string = NULL;                                  \
+    }                                                   \
+
 #define ENNA_OBJECT_DEL(obj)                            \
     if (obj) {                                          \
         evas_object_del(obj);                           \
