@@ -278,14 +278,11 @@ static void _view_cover_h_select(Evas_Object *obj, int pos)
     if (si)
     {
         Evas_Coord x, xedje, wedje, xbox;
+        Evas_Coord y, w, h;
+        evas_object_geometry_get(si->o_edje, &x,&y, &w,&h);
 
-        evas_object_geometry_get(si->o_edje, &xedje, NULL, &wedje, NULL);
-        evas_object_geometry_get(sd->o_box, &xbox, NULL, NULL, NULL);
-        if (pos)
-            x = (xedje + wedje / 2 - xbox + sd->w / 2 );
-        else
-            x = (xedje + wedje / 2 - xbox - sd->w / 2 );
-        elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
+//        elm_scroller_region_get(sd->o_scroll, NULL, &y, &w, &h);
+        elm_scroller_region_bring_in(sd->o_scroll, x + x/2, y, w, h);
 
 	_smart_item_select(sd, si);
 	if (ssi) _smart_item_unselect(sd, ssi);
@@ -410,7 +407,6 @@ static void _smart_add(Evas_Object * obj)
     sd->o_box = elm_box_add(sd->o_scroll);
     elm_box_homogenous_set(sd->o_box, 0);
     elm_box_horizontal_set(sd->o_box, 1);
-    evas_object_size_hint_align_set(sd->o_box, 0.5, 0.5);
     evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
 
     evas_object_show(sd->o_box);
