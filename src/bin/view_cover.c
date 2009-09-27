@@ -104,7 +104,7 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
     evas_object_size_hint_min_set (o, w, h);
     evas_object_size_hint_align_set (o, 1, 1);
     evas_object_show (p);
-    edje_object_part_swallow (o, "enna.swallow.icon", p);
+    edje_object_part_swallow (o, "enna.swallow.content", p);
     edje_object_signal_emit (e, signal, "enna");
     evas_object_show (o);
 }
@@ -121,7 +121,7 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     sd->nb++;
     o = edje_object_add(evas_object_evas_get(sd->o_scroll));
-    edje_object_file_set(o, enna_config_theme_get(), "enna/covervideo/item");
+    edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
     si->label = eina_stringshare_add(file->label);
     o_pict = elm_image_add(sd->o_scroll);
     si->data = data;
@@ -131,11 +131,12 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     if (file->icon && file->icon[0] != '/')
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       enna_config_theme_get (), file->icon,
-                                      96, 96, "shadow,hide");
+                                      32, 32, "shadow,hide");
     else
         enna_view_cover_display_icon (o, o_pict, si->o_edje,
                                       file->icon, NULL,
-                                      96, 96 * 3/2, "shadow,show");
+                                      32, 32 * 3/2, "shadow,show");
+    edje_object_part_text_set(o, "enna.text.label", si->label);
 
     elm_box_pack_end(sd->o_box, o);
     si->o_pict = o_pict;
@@ -152,6 +153,7 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 Eina_Bool
 enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
 {
+    Smart_Item *si;
     API_ENTRY return ENNA_EVENT_CONTINUE;
 
     switch (event)
@@ -164,6 +166,11 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         _view_cover_h_select (obj, 1);
         return ENNA_EVENT_BLOCK;
         break;
+    case ENNA_INPUT_OK:
+        si = _smart_selected_item_get(sd, NULL);
+        if (si && si->func)
+            si->func(si->data);
+        return ENNA_EVENT_BLOCK;
     default:
         break;
     }
@@ -359,11 +366,23 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 static void _smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
-
+    Evas_Coord ow, oh;
+    Eina_List *l;
+    Smart_Item *si;
     x = sd->x;
     y = sd->y;
     w = sd->w;
     h = sd->h;
+
+
+    evas_object_geometry_get(sd->o_scroll, NULL, NULL, &ow, &oh); 
+    oh -= 32;
+    printf("oh = %d\n", oh);
+    evas_object_size_hint_min_set(sd->o_box, ow, oh);
+    EINA_LIST_FOREACH(sd->items, l, si)
+    {
+        evas_object_size_hint_min_set(si->o_edje, oh , oh);
+    }
 
     evas_object_move(sd->o_edje, sd->x, sd->y);
     evas_object_resize(sd->o_edje, sd->w, sd->h);

@@ -64,8 +64,6 @@ struct _Menu_Item
     Menu_Data *sd;
     Evas_Object *o_base;
     Evas_Object *o_icon;
-    void (*func)(void *data);
-    void *data;
     Enna_Class_Activity *act;
 };
 
@@ -74,9 +72,7 @@ static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_in
 static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
 static Evas_Object *_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info));
 static Eina_Bool _input_events_cb(void *data, enna_input event);
-static void _item_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info);
-static void _item_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info);
-
+static void _activate (void *data);
 
 /* local subsystem globals */
 static Menu_Data *sd = NULL;
@@ -144,11 +140,9 @@ enna_mainmenu_shutdown(void)
 
 void
 enna_mainmenu_append(const char *icon, const char *label,
-                Enna_Class_Activity *act, void (*func) (void *data), void *data)
+                Enna_Class_Activity *act)
 {
     Menu_Item *it;
-    static int i = 0;
-    static int j = 0;
     Enna_Vfs_File *f;
 
     it = malloc(sizeof(Menu_Item));
@@ -176,42 +170,18 @@ enna_mainmenu_append(const char *icon, const char *label,
     }
 
     // item data
-    it->func = func;
-    it->data = data;
     sd->items = eina_list_append(sd->items, it);
 
     evas_object_size_hint_weight_set(it->o_base, 1.0, 1.0);
     evas_object_size_hint_align_set(it->o_base, -1.0, -1.0);
 
     f = calloc(1, sizeof(Enna_Vfs_File));
-    f->label = eina_stringshare_add(label);
-    f->icon = eina_stringshare_add(icon);
-    enna_view_cover_file_append(sd->o_menu, f, func, data);
-    //elm_table_pack(sd->o_menu, it->o_base, i, j, 1, 1);
+    f->label = (char*)eina_stringshare_add(label);
+    f->icon = (char*)eina_stringshare_add(icon);
+    enna_view_cover_file_append(sd->o_menu, f, _activate, it);
 
-    evas_object_event_callback_add(it->o_base, EVAS_CALLBACK_MOUSE_UP,
-                                   _item_event_mouse_up, it);
-    evas_object_event_callback_add(it->o_base, EVAS_CALLBACK_MOUSE_DOWN,
-                                   _item_event_mouse_down, it);
     evas_object_show(it->o_base);
-
-
-    // FIXME : Ugly !
-    i++;
-    if (i == MAX_PER_ROW)
-    {
-        j++;
-        i = 0;
-    }
 }
-
-static void
-_activate (void *data)
-{
-    Enna_Class_Activity *act = data;
-    printf("activate %s", act->label);
-}
-
 
 void
 enna_mainmenu_load_from_activities(void)
@@ -223,7 +193,7 @@ enna_mainmenu_load_from_activities(void)
 
     EINA_LIST_FOREACH(activities, l, act)
         enna_mainmenu_append(act->icon ? act->icon : act->icon_file,
-                             act->label, act, _activate, act);
+                             act->label, act);
 }
 
 void
@@ -257,14 +227,6 @@ enna_mainmenu_activate_nth(int nth)
     if (!it) return;
 
     enna_mainmenu_activate(it);
-}
-
-static int
-enna_mainmenu_get_nr_items()
-{
-    if (!sd) return 0;
-
-    return eina_list_count(sd->items);
 }
 
 int
@@ -306,49 +268,9 @@ enna_mainmenu_selected_activity_get(void)
     return it->act;
 }
 
-static void
-enna_mainmenu_select_sibbling (int way)
-{
-    Menu_Item *new, *prev;
-    int ns = 0;
-
-    if (!sd) return;
-
-    ns = sd->selected;
-    prev = eina_list_nth(sd->items, ns);
-    if (!prev)
-        return;
-    if (way) ns--; else ns++;
-    new = eina_list_nth(sd->items, ns);
-    if (!new)
-    {
-        ns = way ? eina_list_count(sd->items) - 1 : 0;
-        new = eina_list_nth(sd->items, ns);
-        if (!new)
-            return;
-    }
-    sd->selected = ns;
-    edje_object_signal_emit(new->o_base, "select", "enna");
-    edje_object_signal_emit(prev->o_base, "unselect", "enna");
-}
-
-void
-enna_mainmenu_select_next(void)
-{
-    enna_mainmenu_select_sibbling (0);
-}
-
-void
-enna_mainmenu_select_prev(void)
-{
-    enna_mainmenu_select_sibbling (1);
-}
-
-
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
 {
-    int el, n;
     if (!sd) return ENNA_EVENT_CONTINUE;
 
     if (event == ENNA_INPUT_FULLSCREEN)
@@ -367,8 +289,7 @@ _input_events_cb(void *data, enna_input event)
             case ENNA_INPUT_UP:
             case ENNA_INPUT_DOWN:
             case ENNA_INPUT_OK:
-                enna_view_cover_input_feed(sd->o_menu, event);
-                return ENNA_EVENT_BLOCK;
+                return enna_view_cover_input_feed(sd->o_menu, event);
                 break;
             default:
                 break;
@@ -459,53 +380,11 @@ _add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, voi
 }
 
 static void
-_item_event_mouse_up(void *data, Evas *evas, Evas_Object *obj, void *event_info)
+_activate (void *data)
 {
-    Evas_Event_Mouse_Up *ev;
-    Menu_Item *it;
-    Eina_List *l;
-    int i;
-
-    ev = event_info;
-    it = data;
-
-    if (!sd->items)
-        return;
-
-    for (l = sd->items, i = 0; l; l = l->next, i++)
-    {
-        if (l->data == it)
-        {
-            enna_mainmenu_activate(it);
-            break;
-        }
-    }
+    Menu_Item *it = data;
+    printf("activate %s", it->act->label);
+    enna_mainmenu_activate(it);
 }
 
-static void
-_item_event_mouse_down(void *data, Evas *evas, Evas_Object *obj, void *event_info)
-{
-    Evas_Event_Mouse_Down *ev;
-    Menu_Item *it;
-    Menu_Item *prev;
-    Eina_List *l = NULL;
-    int i;
-
-    ev = event_info;
-    it = data;
-
-    if (!sd->items) return;
-
-    prev = eina_list_nth(sd->items, sd->selected);
-    for (i = 0, l = sd->items; l; l = l->next, i++)
-    {
-        if (l->data == it)
-        {
-            edje_object_signal_emit(it->o_base, "select", "enna");
-            edje_object_signal_emit(prev->o_base, "unselect", "enna");
-            sd->selected = i;
-            break;
-        }
-    }
-}
 
