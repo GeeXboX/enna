@@ -1,4 +1,4 @@
-#define COMP LOSSY 80 
+#define COMP LOSSY 80
 
 images{
     image: "background.png" COMP;
@@ -118,7 +118,7 @@ collections
                 type: SWALLOW;
                 description { state: "default" 0.0;
                     rel1.offset: 0 60;
-                } 
+                }
             }
             /* mainmenu */
             part { name: "enna.mainmenu.clip";
@@ -188,7 +188,7 @@ collections
             }
             part { name: "titlebar.swallow.button";
                 type: SWALLOW;
-                
+
                 mouse_events: 1;
                 clip_to: "titlebar.buttons.clip";
                 description { state: "default" 0.0;
@@ -312,7 +312,7 @@ collections
                     state: "default" 0.0;
                     rel1.relative: 0.2 0.2;
                     rel2.relative: 0.8 0.8;
-                }       
+                }
             }
         }
         programs
