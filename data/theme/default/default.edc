@@ -142,7 +142,10 @@ collections
                 clip_to: "enna.mainmenu.clip";
                 description { state: "default" 0.0;
                     rel1.to: "enna.mainmenu.clip";
+                    rel1.relative: 0 0.3;
                     rel2.to: "enna.mainmenu.clip";
+                    rel2.relative: 1 0.7;
+
                 }
             }
             /* title bar */

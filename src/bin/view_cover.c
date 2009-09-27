@@ -102,7 +102,7 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
     /* Fit container but keep aspect ratio */
     elm_image_scale_set (p, 1, 1);
     evas_object_size_hint_min_set (o, w, h);
-    evas_object_size_hint_align_set (o, 1, 1);
+    evas_object_size_hint_align_set (o, 0.5, 0.5);
     evas_object_show (p);
     edje_object_part_swallow (o, "enna.swallow.content", p);
     edje_object_signal_emit (e, signal, "enna");
