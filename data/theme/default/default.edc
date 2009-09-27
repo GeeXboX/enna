@@ -1,8 +1,10 @@
 #define COMP LOSSY 80
 
 images{
-    image: "background.png" COMP;
+    image: "background.png" RAW;
     image: "circle_shade.png" COMP;
+    image: "mainmenu_border_left.png" COMP;
+    image: "mainmenu_border_right.png" COMP;
 }
 
 fonts{
@@ -80,29 +82,21 @@ collections
         }
         parts {
             /* background  */
-            part { name: "white";
-                type: RECT;
-                description { state: "default" 0.0;
-                    color: 255 255 255 255;
-                }
-            }
             part { name: "enna.background";
                 mouse_events:  0;
                 description { state: "default" 0.0;
-                    color: 255 255 255 200;
+                    color: 255 255 255 255;
                     image.normal: "background.png";
                     fill {
-                        smooth: 0;
-                        size {
-                            relative: 0 0;
-                            offset: 32 32;
-                        }
+                        smooth: 1;
                     }
                 }
             }
-            part { name: "enna.background.shade";
+            part {
+                name: "enna.background.shade";
                 mouse_events:  0;
                 description { state: "default" 0.0;
+                    visible: 1;
                     color: 255 255 255 255;
                     image.normal: "circle_shade.png";
                     fill.smooth: 1;
@@ -146,6 +140,31 @@ collections
                     rel2.to: "enna.mainmenu.clip";
                     rel2.relative: 1 0.7;
 
+                }
+            }
+            part { name: "enna.mainmenu.left";
+                mouse_events:  0;
+                clip_to: "enna.mainmenu.clip";
+                description { state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1.relative: 0 0;
+                    rel2.relative: 0 1;
+                    rel2.offset: 127 0;
+                    image.normal: "mainmenu_border_left.png";
+                    image.border: 128 0 0 0;
+                    fill.smooth: 0;
+                }
+            }
+            part { name: "enna.mainmenu.right";
+                mouse_events:  0;
+                clip_to: "enna.mainmenu.clip";
+                description { state: "default" 0.0;
+                    color: 255 255 255 255;
+                    rel1.relative: 1 0;
+                    rel2.relative: 1 1;
+                    rel1.offset: -127 0;
+                    image.normal: "mainmenu_border_right.png";
+                    image.border: 0 0 0 0;
                 }
             }
             /* title bar */
