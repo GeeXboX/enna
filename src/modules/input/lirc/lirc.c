@@ -78,16 +78,16 @@ static const struct
     { "Ok",           ENNA_INPUT_OK          },
     { "Prev",         ENNA_INPUT_PREV        },
     { "Next",         ENNA_INPUT_NEXT        },
-    
+
     { "Stop",         ENNA_INPUT_STOP        },
     { "Exit",         ENNA_INPUT_EXIT        },
-    
+
     { "Quit",         ENNA_INPUT_QUIT        },
     { "Menu",         ENNA_INPUT_MENU        },
-    
+
     { "Plus",         ENNA_INPUT_PLUS        },
     { "Minus",        ENNA_INPUT_MINUS       },
-    
+
     { "0",            ENNA_INPUT_KEY_0       },
     { "1",            ENNA_INPUT_KEY_1       },
     { "2",            ENNA_INPUT_KEY_2       },
@@ -125,7 +125,7 @@ static const struct
     { "x",            ENNA_INPUT_KEY_X       },
     { "y",            ENNA_INPUT_KEY_Y       },
     { "z",            ENNA_INPUT_KEY_Z       },
-    
+
     { NULL,           ENNA_INPUT_UNKNOWN     }
 };
 
@@ -177,7 +177,7 @@ lirc_panel_show(void *data)
     evas_object_size_hint_align_set(_o_main, -1.0, -1.0);
     evas_object_size_hint_weight_set(_o_main, 1.0, 1.0);
     evas_object_show(_o_main);
-    
+
     return _o_main;
 }
 
