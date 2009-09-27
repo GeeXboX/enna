@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-09-21 20:35+0200\n"
+"POT-Creation-Date: 2009-09-27 12:51+0200\n"
 "PO-Revision-Date: 2009-05-10 17:11+0100\n"
 "Last-Translator: Benjamin Zores <ben@geexbox.org>\n"
 "Language-Team: French\n"
@@ -16,66 +16,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/bin/browser.c:494
+#: src/bin/browser.c:492
 msgid "No media found !"
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/bin/enna.c:404
+#: src/bin/enna.c:379
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:405
+#: src/bin/enna.c:380
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Usage: %s [options ...]\n"
 
-#: src/bin/enna.c:406
+#: src/bin/enna.c:381
 #, c-format
 msgid " Available Options:\n"
 msgstr " Options disponibles:\n"
 
-#: src/bin/enna.c:407
+#: src/bin/enna.c:382
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Spécifie le fichier de configuration à utiliser.\n"
 
-#: src/bin/enna.c:408
+#: src/bin/enna.c:383
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      Forcer le mode plein écran.\n"
 
-#: src/bin/enna.c:409
+#: src/bin/enna.c:384
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Affichager cette aide.\n"
 
-#: src/bin/enna.c:410
+#: src/bin/enna.c:385
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Spécifie le nom du thème à utiliser.\n"
 
-#: src/bin/enna.c:411
+#: src/bin/enna.c:386
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): Spécifie la résolution de la fenêtre. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:412
+#: src/bin/enna.c:387
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Affichage le numéro de version d'Enna.\n"
 
-#: src/bin/exit.c:90
+#: src/bin/exit.c:116
 msgid "Are you sure you want to quit enna ?"
 msgstr ""
 
-#: src/bin/exit.c:129
+#: src/bin/exit.c:155
 msgid "Yes, Quit Enna"
 msgstr ""
 
-#: src/bin/exit.c:132
+#: src/bin/exit.c:158
 msgid "No, Continue using enna"
 msgstr ""
 
@@ -84,125 +84,125 @@ msgstr ""
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Piste #%02d (%02d:%02d)"
 
-#: src/modules/activity/games/games.c:246
+#: src/modules/activity/games/games.c:242
 msgid "Games"
 msgstr "Jeux"
 
-#: src/modules/activity/configuration/configuration.c:96
-msgid "Infos"
-msgstr "Infos"
-
-#: src/modules/activity/configuration/configuration.c:199
+#: src/modules/activity/configuration/configuration.c:227
 msgid "Configuration"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:127
+#: src/modules/activity/configuration/configuration.c:263
+msgid "Infos"
+msgstr "Infos"
+
+#: src/modules/activity/configuration/infos.c:109
 msgid "<c>Enna Information</c><br><br>"
 msgstr "<c>Informations d'Enna</c><br><br>"
 
-#: src/modules/activity/configuration/infos.c:128
+#: src/modules/activity/configuration/infos.c:110
 #, c-format
 msgid "<hilight>Enna: </hilight>%s<br>"
 msgstr "<hilight>Enna: </hilight>%s<br>"
 
-#: src/modules/activity/configuration/infos.c:129
+#: src/modules/activity/configuration/infos.c:111
 #, c-format
 msgid "<hilight>libplayer: </hilight>%s<br>"
 msgstr "<hilight>libplayer: </hilight>%s<br>"
 
-#: src/modules/activity/configuration/infos.c:132
+#: src/modules/activity/configuration/infos.c:114
 #, c-format
 msgid "<hilight>libvalhalla: </hilight>%s<br>"
 msgstr "<hilight>libvalhalla: </hilight>%s<br>"
 
-#: src/modules/activity/configuration/infos.c:136
+#: src/modules/activity/configuration/infos.c:118
 #, c-format
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
 msgstr "<hilight>libsvdrp: </hilight>%s<br>"
 
-#: src/modules/activity/configuration/infos.c:194
+#: src/modules/activity/configuration/infos.c:177
 msgid "<hilight>Distribution: </hilight>"
 msgstr "<hilight>Distribution: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:214
+#: src/modules/activity/configuration/infos.c:197
 msgid "<hilight>OS: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:233
+#: src/modules/activity/configuration/infos.c:216
 #, fuzzy
 msgid "<hilight>Available CPUs: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:264
+#: src/modules/activity/configuration/infos.c:247
 #, c-format
 msgid ", running at %d MHz"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:296
+#: src/modules/activity/configuration/infos.c:279
 #, fuzzy
 msgid "<hilight>CPU Load: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:339
+#: src/modules/activity/configuration/infos.c:322
 #, fuzzy
 msgid "<hilight>Memory: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:340
+#: src/modules/activity/configuration/infos.c:323
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:376
+#: src/modules/activity/configuration/infos.c:359
 msgid "<hilight>Screen Resolution: </hilight>"
 msgstr "<hilight>Résolution d'écran: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:377
+#: src/modules/activity/configuration/infos.c:360
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
 msgstr "%dx%d à %d Hz (min: %dx%d, max: %dx%d)"
 
-#: src/modules/activity/configuration/infos.c:390
+#: src/modules/activity/configuration/infos.c:374
 msgid "<hilight>VDR:</hilight> "
 msgstr "<hilight>VDR:</hilight> "
 
-#: src/modules/activity/configuration/infos.c:392
+#: src/modules/activity/configuration/infos.c:376
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
 msgstr "connecté à VDR %s sur %s (%s)<br>"
 
-#: src/modules/activity/configuration/infos.c:397
+#: src/modules/activity/configuration/infos.c:381
 msgid "not connected<br>"
 msgstr "non connecté<br>"
 
-#: src/modules/activity/configuration/infos.c:409
+#: src/modules/activity/configuration/infos.c:393
 msgid "<hilight>Available network interfaces:</hilight><br>"
 msgstr "<hilight>Interfaces réseau disponibles:</hilight><br>"
 
-#: src/modules/activity/configuration/infos.c:434
+#: src/modules/activity/configuration/infos.c:418
 #, c-format
 msgid "  * %s (IP: %s, "
 msgstr "  * %s (IP: %s, "
 
-#: src/modules/activity/configuration/infos.c:440
+#: src/modules/activity/configuration/infos.c:424
 #, c-format
 msgid "Netmask: %s)<br>"
 msgstr "Masque de sous-réseau: %s)<br>"
 
-#: src/modules/activity/configuration/infos.c:463
+#: src/modules/activity/configuration/infos.c:447
 msgid "<hilight>Default Gateway: </hilight>"
 msgstr "<hilight>Passerelle par défaut: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:490
+#: src/modules/activity/configuration/infos.c:474
 msgid "None<br>"
 msgstr "Aucun<br>"
 
-#: src/modules/activity/configuration/infos.c:501
+#: src/modules/activity/configuration/infos.c:485
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informations Systèmes</c><br><br>"
 
 #: src/modules/activity/music/music.c:140
-#: src/modules/activity/music/music.c:654
+#: src/modules/activity/music/music.c:644
 msgid "Music"
 msgstr "Music"
 
@@ -211,7 +211,7 @@ msgstr "Music"
 msgid "No lyrics found ..."
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/modules/activity/photo/photo.c:390
+#: src/modules/activity/photo/photo.c:386
 msgid "Photo"
 msgstr "Photo"
 
@@ -231,7 +231,7 @@ msgstr "Enregistrement de '%s'"
 msgid "Recording in progress"
 msgstr "Enregistrement en cours"
 
-#: src/modules/activity/tv/tv.c:152
+#: src/modules/activity/tv/tv.c:149
 msgid "Television"
 msgstr "Télévision"
 
@@ -278,12 +278,12 @@ msgstr "<hl>Audio: </hl> %s, %d ch., %i kb/s, %d Hz<br>"
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Taille: </hl> %.2f Mo<br>"
 
-#: src/modules/activity/video/video.c:793
-#: src/modules/activity/video/video.c:871
+#: src/modules/activity/video/video.c:790
+#: src/modules/activity/video/video.c:865
 msgid "Video"
 msgstr "Vidéo"
 
-#: src/modules/activity/weather/weather.c:512
+#: src/modules/activity/weather/weather.c:509
 msgid "Weather"
 msgstr "Météo"
 

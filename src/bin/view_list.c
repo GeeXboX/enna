@@ -415,7 +415,7 @@ static void _smart_select_item(Smart_Data *sd, int n)
     it = eina_list_nth(sd->items, n);
     if (!it) return;
 
-    elm_genlist_item_show(it->item);
+    elm_genlist_item_bring_in(it->item);
     elm_genlist_item_selected_set(it->item, 1);
 }
 
