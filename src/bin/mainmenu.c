@@ -39,6 +39,7 @@
 #include "content.h"
 #include "input.h"
 #include "logs.h"
+#include "view_cover.h"
 
 #define MAX_PER_ROW 3
 
@@ -95,7 +96,9 @@ enna_mainmenu_add(Evas * evas)
     sd->selected = 0;
 
     // main menu table
-    sd->o_tbl = elm_table_add(enna->layout);
+    //sd->o_tbl = elm_table_add(enna->layout);
+
+    sd->o_tbl = enna_view_cover_add(evas_object_evas_get(enna->layout));
     elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_tbl);
 
     // button box
@@ -146,6 +149,7 @@ enna_mainmenu_append(const char *icon, const char *label,
     Menu_Item *it;
     static int i = 0;
     static int j = 0;
+    Enna_Vfs_File *f;
 
     it = malloc(sizeof(Menu_Item));
     if (!it) return;
@@ -179,7 +183,11 @@ enna_mainmenu_append(const char *icon, const char *label,
     evas_object_size_hint_weight_set(it->o_base, 1.0, 1.0);
     evas_object_size_hint_align_set(it->o_base, -1.0, -1.0);
 
-    elm_table_pack(sd->o_tbl, it->o_base, i, j, 1, 1);
+    f = calloc(1, sizeof(Enna_Vfs_File));
+    f->label = eina_stringshare_add(label);
+    f->icon = eina_stringshare_add(icon);
+    enna_view_cover_file_append(sd->o_tbl, f, func, data);
+    //elm_table_pack(sd->o_tbl, it->o_base, i, j, 1, 1);
 
     evas_object_event_callback_add(it->o_base, EVAS_CALLBACK_MOUSE_UP,
                                    _item_event_mouse_up, it);
@@ -197,6 +205,14 @@ enna_mainmenu_append(const char *icon, const char *label,
     }
 }
 
+static void
+_activate (void *data)
+{
+    Enna_Class_Activity *act = data;
+    printf("activate %s", act->label);
+}
+
+
 void
 enna_mainmenu_load_from_activities(void)
 {
@@ -207,7 +223,7 @@ enna_mainmenu_load_from_activities(void)
 
     EINA_LIST_FOREACH(activities, l, act)
         enna_mainmenu_append(act->icon ? act->icon : act->icon_file,
-                             act->label, act, NULL, NULL);
+                             act->label, act, _activate, act);
 }
 
 void
@@ -347,28 +363,11 @@ _input_events_cb(void *data, enna_input event)
         switch (event)
         {
             case ENNA_INPUT_RIGHT:
-                enna_mainmenu_select_next();
-                return ENNA_EVENT_BLOCK;
-                break;
             case ENNA_INPUT_LEFT:
-                enna_mainmenu_select_prev();
-                return ENNA_EVENT_BLOCK;
-                break;
             case ENNA_INPUT_UP:
-                el = enna_mainmenu_selected_get();
-                enna_mainmenu_select_nth(el - MAX_PER_ROW);
-                return ENNA_EVENT_BLOCK;
-                break;
             case ENNA_INPUT_DOWN:
-                n = enna_mainmenu_get_nr_items();
-                el = enna_mainmenu_selected_get();
-                /* go to element below or last one of row if none */
-                enna_mainmenu_select_nth((el + MAX_PER_ROW >= n) ?
-                                         n - 1 : el + MAX_PER_ROW);
-                return ENNA_EVENT_BLOCK;
-                break;
             case ENNA_INPUT_OK:
-                enna_mainmenu_activate_nth(enna_mainmenu_selected_get());
+                enna_view_cover_input_feed(sd->o_tbl, event);
                 return ENNA_EVENT_BLOCK;
                 break;
             default:
