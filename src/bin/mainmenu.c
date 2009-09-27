@@ -109,7 +109,7 @@ enna_mainmenu_add(Evas * evas)
     evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
     evas_object_show(sd->o_btn_box);
     elm_layout_content_set(enna->layout, "titlebar.swallow.button", sd->o_btn_box);
-    
+
     sd->o_home_button = _add_button("icon/home_mini", _home_button_clicked_cb);
     elm_box_pack_start(sd->o_btn_box, sd->o_home_button);
 
@@ -442,11 +442,11 @@ static Evas_Object *
 _add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info))
 {
     Evas_Object *ic, *bt;
-    
+
     ic = elm_icon_add(enna->layout);
     elm_icon_file_set(ic, enna_config_theme_get(), icon_name);
     evas_object_show(ic);
-    
+
     bt = elm_button_add(enna->layout);
     evas_object_smart_callback_add(bt, "clicked", cb, sd);
     elm_button_icon_set(bt, ic);
