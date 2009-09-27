@@ -120,7 +120,7 @@ static void _create_slideshow_gui()
     ENNA_OBJECT_DEL (mod->o_slideshow);
 
     o = enna_slideshow_add(mod->em->evas);
-    //~ edje_object_part_swallow(enna->o_edje, "enna.swallow.fullscreen", o);
+    elm_layout_content_set(enna->layout, "enna.fullscreen.swallow", o);
     evas_object_show(o);
     mod->o_slideshow = o;
 

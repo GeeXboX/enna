@@ -559,9 +559,9 @@ movie_start_playback (int resume)
     ENNA_OBJECT_DEL (mod->o_mediaplayer);
     mod->o_mediaplayer = evas_object_rectangle_add (mod->em->evas);
     evas_object_color_set (mod->o_mediaplayer, 0, 0, 0, 255);
-    //~ edje_object_part_swallow (enna->o_edje, "enna.swallow.fullscreen", mod->o_mediaplayer);
+    elm_layout_content_set (enna->layout, "enna.fullscreen.swallow", mod->o_mediaplayer);
     evas_object_event_callback_add (mod->o_mediaplayer, EVAS_CALLBACK_RESIZE,
-	_mediaplayer_resize_cb, NULL);
+                                    _mediaplayer_resize_cb, NULL);
 
     enna_mediaplayer_play (mod->enna_playlist);
     if (resume)

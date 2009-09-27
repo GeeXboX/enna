@@ -279,6 +279,12 @@ collections
                     rel2.to: "popup.clip";
                 }
             }
+            /* fullscreen */
+            part { name: "enna.fullscreen.swallow";
+             type: SWALLOW;
+                mouse_events: 1;
+                description { state: "default" 0.0; }
+            }
             /* exit dialog */
             part { name: "exit.clip";
                 type: RECT;

@@ -270,7 +270,8 @@ _volume_core(enna_input event)
 
     /* Show volume popup */
     edje_object_signal_emit(elm_layout_edje_get(enna->layout), "popup,show","enna");
-    //~ edje_object_signal_callback_del(enna->o_edje, "hide,done", "*", _volume_hide_done_cb);
+    //~ edje_object_signal_callback_del(elm_layout_edje_get(enna->layout), 
+                                    //~ "hide,done", "*", _volume_hide_done_cb); //needed?
 
     /* Reset Timer */
     ENNA_TIMER_DEL(mod->timer_volume);
