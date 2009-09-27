@@ -182,16 +182,15 @@ static int _enna_init(void)
     Enna_Class_Activity *a;
 
     enna->lvl = ENNA_MSG_INFO;
-    enna->home = enna_util_user_home_get();
 
     enna_module_init();
 
-    snprintf(tmp, sizeof(tmp), "%s/.enna", enna->home);
+    snprintf(tmp, sizeof(tmp), "%s/.enna", enna_util_user_home_get());
 
     if (!ecore_file_exists(tmp))
         ecore_file_mkdir(tmp);
 
-    snprintf(tmp, sizeof(tmp), "%s/.enna/covers", enna->home);
+    snprintf(tmp, sizeof(tmp), "%s/.enna/covers", enna_util_user_home_get());
     if (!ecore_file_exists(tmp))
         ecore_file_mkdir(tmp);
 
@@ -323,7 +322,6 @@ static void _enna_shutdown(void)
     edje_shutdown();
     ecore_file_shutdown();
     enna_ipc_shutdown();
-    ENNA_FREE(enna->home);
     ENNA_FREE(enna);
 }
 
