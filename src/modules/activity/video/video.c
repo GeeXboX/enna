@@ -55,7 +55,6 @@
 #include "location.h"
 #endif
 #include "mediaplayer.h"
-#include "event_key.h"
 #include "backdrop.h"
 #include "panel_infos.h"
 #include "video.h"

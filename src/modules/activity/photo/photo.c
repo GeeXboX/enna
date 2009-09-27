@@ -42,7 +42,6 @@
 #include "view_list.h"
 #include "content.h"
 #include "mainmenu.h"
-#include "event_key.h"
 #include "logs.h"
 #include "photo.h"
 #include "exif.h"

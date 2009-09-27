@@ -41,7 +41,6 @@
 #include "view_list.h"
 #include "browser.h"
 #include "logs.h"
-#include "event_key.h"
 #include "smart_player.h"
 #include "volumes.h"
 #include "panel_lyrics.h"

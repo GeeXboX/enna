@@ -38,7 +38,6 @@
 #include "activity.h"
 #include "xml_utils.h"
 #include "url_utils.h"
-#include "event_key.h"
 #include "logs.h"
 #include "content.h"
 #include "mainmenu.h"

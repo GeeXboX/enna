@@ -55,7 +55,6 @@ Evas_Object    *enna_browser_add(Evas * evas);
 void            enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type);
 void            enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs);
 void            enna_browser_show_file_set(Evas_Object *obj, unsigned char show);
-void            enna_browser_event_feed(Evas_Object *obj, void *event_info);
 void            enna_browser_input_feed(Evas_Object *obj, enna_input event);
 int             enna_browser_select_label(Evas_Object *obj, const char *label);
 Eina_List      *enna_browser_files_get(Evas_Object *obj);

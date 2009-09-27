@@ -597,7 +597,7 @@ static void
 mp_send_key (enna_input event)
 {
     const player_vdr_t vdr_keymap[] = {
-        [ENNA_KEY_SPACE]        = PLAYER_VDR_MENU,
+        [ENNA_INPUT_MENU]        = PLAYER_VDR_MENU,
         [ENNA_INPUT_LEFT]       = PLAYER_VDR_LEFT,
         [ENNA_INPUT_RIGHT]      = PLAYER_VDR_RIGHT,
         [ENNA_INPUT_UP]         = PLAYER_VDR_UP,

@@ -49,7 +49,6 @@
 #include "view_wall.h"
 #include "image.h"
 #include "logs.h"
-#include "event_key.h"
 #include "input.h"
 
 #define SMART_NAME "Enna_Browser"
@@ -73,7 +72,6 @@ struct _Smart_Data
     Eina_List *files;
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
-    Evas *evas;
     Eina_List *visited;
     unsigned int letter_mode;
     Ecore_Timer *letter_timer;
@@ -131,7 +129,7 @@ _browser_view_list_add(Smart_Data *sd)
 
     if (!sd) return NULL;
 
-    view = enna_list_add(sd->evas);
+    view = enna_list_add(enna->evas);
 
     edje_object_part_swallow(sd->o_edje, "enna.swallow.content", view);
     /* View */
@@ -327,8 +325,7 @@ static void _smart_add(Evas_Object * obj)
     if (!sd)
         return;
 
-    sd->evas = evas_object_evas_get(obj);
-    sd->o_edje = edje_object_add(sd->evas);
+    sd->o_edje = edje_object_add(enna->evas);
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/browser");
 
     sd->view_funcs.view_add = _browser_view_list_add;
@@ -613,12 +610,12 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 
             if (f->icon_file && f->icon_file[0] == '/')
             {
-                icon = enna_image_add(sd->evas);
+                icon = enna_image_add(enna->evas);
                 enna_image_file_set(icon, f->icon_file, NULL);
             }
             else
             {
-                icon = edje_object_add(sd->evas);
+                icon = edje_object_add(enna->evas);
                 edje_object_file_set(icon, enna_config_theme_get(), f->icon);
             }
 
@@ -716,7 +713,7 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
 {
     API_ENTRY return;
 
-    printf("INPUT.. to browser %d\n", event);
+    //printf("INPUT.. to browser %d\n", event);
     if (!sd->accept_ev) return;
 
     edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
@@ -727,7 +724,6 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
     switch (event)
     {
     case ENNA_INPUT_EXIT:
-    printf("EX\n");
         _browse_down(sd);
         break;
     case ENNA_INPUT_OK:
@@ -747,7 +743,6 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
         if (sd->view_funcs.view_key_down)
             sd->view_funcs.view_key_down(sd->o_view, event);
         break;
-
 
     case ENNA_INPUT_KEY_0: _browser_letter_show(sd, "0"); return; break;
     case ENNA_INPUT_KEY_1: _browser_letter_show(sd, "1"); return; break;
@@ -789,4 +784,3 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
         break;
     }
 }
-

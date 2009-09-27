@@ -43,7 +43,6 @@
 #include "utils.h"
 #include "content.h"
 #include "mainmenu.h"
-#include "event_key.h"
 #include "input.h"
 
 #define ENNA_MODULE_NAME "games"

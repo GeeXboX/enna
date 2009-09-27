@@ -34,7 +34,6 @@
 #include "logs.h"
 #include "input.h"
 #include "module.h"
-#include "event_key.h"
 
 #define ENNA_MODULE_NAME "input_keyb"
 

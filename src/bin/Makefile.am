@@ -33,7 +33,6 @@ view_wall.c\
 switcher.c\
 location.c\
 mediaplayer.c\
-event_key.c\
 xml_utils.c\
 url_utils.c\
 logs.c\
@@ -88,7 +87,6 @@ view_wall.h\
 switcher.h\
 location.h\
 mediaplayer.h\
-event_key.h\
 xml_utils.h\
 url_utils.h\
 logs.h\

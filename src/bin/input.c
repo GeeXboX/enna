@@ -45,23 +45,10 @@ struct _Input_Listener {
 };
 
 
+/* Local Globals */
 static Eina_List *_listeners = NULL;
 
-/* Private Functions */
-
 /* Public Functions */
-void
-enna_input_init(void)
-{
-   
-}
-
-void
-enna_input_shutdown(void)
-{
-
-}
-
 Eina_Bool
 enna_input_event_emit(enna_input in)
 {
@@ -92,6 +79,7 @@ Input_Listener *
 enna_input_listener_add(const char *name, Eina_Bool(*func)(void *data, enna_input event), void *data)
 {
     Input_Listener *il;
+
     enna_log(ENNA_MSG_INFO, NULL, "listener add: %s", name);
     il = ENNA_NEW(Input_Listener, 1);
     if (!il) return NULL;
@@ -100,7 +88,6 @@ enna_input_listener_add(const char *name, Eina_Bool(*func)(void *data, enna_inpu
     il->data = data;
 
     _listeners = eina_list_prepend(_listeners, il);
-
     return il;
 }
 

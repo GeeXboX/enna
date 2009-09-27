@@ -32,7 +32,6 @@
 
 #include "enna.h"
 #include "metadata.h"
-#include "event_key.h"
 #include "input.h"
 
 typedef enum

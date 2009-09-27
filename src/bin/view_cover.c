@@ -39,7 +39,6 @@
 #include "enna_config.h"
 #include "image.h"
 #include "logs.h"
-#include "event_key.h"
 #include "input.h"
 #include "view_cover.h"
 

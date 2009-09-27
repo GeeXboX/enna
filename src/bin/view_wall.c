@@ -40,7 +40,6 @@
 #include "view_wall.h"
 #include "image.h"
 #include "logs.h"
-#include "event_key.h"
 #include "thumb.h"
 #include "vfs.h"
 #include "input.h"
@@ -278,44 +277,6 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     enna_thumb_icon_begin(pi->o_pict);
 }
 
-/* deprecated (use enna_wall_input_feed() instead) TODO */
-void enna_wall_event_feed(Evas_Object *obj, void *event_info)
-{
-    Evas_Event_Key_Down *ev = event_info;
-    enna_key_t key = enna_get_key(ev);
-
-    API_ENTRY return;
-
-    enna_log(ENNA_MSG_EVENT, SMART_NAME, "Key pressed : %s", ev->key);
-    switch (key)
-    {
-    case ENNA_KEY_LEFT:
-        _wall_left_select(obj);
-        break;
-    case ENNA_KEY_RIGHT:
-        _wall_right_select(obj);
-        break;
-    case ENNA_KEY_UP:
-        _wall_up_select(obj);
-        break;
-    case ENNA_KEY_DOWN:
-        _wall_down_select(obj);
-        break;
-    case ENNA_KEY_OK:
-    case ENNA_KEY_SPACE:
-    {
-	Picture_Item *pi = _smart_selected_item_get(sd, NULL, NULL);
-	if (pi && pi->func)
-	    pi->func(pi->data);
-    }
-
-    default:
-        break;
-    }
-
-
-}
-
 Eina_Bool
 enna_wall_input_feed(Evas_Object *obj, enna_input ev)
 {
@@ -323,7 +284,7 @@ enna_wall_input_feed(Evas_Object *obj, enna_input ev)
 
     API_ENTRY return ENNA_EVENT_CONTINUE;
 
-    printf("INPUT.. to wall %d\n", ev);
+    // printf("INPUT.. to wall %d\n", ev);
     switch (ev)
     {
     case ENNA_INPUT_LEFT:

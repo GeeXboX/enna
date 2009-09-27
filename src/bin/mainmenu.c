@@ -37,10 +37,8 @@
 #include "enna_config.h"
 #include "mainmenu.h"
 #include "content.h"
-#include "event_key.h"
 #include "input.h"
 #include "logs.h"
-#include "exit.h"
 
 #define MAX_PER_ROW 3
 

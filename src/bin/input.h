@@ -31,7 +31,6 @@
 #define ENNA_INPUT_H
 
 #include "enna.h"
-#include "input.h"
 
 #define ENNA_EVENT_BLOCK ECORE_CALLBACK_CANCEL
 #define ENNA_EVENT_CONTINUE ECORE_CALLBACK_RENEW
@@ -111,11 +110,7 @@ typedef enum
 } enna_input;
 
 
-
-
 /* Enna Event API functions */
-void enna_input_init(void);
-void enna_input_shutdown(void);
 Eina_Bool enna_input_event_emit(enna_input in);
 
 Input_Listener *enna_input_listener_add(const char *name, Eina_Bool (*func)(void *data, enna_input event), void *data);

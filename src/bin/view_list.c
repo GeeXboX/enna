@@ -32,7 +32,6 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "view_list.h"
-#include "event_key.h"
 #include "input.h"
 #include "vfs.h"
 
@@ -71,7 +70,6 @@ static void _smart_color_set(Evas_Object *obj, int r, int g, int b, int a);
 static void _smart_clip_set(Evas_Object *obj, Evas_Object *clip);
 static void _smart_clip_unset(Evas_Object *obj);
 static void _smart_reconfigure(Smart_Data *sd);
-static void _smart_event_key_down(Smart_Data *sd, void *event_info);
 static void _smart_select_item(Smart_Data *sd, int n);
 
 static Evas_Smart *_e_smart = NULL;
@@ -439,13 +437,6 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
         _smart_select_item(sd, n);
 }
 
-//deprecated. use enna_list_input_feed() instead
-void enna_list_event_feed(Evas_Object *obj, void *event_info)
-{
-    API_ENTRY return;
-    _smart_event_key_down(sd, event_info);
-}
-
 Eina_Bool
 enna_list_input_feed(Evas_Object *obj, enna_input event)
 {
@@ -496,52 +487,4 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
             break;
     }
     return ENNA_EVENT_CONTINUE;
-}
-
-/* deprecated (use enna_list_input_feed() instead */
-static void _smart_event_key_down(Smart_Data *sd, void *event_info)
-{
-    Evas_Event_Key_Down *ev;
-    enna_key_t keycode;
-    int ns;
-
-    ev = event_info;
-    ns = enna_list_selected_get(sd->o_smart);
-    keycode = enna_get_key(ev);
-
-    switch (keycode)
-    {
-        case ENNA_KEY_UP:
-            list_set_item(sd, ns, 0, 1);
-            break;
-        case ENNA_KEY_PAGE_UP:
-            list_set_item(sd, ns, 0, 5);
-            break;
-        case ENNA_KEY_DOWN:
-            list_set_item(sd, ns, 1, 1);
-            break;
-        case ENNA_KEY_PAGE_DOWN:
-            list_set_item(sd, ns, 1, 5);
-            break;
-        case ENNA_KEY_HOME:
-            list_set_item(sd, -1, 1, 1);
-            break;
-        case ENNA_KEY_END:
-            list_set_item(sd, eina_list_count(sd->items), 0, 1);
-            break;
-        case ENNA_KEY_OK:
-        case ENNA_KEY_SPACE:
-        {
-
-            List_Item *it = eina_list_nth(sd->items, enna_list_selected_get(sd->o_smart));
-            if (it)
-            {
-                if (it->func)
-                    it->func(it->data);
-            }
-        }
-            break;
-       default:
-            break;
-    }
 }

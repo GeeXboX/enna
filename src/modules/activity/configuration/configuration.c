@@ -33,8 +33,6 @@
 #include <Edje.h>
 
 #include "enna.h"
-#include "event_key.h"
-#include "input.h"
 #include "vfs.h"
 #include "enna_config.h"
 #include "view_wall.h"
