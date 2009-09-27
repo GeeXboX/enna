@@ -226,7 +226,7 @@ enna_mainmenu_activate(Menu_Item *it)
     elm_layout_content_set(enna->layout, "titlebar.swallow.icon", sd->o_icon);
 
     // run the activity_show cb. that is responsable of showing the
-    // content using enna_content_select("name)
+    // content using enna_content_select("name")
     enna_activity_show(it->act->name);
 }
 
@@ -334,8 +334,6 @@ _input_events_cb(void *data, enna_input event)
 {
     int el, n;
     if (!sd) return ENNA_EVENT_CONTINUE;
-    
-    //~ printf("INPUT.. to mainmenu %d\n", (enna_input)event);
 
     if (event == ENNA_INPUT_FULLSCREEN)
     {

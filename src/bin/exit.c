@@ -172,6 +172,7 @@ static void _smart_add(Evas_Object * obj)
 
     /* connect to the input signal */
     sd->listener = enna_input_listener_add("exit_dialog", _input_events_cb, obj);
+    enna_input_listener_demote(sd->listener);
 }
 
 static void _smart_del(Evas_Object * obj)
@@ -283,6 +284,7 @@ enna_exit_hide(Evas_Object *obj)
 {
     API_ENTRY return;
 
+    enna_input_listener_demote(sd->listener);
     edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,hide", "enna");
     sd->visible = EINA_FALSE;
 }
