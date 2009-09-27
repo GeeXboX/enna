@@ -277,12 +277,11 @@ static void _view_cover_h_select(Evas_Object *obj, int pos)
     si = eina_list_nth(sd->items, nth);
     if (si)
     {
-        Evas_Coord x, xedje, wedje, xbox;
+        Evas_Coord x, xedje;
         Evas_Coord y, w, h;
-        evas_object_geometry_get(si->o_edje, &x,&y, &w,&h);
-
-//        elm_scroller_region_get(sd->o_scroll, NULL, &y, &w, &h);
-        elm_scroller_region_bring_in(sd->o_scroll, x + x/2, y, w, h);
+        evas_object_geometry_get(si->o_edje, &xedje, NULL, NULL, NULL);
+        elm_scroller_region_get(sd->o_scroll, &x, &y, &w, &h);
+        elm_scroller_region_bring_in(sd->o_scroll, x + xedje, y, w, h);
 
 	_smart_item_select(sd, si);
 	if (ssi) _smart_item_unselect(sd, ssi);
@@ -371,7 +370,7 @@ static void _smart_reconfigure(Smart_Data * sd)
     w = sd->w;
     h = sd->h;
 
-
+    elm_scroller_content_min_limit(sd->o_scroll, w, h);
     evas_object_geometry_get(sd->o_scroll, NULL, NULL, &ow, &oh); 
     oh -= 32;
     printf("oh = %d\n", oh);
@@ -400,7 +399,7 @@ static void _smart_add(Evas_Object * obj)
     sd->o_scroll = elm_scroller_add(obj);
     evas_object_show(sd->o_scroll);
     elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_bounce_set(sd->o_scroll, 0, 0);
+    elm_scroller_bounce_set(sd->o_scroll, 1, 0);
 
     edje_object_part_swallow(sd->o_edje, "swallow.content", sd->o_scroll);
 
