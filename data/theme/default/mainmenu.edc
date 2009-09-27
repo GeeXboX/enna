@@ -62,7 +62,7 @@ group
             state: "default" 0.0;
             aspect: 1 1;
             rel2.relative: 1 0.85;
-            
+
             aspect_preference: BOTH;
             rel1.offset: 24 24;
             rel2.offset: -24 -24;
