@@ -30,17 +30,23 @@
 #ifndef LIST2_H
 #define LIST2_H
 
+#include <Elementary.h>
+
 #include "enna.h"
 #include "vfs.h"
 #include "input.h"
 
 
-Evas_Object  *enna_list2_add(Evas *evas);
-void          enna_list2_append(Evas_Object *obj, const char *label1,
-                                const char *label2, const char *icon,
-                                void (*func)(void *data), void *func_data);
+Evas_Object      *enna_list2_add(Evas *evas);
+Elm_Genlist_Item *enna_list2_append(Evas_Object *obj, const char *label1,
+                                    const char *label2, const char *icon,
+                                    void (*func)(void *data), void *func_data);
 void          enna_list2_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-                                     void (*func) (void *data), void *data);
+                                    void (*func) (void *data), void *func_data);
+
+void          enna_list2_item_button_add(Elm_Genlist_Item *item, const char *icon, const char *label,
+                                        void (*func) (void *data), void *func_data);
+                                     
                                      
 //~ Eina_List* enna_list_files_get(Evas_Object* obj);
 //~ void enna_list_select_nth(Evas_Object *obj, int nth);

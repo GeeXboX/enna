@@ -279,6 +279,11 @@ _input_events_cb(void *data, enna_input event)
     return enna_list2_input_feed(o_list, event);
 }
 
+void _button_cb (void *data)
+{
+    printf("Button clicked...\n");
+}
+
 static Evas_Object *
 _config_panel_show(void *data)
 {
@@ -297,10 +302,16 @@ _config_panel_show(void *data)
     // populate list
     EINA_LIST_FOREACH(_enna_modules, l, m)
     {
-        enna_list2_append(o_list, m->name,
+        Elm_Genlist_Item *item;
+        item = enna_list2_append(o_list, m->name,
                           m->enabled ? "Module enabled. press to disable" :
                           "Module disabled. press to enable",
                           "icon/video", _list_selected_cb, m); //TODO fixme
+
+        enna_list2_item_button_add(item, "icon/podcast", "info",
+                                    _button_cb , NULL);
+        enna_list2_item_button_add(item, "icon/photo", "just for test",
+                                    _button_cb , NULL);
     }
 
     if (!_listener)
@@ -318,6 +329,3 @@ _config_panel_hide(void *data)
     _listener = NULL;
     ENNA_OBJECT_DEL(o_list);
 }
-
-
-    

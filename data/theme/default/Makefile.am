@@ -141,6 +141,8 @@ images/loading-5.png \
 images/volume_icon_reflection.png \
 images/progress_bar_drag.png \
 images/bt_shine_menuitem.png \
+images/bt_dis_base.png \
+images/bt_dis_hilight.png \
 images/weather_sun_storm.png \
 images/progress_bar_content.png \
 images/weather_sunny.png \

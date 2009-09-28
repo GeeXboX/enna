@@ -37,55 +37,120 @@
 typedef struct _Item_Data Item_Data;
 struct _Item_Data
 {
-    void (*func) (void *data);
-    void *func_data;
-    const char *label1;
-    const char *label2;
-    const char *icon;
+    const char *label1;        /**< primary label (title) */
+    const char *label2;        /**< secondary label (subtitle) */
+    const char *icon;          /**< icon for the list item */
+    void (*func) (void *data); /**< function to call when list item is selected */
+    void *func_data;           /**< data to return-back */
+    Eina_List *buttons;        /**< list of Item_Button pointers */
+};
+
+typedef struct _Item_Button Item_Button;
+struct _Item_Button
+{
+    Evas_Object *obj;          /**< elementary button */
+    const char *label;         /**< label for the button */
+    const char *icon;          /**< icon for the button */
+    void (*func) (void *data); /**< function to call when button pressed */
+    void *func_data;           /**< data to return-back */
 };
 
 /***   Local Globals  ***/
 
 
+/***   Callbacks  ***/
+/*static void // called on list item double-click
+_list_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Item_Data *id = data;
+    printf("CLICK on %s\n", id->label);
+    _list_item_activate(id);
+}*/
+
+static void // called on list item selection (higlight)
+_list_item_selected_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    //Elm_Genlist_Item *item = event_info;
+    Item_Data *id = data;
+    Eina_List *l;
+    Item_Button *b;
+
+    EINA_LIST_FOREACH(id->buttons, l, b)
+        elm_object_disabled_set(b->obj, EINA_TRUE);
+}
+
+static void // called when one of the buttons is pressed
+_list_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Item_Button *b = data;
+
+    if (b->func) b->func(b->func_data);
+}
 
 /***   Privates  ***/
 static void
 _list_item_activate(Item_Data *id)
 {
     if (!id) return;
-    //printf("ACTIVATE %s\n", id->label);
 
-    // execute the activate function
+    // execute the item activate callback
     if (id->func) id->func(id->func_data);
 }
 
-/***   Callbacks  ***/
-//~ static void // called on item double-click
-//~ _list_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
-//~ {
-    //~ Item_Data *id = data;
-    //~ printf("CLICK on %s\n", id->label);
-    //~ _list_item_activate(id);
-//~ }
-
-static void // called on item selection (higlight)
-_list_item_selected_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_list_button_activate(Item_Button *b)
 {
-    Item_Data *id = data;
-    //Elm_Genlist_Item *item = event_info;
-    
-    printf("SEL %s\n", id->label1);
+    if (!b) return;
+
+    // execute the button activate callback
+    if (b->func) b->func(b->func_data);
 }
 
-/***   Genlist Class   ***/
+static Evas_Object *
+_list_item_buttons_create(Item_Data *id)
+{
+    Evas_Object *box;
+    Eina_List *l;
+    Item_Button *b;
+
+    box = elm_box_add(enna->layout);
+    elm_box_horizontal_set(box, EINA_TRUE);
+    evas_object_show(box);
+
+    EINA_LIST_FOREACH(id->buttons, l, b)
+    {
+        Evas_Object *ic;
+
+        ic = elm_icon_add(enna->layout);
+        if (b->icon && b->icon[0] == '/')
+            elm_icon_file_set(ic, b->icon, NULL);
+        else if (b->icon)
+            elm_icon_file_set(ic, enna_config_theme_get(), b->icon);
+        evas_object_show(ic);
+
+        b->obj = elm_button_add(enna->layout);
+        elm_button_style_set(b->obj, "enna_list");
+        elm_button_label_set(b->obj, b->label);
+        elm_button_icon_set(b->obj, ic);
+        evas_object_size_hint_weight_set(b->obj, 1.0, 1.0);
+        evas_object_size_hint_align_set(b->obj, -1.0, -1.0);
+        evas_object_smart_callback_add(b->obj, "clicked", _list_button_clicked_cb, b);
+        evas_object_show(b->obj);
+
+        elm_box_pack_end(box, b->obj);
+    }
+    
+    return box;
+}
+
+/***   Genlist Class Implementation  ***/
 static char *
 _list_item_label_get(const void *data, Evas_Object *obj, const char *part)
 {
     const Item_Data *id = data;
 
-    printf(" * label_get(,,%s)\n", part);
     if (!id) return NULL;
-    
+
     if (!strcmp(part, "elm.text") && id->label1)
         return strdup(id->label1);
     if (!strcmp(part, "elm.text.sub") && id->label2)
@@ -98,7 +163,6 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
 {
     const Item_Data *id = data;
 
-    //printf(" * icon_get()\n");
     if (!id) return NULL;
 
     if (!strcmp(part, "elm.swallow.icon"))
@@ -114,6 +178,10 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
         evas_object_show(ic);
         return ic;
     }
+    else if (!strcmp(part, "elm.swallow.end"))
+    {
+        return _list_item_buttons_create(id);
+    }
 
     return NULL;
 }
@@ -128,9 +196,15 @@ static void
 _list_item_del(const void *data, Evas_Object *obj)
 {
     Item_Data *id = (Item_Data *)data;
-    printf("DEL\n");
+    Item_Button *b;
 
     if (!id) return;
+    EINA_LIST_FREE(id->buttons, b)
+    {
+        ENNA_STRINGSHARE_DEL(b->label);
+        ENNA_STRINGSHARE_DEL(b->icon);
+        ENNA_FREE(b);
+    }
     ENNA_STRINGSHARE_DEL(id->label1);
     ENNA_STRINGSHARE_DEL(id->label2);
     ENNA_STRINGSHARE_DEL(id->icon);
@@ -163,7 +237,7 @@ enna_list2_add(Evas *evas) // evas is unused
     return obj;
 }
 
-void
+Elm_Genlist_Item *
 enna_list2_append(Evas_Object *obj, const char *label1, const char *label2,
                   const char *icon,
                   void (*func)(void *data), void *func_data)
@@ -172,7 +246,7 @@ enna_list2_append(Evas_Object *obj, const char *label1, const char *label2,
     Item_Data *id;
 
     id = ENNA_NEW(Item_Data, 1);
-    if (!id) return;
+    if (!id) return NULL;
     id->func = func;
     id->func_data = func_data;
     id->label1 = eina_stringshare_add(label1);
@@ -185,6 +259,8 @@ enna_list2_append(Evas_Object *obj, const char *label1, const char *label2,
 
     if (!elm_genlist_selected_item_get(obj))
         elm_genlist_item_selected_set(item, EINA_TRUE);
+
+    return item;
 }
 
 void
@@ -195,25 +271,114 @@ enna_list2_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     //TODO the caller expect I will free the Vfs_File ??
 }
 
+void
+enna_list2_item_button_add(Elm_Genlist_Item *item, const char *icon, const char *label,
+                           void (*func) (void *data), void *func_data)
+{
+    Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
+    Item_Button *b;
+
+    b = ENNA_NEW(Item_Button, 1);
+    if (!b) return;
+
+    b->icon = eina_stringshare_add(icon);
+    b->label = eina_stringshare_add(label);
+    b->func = func;
+    b->func_data = func_data;
+
+    id->buttons = eina_list_append(id->buttons, b);
+}
+
+static Item_Button *
+_list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
+{
+    Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
+    Item_Button *next;
+
+    if (!item || !id) return NULL;
+
+    // item currently selected, select the next one if exists
+    if (cur)
+    {
+        Eina_List *l;
+
+        l = eina_list_next(eina_list_data_find_list(id->buttons, cur));
+        if (l)
+        {
+            next = l->data;
+            elm_object_disabled_set(next->obj, EINA_FALSE);
+            elm_object_disabled_set(cur->obj, EINA_TRUE);
+            return next;
+        }
+    }
+    // none selected, select the first
+    else if (id->buttons)
+    {
+        next = (id->buttons->data);
+        elm_object_disabled_set(next->obj, EINA_FALSE);
+        return next;
+    }
+
+    return cur;
+}
+
+static Item_Button *
+_list_item_button_focus_prev(Elm_Genlist_Item *item, Item_Button *cur)
+{
+    Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
+    Item_Button *prev;
+
+    if (!item || !id) return NULL;
+
+    if (cur)
+    {
+        Eina_List *l;
+
+        l = eina_list_prev(eina_list_data_find_list(id->buttons, cur));
+        if (l)
+        {
+            prev = l->data;
+            elm_object_disabled_set(prev->obj, EINA_FALSE);
+            elm_object_disabled_set(cur->obj, EINA_TRUE);
+            return prev;
+        }
+        elm_object_disabled_set(cur->obj, EINA_TRUE);
+        return NULL;
+    }
+
+    return NULL;
+}
+
 Eina_Bool
 enna_list2_input_feed(Evas_Object *obj, enna_input event)
 {
     Elm_Genlist_Item *item, *prev, *next;
+    static Item_Button *focused = NULL;
 
     //printf("INPUT.. to list2 %d\n", event);
     if (!obj) return ENNA_EVENT_CONTINUE;
 
     item = elm_genlist_selected_item_get(obj);
     if (!item) return ENNA_EVENT_CONTINUE;
+    
 
     switch (event)
     {
+        case ENNA_INPUT_RIGHT:
+            focused = _list_item_button_focus_next(item, focused);
+            return ENNA_EVENT_BLOCK;
+            break;
+        case ENNA_INPUT_LEFT:
+            focused = _list_item_button_focus_prev(item, focused);
+            return ENNA_EVENT_BLOCK;
+            break;
         case ENNA_INPUT_UP:
             prev = elm_genlist_item_prev_get(item);
             if (prev)
             {
                 elm_genlist_item_selected_set(prev, EINA_TRUE);
                 elm_genlist_item_bring_in(prev);
+                focused = NULL;
                 return ENNA_EVENT_BLOCK;
             }
             break;
@@ -223,11 +388,15 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
             {
                 elm_genlist_item_selected_set(next, EINA_TRUE);
                 elm_genlist_item_bring_in(next);
+                focused = NULL;
                 return ENNA_EVENT_BLOCK;
             }
             break;
         case ENNA_INPUT_OK:
-            _list_item_activate((Item_Data*)elm_genlist_item_data_get(item));
+            if (focused)
+                _list_button_activate(focused);
+            else
+                _list_item_activate((Item_Data*)elm_genlist_item_data_get(item));
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_HOME:
@@ -250,6 +419,7 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
             //~ list_set_item(sd, ns, 1, 5);
             //~ return ENNA_EVENT_BLOCK;
             //~ break;
+ 
         default:
             break;
     }
