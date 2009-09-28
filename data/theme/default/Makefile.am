@@ -116,6 +116,8 @@ images/location_panel.png \
 images/mp_rewind.png \
 images/dev_ipod.png \
 images/mainmenu_background.png \
+images/mainmenu_border_left.png \
+images/mainmenu_border_right.png \
 images/ctrl_hibernate.png \
 images/dev_cdrw.png \
 images/dev_tv.png \
@@ -141,6 +143,8 @@ images/loading-5.png \
 images/volume_icon_reflection.png \
 images/progress_bar_drag.png \
 images/bt_shine_menuitem.png \
+images/bt_dis_base.png \
+images/bt_dis_hilight.png \
 images/weather_sun_storm.png \
 images/progress_bar_content.png \
 images/weather_sunny.png \
