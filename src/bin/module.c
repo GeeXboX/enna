@@ -27,18 +27,13 @@
  *
  */
 
-#include <string.h>
-
 #include <Eina.h>
-#include <Ecore_Data.h>
 
 #include "enna.h"
 #include "module.h"
 #include "input.h"
 #include "enna_config.h"
-#include "view_list.h"
 #include "view_list2.h"
-#include "input.h"
 #include "logs.h"
 
 static Eina_List *_enna_modules = NULL;
@@ -80,71 +75,34 @@ int enna_module_init(void)
     return 0;
 }
 
-static const struct {
-    const char *type_name;
-    _Enna_Module_Type type;
-} module_class_mapping[] = {
-    { "activity",       ENNA_MODULE_ACTIVITY  },
-    { "browser",        ENNA_MODULE_BROWSER   },
-    { "metadata",       ENNA_MODULE_METADATA  },
-    { "volume",         ENNA_MODULE_VOLUME    },
-    { "input",          ENNA_MODULE_INPUT     },
-    { NULL,             ENNA_MODULE_UNKNOWN   }
-};
-
-void enna_module_load_all (Evas *evas)
+void enna_module_load_all(void)
 {
-    Eina_List *mod, *l;
-    char *p;
+    Eina_List *l;
+    char *name;
 
-    if (!evas)
-        return;
-
-    mod = ecore_plugin_available_get (path_group);
-    EINA_LIST_FOREACH (mod, l, p) {
+    EINA_LIST_FOREACH(ecore_plugin_available_get (path_group), l, name)
+    {
         Enna_Module *em;
-        _Enna_Module_Type type = ENNA_MODULE_UNKNOWN;
-        char tp[64], name[128];
-        int res, i;
 
-        if (!p)
-            continue;
-
-        res = sscanf (p, "%[^_]_%s", tp, name);
-        if (res != 2)
-            continue;
-
-        for (i = 0; module_class_mapping[i].type_name; i++)
-            if (!strcmp (tp, module_class_mapping[i].type_name))
-            {
-                type = module_class_mapping[i].type;
-                break;
-            }
-
-        em = enna_module_open (name, type, enna->evas);
-        enna_module_enable (em);
+        em = enna_module_open(name);
+        enna_module_enable(em);
     }
 }
 
 /**
  * @brief Free all modules registered and delete Ecore_Path_Group
- * @return 1 if succes 0 otherwise
  */
-
-int enna_module_shutdown(void)
+void enna_module_shutdown(void)
 {
-    Eina_List *l;
+    Enna_Module *m;
 
     enna_config_panel_unregister(_config_panel);
 
-    for (l = _enna_modules; l; l = eina_list_remove(l, l->data))
+    EINA_LIST_FREE(_enna_modules, m)
     {
-        Enna_Module *m;
-        m = l->data;
-
+        enna_log(ENNA_MSG_INFO, NULL, "Disable module : %s", m->name);
         if (m->enabled)
         {
-            enna_log(ENNA_MSG_EVENT, NULL, "disable module : %s", m->name);
             enna_module_disable(m);
         }
         ecore_plugin_unload(m->plugin);
@@ -156,12 +114,10 @@ int enna_module_shutdown(void)
         ecore_path_group_del(path_group);
         path_group = NULL;
     }
-    return 0;
 }
 
 int enna_module_enable(Enna_Module *m)
 {
-    printf("ENABLE MODULE: %s\n", m->name);
     if (!m)
         return -1;
     if (m->enabled)
@@ -174,7 +130,6 @@ int enna_module_enable(Enna_Module *m)
 
 int enna_module_disable(Enna_Module *m)
 {
-    printf("DISABLE MODULE: %s\n", m->name);
     if (!m)
         return -1;
     if (!m->enabled)
@@ -197,17 +152,12 @@ int enna_module_disable(Enna_Module *m)
  *       module in loaded from file /usr/lib/enna/modules/activity_music.so
  */
 Enna_Module *
-enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
+enna_module_open(const char *name)
 {
     Ecore_Plugin *plugin;
     Enna_Module *m;
-    char module_name[4096];
-    const char *module_class = NULL;
-    int i;
 
-    if (!name || !evas) return NULL;
-
-    m = calloc(1,sizeof(Enna_Module));
+    if (!name) return NULL;
 
     if (!path_group)
     {
@@ -216,19 +166,19 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
         return NULL;
     }
 
-    for (i = 0; module_class_mapping[i].type_name; i++)
-        if (type == module_class_mapping[i].type)
-        {
-            module_class = module_class_mapping[i].type_name;
-            break;
-        }
+    enna_log(ENNA_MSG_INFO, NULL, "Loading module: %s", name);
 
-    snprintf(module_name, sizeof(module_name), "%s_%s", module_class, name);
-    enna_log (ENNA_MSG_EVENT, NULL, "Try to load %s", module_name);
-    plugin = ecore_plugin_load(path_group, module_name, NULL);
+    plugin = ecore_plugin_load(path_group, name, NULL);
     if (!plugin)
     {
         enna_log (ENNA_MSG_WARNING, NULL, "Unable to load module %s", name);
+        return NULL;
+    }
+
+    m = ENNA_NEW(Enna_Module, 1);
+    if (!m)
+    {
+        ecore_plugin_unload(plugin);
         return NULL;
     }
 
@@ -240,16 +190,15 @@ enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas)
         enna_log (ENNA_MSG_WARNING, NULL,
                   "Bad module version, unload %s module", m->api->name);
         ecore_plugin_unload(plugin);
+        ENNA_FREE(m);
         return NULL;
     }
+
     m->func.init = ecore_plugin_symbol_get(plugin, "module_init");
     m->func.shutdown = ecore_plugin_symbol_get(plugin, "module_shutdown");
     m->name = m->api->name;
-    enna_log (ENNA_MSG_INFO, NULL,
-              "Module \'%s\' loaded succesfully", m->api->name);
     m->enabled = 0;
     m->plugin = plugin;
-    m->evas = evas;
     _enna_modules = eina_list_append(_enna_modules, m);
     return m;
 }

@@ -34,19 +34,10 @@
 
 #include "enna.h"
 
-#define ENNA_MODULE_VERSION 1
+#define ENNA_MODULE_VERSION 2
 
 typedef struct _Enna_Module Enna_Module;
 typedef struct _Enna_Module_Api Enna_Module_Api;
-
-typedef enum {
-    ENNA_MODULE_UNKNOWN,
-    ENNA_MODULE_ACTIVITY,
-    ENNA_MODULE_BROWSER,
-    ENNA_MODULE_METADATA,
-    ENNA_MODULE_VOLUME,
-    ENNA_MODULE_INPUT,
-} _Enna_Module_Type;
 
 struct _Enna_Module
 {
@@ -64,18 +55,17 @@ struct _Enna_Module
     void *mod;
 };
 
-struct _Enna_Module_Api //TODO needed?
+struct _Enna_Module_Api
 {
     int version;
-    _Enna_Module_Type type;
     const char *name;
 };
 
-int enna_module_init(void);
-int enna_module_shutdown(void);
-void enna_module_load_all (Evas *evas);
-Enna_Module *enna_module_open(const char *name, _Enna_Module_Type type, Evas *evas);
-int enna_module_enable(Enna_Module *m);
-int enna_module_disable(Enna_Module *m);
+int          enna_module_init(void);
+void         enna_module_shutdown(void);
+void         enna_module_load_all(void);
+Enna_Module *enna_module_open(const char *name);
+int          enna_module_enable(Enna_Module *m);
+int          enna_module_disable(Enna_Module *m);
 
 #endif /* MODULE_H */

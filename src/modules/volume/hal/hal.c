@@ -382,7 +382,6 @@ ehal_device_removed (void *data, DBusMessage *msg)
 
 Enna_Module_Api module_api = {
     ENNA_MODULE_VERSION,
-    ENNA_MODULE_VOLUME,
     "volume_hal"
 };
 

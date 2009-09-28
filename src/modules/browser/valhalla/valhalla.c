@@ -463,7 +463,6 @@ static Enna_Vfs_File *_class_vfs_get(void *cookie)
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    ENNA_MODULE_BROWSER,
     "browser_valhalla",
 };
 

@@ -245,7 +245,6 @@ static Enna_Class_Activity class = {
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    ENNA_MODULE_ACTIVITY,
     "configuration"
 };
 

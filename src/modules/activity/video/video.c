@@ -933,7 +933,6 @@ em_shutdown(Enna_Module *em)
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    ENNA_MODULE_ACTIVITY,
     "activity_video"
 };
 

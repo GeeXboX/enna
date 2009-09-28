@@ -222,7 +222,7 @@ static int _enna_init(void)
         return 0;
 
     /* Load available modules */
-    enna_module_load_all(enna->evas);
+    enna_module_load_all();
 
     /* Dinamically init activities */
     EINA_LIST_FOREACH(enna_activities_get(), l, a)
