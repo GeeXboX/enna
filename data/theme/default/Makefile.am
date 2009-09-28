@@ -116,6 +116,8 @@ images/location_panel.png \
 images/mp_rewind.png \
 images/dev_ipod.png \
 images/mainmenu_background.png \
+images/mainmenu_border_left.png \
+images/mainmenu_border_right.png \
 images/ctrl_hibernate.png \
 images/dev_cdrw.png \
 images/dev_tv.png \
