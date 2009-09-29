@@ -226,7 +226,7 @@ static Enna_Class_Activity class = {
     10,
     N_("Configuration"),
     NULL,
-    "icon/infos",
+    "icon/config",
     {
         _activity_init,
         NULL,
@@ -272,7 +272,6 @@ void
 module_shutdown (Enna_Module *em)
 {
     enna_config_panel_unregister(info1);
-
 
     ENNA_OBJECT_DEL (mod->o_edje);
     _delete_menu ();

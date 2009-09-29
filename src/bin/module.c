@@ -69,7 +69,7 @@ int enna_module_init(void)
     EINA_LIST_FOREACH(mod, l, p)
         enna_log(ENNA_MSG_INFO, NULL, "\t * %s", p);
 
-    _config_panel = enna_config_panel_register(_("Modules"), "icon/video",
+    _config_panel = enna_config_panel_register(_("Modules"), "icon/module",
                                   _config_panel_show, _config_panel_hide, NULL);
 
     return 0;

@@ -217,6 +217,7 @@ images/go-last.png \
 images/icon_rotate_cw.png \
 images/icon_rotate_ccw.png \
 images/picture_bar.png \
+images/icon_module.png \
 fonts/content.ttf \
 fonts/content_bold.ttf \
 default.edc \

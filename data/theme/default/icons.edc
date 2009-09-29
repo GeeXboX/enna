@@ -1,27 +1,20 @@
-#define STOCK_ICON(icon_file, icon_name) \
-images { \
-   image: icon_file COMP; \
-} \
-group { \
-   name: icon_name; \
-   parts { \
-      part { \
-         name: "icon"; \
-         description { \
-            state: "default" 0.0; \
-            rel1 { \
-               relative: 0 0; \
-            } \
-            rel2 { \
-               relative: 1.0 1.0; \
-            } \
-            image { \
-               normal: icon_file; \
-            } \
-         } \
-      } \
-   } \
-}
+
+#define STOCK_ICON(icon_file, icon_name)            \
+images {                                            \
+   image: icon_file COMP;                           \
+}                                                   \
+group {                                             \
+   name: icon_name;                                 \
+    parts {                                         \
+        part { name: "icon";                        \
+            description { state: "default" 0.0;     \
+                rel1.relative: 0 0;                 \
+                rel2.relative: 1.0 1.0;             \
+                image.normal: icon_file;            \
+            }                                       \
+        }                                           \
+    }                                               \
+}                                                   \
 
 
 STOCK_ICON("icon_music.png", "icon/music")
@@ -39,6 +32,7 @@ STOCK_ICON("icon_artist.png",  "icon/artist")
 STOCK_ICON("icon_genre.png",  "icon/genre")
 STOCK_ICON("icon_song.png",  "icon/song")
 STOCK_ICON("icon_config.png",  "icon/config")
+STOCK_ICON("icon_module.png",  "icon/module")
 
 STOCK_ICON("icon_hd.png",  "icon/hd")
 STOCK_ICON("icon_directory.png",  "icon/directory")
@@ -51,6 +45,7 @@ STOCK_ICON("icon_upnp.png",      "icon/upnp")
 STOCK_ICON("icon_nofile.png", "icon_nofile")
 STOCK_ICON("arrow_left.png", "icon/arrow_left")
 
+/* Devices */
 STOCK_ICON("dev_bluetooth.png",     "icon/dev/bluetooth")
 STOCK_ICON("dev_camera.png",        "icon/dev/camera")
 STOCK_ICON("dev_cdda2.png",         "icon/dev/cdda2")
@@ -82,7 +77,7 @@ STOCK_ICON("icon_music.png", "icon/file/music")
 STOCK_ICON("icon_video.png", "icon/file/video")
 STOCK_ICON("icon_photo.png", "icon/file/photo")
 
-/*Mediacontrol*/
+/* Mediacontrol */
 STOCK_ICON("mp_play.png",     "icon/mp_play")
 STOCK_ICON("mp_pause.png",     "icon/mp_pause")
 STOCK_ICON("mp_next.png",     "icon/mp_next")
@@ -94,6 +89,7 @@ STOCK_ICON("go-first.png",    "icon/go_first");
 STOCK_ICON("go-last.png",    "icon/go_last");
 STOCK_ICON("icon_rotate_cw.png", "icon/rotate_cw");
 STOCK_ICON("icon_rotate_ccw.png", "icon/rotate_ccw");
+
 /* Weather */
 STOCK_ICON("weather_spring.jpeg",           "weather/spring")
 STOCK_ICON("weather_summer.jpeg",           "weather/summer")
@@ -122,6 +118,7 @@ STOCK_ICON("weather_windy.png",             "weather/windy");
 
 //STOCK_ICON("default_backdrop.png",          "backdrop/default");
 
+/* Rating */
 STOCK_ICON("rating0.png",                   "rating/0");
 STOCK_ICON("rating1.png",                   "rating/1");
 STOCK_ICON("rating2.png",                   "rating/2");
