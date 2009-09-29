@@ -496,11 +496,11 @@ _class_hide (int dummy)
 static void
 _class_event (enna_input event)
 {
-    //~ if (key != ENNA_INPUT_EXIT)
-        //~ return;
+    if (event != ENNA_INPUT_EXIT)
+        return;
 
-    //~ enna_content_hide();
-    //~ enna_mainmenu_show();
+    enna_content_hide();
+    enna_mainmenu_show();
 }
 
 static Enna_Class_Activity class = {
