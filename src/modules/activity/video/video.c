@@ -385,7 +385,7 @@ infos_flags_set (Enna_Metadata *m)
         if (!v_str)
             v_str = "flags/video/sd";
 
-        v = edje_object_add (mod->em->evas);
+        v = edje_object_add (enna->evas);
         edje_object_file_set (v, enna_config_theme_get (), v_str);
     }
 
@@ -398,7 +398,7 @@ infos_flags_set (Enna_Metadata *m)
             if (m->music->channels >= flag_audio_mapping[i].channels)
                 a_str = flag_audio_mapping[i].name;
 
-        a = edje_object_add (mod->em->evas);
+        a = edje_object_add (enna->evas);
         edje_object_file_set (a, enna_config_theme_get (), a_str);
     }
 
@@ -414,13 +414,13 @@ infos_flags_set (Enna_Metadata *m)
                 break;
             }
 
-        s = edje_object_add (mod->em->evas);
+        s = edje_object_add (enna->evas);
         edje_object_file_set (s, enna_config_theme_get (), s_str);
     }
 
     /* detect media type: no idea how to that atm, alwasy use default one */
     m_str = "flags/media/divx";
-    md = edje_object_add (mod->em->evas);
+    md = edje_object_add (enna->evas);
     edje_object_file_set (md, enna_config_theme_get (), m_str);
 #endif
 
@@ -557,7 +557,7 @@ movie_start_playback (int resume)
 {
     mod->state = VIDEOPLAYER_VIEW;
     ENNA_OBJECT_DEL (mod->o_mediaplayer);
-    mod->o_mediaplayer = evas_object_rectangle_add (mod->em->evas);
+    mod->o_mediaplayer = evas_object_rectangle_add (enna->evas);
     evas_object_color_set (mod->o_mediaplayer, 0, 0, 0, 255);
     elm_layout_content_set (enna->layout, "enna.fullscreen.swallow", mod->o_mediaplayer);
     evas_object_event_callback_add (mod->o_mediaplayer, EVAS_CALLBACK_RESIZE,
@@ -683,7 +683,7 @@ browse (void *data)
     if (!vfs)
         return;
 
-    mod->o_browser = enna_browser_add (mod->em->evas);
+    mod->o_browser = enna_browser_add (enna->evas);
 
     enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_COVER);
     evas_object_smart_callback_add (mod->o_browser,
@@ -705,12 +705,12 @@ browse (void *data)
     mod->o_list = NULL;
 
     ENNA_OBJECT_DEL(mod->o_panel_infos);
-    mod->o_panel_infos = enna_panel_infos_add(mod->em->evas);
+    mod->o_panel_infos = enna_panel_infos_add(enna->evas);
     edje_object_part_swallow (mod->o_edje,
                               "infos.panel.swallow", mod->o_panel_infos);
 
     ENNA_OBJECT_DEL(mod->o_resume);
-    mod->o_resume = video_resume_add (mod->em->evas);
+    mod->o_resume = video_resume_add (enna->evas);
     edje_object_part_swallow (mod->o_edje,
                               "enna.resume.swallow", mod->o_resume);
 
@@ -738,7 +738,7 @@ _create_menu (void)
     Enna_Class_Vfs *cat;
 
     /* Create List */
-    o = enna_list_add(mod->em->evas);
+    o = enna_list_add(enna->evas);
     edje_object_signal_emit(mod->o_edje, "list,right,now", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_VIDEO);
@@ -777,15 +777,15 @@ _create_gui (void)
 #endif
 
     mod->state = MENU_VIEW;
-    o = edje_object_add(mod->em->evas);
+    o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "module/video");
     mod->o_edje = o;
     _create_menu();
 #ifdef LOCATION
     /* Create Location bar */
-    o = enna_location_add(mod->em->evas);
+    o = enna_location_add(enna->evas);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
-    icon = edje_object_add(mod->em->evas);
+    icon = edje_object_add(enna->evas);
     edje_object_file_set(icon, enna_config_theme_get(), "icon/video_mini");
     enna_location_append(o, _("Video"), icon, NULL, NULL, NULL);
     mod->o_location = o;
@@ -886,7 +886,7 @@ em_init(Enna_Module *em)
 
     mod->infos_displayed = 0;
     mod->resume_displayed = 0;
-    mod->o_backdrop = enna_backdrop_add (mod->em->evas);
+    mod->o_backdrop = enna_backdrop_add (enna->evas);
     mod->browser_refresh_handler =
 	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, browser_cb_refresh, NULL);
     mod->eos_event_handler =

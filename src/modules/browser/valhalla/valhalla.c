@@ -64,7 +64,6 @@ typedef struct vh_data_s {
 
 typedef struct _Enna_Module_libvalhalla
 {
-    Evas            *evas;
     Enna_Module     *em;
     valhalla_t      *valhalla;
     browser_level_t  level;
@@ -495,7 +494,6 @@ void module_init(Enna_Module *em)
         return;
 
     mod->em = em;
-    mod->evas = em->evas;
     mod->level = BROWSER_LEVEL_ROOT;
     mod->valhalla = enna_metadata_get_db ();
 

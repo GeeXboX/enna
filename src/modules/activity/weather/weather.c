@@ -162,7 +162,7 @@ set_picture (Evas_Object **old,
     if (!img || !field)
         return;
 
-    obj = edje_object_add (mod->em->evas);
+    obj = edje_object_add (enna->evas);
     edje_object_file_set (obj, enna_config_theme_get (), img);
 
     old_obj = edje_object_part_swallow_get(mod->edje, field);
@@ -359,7 +359,7 @@ google_weather_search (void)
 static void
 create_gui (void)
 {
-    mod->edje = edje_object_add (mod->em->evas);
+    mod->edje = edje_object_add (enna->evas);
     edje_object_file_set (mod->edje,
                           enna_config_theme_get (), "module/weather");
 }

@@ -64,7 +64,7 @@ static Enna_Module_Tv *mod;
 
 static void _class_init(int dummy)
 {
-    mod->o_background = evas_object_rectangle_add(mod->em->evas);
+    mod->o_background = evas_object_rectangle_add(enna->evas);
     evas_object_color_set(mod->o_background, 0, 0, 0, 255);
     enna_content_append(ENNA_MODULE_NAME, mod->o_background);
 }

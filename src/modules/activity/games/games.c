@@ -150,7 +150,7 @@ static void _create_menu()
     char gamesdir[4096];
 
     /* Create List */
-    o = enna_list_add(mod->em->evas);
+    o = enna_list_add(enna->evas);
     edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
 
     sprintf(gamesdir, "%s/.enna/games", enna_util_user_home_get());
@@ -171,7 +171,7 @@ static void _create_gui(void)
     mod->state = MENU_VIEW;
 
     /* Create main edje object */
-    mod->o_edje = edje_object_add(mod->em->evas);
+    mod->o_edje = edje_object_add(enna->evas);
     edje_object_file_set(mod->o_edje, enna_config_theme_get(), "module/games");
 
     _create_menu();

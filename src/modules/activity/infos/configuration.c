@@ -129,7 +129,7 @@ _crate_menu()
 static void
 create_gui (void)
 {
-    mod->edje = edje_object_add (mod->em->evas);
+    mod->edje = edje_object_add (enna->evas);
     edje_object_file_set (mod->edje,
                           enna_config_theme_get (), "module/infos");
     

@@ -262,7 +262,7 @@ _volume_core(enna_input event)
     if (!mod->o_volume)
     {
         /* Volume popup doesn't exists, create it */
-        mod->o_volume = edje_object_add(mod->em->evas);
+        mod->o_volume = edje_object_add(enna->evas);
         edje_object_file_set(mod->o_volume, enna_config_theme_get(), "enna/volume");
         elm_layout_content_set(enna->layout, "enna.popup.swallow", mod->o_volume);
     }
@@ -500,7 +500,7 @@ _browse(void *data)
     if (!vfs) return;
 
     mod->accept_ev = 0;
-    mod->o_browser = enna_browser_add(mod->em->evas);
+    mod->o_browser = enna_browser_add(enna->evas);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
@@ -515,7 +515,7 @@ _browse(void *data)
     edje_object_signal_emit(mod->o_edje, "list,left", "enna");
 
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
-    mod->o_panel_lyrics = enna_panel_lyrics_add (mod->em->evas);
+    mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
     edje_object_part_swallow (mod->o_edje,
                               "lyrics.panel.swallow", mod->o_panel_lyrics);
 }
@@ -572,7 +572,7 @@ _create_mediaplayer_gui()
     mod->seek_event_handler = ecore_event_handler_add(
             ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, NULL);
 
-    o = enna_smart_player_add(mod->em->evas,mod->enna_playlist);
+    o = enna_smart_player_add(enna->evas, mod->enna_playlist);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
     evas_object_show(o);
 
@@ -599,7 +599,7 @@ _create_menu()
     /* Create List */
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
-    o = enna_list_add(mod->em->evas);
+    o = enna_list_add(enna->evas);
     categories = enna_vfs_get(ENNA_CAPS_MUSIC);
     EINA_LIST_FOREACH(categories, l, cat)
     {
@@ -629,17 +629,17 @@ _create_gui()
     mod->state = MENU_VIEW;
 
     /* Create main edje object */
-    o = edje_object_add(mod->em->evas);
+    o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "module/music_video");
     mod->o_edje = o;
 
     _create_menu();
 
     /* Create Location bar */
-    o = enna_location_add(mod->em->evas);
+    o = enna_location_add(enna->evas);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
 
-    icon = edje_object_add(mod->em->evas);
+    icon = edje_object_add(enna->evas);
     edje_object_file_set(icon, enna_config_theme_get(), "icon/music_mini");
     enna_location_append(o, _("Music"), icon, NULL, NULL, NULL);
     mod->o_location = o;

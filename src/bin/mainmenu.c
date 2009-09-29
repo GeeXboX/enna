@@ -190,7 +190,7 @@ enna_mainmenu_load_from_activities(void)
     Enna_Class_Activity *act;
 
     activities = enna_activities_get();
-printf("ACT: %d\n",eina_list_count(activities));
+
     EINA_LIST_FOREACH(activities, l, act)
         enna_mainmenu_append(act->icon ? act->icon : act->icon_file,
                              act->label, act);

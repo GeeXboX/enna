@@ -119,7 +119,7 @@ static void _create_slideshow_gui()
 
     ENNA_OBJECT_DEL (mod->o_slideshow);
 
-    o = enna_slideshow_add(mod->em->evas);
+    o = enna_slideshow_add(enna->evas);
     elm_layout_content_set(enna->layout, "enna.fullscreen.swallow", o);
     evas_object_show(o);
     mod->o_slideshow = o;
@@ -200,7 +200,7 @@ static void _browse(void *data)
 
     if(!vfs) return;
 
-    mod->o_browser = enna_browser_add(mod->em->evas);
+    mod->o_browser = enna_browser_add(enna->evas);
 
     enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_WALL);
 
@@ -231,7 +231,7 @@ _create_menu()
     Enna_Class_Vfs *cat;
 
     /* Create List */
-    o = enna_list_add(mod->em->evas);
+    o = enna_list_add(enna->evas);
     edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_PHOTO);
@@ -257,7 +257,7 @@ static void _create_gui(void)
     mod->state = MENU_VIEW;
 
     /* Create main edje object */
-    mod->o_edje = edje_object_add(mod->em->evas);
+    mod->o_edje = edje_object_add(enna->evas);
     edje_object_file_set(mod->o_edje, enna_config_theme_get(), "module/photo");
 
     _create_menu();

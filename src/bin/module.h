@@ -51,7 +51,6 @@ struct _Enna_Module
     Enna_Module_Api *api;
     unsigned char enabled;
     Ecore_Plugin *plugin;
-    Evas *evas;
     void *mod;
 };
 
