@@ -146,7 +146,11 @@ static int _remove_volumes_cb(void *data, int type, void *event)
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "browser_cdda"
+    "browser_cdda",
+    "CDDA module",
+    "icon/dev/cdda",
+    "Listen your favorite compact discs",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 void module_init(Enna_Module *em)

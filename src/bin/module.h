@@ -34,7 +34,7 @@
 
 #include "enna.h"
 
-#define ENNA_MODULE_VERSION 2
+#define ENNA_MODULE_VERSION 3
 
 typedef struct _Enna_Module Enna_Module;
 typedef struct _Enna_Module_Api Enna_Module_Api;
@@ -58,6 +58,10 @@ struct _Enna_Module_Api
 {
     int version;
     const char *name;
+    const char *title;
+    const char *icon;
+    const char *short_desc;
+    const char *long_desc;
 };
 
 int          enna_module_init(void);

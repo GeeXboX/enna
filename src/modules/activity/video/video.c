@@ -933,7 +933,11 @@ em_shutdown(Enna_Module *em)
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "activity_video"
+    "activity_video",
+    "Video",
+    "icon/video",
+    "This is the main video module",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 void

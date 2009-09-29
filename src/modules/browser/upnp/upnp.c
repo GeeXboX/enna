@@ -567,7 +567,11 @@ static Enna_Class_Vfs class_upnp = {
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "browser_upnp"
+    "browser_upnp",
+    "UPNP module",
+    "icon/module",
+    "This module enable enna to browse UPNP sources",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 void module_init (Enna_Module *em)

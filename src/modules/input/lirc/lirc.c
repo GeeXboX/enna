@@ -60,7 +60,11 @@ static Evas_Object *_o_main = NULL;
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    ENNA_MODULE_NAME
+    ENNA_MODULE_NAME,
+    "LIRC Remote",
+    NULL,
+    "Module to control enna from your remote",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 

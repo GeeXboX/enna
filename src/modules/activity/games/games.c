@@ -260,7 +260,11 @@ class =
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "activity_games"
+    "activity_games",
+    "System games",
+    "icon/games",
+    "With this module you can play your games directly from enna",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 void module_init(Enna_Module *em)

@@ -38,6 +38,7 @@ STOCK_ICON("icon_album.png",  "icon/album")
 STOCK_ICON("icon_artist.png",  "icon/artist")
 STOCK_ICON("icon_genre.png",  "icon/genre")
 STOCK_ICON("icon_song.png",  "icon/song")
+STOCK_ICON("icon_config.png",  "icon/config")
 
 STOCK_ICON("icon_hd.png",  "icon/hd")
 STOCK_ICON("icon_directory.png",  "icon/directory")

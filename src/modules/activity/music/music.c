@@ -129,7 +129,11 @@ static Enna_Module_Music *mod;
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "activity_music"
+    "activity_music",
+    "Music core",
+    "icon/music",
+    "This is the main music module",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 static Enna_Class_Activity class =

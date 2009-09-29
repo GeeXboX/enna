@@ -527,7 +527,11 @@ static Enna_Class_Activity class = {
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "activity_weather"
+    "activity_weather",
+    "Weather forecast",
+    "icon/weather",
+    "Show the weather at your location",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 void

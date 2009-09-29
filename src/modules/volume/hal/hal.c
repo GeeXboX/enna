@@ -382,7 +382,11 @@ ehal_device_removed (void *data, DBusMessage *msg)
 
 Enna_Module_Api module_api = {
     ENNA_MODULE_VERSION,
-    "volume_hal"
+    "volume_hal",
+    "Volumes from HAL",
+    NULL,
+    "This module provide support for removable volumes",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 void

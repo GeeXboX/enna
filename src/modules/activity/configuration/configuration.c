@@ -245,7 +245,11 @@ static Enna_Class_Activity class = {
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "configuration"
+    "configuration",
+    "Configuration",
+    "icon/config",
+    "This module create the enna configuration panel (DO NOT UNLOAD)",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 void

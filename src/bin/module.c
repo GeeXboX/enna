@@ -252,10 +252,12 @@ _config_panel_show(void *data)
     EINA_LIST_FOREACH(_enna_modules, l, m)
     {
         Elm_Genlist_Item *item;
-        item = enna_list2_append(o_list, m->name,
-                          m->enabled ? "Module enabled. press to disable" :
-                          "Module disabled. press to enable",
-                          "icon/video", _list_selected_cb, m); //TODO fixme
+        item = enna_list2_append(o_list,
+                                 m->api->title ? m->api->title : m->name,
+                                 m->api->short_desc ? m->api->short_desc :
+                                    "No information provided",
+                                 m->api->icon ? m->api->icon : "icon/module",
+                                 _list_selected_cb, m);
 
         enna_list2_item_button_add(item, "icon/podcast", "info",
                                     _button_cb , NULL);

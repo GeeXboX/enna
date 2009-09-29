@@ -404,7 +404,11 @@ static Enna_Class_Activity class =
 Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
-    "activity_photo"
+    "activity_photo",
+    "Photo",
+    "icon/photo",
+    "View all your photos in a wall or as slideshow",
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
 void module_init(Enna_Module *em)
