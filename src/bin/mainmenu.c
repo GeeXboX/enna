@@ -201,8 +201,6 @@ enna_mainmenu_activate(Menu_Item *it)
 {
     // hide the mainmenu
     enna_mainmenu_hide();
-    edje_object_part_text_set(elm_layout_edje_get(enna->layout),
-                              "titlebar.text.label", "");
 
     // update icon
     ENNA_OBJECT_DEL(sd->o_icon)
@@ -214,6 +212,9 @@ enna_mainmenu_activate(Menu_Item *it)
     // run the activity_show cb. that is responsable of showing the
     // content using enna_content_select("name")
     enna_activity_show(it->act->name);
+
+    edje_object_part_text_set(elm_layout_edje_get(enna->layout),
+                              "titlebar.text.label", it->act->label);
 }
 
 void
