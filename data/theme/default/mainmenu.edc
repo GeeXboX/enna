@@ -61,6 +61,7 @@ group
          {
             state: "default" 0.0;
             aspect: 1 1;
+            aspect_preference: VERTICAL;
             rel2.relative: 1 0.85;
 
             aspect_preference: BOTH;
