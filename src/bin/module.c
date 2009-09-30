@@ -206,20 +206,7 @@ enna_module_open(const char *name)
 /******************************************************************************/
 /*                     Config Panel Stuff                                     */
 /******************************************************************************/
-static void
-_list_selected_cb(void *data)
-{
-    Enna_Module *m;
 
-    m = data;
-    if (!m) return;
-
-    printf("SELECTED MOD: %s\n", m->name);
-    if (m->enabled)
-        enna_module_disable(m);
-    else
-        enna_module_enable(m);
-}
 
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
@@ -228,9 +215,26 @@ _input_events_cb(void *data, enna_input event)
     return enna_list2_input_feed(o_list, event);
 }
 
-void _button_cb (void *data)
+
+void _info_button_cb(void *data)
 {
+    //~ Enna_Module *m = data;
+
+    printf("Info clicked...TODO show module info\n");
+}
+
+void _enable_button_cb(void *data)
+{
+    Enna_Module *m = data;
+
+    if (!m) return;
     printf("Button clicked...\n");
+
+    printf("SELECTED MOD: %s\n", m->name);
+    if (m->enabled)
+        enna_module_disable(m);
+    else
+        enna_module_enable(m);
 }
 
 static Evas_Object *
@@ -251,22 +255,20 @@ _config_panel_show(void *data)
     // populate list
     EINA_LIST_FOREACH(_enna_modules, l, m)
     {
-        static Eina_Bool st = EINA_FALSE;
         Elm_Genlist_Item *item;
         item = enna_list2_append(o_list,
                                  m->api->title ? m->api->title : m->name,
                                  m->api->short_desc ? m->api->short_desc :
                                     "No information provided",
                                  m->api->icon ? m->api->icon : "icon/module",
-                                 _list_selected_cb, m);
+                                 NULL, NULL);
 
         enna_list2_item_button_add(item, "icon/podcast", "info",
-                                   _button_cb , NULL);
+                                   _info_button_cb , NULL);
         //~ enna_list2_item_toggle_add(item, "icon/photo", "just for test",
                                    //~ _button_cb , NULL);
-        enna_list2_item_check_add(item, "icon/music", "supercalifragilistichespiralidoso",
-                                  st, _button_cb, NULL);
-        st = !st;
+        enna_list2_item_check_add(item, "icon/music", "enabled",
+                                  m->enabled, _enable_button_cb, m);
     }
 
     if (!_listener)

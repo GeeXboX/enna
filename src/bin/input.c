@@ -55,7 +55,7 @@ enna_input_event_emit(enna_input in)
     Input_Listener *il;
     Eina_List *l;
     Eina_Bool ret;
-    
+
     enna_log(ENNA_MSG_INFO, NULL, "Input emit: %d (listeners: %d)", in, eina_list_count(_listeners));
 
     enna_idle_timer_renew();

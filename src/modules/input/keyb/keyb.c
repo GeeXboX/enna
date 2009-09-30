@@ -52,7 +52,7 @@ Enna_Module_Api module_api =
 static const struct
 {
     const char *keyname;
-    const char *modifier;
+    Ecore_Event_Modifier modifier;
     enna_input input;
 } enna_keymap[] = {
     { "Left",         0,              ENNA_INPUT_LEFT          },
@@ -81,7 +81,7 @@ static const struct
     { "KP_Add",       0,              ENNA_INPUT_PLUS          },
     { "minus",        0,              ENNA_INPUT_MINUS         },
     { "KP_Subtract",  0,              ENNA_INPUT_MINUS         },
-    { "f",            "Control",      ENNA_INPUT_FULLSCREEN    },
+    { "f",            ECORE_CTRL,     ENNA_INPUT_FULLSCREEN    },
     { "0",            0,              ENNA_INPUT_KEY_0         },
     { "KP_0",         0,              ENNA_INPUT_KEY_0         },
     { "1",            0,              ENNA_INPUT_KEY_1         },
@@ -131,32 +131,33 @@ static const struct
     { NULL,           0,              ENNA_INPUT_UNKNOWN       }
 };
 
+
+
+static Ecore_Event_Handler *key_down_event_handler;
+
 static enna_input
-_get_input_from_event(void *event)
+_get_input_from_event(Ecore_Event_Key *ev)
 {
     int i;
-    Evas_Event_Key_Down *ev;
-
-    ev = event;
 
     if (!ev) return ENNA_INPUT_UNKNOWN;
-
+    
     for (i = 0; enna_keymap[i].keyname; i++)
     {
         /* Test First if modifer is set and is different than "None"*/
-        if (enna_keymap[i].modifier
-            && evas_key_modifier_is_set (ev->modifiers, enna_keymap[i].modifier)
-            && !strcmp (enna_keymap[i].keyname, ev->key) )
+        if (enna_keymap[i].modifier &&
+            ev->modifiers == enna_keymap[i].modifier &&
+            !strcmp(enna_keymap[i].keyname, ev->key))
         {
-            enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : [%s] + %s",
-                enna_keymap[i].modifier, enna_keymap[i] );
+            enna_log(ENNA_MSG_ERROR, NULL, "Key pressed : [%d] + %s",
+                     enna_keymap[i].modifier, enna_keymap[i] );
             return enna_keymap[i].input;
         }
         /* Else just test if keyname match */
-        else if (!enna_keymap[i].modifier && !strcmp (enna_keymap[i].keyname, ev->key))
+        else if (!strcmp (enna_keymap[i].keyname, ev->key))
         {
-            enna_log (ENNA_MSG_EVENT, NULL, "Key pressed : %s",
-                enna_keymap[i].keyname );
+            enna_log(ENNA_MSG_ERROR, NULL, "Key pressed : %s",
+                     enna_keymap[i].keyname );
             return enna_keymap[i].input;
         }
     }
@@ -164,28 +165,31 @@ _get_input_from_event(void *event)
     return ENNA_INPUT_UNKNOWN;
 }
 
-static void _event_key_down_cb(void *data, Evas *e,
-                                  Evas_Object *obj, void *event)
+static int
+_ecore_event_key_down_cb(void *data, int type, void *event)
 {
+    Ecore_Event_Key *e = event;
     enna_input in;
 
     enna_idle_timer_renew();
-    in = _get_input_from_event(event);
+
+    in = _get_input_from_event(e);
     if (in != ENNA_INPUT_UNKNOWN)
         enna_input_event_emit(in);
+
+    return ECORE_CALLBACK_CANCEL;
 }
+
 
 /* Module interface */
 
 void module_init(Enna_Module *em)
 {
-    evas_object_event_callback_add(enna->win, EVAS_CALLBACK_KEY_DOWN,
-                                   _event_key_down_cb, enna);
-    evas_object_focus_set(enna->win, 1);
+    key_down_event_handler =
+        ecore_event_handler_add (ECORE_EVENT_KEY_DOWN, _ecore_event_key_down_cb, NULL);
 }
 
 void module_shutdown(Enna_Module *em)
 {
-    printf(" @@ KEYB SHUTDOWN\n");
-    // TODO remove event callback
+    ENNA_EVENT_HANDLER_DEL(key_down_event_handler);
 }
