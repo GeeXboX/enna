@@ -84,13 +84,10 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
                               char *signal)
 {
     elm_image_file_set (p, file, group);
-    //elm_image_no_scale_set (p, 1);
     elm_image_smooth_set (p, 1);
 
     /* Fit container but keep aspect ratio */
-    //elm_image_scale_set (p, 1, 1);
     evas_object_size_hint_min_set (o, w, h);
-    //evas_object_size_hint_weight_set (o, -1.0, -1.0);
     evas_object_show (p);
     edje_object_part_swallow (o, "enna.swallow.content", p);
     edje_object_signal_emit (e, signal, "enna");
@@ -362,7 +359,6 @@ Evas_Object * enna_view_cover_add(Evas * evas)
     sd->o_box = elm_box_add(obj);
     elm_box_homogenous_set(sd->o_box, 0);
     elm_box_horizontal_set(sd->o_box, 1);
-    //evas_object_size_hint_weight_set(sd->o_box, -1.0, -1.0);
 
     evas_object_show(sd->o_box);
     elm_scroller_content_set(obj, sd->o_box);
