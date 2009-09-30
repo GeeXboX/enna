@@ -84,13 +84,13 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
                               char *signal)
 {
     elm_image_file_set (p, file, group);
-    elm_image_no_scale_set (p, 1);
+    //elm_image_no_scale_set (p, 1);
     elm_image_smooth_set (p, 1);
 
     /* Fit container but keep aspect ratio */
-    elm_image_scale_set (p, 1, 1);
+    //elm_image_scale_set (p, 1, 1);
     evas_object_size_hint_min_set (o, w, h);
-    evas_object_size_hint_align_set (o, 0.5, 0.5);
+    //evas_object_size_hint_weight_set (o, -1.0, -1.0);
     evas_object_show (p);
     edje_object_part_swallow (o, "enna.swallow.content", p);
     edje_object_signal_emit (e, signal, "enna");
@@ -260,11 +260,15 @@ static void _view_cover_h_select(Evas_Object *obj, int pos)
     si = eina_list_nth(sd->items, nth);
     if (si)
     {
-        Evas_Coord x, xedje;
-        Evas_Coord y, w, h;
-        evas_object_geometry_get(si->o_edje, &xedje, NULL, NULL, NULL);
-        elm_scroller_region_get(obj, &x, &y, &w, &h);
-        elm_scroller_region_bring_in(obj, x + xedje, y, w, h);
+        Evas_Coord x, w, xedje, wedje, xbox;
+        evas_object_geometry_get(obj, NULL, NULL, &w, NULL);
+        evas_object_geometry_get(si->o_edje, &xedje, NULL, &wedje, NULL);
+        evas_object_geometry_get(sd->o_box, &xbox, NULL, NULL, NULL);
+        if (pos)
+            x = (xedje + wedje / 2 - xbox + w / 2 );
+        else
+            x = (xedje + wedje / 2 - xbox - w / 2 );
+            elm_scroller_region_bring_in(obj, x, 0, w, 0);
 
 	_smart_item_select(sd, si);
 	if (ssi) _smart_item_unselect(sd, ssi);
@@ -353,12 +357,12 @@ Evas_Object * enna_view_cover_add(Evas * evas)
     sd->obj = obj;
 
     elm_scroller_policy_set(obj, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_bounce_set(obj, 1, 0);
+    elm_scroller_bounce_set(obj, 0, 0);
 
     sd->o_box = elm_box_add(obj);
     elm_box_homogenous_set(sd->o_box, 0);
     elm_box_horizontal_set(sd->o_box, 1);
-    evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
+    //evas_object_size_hint_weight_set(sd->o_box, -1.0, -1.0);
 
     evas_object_show(sd->o_box);
     elm_scroller_content_set(obj, sd->o_box);
