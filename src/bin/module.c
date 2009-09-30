@@ -251,6 +251,7 @@ _config_panel_show(void *data)
     // populate list
     EINA_LIST_FOREACH(_enna_modules, l, m)
     {
+        static Eina_Bool st = EINA_FALSE;
         Elm_Genlist_Item *item;
         item = enna_list2_append(o_list,
                                  m->api->title ? m->api->title : m->name,
@@ -260,9 +261,12 @@ _config_panel_show(void *data)
                                  _list_selected_cb, m);
 
         enna_list2_item_button_add(item, "icon/podcast", "info",
-                                    _button_cb , NULL);
-        enna_list2_item_button_add(item, "icon/photo", "just for test",
-                                    _button_cb , NULL);
+                                   _button_cb , NULL);
+        //~ enna_list2_item_toggle_add(item, "icon/photo", "just for test",
+                                   //~ _button_cb , NULL);
+        enna_list2_item_check_add(item, "icon/music", "supercalifragilistichespiralidoso",
+                                  st, _button_cb, NULL);
+        st = !st;
     }
 
     if (!_listener)

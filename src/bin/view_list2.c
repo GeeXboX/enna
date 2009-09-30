@@ -33,6 +33,14 @@
 #include "view_list2.h"
 #include "enna_config.h"
 
+typedef enum {
+    ENNA_UNKNOW,
+    ENNA_BUTTON,
+    ENNA_TOGGLE,     //TODO finish
+    ENNA_CHECKBOX,
+    ENNA_HOVERSEL,   //TODO implement
+    ENNA_SPINNER,    //TODO implement
+}list_control_type;
 
 typedef struct _Item_Data Item_Data;
 struct _Item_Data
@@ -49,14 +57,18 @@ typedef struct _Item_Button Item_Button;
 struct _Item_Button
 {
     Evas_Object *obj;          /**< elementary button */
+    list_control_type type;    /**< type of the control (button, toggle, etc) */
     const char *label;         /**< label for the button */
     const char *icon;          /**< icon for the button */
+    Eina_Bool status;          /**< initial status for checks buttons */
     void (*func) (void *data); /**< function to call when button pressed */
     void *func_data;           /**< data to return-back */
 };
 
-/***   Local Globals  ***/
-
+/***   Local protos  ***/
+static void _list_item_activate(Item_Data *id);
+static void _list_button_activate(Item_Button *b);
+static Evas_Object *_list_item_buttons_create_all(const Item_Data *id);
 
 /***   Callbacks  ***/
 /*static void // called on list item double-click
@@ -84,10 +96,35 @@ _list_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Item_Button *b = data;
 
-    if (b->func) b->func(b->func_data);
+    _list_button_activate(b);
 }
 
 /***   Privates  ***/
+static void
+_enna_list_item_widget_add(Elm_Genlist_Item *item, const char *icon, const char *label,
+                           void (*func) (void *data),
+                           void *func_data,
+                           list_control_type type,
+                           Eina_Bool status)
+{
+    Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
+    Item_Button *b;
+
+    if (!item) return;
+
+    b = ENNA_NEW(Item_Button, 1);
+    if (!b) return;
+
+    b->icon = eina_stringshare_add(icon);
+    b->label = eina_stringshare_add(label);
+    b->func = func;
+    b->func_data = func_data;
+    b->type = type;
+    b->status = status;
+
+    id->buttons = eina_list_append(id->buttons, b);
+}
+
 static void
 _list_item_activate(Item_Data *id)
 {
@@ -107,37 +144,67 @@ _list_button_activate(Item_Button *b)
 }
 
 static Evas_Object *
-_list_item_buttons_create(Item_Data *id)
+_list_item_buttons_create_all(const Item_Data *id)
 {
     Evas_Object *box;
     Eina_List *l;
     Item_Button *b;
 
+    if (!id->buttons) return NULL;
+
     box = elm_box_add(enna->layout);
     elm_box_horizontal_set(box, EINA_TRUE);
-    evas_object_show(box);
 
     EINA_LIST_FOREACH(id->buttons, l, b)
     {
-        Evas_Object *ic;
+        Evas_Object *o, *ic;
 
-        ic = elm_icon_add(enna->layout);
-        if (b->icon && b->icon[0] == '/')
-            elm_icon_file_set(ic, b->icon, NULL);
-        else if (b->icon)
-            elm_icon_file_set(ic, enna_config_theme_get(), b->icon);
-        evas_object_show(ic);
+        o = ic = NULL;
 
-        b->obj = elm_button_add(enna->layout);
-        elm_button_style_set(b->obj, "enna_list");
-        elm_button_label_set(b->obj, b->label);
-        elm_button_icon_set(b->obj, ic);
-        evas_object_size_hint_weight_set(b->obj, 1.0, 1.0);
-        evas_object_size_hint_align_set(b->obj, -1.0, -1.0);
-        evas_object_smart_callback_add(b->obj, "clicked", _list_button_clicked_cb, b);
-        evas_object_show(b->obj);
+        // create icon if needed
+        if (b->type == ENNA_BUTTON)
+        {
+            ic = elm_icon_add(enna->layout);
+            if (b->icon && b->icon[0] == '/')
+                elm_icon_file_set(ic, b->icon, NULL);
+            else if (b->icon)
+                elm_icon_file_set(ic, enna_config_theme_get(), b->icon);
+            evas_object_show(ic);
+        }
 
-        elm_box_pack_end(box, b->obj);
+        // create the widget of the given type
+        switch (b->type)
+        {
+        case ENNA_BUTTON:
+            o = elm_button_add(enna->layout);
+            elm_button_style_set(o, "enna_list");
+            elm_button_label_set(o, b->label);
+            elm_button_icon_set(o, ic);
+            evas_object_smart_callback_add(o, "clicked", _list_button_clicked_cb, b);
+            break;
+        case ENNA_TOGGLE:
+            o = elm_toggle_add(enna->layout);
+            break;
+        case ENNA_CHECKBOX:
+            o = elm_check_add(enna->layout);
+            elm_button_style_set(o, "enna_list");
+            elm_check_label_set(o, b->label);
+            elm_check_icon_set(o, ic);
+            elm_check_state_set(o, b->status);
+            evas_object_smart_callback_add(o, "changed", _list_button_clicked_cb, b);
+            break;
+        default:
+            break;
+        }
+
+        if (o)
+        {
+            evas_object_size_hint_weight_set(o, 1.0, 1.0);
+            evas_object_size_hint_align_set(o, -1.0, -1.0);
+            evas_object_show(o);
+            elm_box_pack_end(box, o);
+            b->obj = o;
+        }
     }
     
     return box;
@@ -180,7 +247,7 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
     }
     else if (!strcmp(part, "elm.swallow.end"))
     {
-        return _list_item_buttons_create(id);
+        return _list_item_buttons_create_all(id);
     }
 
     return NULL;
@@ -275,20 +342,24 @@ void
 enna_list2_item_button_add(Elm_Genlist_Item *item, const char *icon, const char *label,
                            void (*func) (void *data), void *func_data)
 {
-    Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
-    Item_Button *b;
-
-    b = ENNA_NEW(Item_Button, 1);
-    if (!b) return;
-
-    b->icon = eina_stringshare_add(icon);
-    b->label = eina_stringshare_add(label);
-    b->func = func;
-    b->func_data = func_data;
-
-    id->buttons = eina_list_append(id->buttons, b);
+    _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_BUTTON, EINA_FALSE);
 }
 
+void //TODO to finish
+enna_list2_item_toggle_add(Elm_Genlist_Item *item, const char *icon, const char *label,
+                           void (*func) (void *data), void *func_data)
+{
+    _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_TOGGLE, EINA_FALSE);
+}
+
+void
+enna_list2_item_check_add(Elm_Genlist_Item *item, const char *icon, const char *label,
+                          Eina_Bool status, void (*func) (void *data), void *func_data)
+{
+    _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_CHECKBOX, status);
+}
+
+/* Events input */
 static Item_Button *
 _list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
 {
@@ -394,9 +465,16 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
             break;
         case ENNA_INPUT_OK:
             if (focused)
+            {
+                if(focused->type == ENNA_CHECKBOX)
+                    elm_check_state_set(focused->obj, !elm_check_state_get(focused->obj));
+
                 _list_button_activate(focused);
+            }
             else
+            {
                 _list_item_activate((Item_Data*)elm_genlist_item_data_get(item));
+            }
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_HOME:
