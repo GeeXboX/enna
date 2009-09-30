@@ -96,13 +96,13 @@ enna_mainmenu_add(Evas * evas)
 
     sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout));
     elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
-
+    evas_object_size_hint_weight_set(sd->o_menu, -1.0, -1.0);
     // button box
     sd->o_btn_box = elm_box_add(enna->win);
     elm_box_homogenous_set(sd->o_btn_box, 0);
     elm_box_horizontal_set(sd->o_btn_box, 1);
-    evas_object_size_hint_align_set(sd->o_btn_box, -1.0, -1.0);
-    evas_object_size_hint_weight_set(sd->o_btn_box, 1.0, 1.0);
+    evas_object_size_hint_align_set(sd->o_btn_box, 0.5, 0.5);
+    evas_object_size_hint_weight_set(sd->o_btn_box, -1.0, -1.0);
     evas_object_show(sd->o_btn_box);
     elm_layout_content_set(enna->layout, "titlebar.swallow.button", sd->o_btn_box);
 
