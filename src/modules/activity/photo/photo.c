@@ -381,7 +381,7 @@ static void _class_event(enna_input event)
 
 static Enna_Class_Activity class =
 {
-    "photo",
+    ENNA_MODULE_NAME,
     1,
     N_("Photo"),
     NULL,
@@ -426,6 +426,7 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
+    enna_activity_del(ENNA_MODULE_NAME);
     _delete_infos();
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);

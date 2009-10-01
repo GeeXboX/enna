@@ -237,7 +237,7 @@ static void _class_event(enna_input event)
 static Enna_Class_Activity
 class =
 {
-    "games",
+    ENNA_MODULE_NAME,
     10,
     N_("Games"),
     NULL,
@@ -282,6 +282,7 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
+    enna_activity_del(ENNA_MODULE_NAME);
     evas_object_del(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);
     free(mod);

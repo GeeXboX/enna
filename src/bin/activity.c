@@ -32,6 +32,7 @@
 #include "enna.h"
 #include "activity.h"
 #include "buffer.h"
+#include "logs.h"
 
 static Eina_List *_enna_activities = NULL;
 
@@ -62,6 +63,10 @@ int enna_activity_add(Enna_Class_Activity *class)
     _enna_activities = eina_list_sort(_enna_activities,
         eina_list_count(_enna_activities),
         _sort_cb);
+
+    // send the ENNA_EVENT_ACTIVITIES_CHANGED event
+    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITIES_CHANGED Sent");
+    ecore_event_add(ENNA_EVENT_ACTIVITIES_CHANGED, NULL, NULL, NULL);
 
     return 0;
 }
@@ -101,6 +106,11 @@ int enna_activity_del(const char *name)
         return -1;
 
     _enna_activities = eina_list_remove(_enna_activities, act);
+
+    // send the ENNA_EVENT_ACTIVITIES_CHANGED event
+    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITIES_CHANGED Sent");
+    ecore_event_add(ENNA_EVENT_ACTIVITIES_CHANGED, NULL, NULL, NULL);
+
     return 0;
 }
 

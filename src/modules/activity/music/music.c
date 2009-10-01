@@ -138,7 +138,7 @@ Enna_Module_Api module_api =
 
 static Enna_Class_Activity class =
 {
-    "music",
+    ENNA_MODULE_NAME,
     1,
     N_("Music"),
     NULL,
@@ -685,6 +685,7 @@ em_init(Enna_Module *em)
 static int
 em_shutdown(Enna_Module *em)
 {
+    enna_activity_del(ENNA_MODULE_NAME);
     ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);

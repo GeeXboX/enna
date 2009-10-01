@@ -236,6 +236,36 @@ void enna_view_cover_jump_ascii(Evas_Object *obj, char k)
     }
 }
 
+static void enna_view_cover_item_remove(Evas_Object *obj, Smart_Item *item)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+
+    if (!sd || !item) return;
+
+    sd->items = eina_list_remove(sd->items, item);
+
+    //~ enna_vfs_remove(item->file); //TODO need to free file ?
+    ENNA_OBJECT_DEL(item->o_pict);
+    ENNA_OBJECT_DEL(item->o_edje);
+    ENNA_STRINGSHARE_DEL(item->label);
+    ENNA_FREE(item);
+
+    return;
+}
+
+
+void enna_view_cover_clear(Evas_Object *obj)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    Smart_Item *item;
+    Eina_List *l, *l_next;
+
+    EINA_LIST_FOREACH_SAFE(sd->items, l, l_next, item)
+    {
+        enna_view_cover_item_remove(obj, item);
+    }
+}
+
 /* local subsystem globals */
 static void _view_cover_h_select(Evas_Object *obj, int pos)
 {

@@ -211,6 +211,10 @@ static int _enna_init(void)
     enna->slideshow_delay = enna_config->slideshow_delay;
 
 
+    /* Create ecore events (we should put here ALL the event_type_new) */
+    ENNA_EVENT_ACTIVITIES_CHANGED = ecore_event_type_new();
+
+
     if (!_create_gui())
         return 0;
 
@@ -228,9 +232,8 @@ static int _enna_init(void)
     EINA_LIST_FOREACH(enna_activities_get(), l, a)
         enna_activity_init(a->name);
 
-    /* Fill mainmenu */
-    enna_mainmenu_load_from_activities();
-    enna_mainmenu_select_nth(0);
+    /* Show mainmenu */
+    //~ enna_mainmenu_select_nth(0);
     enna_mainmenu_show();
 
     enna->idle_timer = NULL;
@@ -273,7 +276,7 @@ static int _create_gui(void)
     evas_object_show(enna->layout);
 
     // mainmenu
-    enna_mainmenu_add(enna->evas);
+    enna_mainmenu_init();
 
     // exit dialog
     elm_layout_content_set(enna->layout, "enna.exit.swallow",

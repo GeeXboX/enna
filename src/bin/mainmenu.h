@@ -32,21 +32,15 @@
 
 #include "activity.h"
 
-Evas_Object *enna_mainmenu_add(Evas * evas);
 
-void enna_mainmenu_append(const char *icon, const char *label, Enna_Class_Activity *act);
-Enna_Class_Activity *enna_mainmenu_selected_activity_get(void);
-void enna_mainmenu_load_from_activities(void);
-int enna_mainmenu_selected_get();
-void enna_mainmenu_select_next(void);
-void enna_mainmenu_select_prev(void);
-void enna_mainmenu_select_nth(int nth);
+Evas_Object *enna_mainmenu_init(void);
+void enna_mainmenu_shutdown(void);
+void enna_mainmenu_append(Enna_Class_Activity *act);
 void enna_mainmenu_show(void);
 void enna_mainmenu_hide(void);
-unsigned char enna_mainmenu_visible(void);
-unsigned char enna_mainmenu_exit_visible(void);
-void enna_mainmenu_activate_nth(int nth);
-void enna_mainmenu_shutdown(void);
+Eina_Bool enna_mainmenu_visible(void);
+Eina_Bool enna_mainmenu_exit_visible(void);
+Enna_Class_Activity *enna_mainmenu_selected_activity_get(void);
 
 
 #endif /* MAINMENU_H */

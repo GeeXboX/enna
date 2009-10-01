@@ -41,10 +41,8 @@
 #include "logs.h"
 #include "view_cover.h"
 
-#define MAX_PER_ROW 3
 
 typedef struct _Menu_Data Menu_Data;
-typedef struct _Menu_Item Menu_Item;
 
 struct _Menu_Data
 {
@@ -53,219 +51,82 @@ struct _Menu_Data
     Evas_Object *o_back_button;
     Evas_Object *o_btn_box;
     Evas_Object *o_icon;
-    Eina_List *items;
-    int selected;
-    unsigned char visible : 1;
-    unsigned char exit_visible: 1;
+    Enna_Class_Activity *selected;
+    Input_Listener *listener;
+    Ecore_Event_Handler *act_handler;
+    Eina_Bool visible;
+    Eina_Bool exit_visible;
 };
 
-struct _Menu_Item
-{
-    Menu_Data *sd;
-    Evas_Object *o_base;
-    Evas_Object *o_icon;
-    Enna_Class_Activity *act;
-};
-
-/* local subsystem functions */
-static void _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info);
-static Evas_Object *_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info));
-static Eina_Bool _input_events_cb(void *data, enna_input event);
-static void _activate (void *data);
-
-/* local subsystem globals */
 static Menu_Data *sd = NULL;
-static Input_Listener *listener = NULL;
 
-/* externally accessible functions */
-Evas_Object *
-enna_mainmenu_add(Evas * evas)
+
+/* Local subsystem functions */
+static void
+_enna_mainmenu_load_from_activities(void)
 {
-    if (sd) return sd->o_menu;
-
-    sd = calloc(1, sizeof(Menu_Data));
-    if (!sd) return NULL;
-    sd->items = NULL;
-    sd->visible = 0;
-    sd->exit_visible = 0;
-    sd->selected = 0;
-
-    // main menu table
-    //sd->o_menu = elm_table_add(enna->layout);
-
-    sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout));
-    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
-    evas_object_size_hint_weight_set(sd->o_menu, -1.0, -1.0);
-    // button box
-    sd->o_btn_box = elm_box_add(enna->win);
-    elm_box_homogenous_set(sd->o_btn_box, 0);
-    elm_box_horizontal_set(sd->o_btn_box, 1);
-    evas_object_size_hint_align_set(sd->o_btn_box, 0.5, 0.5);
-    evas_object_size_hint_weight_set(sd->o_btn_box, -1.0, -1.0);
-    evas_object_show(sd->o_btn_box);
-    elm_layout_content_set(enna->layout, "titlebar.swallow.button", sd->o_btn_box);
-
-    sd->o_home_button = _add_button("icon/home_mini", _home_button_clicked_cb);
-    elm_box_pack_start(sd->o_btn_box, sd->o_home_button);
-
-    sd->o_back_button = _add_button("icon/arrow_left", _back_button_clicked_cb);
-    elm_box_pack_end(sd->o_btn_box, sd->o_back_button);
-
-    // connect to the input signal
-    listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
-
-    return sd->o_menu;
-}
-
-void
-enna_mainmenu_shutdown(void)
-{
-    Menu_Item *it;
-
-    enna_input_listener_del(listener);
-
-    EINA_LIST_FREE(sd->items, it)
-    {
-        ENNA_OBJECT_DEL(it->o_base);
-        ENNA_OBJECT_DEL(it->o_icon);
-        ENNA_FREE(it);
-    }
-    ENNA_OBJECT_DEL(sd->o_home_button);
-    ENNA_OBJECT_DEL(sd->o_back_button);
-    ENNA_OBJECT_DEL(sd->o_menu);
-    ENNA_OBJECT_DEL(sd->o_btn_box);
-    ENNA_FREE(sd);
-}
-
-void
-enna_mainmenu_append(const char *icon, const char *label,
-                Enna_Class_Activity *act)
-{
-    Menu_Item *it;
-    Enna_Vfs_File *f;
-
-    it = malloc(sizeof(Menu_Item));
-    if (!it) return;
-    it->act = act;
-    it->o_base = edje_object_add(enna->evas);
-    edje_object_file_set(it->o_base, enna_config_theme_get(), "enna/mainmenu/item");
-
-    // label
-    if (label)
-        edje_object_part_text_set(it->o_base, "enna.text.label", gettext(label));
-
-    // icon
-    if (icon)
-    {
-        Evas_Object *ic;
-
-        ic = elm_icon_add(enna->layout);
-        elm_icon_file_set(ic, enna_config_theme_get(), icon);
-        evas_object_size_hint_weight_set(ic, 1.0, 1.0);
-        evas_object_show(ic);
-        it->o_icon = ic;
-        if (ic)
-            edje_object_part_swallow(it->o_base, "enna.swallow.content", ic);
-    }
-
-    // item data
-    sd->items = eina_list_append(sd->items, it);
-
-    evas_object_size_hint_weight_set(it->o_base, 1.0, 1.0);
-    evas_object_size_hint_align_set(it->o_base, -1.0, -1.0);
-
-    f = calloc(1, sizeof(Enna_Vfs_File));
-    f->label = (char*)eina_stringshare_add(label);
-    f->icon = (char*)eina_stringshare_add(icon);
-    enna_view_cover_file_append(sd->o_menu, f, _activate, it);
-
-    evas_object_show(it->o_base);
-}
-
-void
-enna_mainmenu_load_from_activities(void)
-{
-    Eina_List *activities, *l;
     Enna_Class_Activity *act;
+    Eina_List *l;
 
-    activities = enna_activities_get();
+    enna_view_cover_clear(sd->o_menu);
 
-    EINA_LIST_FOREACH(activities, l, act)
-        enna_mainmenu_append(act->icon ? act->icon : act->icon_file,
-                             act->label, act);
+    EINA_LIST_FOREACH(enna_activities_get(), l, act)
+    {
+        enna_mainmenu_append(act);
+    }
 }
 
-void
-enna_mainmenu_activate(Menu_Item *it)
+static void
+_enna_mainmenu_item_activate(void *data)
 {
-    // hide the mainmenu
+    Enna_Class_Activity *act = data;
+
     enna_mainmenu_hide();
 
     // update icon
     ENNA_OBJECT_DEL(sd->o_icon)
     sd->o_icon = elm_icon_add(enna->layout);
-    elm_icon_file_set(sd->o_icon, enna_config_theme_get(), it->act->icon);
+    elm_icon_file_set(sd->o_icon, enna_config_theme_get(), act->icon);
     evas_object_show(sd->o_icon);
     elm_layout_content_set(enna->layout, "titlebar.swallow.icon", sd->o_icon);
 
+    // upadate text
+    edje_object_part_text_set(elm_layout_edje_get(enna->layout),
+                              "titlebar.text.label", act->label);
+
     // run the activity_show cb. that is responsable of showing the
     // content using enna_content_select("name")
-    enna_activity_show(it->act->name);
+    enna_activity_show(act->name);
 
-    edje_object_part_text_set(elm_layout_edje_get(enna->layout),
-                              "titlebar.text.label", it->act->label);
+    sd->selected = act;
 }
 
-void
-enna_mainmenu_activate_nth(int nth)
+static Evas_Object *
+_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info))
 {
-    Menu_Item *it;
+    Evas_Object *ic, *bt;
 
-    if (!sd) return;
+    ic = elm_icon_add(enna->layout);
+    elm_icon_file_set(ic, enna_config_theme_get(), icon_name);
+    evas_object_show(ic);
 
-    it = eina_list_nth(sd->items, nth);
-    if (!it) return;
+    bt = elm_button_add(enna->layout);
+    evas_object_smart_callback_add(bt, "clicked", cb, sd);
+    elm_button_icon_set(bt, ic);
+    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
+    evas_object_size_hint_min_set(bt, 55, 55);
+    evas_object_show(bt);
 
-    enna_mainmenu_activate(it);
+    return bt;
 }
 
-int
-enna_mainmenu_selected_get(void)
+/* Local subsystem callbacks */
+static int
+_activities_changed_cb(void *data, int type, void *event)
 {
-    if (!sd) return 0;
-    return sd->selected;
-}
-
-void
-enna_mainmenu_select_nth(int nth)
-{
-    Menu_Item *new, *prev;
-
-    if (!sd) return;
-
-    prev = eina_list_nth(sd->items, sd->selected);
-    if (!prev) return;
-
-    new = eina_list_nth(sd->items, nth);
-    if (!new) return;
-
-    sd->selected = nth;
-    edje_object_signal_emit(new->o_base, "select", "enna");
-    if (new != prev)
-        edje_object_signal_emit(prev->o_base, "unselect", "enna");
-}
-
-Enna_Class_Activity *
-enna_mainmenu_selected_activity_get(void)
-{
-    Menu_Item *it;
-    if (!sd) return NULL;
-
-    it = enna_view_cover_selected_data_get(sd->o_menu);
-    if (!it)
-        return NULL;
-    return it->act;
+    _enna_mainmenu_load_from_activities();
+    // TODO reselect selected activities
+    return ECORE_CALLBACK_RENEW;
 }
 
 static Eina_Bool
@@ -310,11 +171,97 @@ _input_events_cb(void *data, enna_input event)
     return ENNA_EVENT_CONTINUE;
 }
 
+static void
+_home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    enna_input_event_emit(ENNA_INPUT_MENU);
+}
+
+static void
+_back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    enna_input_event_emit(ENNA_INPUT_EXIT);
+}
+
+/* externally accessible functions */
+Evas_Object *
+enna_mainmenu_init(void)
+{
+    if (sd) return sd->o_menu;
+
+    sd = ENNA_NEW(Menu_Data, 1);
+    if (!sd) return NULL;
+
+    // cover view
+    sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout));
+    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
+    evas_object_size_hint_weight_set(sd->o_menu, -1.0, -1.0);
+
+    // button box
+    sd->o_btn_box = elm_box_add(enna->win);
+    elm_box_homogenous_set(sd->o_btn_box, 0);
+    elm_box_horizontal_set(sd->o_btn_box, 1);
+    evas_object_size_hint_align_set(sd->o_btn_box, 0.5, 0.5);
+    evas_object_size_hint_weight_set(sd->o_btn_box, -1.0, -1.0);
+    evas_object_show(sd->o_btn_box);
+    elm_layout_content_set(enna->layout, "titlebar.swallow.button", sd->o_btn_box);
+
+    sd->o_home_button = _add_button("icon/home_mini", _home_button_clicked_cb);
+    elm_box_pack_start(sd->o_btn_box, sd->o_home_button);
+
+    sd->o_back_button = _add_button("icon/arrow_left", _back_button_clicked_cb);
+    elm_box_pack_end(sd->o_btn_box, sd->o_back_button);
+
+    // connect to the input signal
+    sd->listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
+
+    sd->act_handler = ecore_event_handler_add(ENNA_EVENT_ACTIVITIES_CHANGED,
+                                          _activities_changed_cb, NULL);
+
+    return sd->o_menu;
+}
+
+void
+enna_mainmenu_shutdown(void)
+{
+    ENNA_EVENT_HANDLER_DEL(sd->act_handler);
+
+    enna_input_listener_del(sd->listener);
+
+    ENNA_OBJECT_DEL(sd->o_home_button);
+    ENNA_OBJECT_DEL(sd->o_back_button);
+    ENNA_OBJECT_DEL(sd->o_menu);
+    ENNA_OBJECT_DEL(sd->o_btn_box);
+    ENNA_OBJECT_DEL(sd->o_icon);
+    ENNA_FREE(sd);
+}
+
+void
+enna_mainmenu_append(Enna_Class_Activity *act)
+{
+    Enna_Vfs_File *f;
+
+    if (!act) return;
+
+    f = calloc(1, sizeof(Enna_Vfs_File));
+    f->label = (char*)eina_stringshare_add(act->label);
+    f->icon = (char*)eina_stringshare_add(act->icon);
+    enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, act);
+}
+
+Enna_Class_Activity *
+enna_mainmenu_selected_activity_get(void)
+{
+    if (!sd) return 0;
+    return sd->selected;
+}
+
 void
 enna_mainmenu_show(void)
 {
     if (!sd) return;
     sd->visible = 1;
+    sd->selected = NULL;
 
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,show", "enna");
@@ -333,14 +280,14 @@ enna_mainmenu_hide(void)
                             "mainmenu,hide", "enna");
 }
 
-unsigned char
+Eina_Bool
 enna_mainmenu_visible(void)
 {
-    if (!sd) return 0;
+    if (!sd) return EINA_FALSE;
     return sd->visible;
 }
 
-unsigned char
+Eina_Bool
 enna_mainmenu_exit_visible(void)
 {
     if (!sd) return 0;
@@ -348,44 +295,4 @@ enna_mainmenu_exit_visible(void)
 }
 
 /* local subsystem functions */
-static void
-_home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    enna_input_event_emit(ENNA_INPUT_MENU);
-}
-
-static void
-_back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    enna_input_event_emit(ENNA_INPUT_EXIT);
-}
-
-static Evas_Object *
-_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info))
-{
-    Evas_Object *ic, *bt;
-
-    ic = elm_icon_add(enna->layout);
-    elm_icon_file_set(ic, enna_config_theme_get(), icon_name);
-    evas_object_show(ic);
-
-    bt = elm_button_add(enna->layout);
-    evas_object_smart_callback_add(bt, "clicked", cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    //~ evas_object_size_hint_align_set(bt, -1.0, -1.0);
-    evas_object_size_hint_min_set(bt, 55, 55);
-    evas_object_show(bt);
-
-    return bt;
-}
-
-static void
-_activate (void *data)
-{
-    Menu_Item *it = data;
-    printf("activate %s", it->act->label);
-    enna_mainmenu_activate(it);
-}
-
 

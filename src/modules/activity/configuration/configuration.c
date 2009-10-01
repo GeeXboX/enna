@@ -272,6 +272,7 @@ void
 module_shutdown (Enna_Module *em)
 {
     enna_config_panel_unregister(info1);
+    enna_activity_del(ENNA_MODULE_NAME);
 
     ENNA_OBJECT_DEL (mod->o_edje);
     _delete_menu ();
