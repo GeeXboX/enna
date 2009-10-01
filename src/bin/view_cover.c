@@ -287,15 +287,14 @@ static void _view_cover_h_select(Evas_Object *obj, int pos)
     si = eina_list_nth(sd->items, nth);
     if (si)
     {
-        Evas_Coord x, w, xedje, wedje, xbox;
-        evas_object_geometry_get(obj, NULL, NULL, &w, NULL);
-        evas_object_geometry_get(si->o_edje, &xedje, NULL, &wedje, NULL);
-        evas_object_geometry_get(sd->o_box, &xbox, NULL, NULL, NULL);
-        if (pos)
-            x = (xedje + wedje / 2 - xbox + w / 2 );
-        else
-            x = (xedje + wedje / 2 - xbox - w / 2 );
-            elm_scroller_region_bring_in(obj, x, 0, w, 0);
+        Evas_Coord x, y, w, h;
+        Evas_Coord xedje, yedje, wedje, hedje;
+
+        evas_object_geometry_get(si->o_edje, &xedje, &yedje, &wedje, &hedje);
+        elm_scroller_region_get(obj, &x, &y, &w, &h);
+
+        x += xedje;
+        elm_scroller_region_bring_in(obj, x, y, wedje, hedje);
 
 	_smart_item_select(sd, si);
 	if (ssi) _smart_item_unselect(sd, ssi);
