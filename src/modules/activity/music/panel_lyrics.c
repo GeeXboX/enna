@@ -46,11 +46,6 @@ struct _Smart_Data
     Evas_Object *text;
 };
 
-/* local subsystem globals */
-
-/* local subsystem globals */
-
-
 /* externally accessible functions */
 
 Evas_Object *
@@ -79,10 +74,6 @@ enna_panel_lyrics_add (Evas *evas)
 
     return obj;
 }
-
-/****************************************************************************/
-/*                              Lyrics Panel                                */
-/****************************************************************************/
 
 void
 enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
