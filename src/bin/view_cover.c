@@ -371,9 +371,24 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     _smart_item_select(si->sd, si);
 }
 
+static void
+_custom_resize(void *data, Evas *a, Evas_Object *obj, void *event_info)
+{
+    Evas_Coord x, y, w, h;
+    Smart_Data *sd = data;
+    Eina_List *l;
+    Smart_Item *it;
+
+    elm_scroller_region_get(obj, &x, &y, &w, &h);
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+        evas_object_size_hint_min_set (it->o_edje, h, h);
+}
+
 /* externally accessible functions */
 Evas_Object * enna_view_cover_add(Evas * evas)
 {
+
     Evas_Object *obj;
     Smart_Data *sd;
 
@@ -391,6 +406,9 @@ Evas_Object * enna_view_cover_add(Evas * evas)
 
     evas_object_show(sd->o_box);
     elm_scroller_content_set(obj, sd->o_box);
+
+    evas_object_event_callback_add(obj, EVAS_CALLBACK_RESIZE,
+                                   _custom_resize, sd);
 
     evas_object_data_set(obj, "sd", sd);
 
