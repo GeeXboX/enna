@@ -133,27 +133,6 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
             _smart_event_mouse_down, si);
 }
 
-void enna_view_cover_file_remove(Evas_Object *obj, Enna_Vfs_File *file)
-{
-    Eina_List *l;
-    Smart_Item *item;
-    Smart_Data *sd = evas_object_data_get(obj, "sd");
-
-    EINA_LIST_FOREACH(sd->items, l, item)
-    {
-        if (item->file == file)
-        {
-            sd->items = eina_list_remove(sd->items, item);
-            ENNA_OBJECT_DEL(item->o_pict);
-            ENNA_OBJECT_DEL(item->o_edje);
-            ENNA_STRINGSHARE_DEL(item->label);
-            ENNA_FREE(item);
-            //TODO need to free the vfs_file ??
-            return;
-        }
-    }
-}
-
 Eina_Bool
 enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
 {

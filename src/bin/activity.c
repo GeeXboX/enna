@@ -32,7 +32,6 @@
 #include "enna.h"
 #include "activity.h"
 #include "buffer.h"
-#include "logs.h"
 
 static Eina_List *_enna_activities = NULL;
 
@@ -49,11 +48,6 @@ static int _sort_cb(const void *d1, const void *d2)
     return strcasecmp(act1->name, act2->name);
 }
 
-void _do_not_free(void *data, void *ev)
-{
-    //This is just to tell ecore_event_add to not free the Activity
-}
-
 /**
  * @brief Register new activity
  * @param em enna module
@@ -64,19 +58,15 @@ int enna_activity_add(Enna_Class_Activity *class)
     if (!class)
         return -1;
 
-    _enna_activities = eina_list_append(_enna_activities, class); //TODO use append_sorted
+    _enna_activities = eina_list_append(_enna_activities, class);
     _enna_activities = eina_list_sort(_enna_activities,
         eina_list_count(_enna_activities),
         _sort_cb);
 
-    // send the ENNA_EVENT_ACTIVITY_ADDED event
-    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITY_ADDED Sent");
-    ecore_event_add(ENNA_EVENT_ACTIVITY_ADDED, class, _do_not_free, NULL);
-
     return 0;
 }
 
-static Enna_Class_Activity *enna_get_activity(const char *name)
+static Enna_Class_Activity * enna_get_activity(const char *name)
 {
     Eina_List *l;
     Enna_Class_Activity *act;
@@ -99,25 +89,18 @@ static Enna_Class_Activity *enna_get_activity(const char *name)
 
 /**
  * @brief Unregister an existing activity
- * @param name Name of the activity to delete
+ * @param em enna module
  * @return -1 if error occurs, 0 otherwise
  */
 int enna_activity_del(const char *name)
 {
     Enna_Class_Activity *act;
-    Enna_Class_Activity *ev;
 
     act = enna_get_activity (name);
     if (!act)
         return -1;
 
     _enna_activities = eina_list_remove(_enna_activities, act);
-    
-    // send the ENNA_EVENT_ACTIVITY_REMOVED event
-    ev = ENNA_NEW(Enna_Class_Activity, 1);
-    memcpy(ev, act, sizeof(Enna_Class_Activity));
-    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITY_REMOVED Sent");
-    ecore_event_add(ENNA_EVENT_ACTIVITY_REMOVED, ev, NULL, NULL);
     return 0;
 }
 

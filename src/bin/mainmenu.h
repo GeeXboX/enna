@@ -36,6 +36,7 @@ Evas_Object *enna_mainmenu_add(Evas * evas);
 
 void enna_mainmenu_append(const char *icon, const char *label, Enna_Class_Activity *act);
 Enna_Class_Activity *enna_mainmenu_selected_activity_get(void);
+void enna_mainmenu_load_from_activities(void);
 int enna_mainmenu_selected_get();
 void enna_mainmenu_select_next(void);
 void enna_mainmenu_select_prev(void);

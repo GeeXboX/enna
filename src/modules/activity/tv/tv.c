@@ -334,7 +334,6 @@ void module_shutdown(Enna_Module *em)
     if (!mod)
         return;
 
-    enna_activity_del(ENNA_MODULE_NAME);
     ENNA_OBJECT_DEL(mod->o_background);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
 #ifdef BUILD_LIBSVDRP

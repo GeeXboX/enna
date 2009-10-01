@@ -553,8 +553,6 @@ module_init (Enna_Module *em)
 void
 module_shutdown (Enna_Module *em)
 {
-    enna_activity_del(ENNA_MODULE_NAME);
-    
     ENNA_TIMER_DEL (mod->timer);
     ENNA_FREE (mod->city);
     ENNA_FREE (mod->lang);

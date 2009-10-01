@@ -60,7 +60,6 @@ struct _Enna_Class_Activity
     Eina_List *categories;
 };
 
-
 int enna_activity_add(Enna_Class_Activity *class);
 int enna_activity_del(const char *name);
 void enna_activity_del_all (void);
