@@ -221,7 +221,6 @@ fonts/content.ttf \
 fonts/content_bold.ttf \
 default.edc \
 music_video.edc \
-audio_lyrics.edc \
 video_info.edc \
 mediaplayer.edc \
 mainmenu.edc \
