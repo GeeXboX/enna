@@ -210,6 +210,10 @@ static int _enna_init(void)
     enna->metadata_cache = enna_config->metadata_cache;
     enna->slideshow_delay = enna_config->slideshow_delay;
 
+    /* Create ecore events (we should put here ALL the event_type_new) */
+    ENNA_EVENT_ACTIVITY_ADDED = ecore_event_type_new();
+    ENNA_EVENT_ACTIVITY_REMOVED = ecore_event_type_new();
+
 
     if (!_create_gui())
         return 0;
@@ -228,8 +232,7 @@ static int _enna_init(void)
     EINA_LIST_FOREACH(enna_activities_get(), l, a)
         enna_activity_init(a->name);
 
-    /* Fill mainmenu */
-    enna_mainmenu_load_from_activities();
+    /* Show mainmenu */
     enna_mainmenu_select_nth(0);
     enna_mainmenu_show();
 

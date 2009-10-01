@@ -898,6 +898,7 @@ em_init(Enna_Module *em)
 static void
 em_shutdown(Enna_Module *em)
 {
+    enna_activity_del(ENNA_MODULE_NAME);
     ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
     ENNA_EVENT_HANDLER_DEL(mod->eos_event_handler);
     ENNA_OBJECT_DEL(mod->o_edje);

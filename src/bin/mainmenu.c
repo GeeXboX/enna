@@ -65,6 +65,7 @@ struct _Menu_Item
     Evas_Object *o_base;
     Evas_Object *o_icon;
     Enna_Class_Activity *act;
+    Enna_Vfs_File *file;
 };
 
 /* local subsystem functions */
@@ -73,10 +74,14 @@ static void _back_button_clicked_cb(void *data, Evas_Object *obj, void *event_in
 static Evas_Object *_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info));
 static Eina_Bool _input_events_cb(void *data, enna_input event);
 static void _activate (void *data);
+static int _activity_added_cb(void *data, int type, void *event);
+static int _activity_removed_cb(void *data, int type, void *event);
 
 /* local subsystem globals */
 static Menu_Data *sd = NULL;
 static Input_Listener *listener = NULL;
+static Ecore_Event_Handler *activity_add_handler;
+static Ecore_Event_Handler *activity_del_handler;
 
 /* externally accessible functions */
 Evas_Object *
@@ -114,6 +119,11 @@ enna_mainmenu_add(Evas * evas)
 
     // connect to the input signal
     listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
+    
+    activity_add_handler = ecore_event_handler_add(ENNA_EVENT_ACTIVITY_ADDED,
+                                                  _activity_added_cb, NULL);
+    activity_del_handler = ecore_event_handler_add(ENNA_EVENT_ACTIVITY_REMOVED,
+                                                  _activity_removed_cb, NULL);
 
     return sd->o_menu;
 }
@@ -124,6 +134,8 @@ enna_mainmenu_shutdown(void)
     Menu_Item *it;
 
     enna_input_listener_del(listener);
+    ENNA_EVENT_HANDLER_DEL(activity_add_handler);
+    ENNA_EVENT_HANDLER_DEL(activity_del_handler);
 
     EINA_LIST_FREE(sd->items, it)
     {
@@ -179,21 +191,24 @@ enna_mainmenu_append(const char *icon, const char *label,
     f->label = (char*)eina_stringshare_add(label);
     f->icon = (char*)eina_stringshare_add(icon);
     enna_view_cover_file_append(sd->o_menu, f, _activate, it);
+    it->file = f;
 
     evas_object_show(it->o_base);
 }
 
 void
-enna_mainmenu_load_from_activities(void)
+enna_mainmenu_item_del(Enna_Class_Activity *act)
 {
-    Eina_List *activities, *l;
-    Enna_Class_Activity *act;
+    Eina_List *l;
+    Menu_Item *item;
 
-    activities = enna_activities_get();
-
-    EINA_LIST_FOREACH(activities, l, act)
-        enna_mainmenu_append(act->icon ? act->icon : act->icon_file,
-                             act->label, act);
+    EINA_LIST_FOREACH(sd->items, l, item)
+    {
+        if (!strcmp(item->act->name, act->name))
+        {
+            enna_view_cover_file_remove(sd->o_menu, item->file);
+        }
+    }
 }
 
 void
@@ -348,6 +363,24 @@ enna_mainmenu_exit_visible(void)
 }
 
 /* local subsystem functions */
+static int
+_activity_added_cb(void *data, int type, void *event)
+{
+    Enna_Class_Activity *act = event;
+
+    enna_mainmenu_append(act->icon ? act->icon : act->icon_file, act->label, act);
+    return ECORE_CALLBACK_RENEW;
+}
+
+static int
+_activity_removed_cb(void *data, int type, void *event)
+{
+    Enna_Class_Activity *act = event;
+
+    enna_mainmenu_item_del(act);
+    return ECORE_CALLBACK_RENEW;
+}
+
 static void
 _home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {

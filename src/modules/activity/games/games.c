@@ -282,6 +282,7 @@ void module_init(Enna_Module *em)
 
 void module_shutdown(Enna_Module *em)
 {
+    enna_activity_del("games");
     evas_object_del(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);
     free(mod);

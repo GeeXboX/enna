@@ -154,4 +154,7 @@ extern Enna *enna;
 
 void enna_idle_timer_renew(void);
 
+int ENNA_EVENT_ACTIVITY_ADDED;   /**< ev = *Enna_Class_Activity */
+int ENNA_EVENT_ACTIVITY_REMOVED; /**< ev = *Enna_Class_Activity */
+
 #endif /* ENNA_H */

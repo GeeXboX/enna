@@ -228,7 +228,6 @@ void _enable_button_cb(void *data)
     Enna_Module *m = data;
 
     if (!m) return;
-    printf("Button clicked...\n");
 
     printf("SELECTED MOD: %s\n", m->name);
     if (m->enabled)
