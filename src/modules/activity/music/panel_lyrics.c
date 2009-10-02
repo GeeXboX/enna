@@ -58,6 +58,8 @@ enna_panel_lyrics_add (Evas *evas)
     sd = calloc(1, sizeof(Smart_Data));
 
     obj = elm_win_inwin_add(enna->win);
+    elm_win_inwin_style_set(obj, "enna");
+    elm_win_inwin_activate(obj);
     sc = elm_scroller_add (enna->layout);
     lb = elm_label_add(enna->layout);
 
