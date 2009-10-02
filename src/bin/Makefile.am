@@ -42,7 +42,6 @@ slideshow.c\
 mediacontrol.c\
 reflection.c\
 view_cover.c\
-popup.c\
 exit.c\
 thumb.c\
 ipc.c\
@@ -97,7 +96,6 @@ slideshow.h\
 mediacontrol.h\
 reflection.h\
 view_cover.h\
-popup.h\
 exit.h\
 gettext.h\
 thumb.h\
