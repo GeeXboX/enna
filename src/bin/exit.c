@@ -27,12 +27,13 @@
  *
  */
 
+/* TODO : remove smart object and use directly elm objects */
+
 #include "Elementary.h"
 
 #include "enna.h"
 #include "enna_config.h"
 #include "view_list.h"
-#include "popup.h"
 #include "buffer.h"
 #include "activity.h"
 #include "input.h"
@@ -145,7 +146,9 @@ static void _smart_add(Evas_Object * obj)
     if (!sd)
         return;
 
-    sd->popup = enna_popup_add(evas_object_evas_get(obj));
+    sd->popup = elm_win_inwin_add(enna->win);
+    elm_win_inwin_style_set(sd->popup, "enna_minimal");
+    elm_win_inwin_activate(sd->popup);
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/exit");
@@ -165,7 +168,7 @@ static void _smart_add(Evas_Object * obj)
 
     _update_text(sd);
 
-    enna_popup_content_set(sd->popup, sd->o_edje);
+    elm_win_inwin_content_set(sd->popup, sd->o_edje);
 
     evas_object_smart_member_add(sd->popup, obj);
     evas_object_smart_data_set(obj, sd);
