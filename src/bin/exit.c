@@ -45,42 +45,23 @@ typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
-    Evas_Coord x, y, w, h;
-    Evas_Object *popup;
-    Evas_Object *o_edje;
+    Evas_Object *layout;
     Evas_Object *list;
+    Evas_Object *label;
     Input_Listener *listener;
-    Eina_Bool visible;
+    Eina_Bool visible: 1;
 };
 
-/* local subsystem functions */
-static void _smart_reconfigure(Smart_Data * sd);
-static void _smart_init(void);
-
 /* local subsystem globals */
-static Evas_Smart *_smart = NULL;
 
-/* local subsystem globals */
-static void _smart_reconfigure(Smart_Data * sd)
-{
-    Evas_Coord x, y, w, h;
-
-    x = sd->x;
-    y = sd->y;
-    w = sd->w;
-    h = sd->h;
-
-    evas_object_move(sd->popup, x, y);
-    evas_object_resize(sd->popup, w, h);
-
-}
-
-static void _yes_cb(void *data)
+static void
+_yes_cb(void *data)
 {
     ecore_main_loop_quit();
 }
 
-static void _no_cb(void *data)
+static void
+_no_cb(void *data)
 {
     Evas_Object *obj = data;
 
@@ -91,12 +72,14 @@ static Eina_Bool
 _input_events_cb(void *data, enna_input event)
 {
     Evas_Object *obj = data;
-    API_ENTRY return ENNA_EVENT_CONTINUE;
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
 
     if (event == ENNA_INPUT_QUIT)
     {
-        if (sd->visible) enna_exit_hide(obj);
-        else enna_exit_show(obj);
+        if (sd->visible)
+            enna_exit_hide(obj);
+        else
+            enna_exit_show(obj);
         return ENNA_EVENT_BLOCK;
     }
     if (sd->visible)
@@ -107,7 +90,8 @@ _input_events_cb(void *data, enna_input event)
     return ENNA_EVENT_CONTINUE;
 }
 
-static void _update_text(Smart_Data *sd)
+static void
+_update_text(Evas_Object *lb)
 {
     buffer_t *label;
     const char *tmp;
@@ -120,7 +104,7 @@ static void _update_text(Smart_Data *sd)
 
     if (tmp) buffer_appendf(label, "<h2>%s<h2>", tmp);
 
-    edje_object_part_text_set(sd->o_edje, "enna.text.label", label->buf);
+    elm_label_label_set(lb, label->buf);
     buffer_free(label);
 }
 
@@ -136,165 +120,99 @@ _create_list_item (char *label, char *icon)
     return it;
 }
 
-static void _smart_add(Evas_Object * obj)
+static void
+_sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
-    Smart_Data *sd;
-    Enna_Vfs_File *it1, *it2;
+    Smart_Data *sd = data;
 
-
-    sd = calloc(1, sizeof(Smart_Data));
-    if (!sd)
-        return;
-
-    sd->popup = elm_win_inwin_add(enna->win);
-    elm_win_inwin_style_set(sd->popup, "enna_minimal");
-    elm_win_inwin_activate(sd->popup);
-
-    sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/exit");
-
-    sd->list = enna_list_add(evas_object_evas_get(sd->popup));
-
-    it1 = _create_list_item (_("Yes, Quit Enna"), "ctrl/shutdown");
-    enna_list_file_append(sd->list, it1, _yes_cb, obj);
-
-    it2 = _create_list_item (_("No, Continue using enna"), "ctrl/hibernate");
-    enna_list_file_append(sd->list, it2, _no_cb, obj);
-
-    evas_object_size_hint_weight_set(sd->list, 1.0, 1.0);
-    evas_object_show(sd->list);
-    enna_list_select_nth(sd->list, 0);
-    edje_object_part_swallow(sd->o_edje, "enna.content.swallow", sd->list);
-
-    _update_text(sd);
-
-    elm_win_inwin_content_set(sd->popup, sd->o_edje);
-
-    evas_object_smart_member_add(sd->popup, obj);
-    evas_object_smart_data_set(obj, sd);
-
-    /* connect to the input signal */
-    sd->listener = enna_input_listener_add("exit_dialog", _input_events_cb, obj);
-    enna_input_listener_demote(sd->listener);
-}
-
-static void _smart_del(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    enna_input_listener_del(sd->listener);
-    evas_object_del(sd->list);
-    evas_object_del(sd->o_edje);
-    evas_object_del(sd->popup);
-    free(sd);
-}
-
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
-{
-    INTERNAL_ENTRY;
-
-    if ((sd->x == x) && (sd->y == y))
-        return;
-    sd->x = x;
-    sd->y = y;
-    _smart_reconfigure(sd);
-}
-
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
-{
-    INTERNAL_ENTRY;
-
-    if ((sd->w == w) && (sd->h == h))
-        return;
-    sd->w = w;
-    sd->h = h;
-    _smart_reconfigure(sd);
-}
-
-static void _smart_show(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_show(sd->popup);
-}
-
-static void _smart_hide(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_hide(sd->popup);
-}
-
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
-{
-    INTERNAL_ENTRY;
-    evas_object_color_set(sd->popup, r, g, b, a);
-}
-
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
-{
-    INTERNAL_ENTRY;
-    evas_object_clip_set(sd->popup, clip);
-}
-
-static void _smart_clip_unset(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_clip_unset(sd->popup);
-}
-
-static void _smart_init(void)
-{
-    static const Evas_Smart_Class sc =
-    {
-        SMART_NAME,
-        EVAS_SMART_CLASS_VERSION,
-        _smart_add,
-        _smart_del,
-        _smart_move,
-        _smart_resize,
-        _smart_show,
-        _smart_hide,
-        _smart_color_set,
-        _smart_clip_set,
-        _smart_clip_unset,
-        NULL,
-        NULL
-    };
-
-    if (!_smart)
-       _smart = evas_smart_class_new(&sc);
+    ENNA_OBJECT_DEL(sd->label);
+    ENNA_OBJECT_DEL(sd->list);
+    ENNA_OBJECT_DEL(sd->layout);
+    ENNA_FREE(sd);
 }
 
 /* externally accessible functions */
 Evas_Object *
 enna_exit_add(Evas * evas)
 {
-    _smart_init();
-    return evas_object_smart_add(evas, _smart);
+    Evas_Object *obj;
+    Smart_Data *sd;
+    Enna_Vfs_File *it1, *it2;
+
+    sd = calloc(1, sizeof(Smart_Data));
+
+    obj = elm_win_inwin_add(enna->win);
+    elm_win_inwin_style_set(obj, "enna");
+
+    sd->layout = elm_layout_add(obj);
+    elm_layout_file_set(sd->layout, enna_config_theme_get(), "exit_layout");
+    evas_object_size_hint_weight_set(sd->layout, 1.0, 1.0);
+    evas_object_show(sd->layout);
+
+    sd->label = elm_label_add(sd->layout);
+    _update_text(sd->label);
+
+    sd->list = enna_list_add(enna->evas);
+    it1 = _create_list_item (_("Yes, Quit Enna"), "ctrl/shutdown");
+    enna_list_file_append(sd->list, it1, _yes_cb, obj);
+
+    it2 = _create_list_item (_("No, Continue using enna"), "ctrl/hibernate");
+    enna_list_file_append(sd->list, it2, _no_cb, obj);
+    enna_list_select_nth(sd->list, 0);
+/*
+    enna_list2_append(list, _("Yes, Quit Enna"), NULL,  "ctrl/shutdown",
+                      _yes_cb, obj);
+
+    enna_list2_append(list, _("No, Continue using enna"), NULL,  "ctrl/hibernate",
+                      _no_cb, obj);
+*/
+    elm_layout_content_set(sd->layout, "enna.content.swallow",
+                           sd->list);
+    elm_layout_content_set(sd->layout, "enna.label.swallow",
+                           sd->label);
+
+    elm_win_inwin_content_set(obj, sd->layout);
+    elm_win_inwin_activate(obj);
+
+    evas_object_data_set(obj, "sd", sd);
+    /* connect to the input signal */
+
+    sd->listener = enna_input_listener_add("exit_dialog", _input_events_cb, obj);
+    enna_input_listener_demote(sd->listener);
+
+    evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
+                                   _sd_del, sd);
+    //  sd->label = lb;
+    return obj;
 }
 
 void
 enna_exit_show(Evas_Object *obj)
 {
-    API_ENTRY return;
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
 
-    if (sd->visible) enna_exit_update_text(obj);
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,show", "enna");
+    if (sd->visible)
+        enna_exit_update_text(obj);
+    enna_list_select_nth(sd->list, 0);
     sd->visible = EINA_TRUE;
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,show", "enna");
     enna_input_listener_promote(sd->listener);
 }
 
 void
 enna_exit_hide(Evas_Object *obj)
 {
-    API_ENTRY return;
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
 
+    sd->visible = EINA_FALSE;
     enna_input_listener_demote(sd->listener);
     edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,hide", "enna");
-    sd->visible = EINA_FALSE;
 }
 
 void enna_exit_update_text(Evas_Object *obj)
 {
-    API_ENTRY return;
-    _update_text(sd);
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+
+    _update_text(sd->label);
 }
 
