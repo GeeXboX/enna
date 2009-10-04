@@ -247,7 +247,7 @@ enna_metadata_db_init (void)
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
               enna_util_user_home_get (), PATH_BACKDROPS);
-    valhalla_downloader_dest_set (vh, VALHALLA_DL_BACKDROP, dst);
+    valhalla_downloader_dest_set (vh, VALHALLA_DL_FAN_ART, dst);
 
     rc = valhalla_run(vh, scan_loop, scan_sleep, scan_priority);
     if (rc)
