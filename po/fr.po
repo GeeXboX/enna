@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-09-27 12:51+0200\n"
+"POT-Creation-Date: 2009-10-10 19:17+0200\n"
 "PO-Revision-Date: 2009-05-10 17:11+0100\n"
 "Last-Translator: Benjamin Zores <ben@geexbox.org>\n"
 "Language-Team: French\n"
@@ -20,62 +20,62 @@ msgstr ""
 msgid "No media found !"
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/bin/enna.c:379
+#: src/bin/enna.c:380
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:380
+#: src/bin/enna.c:381
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Usage: %s [options ...]\n"
 
-#: src/bin/enna.c:381
+#: src/bin/enna.c:382
 #, c-format
 msgid " Available Options:\n"
 msgstr " Options disponibles:\n"
 
-#: src/bin/enna.c:382
+#: src/bin/enna.c:383
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Spécifie le fichier de configuration à utiliser.\n"
 
-#: src/bin/enna.c:383
+#: src/bin/enna.c:384
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      Forcer le mode plein écran.\n"
 
-#: src/bin/enna.c:384
+#: src/bin/enna.c:385
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Affichager cette aide.\n"
 
-#: src/bin/enna.c:385
+#: src/bin/enna.c:386
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Spécifie le nom du thème à utiliser.\n"
 
-#: src/bin/enna.c:386
+#: src/bin/enna.c:387
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): Spécifie la résolution de la fenêtre. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:387
+#: src/bin/enna.c:388
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Affichage le numéro de version d'Enna.\n"
 
-#: src/bin/exit.c:116
+#: src/bin/exit.c:101
 msgid "Are you sure you want to quit enna ?"
 msgstr ""
 
-#: src/bin/exit.c:155
+#: src/bin/exit.c:156
 msgid "Yes, Quit Enna"
 msgstr ""
 
-#: src/bin/exit.c:158
+#: src/bin/exit.c:159
 msgid "No, Continue using enna"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgstr "Jeux"
 msgid "Configuration"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration.c:263
+#: src/modules/activity/configuration/configuration.c:266
 msgid "Infos"
 msgstr "Infos"
 
@@ -201,12 +201,12 @@ msgstr "Aucun<br>"
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informations Systèmes</c><br><br>"
 
-#: src/modules/activity/music/music.c:140
-#: src/modules/activity/music/music.c:644
+#: src/modules/activity/music/music.c:143
+#: src/modules/activity/music/music.c:648
 msgid "Music"
 msgstr "Music"
 
-#: src/modules/activity/music/panel_lyrics.c:230
+#: src/modules/activity/music/panel_lyrics.c:99
 #, fuzzy
 msgid "No lyrics found ..."
 msgstr "Aucun contenu multimédia ne semble disponible !"
@@ -303,9 +303,9 @@ msgstr "Lecture (avec menus interractifs)"
 msgid "Watch DVD Video"
 msgstr "Regarder un DVD Vidéo"
 
-#: src/modules/browser/localfiles/localfiles.c:421
-#: src/modules/browser/localfiles/localfiles.c:439
-#: src/modules/browser/localfiles/localfiles.c:457
+#: src/modules/browser/localfiles/localfiles.c:431
+#: src/modules/browser/localfiles/localfiles.c:449
+#: src/modules/browser/localfiles/localfiles.c:467
 msgid "Browse Local Devices"
 msgstr "Parcourir les disques locaux"
 
@@ -326,23 +326,23 @@ msgstr "Flux SHOUTcast"
 msgid "UPnP/DLNA Media Servers"
 msgstr "Serveurs Multimédia UPnP/DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:308
+#: src/modules/browser/valhalla/valhalla.c:307
 msgid "Artists"
 msgstr "Artistes"
 
-#: src/modules/browser/valhalla/valhalla.c:312
+#: src/modules/browser/valhalla/valhalla.c:311
 msgid "Albums"
 msgstr "Albums"
 
-#: src/modules/browser/valhalla/valhalla.c:316
+#: src/modules/browser/valhalla/valhalla.c:315
 msgid "Genres"
 msgstr "Genres"
 
-#: src/modules/browser/valhalla/valhalla.c:320
+#: src/modules/browser/valhalla/valhalla.c:319
 msgid "Unclassified"
 msgstr "Non Classé"
 
-#: src/modules/browser/valhalla/valhalla.c:474
+#: src/modules/browser/valhalla/valhalla.c:476
 msgid "Media Library"
 msgstr "Bibliothèque Multimédia"
 
