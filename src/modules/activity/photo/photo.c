@@ -166,7 +166,7 @@ _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
 
-     if (!ev || !ev->file)
+     if (!ev || !ev->file || !ev->file->uri)
         return;
 
      edje_object_part_text_set(mod->o_edje, "filename.text", ev->file->label);
