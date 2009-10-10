@@ -23,8 +23,8 @@ pkg_LTLIBRARIES = activity_photo.la
 activity_photo_la_SOURCES= \
 photo.c \
 photo.h \
-panel_infos.c \
-panel_infos.h
+photo_panel_infos.c \
+photo_panel_infos.h
 
 activity_photo_la_LIBADD = @ENNA_LIBS@
 activity_photo_la_LDFLAGS = -module -avoid-version

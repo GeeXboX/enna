@@ -27,13 +27,13 @@
  *
  */
 
-#ifndef PANEL_INFO_H
-#define PANEL_INFO_H
+#ifndef PHOTO_PANEL_INFOS_H
+#define PHOTO_PANEL_INFOS_H
 
 #include "enna.h"
 
 Evas_Object *photo_panel_infos_add(Evas * evas);
-void photo_panel_infos_set_text(Evas_Object *obj, char *text);
-void photo_panel_infos_set_cover(Evas_Object *obj, char *filename);
+void photo_panel_infos_set_text(Evas_Object *obj, const char *text);
+void photo_panel_infos_set_cover(Evas_Object *obj, const char *filename);
 
-#endif /* PANEL_INFOS_H */
+#endif /* PHOTO_PANEL_INFOS_H */
