@@ -73,11 +73,6 @@ static Enna_Module_Photo *mod;
 /*                             Photo Helpers                                */
 /****************************************************************************/
 
-static void _delete_infos()
-{
-    ENNA_OBJECT_DEL(mod->o_infos);
-}
-
 static void _create_infos()
 {  
     mod->o_infos = photo_panel_infos_add (evas_object_evas_get(mod->o_edje));
@@ -422,7 +417,7 @@ void module_init(Enna_Module *em)
 void module_shutdown(Enna_Module *em)
 {
     enna_activity_del(ENNA_MODULE_NAME);
-    _delete_infos();
+    ENNA_OBJECT_DEL(mod->o_infos);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);
     ENNA_OBJECT_DEL(mod->o_browser);
