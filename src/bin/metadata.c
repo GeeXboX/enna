@@ -85,18 +85,6 @@ enna_metadata_db_init (void)
     valhalla_verb_t verbosity = VALHALLA_MSG_WARNING;
     char dst[1024];
 
-    cfgdata = enna_config_module_pair_get("libplayer");
-    if (cfgdata)
-    {
-        Eina_List *list;
-        for (list = cfgdata->pair; list; list = list->next)
-        {
-            Config_Pair *pair = list->data;
-            enna_config_value_store (&bl_words, "blacklist_keywords",
-                                     ENNA_CONFIG_STRING_LIST, pair);
-        }
-    }
-
     cfgdata = enna_config_module_pair_get("valhalla");
     if (cfgdata)
     {
@@ -116,6 +104,8 @@ enna_metadata_db_init (void)
                                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&scan_priority, "scan_priority",
                                     ENNA_CONFIG_INT, pair);
+            enna_config_value_store (&bl_words, "blacklist_keywords",
+                                     ENNA_CONFIG_STRING_LIST, pair);
 
             if (!strcmp("path", pair->key))
             {

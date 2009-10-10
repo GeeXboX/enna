@@ -104,9 +104,6 @@
     "#verbose,info,warning,error,critical,none\n" \
     "#verbosity=\n" \
     "\n" \
-    "# Metadata module (video)\n" \
-    "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid\n" \
-    "\n" \
     "[localfiles]\n" \
     "path_music=file:///path/to/Music,Music,icon/favorite\n" \
     "path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs\n" \
@@ -153,6 +150,10 @@
     "# 0: normal, -20: higher, 19 lower\n" \
     "scan_priority=19\n" \
     "\n" \
+    "# blacklisted keywords\n" \
+    "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid\n" \
+    "\n" \
+
 
 static Eina_Hash *hash_config;
 

@@ -53,9 +53,6 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 #verbose,info,warning,error,critical,none
 #verbosity=
 
-# Metadata module (video)
-blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid
-
 [localfiles]
 path_music=file:///path/to/Music,Music,icon/favorite
 path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs
@@ -101,6 +98,9 @@ scan_loop=-1
 scan_sleep=900
 # 0: normal, -20: higher, 19 lower
 scan_priority=19
+
+# blacklisted keywords
+blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid
 
 [podcast]
 #stream=stream url
