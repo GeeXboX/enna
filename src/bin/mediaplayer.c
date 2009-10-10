@@ -483,7 +483,7 @@ mp_file_set (const char *uri, const char *label)
     mp->subtitle_delay = SUB_DELAY_DEFAULT;
 
     /* Get the video configuration parameters from file */
-    config_video = enna_config_video_get();
+    config_video = enna_config->cfg_video;
 
     /* Initialization of subtitles variables */
     init_sub_align ();
@@ -711,6 +711,7 @@ int
 enna_mediaplayer_init (void)
 {
     Enna_Config_Data *cfgdata;
+    Enna_Config_Video *video;
     char *value = NULL;
 
     player_type_t type = PLAYER_TYPE_MPLAYER;
@@ -721,6 +722,10 @@ enna_mediaplayer_init (void)
     player_verbosity_level_t verbosity = PLAYER_MSG_WARNING;
 
     int dvd_set = 0, tv_set = 0;
+
+    /* set default video config */
+    enna_config->cfg_video = calloc (1, sizeof (Enna_Config_Video));
+    video = enna_config->cfg_video;
 
     /* Load Config file values */
     cfgdata = enna_config_module_pair_get ("mediaplayer");
@@ -858,6 +863,17 @@ enna_mediaplayer_init (void)
                               "   - unknown verbosity, " \
                               "'warning' used instead");
             }
+
+            enna_config_value_store (&video->sub_align, "sub_align",
+                                     ENNA_CONFIG_STRING, pair);
+            enna_config_value_store (&video->sub_pos, "sub_pos",
+                                     ENNA_CONFIG_STRING, pair);
+            enna_config_value_store (&video->sub_scale, "sub_scale",
+                                     ENNA_CONFIG_STRING, pair);
+            enna_config_value_store (&video->sub_visibility, "sub_visibility",
+                                     ENNA_CONFIG_STRING, pair);
+            enna_config_value_store (&video->framedrop, "framedrop",
+                                     ENNA_CONFIG_STRING, pair);
         }
     }
 

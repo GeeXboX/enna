@@ -6,21 +6,6 @@ log_file=/var/log/enna.log
 #0,1
 fullscreen=0
 
-#auto,top,middle,bottom
-sub_align=auto
-
-#auto (value set to 100 for bottom),M..N where M and N are integer
-sub_pos=auto
-
-#auto (value set to 5) ,M..N where M and N are integer
-sub_scale=auto
-
-#auto,yes,no
-sub_visibility=auto
-
-#no,soft,hard
-framedrop=no
-
 idle_timeout=0
 
 #/home/user/theme.edj for specific file or just 'default' if theme is
@@ -52,6 +37,21 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 
 #verbose,info,warning,error,critical,none
 #verbosity=
+
+#auto,top,middle,bottom
+sub_align=auto
+
+#auto (value set to 100 for bottom),M..N where M and N are integer
+sub_pos=auto
+
+#auto (value set to 5) ,M..N where M and N are integer
+sub_scale=auto
+
+#auto,yes,no
+sub_visibility=auto
+
+#no,soft,hard
+framedrop=no
 
 [localfiles]
 path_music=file:///path/to/Music,Music,icon/favorite

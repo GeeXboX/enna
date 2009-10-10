@@ -52,11 +52,6 @@ struct _Enna_Config
     const char *theme_file;
     int idle_timeout;
     int fullscreen;
-    char *sub_align;
-    char *sub_pos;
-    char *sub_scale;
-    char *sub_visibility;
-    char *framedrop;
     int slideshow_delay;
     char *engine;
     const char *verbosity;
@@ -65,6 +60,7 @@ struct _Enna_Config
     Eina_List *video_filters;
     Eina_List *photo_filters;
     const char *log_file;
+    Enna_Config_Video *cfg_video;
 };
 
 struct _Enna_Config_Data
@@ -92,7 +88,6 @@ Enna_Config *enna_config;
 
 const char *enna_config_theme_get(void);
 const char *enna_config_theme_file_get(const char *s);
-Enna_Config_Video *enna_config_video_get(void);
 void enna_config_value_store(void *var, char *section,
         ENNA_CONFIG_TYPE type, Config_Pair *pair);
 Enna_Config_Data *enna_config_module_pair_get(const char *module_name);
