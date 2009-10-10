@@ -449,32 +449,6 @@ if test "x$want_libcurl" = "xyes" -o "x$want_libcurl" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LIBCURL, test "x$have_libcurl" = "xyes")
 
-# libexif
-want_libexif="auto"
-have_libexif="no"
-AC_MSG_CHECKING(whether libexif support is to be built)
-AC_ARG_ENABLE(libexif,
-    AS_HELP_STRING([--enable-libexif],[Enable libexif support]),
-    [ want_libexif=$enableval ]
-)
-AC_MSG_RESULT($want_libexif)
-if test "x$want_libexif" = "xyes" -o "x$want_libexif" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LIBEXIF],
-    [libexif],
-    [
-      AC_DEFINE(BUILD_LIBEXIF, 1, [libexif support])
-      have_libexif="yes"
-    ],
-    [
-      if test "x$want_libexif" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([libexif not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_LIBEXIF, test "x$have_libexif" = "xyes")
-
 # libsvdrp
 want_libsvdrp="auto"
 have_libsvdrp="no"
@@ -645,7 +619,6 @@ echo
 echo "  efreet........................... : $have_efreet"
 echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"
-echo "  libexif.......................... : $have_libexif"
 echo "  libsvdrp......................... : $have_libsvdrp"
 echo "  libxml2.......................... : $have_libxml2"
 echo "  libxrandr........................ : $have_libxrandr"
