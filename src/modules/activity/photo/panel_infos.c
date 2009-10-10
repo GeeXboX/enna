@@ -36,7 +36,7 @@
 #include "logs.h"
 #include "image.h"
 
-#define SMART_NAME "enna_panel_infos"
+#define SMART_NAME "photo_panel_infos"
 
 typedef struct _Smart_Data Smart_Data;
 
