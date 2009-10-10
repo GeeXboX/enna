@@ -220,6 +220,7 @@ photo_panel_infos_set_text (Evas_Object *obj, const char *filename)
                                _("No EXIF such information found ..."));
     ENNA_FREE (meta);
     ENNA_FREE (meta2);
+    enna_metadata_meta_free (m);
 }
 
 void
