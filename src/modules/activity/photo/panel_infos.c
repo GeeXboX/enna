@@ -188,7 +188,7 @@ static void _smart_init(void)
 
 /* externally accessible functions */
 Evas_Object *
-enna_panel_infos_add(Evas * evas)
+photo_panel_infos_add(Evas * evas)
 {
     _smart_init();
     return evas_object_smart_add(evas, _smart);
@@ -199,7 +199,7 @@ enna_panel_infos_add(Evas * evas)
 /****************************************************************************/
 
 void
-enna_panel_infos_set_text (Evas_Object *obj, const char *filename)
+photo_panel_infos_set_text (Evas_Object *obj, const char *filename)
 {
 #ifdef BUILD_LIBEXIF
     ExifData *d;
@@ -234,7 +234,7 @@ enna_panel_infos_set_text (Evas_Object *obj, const char *filename)
 }
 
 void
-enna_panel_infos_set_cover(Evas_Object *obj, const char *filename)
+photo_panel_infos_set_cover(Evas_Object *obj, const char *filename)
 {
     Evas_Object *o_pict;
 

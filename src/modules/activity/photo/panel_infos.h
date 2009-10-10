@@ -32,8 +32,8 @@
 
 #include "enna.h"
 
-Evas_Object *enna_panel_infos_add(Evas * evas);
-void enna_panel_infos_set_text(Evas_Object *obj, char *text);
-void enna_panel_infos_set_cover(Evas_Object *obj, char *filename);
+Evas_Object *photo_panel_infos_add(Evas * evas);
+void photo_panel_infos_set_text(Evas_Object *obj, char *text);
+void photo_panel_infos_set_cover(Evas_Object *obj, char *filename);
 
 #endif /* PANEL_INFOS_H */

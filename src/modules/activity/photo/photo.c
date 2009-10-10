@@ -84,7 +84,7 @@ static void _delete_infos()
 
 static void _create_infos()
 {  
-    mod->o_infos = enna_panel_infos_add (evas_object_evas_get(mod->o_edje));
+    mod->o_infos = photo_panel_infos_add (evas_object_evas_get(mod->o_edje));
     edje_object_part_swallow (mod->o_edje,
                               "infos.panel.swallow", mod->o_infos);   
     edje_object_signal_emit (mod->o_edje, "infos,hide", "enna");
@@ -188,9 +188,9 @@ _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
      edje_object_part_text_set(mod->o_edje, "filename.text", ev->file->label);
         
      if (!ev->file->is_directory)
-        enna_panel_infos_set_cover(mod->o_infos, ev->file->uri + 7);
+        photo_panel_infos_set_cover(mod->o_infos, ev->file->uri + 7);
      
-     enna_panel_infos_set_text(mod->o_infos, ev->file->uri + 7);
+     photo_panel_infos_set_text(mod->o_infos, ev->file->uri + 7);
 }
 
 
