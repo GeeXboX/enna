@@ -62,7 +62,6 @@ static void _smart_reconfigure(Smart_Data * sd)
 
     evas_object_move(sd->o_edje, x, y);
     evas_object_resize(sd->o_edje, w, h);
-
 }
 
 static void _smart_add(Evas_Object * obj)
@@ -74,7 +73,8 @@ static void _smart_add(Evas_Object * obj)
         return;
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "module/photo/panel_infos");
+    edje_object_file_set(sd->o_edje,
+                         enna_config_theme_get(), "module/photo/panel_infos");
     evas_object_show(sd->o_edje);
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
