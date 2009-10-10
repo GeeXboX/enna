@@ -137,7 +137,7 @@
     "[weather]\n" \
     "city=New York\n" \
     "\n" \
-    "[valhalla]\n" \
+    "[media_db]\n" \
     "path=file:///path/to/Music\n" \
     "path=file:///path/to/server/Medias/Music\n" \
     "verbosity=info\n" \

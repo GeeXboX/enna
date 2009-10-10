@@ -85,7 +85,7 @@ enna_metadata_db_init (void)
     valhalla_verb_t verbosity = VALHALLA_MSG_WARNING;
     char dst[1024];
 
-    cfgdata = enna_config_module_pair_get("valhalla");
+    cfgdata = enna_config_module_pair_get("media_db");
     if (cfgdata)
     {
         Eina_List *list;

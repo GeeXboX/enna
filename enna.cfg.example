@@ -86,7 +86,7 @@ stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/f
 [weather]
 city=New York
 
-[valhalla]
+[media_db]
 path=file:///path/to/Music
 path=file:///path/to/server/Medias/Music
 verbosity=info
