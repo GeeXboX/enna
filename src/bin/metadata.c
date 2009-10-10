@@ -69,7 +69,6 @@ enna_metadata_db_init (void)
     char *value = NULL;
     char db[PATH_BUFFER];
     Eina_List *path = NULL, *l;
-    Eina_List *music_ext = NULL, *video_ext = NULL, *photo_ext = NULL;
     Eina_List *bl_words = NULL;
     int parser_number   = ENNA_METADATA_DEFAULT_PARSER_NUMBER;
     int commit_interval = ENNA_METADATA_DEFAULT_COMMIT_INTERVAL;
@@ -78,22 +77,6 @@ enna_metadata_db_init (void)
     int scan_priority   = ENNA_METADATA_DEFAULT_SCAN_PRIORITY;
     valhalla_verb_t verbosity = VALHALLA_MSG_WARNING;
     char dst[1024];
-
-    cfgdata = enna_config_module_pair_get("enna");
-    if (cfgdata)
-    {
-        Eina_List *list;
-        for (list = cfgdata->pair; list; list = list->next)
-        {
-            Config_Pair *pair = list->data;
-            enna_config_value_store (&music_ext, "music_ext",
-                                     ENNA_CONFIG_STRING_LIST, pair);
-            enna_config_value_store (&video_ext, "video_ext",
-                                     ENNA_CONFIG_STRING_LIST, pair);
-            enna_config_value_store (&photo_ext, "photo_ext",
-                                     ENNA_CONFIG_STRING_LIST, pair);
-        }
-    }
 
     cfgdata = enna_config_module_pair_get("libplayer");
     if (cfgdata)
@@ -179,37 +162,22 @@ enna_metadata_db_init (void)
         goto err;
 
     /* Add file suffixes */
-    for (l = music_ext; l; l = l->next)
+    for (l = enna_config->music_filters; l; l = l->next)
     {
         const char *ext = l->data;
         valhalla_suffix_add(vh, ext);
-    }
-    if (music_ext)
-    {
-        eina_list_free(music_ext);
-        music_ext = NULL;
     }
 
-    for (l = video_ext; l; l = l->next)
+    for (l = enna_config->video_filters; l; l = l->next)
     {
         const char *ext = l->data;
         valhalla_suffix_add(vh, ext);
-    }
-    if (video_ext)
-    {
-        eina_list_free(video_ext);
-        video_ext = NULL;
     }
 
-    for (l = photo_ext; l; l = l->next)
+    for (l = enna_config->photo_filters; l; l = l->next)
     {
         const char *ext = l->data;
         valhalla_suffix_add(vh, ext);
-    }
-    if (photo_ext)
-    {
-        eina_list_free(photo_ext);
-        photo_ext = NULL;
     }
 
     /* Add paths */
@@ -265,12 +233,6 @@ enna_metadata_db_init (void)
  err:
     enna_log(ENNA_MSG_ERROR,
              MODULE_NAME, "valhalla module initialization");
-    if (music_ext)
-        eina_list_free(music_ext);
-    if (video_ext)
-        eina_list_free(video_ext);
-    if (photo_ext)
-        eina_list_free(photo_ext);
     if (bl_words)
         eina_list_free(bl_words);
     if (path)
