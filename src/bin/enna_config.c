@@ -85,7 +85,7 @@
     "video_ext=asf,avi,divx,dvr-ms,evo,flc,fli,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m\n" \
     "photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm\n" \
     "\n" \
-    "[libplayer]\n" \
+    "[mediaplayer]\n" \
     "# Values by default are 'mplayer' type, 'auto' video_out, 'auto' audio_out\n" \
     "# and 'warning' verbosity. Change these parameters only if that is really\n" \
     "# necessary.\n" \

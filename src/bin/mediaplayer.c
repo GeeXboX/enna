@@ -723,7 +723,7 @@ enna_mediaplayer_init (void)
     int dvd_set = 0, tv_set = 0;
 
     /* Load Config file values */
-    cfgdata = enna_config_module_pair_get ("libplayer");
+    cfgdata = enna_config_module_pair_get ("mediaplayer");
 
     enna_log (ENNA_MSG_INFO, NULL, "parameters:");
 
