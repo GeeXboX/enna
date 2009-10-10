@@ -707,6 +707,9 @@ enna_mediaplayer_supported_uri_type (enna_mediaplayer_uri_type_t type)
     }                                                                        \
     while (0)
 
+#define CFG_VIDEO(field) \
+    enna_config_value_store (&video->field, #field, ENNA_CONFIG_STRING, pair);
+
 int
 enna_mediaplayer_init (void)
 {
@@ -864,16 +867,11 @@ enna_mediaplayer_init (void)
                               "'warning' used instead");
             }
 
-            enna_config_value_store (&video->sub_align, "sub_align",
-                                     ENNA_CONFIG_STRING, pair);
-            enna_config_value_store (&video->sub_pos, "sub_pos",
-                                     ENNA_CONFIG_STRING, pair);
-            enna_config_value_store (&video->sub_scale, "sub_scale",
-                                     ENNA_CONFIG_STRING, pair);
-            enna_config_value_store (&video->sub_visibility, "sub_visibility",
-                                     ENNA_CONFIG_STRING, pair);
-            enna_config_value_store (&video->framedrop, "framedrop",
-                                     ENNA_CONFIG_STRING, pair);
+            CFG_VIDEO (sub_align);
+            CFG_VIDEO (sub_pos);
+            CFG_VIDEO (sub_scale);
+            CFG_VIDEO (sub_visibility);
+            CFG_VIDEO (framedrop);
         }
     }
 
