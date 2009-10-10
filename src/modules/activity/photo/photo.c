@@ -83,18 +83,10 @@ static void _create_infos(void)
 static void
 panel_infos_display (int show)
 {
-    if (show)
-    {
-        edje_object_signal_emit (mod->o_edje, "infos,show", "enna");
-        mod->infos_displayed = 1;
-        mod->state = INFOS_VIEW;  
-    }
-    else
-    {
-        edje_object_signal_emit (mod->o_edje, "infos,hide", "enna");
-        mod->infos_displayed = 0;
-        mod->state = BROWSER_VIEW;  
-    }
+    edje_object_signal_emit (mod->o_edje,
+                             show ? "infos,show": "infos,hide", "enna");
+    mod->infos_displayed = show ? 1 : 0;
+    mod->state = show ? INFOS_VIEW : BROWSER_VIEW;
 }
 
 /* #############################################################
