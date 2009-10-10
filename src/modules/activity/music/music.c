@@ -426,7 +426,7 @@ _menu_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const 
             _menu_transition_left_end_cb);
     mod->state = BROWSER_VIEW;
 
-    ENNA_OBJECT_DEL(mod->o_list);
+    //ENNA_OBJECT_DEL(mod->o_list);
     mod->accept_ev = 1;
 }
 
