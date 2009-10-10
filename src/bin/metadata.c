@@ -61,6 +61,13 @@
 
 static valhalla_t *vh = NULL;
 
+#define SUFFIX_ADD(type)                                       \
+    for (l = enna_config->type; l; l = l->next)                \
+    {                                                          \
+        const char *ext = l->data;                             \
+        valhalla_suffix_add(vh, ext);                          \
+    }                                                          \
+
 static void
 enna_metadata_db_init (void)
 {
@@ -162,23 +169,9 @@ enna_metadata_db_init (void)
         goto err;
 
     /* Add file suffixes */
-    for (l = enna_config->music_filters; l; l = l->next)
-    {
-        const char *ext = l->data;
-        valhalla_suffix_add(vh, ext);
-    }
-
-    for (l = enna_config->video_filters; l; l = l->next)
-    {
-        const char *ext = l->data;
-        valhalla_suffix_add(vh, ext);
-    }
-
-    for (l = enna_config->photo_filters; l; l = l->next)
-    {
-        const char *ext = l->data;
-        valhalla_suffix_add(vh, ext);
-    }
+    SUFFIX_ADD (music_filters);
+    SUFFIX_ADD (video_filters);
+    SUFFIX_ADD (photo_filters);
 
     /* Add paths */
     for (l = path; l; l = l->next)
