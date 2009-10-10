@@ -73,7 +73,7 @@ static Enna_Module_Photo *mod;
 /*                             Photo Helpers                                */
 /****************************************************************************/
 
-static void _create_infos()
+static void _create_infos(void)
 {  
     mod->o_infos = photo_panel_infos_add (evas_object_evas_get(mod->o_edje));
     edje_object_part_swallow (mod->o_edje,
@@ -102,7 +102,7 @@ panel_infos_display (int show)
    #               slideshow helpers                           #
    ############################################################# */
 
-static void _create_slideshow_gui()
+static void _create_slideshow_gui(void)
 {
     Evas_Object *o;
 
@@ -120,7 +120,7 @@ static void _create_slideshow_gui()
 }
 
 
-void _slideshow_add_files()
+void _slideshow_add_files(void)
 {
     Eina_List *files = NULL;
     files = enna_browser_files_get (mod->o_browser);
@@ -215,7 +215,7 @@ static void _browse(void *data)
 }
 
 static void
-_create_menu()
+_create_menu(void)
 {
     Evas_Object *o;
     Eina_List *l, *categories;
