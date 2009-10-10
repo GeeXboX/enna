@@ -701,8 +701,7 @@ browse (void *data)
     edje_object_part_swallow (mod->o_edje,
                               "enna.swallow.browser", mod->o_browser);
     enna_browser_root_set (mod->o_browser, vfs);
-    evas_object_del (mod->o_list);
-    mod->o_list = NULL;
+    ENNA_OBJECT_DEL (mod->o_list);
 
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     mod->o_panel_infos = enna_panel_infos_add(enna->evas);
