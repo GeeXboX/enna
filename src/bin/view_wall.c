@@ -43,10 +43,7 @@
 #include "thumb.h"
 #include "vfs.h"
 #include "input.h"
-
-#ifdef BUILD_LIBEXIF
-#include <libexif/exif-data.h>
-#endif
+#include "metadata.h"
 
 #define SMART_NAME "enna_wall"
 
@@ -157,29 +154,16 @@ static
 void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
 {
     Picture_Item *pi = data;
-    int orientation = 0;
+    int orientation;
     Evas_Coord w, h;
-#ifdef BUILD_LIBEXIF
-    ExifData  *exif;
-    ExifEntry *entry = NULL;
-    ExifByteOrder bo;
-#endif
+    Enna_Metadata *m;
+    char *o;
 
     if (!pi) return;
 
-#ifdef BUILD_LIBEXIF
-    exif = exif_data_new_from_file(enna_thumb_icon_file_get(pi->o_pict));
-    if (exif)
-    {
-	entry = exif_data_get_entry(exif, EXIF_TAG_ORIENTATION);
-	if (entry)
-	{
-	    bo = exif_data_get_byte_order(exif);
-	    orientation = exif_get_short(entry->data, bo);
-	}
-	exif_data_free(exif);
-    }
-#endif
+    m = enna_metadata_meta_new (enna_thumb_icon_file_get (pi->o_pict));
+    o = enna_metadata_meta_get (m, "picture_orientation", 1);
+    orientation = o ? atoi (o) : 0;
 
     if (orientation > 1 && orientation < 9)
     {
@@ -214,6 +198,7 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
     }
     enna_thumb_icon_size_get(pi->o_pict, &w, &h);
     _wall_add_pict_to_wall(pi->sd, pi, w, h);
+    enna_metadata_meta_free (m);
 }
 
 void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
