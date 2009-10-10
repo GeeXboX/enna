@@ -218,7 +218,7 @@ static void _browse(void *data)
 //    edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
     edje_object_signal_emit(mod->o_edje, "slideshow,hide", "enna");
 
-    ENNA_OBJECT_DEL (mod->o_menu);
+    //ENNA_OBJECT_DEL (mod->o_menu);
 }
 
 static void
