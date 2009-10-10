@@ -56,7 +56,6 @@ static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_i
 
 typedef struct _Enna_Module_Photo
 {
-    Evas *e;
     Evas_Object *o_edje;
     Evas_Object *o_menu;
     Evas_Object *o_browser;
