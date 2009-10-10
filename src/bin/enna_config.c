@@ -153,13 +153,6 @@
     "# 0: normal, -20: higher, 19 lower\n" \
     "scan_priority=19\n" \
     "\n" \
-    "[lms]\n" \
-    "path=file:///path/to/Music\n" \
-    "path=file:///path/to/server/Medias/Music\n" \
-    "parser=mp3,ogg,flac,rm,dummy\n" \
-    "slave_timeout=1000\n" \
-    "commit_interval=100\n" \
-
 
 static Eina_Hash *hash_config;
 
