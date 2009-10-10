@@ -179,7 +179,7 @@ void
 photo_panel_infos_set_text (Evas_Object *obj, const char *filename)
 {
     Enna_Metadata *m;
-    char *meta;
+    char *meta, *meta2 = NULL;
 
     API_ENTRY return;
 
@@ -192,10 +192,34 @@ photo_panel_infos_set_text (Evas_Object *obj, const char *filename)
 
     m = enna_metadata_meta_new (filename);
     meta = enna_metadata_meta_get_all (m);
+    if (meta)
+    {
+        int i, j;
+
+        meta2 = calloc (2, strlen (meta));
+        for (i = 0, j = 0; i < strlen (meta); i++)
+        {
+            if (meta[i] != '\n')
+            {
+                meta2[j] = meta[i];
+                j++;
+            }
+            else
+            {
+                meta2[j]   = '<';
+                meta2[j+1] = 'b';
+                meta2[j+2] = 'r';
+                meta2[j+3] = '>';
+                j += 4;
+            }
+        }
+    }
+
     edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
-                               meta ? meta:
+                               meta2 ? meta2:
                                _("No EXIF such information found ..."));
     ENNA_FREE (meta);
+    ENNA_FREE (meta2);
 }
 
 void
