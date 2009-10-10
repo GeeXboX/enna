@@ -305,7 +305,7 @@ backdrop_show (Enna_Metadata *m)
         from_vfs = 0;
     }
 
-    backdrop = enna_metadata_meta_get (m, "backdrop", 1);
+    backdrop = enna_metadata_meta_get (m, "fanart", 1);
     if (!file && backdrop)
     {
         char dst[1024] = { 0 };
