@@ -57,7 +57,6 @@ struct _Enna_Config
     char *sub_scale;
     char *sub_visibility;
     char *framedrop;
-    int use_network;
     int slideshow_delay;
     char *engine;
     const char *verbosity;
