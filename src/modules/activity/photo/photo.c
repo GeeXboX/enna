@@ -73,10 +73,10 @@ static Enna_Module_Photo *mod;
 /****************************************************************************/
 
 static void _create_infos(void)
-{  
+{
     mod->o_infos = photo_panel_infos_add (evas_object_evas_get(mod->o_edje));
     edje_object_part_swallow (mod->o_edje,
-                              "infos.panel.swallow", mod->o_infos);   
+                              "infos.panel.swallow", mod->o_infos);
     edje_object_signal_emit (mod->o_edje, "infos,hide", "enna");
 }
 
@@ -119,14 +119,16 @@ void _slideshow_add_files(void)
     eina_list_free (files);
 }
 
-
 static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
     mod->state = MENU_VIEW;
-    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
-    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
-    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "root", _browser_root_cb);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "browse_down", _browser_browse_down_cb);
 
     /* Delete objects */
     ENNA_OBJECT_DEL(mod->o_browser);
@@ -166,12 +168,12 @@ _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 
      if (!ev || !ev->file)
         return;
-    
+
      edje_object_part_text_set(mod->o_edje, "filename.text", ev->file->label);
-        
+
      if (!ev->file->is_directory)
         photo_panel_infos_set_cover(mod->o_infos, ev->file->uri + 7);
-     
+
      photo_panel_infos_set_text(mod->o_infos, ev->file->uri + 7);
 }
 
@@ -186,15 +188,21 @@ static void _browse(void *data)
 
     enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_WALL);
 
-    evas_object_smart_callback_add (mod->o_browser, "root", _browser_root_cb, NULL);
-    evas_object_smart_callback_add (mod->o_browser, "selected", _browser_selected_cb, NULL);
-    evas_object_smart_callback_add (mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
-    evas_object_smart_callback_add (mod->o_browser, "hilight", _browser_hilight_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser,
+                                    "root", _browser_root_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser,
+                                    "selected", _browser_selected_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser,
+                                    "browse_down",
+                                    _browser_browse_down_cb, NULL);
+    evas_object_smart_callback_add (mod->o_browser,
+                                    "hilight", _browser_hilight_cb, NULL);
 
     mod->state = BROWSER_VIEW;
 
     evas_object_show(mod->o_browser);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.browser", mod->o_browser);
+    edje_object_part_swallow(mod->o_edje,
+                             "enna.swallow.browser", mod->o_browser);
     enna_browser_root_set(mod->o_browser, vfs);
 
     edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
