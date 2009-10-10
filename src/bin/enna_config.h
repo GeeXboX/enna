@@ -58,12 +58,8 @@ struct _Enna_Config
     char *sub_visibility;
     char *framedrop;
     int use_network;
-    int use_covers;
-    int use_snapshots;
-    int metadata_cache;
     int slideshow_delay;
     char *engine;
-    const char *backend;
     const char *verbosity;
     Eina_List *music_local_root_directories;
     Eina_List *music_filters;

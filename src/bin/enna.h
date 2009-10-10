@@ -139,10 +139,6 @@ struct _Enna
     Evas_Object *o_content; /** Edje Object to swallow content */
     Evas_Object *o_cursor; /** Edje Object for mouse cursor */
     enna_msg_level_t lvl; /**< Error message level */
-    int use_network;
-    int use_covers;
-    int use_snapshots;
-    int metadata_cache;
     int slideshow_delay;
     int cursor_is_shown;
     int run_fullscreen;

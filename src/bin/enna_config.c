@@ -70,16 +70,6 @@
     "#no,soft,hard\n" \
     "framedrop=no\n" \
     "\n" \
-    "#0,1\n" \
-    "use_network=1\n" \
-    "\n" \
-    "use_covers=1\n" \
-    "\n" \
-    "#0,1\n" \
-    "use_snapshots=1\n" \
-    "#0,1\n" \
-    "metadata_cache=1\n" \
-    "\n" \
     "slideshow_delay=5\n" \
     "\n" \
     "idle_timeout=0\n" \
@@ -90,9 +80,6 @@
     "\n" \
     "#software_x11,xrender_x11,opengl_x11,software_x11_16\n" \
     "engine=software_x11\n" \
-    "\n" \
-    "#libplayer\n" \
-    "backend=libplayer\n" \
     "\n" \
     "music_ext=3gp,aac,ape,apl,flac,m4a,mac,mka,mp2,mp3,mp4,mpc,ogg,ra,wav,wma\n" \
     "video_ext=asf,avi,divx,dvr-ms,evo,flc,fli,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m\n" \
@@ -319,10 +306,6 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
     {
         config_data = data;
 
-        enna_config->use_network = 1;
-        enna_config->use_covers = 1;
-        enna_config->use_snapshots = 1;
-        enna_config->metadata_cache = 1;
         enna_config->slideshow_delay = SLIDESHOW_DEFAULT_TIMER;
 
         enna_config->sub_align = "auto";
@@ -351,22 +334,10 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
                                     ENNA_CONFIG_STRING, pair);
             enna_config_value_store(&enna_config->framedrop, "framedrop",
                     ENNA_CONFIG_STRING, pair);
-            enna_config_value_store(&enna_config->use_network, "use_network",
-                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&enna_config->use_covers, "use_covers",
-                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&enna_config->use_snapshots,
-                                    "use_snapshots",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&enna_config->metadata_cache,
-                                    "metadata_cache",
-                                    ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->slideshow_delay,
                                     "slideshow_delay",
                                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&enna_config->engine, "engine",
-                    ENNA_CONFIG_STRING, pair);
-            enna_config_value_store(&enna_config->backend, "backend",
                     ENNA_CONFIG_STRING, pair);
             enna_config_value_store(&enna_config->verbosity, "verbosity",
                     ENNA_CONFIG_STRING, pair);
