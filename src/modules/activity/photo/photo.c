@@ -44,7 +44,6 @@
 #include "mainmenu.h"
 #include "logs.h"
 #include "photo.h"
-#include "exif.h"
 #include "panel_infos.h"
 #include "module.h"
 
@@ -67,7 +66,6 @@ typedef struct _Enna_Module_Photo
     Evas_Object *o_slideshow;
     PHOTO_STATE state;
     Enna_Module *em;
-    photo_exif_t *exif;
     int infos_displayed;
 } Enna_Module_Photo;
 
@@ -419,7 +417,6 @@ void module_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Photo));
     mod->em = em;
     em->mod = mod;
-    mod->exif = calloc (1, sizeof (photo_exif_t));
 
     enna_activity_add(&class);
 }
