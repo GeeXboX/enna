@@ -49,7 +49,7 @@
 
 #define ENNA_MODULE_NAME "photo"
 
-static void _create_menu();
+static void _create_menu(void);
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
