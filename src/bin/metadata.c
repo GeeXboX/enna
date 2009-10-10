@@ -54,7 +54,7 @@
 #define ENNA_METADATA_DEFAULT_SCAN_SLEEP              900
 #define ENNA_METADATA_DEFAULT_SCAN_PRIORITY           19
 
-#define PATH_BACKDROPS          "backdrops"
+#define PATH_FANARTS            "fanarts"
 #define PATH_COVERS             "covers"
 
 #define PATH_BUFFER 4096
@@ -197,7 +197,7 @@ enna_metadata_db_init (void)
 
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_BACKDROPS);
+              enna_util_user_home_get (), PATH_FANARTS);
     valhalla_downloader_dest_set (vh, VALHALLA_DL_FAN_ART, dst);
 
     rc = valhalla_run(vh, scan_loop, scan_sleep, scan_priority);
@@ -237,7 +237,7 @@ enna_metadata_init (void)
     /* try to create backdrops directory storage */
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_BACKDROPS);
+              enna_util_user_home_get (), PATH_FANARTS);
     if (!ecore_file_is_dir (dst))
         ecore_file_mkdir (dst);
 
