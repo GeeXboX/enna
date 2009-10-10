@@ -388,36 +388,3 @@ group
       }
    }
 }
-
-group { name: "exif/data";
-   styles
-   {
-      style { name: "textblock_style";
-         base: "font=content font_size=14 align=left color=#FFF wrap=word";
-
-         tag:  "br" "\n";
-         tag:  "hilight" "+ font_size=16 + font=content_bd + color=#999";
-         tag:  "b" "+ font=Sans:style=Bold";
-      }
-   }
-   parts {
-
-      part { name: "enna.text.exif";
-         type: TEXTBLOCK;
-         mouse_events: 1;
-         repeat_events: 1;
-         description { state: "default" 0.0;
-            rel1.relative: 0 0;
-            rel1.offset: 10 10;
-            rel2.relative: 1 1;
-            rel2.offset: -11 -11;
-            text {
-               style: "textblock_style";
-               min: 1 1;
-
-            }
-         }
-      }
-
-   }
-}
