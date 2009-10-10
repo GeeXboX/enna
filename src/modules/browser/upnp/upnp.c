@@ -57,7 +57,6 @@ typedef struct Enna_Module_UPnP_s
     Enna_Module *em;
     pthread_mutex_t mutex;
     Eina_List *devices;
-    Ecore_Idler *idler;
     GMainContext *mctx;
     GUPnPContext *ctx;
     GUPnPControlPoint *cp;
@@ -94,51 +93,6 @@ upnp_media_server_free (upnp_media_server_t *srv)
     ENNA_FREE (srv->name);
     ENNA_FREE (srv->model);
     free (srv);
-}
-
-static gboolean
-upnp_gloop_prepare (GSource *source, gint *timeout)
-{
-    return TRUE;
-}
-
-static gboolean
-upnp_gloop_check (GSource *source)
-{
-    return TRUE;
-}
-
-static gboolean
-upnp_gloop_dispatch (GSource *source,
-                     GSourceFunc callback, gpointer user_data)
-{
-    ecore_main_loop_iterate ();
-    return TRUE;
-}
-
-static GSourceFuncs
-upnp_gloop_source_funcs = {
-    upnp_gloop_prepare,
-    upnp_gloop_check,
-    upnp_gloop_dispatch,
-    NULL,
-    NULL,
-    NULL
-};
-
-static void
-upnp_gloop_main_begin (GMainContext *ctx)
-{
-    GSource *s = g_source_new (&upnp_gloop_source_funcs, sizeof (GSource));
-    g_source_attach (s, ctx);
-}
-
-static int
-upnp_gloop_idler (void *data)
-{
-    GMainContext *mctx = data;
-    g_main_context_iteration (mctx, FALSE);
-    return 1; /* keep going */
 }
 
 static xmlNode *
@@ -593,8 +547,7 @@ void module_init (Enna_Module *em)
 
     /* bind upnp context to ecore */
     mod->mctx = g_main_context_default ();
-    upnp_gloop_main_begin (mod->mctx);
-    mod->idler = ecore_idler_add (upnp_gloop_idler, mod->mctx);
+    ecore_main_loop_glib_integrate ();
 
     error = NULL;
     mod->ctx = gupnp_context_new (mod->mctx, NULL, 0, &error);
@@ -635,8 +588,6 @@ void module_shutdown (Enna_Module *em)
         upnp_media_server_free(srv);
     g_object_unref (mod->cp);
     g_object_unref (mod->ctx);
-
-    ecore_idler_del (mod->idler);
 
     ENNA_FREE (mod->prev_id);
     ENNA_FREE (mod->pprev_id);
