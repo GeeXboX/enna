@@ -154,7 +154,7 @@ enna_metadata_db_init (void)
     snprintf(db, sizeof(db),
              "%s/.enna/%s", enna_util_user_home_get(), ENNA_METADATA_DB_NAME);
 
-    vh = valhalla_init(db, parser_number, 1, commit_interval);
+    vh = valhalla_init(db, parser_number, 1, commit_interval, NULL, NULL);
     if (!vh)
         goto err;
 
