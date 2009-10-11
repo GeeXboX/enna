@@ -44,6 +44,7 @@
 #include "logs.h"
 #include "photo.h"
 #include "photo_panel_infos.h"
+#include "photo_slideshow_view.h"
 #include "module.h"
 
 #define ENNA_MODULE_NAME "photo"

@@ -33,6 +33,7 @@
 
 #include "enna_config.h"
 #include "input.h"
+#include "photo_slideshow_view.h"
 
 typedef struct _Smart_Data Smart_Data;
 
