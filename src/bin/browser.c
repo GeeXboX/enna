@@ -237,7 +237,7 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 	break;
     }
     evas_object_smart_callback_del(sd->o_view, "hilight", _view_hilight_cb);
-    //ENNA_OBJECT_DEL(sd->o_view);
+    ENNA_OBJECT_DEL(sd->o_view);
     sd->o_view = sd->view_funcs.view_add(sd);
 
 }
@@ -590,7 +590,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     }
 
 
-    //ENNA_OBJECT_DEL(sd->o_view);
+    ENNA_OBJECT_DEL(sd->o_view);
     sd->o_view = sd->view_funcs.view_add(sd);
 
     if (direction == 0)
