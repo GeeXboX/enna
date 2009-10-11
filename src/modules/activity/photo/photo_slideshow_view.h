@@ -30,7 +30,6 @@
 #ifndef PHOTO_SLIDESHOW_VIEW_H
 #define PHOTO_SLIDESHOW_VIEW_H
 
-
 Evas_Object *enna_slideshow_add(Evas * evas);
 void enna_slideshow_next(Evas_Object *obj);
 void enna_slideshow_previous(Evas_Object *obj);
