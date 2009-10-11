@@ -25,7 +25,8 @@ photo.c \
 photo.h \
 photo_panel_infos.c \
 photo_panel_infos.h \
-slideshow_view.c
+slideshow_view.c \
+slideshow_view.h
 
 activity_photo_la_LIBADD = @ENNA_LIBS@
 activity_photo_la_LDFLAGS = -module -avoid-version
