@@ -287,12 +287,13 @@ static void photo_event_browser (enna_input event)
 {
     switch (event)
     {
-	case ENNA_INPUT_KEY_I:
-	    panel_infos_display(1);
-	    break;
+    case ENNA_INPUT_KEY_I:
+        panel_infos_display(1);
+        break;
     default:
         enna_browser_input_feed(mod->o_browser, event);
-	}
+        break;
+    }
 }
 
 static void photo_event_info (enna_input event)
