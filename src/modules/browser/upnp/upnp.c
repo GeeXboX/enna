@@ -168,11 +168,14 @@ didl_process_object (xmlNode *e, char *udn)
         if (!class_name)
             goto err_no_class;
 
-        if (!strcmp (class_name, ITEM_CLASS_IMAGE))
+        if (!strncmp (class_name,
+                      ITEM_CLASS_IMAGE, strlen (ITEM_CLASS_IMAGE)))
             icon = "icon/photo";
-        else if (!strcmp (class_name, ITEM_CLASS_AUDIO))
+        else if (!strncmp (class_name,
+                           ITEM_CLASS_AUDIO, strlen (ITEM_CLASS_AUDIO)))
             icon = "icon/music";
-        else if (!strcmp (class_name, ITEM_CLASS_VIDEO))
+        else if (!strncmp (class_name,
+                           ITEM_CLASS_VIDEO, strlen (ITEM_CLASS_VIDEO)))
             icon = "icon/video";
 
         g_free (class_name);
