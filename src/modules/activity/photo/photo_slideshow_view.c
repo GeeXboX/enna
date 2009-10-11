@@ -104,9 +104,6 @@ _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
 {
-    //Evas_Object *obj = data;
-    //Smart_Data *sd = evas_object_data_get(obj, "sd");
-
     return ENNA_EVENT_CONTINUE;
 }
 
