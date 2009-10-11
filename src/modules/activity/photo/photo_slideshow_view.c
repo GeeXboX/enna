@@ -148,7 +148,6 @@ enna_photo_slideshow_add(Evas * evas)
 
     sd->slideshow = elm_slideshow_add(enna->layout);
     elm_slideshow_transition_set(sd->slideshow, "horizontal");
-    elm_slideshow_ratio_set(sd->slideshow, 1);
     elm_slideshow_loop_set(sd->slideshow, 1);
 
     sd->controls = elm_notify_add(enna->win);
@@ -219,8 +218,12 @@ void enna_photo_slideshow_timeout_set(Evas_Object *obj, int to)
 
 void enna_photo_slideshow_image_add(Evas_Object *obj, const char *file, const char *group)
 {
+    Evas_Object *im;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
-    elm_slideshow_image_add(sd->slideshow, file, group);
+
+    im = elm_image_add(obj);
+    elm_image_file_set(im, file, group);
+    elm_slideshow_item_add(sd->slideshow, im);
 }
 
 void enna_photo_slideshow_goto(Evas_Object *obj, int nth)
