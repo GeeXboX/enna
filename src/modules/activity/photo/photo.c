@@ -101,7 +101,11 @@ static void _create_slideshow_gui(void)
 
     ENNA_OBJECT_DEL (mod->o_slideshow);
 
-    o = enna_slideshow_add(enna->evas);
+    o = elm_slideshow_add(enna->layout);
+    elm_slideshow_transition_set(o, "horizontal");
+    elm_slideshow_ratio_set(o, 1);
+    elm_slideshow_loop_set(o, 1);
+
     elm_layout_content_set(enna->layout, "enna.fullscreen.swallow", o);
     evas_object_show(o);
     mod->o_slideshow = o;
@@ -111,12 +115,26 @@ static void _create_slideshow_gui(void)
 }
 
 
-void _slideshow_add_files(void)
+static int
+_slideshow_add_files(char *file_selected)
 {
     Eina_List *files = NULL;
+    Eina_List *l;
+    int n = 0;
+    int pos = 0;
+    Enna_Vfs_File *file;
+
     files = enna_browser_files_get (mod->o_browser);
-    enna_slideshow_append_list (mod->o_slideshow, files);
+    EINA_LIST_FOREACH(files, l, file)
+    {
+        if (!strcmp(file_selected, file->uri))
+            pos = n;
+        printf("add %s\n", file->uri + 7);
+        elm_slideshow_image_add(mod->o_slideshow, file->uri + 7, NULL);
+        n++;
+    }
     eina_list_free (files);
+    return pos;
 }
 
 static void
@@ -148,6 +166,7 @@ static void
 _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
+    int pos;
 
     if (!ev || !ev->file) return;
 
@@ -155,8 +174,8 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     {
         /* File is selected, display it in slideshow mode */
         _create_slideshow_gui();
-        _slideshow_add_files();
-        enna_slideshow_set(mod->o_slideshow, ev->file->uri + 7);
+        pos = _slideshow_add_files(ev->file->uri);
+        elm_slideshow_goto(mod->o_slideshow, pos);
     }
     free(ev);
 }
@@ -294,7 +313,7 @@ static void photo_event_info (enna_input event)
         break;
     case ENNA_INPUT_OK:
         _create_slideshow_gui();
-        _slideshow_add_files();
+        _slideshow_add_files(NULL);
         break;
     default:
         break;
@@ -312,13 +331,16 @@ static void photo_event_slideshow (enna_input event)
         edje_object_signal_emit(mod->o_edje, "list,show", "enna");
         break;
     case ENNA_INPUT_RIGHT:
-        enna_slideshow_next(mod->o_slideshow);
+        elm_slideshow_next(mod->o_slideshow);
         break;
     case ENNA_INPUT_LEFT:
-        enna_slideshow_prev(mod->o_slideshow);
+        elm_slideshow_previous(mod->o_slideshow);
         break;
     case ENNA_INPUT_OK:
-        enna_slideshow_play(mod->o_slideshow);
+        if (!elm_slideshow_timeout_get(mod->o_slideshow))
+            elm_slideshow_timeout_set(mod->o_slideshow, enna->slideshow_delay);
+        else
+            elm_slideshow_timeout_set(mod->o_slideshow, 0);
         break;
     default:
         break;

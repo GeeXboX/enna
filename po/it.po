@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-10-10 19:17+0200\n"
+"POT-Creation-Date: 2009-10-11 13:06+0200\n"
 "PO-Revision-Date: 2009-08-30 15:11+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -20,49 +20,49 @@ msgstr ""
 msgid "No media found !"
 msgstr "Nessun media trovato!"
 
-#: src/bin/enna.c:380
+#: src/bin/enna.c:376
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:381
+#: src/bin/enna.c:377
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:382
+#: src/bin/enna.c:378
 #, c-format
 msgid " Available Options:\n"
 msgstr "Opzioni disponibili:\n"
 
-#: src/bin/enna.c:383
+#: src/bin/enna.c:379
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:384
+#: src/bin/enna.c:380
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:385
+#: src/bin/enna.c:381
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:386
+#: src/bin/enna.c:382
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:387
+#: src/bin/enna.c:383
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:388
+#: src/bin/enna.c:384
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
@@ -199,7 +199,7 @@ msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informazioni di sistema</c><br><br>"
 
 #: src/modules/activity/music/music.c:143
-#: src/modules/activity/music/music.c:648
+#: src/modules/activity/music/music.c:647
 msgid "Music"
 msgstr "Musica"
 
@@ -207,7 +207,7 @@ msgstr "Musica"
 msgid "No lyrics found ..."
 msgstr "Nessun testo trovato..."
 
-#: src/modules/activity/photo/photo.c:386
+#: src/modules/activity/photo/photo.c:398
 msgid "Photo"
 msgstr "Foto"
 
@@ -274,8 +274,8 @@ msgstr "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Dimensione: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video.c:790
-#: src/modules/activity/video/video.c:865
+#: src/modules/activity/video/video.c:789
+#: src/modules/activity/video/video.c:864
 msgid "Video"
 msgstr "Video"
 
@@ -318,9 +318,14 @@ msgstr "Ascolta podcast"
 msgid "SHOUTcast Streaming"
 msgstr "Flussi SHOUTcast"
 
-#: src/modules/browser/upnp/upnp.c:552
+#: src/modules/browser/upnp/upnp.c:450
 msgid "UPnP/DLNA Media Servers"
 msgstr "UPnP/DLNA media server"
+
+#: src/modules/browser/upnp/upnp.c:504
+#, c-format
+msgid "Found new UPnP device '%s (%s)'"
+msgstr ""
 
 #: src/modules/browser/valhalla/valhalla.c:307
 msgid "Artists"
