@@ -410,24 +410,25 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
         return;
 
     location = gupnp_device_info_get_location (GUPNP_DEVICE_INFO (proxy));
-    udn = gupnp_device_info_get_udn (GUPNP_DEVICE_INFO (proxy));
-    name = gupnp_device_info_get_friendly_name (GUPNP_DEVICE_INFO (proxy));
-    model = gupnp_device_info_get_model_name (GUPNP_DEVICE_INFO (proxy));
+    udn      = gupnp_device_info_get_udn (GUPNP_DEVICE_INFO (proxy));
+    name     = gupnp_device_info_get_friendly_name (GUPNP_DEVICE_INFO (proxy));
+    model    = gupnp_device_info_get_model_name (GUPNP_DEVICE_INFO (proxy));
 
     /* check if device is already known */
     EINA_LIST_FOREACH(mod->devices, l, srv)
         if (!strcmp (srv->location, location))
             return;
 
-    srv = calloc (1, sizeof (upnp_media_server_t));
-    srv->info = GUPNP_DEVICE_INFO (proxy);
-    si = gupnp_device_info_get_service (srv->info, UPNP_CONTENT_DIR);
+    srv              = calloc (1, sizeof (upnp_media_server_t));
+    srv->info        = GUPNP_DEVICE_INFO (proxy);
+    si               = gupnp_device_info_get_service (srv->info,
+                                                      UPNP_CONTENT_DIR);
     srv->content_dir = GUPNP_SERVICE_PROXY (si);
-    srv->type = strdup (type);
-    srv->location = strdup (location);
-    srv->udn = strdup (udn);
-    srv->name = strdup (name);
-    srv->model = strdup (model);
+    srv->type        = strdup (type);
+    srv->location    = strdup (location);
+    srv->udn         = strdup (udn);
+    srv->name        = strdup (name);
+    srv->model       = strdup (model);
 
     pthread_mutex_lock (&mod->mutex);
     mod->devices = eina_list_append (mod->devices, srv);
