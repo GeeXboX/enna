@@ -416,7 +416,7 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
 
     /* check if device is already known */
     EINA_LIST_FOREACH(mod->devices, l, srv)
-        if (!strcmp (srv->location, location))
+        if (location && !strcmp (srv->location, location))
             return;
 
     srv              = calloc (1, sizeof (upnp_media_server_t));
@@ -424,11 +424,11 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
     si               = gupnp_device_info_get_service (srv->info,
                                                       UPNP_CONTENT_DIR);
     srv->content_dir = GUPNP_SERVICE_PROXY (si);
-    srv->type        = strdup (type);
-    srv->location    = strdup (location);
-    srv->udn         = strdup (udn);
-    srv->name        = strdup (name);
-    srv->model       = strdup (model);
+    srv->type        = type     ? strdup (type)     : NULL;
+    srv->location    = location ? strdup (location) : NULL;
+    srv->udn         = udn      ? strdup (udn)      : NULL;
+    srv->name        = name     ? strdup (name)     : NULL;
+    srv->model       = model    ? strdup (model)    : NULL;
 
     pthread_mutex_lock (&mod->mutex);
     mod->devices = eina_list_append (mod->devices, srv);
