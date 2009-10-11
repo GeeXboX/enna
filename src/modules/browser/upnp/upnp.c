@@ -435,7 +435,7 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
     pthread_mutex_unlock (&mod->mutex);
 
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-              "Found news UPnP device '%s (%s)'", name, model);
+              "Found new UPnP device '%s (%s)'", name, model);
 }
 
 static Eina_List *
