@@ -66,7 +66,7 @@ struct _Smart_Data
 {
     Evas_Coord x, y, w, h;
     Evas_Object *obj;
-    Evas_Object *o_edje;
+    Evas_Object *layout;
     Evas_Object *o_view;
     Evas_Object *o_letter;
     Eina_List *files;
@@ -131,7 +131,7 @@ _browser_view_list_add(Smart_Data *sd)
 
     view = enna_list_add(enna->evas);
 
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", view);
+    elm_layout_content_set(sd->layout, "enna.swallow.content", view);
     /* View */
     edje_object_signal_emit(view, "list,right,now", "enna");
 
@@ -146,9 +146,9 @@ _browser_view_cover_add(Smart_Data *sd)
 
     if (!sd) return NULL;
 
-    view = enna_view_cover_add(evas_object_evas_get(sd->o_edje));
+    view = enna_view_cover_add(enna->evas);
 
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", view);
+    elm_layout_content_set(sd->layout, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
     return view;
 }
@@ -160,9 +160,9 @@ _browser_view_wall_add(Smart_Data *sd)
 
     if (!sd) return NULL;
 
-    view = enna_wall_add(evas_object_evas_get(sd->o_edje));
+    view = enna_wall_add(enna->evas);
 
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.content", view);
+    elm_layout_content_set(sd->layout, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
     return view;
 }
@@ -286,8 +286,8 @@ static void _smart_reconfigure(Smart_Data * sd)
     w = sd->w;
     h = sd->h;
 
-    evas_object_move(sd->o_edje, x, y);
-    evas_object_resize(sd->o_edje, w, h);
+    evas_object_move(sd->layout, x, y);
+    evas_object_resize(sd->layout, w, h);
 }
 
 /* Class Item interface */
@@ -325,8 +325,8 @@ static void _smart_add(Evas_Object * obj)
     if (!sd)
         return;
 
-    sd->o_edje = edje_object_add(enna->evas);
-    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/browser");
+    sd->layout = elm_layout_add(enna->layout);
+    elm_layout_file_set(sd->layout, enna_config_theme_get(), "enna/browser");
 
     sd->view_funcs.view_add = _browser_view_list_add;
     sd->view_funcs.view_append =  enna_list_file_append;
@@ -338,16 +338,16 @@ static void _smart_add(Evas_Object * obj)
     sd->o_view = sd->view_funcs.view_add(sd);
     evas_object_smart_callback_add(sd->o_view, "hilight", _view_hilight_cb, sd);
 
-    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(sd->layout), "letter,hide", "enna");
     sd->o_letter =  elm_button_add(obj);
     elm_button_label_set(sd->o_letter, "");
     elm_object_scale_set(sd->o_letter, 6.0);
     evas_object_show(sd->o_letter);
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.letter", sd->o_letter);
+    elm_layout_content_set(sd->layout, "enna.swallow.letter", sd->o_letter);
 
     sd->accept_ev = 1;
     sd->show_file = 1;
-    evas_object_smart_member_add(sd->o_edje, obj);
+    evas_object_smart_member_add(sd->layout, obj);
     sd->obj = obj;
     evas_object_smart_data_set(obj, sd);
 }
@@ -355,10 +355,12 @@ static void _smart_add(Evas_Object * obj)
 static void _smart_del(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje", _list_transition_right_end_cb);
-    edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje", _list_transition_left_end_cb);
+    edje_object_signal_callback_del(elm_layout_edje_get(sd->layout), 
+                                    "list,transition,end", "edje", _list_transition_right_end_cb);
+    edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
+                                    "list,transition,end", "edje", _list_transition_left_end_cb);
     ENNA_OBJECT_DEL(sd->o_view);
-    evas_object_del(sd->o_edje);
+    evas_object_del(sd->layout);
     evas_object_del(sd->o_letter);
     free(sd);
 }
@@ -388,31 +390,31 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 static void _smart_show(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    evas_object_show(sd->o_edje);
+    evas_object_show(sd->layout);
 }
 
 static void _smart_hide(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    evas_object_hide(sd->o_edje);
+    evas_object_hide(sd->layout);
 }
 
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
     INTERNAL_ENTRY;
-    evas_object_color_set(sd->o_edje, r, g, b, a);
+    evas_object_color_set(sd->layout, r, g, b, a);
 }
 
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
     INTERNAL_ENTRY;
-    evas_object_clip_set(sd->o_edje, clip);
+    evas_object_clip_set(sd->layout, clip);
 }
 
 static void _smart_clip_unset(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
-    evas_object_clip_unset(sd->o_edje);
+    evas_object_clip_unset(sd->layout);
 }
 
 static void
@@ -424,8 +426,9 @@ _list_transition_default_up_end_cb(void *data, Evas_Object *o, const char *sig, 
     sd->accept_ev = 1;
 
     sd->view_funcs.view_select_nth(sd->o_view, 0);
-    edje_object_signal_callback_del(sd->o_edje, "list,transition,default,end", "edje",
-	    _list_transition_default_up_end_cb);
+    edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
+                                    "list,transition,default,end", "edje",
+                                    _list_transition_default_up_end_cb);
 }
 
 static void
@@ -455,8 +458,9 @@ _list_transition_default_down_end_cb(void *data, Evas_Object *o, const char *sig
     else
         sd->view_funcs.view_select_nth(sd->o_view, 0);
 
-    edje_object_signal_callback_del(sd->o_edje, "list,transition,default,end", "edje",
-	    _list_transition_default_down_end_cb);
+    edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
+                                    "list,transition,default,end", "edje",
+                                    _list_transition_default_down_end_cb);
 }
 
 static  void _browse(void *data)
@@ -523,9 +527,11 @@ static  void _browse(void *data)
         sd->visited = eina_list_append(sd->visited, visited);
 
         /* Clear list and add new items */
-        edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
-	    _list_transition_left_end_cb, sd);
-        edje_object_signal_emit(sd->o_edje, "list,left", "enna");
+        edje_object_signal_callback_add(elm_layout_edje_get(sd->layout),
+                                        "list,transition,end", "edje",
+                                        _list_transition_left_end_cb, sd);
+        edje_object_signal_emit(elm_layout_edje_get(sd->layout),
+                                "list,left", "enna");
     }
 }
 
@@ -548,9 +554,11 @@ static void _browse_down(void *data)
         }
 
         /* Clear list and add new items */
-        edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje",
-            _list_transition_right_end_cb, sd);
-        edje_object_signal_emit(sd->o_edje, "list,right", "enna");
+        edje_object_signal_callback_add(elm_layout_edje_get(sd->layout),
+                                        "list,transition,end", "edje",
+                                        _list_transition_right_end_cb, sd);
+        edje_object_signal_emit(elm_layout_edje_get(sd->layout),
+                                "list,right", "enna");
 
     }
 }
@@ -564,17 +572,21 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 
     if (!direction)
     {
-        edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
-            _list_transition_left_end_cb);
-        edje_object_signal_callback_add(sd->o_edje, "list,transition,default,end", "edje",
-	        _list_transition_default_up_end_cb, sd);
+        edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
+                                        "list,transition,end", "edje",
+                                        _list_transition_left_end_cb);
+        edje_object_signal_callback_add(elm_layout_edje_get(sd->layout),
+                                        "list,transition,default,end", "edje",
+                                        _list_transition_default_up_end_cb, sd);
     }
     else
     {
-        edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
-            _list_transition_right_end_cb);
-        edje_object_signal_callback_add(sd->o_edje, "list,transition,default,end", "edje",
-	        _list_transition_default_down_end_cb, sd);
+        edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
+                                        "list,transition,end", "edje",
+                                        _list_transition_right_end_cb);
+        edje_object_signal_callback_add(elm_layout_edje_get(sd->layout),
+                                        "list,transition,default,end", "edje",
+                                        _list_transition_default_down_end_cb, sd);
     }
 
 
@@ -584,12 +596,14 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     if (direction == 0)
     {
 
-        edje_object_signal_emit(sd->o_edje, "list,right,now", "enna");
+        edje_object_signal_emit(elm_layout_edje_get(sd->layout),
+                                "list,right,now", "enna");
     }
     else
     {
-	    evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
-        edje_object_signal_emit(sd->o_edje, "list,left,now", "enna");
+        evas_object_smart_callback_call (sd->obj, "browse_down", NULL);
+        edje_object_signal_emit(elm_layout_edje_get(sd->layout),
+                                "list,left,now", "enna");
     }
 
     if (eina_list_count(files))
@@ -632,7 +646,8 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
         sd->vfs = NULL;
 
     }
-    edje_object_signal_emit(sd->o_edje, "list,default", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(sd->layout),
+                            "list,default", "enna");
     //sd->accept_ev = 1;
 }
 
@@ -655,7 +670,8 @@ static int _letter_timer_cb(void *data)
     sd = data;
     if (!sd) return 0;
 
-    edje_object_signal_emit(sd->o_edje, "letter,hide", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(sd->layout),
+                            "letter,hide", "enna");
     sd->letter_mode = 0;
     ENNA_TIMER_DEL(sd->letter_timer);
     return ECORE_CALLBACK_CANCEL;
@@ -672,8 +688,11 @@ void enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
         /* create Root menu */
         sd->files = vfs->func.class_browse_up(NULL, vfs->cookie);
         sd->vfs = vfs;
-        edje_object_signal_callback_add(sd->o_edje, "list,transition,end", "edje", _list_transition_left_end_cb, sd);
-        edje_object_signal_emit(sd->o_edje, "list,left", "enna");
+        edje_object_signal_callback_add(elm_layout_edje_get(sd->layout),
+                                        "list,transition,end", "edje", 
+                                        _list_transition_left_end_cb, sd);
+        edje_object_signal_emit(elm_layout_edje_get(sd->layout),
+                                "list,left", "enna");
     }
 }
 
@@ -701,8 +720,10 @@ _browser_letter_show(Smart_Data *sd, const char *letter)
     ENNA_TIMER_DEL(sd->letter_timer);
 
     elm_button_label_set(sd->o_letter, letter);
-    edje_object_part_text_set(sd->o_edje, "enna.text.letter", letter);
-    edje_object_signal_emit(sd->o_edje, "letter,show", "enna");
+    edje_object_part_text_set(elm_layout_edje_get(sd->layout),
+                              "enna.text.letter", letter);
+    edje_object_signal_emit(elm_layout_edje_get(sd->layout),
+                            "letter,show", "enna");
 
     sd->letter_timer = ecore_timer_add(1.5, _letter_timer_cb, sd);
 
@@ -716,10 +737,12 @@ void enna_browser_input_feed(Evas_Object *obj, enna_input event)
     //printf("INPUT.. to browser %d\n", event);
     if (!sd->accept_ev) return;
 
-    edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
-        _list_transition_left_end_cb);
-    edje_object_signal_callback_del(sd->o_edje, "list,transition,end", "edje",
-        _list_transition_right_end_cb);
+    edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
+                                    "list,transition,end", "edje",
+                                    _list_transition_left_end_cb);
+    edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
+                                    "list,transition,end", "edje",
+                                    _list_transition_right_end_cb);
 
     switch (event)
     {
