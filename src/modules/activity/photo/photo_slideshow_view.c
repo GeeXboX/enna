@@ -132,7 +132,7 @@ _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
 
 /* externally accessible functions */
 Evas_Object *
-enna_slideshow_add(Evas * evas)
+enna_photo_slideshow_add(Evas * evas)
 {
     Evas_Object *obj;
     Smart_Data *sd;
@@ -193,37 +193,37 @@ enna_slideshow_add(Evas * evas)
     return obj;
 }
 
-void enna_slideshow_next(Evas_Object *obj)
+void enna_photo_slideshow_next(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     elm_slideshow_next(sd->slideshow);
 }
 
-void enna_slideshow_previous(Evas_Object *obj)
+void enna_photo_slideshow_previous(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     elm_slideshow_previous(sd->slideshow);
 }
 
-int enna_slideshow_timeout_get(Evas_Object *obj)
+int enna_photo_slideshow_timeout_get(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     return elm_slideshow_timeout_get(sd->slideshow);
 }
 
-void enna_slideshow_timeout_set(Evas_Object *obj, int to)
+void enna_photo_slideshow_timeout_set(Evas_Object *obj, int to)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     elm_slideshow_timeout_set(sd->slideshow, to);
 }
 
-void enna_slideshow_image_add(Evas_Object *obj, const char *file, const char *group)
+void enna_photo_slideshow_image_add(Evas_Object *obj, const char *file, const char *group)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     elm_slideshow_image_add(sd->slideshow, file, group);
 }
 
-void enna_slideshow_goto(Evas_Object *obj, int nth)
+void enna_photo_slideshow_goto(Evas_Object *obj, int nth)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     elm_slideshow_goto(sd->slideshow, nth);

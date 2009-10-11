@@ -99,7 +99,7 @@ static void _create_slideshow_gui(void)
 
     ENNA_OBJECT_DEL (mod->o_slideshow);
 
-    mod->o_slideshow = enna_slideshow_add(enna->layout);
+    mod->o_slideshow = enna_photo_slideshow_add(enna->layout);
     elm_layout_content_set(enna->layout, "enna.fullscreen.swallow", mod->o_slideshow);
 
     edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
@@ -122,7 +122,7 @@ _slideshow_add_files(char *file_selected)
         if (!strcmp(file_selected, file->uri))
             pos = n;
         printf("add %s\n", file->uri + 7);
-        enna_slideshow_image_add(mod->o_slideshow, file->uri + 7, NULL);
+        enna_photo_slideshow_image_add(mod->o_slideshow, file->uri + 7, NULL);
         n++;
     }
     eina_list_free (files);
@@ -167,7 +167,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
         /* File is selected, display it in slideshow mode */
         _create_slideshow_gui();
         pos = _slideshow_add_files(ev->file->uri);
-        enna_slideshow_goto(mod->o_slideshow, pos);
+        enna_photo_slideshow_goto(mod->o_slideshow, pos);
     }
     free(ev);
 }
@@ -323,16 +323,16 @@ static void photo_event_slideshow (enna_input event)
         edje_object_signal_emit(mod->o_edje, "list,show", "enna");
         break;
     case ENNA_INPUT_RIGHT:
-        enna_slideshow_next(mod->o_slideshow);
+        enna_photo_slideshow_next(mod->o_slideshow);
         break;
     case ENNA_INPUT_LEFT:
-        enna_slideshow_previous(mod->o_slideshow);
+        enna_photo_slideshow_previous(mod->o_slideshow);
         break;
     case ENNA_INPUT_OK:
-        if (!enna_slideshow_timeout_get(mod->o_slideshow))
-            enna_slideshow_timeout_set(mod->o_slideshow, enna->slideshow_delay);
+        if (!enna_photo_slideshow_timeout_get(mod->o_slideshow))
+            enna_photo_slideshow_timeout_set(mod->o_slideshow, enna->slideshow_delay);
         else
-            enna_slideshow_timeout_set(mod->o_slideshow, 0);
+            enna_photo_slideshow_timeout_set(mod->o_slideshow, 0);
         break;
     default:
         break;
