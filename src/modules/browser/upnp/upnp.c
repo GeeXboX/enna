@@ -396,48 +396,6 @@ upnp_list_mediaservers (void)
     return servers;
 }
 
-static void
-upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
-{
-    const char *type, *location, *udn;
-    char *name, *model;
-    upnp_media_server_t *srv;
-    GUPnPServiceInfo *si;
-    Eina_List *l;
-
-    type = gupnp_device_info_get_device_type (GUPNP_DEVICE_INFO (proxy));
-    if (!g_pattern_match_simple (UPNP_MEDIA_SERVER, type))
-        return;
-
-    location = gupnp_device_info_get_location (GUPNP_DEVICE_INFO (proxy));
-    udn      = gupnp_device_info_get_udn (GUPNP_DEVICE_INFO (proxy));
-    name     = gupnp_device_info_get_friendly_name (GUPNP_DEVICE_INFO (proxy));
-    model    = gupnp_device_info_get_model_name (GUPNP_DEVICE_INFO (proxy));
-
-    /* check if device is already known */
-    EINA_LIST_FOREACH(mod->devices, l, srv)
-        if (location && !strcmp (srv->location, location))
-            return;
-
-    srv              = calloc (1, sizeof (upnp_media_server_t));
-    srv->info        = GUPNP_DEVICE_INFO (proxy);
-    si               = gupnp_device_info_get_service (srv->info,
-                                                      UPNP_CONTENT_DIR);
-    srv->content_dir = GUPNP_SERVICE_PROXY (si);
-    srv->type        = type     ? strdup (type)     : NULL;
-    srv->location    = location ? strdup (location) : NULL;
-    srv->udn         = udn      ? strdup (udn)      : NULL;
-    srv->name        = name     ? strdup (name)     : NULL;
-    srv->model       = model    ? strdup (model)    : NULL;
-
-    pthread_mutex_lock (&mod->mutex);
-    mod->devices = eina_list_append (mod->devices, srv);
-    pthread_mutex_unlock (&mod->mutex);
-
-    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-              _("Found new UPnP device '%s (%s)'"), name, model);
-}
-
 static Eina_List *
 _class_browse_up (const char *id, void *cookie)
 {
@@ -516,6 +474,50 @@ static Enna_Class_Vfs class_upnp = {
     },
     NULL
 };
+
+/* Device Callbacks */
+
+static void
+upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
+{
+    const char *type, *location, *udn;
+    char *name, *model;
+    upnp_media_server_t *srv;
+    GUPnPServiceInfo *si;
+    Eina_List *l;
+
+    type = gupnp_device_info_get_device_type (GUPNP_DEVICE_INFO (proxy));
+    if (!g_pattern_match_simple (UPNP_MEDIA_SERVER, type))
+        return;
+
+    location = gupnp_device_info_get_location (GUPNP_DEVICE_INFO (proxy));
+    udn      = gupnp_device_info_get_udn (GUPNP_DEVICE_INFO (proxy));
+    name     = gupnp_device_info_get_friendly_name (GUPNP_DEVICE_INFO (proxy));
+    model    = gupnp_device_info_get_model_name (GUPNP_DEVICE_INFO (proxy));
+
+    /* check if device is already known */
+    EINA_LIST_FOREACH(mod->devices, l, srv)
+        if (location && !strcmp (srv->location, location))
+            return;
+
+    srv              = calloc (1, sizeof (upnp_media_server_t));
+    srv->info        = GUPNP_DEVICE_INFO (proxy);
+    si               = gupnp_device_info_get_service (srv->info,
+                                                      UPNP_CONTENT_DIR);
+    srv->content_dir = GUPNP_SERVICE_PROXY (si);
+    srv->type        = type     ? strdup (type)     : NULL;
+    srv->location    = location ? strdup (location) : NULL;
+    srv->udn         = udn      ? strdup (udn)      : NULL;
+    srv->name        = name     ? strdup (name)     : NULL;
+    srv->model       = model    ? strdup (model)    : NULL;
+
+    pthread_mutex_lock (&mod->mutex);
+    mod->devices = eina_list_append (mod->devices, srv);
+    pthread_mutex_unlock (&mod->mutex);
+
+    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+              _("Found new UPnP device '%s (%s)'"), name, model);
+}
 
 /* Module interface */
 
