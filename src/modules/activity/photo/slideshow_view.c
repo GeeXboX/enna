@@ -45,19 +45,69 @@ struct _Smart_Data
 
 /* local subsystem globals */
 
+static void
+_controls_show(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    evas_object_show(sd->controls);
+    elm_notify_timer_init(sd->controls);
+}
+
+static void
+_mouse_in(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    elm_notify_timeout_set(sd->controls, 0);
+}
+
+
+static void
+_mouse_out(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    elm_notify_timeout_set(sd->controls, 3);
+}
+
+
+static void
+_button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    if (!elm_slideshow_timeout_get(sd->slideshow))
+        elm_slideshow_timeout_set(sd->slideshow, enna_config->slideshow_delay);
+    else
+        elm_slideshow_timeout_set(sd->slideshow, 0);
+}
+
+static void
+_button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    elm_slideshow_previous(sd->slideshow);
+}
+
+static void
+_button_clicked_next_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    elm_slideshow_next(sd->slideshow);
+}
+
+static void
+_button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    elm_slideshow_timeout_set(sd->slideshow, 0);
+}
+
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
 {
     //Evas_Object *obj = data;
     //Smart_Data *sd = evas_object_data_get(obj, "sd");
 
-    if (event == ENNA_INPUT_QUIT)
-    {
-        return ENNA_EVENT_BLOCK;
-    }
     return ENNA_EVENT_CONTINUE;
 }
-
 
 
 static void
@@ -65,9 +115,25 @@ _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
 
+    ENNA_OBJECT_DEL(sd->controls);
     ENNA_OBJECT_DEL(sd->slideshow);
     ENNA_FREE(sd);
 }
+
+#define ELM_ADD(icon, cb)                                            \
+    ic = elm_icon_add(obj);                                          \
+    elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
+    elm_icon_scale_set(ic, 0, 0);                                    \
+    bt = elm_button_add(obj);                                        \
+    elm_button_style_set(bt, "simple");                              \
+    evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
+    elm_button_icon_set(bt, ic);                                     \
+    evas_object_size_hint_min_set(bt, 64, 64);                       \
+    evas_object_size_hint_weight_set(bt, 0.0, 1.0);                  \
+    evas_object_size_hint_align_set(bt, 0.5, 0.5);                   \
+    elm_box_pack_end(bx, bt);                                        \
+    evas_object_show(bt);                                            \
+    evas_object_show(ic);                                            \
 
 /* externally accessible functions */
 Evas_Object *
@@ -75,7 +141,8 @@ enna_slideshow_add(Evas * evas)
 {
     Evas_Object *obj;
     Smart_Data *sd;
-    Evas_Object *bx, *bt;
+    Evas_Object *bx, *bt, *ic;
+    Evas_Coord w, h;
 
     sd = calloc(1, sizeof(Smart_Data));
 
@@ -89,30 +156,28 @@ enna_slideshow_add(Evas * evas)
     elm_slideshow_ratio_set(sd->slideshow, 1);
     elm_slideshow_loop_set(sd->slideshow, 1);
 
-    sd->controls = elm_notify_add(obj);
+    sd->controls = elm_notify_add(enna->win);
     elm_notify_orient_set(sd->controls, ELM_NOTIFY_ORIENT_BOTTOM);
+    evas_object_geometry_get(enna->layout, NULL, NULL, &w, &h);
+    evas_object_move(sd->controls, 0, 0);
+    evas_object_resize(sd->controls, w, h);
     /* Fixme : add a config value */
-    elm_notify_timeout_set(sd->controls, 3);
+    elm_notify_timeout_set(sd->controls, 10);
 
     bx = elm_box_add(obj);
     elm_box_horizontal_set(bx, 1);
     elm_notify_content_set(sd->controls, bx);
     evas_object_show(bx);
 
-//    evas_object_event_callback_add(bx, EVAS_CALLBACK_MOUSE_IN, _mouse_in, sd);
-//    evas_object_event_callback_add(bx, EVAS_CALLBACK_MOUSE_OUT, _mouse_out, sd);
+    evas_object_event_callback_add(bx, EVAS_CALLBACK_MOUSE_IN, _mouse_in, sd);
+    evas_object_event_callback_add(bx, EVAS_CALLBACK_MOUSE_OUT, _mouse_out, sd);
 
-    bt = elm_button_add(obj);
-    elm_button_label_set(bt, "Previous");
-    //evas_object_smart_callback_add(bt, "clicked", _previous, slideshow);
-    elm_box_pack_end(bx, bt);
-    evas_object_show(bt);
-
-    bt = elm_button_add(obj);
-    elm_button_label_set(bt, "Next");
-    //evas_object_smart_callback_add(bt, "clicked", _next, slideshow);
-    elm_box_pack_end(bx, bt);
-    evas_object_show(bt);
+    ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
+    ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+    ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
+    ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
+//    ELM_ADD ("icon/rotate_ccw", _button_clicked_rotate_ccw_cb);
+//    ELM_ADD ("icon/rotate_cw",  _button_clicked_rotate_cw_cb);
 
     evas_object_show(obj);
     evas_object_show(sd->slideshow);
@@ -124,6 +189,9 @@ enna_slideshow_add(Evas * evas)
     /* connect to the input signal */
     sd->listener = enna_input_listener_add("slideshow", _input_events_cb, obj);
     enna_input_listener_demote(sd->listener);
+
+    evas_object_smart_callback_add(sd->slideshow, "clicked", _controls_show, sd);
+    evas_object_smart_callback_add(sd->slideshow, "move", _controls_show, sd);
 
     evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
                                    _sd_del, sd);
@@ -161,7 +229,7 @@ void enna_slideshow_image_add(Evas_Object *obj, const char *file, const char *gr
 }
 
 void enna_slideshow_goto(Evas_Object *obj, int nth)
-{ 
+{
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     elm_slideshow_goto(sd->slideshow, nth);
 }
