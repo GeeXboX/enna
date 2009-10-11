@@ -61,7 +61,6 @@ _mouse_in(void *data, Evas *e, Evas_Object *obj, void *event_info)
     elm_notify_timeout_set(sd->controls, 0);
 }
 
-
 static void
 _mouse_out(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
@@ -105,7 +104,6 @@ _input_events_cb(void *data, enna_input event)
 {
     return ENNA_EVENT_CONTINUE;
 }
-
 
 static void
 _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
