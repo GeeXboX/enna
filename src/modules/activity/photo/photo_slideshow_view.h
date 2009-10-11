@@ -31,12 +31,12 @@
 #define PHOTO_SLIDESHOW_VIEW_H
 
 
-enna_slideshow_add(Evas * evas)
-void enna_slideshow_next(Evas_Object *obj)
-void enna_slideshow_previous(Evas_Object *obj)
-int enna_slideshow_timeout_get(Evas_Object *obj)
-void enna_slideshow_timeout_set(Evas_Object *obj, int to)
-void enna_slideshow_image_add(Evas_Object *obj, const char *file, const char *group)
-void enna_slideshow_goto(Evas_Object *obj, int nth)
+Evas_Object *enna_slideshow_add(Evas * evas);
+void enna_slideshow_next(Evas_Object *obj);
+void enna_slideshow_previous(Evas_Object *obj);
+int enna_slideshow_timeout_get(Evas_Object *obj);
+void enna_slideshow_timeout_set(Evas_Object *obj, int to);
+void enna_slideshow_image_add(Evas_Object *obj, const char *file, const char *group);
+void enna_slideshow_goto(Evas_Object *obj, int nth);
 
 #endif /* PHOTO_SLIDESHOW_VIEW_H */
