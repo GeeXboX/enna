@@ -74,10 +74,9 @@ static void
 _button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
-    if (!elm_slideshow_timeout_get(sd->slideshow))
-        elm_slideshow_timeout_set(sd->slideshow, enna_config->slideshow_delay);
-    else
-        elm_slideshow_timeout_set(sd->slideshow, 0);
+    elm_slideshow_timeout_set (sd->slideshow,
+                               !elm_slideshow_timeout_get (sd->slideshow)
+                               ? enna_config->slideshow_delay : 0);
 }
 
 static void
