@@ -43,7 +43,6 @@
 #include "enna_config.h"
 #include "utils.h"
 #include "logs.h"
-#include "slideshow.h"
 
 #define DEFAULT_FILE \
     "[enna]\n" \

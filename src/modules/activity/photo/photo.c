@@ -38,7 +38,6 @@
 #include "view_wall.h"
 #include "image.h"
 #include "browser.h"
-#include "slideshow.h"
 #include "view_list.h"
 #include "content.h"
 #include "mainmenu.h"
@@ -95,20 +94,12 @@ panel_infos_display (int show)
 
 static void _create_slideshow_gui(void)
 {
-    Evas_Object *o;
-
     mod->state = SLIDESHOW_VIEW;
 
     ENNA_OBJECT_DEL (mod->o_slideshow);
 
-    o = elm_slideshow_add(enna->layout);
-    elm_slideshow_transition_set(o, "horizontal");
-    elm_slideshow_ratio_set(o, 1);
-    elm_slideshow_loop_set(o, 1);
-
-    elm_layout_content_set(enna->layout, "enna.fullscreen.swallow", o);
-    evas_object_show(o);
-    mod->o_slideshow = o;
+    mod->o_slideshow = enna_slideshow_add(enna->layout);
+    elm_layout_content_set(enna->layout, "enna.fullscreen.swallow", mod->o_slideshow);
 
     edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
@@ -130,7 +121,7 @@ _slideshow_add_files(char *file_selected)
         if (!strcmp(file_selected, file->uri))
             pos = n;
         printf("add %s\n", file->uri + 7);
-        elm_slideshow_image_add(mod->o_slideshow, file->uri + 7, NULL);
+        enna_slideshow_image_add(mod->o_slideshow, file->uri + 7, NULL);
         n++;
     }
     eina_list_free (files);
@@ -175,7 +166,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
         /* File is selected, display it in slideshow mode */
         _create_slideshow_gui();
         pos = _slideshow_add_files(ev->file->uri);
-        elm_slideshow_goto(mod->o_slideshow, pos);
+        enna_slideshow_goto(mod->o_slideshow, pos);
     }
     free(ev);
 }
@@ -331,16 +322,16 @@ static void photo_event_slideshow (enna_input event)
         edje_object_signal_emit(mod->o_edje, "list,show", "enna");
         break;
     case ENNA_INPUT_RIGHT:
-        elm_slideshow_next(mod->o_slideshow);
+        enna_slideshow_next(mod->o_slideshow);
         break;
     case ENNA_INPUT_LEFT:
-        elm_slideshow_previous(mod->o_slideshow);
+        enna_slideshow_previous(mod->o_slideshow);
         break;
     case ENNA_INPUT_OK:
-        if (!elm_slideshow_timeout_get(mod->o_slideshow))
-            elm_slideshow_timeout_set(mod->o_slideshow, enna->slideshow_delay);
+        if (!enna_slideshow_timeout_get(mod->o_slideshow))
+            enna_slideshow_timeout_set(mod->o_slideshow, enna->slideshow_delay);
         else
-            elm_slideshow_timeout_set(mod->o_slideshow, 0);
+            enna_slideshow_timeout_set(mod->o_slideshow, 0);
         break;
     default:
         break;

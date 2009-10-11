@@ -151,7 +151,6 @@ extern Enna *enna;
 /* Events */
 int ENNA_EVENT_ACTIVITIES_CHANGED; /**< ev = NULL */
 
-
 void enna_idle_timer_renew(void);
 
 #endif /* ENNA_H */

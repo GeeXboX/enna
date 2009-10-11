@@ -24,7 +24,8 @@ activity_photo_la_SOURCES= \
 photo.c \
 photo.h \
 photo_panel_infos.c \
-photo_panel_infos.h
+photo_panel_infos.h \
+slideshow_view.c
 
 activity_photo_la_LIBADD = @ENNA_LIBS@
 activity_photo_la_LDFLAGS = -module -avoid-version
