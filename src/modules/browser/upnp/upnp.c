@@ -60,8 +60,7 @@ typedef struct Enna_Module_UPnP_s
     GMainContext *mctx;
     GUPnPContext *ctx;
     GUPnPControlPoint *cp;
-    char *prev_id;
-    char *pprev_id;
+    char *current_id;
 } Enna_Module_UPnP;
 
 typedef struct upnp_media_server_s {
@@ -131,7 +130,7 @@ xml_util_get_element (xmlNode *node, ...)
 static Enna_Vfs_File *
 didl_process_object (xmlNode *e, char *udn)
 {
-    char *id, *parent_id, *title;
+    char *id, *title;
     gboolean is_container;
     Enna_Vfs_File *f = NULL;
 
@@ -143,10 +142,6 @@ didl_process_object (xmlNode *e, char *udn)
     if (!title)
         goto err_title;
 
-    parent_id = gupnp_didl_lite_object_get_parent_id (e);
-    if (!parent_id)
-        goto err_parent;
-
     is_container = gupnp_didl_lite_object_is_container (e);
 
 
@@ -155,14 +150,12 @@ didl_process_object (xmlNode *e, char *udn)
         char uri[1024];
 
         memset (uri, '\0', sizeof (uri));
-        snprintf (uri, sizeof (uri),
-                  "udn:%s,id:%s,parent_id:%s", udn, id, parent_id);
+        snprintf (uri, sizeof (uri), "%s/%s", mod->current_id, id);
 
         f = enna_vfs_create_directory (uri, title, "icon/directory", NULL);
 
         enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "DIDL container '%s' (id: %s, parent_id: %s, uri: %s)",
-                  title, id, parent_id, uri);
+                  "DIDL container '%s' (id: %s, uri: %s)", title, id, uri);
     }
     else
     {
@@ -203,8 +196,7 @@ didl_process_object (xmlNode *e, char *udn)
         f = enna_vfs_create_file (uri, title, icon, NULL);
 
         enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "DIDL item '%s' (id: %s, parent_id: %s, uri: %s)",
-                  title, id, parent_id, uri);
+                  "DIDL item '%s' (id: %s, uri: %s)", title, id, uri);
 
     err_no_uri:
     err_res_node:
@@ -212,7 +204,6 @@ didl_process_object (xmlNode *e, char *udn)
     }
 
  err_resources:
- err_parent:
     g_free (title);
  err_title:
     g_free (id);
@@ -340,10 +331,11 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
 }
 
 static Eina_List *
-browse_server_list (const char *uri, int parent)
+browse_server_list (const char *uri)
 {
     upnp_media_server_t *srv = NULL;
-    char udn[512], id[256], parent_id[256];
+    char udn[512], id[512];
+    char *container_id;
     int res;
     Eina_List *l;
 
@@ -353,9 +345,15 @@ browse_server_list (const char *uri, int parent)
     if (!uri)
         return NULL;
 
-    res = sscanf (uri, "udn:%[^,],id:%[^,],parent_id:%s", udn, id, parent_id);
-    if (res != 3)
+    res = sscanf (uri, "udn:%[^,],id:%[^,]", udn, id);
+    if (res != 2)
         return NULL;
+
+    container_id = strrchr (id, '/');
+    if (!container_id)
+        container_id = UPNP_DEFAULT_ROOT;
+    else
+        container_id++;
 
     EINA_LIST_FOREACH(mod->devices, l, srv)
         if (!strcmp (srv->udn, udn))
@@ -365,7 +363,11 @@ browse_server_list (const char *uri, int parent)
     if (!srv)
         return NULL;
 
-    return upnp_browse (srv, parent ? parent_id : id, 0, UPNP_MAX_BROWSE);
+    /* memorize our position */
+    ENNA_FREE (mod->current_id);
+    mod->current_id = strdup (uri);
+
+    return upnp_browse (srv, container_id, 0, UPNP_MAX_BROWSE);
 }
 
 static Eina_List *
@@ -385,9 +387,8 @@ upnp_list_mediaservers (void)
         snprintf (name, sizeof (name), "%s (%s)", srv->name, srv->model);
 
         memset (uri, '\0', sizeof (uri));
-        snprintf (uri, sizeof (uri),
-                  "udn:%s,id:%s,parent_id:%s",
-                  srv->udn, UPNP_DEFAULT_ROOT, UPNP_DEFAULT_ROOT);
+        snprintf (uri, sizeof (uri), "udn:%s,id:%s",
+                  srv->udn, UPNP_DEFAULT_ROOT);
 
         f = enna_vfs_create_directory (uri, name, "icon/dev/nfs", NULL);
         servers = eina_list_append (servers, f);
@@ -399,57 +400,38 @@ upnp_list_mediaservers (void)
 static Eina_List *
 _class_browse_up (const char *id, void *cookie)
 {
-    Eina_List *l;
-
     if (!id)
     {
         /* list available UPnP media servers */
-        l = upnp_list_mediaservers ();
-        ENNA_FREE (mod->prev_id);
-        ENNA_FREE (mod->pprev_id);
-    }
-    else
-    {
-        /* browse content from media server */
-        l = browse_server_list (id, 0);
-
-        if (mod->prev_id)
-        {
-            ENNA_FREE (mod->pprev_id);
-            mod->pprev_id = strdup (mod->prev_id);
-        }
-
-        ENNA_FREE (mod->prev_id);
-        mod->prev_id = strdup (id);
+        ENNA_FREE (mod->current_id);
+        return upnp_list_mediaservers ();
     }
 
-    return l;
+    /* browse content from a given media server */
+    return browse_server_list (id);
 }
 
 static Eina_List *
 _class_browse_down (void *cookie)
 {
-    if (mod->prev_id)
-    {
-        Eina_List *l = NULL;
+    char *prev_id;
+    char new_id[512] = { 0 };
+    int i, len;
 
-        /* if we're at root of a media server, display list again */
-        if (mod->pprev_id && !strcmp (mod->prev_id, mod->pprev_id))
-            goto server_list;
+    /* no recorded position, try root */
+    if (!mod->current_id)
+        return upnp_list_mediaservers ();
 
-        /* otherwise browse back the previous level */
-        l = browse_server_list (mod->prev_id, 1);
-        ENNA_FREE (mod->prev_id);
-        if (mod->pprev_id)
-            mod->prev_id = strdup (mod->pprev_id);
+    /* try to guess where we come from */
+    prev_id = strrchr (mod->current_id, '/');
+    if (!prev_id)
+        return upnp_list_mediaservers ();
 
-        return l;
-    }
+    len = strlen (mod->current_id) - strlen (prev_id);
+    for (i = 0; i < len; i++)
+        new_id[i] = mod->current_id[i];
 
- server_list:
-    ENNA_FREE (mod->prev_id);
-    ENNA_FREE (mod->pprev_id);
-    return upnp_list_mediaservers ();
+    return browse_server_list (new_id);
 }
 
 static Enna_Vfs_File *
@@ -592,7 +574,6 @@ void module_shutdown (Enna_Module *em)
     g_object_unref (mod->cp);
     g_object_unref (mod->ctx);
 
-    ENNA_FREE (mod->prev_id);
-    ENNA_FREE (mod->pprev_id);
+    ENNA_FREE (mod->current_id);
     pthread_mutex_destroy (&mod->mutex);
 }
