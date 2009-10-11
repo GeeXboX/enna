@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef SLIDESHOW_VIEW_H
-#define SLIDESHOW_VIEW_H
+#ifndef PHOTO_SLIDESHOW_VIEW_H
+#define PHOTO_SLIDESHOW_VIEW_H
 
 
 enna_slideshow_add(Evas * evas)
@@ -39,4 +39,4 @@ void enna_slideshow_timeout_set(Evas_Object *obj, int to)
 void enna_slideshow_image_add(Evas_Object *obj, const char *file, const char *group)
 void enna_slideshow_goto(Evas_Object *obj, int nth)
 
-#endif /* SLIDESHOW_VIEW_H */
+#endif /* PHOTO_SLIDESHOW_VIEW_H */
