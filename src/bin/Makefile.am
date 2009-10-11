@@ -38,7 +38,6 @@ xml_utils.c\
 url_utils.c\
 logs.c\
 parser_cdda.c\
-slideshow.c\
 mediacontrol.c\
 reflection.c\
 view_cover.c\
@@ -92,7 +91,6 @@ xml_utils.h\
 url_utils.h\
 logs.h\
 parser_cdda.h\
-slideshow.h\
 mediacontrol.h\
 reflection.h\
 view_cover.h\
