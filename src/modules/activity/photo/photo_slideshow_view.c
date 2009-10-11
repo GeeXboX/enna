@@ -29,7 +29,7 @@
 
 /* TODO : remove smart object and use directly elm objects */
 
-#include "Elementary.h"
+#include <Elementary.h>
 
 #include "enna_config.h"
 #include "input.h"
