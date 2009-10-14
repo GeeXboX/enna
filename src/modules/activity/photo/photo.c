@@ -323,18 +323,6 @@ static void photo_event_slideshow (enna_input event)
         edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
         edje_object_signal_emit(mod->o_edje, "list,show", "enna");
         break;
-    case ENNA_INPUT_RIGHT:
-        enna_photo_slideshow_next(mod->o_slideshow);
-        break;
-    case ENNA_INPUT_LEFT:
-        enna_photo_slideshow_previous(mod->o_slideshow);
-        break;
-    case ENNA_INPUT_OK:
-        if (!enna_photo_slideshow_timeout_get(mod->o_slideshow))
-            enna_photo_slideshow_timeout_set(mod->o_slideshow, enna->slideshow_delay);
-        else
-            enna_photo_slideshow_timeout_set(mod->o_slideshow, 0);
-        break;
     default:
         break;
     }
