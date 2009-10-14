@@ -46,6 +46,8 @@ struct _Smart_Data
     Input_Listener *listener;
     Eina_List *items;
     Evas_Object *btplay;
+    Evas_Object *spin;
+    int delay;
 };
 
 /* local subsystem globals */
@@ -79,7 +81,7 @@ _button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
     Smart_Data *sd = data;
     if (!elm_slideshow_timeout_get(sd->slideshow))
     {
-        elm_slideshow_timeout_set(sd->slideshow, enna_config->slideshow_delay);
+        elm_slideshow_timeout_set(sd->slideshow, sd->delay);
     }
     else
     {
@@ -116,7 +118,6 @@ static void
     Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
     im = elm_slideshow_item_object_get(it);
     elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CCW);
-    printf("rotate : %p\n", im);
 }
 
 static void
@@ -127,12 +128,54 @@ static void
     Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
     im = elm_slideshow_item_object_get(it);
     elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CW);
-    printf("rotate : %p\n", im);
+}
+
+static void
+_spin(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    if (elm_slideshow_timeout_get(sd->slideshow) > 0)
+        elm_slideshow_timeout_set(sd->slideshow, (int)elm_spinner_value_get(sd->spin));
 }
 
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
 {
+    Smart_Data *sd = evas_object_data_get(data, "sd");
+    switch(event)
+    {
+    case ENNA_INPUT_LEFT:
+        _button_clicked_prev_cb(sd, data, NULL);
+        break;
+    case ENNA_INPUT_RIGHT:
+        _button_clicked_next_cb(sd, data, NULL);
+        break;
+    case ENNA_INPUT_OK:
+        _button_clicked_play_cb(sd, data, NULL);
+        break;
+    case ENNA_INPUT_KEY_R:
+        _button_clicked_rotate_ccw_cb(sd, data, NULL);
+        break;
+    case ENNA_INPUT_DOWN:
+        sd->delay--;
+        if (sd->delay < 1)
+            sd->delay = 1;
+        if (elm_slideshow_timeout_get(sd->slideshow))
+            elm_slideshow_timeout_set(sd->slideshow, sd->delay);
+        elm_spinner_value_set(sd->spin, sd->delay);
+        break;
+    case ENNA_INPUT_UP:
+        sd->delay++;
+        if (sd->delay > 100)
+            sd->delay = 100;
+        if (elm_slideshow_timeout_get(sd->slideshow))
+            elm_slideshow_timeout_set(sd->slideshow, sd->delay);
+        elm_spinner_value_set(sd->spin, sd->delay);
+
+        break;
+    default:
+        break;
+    }
     return ENNA_EVENT_CONTINUE;
 }
 
@@ -140,10 +183,8 @@ static Evas_Object *
 _slideshow_item_get(void *data, Evas_Object *obj)
 {
     Evas_Object *im;
-
     im = elm_image_add(obj);
     elm_image_file_set(im, data, NULL);
-    printf("create : %p\n", im);
     return im;
 }
 
@@ -192,6 +233,8 @@ enna_photo_slideshow_add(Evas * evas)
 
     sd = calloc(1, sizeof(Smart_Data));
 
+    sd->delay = enna_config->slideshow_delay;
+
     obj = elm_layout_add(enna->layout);
     elm_layout_file_set(obj, enna_config_theme_get(), "enna/slideshow");
     evas_object_size_hint_weight_set(obj, 1.0, 1.0);
@@ -222,6 +265,16 @@ enna_photo_slideshow_add(Evas * evas)
     sd->btplay = bt;
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
     ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
+
+    sd->spin = elm_spinner_add(obj);
+    elm_spinner_label_format_set(sd->spin, "%2.f secs.");
+    evas_object_smart_callback_add(sd->spin, "changed", _spin, sd);
+    elm_spinner_step_set(sd->spin, 1);
+    elm_spinner_min_max_set(sd->spin, 1, 100);
+    elm_spinner_value_set(sd->spin, sd->delay);
+    elm_box_pack_end(bx, sd->spin);
+    evas_object_show(sd->spin);
+
     ELM_ADD ("icon/rotate_ccw", _button_clicked_rotate_ccw_cb);
     ELM_ADD ("icon/rotate_cw",  _button_clicked_rotate_cw_cb);
 
