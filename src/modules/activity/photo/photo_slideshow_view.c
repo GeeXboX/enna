@@ -32,8 +32,10 @@
 #include <Elementary.h>
 
 #include "enna_config.h"
+#include "image.h"
 #include "input.h"
 #include "photo_slideshow_view.h"
+
 
 typedef struct _Smart_Data Smart_Data;
 
@@ -42,12 +44,14 @@ struct _Smart_Data
     Evas_Object *controls;
     Evas_Object *slideshow;
     Input_Listener *listener;
+    Eina_List *items;
+    Evas_Object *btplay;
 };
 
 /* local subsystem globals */
 
 static void
-_controls_show(void *data, Evas_Object *obj, void *event_info)
+_controls_show(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
     evas_object_show(sd->controls);
@@ -73,9 +77,14 @@ static void
 _button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
-    elm_slideshow_timeout_set (sd->slideshow,
-                               !elm_slideshow_timeout_get (sd->slideshow)
-                               ? enna_config->slideshow_delay : 0);
+    if (!elm_slideshow_timeout_get(sd->slideshow))
+    {
+        elm_slideshow_timeout_set(sd->slideshow, enna_config->slideshow_delay);
+    }
+    else
+    {
+        elm_slideshow_timeout_set(sd->slideshow, 0);
+    }
 }
 
 static void
@@ -99,10 +108,43 @@ _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
     elm_slideshow_timeout_set(sd->slideshow, 0);
 }
 
+static void
+ _button_clicked_rotate_ccw_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Evas_Object *im;
+    Smart_Data *sd = data;
+    Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
+    im = elm_slideshow_item_object_get(it);
+    elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CCW);
+    printf("rotate : %p\n", im);
+}
+
+static void
+ _button_clicked_rotate_cw_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Evas_Object *im;
+    Smart_Data *sd = data;
+    Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
+    im = elm_slideshow_item_object_get(it);
+    elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CW);
+    printf("rotate : %p\n", im);
+}
+
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
 {
     return ENNA_EVENT_CONTINUE;
+}
+
+static Evas_Object *
+_slideshow_item_get(void *data, Evas_Object *obj)
+{
+    Evas_Object *im;
+
+    im = elm_image_add(obj);
+    elm_image_file_set(im, data, NULL);
+    printf("create : %p\n", im);
+    return im;
 }
 
 static void
@@ -112,6 +154,7 @@ _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
 
     ENNA_OBJECT_DEL(sd->controls);
     ENNA_OBJECT_DEL(sd->slideshow);
+    eina_list_free(sd->items);
     ENNA_FREE(sd);
 }
 
@@ -129,6 +172,14 @@ _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
     elm_box_pack_end(bx, bt);                                        \
     evas_object_show(bt);                                            \
     evas_object_show(ic);                                            \
+
+static Elm_Slideshow_Item_Class itc =
+{
+    {
+        _slideshow_item_get,
+        NULL
+    }
+};
 
 /* externally accessible functions */
 Evas_Object *
@@ -168,10 +219,11 @@ enna_photo_slideshow_add(Evas * evas)
 
     ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
     ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+    sd->btplay = bt;
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
     ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
-//    ELM_ADD ("icon/rotate_ccw", _button_clicked_rotate_ccw_cb);
-//    ELM_ADD ("icon/rotate_cw",  _button_clicked_rotate_cw_cb);
+    ELM_ADD ("icon/rotate_ccw", _button_clicked_rotate_ccw_cb);
+    ELM_ADD ("icon/rotate_cw",  _button_clicked_rotate_cw_cb);
 
     evas_object_show(obj);
     evas_object_show(sd->slideshow);
@@ -184,8 +236,8 @@ enna_photo_slideshow_add(Evas * evas)
     sd->listener = enna_input_listener_add("slideshow", _input_events_cb, obj);
     enna_input_listener_demote(sd->listener);
 
-    evas_object_smart_callback_add(sd->slideshow, "clicked", _controls_show, sd);
-    evas_object_smart_callback_add(sd->slideshow, "move", _controls_show, sd);
+    evas_object_event_callback_add(sd->slideshow, EVAS_CALLBACK_MOUSE_UP, _controls_show, sd);
+    evas_object_event_callback_add(sd->slideshow, EVAS_CALLBACK_MOUSE_MOVE, _controls_show, sd);
 
     evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
                                    _sd_del, sd);
@@ -218,16 +270,17 @@ void enna_photo_slideshow_timeout_set(Evas_Object *obj, int to)
 
 void enna_photo_slideshow_image_add(Evas_Object *obj, const char *file, const char *group)
 {
-    Evas_Object *im;
+    Elm_Slideshow_Item *it;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
-
-    im = elm_image_add(obj);
-    elm_image_file_set(im, file, group);
-    elm_slideshow_item_add(sd->slideshow, im);
+    it = elm_slideshow_item_add(sd->slideshow, &itc, file);
+    sd->items = eina_list_append(sd->items, it);
 }
 
 void enna_photo_slideshow_goto(Evas_Object *obj, int nth)
 {
+    Elm_Slideshow_Item *it;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
-    elm_slideshow_goto(sd->slideshow, nth);
+
+    it = eina_list_nth(sd->items, nth);
+    elm_slideshow_show(it);
 }
