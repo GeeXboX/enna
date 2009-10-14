@@ -79,14 +79,24 @@ static void
 _button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
+    Evas_Object *ic;
+
+    ic = elm_icon_add(obj);
+
     if (!elm_slideshow_timeout_get(sd->slideshow))
     {
         elm_slideshow_timeout_set(sd->slideshow, sd->delay);
+        elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_pause");
     }
     else
     {
         elm_slideshow_timeout_set(sd->slideshow, 0);
+        elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
     }
+    elm_button_icon_set(sd->btplay, ic);
+    evas_object_size_hint_min_set(sd->btplay, 64, 64);
+    evas_object_size_hint_weight_set(sd->btplay, 0.0, 1.0);
+    evas_object_size_hint_align_set(sd->btplay, 0.5, 0.5);
 }
 
 static void
@@ -134,8 +144,10 @@ static void
 _spin(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
+
+    sd->delay = (int)elm_spinner_value_get(sd->spin);
     if (elm_slideshow_timeout_get(sd->slideshow) > 0)
-        elm_slideshow_timeout_set(sd->slideshow, (int)elm_spinner_value_get(sd->spin));
+        elm_slideshow_timeout_set(sd->slideshow, sd->delay);
 }
 
 static Eina_Bool
@@ -261,7 +273,7 @@ enna_photo_slideshow_add(Evas * evas)
     evas_object_event_callback_add(bx, EVAS_CALLBACK_MOUSE_OUT, _mouse_out, sd);
 
     ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
-    ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+    ELM_ADD ("icon/mp_pause",    _button_clicked_play_cb);
     sd->btplay = bt;
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
     ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
