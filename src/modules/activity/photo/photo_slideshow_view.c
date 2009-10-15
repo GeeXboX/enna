@@ -208,6 +208,7 @@ _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
     ENNA_OBJECT_DEL(sd->controls);
     ENNA_OBJECT_DEL(sd->slideshow);
     eina_list_free(sd->items);
+    enna_input_listener_del(sd->listener);
     ENNA_FREE(sd);
 }
 
@@ -261,6 +262,7 @@ enna_photo_slideshow_add(Evas * evas)
     evas_object_geometry_get(enna->layout, NULL, NULL, &w, &h);
     evas_object_move(sd->controls, 0, 0);
     evas_object_resize(sd->controls, w, h);
+    //elm_object_style_set(sd->controls, "enna_bottom");
     /* Fixme : add a config value */
     elm_notify_timeout_set(sd->controls, 10);
 
