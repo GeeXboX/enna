@@ -142,7 +142,7 @@ enna_exit_add(Evas * evas)
     sd = calloc(1, sizeof(Smart_Data));
 
     obj = elm_win_inwin_add(enna->win);
-    elm_win_inwin_style_set(obj, "enna");
+    elm_object_style_set(obj, "enna");
 
     sd->layout = elm_layout_add(obj);
     elm_layout_file_set(sd->layout, enna_config_theme_get(), "exit_layout");

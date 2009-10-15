@@ -102,7 +102,7 @@ _smart_add (Evas_Object * obj)
         return;
 
     sd->popup = elm_win_inwin_add(enna->win);
-    elm_win_inwin_style_set(sd->popup, "enna_minimal");
+    elm_object_style_set(sd->popup, "enna_minimal");
     elm_win_inwin_activate(sd->popup);
 
     sd->o_edje = edje_object_add (evas_object_evas_get (obj));

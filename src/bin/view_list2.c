@@ -177,7 +177,7 @@ _list_item_buttons_create_all(const Item_Data *id)
         {
         case ENNA_BUTTON:
             o = elm_button_add(enna->layout);
-            elm_button_style_set(o, "enna_list");
+            elm_object_style_set(o, "enna_list");
             elm_button_label_set(o, b->label);
             elm_button_icon_set(o, ic);
             evas_object_smart_callback_add(o, "clicked", _list_button_clicked_cb, b);
@@ -187,7 +187,7 @@ _list_item_buttons_create_all(const Item_Data *id)
             break;
         case ENNA_CHECKBOX:
             o = elm_check_add(enna->layout);
-            elm_button_style_set(o, "enna_list");
+            elm_object_style_set(o, "enna_list");
             elm_check_label_set(o, b->label);
             elm_check_icon_set(o, ic);
             elm_check_state_set(o, b->status);
