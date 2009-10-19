@@ -121,7 +121,6 @@ _slideshow_add_files(char *file_selected)
     {
         if (!strcmp(file_selected, file->uri))
             pos = n;
-        printf("add %s\n", file->uri + 7);
         enna_photo_slideshow_image_add(mod->o_slideshow, file->uri + 7, NULL);
         n++;
     }
