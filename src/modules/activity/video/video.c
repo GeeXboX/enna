@@ -310,8 +310,11 @@ backdrop_show (Enna_Metadata *m)
     {
         char dst[1024] = { 0 };
 
-        snprintf (dst, sizeof (dst), "%s/.enna/fanarts/%s",
-                  enna_util_user_home_get (), backdrop);
+        if (*backdrop == '/')
+          snprintf (dst, sizeof (dst), "%s", backdrop);
+        else
+          snprintf (dst, sizeof (dst), "%s/.enna/fanarts/%s",
+                    enna_util_user_home_get (), backdrop);
         file = strdup (dst);
     }
 
