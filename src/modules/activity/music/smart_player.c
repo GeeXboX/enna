@@ -118,8 +118,11 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     {
         char cv[1024] = { 0 };
 
-        snprintf (cv, sizeof (cv), "%s/.enna/covers/%s",
-                  enna_util_user_home_get (), cover);
+        if (*cover == '/')
+          snprintf (cv, sizeof (cv), "%s", cover);
+        else
+          snprintf (cv, sizeof (cv), "%s/.enna/covers/%s",
+                    enna_util_user_home_get (), cover);
         sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
         enna_image_fill_inside_set(sd->o_cover, 0);
         enna_image_file_set(sd->o_cover, cv, NULL);
