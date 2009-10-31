@@ -1,7 +1,7 @@
 #define COMP LOSSY 80
 
 images{
-   image: "background.png" RAW;
+   image: "bg1.jpg" COMP;
    image: "circle_shade.png" COMP;
    image: "mainmenu_border_left.png" COMP;
    image: "mainmenu_border_right.png" COMP;
@@ -83,19 +83,11 @@ collections
       }
       parts {
          /* background  */
-         part { name: "white_rect";
-            mouse_events:  0;
-            type: RECT;
-            description { state: "default" 0.0;
-               color: 255 255 255 255;
-
-            }
-         }
          part { name: "enna.background";
             mouse_events:  0;
             description { state: "default" 0.0;
-               color: 255 255 255 200;
-               image.normal: "background.png";
+               color: 255 255 255 255;
+               image.normal: "bg1.jpg";
                fill {
                   smooth: 1;
                }
