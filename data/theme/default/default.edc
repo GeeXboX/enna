@@ -134,14 +134,14 @@ collections
                visible: 1;
                image.normal: "shad_circ.png";
                image.border: 50 50 50 50;
-               rel1.to: "enna.mainmenu.bg";
+               rel1.to: "mainmenu.clip";
                rel1.offset: -32 -32;
-               rel2.to: "enna.mainmenu.bg";
+               rel2.to: "mainmenu.clip";
                rel2.offset: 32 32;
                fill.smooth: 0;
             }
          }
-         part { name: "enna.mainmenu.bg";
+         /*part { name: "enna.mainmenu.bg";
             clip_to: "enna.mainmenu.clip";
             description { state: "default" 0.0;
                color: 0 0 0 200;
@@ -154,14 +154,14 @@ collections
                    border: 8 8 8 8;
                 }
             }
-         }
+            }*/
          part { name: "enna.mainmenu.swallow";
             type: SWALLOW;
             clip_to: "mainmenu.clip";
             description { state: "default" 0.0;
-               rel1.to: "enna.mainmenu.bg";
+               rel1.to: "mainmenu.clip";
                rel1.offset: 4 4;
-               rel2.to: "enna.mainmenu.bg";
+               rel2.to: "mainmenu.clip";
                rel2.offset: -4 4;
             }
          }
