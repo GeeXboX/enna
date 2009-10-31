@@ -52,7 +52,6 @@ images/weather_unknown.png \
 images/volume_icon.png \
 images/mp_stop.png \
 images/icon_artist.png \
-images/location_panel_shadow.png \
 images/unknown_cover.png \
 images/icon_directory.png \
 images/default_backdrop.png \
@@ -112,7 +111,6 @@ images/flags/audio/dts51.png \
 images/flags/audio/dts.png \
 images/background.png \
 images/mp_forward.png \
-images/location_panel.png \
 images/mp_rewind.png \
 images/dev_ipod.png \
 images/mainmenu_background.png \
@@ -123,7 +121,6 @@ images/dev_cdrw.png \
 images/dev_tv.png \
 images/weather_sun_clouds.png \
 images/weather_sun_snow.png \
-images/location_bg.png \
 images/menu_sel_bg.png \
 images/loading-7.png \
 images/icon_enna.png \
@@ -168,7 +165,6 @@ images/icon_album.png \
 images/dev_samba.png \
 images/arrow_left.png \
 images/sel_fg.png \
-images/location_fg.png \
 images/bt_sm_hilight.png \
 images/rating0.png \
 images/weather_showers.png \
@@ -238,7 +234,6 @@ popup.edc \
 volume.edc \
 games.edc \
 icons.edc \
-location.edc \
 cover_video.edc \
 photo.edc \
 configuration.edc

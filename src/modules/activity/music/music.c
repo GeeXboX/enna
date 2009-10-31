@@ -35,7 +35,6 @@
 #include "activity.h"
 #include "vfs.h"
 #include "mediaplayer.h"
-#include "location.h"
 #include "mainmenu.h"
 #include "content.h"
 #include "view_list.h"
@@ -62,7 +61,6 @@ static void _create_mediaplayer_gui();
 static void _browse(void *data);
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
-static void _browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info);
 
 static void _menu_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
 
@@ -104,7 +102,6 @@ struct _Enna_Module_Music
     Evas_Object *o_edje;
     Evas_Object *o_list;
     Evas_Object *o_browser;
-    Evas_Object *o_location;
     Evas_Object *o_mediaplayer;
     Evas_Object *o_volume;
     Evas_Object *o_panel_lyrics;
@@ -436,24 +433,9 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
     mod->state = MENU_VIEW;
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
-    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
     mod->accept_ev = 0;
 
     _create_menu();
-
-    enna_location_remove_nth(mod->o_location,enna_location_count(mod->o_location) - 1);
-}
-
-static void
-_browser_browse_down_cb (void *data, Evas_Object *obj, void *event_info)
-{
-    int n;
-    const char *label ;
-
-    n = enna_location_count(mod->o_location) - 1;
-    label = enna_location_label_get_nth(mod->o_location, n);
-    enna_browser_select_label(mod->o_browser, label);
-    enna_location_remove_nth(mod->o_location, n);
 }
 
 
@@ -470,7 +452,6 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     if (ev->file->is_directory)
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
-        enna_location_append(mod->o_location, ev->file->label, NULL, NULL, NULL, NULL);
     }
     else
     {
@@ -506,13 +487,11 @@ _browse(void *data)
     mod->o_browser = enna_browser_add(enna->evas);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
-    evas_object_smart_callback_add(mod->o_browser, "browse_down", _browser_browse_down_cb, NULL);
 
     evas_object_show(mod->o_browser);
     edje_object_part_swallow(mod->o_edje, "enna.swallow.browser", mod->o_browser);
     enna_browser_root_set(mod->o_browser, vfs);
 
-    enna_location_append(mod->o_location, gettext(vfs->label), NULL, NULL, NULL, NULL);
     edje_object_signal_callback_add(mod->o_edje, "list,transition,end", "edje",
         _menu_transition_left_end_cb, NULL);
     edje_object_signal_emit(mod->o_edje, "list,left", "enna");
@@ -626,7 +605,6 @@ static void
 _create_gui()
 {
     Evas_Object *o;
-    Evas_Object *icon;
 
     /* Set default state */
     mod->state = MENU_VIEW;
@@ -637,15 +615,6 @@ _create_gui()
     mod->o_edje = o;
 
     _create_menu();
-
-    /* Create Location bar */
-    o = enna_location_add(enna->evas);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.location", o);
-
-    icon = edje_object_add(enna->evas);
-    edje_object_file_set(icon, enna_config_theme_get(), "icon/music_mini");
-    enna_location_append(o, _("Music"), icon, NULL, NULL, NULL);
-    mod->o_location = o;
 
     evas_object_event_callback_add(mod->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
         _event_mouse_down, NULL);
@@ -690,10 +659,8 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
-    evas_object_smart_callback_del(mod->o_browser, "browse_down", _browser_browse_down_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
-    ENNA_OBJECT_DEL(mod->o_location);
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_TIMER_DEL(mod->timer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);

@@ -42,7 +42,6 @@ collections
 #include "icons.edc"
 #include "list.edc"
 #include "browser.edc"
-#include "location.edc"
 #include "mediaplayer.edc"
 #include "video_info.edc"
 #include "slideshow.edc"

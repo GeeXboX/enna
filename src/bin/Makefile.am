@@ -32,7 +32,6 @@ view_list.c\
 view_list2.c\
 view_wall.c\
 switcher.c\
-location.c\
 mediaplayer.c\
 xml_utils.c\
 url_utils.c\
@@ -85,7 +84,6 @@ view_list.h\
 view_list2.h\
 view_wall.h\
 switcher.h\
-location.h\
 mediaplayer.h\
 xml_utils.h\
 url_utils.h\
