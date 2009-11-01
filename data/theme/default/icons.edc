@@ -8,9 +8,9 @@ group {                                             \
     parts {                                         \
         part { name: "icon";                        \
             description { state: "default" 0.0;     \
-                rel1.relative: 0 0;                 \
-                rel2.relative: 1.0 1.0;             \
-                image.normal: icon_file;            \
+            aspect: 1 1;                            \
+            aspect_preference: BOTH;                \
+            image.normal: icon_file;                \
             }                                       \
         }                                           \
     }                                               \

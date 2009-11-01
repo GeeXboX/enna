@@ -527,7 +527,7 @@ static int
 mp_seek (double percent)
 {
     player_playback_seek (mp->player,
-                          (int) (100 * percent), PLAYER_PB_SEEK_PERCENT);
+                          (int) (percent), PLAYER_PB_SEEK_PERCENT);
     return 0;
 }
 

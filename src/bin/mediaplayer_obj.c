@@ -44,35 +44,39 @@ typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
-    Evas_Coord x, y, w, h;
-    Evas_Object *o_edje;
-    Evas_Object *o_cover;
-    Evas_Object *o_mediacontrol;
+    Evas_Object *cv;
+    Evas_Object *ctl;
+    Evas_Object *sl;
+    Evas_Object *current_time;
+    Evas_Object *total_time;
+    Evas_Object *artist;
+    Evas_Object *album;
+    Evas_Object *title;
 };
 
 /* local subsystem globals */
-static Evas_Smart *_smart = NULL;
 static Enna_Playlist *_enna_playlist;
 
-static void _drag_bar_seek_cb(void *data, Evas_Object *obj,
-        const char *emission, const char *source)
+static void _seek_cb(void *data, Evas_Object *obj, void *event_info)
 {
-/*
     double value;
-    edje_object_part_drag_value_get(obj, "enna.dragable.pos", &value, NULL);
+
+    value = elm_slider_value_get(data);
+    printf("seek to %3.3f\n", value);
     enna_mediaplayer_seek(value);
-*/
 }
 
 void enna_smart_player_position_set(Evas_Object *obj, double pos,
         double len, double percent)
 {
-/*
+    Smart_Data *sd;
+
     long ph, pm, ps, lh, lm, ls;
     char buf[256];
     char buf2[256];
-    API_ENTRY
-    ;
+
+    sd = evas_object_data_get(obj, "sd");
+    if (!sd) return;
 
     lh = len / 3600000;
     lm = len / 60 - (lh * 60);
@@ -83,86 +87,71 @@ void enna_smart_player_position_set(Evas_Object *obj, double pos,
     snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
     snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
 
-    edje_object_part_text_set(sd->o_edje, "enna.text.length", buf2);
-    edje_object_part_text_set(sd->o_edje, "enna.text.position", buf);
-    edje_object_part_drag_value_set(sd->o_edje, "enna.dragable.pos", percent,
-            0.0);
-*/
+    elm_label_label_set(sd->total_time, buf2);
+    elm_label_label_set(sd->current_time, buf);
+    elm_slider_value_set(sd->sl, pos);
+
 }
 
-static void metadata_set_text (Evas_Object *obj, Enna_Metadata *m,
-                               const char *name, const char *edje, int max)
+static void metadata_set_text(Evas_Object *obj, Enna_Metadata *m, const char *name)
 {
-/*
     char *str;
-
-    API_ENTRY;
-
-    str = enna_metadata_meta_get (m, name, max);
-    edje_object_part_text_set(sd->o_edje, edje, str ? str : "");
+    str = enna_metadata_meta_get(m, name, 1);
+    elm_label_label_set(obj, str);
     ENNA_FREE(str);
-*/
 }
 
 void enna_smart_player_metadata_set(Evas_Object *obj,
                                     Enna_Metadata *metadata)
 {
-/*
+    Smart_Data *sd;
     char *cover;
 
-    API_ENTRY;
+    sd = evas_object_data_get(obj, "sd");
 
-    if (!metadata)
+    if (!metadata || !sd)
         return;
 
-    metadata_set_text (obj, metadata, "title", "enna.text.title", 1);
-    metadata_set_text (obj, metadata, "album", "enna.text.album", 1);
-    metadata_set_text (obj, metadata, "author", "enna.text.artist", 1);
+    metadata_set_text (sd->title, metadata, "title");
+    metadata_set_text (sd->album, metadata, "album");
+    metadata_set_text (sd->artist, metadata, "author");
 
-    ENNA_OBJECT_DEL(sd->o_cover);
     cover = enna_metadata_meta_get (metadata, "cover", 1);
+    printf("cover: %s\n", cover);
     if (cover)
     {
         char cv[1024] = { 0 };
 
         if (*cover == '/')
-          snprintf (cv, sizeof (cv), "%s", cover);
+            snprintf(cv, sizeof (cv), "%s", cover);
         else
-          snprintf (cv, sizeof (cv), "%s/.enna/covers/%s",
-                    enna_util_user_home_get (), cover);
-        sd->o_cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-        enna_image_fill_inside_set(sd->o_cover, 0);
-        enna_image_file_set(sd->o_cover, cv, NULL);
+            snprintf(cv, sizeof (cv), "%s/.enna/covers/%s",
+                     enna_util_user_home_get (), cover);
+
+        printf("cover: %s\n", cv);
+        elm_image_file_set(sd->cv, cv, NULL);
     }
     else
     {
-        sd->o_cover = edje_object_add(evas_object_evas_get(sd->o_edje));
-        edje_object_file_set(sd->o_cover,
-                             enna_config_theme_get(), "icon/unknown_cover");
+        elm_image_file_set(sd->cv, enna_config_theme_get(), "icon/unknown_cover");
     }
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
-    edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
-    ENNA_FREE(cover);
-*/
 }
-
-
-
-
-
-
 
 /* externally accessible functions */
 Evas_Object *
 enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
 {
-    Evas_Object *obj;
+
     Evas_Object *fr;
     Evas_Object *tb;
     Evas_Object *bt;
     Evas_Object *cv;
     Evas_Object *lb;
+    Evas_Object *sl;
+    Evas_Object *bx;
+    Smart_Data *sd;
 
+    sd = malloc(sizeof(Smart_Data));
 
     fr = elm_frame_add(enna->layout);
     tb = elm_table_add(enna->layout);
@@ -174,53 +163,68 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
 
     cv = elm_image_add(fr);
     elm_image_file_set(cv, enna_config_theme_get(), "icon/unknown_cover");
-    //evas_object_size_hint_weight_set(cv, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    //evas_object_size_hint_align_set(cv, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(cv, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(cv, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_table_pack(tb, cv, 0, 0, 1, 4);
     evas_object_show(cv);
-
-    bt = elm_button_add(fr);
-    elm_button_label_set(bt, "Button 2");
-    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_table_pack(tb, bt, 0, 4, 1, 2);
-    evas_object_show(bt);
+    sd->cv = cv;
 
     lb = elm_label_add(fr);
     elm_label_label_set(lb, "Title");
-    evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(lb, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_table_pack(tb, lb, 1, 0, 1, 1);
     evas_object_show(lb);
+    sd->title = lb;
 
 
     lb = elm_label_add(fr);
     elm_label_label_set(lb, "Album");
-    evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(lb, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_table_pack(tb, lb, 1, 1, 1, 1);
     evas_object_show(lb);
+    sd->album = lb;
 
     lb = elm_label_add(fr);
     elm_label_label_set(lb, "Artist");
-    evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(lb, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_table_pack(tb, lb, 1, 2, 1, 1);
     evas_object_show(lb);
+    sd->artist = lb;
 
 
-
-
-    bt = elm_button_add(fr);
-    elm_button_label_set(bt, "Button 6");
+    bt = enna_mediacontrol_add(evas_object_evas_get(fr),_enna_playlist);
     evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_table_pack(tb, bt, 1, 3, 1, 1);
     evas_object_show(bt);
 
+    bx = elm_box_add(fr);
+    elm_box_horizontal_set(bx, 1);
+    evas_object_size_hint_align_set(bx, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_show(bx);
+    elm_table_pack(tb, bx, 1, 4, 1, 1);
+
+    lb = elm_label_add(fr);
+    elm_box_pack_end(bx, lb);
+    evas_object_show(lb);
+    sd->current_time = lb;
+
+    sl = elm_slider_add(fr);
+    elm_slider_span_size_set(sl, 40);
+    elm_object_scale_set(sl, 2.0);
+    evas_object_size_hint_align_set(sl, EVAS_HINT_FILL, 0.5);
+    elm_slider_min_max_set(sl, 0.0, 100.0);
+    elm_slider_indicator_format_set(sl, "%1.0f %%");
+    evas_object_size_hint_weight_set(sl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    elm_box_pack_end(bx, sl);
+    evas_object_show(sl);
+    evas_object_smart_callback_add(sl, "delay,changed", _seek_cb, sl);
+    sd->sl = sl;
+
+    lb = elm_label_add(fr);
+    elm_box_pack_end(bx, lb);
+    evas_object_show(lb);
+    sd->total_time = lb;
+
+    evas_object_data_set(fr, "sd", sd);
 
     return fr;
-    //sd->o_mediacontrol = enna_mediacontrol_add(evas_object_evas_get(sd->o_edje),_enna_playlist);
-
-
-}
+ }
