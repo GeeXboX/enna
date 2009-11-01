@@ -450,7 +450,6 @@ _list_transition_default_down_end_cb(void *data, Evas_Object *o, const char *sig
 
     if (last && last->label)
     {
-        printf("will try to select : %s\n", last->label);
         selected = sd->view_funcs.view_jump_label(sd->o_view, last->label);
         if (selected == -1)
             sd->view_funcs.view_select_nth(sd->o_view, 0);
