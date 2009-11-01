@@ -2220,8 +2220,8 @@ group { name: "elm/frame/base/default";
          mouse_events:  0;
          description { state:    "default" 0.0;
             color: 255 255 255 100;
-            rel1.offset: 16 16;
-            rel2.offset: -16 -16;
+            rel1.offset: 32 32;
+            rel2.offset: -32 -32;
             image {
                normal: "black_frame.png";
                border: 8 8 8 8 ;
@@ -2256,6 +2256,7 @@ group { name: "elm/frame/base/default";
 	 image: "sl_bt2_1.png" COMP;
 	 image: "sl_bt2_2.png" COMP;
          image: "sl_units.png" COMP;
+         image: "progress_bar_content.png" COMP;
       }
       parts {
          part { name: "base";
@@ -2273,24 +2274,7 @@ group { name: "elm/frame/base/default";
                fill.smooth: 0;
             }
          }
-         part { name: "level";
-            type: RECT;
-            mouse_events: 0;
-            description { state: "default" 0.0;
-               fixed: 1 1;
-               rel1.to: "base";
-               rel2 {
-                  to_y: "base";
-                  to_x: "elm.dragable.slider";
-                  relative: 0.5 1.0;
-               }
-               color: 128 128 128 255;
-            }
-            description { state: "inverted" 0.0;
-               inherit: "default" 0.0;
-               visible: 0;
-            }
-         }
+
          part { name: "level2";
             type: RECT;
             mouse_events: 0;
@@ -2355,6 +2339,7 @@ group { name: "elm/frame/base/default";
                }
 	    }
 	 }
+
 	 part { name: "elm.swallow.content";
 	    type: SWALLOW;
 	    description { state: "default" 0.0;
@@ -2378,6 +2363,25 @@ group { name: "elm/frame/base/default";
 	       rel2.offset: 4 -1;
 	    }
 	 }
+         part { name: "level";
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: 8 8;
+               rel1.to: "base";
+               rel2 {
+                  to_y: "base";
+                  to_x: "elm.dragable.slider";
+                  relative: 0.5 1.0;
+               }
+               image.normal: "progress_bar_content.png";
+               image.border: 4 4 4 4;
+            }
+            description { state: "inverted" 0.0;
+               inherit: "default" 0.0;
+               visible: 0;
+            }
+         }
          part { name: "elm.text";
 	    type: TEXT;
 	    mouse_events: 0;
@@ -2394,8 +2398,8 @@ group { name: "elm/frame/base/default";
 	       rel2.offset: -1 -5;
 	       color: 0 0 0 255;
 	       text {
-		  font: "Sans,Edje-Vera";
-		  size: 10;
+		  font: "content";
+		  size: 20;
 		  min: 0 0;
 		  align: 0.0 0.5;
 	       }
@@ -2441,8 +2445,8 @@ group { name: "elm/frame/base/default";
 	       rel2.offset: 0 -9;
 	       color: 0 0 0 255;
 	       text {
-		  font: "Sans,Edje-Vera";
-		  size: 10;
+		  font: "content";
+		  size: 20;
 		  min: 0 0;
 		  align: 0.0 0.5;
 	       }
@@ -2641,8 +2645,8 @@ group { name: "elm/frame/base/default";
 	       color: 224 224 224 255;
 	       color3: 0 0 0 64;
 	       text {
-		  font:     "Sans,Edje-Vera";
-		  size:     10;
+		  font:     "content";
+		  size:     20;
 		  min:      0 0;
 		  align:    0.5 0.5;
 	       }
@@ -2779,8 +2783,7 @@ group { name: "elm/label/base/default";
       styles
 	{
 	   style { name: "textblock_style";
-	      base: "font=content font_size=20 align=left color=#FFF wrap=word";
-
+	      base: "font=content font_size=20 align=center effect=glow color=#AAA color3=#FFF wrap=word";
 	      tag:  "br" "\n";
 	      tag:  "hilight" "+ font=content_bd";
 	      tag:  "b" "+ font=content_bd";

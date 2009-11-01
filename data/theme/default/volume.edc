@@ -6,7 +6,7 @@ images {
    image: "volume_level_shadow.png" COMP;
    image: "volume_bg.png" COMP;
    image: "volume_bg_shadow.png" COMP;
-
+   image: "progress_bar_drag.png" COMP;
 }
 
 group {
