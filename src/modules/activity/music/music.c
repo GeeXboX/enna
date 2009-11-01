@@ -40,7 +40,7 @@
 #include "view_list.h"
 #include "browser.h"
 #include "logs.h"
-#include "smart_player.h"
+#include "mediaplayer_obj.h"
 #include "volumes.h"
 #include "panel_lyrics.h"
 #include "module.h"

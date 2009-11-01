@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef SMART_PLAYER_H
-#define SMART_PLAYER_H
+#ifndef MEDIAPLAYER_OBJ_H
+#define MEDIAPLAYER_OBJ_H
 
 #include "enna.h"
 
@@ -36,4 +36,4 @@ Evas_Object *enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist);
 void enna_smart_player_position_set(Evas_Object *obj, double pos,
         double len, double percent);
 void enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata);
-#endif /* SMART_PLAYER_H */
+#endif /* MEDIAPLAYER_OBJ_H */

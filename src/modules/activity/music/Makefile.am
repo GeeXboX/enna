@@ -24,9 +24,7 @@ activity_music_la_SOURCES= \
 music.c \
 music.h \
 panel_lyrics.c\
-panel_lyrics.h\
-smart_player.c\
-smart_player.h
+panel_lyrics.h
 
 activity_music_la_LIBADD = @ENNA_LIBS@
 activity_music_la_LDFLAGS = -module -avoid-version

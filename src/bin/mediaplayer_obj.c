@@ -34,7 +34,7 @@
 #include "image.h"
 #include "metadata.h"
 #include "mediaplayer.h"
-#include "smart_player.h"
+#include "mediaplayer_obj.h"
 #include "mediacontrol.h"
 #include "utils.h"
 
