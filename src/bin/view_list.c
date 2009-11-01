@@ -172,9 +172,8 @@ enna_list_add(Evas *evas)
     sd = calloc(1, sizeof(Smart_Data));
 
     obj = elm_genlist_add(enna->layout);
-    evas_object_size_hint_align_set(obj, -1.0, -1.0);
-    evas_object_size_hint_weight_set(obj, 1.0, 1.0);
-    elm_genlist_horizontal_mode_set(obj, ELM_LIST_LIMIT);
+    evas_object_size_hint_weight_set(obj, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    elm_genlist_horizontal_mode_set(obj, ELM_LIST_COMPRESS);
     evas_object_show(obj);
 
     evas_object_data_set(obj, "sd", sd);

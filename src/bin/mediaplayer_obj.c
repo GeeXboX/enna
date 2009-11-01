@@ -38,7 +38,7 @@
 #include "mediacontrol.h"
 #include "utils.h"
 
-#define SMART_NAME "smart_mediaplayer"xb
+#define SMART_NAME "smart_mediaplayer"
 
 typedef struct _Smart_Data Smart_Data;
 
@@ -96,7 +96,7 @@ static void metadata_set_text(Evas_Object *obj, Enna_Metadata *m, const char *na
 {
     char *str;
     str = enna_metadata_meta_get(m, name, 1);
-    elm_label_label_set(obj, str);
+    elm_label_label_set(obj, enna_util_str_chomp(str));
     ENNA_FREE(str);
 }
 
@@ -130,7 +130,7 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     }
     else
     {
-        elm_image_file_set(sd->cv, enna_config_theme_get(), "icon/unknown_cover");
+        elm_image_file_set(sd->cv, NULL, NULL);
     }
     evas_object_show(sd->cv);
 }
@@ -159,7 +159,6 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     evas_object_show(tb);
 
     cv = elm_image_add(fr);
-    elm_image_file_set(cv, enna_config_theme_get(), "icon/unknown_cover");
     evas_object_size_hint_weight_set(cv, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(cv, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_table_pack(tb, cv, 0, 0, 1, 4);

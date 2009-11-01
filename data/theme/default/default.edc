@@ -42,7 +42,6 @@ collections
 #include "icons.edc"
 #include "list.edc"
 #include "browser.edc"
-#include "mediaplayer.edc"
 #include "video_info.edc"
 #include "slideshow.edc"
 #include "picture.edc"
@@ -125,8 +124,8 @@ collections
                color: 255 255 255 255;
                visible: 1;
             }
-         }
-         part { name: "mainmenu.shadow";
+         
+}         part { name: "mainmenu.shadow";
             mouse_events:  0;
             clip_to: "enna.mainmenu.clip";
             description { state: "default" 0.0;

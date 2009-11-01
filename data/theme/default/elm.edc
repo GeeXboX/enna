@@ -2208,18 +2208,19 @@ group { name: "elm/frame/base/default";
          description { state: "default" 0.0;
             visible: 1;
             image.normal: "shad_circ.png";
-            image.border: 50 50 50 50;
+            image.border: 16 16 16 16;
             rel1.to: "base";
             rel1.offset: -16 -16;
             rel2.to: "base";
             rel2.offset: 16 16;
             fill.smooth: 0;
+            image.middle: 0;
          }
       }
       part { name: "base";
          mouse_events:  0;
          description { state:    "default" 0.0;
-            color: 255 255 255 100;
+            color: 255 255 255 200;
             rel1.offset: 32 32;
             rel2.offset: -32 -32;
             image {
@@ -2783,7 +2784,7 @@ group { name: "elm/label/base/default";
       styles
 	{
 	   style { name: "textblock_style";
-	      base: "font=content font_size=20 align=center effect=glow color=#AAA color3=#FFF wrap=word";
+	      base: "font=content font_size=20 align=center effect=glow color=#EEE color3=#FFF wrap=word";
 	      tag:  "br" "\n";
 	      tag:  "hilight" "+ font=content_bd";
 	      tag:  "b" "+ font=content_bd";

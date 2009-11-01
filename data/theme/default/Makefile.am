@@ -218,7 +218,6 @@ fonts/content_bold.ttf \
 default.edc \
 music_video.edc \
 video_info.edc \
-mediaplayer.edc \
 mainmenu.edc \
 mediacontrol.edc \
 picture.edc \
