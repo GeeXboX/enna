@@ -380,3 +380,23 @@ void enna_util_env_set(const char *var, const char *val)
     else
     	unsetenv(var);
 }
+
+
+/**
+ * Remove Trailing spaces from str
+ */
+char *enna_util_str_chomp(char *str)
+{
+    char *c;
+
+    if (!str)
+        return NULL;
+
+    if (!*str)
+        return str;
+
+    for (c = str + strlen(str) - 1; c >= str && isspace(*c); c--)
+        *c = '\0';
+
+    return str;
+}

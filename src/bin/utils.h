@@ -53,5 +53,6 @@ svdrp_t *enna_svdrp_get (void);
 #endif
 
 void enna_util_env_set(const char *var, const char *val);
+char *enna_util_str_chomp(char *str);
 
 #endif /* UTILS_H */
