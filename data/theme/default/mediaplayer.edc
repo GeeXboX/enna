@@ -1,4 +1,4 @@
-#define COVER_X 0.35
+#define COVER_X 0.25
 
 images {
    image: "cd_case_reflect.png" COMP;

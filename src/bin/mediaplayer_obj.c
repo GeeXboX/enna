@@ -57,14 +57,17 @@ static Enna_Playlist *_enna_playlist;
 static void _drag_bar_seek_cb(void *data, Evas_Object *obj,
         const char *emission, const char *source)
 {
+/*
     double value;
     edje_object_part_drag_value_get(obj, "enna.dragable.pos", &value, NULL);
     enna_mediaplayer_seek(value);
+*/
 }
 
 void enna_smart_player_position_set(Evas_Object *obj, double pos,
         double len, double percent)
 {
+/*
     long ph, pm, ps, lh, lm, ls;
     char buf[256];
     char buf2[256];
@@ -84,11 +87,13 @@ void enna_smart_player_position_set(Evas_Object *obj, double pos,
     edje_object_part_text_set(sd->o_edje, "enna.text.position", buf);
     edje_object_part_drag_value_set(sd->o_edje, "enna.dragable.pos", percent,
             0.0);
+*/
 }
 
 static void metadata_set_text (Evas_Object *obj, Enna_Metadata *m,
                                const char *name, const char *edje, int max)
 {
+/*
     char *str;
 
     API_ENTRY;
@@ -96,11 +101,13 @@ static void metadata_set_text (Evas_Object *obj, Enna_Metadata *m,
     str = enna_metadata_meta_get (m, name, max);
     edje_object_part_text_set(sd->o_edje, edje, str ? str : "");
     ENNA_FREE(str);
+*/
 }
 
 void enna_smart_player_metadata_set(Evas_Object *obj,
                                     Enna_Metadata *metadata)
 {
+/*
     char *cover;
 
     API_ENTRY;
@@ -136,134 +143,81 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     edje_object_part_swallow(sd->o_edje, "enna.swallow.cover", sd->o_cover);
     edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
     ENNA_FREE(cover);
+*/
 }
 
-/* local subsystem globals */
-static void _enna_mediaplayer_smart_reconfigure(Smart_Data * sd)
-{
-    Evas_Coord x, y, w, h;
 
-    x = sd->x;
-    y = sd->y;
-    w = sd->w;
-    h = sd->h;
 
-    evas_object_move(sd->o_edje, x, y);
-    evas_object_resize(sd->o_edje, w, h);
-}
 
-static void _smart_add(Evas_Object * obj)
-{
-    Smart_Data *sd;
 
-    sd = calloc(1, sizeof(Smart_Data));
-    if (!sd)
-        return;
-    sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "mediaplayer");
-    sd->x = 0;
-    sd->y = 0;
-    sd->w = 0;
-    sd->h = 0;
-    sd->o_mediacontrol=enna_mediacontrol_add(evas_object_evas_get(sd->o_edje),_enna_playlist);
-    edje_object_part_swallow(sd->o_edje, "enna.swallow.mediacontrol", sd->o_mediacontrol);
 
-    evas_object_smart_member_add(sd->o_mediacontrol, obj);
-    evas_object_smart_member_add(sd->o_edje, obj);
-    evas_object_smart_data_set(obj, sd);
-    edje_object_signal_callback_add(sd->o_edje, "drag", "enna.dragable.pos",
-            _drag_bar_seek_cb, NULL);
-}
-
-static void _smart_del(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    ENNA_OBJECT_DEL(sd->o_mediacontrol);
-    ENNA_OBJECT_DEL(sd->o_cover);
-    ENNA_OBJECT_DEL(sd->o_edje);
-    free(sd);
-}
-
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
-{
-    INTERNAL_ENTRY;
-
-    if ((sd->x == x) && (sd->y == y))
-        return;
-    sd->x = x;
-    sd->y = y;
-    _enna_mediaplayer_smart_reconfigure(sd);
-}
-
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
-{
-    INTERNAL_ENTRY;
-
-    if ((sd->w == w) && (sd->h == h))
-        return;
-    sd->w = w;
-    sd->h = h;
-    _enna_mediaplayer_smart_reconfigure(sd);
-}
-
-static void _smart_show(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_show(sd->o_edje);
-}
-
-static void _smart_hide(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_hide(sd->o_edje);
-}
-
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
-{
-    INTERNAL_ENTRY;
-    evas_object_color_set(sd->o_edje, r, g, b, a);
-}
-
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
-{
-    INTERNAL_ENTRY;
-    evas_object_clip_set(sd->o_edje, clip);
-}
-
-static void _smart_clip_unset(Evas_Object * obj)
-{
-    INTERNAL_ENTRY;
-    evas_object_clip_unset(sd->o_edje);
-}
-
-static void _enna_mediaplayer_smart_init(void)
-{
-    static const Evas_Smart_Class sc =
-    {
-        SMART_NAME,
-        EVAS_SMART_CLASS_VERSION,
-        _smart_add,
-        _smart_del,
-        _smart_move,
-        _smart_resize,
-        _smart_show,
-        _smart_hide,
-        _smart_color_set,
-        _smart_clip_set,
-        _smart_clip_unset,
-        NULL,
-        NULL
-    };
-
-    if (!_smart)
-        _smart = evas_smart_class_new(&sc);
-}
 
 /* externally accessible functions */
 Evas_Object *
 enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
 {
-    _enna_playlist = enna_playlist;
-    _enna_mediaplayer_smart_init();
-    return evas_object_smart_add(evas, _smart);
+    Evas_Object *obj;
+    Evas_Object *fr;
+    Evas_Object *tb;
+    Evas_Object *bt;
+
+
+    fr = elm_frame_add(enna->layout);
+    tb = elm_table_add(enna->layout);
+    evas_object_size_hint_weight_set(tb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    elm_frame_content_set(fr, tb);
+    evas_object_show(fr);
+    evas_object_show(tb);
+
+
+    bt = elm_button_add(fr);
+    elm_button_label_set(bt, "Button 1");
+    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, bt, 0, 0, 1, 4);
+    evas_object_show(bt);
+
+    bt = elm_button_add(fr);
+    elm_button_label_set(bt, "Button 2");
+    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, bt, 0, 4, 1, 2);
+    evas_object_show(bt);
+   
+    bt = elm_button_add(fr);
+    elm_button_label_set(bt, "Button 3");
+    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, bt, 1, 0, 1, 1);
+    evas_object_show(bt);
+
+   
+    bt = elm_button_add(fr);
+    elm_button_label_set(bt, "Button 4");
+    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, bt, 1, 1, 1, 1);
+    evas_object_show(bt);
+
+   
+    bt = elm_button_add(fr);
+    elm_button_label_set(bt, "Button 5");
+    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, bt, 1, 2, 1, 1);
+    evas_object_show(bt);
+
+   
+    bt = elm_button_add(fr);
+    elm_button_label_set(bt, "Button 6");
+    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, bt, 1, 3, 1, 1);
+    evas_object_show(bt);
+
+   
+    return fr;
+    //sd->o_mediacontrol = enna_mediacontrol_add(evas_object_evas_get(sd->o_edje),_enna_playlist);
+
+
 }
