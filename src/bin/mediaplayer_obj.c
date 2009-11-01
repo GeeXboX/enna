@@ -160,6 +160,8 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     Evas_Object *fr;
     Evas_Object *tb;
     Evas_Object *bt;
+    Evas_Object *cv;
+    Evas_Object *lb;
 
 
     fr = elm_frame_add(enna->layout);
@@ -170,12 +172,12 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     evas_object_show(tb);
 
 
-    bt = elm_button_add(fr);
-    elm_button_label_set(bt, "Button 1");
-    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_table_pack(tb, bt, 0, 0, 1, 4);
-    evas_object_show(bt);
+    cv = elm_image_add(fr);
+    elm_image_file_set(cv, enna_config_theme_get(), "icon/unknown_cover");
+    //evas_object_size_hint_weight_set(cv, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    //evas_object_size_hint_align_set(cv, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, cv, 0, 0, 1, 4);
+    evas_object_show(cv);
 
     bt = elm_button_add(fr);
     elm_button_label_set(bt, "Button 2");
@@ -183,31 +185,32 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_table_pack(tb, bt, 0, 4, 1, 2);
     evas_object_show(bt);
-   
-    bt = elm_button_add(fr);
-    elm_button_label_set(bt, "Button 3");
-    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_table_pack(tb, bt, 1, 0, 1, 1);
-    evas_object_show(bt);
 
-   
-    bt = elm_button_add(fr);
-    elm_button_label_set(bt, "Button 4");
-    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_table_pack(tb, bt, 1, 1, 1, 1);
-    evas_object_show(bt);
+    lb = elm_label_add(fr);
+    elm_label_label_set(lb, "Title");
+    evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(lb, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, lb, 1, 0, 1, 1);
+    evas_object_show(lb);
 
-   
-    bt = elm_button_add(fr);
-    elm_button_label_set(bt, "Button 5");
-    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_table_pack(tb, bt, 1, 2, 1, 1);
-    evas_object_show(bt);
 
-   
+    lb = elm_label_add(fr);
+    elm_label_label_set(lb, "Album");
+    evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(lb, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, lb, 1, 1, 1, 1);
+    evas_object_show(lb);
+
+    lb = elm_label_add(fr);
+    elm_label_label_set(lb, "Artist");
+    evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_size_hint_align_set(lb, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_table_pack(tb, lb, 1, 2, 1, 1);
+    evas_object_show(lb);
+
+
+
+
     bt = elm_button_add(fr);
     elm_button_label_set(bt, "Button 6");
     evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -215,7 +218,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     elm_table_pack(tb, bt, 1, 3, 1, 1);
     evas_object_show(bt);
 
-   
+
     return fr;
     //sd->o_mediacontrol = enna_mediacontrol_add(evas_object_evas_get(sd->o_edje),_enna_playlist);
 
