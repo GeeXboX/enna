@@ -73,12 +73,12 @@ AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
 
 # Configuration
 want_activity_configuration="yes"
-AC_MSG_CHECKING(whether information activity module is to be built)
+AC_MSG_CHECKING(whether configuration activity module is to be built)
 AC_ARG_ENABLE(activity-configuration,
   AS_HELP_STRING([--enable-activity-configuration],[Enable configuration Activity Module]),
-  [ want_activity_info=$enableval ]
+  [ want_activity_configuration=$enableval ]
 )
-AC_MSG_RESULT($want_activity_info)
+AC_MSG_RESULT($want_activity_configuration)
 AM_CONDITIONAL(BUILD_ACTIVITY_CONFIGURATION, test "x$want_activity_configuration" = "xyes")
 if test "x$want_activity_configuration" = "xyes"; then
   AC_DEFINE(BUILD_ACTIVITY_CONFIGURATION, 1, [configuration Activity])
