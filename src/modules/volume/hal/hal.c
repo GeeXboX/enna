@@ -399,6 +399,8 @@ module_init (Enna_Module *em)
     mod->em = em;
     em->mod = mod;
 
+    e_dbus_init();
+
     mod->dbus = e_dbus_bus_get (DBUS_BUS_SYSTEM);
     if (!mod->dbus)
         goto edbus_error;
