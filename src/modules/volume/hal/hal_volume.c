@@ -69,11 +69,11 @@ static const struct {
     const char *property;
     volume_type_t type;
 } vol_disc_mapping[] = {
-    { N_("CDDA"),  "volume.disc.has_audio",    VOLUME_TYPE_CDDA              },
-    { N_("VCD"),   "volume.disc.is_vcd",       VOLUME_TYPE_VCD               },
-    { N_("SVCD"),  "volume.disc.is_svcd",      VOLUME_TYPE_SVCD              },
-    { N_("DVD"),   "volume.disc.is_videodvd",  VOLUME_TYPE_DVD_VIDEO         },
-    { N_("Data"),  "volume.disc.has_data",     VOLUME_TYPE_CD                },
+    { N_("CDDA"),  "volume.disc.has_audio",    HAL_VOLUME_TYPE_CDDA              },
+    { N_("VCD"),   "volume.disc.is_vcd",       HAL_VOLUME_TYPE_VCD               },
+    { N_("SVCD"),  "volume.disc.is_svcd",      HAL_VOLUME_TYPE_SVCD              },
+    { N_("DVD"),   "volume.disc.is_videodvd",  HAL_VOLUME_TYPE_DVD_VIDEO         },
+    { N_("Data"),  "volume.disc.has_data",     HAL_VOLUME_TYPE_CD                },
     { NULL }
 };
 
@@ -83,7 +83,7 @@ volume_new (void)
     volume_t *v;
 
     v = calloc (1, sizeof (volume_t));
-    v->type = VOLUME_TYPE_UNKNOWN;
+    v->type = HAL_VOLUME_TYPE_UNKNOWN;
 
     return v;
 }
@@ -107,16 +107,6 @@ volume_free (volume_t *v)
     ENNA_FREE (v->partition_label);
     ENNA_FREE (v->mount_point);
     ENNA_FREE (v->device);
-    if (v->enna_volume)
-    {
-        Enna_Volume *ev = v->enna_volume;
-        eina_stringshare_del(ev->name);
-        eina_stringshare_del(ev->label);
-        eina_stringshare_del(ev->icon);
-        eina_stringshare_del(ev->type);
-        eina_stringshare_del(ev->uri);
-        free(ev);
-    }
     free (v);
 }
 
@@ -131,7 +121,7 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
         (usage != LIBHAL_VOLUME_USAGE_UNKNOWN))
         return;
 
-    v->type = VOLUME_TYPE_HDD;
+    v->type = HAL_VOLUME_TYPE_HDD;
 
     if (libhal_volume_get_storage_device_udi (v->vol))
         v->parent = strdup (libhal_volume_get_storage_device_udi (v->vol));
@@ -141,7 +131,7 @@ volume_get_properties (LibHalContext *ctx, const char *udi, volume_t *v)
         LibHalVolumeDiscType type;
         DBusError error;
 
-        v->type = VOLUME_TYPE_CD;
+        v->type = HAL_VOLUME_TYPE_CD;
 
         type = libhal_volume_get_disc_type (v->vol);
         for (i = 0; vol_disc_type_mapping[i].name; i++)

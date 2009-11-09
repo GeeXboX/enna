@@ -139,12 +139,9 @@ static void
 vfs_add_volume_entry (volume_t *v)
 {
     char name[256], tmp[4096];
-    int caps = 0;
-    const char *icon = NULL;
-    const char *type = NULL;
+    ENNA_VOLUME_TYPE type = VOLUME_TYPE_HDD;
     const char *uri = NULL;
     Enna_Volume *evol;
-    char *ic = NULL;
 
     if (!v)
         return;
@@ -152,85 +149,75 @@ vfs_add_volume_entry (volume_t *v)
     switch (v->type)
     {
         /* discard unknown volumes */
-    case VOLUME_TYPE_UNKNOWN:
+    case HAL_VOLUME_TYPE_UNKNOWN:
         return;
 
-    case VOLUME_TYPE_HDD:
+    case HAL_VOLUME_TYPE_HDD:
         /* discarded un-accessible HDDs */
         if (!v->mounted)
             return;
 
-        caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-
         switch (v->s->type)
         {
         case LIBHAL_DRIVE_TYPE_CAMERA:
-            ic = "icon/dev/camera";
+            type = VOLUME_TYPE_CAMERA;
             break;
 
         case LIBHAL_DRIVE_TYPE_PORTABLE_AUDIO_PLAYER:
-            ic = "icon/dev/ipod";
+            type = VOLUME_TYPE_AUDIO_PLAYER;
             break;
 
         case LIBHAL_DRIVE_TYPE_FLASHKEY:
+            type = VOLUME_TYPE_FLASHKEY;
+            break;
         case LIBHAL_DRIVE_TYPE_REMOVABLE_DISK:
-            ic = "icon/dev/usbstick";
+            type = VOLUME_TYPE_REMOVABLE_DISK;
             break;
 
         case LIBHAL_DRIVE_TYPE_COMPACT_FLASH:
-        case LIBHAL_DRIVE_TYPE_MEMORY_STICK:
-        case LIBHAL_DRIVE_TYPE_SMART_MEDIA:
-        case LIBHAL_DRIVE_TYPE_SD_MMC:
-            ic = "icon/dev/memorycard";
+            type = VOLUME_TYPE_COMPACT_FLASH;
             break;
-
+        case LIBHAL_DRIVE_TYPE_MEMORY_STICK:
+            type = VOLUME_TYPE_MEMORY_STICK;
+            break;
+        case LIBHAL_DRIVE_TYPE_SMART_MEDIA:
+            type = VOLUME_TYPE_SMART_MEDIA;
+            break;
+        case LIBHAL_DRIVE_TYPE_SD_MMC:
+            type = VOLUME_TYPE_SD_MMC;
+            break;
         default:
-            ic = "icon/dev/hdd";
+            type = VOLUME_TYPE_HDD;
             break;
         }
-
-        icon = eina_stringshare_add(ic);
-        type =  eina_stringshare_add("file://");
-        snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
         uri = eina_stringshare_add(tmp);
         break;
-
-    case VOLUME_TYPE_CD:
-        caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon =  eina_stringshare_add("icon/dev/cdrom");
-        type =  eina_stringshare_add("file://");
-        snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+    case HAL_VOLUME_TYPE_CD:
+        type = VOLUME_TYPE_CD;
+        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
         uri = eina_stringshare_add(tmp);
         break;
-
-    case VOLUME_TYPE_CDDA:
-        caps = ENNA_CAPS_MUSIC;
-        icon =  eina_stringshare_add("icon/dev/cdda2");
-        type =  eina_stringshare_add("cdda://");
+    case HAL_VOLUME_TYPE_CDDA:
+        type =  VOLUME_TYPE_CDDA;
         uri  =  eina_stringshare_add("cdda://");
         break;
-
-    case VOLUME_TYPE_DVD:
-        caps = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
-        icon =  eina_stringshare_add("icon/dev/dvd");
-        type =  eina_stringshare_add("file://");
-        snprintf (tmp, sizeof (tmp), "file://%s", v->mount_point);
+    case HAL_VOLUME_TYPE_DVD:
+        type =  VOLUME_TYPE_DVD;
+        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
         uri = eina_stringshare_add(tmp);
-
+        printf("%s uri\n", uri);
         break;
-
-    case VOLUME_TYPE_DVD_VIDEO:
-        caps = ENNA_CAPS_VIDEO;
-        icon =  eina_stringshare_add("icon/dev/dvd");
-        type =  eina_stringshare_add("dvd://"); /* Need a way to manage dvdnav:// !*/
-        uri  =  eina_stringshare_add("dvd://"); /* Need a way to manage dvdnav:// !*/
+    case HAL_VOLUME_TYPE_DVD_VIDEO:
+        type =  VOLUME_TYPE_DVD_VIDEO;
+        uri  =  eina_stringshare_add("dvd://");
         break;
-
-    case VOLUME_TYPE_VCD:
-    case VOLUME_TYPE_SVCD:
-        caps = ENNA_CAPS_VIDEO;
-        icon = eina_stringshare_add("icon/dev/cdrom");
-        type =  eina_stringshare_add("vcd://");
+    case HAL_VOLUME_TYPE_VCD:
+        type = VOLUME_TYPE_VCD;
+        uri =  eina_stringshare_add("vcd://");
+        break;
+    case HAL_VOLUME_TYPE_SVCD:
+        type = VOLUME_TYPE_SVCD;
         uri =  eina_stringshare_add("vcd://");
         break;
     }
@@ -248,14 +235,26 @@ vfs_add_volume_entry (volume_t *v)
         v->name = strdup (name);
 
     evol = calloc(1, sizeof(Enna_Volume));
-    evol->name = strdup(name);
-    evol->label = strdup(name);
-    evol->icon = eina_stringshare_add(icon);
-    evol->type = eina_stringshare_add(type);
-    evol->uri = eina_stringshare_add(uri);
-    evol->device = eina_stringshare_add(v->device);
-    enna_volumes_append(evol->type, evol);
+    evol->label = eina_stringshare_add(name);
+    evol->type = type;
+    evol->mount_point = eina_stringshare_add(uri);
+    /* FIXME add this property correctly */
+    evol->eject = NULL;
+    evol->is_ejectable = EINA_FALSE;
     v->enna_volume = evol;
+    enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point);
+    enna_volumes_add_emit(evol);
+}
+
+static void
+vfs_remove_volume_entry (volume_t *v)
+{
+    enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point);
+    enna_volumes_remove_emit(v->enna_volume);
+    eina_stringshare_del(v->enna_volume->label);
+    eina_stringshare_del(v->enna_volume->mount_point);
+    ENNA_FREE(v->enna_volume);
+    v->enna_volume = NULL;
 }
 
 static void
@@ -291,11 +290,9 @@ ehal_remove_volume (char *udi)
     {
         if (v->udi && !strcmp (v->udi, udi))
         {
-            if (v->enna_volume)
-            {
-                enna_volumes_remove(v->enna_volume->type, v->enna_volume);
-            }
-            volume_free (v);
+            vfs_remove_volume_entry(v);
+            mod->volumes = eina_list_remove (mod->volumes, v);
+            volume_free(v);
         }
     }
 }
