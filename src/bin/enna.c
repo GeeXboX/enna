@@ -215,7 +215,6 @@ static int _enna_init(void)
         return 0;
 
     /* Init various stuff */
-    enna_volumes_init();
     enna_metadata_init ();
 
     if (!enna_mediaplayer_init())

@@ -114,7 +114,6 @@ struct _Enna_Module_Music
     Ecore_Event_Handler *next_event_handler;
     Ecore_Event_Handler *prev_event_handler;
     Ecore_Event_Handler *seek_event_handler;
-    Ecore_Event_Handler *browser_refresh_handler;
     Enna_Playlist *enna_playlist;
     unsigned char  accept_ev : 1;
     Elm_Genlist_Item_Class *item_class;
@@ -621,17 +620,6 @@ _create_gui()
 
 }
 
-static int
-_refresh_browser_cb(void *data, int type, void *event)
-{
-    if (mod->state == MENU_VIEW)
-    {
-	ENNA_OBJECT_DEL(mod->o_list);
-	_create_menu();
-    }
-    return 1;
-}
-
 /* Module interface */
 
 static int
@@ -640,9 +628,6 @@ em_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Music));
     mod->em = em;
     em->mod = mod;
-
-    mod->browser_refresh_handler =
-	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, _refresh_browser_cb, NULL);
 
     /* Add activity */
     enna_activity_add(&class);
@@ -654,7 +639,6 @@ static int
 em_shutdown(Enna_Module *em)
 {
     enna_activity_del(ENNA_MODULE_NAME);
-    ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
