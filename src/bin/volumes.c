@@ -10,6 +10,7 @@
 
 #include "enna.h"
 #include "volumes.h"
+#include "logs.h"
 
 struct _Enna_Volumes_Listener {
     const char *name;
@@ -62,7 +63,8 @@ enna_volumes_add_emit(Enna_Volume *v)
     if (!v)
         return;
 
-    printf("Add: %s volume  listeners: %d", v->label, eina_list_count(enna_volumes_listeners));
+    enna_log(ENNA_MSG_EVENT, "volumes", "Add: %s volume  listeners: %d",
+             v->label, eina_list_count(enna_volumes_listeners));
     EINA_LIST_FOREACH(enna_volumes_listeners, l, vl)
     {
         if (!vl->add) continue;
@@ -80,7 +82,8 @@ enna_volumes_remove_emit(Enna_Volume *v)
     if (!v)
         return;
 
-    printf("Remove: %s volume  listeners: %d", v->label, eina_list_count(enna_volumes_listeners));
+    enna_log(ENNA_MSG_EVENT, "volumes","Remove: %s volume  listeners: %d",
+             v->label, eina_list_count(enna_volumes_listeners));
     EINA_LIST_FOREACH(enna_volumes_listeners, l, vl)
     {
         if (!vl->remove) continue;
@@ -108,6 +111,10 @@ enna_volumes_icon_from_type(Enna_Volume *v)
     case MOUNT_POINT_TYPE_FLASHKEY:
     case MOUNT_POINT_TYPE_REMOVABLE_DISK:
         return strdup("icon/usb");
+    case MOUNT_POINT_TYPE_NFS:
+        return strdup("icon/dev/nfs");
+    case MOUNT_POINT_TYPE_SMB:
+        return strdup("icon/dev/sambe");
     default:
         return strdup("icon/enna");
     }
