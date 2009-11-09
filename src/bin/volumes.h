@@ -37,11 +37,10 @@ struct _Enna_Volume
 };
 
 Enna_Volumes_Listener * enna_volumes_listener_add(const char *name, EnnaVolumesFunc add, EnnaVolumesFunc remove, void *data);
-void enna_volumes_listener_promote(Enna_Volumes_Listener *vl);
-void enna_volumes_listener_demote(Enna_Volumes_Listener *vl);
 void enna_volumes_listener_del(Enna_Volumes_Listener *vl);
 void enna_volumes_add_emit(Enna_Volume *v);
 void enna_volumes_remove_emit(Enna_Volume *v);
+char *enna_volumes_icon_from_type(Enna_Volume *v);
 Eina_List* enna_volumes_get();
 
 #endif /* ENNA_VOLUMES_H */

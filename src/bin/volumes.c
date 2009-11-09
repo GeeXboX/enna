@@ -43,24 +43,6 @@ enna_volumes_listener_add(const char *name, EnnaVolumesFunc add, EnnaVolumesFunc
 }
 
 void
-enna_volumes_listener_promote(Enna_Volumes_Listener *vl)
-{
-   Eina_List *l;
-
-   l = eina_list_data_find_list(enna_volumes_listeners, vl);
-   if (l) enna_volumes_listeners = eina_list_promote_list(enna_volumes_listeners, l);
-}
-
-void
-enna_volumes_listener_demote(Enna_Volumes_Listener *vl)
-{
-   Eina_List *l;
-
-   l = eina_list_data_find_list(enna_volumes_listeners, vl);
-   if (l) enna_volumes_listeners  = eina_list_demote_list(enna_volumes_listeners, l);
-}
-
-void
 enna_volumes_listener_del(Enna_Volumes_Listener *vl)
 {
    if (!vl) return;
@@ -111,4 +93,22 @@ Eina_List*
 enna_volumes_get()
 {
     return _volumes;
+}
+
+char *
+enna_volumes_icon_from_type(Enna_Volume *v)
+{
+    if (!v)
+        return NULL;
+
+    switch(v->type)
+    {
+    case MOUNT_POINT_TYPE_CAMERA:
+    case MOUNT_POINT_TYPE_AUDIO_PLAYER:
+    case MOUNT_POINT_TYPE_FLASHKEY:
+    case MOUNT_POINT_TYPE_REMOVABLE_DISK:
+        return strdup("icon/usb");
+    default:
+        return strdup("icon/enna");
+    }
 }
