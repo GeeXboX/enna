@@ -317,9 +317,12 @@ _add_volumes_cb(void *data, Enna_Volume *v)
     Class_Private_Data *priv = data;
     Root_Directories *root;
     char buf[4096];
+
+    if (!strstr(v->mount_point, "file://"))
+        return;
+
     root = calloc(1, sizeof(Root_Directories));
-    snprintf(buf, sizeof(buf), "file://%s", v->mount_point);
-    root->uri = strdup(buf);
+    root->uri = strdup( v->mount_point);
     root->label = strdup(v->label);
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
              "Root Data: %s", root->uri);
