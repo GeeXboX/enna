@@ -59,8 +59,7 @@ typedef struct _Class_Private_Data
     const char *uri;
     const char *prev_uri;
     Module_Config *config;
-    Ecore_Event_Handler *volume_add_handler;
-    Ecore_Event_Handler *volume_remove_handler;
+    Enna_Volumes_Listener *vl;
 } Class_Private_Data;
 
 typedef struct _Enna_Module_LocalFiles
@@ -312,48 +311,42 @@ static Enna_Vfs_File * _class_vfs_get_photo(void *cookie)
 }
 #endif
 
-static int _add_volumes_cb(void *data, int type, void *event)
+static void
+_add_volumes_cb(void *data, Enna_Volume *v)
 {
-    Root_Directories *root ;
-    Enna_Volume *v =  event;
     Class_Private_Data *priv = data;
-
-    if (!strcmp(v->type, "file://"))
-    {
-        root = calloc(1, sizeof(Root_Directories));
-
-        root->uri = strdup(v->uri);
-        root->label = strdup(v->label);
-        root->icon = strdup(v->icon);
-
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "add : %s", root->label);
-        priv->config->root_directories = eina_list_append(
-            priv->config->root_directories, root);
-    }
-    return 1;
+    Root_Directories *root;
+    char buf[4096];
+    root = calloc(1, sizeof(Root_Directories));
+    snprintf(buf, sizeof(buf), "file://%s", v->mount_point);
+    root->uri = strdup(buf);
+    root->label = strdup(v->label);
+    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+             "Root Data: %s", root->uri);
+    root->icon = strdup(enna_volumes_icon_from_type(v));
+    priv->config->root_directories = eina_list_append(
+        priv->config->root_directories, root);
 }
 
-static int _remove_volumes_cb(void *data, int type, void *event)
+static void
+_remove_volumes_cb(void *data, Enna_Volume *v)
 {
-    Enna_Volume *v = event;
     Class_Private_Data *priv = data;
+    Root_Directories *root;
+    Eina_List *l;
 
-    if (!strcmp(v->type, "file://"))
+    EINA_LIST_FOREACH(priv->config->root_directories, l, root)
     {
-        Root_Directories *root;
-        Eina_List *l;
-        EINA_LIST_FOREACH(priv->config->root_directories, l, root)
-            {
-                if (!strcmp(root->label, v->label))
-                {
-                    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                             "remove : %s", root->label);
-                    priv->config->root_directories =
-                        eina_list_remove(priv->config->root_directories, root);
-                }
-            }
+        if (!strcmp(root->label, v->label))
+        {
+            priv->config->root_directories = eina_list_remove(
+                priv->config->root_directories, root);
+            ENNA_FREE(root->uri);
+            ENNA_FREE(root->label);
+            ENNA_FREE(root->icon);
+            ENNA_FREE(root);
+        }
     }
-    return 1;
 }
 
 static void __class_init(const char *name, Class_Private_Data **priv,
@@ -364,6 +357,7 @@ static void __class_init(const char *name, Class_Private_Data **priv,
     Root_Directories *root;
     char buf[PATH_MAX + 7];
     Eina_List *l;
+    Enna_Volume *v;
 
     data = calloc(1, sizeof(Class_Private_Data));
     *priv = data;
@@ -404,6 +398,19 @@ static void __class_init(const char *name, Class_Private_Data **priv,
             }
         }
     }
+    /* Add All detected volumes */
+    EINA_LIST_FOREACH(enna_volumes_get(), l, v)
+    {
+        root = calloc(1, sizeof(Root_Directories));
+        snprintf(buf, sizeof(buf), "file://%s", v->mount_point);
+        root->uri = strdup(buf);
+        root->label = strdup(v->label);
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                 "Root Data: %s", root->uri);
+        root->icon = strdup(enna_volumes_icon_from_type(v));
+        data->config->root_directories = eina_list_append(
+            data->config->root_directories, root);
+    }
 
     // add home directory entry
     root = ENNA_NEW(Root_Directories, 1);
@@ -413,15 +420,10 @@ static void __class_init(const char *name, Class_Private_Data **priv,
     root->icon = strdup("icon/favorite");
 
     data->config->root_directories = eina_list_append(
-                data->config->root_directories, root);
+        data->config->root_directories, root);
 
-    data->volume_add_handler =
-        ecore_event_handler_add(ENNA_EVENT_VOLUME_ADDED,
-                                _add_volumes_cb, data);
-    data->volume_remove_handler =
-        ecore_event_handler_add(ENNA_EVENT_VOLUME_REMOVED,
-                                _remove_volumes_cb, data);
-
+    /* add localfiles to the list of volumes listener */
+    data->vl = enna_volumes_listener_add("localfiles", _add_volumes_cb, _remove_volumes_cb, data);
 }
 
 #ifdef BUILD_ACTIVITY_MUSIC
@@ -519,12 +521,15 @@ void module_shutdown(Enna_Module *em)
 
     mod = em->mod;
 #ifdef BUILD_ACTIVITY_MUSIC
+    enna_volumes_listener_del(mod->music->vl);
     free(mod->music);
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
+    enna_volumes_listener_del(mod->video->vl);
     free(mod->video);
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
+    enna_volumes_listener_del(mod->photo->vl);
     free(mod->photo);
 #endif
 }
