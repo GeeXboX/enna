@@ -33,7 +33,6 @@ enna_volumes_listener_add(const char *name, EnnaVolumesFunc add, EnnaVolumesFunc
    Enna_Volumes_Listener *vl;
 
    vl = ENNA_NEW(Enna_Volumes_Listener, 1);
-   if (!vl) return NULL;
    vl->name = eina_stringshare_add(name);
    vl->add = add;
    vl->remove = remove;
@@ -68,7 +67,7 @@ enna_volumes_add_emit(Enna_Volume *v)
     EINA_LIST_FOREACH(enna_volumes_listeners, l, vl)
     {
         if (!vl->add) continue;
-        vl->add(v, vl->data);
+        vl->add(vl->data, v);
     }
     _volumes = eina_list_append(_volumes, v);
 }
@@ -87,7 +86,7 @@ enna_volumes_remove_emit(Enna_Volume *v)
     EINA_LIST_FOREACH(enna_volumes_listeners, l, vl)
     {
         if (!vl->remove) continue;
-        vl->remove(v, vl->data);
+        vl->remove(vl->data, v);
     }
     _volumes = eina_list_remove(_volumes, v);
 }
