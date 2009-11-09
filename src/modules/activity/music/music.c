@@ -118,6 +118,7 @@ struct _Enna_Module_Music
     unsigned char  accept_ev : 1;
     Elm_Genlist_Item_Class *item_class;
     int lyrics_displayed;
+    Enna_Volumes_Listener *vl;
 };
 
 static Enna_Module_Music *mod;
@@ -601,6 +602,12 @@ _create_menu()
 }
 
 static void
+_refresh_list(void *data, Enna_Volume *volume)
+{
+    _create_menu();
+}
+
+static void
 _create_gui()
 {
     Evas_Object *o;
@@ -614,7 +621,7 @@ _create_gui()
     mod->o_edje = o;
 
     _create_menu();
-
+    mod->vl = enna_volumes_listener_add("activity_music", _refresh_list, _refresh_list, NULL);
     evas_object_event_callback_add(mod->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
         _event_mouse_down, NULL);
 
@@ -628,7 +635,7 @@ em_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Music));
     mod->em = em;
     em->mod = mod;
-
+    mod->vl = NULL;
     /* Add activity */
     enna_activity_add(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
@@ -638,6 +645,7 @@ em_init(Enna_Module *em)
 static int
 em_shutdown(Enna_Module *em)
 {
+    enna_volumes_listener_del(mod->vl);
     enna_activity_del(ENNA_MODULE_NAME);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
