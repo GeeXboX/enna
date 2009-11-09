@@ -82,7 +82,6 @@ _enna_mainmenu_item_activate(void *data)
     // run the activity_show cb. that is responsable of showing the
     // content using enna_content_select("name")
     enna_activity_show(act->name);
-
     sd->selected = act;
 }
 

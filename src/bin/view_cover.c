@@ -56,7 +56,7 @@ struct _Smart_Item
     const char *label;
     Enna_Vfs_File *file;
     void *data;
-    void (*func) (void *data);
+    void (*func_activated) (void *data);
     unsigned char selected : 1;
 };
 
@@ -96,7 +96,7 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
 }
 
 void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func) (void *data), void *data)
+    void (*func_activated) (void *data), void *data)
 {
     Evas_Object *o, *o_pict;
     Smart_Item *si;
@@ -109,7 +109,7 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     si->label = eina_stringshare_add(file->label);
     o_pict = elm_image_add(obj);
     si->data = data;
-    si->func = func;
+    si->func_activated = func_activated;
     si->file = file;
 
     if (file->icon && file->icon[0] != '/')
@@ -171,8 +171,8 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         break;
     case ENNA_INPUT_OK:
         si = _smart_selected_item_get(sd, NULL);
-        if (si && si->func)
-            si->func(si->data);
+        if (si && si->func_activated)
+            si->func_activated(si->data);
         return ENNA_EVENT_BLOCK;
     default:
         break;
@@ -380,8 +380,8 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     }
     else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
     {
-        if (si->func)
-            si->func(si->data);
+        if (si->func_activated)
+            si->func_activated(si->data);
 	    return;
     }
     else if (spi == si)
