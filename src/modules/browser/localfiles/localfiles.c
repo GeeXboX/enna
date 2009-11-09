@@ -404,7 +404,7 @@ static void __class_init(const char *name, Class_Private_Data **priv,
             }
         }
     }
-    
+
     // add home directory entry
     root = ENNA_NEW(Root_Directories, 1);
     snprintf(buf, sizeof(buf), "file://%s", enna_util_user_home_get());
