@@ -135,7 +135,6 @@ images/folder_favorites.png \
 images/loading-1.png \
 images/weather_heavy_rain.png \
 images/weather_windy.png \
-images/title_bar.png \
 images/loading-5.png \
 images/volume_icon_reflection.png \
 images/progress_bar_drag.png \

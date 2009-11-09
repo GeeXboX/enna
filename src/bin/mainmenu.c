@@ -47,10 +47,6 @@ typedef struct _Menu_Data Menu_Data;
 struct _Menu_Data
 {
     Evas_Object *o_menu;
-    Evas_Object *o_home_button;
-    Evas_Object *o_back_button;
-    Evas_Object *o_btn_box;
-    Evas_Object *o_icon;
     Enna_Class_Activity *selected;
     Input_Listener *listener;
     Ecore_Event_Handler *act_handler;
@@ -83,41 +79,11 @@ _enna_mainmenu_item_activate(void *data)
 
     enna_mainmenu_hide();
 
-    // update icon
-    ENNA_OBJECT_DEL(sd->o_icon)
-    sd->o_icon = elm_icon_add(enna->layout);
-    elm_icon_file_set(sd->o_icon, enna_config_theme_get(), act->icon);
-    evas_object_show(sd->o_icon);
-    elm_layout_content_set(enna->layout, "titlebar.swallow.icon", sd->o_icon);
-
-    // upadate text
-    edje_object_part_text_set(elm_layout_edje_get(enna->layout),
-                              "titlebar.text.label", act->label);
-
     // run the activity_show cb. that is responsable of showing the
     // content using enna_content_select("name")
     enna_activity_show(act->name);
 
     sd->selected = act;
-}
-
-static Evas_Object *
-_add_button(const char *icon_name, void (*cb) (void *data, Evas_Object *obj, void *event_info))
-{
-    Evas_Object *ic, *bt;
-
-    ic = elm_icon_add(enna->layout);
-    elm_icon_file_set(ic, enna_config_theme_get(), icon_name);
-    evas_object_show(ic);
-
-    bt = elm_button_add(enna->layout);
-    evas_object_smart_callback_add(bt, "clicked", cb, sd);
-    elm_button_icon_set(bt, ic);
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);
-    evas_object_size_hint_min_set(bt, 55, 55);
-    evas_object_show(bt);
-
-    return bt;
 }
 
 /* Local subsystem callbacks */
@@ -171,18 +137,6 @@ _input_events_cb(void *data, enna_input event)
     return ENNA_EVENT_CONTINUE;
 }
 
-static void
-_home_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    enna_input_event_emit(ENNA_INPUT_MENU);
-}
-
-static void
-_back_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    enna_input_event_emit(ENNA_INPUT_EXIT);
-}
-
 /* externally accessible functions */
 Evas_Object *
 enna_mainmenu_init(void)
@@ -196,21 +150,6 @@ enna_mainmenu_init(void)
     sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout));
     elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
     evas_object_size_hint_weight_set(sd->o_menu, -1.0, -1.0);
-
-    // button box
-    sd->o_btn_box = elm_box_add(enna->win);
-    elm_box_homogenous_set(sd->o_btn_box, 0);
-    elm_box_horizontal_set(sd->o_btn_box, 1);
-    evas_object_size_hint_align_set(sd->o_btn_box, 0.5, 0.5);
-    evas_object_size_hint_weight_set(sd->o_btn_box, -1.0, -1.0);
-    evas_object_show(sd->o_btn_box);
-    elm_layout_content_set(enna->layout, "titlebar.swallow.button", sd->o_btn_box);
-
-    sd->o_home_button = _add_button("icon/home_mini", _home_button_clicked_cb);
-    elm_box_pack_start(sd->o_btn_box, sd->o_home_button);
-
-    sd->o_back_button = _add_button("icon/arrow_left", _back_button_clicked_cb);
-    elm_box_pack_end(sd->o_btn_box, sd->o_back_button);
 
     // connect to the input signal
     sd->listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
@@ -228,11 +167,7 @@ enna_mainmenu_shutdown(void)
 
     enna_input_listener_del(sd->listener);
 
-    ENNA_OBJECT_DEL(sd->o_home_button);
-    ENNA_OBJECT_DEL(sd->o_back_button);
     ENNA_OBJECT_DEL(sd->o_menu);
-    ENNA_OBJECT_DEL(sd->o_btn_box);
-    ENNA_OBJECT_DEL(sd->o_icon);
     ENNA_FREE(sd);
 }
 
@@ -265,9 +200,6 @@ enna_mainmenu_show(void)
 
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,show", "enna");
-    edje_object_part_text_set(elm_layout_edje_get(enna->layout),
-                              "titlebar.text.label", "enna");
-    ENNA_OBJECT_DEL(sd->o_icon);
 }
 
 void

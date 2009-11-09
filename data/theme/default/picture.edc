@@ -338,7 +338,6 @@ group
         rel2.relative: 1 1;
         image
         {
-        normal: "title_bar.png";
         border: 0 0 0 0;
         }
         fill {
