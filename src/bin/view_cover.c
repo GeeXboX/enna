@@ -142,12 +142,32 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
     switch (event)
     {
     case ENNA_INPUT_LEFT:
-        _view_cover_h_select (obj, 0);
-        return ENNA_EVENT_BLOCK;
+        if (sd->horizontal)
+        {
+            _view_cover_h_select (obj, 0);
+            return ENNA_EVENT_BLOCK;
+        }
         break;
     case ENNA_INPUT_RIGHT:
-        _view_cover_h_select (obj, 1);
-        return ENNA_EVENT_BLOCK;
+        if (sd->horizontal)
+        {
+            _view_cover_h_select (obj, 1);
+            return ENNA_EVENT_BLOCK;
+        }
+        break;
+    case ENNA_INPUT_UP:
+        if (!sd->horizontal)
+        {
+            _view_cover_h_select (obj, 0);
+            return ENNA_EVENT_BLOCK;
+        }
+        break;
+    case ENNA_INPUT_DOWN:
+        if (!sd->horizontal)
+        {
+            _view_cover_h_select (obj, 1);
+            return ENNA_EVENT_BLOCK;
+        }
         break;
     case ENNA_INPUT_OK:
         si = _smart_selected_item_get(sd, NULL);
