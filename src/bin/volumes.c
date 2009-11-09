@@ -107,14 +107,34 @@ enna_volumes_icon_from_type(Enna_Volume *v)
     switch(v->type)
     {
     case VOLUME_TYPE_CAMERA:
+        return strdup("icon/dev/camera");
     case VOLUME_TYPE_AUDIO_PLAYER:
-    case VOLUME_TYPE_FLASHKEY:
+        return strdup("icon/dev/ipod");
     case VOLUME_TYPE_REMOVABLE_DISK:
-        return strdup("icon/usb");
+        return strdup("icon/dev/usbstick");
+    case VOLUME_TYPE_FLASHKEY:
+    case VOLUME_TYPE_COMPACT_FLASH:
+    case VOLUME_TYPE_MEMORY_STICK:
+    case VOLUME_TYPE_SMART_MEDIA:
+    case VOLUME_TYPE_SD_MMC:
+        return strdup("icon/dev/memorycard");
+    case VOLUME_TYPE_HDD:
+        return strdup("icon/dev/hdd");
+    case VOLUME_TYPE_CD:
+    case VOLUME_TYPE_VCD:
+    case VOLUME_TYPE_SVCD:
+        return strdup("icon/dev/cdrom");
+    case VOLUME_TYPE_CDDA:
+        /* FIXME why cdda2 ? */
+        return strdup("icon/dev/cdda2");
+    case VOLUME_TYPE_DVD:
+    case VOLUME_TYPE_DVD_VIDEO:
+        return strdup("icon/dev/dvd");
     case VOLUME_TYPE_NFS:
         return strdup("icon/dev/nfs");
     case VOLUME_TYPE_SMB:
         return strdup("icon/dev/sambe");
+
     default:
         return strdup("icon/enna");
     }
