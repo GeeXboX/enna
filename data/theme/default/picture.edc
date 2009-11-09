@@ -322,34 +322,6 @@ group
             rel2.to: "enna.swallow.content";
          }
       }
-      /*
-        part
-        {
-        name: "icon_bar";
-        clip_to: "clip";
-        repeat_events: 1;
-        description
-        {
-        state: "default" 0.0;
-        visible: 1;
-        color: 255 255 255 180;
-        rel1.relative: 0 1;
-        rel1.offset: 0 -64;
-        rel2.relative: 1 1;
-        image
-        {
-        border: 0 0 0 0;
-        }
-        fill {
-        smooth: 0;
-        size
-        {
-        relative: 0 0;
-        offset: 97 97;
-        }
-        }
-        }
-        }*/
    }
    programs
    {
