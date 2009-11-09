@@ -106,14 +106,14 @@ enna_volumes_icon_from_type(Enna_Volume *v)
 
     switch(v->type)
     {
-    case MOUNT_POINT_TYPE_CAMERA:
-    case MOUNT_POINT_TYPE_AUDIO_PLAYER:
-    case MOUNT_POINT_TYPE_FLASHKEY:
-    case MOUNT_POINT_TYPE_REMOVABLE_DISK:
+    case VOLUME_TYPE_CAMERA:
+    case VOLUME_TYPE_AUDIO_PLAYER:
+    case VOLUME_TYPE_FLASHKEY:
+    case VOLUME_TYPE_REMOVABLE_DISK:
         return strdup("icon/usb");
-    case MOUNT_POINT_TYPE_NFS:
+    case VOLUME_TYPE_NFS:
         return strdup("icon/dev/nfs");
-    case MOUNT_POINT_TYPE_SMB:
+    case VOLUME_TYPE_SMB:
         return strdup("icon/dev/sambe");
     default:
         return strdup("icon/enna");
