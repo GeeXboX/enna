@@ -13,25 +13,32 @@
 
 typedef struct _Enna_Volumes_Listener Enna_Volumes_Listener;
 typedef struct _Enna_Volume Enna_Volume;
-typedef enum _VOLUME_TYPE VOLUME_TYPE;
+typedef enum _ENNA_VOLUME_TYPE ENNA_VOLUME_TYPE;
 
 typedef void (*EnnaVolumesFunc)(void *data, Enna_Volume *volume);
 typedef void (*EnnaVolumeEject)(void *data);
 
 
-enum _VOLUME_TYPE
+enum _ENNA_VOLUME_TYPE
 {
     VOLUME_TYPE_CAMERA,
     VOLUME_TYPE_AUDIO_PLAYER,
     VOLUME_TYPE_FLASHKEY,
     VOLUME_TYPE_REMOVABLE_DISK,
+    VOLUME_TYPE_HDD,
+    VOLUME_TYPE_CD,
+    VOLUME_TYPE_CDDA,
+    VOLUME_TYPE_DVD,
+    VOLUME_TYPE_DVD_VIDEO,
+    VOLUME_TYPE_VCD,
+    VOLUME_TYPE_SVCD,
     VOLUME_TYPE_NFS,
-    VOLUME_TYPE_SMB
+    VOLUME_TYPE_SMB,
 };
 
 struct _Enna_Volume
 {
-    VOLUME_TYPE type;
+    ENNA_VOLUME_TYPE type;
     const char *mount_point;
     const char *label;
     EnnaVolumeEject eject;
