@@ -33,7 +33,7 @@
 #include "enna.h"
 #include "vfs.h"
 
-Evas_Object * enna_view_cover_add(Evas * evas);
+Evas_Object * enna_view_cover_add(Evas * evas, int horizontal);
 void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
      void (*func) (void *data), void *data);
 Eina_List* enna_view_cover_files_get(Evas_Object* obj);

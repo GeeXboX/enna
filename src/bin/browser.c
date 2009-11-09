@@ -146,7 +146,7 @@ _browser_view_cover_add(Smart_Data *sd)
 
     if (!sd) return NULL;
 
-    view = enna_view_cover_add(enna->evas);
+    view = enna_view_cover_add(enna->evas, 1);
 
     elm_layout_content_set(sd->layout, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);

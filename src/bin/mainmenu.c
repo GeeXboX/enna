@@ -147,7 +147,7 @@ enna_mainmenu_init(void)
     if (!sd) return NULL;
 
     // cover view
-    sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout));
+    sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout), 1);
     elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
     evas_object_size_hint_weight_set(sd->o_menu, -1.0, -1.0);
 

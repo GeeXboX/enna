@@ -386,7 +386,7 @@ _custom_resize(void *data, Evas *a, Evas_Object *obj, void *event_info)
 }
 
 /* externally accessible functions */
-Evas_Object * enna_view_cover_add(Evas * evas)
+Evas_Object * enna_view_cover_add(Evas * evas, int horizontal)
 {
 
     Evas_Object *obj;
@@ -402,7 +402,7 @@ Evas_Object * enna_view_cover_add(Evas * evas)
 
     sd->o_box = elm_box_add(obj);
     elm_box_homogenous_set(sd->o_box, 0);
-    elm_box_horizontal_set(sd->o_box, 1);
+    elm_box_horizontal_set(sd->o_box, horizontal);
 
     evas_object_show(sd->o_box);
     elm_scroller_content_set(obj, sd->o_box);
