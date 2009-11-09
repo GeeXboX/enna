@@ -65,6 +65,7 @@ struct _Smart_Data
     Evas_Object *obj;
     Evas_Object *o_box;
     Eina_List *items;
+    int horizontal;
 };
 
 /* local subsystem functions */
@@ -403,6 +404,7 @@ Evas_Object * enna_view_cover_add(Evas * evas, int horizontal)
     sd->o_box = elm_box_add(obj);
     elm_box_homogenous_set(sd->o_box, 0);
     elm_box_horizontal_set(sd->o_box, horizontal);
+    sd->horizontal = horizontal;
 
     evas_object_show(sd->o_box);
     elm_scroller_content_set(obj, sd->o_box);
