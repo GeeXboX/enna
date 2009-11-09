@@ -179,5 +179,4 @@ module_shutdown(Enna_Module *em)
     }
     _mount_points = NULL;
     enna_log(ENNA_MSG_EVENT, "mtab", "mtab module shutdown");
-    return EINA_TRUE;
 }
