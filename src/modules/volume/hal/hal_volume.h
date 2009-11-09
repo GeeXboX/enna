@@ -30,15 +30,21 @@
 #ifndef HAL_VOLUME_H
 #define HAL_VOLUME_H
 
+/* FIXME : I have changed VOLUME_TYPE_* in HAL_VOLUME_TYPE_*
+ * There is a conflic with enum declared in volumes.h
+ * We should improve code here to avoid the declaration
+ * of two enums that seems to be the same i keep the code
+ * for now, just change for the new voulme API
+ */
 typedef enum {
-    VOLUME_TYPE_UNKNOWN,
-    VOLUME_TYPE_HDD,
-    VOLUME_TYPE_CD,
-    VOLUME_TYPE_CDDA,
-    VOLUME_TYPE_DVD,
-    VOLUME_TYPE_DVD_VIDEO,
-    VOLUME_TYPE_VCD,
-    VOLUME_TYPE_SVCD,
+    HAL_VOLUME_TYPE_UNKNOWN,
+    HAL_VOLUME_TYPE_HDD,
+    HAL_VOLUME_TYPE_CD,
+    HAL_VOLUME_TYPE_CDDA,
+    HAL_VOLUME_TYPE_DVD,
+    HAL_VOLUME_TYPE_DVD_VIDEO,
+    HAL_VOLUME_TYPE_VCD,
+    HAL_VOLUME_TYPE_SVCD,
 } volume_type_t;
 
 typedef struct volume_s {
