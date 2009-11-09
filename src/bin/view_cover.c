@@ -69,7 +69,7 @@ struct _Smart_Data
 };
 
 /* local subsystem functions */
-static void _view_cover_h_select(Evas_Object *obj, int pos);
+static void _view_cover_select(Evas_Object *obj, int pos);
 static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth);
 static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si);
 static void _smart_item_select(Smart_Data *sd, Smart_Item *si);
@@ -144,28 +144,28 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
     case ENNA_INPUT_LEFT:
         if (sd->horizontal)
         {
-            _view_cover_h_select (obj, 0);
+            _view_cover_select (obj, 0);
             return ENNA_EVENT_BLOCK;
         }
         break;
     case ENNA_INPUT_RIGHT:
         if (sd->horizontal)
         {
-            _view_cover_h_select (obj, 1);
+            _view_cover_select (obj, 1);
             return ENNA_EVENT_BLOCK;
         }
         break;
     case ENNA_INPUT_UP:
         if (!sd->horizontal)
         {
-            _view_cover_h_select (obj, 0);
+            _view_cover_select (obj, 0);
             return ENNA_EVENT_BLOCK;
         }
         break;
     case ENNA_INPUT_DOWN:
         if (!sd->horizontal)
         {
-            _view_cover_h_select (obj, 1);
+            _view_cover_select (obj, 1);
             return ENNA_EVENT_BLOCK;
         }
         break;
@@ -288,7 +288,7 @@ void enna_view_cover_clear(Evas_Object *obj)
 }
 
 /* local subsystem globals */
-static void _view_cover_h_select(Evas_Object *obj, int pos)
+static void _view_cover_select(Evas_Object *obj, int pos)
 {
     Smart_Data *sd;
     Smart_Item *si, *ssi;
