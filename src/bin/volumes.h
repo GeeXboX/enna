@@ -27,7 +27,7 @@ enum _VOLUME_TYPE
     MOUNT_POINT_TYPE_REMOVABLE_DISK
 };
 
-typedef struct _Enna_Volume
+struct _Enna_Volume
 {
     VOLUME_TYPE type;
     const char *mount_point;
