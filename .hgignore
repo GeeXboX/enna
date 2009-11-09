@@ -35,6 +35,7 @@ syntax: regexp
 ^config\.sub$
 ^configure$
 ^depcomp$
+^easy_e17\.sh$
 ^install-sh$
 ^libtool$
 ^ltmain\.sh$
