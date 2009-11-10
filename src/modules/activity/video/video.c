@@ -101,7 +101,6 @@ struct _Enna_Module_Video
     VIDEO_STATE state;
     Ecore_Timer *timer_show_mediaplayer;
     Ecore_Event_Handler *eos_event_handler;
-    Ecore_Event_Handler *browser_refresh_handler;
     Enna_Playlist *enna_playlist;
     char *o_current_uri;
     int infos_displayed;
@@ -483,18 +482,6 @@ browser_view_event (enna_input event)
     enna_browser_input_feed (mod->o_browser, event);
 }
 
-static int
-browser_cb_refresh (void *data, int type, void *event)
-{
-    if (mod->state == MENU_VIEW)
-    {
-	ENNA_OBJECT_DEL(mod->o_list);
-	_create_menu ();
-    }
-
-    return 1;
-}
-
 static void
 browser_cb_root (void *data, Evas_Object *obj, void *event_info)
 {
@@ -819,8 +806,6 @@ em_init(Enna_Module *em)
     mod->infos_displayed = 0;
     mod->resume_displayed = 0;
     mod->o_backdrop = enna_backdrop_add (enna->evas);
-    mod->browser_refresh_handler =
-	ecore_event_handler_add(ENNA_EVENT_REFRESH_BROWSER, browser_cb_refresh, NULL);
     mod->eos_event_handler =
 	ecore_event_handler_add (ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
     enna_activity_add(&class);
@@ -831,7 +816,6 @@ static void
 em_shutdown(Enna_Module *em)
 {
     enna_activity_del(ENNA_MODULE_NAME);
-    ENNA_EVENT_HANDLER_DEL(mod->browser_refresh_handler);
     ENNA_EVENT_HANDLER_DEL(mod->eos_event_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
