@@ -324,7 +324,11 @@ static void _view_cover_select(Evas_Object *obj, int pos)
         evas_object_geometry_get(si->o_edje, &xedje, &yedje, &wedje, &hedje);
         elm_scroller_region_get(obj, &x, &y, &w, &h);
 
-        x += xedje;
+        if (sd->horizontal)
+            x += xedje;
+        else
+            y += yedje;
+
         elm_scroller_region_bring_in(obj, x, y, wedje, hedje);
 
         _smart_item_select(sd, si);
