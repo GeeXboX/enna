@@ -81,6 +81,7 @@ _enna_mainmenu_load_from_activities(void)
     {
         enna_mainmenu_append(act);
     }
+    enna_view_cover_select_nth(sd->o_menu, 0);
 }
 
 static void
