@@ -316,7 +316,6 @@ _add_volumes_cb(void *data, Enna_Volume *v)
 {
     Class_Private_Data *priv = data;
     Root_Directories *root;
-    char buf[4096];
 
     if (!strstr(v->mount_point, "file://"))
         return;
