@@ -45,6 +45,15 @@ STOCK_ICON("icon_upnp.png",      "icon/upnp")
 STOCK_ICON("icon_nofile.png", "icon_nofile")
 STOCK_ICON("arrow_left.png", "icon/arrow_left")
 
+/* Activities Backgrounds */
+STOCK_ICON("default_backdrop.png",  "background/configuration")
+STOCK_ICON("default_backdrop.png",  "background/games")
+STOCK_ICON("bg3.jpg",               "background/music")
+STOCK_ICON("default_backdrop.png",  "background/photo")
+STOCK_ICON("default_backdrop.png",  "background/tv")
+STOCK_ICON("bg1.jpg",               "background/video")
+STOCK_ICON("weather_fall.jpeg",     "background/weather")
+
 /* Devices */
 STOCK_ICON("dev_bluetooth.png",     "icon/dev/bluetooth")
 STOCK_ICON("dev_camera.png",        "icon/dev/camera")
