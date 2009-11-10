@@ -237,6 +237,7 @@ vfs_add_volume_entry (volume_t *v)
     evol->label = eina_stringshare_add(name);
     evol->type = type;
     evol->mount_point = eina_stringshare_add(uri);
+    evol->device_name = eina_stringshare_add(v->device);
     /* FIXME add this property correctly */
     evol->eject = NULL;
     evol->is_ejectable = EINA_FALSE;
@@ -252,6 +253,7 @@ vfs_remove_volume_entry (volume_t *v)
     enna_volumes_remove_emit(v->enna_volume);
     eina_stringshare_del(v->enna_volume->label);
     eina_stringshare_del(v->enna_volume->mount_point);
+    eina_stringshare_del(v->enna_volume->device_name);
     ENNA_FREE(v->enna_volume);
     v->enna_volume = NULL;
 }
