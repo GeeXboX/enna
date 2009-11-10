@@ -71,6 +71,9 @@ struct _Enna_Volume
     Eina_Bool is_ejectable : 1;
 };
 
+Enna_Volume *enna_volume_new (void);
+void enna_volume_free (Enna_Volume *v);
+
 Enna_Volumes_Listener * enna_volumes_listener_add(const char *name, EnnaVolumesFunc add, EnnaVolumesFunc remove, void *data);
 void enna_volumes_listener_del(Enna_Volumes_Listener *vl);
 void enna_volumes_add_emit(Enna_Volume *v);

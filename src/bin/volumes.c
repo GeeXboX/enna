@@ -157,3 +157,24 @@ enna_volumes_icon_from_type(Enna_Volume *v)
         return strdup("icon/enna");
     }
 }
+
+Enna_Volume *
+enna_volume_new (void)
+{
+  Enna_Volume *v;
+
+  v = ENNA_NEW (Enna_Volume, 1);
+  return v;
+}
+
+void
+enna_volume_free (Enna_Volume *v)
+{
+  if (!v)
+    return;
+
+  eina_stringshare_del (v->device_name);
+  eina_stringshare_del (v->mount_point);
+  eina_stringshare_del (v->label);
+  ENNA_FREE (v);
+}
