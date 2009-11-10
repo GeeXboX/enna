@@ -46,8 +46,7 @@ typedef struct _Class_Private_Data
     const char *uri;
     const char *device;
     unsigned char state;
-    Ecore_Event_Handler *volume_add_handler;
-    Ecore_Event_Handler *volume_remove_handler;
+    Enna_Volumes_Listener *vl;
 } Class_Private_Data;
 
 typedef struct _Enna_Module_Dvd
@@ -107,29 +106,21 @@ static Enna_Class_Vfs class_dvd = {
     NULL
 };
 
-static int _add_volumes_cb(void *data, int type, void *event)
+static void _add_volumes_cb(void *data, Enna_Volume *v)
 {
-    Enna_Volume *v =  event;
-
-    if (!strcmp(v->type, "dvd://"))
+    if (v && v->type == VOLUME_TYPE_DVD_VIDEO)
     {
-	mod->dvd->device = eina_stringshare_add(v->device);
+	//mod->dvd->device = eina_stringshare_add(v->device);
         enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
-	ecore_event_add(ENNA_EVENT_REFRESH_BROWSER, NULL, NULL, NULL);
     }
-    return 1;
 }
 
-static int _remove_volumes_cb(void *data, int type, void *event)
+static void _remove_volumes_cb(void *data, Enna_Volume *v)
 {
-    Enna_Volume *v = event;
-
-    if (!strcmp(v->type, "dvd://"))
+    if (v && v->type == VOLUME_TYPE_DVD_VIDEO)
     {
         enna_vfs_class_remove("dvd", ENNA_CAPS_VIDEO);
-	ecore_event_add(ENNA_EVENT_REFRESH_BROWSER, NULL, NULL, NULL);
     }
-    return 1;
 }
 
 
@@ -157,12 +148,9 @@ void module_init(Enna_Module *em)
 
     mod->dvd = calloc(1, sizeof(Class_Private_Data));
 
-    mod->dvd->volume_add_handler =
-        ecore_event_handler_add(ENNA_EVENT_VOLUME_ADDED,
-            _add_volumes_cb, mod->dvd);
-    mod->dvd->volume_remove_handler =
-        ecore_event_handler_add(ENNA_EVENT_VOLUME_REMOVED,
-            _remove_volumes_cb, mod->dvd);
+    mod->dvd->vl =
+        enna_volumes_listener_add ("dvd", _add_volumes_cb,
+                                   _remove_volumes_cb, mod->dvd);
 }
 
 void module_shutdown(Enna_Module *em)
