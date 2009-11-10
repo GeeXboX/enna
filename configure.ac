@@ -85,7 +85,7 @@ if test "x$want_activity_configuration" = "xyes"; then
 fi
 
 # Games
-want_activity_games="yes"
+want_activity_games="no"
 AC_MSG_CHECKING(whether games activity module is to be built)
 AC_ARG_ENABLE(activity-games,
   AS_HELP_STRING([--enable-activity-games],[Enable Games Activity Module]),
