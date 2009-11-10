@@ -56,18 +56,18 @@ enna_input_event_emit(enna_input in)
     Eina_List *l;
     Eina_Bool ret;
 
-    enna_log(ENNA_MSG_INFO, NULL, "Input emit: %d (listeners: %d)", in, eina_list_count(_listeners));
+    enna_log(ENNA_MSG_EVENT, NULL, "Input emit: %d (listeners: %d)", in, eina_list_count(_listeners));
 
     enna_idle_timer_renew();
     EINA_LIST_FOREACH(_listeners, l, il)
     {
-        enna_log(ENNA_MSG_INFO, NULL, "  emit to: %s", il->name);
+        enna_log(ENNA_MSG_EVENT, NULL, "  emit to: %s", il->name);
         if (!il->func) continue;
 
         ret = il->func(il->data, in);
         if (ret == ENNA_EVENT_BLOCK)
         {
-            enna_log(ENNA_MSG_INFO, NULL, "  emission stopped by: %s", il->name);
+            enna_log(ENNA_MSG_EVENT, NULL, "  emission stopped by: %s", il->name);
             return EINA_TRUE;
         }
     }

@@ -149,14 +149,14 @@ _get_input_from_event(Ecore_Event_Key *ev)
             ev->modifiers == enna_keymap[i].modifier &&
             !strcmp(enna_keymap[i].keyname, ev->key))
         {
-            enna_log(ENNA_MSG_ERROR, NULL, "Key pressed : [%d] + %s",
+            enna_log(ENNA_MSG_EVENT, NULL, "Key pressed : [%d] + %s",
                      enna_keymap[i].modifier, enna_keymap[i] );
             return enna_keymap[i].input;
         }
         /* Else just test if keyname match */
         else if (!strcmp (enna_keymap[i].keyname, ev->key))
         {
-            enna_log(ENNA_MSG_ERROR, NULL, "Key pressed : %s",
+            enna_log(ENNA_MSG_EVENT, NULL, "Key pressed : %s",
                      enna_keymap[i].keyname );
             return enna_keymap[i].input;
         }
