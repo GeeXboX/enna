@@ -576,8 +576,8 @@ mp_length_get (void)
 static void
 mp_video_resize (int x, int y, int w, int h)
 {
-    int flags = PLAYER_X_WINDOW_X | PLAYER_X_WINDOW_Y |
-                PLAYER_X_WINDOW_W | PLAYER_X_WINDOW_H;
+    const int flags = PLAYER_X_WINDOW_X | PLAYER_X_WINDOW_Y |
+                      PLAYER_X_WINDOW_W | PLAYER_X_WINDOW_H;
 
     /* if w or h is 0, libplayer guess the best size automatically */
     player_x_window_set_properties (mp->player, x, y, w, h, flags);
