@@ -31,6 +31,30 @@
 #include "volumes.h"
 #include "logs.h"
 
+static const struct {
+  ENNA_VOLUME_TYPE type;
+  const char *icon;
+} volumes_type_icon_map[] = {
+  { VOLUME_TYPE_CAMERA,            "icon/dev/camera"        },
+  { VOLUME_TYPE_AUDIO_PLAYER,      "icon/dev/ipod"          },
+  { VOLUME_TYPE_FLASHKEY,          "icon/dev/memorycard"    },
+  { VOLUME_TYPE_REMOVABLE_DISK,    "icon/dev/usbstick"      },
+  { VOLUME_TYPE_COMPACT_FLASH,     "icon/dev/memorycard"    },
+  { VOLUME_TYPE_MEMORY_STICK,      "icon/dev/memorycard"    },
+  { VOLUME_TYPE_SMART_MEDIA,       "icon/dev/memorycard"    },
+  { VOLUME_TYPE_SD_MMC,            "icon/dev/memorycard"    },
+  { VOLUME_TYPE_HDD,               "icon/dev/hdd"           },
+  { VOLUME_TYPE_CD,                "icon/dev/cdrom"         },
+  { VOLUME_TYPE_CDDA,              "icon/dev/cdda2"         },
+  { VOLUME_TYPE_DVD,               "icon/dev/dvd"           },
+  { VOLUME_TYPE_DVD_VIDEO,         "icon/dev/dvd"           },
+  { VOLUME_TYPE_VCD,               "icon/dev/cdrom"         },
+  { VOLUME_TYPE_SVCD,              "icon/dev/cdrom"         },
+  { VOLUME_TYPE_NFS,               "icon/dev/nfs"           },
+  { VOLUME_TYPE_SMB,               "icon/dev/samba"         },
+  { VOLUME_TYPE_UNKNOWN,           NULL                     }
+};
+
 struct _Enna_Volumes_Listener {
     const char *name;
     EnnaVolumesFunc add;
@@ -119,43 +143,16 @@ enna_volumes_get()
 char *
 enna_volumes_icon_from_type(Enna_Volume *v)
 {
+    int i;
+
     if (!v)
         return NULL;
 
-    switch(v->type)
-    {
-    case VOLUME_TYPE_CAMERA:
-        return strdup("icon/dev/camera");
-    case VOLUME_TYPE_AUDIO_PLAYER:
-        return strdup("icon/dev/ipod");
-    case VOLUME_TYPE_REMOVABLE_DISK:
-        return strdup("icon/dev/usbstick");
-    case VOLUME_TYPE_FLASHKEY:
-    case VOLUME_TYPE_COMPACT_FLASH:
-    case VOLUME_TYPE_MEMORY_STICK:
-    case VOLUME_TYPE_SMART_MEDIA:
-    case VOLUME_TYPE_SD_MMC:
-        return strdup("icon/dev/memorycard");
-    case VOLUME_TYPE_HDD:
-        return strdup("icon/dev/hdd");
-    case VOLUME_TYPE_CD:
-    case VOLUME_TYPE_VCD:
-    case VOLUME_TYPE_SVCD:
-        return strdup("icon/dev/cdrom");
-    case VOLUME_TYPE_CDDA:
-        /* FIXME why cdda2 ? */
-        return strdup("icon/dev/cdda2");
-    case VOLUME_TYPE_DVD:
-    case VOLUME_TYPE_DVD_VIDEO:
-        return strdup("icon/dev/dvd");
-    case VOLUME_TYPE_NFS:
-        return strdup("icon/dev/nfs");
-    case VOLUME_TYPE_SMB:
-        return strdup("icon/dev/sambe");
+    for (i = 0; volumes_type_icon_map[i].icon; i++)
+        if (v->type == volumes_type_icon_map[i].type)
+            return strdup (volumes_type_icon_map[i].icon);
 
-    default:
-        return strdup("icon/enna");
-    }
+    return strdup ("icon/enna");
 }
 
 Enna_Volume *
