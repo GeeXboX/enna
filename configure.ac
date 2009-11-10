@@ -1,7 +1,7 @@
 # get rid of that stupid cache mechanism
 rm -f config.cache
 
-AC_INIT([enna],[0.3.0],[www.digital-corner.org])
+AC_INIT([enna],[0.3.0],[http://enna.geexbox.org])
 AC_PREREQ(2.61)
 AC_CONFIG_SRCDIR(configure.ac)
 AC_CANONICAL_BUILD
