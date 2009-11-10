@@ -111,7 +111,7 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 
 
     if (h)
-            f = (float)w/(float)h;
+        f = (float)w/(float)h;
 
     edje_object_part_swallow(pi->o_edje, "enna.swallow.content", pi->o_pict);
 
@@ -121,18 +121,18 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 
     if (w0 <= w1 && w0 <= w2)
     {
-            row = 0;
-            oh = h0;
+        row = 0;
+        oh = h0;
     }
     else if (w1 <= w2)
     {
         row = 1;
-            oh = h1;
+        oh = h1;
     }
     else
     {
         row = 2;
-            oh = h2;
+        oh = h2;
     }
 
     if (!oh) oh = h;
@@ -220,47 +220,47 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     if (file->is_directory)
     {
-            edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
+        edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
         edje_object_part_text_set(o, "enna.text.label", file->label);
 
-            o_pict = elm_icon_add(obj);
-            enna_image_fill_inside_set(o_pict, 0);
+        o_pict = elm_icon_add(obj);
+        enna_image_fill_inside_set(o_pict, 0);
 
-            if (file->icon && file->icon[0] == '/')
-                elm_icon_file_set(o_pict, file->icon, NULL);
-            else
-                elm_icon_file_set(o_pict, enna_config_theme_get(), file->icon);
+        if (file->icon && file->icon[0] == '/')
+            elm_icon_file_set(o_pict, file->icon, NULL);
+        else
+            elm_icon_file_set(o_pict, enna_config_theme_get(), file->icon);
 
-            pi->o_pict = o_pict;
-            pi->o_edje = o;
-            pi->data = data;
-            pi->func_activated = func_activated;
-            pi->func_selected = func_selected;
-            pi->sd = sd;
+        pi->o_pict = o_pict;
+        pi->o_edje = o;
+        pi->data = data;
+        pi->func_activated = func_activated;
+        pi->func_selected = func_selected;
+        pi->sd = sd;
 
-            _wall_add_pict_to_wall(pi->sd, pi, 1, 1);
+        _wall_add_pict_to_wall(pi->sd, pi, 1, 1);
     }
     else
     {
         edje_object_file_set(o, enna_config_theme_get(), "enna/picture/item");
         edje_object_part_text_set(o, "enna.text.label", file->label);
-            o_pict = enna_thumb_icon_add(evas_object_evas_get(sd->o_scroll));
-            enna_thumb_icon_file_set(o_pict, file->uri+7, "enna/thumbnails");
-            enna_thumb_icon_size_set(o_pict, 256, 256);
-            evas_object_show(o_pict);
+        o_pict = enna_thumb_icon_add(evas_object_evas_get(sd->o_scroll));
+        enna_thumb_icon_file_set(o_pict, file->uri+7, "enna/thumbnails");
+        enna_thumb_icon_size_set(o_pict, 256, 256);
+        evas_object_show(o_pict);
 
-            evas_object_smart_callback_add(o_pict, "enna_thumb_gen", _wall_image_preload_cb, pi);
-            pi->o_pict = o_pict;
+        evas_object_smart_callback_add(o_pict, "enna_thumb_gen", _wall_image_preload_cb, pi);
+        pi->o_pict = o_pict;
 
-            pi->o_edje = o;
-            pi->data = data;
-            pi->func_activated = func_activated;
+        pi->o_edje = o;
+        pi->data = data;
+        pi->func_activated = func_activated;
         pi->func_selected = func_selected;
-            pi->sd = sd;
+        pi->sd = sd;
     }
 
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
-            _smart_event_mouse_down, pi);
+        _smart_event_mouse_down, pi);
 
     enna_thumb_icon_begin(pi->o_pict);
 }
@@ -320,8 +320,6 @@ void enna_wall_select_nth(Evas_Object *obj, int col, int row)
     evas_object_geometry_get(sd->o_box[sd->row_sel], &xbox, NULL, NULL, NULL);
     x = (xedje + wedje / 2 - xbox + sd->w / 2 );
     elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
-
-
 }
 
 void *enna_wall_selected_data_get(Evas_Object *obj)
@@ -602,7 +600,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     {
         if (pi->func_activated)
             pi->func_activated(pi->data);
-            return;
+        return;
     }
     else if (ppi == pi)
     {
