@@ -148,8 +148,6 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         if (sd->horizontal)
         {
             _view_cover_select (obj, 0);
-            if (si && si->func_selected)
-                si->func_selected(si->data);
             return ENNA_EVENT_BLOCK;
         }
         break;
@@ -157,8 +155,6 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         if (sd->horizontal)
         {
             _view_cover_select (obj, 1);
-            if (si && si->func_selected)
-                si->func_selected(si->data);
             return ENNA_EVENT_BLOCK;
         }
         break;
@@ -166,8 +162,6 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         if (!sd->horizontal)
         {
             _view_cover_select (obj, 0);
-            if (si && si->func_selected)
-                si->func_selected(si->data);
             return ENNA_EVENT_BLOCK;
         }
         break;
@@ -175,9 +169,6 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         if (!sd->horizontal)
         {
             _view_cover_select (obj, 1);
-            if (si && si->func_selected)
-                si->func_selected(si->data);
-            return ENNA_EVENT_BLOCK;
         }
         break;
     case ENNA_INPUT_OK:
@@ -324,7 +315,11 @@ static void _view_cover_select(Evas_Object *obj, int pos)
         evas_object_geometry_get(si->o_edje, &xedje, &yedje, &wedje, &hedje);
         elm_scroller_region_get(obj, &x, &y, &w, &h);
 
-        x += xedje;
+        if (sd->horizontal)
+            x += xedje;
+        else
+            y += yedje;
+
         elm_scroller_region_bring_in(obj, x, y, wedje, hedje);
 
         _smart_item_select(sd, si);
@@ -366,10 +361,17 @@ static void _smart_item_select(Smart_Data *sd, Smart_Item *si)
 {
     if (si->selected) return;
 
+    if (si->func_selected)
+    {
+        printf("func selected\n");
+        si->func_selected(si->data);
+    }
+
     si->selected = 1;
     edje_object_signal_emit(si->o_edje, "select", "enna");
     evas_object_raise(si->o_edje);
     evas_object_smart_callback_call (sd->obj, "hilight", si->data);
+
 }
 
 static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
@@ -413,7 +415,12 @@ _custom_resize(void *data, Evas *a, Evas_Object *obj, void *event_info)
     elm_scroller_region_get(obj, &x, &y, &w, &h);
 
     EINA_LIST_FOREACH(sd->items, l, it)
-        evas_object_size_hint_min_set (it->o_edje, w, h);
+    {
+        if (sd->horizontal)
+            evas_object_size_hint_min_set (it->o_edje, h, h);
+        else
+            evas_object_size_hint_min_set (it->o_edje, w, w);
+    }
 }
 
 /* externally accessible functions */

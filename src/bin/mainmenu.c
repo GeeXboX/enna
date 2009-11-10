@@ -40,18 +40,29 @@
 #include "input.h"
 #include "logs.h"
 #include "view_cover.h"
+#include "image.h"
 
+typedef struct _Background_Item Background_Item;
+
+struct _Background_Item
+{
+    const char *name;
+    const char *filename;
+    const char *key;
+};
 
 typedef struct _Menu_Data Menu_Data;
 
 struct _Menu_Data
 {
     Evas_Object *o_menu;
+    Evas_Object *o_background;
     Enna_Class_Activity *selected;
     Input_Listener *listener;
     Ecore_Event_Handler *act_handler;
     Eina_Bool visible;
     Eina_Bool exit_visible;
+    Eina_List *backgrounds;
 };
 
 static Menu_Data *sd = NULL;
@@ -70,6 +81,7 @@ _enna_mainmenu_load_from_activities(void)
     {
         enna_mainmenu_append(act);
     }
+    enna_view_cover_select_nth(sd->o_menu, 0);
 }
 
 static void
@@ -79,7 +91,7 @@ _enna_mainmenu_item_focus(void *data)
     if (!act)
         return;
 
-    printf ("***** Activity now has focus: %s *****\n", act->name);
+    enna_mainmenu_background_select(act->name);
 }
 
 static void
@@ -155,12 +167,16 @@ enna_mainmenu_init(void)
     sd = ENNA_NEW(Menu_Data, 1);
     if (!sd) return NULL;
 
-    // cover view
+    /* cover view */
     sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout), 0);
     elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
     evas_object_size_hint_weight_set(sd->o_menu, -1.0, -1.0);
 
-    // connect to the input signal
+    /* Add  background*/
+    sd->o_background = NULL;
+    sd->backgrounds = NULL;
+
+    /* connect to the input signal */
     sd->listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
 
     sd->act_handler = ecore_event_handler_add(ENNA_EVENT_ACTIVITIES_CHANGED,
@@ -172,11 +188,23 @@ enna_mainmenu_init(void)
 void
 enna_mainmenu_shutdown(void)
 {
+    Eina_List *l;
+    Background_Item *it;
+
     ENNA_EVENT_HANDLER_DEL(sd->act_handler);
 
     enna_input_listener_del(sd->listener);
 
     ENNA_OBJECT_DEL(sd->o_menu);
+    ENNA_OBJECT_DEL(sd->o_background);
+    EINA_LIST_FOREACH(sd->backgrounds, l, it)
+    {
+        sd->backgrounds = eina_list_remove(sd->backgrounds, it);
+        if (it->name) eina_stringshare_del(it->name);
+        if (it->filename) eina_stringshare_del(it->filename);
+        if (it->key) eina_stringshare_del(it->key);
+        ENNA_FREE(it);
+    }
     ENNA_FREE(sd);
 }
 
@@ -191,6 +219,13 @@ enna_mainmenu_append(Enna_Class_Activity *act)
     f->label = (char*)eina_stringshare_add(act->label);
     f->icon = (char*)eina_stringshare_add(act->icon);
     enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, _enna_mainmenu_item_focus, act);
+
+    /*if (act->background && act->background[0] == '/')
+        enna_mainmenu_background_add(act->name, act->background, NULL);
+    else
+        enna_mainmenu_background_add(act->name, enna_config_theme_get(), act->background);
+    */
+    enna_mainmenu_background_add(act->name, enna_config_theme_get(), act->icon);
 }
 
 Enna_Class_Activity *
@@ -219,6 +254,41 @@ enna_mainmenu_hide(void)
 
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,hide", "enna");
+}
+
+void
+enna_mainmenu_background_add(const char *name, const char *filename, const char *key)
+{
+    Background_Item *item;
+
+    if (!name)
+        return;
+
+    item = ENNA_NEW(Background_Item, 1);
+    item->name = name ? eina_stringshare_add(name) : NULL;
+    item->filename = filename ? eina_stringshare_add(filename) : NULL;
+    item->key = key ? eina_stringshare_add(key) : NULL;
+
+    sd->backgrounds = eina_list_append(sd->backgrounds, item);
+}
+
+void
+enna_mainmenu_background_select(const char *name)
+{
+    Background_Item *it;
+    Eina_List *l;
+
+    EINA_LIST_FOREACH(sd->backgrounds, l, it)
+    {
+        if (!strcmp(name, it->name))
+        {
+            ENNA_OBJECT_DEL(sd->o_background);
+            sd->o_background = elm_image_add(enna->layout);
+            elm_image_file_set(sd->o_background, it->filename, it->key);
+            elm_layout_content_set(enna->layout, "enna.background.swallow", sd->o_background);
+            break;
+        }
+    }
 }
 
 Eina_Bool
