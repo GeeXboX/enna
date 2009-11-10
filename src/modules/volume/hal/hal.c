@@ -233,7 +233,7 @@ vfs_add_volume_entry (volume_t *v)
     if (!v->name)
         v->name = strdup (name);
 
-    evol = calloc(1, sizeof(Enna_Volume));
+    evol = enna_volume_new ();
     evol->label = eina_stringshare_add(name);
     evol->type = type;
     evol->mount_point = eina_stringshare_add(uri);
@@ -251,11 +251,7 @@ vfs_remove_volume_entry (volume_t *v)
 {
     enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point);
     enna_volumes_remove_emit(v->enna_volume);
-    eina_stringshare_del(v->enna_volume->label);
-    eina_stringshare_del(v->enna_volume->mount_point);
-    eina_stringshare_del(v->enna_volume->device_name);
-    ENNA_FREE(v->enna_volume);
-    v->enna_volume = NULL;
+    enna_volume_free(v->enna_volume);
 }
 
 static void

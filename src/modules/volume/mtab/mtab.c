@@ -66,7 +66,7 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
     if(!fsname || !dir)
         return;
 
-    v = ENNA_NEW(Enna_Volume, 1);
+    v = enna_volume_new ();
 
     memset(name,  '\0', sizeof(name));
     memset(tmp,   '\0', sizeof(tmp));
@@ -163,10 +163,7 @@ module_shutdown(Enna_Module *em)
     {
         enna_log(ENNA_MSG_EVENT, "mtab", "Remove %s", v->label);
         _mount_points = eina_list_remove(_mount_points, v);
-        eina_stringshare_del(v->device_name);
-        eina_stringshare_del(v->mount_point);
-        eina_stringshare_del(v->label);
-        ENNA_FREE(v);
+        enna_volume_free (v);
     }
     _mount_points = NULL;
     enna_log(ENNA_MSG_EVENT, "mtab", "mtab module shutdown");
