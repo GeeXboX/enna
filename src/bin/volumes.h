@@ -64,6 +64,7 @@ enum _ENNA_VOLUME_TYPE
 struct _Enna_Volume
 {
     ENNA_VOLUME_TYPE type;
+    const char *device_name;
     const char *mount_point;
     const char *label;
     EnnaVolumeEject eject;
