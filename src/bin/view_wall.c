@@ -59,7 +59,8 @@ struct _Picture_Item
     unsigned char selected : 1;
     Enna_Vfs_File *file;
     void *data;
-    void (*func) (void *data);
+    void (*func_activated) (void *data);
+    void (*func_selected) (void *data);
 };
 
 struct _Smart_Data
@@ -202,7 +203,7 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
 }
 
 void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func) (void *data), void *data )
+    void (*func_activated) (void *data), void (*func_selected) (void *data), void *data )
 {
     Evas_Object *o, *o_pict;
 
@@ -233,7 +234,8 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 	    pi->o_pict = o_pict;
 	    pi->o_edje = o;
 	    pi->data = data;
-	    pi->func = func;
+	    pi->func_activated = func_activated;
+            pi->func_selected = func_selected;
 	    pi->sd = sd;
 
 	    _wall_add_pict_to_wall(pi->sd, pi, 1, 1);
@@ -252,7 +254,8 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     	pi->o_edje = o;
     	pi->data = data;
-    	pi->func = func;
+    	pi->func_activated = func_activated;
+        pi->func_selected = func_selected;
     	pi->sd = sd;
     }
 
@@ -290,8 +293,8 @@ enna_wall_input_feed(Evas_Object *obj, enna_input ev)
         break;
     case ENNA_INPUT_OK:
         pi = _smart_selected_item_get(sd, NULL, NULL);
-        if (pi && pi->func)
-            pi->func(pi->data);
+        if (pi && pi->func_activated)
+            pi->func_activated(pi->data);
         return ENNA_EVENT_BLOCK;
         break;
     default:
@@ -597,8 +600,8 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     }
     else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
     {
-        if (pi->func)
-            pi->func(pi->data);
+        if (pi->func_activated)
+            pi->func_activated(pi->data);
 	    return;
     }
     else if (ppi == pi)

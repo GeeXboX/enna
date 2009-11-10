@@ -57,6 +57,7 @@ struct _Smart_Item
     Enna_Vfs_File *file;
     void *data;
     void (*func_activated) (void *data);
+    void (*func_selected) (void *data);
     unsigned char selected : 1;
 };
 
@@ -96,7 +97,7 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
 }
 
 void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func_activated) (void *data), void *data)
+    void (*func_activated) (void *data), void (*func_selected) (void *data), void *data)
 {
     Evas_Object *o, *o_pict;
     Smart_Item *si;
@@ -110,6 +111,7 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     o_pict = elm_image_add(obj);
     si->data = data;
     si->func_activated = func_activated;
+    si->func_selected = func_selected;
     si->file = file;
 
     if (file->icon && file->icon[0] != '/')
@@ -139,12 +141,15 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
 {
     Smart_Item *si;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
+    si = _smart_selected_item_get(sd, NULL);
     switch (event)
     {
     case ENNA_INPUT_LEFT:
         if (sd->horizontal)
         {
             _view_cover_select (obj, 0);
+            if (si && si->func_selected)
+                si->func_selected(si->data);
             return ENNA_EVENT_BLOCK;
         }
         break;
@@ -152,6 +157,8 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         if (sd->horizontal)
         {
             _view_cover_select (obj, 1);
+            if (si && si->func_selected)
+                si->func_selected(si->data);
             return ENNA_EVENT_BLOCK;
         }
         break;
@@ -159,6 +166,8 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         if (!sd->horizontal)
         {
             _view_cover_select (obj, 0);
+            if (si && si->func_selected)
+                si->func_selected(si->data);
             return ENNA_EVENT_BLOCK;
         }
         break;
@@ -166,11 +175,12 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
         if (!sd->horizontal)
         {
             _view_cover_select (obj, 1);
+            if (si && si->func_selected)
+                si->func_selected(si->data);
             return ENNA_EVENT_BLOCK;
         }
         break;
     case ENNA_INPUT_OK:
-        si = _smart_selected_item_get(sd, NULL);
         if (si && si->func_activated)
             si->func_activated(si->data);
         return ENNA_EVENT_BLOCK;

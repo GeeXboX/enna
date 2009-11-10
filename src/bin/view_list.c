@@ -43,7 +43,8 @@ typedef struct _List_Item List_Item;
 struct _List_Item
 {
     Enna_Vfs_File *file;
-    void (*func) (void *data);
+    void (*func_activated) (void *data);
+    void (*func_selected) (void *data);
     void *data;
     Elm_Genlist_Item *item;
 };
@@ -67,7 +68,7 @@ void _item_activated(void *data, Evas_Object *obj, void *event_info)
     {
         if (it->item == item)
         {
-            if (it->func) it->func(it->data);
+            if (it->func_activated) it->func_activated(it->data);
             return;
         }
     }
@@ -183,7 +184,7 @@ enna_list_add(Evas *evas)
     return obj;
 }
 
-void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func) (void *data),  void *data)
+void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func_activated) (void *data),  void (*func_selected) (void *data), void *data)
 {
     Smart_Data *sd;
     List_Item *it;
@@ -194,7 +195,8 @@ void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func) (
     it->item = elm_genlist_item_append (obj, &itc_list, file,
         NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL );
 
-    it->func = func;
+    it->func_activated = func_activated;
+    it->func_selected = func_selected;
     it->data = data;
     it->file = file;
 
@@ -338,8 +340,8 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
             List_Item *it = eina_list_nth(sd->items, enna_list_selected_get(obj));
             if (it)
             {
-                if (it->func)
-                    it->func(it->data);
+                if (it->func_activated)
+                    it->func_activated(it->data);
             }
         }
             return ENNA_EVENT_BLOCK;
