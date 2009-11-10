@@ -73,6 +73,16 @@ _enna_mainmenu_load_from_activities(void)
 }
 
 static void
+_enna_mainmenu_item_focus(void *data)
+{
+    Enna_Class_Activity *act = data;
+    if (!act)
+        return;
+
+    printf ("***** Activity now has focus: %s *****\n", act->name);
+}
+
+static void
 _enna_mainmenu_item_activate(void *data)
 {
     Enna_Class_Activity *act = data;
@@ -180,7 +190,7 @@ enna_mainmenu_append(Enna_Class_Activity *act)
     f = calloc(1, sizeof(Enna_Vfs_File));
     f->label = (char*)eina_stringshare_add(act->label);
     f->icon = (char*)eina_stringshare_add(act->icon);
-    enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, NULL, act);
+    enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, _enna_mainmenu_item_focus, act);
 }
 
 Enna_Class_Activity *
