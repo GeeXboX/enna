@@ -41,6 +41,7 @@ void enna_mainmenu_hide(void);
 Eina_Bool enna_mainmenu_visible(void);
 Eina_Bool enna_mainmenu_exit_visible(void);
 Enna_Class_Activity *enna_mainmenu_selected_activity_get(void);
-
+void enna_mainmenu_background_add(const char *name, const char *filename, const char *key);
+void enna_mainmenu_background_select(const char *name);
 
 #endif /* MAINMENU_H */

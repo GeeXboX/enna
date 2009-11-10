@@ -47,6 +47,7 @@ struct _Enna_Class_Activity
     const char *label;
     const char *icon_file;
     const char *icon;
+    //const char *background;
     struct
     {
         void (*class_init)(int dummy);
