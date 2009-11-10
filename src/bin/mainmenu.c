@@ -220,11 +220,11 @@ enna_mainmenu_append(Enna_Class_Activity *act)
     f->icon = (char*)eina_stringshare_add(act->icon);
     enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, _enna_mainmenu_item_focus, act);
 
-    /*if (act->background && act->background[0] == '/')
-        enna_mainmenu_background_add(act->name, act->background, NULL);
+    if (act->bg && act->bg[0] == '/')
+        enna_mainmenu_background_add(act->name, act->bg, NULL);
     else
-        enna_mainmenu_background_add(act->name, enna_config_theme_get(), act->background);
-    */
+        enna_mainmenu_background_add(act->name, enna_config_theme_get(), act->bg);
+    
     enna_mainmenu_background_add(act->name, enna_config_theme_get(), act->icon);
 }
 
