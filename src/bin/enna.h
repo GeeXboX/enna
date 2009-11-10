@@ -47,7 +47,7 @@
 #endif
 
 #define ARRAY_NB_ELEMENTS(array) (sizeof (array) / sizeof (array[0]))
-#define ENNA_FREE(p) { if (p) {free(p); p = NULL;} }
+#define ENNA_FREE(p) do { free(p); p = NULL; } while (0)
 #define ENNA_NEW(s, n) (s *)calloc(n, sizeof(s))
 #define ENNA_FREE_LIST(list, free)			\
   do							\

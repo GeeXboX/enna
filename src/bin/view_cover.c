@@ -56,7 +56,8 @@ struct _Smart_Item
     const char *label;
     Enna_Vfs_File *file;
     void *data;
-    void (*func) (void *data);
+    void (*func_activated) (void *data);
+    void (*func_selected) (void *data);
     unsigned char selected : 1;
 };
 
@@ -65,10 +66,11 @@ struct _Smart_Data
     Evas_Object *obj;
     Evas_Object *o_box;
     Eina_List *items;
+    int horizontal;
 };
 
 /* local subsystem functions */
-static void _view_cover_h_select(Evas_Object *obj, int pos);
+static void _view_cover_select(Evas_Object *obj, int pos);
 static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth);
 static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si);
 static void _smart_item_select(Smart_Data *sd, Smart_Item *si);
@@ -95,7 +97,7 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
 }
 
 void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func) (void *data), void *data)
+    void (*func_activated) (void *data), void (*func_selected) (void *data), void *data)
 {
     Evas_Object *o, *o_pict;
     Smart_Item *si;
@@ -108,7 +110,8 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     si->label = eina_stringshare_add(file->label);
     o_pict = elm_image_add(obj);
     si->data = data;
-    si->func = func;
+    si->func_activated = func_activated;
+    si->func_selected = func_selected;
     si->file = file;
 
     if (file->icon && file->icon[0] != '/')
@@ -138,20 +141,48 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
 {
     Smart_Item *si;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
+    si = _smart_selected_item_get(sd, NULL);
     switch (event)
     {
     case ENNA_INPUT_LEFT:
-        _view_cover_h_select (obj, 0);
-        return ENNA_EVENT_BLOCK;
+        if (sd->horizontal)
+        {
+            _view_cover_select (obj, 0);
+            if (si && si->func_selected)
+                si->func_selected(si->data);
+            return ENNA_EVENT_BLOCK;
+        }
         break;
     case ENNA_INPUT_RIGHT:
-        _view_cover_h_select (obj, 1);
-        return ENNA_EVENT_BLOCK;
+        if (sd->horizontal)
+        {
+            _view_cover_select (obj, 1);
+            if (si && si->func_selected)
+                si->func_selected(si->data);
+            return ENNA_EVENT_BLOCK;
+        }
+        break;
+    case ENNA_INPUT_UP:
+        if (!sd->horizontal)
+        {
+            _view_cover_select (obj, 0);
+            if (si && si->func_selected)
+                si->func_selected(si->data);
+            return ENNA_EVENT_BLOCK;
+        }
+        break;
+    case ENNA_INPUT_DOWN:
+        if (!sd->horizontal)
+        {
+            _view_cover_select (obj, 1);
+            if (si && si->func_selected)
+                si->func_selected(si->data);
+            return ENNA_EVENT_BLOCK;
+        }
         break;
     case ENNA_INPUT_OK:
-        si = _smart_selected_item_get(sd, NULL);
-        if (si && si->func)
-            si->func(si->data);
+        if (si && si->func_activated)
+            si->func_activated(si->data);
         return ENNA_EVENT_BLOCK;
     default:
         break;
@@ -267,7 +298,7 @@ void enna_view_cover_clear(Evas_Object *obj)
 }
 
 /* local subsystem globals */
-static void _view_cover_h_select(Evas_Object *obj, int pos)
+static void _view_cover_select(Evas_Object *obj, int pos)
 {
     Smart_Data *sd;
     Smart_Item *si, *ssi;
@@ -359,8 +390,8 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     }
     else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
     {
-        if (si->func)
-            si->func(si->data);
+        if (si->func_activated)
+            si->func_activated(si->data);
 	    return;
     }
     else if (spi == si)
@@ -382,11 +413,11 @@ _custom_resize(void *data, Evas *a, Evas_Object *obj, void *event_info)
     elm_scroller_region_get(obj, &x, &y, &w, &h);
 
     EINA_LIST_FOREACH(sd->items, l, it)
-        evas_object_size_hint_min_set (it->o_edje, h, h);
+        evas_object_size_hint_min_set (it->o_edje, w, h);
 }
 
 /* externally accessible functions */
-Evas_Object * enna_view_cover_add(Evas * evas)
+Evas_Object * enna_view_cover_add(Evas * evas, int horizontal)
 {
 
     Evas_Object *obj;
@@ -402,7 +433,8 @@ Evas_Object * enna_view_cover_add(Evas * evas)
 
     sd->o_box = elm_box_add(obj);
     elm_box_homogenous_set(sd->o_box, 0);
-    elm_box_horizontal_set(sd->o_box, 1);
+    elm_box_horizontal_set(sd->o_box, horizontal);
+    sd->horizontal = horizontal;
 
     evas_object_show(sd->o_box);
     elm_scroller_content_set(obj, sd->o_box);

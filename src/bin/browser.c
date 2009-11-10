@@ -84,7 +84,8 @@ struct _Smart_Data
 	    void (*view_append)(
 	        Evas_Object *view,
 	        Enna_Vfs_File *file,
-	        void (*func) (void *data),
+	        void (*func_activated) (void *data),
+                void (*func_selected) (void *data),
 	        void *data);
 	    void * (*view_selected_data_get)(Evas_Object *view);
 	    int (*view_jump_label)(Evas_Object *view, const char *label);
@@ -159,7 +160,7 @@ _browser_view_cover_add(Smart_Data *sd)
 
     if (!sd) return NULL;
 
-    view = enna_view_cover_add(enna->evas);
+    view = enna_view_cover_add(enna->evas, 1);
 
     elm_layout_content_set(sd->layout, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
@@ -650,7 +651,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             bd = calloc(1, sizeof(Browse_Data));
             bd->file = f;
             bd->sd = sd;
-	        sd->view_funcs.view_append(sd->o_view, f, _browse, bd);
+	        sd->view_funcs.view_append(sd->o_view, f, _browse, NULL, bd);
         }
 
     }

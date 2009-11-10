@@ -118,11 +118,11 @@ _smart_add (Evas_Object * obj)
     buffer_free (label);
 
     it1 = _create_list_item (_("Resume movie playback"), "ctrl/ok");
-    enna_list_file_append (sd->list, it1, cb_playback_resume, NULL);
+    enna_list_file_append (sd->list, it1, cb_playback_resume, NULL, NULL);
 
     it2 = _create_list_item (_("Start playing from beginning"),
                              "ctrl/restart");
-    enna_list_file_append (sd->list,it2, cb_playback_begin, NULL);
+    enna_list_file_append (sd->list,it2, cb_playback_begin, NULL, NULL);
 
     evas_object_size_hint_weight_set (sd->list, 1.0, 1.0);
     evas_object_show (sd->list);
