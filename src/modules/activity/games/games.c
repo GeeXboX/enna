@@ -242,6 +242,7 @@ class =
     N_("Games"),
     NULL,
     "icon/games",
+    "background/games",
     {
         _class_init,
         NULL,

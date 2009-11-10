@@ -784,6 +784,7 @@ static Enna_Class_Activity class =
     N_("Video"),
     NULL,
     "icon/video",
+    "background/video",
     {
         _class_init,
         NULL,

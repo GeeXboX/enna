@@ -149,6 +149,7 @@ static Enna_Class_Activity class =
     N_("Television"),
     NULL,
     "icon/tv",
+    "background/tv",
     {
     _class_init,
     _class_quit_request,

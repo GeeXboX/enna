@@ -227,6 +227,7 @@ static Enna_Class_Activity class = {
     N_("Configuration"),
     NULL,
     "icon/config",
+    "background/configuration",
     {
         _activity_init,
         NULL,
