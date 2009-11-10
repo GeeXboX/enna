@@ -95,6 +95,7 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
         break;
     }
 
+    v->device_name = eina_stringshare_add(srv);
     v->label = eina_stringshare_add(name);
     snprintf(tmp, sizeof(tmp), "file://%s", dir);
     v->mount_point = eina_stringshare_add(tmp);
@@ -162,6 +163,7 @@ module_shutdown(Enna_Module *em)
     {
         enna_log(ENNA_MSG_EVENT, "mtab", "Remove %s", v->label);
         _mount_points = eina_list_remove(_mount_points, v);
+        eina_stringshare_del(v->device_name);
         eina_stringshare_del(v->mount_point);
         eina_stringshare_del(v->label);
         ENNA_FREE(v);
