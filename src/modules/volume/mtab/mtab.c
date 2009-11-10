@@ -47,15 +47,6 @@ typedef enum {
     MTAB_TYPE_SMB,
 } MTAB_TYPE;
 
-
-typedef struct _Mount_Point
-{
-    const char *mount_point;
-    const char *label;
-    const char *type;
-    const char *icon;
-}Mount_Point;
-
 Eina_List *_mount_points = NULL;
 
 /***************************************/
@@ -165,17 +156,15 @@ module_init(Enna_Module *em)
 void
 module_shutdown(Enna_Module *em)
 {
-    Mount_Point *m;
+    Enna_Volume *v;
     Eina_List *l, *l_next;
-    EINA_LIST_FOREACH_SAFE(_mount_points, l, l_next, m)
+    EINA_LIST_FOREACH_SAFE(_mount_points, l, l_next, v)
     {
-        enna_log(ENNA_MSG_EVENT, "mtab", "Remove %s", m->label);
-        _mount_points = eina_list_remove(_mount_points, m);
-        eina_stringshare_del(m->mount_point);
-        eina_stringshare_del(m->label);
-        eina_stringshare_del(m->icon);
-        eina_stringshare_del(m->type);
-        ENNA_FREE(m);
+        enna_log(ENNA_MSG_EVENT, "mtab", "Remove %s", v->label);
+        _mount_points = eina_list_remove(_mount_points, v);
+        eina_stringshare_del(v->mount_point);
+        eina_stringshare_del(v->label);
+        ENNA_FREE(v);
     }
     _mount_points = NULL;
     enna_log(ENNA_MSG_EVENT, "mtab", "mtab module shutdown");
