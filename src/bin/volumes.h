@@ -42,6 +42,7 @@ typedef void (*EnnaVolumeEject)(void *data);
 
 enum _ENNA_VOLUME_TYPE
 {
+    VOLUME_TYPE_UNKNOWN,
     VOLUME_TYPE_CAMERA,
     VOLUME_TYPE_AUDIO_PLAYER,
     VOLUME_TYPE_FLASHKEY,
