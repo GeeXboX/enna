@@ -47,8 +47,7 @@ typedef struct _Class_Private_Data
     const char *uri;
     const char *device;
     unsigned char state;
-    Ecore_Event_Handler *volume_add_handler;
-    Ecore_Event_Handler *volume_remove_handler;
+    Enna_Volumes_Listener *vl;
 } Class_Private_Data;
 
 typedef struct _Enna_Module_Cdda
@@ -114,29 +113,21 @@ static Enna_Class_Vfs class_cdda = {
     NULL
 };
 
-static int _add_volumes_cb(void *data, int type, void *event)
+static void _add_volumes_cb(void *data, Enna_Volume *v)
 {
-    Enna_Volume *v =  event;
-
-    if (!strcmp(v->type, "cdda://"))
+    if (v && v->type == VOLUME_TYPE_CDDA)
     {
-	mod->cdda->device = eina_stringshare_add(v->device);
+	//mod->cdda->device = eina_stringshare_add(v->device);
         enna_vfs_append("cdda", ENNA_CAPS_MUSIC, &class_cdda);
-	ecore_event_add(ENNA_EVENT_REFRESH_BROWSER, NULL, NULL, NULL);
     }
-    return 1;
 }
 
-static int _remove_volumes_cb(void *data, int type, void *event)
+static void _remove_volumes_cb(void *data, Enna_Volume *v)
 {
-    Enna_Volume *v = event;
-
-    if (!strcmp(v->type, "cdda://"))
+    if (v && v->type == VOLUME_TYPE_CDDA)
     {
         enna_vfs_class_remove("cdda", ENNA_CAPS_MUSIC);
-	ecore_event_add(ENNA_EVENT_REFRESH_BROWSER, NULL, NULL, NULL);
     }
-    return 1;
 }
 
 
@@ -164,12 +155,9 @@ void module_init(Enna_Module *em)
 
     mod->cdda = calloc(1, sizeof(Class_Private_Data));
 
-    mod->cdda->volume_add_handler =
-        ecore_event_handler_add(ENNA_EVENT_VOLUME_ADDED,
-            _add_volumes_cb, mod->cdda);
-    mod->cdda->volume_remove_handler =
-        ecore_event_handler_add(ENNA_EVENT_VOLUME_REMOVED,
-            _remove_volumes_cb, mod->cdda);
+    mod->cdda->vl =
+        enna_volumes_listener_add ("cdda", _add_volumes_cb,
+                                   _remove_volumes_cb, mod->cdda);
 }
 
 void module_shutdown(Enna_Module *em)
