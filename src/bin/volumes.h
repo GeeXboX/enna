@@ -80,6 +80,6 @@ void enna_volumes_listener_del(Enna_Volumes_Listener *vl);
 void enna_volumes_add_emit(Enna_Volume *v);
 void enna_volumes_remove_emit(Enna_Volume *v);
 char *enna_volumes_icon_from_type(Enna_Volume *v);
-Eina_List* enna_volumes_get();
+Eina_List* enna_volumes_get(void);
 
 #endif /* ENNA_VOLUMES_H */

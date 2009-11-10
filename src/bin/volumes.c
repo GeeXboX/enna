@@ -135,7 +135,7 @@ enna_volumes_remove_emit(Enna_Volume *v)
 }
 
 Eina_List*
-enna_volumes_get()
+enna_volumes_get(void)
 {
     return _volumes;
 }
