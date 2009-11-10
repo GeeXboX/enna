@@ -124,7 +124,7 @@ if test "x$want_activity_photo" = "xyes"; then
 fi
 
 # TV
-want_activity_tv="yes"
+want_activity_tv="no"
 AC_MSG_CHECKING(whether tv activity module is to be built)
 AC_ARG_ENABLE(activity-tv,
   AS_HELP_STRING([--enable-activity-tv],[Enable TV Activity Module]),
@@ -206,7 +206,7 @@ if test "x$want_browser_localfiles" = "xyes"; then
 fi
 
 # NetStreams
-want_browser_netstreams="yes"
+want_browser_netstreams="no"
 AC_MSG_CHECKING(whether netstreams browser module is to be built)
 AC_ARG_ENABLE(browser-netstreams,
   AS_HELP_STRING([--enable-browser-netstreams],[Enable NetStreams Browser Module]),
@@ -219,7 +219,7 @@ if test "x$want_browser_netstreams" = "xyes"; then
 fi
 
 # Podcast
-want_browser_podcasts="yes"
+want_browser_podcasts="no"
 AC_MSG_CHECKING(whether podcasts browser module is to be built)
 AC_ARG_ENABLE(browser-podcasts,
   AS_HELP_STRING([--enable-browser-podcasts],[Enable Podcasts Browser Module]),
@@ -232,7 +232,7 @@ if test "x$want_browser_podcasts" = "xyes"; then
 fi
 
 # SHOUTcast
-want_browser_shoutcast="yes"
+want_browser_shoutcast="no"
 AC_MSG_CHECKING(whether shoutcast browser module is to be built)
 AC_ARG_ENABLE(browser-shoutcast,
   AS_HELP_STRING([--enable-browser-shoutcast],[Enable SHOUTcast Browser Module]),
