@@ -78,8 +78,6 @@ _enna_mainmenu_item_focus(void *data)
     Enna_Class_Activity *act = data;
     if (!act)
         return;
-
-    printf ("***** Activity now has focus: %s *****\n", act->name);
 }
 
 static void
