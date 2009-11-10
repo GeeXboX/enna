@@ -110,7 +110,7 @@ static void _add_volumes_cb(void *data, Enna_Volume *v)
 {
     if (v && v->type == VOLUME_TYPE_DVD_VIDEO)
     {
-	//mod->dvd->device = eina_stringshare_add(v->device);
+	mod->dvd->device = eina_stringshare_add(v->device_name);
         enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
     }
 }

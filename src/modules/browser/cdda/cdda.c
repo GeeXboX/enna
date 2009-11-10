@@ -117,7 +117,7 @@ static void _add_volumes_cb(void *data, Enna_Volume *v)
 {
     if (v && v->type == VOLUME_TYPE_CDDA)
     {
-	//mod->cdda->device = eina_stringshare_add(v->device);
+	mod->cdda->device = eina_stringshare_add(v->device_name);
         enna_vfs_append("cdda", ENNA_CAPS_MUSIC, &class_cdda);
     }
 }
