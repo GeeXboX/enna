@@ -50,6 +50,7 @@
 #include "image.h"
 #include "logs.h"
 #include "input.h"
+#include "volumes.h"
 
 #define SMART_NAME "Enna_Browser"
 
@@ -92,6 +93,7 @@ struct _Smart_Data
 	    Eina_List *(*view_files_get)(Evas_Object *obj);
 	    void (*view_jump_ascii)(Evas_Object *obj, char k);
     }view_funcs;
+    Enna_Volumes_Listener *vl;
     unsigned char accept_ev : 1;
     unsigned char show_file : 1;
 };
@@ -114,13 +116,24 @@ static void _smart_hide(Evas_Object * obj);
 static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip);
 static void _smart_clip_unset(Evas_Object * obj);
+static void _browse(void *data);
 
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
 
 /* Browser View */
 
+static void
+_refresh_browser(void *data, Enna_Volume *volume)
+{
+    Smart_Data *sd = data;
+    Browse_Data* bd;
 
+    bd = ENNA_NEW(Browse_Data, 1);
+    bd->sd = sd;
+    bd->file = sd->file;
+    _browse(bd);
+}
 
 static Evas_Object *
 _browser_view_list_add(Smart_Data *sd)
@@ -350,6 +363,7 @@ static void _smart_add(Evas_Object * obj)
     evas_object_smart_member_add(sd->layout, obj);
     sd->obj = obj;
     evas_object_smart_data_set(obj, sd);
+    sd->vl = enna_volumes_listener_add("browser", _refresh_browser, _refresh_browser, sd);
 }
 
 static void _smart_del(Evas_Object * obj)
@@ -362,6 +376,7 @@ static void _smart_del(Evas_Object * obj)
     ENNA_OBJECT_DEL(sd->o_view);
     evas_object_del(sd->layout);
     evas_object_del(sd->o_letter);
+    enna_volumes_listener_del(sd->vl);
     free(sd);
 }
 
