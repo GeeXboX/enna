@@ -413,7 +413,12 @@ _custom_resize(void *data, Evas *a, Evas_Object *obj, void *event_info)
     elm_scroller_region_get(obj, &x, &y, &w, &h);
 
     EINA_LIST_FOREACH(sd->items, l, it)
-        evas_object_size_hint_min_set (it->o_edje, w, h);
+    {
+        if (sd->horizontal)
+            evas_object_size_hint_min_set (it->o_edje, h, h);
+        else
+            evas_object_size_hint_min_set (it->o_edje, w, w);
+    }
 }
 
 /* externally accessible functions */
