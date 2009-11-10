@@ -80,19 +80,19 @@ struct _Smart_Data
     char letter_key;
     struct
     {
-	    Evas_Object * (*view_add)(Smart_Data *sd);
-	    void (*view_append)(
-	        Evas_Object *view,
-	        Enna_Vfs_File *file,
-	        void (*func_activated) (void *data),
+            Evas_Object * (*view_add)(Smart_Data *sd);
+            void (*view_append)(
+                Evas_Object *view,
+                Enna_Vfs_File *file,
+                void (*func_activated) (void *data),
                 void (*func_selected) (void *data),
-	        void *data);
-	    void * (*view_selected_data_get)(Evas_Object *view);
-	    int (*view_jump_label)(Evas_Object *view, const char *label);
-	    Eina_Bool (*view_key_down)(Evas_Object *view, enna_input event);
-	    void (*view_select_nth)(Evas_Object *obj, int nth);
-	    Eina_List *(*view_files_get)(Evas_Object *obj);
-	    void (*view_jump_ascii)(Evas_Object *obj, char k);
+                void *data);
+            void * (*view_selected_data_get)(Evas_Object *view);
+            int (*view_jump_label)(Evas_Object *view, const char *label);
+            Eina_Bool (*view_key_down)(Evas_Object *view, enna_input event);
+            void (*view_select_nth)(Evas_Object *obj, int nth);
+            Eina_List *(*view_files_get)(Evas_Object *obj);
+            void (*view_jump_ascii)(Evas_Object *obj, char k);
     }view_funcs;
     Enna_Volumes_Listener *vl;
     unsigned char accept_ev : 1;
@@ -219,36 +219,36 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
     switch(view_type)
     {
     case ENNA_BROWSER_VIEW_LIST:
-	    sd->view_funcs.view_add = _browser_view_list_add;
-	    sd->view_funcs.view_append =  enna_list_file_append;
-	    sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
-	    sd->view_funcs.view_jump_label =  enna_list_jump_label;
-	    sd->view_funcs.view_key_down = enna_list_input_feed;
-	    sd->view_funcs.view_select_nth = enna_list_select_nth;
-	    sd->view_funcs.view_files_get = enna_list_files_get;
-	    sd->view_funcs.view_jump_ascii = enna_list_jump_ascii;
-	    break;
+            sd->view_funcs.view_add = _browser_view_list_add;
+            sd->view_funcs.view_append =  enna_list_file_append;
+            sd->view_funcs.view_selected_data_get =  enna_list_selected_data_get;
+            sd->view_funcs.view_jump_label =  enna_list_jump_label;
+            sd->view_funcs.view_key_down = enna_list_input_feed;
+            sd->view_funcs.view_select_nth = enna_list_select_nth;
+            sd->view_funcs.view_files_get = enna_list_files_get;
+            sd->view_funcs.view_jump_ascii = enna_list_jump_ascii;
+            break;
     case ENNA_BROWSER_VIEW_COVER:
-	    sd->view_funcs.view_add = _browser_view_cover_add;
-	    sd->view_funcs.view_append =  enna_view_cover_file_append;
-	    sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
-	    sd->view_funcs.view_jump_label = enna_view_cover_jump_label;
-	    sd->view_funcs.view_key_down = enna_view_cover_input_feed;
-	    sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
-	    sd->view_funcs.view_files_get = enna_view_cover_files_get;
-	    sd->view_funcs.view_jump_ascii = enna_view_cover_jump_ascii;
-	    break;
+            sd->view_funcs.view_add = _browser_view_cover_add;
+            sd->view_funcs.view_append =  enna_view_cover_file_append;
+            sd->view_funcs.view_selected_data_get =  enna_view_cover_selected_data_get;
+            sd->view_funcs.view_jump_label = enna_view_cover_jump_label;
+            sd->view_funcs.view_key_down = enna_view_cover_input_feed;
+            sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
+            sd->view_funcs.view_files_get = enna_view_cover_files_get;
+            sd->view_funcs.view_jump_ascii = enna_view_cover_jump_ascii;
+            break;
     case ENNA_BROWSER_VIEW_WALL:
-	    sd->view_funcs.view_add = _browser_view_wall_add;
-	    sd->view_funcs.view_append =  enna_wall_file_append;
-	    sd->view_funcs.view_selected_data_get =  enna_wall_selected_data_get;
-	    sd->view_funcs.view_jump_label =  enna_wall_jump_label;
-	    sd->view_funcs.view_key_down = enna_wall_input_feed;
-	    sd->view_funcs.view_select_nth = _browser_view_wall_select_nth;
-	    sd->view_funcs.view_files_get = enna_wall_files_get;
-  	    sd->view_funcs.view_jump_ascii = enna_wall_jump_ascii;
+            sd->view_funcs.view_add = _browser_view_wall_add;
+            sd->view_funcs.view_append =  enna_wall_file_append;
+            sd->view_funcs.view_selected_data_get =  enna_wall_selected_data_get;
+            sd->view_funcs.view_jump_label =  enna_wall_jump_label;
+            sd->view_funcs.view_key_down = enna_wall_input_feed;
+            sd->view_funcs.view_select_nth = _browser_view_wall_select_nth;
+            sd->view_funcs.view_files_get = enna_wall_files_get;
+              sd->view_funcs.view_jump_ascii = enna_wall_jump_ascii;
         default:
-	break;
+        break;
     }
     evas_object_smart_callback_del(sd->o_view, "hilight", _view_hilight_cb);
     ENNA_OBJECT_DEL(sd->o_view);
@@ -272,7 +272,7 @@ enna_browser_select_label(Evas_Object *obj, const char *label)
     if (!sd || !sd->o_view) return -1;
 
     if (sd->view_funcs.view_jump_label)
-	    sd->view_funcs.view_jump_label(sd->o_view, label);
+            sd->view_funcs.view_jump_label(sd->o_view, label);
 
     return 0;
 
@@ -285,7 +285,7 @@ enna_browser_files_get(Evas_Object *obj)
      if (!sd->o_view) return NULL;
 
      if (sd->view_funcs.view_files_get)
-	    return sd->view_funcs.view_files_get(sd->o_view);
+            return sd->view_funcs.view_files_get(sd->o_view);
 
      return NULL;
 }
@@ -311,21 +311,21 @@ static void _smart_init(void)
     if (_smart)
         return;
     static const Evas_Smart_Class sc =
-	{
-	    SMART_NAME,
-	    EVAS_SMART_CLASS_VERSION,
-	    _smart_add,
-	    _smart_del,
-	    _smart_move,
-	    _smart_resize,
-	    _smart_show,
-	    _smart_hide,
-	    _smart_color_set,
-	    _smart_clip_set,
-	    _smart_clip_unset,
-	    NULL,
-	    NULL
-	};
+        {
+            SMART_NAME,
+            EVAS_SMART_CLASS_VERSION,
+            _smart_add,
+            _smart_del,
+            _smart_move,
+            _smart_resize,
+            _smart_show,
+            _smart_hide,
+            _smart_color_set,
+            _smart_clip_set,
+            _smart_clip_unset,
+            NULL,
+            NULL
+        };
     _smart = evas_smart_class_new(&sc);
 }
 
@@ -484,7 +484,7 @@ static  void _browse(void *data)
     Browse_Data *bd = data;
     Enna_Vfs_File *visited;
     if (!bd)
-	return;
+        return;
 
     sd = bd->sd;
     sd->file = bd->file;
@@ -526,7 +526,7 @@ static  void _browse(void *data)
             Enna_Vfs_File *prev_vfs;
             char *prev_uri;
             prev_vfs = sd->vfs->func.class_vfs_get(sd->vfs->cookie);
-	        prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
+                prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
             sd->files = sd->vfs->func.class_browse_up(prev_uri, sd->vfs->cookie);
             ENNA_FREE(prev_uri);
             ev->files = sd->files;
@@ -651,7 +651,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
             bd = calloc(1, sizeof(Browse_Data));
             bd->file = f;
             bd->sd = sd;
-	        sd->view_funcs.view_append(sd->o_view, f, _browse, NULL, bd);
+                sd->view_funcs.view_append(sd->o_view, f, _browse, NULL, bd);
         }
 
     }
@@ -704,7 +704,7 @@ void enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
         sd->files = vfs->func.class_browse_up(NULL, vfs->cookie);
         sd->vfs = vfs;
         edje_object_signal_callback_add(elm_layout_edje_get(sd->layout),
-                                        "list,transition,end", "edje", 
+                                        "list,transition,end", "edje",
                                         _list_transition_left_end_cb, sd);
         edje_object_signal_emit(elm_layout_edje_get(sd->layout),
                                 "list,left", "enna");
@@ -716,7 +716,7 @@ static void _jump_to_ascii(Smart_Data *sd, char k)
     if (!sd) return;
 
      if (sd->view_funcs.view_jump_ascii)
-	    sd->view_funcs.view_jump_ascii(sd->o_view, k);
+            sd->view_funcs.view_jump_ascii(sd->o_view, k);
 /*
     EINA_LIST_FOREACH(sd->items, l, it)
     {

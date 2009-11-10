@@ -220,10 +220,10 @@ _smart_reconfigure(Smart_Data * sd)
     elm_box_pack_end(sd->o_btn_box, bt);                             \
     evas_object_show(bt);                                            \
     evas_object_show(ic);                                            \
-    it = calloc(1, sizeof(Smart_Btn_Item));			     \
-    it->bt = bt;						     \
-    it->ic = ic;						     \
-    sd->btns = eina_list_append(sd->btns, it);			     \
+    it = calloc(1, sizeof(Smart_Btn_Item));                          \
+    it->bt = bt;                                                     \
+    it->ic = ic;                                                     \
+    sd->btns = eina_list_append(sd->btns, it);                       \
 
 static void
 _smart_add(Evas_Object * obj)

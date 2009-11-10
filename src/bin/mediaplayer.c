@@ -178,7 +178,7 @@ event_mouse_button (void *data, int type, void *event)
     /* Broadcast mouse position only for dvd player and only
        if libplayer window is on screen */
     if ((e->window == enna->ee_winid) || !mp->uri ||
-	strncmp (mp->uri, URI_TYPE_DVDNAV, strlen (URI_TYPE_DVDNAV)))
+        strncmp (mp->uri, URI_TYPE_DVDNAV, strlen (URI_TYPE_DVDNAV)))
         return 1;
 
     /* Set mouse position and send mouseclick event */
@@ -197,7 +197,7 @@ event_mouse_move (void *data, int type, void *event)
     /* Broadcast mouse position only for dvd player and only
        if libplayer window is on screen*/
     if ((e->window == enna->ee_winid) || !mp->uri ||
-	strncmp (mp->uri, URI_TYPE_DVDNAV, strlen (URI_TYPE_DVDNAV)))
+        strncmp (mp->uri, URI_TYPE_DVDNAV, strlen (URI_TYPE_DVDNAV)))
         return 1;
 
     /* Send mouse position to libplayer */
@@ -909,10 +909,10 @@ enna_mediaplayer_init (void)
     mp->key_down_event_handler =
         ecore_event_handler_add (ECORE_EVENT_KEY_DOWN, event_key_down, NULL);
     mp->mouse_button_event_handler =
-	ecore_event_handler_add (ECORE_EVENT_MOUSE_BUTTON_DOWN,
+        ecore_event_handler_add (ECORE_EVENT_MOUSE_BUTTON_DOWN,
                                  event_mouse_button, NULL);
     mp->mouse_move_event_handler =
-	ecore_event_handler_add (ECORE_EVENT_MOUSE_MOVE,
+        ecore_event_handler_add (ECORE_EVENT_MOUSE_MOVE,
                                  event_mouse_move, NULL);
 
     mp->pipe = ecore_pipe_add (pipe_read, NULL);
@@ -1323,9 +1323,9 @@ enna_mediaplayer_mute_get (void)
     player_mute_t m;
     m = player_audio_mute_get (mp->player);
     if (m == PLAYER_MUTE_ON)
-	return 1;
+        return 1;
     else
-	return 0;
+        return 0;
 }
 
 void

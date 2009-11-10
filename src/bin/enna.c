@@ -127,7 +127,7 @@ void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
     }
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     if (enna->mouse_idle_timer)
-        ecore_timer_interval_set(enna->mouse_idle_timer, 
+        ecore_timer_interval_set(enna->mouse_idle_timer,
                                  ENNA_MOUSE_IDLE_TIMEOUT);
     else
         enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
@@ -339,7 +339,7 @@ void enna_idle_timer_renew(void)
 {
     if (enna_config->idle_timeout)
     {
-        if (enna->idle_timer) 
+        if (enna->idle_timer)
         {
             ENNA_TIMER_DEL(enna->idle_timer)
         }

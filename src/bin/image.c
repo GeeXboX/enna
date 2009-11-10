@@ -64,13 +64,13 @@ _flip_horizontal(Smart_Data *sd)
         p1 = data + (y * iw);
         p2 = data + ((y + 1) * iw) - 1;
         for (x = 0; x < (iw >> 1); x++)
-	{
-	    tmp = *p1;
-	    *p1 = *p2;
-	    *p2 = tmp;
-	    p1++;
-	    p2--;
-	}
+        {
+            tmp = *p1;
+            *p1 = *p2;
+            *p2 = tmp;
+            p1++;
+            p2--;
+        }
     }
 
     evas_object_image_data_set(sd->obj, data);
@@ -93,13 +93,13 @@ _flip_vertical(Smart_Data *sd)
         p1 = data + (y * iw);
         p2 = data + ((ih - 1 - y) * iw);
         for (x = 0; x < iw; x++)
-	{
-	    tmp = *p1;
-	    *p1 = *p2;
-	    *p2 = tmp;
-	    p1++;
-	    p2++;
-	}
+        {
+            tmp = *p1;
+            *p1 = *p2;
+            *p2 = tmp;
+            p1++;
+            p2++;
+        }
     }
 
     evas_object_image_data_set(sd->obj, data);
@@ -257,21 +257,21 @@ void enna_image_orient_set(Evas_Object *obj, Enna_Image_Orient orient)
     sd = evas_object_smart_data_get(obj);
     if (!sd) return;
     if (!strcmp(evas_object_type_get(sd->obj), "edje"))
-	return;
+        return;
 
     switch (orient)
     {
     case ENNA_IMAGE_FLIP_HORIZONTAL:
-	_flip_horizontal(sd);
-	return;
+        _flip_horizontal(sd);
+        return;
     case ENNA_IMAGE_FLIP_VERTICAL:
-	_flip_vertical(sd);
-	return;
+        _flip_vertical(sd);
+        return;
     case ENNA_IMAGE_ROTATE_180_CW:
-	_rotate_180(sd);
-	return;
+        _rotate_180(sd);
+        return;
     default:
-	break;
+        break;
     }
 
     evas_object_image_size_get(sd->obj, &iw, &ih);
@@ -290,36 +290,36 @@ void enna_image_orient_set(Evas_Object *obj, Enna_Image_Orient orient)
     switch (orient)
     {
     case ENNA_IMAGE_FLIP_TRANSPOSE:
-	to = data;
-	hw = -hw + 1;
-	break;
+        to = data;
+        hw = -hw + 1;
+        break;
     case ENNA_IMAGE_FLIP_TRANSVERSE:
-	to = data + hw - 1;
-	w = -w;
-	hw = hw - 1;
-	break;
+        to = data + hw - 1;
+        w = -w;
+        hw = hw - 1;
+        break;
     case ENNA_IMAGE_ROTATE_90_CW:
-	to = data + w - 1;
-	hw = -hw - 1;
-	break;
+        to = data + w - 1;
+        hw = -hw - 1;
+        break;
     case ENNA_IMAGE_ROTATE_90_CCW:
-	to = data + hw - w;
-	w = -w;
-	hw = hw + 1;
-	break;
+        to = data + hw - w;
+        w = -w;
+        hw = hw + 1;
+        break;
     default:
-	to = NULL;
-	break;
+        to = NULL;
+        break;
     }
     from = data2;
     for (x = iw; --x >= 0;)
     {
         for (y = ih; --y >= 0;)
-	{
-	    *to = *from;
-	    from++;
-	    to += w;
-	}
+        {
+            *to = *from;
+            from++;
+            to += w;
+        }
         to += hw;
     }
     evas_object_del(tmp);
@@ -358,12 +358,12 @@ static void _smart_reconfigure(Smart_Data * sd)
     else
     {
         /*w = sd->w;
-	  h = ((double)ih * w) / (double)iw;
-	  if (h < sd->h)
-	  {
-	  h = sd->h;
-	  w = ((double)iw * h) / (double)ih;
-	  }*/
+          h = ((double)ih * w) / (double)iw;
+          if (h < sd->h)
+          {
+          h = sd->h;
+          w = ((double)iw * h) / (double)ih;
+          }*/
         evas_object_move(sd->obj, sd->x, sd->y);
         evas_object_image_fill_set(sd->obj, 0, 0, sd->w, sd->h);
         evas_object_resize(sd->obj, sd->w, sd->h);
@@ -466,23 +466,23 @@ static void _smart_clip_unset(Evas_Object * obj)
 static void _enna_image_smart_init(void)
 {
     static const Evas_Smart_Class sc = {
-	SMART_NAME,
-	EVAS_SMART_CLASS_VERSION,
-	_smart_add,
-	_smart_del,
-	_smart_move,
-	_smart_resize,
-	_smart_show,
-	_smart_hide,
-	_smart_color_set,
-	_smart_clip_set,
-	_smart_clip_unset,
-	NULL,
-	NULL
+        SMART_NAME,
+        EVAS_SMART_CLASS_VERSION,
+        _smart_add,
+        _smart_del,
+        _smart_move,
+        _smart_resize,
+        _smart_show,
+        _smart_hide,
+        _smart_color_set,
+        _smart_clip_set,
+        _smart_clip_unset,
+        NULL,
+        NULL
     };
 
     if (!_e_smart)
-	_e_smart = evas_smart_class_new(&sc);
+        _e_smart = evas_smart_class_new(&sc);
 }
 
 /* externally accessible functions */

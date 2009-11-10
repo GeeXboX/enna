@@ -307,13 +307,13 @@ static void _view_cover_select(Evas_Object *obj, int pos)
     sd = evas_object_data_get(obj, "sd");
     ssi = _smart_selected_item_get(sd, &nth);
     if (!ssi)
-	nth = 0;
+        nth = 0;
     else
     {
-	if (pos)
-	    nth++;
-	else
-	    nth--;
+        if (pos)
+            nth++;
+        else
+            nth--;
     }
     si = eina_list_nth(sd->items, nth);
     if (si)
@@ -327,8 +327,8 @@ static void _view_cover_select(Evas_Object *obj, int pos)
         x += xedje;
         elm_scroller_region_bring_in(obj, x, y, wedje, hedje);
 
-	_smart_item_select(sd, si);
-	if (ssi) _smart_item_unselect(sd, ssi);
+        _smart_item_select(sd, si);
+        if (ssi) _smart_item_unselect(sd, ssi);
     }
 
 }
@@ -341,12 +341,12 @@ static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth)
 
     EINA_LIST_FOREACH(sd->items, l, si)
     {
-	if (si->selected)
-	{
-	    if (nth)  *nth = i;
-	    return si;
-	}
-	i++;
+        if (si->selected)
+        {
+            if (nth)  *nth = i;
+            return si;
+        }
+        i++;
     }
     if (nth) *nth = -1;
     return NULL;
@@ -392,7 +392,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     {
         if (si->func_activated)
             si->func_activated(si->data);
-	    return;
+            return;
     }
     else if (spi == si)
     {

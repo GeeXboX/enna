@@ -173,7 +173,7 @@ const char * enna_config_theme_file_get(const char *s)
 
     if (!s)
         return NULL;
-    if (s[0]=='/') 
+    if (s[0]=='/')
         snprintf(tmp, sizeof(tmp), "%s", s);
 
     if (!ecore_file_exists(tmp))
@@ -258,7 +258,7 @@ void enna_config_init(const char* conffile)
     }
     else enna_log(ENNA_MSG_WARNING, NULL, "couldn't load enna config file: %s.", filename);
 
-    if (!enna_config->theme) 
+    if (!enna_config->theme)
         enna_config->theme=strdup("default");
     enna_config->theme_file
         = enna_config_theme_file_get(enna_config->theme);
@@ -493,14 +493,14 @@ Eina_List *_config_panels = NULL;
  * the configuration panel. The use is quite simple: give in a label and the
  * icon that rapresent your panel.
  * You need to implement 2 functions:
- * 
+ *
  *  Evas_Object *create_cb(void *data)
  *   This function must return the main Evas_Object of your panel
  *   The data pointer is the data you set in the register function
  *
  *  void *destroy_cb(void *data)
  *   In this function you must hide your panel, and possiby free some resource
- * 
+ *
  */
 Enna_Config_Panel *
 enna_config_panel_register(const char *label, const char *icon,

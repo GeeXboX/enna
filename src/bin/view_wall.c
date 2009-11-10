@@ -111,7 +111,7 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 
 
     if (h)
-	    f = (float)w/(float)h;
+            f = (float)w/(float)h;
 
     edje_object_part_swallow(pi->o_edje, "enna.swallow.content", pi->o_pict);
 
@@ -121,18 +121,18 @@ void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas
 
     if (w0 <= w1 && w0 <= w2)
     {
-	    row = 0;
-	    oh = h0;
+            row = 0;
+            oh = h0;
     }
     else if (w1 <= w2)
     {
         row = 1;
-	    oh = h1;
+            oh = h1;
     }
     else
     {
         row = 2;
-	    oh = h2;
+            oh = h2;
     }
 
     if (!oh) oh = h;
@@ -168,34 +168,34 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
 
     if (orientation > 1 && orientation < 9)
     {
-	Enna_Image_Orient t1 = ENNA_IMAGE_ORIENT_NONE;
+        Enna_Image_Orient t1 = ENNA_IMAGE_ORIENT_NONE;
 
-	switch (orientation)
-	{
-	case 2:		/* Horizontal flip */
-	    t1 = ENNA_IMAGE_FLIP_HORIZONTAL;
-	    break;
-	case 3:		/* Rotate 180 clockwise */
-	    t1 = ENNA_IMAGE_ROTATE_180_CW;
-	    break;
-	case 4:		/* Vertical flip */
-	    t1 = ENNA_IMAGE_FLIP_VERTICAL;
-	    break;
-	case 5:		/* Transpose */
-	    t1 = ENNA_IMAGE_FLIP_TRANSPOSE;
-	    break;
-	case 6:		/* Rotate 90 clockwise */
-	    t1 = ENNA_IMAGE_ROTATE_90_CW;
-	    break;
-	case 7:		/* Transverse */
-	    t1 = ENNA_IMAGE_FLIP_TRANSVERSE;
-	    break;
-	case 8:		/* Rotate 90 counter-clockwise */
-	    t1 = ENNA_IMAGE_ROTATE_90_CCW;
-	    break;
-	}
-	if (t1)
-	    enna_thumb_icon_orient_set(pi->o_pict, t1);
+        switch (orientation)
+        {
+        case 2:                /* Horizontal flip */
+            t1 = ENNA_IMAGE_FLIP_HORIZONTAL;
+            break;
+        case 3:                /* Rotate 180 clockwise */
+            t1 = ENNA_IMAGE_ROTATE_180_CW;
+            break;
+        case 4:                /* Vertical flip */
+            t1 = ENNA_IMAGE_FLIP_VERTICAL;
+            break;
+        case 5:                /* Transpose */
+            t1 = ENNA_IMAGE_FLIP_TRANSPOSE;
+            break;
+        case 6:                /* Rotate 90 clockwise */
+            t1 = ENNA_IMAGE_ROTATE_90_CW;
+            break;
+        case 7:                /* Transverse */
+            t1 = ENNA_IMAGE_FLIP_TRANSVERSE;
+            break;
+        case 8:                /* Rotate 90 counter-clockwise */
+            t1 = ENNA_IMAGE_ROTATE_90_CCW;
+            break;
+        }
+        if (t1)
+            enna_thumb_icon_orient_set(pi->o_pict, t1);
     }
     enna_thumb_icon_size_get(pi->o_pict, &w, &h);
     _wall_add_pict_to_wall(pi->sd, pi, w, h);
@@ -220,43 +220,43 @@ void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     if (file->is_directory)
     {
-	    edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
+            edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
         edje_object_part_text_set(o, "enna.text.label", file->label);
 
-	    o_pict = elm_icon_add(obj);
-	    enna_image_fill_inside_set(o_pict, 0);
+            o_pict = elm_icon_add(obj);
+            enna_image_fill_inside_set(o_pict, 0);
 
-	    if (file->icon && file->icon[0] == '/')
-	        elm_icon_file_set(o_pict, file->icon, NULL);
-	    else
-	        elm_icon_file_set(o_pict, enna_config_theme_get(), file->icon);
+            if (file->icon && file->icon[0] == '/')
+                elm_icon_file_set(o_pict, file->icon, NULL);
+            else
+                elm_icon_file_set(o_pict, enna_config_theme_get(), file->icon);
 
-	    pi->o_pict = o_pict;
-	    pi->o_edje = o;
-	    pi->data = data;
-	    pi->func_activated = func_activated;
+            pi->o_pict = o_pict;
+            pi->o_edje = o;
+            pi->data = data;
+            pi->func_activated = func_activated;
             pi->func_selected = func_selected;
-	    pi->sd = sd;
+            pi->sd = sd;
 
-	    _wall_add_pict_to_wall(pi->sd, pi, 1, 1);
+            _wall_add_pict_to_wall(pi->sd, pi, 1, 1);
     }
     else
     {
         edje_object_file_set(o, enna_config_theme_get(), "enna/picture/item");
         edje_object_part_text_set(o, "enna.text.label", file->label);
-	    o_pict = enna_thumb_icon_add(evas_object_evas_get(sd->o_scroll));
-    	enna_thumb_icon_file_set(o_pict, file->uri+7, "enna/thumbnails");
-    	enna_thumb_icon_size_set(o_pict, 256, 256);
-    	evas_object_show(o_pict);
+            o_pict = enna_thumb_icon_add(evas_object_evas_get(sd->o_scroll));
+            enna_thumb_icon_file_set(o_pict, file->uri+7, "enna/thumbnails");
+            enna_thumb_icon_size_set(o_pict, 256, 256);
+            evas_object_show(o_pict);
 
-    	evas_object_smart_callback_add(o_pict, "enna_thumb_gen", _wall_image_preload_cb, pi);
-    	pi->o_pict = o_pict;
+            evas_object_smart_callback_add(o_pict, "enna_thumb_gen", _wall_image_preload_cb, pi);
+            pi->o_pict = o_pict;
 
-    	pi->o_edje = o;
-    	pi->data = data;
-    	pi->func_activated = func_activated;
+            pi->o_edje = o;
+            pi->data = data;
+            pi->func_activated = func_activated;
         pi->func_selected = func_selected;
-    	pi->sd = sd;
+            pi->sd = sd;
     }
 
     evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
@@ -602,7 +602,7 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     {
         if (pi->func_activated)
             pi->func_activated(pi->data);
-	    return;
+            return;
     }
     else if (ppi == pi)
     {
@@ -707,7 +707,7 @@ static void _smart_del(Evas_Object * obj)
             sd->items[i] = eina_list_remove_list(sd->items[i], sd->items[i]);
             evas_object_del(pi->o_edje);
             evas_object_smart_callback_del(pi->o_pict, "enna_thumb_gen", _wall_image_preload_cb);
-	        enna_thumb_icon_end(pi->o_pict);
+                enna_thumb_icon_end(pi->o_pict);
             evas_object_del(pi->o_pict);
             free(pi);
         }

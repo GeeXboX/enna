@@ -206,7 +206,7 @@ _list_item_buttons_create_all(const Item_Data *id)
             b->obj = o;
         }
     }
-    
+
     return box;
 }
 
@@ -431,7 +431,6 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
 
     item = elm_genlist_selected_item_get(obj);
     if (!item) return ENNA_EVENT_CONTINUE;
-    
 
     switch (event)
     {
@@ -497,7 +496,7 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
             //~ list_set_item(sd, ns, 1, 5);
             //~ return ENNA_EVENT_BLOCK;
             //~ break;
- 
+
         default:
             break;
     }

@@ -170,9 +170,9 @@ int enna_activity_event(Enna_Class_Activity *act, enna_input event)
 const char *enna_activity_request_quit_all(void)
 {
     Eina_List *l;
-    buffer_t *msg;   
+    buffer_t *msg;
     Enna_Class_Activity *act;
-    const char *tmp;    
+    const char *tmp;
     msg = buffer_new();
     EINA_LIST_FOREACH(_enna_activities, l,  act)
     {
@@ -180,7 +180,7 @@ const char *enna_activity_request_quit_all(void)
         {
           tmp = act->func.class_quit_request (0);
           if (tmp)
-            buffer_appendf(msg, "%s<t> : <hilight>%s</hilight><br>", act->label, tmp);  
+            buffer_appendf(msg, "%s<t> : <hilight>%s</hilight><br>", act->label, tmp);
         }
     }
     if (msg->buf)
@@ -189,6 +189,5 @@ const char *enna_activity_request_quit_all(void)
         buffer_free(msg);
         return tmp;
     }
-    return NULL;                                                                                            
-    
+    return NULL;
 }

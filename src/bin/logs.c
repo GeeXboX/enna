@@ -52,13 +52,13 @@ int enna_log_init(const char *filename)
 {
 
     if (refcount > 1)
-	return 0;
+        return 0;
 
     if (filename)
     {
-	fp = fopen(filename, "w");
-	if (!fp)
-	    return 0;
+        fp = fopen(filename, "w");
+        if (!fp)
+            return 0;
     }
 
     refcount++;
@@ -113,15 +113,15 @@ void enna_log_print(int level, const char *module, char *file, int line,
 
     if (!fp)
     {
-	f = stderr;
-	fprintf (f, "[" BOLD "%s%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
-	    prefix ? prefix : "", module, file, line, c[level], l[level]);
+        f = stderr;
+        fprintf (f, "[" BOLD "%s%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
+            prefix ? prefix : "", module, file, line, c[level], l[level]);
     }
     else
     {
-	f = fp;
-	fprintf (f, "[%s%s] [%s:%d] %s: ",
-	    prefix ? prefix : "", module, file, line, l[level]);
+        f = fp;
+        fprintf (f, "[%s%s] [%s:%d] %s: ",
+            prefix ? prefix : "", module, file, line, l[level]);
     }
 
     vfprintf (f, format, va);
@@ -133,7 +133,7 @@ void enna_log_shutdown(void)
 {
     if (fp)
     {
-	fclose(fp);
+        fclose(fp);
     }
     refcount--;
 }

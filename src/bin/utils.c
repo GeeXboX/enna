@@ -342,9 +342,9 @@ svdrp_t *enna_svdrp_get (void)
 void enna_util_env_set(const char *var, const char *val)
 {
     if (val)
-	setenv(var, val, 1);
+        setenv(var, val, 1);
     else
-    	unsetenv(var);
+        unsetenv(var);
 }
 
 

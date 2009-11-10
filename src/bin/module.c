@@ -245,7 +245,7 @@ _config_panel_show(void *data)
 
     printf("** Modules Panel Show **\n");
     if (o_list) return o_list;
-    
+
     // create list
     o_list = enna_list2_add(enna->evas);
     evas_object_size_hint_align_set(o_list, -1.0, -1.0);

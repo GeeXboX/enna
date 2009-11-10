@@ -46,35 +46,35 @@ enna_ipc_init(void)
      }
    else
      {
-	struct stat st;
+        struct stat st;
 
-	if (stat(buf, &st) == 0)
-	  {
-	     if ((st.st_uid ==
-		  getuid()) &&
-		 ((st.st_mode & (S_IFDIR|S_IRWXU|S_IRWXG|S_IRWXO)) ==
-		  (S_IRWXU|S_IFDIR)))
-	       {
-	       }
-	     else
-	       {
-		  printf(_("Possible IPC Hack Attempt. The IPC socket\n"
-					 "directory already exists BUT has permissions\n"
-					 "that are too leanient (must only be readable\n" "and writable by the owner, and nobody else)\n"
-					 "or is not owned by you. Please check:\n"
-					 "%s/enlightenment-%s\n"), tmp, user);
-		  return 0;
-	       }
-	  }
-	else
-	  {
-	     printf(_("The IPC socket directory cannot be created or\n"
-				    "examined.\n"
-				    "Please check:\n"
-				    "%s/enlightenment-%s\n"),
-				  tmp, user);
-	     return 0;
-	  }
+        if (stat(buf, &st) == 0)
+          {
+             if ((st.st_uid ==
+                  getuid()) &&
+                 ((st.st_mode & (S_IFDIR|S_IRWXU|S_IRWXG|S_IRWXO)) ==
+                  (S_IRWXU|S_IFDIR)))
+               {
+               }
+             else
+               {
+                  printf(_("Possible IPC Hack Attempt. The IPC socket\n"
+                                         "directory already exists BUT has permissions\n"
+                                         "that are too leanient (must only be readable\n" "and writable by the owner, and nobody else)\n"
+                                         "or is not owned by you. Please check:\n"
+                                         "%s/enlightenment-%s\n"), tmp, user);
+                  return 0;
+               }
+          }
+        else
+          {
+             printf(_("The IPC socket directory cannot be created or\n"
+                                    "examined.\n"
+                                    "Please check:\n"
+                                    "%s/enlightenment-%s\n"),
+                                  tmp, user);
+             return 0;
+          }
      }
    snprintf(buf, sizeof(buf), "%s/enna-%s/disp-%s-%i", tmp, user, disp, pid);
    _ipc_server = ecore_ipc_server_add(ECORE_IPC_LOCAL_SYSTEM, buf, 0, NULL);
@@ -94,8 +94,8 @@ enna_ipc_shutdown(void)
 
    if (_ipc_server)
      {
-	ecore_ipc_server_del(_ipc_server);
-	_ipc_server = NULL;
+        ecore_ipc_server_del(_ipc_server);
+        _ipc_server = NULL;
      }
 
    ecore_ipc_shutdown();
@@ -134,10 +134,10 @@ _ipc_cb_client_data(void *data, int type, void *event)
    switch (e->major)
      {
       case 5:
-	enna_thumb_client_data(e);
-	break;
+        enna_thumb_client_data(e);
+        break;
       default:
-	break;
+        break;
      }
    return 1;
 }

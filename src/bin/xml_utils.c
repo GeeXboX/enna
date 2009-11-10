@@ -175,27 +175,27 @@ get_attr_value_from_node (xmlNode *node, const char *attr_name)
     return NULL;
 }
 
-xmlXPathObjectPtr 
+xmlXPathObjectPtr
 get_xnodes_from_xml_tree (xmlDocPtr doc, xmlChar *xpath)
-{	
+{
     xmlXPathContextPtr context;
     xmlXPathObjectPtr result;
 
     context = xmlXPathNewContext(doc);
 
-    if (!context) 
+    if (!context)
         return NULL;
 
     result = xmlXPathEvalExpression(xpath, context);
     xmlXPathFreeContext(context);
 
-    if (!result) 
+    if (!result)
         return NULL;
 
     if(xmlXPathNodeSetIsEmpty(result->nodesetval))
     {
         xmlXPathFreeObject(result);
-	return NULL;
+        return NULL;
     }
 
     return result;

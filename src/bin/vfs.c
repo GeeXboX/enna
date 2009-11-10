@@ -66,28 +66,28 @@ int enna_vfs_append(const char *name, unsigned char type,
     if (type & ENNA_CAPS_MUSIC)
     {
         _enna_vfs_music = eina_list_append(_enna_vfs_music, vfs);
-	_enna_vfs_music = eina_list_sort(
-	    _enna_vfs_music,
-	    eina_list_count(_enna_vfs_music),
-	    _sort_cb);
+        _enna_vfs_music = eina_list_sort(
+            _enna_vfs_music,
+            eina_list_count(_enna_vfs_music),
+            _sort_cb);
     }
 
     if (type & ENNA_CAPS_VIDEO)
     {
-	_enna_vfs_video = eina_list_append(_enna_vfs_video, vfs);
-	_enna_vfs_video = eina_list_sort(
-	    _enna_vfs_video,
-	    eina_list_count(_enna_vfs_video),
-	    _sort_cb);
+        _enna_vfs_video = eina_list_append(_enna_vfs_video, vfs);
+        _enna_vfs_video = eina_list_sort(
+            _enna_vfs_video,
+            eina_list_count(_enna_vfs_video),
+            _sort_cb);
     }
 
     if (type & ENNA_CAPS_PHOTO)
     {
-	_enna_vfs_photo = eina_list_append(_enna_vfs_photo, vfs);
-	_enna_vfs_photo = eina_list_sort(
-	    _enna_vfs_photo,
-	    eina_list_count(_enna_vfs_photo),
-	    _sort_cb);
+        _enna_vfs_photo = eina_list_append(_enna_vfs_photo, vfs);
+        _enna_vfs_photo = eina_list_sort(
+            _enna_vfs_photo,
+            eina_list_count(_enna_vfs_photo),
+            _sort_cb);
     }
 
     return 0;

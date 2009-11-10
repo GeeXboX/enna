@@ -97,10 +97,10 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
         Evas_Object *ic;
 
         ic = elm_icon_add(obj);
-	if (item->icon && item->icon[0] == '/')
-	    elm_icon_file_set(ic, item->icon, NULL);
-	else
-	    elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+        if (item->icon && item->icon[0] == '/')
+            elm_icon_file_set(ic, item->icon, NULL);
+        else
+            elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
         evas_object_size_hint_min_set(ic, 64, 64);
         evas_object_show(ic);
         return ic;
@@ -162,7 +162,6 @@ static void list_set_item(Smart_Data *sd, int start, int up, int step)
     if (n != ns)
         _smart_select_item(sd, n);
 }
-
 
 Evas_Object *
 enna_list_add(Evas *evas)
@@ -281,7 +280,6 @@ void *enna_list_selected_data_get(Evas_Object *obj)
     }
     return NULL;
 }
-
 
 void enna_list_jump_ascii(Evas_Object *obj, char k)
 {
