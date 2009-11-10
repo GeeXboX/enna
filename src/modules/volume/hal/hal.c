@@ -206,7 +206,6 @@ vfs_add_volume_entry (volume_t *v)
         type =  VOLUME_TYPE_DVD;
         snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
         uri = eina_stringshare_add(tmp);
-        printf("%s uri\n", uri);
         break;
     case HAL_VOLUME_TYPE_DVD_VIDEO:
         type =  VOLUME_TYPE_DVD_VIDEO;
@@ -282,13 +281,14 @@ static void
 ehal_remove_volume (char *udi)
 {
     volume_t *v;
-    Eina_List *l;
+    Eina_List *l, *l_next;
+
     if (!udi)
         return;
 
-    EINA_LIST_FOREACH(mod->volumes, l, v);
+    EINA_LIST_FOREACH_SAFE(mod->volumes, l, l_next, v);
     {
-        if (v->udi && !strcmp (v->udi, udi))
+        if (v && v->udi && !strcmp (v->udi, udi))
         {
             vfs_remove_volume_entry(v);
             mod->volumes = eina_list_remove (mod->volumes, v);
@@ -371,8 +371,8 @@ ehal_device_removed (void *data, DBusMessage *msg)
     enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
               "Removing newly disconnected device: %s", udi);
 
-    ehal_remove_storage (udi);
     ehal_remove_volume (udi);
+    ehal_remove_storage (udi);
 }
 
 /* Module interface */
@@ -397,6 +397,7 @@ module_init (Enna_Module *em)
     em->mod = mod;
 
     e_dbus_init();
+    e_hal_init();
 
     mod->dbus = e_dbus_bus_get (DBUS_BUS_SYSTEM);
     if (!mod->dbus)
