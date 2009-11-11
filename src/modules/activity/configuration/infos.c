@@ -81,7 +81,7 @@
 #define DISTRIB_RELEASE "DISTRIB_RELEASE="
 #define DISTRIB_RELEASE_LEN strlen (DISTRIB_RELEASE)
 
-#define ENNA_MODULE_NAME "infos" // NEEDED ??
+#define ENNA_MODULE_NAME "sysinfo" // NEEDED ??
 
 #define STR_CPU "processor"
 #define STR_MODEL "model name"
@@ -509,8 +509,8 @@ printf("cb\n");
     b = buffer_new();
     set_enna_information (b);
     set_system_information (b);
-    edje_object_part_text_set (obj, "infos.text", b->buf);
-    edje_object_signal_emit (obj, "infos,show", "enna");
+    edje_object_part_text_set (obj, "sysinfo.text", b->buf);
+    edje_object_signal_emit (obj, "sysinfo,show", "enna");
     buffer_free(b);
 
     return ECORE_CALLBACK_RENEW;
@@ -521,7 +521,8 @@ Evas_Object *info_panel_show(void *data)
 {
     // create the panel main object
     o_edje = edje_object_add(enna->evas);
-    edje_object_file_set(o_edje, enna_config_theme_get (), "module/infos");
+    edje_object_file_set(o_edje, enna_config_theme_get (),
+                         "activity/configuration/sysinfo");
 
     // update info once and fire the first callback
     _update_infos_cb(o_edje);

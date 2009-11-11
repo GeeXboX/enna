@@ -47,7 +47,7 @@ typedef enum {
     MTAB_TYPE_SMB,
 } MTAB_TYPE;
 
-Eina_List *_mount_points = NULL;
+static Eina_List *_mount_points = NULL;
 
 /***************************************/
 /*           mtab handling             */
@@ -59,6 +59,7 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
     Enna_Volume *v;
     char name[512], tmp[1024], srv[128], share[128];
     char *p;
+    ENNA_VOLUME_TYPE type;
 
     if(t == MTAB_TYPE_NONE)
         return;
@@ -66,46 +67,52 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
     if(!fsname || !dir)
         return;
 
-    v = enna_volume_new ();
-
     memset(name,  '\0', sizeof(name));
     memset(tmp,   '\0', sizeof(tmp));
     memset(srv,   '\0', sizeof(srv));
     memset(share, '\0', sizeof(share));
 
+    snprintf(tmp, sizeof(tmp), "file://%s", dir);
+
     switch(t)
     {
     case MTAB_TYPE_NFS:
         p = strchr(fsname, ':');
+        if(!p)
+            return;
         strncpy(srv, fsname, p - fsname);
         strcpy(share, p + 1);
         snprintf(name, sizeof(name), _("[NFS] %s on %s"), share, srv);
-        v->type = VOLUME_TYPE_NFS;
+        type = VOLUME_TYPE_NFS;
         break;
 
     case MTAB_TYPE_SMB:
         p = strchr(fsname + 2, '/');
-        strncpy(srv, fsname + 2, p -(fsname + 2));
+        if(!p)
+            return;
+        strncpy(srv, fsname + 2, p - (fsname + 2));
         strcpy(share, p + 1);
         snprintf(name, sizeof(name), _("[SAMBA] %s on %s"), share, srv);
-        v->type = VOLUME_TYPE_SMB;
+        type = VOLUME_TYPE_SMB;
         break;
 
     default:
         break;
     }
 
+    v              = enna_volume_new ();
+    v->type        = type;
     v->device_name = eina_stringshare_add(srv);
-    v->label = eina_stringshare_add(name);
-    snprintf(tmp, sizeof(tmp), "file://%s", dir);
+    v->label       = eina_stringshare_add(name);
     v->mount_point = eina_stringshare_add(tmp);
 
-    enna_log(ENNA_MSG_EVENT, "mtab", "New mount point discovered at %s", fsname);
-    enna_log(ENNA_MSG_EVENT, "mtab", "Add mount point [%s] %s", v->label, v->mount_point);
+    enna_log(ENNA_MSG_EVENT, "mtab",
+             "New mount point discovered at %s", fsname);
+    enna_log(ENNA_MSG_EVENT, "mtab",
+             "Add mount point [%s] %s", v->label, v->mount_point);
     _mount_points = eina_list_append(_mount_points, v);
 
     enna_volumes_add_emit(v);
-
 }
 
 static void

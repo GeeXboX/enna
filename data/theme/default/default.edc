@@ -38,7 +38,7 @@ collections
 #include "activity_photo.edc"
 #include "activity_weather.edc"
 #include "activity_configuration.edc"
-#include "configuration.edc"
+#include "activity_configuration_sysinfo.edc"
 #include "icons.edc"
 #include "list.edc"
 #include "browser.edc"

@@ -361,7 +361,7 @@ create_gui (void)
 {
     mod->edje = edje_object_add (enna->evas);
     edje_object_file_set (mod->edje,
-                          enna_config_theme_get (), "module/weather");
+                          enna_config_theme_get (), "activity/weather");
 }
 
 static void

@@ -2,7 +2,7 @@ images {
    image: "separator_v.png" COMP;
 }
 group {
-   name: "module/activity_music";
+   name: "activity/music";
    parts {
       part {
          name: "module.clip";

@@ -3,7 +3,7 @@ images {
    image: "filebrowser_tile.png" COMP;
 }
  group {
-    name: "module/video";
+    name: "activity/video";
 
     styles {
        style {
@@ -26,7 +26,7 @@ images {
 
     parts {
        part {
-          name: "clip.module";
+          name: "module.clip";
           type: RECT;
           description {
              state: "default" 0.0;
@@ -41,33 +41,33 @@ images {
        }
 
       part {
-          name: "clip.content";
+          name: "content.clip";
           type: RECT;
-          clip_to: "clip.module";
+          clip_to: "module.clip";
            description {
              state: "default" 0.0;
              color: 255 255 255 0;
-             rel1 {relative: 0  1;to: "clip.module";}
-             rel2 {relative: 1 0;to: "clip.module";}
+             rel1 {relative: 0  1;to: "module.clip";}
+             rel2 {relative: 1 0;to: "module.clip";}
           }
           description {
              state: "show" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0 0;to: "clip.module";}
-             rel2 {relative: 1 1;to: "clip.module";}
+             rel1 {relative: 0 0;to: "module.clip";}
+             rel2 {relative: 1 1;to: "module.clip";}
           }
        }
        part {
-          name: "clip.list";
-          clip_to: "clip.content";
+          name: "list.clip";
+          clip_to: "content.clip";
           type: RECT;
           mouse_events: 0;
           description {
              state: "default" 0.0;
              visible: 1;
              color: 255 255 255 255;
-             rel1.to: "clip.content";
-             rel2.to: "clip.content";
+             rel1.to: "content.clip";
+             rel2.to: "content.clip";
           }
           description {
              state: "left" 0.0;
@@ -75,8 +75,8 @@ images {
              visible: 0;
              rel1 {relative: -1 0;}
              rel2 {relative:  0  1;};
-             rel1.to: "clip.content";
-             rel2.to: "clip.content";
+             rel1.to: "content.clip";
+             rel2.to: "content.clip";
           }
           description {
              state: "right" 0.0;
@@ -84,31 +84,31 @@ images {
              visible: 0;
              rel1{relative: 1 0;}
              rel2 {relative: 2 1;};
-             rel1.to: "clip.content";
-             rel2.to: "clip.content";
+             rel1.to: "content.clip";
+             rel2.to: "content.clip";
           }
        }
        part {
-          name: "enna.swallow.list";
+          name: "list.swallow";
           type: SWALLOW;
           mouse_events : 1;
-          clip_to: "clip.list";
+          clip_to: "list.clip";
           description {
              state: "default" 0.0;
-             rel1.to: "clip.list";
+             rel1.to: "list.clip";
              rel1.offset: 16 16;
              rel1.relative: 0 0;
-             rel2.to: "clip.list";
+             rel2.to: "list.clip";
              rel2.offset: -16 -16;
              rel2.relative: 0.45 1.0;
           }
        }
 
        part {
-          name: "enna.swallow.backdrop";
+          name: "backdrop.swallow";
           type: SWALLOW;
           mouse_events : 1;
-          clip_to: "clip.module";
+          clip_to: "module.clip";
           description {
              state: "default" 0.0;
              rel1.relative: 0 0;
@@ -117,10 +117,10 @@ images {
        }
 
        part {
-          name: "enna.browser.tile";
+          name: "browser.tile";
           type: IMAGE;
           mouse_events: 0;
-          clip_to: clip.module;
+          clip_to: module.clip;
           description {
              state: "default" 0.0;
              visible: 0;
@@ -142,12 +142,12 @@ images {
        }
 
        part {
-          name:          "enna.text.label";
+          name:          "text.label";
           type:          TEXT;
           effect:        SOFT_SHADOW;
           mouse_events:  0;
           scale: 1;
-          clip_to: clip.module;
+          clip_to: module.clip;
           description { state: "default" 0.0;
              visible: 1;
              rel1.relative: 0.0 1.0;
@@ -165,12 +165,12 @@ images {
        }
 
        part {
-          name:          "enna.text.category";
+          name:          "text.category";
           type:          TEXT;
           effect:        SOFT_SHADOW;
           mouse_events:  0;
           scale: 1;
-          clip_to: clip.module;
+          clip_to: module.clip;
           description {
              state: "default" 0.0;
              visible: 1;
@@ -188,44 +188,44 @@ images {
           }
        }
        part {
-          name: "enna.swallow.browser";
+          name: "browser.swallow";
           type: SWALLOW;
           mouse_events : 1;
-          clip_to: "clip.content";
+          clip_to: "content.clip";
           description {
              state: "default" 0.0;
-             rel1.to: "clip.content";
+             rel1.to: "content.clip";
              rel1.relative: 0 0;
              rel1.offset: 16 16 ;
-             rel2.to: "clip.content";
+             rel2.to: "content.clip";
              rel2.offset: -16 -16;
              rel2.relative: 0.45 1.0;
           }
        }
 
        part {
-          name: "enna.swallow.mediaplayer";
+          name: "mediaplayer.swallow";
           type: SWALLOW;
           mouse_events : 1;
-          clip_to: "clip.module";
+          clip_to: "module.clip";
           description {
              state: "default" 0.0;
              color: 255 255 255 0;
              visible: 0;
-             rel1 {relative: 0 0; to: "clip.module";}
-             rel2 {relative: 1 1; to: "clip.module";}
+             rel1 {relative: 0 0; to: "module.clip";}
+             rel2 {relative: 1 1; to: "module.clip";}
           }
           description {
              state: "show" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0 0; to: "clip.module";}
-             rel2 {relative: 1 1; to: "clip.module";}
+             rel1 {relative: 0 0; to: "module.clip";}
+             rel2 {relative: 1 1; to: "module.clip";}
           }
           description {
              state: "controls" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0.2 0.2; to: "clip.module";}
-             rel2 {relative: 0.8 0.8; to: "clip.module";}
+             rel1 {relative: 0.2 0.2; to: "module.clip";}
+             rel2 {relative: 0.8 0.8; to: "module.clip";}
           }
        }
        part {
@@ -239,7 +239,7 @@ images {
        part {
           name: "infos.flags.video.swallow";
           type: SWALLOW;
-          clip_to: clip.module;
+          clip_to: module.clip;
           description {
              state: default 0.0;
              visible: 0;
@@ -255,7 +255,7 @@ images {
        part {
           name: "infos.flags.audio.swallow";
           type: SWALLOW;
-          clip_to: clip.module;
+          clip_to: module.clip;
           description {
              state: default 0.0;
              visible: 0;
@@ -271,7 +271,7 @@ images {
        part {
           name: "infos.flags.studio.swallow";
           type: SWALLOW;
-          clip_to: clip.module;
+          clip_to: module.clip;
           description {
              state: default 0.0;
              visible: 0;
@@ -287,7 +287,7 @@ images {
        part {
           name: "infos.flags.media.swallow";
           type: SWALLOW;
-          clip_to: clip.module;
+          clip_to: module.clip;
           description {
              state: default 0.0;
              visible: 0;
@@ -302,7 +302,7 @@ images {
        part {
           name: "infos.panel.clip";
           mouse_events: 0;
-          clip_to: clip.module;
+          clip_to: module.clip;
           type: RECT;
           description {
              state: "default" 0.0;
@@ -352,7 +352,7 @@ images {
           }
        }
        part {
-         name: "enna.resume.swallow";
+         name: "resume.swallow";
          type: SWALLOW;
          clip_to: "resume.clip";
          description {
@@ -371,7 +371,7 @@ images {
           source:  "enna";
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.module";
+          target: "module.clip";
        }
        program {
           name: "module,hide";
@@ -379,7 +379,7 @@ images {
           source:  "enna";
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.module";
+          target: "module.clip";
        }
        program {
           name: "content,show";
@@ -387,7 +387,7 @@ images {
           source:  "enna";
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.content";
+          target: "content.clip";
        }
        program {
           name: "content,hide";
@@ -395,7 +395,7 @@ images {
           source:  "enna";
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.content";
+          target: "content.clip";
        }
        program {
           name: "tile,show";
@@ -403,7 +403,7 @@ images {
           source:  "enna";
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "enna.browser.tile";
+          target: "browser.tile";
        }
        program {
           name: "tile,hide";
@@ -411,28 +411,28 @@ images {
           source:  "enna";
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "enna.browser.tile";
+          target: "browser.tile";
        }
        program {
           name: "mediaplayer,show";
           signal: "mediaplayer,show";
           source:  "enna";
           action:  STATE_SET "show" 0.0;
-          target: "enna.swallow.mediaplayer";
+          target: "mediaplayer.swallow";
        }
        program {
           name: "mediaplayer,hide";
           signal: "mediaplayer,hide";
           source:  "enna";
           action:  STATE_SET "default" 0.0;
-          target: "enna.swallow.mediaplayer";
+          target: "mediaplayer.swallow";
        }
       program {
           name: "mediaplayer,controls";
           signal: "mediaplayer,controls";
           source:  "enna";
           action:  STATE_SET "controls" 0.0;
-          target: "enna.swallow.mediaplayer";
+          target: "mediaplayer.swallow";
        }
 
        program {
@@ -440,14 +440,14 @@ images {
           signal: "list,left,now";
           source:  "enna";
           action:  STATE_SET "left" 0.0;
-          target: "clip.list";
+          target: "list.clip";
        }
        program {
           name: "list,right,now";
           signal: "list,right,now";
           source:  "enna";
           action:  STATE_SET "right" 0.0;
-          target: "clip.list";
+          target: "list.clip";
        }
        program {
           name: "list,right";
@@ -455,7 +455,7 @@ images {
           source:  "enna";
           action:  STATE_SET "right" 0.0;
           transition: "ACCELERATE" 0.3;
-          target: "clip.list";
+          target: "list.clip";
           after: "transition,end";
        }
        program {
@@ -464,7 +464,7 @@ images {
           source:  "enna";
           action:  STATE_SET "left" 0.0;
           transition: "ACCELERATE" 0.3;
-          target: "clip.list";
+          target: "list.clip";
           after: "transition,end";
        }
        program {
@@ -473,7 +473,7 @@ images {
           source:  "enna";
           action:  STATE_SET "default" 0.0;
           transition: "ACCELERATE" 0.3;
-          target: "clip.list";
+          target: "list.clip";
        }
        program {
           name: "transition,end";
@@ -542,10 +542,10 @@ images {
 
 
 group {
-   name: "enna/video/backdrop";
+   name: "activity/video/backdrop";
    parts {
       part {
-         name: "clip.content";
+         name: "content.clip";
          type: RECT;
          description{
             state: "default" 0.0;
@@ -560,9 +560,9 @@ group {
 
       }
       part {
-         name: "enna.swallow.content";
+         name: "content.swallow";
          type: SWALLOW;
-         clip_to: "clip.content";
+         clip_to: "content.clip";
          description{
             state: default 0.0;
          }
@@ -575,7 +575,7 @@ group {
           source:  "enna";
           action:  STATE_SET "show" 0.0;
           transition: "ACCELERATE" 0.3;
-          target: "clip.content";
+          target: "content.clip";
       }
       program {
          name: "snapshot,hide";
@@ -583,7 +583,7 @@ group {
          source:  "enna";
          action:  STATE_SET "default" 0.0;
          transition: "DECELERATE" 0.3;
-         target: "clip.content";
+         target: "content.clip";
       }
    }
 }

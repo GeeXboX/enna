@@ -114,7 +114,7 @@ _smart_add (Evas_Object * obj)
     buffer_append (label, _("Seems you already watched this movie once ..."));
     buffer_append (label, "</c></h3><br>");
 
-    edje_object_part_text_set (sd->o_edje, "enna.text.label", label->buf);
+    edje_object_part_text_set (sd->o_edje, "text.label", label->buf);
     buffer_free (label);
 
     it1 = _create_list_item (_("Resume movie playback"), "ctrl/ok");
@@ -127,7 +127,7 @@ _smart_add (Evas_Object * obj)
     evas_object_size_hint_weight_set (sd->list, 1.0, 1.0);
     evas_object_show (sd->list);
     enna_list_select_nth (sd->list, 0);
-    edje_object_part_swallow (sd->o_edje, "enna.content.swallow", sd->list);
+    edje_object_part_swallow (sd->o_edje, "content.swallow", sd->list);
 
     elm_win_inwin_content_set (sd->popup, sd->o_edje);
     evas_object_smart_member_add (sd->popup, obj);

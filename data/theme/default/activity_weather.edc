@@ -4,7 +4,7 @@ images {
 }
 
 group {
-   name: "module/weather";
+   name: "activity/weather";
 
 /**********/
 /* Styles */

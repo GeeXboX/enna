@@ -309,7 +309,7 @@ backdrop_show (Enna_Metadata *m)
     enna_backdrop_set (mod->o_backdrop, file, from_vfs);
     evas_object_show (mod->o_backdrop);
     edje_object_part_swallow (mod->o_edje,
-                              "enna.swallow.backdrop", mod->o_backdrop);
+                              "backdrop.swallow", mod->o_backdrop);
 
     ENNA_FREE (backdrop);
     ENNA_FREE (file);
@@ -612,8 +612,8 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
     label = title ? title : ev->file->label;
 
     categories = enna_metadata_meta_get (m, "category", 5);
-    edje_object_part_text_set (mod->o_edje, "enna.text.label", label);
-    edje_object_part_text_set (mod->o_edje, "enna.text.category",
+    edje_object_part_text_set (mod->o_edje, "text.label", label);
+    edje_object_part_text_set (mod->o_edje, "text.category",
                                categories ? categories : "");
 
     backdrop_show (m);
@@ -648,7 +648,7 @@ browse (void *data)
     evas_object_show (mod->o_browser);
 
     edje_object_part_swallow (mod->o_edje,
-                              "enna.swallow.browser", mod->o_browser);
+                              "browser.swallow", mod->o_browser);
     enna_browser_root_set (mod->o_browser, vfs);
     ENNA_OBJECT_DEL (mod->o_list);
 
@@ -660,7 +660,7 @@ browse (void *data)
     ENNA_OBJECT_DEL(mod->o_resume);
     mod->o_resume = video_resume_add (enna->evas);
     edje_object_part_swallow (mod->o_edje,
-                              "enna.resume.swallow", mod->o_resume);
+                              "resume.swallow", mod->o_resume);
 
     mod->state = BROWSER_VIEW;
     edje_object_signal_emit(mod->o_edje, "tile,show", "enna");
@@ -695,12 +695,12 @@ _create_menu (void)
 
     enna_list_select_nth(o, 0);
     mod->o_list = o;
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
+    edje_object_part_swallow(mod->o_edje, "list.swallow", o);
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
     edje_object_signal_emit(mod->o_edje, "tile,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "infos,flags,hide", "enna");
-    edje_object_part_text_set (mod->o_edje, "enna.text.label", "");
-    edje_object_part_text_set (mod->o_edje, "enna.text.category", "");
+    edje_object_part_text_set (mod->o_edje, "text.label", "");
+    edje_object_part_text_set (mod->o_edje, "text.category", "");
     panel_infos_display (0);
     popup_resume_display (0);
     enna_backdrop_set (mod->o_backdrop, NULL, 0);
@@ -713,7 +713,7 @@ _create_gui (void)
 
     mod->state = MENU_VIEW;
     o = edje_object_add(enna->evas);
-    edje_object_file_set(o, enna_config_theme_get(), "module/video");
+    edje_object_file_set(o, enna_config_theme_get(), "activity/video");
     mod->o_edje = o;
     _create_menu();
 }
