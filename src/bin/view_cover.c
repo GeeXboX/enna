@@ -57,7 +57,6 @@ struct _Smart_Item
     Enna_Vfs_File *file;
     void *data;
     void (*func_activated) (void *data);
-    void (*func_selected) (void *data);
     unsigned char selected : 1;
 };
 
@@ -97,7 +96,7 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
 }
 
 void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func_activated) (void *data), void (*func_selected) (void *data), void *data)
+    void (*func_activated) (void *data), void *data)
 {
     Evas_Object *o, *o_pict;
     Smart_Item *si;
@@ -111,7 +110,6 @@ void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     o_pict = elm_image_add(obj);
     si->data = data;
     si->func_activated = func_activated;
-    si->func_selected = func_selected;
     si->file = file;
 
     if (file->icon && file->icon[0] != '/')
@@ -321,7 +319,7 @@ static void _view_cover_select(Evas_Object *obj, int pos)
             y += yedje;
 
         elm_scroller_region_bring_in(obj, x, y, wedje, hedje);
-
+        printf("viex_cover_select\n");
         _smart_item_select(sd, si);
         if (ssi) _smart_item_unselect(sd, ssi);
     }
@@ -360,12 +358,6 @@ static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si)
 static void _smart_item_select(Smart_Data *sd, Smart_Item *si)
 {
     if (si->selected) return;
-
-    if (si->func_selected)
-    {
-        printf("func selected\n");
-        si->func_selected(si->data);
-    }
 
     si->selected = 1;
     edje_object_signal_emit(si->o_edje, "select", "enna");
