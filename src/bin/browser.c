@@ -70,6 +70,7 @@ struct _Smart_Data
     Evas_Object *layout;
     Evas_Object *o_view;
     Evas_Object *o_letter;
+    Evas_Object *o_parent;
     Eina_List *files;
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
@@ -117,6 +118,7 @@ static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a);
 static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip);
 static void _smart_clip_unset(Evas_Object * obj);
 static void _browse(void *data);
+static void _browse_down(void *data);
 
 /* local subsystem globals */
 static Evas_Smart *_smart = NULL;
@@ -187,6 +189,11 @@ _browser_view_wall_select_nth(Evas_Object *view, int nth)
     enna_wall_select_nth(view, nth, 0);
 }
 
+static void
+_parent_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    _browse_down(data);
+}
 
 /* externally accessible functions */
 Evas_Object *
@@ -375,6 +382,7 @@ static void _smart_del(Evas_Object * obj)
     edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
                                     "list,transition,end", "edje", _list_transition_left_end_cb);
     ENNA_OBJECT_DEL(sd->o_view);
+    ENNA_OBJECT_DEL(sd->o_parent);
     evas_object_del(sd->layout);
     evas_object_del(sd->o_letter);
     enna_volumes_listener_del(sd->vl);
@@ -483,6 +491,7 @@ static  void _browse(void *data)
     Smart_Data *sd;
     Browse_Data *bd = data;
     Enna_Vfs_File *visited;
+
     if (!bd)
         return;
 
@@ -581,7 +590,7 @@ static void _browse_down(void *data)
 static void
 _list_transition_core(Smart_Data *sd, unsigned char direction)
 {
-
+    Evas_Object *ic;
     Eina_List *l;
     Eina_List *files = sd->files;
 
@@ -661,6 +670,24 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
         sd->vfs = NULL;
 
     }
+
+    /* Change parent */
+    ENNA_OBJECT_DEL(sd->o_parent);
+    sd->o_parent = elm_button_add(enna->layout);
+    elm_object_style_set(sd->o_parent, "simple");
+    evas_object_smart_callback_add(sd->o_parent, "clicked", _parent_clicked_cb, sd);
+    elm_button_label_set(sd->o_parent, sd->file ? sd->file->label : _("Main Menu"));
+    ic = elm_icon_add(enna->layout);
+    if (!sd->file)
+        elm_icon_file_set(ic, enna_config_theme_get(), "icon/home");
+    else if (sd->file->icon && sd->file->icon[0] == '/')
+        elm_icon_file_set(ic, sd->file->icon, NULL);
+    else if (sd->file->icon)
+        elm_icon_file_set(ic, enna_config_theme_get(), sd->file->icon);
+    evas_object_show(ic);
+    elm_button_icon_set(sd->o_parent, ic);
+    elm_layout_content_set(sd->layout, "enna.swallow.parent", sd->o_parent);
+
     edje_object_signal_emit(elm_layout_edje_get(sd->layout),
                             "list,default", "enna");
     //sd->accept_ev = 1;

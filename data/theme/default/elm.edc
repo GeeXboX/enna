@@ -447,15 +447,16 @@ group { name: "elm/button/base/simple";
          type: RECT;
          mouse_events: 1;
          description {
-            color: 255 255 255 0; 
+            color: 255 255 255 0;
             state: "default" 0.0;
             visible: 1;
          }
-         description { 
+         description {
             state: "clicked" 0.0;
             inherit: "default" 0.0;
          }
       }
+
       part { name: "elm.swallow.content";
          type: SWALLOW;
          description { state: "default" 0.0;
@@ -468,11 +469,13 @@ group { name: "elm/button/base/simple";
          }
          description { state: "visible" 0.0;
             inherit: "default" 0.0;
-            fixed: 1 0;
+            fixed: 0 0;
             visible: 1;
+            align: 0 0.5;
             aspect: 1.0 1.0;
+            rel2.offset: -5 -5;
+            rel2.relative: 1.0 1.0;
             aspect_preference: BOTH;
-            rel2.offset: 4 -5;
          }
          description { state: "icononly" 0.0;
             inherit: "default" 0.0;
@@ -485,6 +488,7 @@ group { name: "elm/button/base/simple";
             aspect_preference: BOTH;
          }
       }
+
       part {
          name:          "elm.text";
          type:          TEXT;
@@ -495,15 +499,15 @@ group { name: "elm/button/base/simple";
             visible: 0;
             rel1.to_x: "elm.swallow.content";
             rel1.relative: 1.0 0.0;
-            rel1.offset: 0 4;
+            rel1.offset: 16 4;
             rel2.offset: -5 -5;
             color: 224 224 224 255;
             color3: 0 0 0 64;
             text {
                font:     "content";
-               size:     10;
+               size:     18;
                min:      0 0;
-               align:    0.5 0.5;
+               align:    0 0.5;
             }
          }
          description { state: "visible" 0.0;
@@ -542,7 +546,7 @@ group { name: "elm/button/base/simple";
                normal: "bt_glow.png";
                border: 12 12 12 12;
             }
-            fill.smooth : 0;
+            fill.smooth : 1;
          }
          description { state: "clicked" 0.0;
             inherit:  "default" 0.0;
@@ -1519,7 +1523,7 @@ group { name: "elm/button/base/enna_list";
                font: "content";
                size: 18;
                min: 0 0;
-               align: 1.0 0.5;
+               align: 0.0 0.5;
             }
          }
          description { state: "visible" 0.0;
@@ -2012,6 +2016,8 @@ group { name: "elm/check/base/enna_list";
       }
    }
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/win/inwin/enna_minimal";

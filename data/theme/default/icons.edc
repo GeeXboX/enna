@@ -23,7 +23,7 @@ STOCK_ICON("icon_tv.png", "icon/tv")
 STOCK_ICON("icon_weather.png", "icon/weather")
 STOCK_ICON("icon_infos.png", "icon/infos")
 STOCK_ICON("icon_music_mini.png", "icon/music_mini");
-STOCK_ICON("icon_home_mini.png", "icon/home_mini");
+STOCK_ICON("icon_home_mini.png", "icon/home");
 STOCK_ICON("icon_library.png", "icon/library")
 STOCK_ICON("icon_album.png",  "icon/album")
 STOCK_ICON("icon_artist.png",  "icon/artist")
