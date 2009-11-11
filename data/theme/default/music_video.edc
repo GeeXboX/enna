@@ -9,7 +9,9 @@ images {
           type: RECT;
           description {
              state: "default" 0.0;
-             color: 0 0 0 0;
+             color: 255 255 255 255;
+             rel1.relative: 1 0;
+             rel2.relative: 2 1;
              visible: 0;
           }
           description {
@@ -26,7 +28,7 @@ images {
            description {
              state: "default" 0.0;
              color: 255 255 255 0;
-             rel1 {relative: 0  1;to: "clip.module";}
+             rel1 {relative: 0 1;to: "clip.module";}
              rel2 {relative: 1 0;to: "clip.module";}
           }
           description {
@@ -45,28 +47,46 @@ images {
              state: "default" 0.0;
              visible: 1;
              color: 255 255 255 255;
-             rel1.to: "clip.content";
-             rel2.to: "clip.content";
-          }
-          description {
-             state: "left" 0.0;
-             color: 255 255 255 255;
-             visible: 0;
-             rel1 {relative: -1 0;}
-             rel2 {relative:  0  1;};
-             rel1.to: "clip.content";
-             rel2.to: "clip.content";
-          }
-          description {
-             state: "right" 0.0;
-             color: 255 255 255 255;
-             visible: 0;
-             rel1{relative: 1 0;}
-             rel2 {relative: 2 1;};
+             rel1.relative:  0 0;
+             rel1.offset:  16  16;
+             /* align on the left */
+             rel1.relative: 0.50 0.0;
+             rel2.offset: -16 -16;
+             //rel2.relative: 0.40  1;
              rel1.to: "clip.content";
              rel2.to: "clip.content";
           }
        }
+         part { name: "list.shadow";
+            mouse_events:  0;
+            clip_to: "clip.content";
+            description { state: "default" 0.0;
+               visible: 1;
+               image.normal: "shad_circ.png";
+               image.border: 20 20 20 20;
+               rel1.to: "clip.list";
+               rel1.offset: -32 -32;
+               rel2.to: "clip.list";
+               rel2.offset: 32 32;
+               fill.smooth: 0;
+               image.middle: NONE;
+            }
+         }
+         part { name: "list.bg";
+            mouse_events:  0;
+            clip_to: "clip.content";
+             description { state: "default" 0.0;
+                color: 255 255 255 180;
+                rel1.to: "clip.list";
+                rel1.offset: -8 -8;
+                rel2.to: "clip.list";
+                rel2.offset: 8 8;
+                image {
+                   normal: "black_frame.png";
+                   border: 8 8 8 8;
+                }
+             }
+         }
        part {
           name: "enna.swallow.list";
           type: SWALLOW;
@@ -75,11 +95,11 @@ images {
           description {
              state: "default" 0.0;
              rel1.to: "clip.list";
-             rel1.offset: 16 16;
-             rel1.relative: 0 0;
+             //rel1.offset: 8 4;
+             //rel1.relative: 0 0;
              rel2.to: "clip.list";
-             rel2.offset: -16 -16;
-             rel2.relative: 0.45 1.0;
+             //rel2.offset: -4 -4;
+             //rel2.relative: 1.0 1.0;
           }
        }
 
@@ -204,51 +224,6 @@ images {
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
           target: "enna.swallow.mediaplayer";
-       }
-
-       program {
-          name: "list,left,now";
-          signal: "list,left,now";
-          source:  "enna";
-          action:  STATE_SET "left" 0.0;
-          target: "clip.list";
-       }
-       program {
-          name: "list,right,now";
-          signal: "list,right,now";
-          source:  "enna";
-          action:  STATE_SET "right" 0.0;
-          target: "clip.list";
-       }
-       program {
-          name: "list,right";
-          signal: "list,right";
-          source:  "enna";
-          action:  STATE_SET "right" 0.0;
-          transition: "ACCELERATE" 0.3;
-          target: "clip.list";
-          after: "transition,end";
-       }
-       program {
-          name: "list,left";
-          signal: "list,left";
-          source:  "enna";
-          action:  STATE_SET "left" 0.0;
-          transition: "ACCELERATE" 0.3;
-          target: "clip.list";
-          after: "transition,end";
-       }
-       program {
-          name: "list,default";
-          signal: "list,default";
-          source:  "enna";
-          action:  STATE_SET "default" 0.0;
-          transition: "ACCELERATE" 0.3;
-          target: "clip.list";
-       }
-       program {
-          name: "transition,end";
-          action: SIGNAL_EMIT "list,transition,end" "edje";
        }
       program {
            name: "lyrics,show";

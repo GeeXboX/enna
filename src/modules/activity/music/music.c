@@ -420,8 +420,8 @@ _show_mediaplayer_cb(void *data)
 static void
 _menu_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src)
 {
-    edje_object_signal_callback_del(mod->o_edje, "list,transition,end", "edje",
-            _menu_transition_left_end_cb);
+    //edje_object_signal_callback_del(mod->o_edje, "list,transition,end", "edje",
+    //        _menu_transition_left_end_cb);
     mod->state = BROWSER_VIEW;
 
     //ENNA_OBJECT_DEL(mod->o_list);
@@ -490,12 +490,17 @@ _browse(void *data)
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
 
     evas_object_show(mod->o_browser);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.browser", mod->o_browser);
+    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", mod->o_browser);
     enna_browser_root_set(mod->o_browser, vfs);
 
-    edje_object_signal_callback_add(mod->o_edje, "list,transition,end", "edje",
-        _menu_transition_left_end_cb, NULL);
-    edje_object_signal_emit(mod->o_edje, "list,left", "enna");
+    mod->state = BROWSER_VIEW;
+
+    ENNA_OBJECT_DEL(mod->o_list);
+    mod->accept_ev = 1;
+
+    //edje_object_signal_callback_add(mod->o_edje, "list,transition,end", "edje",
+    //    _menu_transition_left_end_cb, NULL);
+    //edje_object_signal_emit(mod->o_edje, "list,left", "enna");
 
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
@@ -596,7 +601,7 @@ _create_menu()
 
     enna_list_select_nth(o, 0);
     mod->o_list = o;
-    edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
+//    edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
     edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
     mod->accept_ev = 1;
