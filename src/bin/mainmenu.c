@@ -85,9 +85,9 @@ _enna_mainmenu_load_from_activities(void)
 }
 
 static void
-_enna_mainmenu_item_focus(void *data)
+_enna_mainmenu_item_focus(void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_Class_Activity *act = data;
+    Enna_Class_Activity *act = event_info;
     if (!act)
         return;
 
@@ -218,8 +218,8 @@ enna_mainmenu_append(Enna_Class_Activity *act)
     f = calloc(1, sizeof(Enna_Vfs_File));
     f->label = (char*)eina_stringshare_add(act->label);
     f->icon = (char*)eina_stringshare_add(act->icon);
-    enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, _enna_mainmenu_item_focus, act);
-
+    enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, act);
+    evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, act);
     if (act->bg && act->bg[0] == '/')
         enna_mainmenu_background_add(act->name, act->bg, NULL);
     else
