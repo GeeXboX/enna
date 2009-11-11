@@ -161,7 +161,7 @@ static void _create_menu()
 
     enna_list_select_nth(o, 0);
     mod->o_menu = o;
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.menu", o);
+    edje_object_part_swallow(mod->o_edje, "menu.swallow", o);
     edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
 }
 
@@ -172,7 +172,7 @@ static void _create_gui(void)
 
     /* Create main edje object */
     mod->o_edje = edje_object_add(enna->evas);
-    edje_object_file_set(mod->o_edje, enna_config_theme_get(), "module/games");
+    edje_object_file_set(mod->o_edje, enna_config_theme_get(), "activity/games");
 
     _create_menu();
 }

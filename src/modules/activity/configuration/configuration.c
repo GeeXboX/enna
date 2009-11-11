@@ -110,7 +110,7 @@ _create_menu (void)
     }
 
     enna_wall_select_nth(mod->o_menu, 0, 0);
-    edje_object_part_swallow (mod->o_edje, "enna.swallow.menu", mod->o_menu);
+    edje_object_part_swallow (mod->o_edje, "menu.swallow", mod->o_menu);
     mod->state = MENU_VIEW;
 }
 
@@ -138,7 +138,7 @@ _show_subpanel(Enna_Config_Panel *p)
     if (p->create_cb) new = (p->create_cb)(p->data);
     if (!new) return;
 
-    edje_object_part_swallow (mod->o_edje, "enna.swallow.content", new);
+    edje_object_part_swallow (mod->o_edje, "content.swallow", new);
     edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->o_edje, "content,show", "enna");
 

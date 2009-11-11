@@ -74,7 +74,8 @@ static void _smart_add(Evas_Object * obj)
         return;
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "enna/video/backdrop");
+    edje_object_file_set(sd->o_edje, enna_config_theme_get(),
+                         "activity/video/backdrop");
     evas_object_show(sd->o_edje);
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
@@ -201,7 +202,7 @@ enna_backdrop_set (Evas_Object *obj, char *file, int from_vfs)
       edje_object_file_set(sd->o_img, enna_config_theme_get(), file);
     }
     edje_object_part_swallow(sd->o_edje,
-                             "enna.swallow.content", sd->o_img);
+                             "content.swallow", sd->o_img);
     edje_object_signal_emit(sd->o_edje, "snapshot,show", "enna");
     evas_object_del(o_img_old);
     evas_object_show(sd->o_img);

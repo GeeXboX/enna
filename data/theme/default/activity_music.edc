@@ -2,7 +2,7 @@ images {
 
 }
 group {
-   name: "module/activity_music";
+   name: "activity/music";
    parts {
       part {
          name: "module.clip";

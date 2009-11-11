@@ -20,7 +20,7 @@
 
         /* main config menu */
         part {
-        name: "clip.menu";
+        name: "menu.clip";
            type: RECT;
            description {
               state: "default" 0.0;
@@ -37,19 +37,19 @@
         }
 
         part {
-          name: "enna.swallow.menu";
+          name: "menu.swallow";
           type: SWALLOW;
-          clip_to: "clip.menu";
+          clip_to: "menu.clip";
           description {
              state: "default" 0.0;
-             rel1.to: "clip.menu";
-             rel2.to: "clip.menu";
+             rel1.to: "menu.clip";
+             rel2.to: "menu.clip";
           }
        }
 
        /* content (where subpanels are swallowed) */
        part {
-          name: "clip.content";
+          name: "content.clip";
           type: RECT;
           description {
               state: "default" 0.0;
@@ -64,13 +64,13 @@
        }
 
        part {
-          name: "enna.swallow.content";
+          name: "content.swallow";
           type: SWALLOW;
-          clip_to: "clip.content";
+          clip_to: "content.clip";
           description {
              state: "default" 0.0;
-             rel1.to: "clip.content";
-             rel2.to: "clip.content";
+             rel1.to: "content.clip";
+             rel2.to: "content.clip";
           }
        }
     }
@@ -82,7 +82,7 @@
           source:  "enna";
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.menu";
+          target: "menu.clip";
        }
        program {
           name: "menu,hide";
@@ -90,7 +90,7 @@
           source:  "enna";
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.menu";
+          target: "menu.clip";
        }
        program {
           name: "content,show";
@@ -98,7 +98,7 @@
           source:  "enna";
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.content";
+          target: "content.clip";
        }
        program {
           name: "content,hide";
@@ -106,7 +106,7 @@
           source:  "enna";
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.content";
+          target: "content.clip";
        }
     }
  }

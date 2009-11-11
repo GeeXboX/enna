@@ -78,7 +78,9 @@ static void _smart_add(Evas_Object * obj)
         return;
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
-    edje_object_file_set(sd->o_edje, enna_config_theme_get(), "module/video/panel_infos");
+    edje_object_file_set(sd->o_edje,
+                         enna_config_theme_get(),
+                         "activity/video/panel_infos");
     evas_object_show(sd->o_edje);
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);

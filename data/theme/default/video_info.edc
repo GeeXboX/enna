@@ -4,7 +4,7 @@ images {
 }
 
 group {
-   name: "module/video/panel_infos";
+   name: "activity/video/panel_infos";
    styles
    {
       style { name: "infos_style";

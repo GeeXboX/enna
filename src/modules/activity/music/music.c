@@ -530,7 +530,7 @@ _create_gui()
 
     /* Create main edje object */
     o = edje_object_add(enna->evas);
-    edje_object_file_set(o, enna_config_theme_get(), "module/activity_music");
+    edje_object_file_set(o, enna_config_theme_get(), "activity/music");
     mod->o_edje = o;
 
     _create_menu();
