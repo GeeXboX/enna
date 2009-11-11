@@ -142,9 +142,9 @@ mtab_parse(void)
 Enna_Module_Api module_api = {
     ENNA_MODULE_VERSION,
     "volume_mtab",
-    "Volumes from mtab",
+    N_("Volumes from mtab"),
     NULL,
-    "This module get volumes from the mtab file",
+    N_("This module get volumes from the mtab file"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

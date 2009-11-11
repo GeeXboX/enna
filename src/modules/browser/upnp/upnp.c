@@ -510,9 +510,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "browser_upnp",
-    "UPnP / DLNA module",
+    N_("UPnP / DLNA module"),
     "icon/module",
-    "This module allows Enna to browse contents from UPnP/DLNA Media Servers",
+    N_("This module allows Enna to browse contents from UPnP/DLNA Media Servers"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

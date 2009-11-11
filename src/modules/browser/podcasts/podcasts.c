@@ -328,9 +328,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "browser_podcast",
-    "Podcast browser",
+    N_("Podcast browser"),
     "icon/podcast",
-    "Podcast module",
+    N_("Podcast module"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

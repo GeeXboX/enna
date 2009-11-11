@@ -169,9 +169,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "activity_tv",
-    "Television",
+    N_("Television"),
     "icon/tv",
-    "View tv channels",
+    N_("View tv channels"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

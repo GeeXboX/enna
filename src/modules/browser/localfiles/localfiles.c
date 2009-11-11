@@ -488,9 +488,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "browser_localfiles",
-    "Browse local files",
+    N_("Browse local files"),
     "icon/hd",
-    "Browse files in your local hard disk",
+    N_("Browse files in your local hard disk"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

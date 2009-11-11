@@ -351,9 +351,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "browser_netstreams",
-    "Netstreams",
+    N_("Netstreams"),
     "icon/module",
-    "I really don't know :P", //TODO FIXME !!
+    N_("I really don't know :P"), //TODO FIXME !!
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

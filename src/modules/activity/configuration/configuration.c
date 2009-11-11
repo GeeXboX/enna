@@ -247,9 +247,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "configuration",
-    "Configuration",
+    N_("Configuration"),
     "icon/config",
-    "This module create the enna configuration panel (DO NOT UNLOAD)",
+    N_("This module create the enna configuration panel (DO NOT UNLOAD)"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

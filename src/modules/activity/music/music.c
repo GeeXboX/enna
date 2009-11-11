@@ -127,9 +127,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "activity_music",
-    "Music core",
+    N_("Music core"),
     "icon/music",
-    "This is the main music module",
+    N_("This is the main music module"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

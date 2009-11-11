@@ -846,9 +846,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "activity_video",
-    "Video",
+    N_("Video"),
     "icon/video",
-    "This is the main video module",
+    N_("This is the main video module"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

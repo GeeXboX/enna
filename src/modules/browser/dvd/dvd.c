@@ -131,9 +131,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "browser_dvd",
-    "DVD module",
+    N_("DVD module"),
     "icon/dev/dvd",
-    "Watch movies from DVD",
+    N_("Watch movies from DVD"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

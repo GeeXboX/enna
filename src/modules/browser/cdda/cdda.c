@@ -138,9 +138,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "browser_cdda",
-    "CDDA module",
+    N_("CDDA module"),
     "icon/dev/cdda",
-    "Listen your favorite compact discs",
+    N_("Listen your favorite compact discs"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

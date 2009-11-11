@@ -463,9 +463,9 @@ Enna_Module_Api module_api =
 {
     ENNA_MODULE_VERSION,
     "browser_valhalla",
-    "Valhalla module",
+    N_("Valhalla module"),
     "icon/config",
-    "Database stuff and metadata retrival from various sources",
+    N_("Database stuff and metadata retrival from various sources"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
