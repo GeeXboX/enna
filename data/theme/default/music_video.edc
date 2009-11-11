@@ -73,10 +73,10 @@ images {
              visible: 1;
              color: 255 255 255 255;
 
-             rel1.relative: 0.01 0.05;
+             rel1.relative: 0.51 0.05;
              rel1.to: "background";
 
-             rel2.relative: 0.50 1.00;
+             rel2.relative: 1.0 0.99;
              rel2.offset: 0 -50;
              rel2.to: "background";
           }
