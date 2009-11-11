@@ -47,7 +47,7 @@ typedef enum {
     MTAB_TYPE_SMB,
 } MTAB_TYPE;
 
-Eina_List *_mount_points = NULL;
+static Eina_List *_mount_points = NULL;
 
 /***************************************/
 /*           mtab handling             */
