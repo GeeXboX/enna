@@ -397,7 +397,7 @@ _browse(void *data)
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
 
     evas_object_show(mod->o_browser);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", mod->o_browser);
+    edje_object_part_swallow(mod->o_edje, "browser.swallow", mod->o_browser);
     enna_browser_root_set(mod->o_browser, vfs);
 
     mod->state = BROWSER_VIEW;
@@ -509,7 +509,7 @@ _create_menu()
     enna_list_select_nth(o, 0);
     mod->o_list = o;
 //    edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.list", o);
+    edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
     edje_object_signal_emit(mod->o_edje, "list,default", "enna");
     mod->accept_ev = 1;
 }
@@ -530,7 +530,7 @@ _create_gui()
 
     /* Create main edje object */
     o = edje_object_add(enna->evas);
-    edje_object_file_set(o, enna_config_theme_get(), "module/music_video");
+    edje_object_file_set(o, enna_config_theme_get(), "module/activity_music");
     mod->o_edje = o;
 
     _create_menu();

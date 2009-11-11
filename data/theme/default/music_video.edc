@@ -2,10 +2,10 @@ images {
 
 }
  group {
-    name: "module/music_video";
+    name: "module/activity_music";
     parts {
        part {
-          name: "clip.module";
+          name: "module.clip";
           type: RECT;
           description {
              state: "default" 0.0;
@@ -22,14 +22,14 @@ images {
        }
 
        part {
-          name: "clip.content";
+          name: "content.clip";
           type: RECT;
-          clip_to: "clip.module";
+          clip_to: "module.clip";
            description {
              state: "default" 0.0;
              color: 255 255 255 0;
-              rel1.to: clip.module;
-              rel2.to: clip.module;
+              rel1.to: module.clip;
+              rel2.to: module.clip;
              visible: 0;
           }
           description {
@@ -39,82 +39,80 @@ images {
              visible: 1;
           }
        }
+
+       /* background */
        part {
-          name: "clip.list";
-          clip_to: "clip.content";
+          name: "background";
+          mouse_events:  0;
+          clip_to: "content.clip";
+          description {
+              state: "default" 0.0;
+              color: 255 255 255 180;
+
+              rel1.relative: 0.01 0.02;
+              rel1.to: "content.clip";
+
+              rel2.relative: 0.99 0.98;
+              rel2.to: "content.clip";
+
+              image {
+                 normal: "black_frame.png";
+                 border: 8 8 8 8;
+              }
+           }
+       }
+
+       /* file browser */
+       part {
+          name: "browser.clip";
+          clip_to: "content.clip";
           type: RECT;
           mouse_events: 0;
           description {
              state: "default" 0.0;
              visible: 1;
              color: 255 255 255 255;
-             /* align on the left */
-             rel1.relative: 0.50 0.0;
-             rel1.offset: 16 16;
-             rel1.to: "clip.content";
-             rel2.offset: -16 -16;
-             //rel2.relative: 0.40  1;
-             rel2.to: "clip.content";
+
+             rel1.relative: 0.01 0.05;
+             rel1.to: "background";
+
+             rel2.relative: 0.50 1.00;
+             rel2.offset: 0 -50;
+             rel2.to: "background";
           }
        }
-         part { name: "list.shadow";
-            mouse_events:  0;
-            clip_to: "clip.content";
-            description { state: "default" 0.0;
-               visible: 1;
-               image.normal: "shad_circ.png";
-               image.border: 20 20 20 20;
-               rel1.to: "clip.list";
-               rel1.offset: -32 -32;
-               rel2.to: "clip.list";
-               rel2.offset: 32 32;
-               fill.smooth: 0;
-               image.middle: NONE;
-            }
-         }
-         part { name: "list.bg";
-            mouse_events:  0;
-            clip_to: "clip.content";
-             description { state: "default" 0.0;
-                color: 255 255 255 180;
-                rel1.to: "clip.list";
-                rel1.offset: -8 -8;
-                rel2.to: "clip.list";
-                rel2.offset: 8 8;
-                image {
-                   normal: "black_frame.png";
-                   border: 8 8 8 8;
-                }
-             }
-         }
+
        part {
-          name: "enna.swallow.list";
+          name: "browser.swallow";
           type: SWALLOW;
           mouse_events : 1;
-          clip_to: "clip.list";
+          clip_to: "browser.clip";
           description {
              state: "default" 0.0;
-             rel1.to: "clip.list";
-             rel2.to: "clip.list";
+             rel1.to: "browser.clip";
+             rel2.to: "browser.clip";
           }
        }
+
+
+
 
        part {
           name: "enna.swallow.mediaplayer";
           type: SWALLOW;
           mouse_events : 1;
-          clip_to: "clip.module";
+          clip_to: "module.clip";
           description {
              state: "default" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0 -1;to: "clip.module";}
-             rel2 {relative: 1  0;to: "clip.module";}
+             rel1 {relative: 0 -1;to: "module.clip";}
+             rel2 {relative: 1  0;to: "module.clip";}
           }
           description {
              state: "show" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0  0;to: "clip.module";}
-             rel2 {relative: 1  1;to: "clip.module";}
+             rel1 {relative: 0  0;to: "module.clip";}
+             rel2 {relative: 1  1;to: "module.clip";}
           }
        }
 
@@ -130,7 +128,7 @@ images {
       part {
           name: "infos.panel.clip";
           mouse_events: 0;
-          clip_to: clip.module;
+          clip_to: module.clip;
           type: RECT;
           description {
              state: "default" 0.0;
@@ -164,7 +162,7 @@ images {
           source:  "enna";
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.module";
+          target: "module.clip";
        }
        program {
           name: "module,hide";
@@ -172,7 +170,7 @@ images {
           source:  "enna";
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.module";
+          target: "module.clip";
        }
        program {
           name: "content,show";
@@ -180,7 +178,7 @@ images {
           source:  "enna";
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.content";
+          target: "content.clip";
        }
        program {
           name: "content,hide";
@@ -188,7 +186,7 @@ images {
           source:  "enna";
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
-          target: "clip.content";
+          target: "content.clip";
        }
        program {
           name: "mediaplayer,show";
