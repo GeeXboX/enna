@@ -1,5 +1,5 @@
 images {
-
+   image: "separator_v.png" COMP;
 }
 group {
    name: "module/activity_music";
@@ -58,6 +58,26 @@ group {
             image {
                normal: "black_frame.png";
                border: 8 8 8 8;
+            }
+         }
+      }
+      /* Separator beetween list and player */
+      part {
+         name: "separator";
+         mouse_events:  0;
+         clip_to: "content.clip";
+         description {
+            state: "default" 0.0;
+            min: 2 2;
+            rel1.relative: 0.5 0.0;
+            rel1.offset: 4 4;
+            rel2.relative: 0.5 1.0;
+            rel2.offset: -5 -5;
+            image {
+               normal: "separator_v.png";
+            }
+            fill {
+               smooth: 0;
             }
          }
       }
