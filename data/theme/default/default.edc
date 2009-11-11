@@ -83,7 +83,6 @@ collections
          part { name: "enna.content.swallow";
             type: SWALLOW;
             description { state: "default" 0.0;
-               rel1.offset: 0 60;
             }
          }
          /* mainmenu */
