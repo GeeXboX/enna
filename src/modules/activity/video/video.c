@@ -638,7 +638,7 @@ browse (void *data)
 
     mod->o_browser = enna_browser_add (enna->evas);
 
-    enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_COVER);
+    enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_LIST);
     evas_object_smart_callback_add (mod->o_browser,
                                    "root", browser_cb_root, NULL);
     evas_object_smart_callback_add (mod->o_browser,

@@ -40,7 +40,7 @@ images {
           }
        }
 
-       part {
+      part {
           name: "clip.content";
           type: RECT;
           clip_to: "clip.module";
@@ -48,13 +48,13 @@ images {
              state: "default" 0.0;
              color: 255 255 255 0;
              rel1 {relative: 0  1;to: "clip.module";}
-             rel2 {relative: 1 0;offset: 0 -64;to: "clip.module";}
+             rel2 {relative: 1 0;to: "clip.module";}
           }
           description {
              state: "show" 0.0;
              color: 255 255 255 255;
              rel1 {relative: 0 0;to: "clip.module";}
-             rel2 {relative: 1 1;offset: 0 -64;to: "clip.module";}
+             rel2 {relative: 1 1;to: "clip.module";}
           }
        }
        part {
@@ -96,13 +96,13 @@ images {
           description {
              state: "default" 0.0;
              rel1.to: "clip.list";
-             rel1.relative: 0.1 0.02;
+             rel1.offset: 16 16;
+             rel1.relative: 0 0;
              rel2.to: "clip.list";
-             rel2.relative: 0.9 0.98;
+             rel2.offset: -16 -16;
+             rel2.relative: 0.45 1.0;
           }
        }
-
-
 
        part {
           name: "enna.swallow.backdrop";
@@ -187,21 +187,22 @@ images {
              }
           }
        }
-
-      part {
+       part {
           name: "enna.swallow.browser";
           type: SWALLOW;
           mouse_events : 1;
-          clip_to: "clip.module";
+          clip_to: "clip.content";
           description {
              state: "default" 0.0;
-             rel1.relative: 0.0 0.65;
-             rel2.relative: 1.0 1.0;
-             rel2.offset: 0 -64;
+             rel1.to: "clip.content";
+             rel1.relative: 0 0;
+             rel1.offset: 16 16 ;
+             rel2.to: "clip.content";
+             rel2.offset: -16 -16;
+             rel2.relative: 0.45 1.0;
           }
        }
 
-   
        part {
           name: "enna.swallow.mediaplayer";
           type: SWALLOW;
