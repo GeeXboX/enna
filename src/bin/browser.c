@@ -71,6 +71,7 @@ struct _Smart_Data
     Evas_Object *o_view;
     Evas_Object *o_letter;
     Evas_Object *o_parent;
+    Evas_Object *o_parent_box;
     Eina_List *files;
     Enna_Class_Vfs *vfs;
     Enna_Vfs_File *file;
@@ -359,6 +360,9 @@ static void _smart_add(Evas_Object * obj)
     sd->o_view = sd->view_funcs.view_add(sd);
     evas_object_smart_callback_add(sd->o_view, "hilight", _view_hilight_cb, sd);
 
+    sd->o_parent_box = elm_box_add(enna->layout);
+    elm_layout_content_set(sd->layout, "enna.swallow.parent", sd->o_parent_box);
+
     edje_object_signal_emit(elm_layout_edje_get(sd->layout), "letter,hide", "enna");
     sd->o_letter =  elm_button_add(obj);
     elm_button_label_set(sd->o_letter, "");
@@ -382,7 +386,7 @@ static void _smart_del(Evas_Object * obj)
     edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
                                     "list,transition,end", "edje", _list_transition_left_end_cb);
     ENNA_OBJECT_DEL(sd->o_view);
-    ENNA_OBJECT_DEL(sd->o_parent);
+    ENNA_OBJECT_DEL(sd->o_parent_box);
     evas_object_del(sd->layout);
     evas_object_del(sd->o_letter);
     enna_volumes_listener_del(sd->vl);
@@ -686,7 +690,9 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
         elm_icon_file_set(ic, enna_config_theme_get(), sd->file->icon);
     evas_object_show(ic);
     elm_button_icon_set(sd->o_parent, ic);
-    elm_layout_content_set(sd->layout, "enna.swallow.parent", sd->o_parent);
+    evas_object_size_hint_align_set(sd->o_parent, 0.5, 0.5);
+    elm_box_pack_start(sd->o_parent_box, sd->o_parent);
+    evas_object_show(sd->o_parent);
 
     edje_object_signal_emit(elm_layout_edje_get(sd->layout),
                             "list,default", "enna");
