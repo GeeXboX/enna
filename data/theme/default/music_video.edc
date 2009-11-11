@@ -28,14 +28,15 @@ images {
            description {
              state: "default" 0.0;
              color: 255 255 255 0;
-             rel1 {relative: 0 1;to: "clip.module";}
-             rel2 {relative: 1 0;to: "clip.module";}
+              rel1.to: clip.module;
+              rel2.to: clip.module;
+             visible: 0;
           }
           description {
              state: "show" 0.0;
+             inherit: "default" 0.0;
              color: 255 255 255 255;
-             rel1 {relative: 0 0;to: "clip.module";}
-             rel2 {relative: 1 1;to: "clip.module";}
+             visible: 1;
           }
        }
        part {
@@ -47,13 +48,12 @@ images {
              state: "default" 0.0;
              visible: 1;
              color: 255 255 255 255;
-             rel1.relative:  0 0;
-             rel1.offset:  16  16;
              /* align on the left */
              rel1.relative: 0.50 0.0;
+             rel1.offset: 16 16;
+             rel1.to: "clip.content";
              rel2.offset: -16 -16;
              //rel2.relative: 0.40  1;
-             rel1.to: "clip.content";
              rel2.to: "clip.content";
           }
        }
@@ -95,29 +95,10 @@ images {
           description {
              state: "default" 0.0;
              rel1.to: "clip.list";
-             //rel1.offset: 8 4;
-             //rel1.relative: 0 0;
              rel2.to: "clip.list";
-             //rel2.offset: -4 -4;
-             //rel2.relative: 1.0 1.0;
           }
        }
 
-       part {
-          name: "enna.swallow.browser";
-          type: SWALLOW;
-          mouse_events : 1;
-          clip_to: "clip.content";
-          description {
-             state: "default" 0.0;
-             rel1.to: "clip.content";
-             rel1.relative: 0 0;
-             rel1.offset: 16 16 ;
-             rel2.to: "clip.content";
-             rel2.offset: -16 -16;
-             rel2.relative: 0.45 1.0;
-          }
-       }
        part {
           name: "enna.swallow.mediaplayer";
           type: SWALLOW;
