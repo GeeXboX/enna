@@ -72,6 +72,8 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
     memset(srv,   '\0', sizeof(srv));
     memset(share, '\0', sizeof(share));
 
+    snprintf(tmp, sizeof(tmp), "file://%s", dir);
+
     switch(t)
     {
     case MTAB_TYPE_NFS:
@@ -88,7 +90,7 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
         p = strchr(fsname + 2, '/');
         if(!p)
             return;
-        strncpy(srv, fsname + 2, p -(fsname + 2));
+        strncpy(srv, fsname + 2, p - (fsname + 2));
         strcpy(share, p + 1);
         snprintf(name, sizeof(name), _("[SAMBA] %s on %s"), share, srv);
         type = VOLUME_TYPE_SMB;
@@ -98,19 +100,19 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
         break;
     }
 
-    v = enna_volume_new ();
-    v->type = type;
+    v              = enna_volume_new ();
+    v->type        = type;
     v->device_name = eina_stringshare_add(srv);
-    v->label = eina_stringshare_add(name);
-    snprintf(tmp, sizeof(tmp), "file://%s", dir);
+    v->label       = eina_stringshare_add(name);
     v->mount_point = eina_stringshare_add(tmp);
 
-    enna_log(ENNA_MSG_EVENT, "mtab", "New mount point discovered at %s", fsname);
-    enna_log(ENNA_MSG_EVENT, "mtab", "Add mount point [%s] %s", v->label, v->mount_point);
+    enna_log(ENNA_MSG_EVENT, "mtab",
+             "New mount point discovered at %s", fsname);
+    enna_log(ENNA_MSG_EVENT, "mtab",
+             "Add mount point [%s] %s", v->label, v->mount_point);
     _mount_points = eina_list_append(_mount_points, v);
 
     enna_volumes_add_emit(v);
-
 }
 
 static void
