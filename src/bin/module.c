@@ -257,9 +257,9 @@ _config_panel_show(void *data)
     {
         Elm_Genlist_Item *item;
         item = enna_list2_append(o_list,
-                                 m->api->title ? m->api->title : m->name,
-                                 m->api->short_desc ? m->api->short_desc :
-                                    "No information provided",
+                                 m->api->title ? _(m->api->title) : _(m->name),
+                                 m->api->short_desc ? _(m->api->short_desc) :
+                                    _("No information provided"),
                                  m->api->icon ? m->api->icon : "icon/module",
                                  NULL, NULL);
 
