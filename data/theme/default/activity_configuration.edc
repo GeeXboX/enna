@@ -1,80 +1,95 @@
-group {
-   name: "module/infos";
+/*
+ *  Group: module/configuration
+ *
+ *  This object is used by the configuration panel as a 'main layout', bla, bla
+ * 
+ *   * This group MUST provide:
+ *  enna.swallow.menu : Enna will put here the main configuration menu.
+ *  enna.swallow.content : Enna will put here the various panels
+ *
+ *   * signals the group will receive:
+ *  menu,show : Enna ask to show the config menu
+ *  menu,hide : Enna ask to hide the config menu
+ *  content,show : Enna ask to show the subpanel
+ *  content, hide : Enna ask to hide the subpanel
+ * 
+ */
 
-/**********/
-/* Styles */
-/**********/
-
-   styles {
-      style {
-         name: "style_infos";
-         base: "font=content font_size=14 align=left color=#FFF wrap=word";
-         tag:  "br" "\n";
-         tag:  "hilight" "+ font_size=18 font=content_bd color=#A0D026";
-         tag:  "b" "+ font=conten_bd";
-         tag:  "tab" "\t";
-         tag:  "c" "+ align=center font_size=24 font=content_bd color=#A0D026A0 color2=#A0D026A0 style=GLOW";
-      }
-   }
-
-   parts {
-
-/**********/
-/* Module */
-/**********/
-
-      part {
-         name: "infos.clip";
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            color: 0 0 0 0;
-            visible: 0;
-         }
-         description {
-            state: "show" 0.0;
-            color : 255 255 255 255;
-            visible: 1;
-         }
-      }
-
-      part {
-         name: "infos.text";
-         clip_to: "infos.clip";
-	 type: TEXTBLOCK;
-	 mouse_events: 0;
-	 scale: 1;
-	 description { state: "default" 0.0;
-            rel1 { relative: 0.0 0.0; to: "infos.clip"; offset: 28 10;}
-            rel2 { relative: 1.0 1.0; to: "infos.clip"; offset: -10 -10;}
-	    text {
-               style: "style_infos";
-	       min: 0 0;
-            }
-	 }
-      }
-   }
-
-/************/
-/* Programs */
-/************/
-
-   programs {
-      program {
-         name: "infos,show";
-         signal: "infos,show";
-         source:  "enna";
-         action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "infos.clip";
-      }
-      program {
-         name: "infos,hide";
-         signal: "infos,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "infos.clip";
-      }
-   }
-}
+ 
+ group { name: "module/configuration";
+    parts {
+        /* main config menu */
+       part { name: "clip.menu";
+          type: RECT;
+           description { state: "default" 0.0;
+              color: 255 255 255 100;
+              visible: 0;
+              rel1.relative: -1.0 0;
+              rel2.relative: 0.0 1.0;
+          }
+          description { state: "show" 0.0;
+             color: 255 255 255 255;
+             visible: 1;
+          }
+       }
+       part { name: "enna.swallow.menu";
+          type: SWALLOW;
+          clip_to: "clip.menu";
+          description{
+             state: "default" 0.0;
+             rel1.to: "clip.menu";
+             rel2.to: "clip.menu";
+          }
+       }
+       /* content (where subpanels are swallowed) */
+       part { name: "clip.content";
+          type: RECT;
+          description { state: "default" 0.0;
+              color: 255 255 255 0;
+              visible: 0;
+          }
+          description { state: "show" 0.0;
+             color: 255 255 255 255;
+             visible: 1;
+          }
+       }
+       part { name: "enna.swallow.content";
+          type: SWALLOW;
+          clip_to: "clip.content";
+          description { state: "default" 0.0;
+             rel1.to: "clip.content";
+             rel2.to: "clip.content";
+          }
+       }
+    }
+    programs {
+       program { name: "menu,show";
+          signal: "menu,show";
+          source:  "enna";
+          action:  STATE_SET "show" 0.0;
+          transition: SINUSOIDAL 0.5;
+          target: "clip.menu";
+       }
+       program { name: "menu,hide";
+          signal: "menu,hide";
+          source:  "enna";
+          action:  STATE_SET "default" 0.0;
+          transition: SINUSOIDAL 0.5;
+          target: "clip.menu";
+       }
+       program { name: "content,show";
+          signal: "content,show";
+          source:  "enna";
+          action:  STATE_SET "show" 0.0;
+          transition: SINUSOIDAL 0.5;
+          target: "clip.content";
+       }
+       program { name: "content,hide";
+          signal: "content,hide";
+          source:  "enna";
+          action:  STATE_SET "default" 0.0;
+          transition: SINUSOIDAL 0.5;
+          target: "clip.content";
+       }
+    }
+ }

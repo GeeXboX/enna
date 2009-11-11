@@ -234,7 +234,7 @@ activity_games.edc \
 icons.edc \
 cover_video.edc \
 activity_photo.edc \
-configuration.edc
+activity_configuration_sysinfo.edc
 
 
 
