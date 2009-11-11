@@ -59,14 +59,13 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
     Enna_Volume *v;
     char name[512], tmp[1024], srv[128], share[128];
     char *p;
+    ENNA_VOLUME_TYPE type;
 
     if(t == MTAB_TYPE_NONE)
         return;
 
     if(!fsname || !dir)
         return;
-
-    v = enna_volume_new ();
 
     memset(name,  '\0', sizeof(name));
     memset(tmp,   '\0', sizeof(tmp));
@@ -80,7 +79,7 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
         strncpy(srv, fsname, p - fsname);
         strcpy(share, p + 1);
         snprintf(name, sizeof(name), _("[NFS] %s on %s"), share, srv);
-        v->type = VOLUME_TYPE_NFS;
+        type = VOLUME_TYPE_NFS;
         break;
 
     case MTAB_TYPE_SMB:
@@ -88,13 +87,15 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
         strncpy(srv, fsname + 2, p -(fsname + 2));
         strcpy(share, p + 1);
         snprintf(name, sizeof(name), _("[SAMBA] %s on %s"), share, srv);
-        v->type = VOLUME_TYPE_SMB;
+        type = VOLUME_TYPE_SMB;
         break;
 
     default:
         break;
     }
 
+    v = enna_volume_new ();
+    v->type = type;
     v->device_name = eina_stringshare_add(srv);
     v->label = eina_stringshare_add(name);
     snprintf(tmp, sizeof(tmp), "file://%s", dir);
