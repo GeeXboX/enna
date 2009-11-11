@@ -66,13 +66,6 @@ static void _menu_transition_left_end_cb(void *data, Evas_Object *o, const char 
 
 static int _show_mediaplayer_cb(void *data);
 
-static void _class_init(int dummy);
-static void _class_show(int dummy);
-static void _class_hide(int dummy);
-static void _class_event(enna_input event);
-static int em_init(Enna_Module *em);
-static int em_shutdown(Enna_Module *em);
-
 /*Events from mediaplayer*/
 static int _eos_cb(void *data, int type, void *event);
 static int _prev_cb(void *data, int type, void *event);
@@ -122,69 +115,6 @@ struct _Enna_Module_Music
 };
 
 static Enna_Module_Music *mod;
-
-Enna_Module_Api module_api =
-{
-    ENNA_MODULE_VERSION,
-    "activity_music",
-    N_("Music core"),
-    "icon/music",
-    N_("This is the main music module"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-static Enna_Class_Activity class =
-{
-    ENNA_MODULE_NAME,
-    1,
-    N_("Music"),
-    NULL,
-    "icon/music",
-    "background/music",
-    {
-        _class_init,
-        NULL,
-        NULL,
-        _class_show,
-        _class_hide,
-        _class_event
-    },
-    NULL
-};
-
-static void
-_class_init(int dummy)
-{
-    _create_gui();
-    enna_content_append("music", mod->o_edje);
-}
-
-static void
-_class_show(int dummy)
-{
-    enna_content_select(ENNA_MODULE_NAME);
-    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
-    switch (mod->state)
-    {
-    case MENU_VIEW:
-        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
-        break;
-    case MEDIAPLAYER_VIEW:
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
-        break;
-    default:
-        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-            "Error State Unknown in music module");
-    }
-}
-
-static void
-_class_hide(int dummy)
-{
-    edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
-}
 
 static void
 _class_event_menu_view(enna_input event)
@@ -368,29 +298,6 @@ _class_event_mediaplayer_view(enna_input event)
         break;
     }
 
-}
-
-static void
-_class_event(enna_input event)
-{
-    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %d", event);
-
-    if (!mod->accept_ev) return;
-
-    switch (mod->state)
-    {
-    case MENU_VIEW:
-        _class_event_menu_view (event);
-        break;
-    case BROWSER_VIEW:
-        _class_event_browser_view (event);
-        break;
-    case MEDIAPLAYER_VIEW:
-        _class_event_mediaplayer_view (event);
-        break;
-    default:
-        break;
-    }
 }
 
 static void _event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
@@ -633,56 +540,6 @@ _create_gui()
 
 }
 
-/* Module interface */
-
-static int
-em_init(Enna_Module *em)
-{
-    mod = calloc(1, sizeof(Enna_Module_Music));
-    mod->em = em;
-    em->mod = mod;
-    mod->vl = NULL;
-    /* Add activity */
-    enna_activity_add(&class);
-    mod->enna_playlist = enna_mediaplayer_playlist_create();
-    return 1;
-}
-
-static int
-em_shutdown(Enna_Module *em)
-{
-    enna_volumes_listener_del(mod->vl);
-    enna_activity_del(ENNA_MODULE_NAME);
-    ENNA_OBJECT_DEL(mod->o_edje);
-    ENNA_OBJECT_DEL(mod->o_list);
-    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
-    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
-    ENNA_OBJECT_DEL(mod->o_browser);
-    ENNA_OBJECT_DEL(mod->o_panel_lyrics);
-    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-    ENNA_TIMER_DEL(mod->timer);
-    ENNA_OBJECT_DEL(mod->o_mediaplayer);
-    enna_mediaplayer_playlist_free(mod->enna_playlist);
-    free(mod);
-    return 1;
-}
-
-void
-module_init(Enna_Module *em)
-{
-    if (!em)
-        return;
-
-    if (!em_init(em))
-        return;
-}
-
-void
-module_shutdown(Enna_Module *em)
-{
-    em_shutdown(em);
-}
-
 static int
 _next_cb(void *data, int type, void *event)
 {
@@ -710,4 +567,131 @@ _seek_cb(void *data, int type, void *event)
     pos=length*percent;
     enna_smart_player_position_set(mod->o_mediaplayer, pos, length, percent);
     return 1;
+}
+
+/****************************************************************************/
+/*                         Private Module API                               */
+/****************************************************************************/
+
+static void
+_class_init(int dummy)
+{
+    _create_gui();
+    enna_content_append("music", mod->o_edje);
+}
+
+static void
+_class_show(int dummy)
+{
+    enna_content_select(ENNA_MODULE_NAME);
+    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
+    switch (mod->state)
+    {
+    case MENU_VIEW:
+        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
+        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
+        break;
+    case MEDIAPLAYER_VIEW:
+        edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
+        edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
+        break;
+    default:
+        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+            "Error State Unknown in music module");
+    }
+}
+
+static void
+_class_hide(int dummy)
+{
+    edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
+}
+
+static void
+_class_event(enna_input event)
+{
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %d", event);
+
+    if (!mod->accept_ev) return;
+
+    switch (mod->state)
+    {
+    case MENU_VIEW:
+        _class_event_menu_view (event);
+        break;
+    case BROWSER_VIEW:
+        _class_event_browser_view (event);
+        break;
+    case MEDIAPLAYER_VIEW:
+        _class_event_mediaplayer_view (event);
+        break;
+    default:
+        break;
+    }
+}
+
+static Enna_Class_Activity class =
+{
+    ENNA_MODULE_NAME,
+    1,
+    N_("Music"),
+    NULL,
+    "icon/music",
+    "background/music",
+    {
+        _class_init,
+        NULL,
+        NULL,
+        _class_show,
+        _class_hide,
+        _class_event
+    },
+    NULL
+};
+
+/****************************************************************************/
+/*                         Public Module API                                */
+/****************************************************************************/
+
+Enna_Module_Api module_api =
+{
+    ENNA_MODULE_VERSION,
+    "activity_music",
+    N_("Music core"),
+    "icon/music",
+    N_("This is the main music module"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
+};
+
+void
+module_init(Enna_Module *em)
+{
+    if (!em)
+        return;
+
+    mod     = calloc(1, sizeof(Enna_Module_Music));
+    mod->em = em;
+    em->mod = mod;
+    mod->vl = NULL;
+
+    enna_activity_add(&class);
+    mod->enna_playlist = enna_mediaplayer_playlist_create();
+}
+
+void
+module_shutdown(Enna_Module *em)
+{
+    enna_volumes_listener_del(mod->vl);
+    enna_activity_del(ENNA_MODULE_NAME);
+    ENNA_OBJECT_DEL(mod->o_edje);
+    ENNA_OBJECT_DEL(mod->o_list);
+    evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
+    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    ENNA_OBJECT_DEL(mod->o_browser);
+    ENNA_OBJECT_DEL(mod->o_panel_lyrics);
+    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
+    ENNA_TIMER_DEL(mod->timer);
+    ENNA_OBJECT_DEL(mod->o_mediaplayer);
+    enna_mediaplayer_playlist_free(mod->enna_playlist);
+    free(mod);
 }
