@@ -180,7 +180,7 @@ _activity_show (int dummy)
     {
         mod->o_edje = edje_object_add (enna->evas);
         edje_object_file_set (mod->o_edje, enna_config_theme_get (),
-                              "module/configuration");
+                              "activity/configuration");
         enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
     }
 

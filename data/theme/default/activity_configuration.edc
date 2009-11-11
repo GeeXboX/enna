@@ -1,7 +1,5 @@
 /*
- *  Group: module/configuration
- *
- *  This object is used by the configuration panel as a 'main layout', bla, bla
+ *  Group: activity/configuration
  * 
  *   * This group MUST provide:
  *  enna.swallow.menu : Enna will put here the main configuration menu.
@@ -16,7 +14,7 @@
  */
 
  
- group { name: "module/configuration";
+ group { name: "activity/configuration";
     parts {
         /* main config menu */
        part { name: "clip.menu";
