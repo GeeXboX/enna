@@ -76,6 +76,8 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
     {
     case MTAB_TYPE_NFS:
         p = strchr(fsname, ':');
+        if(!p)
+            return;
         strncpy(srv, fsname, p - fsname);
         strcpy(share, p + 1);
         snprintf(name, sizeof(name), _("[NFS] %s on %s"), share, srv);
@@ -84,6 +86,8 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
 
     case MTAB_TYPE_SMB:
         p = strchr(fsname + 2, '/');
+        if(!p)
+            return;
         strncpy(srv, fsname + 2, p -(fsname + 2));
         strcpy(share, p + 1);
         snprintf(name, sizeof(name), _("[SAMBA] %s on %s"), share, srv);
