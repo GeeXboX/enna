@@ -48,16 +48,6 @@ group { name: "elm/scroller/base/default";
             rel2.to: "bg";
          }
       }
-      part { name: "conf_over";
-         mouse_events:  0;
-         description { state: "default" 0.0;
-            color: 255 255 255 200;
-            image {
-               normal: "black_frame.png";
-               border: 8 8 8 8;
-            }
-         }
-      }
       part { name: "elm.swallow.content";
          clip_to: "clipper";
          type: SWALLOW;
