@@ -224,8 +224,6 @@ enna_mainmenu_append(Enna_Class_Activity *act)
         enna_mainmenu_background_add(act->name, act->bg, NULL);
     else
         enna_mainmenu_background_add(act->name, enna_config_theme_get(), act->bg);
-    
-    enna_mainmenu_background_add(act->name, enna_config_theme_get(), act->icon);
 }
 
 Enna_Class_Activity *
