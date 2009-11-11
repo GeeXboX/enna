@@ -319,7 +319,7 @@ static void _view_cover_select(Evas_Object *obj, int pos)
             y += yedje;
 
         elm_scroller_region_bring_in(obj, x, y, wedje, hedje);
-        printf("viex_cover_select\n");
+
         _smart_item_select(sd, si);
         if (ssi) _smart_item_unselect(sd, ssi);
     }
