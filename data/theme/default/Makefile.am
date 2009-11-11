@@ -215,25 +215,25 @@ images/check.png \
 fonts/content.ttf \
 fonts/content_bold.ttf \
 default.edc \
-music_video.edc \
+activity_music.edc \
 video_info.edc \
 mainmenu.edc \
 mediacontrol.edc \
 picture.edc \
-weather.edc \
+activity_weather.edc \
 browser.edc \
 exit.edc \
 elm.edc \
-infos.edc \
+activity_configuration.edc \
 slideshow.edc \
 list.edc \
-video.edc \
+activity_video.edc \
 popup.edc \
-volume.edc \
-games.edc \
+notification_volume.edc \
+activity_games.edc \
 icons.edc \
 cover_video.edc \
-photo.edc \
+activity_photo.edc \
 configuration.edc
 
 
