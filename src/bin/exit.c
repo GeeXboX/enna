@@ -154,10 +154,10 @@ enna_exit_add(Evas * evas)
 
     sd->list = enna_list_add(enna->evas);
     it1 = _create_list_item (_("Yes, Quit Enna"), "ctrl/shutdown");
-    enna_list_file_append(sd->list, it1, _yes_cb, NULL, obj);
+    enna_list_file_append(sd->list, it1, _yes_cb, obj);
 
     it2 = _create_list_item (_("No, Continue using enna"), "ctrl/hibernate");
-    enna_list_file_append(sd->list, it2, _no_cb, NULL, obj);
+    enna_list_file_append(sd->list, it2, _no_cb, obj);
     enna_list_select_nth(sd->list, 0);
 /*
     enna_list2_append(list, _("Yes, Quit Enna"), NULL,  "ctrl/shutdown",

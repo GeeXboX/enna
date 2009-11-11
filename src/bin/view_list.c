@@ -44,13 +44,13 @@ struct _List_Item
 {
     Enna_Vfs_File *file;
     void (*func_activated) (void *data);
-    void (*func_selected) (void *data);
     void *data;
     Elm_Genlist_Item *item;
 };
 
 struct _Smart_Data
 {
+    Evas_Object *obj;
     Eina_List *items;
 };
 
@@ -143,6 +143,8 @@ static void _smart_select_item(Smart_Data *sd, int n)
 
     elm_genlist_item_bring_in(it->item);
     elm_genlist_item_selected_set(it->item, 1);
+    printf("hilight\n");
+    evas_object_smart_callback_call(sd->obj, "hilight", it->data);
 }
 
 static void list_set_item(Smart_Data *sd, int start, int up, int step)
@@ -175,7 +177,7 @@ enna_list_add(Evas *evas)
     evas_object_size_hint_weight_set(obj, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_genlist_horizontal_mode_set(obj, ELM_LIST_COMPRESS);
     evas_object_show(obj);
-
+    sd->obj = obj;
     evas_object_data_set(obj, "sd", sd);
 
     evas_object_smart_callback_add(obj, "clicked", _item_activated, sd);
@@ -183,7 +185,7 @@ enna_list_add(Evas *evas)
     return obj;
 }
 
-void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func_activated) (void *data),  void (*func_selected) (void *data), void *data)
+void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func_activated) (void *data),  void *data)
 {
     Smart_Data *sd;
     List_Item *it;
@@ -195,7 +197,6 @@ void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func_ac
         NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL );
 
     it->func_activated = func_activated;
-    it->func_selected = func_selected;
     it->data = data;
     it->file = file;
 

@@ -36,7 +36,7 @@
 
 Evas_Object *enna_list_add (Evas *evas);
 void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func_activated) (void *data), void (*func_selected) (void *data), void *data);
+    void (*func_activated) (void *data), void *data);
 Eina_List* enna_list_files_get(Evas_Object* obj);
 void enna_list_select_nth(Evas_Object *obj, int nth);
 Eina_Bool enna_list_input_feed(Evas_Object *obj, enna_input event);
