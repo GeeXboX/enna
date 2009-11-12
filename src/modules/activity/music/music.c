@@ -62,10 +62,6 @@ static void _browse(void *data);
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
 
-static void _menu_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src);
-
-static int _show_mediaplayer_cb(void *data);
-
 /*Events from mediaplayer*/
 static int _eos_cb(void *data, int type, void *event);
 static int _prev_cb(void *data, int type, void *event);
@@ -102,7 +98,6 @@ struct _Enna_Module_Music
     Ecore_Timer *timer;
     Enna_Module *em;
     MUSIC_STATE state;
-    Ecore_Timer *timer_show_mediaplayer;
     Ecore_Event_Handler *eos_event_handler;
     Ecore_Event_Handler *next_event_handler;
     Ecore_Event_Handler *prev_event_handler;
@@ -119,13 +114,6 @@ static Enna_Module_Music *mod;
 static void
 _class_event_menu_view(enna_input event)
 {
-    if (mod->o_mediaplayer)
-    {
-        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer =
-            ecore_timer_add (TIMER_VALUE, _show_mediaplayer_cb, NULL);
-    }
-
     switch (event)
     {
     case ENNA_INPUT_LEFT:
@@ -146,12 +134,6 @@ _class_event_menu_view(enna_input event)
 static void
 _class_event_browser_view(enna_input event)
 {
-    if (mod->o_mediaplayer)
-    {
-        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer =
-            ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
-    }
     enna_browser_input_feed(mod->o_browser, event);
 }
 
@@ -271,8 +253,6 @@ _class_event_mediaplayer_view(enna_input event)
         break;
     case ENNA_INPUT_EXIT:
         panel_lyrics_display (0);
-        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
         edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
         edje_object_signal_emit(mod->o_edje, "content,show", "enna");
         mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
@@ -281,7 +261,6 @@ _class_event_mediaplayer_view(enna_input event)
     case ENNA_INPUT_KEY_S:
         panel_lyrics_display (0);
         enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
-        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
         edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
         edje_object_signal_emit(mod->o_edje, "content,show", "enna");
         mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
@@ -306,33 +285,7 @@ static void _event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
     if (mod->o_mediaplayer)
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Remove Timer");
-        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer = ecore_timer_add(TIMER_VALUE,_show_mediaplayer_cb, NULL);
     }
-}
-
-static int
-_show_mediaplayer_cb(void *data)
-{
-    if (mod->o_mediaplayer)
-    {
-        mod->state = MEDIAPLAYER_VIEW;
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
-        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-    }
-    return 0;
-}
-
-static void
-_menu_transition_left_end_cb(void *data, Evas_Object *o, const char *sig, const char *src)
-{
-    //edje_object_signal_callback_del(mod->o_edje, "list,transition,end", "edje",
-    //        _menu_transition_left_end_cb);
-    mod->state = BROWSER_VIEW;
-
-    //ENNA_OBJECT_DEL(mod->o_list);
-    mod->accept_ev = 1;
 }
 
 static void
@@ -689,7 +642,6 @@ module_shutdown(Enna_Module *em)
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
-    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_TIMER_DEL(mod->timer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
