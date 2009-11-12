@@ -847,9 +847,11 @@ group { name: "elm/genlist/item/default/default";
    data.item: "treesize" "20";
    //      data.item: "states" "";
    images {
-      image: "bt_sm_base1.png" COMP;
-      image: "bt_sm_shine.png" COMP;
-      image: "bt_sm_hilight.png" COMP;
+      image: "sel_bg.png" COMP;
+      image: "sel_shad.png" COMP;
+      image: "sel_hilight.png" COMP;
+      image: "sel_shine_white.png" COMP;
+      image: "sel_shine_black.png" COMP;
       image: "separator_h.png" COMP;
    }
    parts {
@@ -862,22 +864,32 @@ group { name: "elm/genlist/item/default/default";
             color: 255 255 255 0;
          }
       }
+      part{ name: "shadow";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description{ state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "sel_shad.png";
+            image.border: 6 6 6 6;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 200;
+         }
+      }
       part { name: "bg";
          clip_to: "disclip";
          mouse_events: 0;
          description { state: "default" 0.0;
             visible: 0;
             color: 255 255 255 0;
-            rel1 {
-               relative: 0.0 0.0;
-               offset: -5 -5;
-            }
-            rel2 {
-               relative: 1.0 1.0;
-               offset: 4 4;
-            }
+            rel2.offset: 0 -1;
             image {
-               normal: "bt_sm_base1.png";
+               normal: "sel_bg.png";
                border: 6 6 6 6;
             }
             image.middle: SOLID;
@@ -885,29 +897,46 @@ group { name: "elm/genlist/item/default/default";
          description { state: "selected" 0.0;
             inherit: "default" 0.0;
             visible: 1;
-            color: 255 255 255 255;
-            rel1 {
-               relative: 0.0 0.0;
-               offset: -2 -2;
-            }
-            rel2 {
-               relative: 1.0 1.0;
-               offset: 1 1;
-            }
+            color: 255 255 255 128;
          }
       }
+
+      part {
+         name: "separator";
+         //clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            //min: 1 1;
+            //fixed: 1 1;
+            color: 255 255 255 50;
+            rel1.relative: 0 1;
+            rel1.to: "bg";
+            rel2.relative: 1 1;
+            rel2.to: "bg";
+            rel2.offset: 0 1;
+
+            image {
+               normal: "separator_h.png";
+               //border: 1 1 1 1;
+            }
+            fill.smooth: 0;
+         }
+      }
+
       part { name: "elm.swallow.pad";
          type: SWALLOW;
          description { state: "default" 0.0;
             fixed: 1 0;
             align: 0.0 0.5;
             rel1 {
+               to: "bg";
                relative: 0.0  0.0;
-               offset:   4    4;
+               offset:   8    4;
             }
             rel2 {
+               to: "bg";
                relative: 0.0  1.0;
-               offset:   4   -5;
+               offset:   8   -4;
             }
          }
       }
@@ -918,14 +947,14 @@ group { name: "elm/genlist/item/default/default";
             fixed: 1 0;
             align: 0.0 0.5;
             rel1 {
-               to_x: "elm.swallow.pad";
+               to: "elm.swallow.pad";
                relative: 1.0  0.0;
-               offset:   -1    4;
+               offset:   2    2;
             }
             rel2 {
-               to_x: "elm.swallow.pad";
+               to: "elm.swallow.pad";
                relative: 1.0  1.0;
-               offset:   -1   -5;
+               offset:   2   -3;
             }
          }
       }
@@ -956,6 +985,7 @@ group { name: "elm/genlist/item/default/default";
          description {
             state: "default" 0.0;
             //               min: 16 16;
+            fixed: 1 1;
             rel1 {
                to_x:     "elm.swallow.icon";
                relative: 1.0  0.0;
@@ -982,49 +1012,8 @@ group { name: "elm/genlist/item/default/default";
             color3: 0 0 0 64;
          }
       }
-      part {
-         name: "separator";
-         clip_to: "disclip";
-         mouse_events: 0;
-         description { state: "default" 0.0;
-            min: 2 2;
-            rel1.relative: 0 1;
-            rel1.offset: 0 -12;
-            rel2.relative: 1 1;
-            image {
-               normal: "separator_h.png";
-            }
-            fill {
-               smooth: 0;
-            }
-         }
-         description { state: "selected" 0.0;
-            inherit: "default" 0.0;
-            visible: 0;
-            color: 255 255 255 0;
-         }
-      }
-      part { name: "fg1";
-         clip_to: "disclip";
-         mouse_events: 0;
-         description { state: "default" 0.0;
-            visible: 0;
-            color: 255 255 255 0;
-            rel1.to: "bg";
-            rel2.relative: 1.0 0.5;
-            rel2.to: "bg";
-            image {
-               normal: "bt_sm_hilight.png";
-               border: 6 6 6 0;
-            }
-         }
-         description { state: "selected" 0.0;
-            inherit: "default" 0.0;
-            visible: 1;
-            color: 255 255 255 255;
-         }
-      }
-      part { name: "fg2";
+     
+      part { name: "shine_white";
          clip_to: "disclip";
          mouse_events: 0;
          description { state: "default" 0.0;
@@ -1033,14 +1022,52 @@ group { name: "elm/genlist/item/default/default";
             rel1.to: "bg";
             rel2.to: "bg";
             image {
-               normal: "bt_sm_shine.png";
+               normal: "sel_shine_white.png";
+               border: 6 6 6 6;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 200;
+         }
+      }
+      part { name: "shine_black";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_shine_black.png";
                border: 6 6 6 0;
             }
          }
          description { state: "selected" 0.0;
             inherit: "default" 0.0;
             visible: 1;
-            color: 255 255 255 255;
+            color: 255 255 255 200;
+         }
+      }
+      part { name: "hilight";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_hilight.png";
+               border: 6 6 6 6;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 80;
          }
       }
       part { name: "disclip";
@@ -1076,9 +1103,11 @@ group { name: "elm/genlist/item/default/default";
          source:  "elm";
          action:  STATE_SET "selected" 0.0;
          target:  "bg";
+         target:  "shadow";
          target:  "separator";
-         target:  "fg1";
-         target:  "fg2";
+         target:  "shine_white";
+         target:  "shine_black";
+         target:  "hilight";
          target:  "elm.text";
       }
       program {
@@ -1087,9 +1116,11 @@ group { name: "elm/genlist/item/default/default";
          source:  "elm";
          action:  STATE_SET "default" 0.0;
          target:  "bg";
+         target:  "shadow";
          target:  "separator";
-         target:  "fg1";
-         target:  "fg2";
+         target:  "shine_white";
+         target:  "shine_black";
+         target:  "hilight";
          target:  "elm.text";
          transition: LINEAR 0.1;
       }
