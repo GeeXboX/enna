@@ -89,8 +89,8 @@ void enna_smart_player_position_set(Evas_Object *obj, double pos,
 
     elm_label_label_set(sd->total_time, buf2);
     elm_label_label_set(sd->current_time, buf);
-    //elm_slider_value_set(sd->sl, pos/len * 100.0);
 
+    elm_slider_value_set(sd->sl, pos/len * 100.0);
 }
 
 static void metadata_set_text(Evas_Object *obj, Enna_Metadata *m,
@@ -161,7 +161,6 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     Evas_Object *layout;
     Evas_Object *bx;
     Evas_Object *bt;
-    Evas_Object *cv;
     Evas_Object *lb;
     Evas_Object *sl_box;
     Evas_Object *sl;
