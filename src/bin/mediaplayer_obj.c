@@ -103,11 +103,11 @@ static void metadata_set_text(Evas_Object *obj, Enna_Metadata *m,
     str = enna_metadata_meta_get(m, name, 1);
 
     if(bold)
-        snprintf(tmp, sizeof(tmp), "<b>%s</b>", str);
+        snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
     else
-        snprintf(tmp, sizeof(tmp), "%s", str);
+        snprintf(tmp, sizeof(tmp), "%s", enna_util_str_chomp(str));
 
-    elm_label_label_set(obj, enna_util_str_chomp(tmp));
+    elm_label_label_set(obj, tmp);
     ENNA_FREE(str);
 }
 
@@ -166,7 +166,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     Evas_Object *sl;
     Smart_Data *sd;
 
-    sd = malloc(sizeof(Smart_Data));
+    sd = ENNA_NEW(Smart_Data, 1);
 
     layout = elm_layout_add(enna->layout);
     elm_layout_file_set(layout, enna_config_theme_get(), "core/mediaplayer");
