@@ -513,7 +513,7 @@ static  void _browse(void *data)
         ev->vfs = sd->vfs;
         ev->file = sd->file;
 
-        if (sd->file && sd->file->is_directory)
+        if (sd->file && (sd->file->is_directory || sd->file->is_menu))
         {
             /* File selected is a directory */
             sd->files = sd->vfs->func.class_browse_up(sd->file->uri, sd->vfs->cookie);
@@ -647,7 +647,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
 
             f = l->data;
 
-            if (!f->is_directory && !sd->show_file)
+            if ((!f->is_directory || !f->is_menu) && !sd->show_file)
                 continue;
 
             if (f->icon_file && f->icon_file[0] == '/')
@@ -684,8 +684,8 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     ic = elm_icon_add(enna->layout);
     if (!sd->file)
         elm_icon_file_set(ic, enna_config_theme_get(), "icon/home");
-    else if (sd->file->icon && sd->file->icon[0] == '/')
-        elm_icon_file_set(ic, sd->file->icon, NULL);
+    else if (sd->file->is_directory)
+        elm_icon_file_set(ic, enna_config_theme_get(), "icon/directory");
     else if (sd->file->icon)
         elm_icon_file_set(ic, enna_config_theme_get(), sd->file->icon);
     evas_object_show(ic);

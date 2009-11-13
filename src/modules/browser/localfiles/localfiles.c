@@ -108,7 +108,7 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
             Root_Directories *root;
 
             root = l->data;
-            file = enna_vfs_create_directory(root->uri, root->label,
+            file = enna_vfs_create_menu(root->uri, root->label,
                                              root->icon ?
                                              root->icon : "icon/hd", NULL);
             files = eina_list_append(files, file);
@@ -145,8 +145,7 @@ static Eina_List *_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
             {
                 Enna_Vfs_File *f;
 
-                f = enna_vfs_create_directory(dir, filename, "icon/directory",
-                                              NULL);
+                f = enna_vfs_create_directory(dir, filename, "icon/directory", NULL);
                 dirs_list = eina_list_append(dirs_list, f);
             }
             else if (enna_util_uri_has_extension(dir, caps))
@@ -214,7 +213,7 @@ static Eina_List * _class_browse_down(Class_Private_Data *data,
                 Root_Directories *root;
 
                 root = l->data;
-                file = enna_vfs_create_directory(root->uri, root->label,
+                file = enna_vfs_create_menu(root->uri, root->label,
                         root->icon ? root->icon : "icon/hd", NULL);
                 files = eina_list_append(files, file);
             }

@@ -132,7 +132,11 @@ static Enna_Vfs_File * enna_vfs_create_inode(const char *uri, const char *label,
     f->label = label ? strdup(label) : NULL;
     f->icon = icon ? strdup(icon) : NULL;
     f->icon_file = icon_file ? strdup(icon_file) : NULL;
-    f->is_directory = dir;
+
+    if (dir == 1)
+        f->is_directory = 1;
+    else if (dir == 2)
+        f->is_menu = 1;
 
     return f;
 }
@@ -140,13 +144,19 @@ static Enna_Vfs_File * enna_vfs_create_inode(const char *uri, const char *label,
 Enna_Vfs_File * enna_vfs_create_file(const char *uri, const char *label, const char *icon,
         const char *icon_file)
 {
-    return enna_vfs_create_inode(uri, label, icon, icon_file, 0);
+    return enna_vfs_create_inode(uri, label, NULL, NULL, 0);
 }
 
 Enna_Vfs_File * enna_vfs_create_directory(const char *uri, const char *label, const char *icon,
         const char *icon_file)
 {
-    return enna_vfs_create_inode(uri, label, icon, icon_file, 1);
+    return enna_vfs_create_inode(uri, label, "icon/arrow_right", NULL, 1);
+}
+
+Enna_Vfs_File * enna_vfs_create_menu(const char *uri, const char *label, const char *icon,
+        const char *icon_file)
+{
+    return enna_vfs_create_inode(uri, label, icon, icon_file, 2);
 }
 
 void enna_vfs_remove(Enna_Vfs_File *f)

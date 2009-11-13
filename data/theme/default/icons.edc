@@ -42,6 +42,7 @@ STOCK_ICON("icon_rss.png", "icon/podcast")
 STOCK_ICON("icon_upnp.png",      "icon/upnp")
 STOCK_ICON("icon_nofile.png", "icon_nofile")
 STOCK_ICON("arrow_left.png", "icon/arrow_left")
+STOCK_ICON("arrow_right.png", "icon/arrow_right")
 
 /* Activities Backgrounds */
 STOCK_ICON("default_backdrop.png",  "background/configuration")

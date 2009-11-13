@@ -50,6 +50,7 @@ struct _Enna_Vfs_File
     char *icon;
     char *icon_file;
     unsigned char is_directory : 1;
+    unsigned char is_menu : 1;
 };
 
 struct _Enna_Class_Vfs
@@ -77,5 +78,6 @@ void enna_vfs_class_remove(const char *name, unsigned char type);
 Eina_List *enna_vfs_get(ENNA_VFS_CAPS type);
 Enna_Vfs_File *enna_vfs_create_file (const char *uri, const char *label, const char *icon, const char *icon_file);
 Enna_Vfs_File *enna_vfs_create_directory (const char *uri, const char *label, const char *icon, const char *icon_file);
+Enna_Vfs_File * enna_vfs_create_menu(const char *uri, const char *label, const char *icon, const char *icon_file);
 void enna_vfs_remove(Enna_Vfs_File *f);
 #endif /* VFS_H */
