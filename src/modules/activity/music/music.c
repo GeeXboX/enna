@@ -83,7 +83,7 @@ enum _MUSIC_STATE
 {
     MENU_VIEW,
     BROWSER_VIEW,
-    MEDIAPLAYER_VIEW
+    MEDIAPLAER_VIEW
 };
 
 struct _Enna_Module_Music
@@ -328,11 +328,11 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
                 {
                     enna_mediaplayer_select_nth(mod->enna_playlist,i);
                     enna_mediaplayer_play(mod->enna_playlist);
+                    METADATA_APPLY;
                 }
                 i++;
             }
         }
-        _create_mediaplayer_gui();
     }
     free(ev);
 }
@@ -372,7 +372,7 @@ _browse(void *data)
 static int
 _update_position_timer(void *data)
 {
-    if(enna_mediaplayer_state_get()!=PAUSE)
+    if(enna_mediaplayer_state_get() != PAUSE)
     {
         double pos;
         double length;
@@ -400,33 +400,19 @@ _create_mediaplayer_gui()
 {
     Evas_Object *o;
 
-    mod->state = MEDIAPLAYER_VIEW;
-
-    ENNA_TIMER_DEL(mod->timer);
-    ENNA_EVENT_HANDLER_DEL(mod->eos_event_handler);
-    ENNA_EVENT_HANDLER_DEL(mod->next_event_handler);
-    ENNA_EVENT_HANDLER_DEL(mod->prev_event_handler);
-    ENNA_EVENT_HANDLER_DEL(mod->seek_event_handler);
-
-    if (mod->o_mediaplayer)
-        evas_object_del(mod->o_mediaplayer);
-
     mod->eos_event_handler = ecore_event_handler_add(
-            ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
+        ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
     mod->next_event_handler = ecore_event_handler_add(
-            ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, NULL);
+        ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, NULL);
     mod->prev_event_handler = ecore_event_handler_add(
-            ENNA_EVENT_MEDIAPLAYER_PREV, _prev_cb, NULL);
+        ENNA_EVENT_MEDIAPLAYER_PREV, _prev_cb, NULL);
     mod->seek_event_handler = ecore_event_handler_add(
-            ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, NULL);
+        ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, NULL);
 
     o = enna_smart_player_add(enna->evas, mod->enna_playlist);
-    edje_object_part_swallow(mod->o_edje, "enna.swallow.mediaplayer", o);
+    edje_object_part_swallow(mod->o_edje, "mediaplayer.swallow", o);
     evas_object_show(o);
-
     mod->o_mediaplayer = o;
-
-    METADATA_APPLY;
 
     mod->timer = ecore_timer_add(1, _update_position_timer, NULL);
 
@@ -487,6 +473,8 @@ _create_gui()
     mod->o_edje = o;
 
     _create_menu();
+    _create_mediaplayer_gui();
+
     mod->vl = enna_volumes_listener_add("activity_music", _refresh_list, _refresh_list, NULL);
     evas_object_event_callback_add(mod->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
         _event_mouse_down, NULL);
@@ -544,10 +532,6 @@ _class_show(int dummy)
         edje_object_signal_emit(mod->o_edje, "content,show", "enna");
         edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
         break;
-    case MEDIAPLAYER_VIEW:
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
-        break;
     default:
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
             "Error State Unknown in music module");
@@ -574,9 +558,6 @@ _class_event(enna_input event)
         break;
     case BROWSER_VIEW:
         _class_event_browser_view (event);
-        break;
-    case MEDIAPLAYER_VIEW:
-        _class_event_mediaplayer_view (event);
         break;
     default:
         break;
