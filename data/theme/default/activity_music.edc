@@ -68,16 +68,14 @@ group {
          clip_to: "content.clip";
          description {
             state: "default" 0.0;
-            min: 2 2;
+            color: 255 255 255 80;
             rel1.relative: 0.5 0.0;
-            rel1.offset: 4 4;
+            rel1.offset: -1 0;
+            rel1.to: "background";
             rel2.relative: 0.5 1.0;
-            rel2.offset: -5 -5;
+            rel2.to: "background";
             image {
                normal: "separator_v.png";
-            }
-            fill {
-               smooth: 0;
             }
          }
       }
@@ -115,28 +113,35 @@ group {
       }
 
 
-
-
+      /* Mediaplayer */
       part {
-         name: "enna.swallow.mediaplayer";
-         type: SWALLOW;
-         mouse_events : 1;
-         clip_to: "module.clip";
+         name: "mediaplayer.clip";
+         clip_to: "content.clip";
+         type: RECT;
+         mouse_events: 0;
          description {
             state: "default" 0.0;
+            visible: 1;
             color: 255 255 255 255;
-            rel1 {relative: 0 -1;to: "module.clip";}
-            rel2 {relative: 1  0;to: "module.clip";}
-         }
-         description {
-            state: "show" 0.0;
-            color: 255 255 255 255;
-            rel1 {relative: 0  0;to: "module.clip";}
-            rel2 {relative: 1  1;to: "module.clip";}
+            rel1.relative: 0.01 0.05;
+            rel1.to: "background";
+            rel2.relative: 0.49 0.99;
+            rel2.offset: 0 -50;
+            rel2.to: "background";
          }
       }
 
-
+      part {
+         name: "mediaplayer.swallow";
+         type: SWALLOW;
+         mouse_events : 1;
+         clip_to: "mediaplayer.clip";
+         description {
+            state: "default" 0.0;
+            rel1.to: "mediaplayer.clip";
+            rel2.to: "mediaplayer.clip";
+         }
+      }
 
       part {
          name: "event";
@@ -214,7 +219,7 @@ group {
          source:  "enna";
          action:  STATE_SET "show" 0.0;
          transition: SINUSOIDAL 0.5;
-         target: "enna.swallow.mediaplayer";
+         target: "mediaplayer.swallow";
       }
       program {
          name: "mediaplayer,hide";
@@ -222,7 +227,7 @@ group {
          source:  "enna";
          action:  STATE_SET "default" 0.0;
          transition: SINUSOIDAL 0.5;
-         target: "enna.swallow.mediaplayer";
+         target: "mediaplayer.swallow";
       }
       program {
          name: "lyrics,show";

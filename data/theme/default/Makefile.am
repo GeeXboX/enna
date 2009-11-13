@@ -212,6 +212,13 @@ images/icon_rotate_ccw.png \
 images/picture_bar.png \
 images/icon_module.png \
 images/check.png \
+images/sel_bg.png \
+images/sel_shad.png \
+images/sel_shine_black.png \
+images/sel_shine_white.png \
+images/sel_hilight.png \
+images/separator_h.png \
+images/separator_v.png \
 fonts/content.ttf \
 fonts/content_bold.ttf \
 default.edc \

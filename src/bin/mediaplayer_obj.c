@@ -44,6 +44,7 @@ typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
+    Evas_Object *layout;
     Evas_Object *cv;
     Evas_Object *ctl;
     Evas_Object *sl;
@@ -88,15 +89,25 @@ void enna_smart_player_position_set(Evas_Object *obj, double pos,
 
     elm_label_label_set(sd->total_time, buf2);
     elm_label_label_set(sd->current_time, buf);
-    elm_slider_value_set(sd->sl, pos/len * 100.0);
+    //elm_slider_value_set(sd->sl, pos/len * 100.0);
 
 }
 
-static void metadata_set_text(Evas_Object *obj, Enna_Metadata *m, const char *name)
+static void metadata_set_text(Evas_Object *obj, Enna_Metadata *m,
+                              const char *name,
+                              int bold)
 {
     char *str;
+    char tmp[4096];
+
     str = enna_metadata_meta_get(m, name, 1);
-    elm_label_label_set(obj, enna_util_str_chomp(str));
+
+    if(bold)
+        snprintf(tmp, sizeof(tmp), "<b>%s</b>", str);
+    else
+        snprintf(tmp, sizeof(tmp), "%s", str);
+
+    elm_label_label_set(obj, enna_util_str_chomp(tmp));
     ENNA_FREE(str);
 }
 
@@ -111,9 +122,11 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
     if (!metadata || !sd)
         return;
 
-    metadata_set_text (sd->title, metadata, "title");
-    metadata_set_text (sd->album, metadata, "album");
-    metadata_set_text (sd->artist, metadata, "author");
+    metadata_set_text (sd->title, metadata, "title", 1);
+    metadata_set_text (sd->album, metadata, "album", 0);
+    metadata_set_text (sd->artist, metadata, "author", 0);
+
+    printf("Meta set\n");
 
     cover = enna_metadata_meta_get (metadata, "cover", 1);
     if (cover)
@@ -126,7 +139,12 @@ void enna_smart_player_metadata_set(Evas_Object *obj,
             snprintf(cv, sizeof (cv), "%s/.enna/covers/%s",
                      enna_util_user_home_get (), cover);
 
+        ENNA_OBJECT_DEL(sd->cv);
+        sd->cv = elm_image_add(sd->layout);
         elm_image_file_set(sd->cv, cv, NULL);
+        evas_object_size_hint_align_set(sd->cv, 1, 1);
+        evas_object_size_hint_weight_set(sd->cv, -1, -1);
+        elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
     }
     else
     {
@@ -140,95 +158,92 @@ Evas_Object *
 enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
 {
 
-    Evas_Object *fr;
-    Evas_Object *tb;
+    Evas_Object *layout;
+    Evas_Object *bx;
     Evas_Object *bt;
     Evas_Object *cv;
     Evas_Object *lb;
+    Evas_Object *sl_box;
     Evas_Object *sl;
-    Evas_Object *bx;
     Smart_Data *sd;
 
     sd = malloc(sizeof(Smart_Data));
 
-    fr = elm_frame_add(enna->layout);
-    tb = elm_table_add(enna->layout);
-    evas_object_size_hint_weight_set(tb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    elm_frame_content_set(fr, tb);
-    evas_object_show(fr);
-    evas_object_show(tb);
+    layout = elm_layout_add(enna->layout);
+    elm_layout_file_set(layout, enna_config_theme_get(), "core/mediaplayer");
+    evas_object_size_hint_weight_set(enna->layout, 1.0, 1.0);
+    sd->layout = layout;
 
-    cv = elm_image_add(fr);
-    evas_object_size_hint_weight_set(cv, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(cv, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_table_pack(tb, cv, 0, 0, 1, 4);
-    evas_object_show(cv);
-    sd->cv = cv;
+    bx = elm_box_add(enna->layout);
+    evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    elm_layout_content_set(layout, "text.swallow", bx);
+    evas_object_show(bx);
 
-    lb = elm_label_add(fr);
+    lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "Title");
-    elm_table_pack(tb, lb, 1, 0, 1, 1);
+    elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->title = lb;
 
-
-    lb = elm_label_add(fr);
+    lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "Album");
-    elm_table_pack(tb, lb, 1, 1, 1, 1);
+    elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->album = lb;
 
-    lb = elm_label_add(fr);
+    lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "Artist");
-    elm_table_pack(tb, lb, 1, 2, 1, 1);
+    elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->artist = lb;
 
 
-    bt = enna_mediacontrol_add(evas_object_evas_get(fr), enna_playlist);
-    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    bt = enna_mediacontrol_add(evas_object_evas_get(layout), enna_playlist);
+    evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, 0.5);
     evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_table_pack(tb, bt, 1, 3, 1, 1);
+    elm_layout_content_set(layout, "buttons.swallow", bt);
     evas_object_show(bt);
 
-    bx = elm_box_add(fr);
-    elm_box_horizontal_set(bx, 1);
-    evas_object_size_hint_align_set(bx, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_show(bx);
-    elm_table_pack(tb, bx, 1, 4, 1, 1);
+    sl_box = elm_box_add(layout);
+    elm_box_horizontal_set(sl_box, 1);
+    //evas_object_size_hint_align_set(sl_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_align_set(sl_box, EVAS_HINT_FILL, 0.5);
+    evas_object_size_hint_weight_set(sl_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_show(sl_box);
+    elm_box_pack_end(bx, sl_box);
 
-    lb = elm_label_add(fr);
-    elm_box_pack_end(bx, lb);
+    lb = elm_label_add(layout);
+    elm_box_pack_end(sl_box, lb);
     evas_object_show(lb);
     sd->current_time = lb;
 
-    sl = elm_slider_add(fr);
+    sl = elm_slider_add(layout);
     elm_slider_span_size_set(sl, 80);
     evas_object_size_hint_align_set(sl, EVAS_HINT_FILL, 0.5);
     elm_slider_min_max_set(sl, 0.0, 100.0);
     elm_slider_indicator_format_set(sl, "%1.0f %%");
     evas_object_size_hint_weight_set(sl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    elm_box_pack_end(bx, sl);
+    elm_box_pack_end(sl_box, sl);
     evas_object_show(sl);
     evas_object_smart_callback_add(sl, "delay,changed", _seek_cb, sl);
     sd->sl = sl;
 
-    lb = elm_label_add(fr);
-    elm_box_pack_end(bx, lb);
+    lb = elm_label_add(layout);
+    elm_box_pack_end(sl_box, lb);
     evas_object_show(lb);
     sd->total_time = lb;
+    elm_layout_content_set(layout, "slider.swallow", sl_box);
 
     /* FIXME : WTF ? why we have a ref to the playlist there ? */
     _enna_playlist = enna_playlist;
 
-    evas_object_data_set(fr, "sd", sd);
+    evas_object_data_set(layout, "sd", sd);
 
-    return fr;
+    return layout;
  }

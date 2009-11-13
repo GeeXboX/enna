@@ -51,6 +51,7 @@ collections
 #include "cover_video.edc"
 #include "popup.edc"
 #include "exit.edc"
+#include "mediaplayer.edc"
 
    group { name: "main_layout";
       parts {
