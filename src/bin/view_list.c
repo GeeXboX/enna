@@ -162,7 +162,6 @@ static void _smart_select_item(Smart_Data *sd, int n)
 
     elm_genlist_item_middle_bring_in(it->item);
     elm_genlist_item_selected_set(it->item, 1);
-    printf("hilight\n");
     evas_object_smart_callback_call(sd->obj, "hilight", it->data);
 }
 

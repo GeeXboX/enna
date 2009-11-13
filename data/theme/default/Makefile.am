@@ -163,6 +163,7 @@ images/browser_cover_bg.png \
 images/icon_album.png \
 images/dev_samba.png \
 images/arrow_left.png \
+images/arrow_right.png \
 images/sel_fg.png \
 images/bt_sm_hilight.png \
 images/rating0.png \
