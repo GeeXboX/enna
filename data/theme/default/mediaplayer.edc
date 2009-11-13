@@ -1,0 +1,131 @@
+images {
+   image: "shad_circ.png" COMP;
+}
+
+group {
+
+   name: "core/mediaplayer";
+   parts {
+      /* Define 2 zones : cover and controls */
+      part {
+         name: "cover.area";
+         type: SWALLOW;
+         mouse_events:   0;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0;
+            rel2.relative: 1 0.6;
+         }
+         description { state: "vertical" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0;
+            rel2.relative: 0.6 1;
+         }
+      }
+      part {
+         name: "controls.area";
+         type: SWALLOW;
+         mouse_events:   0;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0.6;
+            rel2.relative: 1 1;
+         }
+         description { state: "vertical" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0.6 0;
+            rel2.relative: 1 1;
+         }
+
+      }
+
+      /* Cover Zone */
+      part { name: "cover.shadow";
+         mouse_events:  0;
+         description { state: "default" 0.0;
+            visible: 1;
+            image.normal: "shad_circ.png";
+            image.border: 25 25 25 25;
+            rel1.to: "cover.swallow";
+            rel1.offset: -25 -25;
+            rel2.to: "cover.swallow";
+            rel2.offset: 25 25;
+            fill.smooth: 0;
+            image.middle: 0;
+         }
+      }
+      part { name: "cover.bg";
+         type: RECT;
+         mouse_events:  0;
+         description { state: "default" 0.0;
+            visible: 1;
+            align: 0.5 0.5;
+            rel1 {
+               to: "cover.swallow";
+               relative: 0.0 0.0;
+               offset: -1 -1;
+            }
+            rel2 {
+               to: "cover.swallow";
+               relative: 1.0 1.0;
+               offset: 1 1;
+            }
+            color: 0 0 0 64;
+         }
+      }
+      part {
+         name: "cover.swallow";
+         type: SWALLOW;
+         mouse_events:   0;
+         description { state: "default" 0.0;
+            aspect_preference: BOTH;
+            aspect: 1 1;
+            align: 0.5 0.5;
+            rel1.to: "cover.area";
+            rel1.offset: 20 20;
+            rel2.to: "cover.area";
+            rel2.offset: -20 -20;
+         }
+      }
+      /* Control Zone */
+      part {
+         name: "text.swallow";
+         type: SWALLOW;
+         mouse_events:   0;
+         description { state: "default" 0.0;
+            rel1.to: "controls.area";
+            rel1.offset: 4 4;
+            rel2.to: "controls.area";
+            rel2.relative: 1 0.6;
+            rel2.offset: -4 -4;
+         }
+      }
+      part {
+         name: "slider.swallow";
+         type: SWALLOW;
+         mouse_events:   1;
+         description { state: "default" 0.0;
+            rel1.relative: 0 1;
+            rel1.to: "text.swallow";
+            rel1.offset: 0 4;
+            rel2.to: "controls.area";
+            rel2.relative: 1 0.8;
+            rel2.offset: -4 -4;
+         }
+      }
+      part {
+         name: "buttons.swallow";
+         type: SWALLOW;
+         mouse_events:   1;
+         description { state: "default" 0.0;
+            rel1.relative: 0 1;
+            rel1.to: "slider.swallow";
+            rel1.offset: 0 4;
+            rel2.to: "controls.area";
+            rel2.relative: 1 1;
+            rel2.offset: -4 -4;
+         }
+      }
+
+   }
+}
