@@ -82,8 +82,7 @@ struct _Music_Item_Class_Data
 enum _MUSIC_STATE
 {
     MENU_VIEW,
-    BROWSER_VIEW,
-    MEDIAPLAER_VIEW
+    BROWSER_VIEW
 };
 
 struct _Enna_Module_Music
