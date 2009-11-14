@@ -65,8 +65,7 @@ buffer_append (buffer_t *buffer, const char *str)
     if (!buffer->buf)
     {
         buffer->capacity = BUFFER_DEFAULT_CAPACITY;
-        buffer->buf = malloc (buffer->capacity);
-        memset (buffer->buf, '\0', buffer->capacity);
+        buffer->buf = calloc(1, buffer->capacity);
     }
 
     len = buffer->len + strlen (str);
