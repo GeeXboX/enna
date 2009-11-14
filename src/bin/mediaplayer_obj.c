@@ -153,7 +153,18 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
         elm_image_file_set(sd->cv, NULL, NULL);
     }
     evas_object_show(sd->cv);
+    edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,show", "enna");
 }
+
+void
+enna_smart_player_metadata_unset(Evas_Object *obj)
+{
+    Smart_Data *sd;
+
+    sd = evas_object_data_get(obj, "sd");
+    edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,hide", "enna");
+}
+
 
 /* externally accessible functions */
 Evas_Object *
