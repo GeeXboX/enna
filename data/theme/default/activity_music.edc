@@ -1,5 +1,6 @@
 images {
    image: "separator_v.png" COMP;
+   image: "vertical_gradient.png" COMP;
 }
 group {
    name: "activity/music";
@@ -47,17 +48,11 @@ group {
          clip_to: "content.clip";
          description {
             state: "default" 0.0;
-            color: 255 255 255 180;
-
-            rel1.relative: 0.01 0.02;
+            color: 255 255 255 255;
             rel1.to: "content.clip";
-
-            rel2.relative: 0.99 0.98;
             rel2.to: "content.clip";
-
             image {
-               normal: "black_frame.png";
-               border: 8 8 8 8;
+               normal: "vertical_gradient.png";
             }
          }
       }
