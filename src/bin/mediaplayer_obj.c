@@ -104,10 +104,10 @@ metadata_set_text(Evas_Object *obj,
 
     str = enna_metadata_meta_get(m, name, 1);
 
-    if(bold)
+    if(bold && str)
         snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
     else
-        snprintf(tmp, sizeof(tmp), "%s", enna_util_str_chomp(str));
+        snprintf(tmp, sizeof(tmp), "%s", str ? enna_util_str_chomp(str) : "");
 
     elm_label_label_set(obj, tmp);
     ENNA_FREE(str);
@@ -127,8 +127,6 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
     metadata_set_text (sd->title, metadata, "title", 1);
     metadata_set_text (sd->album, metadata, "album", 0);
     metadata_set_text (sd->artist, metadata, "author", 0);
-
-    printf("Meta set\n");
 
     cover = enna_metadata_meta_get (metadata, "cover", 1);
     if (cover)
@@ -194,7 +192,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
-    elm_label_label_set(lb, "Title");
+    elm_label_label_set(lb, "");
     elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->title = lb;
@@ -202,7 +200,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
-    elm_label_label_set(lb, "Album");
+    elm_label_label_set(lb, "");
     elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->album = lb;
@@ -210,7 +208,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
-    elm_label_label_set(lb, "Artist");
+    elm_label_label_set(lb, "");
     elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->artist = lb;

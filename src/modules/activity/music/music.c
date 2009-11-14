@@ -111,6 +111,28 @@ struct _Enna_Module_Music
 static Enna_Module_Music *mod;
 
 static void
+update_songs_counter (Eina_List *list)
+{
+    Enna_Vfs_File *f;
+    Eina_List *l;
+    int children = 0;
+    char label[128] = { 0 };
+
+    if (!list)
+        goto end;
+
+    EINA_LIST_FOREACH(list, l, f)
+    {
+        if (!f->is_directory)
+            children++;
+    }
+    if (children)
+        snprintf(label, sizeof(label), _("%d Songs"), children);
+end:
+    edje_object_part_text_set(mod->o_edje, "songs.counter.label", label);
+}
+
+static void
 _class_event_menu_view(enna_input event)
 {
     switch (event)
@@ -133,6 +155,8 @@ _class_event_menu_view(enna_input event)
 static void
 _class_event_browser_view(enna_input event)
 {
+    if (event == ENNA_INPUT_EXIT)
+        update_songs_counter(NULL);
     enna_browser_input_feed(mod->o_browser, event);
 }
 
@@ -298,7 +322,6 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
     _create_menu();
 }
 
-
 static void
 _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 {
@@ -312,6 +335,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
     if (ev->file->is_directory)
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
+        update_songs_counter (ev->files);
     }
     else
     {
