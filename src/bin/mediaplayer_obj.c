@@ -128,8 +128,6 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
     metadata_set_text (sd->album, metadata, "album", 0);
     metadata_set_text (sd->artist, metadata, "author", 0);
 
-    printf("Meta set\n");
-
     cover = enna_metadata_meta_get (metadata, "cover", 1);
     if (cover)
     {
