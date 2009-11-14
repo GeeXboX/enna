@@ -1,6 +1,7 @@
 images {
    image: "browser_cover_bg.png" COMP;
    image: "filebrowser_tile.png" COMP;
+   image: "vertical_gradient.png" COMP;
 }
  group {
     name: "activity/video";
@@ -25,38 +26,41 @@ images {
     }
 
     parts {
-       part {
-          name: "module.clip";
-          type: RECT;
-          description {
-             state: "default" 0.0;
-             color: 0 0 0 0;
-             visible: 0;
-          }
-          description {
-             state: "show" 0.0;
-             color : 255 255 255 255;
-             visible: 1;
-          }
-       }
+      part {
+         name: "module.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+            rel1.relative: 1 0;
+            rel2.relative: 2 1;
+            visible: 0;
+         }
+         description {
+            state: "show" 0.0;
+            color : 255 255 255 255;
+            visible: 1;
+         }
+      }
 
       part {
-          name: "content.clip";
-          type: RECT;
-          clip_to: "module.clip";
-           description {
-             state: "default" 0.0;
-             color: 255 255 255 0;
-             rel1 {relative: 0  1;to: "module.clip";}
-             rel2 {relative: 1 0;to: "module.clip";}
-          }
-          description {
-             state: "show" 0.0;
-             color: 255 255 255 255;
-             rel1 {relative: 0 0;to: "module.clip";}
-             rel2 {relative: 1 1;to: "module.clip";}
-          }
-       }
+         name: "content.clip";
+         type: RECT;
+         clip_to: "module.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            rel1.to: module.clip;
+            rel2.to: module.clip;
+            visible: 0;
+         }
+         description {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+         }
+      }
 
        /* movie backdrop */
        part {
@@ -71,27 +75,25 @@ images {
           }
        }
 
-      /* background */
-      part {
-         name: "background";
-         mouse_events:  0;
-         clip_to: "content.clip";
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 180;
-
-            rel1.relative: 0.01 0.02;
-            rel1.to: "content.clip";
-
-            rel2.relative: 0.99 0.98;
-            rel2.to: "content.clip";
-
-            image {
-               normal: "black_frame.png";
-               border: 8 8 8 8;
-            }
-         }
-      }
+       /* background */
+       part {
+          name: "background";
+          mouse_events:  0;
+          description {
+             state: "default" 0.0;
+             color: 255 255 255 0;
+             visible: 1;
+             image {
+                normal: "vertical_gradient.png";
+             }
+          }
+          description {
+             state: "show" 0.0;
+             inherit: "default" 0.0;
+             color: 255 255 255 255;
+             visible: 1;
+          }
+       }
 
       /* Separator beetween browser and infos */
       part {
@@ -103,9 +105,9 @@ images {
             color: 255 255 255 80;
             rel1.relative: 0.5 0.0;
             rel1.offset: -1 0;
-            rel1.to: "background";
+            rel1.to: "content.clip";
             rel2.relative: 0.5 1.0;
-            rel2.to: "background";
+            rel2.to: "content.clip";
             image.normal: "separator_v.png";
          }
       }
@@ -122,11 +124,11 @@ images {
             color: 255 255 255 255;
 
             rel1.relative: 0.51 0.05;
-            rel1.to: "background";
+            rel1.to: "content.clip";
 
             rel2.relative: 1.0 0.99;
             rel2.offset: 0 -50;
-            rel2.to: "background";
+            rel2.to: "content.clip";
          }
       }
 
@@ -157,11 +159,11 @@ images {
             visible: 1;
 
             rel1.relative: 0.75 1.00;
-            rel1.to: "background";
+            rel1.to: "content.clip";
 
             rel2.relative: 0.99 1.00;
             rel2.offset: 0 -50;
-            rel2.to: "background";
+            rel2.to: "content.clip";
 
             color3: 0 0 0 64;
             text {
@@ -185,10 +187,10 @@ images {
             color: 255 255 255 255;
 
             rel1.relative: 0.00 0.05;
-            rel1.to: "background";
+            rel1.to: "content.clip";
 
             rel2.relative: 0.50 1.00;
-            rel2.to: "background";
+            rel2.to: "content.clip";
          }
       }
 
@@ -221,6 +223,7 @@ images {
       part {
          name: "snapshot.shadow";
          mouse_events: 0;
+         clip_to: infos.clip;
          description {
             state: "default" 0.0;
             visible: 1;
@@ -239,6 +242,7 @@ images {
          name: "snapshot.bg";
          type: RECT;
          mouse_events: 0;
+         clip_to: infos.clip;
          description {
             state: "default" 0.0;
             visible: 1;
@@ -511,6 +515,7 @@ images {
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
           target: "module.clip";
+          target: "background";
        }
        program {
           name: "module,hide";
@@ -519,6 +524,7 @@ images {
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
           target: "module.clip";
+          target: "background";
        }
        program {
           name: "content,show";
