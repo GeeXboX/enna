@@ -63,14 +63,14 @@ group {
             rel1 {
                to: "cover.swallow";
                relative: 0.0 0.0;
-               offset: -1 -1;
+               offset: -1  -1;
             }
             rel2 {
                to: "cover.swallow";
                relative: 1.0 1.0;
-               offset: 1 1;
+               offset: 0 0;
             }
-            color: 0 0 0 64;
+            color: 255 255 255 64;
          }
       }
       part {
