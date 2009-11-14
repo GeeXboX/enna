@@ -112,6 +112,36 @@ group {
          }
       }
 
+      /* songs counter */
+      part {
+         name: "songs.counter.label";
+         clip_to: content.clip;
+         type: TEXT;
+         effect: SOFT_SHADOW;
+         mouse_events: 0;
+         scale: 1;
+
+         description {
+            state: "default" 0.0;
+            color: 224 224 224 200;
+            visible: 1;
+
+            rel1.relative: 0.75 1.00;
+            rel1.to: "background";
+
+            rel2.relative: 0.99 1.00;
+            rel2.offset: 0 -50;
+            rel2.to: "background";
+
+            color3: 0 0 0 64;
+            text {
+                font: "content";
+                size: 16;
+                min: 1 1;
+                align: 1 1;
+             }
+          }
+       }
 
       /* Mediaplayer */
       part {
