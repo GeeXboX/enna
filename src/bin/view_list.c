@@ -103,8 +103,10 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
         ic = elm_icon_add(obj);
         if (item->icon && item->icon[0] == '/')
             elm_icon_file_set(ic, item->icon, NULL);
-        else
+        else if (item->icon)
             elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+        else
+            return NULL;
         evas_object_size_hint_min_set(ic, 32, 32);
         evas_object_show(ic);
         return ic;
@@ -121,7 +123,7 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
             elm_icon_file_set(ic, item->icon, NULL);
         else
             elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
-        evas_object_size_hint_min_set(ic, 32, 32);
+        evas_object_size_hint_min_set(ic, 24, 24);
         evas_object_show(ic);
         return ic;
     }
