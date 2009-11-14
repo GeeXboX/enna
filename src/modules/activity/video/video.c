@@ -679,7 +679,7 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 
     categories = enna_metadata_meta_get (m, "category", 5);
     edje_object_part_text_set (mod->o_edje, "title.label", label);
-    edje_object_part_text_set (mod->o_edje, "text.category",
+    edje_object_part_text_set (mod->o_edje, "genre.label",
                                categories ? categories : "");
 
     backdrop_show (m);
@@ -763,7 +763,7 @@ _create_menu (void)
     edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
     edje_object_signal_emit(mod->o_edje, "infos,flags,hide", "enna");
     edje_object_part_text_set (mod->o_edje, "title.label", "");
-    edje_object_part_text_set (mod->o_edje, "text.category", "");
+    edje_object_part_text_set (mod->o_edje, "genre.label", "");
     panel_infos_display (0);
     popup_resume_display (0);
     enna_backdrop_set (mod->o_backdrop, NULL, 0);

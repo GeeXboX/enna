@@ -271,29 +271,32 @@ images {
          }
       }
 
-       part {
-          name:          "text.category";
-          type:          TEXT;
-          effect:        SOFT_SHADOW;
-          mouse_events:  0;
-          scale: 1;
-          clip_to: module.clip;
-          description {
-             state: "default" 0.0;
-             visible: 1;
-             rel1.relative: 0.0 1.0;
-             rel1.offset: 0 -64;
-             rel2.relative: 1.0 1.0;
-             color: 224 224 224 200;
-             color3: 0 0 0 64;
-             text {
-                font:     "content";
-                size:     16;
-                min:      1 1;
-                align:    0.5 1;
-             }
-          }
-       }
+      part {
+         name: "genre.label";
+         type: TEXT;
+         effect: SOFT_SHADOW;
+         mouse_events: 0;
+         scale: 1;
+         clip_to: module.clip;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+
+            rel1.relative: 0.05 0.52;
+            rel1.to: "infos.clip";
+            rel2.relative: 0.95 0.55;
+            rel2.to: "infos.clip";
+
+            color: 255 255 255 255;
+            color3: 0 0 0 64;
+            text {
+               font: "content";
+               size: 16;
+               min: 1 1;
+               align: 0.5 1;
+            }
+         }
+      }
 
        part {
           name: "mediaplayer.swallow";
