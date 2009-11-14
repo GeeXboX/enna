@@ -197,39 +197,39 @@ enna_config_value_store(void *var, char *section,
     {
         switch (type)
         {
-            case ENNA_CONFIG_INT:
-            {
-                int *value = var;
-                *value = atoi(pair->value);
-                break;
-            }
-            case ENNA_CONFIG_STRING:
-            {
-                char **value = var;
-                *value = strdup(pair->value);
-                break;
-            }
-            case ENNA_CONFIG_STRING_LIST:
-            {
-                Eina_List *list;
-                Eina_List **value = var;
-                char **clist;
-                char *string;
-                int i;
+        case ENNA_CONFIG_INT:
+        {
+            int *value = var;
+            *value = atoi(pair->value);
+            break;
+        }
+        case ENNA_CONFIG_STRING:
+        {
+            char **value = var;
+            *value = strdup(pair->value);
+            break;
+        }
+        case ENNA_CONFIG_STRING_LIST:
+        {
+            Eina_List *list;
+            Eina_List **value = var;
+            char **clist;
+            char *string;
+            int i;
 
-                list = NULL;
-                clist = ecore_str_split(pair->value, ",", 0);
+            list = NULL;
+            clist = ecore_str_split(pair->value, ",", 0);
 
-                for (i = 0; (string = clist[i]); i++)
-                {
-                    if (!string)
-                        break;
-                    list = eina_list_append(list, string);
-                }
-                *value = list;
+            for (i = 0; (string = clist[i]); i++)
+            {
+                if (!string)
+                    break;
+                list = eina_list_append(list, string);
             }
-            default:
-                break;
+            *value = list;
+        }
+        default:
+            break;
         }
     }
 }
