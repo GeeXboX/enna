@@ -194,7 +194,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
-    elm_label_label_set(lb, "Title");
+    elm_label_label_set(lb, "");
     elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->title = lb;
@@ -202,7 +202,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
-    elm_label_label_set(lb, "Album");
+    elm_label_label_set(lb, "");
     elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->album = lb;
@@ -210,7 +210,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
-    elm_label_label_set(lb, "Artist");
+    elm_label_label_set(lb, "");
     elm_box_pack_end(bx, lb);
     evas_object_show(lb);
     sd->artist = lb;
