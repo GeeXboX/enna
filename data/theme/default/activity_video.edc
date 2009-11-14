@@ -206,10 +206,10 @@ images {
             rel1.to: "infos.clip";
             rel2.relative: 1.0 0.05;
             rel2.to: "infos.clip";
-            color: 224 224 224 200;
+            color: 255 255 255 255;
             color3: 0 0 0 64;
             text {
-               font: "content";
+               font: "content_bd";
                size: 26;
                min: 1 1;
                align: 0.5 1;
