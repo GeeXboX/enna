@@ -103,13 +103,11 @@ metadata_set_text(Evas_Object *obj,
     char tmp[4096];
 
     str = enna_metadata_meta_get(m, name, 1);
-    if (!str)
-        return;
 
-    if(bold)
+    if(bold && str)
         snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
     else
-        snprintf(tmp, sizeof(tmp), "%s", enna_util_str_chomp(str));
+        snprintf(tmp, sizeof(tmp), "%s", str ? enna_util_str_chomp(str) : "");
 
     elm_label_label_set(obj, tmp);
     ENNA_FREE(str);
