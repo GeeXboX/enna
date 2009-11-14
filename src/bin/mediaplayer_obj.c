@@ -103,6 +103,8 @@ metadata_set_text(Evas_Object *obj,
     char tmp[4096];
 
     str = enna_metadata_meta_get(m, name, 1);
+    if (!str)
+        return;
 
     if(bold)
         snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
