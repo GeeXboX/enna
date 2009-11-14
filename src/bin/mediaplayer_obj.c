@@ -58,7 +58,8 @@ struct _Smart_Data
 /* local subsystem globals */
 static Enna_Playlist *_enna_playlist;
 
-static void _seek_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_seek_cb(void *data, Evas_Object *obj, void *event_info)
 {
     double value;
 
@@ -66,8 +67,9 @@ static void _seek_cb(void *data, Evas_Object *obj, void *event_info)
     enna_mediaplayer_seek(value / 100.0);
 }
 
-void enna_smart_player_position_set(Evas_Object *obj, double pos,
-        double len, double percent)
+void
+enna_smart_player_position_set(Evas_Object *obj,
+                               double pos, double len, double percent)
 {
     Smart_Data *sd;
 
@@ -93,9 +95,9 @@ void enna_smart_player_position_set(Evas_Object *obj, double pos,
     elm_slider_value_set(sd->sl, pos/len * 100.0);
 }
 
-static void metadata_set_text(Evas_Object *obj, Enna_Metadata *m,
-                              const char *name,
-                              int bold)
+static void
+metadata_set_text(Evas_Object *obj,
+                  Enna_Metadata *m, const char *name, int bold)
 {
     char *str;
     char tmp[4096];
@@ -111,8 +113,8 @@ static void metadata_set_text(Evas_Object *obj, Enna_Metadata *m,
     ENNA_FREE(str);
 }
 
-void enna_smart_player_metadata_set(Evas_Object *obj,
-                                    Enna_Metadata *metadata)
+void
+enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
     Smart_Data *sd;
     char *cover;

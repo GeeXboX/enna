@@ -76,7 +76,9 @@ enna_input_event_emit(enna_input in)
 }
 
 Input_Listener *
-enna_input_listener_add(const char *name, Eina_Bool(*func)(void *data, enna_input event), void *data)
+enna_input_listener_add(const char *name,
+                        Eina_Bool(*func)(void *data, enna_input event),
+                        void *data)
 {
     Input_Listener *il;
 

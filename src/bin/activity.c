@@ -36,7 +36,8 @@
 
 static Eina_List *_enna_activities = NULL;
 
-static int _sort_cb(const void *d1, const void *d2)
+static int
+_sort_cb(const void *d1, const void *d2)
 {
     const Enna_Class_Activity *act1 = d1;
     const Enna_Class_Activity *act2 = d2;
@@ -54,7 +55,8 @@ static int _sort_cb(const void *d1, const void *d2)
  * @param em enna module
  * @return -1 if error occurs, 0 otherwise
  */
-int enna_activity_add(Enna_Class_Activity *class)
+int
+enna_activity_add(Enna_Class_Activity *class)
 {
     if (!class)
         return -1;
@@ -71,7 +73,8 @@ int enna_activity_add(Enna_Class_Activity *class)
     return 0;
 }
 
-static Enna_Class_Activity * enna_get_activity(const char *name)
+static Enna_Class_Activity *
+enna_get_activity(const char *name)
 {
     Eina_List *l;
     Enna_Class_Activity *act;
@@ -97,7 +100,8 @@ static Enna_Class_Activity * enna_get_activity(const char *name)
  * @param em enna module
  * @return -1 if error occurs, 0 otherwise
  */
-int enna_activity_del(const char *name)
+int
+enna_activity_del(const char *name)
 {
     Enna_Class_Activity *act;
 
@@ -118,7 +122,8 @@ int enna_activity_del(const char *name)
  * @brief Unregister all existing activities
  * @return -1 if error occurs, 0 otherwise
  */
-void enna_activity_del_all (void)
+void
+enna_activity_del_all (void)
 {
     Eina_List *l;
 
@@ -140,7 +145,8 @@ enna_activities_get(void)
 }
 
 #define ACTIVITY_FUNC(func, ...) \
-int enna_activity_##func(const char *name) \
+int \
+enna_activity_##func(const char *name) \
 { \
     Enna_Class_Activity *act; \
     \
@@ -158,7 +164,8 @@ ACTIVITY_FUNC(shutdown, 0);
 ACTIVITY_FUNC(show, 0);
 ACTIVITY_FUNC(hide, 0);
 
-int enna_activity_event(Enna_Class_Activity *act, enna_input event)
+int
+enna_activity_event(Enna_Class_Activity *act, enna_input event)
 {
     if (!act)
         return -1;
@@ -167,7 +174,8 @@ int enna_activity_event(Enna_Class_Activity *act, enna_input event)
     return 0;
 }
 
-const char *enna_activity_request_quit_all(void)
+const char *
+enna_activity_request_quit_all(void)
 {
     Eina_List *l;
     buffer_t *msg;

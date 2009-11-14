@@ -95,8 +95,9 @@ enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
     evas_object_show (o);
 }
 
-void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func_activated) (void *data), void *data)
+void
+enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+                            void (*func_activated) (void *data), void *data)
 {
     Evas_Object *o, *o_pict;
     Smart_Item *si;
@@ -180,7 +181,8 @@ enna_view_cover_input_feed(Evas_Object *obj, enna_input event)
     return ENNA_EVENT_CONTINUE;
 }
 
-void enna_view_cover_select_nth(Evas_Object *obj, int nth)
+void
+enna_view_cover_select_nth(Evas_Object *obj, int nth)
 {
     Smart_Item *si;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
@@ -192,7 +194,8 @@ void enna_view_cover_select_nth(Evas_Object *obj, int nth)
     _smart_item_select(sd, si);
 }
 
-Eina_List* enna_view_cover_files_get(Evas_Object* obj)
+Eina_List *
+enna_view_cover_files_get(Evas_Object* obj)
 {
     Eina_List *files = NULL;
     Eina_List *l;
@@ -205,7 +208,8 @@ Eina_List* enna_view_cover_files_get(Evas_Object* obj)
     return files;
 }
 
-void *enna_view_cover_selected_data_get(Evas_Object *obj)
+void *
+enna_view_cover_selected_data_get(Evas_Object *obj)
 {
     Smart_Item *si;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
@@ -214,7 +218,8 @@ void *enna_view_cover_selected_data_get(Evas_Object *obj)
     return si ? si->data : NULL;
 }
 
-int enna_view_cover_jump_label(Evas_Object *obj, const char *label)
+int
+enna_view_cover_jump_label(Evas_Object *obj, const char *label)
 {
     Smart_Data *sd;
     Smart_Item *it = NULL;
@@ -238,7 +243,8 @@ int enna_view_cover_jump_label(Evas_Object *obj, const char *label)
     return -1;
 }
 
-void enna_view_cover_jump_ascii(Evas_Object *obj, char k)
+void
+enna_view_cover_jump_ascii(Evas_Object *obj, char k)
 {
     Smart_Item *it;
     Eina_List *l;
@@ -256,7 +262,8 @@ void enna_view_cover_jump_ascii(Evas_Object *obj, char k)
     }
 }
 
-static void enna_view_cover_item_remove(Evas_Object *obj, Smart_Item *item)
+static void
+enna_view_cover_item_remove(Evas_Object *obj, Smart_Item *item)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
@@ -274,7 +281,8 @@ static void enna_view_cover_item_remove(Evas_Object *obj, Smart_Item *item)
 }
 
 
-void enna_view_cover_clear(Evas_Object *obj)
+void
+enna_view_cover_clear(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     Smart_Item *item;
@@ -287,7 +295,8 @@ void enna_view_cover_clear(Evas_Object *obj)
 }
 
 /* local subsystem globals */
-static void _view_cover_select(Evas_Object *obj, int pos)
+static void
+_view_cover_select(Evas_Object *obj, int pos)
 {
     Smart_Data *sd;
     Smart_Item *si, *ssi;
@@ -326,7 +335,8 @@ static void _view_cover_select(Evas_Object *obj, int pos)
 
 }
 
-static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth)
+static Smart_Item *
+_smart_selected_item_get(Smart_Data *sd, int *nth)
 {
     Eina_List *l;
     Smart_Item *si;
@@ -345,7 +355,8 @@ static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth)
     return NULL;
 }
 
-static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si)
+static void
+_smart_item_unselect(Smart_Data *sd, Smart_Item *si)
 {
     if (!si || !si->selected) return;
 
@@ -355,7 +366,8 @@ static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si)
 
 }
 
-static void _smart_item_select(Smart_Data *sd, Smart_Item *si)
+static void
+_smart_item_select(Smart_Data *sd, Smart_Item *si)
 {
     if (si->selected) return;
 
@@ -366,8 +378,9 @@ static void _smart_item_select(Smart_Data *sd, Smart_Item *si)
 
 }
 
-static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info)
+static void
+_smart_event_mouse_down(void *data, Evas *evas,
+                        Evas_Object *obj, void *event_info)
 {
     Smart_Item *si = data;
     Smart_Item *spi;
@@ -416,7 +429,8 @@ _custom_resize(void *data, Evas *a, Evas_Object *obj, void *event_info)
 }
 
 /* externally accessible functions */
-Evas_Object * enna_view_cover_add(Evas * evas, int horizontal)
+Evas_Object *
+enna_view_cover_add(Evas * evas, int horizontal)
 {
 
     Evas_Object *obj;

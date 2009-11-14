@@ -364,4 +364,3 @@ _thumb_generate(E_Thumb *eth)
     /* send back path to thumb */
     ecore_ipc_server_send(_ipc_server, 5, 2, eth->objid, 0, 0, buf, strlen(buf) + 1);
 }
-

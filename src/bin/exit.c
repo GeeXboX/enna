@@ -209,7 +209,8 @@ enna_exit_hide(Evas_Object *obj)
     edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,hide", "enna");
 }
 
-void enna_exit_update_text(Evas_Object *obj)
+void
+enna_exit_update_text(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 

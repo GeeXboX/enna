@@ -55,7 +55,8 @@ struct _Smart_Data
 };
 
 
-void _item_activated(void *data, Evas_Object *obj, void *event_info)
+void
+_item_activated(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
     Elm_Genlist_Item *item = event_info;
@@ -153,7 +154,8 @@ static Elm_Genlist_Item_Class itc_list = {
 };
 
 
-static void _smart_select_item(Smart_Data *sd, int n)
+static void
+_smart_select_item(Smart_Data *sd, int n)
 {
     List_Item *it;
 
@@ -165,7 +167,8 @@ static void _smart_select_item(Smart_Data *sd, int n)
     evas_object_smart_callback_call(sd->obj, "hilight", it->data);
 }
 
-static void list_set_item(Smart_Data *sd, int start, int up, int step)
+static void
+list_set_item(Smart_Data *sd, int start, int up, int step)
 {
     int n, ns;
 
@@ -203,7 +206,9 @@ enna_list_add(Evas *evas)
     return obj;
 }
 
-void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func_activated) (void *data),  void *data)
+void
+enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+                      void (*func_activated) (void *data),  void *data)
 {
     Smart_Data *sd;
     List_Item *it;
@@ -221,13 +226,15 @@ void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file, void (*func_ac
     sd->items = eina_list_append(sd->items, it);
 }
 
-void enna_list_select_nth(Evas_Object *obj, int nth)
+void
+enna_list_select_nth(Evas_Object *obj, int nth)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     _smart_select_item(sd, nth);
 }
 
-Eina_List* enna_list_files_get(Evas_Object* obj)
+Eina_List *
+enna_list_files_get(Evas_Object* obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     Eina_List *files = NULL;
@@ -240,7 +247,8 @@ Eina_List* enna_list_files_get(Evas_Object* obj)
     return files;
 }
 
-int enna_list_jump_label(Evas_Object *obj, const char *label)
+int
+enna_list_jump_label(Evas_Object *obj, const char *label)
 {
     List_Item *it = NULL;
     Eina_List *l;
@@ -263,7 +271,8 @@ int enna_list_jump_label(Evas_Object *obj, const char *label)
     return -1;
 }
 
-int enna_list_selected_get(Evas_Object *obj)
+int
+enna_list_selected_get(Evas_Object *obj)
 {
     Eina_List *l;
     List_Item *it;
@@ -282,7 +291,8 @@ int enna_list_selected_get(Evas_Object *obj)
     return -1;
 }
 
-void *enna_list_selected_data_get(Evas_Object *obj)
+void *
+enna_list_selected_data_get(Evas_Object *obj)
 {
     Eina_List *l;
     List_Item *it;
@@ -300,7 +310,8 @@ void *enna_list_selected_data_get(Evas_Object *obj)
     return NULL;
 }
 
-void enna_list_jump_ascii(Evas_Object *obj, char k)
+void
+enna_list_jump_ascii(Evas_Object *obj, char k)
 {
     List_Item *it;
     Eina_List *l;

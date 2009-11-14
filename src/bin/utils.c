@@ -50,7 +50,8 @@ static svdrp_t *svdrp = NULL;
 
 static char *mylocale = NULL;
 
-char * enna_util_user_home_get()
+char *
+enna_util_user_home_get()
 {
     static char *home = NULL;
 
@@ -63,7 +64,8 @@ char * enna_util_user_home_get()
     return home;
 }
 
-int enna_util_has_suffix(char *str, Eina_List * patterns)
+int
+enna_util_has_suffix(char *str, Eina_List * patterns)
 {
     Eina_List *l;
     int result = 0;
@@ -85,7 +87,8 @@ int enna_util_has_suffix(char *str, Eina_List * patterns)
     return result;
 }
 
-unsigned char enna_util_uri_has_extension(const char *uri, int type)
+unsigned char
+enna_util_uri_has_extension(const char *uri, int type)
 {
 
     Eina_List *l;
@@ -112,7 +115,8 @@ unsigned char enna_util_uri_has_extension(const char *uri, int type)
 
 }
 
-unsigned int enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h)
+unsigned int
+enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h)
 {
     float size = 12;
 
@@ -320,26 +324,30 @@ char *get_lang (void)
 }
 
 #ifdef BUILD_LIBSVDRP
-svdrp_t *enna_svdrp_init (char* host, int port, int timeout, svdrp_verbosity_level_t verbosity)
+svdrp_t *
+enna_svdrp_init (char* host, int port, int timeout, svdrp_verbosity_level_t verbosity)
 {
     svdrp = svdrp_open (host, port, timeout, verbosity);
 
     return svdrp;
 }
 
-void enna_svdrp_uninit (void)
+void
+enna_svdrp_uninit (void)
 {
     svdrp_close (svdrp);
     svdrp = NULL;
 }
 
-svdrp_t *enna_svdrp_get (void)
+svdrp_t *
+enna_svdrp_get (void)
 {
     return svdrp;
 }
 #endif
 
-void enna_util_env_set(const char *var, const char *val)
+void
+enna_util_env_set(const char *var, const char *val)
 {
     if (val)
         setenv(var, val, 1);
@@ -351,7 +359,8 @@ void enna_util_env_set(const char *var, const char *val)
 /**
  * Remove Trailing spaces from str
  */
-char *enna_util_str_chomp(char *str)
+char *
+enna_util_str_chomp(char *str)
 {
     char *c;
 

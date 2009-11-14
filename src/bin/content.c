@@ -118,7 +118,8 @@ enna_content_select(const char *name)
 
 /* local subsystem functions */
 
-static void enna_content_update(int show)
+static void
+enna_content_update(int show)
 {
     Eina_List *l;
 
@@ -140,12 +141,14 @@ static void enna_content_update(int show)
     }
 }
 
-void enna_content_hide(void)
+void
+enna_content_hide(void)
 {
    enna_content_update(0);
 }
 
-void enna_content_show(void)
+void
+enna_content_show(void)
 {
    enna_content_update(1);
 }

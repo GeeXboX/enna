@@ -48,7 +48,8 @@
 static FILE *fp = NULL;
 static int refcount = 0;
 
-int enna_log_init(const char *filename)
+int
+enna_log_init(const char *filename)
 {
 
     if (refcount > 1)
@@ -65,8 +66,9 @@ int enna_log_init(const char *filename)
     return 1;
 }
 
-void enna_log_print(int level, const char *module, char *file, int line,
-          const char *format, ...)
+void
+enna_log_print(int level, const char *module,
+               char *file, int line, const char *format, ...)
 {
     FILE *f;
     static const char const *c[] =
@@ -129,7 +131,8 @@ void enna_log_print(int level, const char *module, char *file, int line,
     va_end (va);
 }
 
-void enna_log_shutdown(void)
+void
+enna_log_shutdown(void)
 {
     if (fp)
     {

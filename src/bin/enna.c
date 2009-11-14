@@ -69,7 +69,8 @@ static int run_fullscreen = 0;
 static int _create_gui(void);
 
 /* Callbacks */
-static int _idle_timer_cb(void *data)
+static int
+_idle_timer_cb(void *data)
 {
     if (enna_mediaplayer_state_get() == PLAYING)
     {
@@ -105,7 +106,8 @@ static int _idle_timer_cb(void *data)
     return ECORE_CALLBACK_RENEW;
 }
 
-static int _mouse_idle_timer_cb(void *data)
+static int
+_mouse_idle_timer_cb(void *data)
 {
     Evas_Object *cursor = (Evas_Object*)data;
     edje_object_signal_emit(cursor, "cursor,hide", "enna");
@@ -115,7 +117,8 @@ static int _mouse_idle_timer_cb(void *data)
     return ECORE_CALLBACK_CANCEL;
 }
 
-void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+void
+_mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     if (!enna->cursor_is_shown)
     {
@@ -135,12 +138,14 @@ void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
                                                  obj);
 }
 
-static void _window_delete_cb(void *data, Evas_Object *obj, void *event_info)
+static void
+_window_delete_cb(void *data, Evas_Object *obj, void *event_info)
 {
     ecore_main_loop_quit();
 }
 
-static void _list_engines(void)
+static void
+_list_engines(void)
 {
     Eina_List  *lst;
     Eina_List  *n;
@@ -174,7 +179,8 @@ static const struct {
     { NULL,         0                 }
 };
 
-static int _enna_init(void)
+static int
+_enna_init(void)
 {
     char tmp[PATH_MAX];
     int i;
@@ -239,7 +245,8 @@ static int _enna_init(void)
     return 1;
 }
 
-static int _create_gui(void)
+static int
+_create_gui(void)
 {
     // set custom elementary theme
     elm_theme_extension_add(enna_config_theme_get());
@@ -302,7 +309,8 @@ static int _create_gui(void)
     return 1;
 }
 
-static void _enna_shutdown(void)
+static void
+_enna_shutdown(void)
 {
     ENNA_TIMER_DEL(enna->idle_timer);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
@@ -323,8 +331,9 @@ static void _enna_shutdown(void)
     ENNA_FREE(enna);
 }
 
-static void _opt_geometry_parse(const char *optarg,
-                                unsigned int *pw, unsigned int *ph)
+static void
+_opt_geometry_parse(const char *optarg,
+                     unsigned int *pw, unsigned int *ph)
 {
     int w = 0, h = 0;
 
@@ -335,7 +344,8 @@ static void _opt_geometry_parse(const char *optarg,
     if (ph) *ph = h;
 }
 
-void enna_idle_timer_renew(void)
+void
+enna_idle_timer_renew(void)
 {
     if (enna_config->idle_timeout)
     {
@@ -357,7 +367,8 @@ void enna_idle_timer_renew(void)
     }
 }
 
-static int exit_signal(void *data, int type, void *e)
+static int
+exit_signal(void *data, int type, void *e)
 {
     Ecore_Event_Signal_Exit *event = e;
 
@@ -370,7 +381,8 @@ static int exit_signal(void *data, int type, void *e)
 }
 
 
-static void usage(char *binname)
+static void
+usage(char *binname)
 {
     printf(_("Enna MediaCenter\n"));
     printf(_(" Usage: %s [options ...]\n"), binname);
@@ -384,7 +396,8 @@ static void usage(char *binname)
     exit(EXIT_SUCCESS);
 }
 
-static int parse_command_line(int argc, char **argv)
+static int
+parse_command_line(int argc, char **argv)
 {
     int c, index;
     char short_options[] = "Vhfc:t:b:g:";
@@ -444,7 +457,8 @@ static int parse_command_line(int argc, char **argv)
     return 0;
 }
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
     init_locale();
 
@@ -473,4 +487,3 @@ int main(int argc, char **argv)
     enna_log_shutdown();
     return EXIT_SUCCESS;
 }
-

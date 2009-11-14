@@ -101,7 +101,8 @@ static Evas_Smart *_smart = NULL;
 
 
 static
-void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi, Evas_Coord w, Evas_Coord h)
+void _wall_add_pict_to_wall(Smart_Data *sd, Picture_Item *pi,
+                            Evas_Coord w, Evas_Coord h)
 {
     Evas_Coord ow, oh;
     int row, w0, w1, w2, h0, h1, h2;
@@ -201,8 +202,9 @@ void _wall_image_preload_cb (void *data, Evas_Object *obj, void *event_info)
     enna_metadata_meta_free (m);
 }
 
-void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func_activated) (void *data), void *data )
+void
+enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+                      void (*func_activated) (void *data), void *data )
 {
     Evas_Object *o, *o_pict;
 
@@ -300,7 +302,8 @@ enna_wall_input_feed(Evas_Object *obj, enna_input ev)
     return ENNA_EVENT_CONTINUE;
 }
 
-void enna_wall_select_nth(Evas_Object *obj, int col, int row)
+void
+enna_wall_select_nth(Evas_Object *obj, int col, int row)
 {
     Picture_Item *pi;
     Evas_Coord xedje, wedje, xbox, x;
@@ -319,7 +322,8 @@ void enna_wall_select_nth(Evas_Object *obj, int col, int row)
     elm_scroller_region_show(sd->o_scroll, x, 0, 0, 0);
 }
 
-void *enna_wall_selected_data_get(Evas_Object *obj)
+void *
+enna_wall_selected_data_get(Evas_Object *obj)
 {
     Picture_Item *si;
     API_ENTRY return NULL;
@@ -363,7 +367,8 @@ enna_wall_files_get(Evas_Object* obj)
     return files;
 }
 
-int enna_wall_jump_label(Evas_Object *obj, const char *label)
+int
+enna_wall_jump_label(Evas_Object *obj, const char *label)
 {
     Picture_Item *pi = NULL;
     Eina_List *l;
@@ -392,7 +397,8 @@ int enna_wall_jump_label(Evas_Object *obj, const char *label)
     return -1;
 }
 
-void enna_wall_jump_ascii(Evas_Object *obj, char k)
+void
+enna_wall_jump_ascii(Evas_Object *obj, char k)
 {
     Picture_Item *pi;
     Eina_List *l;
@@ -417,7 +423,8 @@ void enna_wall_jump_ascii(Evas_Object *obj, char k)
 }
 
 /* local subsystem globals */
-static void _wall_h_select(Evas_Object *obj, int pos)
+static void
+_wall_h_select(Evas_Object *obj, int pos)
 {
     Picture_Item *pi, *ppi;
     int row, col;
@@ -453,7 +460,8 @@ static void _wall_h_select(Evas_Object *obj, int pos)
     }
 }
 
-static void _wall_v_select(Evas_Object *obj, int pos)
+static void
+_wall_v_select(Evas_Object *obj, int pos)
 {
     Picture_Item *pi, *ppi;
     Eina_List *l;
@@ -505,28 +513,32 @@ static void _wall_v_select(Evas_Object *obj, int pos)
         _smart_item_select(sd, pi);
 }
 
-static void _wall_left_select(Evas_Object *obj)
+static void
+_wall_left_select(Evas_Object *obj)
 {
     _wall_h_select (obj, 0);
 }
 
-static void _wall_right_select(Evas_Object *obj)
+static void
+_wall_right_select(Evas_Object *obj)
 {
     _wall_h_select (obj, 1);
 }
 
-static void _wall_up_select(Evas_Object *obj)
+static void
+_wall_up_select(Evas_Object *obj)
 {
     _wall_v_select (obj, 0);
 }
 
-static void _wall_down_select(Evas_Object *obj)
+static void
+_wall_down_select(Evas_Object *obj)
 {
     _wall_v_select (obj, 1);
 }
 
-static Picture_Item *_smart_selected_item_get(Smart_Data *sd, int *row,
-        int *col)
+static Picture_Item *
+_smart_selected_item_get(Smart_Data *sd, int *row, int *col)
 {
     Eina_List *l;
     int i, j;
@@ -554,7 +566,8 @@ static Picture_Item *_smart_selected_item_get(Smart_Data *sd, int *row,
     return NULL;
 }
 
-static void _smart_item_unselect(Smart_Data *sd, Picture_Item *pi)
+static void
+_smart_item_unselect(Smart_Data *sd, Picture_Item *pi)
 {
     if (!pi || !sd)
         return;
@@ -563,7 +576,8 @@ static void _smart_item_unselect(Smart_Data *sd, Picture_Item *pi)
 
 }
 
-static void _smart_item_select(Smart_Data *sd, Picture_Item *pi)
+static void
+_smart_item_select(Smart_Data *sd, Picture_Item *pi)
 {
     if (!pi || !sd)
         return;
@@ -578,8 +592,9 @@ static void _smart_item_select(Smart_Data *sd, Picture_Item *pi)
     evas_object_smart_callback_call (sd->obj, "hilight",pi->data);
 }
 
-static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info)
+static void
+_smart_event_mouse_down(void *data, Evas *evas,
+                        Evas_Object *obj, void *event_info)
 {
     Picture_Item *pi, *ppi;
     int col, row;
@@ -608,7 +623,8 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 
 }
 
-static void _smart_reconfigure(Smart_Data * sd)
+static void
+_smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
     Evas_Coord oh = 0;
@@ -649,7 +665,8 @@ static void _smart_reconfigure(Smart_Data * sd)
     evas_object_resize(sd->o_scroll, sd->w, sd->h);
 }
 
-static void _smart_add(Evas_Object * obj)
+static void
+_smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
     int i;
@@ -686,7 +703,8 @@ static void _smart_add(Evas_Object * obj)
     evas_object_smart_data_set(obj, sd);
 }
 
-static void _smart_del(Evas_Object * obj)
+static void
+_smart_del(Evas_Object * obj)
 {
     int i;
     INTERNAL_ENTRY;
@@ -713,7 +731,8 @@ static void _smart_del(Evas_Object * obj)
     free(sd);
 }
 
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
+static void
+_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
     INTERNAL_ENTRY;
 
@@ -724,7 +743,8 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
     _smart_reconfigure(sd);
 }
 
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
+static void
+_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
     INTERNAL_ENTRY;
 
@@ -735,37 +755,43 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
     _smart_reconfigure(sd);
 }
 
-static void _smart_show(Evas_Object * obj)
+static void
+_smart_show(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     evas_object_show(sd->o_scroll);
 }
 
-static void _smart_hide(Evas_Object * obj)
+static void
+_smart_hide(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     evas_object_hide(sd->o_scroll);
 }
 
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
+static void
+_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
     INTERNAL_ENTRY;
     evas_object_color_set(sd->o_scroll, r, g, b, a);
 }
 
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
+static void
+_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
     INTERNAL_ENTRY;
     evas_object_clip_set(sd->o_scroll, clip);
 }
 
-static void _smart_clip_unset(Evas_Object * obj)
+static void
+_smart_clip_unset(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     evas_object_clip_unset(sd->o_scroll);
 }
 
-static void _smart_init(void)
+static void
+_smart_init(void)
 {
     static const Evas_Smart_Class sc = {
         SMART_NAME,
@@ -788,7 +814,8 @@ static void _smart_init(void)
 }
 
 /* externally accessible functions */
-Evas_Object * enna_wall_add(Evas * evas)
+Evas_Object *
+enna_wall_add(Evas * evas)
 {
     _smart_init();
     return evas_object_smart_add(evas, _smart);

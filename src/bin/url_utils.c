@@ -47,7 +47,8 @@
 
 #define ENNA_MODULE_NAME        "enna"
 
-static size_t url_buffer_get(void *ptr, size_t size, size_t nmemb, void *data)
+static size_t
+url_buffer_get(void *ptr, size_t size, size_t nmemb, void *data)
 {
     size_t realsize = size * nmemb;
     url_data_t *mem = (url_data_t *) data;
@@ -63,7 +64,8 @@ static size_t url_buffer_get(void *ptr, size_t size, size_t nmemb, void *data)
     return realsize;
 }
 
-url_t url_new (void)
+url_t
+url_new (void)
 {
     CURL *curl;
 
@@ -72,14 +74,16 @@ url_t url_new (void)
     return (url_t) curl;
 }
 
-void url_free (url_t url)
+void
+url_free (url_t url)
 {
     if (url)
         curl_easy_cleanup ((CURL *) url);
     curl_global_cleanup ();
 }
 
-url_data_t url_get_data(url_t handler, char *url)
+url_data_t
+url_get_data(url_t handler, char *url)
 {
     url_data_t chunk;
     CURL *curl = (CURL *) handler;
@@ -102,7 +106,8 @@ url_data_t url_get_data(url_t handler, char *url)
     return chunk;
 }
 
-char *url_escape_string(url_t handler, const char *buf)
+char *
+url_escape_string(url_t handler, const char *buf)
 {
     CURL *curl = (CURL *) handler;
 

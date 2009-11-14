@@ -101,7 +101,8 @@ _list_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 
 /***   Privates  ***/
 static void
-_enna_list_item_widget_add(Elm_Genlist_Item *item, const char *icon, const char *label,
+_enna_list_item_widget_add(Elm_Genlist_Item *item,
+                           const char *icon, const char *label,
                            void (*func) (void *data),
                            void *func_data,
                            list_control_type type,
@@ -339,22 +340,25 @@ enna_list2_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 }
 
 void
-enna_list2_item_button_add(Elm_Genlist_Item *item, const char *icon, const char *label,
+enna_list2_item_button_add(Elm_Genlist_Item *item,
+                           const char *icon, const char *label,
                            void (*func) (void *data), void *func_data)
 {
     _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_BUTTON, EINA_FALSE);
 }
 
 void //TODO to finish
-enna_list2_item_toggle_add(Elm_Genlist_Item *item, const char *icon, const char *label,
+enna_list2_item_toggle_add(Elm_Genlist_Item *item,
+                           const char *icon, const char *label,
                            void (*func) (void *data), void *func_data)
 {
     _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_TOGGLE, EINA_FALSE);
 }
 
 void
-enna_list2_item_check_add(Elm_Genlist_Item *item, const char *icon, const char *label,
-                          Eina_Bool status, void (*func) (void *data), void *func_data)
+enna_list2_item_check_add(Elm_Genlist_Item *item,
+                          const char *icon, const char *label, Eina_Bool status,
+                          void (*func) (void *data), void *func_data)
 {
     _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_CHECKBOX, status);
 }
@@ -503,4 +507,3 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
 
     return ENNA_EVENT_CONTINUE;
 }
-

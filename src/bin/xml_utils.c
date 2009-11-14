@@ -46,7 +46,8 @@ get_xml_doc_from_memory (char *buffer)
     return doc;
 }
 
-xmlNode * get_node_xml_tree(xmlNode *root, const char *prop)
+xmlNode *
+get_node_xml_tree(xmlNode *root, const char *prop)
 {
     xmlNode *n, *children_node;
 
@@ -63,7 +64,8 @@ xmlNode * get_node_xml_tree(xmlNode *root, const char *prop)
     return NULL;
 }
 
-xmlChar * get_prop_value_from_xml_tree(xmlNode *root, const char *prop)
+xmlChar *
+get_prop_value_from_xml_tree(xmlNode *root, const char *prop)
 {
     xmlNode *node;
 

@@ -302,6 +302,3 @@ enna_mainmenu_exit_visible(void)
     if (!sd) return 0;
     return sd->exit_visible;
 }
-
-/* local subsystem functions */
-

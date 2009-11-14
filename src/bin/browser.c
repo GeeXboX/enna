@@ -220,7 +220,8 @@ _view_hilight_cb (void *data, Evas_Object *obj, void *event_info)
     evas_object_smart_callback_call (sd->obj, "hilight", ev);
 }
 
-void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
+void
+enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 {
     API_ENTRY return;
 
@@ -264,7 +265,8 @@ void enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
 
 }
 
-void enna_browser_show_file_set(Evas_Object *obj, unsigned char show)
+void
+enna_browser_show_file_set(Evas_Object *obj, unsigned char show)
 {
     API_ENTRY return;
 
@@ -299,7 +301,8 @@ enna_browser_files_get(Evas_Object *obj)
 }
 
 /* local subsystem globals */
-static void _smart_reconfigure(Smart_Data * sd)
+static void
+_smart_reconfigure(Smart_Data * sd)
 {
     Evas_Coord x, y, w, h;
 
@@ -314,7 +317,8 @@ static void _smart_reconfigure(Smart_Data * sd)
 
 /* Class Item interface */
 
-static void _smart_init(void)
+static void
+_smart_init(void)
 {
     if (_smart)
         return;
@@ -339,7 +343,8 @@ static void _smart_init(void)
 
 
 
-static void _smart_add(Evas_Object * obj)
+static void
+_smart_add(Evas_Object * obj)
 {
     Smart_Data *sd;
 
@@ -378,7 +383,8 @@ static void _smart_add(Evas_Object * obj)
     sd->vl = enna_volumes_listener_add("browser", _refresh_browser, _refresh_browser, sd);
 }
 
-static void _smart_del(Evas_Object * obj)
+static void
+_smart_del(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     edje_object_signal_callback_del(elm_layout_edje_get(sd->layout), 
@@ -393,7 +399,8 @@ static void _smart_del(Evas_Object * obj)
     free(sd);
 }
 
-static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
+static void
+_smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
 {
     INTERNAL_ENTRY;
 
@@ -404,7 +411,8 @@ static void _smart_move(Evas_Object * obj, Evas_Coord x, Evas_Coord y)
     _smart_reconfigure(sd);
 }
 
-static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
+static void
+_smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
 {
     INTERNAL_ENTRY;
 
@@ -415,31 +423,36 @@ static void _smart_resize(Evas_Object * obj, Evas_Coord w, Evas_Coord h)
     _smart_reconfigure(sd);
 }
 
-static void _smart_show(Evas_Object * obj)
+static void
+_smart_show(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     evas_object_show(sd->layout);
 }
 
-static void _smart_hide(Evas_Object * obj)
+static void
+_smart_hide(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     evas_object_hide(sd->layout);
 }
 
-static void _smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
+static void
+_smart_color_set(Evas_Object * obj, int r, int g, int b, int a)
 {
     INTERNAL_ENTRY;
     evas_object_color_set(sd->layout, r, g, b, a);
 }
 
-static void _smart_clip_set(Evas_Object * obj, Evas_Object * clip)
+static void
+_smart_clip_set(Evas_Object * obj, Evas_Object * clip)
 {
     INTERNAL_ENTRY;
     evas_object_clip_set(sd->layout, clip);
 }
 
-static void _smart_clip_unset(Evas_Object * obj)
+static void
+_smart_clip_unset(Evas_Object * obj)
 {
     INTERNAL_ENTRY;
     evas_object_clip_unset(sd->layout);
@@ -490,7 +503,8 @@ _list_transition_default_down_end_cb(void *data, Evas_Object *o, const char *sig
                                     _list_transition_default_down_end_cb);
 }
 
-static  void _browse(void *data)
+static void
+_browse(void *data)
 {
     Smart_Data *sd;
     Browse_Data *bd = data;
@@ -563,7 +577,8 @@ static  void _browse(void *data)
     }
 }
 
-static void _browse_down(void *data)
+static void
+_browse_down(void *data)
 {
     Smart_Data *sd = data;
 
@@ -711,7 +726,8 @@ _list_transition_right_end_cb(void *data, Evas_Object *o, const char *sig, const
     _list_transition_core(data, 1);
 }
 
-static int _letter_timer_cb(void *data)
+static int
+_letter_timer_cb(void *data)
 {
     Smart_Data *sd;
 
@@ -725,7 +741,8 @@ static int _letter_timer_cb(void *data)
     return ECORE_CALLBACK_CANCEL;
 }
 
-void enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
+void
+enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
 {
     API_ENTRY return;
 
@@ -744,7 +761,8 @@ void enna_browser_root_set(Evas_Object *obj, Enna_Class_Vfs *vfs)
     }
 }
 
-static void _jump_to_ascii(Smart_Data *sd, char k)
+static void
+_jump_to_ascii(Smart_Data *sd, char k)
 {
     if (!sd) return;
 
@@ -778,7 +796,8 @@ _browser_letter_show(Smart_Data *sd, const char *letter)
     _jump_to_ascii(sd, letter[0]);
 }
 
-void enna_browser_input_feed(Evas_Object *obj, enna_input event)
+void
+enna_browser_input_feed(Evas_Object *obj, enna_input event)
 {
     API_ENTRY return;
 

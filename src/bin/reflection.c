@@ -352,4 +352,3 @@ enna_reflection_add(Evas * evas)
     _enna_reflection_smart_init();
     return evas_object_smart_add(evas, _e_smart);
 }
-

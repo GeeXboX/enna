@@ -51,7 +51,8 @@ static void _config_panel_hide(void *data);
  * @return 1 if Initilisation is done correctly, 0 otherwise or if init is called more then twice
  */
 
-int enna_module_init(void)
+int
+enna_module_init(void)
 {
     Eina_List *mod, *l;
     char *p;
@@ -75,7 +76,8 @@ int enna_module_init(void)
     return 0;
 }
 
-void enna_module_load_all(void)
+void
+enna_module_load_all(void)
 {
     Eina_List *l;
     char *name;
@@ -92,7 +94,8 @@ void enna_module_load_all(void)
 /**
  * @brief Free all modules registered and delete Ecore_Path_Group
  */
-void enna_module_shutdown(void)
+void
+enna_module_shutdown(void)
 {
     Enna_Module *m;
 
@@ -116,7 +119,8 @@ void enna_module_shutdown(void)
     }
 }
 
-int enna_module_enable(Enna_Module *m)
+int
+enna_module_enable(Enna_Module *m)
 {
     if (!m)
         return -1;
@@ -128,7 +132,8 @@ int enna_module_enable(Enna_Module *m)
     return 0;
 }
 
-int enna_module_disable(Enna_Module *m)
+int
+enna_module_disable(Enna_Module *m)
 {
     if (!m)
         return -1;
@@ -216,14 +221,16 @@ _input_events_cb(void *data, enna_input event)
 }
 
 
-void _info_button_cb(void *data)
+void
+_info_button_cb(void *data)
 {
     //~ Enna_Module *m = data;
 
     printf("Info clicked...TODO show module info\n");
 }
 
-void _enable_button_cb(void *data)
+void
+_enable_button_cb(void *data)
 {
     Enna_Module *m = data;
 

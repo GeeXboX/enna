@@ -161,12 +161,14 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
 static Eina_Hash *_config_load_conf_file(char *filename);
 static Eina_Hash *_config_load_conf(char *conffile, int size);
 
-const char * enna_config_theme_get()
+const char *
+enna_config_theme_get()
 {
     return enna_config->theme_file;
 }
 
-const char * enna_config_theme_file_get(const char *s)
+const char *
+enna_config_theme_file_get(const char *s)
 {
     char tmp[4096];
     memset(tmp, 0, sizeof(tmp));
@@ -187,8 +189,9 @@ const char * enna_config_theme_file_get(const char *s)
         return NULL;
 }
 
-void enna_config_value_store(void *var, char *section,
-        ENNA_CONFIG_TYPE type, Config_Pair *pair)
+void
+enna_config_value_store(void *var, char *section,
+                        ENNA_CONFIG_TYPE type, Config_Pair *pair)
 {
     if (!strcmp(pair->key, section))
     {
@@ -240,7 +243,8 @@ enna_config_module_pair_get(const char *module_name)
     return eina_hash_find(hash_config, module_name);
 }
 
-void enna_config_init(const char* conffile)
+void
+enna_config_init(const char* conffile)
 {
     char filename[4096];
 
@@ -272,13 +276,14 @@ void enna_config_init(const char* conffile)
 
 }
 
-void enna_config_shutdown(void)
+void
+enna_config_shutdown(void)
 {
 
 }
 
-static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
-        void *data, void *fdata)
+static Eina_Bool
+_hash_foreach(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 {
     Enna_Config_Data *config_data;
     Eina_List *l;
@@ -318,7 +323,8 @@ static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
     return 1;
 }
 
-static Eina_Hash * _config_load_conf_file(char *filename)
+static Eina_Hash *
+_config_load_conf_file(char *filename)
 {
     int fd;
     FILE *f;
@@ -370,7 +376,8 @@ static Eina_Hash * _config_load_conf_file(char *filename)
     return _config_load_conf(conffile, st.st_size);
 }
 
-static Eina_Hash * _config_load_conf(char *conffile, int size)
+static Eina_Hash *
+_config_load_conf(char *conffile, int size)
 {
     char *current_section = NULL;
     char *current_line = conffile;
