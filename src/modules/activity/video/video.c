@@ -663,7 +663,6 @@ browse (void *data)
                               "resume.swallow", mod->o_resume);
 
     mod->state = BROWSER_VIEW;
-    edje_object_signal_emit(mod->o_edje, "tile,show", "enna");
     edje_object_signal_emit(mod->o_edje, "infos,flags,show", "enna");
 }
 
@@ -680,7 +679,6 @@ _create_menu (void)
 
     /* Create List */
     o = enna_list_add(enna->evas);
-    edje_object_signal_emit(mod->o_edje, "list,right,now", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_VIDEO);
     EINA_LIST_FOREACH(categories, l, cat)
@@ -695,9 +693,7 @@ _create_menu (void)
 
     enna_list_select_nth(o, 0);
     mod->o_list = o;
-    edje_object_part_swallow(mod->o_edje, "list.swallow", o);
-    edje_object_signal_emit(mod->o_edje, "list,default", "enna");
-    edje_object_signal_emit(mod->o_edje, "tile,hide", "enna");
+    edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
     edje_object_signal_emit(mod->o_edje, "infos,flags,hide", "enna");
     edje_object_part_text_set (mod->o_edje, "text.label", "");
     edje_object_part_text_set (mod->o_edje, "text.category", "");
