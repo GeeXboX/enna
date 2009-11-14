@@ -44,14 +44,7 @@
 buffer_t *
 buffer_new (void)
 {
-    buffer_t *buffer = NULL;
-
-    buffer = malloc (sizeof (buffer_t));
-    buffer->buf = NULL;
-    buffer->len = 0;
-    buffer->capacity = 0;
-
-    return buffer;
+    return calloc(1, sizeof (buffer_t));
 }
 
 void
