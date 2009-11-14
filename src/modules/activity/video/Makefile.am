@@ -25,6 +25,8 @@ video.c\
 video.h\
 backdrop.c\
 backdrop.h\
+snapshot.c\
+snapshot.h\
 resume.c\
 resume.h\
 panel_infos.c\

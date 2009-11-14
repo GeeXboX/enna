@@ -51,6 +51,7 @@
 #include "browser.h"
 #include "mediaplayer.h"
 #include "backdrop.h"
+#include "snapshot.h"
 #include "panel_infos.h"
 #include "video.h"
 #include "resume.h"
@@ -90,6 +91,7 @@ struct _Enna_Module_Video
     Evas_Object *o_list;
     Evas_Object *o_browser;
     Evas_Object *o_backdrop;
+    Evas_Object *o_snapshot;
     Evas_Object *o_panel_infos;
     Evas_Object *o_resume;
     Evas_Object *o_flag_video;
@@ -312,6 +314,45 @@ backdrop_show (Enna_Metadata *m)
                               "backdrop.swallow", mod->o_backdrop);
 
     ENNA_FREE (backdrop);
+    ENNA_FREE (file);
+}
+
+/****************************************************************************/
+/*                               Snapshot                                   */
+/****************************************************************************/
+
+static void
+snapshot_show (Enna_Metadata *m)
+{
+    char *file = NULL;
+    int from_vfs = 1;
+    char *snapshot;
+
+    if (!m)
+    {
+        file = strdup("backdrop/default");
+        from_vfs = 0;
+    }
+
+    snapshot = enna_metadata_meta_get(m, "fanart", 1);
+    if (!file && snapshot)
+    {
+        char dst[1024] = { 0 };
+
+        if (*snapshot == '/')
+          snprintf(dst, sizeof(dst), "%s", snapshot);
+        else
+          snprintf(dst, sizeof (dst), "%s/.enna/fanarts/%s",
+                   enna_util_user_home_get(), snapshot);
+        file = strdup (dst);
+    }
+
+    enna_snapshot_set (mod->o_snapshot, file, from_vfs);
+    evas_object_show (mod->o_snapshot);
+    edje_object_part_swallow (mod->o_edje,
+                              "snapshot.swallow", mod->o_snapshot);
+
+    ENNA_FREE (snapshot);
     ENNA_FREE (file);
 }
 
@@ -617,6 +658,7 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
                                categories ? categories : "");
 
     backdrop_show (m);
+    snapshot_show (m);
     infos_flags_set (m);
 
     enna_panel_infos_set_cover(mod->o_panel_infos, m);
@@ -700,6 +742,7 @@ _create_menu (void)
     panel_infos_display (0);
     popup_resume_display (0);
     enna_backdrop_set (mod->o_backdrop, NULL, 0);
+    enna_snapshot_set (mod->o_snapshot, NULL, 0);
 }
 
 static void
@@ -803,6 +846,7 @@ em_init(Enna_Module *em)
     mod->infos_displayed = 0;
     mod->resume_displayed = 0;
     mod->o_backdrop = enna_backdrop_add (enna->evas);
+    mod->o_snapshot = enna_snapshot_add (enna->evas);
     mod->eos_event_handler =
 	ecore_event_handler_add (ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
     enna_activity_add(&class);
@@ -823,6 +867,7 @@ em_shutdown(Enna_Module *em)
     ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_backdrop);
+    ENNA_OBJECT_DEL(mod->o_snapshot);
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     ENNA_OBJECT_DEL(mod->o_resume);
     ENNA_OBJECT_DEL(mod->o_flag_video);
