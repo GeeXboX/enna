@@ -319,7 +319,7 @@ static void _enna_shutdown(void)
 
     enna_ipc_shutdown();
     elm_shutdown();
-    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !\n");
+    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !");
     enna_log_shutdown();
     ENNA_FREE(enna);
 }
