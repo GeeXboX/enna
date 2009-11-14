@@ -277,7 +277,7 @@ images {
          effect: SOFT_SHADOW;
          mouse_events: 0;
          scale: 1;
-         clip_to: module.clip;
+         clip_to: infos.clip;
          description {
             state: "default" 0.0;
             visible: 1;
@@ -294,6 +294,49 @@ images {
                size: 16;
                min: 1 1;
                align: 0.5 1;
+            }
+         }
+      }
+
+      part {
+         name: "separator.h1";
+         mouse_events: 0;
+         clip_to: "infos.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 80;
+            visible: 1;
+
+            rel1.relative: 0.05 0.57;
+            rel1.to: "infos.clip";
+            rel2.relative: 0.95 0.58;
+            rel2.to: "infos.clip";
+
+            image.normal: "separator_h.png";
+         }
+      }
+
+      /* synopsis */
+      part {
+         name: "synopsis.textblock";
+         type: TEXTBLOCK;
+         effect: SOFT_SHADOW;
+         mouse_events: 0;
+         scale: 1;
+         clip_to: infos.clip;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            rel1.relative: 0.05 0.60;
+            rel1.to: "infos.clip";
+            rel2.relative: 0.95 0.95;
+            rel2.to: "infos.clip";
+            color: 255 255 255 255;
+            color3: 0 0 0 64;
+
+         text {
+               style: "style.infos.video";
+               min: 0 0;
             }
          }
       }
