@@ -69,8 +69,7 @@ static int run_fullscreen = 0;
 static int _create_gui(void);
 
 /* Callbacks */
-static int
-_idle_timer_cb(void *data)
+static int _idle_timer_cb(void *data)
 {
     if (enna_mediaplayer_state_get() == PLAYING)
     {
@@ -106,8 +105,7 @@ _idle_timer_cb(void *data)
     return ECORE_CALLBACK_RENEW;
 }
 
-static int
-_mouse_idle_timer_cb(void *data)
+static int _mouse_idle_timer_cb(void *data)
 {
     Evas_Object *cursor = (Evas_Object*)data;
     edje_object_signal_emit(cursor, "cursor,hide", "enna");
@@ -117,8 +115,7 @@ _mouse_idle_timer_cb(void *data)
     return ECORE_CALLBACK_CANCEL;
 }
 
-void
-_mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     if (!enna->cursor_is_shown)
     {
@@ -138,14 +135,12 @@ _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
                                                  obj);
 }
 
-static void
-_window_delete_cb(void *data, Evas_Object *obj, void *event_info)
+static void _window_delete_cb(void *data, Evas_Object *obj, void *event_info)
 {
     ecore_main_loop_quit();
 }
 
-static void
-_list_engines(void)
+static void _list_engines(void)
 {
     Eina_List  *lst;
     Eina_List  *n;
@@ -179,8 +174,7 @@ static const struct {
     { NULL,         0                 }
 };
 
-static int
-_enna_init(void)
+static int _enna_init(void)
 {
     char tmp[PATH_MAX];
     int i;
@@ -245,8 +239,7 @@ _enna_init(void)
     return 1;
 }
 
-static int
-_create_gui(void)
+static int _create_gui(void)
 {
     // set custom elementary theme
     elm_theme_extension_add(enna_config_theme_get());
@@ -309,8 +302,7 @@ _create_gui(void)
     return 1;
 }
 
-static void
-_enna_shutdown(void)
+static void _enna_shutdown(void)
 {
     ENNA_TIMER_DEL(enna->idle_timer);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
@@ -325,15 +317,15 @@ _enna_shutdown(void)
     enna_mainmenu_shutdown();
     evas_object_del(enna->o_content);
 
-    edje_shutdown();
-    ecore_file_shutdown();
     enna_ipc_shutdown();
+    elm_shutdown();
+    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !\n");
+    enna_log_shutdown();
     ENNA_FREE(enna);
 }
 
-static void
-_opt_geometry_parse(const char *optarg,
-                     unsigned int *pw, unsigned int *ph)
+static void _opt_geometry_parse(const char *optarg,
+                                unsigned int *pw, unsigned int *ph)
 {
     int w = 0, h = 0;
 
@@ -344,8 +336,7 @@ _opt_geometry_parse(const char *optarg,
     if (ph) *ph = h;
 }
 
-void
-enna_idle_timer_renew(void)
+void enna_idle_timer_renew(void)
 {
     if (enna_config->idle_timeout)
     {
@@ -367,8 +358,7 @@ enna_idle_timer_renew(void)
     }
 }
 
-static int
-exit_signal(void *data, int type, void *e)
+static int exit_signal(void *data, int type, void *e)
 {
     Ecore_Event_Signal_Exit *event = e;
 
@@ -381,8 +371,7 @@ exit_signal(void *data, int type, void *e)
 }
 
 
-static void
-usage(char *binname)
+static void usage(char *binname)
 {
     printf(_("Enna MediaCenter\n"));
     printf(_(" Usage: %s [options ...]\n"), binname);
@@ -396,8 +385,7 @@ usage(char *binname)
     exit(EXIT_SUCCESS);
 }
 
-static int
-parse_command_line(int argc, char **argv)
+static int parse_command_line(int argc, char **argv)
 {
     int c, index;
     char short_options[] = "Vhfc:t:b:g:";
@@ -457,8 +445,7 @@ parse_command_line(int argc, char **argv)
     return 0;
 }
 
-int
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     init_locale();
 
@@ -470,7 +457,7 @@ main(int argc, char **argv)
     /* Must be called first */
     enna_config_init(conffile);
     ENNA_FREE(conffile);
-    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s",
+    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n",
              enna_config->log_file);
     enna_log_init(enna_config->log_file);
     enna = calloc(1, sizeof(Enna));
@@ -483,7 +470,7 @@ main(int argc, char **argv)
     ecore_main_loop_begin();
 
     _enna_shutdown();
-    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !");
-    enna_log_shutdown();
+
     return EXIT_SUCCESS;
 }
+
