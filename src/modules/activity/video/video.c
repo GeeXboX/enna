@@ -72,7 +72,6 @@ static void _return_to_video_info_gui();
 static void _seek_video(double value);
 
 static int _eos_cb(void *data, int type, void *event);
-static int _show_mediaplayer_cb(void *data);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
 typedef enum _VIDEO_STATE VIDEO_STATE;
@@ -101,7 +100,6 @@ struct _Enna_Module_Video
     Evas_Object *o_mediaplayer;
     Enna_Module *em;
     VIDEO_STATE state;
-    Ecore_Timer *timer_show_mediaplayer;
     Ecore_Event_Handler *eos_event_handler;
     Enna_Playlist *enna_playlist;
     char *o_current_uri;
@@ -234,20 +232,6 @@ videoplayer_view_event (enna_input event)
     default:
         break;
     }
-}
-
-static int
-_show_mediaplayer_cb(void *data)
-{
-    if (mod->o_mediaplayer)
-    {
-        mod->state = BROWSER_VIEW;
-        edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
-        ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer = NULL;
-    }
-
-    return 0;
 }
 
 static void
@@ -533,13 +517,6 @@ browser_view_event (enna_input event)
     {
         panel_infos_display (!mod->infos_displayed);
         return;
-    }
-
-    if (mod->o_mediaplayer)
-    {
-        ENNA_TIMER_DEL (mod->timer_show_mediaplayer);
-        mod->timer_show_mediaplayer =
-            ecore_timer_add (10, _show_mediaplayer_cb, NULL);
     }
 
     if (event == ENNA_INPUT_EXIT)
@@ -895,7 +872,6 @@ em_shutdown(Enna_Module *em)
     evas_object_smart_callback_del(mod->o_browser, "selected", browser_cb_select);
     evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hilight);
     ENNA_OBJECT_DEL(mod->o_browser);
-    ENNA_TIMER_DEL(mod->timer_show_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_backdrop);
     ENNA_OBJECT_DEL(mod->o_snapshot);
