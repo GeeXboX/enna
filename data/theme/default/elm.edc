@@ -887,6 +887,7 @@ group { name: "elm/genlist/item/default/default";
          description { state: "default" 0.0;
             visible: 0;
             color: 255 255 255 0;
+            rel1.offset: 0 2;
             rel2.offset: 0 -1;
             image {
                normal: "sel_bg.png";
@@ -929,14 +930,14 @@ group { name: "elm/genlist/item/default/default";
             fixed: 1 0;
             align: 0.0 0.5;
             rel1 {
-               to: "bg";
+                //to: "bg";
                relative: 0.0  0.0;
-               offset:   8    4;
+               offset:   4    4;
             }
             rel2 {
-               to: "bg";
+                //to: "bg";
                relative: 0.0  1.0;
-               offset:   8   -4;
+               offset:   4   -4;
             }
          }
       }
@@ -949,12 +950,12 @@ group { name: "elm/genlist/item/default/default";
             rel1 {
                to: "elm.swallow.pad";
                relative: 1.0  0.0;
-               offset:   2    2;
+               offset:   -1    4;
             }
             rel2 {
                to: "elm.swallow.pad";
                relative: 1.0  1.0;
-               offset:   2   -3;
+               offset:   -1   -5;
             }
          }
       }
@@ -989,7 +990,7 @@ group { name: "elm/genlist/item/default/default";
             rel1 {
                to_x:     "elm.swallow.icon";
                relative: 1.0  0.0;
-               offset:   16 4;
+               offset:   8 4;
             }
             rel2 {
                to_x:     "elm.swallow.end";
@@ -1001,8 +1002,8 @@ group { name: "elm/genlist/item/default/default";
             text {
                font: "content";
                size: 20;
-               min: 1 1;
-               //                  min: 0 1;
+                //min: 1 1;
+               min: 0 1;
                align: 0.0 0.5;
             }
          }
