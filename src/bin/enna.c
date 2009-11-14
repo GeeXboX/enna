@@ -317,9 +317,10 @@ static void _enna_shutdown(void)
     enna_mainmenu_shutdown();
     evas_object_del(enna->o_content);
 
-    edje_shutdown();
-    ecore_file_shutdown();
     enna_ipc_shutdown();
+    elm_shutdown();
+    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !\n");
+    enna_log_shutdown();
     ENNA_FREE(enna);
 }
 
@@ -469,8 +470,7 @@ int main(int argc, char **argv)
     ecore_main_loop_begin();
 
     _enna_shutdown();
-    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !\n");
-    enna_log_shutdown();
+
     return EXIT_SUCCESS;
 }
 
