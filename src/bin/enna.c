@@ -470,7 +470,7 @@ main(int argc, char **argv)
     /* Must be called first */
     enna_config_init(conffile);
     ENNA_FREE(conffile);
-    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n",
+    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s",
              enna_config->log_file);
     enna_log_init(enna_config->log_file);
     enna = calloc(1, sizeof(Enna));
@@ -483,7 +483,7 @@ main(int argc, char **argv)
     ecore_main_loop_begin();
 
     _enna_shutdown();
-    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !\n");
+    enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !");
     enna_log_shutdown();
     return EXIT_SUCCESS;
 }
