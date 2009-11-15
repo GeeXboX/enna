@@ -35,7 +35,7 @@
 #include "metadata.h"
 #include "logs.h"
 #include "image.h"
-#include "snapshot.h"
+#include "picture.h"
 
 #define SMART_NAME "enna_snapshot"
 
@@ -76,7 +76,7 @@ static void _smart_add(Evas_Object * obj)
 
     sd->o_edje = edje_object_add(evas_object_evas_get(obj));
     edje_object_file_set(sd->o_edje, enna_config_theme_get(),
-                         "activity/video/snapshot");
+                         "activity/video/picture");
     evas_object_show(sd->o_edje);
     evas_object_smart_member_add(sd->o_edje, obj);
     evas_object_smart_data_set(obj, sd);
@@ -167,14 +167,14 @@ static void _smart_init(void)
 
 /* externally accessible functions */
 Evas_Object *
-enna_snapshot_add(Evas * evas)
+enna_video_picture_add(Evas * evas)
 {
     _smart_init();
     return evas_object_smart_add(evas, _smart);
 }
 
 void
-enna_snapshot_set (Evas_Object *obj, char *file, int from_vfs)
+enna_video_picture_set (Evas_Object *obj, char *file, int from_vfs)
 {
     Evas_Object *o_img_old;
 

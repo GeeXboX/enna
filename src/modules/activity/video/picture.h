@@ -27,12 +27,12 @@
  *
  */
 
-#ifndef SNAPSHOT_H
-#define SNAPSHOT_H
+#ifndef VIDEO_PICTURE_H
+#define VIDEO_PICTURE_H
 
 #include "enna.h"
 
-Evas_Object *enna_snapshot_add(Evas * evas);
-void enna_snapshot_set(Evas_Object *obj, char *file, int from_vfs);
+Evas_Object *enna_video_picture_add(Evas * evas);
+void enna_video_picture_set(Evas_Object *obj, char *file, int from_vfs);
 
-#endif /* SNAPSHOT_H */
+#endif /* VIDEO_PICTURE_H */

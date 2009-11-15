@@ -23,10 +23,8 @@ pkg_LTLIBRARIES = activity_video.la
 activity_video_la_SOURCES= \
 video.c\
 video.h\
-backdrop.c\
-backdrop.h\
-snapshot.c\
-snapshot.h\
+picture.c\
+picture.h\
 resume.c\
 resume.h\
 panel_infos.c\

@@ -50,8 +50,7 @@
 #include "view_list.h"
 #include "browser.h"
 #include "mediaplayer.h"
-#include "backdrop.h"
-#include "snapshot.h"
+#include "picture.h"
 #include "panel_infos.h"
 #include "video.h"
 #include "resume.h"
@@ -314,7 +313,7 @@ backdrop_show (Enna_Metadata *m)
         file = strdup (dst);
     }
 
-    enna_backdrop_set (mod->o_backdrop, file, from_vfs);
+    enna_video_picture_set (mod->o_backdrop, file, from_vfs);
     evas_object_show (mod->o_backdrop);
     edje_object_part_swallow (mod->o_edje,
                               "backdrop.swallow", mod->o_backdrop);
@@ -353,7 +352,7 @@ snapshot_show (Enna_Metadata *m)
         file = strdup (dst);
     }
 
-    enna_snapshot_set (mod->o_snapshot, file, from_vfs);
+    enna_video_picture_set (mod->o_snapshot, file, from_vfs);
     evas_object_show (mod->o_snapshot);
     edje_object_part_swallow (mod->o_edje,
                               "snapshot.swallow", mod->o_snapshot);
@@ -748,8 +747,8 @@ _create_menu (void)
     edje_object_part_text_set (mod->o_edje, "synopsis.label", "");
     panel_infos_display (0);
     popup_resume_display (0);
-    enna_backdrop_set (mod->o_backdrop, NULL, 0);
-    enna_snapshot_set (mod->o_snapshot, NULL, 0);
+    enna_video_picture_set (mod->o_backdrop, NULL, 0);
+    enna_video_picture_set (mod->o_snapshot, NULL, 0);
 }
 
 static void
@@ -850,8 +849,8 @@ em_init(Enna_Module *em)
 
     mod->infos_displayed = 0;
     mod->resume_displayed = 0;
-    mod->o_backdrop = enna_backdrop_add (enna->evas);
-    mod->o_snapshot = enna_snapshot_add (enna->evas);
+    mod->o_backdrop = enna_video_picture_add (enna->evas);
+    mod->o_snapshot = enna_video_picture_add (enna->evas);
     mod->eos_event_handler =
 	ecore_event_handler_add (ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
     enna_activity_add(&class);
