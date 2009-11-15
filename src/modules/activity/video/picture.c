@@ -46,7 +46,13 @@ struct _Smart_Data
     Evas_Object *o_img;
 };
 
-/* local subsystem globals */
+static void
+_del(void *data, Evas *a, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    ENNA_OBJECT_DEL(sd->o_img);
+    ENNA_FREE(sd);
+}
 
 
 /* externally accessible functions */
@@ -62,6 +68,9 @@ enna_video_picture_add(Evas * evas)
                          "activity/video/picture");
     evas_object_show(sd->o_edje);
     evas_object_data_set(sd->o_edje, "sd", sd);
+
+    evas_object_event_callback_add(sd->o_edje, EVAS_CALLBACK_DEL,
+                                   _del, sd);
 
     return sd->o_edje;
 }
