@@ -51,6 +51,15 @@ struct _Smart_Data
     Evas_Object *o_cover;
 };
 
+static void
+_del(void *data, Evas *a, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    ENNA_OBJECT_DEL(sd->o_img);
+    ENNA_OBJECT_DEL(sd->o_rating);
+    ENNA_OBJECT_DEL(sd->o_cover);
+    ENNA_FREE(sd);
+}
 
 /* externally accessible functions */
 Evas_Object *
@@ -66,6 +75,8 @@ enna_panel_infos_add(Evas * evas)
                          "activity/video/panel_infos");
     evas_object_show(sd->o_edje);
     evas_object_data_set(sd->o_edje, "sd", sd);
+    evas_object_event_callback_add(sd->o_edje, EVAS_CALLBACK_DEL,
+                                   _del, sd);
     return sd->o_edje;
 }
 
