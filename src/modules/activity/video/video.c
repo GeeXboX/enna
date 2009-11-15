@@ -122,7 +122,7 @@ update_movies_counter (Eina_List *list)
 
     EINA_LIST_FOREACH(list, l, f)
     {
-        if (!f->is_directory)
+        if (!f->is_directory && !f->is_menu)
             children++;
     }
     if (children)
@@ -584,7 +584,7 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
 
     if (!ev || !ev->file) return;
 
-    if (ev->file->is_directory)
+    if (ev->file->is_directory || ev->file->is_menu)
     {
         enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                   "Directory Selected %s", ev->file->uri);
@@ -601,7 +601,7 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
         /* File selected, create mediaplayer */
         EINA_LIST_FOREACH(ev->files, l, f)
         {
-            if (!f->is_directory)
+            if (!f->is_directory && !f->is_menu)
             {
                 enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                           "Append : %s %s to playlist", f->label, f->uri);
@@ -649,7 +649,7 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
     if (!ev || !ev->file)
         return;
 
-    if (!ev->file->is_directory)
+    if (!ev->file->is_directory && !ev->file->is_menu)
         m = enna_metadata_meta_new (ev->file->uri);
 
     title = enna_metadata_meta_get (m, "title", 1);
@@ -694,7 +694,6 @@ browse (void *data)
                                     "selected", browser_cb_select, NULL);
     evas_object_smart_callback_add (mod->o_browser, "hilight",
                                     browser_cb_hilight, NULL);
-    evas_object_show (mod->o_browser);
 
     edje_object_part_swallow (mod->o_edje,
                               "browser.swallow", mod->o_browser);
@@ -785,8 +784,6 @@ _class_show (int dummy)
     switch (mod->state)
     {
     case BROWSER_VIEW:
-	edje_object_signal_emit (mod->o_edje, "content,show", "enna");
-
     case MENU_VIEW:
         edje_object_signal_emit (mod->o_edje, "content,show", "enna");
         break;
