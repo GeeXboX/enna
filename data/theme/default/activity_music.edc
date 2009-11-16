@@ -253,7 +253,7 @@ group {
          source:  "enna";
          action:  STATE_SET "show" 0.0;
          transition: SINUSOIDAL 0.5;
-         target: "mediaplayer.swallow";
+         target: "mediaplayer.clip";
       }
       program {
          name: "mediaplayer,hide";
@@ -261,7 +261,7 @@ group {
          source:  "enna";
          action:  STATE_SET "default" 0.0;
          transition: SINUSOIDAL 0.5;
-         target: "mediaplayer.swallow";
+         target: "mediaplayer.clip";
       }
       program {
          name: "lyrics,show";
