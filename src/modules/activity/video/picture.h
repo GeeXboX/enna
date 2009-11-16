@@ -34,5 +34,5 @@
 
 Evas_Object *enna_video_picture_add(Evas * evas);
 void enna_video_picture_set(Evas_Object *obj, char *file, int from_vfs);
-
+void enna_video_picture_unset (Evas_Object *obj);
 #endif /* VIDEO_PICTURE_H */
