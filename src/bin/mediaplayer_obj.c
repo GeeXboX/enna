@@ -83,6 +83,12 @@ static int _seek_cb(void *data, int type, void *event);
 static void show_play_button(Smart_Data * sd);
 static void show_pause_button(Smart_Data * sd);
 
+#define METADATA_APPLY                                          \
+    Enna_Metadata *metadata;                                    \
+    metadata = enna_mediaplayer_metadata_get(_enna_playlist);   \
+    enna_smart_player_metadata_set(sd->layout, metadata);       \
+    enna_metadata_meta_free(metadata);                          \
+
 /* Event from mediaplayer*/
 static int
 _start_cb(void *data, int type, void *event)
@@ -91,6 +97,7 @@ _start_cb(void *data, int type, void *event)
 
     show_pause_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PLAY ");
+    METADATA_APPLY;
     edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,show", "enna");
     return 1;
 }
@@ -109,6 +116,7 @@ _stop_cb(void *data, int type, void *event)
 static int
 _prev_cb(void *data, int type, void *event)
 {
+    METADATA_APPLY;
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PREV");
     return 1;
 }
@@ -116,6 +124,7 @@ _prev_cb(void *data, int type, void *event)
 static int
 _next_cb(void *data, int type, void *event)
 {
+    METADATA_APPLY;
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event NEXT");
     return 1;
 }
