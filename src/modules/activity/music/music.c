@@ -66,7 +66,6 @@ struct _Music_Item_Class_Data
     const char *label;
 };
 
-
 enum _MUSIC_STATE
 {
     MENU_VIEW,
@@ -85,10 +84,6 @@ struct _Enna_Module_Music
     Ecore_Timer *timer;
     Enna_Module *em;
     MUSIC_STATE state;
-    Ecore_Event_Handler *eos_event_handler;
-    Ecore_Event_Handler *next_event_handler;
-    Ecore_Event_Handler *prev_event_handler;
-    Ecore_Event_Handler *seek_event_handler;
     Enna_Playlist *enna_playlist;
     unsigned char  accept_ev : 1;
     Elm_Genlist_Item_Class *item_class;
