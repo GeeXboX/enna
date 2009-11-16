@@ -457,7 +457,7 @@ _create_menu()
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     o = enna_list_add(enna->evas);
-    categories = enna_vfs_get(ENNA_CAPS_VIDEO);
+    categories = enna_vfs_get(ENNA_CAPS_MUSIC);
     EINA_LIST_FOREACH(categories, l, cat)
     {
         Enna_Vfs_File *item;
