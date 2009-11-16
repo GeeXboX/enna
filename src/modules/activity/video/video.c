@@ -636,6 +636,30 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
     free (ev);
 }
 
+
+static void
+browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
+{
+    Browser_Selected_File_Data *ev = event_info;
+    Enna_Metadata *m = NULL;
+
+    if (!ev || !ev->file)
+        return;
+
+    if (!ev->file->is_directory && !ev->file->is_menu)
+         m = enna_metadata_meta_new (ev->file->uri);
+
+    backdrop_show (m);
+    snapshot_show (m);
+    infos_flags_set (m);
+
+    enna_panel_infos_set_cover(mod->o_panel_infos, m);
+    enna_panel_infos_set_text(mod->o_panel_infos, m);
+    enna_panel_infos_set_rating(mod->o_panel_infos, m);
+
+    enna_metadata_meta_free (m);
+}
+
 static void
 browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 {
@@ -650,6 +674,8 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 
     if (!ev->file->is_directory && !ev->file->is_menu)
         m = enna_metadata_meta_new (ev->file->uri);
+    else
+        return;
 
     title = enna_metadata_meta_get (m, "title", 1);
     label = title ? title : ev->file->label;
@@ -663,13 +689,7 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
     edje_object_part_text_set (mod->o_edje, "synopsis.textblock",
                                synopsis ? synopsis : "");
 
-    backdrop_show (m);
-    snapshot_show (m);
-    infos_flags_set (m);
 
-    enna_panel_infos_set_cover(mod->o_panel_infos, m);
-    enna_panel_infos_set_text(mod->o_panel_infos, m);
-    enna_panel_infos_set_rating(mod->o_panel_infos, m);
 
     ENNA_FREE (title);
     ENNA_FREE (categories);
@@ -693,6 +713,8 @@ browse (void *data)
                                     "selected", browser_cb_select, NULL);
     evas_object_smart_callback_add (mod->o_browser, "hilight",
                                     browser_cb_hilight, NULL);
+    evas_object_smart_callback_add (mod->o_browser, "delay,hilight",
+                                    browser_cb_delay_hilight, NULL);
 
     edje_object_part_swallow (mod->o_edje,
                               "browser.swallow", mod->o_browser);
