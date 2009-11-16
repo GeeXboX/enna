@@ -78,6 +78,7 @@ struct _Smart_Data
     Eina_List *visited;
     unsigned int letter_mode;
     Ecore_Timer *letter_timer;
+    Ecore_Timer *hilight_timer;
     unsigned int letter_event_nbr;
     char letter_key;
     struct
@@ -203,6 +204,22 @@ enna_browser_add(Evas * evas)
     return evas_object_smart_add(evas, _smart);
 }
 
+static int
+_view_delay_hilight_cb(void *data)
+{
+    Browse_Data *bd = data;
+    Browser_Selected_File_Data *ev;
+
+    ev = calloc(1, sizeof(Browser_Selected_File_Data));
+    ev->file = bd->file;
+    ev->files = NULL;
+
+    bd->sd->hilight_timer = NULL;
+    evas_object_smart_callback_call (bd->sd->obj, "delay,hilight", ev);
+
+    return 0;
+}
+
 static void
 _view_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 {
@@ -217,6 +234,8 @@ _view_hilight_cb (void *data, Evas_Object *obj, void *event_info)
     ev->files = NULL;
 
     evas_object_smart_callback_call (sd->obj, "hilight", ev);
+    ENNA_TIMER_DEL(sd->hilight_timer);
+    sd->hilight_timer = ecore_timer_add(0.2, _view_delay_hilight_cb, bd);
 }
 
 void
@@ -395,6 +414,7 @@ _smart_del(Evas_Object * obj)
     evas_object_del(sd->layout);
     evas_object_del(sd->o_letter);
     enna_volumes_listener_del(sd->vl);
+    ENNA_TIMER_DEL(sd->hilight_timer);
     free(sd);
 }
 
