@@ -90,7 +90,7 @@ _start_cb(void *data, int type, void *event)
 {
     Smart_Data *sd = data;
 
-    show_pause_button(data);
+    show_play_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PLAY ");
     METADATA_APPLY;
     edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,show", "enna");
@@ -102,7 +102,6 @@ _stop_cb(void *data, int type, void *event)
 {
     Smart_Data *sd = data;
 
-    show_play_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event STOP ");
     edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,hide", "enna");
     return 1;
@@ -131,7 +130,7 @@ _next_cb(void *data, int type, void *event)
 static int
 _unpause_cb(void *data, int type, void *event)
 {
-    show_pause_button(data);
+    show_play_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event UN_PAUSE");
     return 1;
 }
@@ -139,7 +138,7 @@ _unpause_cb(void *data, int type, void *event)
 static int
 _pause_cb(void *data, int type, void *event)
 {
-    show_play_button(data);
+    show_pause_button(data);
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PAUSE ");
     return 1;
 }
@@ -211,12 +210,21 @@ _slider_seek_cb(void *data, Evas_Object *obj, void *event_info)
 static void
 show_play_button(Smart_Data * sd)
 {
+    Evas_Object *ic;
+    ic = elm_icon_add(sd->layout);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
+    elm_button_icon_set(sd->play_btn, ic);
+    evas_object_show(ic);
 }
 
 static void
 show_pause_button(Smart_Data * sd)
 {
-
+    Evas_Object *ic;
+    ic = elm_icon_add(sd->layout);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_pause");
+    elm_button_icon_set(sd->play_btn, ic);
+    evas_object_show(ic);
 }
 
 void
@@ -386,6 +394,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
     ELM_ADD ("icon/mp_rewind",  _button_clicked_rewind_cb);
     ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+    sd->play_btn = bt;
     ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
     ELM_ADD ("icon/mp_forward", _button_clicked_forward_cb);
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
