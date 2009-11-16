@@ -257,10 +257,11 @@ static void
 metadata_set_text(Evas_Object *obj,
                   Enna_Metadata *m, const char *name, int bold)
 {
-    char *str;
+    char *str = NULL;
     char tmp[4096];
 
-    str = enna_metadata_meta_get(m, name, 1);
+    if (m)
+        str = enna_metadata_meta_get(m, name, 1);
 
     if(bold && str)
         snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
@@ -279,7 +280,7 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 
     sd = evas_object_data_get(obj, "sd");
 
-    if (!metadata || !sd)
+    if (!sd)
         return;
 
     metadata_set_text (sd->title, metadata, "title", 1);
