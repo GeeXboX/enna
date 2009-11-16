@@ -399,12 +399,14 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     btn_box = elm_box_add(layout);
     elm_box_homogenous_set(btn_box, 0);
     elm_box_horizontal_set(btn_box, 1);
-    ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+
     ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
     ELM_ADD ("icon/mp_rewind",  _button_clicked_rewind_cb);
+    ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+    ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
     ELM_ADD ("icon/mp_forward", _button_clicked_forward_cb);
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
-    ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
+
     sd->play_event_handler = ecore_event_handler_add(
         ENNA_EVENT_MEDIAPLAYER_START, _start_cb, sd);
     sd->stop_event_handler = ecore_event_handler_add(
