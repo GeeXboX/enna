@@ -34,6 +34,8 @@ pkg_LTLIBRARIES = activity_configuration.la
 
 activity_configuration_la_SOURCES= \
 configuration.c \
+credits.c \
+credits.h \
 infos.c \
 infos.h
 

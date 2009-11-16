@@ -40,6 +40,7 @@
 #include "mainmenu.h"
 #include "module.h"
 #include "infos.h"
+#include "credits.h"
 
 #define ENNA_MODULE_NAME "configuration"
 
@@ -59,6 +60,7 @@ typedef struct _Enna_Module_Configuration {
 
 static Enna_Module_Configuration *mod;
 static Enna_Config_Panel *info1 = NULL;
+static Enna_Config_Panel *credits = NULL;
 
 
 
@@ -267,12 +269,16 @@ module_init (Enna_Module *em)
     info1 = enna_config_panel_register(_("Infos"), "icon/infos",
                                     info_panel_show, info_panel_hide, NULL);
 
+    credits = enna_config_panel_register(_("Credits"), "icon/enna",
+                                         credits_panel_show,
+                                         credits_panel_hide, NULL);
 }
 
 void
 module_shutdown (Enna_Module *em)
 {
     enna_config_panel_unregister(info1);
+    enna_config_panel_unregister(credits);
     enna_activity_del(ENNA_MODULE_NAME);
 
     ENNA_OBJECT_DEL (mod->o_edje);

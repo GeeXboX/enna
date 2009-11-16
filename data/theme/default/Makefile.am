@@ -243,6 +243,7 @@ icons.edc \
 cover_video.edc \
 activity_photo.edc \
 activity_configuration_sysinfo.edc \
+activity_configuration_credits.edc \
 mediaplayer.edc
 
 
