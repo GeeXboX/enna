@@ -313,6 +313,8 @@ backdrop_show (Enna_Metadata *m)
         ENNA_FREE (backdrop);
         ENNA_FREE (file);
     }
+    else
+        enna_video_picture_unset(mod->o_backdrop);
 }
 
 /****************************************************************************/
@@ -345,6 +347,8 @@ snapshot_show (Enna_Metadata *m)
         ENNA_FREE (snapshot);
         ENNA_FREE (file);
     }
+    else
+        enna_video_picture_unset(mod->o_snapshot);
 }
 
 /****************************************************************************/
