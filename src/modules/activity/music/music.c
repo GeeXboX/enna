@@ -56,12 +56,6 @@ static void _browse(void *data);
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
 
-/*Events from mediaplayer*/
-static int _eos_cb(void *data, int type, void *event);
-static int _prev_cb(void *data, int type, void *event);
-static int _next_cb(void *data, int type, void *event);
-static int _seek_cb(void *data, int type, void *event);
-
 typedef struct _Enna_Module_Music Enna_Module_Music;
 typedef enum _MUSIC_STATE MUSIC_STATE;
 typedef struct _Music_Item_Class_Data Music_Item_Class_Data;
@@ -408,13 +402,6 @@ _create_mediaplayer_gui()
 {
     Evas_Object *o;
 
-    mod->next_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, NULL);
-    mod->prev_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_PREV, _prev_cb, NULL);
-    mod->seek_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, NULL);
-
     o = enna_smart_player_add(enna->evas, mod->enna_playlist);
     edje_object_part_swallow(mod->o_edje, "mediaplayer.swallow", o);
     evas_object_show(o);
@@ -485,33 +472,6 @@ _create_gui()
     evas_object_event_callback_add(mod->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
         _event_mouse_down, NULL);
 
-}
-
-static int
-_next_cb(void *data, int type, void *event)
-{
-    return 1;
-}
-
-static int
-_prev_cb(void *data, int type, void *event)
-{
-    return 1;
-}
-
-static int
-_seek_cb(void *data, int type, void *event)
-{
-    Enna_Event_Mediaplayer_Seek_Data *ev;
-    double pos;
-    double length;
-    double percent;
-    ev=event;
-    percent=ev->seek_value;
-    length = enna_mediaplayer_length_get();
-    pos=length*percent;
-    enna_smart_player_position_set(mod->o_mediaplayer, pos, length, percent);
-    return 1;
 }
 
 /****************************************************************************/
