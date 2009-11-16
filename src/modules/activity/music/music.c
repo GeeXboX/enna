@@ -46,12 +46,6 @@
 #include "module.h"
 
 #define ENNA_MODULE_NAME "music"
-#define METADATA_APPLY \
-    Enna_Metadata *metadata;\
-    metadata = enna_mediaplayer_metadata_get(mod->enna_playlist);\
-    enna_smart_player_metadata_set(mod->o_mediaplayer, metadata);\
-    enna_metadata_meta_free(metadata);
-
 #define TIMER_VALUE 30
 #define TIMER_VOLUME_VALUE 3
 
@@ -351,7 +345,6 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
                 {
                     enna_mediaplayer_select_nth(mod->enna_playlist,i);
                     enna_mediaplayer_play(mod->enna_playlist);
-                    METADATA_APPLY;
                 }
                 i++;
             }
@@ -507,14 +500,12 @@ _create_gui()
 static int
 _next_cb(void *data, int type, void *event)
 {
-    METADATA_APPLY;
     return 1;
 }
 
 static int
 _prev_cb(void *data, int type, void *event)
 {
-    METADATA_APPLY;
     return 1;
 }
 
