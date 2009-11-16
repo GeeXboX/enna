@@ -67,6 +67,7 @@ struct _Smart_Data
     Ecore_Event_Handler *pause_event_handler;
     Ecore_Event_Handler *unpause_event_handler;
     Ecore_Event_Handler *seek_event_handler;
+    Ecore_Event_Handler *eos_event_handler;
 };
 
 /* local subsystem globals */
@@ -79,6 +80,7 @@ static int _prev_cb(void *data, int type, void *event);
 static int _pause_cb(void *data, int type, void *event);
 static int _unpause_cb(void *data, int type, void *event);
 static int _seek_cb(void *data, int type, void *event);
+static int _eos_cb(void *data, int type, void *event);
 
 static void show_play_button(Smart_Data * sd);
 static void show_pause_button(Smart_Data * sd);
@@ -116,6 +118,8 @@ _stop_cb(void *data, int type, void *event)
 static int
 _prev_cb(void *data, int type, void *event)
 {
+    Smart_Data *sd = data;
+
     METADATA_APPLY;
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PREV");
     return 1;
@@ -124,6 +128,8 @@ _prev_cb(void *data, int type, void *event)
 static int
 _next_cb(void *data, int type, void *event)
 {
+    Smart_Data *sd = data;
+
     METADATA_APPLY;
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event NEXT");
     return 1;
@@ -153,6 +159,15 @@ _seek_cb(void *data, int type, void *event)
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event SEEK %d%%",(int) (100 * ev->seek_value));
     return 1;
 }
+
+static int
+_eos_cb(void *data, int type, void *event)
+{
+  /* EOS received, update metadata */
+    enna_mediaplayer_next(_enna_playlist);
+    return 1;
+}
+
 
 /* events from buttons*/
 static void
@@ -404,6 +419,8 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
         ENNA_EVENT_MEDIAPLAYER_UNPAUSE, _unpause_cb, sd);
     sd->seek_event_handler = ecore_event_handler_add(
         ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, sd);
+    sd->eos_event_handler = ecore_event_handler_add(
+        ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, sd);
     evas_object_size_hint_weight_set(btn_box, EVAS_HINT_EXPAND, 0.5);
     evas_object_size_hint_align_set(btn_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_layout_content_set(layout, "buttons.swallow", btn_box);

@@ -403,21 +403,11 @@ _update_position_timer(void *data)
     return 1;
 }
 
-static int
-_eos_cb(void *data, int type, void *event)
-{
-  /* EOS received, update metadata */
-    enna_mediaplayer_next(mod->enna_playlist);
-    return 1;
-}
-
 static void
 _create_mediaplayer_gui()
 {
     Evas_Object *o;
 
-    mod->eos_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
     mod->next_event_handler = ecore_event_handler_add(
         ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, NULL);
     mod->prev_event_handler = ecore_event_handler_add(
