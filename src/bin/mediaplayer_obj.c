@@ -35,7 +35,6 @@
 #include "metadata.h"
 #include "mediaplayer.h"
 #include "mediaplayer_obj.h"
-#include "mediacontrol.h"
 #include "utils.h"
 #include "logs.h"
 

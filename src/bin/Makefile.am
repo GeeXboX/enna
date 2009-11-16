@@ -37,7 +37,6 @@ xml_utils.c\
 url_utils.c\
 logs.c\
 parser_cdda.c\
-mediacontrol.c\
 reflection.c\
 view_cover.c\
 exit.c\
@@ -89,7 +88,6 @@ xml_utils.h\
 url_utils.h\
 logs.h\
 parser_cdda.h\
-mediacontrol.h\
 reflection.h\
 view_cover.h\
 exit.h\
