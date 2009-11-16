@@ -77,7 +77,6 @@ static int _start_cb(void *data, int type, void *event);
 static int _pause_cb(void *data, int type, void *event);
 static int _next_cb(void *data, int type, void *event);
 static int _prev_cb(void *data, int type, void *event);
-static int _pause_cb(void *data, int type, void *event);
 static int _unpause_cb(void *data, int type, void *event);
 static int _seek_cb(void *data, int type, void *event);
 static int _eos_cb(void *data, int type, void *event);
@@ -174,12 +173,6 @@ static void
 _button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
 {
     enna_mediaplayer_play(_enna_playlist);
-}
-
-static void
-_button_clicked_pause_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    enna_mediaplayer_pause();
 }
 
 static void
