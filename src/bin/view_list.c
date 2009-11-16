@@ -208,6 +208,14 @@ enna_list_add(Evas *evas)
     return obj;
 }
 
+static void
+_list_item_hilight_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    List_Item *it = data;
+
+    evas_object_smart_callback_call(obj, "hilight", it->data);
+}
+
 void
 enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
                       void (*func_activated) (void *data),  void *data)
@@ -219,7 +227,7 @@ enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     it = ENNA_NEW(List_Item, 1);
     it->item = elm_genlist_item_append (obj, &itc_list, file,
-        NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL );
+        NULL, ELM_GENLIST_ITEM_NONE, _list_item_hilight_cb, it);
 
     it->func_activated = func_activated;
     it->data = data;

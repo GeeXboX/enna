@@ -151,7 +151,7 @@ _browser_view_list_add(Smart_Data *sd)
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
     /* View */
     edje_object_signal_emit(view, "list,right,now", "enna");
-
+    evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
     return view;
 }
 
