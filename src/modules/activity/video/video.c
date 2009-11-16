@@ -294,14 +294,8 @@ backdrop_show (Enna_Metadata *m)
     int from_vfs = 1;
     char *backdrop;
 
-    if (!m)
-    {
-        file = strdup ("backdrop/default");
-        from_vfs = 0;
-    }
-
     backdrop = enna_metadata_meta_get (m, "fanart", 1);
-    if (!file && backdrop)
+    if (backdrop)
     {
         char dst[1024] = { 0 };
 
@@ -311,15 +305,14 @@ backdrop_show (Enna_Metadata *m)
           snprintf (dst, sizeof (dst), "%s/.enna/fanarts/%s",
                     enna_util_user_home_get (), backdrop);
         file = strdup (dst);
+
+        enna_video_picture_set (mod->o_backdrop, file, from_vfs);
+        evas_object_show (mod->o_backdrop);
+        edje_object_part_swallow (mod->o_edje,
+                                  "backdrop.swallow", mod->o_backdrop);
+        ENNA_FREE (backdrop);
+        ENNA_FREE (file);
     }
-
-    enna_video_picture_set (mod->o_backdrop, file, from_vfs);
-    evas_object_show (mod->o_backdrop);
-    edje_object_part_swallow (mod->o_edje,
-                              "backdrop.swallow", mod->o_backdrop);
-
-    ENNA_FREE (backdrop);
-    ENNA_FREE (file);
 }
 
 /****************************************************************************/
@@ -333,14 +326,8 @@ snapshot_show (Enna_Metadata *m)
     int from_vfs = 1;
     char *snapshot;
 
-    if (!m)
-    {
-        file = strdup("backdrop/default");
-        from_vfs = 0;
-    }
-
     snapshot = enna_metadata_meta_get(m, "fanart", 1);
-    if (!file && snapshot)
+    if (snapshot)
     {
         char dst[1024] = { 0 };
 
@@ -350,15 +337,14 @@ snapshot_show (Enna_Metadata *m)
           snprintf(dst, sizeof (dst), "%s/.enna/fanarts/%s",
                    enna_util_user_home_get(), snapshot);
         file = strdup (dst);
+        enna_video_picture_set (mod->o_snapshot, file, from_vfs);
+        evas_object_show (mod->o_snapshot);
+        edje_object_part_swallow (mod->o_edje,
+                                  "snapshot.swallow", mod->o_snapshot);
+
+        ENNA_FREE (snapshot);
+        ENNA_FREE (file);
     }
-
-    enna_video_picture_set (mod->o_snapshot, file, from_vfs);
-    evas_object_show (mod->o_snapshot);
-    edje_object_part_swallow (mod->o_edje,
-                              "snapshot.swallow", mod->o_snapshot);
-
-    ENNA_FREE (snapshot);
-    ENNA_FREE (file);
 }
 
 /****************************************************************************/
