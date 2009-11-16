@@ -163,7 +163,7 @@ _seek_cb(void *data, int type, void *event)
 static int
 _eos_cb(void *data, int type, void *event)
 {
-  /* EOS received, update metadata */
+    /* EOS received, update metadata */
     enna_mediaplayer_next(_enna_playlist);
     return 1;
 }
