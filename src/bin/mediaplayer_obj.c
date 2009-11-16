@@ -40,12 +40,6 @@
 
 #define SMART_NAME "smart_mediaplayer"
 
-typedef struct _Smart_Btn_Item
-{
-    Evas_Object *bt;
-    Evas_Object *ic;
-}Smart_Btn_Item;
-
 typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
@@ -59,7 +53,7 @@ struct _Smart_Data
     Evas_Object *artist;
     Evas_Object *album;
     Evas_Object *title;
-    Eina_List *btns;
+    Evas_Object *play_btn;
     Ecore_Event_Handler *play_event_handler;
     Ecore_Event_Handler *stop_event_handler;
     Ecore_Event_Handler *next_event_handler;
@@ -333,10 +327,6 @@ enna_smart_player_metadata_unset(Evas_Object *obj)
     elm_box_pack_end(btn_box, bt);                                   \
     evas_object_show(bt);                                            \
     evas_object_show(ic);                                            \
-    it = calloc(1, sizeof(Smart_Btn_Item));                          \
-    it->bt = bt;                                                     \
-    it->ic = ic;                                                     \
-    sd->btns = eina_list_append(sd->btns, it);                       \
 
 /* externally accessible functions */
 Evas_Object *
@@ -351,7 +341,6 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     Evas_Object *sl;
     Evas_Object *ic;
     Evas_Object *bt;
-    Smart_Btn_Item *it;
     Smart_Data *sd;
 
     sd = ENNA_NEW(Smart_Data, 1);
