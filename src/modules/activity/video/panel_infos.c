@@ -118,8 +118,8 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
     length = enna_metadata_meta_get (m, "duration", 1);
     if (!length)
     {
-      runtime = enna_metadata_meta_get (m, "runtime", 1);
-      length = enna_metadata_meta_get (m, "length", 1);
+        runtime = enna_metadata_meta_get (m, "runtime", 1);
+        length = enna_metadata_meta_get (m, "length", 1);
     }
     if (runtime || length)
     {
