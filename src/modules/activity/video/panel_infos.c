@@ -89,7 +89,7 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
 {
     buffer_t *buf;
     char *alternative_title, *title, *categories, *year;
-    char *runtime, *length, *director, *actors, *overview;
+    char *runtime = NULL, *length, *director, *actors, *overview;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
     if (!m)
@@ -115,8 +115,12 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
     if (year)
         buffer_append (buf, year);
 
+    length = enna_metadata_meta_get (m, "duration", 1);
+    if (!length)
+    {
     runtime = enna_metadata_meta_get (m, "runtime", 1);
     length = enna_metadata_meta_get (m, "length", 1);
+    }
     if (runtime || length)
     {
         int hh = 0, mm = 0;
