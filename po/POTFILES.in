@@ -6,6 +6,7 @@ src/bin/mainmenu.c
 src/bin/module.c
 src/bin/parser_cdda.c
 src/modules/activity/games/games.c
+src/modules/activity/configuration/credits.c
 src/modules/activity/configuration/configuration.c
 src/modules/activity/configuration/infos.c
 src/modules/activity/music/music.c
