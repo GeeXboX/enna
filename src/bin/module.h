@@ -44,8 +44,8 @@ struct _Enna_Module
     const char *name;
     struct
     {
-        void * (*init)(Enna_Module *m);
-        int (*shutdown)(Enna_Module *m);
+        void (*init)(Enna_Module *m);
+        void (*shutdown)(Enna_Module *m);
     } func;
 
     Enna_Module_Api *api;
