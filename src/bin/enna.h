@@ -46,6 +46,8 @@
 #define PATH_MAX 4096
 #endif
 
+#define ENNA_TOSTRING(s) #s
+#define ENNA_STRINGIFY(s) ENNA_TOSTRING(s)
 #define ARRAY_NB_ELEMENTS(array) (sizeof (array) / sizeof (array[0]))
 #define ENNA_FREE(p) do { free(p); p = NULL; } while (0)
 #define ENNA_NEW(s, n) (s *)calloc(n, sizeof(s))
