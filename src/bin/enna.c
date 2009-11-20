@@ -51,6 +51,7 @@
 #include "mediaplayer.h"
 #include "ipc.h"
 #include "input.h"
+#include "url_utils.h"
 
 /* seconds after which the mouse pointer disappears*/
 #define ENNA_MOUSE_IDLE_TIMEOUT 10
@@ -447,11 +448,14 @@ static int parse_command_line(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
+    int res = EXIT_FAILURE;
+
     init_locale();
 
     if (parse_command_line(argc, argv) < 0)
         return EXIT_SUCCESS;
 
+    url_global_init();
     elm_init(argc, argv);
 
     /* Must be called first */
@@ -465,12 +469,15 @@ int main(int argc, char **argv)
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_signal, enna);
 
     if (!_enna_init())
-        return EXIT_FAILURE;
+        goto out;
 
     ecore_main_loop_begin();
 
     _enna_shutdown();
+    res = EXIT_SUCCESS;
 
-    return EXIT_SUCCESS;
+ out:
+    url_global_uninit();
+    return res;
 }
 

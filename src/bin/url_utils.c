@@ -69,7 +69,6 @@ url_new (void)
 {
     CURL *curl;
 
-    curl_global_init (CURL_GLOBAL_DEFAULT);
     curl = curl_easy_init ();
     return (url_t) curl;
 }
@@ -79,6 +78,15 @@ url_free (url_t url)
 {
     if (url)
         curl_easy_cleanup ((CURL *) url);
+}
+
+void url_global_init (void)
+{
+    curl_global_init (CURL_GLOBAL_DEFAULT);
+}
+
+void url_global_uninit (void)
+{
     curl_global_cleanup ();
 }
 
