@@ -39,18 +39,18 @@ typedef struct url_data_s
 
 typedef void * url_t;
 
-url_t url_new (void);
+url_t url_new(void);
 
-void url_free (url_t url);
+void url_free(url_t url);
 
-void url_global_init (void);
+void url_global_init(void);
 
-void url_global_uninit (void);
+void url_global_uninit(void);
 
 url_data_t url_get_data(url_t handler, char *url);
 
 char *url_escape_string(url_t handler, const char *buf);
 
-void url_save_to_disk (url_t handler, char *src, char *dst);
+void url_save_to_disk(url_t handler, char *src, char *dst);
 
 #endif /* URL_UTILS_H */

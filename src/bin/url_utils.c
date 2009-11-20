@@ -65,29 +65,31 @@ url_buffer_get(void *ptr, size_t size, size_t nmemb, void *data)
 }
 
 url_t
-url_new (void)
+url_new(void)
 {
     CURL *curl;
 
-    curl = curl_easy_init ();
+    curl = curl_easy_init();
     return (url_t) curl;
 }
 
 void
-url_free (url_t url)
+url_free(url_t url)
 {
     if (url)
-        curl_easy_cleanup ((CURL *) url);
+        curl_easy_cleanup((CURL *) url);
 }
 
-void url_global_init (void)
+void
+url_global_init(void)
 {
-    curl_global_init (CURL_GLOBAL_DEFAULT);
+    curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-void url_global_uninit (void)
+void
+url_global_uninit(void)
 {
-    curl_global_cleanup ();
+    curl_global_cleanup();
 }
 
 url_data_t
@@ -123,11 +125,11 @@ url_escape_string(url_t handler, const char *buf)
     if (!curl || !buf)
         return NULL;
 
-    return curl_easy_escape (curl, buf, strlen (buf));
+    return curl_easy_escape(curl, buf, strlen (buf));
 }
 
 void
-url_save_to_disk (url_t handler, char *src, char *dst)
+url_save_to_disk(url_t handler, char *src, char *dst)
 {
     url_data_t data;
     int n, fd;
@@ -137,29 +139,29 @@ url_save_to_disk (url_t handler, char *src, char *dst)
         return;
 
     /* no need to download again an already existing file */
-    if (ecore_file_exists (dst))
+    if (ecore_file_exists(dst))
         return;
 
-    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Saving %s to %s", src, dst);
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Saving %s to %s", src, dst);
 
-    data = url_get_data (curl, src);
+    data = url_get_data(curl, src);
     if (data.status != CURLE_OK)
     {
-        enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                  "Unable to download requested cover file");
+        enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                 "Unable to download requested cover file");
         return;
     }
 
-    fd = open (dst, O_WRONLY | O_CREAT, 0666);
+    fd = open(dst, O_WRONLY | O_CREAT, 0666);
     if (fd < 0)
     {
-        enna_log (ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                  "Unable to open stream to save cover file");
+        enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
+                 "Unable to open stream to save cover file");
 
-        free (data.buffer);
+        free(data.buffer);
         return;
     }
 
-    n = write (fd, data.buffer, data.size);
-    free (data.buffer);
+    n = write(fd, data.buffer, data.size);
+    free(data.buffer);
 }
