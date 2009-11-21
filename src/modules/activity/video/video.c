@@ -688,7 +688,13 @@ browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
         return;
 
     if (!ev->file->is_directory && !ev->file->is_menu)
-         m = enna_metadata_meta_new (ev->file->uri);
+    {
+        /* ask for on-demand scan for local files */
+        if (!strncmp (ev->file->uri, "file://", 7))
+            enna_metadata_ondemand (ev->file->uri + 7);
+
+        m = enna_metadata_meta_new (ev->file->uri);
+    }
 
     backdrop_show (m);
     snapshot_show (m, ev->file->is_directory);
