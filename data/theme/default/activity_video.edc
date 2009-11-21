@@ -1,6 +1,4 @@
 images {
-   image: "browser_cover_bg.png" COMP;
-   image: "filebrowser_tile.png" COMP;
    image: "vertical_gradient.png" COMP;
    image: "shad_square.png" COMP;
 }
