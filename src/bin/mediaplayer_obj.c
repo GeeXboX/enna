@@ -289,6 +289,9 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
     metadata_set_text (sd->album, metadata, "album", 0);
     metadata_set_text (sd->artist, metadata, "author", 0);
 
+    ENNA_OBJECT_DEL(sd->cv);
+    sd->cv = elm_image_add(sd->layout);
+
     cover = enna_metadata_meta_get (metadata, "cover", 1);
     if (cover)
     {
@@ -300,17 +303,17 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
             snprintf(cv, sizeof (cv), "%s/.enna/covers/%s",
                      enna_util_user_home_get (), cover);
 
-        ENNA_OBJECT_DEL(sd->cv);
-        sd->cv = elm_image_add(sd->layout);
         elm_image_file_set(sd->cv, cv, NULL);
-        evas_object_size_hint_align_set(sd->cv, 1, 1);
-        evas_object_size_hint_weight_set(sd->cv, -1, -1);
-        elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
     }
     else
     {
-        elm_image_file_set(sd->cv, NULL, NULL);
+        elm_image_file_set(sd->cv,
+                           enna_config_theme_get(), "cover/music/file");
     }
+
+    evas_object_size_hint_align_set(sd->cv, 1, 1);
+    evas_object_size_hint_weight_set(sd->cv, -1, -1);
+    elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
     evas_object_show(sd->cv);
 }
 
