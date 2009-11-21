@@ -145,12 +145,14 @@ STOCK_ICON("flags/audio/dts.png",            "flags/audio/dts");
 STOCK_ICON("flags/audio/dts51.png",          "flags/audio/dts51");
 STOCK_ICON("flags/audio/dts71.png",          "flags/audio/dts71");
 STOCK_ICON("flags/audio/mono.png",           "flags/audio/mono");
+STOCK_ICON("flags/audio/defaultsound.png",   "flags/audio/default");
 
 STOCK_ICON("flags/media/bluray.png",         "flags/media/bluray");
 STOCK_ICON("flags/media/divx.png",           "flags/media/divx");
 STOCK_ICON("flags/media/dvd.png",            "flags/media/dvd");
 STOCK_ICON("flags/media/hddvd.png",          "flags/media/hddvd");
 STOCK_ICON("flags/media/hdtv.png",           "flags/media/hdtv");
+STOCK_ICON("flags/media/defaultsource.png",  "flags/media/default");
 
 STOCK_ICON("flags/studio/20thcenturyfox.png","flags/studio/fox");
 STOCK_ICON("flags/studio/artisan.png",       "flags/studio/artisan");
@@ -178,6 +180,7 @@ STOCK_ICON("flags/studio/tristar.png",       "flags/studio/tristar");
 STOCK_ICON("flags/studio/unitedartists.png", "flags/studio/united");
 STOCK_ICON("flags/studio/universal.png",     "flags/studio/universal");
 STOCK_ICON("flags/studio/warner.png",        "flags/studio/warner");
+STOCK_ICON("flags/studio/default.png",       "flags/studio/default");
 
 STOCK_ICON("flags/video/1080i.png",          "flags/video/1080i");
 STOCK_ICON("flags/video/1080p.png",          "flags/video/1080p");
@@ -190,6 +193,7 @@ STOCK_ICON("flags/video/540p.png",           "flags/video/540p");
 STOCK_ICON("flags/video/480i.png",           "flags/video/480i");
 STOCK_ICON("flags/video/480p.png",           "flags/video/480p");
 STOCK_ICON("flags/video/sd.png",             "flags/video/sd");
+STOCK_ICON("flags/video/defaultscreen.png",  "flags/video/default");
 
 /* Covers */
 STOCK_ICON("cover_music.png",                "cover/music/file");
