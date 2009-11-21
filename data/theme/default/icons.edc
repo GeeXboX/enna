@@ -190,3 +190,9 @@ STOCK_ICON("flags/video/540p.png",           "flags/video/540p");
 STOCK_ICON("flags/video/480i.png",           "flags/video/480i");
 STOCK_ICON("flags/video/480p.png",           "flags/video/480p");
 STOCK_ICON("flags/video/sd.png",             "flags/video/sd");
+
+/* Covers */
+STOCK_ICON("cover_music.png",                "cover/music/file");
+STOCK_ICON("cover_music2.png",               "cover/music/dir");
+STOCK_ICON("cover_video.png",                "cover/video/file");
+STOCK_ICON("cover_video2.png",               "cover/video/dir");
