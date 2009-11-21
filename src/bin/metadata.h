@@ -41,5 +41,6 @@ char *enna_metadata_meta_get (Enna_Metadata *meta, const char *name, int max);
 char *enna_metadata_meta_get_all (Enna_Metadata *meta);
 void  enna_metadata_meta_free (Enna_Metadata *meta);
 void enna_metadata_set_position (Enna_Metadata *meta, double position);
+void enna_metadata_ondemand (const char *file);
 
 #endif /* METADATA_H */

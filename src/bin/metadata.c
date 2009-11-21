@@ -69,6 +69,26 @@ static valhalla_t *vh = NULL;
     }                                                          \
 
 static void
+ondemand_cb (const char *file, valhalla_event_t e, const char *id, void *data)
+{
+    switch (e)
+    {
+    case VALHALLA_EVENT_PARSED:
+        enna_log(ENNA_MSG_EVENT,
+                 MODULE_NAME, _("[%s]: parsing done."), file);
+        break;
+    case VALHALLA_EVENT_GRABBED:
+        enna_log(ENNA_MSG_EVENT,
+                 MODULE_NAME, _("[%s]: %s grabber has finished"), file, id);
+        break;
+    case VALHALLA_EVENT_ENDED:
+        enna_log(ENNA_MSG_INFO,
+                 MODULE_NAME, _("[%s]: all metadata have been fetched."), file);
+        break;
+    }
+}
+
+static void
 enna_metadata_db_init (void)
 {
     int rc;
@@ -154,7 +174,8 @@ enna_metadata_db_init (void)
     snprintf(db, sizeof(db),
              "%s/.enna/%s", enna_util_user_home_get(), ENNA_METADATA_DB_NAME);
 
-    vh = valhalla_init(db, parser_number, 1, commit_interval, NULL, NULL);
+    vh = valhalla_init(db, parser_number, 1,
+                       commit_interval, ondemand_cb, NULL);
     if (!vh)
         goto err;
 
@@ -363,4 +384,13 @@ void
 enna_metadata_set_position (Enna_Metadata *meta, double position)
 {
     /* to be implemented */
+}
+
+void
+enna_metadata_ondemand (const char *file)
+{
+  if (!vh || !file)
+    return;
+
+  valhalla_ondemand (vh, file);
 }
