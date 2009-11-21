@@ -84,6 +84,19 @@ static void show_pause_button(Smart_Data * sd);
     enna_smart_player_metadata_set(sd->layout, metadata);       \
     enna_metadata_meta_free(metadata);                          \
 
+static void
+media_cover_hide (Smart_Data *sd)
+{
+    if (!sd)
+        return;
+
+    ENNA_OBJECT_DEL(sd->cv);
+    sd->cv = elm_image_add(sd->layout);
+    elm_image_file_set(sd->cv, NULL, NULL);
+    elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
+    evas_object_show(sd->cv);
+}
+
 /* Event from mediaplayer*/
 static int
 _start_cb(void *data, int type, void *event)
@@ -104,6 +117,8 @@ _stop_cb(void *data, int type, void *event)
 
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event STOP ");
     edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,hide", "enna");
+    media_cover_hide(sd);
+
     return 1;
 }
 
