@@ -344,6 +344,7 @@ images {
          }
       }
 
+      /* Movie Categories */
       part {
          name: "genre.label";
          type: TEXT;
