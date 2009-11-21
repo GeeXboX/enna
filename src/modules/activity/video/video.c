@@ -360,17 +360,65 @@ snapshot_show (Enna_Metadata *m, int dir)
 /*                          Information Flags                               */
 /****************************************************************************/
 
+static void
+flag_set (Evas_Object **obj, const char *icon, const char *edje)
+{
+    if (!obj || !icon || !edje)
+        return;
+
+    ENNA_OBJECT_DEL(*obj);
+    *obj = edje_object_add(enna->evas);
+    edje_object_file_set(*obj, enna_config_theme_get(), icon);
+    evas_object_show(*obj);
+    edje_object_part_swallow(mod->o_edje, edje, *obj);
+}
+
 static const struct {
     const char *name;
     int min_height;
 } flag_video_mapping[] = {
-    { "flags/video/1080p",   1080 },
-    { "flags/video/720p",     720 },
-    { "flags/video/576p",     576 },
-    { "flags/video/540p",     540 },
     { "flags/video/480p",     480 },
+    { "flags/video/540p",     540 },
+    { "flags/video/576p",     576 },
+    { "flags/video/720p",     720 },
+    { "flags/video/1080p",   1080 },
     { NULL,                     0 }
 };
+
+static void
+video_flag_set (Enna_Metadata *m)
+{
+    char *h_str, *flag = NULL;
+
+    if (!m)
+        goto video_unknown;
+
+    /* try to guess video flag, based on video resolution */
+    h_str = enna_metadata_meta_get(m, "height", 1);
+    if (h_str)
+    {
+        int i, h;
+
+        h = atoi (h_str);
+        for (i = 0; flag_video_mapping[i].name; i++)
+            if (h <= flag_video_mapping[i].min_height)
+            {
+                flag = strdup(flag_video_mapping[i].name);
+                break;
+            }
+
+        if (!flag)
+            flag = strdup("flags/video/sd");
+        ENNA_FREE(h_str);
+    }
+
+video_unknown:
+    if (!flag)
+        flag = strdup("flags/video/default");
+
+    flag_set(&mod->o_flag_video, flag, "infos.flags.video.swallow");
+    ENNA_FREE(flag);
+}
 
 static const struct {
     const char *name;
@@ -383,6 +431,39 @@ static const struct {
     { NULL,                   0 }
 };
 
+static void
+audio_flag_set (Enna_Metadata *m)
+{
+    char *c_str, *flag = NULL;
+
+    if (!m)
+        goto audio_unknown;
+
+    /* try to guess audio flag (naive method atm) */
+    c_str = enna_metadata_meta_get(m, "audio_channels", 1);
+    if (c_str)
+    {
+        int i, c;
+
+        c = atoi (c_str);
+        for (i = 0; flag_audio_mapping[i].name; i++)
+            if (c <= flag_audio_mapping[i].channels)
+            {
+                flag = strdup(flag_audio_mapping[i].name);
+                break;
+            }
+
+        ENNA_FREE(c_str);
+    }
+
+audio_unknown:
+    if (!flag)
+        flag = strdup("flags/audio/default");
+
+    flag_set(&mod->o_flag_audio, flag, "infos.flags.audio.swallow");
+    ENNA_FREE(flag);
+}
+
 static const struct {
     const char *name;
     const char *fullname;
@@ -391,87 +472,52 @@ static const struct {
 };
 
 static void
-infos_flags_set (Enna_Metadata *m)
+studio_flag_set (Enna_Metadata *m)
 {
-    Evas_Object *v = NULL, *a = NULL, *s = NULL, *md = NULL;
-#if 0
-    const char *v_str = NULL, *a_str = NULL, *s_str = NULL, *m_str = NULL;
-#endif
+    char *studio, *flag = NULL;
 
     if (!m)
-        goto flags_set;
+        goto studio_unknown;
 
-#if 0
-    /* try to guess video flag */
-    if (m->video)
-    {
-        int i;
-
-        for (i = 0; flag_video_mapping[i].name; i++)
-            if (m->video->height >= flag_video_mapping[i].min_height)
-            {
-                v_str = flag_video_mapping[i].name;
-                break;
-            }
-
-        if (!v_str)
-            v_str = "flags/video/sd";
-
-        v = edje_object_add (enna->evas);
-        edje_object_file_set (v, enna_config_theme_get (), v_str);
-    }
-
-    /* try to guess audio flag (naive method atm) */
-    if (m->music)
-    {
-        int i;
-
-        for (i = 0; flag_audio_mapping[i].name; i++)
-            if (m->music->channels >= flag_audio_mapping[i].channels)
-                a_str = flag_audio_mapping[i].name;
-
-        a = edje_object_add (enna->evas);
-        edje_object_file_set (a, enna_config_theme_get (), a_str);
-    }
-
-    /* try to match an existing studio */
-    if (m->studio)
+    /* try to guess studio flag */
+    studio = enna_metadata_meta_get(m, "studio", 1);
+    if (studio)
     {
         int i;
 
         for (i = 0; flag_studio_mapping[i].name; i++)
-            if (!strcmp (m->studio, flag_studio_mapping[i].fullname))
+            if (!strcmp (studio, flag_studio_mapping[i].fullname))
             {
-                s_str = flag_studio_mapping[i].name;
+                flag = strdup(flag_studio_mapping[i].name);
                 break;
             }
 
-        s = edje_object_add (enna->evas);
-        edje_object_file_set (s, enna_config_theme_get (), s_str);
+        ENNA_FREE(studio);
     }
 
+studio_unknown:
+    if (!flag)
+        flag = strdup("flags/studio/default");
+
+    flag_set(&mod->o_flag_studio, flag, "infos.flags.studio.swallow");
+    ENNA_FREE(flag);
+}
+
+static void
+media_flag_set (Enna_Metadata *m)
+{
     /* detect media type: no idea how to that atm, alwasy use default one */
-    m_str = "flags/media/divx";
-    md = edje_object_add (enna->evas);
-    edje_object_file_set (md, enna_config_theme_get (), m_str);
-#endif
+    flag_set(&mod->o_flag_media,
+             "flags/media/default", "infos.flags.media.swallow");
+}
 
- flags_set:
-    ENNA_OBJECT_DEL (mod->o_flag_video);
-    mod->o_flag_video = v;
-    edje_object_part_swallow (mod->o_edje, "infos.flags.video.swallow", v);
-
-    ENNA_OBJECT_DEL (mod->o_flag_audio);
-    mod->o_flag_audio = a;
-    edje_object_part_swallow (mod->o_edje, "infos.flags.audio.swallow", a);
-
-    ENNA_OBJECT_DEL (mod->o_flag_studio);
-    mod->o_flag_studio = s;
-    edje_object_part_swallow (mod->o_edje, "infos.flags.studio.swallow", s);
-
-    ENNA_OBJECT_DEL (mod->o_flag_media);
-    mod->o_flag_media = md;
-    edje_object_part_swallow (mod->o_edje, "infos.flags.media.swallow", md);
+static void
+infos_flags_set (Enna_Metadata *m)
+{
+    video_flag_set(m);
+    audio_flag_set(m);
+    studio_flag_set(m);
+    media_flag_set(m);
 }
 
 
@@ -727,7 +773,6 @@ browse (void *data)
                               "resume.swallow", mod->o_resume);
 
     mod->state = BROWSER_VIEW;
-    edje_object_signal_emit(mod->o_edje, "infos,flags,show", "enna");
 }
 
 /****************************************************************************/
@@ -758,7 +803,6 @@ _create_menu (void)
     enna_list_select_nth(o, 0);
     mod->o_list = o;
     edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
-    edje_object_signal_emit(mod->o_edje, "infos,flags,hide", "enna");
     edje_object_part_text_set (mod->o_edje, "title.label", "");
     edje_object_part_text_set (mod->o_edje, "genre.label", "");
     edje_object_part_text_set (mod->o_edje, "synopsis.label", "");
@@ -766,6 +810,7 @@ _create_menu (void)
     popup_resume_display (0);
     enna_video_picture_set (mod->o_backdrop, NULL, 0);
     enna_video_picture_set (mod->o_snapshot, NULL, 0);
+    infos_flags_set (NULL);
 }
 
 static void
