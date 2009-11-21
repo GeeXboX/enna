@@ -156,17 +156,17 @@ enna_metadata_db_init (void)
     }
 
     /* Configuration */
-    enna_log(ENNA_MSG_INFO,
+    enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* parser number  : %i", parser_number);
-    enna_log(ENNA_MSG_INFO,
+    enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* commit interval: %i", commit_interval);
-    enna_log(ENNA_MSG_INFO,
+    enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* scan loop      : %i", scan_loop);
-    enna_log(ENNA_MSG_INFO,
+    enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* scan sleep     : %i", scan_sleep);
-    enna_log(ENNA_MSG_INFO,
+    enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* scan priority  : %i", scan_priority);
-    enna_log(ENNA_MSG_INFO,
+    enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* verbosity      : %i", verbosity);
 
     valhalla_verbosity(verbosity);
