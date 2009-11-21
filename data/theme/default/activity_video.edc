@@ -229,11 +229,12 @@ images {
             state: "default" 0.0;
             rel1.to: "snapshot.swallow";
             rel1.relative: 0.0 0.0;
-            rel1.offset: -3 -3;
+            rel1.offset: -5 -5;
             rel2.to: "snapshot.swallow";
             rel2.relative: 1.0 1.0;
-            rel2.offset: +2 +2;
+            rel2.offset: +4 +4;
             image.normal: "cover_border.png";
+            image.border: 5 5 5 5;
             visible: 1;
          }
       }
