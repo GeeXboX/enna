@@ -602,6 +602,7 @@ movie_start_playback (int resume)
     evas_object_event_callback_add (mod->o_mediaplayer, EVAS_CALLBACK_RESIZE,
                                     _mediaplayer_resize_cb, NULL);
 
+    enna_mediaplayer_stop();
     enna_mediaplayer_play (mod->enna_playlist);
     if (resume)
     {
