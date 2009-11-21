@@ -2,6 +2,7 @@ images {
    image: "vertical_gradient.png" COMP;
    image: "shad_square.png" COMP;
    image: "cover_video2.png" COMP;
+   image: "cover_border.png" COMP;
 }
  group {
     name: "activity/video";
@@ -221,43 +222,19 @@ images {
 
       /* Movie Snapshot */
       part {
-         name: "snapshot.shadow";
+         name: "cover.border";
+         type: IMAGE;
          mouse_events: 0;
-         clip_to: infos.clip;
          description {
             state: "default" 0.0;
-            visible: 1;
-            image.normal: "shad_square.png";
-            image.border: 15 15 15 15;
             rel1.to: "snapshot.swallow";
-            rel1.offset: -15 -15;
+            rel1.relative: 0.0 0.0;
+            rel1.offset: -3 -3;
             rel2.to: "snapshot.swallow";
-            rel2.offset: 15 15;
-            fill.smooth: 0;
-            image.middle: 0;
-         }
-      }
-
-      part {
-         name: "snapshot.bg";
-         type: RECT;
-         mouse_events: 0;
-         clip_to: infos.clip;
-         description {
-            state: "default" 0.0;
+            rel2.relative: 1.0 1.0;
+            rel2.offset: +2 +2;
+            image.normal: "cover_border.png";
             visible: 1;
-            align: 0.5 0.5;
-            rel1 {
-               to: "snapshot.swallow";
-               relative: 0.0 0.0;
-               offset: -1 -1;
-            }
-            rel2 {
-               to: "snapshot.swallow";
-               relative: 1.0 1.0;
-               offset: 0 0;
-            }
-            color: 255 255 255 64;
          }
       }
 
