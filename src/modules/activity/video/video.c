@@ -322,12 +322,13 @@ backdrop_show (Enna_Metadata *m)
 /****************************************************************************/
 
 static void
-snapshot_show (Enna_Metadata *m)
+snapshot_show (Enna_Metadata *m, int dir)
 {
     char *file = NULL;
     int from_vfs = 1;
     char *snapshot;
 
+    enna_video_picture_unset(mod->o_snapshot);
     snapshot = enna_metadata_meta_get(m, "fanart", 1);
     if (snapshot)
     {
@@ -339,16 +340,20 @@ snapshot_show (Enna_Metadata *m)
           snprintf(dst, sizeof (dst), "%s/.enna/fanarts/%s",
                    enna_util_user_home_get(), snapshot);
         file = strdup (dst);
-        enna_video_picture_set (mod->o_snapshot, file, from_vfs);
-        evas_object_show (mod->o_snapshot);
-        edje_object_part_swallow (mod->o_edje,
-                                  "snapshot.swallow", mod->o_snapshot);
-
-        ENNA_FREE (snapshot);
-        ENNA_FREE (file);
     }
     else
-        enna_video_picture_unset(mod->o_snapshot);
+    {
+        file = strdup(dir ? "cover/video/dir" : "cover/video/file");
+        from_vfs = 0;
+    }
+
+    enna_video_picture_set(mod->o_snapshot, file, from_vfs);
+    evas_object_show(mod->o_snapshot);
+    edje_object_part_swallow(mod->o_edje,
+                             "snapshot.swallow", mod->o_snapshot);
+
+    ENNA_FREE(snapshot);
+    ENNA_FREE(file);
 }
 
 /****************************************************************************/
@@ -640,7 +645,7 @@ browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
          m = enna_metadata_meta_new (ev->file->uri);
 
     backdrop_show (m);
-    snapshot_show (m);
+    snapshot_show (m, ev->file->is_directory);
     infos_flags_set (m);
 
     enna_panel_infos_set_cover(mod->o_panel_infos, m);
