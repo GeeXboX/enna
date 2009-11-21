@@ -1,6 +1,7 @@
 images {
    image: "vertical_gradient.png" COMP;
    image: "shad_square.png" COMP;
+   image: "cover_video2.png" COMP;
 }
  group {
     name: "activity/video";
@@ -257,6 +258,21 @@ images {
                offset: 0 0;
             }
             color: 255 255 255 64;
+         }
+      }
+
+      part {
+         name: "snapshot.bg.default";
+         type: IMAGE;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1.to: "snapshot.swallow";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "snapshot.swallow";
+            rel2.relative: 1.0 1.0;
+            image.normal: "cover_video2.png";
+            visible: 1;
          }
       }
 
