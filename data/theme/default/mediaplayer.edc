@@ -1,5 +1,4 @@
 images {
-   image: "shad_circ.png" COMP;
    image: "cover_music2.png" COMP;
    image: "cover_border.png" COMP;
 }
@@ -42,39 +41,6 @@ group {
       }
 
       /* Cover Zone */
-      part { name: "cover.shadow";
-         mouse_events:  0;
-         description { state: "default" 0.0;
-            visible: 1;
-            image.normal: "shad_circ.png";
-            image.border: 25 25 25 25;
-            rel1.to: "cover.swallow";
-            rel1.offset: -25 -25;
-            rel2.to: "cover.swallow";
-            rel2.offset: 25 25;
-            fill.smooth: 0;
-            image.middle: 0;
-         }
-      }
-      part { name: "cover.bg";
-         type: RECT;
-         mouse_events:  0;
-         description { state: "default" 0.0;
-            visible: 1;
-            align: 0.5 0.5;
-            rel1 {
-               to: "cover.swallow";
-               relative: 0.0 0.0;
-               offset: -1  -1;
-            }
-            rel2 {
-               to: "cover.swallow";
-               relative: 1.0 1.0;
-               offset: 0 0;
-            }
-            color: 255 255 255 64;
-         }
-      }
       part {
          name: "cover.border";
          type: IMAGE;
