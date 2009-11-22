@@ -53,6 +53,131 @@ if BUILD_LIBSVDRP
 enna_LDADD += @LIBSVDRP_LIBS@
 endif
 
+##########################################################################
+# For Modules Static linking : BEGIN
+##########################################################################
+
+if USE_STATIC_MODULES
+
+if BUILD_LIBXRANDR
+AM_CFLAGS += @LIBXRANDR_CFLAGS@
+enna_LDADD += @LIBXRANDR_LIBS@
+endif
+
+if BUILD_EFREET
+AM_CFLAGS += @EFREET_CFLAGS@
+enna_LDADD += @EFREET_LIBS@
+endif
+
+include ../modules/activity/configuration/config.mak
+include ../modules/activity/music/config.mak
+include ../modules/activity/games/config.mak
+include ../modules/activity/photo/config.mak
+include ../modules/activity/tv/config.mak
+include ../modules/activity/video/config.mak
+include ../modules/activity/weather/config.mak
+include ../modules/browser/cdda/config.mak
+include ../modules/browser/dvd/config.mak
+include ../modules/browser/localfiles/config.mak
+include ../modules/browser/netstreams/config.mak
+include ../modules/browser/podcasts/config.mak
+include ../modules/browser/shoutcast/config.mak
+include ../modules/browser/upnp/config.mak
+include ../modules/browser/valhalla/config.mak
+include ../modules/input/keyb/config.mak
+include ../modules/input/lirc/config.mak
+include ../modules/volume/hal/config.mak
+include ../modules/volume/mtab/config.mak
+
+if BUILD_ACTIVITY_CONFIGURATION
+enna_SOURCES += $(SRCS_ACTIVITY_CONFIGURATION)
+endif
+
+if BUILD_ACTIVITY_MUSIC
+enna_SOURCES += $(SRCS_ACTIVITY_MUSIC)
+endif
+
+if BUILD_ACTIVITY_GAMES
+if BUILD_EFREET
+enna_SOURCES += $(SRCS_ACTIVITY_GAMES)
+endif
+endif
+
+if BUILD_ACTIVITY_PHOTO
+enna_SOURCES += $(SRCS_ACTIVITY_PHOTO)
+endif
+
+if BUILD_ACTIVITY_TV
+enna_SOURCES += $(SRCS_ACTIVITY_TV)
+endif
+
+if BUILD_ACTIVITY_VIDEO
+enna_SOURCES += $(SRCS_ACTIVITY_VIDEO)
+endif
+
+if BUILD_ACTIVITY_WEATHER
+enna_SOURCES += $(SRCS_ACTIVITY_WEATHER)
+endif
+
+if BUILD_BROWSER_CDDA
+enna_SOURCES += $(SRCS_BROWSER_CDDA)
+endif
+
+if BUILD_BROWSER_DVD
+enna_SOURCES += $(SRCS_BROWSER_DVD)
+endif
+
+if BUILD_BROWSER_LOCALFILES
+enna_SOURCES += $(SRCS_BROWSER_LOCALFILES)
+endif
+
+if BUILD_BROWSER_NETSTREAMS
+enna_SOURCES += $(SRCS_BROWSER_NETSTREAMS)
+endif
+
+if BUILD_BROWSER_PODCASTS
+enna_SOURCES += $(SRCS_BROWSER_PODCASTS)
+endif
+
+if BUILD_BROWSER_SHOUTCAST
+enna_SOURCES += $(SRCS_BROWSER_SHOUTCAST)
+endif
+
+if BUILD_BROWSER_UPNP
+enna_SOURCES += $(SRCS_BROWSER_UPNP)
+AM_CFLAGS += @GUPNP_CFLAGS@
+enna_LDADD += @GUPNP_LIBS@
+endif
+
+if BUILD_BROWSER_VALHALLA
+enna_SOURCES += $(SRCS_BROWSER_VALHALLA)
+endif
+
+if BUILD_INPUT_KEYB
+enna_SOURCES += $(SRCS_INPUT_KEYB)
+endif
+
+if BUILD_INPUT_LIRC
+enna_SOURCES += $(SRCS_INPUT_LIRC)
+enna_LDADD += @LIRC_LIBS@
+endif
+
+if BUILD_VOLUME_HAL
+enna_SOURCES += $(SRCS_VOLUME_HAL)
+AM_CFLAGS += @EHAL_CFLAGS@
+enna_LDADD += @EHAL_LIBS@
+endif
+
+if BUILD_VOLUME_MTAB
+enna_SOURCES += $(SRCS_VOLUME_MTAB)
+endif
+
+endif
+
+##########################################################################
+# For Modules Static linking : END
+##########################################################################
+
 enna_thumb_SOURCES = \
 enna_thumb_main.c\
 utils.c\

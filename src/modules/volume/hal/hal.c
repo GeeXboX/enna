@@ -375,7 +375,12 @@ ehal_device_removed (void *data, DBusMessage *msg)
 
 /* Module interface */
 
-Enna_Module_Api module_api = {
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_volume_hal
+#endif /* USE_STATIC_MODULES */
+
+Enna_Module_Api ENNA_MODULE_API = {
     ENNA_MODULE_VERSION,
     "volume_hal",
     N_("Volumes from HAL"),
@@ -385,7 +390,7 @@ Enna_Module_Api module_api = {
 };
 
 void
-module_init (Enna_Module *em)
+ENNA_MODULE_INIT(Enna_Module *em)
 {
     if (!em)
         return;
@@ -447,7 +452,7 @@ module_init (Enna_Module *em)
 }
 
 void
-module_shutdown (Enna_Module *em)
+ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     Enna_Module_Hal *mod;
 

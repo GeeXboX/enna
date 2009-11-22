@@ -178,6 +178,20 @@ STOCK_ICON("flags/studio/universal.png",     "flags/studio/universal");
 STOCK_ICON("flags/studio/warner.png",        "flags/studio/warner");
 STOCK_ICON("flags/studio/default.png",       "flags/studio/default");
 
+STOCK_ICON("flags/network/abc.png",          "flags/network/abc");
+STOCK_ICON("flags/network/bbc.png",          "flags/network/bbc");
+STOCK_ICON("flags/network/cartoon_network.png", "flags/network/cartoon");
+STOCK_ICON("flags/network/cbs.png",          "flags/network/cbs");
+STOCK_ICON("flags/network/channel4.png",     "flags/network/channel4");
+STOCK_ICON("flags/network/citytv.png",       "flags/network/citytv");
+STOCK_ICON("flags/network/comedy_central.png", "flags/network/comedy");
+STOCK_ICON("flags/network/fox.png",          "flags/network/fox");
+STOCK_ICON("flags/network/hbo.png",          "flags/network/hbo");
+STOCK_ICON("flags/network/lifetime.png",     "flags/network/lifetime");
+STOCK_ICON("flags/network/living.png",       "flags/network/living");
+STOCK_ICON("flags/network/nbc.png",          "flags/network/nbc");
+STOCK_ICON("flags/network/showtime.png",     "flags/network/showtime");
+
 STOCK_ICON("flags/video/1080i.png",          "flags/video/1080i");
 STOCK_ICON("flags/video/1080p.png",          "flags/video/1080p");
 STOCK_ICON("flags/video/720i.png",           "flags/video/720i");

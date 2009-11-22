@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = dvd
@@ -20,8 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = browser_dvd.la
 
-browser_dvd_la_SOURCES= \
-dvd.c
+browser_dvd_la_SOURCES = $(SRCS_BROWSER_DVD)
 
 browser_dvd_la_LIBADD = @ENNA_LIBS@
 browser_dvd_la_LDFLAGS = -module -avoid-version

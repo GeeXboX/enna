@@ -45,6 +45,147 @@ static Input_Listener *_listener = NULL;
 static Evas_Object *_config_panel_show(void *data);
 static void _config_panel_hide(void *data);
 
+#ifdef USE_STATIC_MODULES
+#define ENNA_MOD_EXTERN(name)                                 \
+    extern void enna_mod_##name##_init(Enna_Module *em);      \
+    extern void enna_mod_##name##_shutdown(Enna_Module *em);  \
+    extern Enna_Module_Api enna_mod_##name##_api;
+
+#define ENNA_MOD_REG(name)                      \
+    {                                           \
+        .init     = enna_mod_##name##_init,     \
+        .shutdown = enna_mod_##name##_shutdown, \
+        .api      = &enna_mod_##name##_api,     \
+    },
+
+#ifdef BUILD_ACTIVITY_CONFIGURATION
+ENNA_MOD_EXTERN(activity_configuration)
+#endif /* BUILD_ACTIVITY_CONFIGURATION */
+#ifdef BUILD_ACTIVITY_GAMES
+ENNA_MOD_EXTERN(activity_games)
+#endif /* BUILD_ACTIVITY_GAMES */
+#ifdef BUILD_ACTIVITY_MUSIC
+ENNA_MOD_EXTERN(activity_music)
+#endif /* BUILD_ACTIVITY_MUSIC */
+#ifdef BUILD_ACTIVITY_PHOTO
+ENNA_MOD_EXTERN(activity_photo)
+#endif /* BUILD_ACTIVITY_PHOTO */
+#ifdef BUILD_ACTIVITY_TV
+ENNA_MOD_EXTERN(activity_tv)
+#endif /* BUILD_ACTIVITY_TV */
+#ifdef BUILD_ACTIVITY_VIDEO
+ENNA_MOD_EXTERN(activity_video)
+#endif /* BUILD_ACTIVITY_VIDEO */
+#ifdef BUILD_ACTIVITY_WEATHER
+ENNA_MOD_EXTERN(activity_weather)
+#endif /* BUILD_ACTIVITY_WEATHER */
+#ifdef BUILD_BROWSER_CDDA
+ENNA_MOD_EXTERN(browser_cdda)
+#endif /* BUILD_BROWSER_CDDA */
+#ifdef BUILD_BROWSER_DVD
+ENNA_MOD_EXTERN(browser_dvd)
+#endif /* BUILD_BROWSER_DVD */
+#ifdef BUILD_BROWSER_LOCALFILES
+ENNA_MOD_EXTERN(browser_localfiles)
+#endif /* BUILD_BROWSER_LOCALFILES */
+#ifdef BUILD_BROWSER_NETSTREAMS
+ENNA_MOD_EXTERN(browser_netstreams)
+#endif /* BUILD_BROWSER_NETSTREAMS */
+#ifdef BUILD_BROWSER_PODCASTS
+ENNA_MOD_EXTERN(browser_podcasts)
+#endif /* BUILD_BROWSER_PODCASTS */
+#ifdef BUILD_BROWSER_SHOUTCAST
+ENNA_MOD_EXTERN(browser_shoutcast)
+#endif /* BUILD_BROWSER_SHOUTCAST */
+#ifdef BUILD_BROWSER_UPNP
+ENNA_MOD_EXTERN(browser_upnp)
+#endif /* BUILD_BROWSER_UPNP */
+#ifdef BUILD_BROWSER_VALHALLA
+ENNA_MOD_EXTERN(browser_valhalla)
+#endif /* BUILD_BROWSER_VALHALLA */
+#ifdef BUILD_INPUT_KEYB
+ENNA_MOD_EXTERN(input_keyb)
+#endif /* BUILD_INPUT_KEYB */
+#ifdef BUILD_INPUT_LIRC
+ENNA_MOD_EXTERN(input_lirc)
+#endif /* BUILD_INPUT_LIRC */
+#ifdef BUILD_VOLUME_HAL
+ENNA_MOD_EXTERN(volume_hal)
+#endif /* BUILD_VOLUME_HAL */
+#ifdef BUILD_VOLUME_MTAB
+ENNA_MOD_EXTERN(volume_mtab)
+#endif /* BUILD_VOLUME_MTAB */
+
+struct _Static_Mod_List
+{
+    void (*init)(Enna_Module *m);
+    void (*shutdown)(Enna_Module *m);
+    Enna_Module_Api *api;
+};
+
+static struct _Static_Mod_List _static_mod_list[] =
+{
+#ifdef BUILD_ACTIVITY_CONFIGURATION
+ENNA_MOD_REG(activity_configuration)
+#endif /* BUILD_ACTIVITY_CONFIGURATION */
+#ifdef BUILD_ACTIVITY_GAMES
+ENNA_MOD_REG(activity_games)
+#endif /* BUILD_ACTIVITY_GAMES */
+#ifdef BUILD_ACTIVITY_MUSIC
+ENNA_MOD_REG(activity_music)
+#endif /* BUILD_ACTIVITY_MUSIC */
+#ifdef BUILD_ACTIVITY_PHOTO
+ENNA_MOD_REG(activity_photo)
+#endif /* BUILD_ACTIVITY_PHOTO */
+#ifdef BUILD_ACTIVITY_TV
+ENNA_MOD_REG(activity_tv)
+#endif /* BUILD_ACTIVITY_TV */
+#ifdef BUILD_ACTIVITY_VIDEO
+ENNA_MOD_REG(activity_video)
+#endif /* BUILD_ACTIVITY_VIDEO */
+#ifdef BUILD_ACTIVITY_WEATHER
+ENNA_MOD_REG(activity_weather)
+#endif /* BUILD_ACTIVITY_WEATHER */
+#ifdef BUILD_BROWSER_CDDA
+ENNA_MOD_REG(browser_cdda)
+#endif /* BUILD_BROWSER_CDDA */
+#ifdef BUILD_BROWSER_DVD
+ENNA_MOD_REG(browser_dvd)
+#endif /* BUILD_BROWSER_DVD */
+#ifdef BUILD_BROWSER_LOCALFILES
+ENNA_MOD_REG(browser_localfiles)
+#endif /* BUILD_BROWSER_LOCALFILES */
+#ifdef BUILD_BROWSER_NETSTREAMS
+ENNA_MOD_REG(browser_netstreams)
+#endif /* BUILD_BROWSER_NETSTREAMS */
+#ifdef BUILD_BROWSER_PODCASTS
+ENNA_MOD_REG(browser_podcasts)
+#endif /* BUILD_BROWSER_PODCASTS */
+#ifdef BUILD_BROWSER_SHOUTCAST
+ENNA_MOD_REG(browser_shoutcast)
+#endif /* BUILD_BROWSER_SHOUTCAST */
+#ifdef BUILD_BROWSER_UPNP
+ENNA_MOD_REG(browser_upnp)
+#endif /* BUILD_BROWSER_UPNP */
+#ifdef BUILD_BROWSER_VALHALLA
+ENNA_MOD_REG(browser_valhalla)
+#endif /* BUILD_BROWSER_VALHALLA */
+#ifdef BUILD_INPUT_KEYB
+ENNA_MOD_REG(input_keyb)
+#endif /* BUILD_INPUT_KEYB */
+#ifdef BUILD_INPUT_LIRC
+ENNA_MOD_REG(input_lirc)
+#endif /* BUILD_INPUT_LIRC */
+#ifdef BUILD_VOLUME_HAL
+ENNA_MOD_REG(volume_hal)
+#endif /* BUILD_VOLUME_HAL */
+#ifdef BUILD_VOLUME_MTAB
+ENNA_MOD_REG(volume_mtab)
+#endif /* BUILD_VOLUME_MTAB */
+    { NULL, NULL, NULL }
+};
+#endif /* USE_STATIC_MODULES */
+
 
 /**
  * @brief Init Module, Save create Ecore_Path_Group and add default module path
@@ -54,8 +195,17 @@ static void _config_panel_hide(void *data);
 int
 enna_module_init(void)
 {
+    const char *p;
+
+#ifdef USE_STATIC_MODULES
+    struct _Static_Mod_List *mod;
+
+    enna_log(ENNA_MSG_INFO, NULL, "Available Plugins (static):");
+    for (mod = _static_mod_list; mod->api; mod++)
+    {
+        p = mod->api->name;
+#else
     Eina_List *mod, *l;
-    char *p;
 
     if (path_group)
         return -1;
@@ -66,9 +216,12 @@ enna_module_init(void)
     enna_log (ENNA_MSG_INFO, NULL,
               "Plugin Directory: %s", PACKAGE_LIB_DIR"/enna/modules/");
     mod = ecore_plugin_available_get(path_group);
-    enna_log(ENNA_MSG_INFO, NULL, "Available Plugins:");
+    enna_log(ENNA_MSG_INFO, NULL, "Available Plugins (dynamic):");
     EINA_LIST_FOREACH(mod, l, p)
+    {
+#endif /* USE_STATIC_MODULES */
         enna_log(ENNA_MSG_INFO, NULL, "\t * %s", p);
+    }
 
     _config_panel = enna_config_panel_register(_("Modules"), "icon/module",
                                   _config_panel_show, _config_panel_hide, NULL);
@@ -79,11 +232,21 @@ enna_module_init(void)
 void
 enna_module_load_all(void)
 {
+    const char *name;
+#ifdef USE_STATIC_MODULES
+    struct _Static_Mod_List *mod;
+#else
     Eina_List *l;
-    char *name;
+#endif /* USE_STATIC_MODULES */
 
+#ifdef USE_STATIC_MODULES
+    for (mod = _static_mod_list; mod->api; mod++)
+    {
+        name = mod->api->name;
+#else
     EINA_LIST_FOREACH(ecore_plugin_available_get (path_group), l, name)
     {
+#endif /* USE_STATIC_MODULES */
         Enna_Module *em;
 
         em = enna_module_open(name);
@@ -108,7 +271,9 @@ enna_module_shutdown(void)
         {
             enna_module_disable(m);
         }
+#ifndef USE_STATIC_MODULES
         ecore_plugin_unload(m->plugin);
+#endif /* USE_STATIC_MODULES */
         free(m);
     }
 
@@ -159,35 +324,59 @@ enna_module_disable(Enna_Module *m)
 Enna_Module *
 enna_module_open(const char *name)
 {
-    Ecore_Plugin *plugin;
+    Ecore_Plugin *plugin = NULL;
     Enna_Module *m;
+#ifdef USE_STATIC_MODULES
+    struct _Static_Mod_List *mod;
+#endif /* USE_STATIC_MODULES */
 
     if (!name) return NULL;
 
+#ifndef USE_STATIC_MODULES
     if (!path_group)
     {
         enna_log (ENNA_MSG_ERROR, NULL,
                   "enna Module should be Init before call this function");
         return NULL;
     }
+#endif /* USE_STATIC_MODULES */
 
     enna_log(ENNA_MSG_INFO, NULL, "Loading module: %s", name);
 
+#ifndef USE_STATIC_MODULES
     plugin = ecore_plugin_load(path_group, name, NULL);
     if (!plugin)
     {
         enna_log (ENNA_MSG_WARNING, NULL, "Unable to load module %s", name);
         return NULL;
     }
+#endif /* USE_STATIC_MODULES */
 
     m = ENNA_NEW(Enna_Module, 1);
     if (!m)
     {
+#ifndef USE_STATIC_MODULES
         ecore_plugin_unload(plugin);
+#endif /* USE_STATIC_MODULES */
         return NULL;
     }
 
-    m->api = ecore_plugin_symbol_get(plugin, "module_api");
+#ifdef USE_STATIC_MODULES
+    for (mod = _static_mod_list; mod->api; mod++)
+        if (!strcmp(mod->api->name, name))
+        {
+            m->func.init = mod->init;
+            m->func.shutdown = mod->shutdown;
+            m->api = mod->api;
+            break;
+        }
+    if (!m->api)
+    {
+        ENNA_FREE(m);
+        return NULL;
+    }
+#else
+    m->api = ecore_plugin_symbol_get(plugin, ENNA_STRINGIFY(MOD_PREFIX) "_api");
     if (!m->api || m->api->version != ENNA_MODULE_VERSION )
     {
         /* FIXME: popup error message */
@@ -199,8 +388,11 @@ enna_module_open(const char *name)
         return NULL;
     }
 
-    m->func.init = ecore_plugin_symbol_get(plugin, "module_init");
-    m->func.shutdown = ecore_plugin_symbol_get(plugin, "module_shutdown");
+    m->func.init =
+        ecore_plugin_symbol_get(plugin, ENNA_STRINGIFY(MOD_PREFIX) "_init");
+    m->func.shutdown =
+        ecore_plugin_symbol_get(plugin, ENNA_STRINGIFY(MOD_PREFIX) "_shutdown");
+#endif /* USE_STATIC_MODULES */
     m->name = m->api->name;
     m->enabled = 0;
     m->plugin = plugin;

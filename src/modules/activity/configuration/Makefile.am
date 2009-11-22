@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = configuration
@@ -32,12 +34,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_configuration.la
 
-activity_configuration_la_SOURCES= \
-configuration.c \
-credits.c \
-credits.h \
-infos.c \
-infos.h
+activity_configuration_la_SOURCES = $(SRCS_ACTIVITY_CONFIGURATION)
 
 activity_configuration_la_LIBADD = @ENNA_LIBS@
 activity_configuration_la_LDFLAGS = -module -avoid-version

@@ -165,7 +165,12 @@ static Enna_Class_Activity class =
 /*                          Public Module API                                */
 /*****************************************************************************/
 
-Enna_Module_Api module_api =
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_activity_tv
+#endif /* USE_STATIC_MODULES */
+
+Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "activity_tv",
@@ -175,7 +180,8 @@ Enna_Module_Api module_api =
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
-void module_init(Enna_Module *em)
+void
+ENNA_MODULE_INIT(Enna_Module *em)
 {
     Enna_Config_Data *cfgdata;
     char *value = NULL;
@@ -330,7 +336,8 @@ void module_init(Enna_Module *em)
     enna_activity_add(&class);
 }
 
-void module_shutdown(Enna_Module *em)
+void
+ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     if (!mod)
         return;

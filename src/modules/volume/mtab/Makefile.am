@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = mtab
@@ -20,7 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = volume_mtab.la
 
-volume_mtab_la_SOURCES= mtab.c
+volume_mtab_la_SOURCES = $(SRCS_VOLUME_MTAB)
 
 volume_mtab_la_LIBADD = @ENNA_LIBS@
 volume_mtab_la_LDFLAGS = -module -avoid-version

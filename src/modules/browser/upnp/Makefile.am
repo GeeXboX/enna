@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = upnp
@@ -20,8 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = browser_upnp.la
 
-browser_upnp_la_SOURCES= \
-upnp.c
+browser_upnp_la_SOURCES = $(SRCS_BROWSER_UPNP)
 
 browser_upnp_la_LIBADD = @ENNA_LIBS@ @GUPNP_LIBS@
 browser_upnp_la_LDFLAGS = -module -avoid-version

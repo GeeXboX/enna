@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = music
@@ -20,11 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_music.la
 
-activity_music_la_SOURCES= \
-music.c \
-music.h \
-panel_lyrics.c\
-panel_lyrics.h
+activity_music_la_SOURCES = $(SRCS_ACTIVITY_MUSIC)
 
 activity_music_la_LIBADD = @ENNA_LIBS@
 activity_music_la_LDFLAGS = -module -avoid-version

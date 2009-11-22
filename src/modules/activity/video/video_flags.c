@@ -102,23 +102,19 @@ static const struct {
     { "flags/studio/warner",       "WarnerBros"        },
 
     /* TV Networks */
-#if 0
-    /* We dont yet have logos for these TV show networks */
-    { "",                          "ABC"               },
-    { "",                          "BBC One"           },
-    { "",                          "CBS"               },
-    { "",                          "Cartoon Network"   },
-    { "",                          "Channel 4"         },
-    { "",                          "CityTV"            },
-    { "",                          "Comedy Central"    },
-    { "",                          "ITV1"              },
-    { "",                          "LIVING"            },
-    { "",                          "NBC"               },
-    { "",                          "Showtime"          },
-    { "",                          "Slice"             },
-    { "",                          "Syndicated"        },
-    { "",                          "Wah Lai Toi"       },
-#endif
+    { "flags/network/abc",         "ABC"               },
+    { "flags/network/bbc",         "BBC One"           },
+    { "flags/network/cartoon",     "Cartoon Network"   },
+    { "flags/network/cbs",         "CBS"               },
+    { "flags/network/channel4",    "Channel 4"         },
+    { "flags/network/citytv",      "CityTV"            },
+    { "flags/network/comedy",      "Comedy Central"    },
+    { "flags/network/fox",         "Fox"               },
+    { "flags/network/hbo",         "HBO"               },
+    { "flags/network/lifetime",    "Lifetime"          },
+    { "flags/network/living",      "LIVING"            },
+    { "flags/network/nbc",         "NBC"               },
+    { "flags/network/showtime",    "Showtime"          },
 
     { NULL,                        0                   }
 };

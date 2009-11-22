@@ -88,7 +88,7 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
 {
     buffer_t *buf;
     char *alternative_title, *title, *categories, *year;
-    char *runtime = NULL, *length, *director, *actors, *overview;
+    char *length, *director, *actors, *overview;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
     if (!m)
@@ -114,36 +114,12 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
     if (year)
         buffer_append (buf, year);
 
-    length = enna_metadata_meta_get (m, "duration", 1);
-    if (!length)
+    length = enna_metadata_meta_duration_get (m);
+    if (length)
     {
-        runtime = enna_metadata_meta_get (m, "runtime", 1);
-        length = enna_metadata_meta_get (m, "length", 1);
-    }
-    if (runtime || length)
-    {
-        int hh = 0, mm = 0;
-
         if (year)
             buffer_append (buf, " - ");
-
-        if (runtime)
-        {
-            hh = (int) (atoi (runtime) / 60);
-            mm = (int) (atoi (runtime) - 60 * hh);
-        }
-        else if (length)
-        {
-            hh = (int) (atoi (length) / 3600 / 1000);
-            mm = (int) ((atoi (length) / 60 / 1000) - (60 * hh));
-        }
-
-        if (hh)
-            buffer_appendf (buf, ngettext("%.2d hour ", "%.2d hours ", hh), hh);
-        if (hh && mm)
-            buffer_append (buf, " ");
-        if (mm)
-            buffer_appendf (buf, ngettext("%.2d minute", "%.2d minutes", mm), mm);
+        buffer_appendf (buf, "%s", length);
     }
     buffer_append (buf, "<br><br>");
 
@@ -180,7 +156,6 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
     ENNA_FREE (title);
     ENNA_FREE (categories);
     ENNA_FREE (year);
-    ENNA_FREE (runtime);
     ENNA_FREE (length);
     ENNA_FREE (director);
     ENNA_FREE (actors);

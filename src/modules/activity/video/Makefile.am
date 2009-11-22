@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = video
@@ -20,17 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_video.la
 
-activity_video_la_SOURCES= \
-video.c\
-video.h\
-video_flags.c\
-video_flags.h\
-picture.c\
-picture.h\
-resume.c\
-resume.h\
-panel_infos.c\
-panel_infos.h
+activity_video_la_SOURCES = $(SRCS_ACTIVITY_VIDEO)
 
 activity_video_la_LIBADD = @ENNA_LIBS@
 activity_video_la_LDFLAGS = -module -avoid-version

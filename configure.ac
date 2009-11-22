@@ -55,6 +55,17 @@ PKG_CHECK_MODULES([ENNA],
   ]
 )
 
+AC_ARG_ENABLE(static_modules,
+  [AC_HELP_STRING([--enable-static-modules], [enable static modules.
+  [[default=disabled]]])],
+  [use_static_modules=$enableval],
+  [use_static_modules="no"]
+)
+AM_CONDITIONAL([USE_STATIC_MODULES], test "x${use_static_modules}" = "xyes")
+if test "x$use_static_modules" = "xyes"; then
+  AC_DEFINE(USE_STATIC_MODULES, 1, [Static Modules])
+fi
+
 #########
 # Theme #
 #########
@@ -577,7 +588,11 @@ echo "$PACKAGE $VERSION"
 echo
 eval echo "Installation Path.................. : $exec_prefix"
 eval echo "\  Binaries......................... : $exec_prefix/bin"
+
+if test "x$use_static_modules" = "xno"; then
 eval echo "\  Modules.......................... : $exec_prefix/lib/enna/modules"
+fi
+
 eval echo "\  Theme............................ : $exec_prefix/share/enna/theme"
 echo
 echo "Build theme........................ : $build_theme"

@@ -36,6 +36,18 @@
 
 #define ENNA_MODULE_VERSION 3
 
+#define MOD_PREFIX module /* default name for dynamic linking */
+#define MOD_APPEND_API(prefix)           prefix##_api
+#define MOD_APPEND_INIT(prefix)          prefix##_init
+#define MOD_APPEND_SHUTDOWN(prefix)      prefix##_shutdown
+#define ENNA_MOD_PREFIX_API(prefix)      MOD_APPEND_API(prefix)
+#define ENNA_MOD_PREFIX_INIT(prefix)     MOD_APPEND_INIT(prefix)
+#define ENNA_MOD_PREFIX_SHUTDOWN(prefix) MOD_APPEND_SHUTDOWN(prefix)
+/* Entries to use in the modules. */
+#define ENNA_MODULE_API                  ENNA_MOD_PREFIX_API(MOD_PREFIX)
+#define ENNA_MODULE_INIT                 ENNA_MOD_PREFIX_INIT(MOD_PREFIX)
+#define ENNA_MODULE_SHUTDOWN             ENNA_MOD_PREFIX_SHUTDOWN(MOD_PREFIX)
+
 typedef struct _Enna_Module Enna_Module;
 typedef struct _Enna_Module_Api Enna_Module_Api;
 

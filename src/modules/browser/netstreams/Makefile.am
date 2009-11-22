@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = netstreams
@@ -20,8 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = browser_netstreams.la
 
-browser_netstreams_la_SOURCES= \
-netstreams.c
+browser_netstreams_la_SOURCES = $(SRCS_BROWSER_NETSTREAMS)
 
 browser_netstreams_la_LIBADD = @ENNA_LIBS@
 browser_netstreams_la_LDFLAGS = -module -avoid-version
