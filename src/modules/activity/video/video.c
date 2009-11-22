@@ -547,7 +547,7 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
     Enna_Metadata *m = NULL;
     Browser_Selected_File_Data *ev = event_info;
     const char *label;
-    char *title = NULL, *categories;
+    char *title = NULL, *categories, *length;
     char *synopsis;
 
     if (!ev || !ev->file)
@@ -565,6 +565,10 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
     edje_object_part_text_set (mod->o_edje, "title.label", label);
     edje_object_part_text_set (mod->o_edje, "genre.label",
                                categories ? categories : "");
+
+    length = enna_metadata_meta_get (m, "duration", 1);
+    edje_object_part_text_set (mod->o_edje, "length.label",
+                               length ? length : "");
 
     synopsis = enna_metadata_meta_get (m, "synopsis", 1);
     edje_object_part_text_set (mod->o_edje, "synopsis.textblock",
@@ -650,6 +654,7 @@ _create_menu (void)
     edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
     edje_object_part_text_set (mod->o_edje, "title.label", "");
     edje_object_part_text_set (mod->o_edje, "genre.label", "");
+    edje_object_part_text_set (mod->o_edje, "length.label", "");
     edje_object_part_text_set (mod->o_edje, "synopsis.label", "");
     panel_infos_display (0);
     popup_resume_display (0);
