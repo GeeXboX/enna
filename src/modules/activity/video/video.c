@@ -579,7 +579,7 @@ video_infos_del (void)
     edje_object_part_text_set (mod->o_edje, "title.label", "");
     edje_object_part_text_set (mod->o_edje, "genre.label", "");
     edje_object_part_text_set (mod->o_edje, "length.label", "");
-    edje_object_part_text_set (mod->o_edje, "synopsis.label", "");
+    edje_object_part_text_set (mod->o_edje, "synopsis.textblock", "");
     panel_infos_display (0);
     popup_resume_display (0);
     enna_video_picture_set (mod->o_backdrop, NULL, 0);
