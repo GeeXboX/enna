@@ -52,7 +52,7 @@ STOCK_ICON("bg3.jpg",               "background/music")
 STOCK_ICON("default_backdrop.png",  "background/photo")
 STOCK_ICON("default_backdrop.png",  "background/tv")
 STOCK_ICON("bg1.jpg",               "background/video")
-STOCK_ICON("weather_fall.jpeg",     "background/weather")
+STOCK_ICON("bg2.jpg",               "background/weather")
 
 /* Devices */
 STOCK_ICON("dev_bluetooth.png",     "icon/dev/bluetooth")
