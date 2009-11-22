@@ -513,10 +513,66 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
 
 
 static void
+video_infos_display (Enna_Vfs_File *file, int delay)
+{
+    Enna_Metadata *m;
+
+    if (!file)
+        return;
+
+    m = enna_metadata_meta_new(file->uri);
+    if (!m)
+        return;
+
+    if (!delay)
+    {
+        char *title, *categories, *length, *synopsis;
+        const char *label;
+
+        /* title */
+        title = enna_metadata_meta_get(m, "title", 1);
+        label = title ? title : file->label;
+        edje_object_part_text_set (mod->o_edje, "title.label", label);
+
+        /* genre */
+        categories = enna_metadata_meta_get(m, "category", 5);
+        edje_object_part_text_set(mod->o_edje, "genre.label",
+                                  categories ? categories : "");
+
+        /* length */
+        length = enna_metadata_meta_get(m, "duration", 1);
+        edje_object_part_text_set(mod->o_edje, "length.label",
+                                  length ? length : "");
+
+        /* synopsis */
+        synopsis = enna_metadata_meta_get(m, "synopsis", 1);
+        edje_object_part_text_set(mod->o_edje, "synopsis.textblock",
+                                  synopsis ? synopsis : "");
+
+        ENNA_FREE(title);
+        ENNA_FREE(categories);
+        ENNA_FREE(length);
+        ENNA_FREE(synopsis);
+    }
+    else
+    {
+        backdrop_show(m);
+        snapshot_show(m, file->is_directory);
+
+        enna_video_flags_update(mod->o_video_flags, m);
+
+        enna_panel_infos_set_cover(mod->o_panel_infos, m);
+        enna_panel_infos_set_text(mod->o_panel_infos, m);
+        enna_panel_infos_set_rating(mod->o_panel_infos, m);
+    }
+
+    enna_metadata_meta_free(m);
+}
+
+static void
 browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
-    Enna_Metadata *m = NULL;
 
     if (!ev || !ev->file)
         return;
@@ -527,58 +583,20 @@ browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
         if (!strncmp (ev->file->uri, "file://", 7))
             enna_metadata_ondemand (ev->file->uri + 7);
 
-        m = enna_metadata_meta_new (ev->file->uri);
+        video_infos_display (ev->file, 1);
     }
-
-    backdrop_show (m);
-    snapshot_show (m, ev->file->is_directory);
-    enna_video_flags_update (mod->o_video_flags, m);
-
-    enna_panel_infos_set_cover(mod->o_panel_infos, m);
-    enna_panel_infos_set_text(mod->o_panel_infos, m);
-    enna_panel_infos_set_rating(mod->o_panel_infos, m);
-
-    enna_metadata_meta_free (m);
 }
 
 static void
 browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_Metadata *m = NULL;
     Browser_Selected_File_Data *ev = event_info;
-    const char *label;
-    char *title = NULL, *categories, *length;
-    char *synopsis;
 
     if (!ev || !ev->file)
         return;
 
     if (!ev->file->is_directory && !ev->file->is_menu)
-        m = enna_metadata_meta_new (ev->file->uri);
-    else
-        return;
-
-    title = enna_metadata_meta_get (m, "title", 1);
-    label = title ? title : ev->file->label;
-
-    categories = enna_metadata_meta_get (m, "category", 5);
-    edje_object_part_text_set (mod->o_edje, "title.label", label);
-    edje_object_part_text_set (mod->o_edje, "genre.label",
-                               categories ? categories : "");
-
-    length = enna_metadata_meta_get (m, "duration", 1);
-    edje_object_part_text_set (mod->o_edje, "length.label",
-                               length ? length : "");
-
-    synopsis = enna_metadata_meta_get (m, "synopsis", 1);
-    edje_object_part_text_set (mod->o_edje, "synopsis.textblock",
-                               synopsis ? synopsis : "");
-
-
-
-    ENNA_FREE (title);
-    ENNA_FREE (categories);
-    enna_metadata_meta_free (m);
+        video_infos_display (ev->file, 0);
 }
 
 static void
