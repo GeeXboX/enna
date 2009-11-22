@@ -73,7 +73,33 @@ static const struct {
     const char *name;
     const char *fullname;
 } flag_studio_mapping[] = {
-    { NULL,                   0 }
+    { "flags/studio/fox",          "FoX"               },
+    { "flags/studio/artisan",      "Artisan"           },
+    { "flags/studio/carolco",      "Carolco"           },
+    { "flags/studio/castlerock",   "CastleRock"        },
+    { "flags/studio/columbia",     "Columbia"          },
+    { "flags/studio/dimension",    "Dimension"         },
+    { "flags/studio/disney",       "Disney"            },
+    { "flags/studio/dreamworks",   "Dreamworks"        },
+    { "flags/studio/filmfour",     "FilmFour"          },
+    { "flags/studio/gaumont",      "Gaumont"           },
+    { "flags/studio/hollywood",    "Hollywood"         },
+    { "flags/studio/lionsgate",    "LionsGate"         },
+    { "flags/studio/lucasfilm",    "LucasFilm"         },
+    { "flags/studio/mgm",          "MGM"               },
+    { "flags/studio/miramax",      "MiraMax"           },
+    { "flags/studio/newline",      "Newline"           },
+    { "flags/studio/paramount",    "Paramount"         },
+    { "flags/studio/revolution",   "Revolution"        },
+    { "flags/studio/screengems",   "ScreenGems"        },
+    { "flags/studio/sony",         "Sony"              },
+    { "flags/studio/canal",        "Studio Canal"      },
+    { "flags/studio/touchstone",   "TouchStone"        },
+    { "flags/studio/tristar",      "Tristar"           },
+    { "flags/studio/united",       "United"            },
+    { "flags/studio/universal",    "Universal"         },
+    { "flags/studio/warner",       "WarnerBros"        },
+    { NULL,                        0                   }
 };
 
 static void
