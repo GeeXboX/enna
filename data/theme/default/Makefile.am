@@ -70,7 +70,6 @@ images/flags/video/576p.png \
 images/flags/video/540p.png \
 images/flags/video/480p.png \
 images/flags/media/bluray.png \
-images/flags/media/hddvd.png \
 images/flags/media/divx.png \
 images/flags/media/dvd.png \
 images/flags/media/hdtv.png \
@@ -102,13 +101,10 @@ images/flags/studio/filmfour.png \
 images/flags/studio/artisan.png \
 images/flags/audio/dd51.png \
 images/flags/audio/dts71.png \
-images/flags/audio/dolby20.png \
-images/flags/audio/dolbydigital.png \
 images/flags/audio/dd71.png \
 images/flags/audio/dd20.png \
 images/flags/audio/mono.png \
 images/flags/audio/dts51.png \
-images/flags/audio/dts.png \
 images/background.png \
 images/mp_forward.png \
 images/mp_rewind.png \

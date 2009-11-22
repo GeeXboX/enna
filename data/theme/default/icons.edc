@@ -139,9 +139,6 @@ STOCK_ICON("rating5.png",                   "rating/5");
 STOCK_ICON("flags/audio/dd20.png",           "flags/audio/dd20");
 STOCK_ICON("flags/audio/dd51.png",           "flags/audio/dd51");
 STOCK_ICON("flags/audio/dd71.png",           "flags/audio/dd71");
-STOCK_ICON("flags/audio/dolby20.png",        "flags/audio/dolby20");
-STOCK_ICON("flags/audio/dolbydigital.png",   "flags/audio/dolbydigital");
-STOCK_ICON("flags/audio/dts.png",            "flags/audio/dts");
 STOCK_ICON("flags/audio/dts51.png",          "flags/audio/dts51");
 STOCK_ICON("flags/audio/dts71.png",          "flags/audio/dts71");
 STOCK_ICON("flags/audio/mono.png",           "flags/audio/mono");
@@ -150,7 +147,6 @@ STOCK_ICON("flags/audio/defaultsound.png",   "flags/audio/default");
 STOCK_ICON("flags/media/bluray.png",         "flags/media/bluray");
 STOCK_ICON("flags/media/divx.png",           "flags/media/divx");
 STOCK_ICON("flags/media/dvd.png",            "flags/media/dvd");
-STOCK_ICON("flags/media/hddvd.png",          "flags/media/hddvd");
 STOCK_ICON("flags/media/hdtv.png",           "flags/media/hdtv");
 STOCK_ICON("flags/media/defaultsource.png",  "flags/media/default");
 
