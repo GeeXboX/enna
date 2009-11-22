@@ -39,7 +39,7 @@
 #include "content.h"
 #include "input.h"
 #include "logs.h"
-#include "view_cover.h"
+#include "view_list.h"
 #include "image.h"
 
 typedef struct _Background_Item Background_Item;
@@ -75,13 +75,12 @@ _enna_mainmenu_load_from_activities(void)
     Enna_Class_Activity *act;
     Eina_List *l;
 
-    enna_view_cover_clear(sd->o_menu);
-
+    enna_list_clear(sd->o_menu);
     EINA_LIST_FOREACH(enna_activities_get(), l, act)
     {
         enna_mainmenu_append(act);
     }
-    enna_view_cover_select_nth(sd->o_menu, 0);
+    enna_list_select_nth(sd->o_menu, 0);
 }
 
 static void
@@ -137,7 +136,7 @@ _input_events_cb(void *data, enna_input event)
             case ENNA_INPUT_UP:
             case ENNA_INPUT_DOWN:
             case ENNA_INPUT_OK:
-                enna_view_cover_input_feed(sd->o_menu, event);
+                enna_list_input_feed(sd->o_menu, event);
                 return ENNA_EVENT_BLOCK;
                 break;
             default:
@@ -168,10 +167,9 @@ enna_mainmenu_init(void)
     if (!sd) return NULL;
 
     /* cover view */
-    sd->o_menu = enna_view_cover_add(evas_object_evas_get(enna->layout), 0);
+    sd->o_menu = enna_list_add(evas_object_evas_get(enna->layout));
     elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
-    evas_object_size_hint_weight_set(sd->o_menu, -1.0, -1.0);
-
+    evas_object_size_hint_align_set(sd->o_menu, -1.0, -1.0);
     /* Add  background*/
     sd->o_background = NULL;
     sd->backgrounds = NULL;
@@ -218,7 +216,7 @@ enna_mainmenu_append(Enna_Class_Activity *act)
     f = calloc(1, sizeof(Enna_Vfs_File));
     f->label = _((char*)eina_stringshare_add(act->label));
     f->icon = (char*)eina_stringshare_add(act->icon);
-    enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, act);
+    enna_list_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, act);
     evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, act);
     if (act->bg && act->bg[0] == '/')
         enna_mainmenu_background_add(act->name, act->bg, NULL);
