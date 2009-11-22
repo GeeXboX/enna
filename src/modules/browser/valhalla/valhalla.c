@@ -459,7 +459,12 @@ static Enna_Vfs_File *_class_vfs_get(void *cookie)
 /*                          Public Module API                                */
 /*****************************************************************************/
 
-Enna_Module_Api module_api =
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_browser_valhalla
+#endif /* USE_STATIC_MODULES */
+
+Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "browser_valhalla",
@@ -486,7 +491,8 @@ static Enna_Class_Vfs class =
     NULL,
 };
 
-void module_init(Enna_Module *em)
+void
+ENNA_MODULE_INIT(Enna_Module *em)
 {
     int flags = ENNA_CAPS_MUSIC;
 
@@ -507,7 +513,8 @@ void module_init(Enna_Module *em)
     enna_vfs_append(ENNA_MODULE_NAME, flags, &class);
 }
 
-void module_shutdown(Enna_Module *em)
+void
+ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     free(mod);
     mod = NULL;

@@ -38,17 +38,6 @@
 #define ENNA_MODULE_NAME "input_keyb"
 
 
-Enna_Module_Api module_api =
-{
-    ENNA_MODULE_VERSION,
-    ENNA_MODULE_NAME,
-    N_("Keyboard controls"),
-    NULL,
-    N_("Module to control enna from the keyboard"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-    
-};
-
 static const struct
 {
     const char *keyname;
@@ -183,13 +172,30 @@ _ecore_event_key_down_cb(void *data, int type, void *event)
 
 /* Module interface */
 
-void module_init(Enna_Module *em)
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_input_keyb
+#endif /* USE_STATIC_MODULES */
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    ENNA_MODULE_NAME,
+    N_("Keyboard controls"),
+    NULL,
+    N_("Module to control enna from the keyboard"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
+};
+
+void
+ENNA_MODULE_INIT(Enna_Module *em)
 {
     key_down_event_handler =
         ecore_event_handler_add (ECORE_EVENT_KEY_DOWN, _ecore_event_key_down_cb, NULL);
 }
 
-void module_shutdown(Enna_Module *em)
+void
+ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     ENNA_EVENT_HANDLER_DEL(key_down_event_handler);
 }

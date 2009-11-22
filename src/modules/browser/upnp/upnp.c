@@ -506,7 +506,12 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
 
 /* Module interface */
 
-Enna_Module_Api module_api =
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_browser_upnp
+#endif /* USE_STATIC_MODULES */
+
+Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "browser_upnp",
@@ -516,7 +521,8 @@ Enna_Module_Api module_api =
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
-void module_init (Enna_Module *em)
+void
+ENNA_MODULE_INIT(Enna_Module *em)
 {
     int flags = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
     GError *error;
@@ -561,7 +567,8 @@ void module_init (Enna_Module *em)
     enna_vfs_append (ENNA_MODULE_NAME, flags, &class_upnp);
 }
 
-void module_shutdown (Enna_Module *em)
+void
+ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     Enna_Module_UPnP *mod;
     upnp_media_server_t *srv;

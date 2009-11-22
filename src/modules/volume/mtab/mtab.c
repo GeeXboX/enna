@@ -146,7 +146,12 @@ mtab_parse(void)
 
 /* Module interface */
 
-Enna_Module_Api module_api = {
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_volume_mtab
+#endif /* USE_STATIC_MODULES */
+
+Enna_Module_Api ENNA_MODULE_API = {
     ENNA_MODULE_VERSION,
     "volume_mtab",
     N_("Volumes from mtab"),
@@ -156,13 +161,13 @@ Enna_Module_Api module_api = {
 };
 
 void
-module_init(Enna_Module *em)
+ENNA_MODULE_INIT(Enna_Module *em)
 {
     mtab_parse();
 }
 
 void
-module_shutdown(Enna_Module *em)
+ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     Enna_Volume *v;
     Eina_List *l, *l_next;

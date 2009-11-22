@@ -193,7 +193,12 @@ static Enna_Class_Vfs class_shoutcast =
 
 /* Module interface */
 
-Enna_Module_Api module_api =
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_browser_shoutcast
+#endif /* USE_STATIC_MODULES */
+
+Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "browser_shoutcast",
@@ -203,7 +208,8 @@ Enna_Module_Api module_api =
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
-void module_init(Enna_Module *em)
+void
+ENNA_MODULE_INIT(Enna_Module *em)
 {
     if (!em)
         return;
@@ -217,7 +223,8 @@ void module_init(Enna_Module *em)
     enna_vfs_append("shoutcast", ENNA_CAPS_MUSIC, &class_shoutcast);
 }
 
-void module_shutdown(Enna_Module *em)
+void
+ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     Enna_Module_Music *mod = em->mod;
 

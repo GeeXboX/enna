@@ -134,7 +134,12 @@ static void _remove_volumes_cb(void *data, Enna_Volume *v)
 
 /* Module interface */
 
-Enna_Module_Api module_api =
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_browser_cdda
+#endif /* USE_STATIC_MODULES */
+
+Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "browser_cdda",
@@ -144,7 +149,8 @@ Enna_Module_Api module_api =
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
-void module_init(Enna_Module *em)
+void
+ENNA_MODULE_INIT(Enna_Module *em)
 {
     if (!em)
         return;
@@ -160,7 +166,8 @@ void module_init(Enna_Module *em)
                                    _remove_volumes_cb, mod->cdda);
 }
 
-void module_shutdown(Enna_Module *em)
+void
+ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     Enna_Module_Cdda *mod;
 
