@@ -544,7 +544,7 @@ video_infos_display (Enna_Vfs_File *file, int delay)
                                   categories ? categories : "");
 
         /* length */
-        length = enna_metadata_meta_get(m, "duration", 1);
+        length = enna_metadata_meta_duration_get (m);
         edje_object_part_text_set(mod->o_edje, "length.label",
                                   length ? length : "");
 

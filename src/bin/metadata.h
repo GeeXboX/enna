@@ -42,5 +42,6 @@ char *enna_metadata_meta_get_all (Enna_Metadata *meta);
 void  enna_metadata_meta_free (Enna_Metadata *meta);
 void enna_metadata_set_position (Enna_Metadata *meta, double position);
 void enna_metadata_ondemand (const char *file);
+char *enna_metadata_meta_duration_get (Enna_Metadata *m);
 
 #endif /* METADATA_H */

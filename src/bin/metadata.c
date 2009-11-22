@@ -394,3 +394,65 @@ enna_metadata_ondemand (const char *file)
 
   valhalla_ondemand (vh, file);
 }
+
+char *
+enna_metadata_meta_duration_get (Enna_Metadata *m)
+{
+    buffer_t *buf;
+    char *runtime = NULL, *length;
+    char *duration = NULL;
+
+    if (!m)
+        return NULL;
+
+    buf = buffer_new();
+
+    length = enna_metadata_meta_get(m, "duration", 1);
+    if (!length)
+    {
+        runtime = enna_metadata_meta_get(m, "runtime", 1);
+        length = enna_metadata_meta_get(m, "length", 1);
+    }
+
+    /* special hack for nfo files which already have a computed duration */
+    if (length && strstr (length, "mn"))
+    {
+        duration = strdup (length);
+        goto end;
+    }
+
+    if (runtime || length)
+    {
+        int hh = 0, mm = 0;
+
+        if (runtime)
+        {
+            hh = (int) (atoi(runtime) / 60);
+            mm = (int) (atoi(runtime) - 60 * hh);
+        }
+        else if (length)
+        {
+            hh = (int) (atoi(length) / 3600 / 1000);
+            mm = (int) ((atoi(length) / 60 / 1000) - (60 * hh));
+        }
+
+        if (hh)
+            buffer_appendf(buf, ngettext("%.2d hour ", "%.2d hours ", hh), hh);
+        if (hh && mm)
+            buffer_append(buf, " ");
+        if (mm)
+            buffer_appendf(buf,
+                           ngettext("%.2d minute", "%.2d minutes", mm), mm);
+
+        duration = strdup (buf->buf);
+    }
+    else
+        duration = NULL;
+
+end:
+    ENNA_FREE(runtime);
+    ENNA_FREE(length);
+    buffer_free(buf);
+
+    return duration;
+}
