@@ -361,6 +361,10 @@ images {
          clip_to: "infos.clip";
          description {
             state: "default" 0.0;
+            visible: 0;
+         }
+         description {
+            state: "show" 0.0;
             color: 255 255 255 200;
             visible: 1;
 
@@ -575,6 +579,20 @@ images {
            target: "infos.panel.clip";
        }
 
+       program {
+           name: "separator,show";
+           signal: "separator,show";
+           source: "enna";
+           action: STATE_SET "show" 0.0;
+           target: "separator.h2";
+       }
+       program {
+           name: "separator,hide";
+           signal: "separator,hide";
+           source: "enna";
+           action: STATE_SET "default" 0.0;
+           target: "separator.h2";
+       }
 
        program {
            name: "resume,show";

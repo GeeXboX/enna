@@ -552,6 +552,8 @@ video_infos_display (Enna_Vfs_File *file, int delay)
         synopsis = enna_metadata_meta_get(m, "synopsis", 1);
         edje_object_part_text_set(mod->o_edje, "synopsis.textblock",
                                   synopsis ? synopsis : "");
+        edje_object_signal_emit (mod->o_edje, synopsis ?
+                                 "separator,show" : "separator,hide", "enna");
 
         ENNA_FREE(title);
         ENNA_FREE(categories);
@@ -585,6 +587,7 @@ video_infos_del (void)
     enna_video_picture_set (mod->o_backdrop, NULL, 0);
     enna_video_picture_set (mod->o_snapshot, NULL, 0);
     enna_video_flags_update (mod->o_video_flags, NULL);
+    edje_object_signal_emit (mod->o_edje, "separator,hide", "enna");
 }
 
 static void
