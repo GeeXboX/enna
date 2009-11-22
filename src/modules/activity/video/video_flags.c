@@ -123,6 +123,17 @@ static const struct {
     { NULL,                        0                   }
 };
 
+static const struct {
+    const char *name;
+    int min_height;
+} flag_media_mapping[] = {
+    { "flags/media/divx",     480 },
+    { "flags/media/dvd",      576 },
+    { "flags/media/hdtv",     720 },
+    { "flags/media/bluray",  1080 },
+    { NULL,                     0 }
+};
+
 static void
 video_flags_del(void *data, Evas *a, Evas_Object *obj, void *event_info)
 {
@@ -253,9 +264,36 @@ studio_unknown:
 static void
 media_flag_set (Smart_Data *sd, Enna_Metadata *m)
 {
-    /* detect media type: no idea how to that atm, alwasy use default one */
-    flag_set(sd, &sd->o_media,
-             "flags/media/default", "flags.media.swallow");
+    char *h_str, *flag = NULL;
+
+    if (!m)
+        goto media_unknown;
+
+    /* try to guess video flag, based on video resolution */
+    h_str = enna_metadata_meta_get(m, "height", 1);
+    if (h_str)
+    {
+        int i, h;
+
+        h = atoi (h_str);
+        for (i = 0; flag_media_mapping[i].name; i++)
+            if (h <= flag_media_mapping[i].min_height)
+            {
+                flag = strdup(flag_media_mapping[i].name);
+                break;
+            }
+
+        if (!flag)
+            flag = strdup("flags/media/divx");
+        ENNA_FREE(h_str);
+    }
+
+media_unknown:
+    if (!flag)
+        flag = strdup("flags/media/default");
+
+    flag_set(sd, &sd->o_media, flag, "flags.media.swallow");
+    ENNA_FREE(flag);
 }
 
 /****************************************************************************/
