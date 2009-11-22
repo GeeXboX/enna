@@ -7,6 +7,7 @@ images{
    image: "mainmenu_border_right.png" COMP;
    image: "black_frame.png" COMP;
    image: "shad_circ.png" COMP;
+   image: "left_pane.png" COMP;
 }
 
 fonts{
@@ -128,8 +129,8 @@ collections
                 rel2.to: "mainmenu.clip";
                 rel2.offset: 16 16;
                 image {
-                   normal: "black_frame.png";
-                   border: 8 8 8 8;
+                   normal: "left_pane.png";
+                   border: 0 8 0 0;
                 }
              }
          }

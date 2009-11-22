@@ -58,6 +58,7 @@ images/default_backdrop.png \
 images/icon_weather.png \
 images/ctrl_back.png \
 images/pointer.png \
+images/left_pane.png \
 images/flags/video/576i.png \
 images/flags/video/sd.png \
 images/flags/video/540i.png \
