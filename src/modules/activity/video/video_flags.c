@@ -233,7 +233,7 @@ studio_flag_set (Smart_Data *sd, Enna_Metadata *m)
         int i;
 
         for (i = 0; flag_studio_mapping[i].name; i++)
-            if (!strcmp (studio, flag_studio_mapping[i].fullname))
+            if (!strcasecmp (studio, flag_studio_mapping[i].fullname))
             {
                 flag = strdup(flag_studio_mapping[i].name);
                 break;
