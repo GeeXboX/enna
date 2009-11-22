@@ -81,7 +81,6 @@ struct _Enna_Module_Music
     Evas_Object *o_volume;
     Evas_Object *o_panel_lyrics;
     Ecore_Timer *timer_volume;
-    Ecore_Timer *timer;
     Enna_Module *em;
     MUSIC_STATE state;
     Enna_Playlist *enna_playlist;
@@ -373,25 +372,6 @@ _browse(void *data)
                               "lyrics.panel.swallow", mod->o_panel_lyrics);
 }
 
-
-static int
-_update_position_timer(void *data)
-{
-    if(enna_mediaplayer_state_get() != PAUSE)
-    {
-        double pos;
-        double length;
-        double percent;
-
-        length = enna_mediaplayer_length_get();
-        pos = enna_mediaplayer_position_get();
-        percent = (double) enna_mediaplayer_position_percent_get() / 100.0;
-        enna_smart_player_position_set(mod->o_mediaplayer, pos, length, percent);
-        enna_log(ENNA_MSG_EVENT, NULL, "Position %f %f",pos,length);
-    }
-    return 1;
-}
-
 static void
 _create_mediaplayer_gui()
 {
@@ -401,8 +381,6 @@ _create_mediaplayer_gui()
     edje_object_part_swallow(mod->o_edje, "mediaplayer.swallow", o);
     evas_object_show(o);
     mod->o_mediaplayer = o;
-
-    mod->timer = ecore_timer_add(1, _update_position_timer, NULL);
 
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
     edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
@@ -582,7 +560,6 @@ module_shutdown(Enna_Module *em)
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
-    ENNA_TIMER_DEL(mod->timer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
