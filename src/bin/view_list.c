@@ -75,6 +75,19 @@ _item_activated(void *data, Evas_Object *obj, void *event_info)
     }
 }
 
+static void
+_item_remove(Evas_Object *obj, List_Item *item)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+
+    if (!sd || !item) return;
+
+    sd->items = eina_list_remove(sd->items, item);
+    ENNA_FREE(item);
+
+    return;
+}
+
 /* List View */
 static char *
 _list_item_label_get(const void *data, Evas_Object *obj, const char *part)
@@ -201,6 +214,7 @@ enna_list_add(Evas *evas)
     elm_genlist_horizontal_mode_set(obj, ELM_LIST_COMPRESS);
     evas_object_show(obj);
     sd->obj = obj;
+
     evas_object_data_set(obj, "sd", sd);
 
     evas_object_smart_callback_add(obj, "clicked", _item_activated, sd);
@@ -388,4 +402,18 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
             break;
     }
     return ENNA_EVENT_CONTINUE;
+}
+
+void
+enna_list_clear(Evas_Object *obj)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    List_Item *item;
+    Eina_List *l, *l_next;
+
+    elm_genlist_clear(obj);
+    EINA_LIST_FOREACH_SAFE(sd->items, l, l_next, item)
+    {
+        _item_remove(obj, item);
+    }
 }
