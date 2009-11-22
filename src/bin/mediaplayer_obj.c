@@ -54,6 +54,7 @@ struct _Smart_Data
     Evas_Object *album;
     Evas_Object *title;
     Evas_Object *play_btn;
+    Ecore_Timer *timer;
     Ecore_Event_Handler *play_event_handler;
     Ecore_Event_Handler *stop_event_handler;
     Ecore_Event_Handler *next_event_handler;
@@ -62,6 +63,8 @@ struct _Smart_Data
     Ecore_Event_Handler *unpause_event_handler;
     Ecore_Event_Handler *seek_event_handler;
     Ecore_Event_Handler *eos_event_handler;
+    double pos;
+    double len;
 };
 
 /* local subsystem globals */
@@ -77,6 +80,8 @@ static int _eos_cb(void *data, int type, void *event);
 
 static void show_play_button(Smart_Data * sd);
 static void show_pause_button(Smart_Data * sd);
+
+static int _timer_cb(void *data);
 
 #define METADATA_APPLY                                          \
     Enna_Metadata *metadata;                                    \
@@ -107,6 +112,10 @@ _start_cb(void *data, int type, void *event)
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event PLAY ");
     METADATA_APPLY;
     edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,show", "enna");
+    ENNA_TIMER_DEL(sd->timer);
+    sd->timer = ecore_timer_add(1, _timer_cb, sd);
+    sd->len = enna_mediaplayer_length_get();
+    sd->pos = 0.0;
     return 1;
 }
 
@@ -117,6 +126,8 @@ _stop_cb(void *data, int type, void *event)
 
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event STOP ");
     edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,hide", "enna");
+    sd->pos = 0.0;
+    sd->len = 0.0;
     media_cover_hide(sd);
 
     return 1;
@@ -175,6 +186,39 @@ _eos_cb(void *data, int type, void *event)
     return 1;
 }
 
+/* Update position Timer callback */
+static int
+_timer_cb(void *data)
+{
+    Smart_Data *sd = data;
+
+    sd->pos += 1.0;
+
+    if(enna_mediaplayer_state_get() == PLAYING)
+    {
+        long ph, pm, ps, lh, lm, ls;
+        char buf[256];
+        char buf2[256];
+
+        /* FIXME : create a dedicated function to do that */
+        lh = sd->len / 3600000;
+        lm = sd->len / 60 - (lh * 60);
+        ls = sd->len - (lm * 60);
+        ph = sd->pos / 3600;
+        pm = sd->pos / 60 - (ph * 60);
+        ps = sd->pos - (pm * 60);
+        snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
+        snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
+
+        elm_label_label_set(sd->total_time, buf2);
+        elm_label_label_set(sd->current_time, buf);
+        if (sd->len)
+            elm_slider_value_set(sd->sl, sd->pos/sd->len * 100.0);
+        enna_log(ENNA_MSG_EVENT, NULL, "Position %f %f", sd->pos, sd->len);
+    }
+
+    return 1;
+}
 
 /* events from buttons*/
 static void
@@ -217,9 +261,11 @@ static void
 _slider_seek_cb(void *data, Evas_Object *obj, void *event_info)
 {
     double value;
+    Smart_Data *sd = data;
 
-    value = elm_slider_value_get(data);
+    value = elm_slider_value_get(sd->sl);
     enna_mediaplayer_seek(value / 100.0);
+    sd->pos = enna_mediaplayer_position_get();
 }
 
 static void
@@ -248,26 +294,8 @@ enna_smart_player_position_set(Evas_Object *obj,
 {
     Smart_Data *sd;
 
-    long ph, pm, ps, lh, lm, ls;
-    char buf[256];
-    char buf2[256];
-
     sd = evas_object_data_get(obj, "sd");
     if (!sd) return;
-
-    lh = len / 3600000;
-    lm = len / 60 - (lh * 60);
-    ls = len - (lm * 60);
-    ph = pos / 3600;
-    pm = pos / 60 - (ph * 60);
-    ps = pos - (pm * 60);
-    snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
-    snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
-
-    elm_label_label_set(sd->total_time, buf2);
-    elm_label_label_set(sd->current_time, buf);
-
-    elm_slider_value_set(sd->sl, pos/len * 100.0);
 }
 
 static void
@@ -459,7 +487,7 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     evas_object_size_hint_weight_set(sl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_box_pack_end(sl_box, sl);
     evas_object_show(sl);
-    evas_object_smart_callback_add(sl, "delay,changed", _slider_seek_cb, sl);
+    evas_object_smart_callback_add(sl, "delay,changed", _slider_seek_cb, sd);
     sd->sl = sl;
 
     lb = elm_label_add(layout);
