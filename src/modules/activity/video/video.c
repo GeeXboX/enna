@@ -72,6 +72,7 @@ static void _return_to_video_info_gui();
 static void _seek_video(double value);
 
 static int _eos_cb(void *data, int type, void *event);
+static void video_infos_del (void);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
 typedef enum _VIDEO_STATE VIDEO_STATE;
@@ -393,7 +394,10 @@ browser_view_event (enna_input event)
     }
 
     if (event == ENNA_INPUT_EXIT)
+    {
+        video_infos_del ();
         update_movies_counter(NULL);
+    }
     enna_browser_input_feed (mod->o_browser, event);
 }
 
