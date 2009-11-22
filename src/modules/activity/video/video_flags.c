@@ -73,6 +73,7 @@ static const struct {
     const char *name;
     const char *fullname;
 } flag_studio_mapping[] = {
+    /* Movie Studios */
     { "flags/studio/fox",          "FoX"               },
     { "flags/studio/artisan",      "Artisan"           },
     { "flags/studio/carolco",      "Carolco"           },
@@ -100,6 +101,7 @@ static const struct {
     { "flags/studio/universal",    "Universal"         },
     { "flags/studio/warner",       "WarnerBros"        },
 
+    /* TV Networks */
 #if 0
     /* We dont yet have logos for these TV show networks */
     { "",                          "ABC"               },
