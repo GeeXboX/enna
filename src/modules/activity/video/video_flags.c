@@ -99,6 +99,25 @@ static const struct {
     { "flags/studio/united",       "United"            },
     { "flags/studio/universal",    "Universal"         },
     { "flags/studio/warner",       "WarnerBros"        },
+
+#if 0
+    /* We dont yet have logos for these TV show networks */
+    { "",                          "ABC"               },
+    { "",                          "BBC One"           },
+    { "",                          "CBS"               },
+    { "",                          "Cartoon Network"   },
+    { "",                          "Channel 4"         },
+    { "",                          "CityTV"            },
+    { "",                          "Comedy Central"    },
+    { "",                          "ITV1"              },
+    { "",                          "LIVING"            },
+    { "",                          "NBC"               },
+    { "",                          "Showtime"          },
+    { "",                          "Slice"             },
+    { "",                          "Syndicated"        },
+    { "",                          "Wah Lai Toi"       },
+#endif
+
     { NULL,                        0                   }
 };
 
