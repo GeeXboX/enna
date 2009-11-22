@@ -53,6 +53,7 @@
 #include "picture.h"
 #include "panel_infos.h"
 #include "video.h"
+#include "video_flags.h"
 #include "resume.h"
 #include "volumes.h"
 #include "buffer.h"
@@ -92,10 +93,7 @@ struct _Enna_Module_Video
     Evas_Object *o_snapshot;
     Evas_Object *o_panel_infos;
     Evas_Object *o_resume;
-    Evas_Object *o_flag_video;
-    Evas_Object *o_flag_audio;
-    Evas_Object *o_flag_studio;
-    Evas_Object *o_flag_media;
+    Evas_Object *o_video_flags;
     Evas_Object *o_mediaplayer;
     Enna_Module *em;
     VIDEO_STATE state;
@@ -356,171 +354,6 @@ snapshot_show (Enna_Metadata *m, int dir)
     ENNA_FREE(file);
 }
 
-/****************************************************************************/
-/*                          Information Flags                               */
-/****************************************************************************/
-
-static void
-flag_set (Evas_Object **obj, const char *icon, const char *edje)
-{
-    if (!obj || !icon || !edje)
-        return;
-
-    ENNA_OBJECT_DEL(*obj);
-    *obj = edje_object_add(enna->evas);
-    edje_object_file_set(*obj, enna_config_theme_get(), icon);
-    evas_object_show(*obj);
-    edje_object_part_swallow(mod->o_edje, edje, *obj);
-}
-
-static const struct {
-    const char *name;
-    int min_height;
-} flag_video_mapping[] = {
-    { "flags/video/480p",     480 },
-    { "flags/video/540p",     540 },
-    { "flags/video/576p",     576 },
-    { "flags/video/720p",     720 },
-    { "flags/video/1080p",   1080 },
-    { NULL,                     0 }
-};
-
-static void
-video_flag_set (Enna_Metadata *m)
-{
-    char *h_str, *flag = NULL;
-
-    if (!m)
-        goto video_unknown;
-
-    /* try to guess video flag, based on video resolution */
-    h_str = enna_metadata_meta_get(m, "height", 1);
-    if (h_str)
-    {
-        int i, h;
-
-        h = atoi (h_str);
-        for (i = 0; flag_video_mapping[i].name; i++)
-            if (h <= flag_video_mapping[i].min_height)
-            {
-                flag = strdup(flag_video_mapping[i].name);
-                break;
-            }
-
-        if (!flag)
-            flag = strdup("flags/video/sd");
-        ENNA_FREE(h_str);
-    }
-
-video_unknown:
-    if (!flag)
-        flag = strdup("flags/video/default");
-
-    flag_set(&mod->o_flag_video, flag, "infos.flags.video.swallow");
-    ENNA_FREE(flag);
-}
-
-static const struct {
-    const char *name;
-    int channels;
-} flag_audio_mapping[] = {
-    { "flags/audio/mono",     1 },
-    { "flags/audio/dd20",     2 },
-    { "flags/audio/dd51",     5 },
-    { "flags/audio/dd71",     7 },
-    { NULL,                   0 }
-};
-
-static void
-audio_flag_set (Enna_Metadata *m)
-{
-    char *c_str, *flag = NULL;
-
-    if (!m)
-        goto audio_unknown;
-
-    /* try to guess audio flag (naive method atm) */
-    c_str = enna_metadata_meta_get(m, "audio_channels", 1);
-    if (c_str)
-    {
-        int i, c;
-
-        c = atoi (c_str);
-        for (i = 0; flag_audio_mapping[i].name; i++)
-            if (c <= flag_audio_mapping[i].channels)
-            {
-                flag = strdup(flag_audio_mapping[i].name);
-                break;
-            }
-
-        ENNA_FREE(c_str);
-    }
-
-audio_unknown:
-    if (!flag)
-        flag = strdup("flags/audio/default");
-
-    flag_set(&mod->o_flag_audio, flag, "infos.flags.audio.swallow");
-    ENNA_FREE(flag);
-}
-
-static const struct {
-    const char *name;
-    const char *fullname;
-} flag_studio_mapping[] = {
-    { NULL,                   0 }
-};
-
-static void
-studio_flag_set (Enna_Metadata *m)
-{
-    char *studio, *flag = NULL;
-
-    if (!m)
-        goto studio_unknown;
-
-    /* try to guess studio flag */
-    studio = enna_metadata_meta_get(m, "studio", 1);
-    if (studio)
-    {
-        int i;
-
-        for (i = 0; flag_studio_mapping[i].name; i++)
-            if (!strcmp (studio, flag_studio_mapping[i].fullname))
-            {
-                flag = strdup(flag_studio_mapping[i].name);
-                break;
-            }
-
-        ENNA_FREE(studio);
-    }
-
-studio_unknown:
-    if (!flag)
-        flag = strdup("flags/studio/default");
-
-    flag_set(&mod->o_flag_studio, flag, "infos.flags.studio.swallow");
-    ENNA_FREE(flag);
-}
-
-static void
-media_flag_set (Enna_Metadata *m)
-{
-    /* detect media type: no idea how to that atm, alwasy use default one */
-    flag_set(&mod->o_flag_media,
-             "flags/media/default", "infos.flags.media.swallow");
-}
-
-static void
-infos_flags_set (Enna_Metadata *m)
-{
-    video_flag_set(m);
-    audio_flag_set(m);
-    studio_flag_set(m);
-    media_flag_set(m);
-}
-
-
 static void
 panel_infos_display (int show)
 {
@@ -699,7 +532,7 @@ browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
 
     backdrop_show (m);
     snapshot_show (m, ev->file->is_directory);
-    infos_flags_set (m);
+    enna_video_flags_update (mod->o_video_flags, m);
 
     enna_panel_infos_set_cover(mod->o_panel_infos, m);
     enna_panel_infos_set_text(mod->o_panel_infos, m);
@@ -779,6 +612,11 @@ browse (void *data)
     edje_object_part_swallow (mod->o_edje,
                               "resume.swallow", mod->o_resume);
 
+    ENNA_OBJECT_DEL(mod->o_video_flags);
+    mod->o_video_flags = enna_video_flags_add(enna->evas);
+    edje_object_part_swallow (mod->o_edje,
+                              "infos.flags.swallow", mod->o_video_flags);
+
     mod->state = BROWSER_VIEW;
 }
 
@@ -817,7 +655,7 @@ _create_menu (void)
     popup_resume_display (0);
     enna_video_picture_set (mod->o_backdrop, NULL, 0);
     enna_video_picture_set (mod->o_snapshot, NULL, 0);
-    infos_flags_set (NULL);
+    enna_video_flags_update (mod->o_video_flags, NULL);
 }
 
 static void
@@ -942,10 +780,7 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_snapshot);
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     ENNA_OBJECT_DEL(mod->o_resume);
-    ENNA_OBJECT_DEL(mod->o_flag_video);
-    ENNA_OBJECT_DEL(mod->o_flag_audio);
-    ENNA_OBJECT_DEL(mod->o_flag_studio);
-    ENNA_OBJECT_DEL(mod->o_flag_media);
+    ENNA_OBJECT_DEL(mod->o_video_flags);
     ENNA_FREE(mod->o_current_uri);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);

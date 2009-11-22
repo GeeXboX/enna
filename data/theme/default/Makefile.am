@@ -236,6 +236,7 @@ activity_configuration.edc \
 slideshow.edc \
 list.edc \
 activity_video.edc \
+activity_video_flags.edc \
 popup.edc \
 notification_volume.edc \
 activity_games.edc \

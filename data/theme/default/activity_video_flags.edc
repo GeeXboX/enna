@@ -1,0 +1,74 @@
+group {
+   name: "activity/video/flags";
+
+   parts {
+
+      part {
+         name: "flags.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+         }
+      }
+
+      part {
+         name: "flags.video.swallow";
+         type: SWALLOW;
+         mouse_events: 0;
+         clip_to: flags.clip;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0.05 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.20 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+      part {
+         name: "flags.audio.swallow";
+         type: SWALLOW;
+         mouse_events: 0;
+         clip_to: flags.clip;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0.30 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.45 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+      part {
+         name: "flags.studio.swallow";
+         type: SWALLOW;
+         mouse_events: 0;
+         clip_to: flags.clip;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0.55 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.70 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+      part {
+         name: "flags.media.swallow";
+         type: SWALLOW;
+         mouse_events: 0;
+         clip_to: flags.clip;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0.80 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.95 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+   }
+
+}
