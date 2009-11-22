@@ -570,6 +570,20 @@ video_infos_display (Enna_Vfs_File *file, int delay)
 }
 
 static void
+video_infos_del (void)
+{
+    edje_object_part_text_set (mod->o_edje, "title.label", "");
+    edje_object_part_text_set (mod->o_edje, "genre.label", "");
+    edje_object_part_text_set (mod->o_edje, "length.label", "");
+    edje_object_part_text_set (mod->o_edje, "synopsis.label", "");
+    panel_infos_display (0);
+    popup_resume_display (0);
+    enna_video_picture_set (mod->o_backdrop, NULL, 0);
+    enna_video_picture_set (mod->o_snapshot, NULL, 0);
+    enna_video_flags_update (mod->o_video_flags, NULL);
+}
+
+static void
 browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
@@ -670,15 +684,7 @@ _create_menu (void)
     enna_list_select_nth(o, 0);
     mod->o_list = o;
     edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
-    edje_object_part_text_set (mod->o_edje, "title.label", "");
-    edje_object_part_text_set (mod->o_edje, "genre.label", "");
-    edje_object_part_text_set (mod->o_edje, "length.label", "");
-    edje_object_part_text_set (mod->o_edje, "synopsis.label", "");
-    panel_infos_display (0);
-    popup_resume_display (0);
-    enna_video_picture_set (mod->o_backdrop, NULL, 0);
-    enna_video_picture_set (mod->o_snapshot, NULL, 0);
-    enna_video_flags_update (mod->o_video_flags, NULL);
+    video_infos_del ();
 }
 
 static void
