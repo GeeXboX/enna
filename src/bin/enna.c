@@ -254,7 +254,7 @@ static int _create_gui(void)
 
     // main window
     enna->win = elm_win_add(NULL, "enna", ELM_WIN_BASIC);
-    elm_win_title_set(enna->win, "enna HTPC (elm)");
+    elm_win_title_set(enna->win, "Enna MediaCenter");
     enna->run_fullscreen = enna_config->fullscreen | run_fullscreen;
     elm_win_fullscreen_set(enna->win, enna->run_fullscreen);
     evas_object_smart_callback_add(enna->win, "delete-request",
