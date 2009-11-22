@@ -44,7 +44,6 @@ typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
-    Evas_Coord x, y, w, h;
     Evas_Object *o_edje;
     Evas_Object *o_img;
     Evas_Object *o_rating;
