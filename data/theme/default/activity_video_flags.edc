@@ -14,15 +14,47 @@ group {
       }
 
       part {
+         name: "flags.video.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1.relative: 0.025 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.225 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+      part {
          name: "flags.video.swallow";
          type: SWALLOW;
          mouse_events: 0;
-         clip_to: flags.clip;
+         clip_to: flags.video.clip;
          description {
             state: "default" 0.0;
-            rel1.relative: 0.05 0.00;
+
+            rel1.relative: 0 0;
+            rel1.to: "flags.video.clip";
+            rel2.relative: 1 1;
+            rel2.to: "flags.video.clip";
+
+            aspect: 1.48 1;
+            aspect_preference: BOTH;
+         }
+      }
+
+      part {
+         name: "flags.audio.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1.relative: 0.275 0.00;
             rel1.to: "flags.clip";
-            rel2.relative: 0.20 1.00;
+            rel2.relative: 0.475 1.00;
             rel2.to: "flags.clip";
          }
       }
@@ -31,12 +63,30 @@ group {
          name: "flags.audio.swallow";
          type: SWALLOW;
          mouse_events: 0;
-         clip_to: flags.clip;
+         clip_to: flags.audio.clip;
          description {
             state: "default" 0.0;
-            rel1.relative: 0.30 0.00;
+
+            rel1.relative: 0 0;
+            rel1.to: "flags.audio.clip";
+            rel2.relative: 1 1;
+            rel2.to: "flags.audio.clip";
+
+            aspect: 4.38 1;
+            aspect_preference: BOTH;
+         }
+      }
+
+      part {
+         name: "flags.studio.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1.relative: 0.525 0.00;
             rel1.to: "flags.clip";
-            rel2.relative: 0.45 1.00;
+            rel2.relative: 0.725 1.00;
             rel2.to: "flags.clip";
          }
       }
@@ -45,12 +95,30 @@ group {
          name: "flags.studio.swallow";
          type: SWALLOW;
          mouse_events: 0;
-         clip_to: flags.clip;
+         clip_to: flags.studio.clip;
          description {
             state: "default" 0.0;
-            rel1.relative: 0.55 0.00;
+
+            rel1.relative: 0 0;
+            rel1.to: "flags.studio.clip";
+            rel2.relative: 1 1;
+            rel2.to: "flags.studio.clip";
+
+            aspect: 1.48 1;
+            aspect_preference: BOTH;
+         }
+      }
+
+      part {
+         name: "flags.media.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1.relative: 0.775 0.00;
             rel1.to: "flags.clip";
-            rel2.relative: 0.70 1.00;
+            rel2.relative: 0.975 1.00;
             rel2.to: "flags.clip";
          }
       }
@@ -59,13 +127,17 @@ group {
          name: "flags.media.swallow";
          type: SWALLOW;
          mouse_events: 0;
-         clip_to: flags.clip;
+         clip_to: flags.media.clip;
          description {
             state: "default" 0.0;
-            rel1.relative: 0.80 0.00;
-            rel1.to: "flags.clip";
-            rel2.relative: 0.95 1.00;
-            rel2.to: "flags.clip";
+
+            rel1.relative: 0 0;
+            rel1.to: "flags.media.clip";
+            rel2.relative: 1 1;
+            rel2.to: "flags.media.clip";
+
+            aspect: 3.11 1;
+            aspect_preference: BOTH;
          }
       }
 
