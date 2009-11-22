@@ -604,14 +604,14 @@ movie_start_playback (int resume)
 
     enna_mediaplayer_stop();
     enna_mediaplayer_play (mod->enna_playlist);
+#if 0
     if (resume)
     {
         Enna_Metadata *m;
         m = enna_mediaplayer_metadata_get (mod->enna_playlist);
-#if 0
         enna_mediaplayer_position_set (m->position);
-#endif
     }
+#endif
     popup_resume_display (0);
 }
 
