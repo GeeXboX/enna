@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = tv
@@ -24,8 +26,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_tv.la
 
-activity_tv_la_SOURCES= \
-tv.c
+activity_tv_la_SOURCES = $(SRCS_ACTIVITY_TV)
 
 activity_tv_la_LIBADD = @ENNA_LIBS@
 activity_tv_la_LDFLAGS = -module -avoid-version

@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = keyb
@@ -20,8 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = input_keyb.la
 
-input_keyb_la_SOURCES= \
-keyb.c
+input_keyb_la_SOURCES = $(SRCS_INPUT_KEYB)
 
 input_keyb_la_LIBADD = @ENNA_LIBS@
 input_keyb_la_LDFLAGS = -module -avoid-version

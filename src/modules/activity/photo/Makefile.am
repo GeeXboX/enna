@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = photo
@@ -20,13 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_photo.la
 
-activity_photo_la_SOURCES= \
-photo.c \
-photo.h \
-photo_panel_infos.c \
-photo_panel_infos.h \
-photo_slideshow_view.c \
-photo_slideshow_view.h
+activity_photo_la_SOURCES = $(SRCS_ACTIVITY_PHOTO)
 
 activity_photo_la_LIBADD = @ENNA_LIBS@
 activity_photo_la_LDFLAGS = -module -avoid-version

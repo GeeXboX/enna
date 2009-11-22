@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = lirc
@@ -20,8 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = input_lirc.la
 
-input_lirc_la_SOURCES= \
-lirc.c
+input_lirc_la_SOURCES = $(SRCS_INPUT_LIRC)
 
 input_lirc_la_LIBADD = @ENNA_LIBS@ @LIRC_LIBS@
 input_lirc_la_LDFLAGS = -module -avoid-version

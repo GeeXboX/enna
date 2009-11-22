@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = podcast
@@ -22,8 +24,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = browser_podcast.la
 
-browser_podcast_la_SOURCES= \
-podcasts.c
+browser_podcast_la_SOURCES = $(SRCS_BROWSER_PODCASTS)
 
 browser_podcast_la_LIBADD = @ENNA_LIBS@ @LIBCURL_LIBS@ @LIBXML2_LIBS@
 browser_podcast_la_LDFLAGS = -module -avoid-version

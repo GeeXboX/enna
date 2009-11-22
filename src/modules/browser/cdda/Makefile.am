@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = cdda
@@ -20,8 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = browser_cdda.la
 
-browser_cdda_la_SOURCES= \
-cdda.c
+browser_cdda_la_SOURCES = $(SRCS_BROWSER_CDDA)
 
 browser_cdda_la_LIBADD = @ENNA_LIBS@
 browser_cdda_la_LDFLAGS = -module -avoid-version

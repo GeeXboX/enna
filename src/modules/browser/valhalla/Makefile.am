@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = valhalla
@@ -20,8 +22,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = browser_valhalla.la
 
-browser_valhalla_la_SOURCES= \
-valhalla.c
+browser_valhalla_la_SOURCES = $(SRCS_BROWSER_VALHALLA)
 
 browser_valhalla_la_LIBADD = @ENNA_LIBS@ @VALHALLA_LIBS@
 browser_valhalla_la_LDFLAGS = -module -avoid-version

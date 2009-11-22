@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = games
@@ -21,8 +23,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_games.la
 
-activity_games_la_SOURCES= \
-games.c
+activity_games_la_SOURCES = $(SRCS_ACTIVITY_GAMES)
 
 activity_games_la_LIBADD = @ENNA_LIBS@ @EFREET_LIBS@
 activity_games_la_LDFLAGS = -module -avoid-version

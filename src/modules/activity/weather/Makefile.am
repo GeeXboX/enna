@@ -1,3 +1,5 @@
+include ./config.mak
+
 MAINTAINERCLEANFILES = Makefile.in
 
 MODULE = weather
@@ -22,8 +24,7 @@ pkgdir = $(libdir)/enna/modules
 
 pkg_LTLIBRARIES = activity_weather.la
 
-activity_weather_la_SOURCES= \
-weather.c
+activity_weather_la_SOURCES = $(SRCS_ACTIVITY_WEATHER)
 
 activity_weather_la_LIBADD = @ENNA_LIBS@ @LIBCURL_LIBS@ @LIBXML2_LIBS@
 activity_weather_la_LDFLAGS = -module -avoid-version
