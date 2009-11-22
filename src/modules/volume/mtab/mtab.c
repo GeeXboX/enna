@@ -59,7 +59,7 @@ mtab_add_mnt(MTAB_TYPE t, char *fsname, char *dir)
     Enna_Volume *v;
     char name[512], tmp[1024], srv[128], share[128];
     char *p;
-    ENNA_VOLUME_TYPE type;
+    ENNA_VOLUME_TYPE type = VOLUME_TYPE_UNKNOWN;
 
     if(t == MTAB_TYPE_NONE)
         return;
