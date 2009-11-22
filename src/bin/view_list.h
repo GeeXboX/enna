@@ -43,6 +43,7 @@ Eina_Bool enna_list_input_feed(Evas_Object *obj, enna_input event);
 void * enna_list_selected_data_get(Evas_Object *obj);
 int enna_list_jump_label(Evas_Object *obj, const char *label);
 void enna_list_jump_ascii(Evas_Object *obj, char k);
+void enna_list_clear(Evas_Object *obj);
 
 #endif /* LIST_H */
 
