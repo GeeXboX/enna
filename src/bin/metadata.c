@@ -221,6 +221,15 @@ enna_metadata_db_init (void)
               enna_util_user_home_get (), PATH_FANARTS);
     valhalla_downloader_dest_set (vh, VALHALLA_DL_FAN_ART, dst);
 
+    /* grabbers */
+    value = get_lang();
+    if (value)
+    {
+        if (strcmp(value, "fr"))
+            valhalla_grabber_state_set(vh, "allocine", 0);
+        free(value);
+    }
+
     rc = valhalla_run(vh, scan_loop, scan_sleep, scan_priority);
     if (rc)
     {
