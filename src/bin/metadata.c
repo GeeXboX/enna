@@ -69,7 +69,7 @@ static valhalla_t *vh = NULL;
     }                                                          \
 
 static void
-ondemand_cb (const char *file, valhalla_event_t e, const char *id, void *data)
+ondemand_cb(const char *file, valhalla_event_t e, const char *id, void *data)
 {
     switch (e)
     {
@@ -89,7 +89,7 @@ ondemand_cb (const char *file, valhalla_event_t e, const char *id, void *data)
 }
 
 static void
-enna_metadata_db_init (void)
+enna_metadata_db_init(void)
 {
     int rc;
     Enna_Config_Data *cfgdata;
@@ -180,9 +180,9 @@ enna_metadata_db_init (void)
         goto err;
 
     /* Add file suffixes */
-    SUFFIX_ADD (music_filters);
-    SUFFIX_ADD (video_filters);
-    SUFFIX_ADD (photo_filters);
+    SUFFIX_ADD(music_filters);
+    SUFFIX_ADD(video_filters);
+    SUFFIX_ADD(photo_filters);
 
     /* Add paths */
     for (l = path; l; l = l->next)
@@ -200,9 +200,9 @@ enna_metadata_db_init (void)
     for (l = bl_words; l; l = l->next)
     {
         const char *keyword = l->data;
-        valhalla_bl_keyword_add (vh, keyword);
-        enna_log (ENNA_MSG_EVENT, MODULE_NAME,
-                  "Blacklisting '%s' from search", keyword);
+        valhalla_bl_keyword_add(vh, keyword);
+        enna_log(ENNA_MSG_EVENT, MODULE_NAME,
+                 "Blacklisting '%s' from search", keyword);
     }
     if (bl_words)
     {
@@ -211,15 +211,15 @@ enna_metadata_db_init (void)
     }
 
     /* set file download destinations */
-    memset (dst, '\0', sizeof (dst));
-    snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_COVERS);
-    valhalla_downloader_dest_set (vh, VALHALLA_DL_COVER, dst);
+    memset(dst, '\0', sizeof(dst));
+    snprintf(dst, sizeof(dst), "%s/.enna/%s",
+             enna_util_user_home_get(), PATH_COVERS);
+    valhalla_downloader_dest_set(vh, VALHALLA_DL_COVER, dst);
 
-    memset (dst, '\0', sizeof (dst));
-    snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_FANARTS);
-    valhalla_downloader_dest_set (vh, VALHALLA_DL_FAN_ART, dst);
+    memset(dst, '\0', sizeof(dst));
+    snprintf(dst, sizeof(dst), "%s/.enna/%s",
+             enna_util_user_home_get(), PATH_FANARTS);
+    valhalla_downloader_dest_set(vh, VALHALLA_DL_FAN_ART, dst);
 
     /* grabbers */
     value = get_lang();
@@ -253,50 +253,50 @@ enna_metadata_db_init (void)
 }
 
 static void
-enna_metadata_db_uninit (void)
+enna_metadata_db_uninit(void)
 {
-    valhalla_uninit (vh);
+    valhalla_uninit(vh);
     vh = NULL;
 }
 
 void
-enna_metadata_init (void)
+enna_metadata_init(void)
 {
     char dst[1024];
 
     /* try to create backdrops directory storage */
-    memset (dst, '\0', sizeof (dst));
-    snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_FANARTS);
-    if (!ecore_file_is_dir (dst))
-        ecore_file_mkdir (dst);
+    memset(dst, '\0', sizeof(dst));
+    snprintf(dst, sizeof(dst), "%s/.enna/%s",
+             enna_util_user_home_get(), PATH_FANARTS);
+    if (!ecore_file_is_dir(dst))
+        ecore_file_mkdir(dst);
 
     /* try to create covers directory storage */
-    memset (dst, '\0', sizeof (dst));
-    snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_COVERS);
-    if (!ecore_file_is_dir (dst))
-        ecore_file_mkdir (dst);
+    memset(dst, '\0', sizeof(dst));
+    snprintf(dst, sizeof(dst), "%s/.enna/%s",
+             enna_util_user_home_get(), PATH_COVERS);
+    if (!ecore_file_is_dir(dst))
+        ecore_file_mkdir(dst);
 
     /* init database and scanner */
-    enna_metadata_db_init ();
+    enna_metadata_db_init();
 }
 
 void
-enna_metadata_shutdown (void)
+enna_metadata_shutdown(void)
 {
     /* uninit database and scanner */
-    enna_metadata_db_uninit ();
+    enna_metadata_db_uninit();
 }
 
 void *
-enna_metadata_get_db (void)
+enna_metadata_get_db(void)
 {
     return vh;
 }
 
 Enna_Metadata *
-enna_metadata_meta_new (const char *file)
+enna_metadata_meta_new(const char *file)
 {
   valhalla_db_filemeta_t *m = NULL;
   int shift = 0;
@@ -304,27 +304,27 @@ enna_metadata_meta_new (const char *file)
   if (!vh || !file)
       return NULL;
 
-  if (!strncmp (file, "file://", 7))
+  if (!strncmp(file, "file://", 7))
       shift = 7;
 
   enna_log (ENNA_MSG_EVENT,
             MODULE_NAME, "Request for metadata on %s", file + shift);
-  valhalla_db_file_get (vh, 0, file + shift, NULL, &m);
+  valhalla_db_file_get(vh, 0, file + shift, NULL, &m);
 
   return (Enna_Metadata *) m;
 }
 
 void
-enna_metadata_meta_free (Enna_Metadata *meta)
+enna_metadata_meta_free(Enna_Metadata *meta)
 {
     valhalla_db_filemeta_t *m = (void *) meta;
 
     if (m)
-        VALHALLA_DB_FILEMETA_FREE (m);
+        VALHALLA_DB_FILEMETA_FREE(m);
 }
 
 char *
-enna_metadata_meta_get (Enna_Metadata *meta, const char *name, int max)
+enna_metadata_meta_get(Enna_Metadata *meta, const char *name, int max)
 {
   valhalla_db_filemeta_t *m, *n;
   int count = 0;
@@ -334,18 +334,18 @@ enna_metadata_meta_get (Enna_Metadata *meta, const char *name, int max)
   if (!meta || !name)
       return NULL;
 
-  b = buffer_new ();
+  b = buffer_new();
   m = (valhalla_db_filemeta_t *) meta;
   n = m;
 
   while (n)
   {
-      if (n->meta_name && !strcmp (n->meta_name, name))
+      if (n->meta_name && !strcmp(n->meta_name, name))
       {
           if (count == 0)
-              buffer_append (b, n->data_value);
+              buffer_append(b, n->data_value);
           else
-              buffer_appendf (b, ", %s", n->data_value);
+              buffer_appendf(b, ", %s", n->data_value);
           count++;
           if (count >= max)
               break;
@@ -353,18 +353,18 @@ enna_metadata_meta_get (Enna_Metadata *meta, const char *name, int max)
       n = n->next;
   }
 
-  str = b->buf ? strdup (b->buf) : NULL;
+  str = b->buf ? strdup(b->buf) : NULL;
   if (str)
-      enna_log (ENNA_MSG_EVENT, MODULE_NAME,
-                "Requested metadata '%s' is associated to value '%s'",
-                name, str);
-  buffer_free (b);
+      enna_log(ENNA_MSG_EVENT, MODULE_NAME,
+               "Requested metadata '%s' is associated to value '%s'",
+               name, str);
+  buffer_free(b);
 
   return str;
 }
 
 char *
-enna_metadata_meta_get_all (Enna_Metadata *meta)
+enna_metadata_meta_get_all(Enna_Metadata *meta)
 {
   valhalla_db_filemeta_t *m, *n;
   buffer_t *b;
@@ -373,39 +373,39 @@ enna_metadata_meta_get_all (Enna_Metadata *meta)
   if (!meta)
       return NULL;
 
-  b = buffer_new ();
+  b = buffer_new();
   m = (valhalla_db_filemeta_t *) meta;
   n = m;
 
   while (n)
   {
-      buffer_appendf (b, "%s: %s\n", n->meta_name, n->data_value);
+      buffer_appendf(b, "%s: %s\n", n->meta_name, n->data_value);
       n = n->next;
   }
 
-  str = b->buf ? strdup (b->buf) : NULL;
-  buffer_free (b);
+  str = b->buf ? strdup(b->buf) : NULL;
+  buffer_free(b);
 
   return str;
 }
 
 void
-enna_metadata_set_position (Enna_Metadata *meta, double position)
+enna_metadata_set_position(Enna_Metadata *meta, double position)
 {
     /* to be implemented */
 }
 
 void
-enna_metadata_ondemand (const char *file)
+enna_metadata_ondemand(const char *file)
 {
   if (!vh || !file)
     return;
 
-  valhalla_ondemand (vh, file);
+  valhalla_ondemand(vh, file);
 }
 
 char *
-enna_metadata_meta_duration_get (Enna_Metadata *m)
+enna_metadata_meta_duration_get(Enna_Metadata *m)
 {
     buffer_t *buf;
     char *runtime = NULL, *length;
@@ -424,9 +424,9 @@ enna_metadata_meta_duration_get (Enna_Metadata *m)
     }
 
     /* special hack for nfo files which already have a computed duration */
-    if (length && strstr (length, "mn"))
+    if (length && strstr(length, "mn"))
     {
-        duration = strdup (length);
+        duration = strdup(length);
         goto end;
     }
 
@@ -453,7 +453,7 @@ enna_metadata_meta_duration_get (Enna_Metadata *m)
             buffer_appendf(buf,
                            ngettext("%.2d minute", "%.2d minutes", mm), mm);
 
-        duration = strdup (buf->buf);
+        duration = strdup(buf->buf);
     }
     else
         duration = NULL;
