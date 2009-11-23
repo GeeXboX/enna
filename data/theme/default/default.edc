@@ -1,8 +1,6 @@
 #define COMP LOSSY 80
 
 images{
-   image: "default_backdrop.png" COMP;
-   image: "circle_shade.png" COMP;
    image: "mainmenu_border_left.png" COMP;
    image: "mainmenu_border_right.png" COMP;
    image: "black_frame.png" COMP;
@@ -59,25 +57,6 @@ collections
    group { name: "main_layout";
       parts {
          /* background  */
-         part { name: "enna.background";
-            mouse_events:  0;
-            description { state: "default" 0.0;
-               color: 255 255 255 255;
-               image.normal: "default_backdrop.png";
-               fill {
-                  smooth: 1;
-               }
-            }
-         }
-         part { name: "enna.background.shade";
-            mouse_events:  0;
-            description { state: "default" 0.0;
-               visible: 1;
-               color: 255 255 255 255;
-               image.normal: "circle_shade.png";
-               fill.smooth: 1;
-            }
-         }
          part { name: "enna.background.swallow";
             type: SWALLOW;
             mouse_events: 0;
