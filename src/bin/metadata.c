@@ -453,7 +453,7 @@ enna_metadata_meta_duration_get(Enna_Metadata *m)
             buffer_appendf(buf,
                            ngettext("%.2d minute", "%.2d minutes", mm), mm);
 
-        duration = strdup(buf->buf);
+        duration = buf->buf ? strdup(buf->buf) : NULL;
     }
     else
         duration = NULL;
