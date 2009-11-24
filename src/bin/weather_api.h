@@ -54,6 +54,7 @@ typedef struct weather_forecast_s {
 typedef struct weather_smart_data_s {
     char *city;
     char *lang;
+    char *date;
     temp_type_t temp;
     weather_current_t current;
     weather_forecast_t forecast[4];

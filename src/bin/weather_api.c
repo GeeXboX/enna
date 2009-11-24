@@ -100,6 +100,7 @@ weather_display_debug (weather_t *w)
     printf("** City: %s\n", w->city);
     printf("** Lang: %s\n", w->lang);
     printf("** Temp: %s\n", w->temp ? "F" : "C");
+    printf("** Date: %s\n", w->date);
     printf("**   Current:\n");
     printf("**     Condition: %s\n", w->current.condition);
     printf("**     Temp: %s\n", w->current.temp);
@@ -235,6 +236,22 @@ weather_get_current (weather_t *w, xmlDocPtr doc)
 }
 
 static void
+weather_get_infos (weather_t *w, xmlDocPtr doc)
+{
+    xmlNode *n;
+
+    if (!w || !doc)
+        return;
+
+    n = get_node_xml_tree(xmlDocGetRootElement(doc), "forecast_information");
+    if (!n)
+        return;
+
+    weather_set_field(n, "city",              NULL, &w->city);
+    weather_set_field(n, "current_date_time", NULL, &w->date);
+}
+
+static void
 weather_google_search (weather_t *w)
 {
     char url[MAX_URL_SIZE];
@@ -279,6 +296,7 @@ weather_google_search (weather_t *w)
     }
 
     weather_get_unit_system (w, doc);
+    weather_get_infos (w, doc);
     weather_get_current (w, doc);
     weather_get_forecast (w, doc);
 
@@ -383,6 +401,7 @@ enna_weather_free (weather_t *w)
 
     ENNA_FREE(w->city);
     ENNA_FREE(w->lang);
+    ENNA_FREE(w->date);
 
     ENNA_FREE(w->current.condition);
     ENNA_FREE(w->current.temp);
