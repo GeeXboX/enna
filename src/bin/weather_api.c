@@ -51,7 +51,7 @@
 #define WEATHER_DEFAULT_CITY  "Paris"
 #define WEATHER_DEFAULT_TEMP  TEMP_CELCIUS
 
-#define DEBUG 1
+#undef DEBUG
 
 /****************************************************************************/
 /*                        Google Weather API                                */
