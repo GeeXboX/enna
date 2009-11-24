@@ -8,7 +8,7 @@ group {
    styles {
       style {
          name: "weather.notifier.style";
-         base: "font=content_bd font_size=14 align=right color=#FFF wrap=word";
+         base: "font=content_bd font_size=14 align=right color=#FFF wrap=line";
          tag:  "br"   "\n";
          tag:  "big"  "+ font_size=22";
          tag:  "huge" "+ font_size=36";
