@@ -85,45 +85,45 @@ static const struct {
 };
 
 static void
-weather_display_debug (weather_smart_data_t *sd)
+weather_display_debug (weather_t *w)
 {
 #if DEBUG
     int i;
 
-    if (!sd)
+    if (!w)
         return;
 
     printf("************************************\n");
-    printf("** City: %s\n", sd->city);
-    printf("** Lang: %s\n", sd->lang);
-    printf("** Temp: %s\n", sd->temp ? "F" : "C");
+    printf("** City: %s\n", w->city);
+    printf("** Lang: %s\n", w->lang);
+    printf("** Temp: %s\n", w->temp ? "F" : "C");
     printf("**   Current:\n");
-    printf("**     Condition: %s\n", sd->current.condition);
-    printf("**     Temp: %s\n", sd->current.temp);
-    printf("**     Humidity: %s\n", sd->current.humidity);
-    printf("**     Icon: %s\n", sd->current.icon);
-    printf("**     Wind: %s\n", sd->current.wind);
+    printf("**     Condition: %s\n", w->current.condition);
+    printf("**     Temp: %s\n", w->current.temp);
+    printf("**     Humidity: %s\n", w->current.humidity);
+    printf("**     Icon: %s\n", w->current.icon);
+    printf("**     Wind: %s\n", w->current.wind);
 
     for (i = 0; i < 4; i++)
     {
         printf("**   Forecast %d:\n", i + 1);
-        printf("**     Day: %s\n", sd->forecast[i].day);
-        printf("**     Low: %s\n", sd->forecast[i].low);
-        printf("**     High: %s\n", sd->forecast[i].high);
-        printf("**     Icon: %s\n", sd->forecast[i].icon);
-        printf("**     Condition: %s\n", sd->forecast[i].condition);
+        printf("**     Day: %s\n", w->forecast[i].day);
+        printf("**     Low: %s\n", w->forecast[i].low);
+        printf("**     High: %s\n", w->forecast[i].high);
+        printf("**     Icon: %s\n", w->forecast[i].icon);
+        printf("**     Condition: %s\n", w->forecast[i].condition);
     }
     printf("************************************\n");
 #endif
 }
 
 static void
-weather_get_unit_system (weather_smart_data_t *sd, xmlDocPtr doc)
+weather_get_unit_system (weather_t *w, xmlDocPtr doc)
 {
     xmlChar *tmp;
     xmlNode *n;
 
-    if (!sd || !doc)
+    if (!w || !doc)
         return;
 
     n = get_node_xml_tree(xmlDocGetRootElement(doc), "forecast_information");
@@ -134,7 +134,7 @@ weather_get_unit_system (weather_smart_data_t *sd, xmlDocPtr doc)
     if (!tmp)
         return;
 
-    sd->temp = (!xmlStrcmp ((unsigned char *) "SI", tmp))
+    w->temp = (!xmlStrcmp ((unsigned char *) "SI", tmp))
         ? TEMP_CELCIUS : TEMP_FAHRENHEIT;
 }
 
@@ -178,16 +178,16 @@ weather_set_field (xmlNode *n, char *prop, char *extra, char **field)
 }
 
 static void
-weather_get_forecast (weather_smart_data_t *sd, xmlDocPtr doc)
+weather_get_forecast (weather_t *w, xmlDocPtr doc)
 {
     char *temp;
     xmlNode *n;
     int i;
 
-    if (!sd || !doc)
+    if (!w || !doc)
         return;
 
-    temp = (sd->temp == TEMP_CELCIUS) ? "°C" : "°F";
+    temp = (w->temp == TEMP_CELCIUS) ? "°C" : "°F";
 
     /* check for forecast information node */
     n = get_node_xml_tree(xmlDocGetRootElement(doc), "forecast_conditions");
@@ -196,22 +196,22 @@ weather_get_forecast (weather_smart_data_t *sd, xmlDocPtr doc)
 
     for (i = 0; i < 4; i++)
     {
-        weather_set_field(n, "day_of_week", NULL, &sd->forecast[i].day);
-        weather_set_field(n, "low",         temp, &sd->forecast[i].low);
-        weather_set_field(n, "high",        temp, &sd->forecast[i].high);
-        weather_set_field(n, "icon",        NULL, &sd->forecast[i].icon);
-        weather_set_field(n, "condition",   NULL, &sd->forecast[i].condition);
+        weather_set_field(n, "day_of_week", NULL, &w->forecast[i].day);
+        weather_set_field(n, "low",         temp, &w->forecast[i].low);
+        weather_set_field(n, "high",        temp, &w->forecast[i].high);
+        weather_set_field(n, "icon",        NULL, &w->forecast[i].icon);
+        weather_set_field(n, "condition",   NULL, &w->forecast[i].condition);
 
         n = n->next;
     }
 }
 
 static void
-weather_get_current (weather_smart_data_t *sd, xmlDocPtr doc)
+weather_get_current (weather_t *w, xmlDocPtr doc)
 {
     xmlNode *n;
 
-    if (!sd || !doc)
+    if (!w || !doc)
         return;
 
     /* check for current conditions node */
@@ -219,20 +219,20 @@ weather_get_current (weather_smart_data_t *sd, xmlDocPtr doc)
     if (!n)
         return;
 
-    weather_set_field(n, "condition",      NULL, &sd->current.condition);
+    weather_set_field(n, "condition",      NULL, &w->current.condition);
 
-    if (sd->temp == TEMP_CELCIUS)
-        weather_set_field(n, "temp_c", "°C", &sd->current.temp);
-    else if (sd->temp == TEMP_FAHRENHEIT)
-        weather_set_field(n, "temp_f", "°F", &sd->current.temp);
+    if (w->temp == TEMP_CELCIUS)
+        weather_set_field(n, "temp_c", "°C", &w->current.temp);
+    else if (w->temp == TEMP_FAHRENHEIT)
+        weather_set_field(n, "temp_f", "°F", &w->current.temp);
 
-    weather_set_field(n, "humidity",       NULL, &sd->current.humidity);
-    weather_set_field(n, "icon",           NULL, &sd->current.icon);
-    weather_set_field(n, "wind_condition", NULL, &sd->current.wind);
+    weather_set_field(n, "humidity",       NULL, &w->current.humidity);
+    weather_set_field(n, "icon",           NULL, &w->current.icon);
+    weather_set_field(n, "wind_condition", NULL, &w->current.wind);
 }
 
 static void
-weather_google_search (weather_smart_data_t *sd)
+weather_google_search (weather_t *w)
 {
     char url[MAX_URL_SIZE];
     url_data_t data;
@@ -240,7 +240,7 @@ weather_google_search (weather_smart_data_t *sd)
     xmlDocPtr doc = NULL;
     xmlNode *n;
 
-    if (!sd)
+    if (!w)
         return;
 
     handler = url_new();
@@ -250,7 +250,7 @@ weather_google_search (weather_smart_data_t *sd)
     /* proceed with Google Weather API request */
     memset(url, '\0', MAX_URL_SIZE);
     snprintf(url, MAX_URL_SIZE, WEATHER_QUERY,
-             url_escape_string(handler, sd->city), sd->lang);
+             url_escape_string(handler, w->city), w->lang);
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Search Request: %s", url);
 
     data = url_get_data(handler, url);
@@ -271,13 +271,13 @@ weather_google_search (weather_smart_data_t *sd)
     if (n)
     {
         enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
-                 "The requested city (%s) can't be found.", sd->city);
+                 "The requested city (%s) can't be found.", w->city);
         goto error;
     }
 
-    weather_get_unit_system (sd, doc);
-    weather_get_current (sd, doc);
-    weather_get_forecast (sd, doc);
+    weather_get_unit_system (w, doc);
+    weather_get_current (w, doc);
+    weather_get_forecast (w, doc);
 
  error:
     if (doc)
@@ -293,12 +293,12 @@ weather_google_search (weather_smart_data_t *sd)
 /****************************************************************************/
 
 void
-enna_weather_parse_config (weather_smart_data_t *sd)
+enna_weather_parse_config (weather_t *w)
 {
     Enna_Config_Data *cfgdata;
     Eina_List *l;
 
-    if (!sd)
+    if (!w)
         return;
 
     cfgdata = enna_config_module_pair_get (ENNA_MODULE_NAME);
@@ -317,50 +317,41 @@ enna_weather_parse_config (weather_smart_data_t *sd)
 
             if (city)
             {
-                ENNA_FREE(sd->city);
-                sd->city = strdup(city);
+                ENNA_FREE(w->city);
+                w->city = strdup(city);
             }
         }
     }
 }
 
 void
-enna_weather_update (Evas_Object *obj)
+enna_weather_update (weather_t *w)
 {
-    weather_smart_data_t *sd;
-
-    if (!obj)
+    if (!w)
         return;
 
-    sd = evas_object_data_get(obj, "sd");
-    weather_google_search(sd);
-    weather_display_debug(sd);
+    weather_google_search(w);
+    weather_display_debug(w);
 }
 
 void
-enna_weather_set_city (Evas_Object *obj, const char *city)
+enna_weather_set_city (weather_t *w, const char *city)
 {
-    weather_smart_data_t *sd;
-
-    if (!obj || !city)
+    if (!w || !city)
         return;
 
-    sd = evas_object_data_get(obj, "sd");
-    ENNA_FREE(sd->city);
-    sd->city = strdup(city);
-    enna_weather_update(obj);
+    ENNA_FREE(w->city);
+    w->city = strdup(city);
+    enna_weather_update(w);
 }
 
 void
-enna_weather_set_lang (Evas_Object *obj, const char *lang)
+enna_weather_set_lang (weather_t *w, const char *lang)
 {
-    weather_smart_data_t *sd;
-
-    if (!obj || !lang)
+    if (!w || !lang)
         return;
 
-    sd = evas_object_data_get(obj, "sd");
-    ENNA_FREE(sd->lang);
-    sd->lang = strdup(lang);
-    enna_weather_update(obj);
+    ENNA_FREE(w->lang);
+    w->lang = strdup(lang);
+    enna_weather_update(w);
 }

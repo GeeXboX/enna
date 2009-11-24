@@ -57,11 +57,11 @@ typedef struct weather_smart_data_s {
     temp_type_t temp;
     weather_current_t current;
     weather_forecast_t forecast[4];
-} weather_smart_data_t;
+} weather_t;
 
-void enna_weather_parse_config (weather_smart_data_t *sd);
-void enna_weather_update   (Evas_Object *obj);
-void enna_weather_set_city (Evas_Object *obj, const char *city);
-void enna_weather_set_lang (Evas_Object *obj, const char *lang);
+void enna_weather_parse_config (weather_t *w);
+void enna_weather_update       (weather_t *w);
+void enna_weather_set_city     (weather_t *w, const char *city);
+void enna_weather_set_lang     (weather_t *w, const char *lang);
 
 #endif /* WEATHER_API_H */
