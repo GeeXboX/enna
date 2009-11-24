@@ -49,6 +49,7 @@ collections
 #include "mediacontrol.edc"
 #include "elm.edc"
 #include "notification_volume.edc"
+#include "notification_weather.edc"
 #include "cover_video.edc"
 #include "popup.edc"
 #include "exit.edc"
@@ -68,6 +69,24 @@ collections
             description { state: "default" 0.0;
             }
          }
+
+         /* weather notification */
+         part {
+            name: "enna.weather.swallow";
+            type: SWALLOW;
+            description {
+               state: "default" 0.0;
+               visible: 0;
+            }
+            description {
+               state: "visible" 0.0;
+               rel1.relative: 0.75 0.80;
+               rel2.relative: 1.00 1.00;
+               rel2.offset: -20 -20;
+               visible: 1;
+            }
+         }
+
          /* mainmenu */
          part { name: "enna.mainmenu.clip";
             type: RECT;
@@ -213,6 +232,22 @@ collections
             transition: DECELERATE 0.5;
             target: "enna.mainmenu.clip";
          }
+
+         program {
+            name: "weather,show";
+            signal: "weather,show";
+            source: "enna";
+            action: STATE_SET "visible" 0.0;
+            target: "enna.weather.swallow";
+         }
+         program {
+            name: "weather,hide";
+            signal: "weather,hide";
+            source: "enna";
+            action: STATE_SET "default" 0.0;
+            target: "enna.weather.swallow";
+         }
+
          program { name: "popup,show";
             signal: "popup,show";
             source: "enna";

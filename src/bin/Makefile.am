@@ -43,6 +43,7 @@ exit.c\
 thumb.c\
 ipc.c\
 weather_api.c\
+weather_notification.c\
 input.c
 
 
@@ -221,4 +222,5 @@ gettext.h\
 thumb.h\
 ipc.h\
 weather_api.h\
+weather_notification.h\
 input.h
