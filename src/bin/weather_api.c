@@ -364,11 +364,13 @@ enna_weather_init (void)
 {
     weather_t *w;
 
-    w = ENNA_NEW(weather_smart_data_t, 1);
+    w = ENNA_NEW(weather_t, 1);
     w->lang = get_lang();
     w->city = strdup(WEATHER_DEFAULT_CITY);
     w->temp = WEATHER_DEFAULT_TEMP;
     enna_weather_parse_config (w);
+
+    return w;
 }
 
 void
@@ -381,9 +383,8 @@ enna_weather_free (weather_t *w)
 
     ENNA_FREE(w->city);
     ENNA_FREE(w->lang);
-    ENNA_FREE(w->temp);
 
-    ENNA_FREE(w->current.position);
+    ENNA_FREE(w->current.condition);
     ENNA_FREE(w->current.temp);
     ENNA_FREE(w->current.humidity);
     ENNA_FREE(w->current.icon);
