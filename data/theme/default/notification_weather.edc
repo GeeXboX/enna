@@ -1,0 +1,121 @@
+images {
+   image: "notifier_bg.png" COMP;
+}
+
+group {
+   name: "enna/notification/weather";
+
+   styles {
+      style {
+         name: "weather.notifier.style";
+         base: "font=content_bd font_size=14 align=right color=#FFF wrap=line";
+         tag:  "br"   "\n";
+         tag:  "big"  "+ font_size=22";
+         tag:  "huge" "+ font_size=36";
+         tag:  "glow" "+ style=GLOW";
+         tag:  "hl"   "+ color=#A0D026";
+      }
+   }
+
+   parts {
+
+      part {
+         name: "weather.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+            rel1.relative: 0 0;
+            rel2.relative: 1 1;
+            visible: 1;
+         }
+      }
+
+      part {
+         name: "weather.frame";
+         type: IMAGE;
+         clip_to: "weather.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0 0;
+            rel1.to: "weather.clip";
+            rel2.relative: 1 1;
+            rel2.to: "weather.clip";
+            image.normal: "notifier_bg.png";
+            image.border: 5 5 5 5;
+         }
+      }
+
+      /* weather icon */
+      part {
+         name: "weather.icon.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            rel1.relative: 0.00 0.00;
+            rel1.to: "weather.clip";
+            rel1.offset: 10 10;
+            rel2.relative: 0.40 1.00;
+            rel2.to: "weather.clip";
+            rel2.offset: -5 -10;
+            visible: 1;
+         }
+      }
+
+      part {
+          name: "weather.icon.swallow";
+          type: SWALLOW;
+          mouse_events : 0;
+          clip_to: "weather.clip";
+          description {
+             state: "default" 0.0;
+             rel1.relative: 0 0;
+             rel1.to: "weather.icon.clip";
+             rel2.relative: 1 1;
+             rel2.to: "weather.icon.clip";
+
+             aspect: 1 1;
+             align: 0.5 0.5;
+             aspect_preference: BOTH;
+          }
+       }
+
+      /* weather text */
+      part {
+         name: "weather.text.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+            rel1.relative: 0.40 0.00;
+            rel1.to: "weather.clip";
+            rel1.offset: 5 10;
+            rel2.relative: 1.00 1.00;
+            rel2.to: "weather.clip";
+            rel2.offset: -20 -10;
+            visible: 1;
+         }
+      }
+
+      part {
+         name: "weather.text.block";
+         type: TEXTBLOCK;
+         clip_to: "weather.text.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+
+            rel1.relative: 0 0;
+            rel1.to: "weather.text.clip";
+            rel2.relative: 1 1;
+            rel2.to: "weather.text.clip";
+
+            text.style: "weather.notifier.style";
+       }
+     }
+
+   }
+}

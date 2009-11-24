@@ -41,6 +41,7 @@
 #include "logs.h"
 #include "view_list.h"
 #include "image.h"
+#include "weather_notification.h"
 
 typedef struct _Background_Item Background_Item;
 
@@ -57,6 +58,7 @@ struct _Menu_Data
 {
     Evas_Object *o_menu;
     Evas_Object *o_background;
+    Evas_Object *o_weather;
     Enna_Class_Activity *selected;
     Input_Listener *listener;
     Ecore_Event_Handler *act_handler;
@@ -174,6 +176,12 @@ enna_mainmenu_init(void)
     sd->o_background = NULL;
     sd->backgrounds = NULL;
 
+    /* Weather widget */
+    sd->o_weather =
+        enna_weather_notification_smart_add(evas_object_evas_get(enna->layout));
+    elm_layout_content_set(enna->layout,
+                           "enna.weather.swallow", sd->o_weather);
+
     /* connect to the input signal */
     sd->listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
 
@@ -195,6 +203,7 @@ enna_mainmenu_shutdown(void)
 
     ENNA_OBJECT_DEL(sd->o_menu);
     ENNA_OBJECT_DEL(sd->o_background);
+    ENNA_OBJECT_DEL(sd->o_weather);
     EINA_LIST_FOREACH(sd->backgrounds, l, it)
     {
         sd->backgrounds = eina_list_remove(sd->backgrounds, it);
@@ -240,6 +249,8 @@ enna_mainmenu_show(void)
 
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,show", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+                            "weather,show", "enna");
 }
 
 void
@@ -250,6 +261,8 @@ enna_mainmenu_hide(void)
 
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,hide", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+                            "weather,hide", "enna");
 }
 
 void

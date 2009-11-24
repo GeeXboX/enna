@@ -249,6 +249,7 @@ activity_video.edc \
 activity_video_flags.edc \
 popup.edc \
 notification_volume.edc \
+notification_weather.edc \
 activity_games.edc \
 icons.edc \
 cover_video.edc \

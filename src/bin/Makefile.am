@@ -42,6 +42,8 @@ view_cover.c\
 exit.c\
 thumb.c\
 ipc.c\
+weather_api.c\
+weather_notification.c\
 input.c
 
 
@@ -219,4 +221,6 @@ exit.h\
 gettext.h\
 thumb.h\
 ipc.h\
+weather_api.h\
+weather_notification.h\
 input.h
