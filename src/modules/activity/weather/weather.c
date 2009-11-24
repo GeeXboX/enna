@@ -93,6 +93,8 @@ fill_current_frame (void)
 {
     edje_object_part_text_set (mod->edje, "frame.current.city",
                                mod->w->city);
+    edje_object_part_text_set (mod->edje, "frame.current.date",
+                               mod->w->date);
     edje_object_part_text_set (mod->edje, "frame.current.condition",
                                mod->w->current.condition);
     edje_object_part_text_set (mod->edje, "frame.current.temp",
