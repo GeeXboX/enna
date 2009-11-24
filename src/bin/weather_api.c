@@ -48,6 +48,9 @@
 #define WEATHER_QUERY         "http://www.google.com/ig/api?weather=%s&hl=%s"
 #define MAX_URL_SIZE          1024
 
+#define WEATHER_DEFAULT_CITY  "Paris"
+#define WEATHER_DEFAULT_TEMP  TEMP_CELCIUS
+
 #define DEBUG 1
 
 /****************************************************************************/
@@ -354,4 +357,46 @@ enna_weather_set_lang (weather_t *w, const char *lang)
     ENNA_FREE(w->lang);
     w->lang = strdup(lang);
     enna_weather_update(w);
+}
+
+weather_t *
+enna_weather_init (void)
+{
+    weather_t *w;
+
+    w = ENNA_NEW(weather_smart_data_t, 1);
+    w->lang = get_lang();
+    w->city = strdup(WEATHER_DEFAULT_CITY);
+    w->temp = WEATHER_DEFAULT_TEMP;
+    enna_weather_parse_config (w);
+}
+
+void
+enna_weather_free (weather_t *w)
+{
+    int i;
+
+    if (!w)
+        return;
+
+    ENNA_FREE(w->city);
+    ENNA_FREE(w->lang);
+    ENNA_FREE(w->temp);
+
+    ENNA_FREE(w->current.position);
+    ENNA_FREE(w->current.temp);
+    ENNA_FREE(w->current.humidity);
+    ENNA_FREE(w->current.icon);
+    ENNA_FREE(w->current.wind);
+
+    for (i = 0; i < 4; i++)
+    {
+        ENNA_FREE(w->forecast[i].day);
+        ENNA_FREE(w->forecast[i].low);
+        ENNA_FREE(w->forecast[i].high);
+        ENNA_FREE(w->forecast[i].icon);
+        ENNA_FREE(w->forecast[i].condition);
+    }
+
+    ENNA_FREE(w);
 }
