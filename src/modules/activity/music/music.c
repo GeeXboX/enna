@@ -362,10 +362,6 @@ _browse(void *data)
     ENNA_OBJECT_DEL(mod->o_list);
     mod->accept_ev = 1;
 
-    //edje_object_signal_callback_add(mod->o_edje, "list,transition,end", "edje",
-    //    _menu_transition_left_end_cb, NULL);
-    //edje_object_signal_emit(mod->o_edje, "list,left", "enna");
-
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
     edje_object_part_swallow (mod->o_edje,
@@ -413,9 +409,7 @@ _create_menu()
 
     enna_list_select_nth(o, 0);
     mod->o_list = o;
-//    edje_object_signal_emit(mod->o_edje, "list,left,now", "enna");
     edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
-    edje_object_signal_emit(mod->o_edje, "list,default", "enna");
     mod->accept_ev = 1;
 }
 
