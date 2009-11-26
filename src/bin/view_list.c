@@ -201,6 +201,16 @@ list_set_item(Smart_Data *sd, int start, int up, int step)
         _smart_select_item(sd, n);
 }
 
+static void
+_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    enna_list_clear(sd->obj);
+    eina_list_free(sd->items);
+    free(sd);
+}
+
 Evas_Object *
 enna_list_add(Evas *evas)
 {
@@ -218,7 +228,8 @@ enna_list_add(Evas *evas)
     evas_object_data_set(obj, "sd", sd);
 
     evas_object_smart_callback_add(obj, "clicked", _item_activated, sd);
-
+    evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
+                                   _del, sd);
     return obj;
 }
 
