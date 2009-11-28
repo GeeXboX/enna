@@ -156,7 +156,7 @@ Enna_Vfs_File *
 enna_vfs_create_directory(const char *uri, const char *label,
                           const char *icon, const char *icon_file)
 {
-    return enna_vfs_create_inode(uri, label, "icon/arrow_right", NULL, 1);
+    return enna_vfs_create_inode(uri, label, icon, icon_file, 1);
 }
 
 Enna_Vfs_File *

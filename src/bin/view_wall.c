@@ -219,7 +219,7 @@ enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     pi->file = file;
     o = edje_object_add(evas_object_evas_get(sd->o_scroll));
 
-    if (file->is_directory)
+    if (file->is_directory || file->is_menu)
     {
         edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
         edje_object_part_text_set(o, "enna.text.label", file->label);
