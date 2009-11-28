@@ -225,6 +225,7 @@ enna_mainmenu_append(Enna_Class_Activity *act)
     f = calloc(1, sizeof(Enna_Vfs_File));
     f->label = _((char*)eina_stringshare_add(act->label));
     f->icon = (char*)eina_stringshare_add(act->icon);
+    f->is_menu = 1;
     enna_list_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, act);
     evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, act);
     if (act->bg && act->bg[0] == '/')

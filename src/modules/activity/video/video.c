@@ -685,6 +685,7 @@ _create_menu (void)
         item = calloc(1, sizeof(Enna_Vfs_File));
         item->icon = (char*)eina_stringshare_add(cat->icon);
         item->label = (char*)eina_stringshare_add(gettext(cat->label));
+        item->is_menu = 1;
         enna_list_file_append(o, item, browse, cat);
     }
 

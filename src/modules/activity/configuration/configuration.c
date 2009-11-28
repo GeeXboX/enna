@@ -105,7 +105,7 @@ _create_menu (void)
         it = calloc (1, sizeof(Enna_Vfs_File));
         it->icon = (char*)eina_stringshare_add (p->icon);
         it->label = (char*)eina_stringshare_add (p->label);
-        it->is_directory = 1;
+        it->is_menu = 1;
 
         enna_wall_file_append (mod->o_menu, it, _item_selected_cb, p);
         mod->items = eina_list_append (mod->items, it);

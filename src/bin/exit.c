@@ -116,7 +116,7 @@ _create_list_item (char *label, char *icon)
     it = calloc (1, sizeof (Enna_Vfs_File));
     it->label = (char*)eina_stringshare_add (label);
     it->icon = (char*)eina_stringshare_add (icon);
-
+    it->is_menu = 1;
     return it;
 }
 
