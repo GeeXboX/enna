@@ -376,6 +376,7 @@ enna_smart_player_metadata_unset(Evas_Object *obj)
     bt = elm_button_add(layout);                                     \
     evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
     elm_button_icon_set(bt, ic);                                     \
+    elm_object_style_set(bt, "mediaplayer");                         \
     evas_object_size_hint_weight_set(bt, 1.0, 1.0);                  \
     evas_object_size_hint_align_set(bt, -1.0, -1.0);                 \
     elm_box_pack_end(btn_box, bt);                                   \
@@ -437,11 +438,11 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     elm_box_homogenous_set(btn_box, 0);
     elm_box_horizontal_set(btn_box, 1);
 
+    ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
     ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
     ELM_ADD ("icon/mp_rewind",  _button_clicked_rewind_cb);
     ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
     sd->play_btn = bt;
-    ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
     ELM_ADD ("icon/mp_forward", _button_clicked_forward_cb);
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
 
