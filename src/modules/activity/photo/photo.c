@@ -141,7 +141,6 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 
     /* Delete objects */
     ENNA_OBJECT_DEL(mod->o_browser);
-    edje_object_signal_emit(mod->o_edje, "browser,hide", "enna");
 
     mod->o_browser = NULL;
     _create_menu();
@@ -215,12 +214,7 @@ static void _browse(void *data)
                              "browser.swallow", mod->o_browser);
     enna_browser_root_set(mod->o_browser, vfs);
 
-    edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
-    edje_object_signal_emit(mod->o_edje, "browser,show", "enna");
-//    edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
-    edje_object_signal_emit(mod->o_edje, "slideshow,hide", "enna");
-
-    //ENNA_OBJECT_DEL (mod->o_menu);
+    ENNA_OBJECT_DEL (mod->o_menu);
 }
 
 static void
@@ -232,7 +226,6 @@ _create_menu(void)
 
     /* Create List */
     o = enna_list_add(enna->evas);
-    edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
 
     categories = enna_vfs_get(ENNA_CAPS_PHOTO);
     EINA_LIST_FOREACH(categories, l, cat)
@@ -242,13 +235,14 @@ _create_menu(void)
         item = calloc(1, sizeof(Enna_Vfs_File));
         item->icon = (char*)eina_stringshare_add(cat->icon);
         item->label = (char*)eina_stringshare_add(gettext(cat->label));
+        item->is_menu = 1;
         enna_list_file_append(o, item, _browse, cat);
     }
 
     enna_list_select_nth(o, 0);
     mod->o_menu = o;
-    edje_object_part_swallow(mod->o_edje, "menu.swallow", o);
-    edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
+    edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
+
 }
 
 static void _create_gui(void)
@@ -342,6 +336,7 @@ static void _class_show(int dummy)
 {
     enna_content_select(ENNA_MODULE_NAME);
     edje_object_signal_emit(mod->o_edje, "module,show", "enna");
+    edje_object_signal_emit(mod->o_edje, "content,show", "enna");
 }
 
 static void _class_hide(int dummy)

@@ -6,13 +6,14 @@ group {
    name: "activity/photo";
    parts {
 
-      /* Main Clip */
       part {
          name: "module.clip";
          type: RECT;
          description {
             state: "default" 0.0;
-            color: 0 0 0 0;
+            color: 255 255 255 255;
+            rel1.relative: 1 0;
+            rel2.relative: 2 1;
             visible: 0;
          }
          description {
@@ -22,60 +23,64 @@ group {
          }
       }
 
-      /* Swallow for menu photo */
-      part { name: "menu.clip";
-         type: RECT;
-         mouse_events: 0;
-         clip_to: "module.clip";
-         description {state: "default" 0.0;
-            color: 255 255 255 0;
-            visible: 0;
-            rel1 {relative: 0.1 -0.9;to: "module.clip";}
-            rel2 {relative: 0.9 0;offset: 0 -64;to: "module.clip";}
-         }
-         description{state: "show" 0.0;
-            color: 255 255 255 255;
-            visible: 1;
-            rel1 {relative: 0.1 0.02;to: "module.clip";}
-            rel2 {relative: 0.9 1;offset: 0 -64;to: "module.clip";}
-         }
-      }
       part {
-         name: "menu.swallow";
-         type: SWALLOW;
-         mouse_events : 1;
-         clip_to: "menu.clip";
+         name: "content.clip";
+         type: RECT;
+         clip_to: "module.clip";
          description {
             state: "default" 0.0;
-            color: 255 255 255 255;
-            rel1 {relative: 0 0; ;to: "menu.clip";}
-            rel2 {relative: 1 1; ; to: "menu.clip";}
-         }
-      }
-      /* Browser Clip */
-      part { name: "browser.clip";
-         type: RECT;
-         mouse_events: 0;
-         clip_to: "module.clip";
-         description {state: "default" 0.0;
             color: 255 255 255 0;
+            rel1.to: module.clip;
+            rel2.to: module.clip;
             visible: 0;
-            rel1.relative: 0 1;
-            rel1.to: "module.clip";
-            rel2.relative: 1 2.0;
-            rel2.to: "module.clip";
-
          }
-         description{state: "show" 0.0;
+         description {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
             color: 255 255 255 255;
             visible: 1;
-            rel1.relative: 0 0; ;
-            rel1.to: "module.clip";
-            rel2.relative: 1 1;
-            rel2.to: "module.clip";
          }
       }
-     
+
+      /* background */
+      part {
+         name: "background";
+         mouse_events:  0;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            visible: 1;
+            image {
+               normal: "vertical_gradient.png";
+            }
+         }
+         description {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+         }
+      }
+
+      /* Browser Clip */
+      part {
+         name: "browser.clip";
+         clip_to: "content.clip";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+
+            rel1.relative: 0.01 0.05;
+            rel1.to: "content.clip";
+
+            rel2.relative: 1.0 0.99;
+            rel2.offset: 0 -64;
+            rel2.to: "content.clip";
+         }
+      }
 
       part {
          name: "browser.swallow";
@@ -85,11 +90,12 @@ group {
          description {
             state: "default" 0.0;
             color: 255 255 255 255;
-             rel1 {relative: 0 0; /*offset: 64 64;*/}
-             rel2 {relative: 1 1; offset: 0 -63;}
+             rel1 {relative: 0 0;}
+             rel2 {relative: 1 1;}
+             rel1.to: "browser.clip";
+             rel2.to: "browser.clip";
          }
       }
-      
       part {
         name: "filename.bg";
         clip_to: "browser.clip";
@@ -171,6 +177,7 @@ group {
          action:  STATE_SET "show" 0.0;
          transition: SINUSOIDAL 0.5;
          target: "module.clip";
+         target: "background";
       }
       program {
          name: "module,hide";
@@ -179,38 +186,23 @@ group {
          action:  STATE_SET "default" 0.0;
          transition: SINUSOIDAL 0.5;
          target: "module.clip";
+         target: "background";
       }
       program {
-         name: "browser,show";
-         signal: "browser,show";
+         name: "content,show";
+         signal: "content,show";
          source:  "enna";
          action:  STATE_SET "show" 0.0;
          transition: SINUSOIDAL 0.5;
-         target: "browser.clip";
+         target: "content.clip";
       }
       program {
-         name: "browser,hide";
-         signal: "browser,hide";
+         name: "content,hide";
+         signal: "content,hide";
          source:  "enna";
          action:  STATE_SET "default" 0.0;
          transition: SINUSOIDAL 0.5;
-         target: "browser.clip";
-      }
-      program {
-         name: "menu,show";
-         signal: "menu,show";
-         source:  "enna";
-         action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "menu.clip";
-      }
-      program {
-         name: "menu,hide";
-         signal: "menu,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "menu.clip";
+         target: "content.clip";
       }
       program {
          name: "slideshow,show";
