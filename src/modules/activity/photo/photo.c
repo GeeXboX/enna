@@ -161,7 +161,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 
     if (!ev || !ev->file) return;
 
-    if (!ev->file->is_directory)
+    if (!ev->file->is_directory && !ev->file->is_menu)
     {
         /* File is selected, display it in slideshow mode */
         _create_slideshow_gui();
@@ -181,7 +181,7 @@ _browser_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 
      edje_object_part_text_set(mod->o_edje, "filename.text", ev->file->label);
 
-     if (!ev->file->is_directory)
+     if (!ev->file->is_directory || !ev->file->is_menu)
         photo_panel_infos_set_cover(mod->o_infos, ev->file->uri + 7);
 
      photo_panel_infos_set_text(mod->o_infos, ev->file->uri + 7);
