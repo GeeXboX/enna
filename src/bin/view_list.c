@@ -55,24 +55,44 @@ struct _Smart_Data
 };
 
 
-void
-_item_activated(void *data, Evas_Object *obj, void *event_info)
+static void
+_item_activate(Elm_Genlist_Item *item)
 {
-    Smart_Data *sd = data;
-    Elm_Genlist_Item *item = event_info;
-    List_Item *it = NULL;
-    Eina_List *l;
+    List_Item *li;
 
-    if (!sd) return;
+    li = (List_Item*)elm_genlist_item_data_get(item);
+    if (li->func_activated)
+            li->func_activated(li->data);
+}
 
-    EINA_LIST_FOREACH(sd->items, l, it)
-    {
-        if (it->item == item)
-        {
-            if (it->func_activated) it->func_activated(it->data);
-            return;
-        }
-    }
+static void
+_item_selected(void *data, Evas_Object *obj, void *event_info)
+{
+    List_Item *li = data;
+
+    evas_object_smart_callback_call(obj, "hilight", li->data);
+}
+
+static void
+_item_click_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Elm_Genlist_Item *item = data;
+    List_Item *li;
+
+    li = (List_Item*)elm_genlist_item_data_get(item);
+    /* Activate item only if it's already selected */
+    if (elm_genlist_item_selected_get(item))
+        _item_activate(item);
+}
+
+static void
+_item_realized_cb(void *data, Evas_Object *obj, void *event_info)
+{
+   Elm_Genlist_Item *item = event_info;
+   Evas_Object *o_item;
+
+   o_item = (Evas_Object*)elm_genlist_item_object_get(item);
+   evas_object_event_callback_add(o_item, EVAS_CALLBACK_MOUSE_UP,_item_click_cb, item);
 }
 
 static void
@@ -92,32 +112,32 @@ _item_remove(Evas_Object *obj, List_Item *item)
 static char *
 _list_item_label_get(const void *data, Evas_Object *obj, const char *part)
 {
-    const Enna_Vfs_File *item = data;
+    const List_Item *li = data;
 
-    if (!item) return NULL;
+    if (!li || !li->file) return NULL;
 
-    return strdup(item->label);
+    return strdup(li->file->label);
 }
 
 static Evas_Object *
 _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
 {
-    Enna_Vfs_File *item = (Enna_Vfs_File *) data;
+    List_Item *li = (List_Item*) data;
 
-    if (!item) return NULL;
+    if (!li) return NULL;
 
     if (!strcmp(part, "elm.swallow.icon"))
     {
         Evas_Object *ic;
 
-        if (!item->is_menu)
+        if (!li->file->is_menu)
             return NULL;
 
         ic = elm_icon_add(obj);
-        if (item->icon && item->icon[0] == '/')
-            elm_icon_file_set(ic, item->icon, NULL);
-        else if (item->icon)
-            elm_icon_file_set(ic, enna_config_theme_get(), item->icon);
+        if (li->file->icon && li->file->icon[0] == '/')
+            elm_icon_file_set(ic, li->file->icon, NULL);
+        else if (li->file->icon)
+            elm_icon_file_set(ic, enna_config_theme_get(), li->file->icon);
         else
             return NULL;
         evas_object_size_hint_min_set(ic, 32, 32);
@@ -128,7 +148,7 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
     {
         Evas_Object *ic;
 
-        if (!item->is_directory)
+        if (!li->file->is_directory)
             return NULL;
 
         ic = elm_icon_add(obj);
@@ -139,12 +159,6 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
     }
 
     return NULL;
-}
-
-static Eina_Bool
-_list_item_state_get(const void *data, Evas_Object *obj, const char *part)
-{
-    return EINA_FALSE;
 }
 
 static void
@@ -160,7 +174,7 @@ static Elm_Genlist_Item_Class itc_list = {
     {
         _list_item_label_get,
         _list_item_icon_get,
-        _list_item_state_get,
+        NULL,
         _list_item_del
     }
 };
@@ -199,7 +213,7 @@ list_set_item(Smart_Data *sd, int start, int up, int step)
 }
 
 static void
-_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
 
@@ -224,18 +238,10 @@ enna_list_add(Evas *evas)
 
     evas_object_data_set(obj, "sd", sd);
 
-    evas_object_smart_callback_add(obj, "clicked", _item_activated, sd);
-    evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
-                                   _del, sd);
+    evas_object_smart_callback_add(obj, "realized", _item_realized_cb, sd);
+    evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL, _del_cb, sd);
+
     return obj;
-}
-
-static void
-_list_item_hilight_cb(void *data, Evas_Object *obj, void *event_info)
-{
-    List_Item *it = data;
-
-    evas_object_smart_callback_call(obj, "hilight", it->data);
 }
 
 void
@@ -248,8 +254,8 @@ enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     sd = evas_object_data_get(obj, "sd");
 
     it = ENNA_NEW(List_Item, 1);
-    it->item = elm_genlist_item_append (obj, &itc_list, file,
-        NULL, ELM_GENLIST_ITEM_NONE, _list_item_hilight_cb, it);
+    it->item = elm_genlist_item_append (obj, &itc_list, it,
+        NULL, ELM_GENLIST_ITEM_NONE, _item_selected, it);
 
     it->func_activated = func_activated;
     it->data = data;
