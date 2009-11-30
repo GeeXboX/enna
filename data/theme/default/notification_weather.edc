@@ -5,18 +5,6 @@ images {
 group {
    name: "enna/notification/weather";
 
-   styles {
-      style {
-         name: "weather.notifier.style";
-         base: "font=content_bd font_size=14 align=right color=#FFF wrap=line";
-         tag:  "br"   "\n";
-         tag:  "big"  "+ font_size=22";
-         tag:  "huge" "+ font_size=36";
-         tag:  "glow" "+ style=GLOW";
-         tag:  "hl"   "+ color=#A0D026";
-      }
-   }
-
    parts {
 
       part {
