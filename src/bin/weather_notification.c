@@ -32,7 +32,6 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "utils.h"
-#include "buffer.h"
 #include "weather_api.h"
 #include "weather_notification.h"
 
@@ -56,7 +55,6 @@ void
 enna_weather_notification_update (Evas_Object *obj)
 {
   weather_notifier_smart_data_t *sd;
-  buffer_t *b;
 
   if (!obj)
     return;
@@ -70,15 +68,13 @@ enna_weather_notification_update (Evas_Object *obj)
   edje_object_file_set(sd->icon, enna_config_theme_get(), sd->w->current.icon);
   edje_object_part_swallow(sd->edje, "weather.icon.swallow", sd->icon);
 
-  /* weather text */
-  b = buffer_new();
-  buffer_append (b, "<glow>");
-  buffer_appendf(b, "<big><hl>%s</hl></big>", sd->w->city);
-  buffer_appendf(b, "<br>%s<br>", sd->w->current.condition);
-  buffer_appendf(b, "<huge>%s</huge>", sd->w->current.temp);
-  buffer_append (b, "</glow>");
-  edje_object_part_text_set(sd->edje, "weather.text.block", b->buf);
-  buffer_free(b);
+  /* weather texts */
+  edje_object_part_text_set(sd->edje, "weather.text.city.str",
+                            sd->w->city);
+  edje_object_part_text_set(sd->edje, "weather.text.condition.str",
+                            sd->w->current.condition);
+  edje_object_part_text_set(sd->edje, "weather.text.temp.str",
+                            sd->w->current.temp);
 }
 
 Evas_Object *

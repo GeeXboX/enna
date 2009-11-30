@@ -82,9 +82,9 @@ group {
           }
        }
 
-      /* weather text */
+      /* weather text city */
       part {
-         name: "weather.text.clip";
+         name: "weather.text.city.clip";
          type: RECT;
          description {
             state: "default" 0.0;
@@ -92,6 +92,86 @@ group {
             rel1.relative: 0.40 0.00;
             rel1.to: "weather.clip";
             rel1.offset: 5 10;
+            rel2.relative: 1.00 0.35;
+            rel2.to: "weather.clip";
+            rel2.offset: -20 0;
+            visible: 1;
+         }
+      }
+
+      part {
+         name: "weather.text.city.str";
+         type: TEXT;
+         effect: GLOW;
+         clip_to: "weather.text.city.clip";
+         description {
+            state: "default" 0.0;
+            color: 160 208 38 255;
+            visible: 1;
+
+            rel1.relative: 0 0;
+            rel1.to: "weather.text.city.clip";
+            rel2.relative: 1 1;
+            rel2.to: "weather.text.city.clip";
+
+            text.align: 1.0 0.5;
+            text.text: "My City";
+            text.font: "content_bd";
+            text.size: 60;
+            text.fit: 1 1;
+        }
+      }
+
+      /* weather text condition */
+      part {
+         name: "weather.text.condition.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+            rel1.relative: 0.40 0.35;
+            rel1.to: "weather.clip";
+            rel1.offset: 5 0;
+            rel2.relative: 1.00 0.50;
+            rel2.to: "weather.clip";
+            rel2.offset: -20 0;
+            visible: 1;
+         }
+      }
+
+      part {
+         name: "weather.text.condition.str";
+         type: TEXT;
+         effect: GLOW;
+         clip_to: "weather.text.condition.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+
+            rel1.relative: 0 0;
+            rel1.to: "weather.text.condition.clip";
+            rel2.relative: 1 1;
+            rel2.to: "weather.text.condition.clip";
+
+            text.align: 1.0 0.5;
+            text.text: "Conditions";
+            text.font: "content_bd";
+            text.size: 60;
+            text.fit: 1 1;
+        }
+      }
+
+      /* weather text temperature */
+      part {
+         name: "weather.text.temp.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+            rel1.relative: 0.40 0.50;
+            rel1.to: "weather.clip";
+            rel1.offset: 5 0;
             rel2.relative: 1.00 1.00;
             rel2.to: "weather.clip";
             rel2.offset: -20 -10;
@@ -100,22 +180,27 @@ group {
       }
 
       part {
-         name: "weather.text.block";
-         type: TEXTBLOCK;
-         clip_to: "weather.text.clip";
+         name: "weather.text.temp.str";
+         type: TEXT;
+         effect: GLOW;
+         clip_to: "weather.text.temp.clip";
          description {
             state: "default" 0.0;
             color: 255 255 255 255;
             visible: 1;
 
             rel1.relative: 0 0;
-            rel1.to: "weather.text.clip";
+            rel1.to: "weather.text.temp.clip";
             rel2.relative: 1 1;
-            rel2.to: "weather.text.clip";
+            rel2.to: "weather.text.temp.clip";
 
-            text.style: "weather.notifier.style";
-       }
-     }
+            text.align: 1.0 0.5;
+            text.text: "Temperature";
+            text.font: "content_bd";
+            text.size: 60;
+            text.fit: 1 1;
+        }
+      }
 
    }
 }
