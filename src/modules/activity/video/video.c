@@ -96,6 +96,7 @@ struct _Enna_Module_Video
     Evas_Object *o_resume;
     Evas_Object *o_video_flags;
     Evas_Object *o_mediaplayer;
+    Evas_Object *o_mediacontrols;
     Enna_Module *em;
     VIDEO_STATE state;
     Ecore_Event_Handler *eos_event_handler;
@@ -103,6 +104,7 @@ struct _Enna_Module_Video
     char *o_current_uri;
     int infos_displayed;
     int resume_displayed;
+    int controls_displayed;
 };
 
 static Enna_Module_Video *mod;
@@ -127,6 +129,26 @@ update_movies_counter (Eina_List *list)
         snprintf(label, sizeof(label), _("%d Movies"), children);
 end:
     edje_object_part_text_set(mod->o_edje, "movies.counter.label", label);
+}
+
+static void
+media_controls_display (int show)
+{
+    Evas_Coord w, h, h2, x, y;
+
+    evas_object_geometry_get(mod->o_mediaplayer, &x, &y, &w, &h);
+    evas_object_geometry_get(mod->o_mediacontrols, NULL, NULL, NULL, &h2);
+
+    if (show)
+    {
+        enna_mediaplayer_video_resize(x, y, w, h - h2);
+        mod->controls_displayed = 1;
+    }
+    else
+    {
+        enna_mediaplayer_video_resize(x, y, w, h);
+        mod->controls_displayed = 0;
+    }
 }
 
 static void
@@ -155,6 +177,9 @@ videoplayer_view_event (enna_input event)
     case ENNA_INPUT_QUIT:
     case ENNA_INPUT_EXIT:
         _return_to_video_info_gui ();
+        break;
+    case ENNA_INPUT_OK:
+        media_controls_display (!mod->controls_displayed);
         break;
     case ENNA_INPUT_SPACE:
         enna_mediaplayer_play (mod->enna_playlist);
@@ -265,6 +290,7 @@ _return_to_video_info_gui()
     double pos;
 
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
+    ENNA_OBJECT_DEL(mod->o_mediacontrols);
     popup_resume_display (0);
     m = enna_mediaplayer_metadata_get(mod->enna_playlist);
     pos = enna_mediaplayer_position_get();
@@ -430,12 +456,19 @@ void
 movie_start_playback (int resume)
 {
     mod->state = VIDEOPLAYER_VIEW;
+
     ENNA_OBJECT_DEL (mod->o_mediaplayer);
     mod->o_mediaplayer = evas_object_rectangle_add (enna->evas);
     evas_object_color_set (mod->o_mediaplayer, 0, 0, 0, 255);
     elm_layout_content_set (enna->layout, "enna.fullscreen.swallow", mod->o_mediaplayer);
     evas_object_event_callback_add (mod->o_mediaplayer, EVAS_CALLBACK_RESIZE,
                                     _mediaplayer_resize_cb, NULL);
+
+    ENNA_OBJECT_DEL (mod->o_mediacontrols);
+    mod->o_mediacontrols = evas_object_rectangle_add (enna->evas);
+    evas_object_color_set (mod->o_mediacontrols, 0, 0, 0, 255);
+    elm_layout_content_set (enna->layout, "enna.fullscreen.controls.swallow",
+                            mod->o_mediacontrols);
 
     enna_mediaplayer_stop();
     enna_mediaplayer_play (mod->enna_playlist);
@@ -791,6 +824,7 @@ em_init(Enna_Module *em)
 
     mod->infos_displayed = 0;
     mod->resume_displayed = 0;
+    mod->controls_displayed = 0;
     mod->o_backdrop = enna_video_picture_add (enna->evas);
     mod->o_snapshot = enna_video_picture_add (enna->evas);
     mod->eos_event_handler =
@@ -811,6 +845,7 @@ em_shutdown(Enna_Module *em)
     evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hilight);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
+    ENNA_OBJECT_DEL(mod->o_mediacontrols);
     ENNA_OBJECT_DEL(mod->o_backdrop);
     ENNA_OBJECT_DEL(mod->o_snapshot);
     ENNA_OBJECT_DEL(mod->o_panel_infos);

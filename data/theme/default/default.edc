@@ -185,6 +185,18 @@ collections
             mouse_events: 1;
             description { state: "default" 0.0; }
          }
+         /* fullscreen media controls */
+         part { name: "enna.fullscreen.controls.swallow";
+            type: SWALLOW;
+            clip_to: "enna.mainmenu.clip";
+            mouse_events: 1;
+            description { state: "default" 0.0;
+               rel1.to: "enna.mainmenu.clip";
+               rel1.relative: 0.00 0.90;
+               rel2.to: "enna.mainmenu.clip";
+               rel2.relative: 1.00 1.00;
+            }
+         }
          /* exit dialog */
          part { name: "exit.clip";
             type: RECT;
