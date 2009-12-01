@@ -46,6 +46,7 @@ typedef enum
     ENNA_INPUT_EXIT,
     //~ ENNA_KEY_CANCEL, isn't the same as 'exit' ??
     ENNA_INPUT_OK,
+    ENNA_INPUT_SPACE,
 
     ENNA_INPUT_LEFT,
     ENNA_INPUT_RIGHT,

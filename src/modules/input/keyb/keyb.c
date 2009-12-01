@@ -58,7 +58,7 @@ static const struct
     { "Next",         0,              ENNA_INPUT_NEXT          },
     { "Return",       0,              ENNA_INPUT_OK            },
     { "KP_Enter",     0,              ENNA_INPUT_OK            },
-    { "space",        0,              ENNA_INPUT_OK            },
+    { "space",        0,              ENNA_INPUT_SPACE         },
     //~ { "Stop",         0,              ENNA_KEY_STOP         }, stop on the keyboard? multimedia keyb?
     { "BackSpace",    0,              ENNA_INPUT_EXIT          },
     
