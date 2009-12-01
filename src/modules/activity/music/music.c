@@ -284,15 +284,6 @@ _class_event_mediaplayer_view(enna_input event)
 
 }
 
-static void _event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
-        void *event_info)
-{
-    if (mod->o_mediaplayer)
-    {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Remove Timer");
-    }
-}
-
 static void
 _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 {
@@ -437,8 +428,6 @@ _create_gui()
     _create_mediaplayer_gui();
 
     mod->vl = enna_volumes_listener_add("activity_music", _refresh_list, _refresh_list, NULL);
-    evas_object_event_callback_add(mod->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
-        _event_mouse_down, NULL);
 
 }
 
