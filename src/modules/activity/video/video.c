@@ -156,7 +156,7 @@ videoplayer_view_event (enna_input event)
     case ENNA_INPUT_EXIT:
         _return_to_video_info_gui ();
         break;
-    case ENNA_INPUT_OK:
+    case ENNA_INPUT_SPACE:
         enna_mediaplayer_play (mod->enna_playlist);
         break;
     case ENNA_INPUT_RIGHT:
