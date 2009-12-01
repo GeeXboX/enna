@@ -247,6 +247,7 @@ slideshow.edc \
 list.edc \
 activity_video.edc \
 activity_video_flags.edc \
+activity_video_controls.edc \
 popup.edc \
 notification_volume.edc \
 notification_weather.edc \

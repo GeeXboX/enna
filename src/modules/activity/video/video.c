@@ -467,8 +467,7 @@ movie_start_playback (int resume)
                                     _mediaplayer_resize_cb, NULL);
 
     ENNA_OBJECT_DEL (mod->o_mediacontrols);
-    mod->o_mediacontrols = evas_object_rectangle_add (enna->evas);
-    evas_object_color_set (mod->o_mediacontrols, 0, 0, 0, 255);
+    mod->o_mediacontrols = enna_video_controls_add (enna->evas);
     edje_object_part_swallow (mod->o_edje, "controls.swallow",
                               mod->o_mediacontrols);
 

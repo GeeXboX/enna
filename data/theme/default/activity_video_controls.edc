@@ -1,0 +1,41 @@
+images {
+   image: "bottom_pane.png" COMP;
+}
+
+group {
+   name: "activity/video/controls";
+
+   parts {
+
+      part {
+         name: "controls.clip";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+         }
+      }
+
+      part {
+         name: "controls.bg.img";
+         type: IMAGE;
+         mouse_events: 0;
+         clip_to: "controls.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+
+            rel1.to: "controls.clip";
+            rel1.relative: 0 0;
+            rel2.to: "controls.clip";
+            rel2.relative: 1 1;
+
+            image.normal: "bottom_pane.png";
+            image.border: 0 0 8 0;
+        }
+      }
+
+   }
+}
