@@ -129,6 +129,17 @@ group {
 	    }
       }
 
+      /* dummy fullscreen layer */
+      part {
+         name: "fullscreen.swallow";
+         type: SWALLOW;
+         mouse_events: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+         }
+      }
+
       /* Slideshow Part */
       part {
          name: "slideshow.swallow";

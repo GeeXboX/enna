@@ -54,6 +54,7 @@
 #include "panel_infos.h"
 #include "video.h"
 #include "video_flags.h"
+#include "video_controls.h"
 #include "resume.h"
 #include "volumes.h"
 #include "buffer.h"
@@ -460,15 +461,16 @@ movie_start_playback (int resume)
     ENNA_OBJECT_DEL (mod->o_mediaplayer);
     mod->o_mediaplayer = evas_object_rectangle_add (enna->evas);
     evas_object_color_set (mod->o_mediaplayer, 0, 0, 0, 255);
-    elm_layout_content_set (enna->layout, "enna.fullscreen.swallow", mod->o_mediaplayer);
+    edje_object_part_swallow (mod->o_edje, "fullscreen.swallow",
+                              mod->o_mediaplayer);
     evas_object_event_callback_add (mod->o_mediaplayer, EVAS_CALLBACK_RESIZE,
                                     _mediaplayer_resize_cb, NULL);
 
     ENNA_OBJECT_DEL (mod->o_mediacontrols);
     mod->o_mediacontrols = evas_object_rectangle_add (enna->evas);
     evas_object_color_set (mod->o_mediacontrols, 0, 0, 0, 255);
-    elm_layout_content_set (enna->layout, "enna.fullscreen.controls.swallow",
-                            mod->o_mediacontrols);
+    edje_object_part_swallow (mod->o_edje, "controls.swallow",
+                              mod->o_mediacontrols);
 
     enna_mediaplayer_stop();
     enna_mediaplayer_play (mod->enna_playlist);

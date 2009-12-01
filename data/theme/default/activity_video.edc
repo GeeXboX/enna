@@ -404,6 +404,34 @@ images {
          }
       }
 
+      /* dummy fullscreen layer */
+      part {
+         name: "fullscreen.swallow";
+         type: SWALLOW;
+         mouse_events: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+         }
+      }
+
+      /* media controls */
+      part {
+         name: "controls.swallow";
+         type: SWALLOW;
+         clip_to: "module.clip";
+         mouse_events: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+
+            rel1.to: "module.clip";
+            rel1.relative: 0.00 0.90;
+            rel2.to: "module.clip";
+            rel2.relative: 1.00 1.00;
+         }
+      }
+
        part {
           name: "mediaplayer.swallow";
           type: SWALLOW;
