@@ -31,6 +31,7 @@
 
 #include "enna.h"
 #include "enna_config.h"
+#include "video.h"
 #include "video_controls.h"
 
 #define EDJE_GROUP "activity/video/controls"
@@ -40,13 +41,21 @@ typedef struct _Smart_Data Smart_Data;
 struct _Smart_Data
 {
     Evas_Object *o_edje;
+    Evas_Object *o_back;
 };
 
 static void
 video_controls_del(void *data, Evas *a, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
+    ENNA_OBJECT_DEL(sd->o_back);
     ENNA_FREE(sd);
+}
+
+static void
+cb_back_clicked(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    media_controls_display(0);
 }
 
 /****************************************************************************/
@@ -66,6 +75,14 @@ enna_video_controls_add(Evas * evas)
     evas_object_data_set(sd->o_edje, "sd", sd);
     evas_object_event_callback_add(sd->o_edje, EVAS_CALLBACK_DEL,
                                    video_controls_del, sd);
+
+    sd->o_back = edje_object_add(evas_object_evas_get(sd->o_edje));
+    edje_object_file_set(sd->o_back,
+                         enna_config_theme_get(), "ctrl/hibernate");
+    edje_object_part_swallow(sd->o_edje,
+                             "controls.back.btn", sd->o_back);
+    evas_object_event_callback_add (sd->o_back, EVAS_CALLBACK_MOUSE_DOWN,
+                                    cb_back_clicked, sd);
 
     return sd->o_edje;
 }

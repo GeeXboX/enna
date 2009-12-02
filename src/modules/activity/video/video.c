@@ -132,7 +132,7 @@ end:
     edje_object_part_text_set(mod->o_edje, "movies.counter.label", label);
 }
 
-static void
+void
 media_controls_display (int show)
 {
     Evas_Coord w, h, h2, x, y;

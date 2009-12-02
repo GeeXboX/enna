@@ -37,5 +37,26 @@ group {
         }
       }
 
+      part {
+         name: "controls.back.btn";
+         type: SWALLOW;
+         mouse_events: 1;
+         clip_to: "controls.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+
+            rel1.to: "controls.clip";
+            rel1.relative: 0.00 0.00;
+            rel1.offset: 5 5;
+            rel2.to: "controls.clip";
+            rel2.relative: 0.05 1.00;
+            rel2.offset: -5 -5;
+
+            aspect: 1 1;
+            aspect_preference: BOTH;
+        }
+      }
+
    }
 }
