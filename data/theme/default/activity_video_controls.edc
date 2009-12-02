@@ -58,5 +58,44 @@ group {
         }
       }
 
+      part {
+         name: "controls.title.clip";
+         type: RECT;
+         mouse_events: 0;
+         clip_to: "controls.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+
+            rel1.to: "controls.clip";
+            rel1.relative: 0.05 0.00;
+            rel1.offset: 5 5;
+            rel2.to: "controls.clip";
+            rel2.relative: 0.70 0.50;
+        }
+      }
+
+      part {
+         name: "controls.title.str";
+         type: TEXT;
+         effect: GLOW;
+         clip_to: "controls.title.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 255;
+
+            rel1.relative: 0 0;
+            rel1.to: "controls.title.clip";
+            rel2.relative: 1 1;
+            rel2.to: "controls.title.clip";
+
+            text.align: 0.0 1.0;
+            text.text: "Movie Title";
+            text.font: "content_bd";
+            text.size: 60;
+            text.fit: 1 1;
+        }
+      }
+
    }
 }

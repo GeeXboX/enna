@@ -86,3 +86,16 @@ enna_video_controls_add(Evas * evas)
 
     return sd->o_edje;
 }
+
+void
+enna_video_controls_set_title(Evas_Object *obj, const char *title)
+{
+    Smart_Data *sd;
+
+    sd = evas_object_data_get(obj, "sd");
+    if (!sd)
+        return;
+
+    edje_object_part_text_set(sd->o_edje, "controls.title.str",
+                              title ? title : "");
+}

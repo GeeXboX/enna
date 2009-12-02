@@ -142,6 +142,14 @@ media_controls_display (int show)
 
     if (show)
     {
+        Enna_Metadata *m;
+        char *title;
+
+        m = enna_mediaplayer_metadata_get(mod->enna_playlist);
+        title = enna_metadata_meta_get(m, "title", 1);
+        enna_video_controls_set_title(mod->o_mediacontrols, title);
+        ENNA_FREE(title);
+
         enna_mediaplayer_video_resize(x, y, w, h - h2);
         mod->controls_displayed = 1;
     }

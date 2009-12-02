@@ -31,5 +31,6 @@
 #define VIDEO_CONTROLS_H
 
 Evas_Object *enna_video_controls_add(Evas * evas);
+void enna_video_controls_set_title(Evas_Object *obj, const char *title);
 
 #endif /* VIDEO_CONTROLS_H */
