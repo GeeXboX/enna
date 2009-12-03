@@ -486,3 +486,9 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
 
     return layout;
  }
+
+Eina_Bool
+enna_mediaplayer_obj_input_feed(Evas_Object *obj, enna_input event)
+{
+    return ENNA_EVENT_BLOCK;
+}

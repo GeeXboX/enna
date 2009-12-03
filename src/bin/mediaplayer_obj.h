@@ -33,5 +33,6 @@
 #include "enna.h"
 
 Evas_Object *enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist);
+Eina_Bool enna_mediaplayer_obj_input_feed(Evas_Object *obj, enna_input event);
 
 #endif /* MEDIAPLAYER_OBJ_H */
