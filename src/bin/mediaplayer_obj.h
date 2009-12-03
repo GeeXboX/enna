@@ -32,9 +32,9 @@
 
 #include "enna.h"
 
-Evas_Object *enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist);
-void enna_smart_player_position_set(Evas_Object *obj, double pos,
+Evas_Object *enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist);
+void enna_mediaplayer_obj_position_set(Evas_Object *obj, double pos,
         double len, double percent);
-void enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata);
-void enna_smart_player_metadata_unset(Evas_Object *obj);
+void enna_mediaplayer_obj_metadata_set(Evas_Object *obj, Enna_Metadata *metadata);
+void enna_mediaplayer_obj_metadata_unset(Evas_Object *obj);
 #endif /* MEDIAPLAYER_OBJ_H */

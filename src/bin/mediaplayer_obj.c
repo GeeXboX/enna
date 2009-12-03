@@ -38,7 +38,7 @@
 #include "utils.h"
 #include "logs.h"
 
-#define SMART_NAME "smart_mediaplayer"
+#define SMART_NAME "mediaplayer_obj"
 
 typedef struct _Smart_Data Smart_Data;
 
@@ -86,7 +86,7 @@ static int _timer_cb(void *data);
 #define METADATA_APPLY                                          \
     Enna_Metadata *metadata;                                    \
     metadata = enna_mediaplayer_metadata_get(_enna_playlist);   \
-    enna_smart_player_metadata_set(sd->layout, metadata);       \
+    enna_mediaplayer_obj_metadata_set(sd->layout, metadata);       \
     enna_metadata_meta_free(metadata);                          \
 
 static void
@@ -289,7 +289,7 @@ show_pause_button(Smart_Data * sd)
 }
 
 void
-enna_smart_player_position_set(Evas_Object *obj,
+enna_mediaplayer_obj_position_set(Evas_Object *obj,
                                double pos, double len, double percent)
 {
     Smart_Data *sd;
@@ -318,7 +318,7 @@ metadata_set_text(Evas_Object *obj,
 }
 
 void
-enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
+enna_mediaplayer_obj_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
     Smart_Data *sd;
     char *cover;
@@ -361,7 +361,7 @@ enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 }
 
 void
-enna_smart_player_metadata_unset(Evas_Object *obj)
+enna_mediaplayer_obj_metadata_unset(Evas_Object *obj)
 {
     Smart_Data *sd;
 
@@ -385,7 +385,7 @@ enna_smart_player_metadata_unset(Evas_Object *obj)
 
 /* externally accessible functions */
 Evas_Object *
-enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
+enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
 {
 
     Evas_Object *layout;
