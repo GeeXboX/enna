@@ -86,8 +86,71 @@ static int _timer_cb(void *data);
 #define METADATA_APPLY                                          \
     Enna_Metadata *metadata;                                    \
     metadata = enna_mediaplayer_metadata_get(_enna_playlist);   \
-    enna_mediaplayer_obj_metadata_set(sd->layout, metadata);       \
+    _metadata_set(sd->layout, metadata);                        \
     enna_metadata_meta_free(metadata);                          \
+
+
+static void
+metadata_set_text(Evas_Object *obj,
+                  Enna_Metadata *m, const char *name, int bold)
+{
+    char *str = NULL;
+    char tmp[4096];
+
+    if (m)
+        str = enna_metadata_meta_get(m, name, 1);
+
+    if(bold && str)
+        snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
+    else
+        snprintf(tmp, sizeof(tmp), "%s", str ? enna_util_str_chomp(str) : "");
+
+    elm_label_label_set(obj, tmp);
+    ENNA_FREE(str);
+}
+
+static void
+_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
+{
+    Smart_Data *sd;
+    char *cover;
+
+    sd = evas_object_data_get(obj, "sd");
+
+    if (!sd)
+        return;
+
+    metadata_set_text (sd->title, metadata, "title", 1);
+    metadata_set_text (sd->album, metadata, "album", 0);
+    metadata_set_text (sd->artist, metadata, "author", 0);
+
+    ENNA_OBJECT_DEL(sd->cv);
+    sd->cv = elm_image_add(sd->layout);
+
+    cover = enna_metadata_meta_get (metadata, "cover", 1);
+    if (cover)
+    {
+        char cv[1024] = { 0 };
+
+        if (*cover == '/')
+            snprintf(cv, sizeof (cv), "%s", cover);
+        else
+            snprintf(cv, sizeof (cv), "%s/.enna/covers/%s",
+                     enna_util_user_home_get (), cover);
+
+        elm_image_file_set(sd->cv, cv, NULL);
+    }
+    else
+    {
+        elm_image_file_set(sd->cv,
+                           enna_config_theme_get(), "cover/music/file");
+    }
+
+    evas_object_size_hint_align_set(sd->cv, 1, 1);
+    evas_object_size_hint_weight_set(sd->cv, -1, -1);
+    elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
+    evas_object_show(sd->cv);
+}
 
 static void
 media_cover_hide (Smart_Data *sd)
@@ -286,87 +349,6 @@ show_pause_button(Smart_Data * sd)
     elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_pause");
     elm_button_icon_set(sd->play_btn, ic);
     evas_object_show(ic);
-}
-
-void
-enna_mediaplayer_obj_position_set(Evas_Object *obj,
-                               double pos, double len, double percent)
-{
-    Smart_Data *sd;
-
-    sd = evas_object_data_get(obj, "sd");
-    if (!sd) return;
-}
-
-static void
-metadata_set_text(Evas_Object *obj,
-                  Enna_Metadata *m, const char *name, int bold)
-{
-    char *str = NULL;
-    char tmp[4096];
-
-    if (m)
-        str = enna_metadata_meta_get(m, name, 1);
-
-    if(bold && str)
-        snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
-    else
-        snprintf(tmp, sizeof(tmp), "%s", str ? enna_util_str_chomp(str) : "");
-
-    elm_label_label_set(obj, tmp);
-    ENNA_FREE(str);
-}
-
-void
-enna_mediaplayer_obj_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
-{
-    Smart_Data *sd;
-    char *cover;
-
-    sd = evas_object_data_get(obj, "sd");
-
-    if (!sd)
-        return;
-
-    metadata_set_text (sd->title, metadata, "title", 1);
-    metadata_set_text (sd->album, metadata, "album", 0);
-    metadata_set_text (sd->artist, metadata, "author", 0);
-
-    ENNA_OBJECT_DEL(sd->cv);
-    sd->cv = elm_image_add(sd->layout);
-
-    cover = enna_metadata_meta_get (metadata, "cover", 1);
-    if (cover)
-    {
-        char cv[1024] = { 0 };
-
-        if (*cover == '/')
-            snprintf(cv, sizeof (cv), "%s", cover);
-        else
-            snprintf(cv, sizeof (cv), "%s/.enna/covers/%s",
-                     enna_util_user_home_get (), cover);
-
-        elm_image_file_set(sd->cv, cv, NULL);
-    }
-    else
-    {
-        elm_image_file_set(sd->cv,
-                           enna_config_theme_get(), "cover/music/file");
-    }
-
-    evas_object_size_hint_align_set(sd->cv, 1, 1);
-    evas_object_size_hint_weight_set(sd->cv, -1, -1);
-    elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
-    evas_object_show(sd->cv);
-}
-
-void
-enna_mediaplayer_obj_metadata_unset(Evas_Object *obj)
-{
-    Smart_Data *sd;
-
-    sd = evas_object_data_get(obj, "sd");
-    edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,hide", "enna");
 }
 
 #define ELM_ADD(icon, cb)                                            \
