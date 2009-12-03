@@ -364,7 +364,7 @@ _create_mediaplayer_gui()
 {
     Evas_Object *o;
 
-    o = enna_smart_player_add(enna->evas, mod->enna_playlist);
+    o = enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
     edje_object_part_swallow(mod->o_edje, "mediaplayer.swallow", o);
     evas_object_show(o);
     mod->o_mediaplayer = o;
