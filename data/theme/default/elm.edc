@@ -642,6 +642,45 @@ group { name: "elm/button/base/mediaplayer";
       image: "mp_bt_hilight.png" COMP;
    }
    parts {
+      part { name: "disclip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+         }
+         description {
+            state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+
+
+      part{ name: "shadow";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description{ state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "sel_shad.png";
+            image.border: 6 6 6 6;
+         }
+      }
+      part { name: "bg";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.offset: 0 2;
+            rel2.offset: 0 -1;
+            image {
+               normal: "sel_bg.png";
+               border: 6 6 6 6;
+            }
+            image.middle: SOLID;
+         }
+      }
+
+
       part { name: "button_image";
          type: RECT;
          mouse_events: 1;
@@ -745,7 +784,7 @@ group { name: "elm/button/base/mediaplayer";
             aspect_preference: VERTICAL;
             image {
                normal: "mp_bt_hilight.png";
-                //border: 12 12 12 12;
+               //border: 12 12 12 12;
             }
             //fill.smooth : 1;
          }
@@ -753,6 +792,43 @@ group { name: "elm/button/base/mediaplayer";
             inherit:  "default" 0.0;
             visible: 1;
             color: 255 255 255 255;
+         }
+      }
+      part { name: "shine_white";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_shine_white.png";
+               border: 6 6 6 6;
+            }
+         }
+      }
+      part { name: "shine_black";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_shine_black.png";
+               border: 6 6 6 0;
+            }
+         }
+      }
+      part { name: "hilight";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_hilight.png";
+               border: 6 6 6 6;
+            }
          }
       }
    }
@@ -834,6 +910,20 @@ group { name: "elm/button/base/mediaplayer";
          source: "elm";
          action:  STATE_SET "default" 0.0;
          target: "elm.swallow.content";
+      }
+      program {
+         name:    "go_disabled";
+         signal:  "elm,state,disabled";
+         source:  "elm";
+         action:  STATE_SET "disabled" 0.0;
+         target:  "disclip";
+      }
+      program {
+         name:    "go_enabled";
+         signal:  "elm,state,enabled";
+         source:  "elm";
+         action:  STATE_SET "default" 0.0;
+         target:  "disclip";
       }
    }
 }
