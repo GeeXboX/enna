@@ -54,6 +54,7 @@ struct _Smart_Data
     Evas_Object *album;
     Evas_Object *title;
     Evas_Object *play_btn;
+    Eina_List *buttons;
     Ecore_Timer *timer;
     Ecore_Event_Handler *play_event_handler;
     Ecore_Event_Handler *stop_event_handler;
@@ -65,7 +66,16 @@ struct _Smart_Data
     Ecore_Event_Handler *eos_event_handler;
     double pos;
     double len;
+    unsigned char show : 1;
 };
+
+typedef struct _Button_Item
+{
+    Evas_Object *bt;
+    unsigned char selected : 1;
+    void (*func)(void *data, Evas_Object *obj, void *event_info);
+    void *data;
+}Button_Item;
 
 /* local subsystem globals */
 static Enna_Playlist *_enna_playlist;
@@ -179,6 +189,7 @@ _start_cb(void *data, int type, void *event)
     sd->timer = ecore_timer_add(1, _timer_cb, sd);
     sd->len = enna_mediaplayer_length_get();
     sd->pos = 0.0;
+    sd->show = 1;
     return 1;
 }
 
@@ -192,7 +203,7 @@ _stop_cb(void *data, int type, void *event)
     sd->pos = 0.0;
     sd->len = 0.0;
     media_cover_hide(sd);
-
+    sd->show = 0;
     return 1;
 }
 
@@ -351,12 +362,90 @@ show_pause_button(Smart_Data * sd)
     evas_object_show(ic);
 }
 
+int
+_selected_button_get(Evas_Object *obj)
+{
+    Eina_List *l;
+    Button_Item *button;
+    int i = 0;
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+
+    if (!sd->buttons) return -1;
+    EINA_LIST_FOREACH(sd->buttons,l, button)
+    {
+        if (button->selected)
+            return i;
+        i++;
+    }
+    return -1;
+}
+
+static void
+_unselect_button(Smart_Data *sd, int n)
+{
+    Button_Item *button;
+
+    button = eina_list_nth(sd->buttons, n);
+    if (!button) return;
+    button->selected = 0;
+    elm_object_disabled_set(button->bt, EINA_FALSE);
+}
+
+static void
+_select_button(Smart_Data *sd, int n)
+{
+    Button_Item *button;
+
+    button = eina_list_nth(sd->buttons, n);
+    if (!button) return;
+    button->selected = 1;
+    elm_object_disabled_set(button->bt, EINA_TRUE);
+}
+
+static void
+_activate_button(Smart_Data *sd, int n)
+{
+    Button_Item *button;
+
+    button = eina_list_nth(sd->buttons, n);
+    if (!button || !button->func) return;
+    button->func(button->data, NULL, NULL);
+}
+
+static int
+_set_button(Smart_Data *sd, int start, int right)
+{
+    int n, ns;
+
+    ns = start;
+    n = start;
+
+    int boundary = right ? eina_list_count(sd->buttons) - 1 : 0;
+
+    if (n == boundary)
+        return ENNA_EVENT_CONTINUE;
+
+    n = right ? n + 1 : n - 1;
+
+    printf("%d %d\n", n, ns);
+    if (n != ns)
+    {
+        _unselect_button(sd, ns);
+        _select_button(sd, n);
+    }
+    return ENNA_EVENT_BLOCK;
+}
+
 #define ELM_ADD(icon, cb)                                            \
+    it = ENNA_NEW(Button_Item, 1);                                   \
     ic = elm_icon_add(layout);                                       \
     elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
     elm_icon_scale_set(ic, 0, 0);                                    \
     bt = elm_button_add(layout);                                     \
+    it->bt = bt;                                                     \
     evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
+    it->func = cb;                                                   \
+    it->data = sd;                                                   \
     elm_button_icon_set(bt, ic);                                     \
     elm_object_style_set(bt, "mediaplayer");                         \
     evas_object_size_hint_weight_set(bt, 1.0, 1.0);                  \
@@ -364,6 +453,7 @@ show_pause_button(Smart_Data * sd)
     elm_box_pack_end(btn_box, bt);                                   \
     evas_object_show(bt);                                            \
     evas_object_show(ic);                                            \
+    sd->buttons = eina_list_append(sd->buttons, it);                 \
 
 /* externally accessible functions */
 Evas_Object *
@@ -378,7 +468,8 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     Evas_Object *sl;
     Evas_Object *ic;
     Evas_Object *bt;
-    Smart_Data *sd;
+    Smart_Data  *sd;
+    Button_Item *it;
 
     sd = ENNA_NEW(Smart_Data, 1);
 
@@ -490,5 +581,29 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
 Eina_Bool
 enna_mediaplayer_obj_input_feed(Evas_Object *obj, enna_input event)
 {
-    return ENNA_EVENT_BLOCK;
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    int ns;
+
+    ns = _selected_button_get(obj);
+
+    switch (event)
+    {
+    case ENNA_INPUT_LEFT:
+        return _set_button(sd, ns, 0);
+    case ENNA_INPUT_RIGHT:
+        return _set_button(sd, ns, 1);
+    case ENNA_INPUT_OK:
+        _activate_button(sd, ns);
+        return ENNA_EVENT_BLOCK;
+    default:
+        return ENNA_EVENT_CONTINUE;
+    }
+
+}
+
+unsigned char
+enna_mediaplayer_show_get(Evas_Object *obj)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    return sd->show;
 }
