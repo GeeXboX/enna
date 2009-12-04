@@ -55,6 +55,8 @@ static void _create_mediaplayer_gui();
 static void _browse(void *data);
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
+static void _class_event(enna_input event);
+static void _class_event_mediaplayer_view(enna_input event);
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
 typedef enum _MUSIC_STATE MUSIC_STATE;
@@ -69,7 +71,8 @@ struct _Music_Item_Class_Data
 enum _MUSIC_STATE
 {
     MENU_VIEW,
-    BROWSER_VIEW
+    BROWSER_VIEW,
+    MEDIAPLAYER_VIEW
 };
 
 struct _Enna_Module_Music
@@ -119,12 +122,15 @@ _class_event_menu_view(enna_input event)
 {
     switch (event)
     {
+    case ENNA_INPUT_RIGHT:
     case ENNA_INPUT_LEFT:
+        printf("left/right\n");
+        enna_mediaplayer_obj_input_feed(mod->o_mediaplayer, event);
+        break;
     case ENNA_INPUT_EXIT:
         enna_content_hide();
         enna_mainmenu_show();
         break;
-    case ENNA_INPUT_RIGHT:
     case ENNA_INPUT_OK:
         _browse(enna_list_selected_data_get(mod->o_list));
         break;
@@ -139,8 +145,53 @@ _class_event_browser_view(enna_input event)
 {
     if (event == ENNA_INPUT_EXIT)
         update_songs_counter(NULL);
-    enna_browser_input_feed(mod->o_browser, event);
+
+    switch (event)
+    {
+    case ENNA_INPUT_RIGHT:
+    case ENNA_INPUT_LEFT:
+        if (enna_mediaplayer_show_get(mod->o_mediaplayer))
+            mod->state = MEDIAPLAYER_VIEW;
+        break;
+    default:
+        enna_browser_input_feed(mod->o_browser, event);
+    }
 }
+
+static void
+_class_event_mediaplayer_view(enna_input event)
+{
+
+    if (!enna_mediaplayer_show_get(mod->o_mediaplayer))
+    {
+        if (mod->o_browser)
+            mod->state = BROWSER_VIEW;
+        else
+            mod->state = MENU_VIEW;
+        return;
+    }
+
+    if (enna_mediaplayer_obj_input_feed(mod->o_mediaplayer, event) == ENNA_EVENT_BLOCK)
+        return;
+
+    printf("Continue\n");
+    switch (event)
+    {
+    case ENNA_INPUT_LEFT:
+    case ENNA_INPUT_RIGHT:
+    case ENNA_INPUT_UP:
+    case ENNA_INPUT_DOWN:
+        if (mod->o_browser)
+            mod->state = BROWSER_VIEW;
+        else
+            mod->state = MENU_VIEW;
+        break;
+    default:
+        break;
+    }
+
+}
+
 
 static void
 _volume_hide_done_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
@@ -231,57 +282,6 @@ panel_lyrics_display (int show)
         edje_object_signal_emit (mod->o_edje, "lyrics,hide", "enna");
         mod->lyrics_displayed = 0;
     }
-}
-
-static void
-_class_event_mediaplayer_view(enna_input event)
-{
-
-    switch (event)
-    {
-    case ENNA_INPUT_OK:
-        enna_mediaplayer_play(mod->enna_playlist);
-        break;
-    case ENNA_INPUT_UP:
-        panel_lyrics_display (0);
-        enna_mediaplayer_prev(mod->enna_playlist);
-        break;
-    case ENNA_INPUT_DOWN:
-        panel_lyrics_display (0);
-        enna_mediaplayer_next(mod->enna_playlist);
-        break;
-    case ENNA_INPUT_LEFT:
-        enna_mediaplayer_default_seek_backward ();
-        break;
-    case ENNA_INPUT_RIGHT:
-        enna_mediaplayer_default_seek_forward ();
-        break;
-    case ENNA_INPUT_EXIT:
-        panel_lyrics_display (0);
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
-        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-        mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
-        break;
-    case ENNA_INPUT_STOP:
-    case ENNA_INPUT_KEY_S:
-        panel_lyrics_display (0);
-        enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide","enna");
-        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-        mod->state = (mod->o_browser) ? BROWSER_VIEW : MENU_VIEW;
-        break;
-    case ENNA_INPUT_KEY_M:
-    case ENNA_INPUT_PLUS:
-    case ENNA_INPUT_MINUS:
-        _volume_core(event);
-        break;
-    case ENNA_INPUT_KEY_I:
-        panel_lyrics_display (!mod->lyrics_displayed);
-        break;
-    default:
-        break;
-    }
-
 }
 
 static void
@@ -480,6 +480,8 @@ _class_event(enna_input event)
     case BROWSER_VIEW:
         _class_event_browser_view (event);
         break;
+    case MEDIAPLAYER_VIEW:
+        _class_event_mediaplayer_view(event);
     default:
         break;
     }
