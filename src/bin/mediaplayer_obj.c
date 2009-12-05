@@ -448,8 +448,8 @@ _set_button(Smart_Data *sd, int start, int right)
     it->data = sd;                                                   \
     elm_button_icon_set(bt, ic);                                     \
     elm_object_style_set(bt, "mediaplayer");                         \
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);                  \
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);                 \
+    evas_object_size_hint_weight_set(bt, 0.0, 1.0);                  \
+    evas_object_size_hint_align_set(bt, 0.5, 0.5);                   \
     elm_box_pack_end(btn_box, bt);                                   \
     evas_object_show(bt);                                            \
     evas_object_show(ic);                                            \
@@ -475,7 +475,8 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
 
     layout = elm_layout_add(enna->layout);
     elm_layout_file_set(layout, enna_config_theme_get(), "core/mediaplayer");
-    evas_object_size_hint_weight_set(enna->layout, 1.0, 1.0);
+    evas_object_size_hint_weight_set(layout, 0.0, 0.0);
+    evas_object_size_hint_align_set(layout, 0.5, 0.5);
     sd->layout = layout;
 
     bx = elm_box_add(enna->layout);
