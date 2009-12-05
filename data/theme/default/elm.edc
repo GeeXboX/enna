@@ -664,6 +664,7 @@ group { name: "elm/button/base/mediaplayer";
             rel2.to: "bg";
             image.normal: "sel_shad.png";
             image.border: 6 6 6 6;
+            color: 255 255 255 200;
          }
       }
       part { name: "bg";
@@ -677,6 +678,7 @@ group { name: "elm/button/base/mediaplayer";
                border: 6 6 6 6;
             }
             image.middle: SOLID;
+            color: 255 255 255 128;
          }
       }
 
@@ -798,7 +800,7 @@ group { name: "elm/button/base/mediaplayer";
          clip_to: "disclip";
          mouse_events: 0;
          description { state: "default" 0.0;
-
+            color: 255 255 255 200;
             rel1.to: "bg";
             rel2.to: "bg";
             image {
@@ -811,6 +813,7 @@ group { name: "elm/button/base/mediaplayer";
          clip_to: "disclip";
          mouse_events: 0;
          description { state: "default" 0.0;
+            color: 255 255 255 200;
             rel1.to: "bg";
             rel2.to: "bg";
             image {
@@ -823,6 +826,7 @@ group { name: "elm/button/base/mediaplayer";
          clip_to: "disclip";
          mouse_events: 0;
          description { state: "default" 0.0;
+            color: 255 255 255 80;
             rel1.to: "bg";
             rel2.to: "bg";
             image {
