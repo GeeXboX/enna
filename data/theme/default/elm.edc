@@ -531,7 +531,7 @@ group { name: "elm/button/base/simple";
          repeat_events: 1;
          ignore_flags: ON_HOLD;
          type: RECT;
-         description { 
+         description {
             state: "default" 0.0;
             color: 255 255 255 0;
             visible: 1;
@@ -771,7 +771,7 @@ group { name: "elm/button/base/mediaplayer";
          repeat_events: 1;
          ignore_flags: ON_HOLD;
          type: RECT;
-         description { 
+         description {
             state: "default" 0.0;
             color: 255 255 255 0;
             visible: 1;
@@ -1309,7 +1309,7 @@ group { name: "elm/genlist/item/default/default";
             color3: 0 0 0 64;
          }
       }
-     
+
       part { name: "shine_white";
          clip_to: "disclip";
          mouse_events: 0;
@@ -2475,7 +2475,7 @@ group { name: "elm/label/base/default";
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/notify/base/bottom";
    //this group is a design similar to the inwin group
-   images {     
+   images {
       image: "picture_bar.png" COMP;
    }
    parts {
