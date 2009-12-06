@@ -1,7 +1,0 @@
-usr/bin/enna
-usr/bin/enna_thumb
-usr/lib/enna/modules/*.so
-usr/share/applications/enna.desktop
-usr/share/pixmaps/enna.png
-usr/share/locale/*/LC_MESSAGES/*.mo
-usr/share/enna/theme/default.edj
