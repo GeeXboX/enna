@@ -10,7 +10,7 @@ group {
       /* Define 2 zones : cover and controls */
       part {
          name: "cover.area";
-         type: SWALLOW;
+         type: RECT;
          mouse_events:   0;
          description { state: "default" 0.0;
             color: 0 0 0 0;
@@ -25,7 +25,7 @@ group {
       }
       part {
          name: "controls.area";
-         type: SWALLOW;
+         type: RECT;
          mouse_events:   0;
          description { state: "default" 0.0;
             color: 0 0 0 0;
@@ -53,7 +53,7 @@ group {
             rel1.offset: -5 -5;
             rel2.to: "cover.swallow";
             rel2.relative: 1.0 1.0;
-            rel2.offset: +4 +4;
+            rel2.offset: 4 4;
             image.normal: "cover_border.png";
             image.border: 5 5 5 5;
             visible: 1;
@@ -80,7 +80,6 @@ group {
          description { state: "default" 0.0;
             aspect_preference: BOTH;
             aspect: 1 1;
-            align: 0.5 0.5;
             rel1.to: "cover.area";
             rel1.offset: 20 20;
             rel2.to: "cover.area";
@@ -92,42 +91,90 @@ group {
          name: "controls.clip";
          type: RECT;
          mouse_events:   0;
-         description { state: "default" 0.0;
+         description {
+            state: "default" 0.0;
+
             rel1.to: "controls.area";
             rel2.to: "controls.area";
+
             color: 255 255 255 0;
             visible: 0;
          }
-         description{ state: "show" 0.0;
+         description{
+            state: "show" 0.0;
             inherit: "default" 0.0;
+
             color: 255 255 255 255;
             visible: 1;
          }
       }
+
       part {
          name: "text.swallow";
          type: SWALLOW;
          mouse_events:   0;
          clip_to: "controls.clip";
-         description { state: "default" 0.0;
+         description {
+            state: "default" 0.0;
+
             rel1.to: "controls.area";
             rel1.offset: 4 4;
+
             rel2.to: "controls.area";
-            rel2.relative: 1 0.6;
+            rel2.relative: 1 0.5;
             rel2.offset: -4 -4;
          }
       }
+
+      part {
+         name: "text.pos.swallow";
+         type: SWALLOW;
+         mouse_events:   0;
+         clip_to: "controls.clip";
+         description {
+            state: "default" 0.0;
+
+            rel1.relative: 0.0 0.5;
+            rel1.to: "controls.area";
+            rel1.offset: 4 4;
+
+            rel2.relative: 0.2 0.6;
+            rel2.to: "controls.area";
+            rel2.offset: -4 -4;
+         }
+      }
+
       part {
          name: "slider.swallow";
          type: SWALLOW;
          mouse_events:   1;
          clip_to: "controls.clip";
-         description { state: "default" 0.0;
-            rel1.relative: 0 1;
-            rel1.to: "text.swallow";
-            rel1.offset: 0 4;
+         description {
+            state: "default" 0.0;
+
+            rel1.relative: 0.2 0.5;
+            rel1.to: "controls.area";
+            rel1.offset: 4 4;
+
             rel2.to: "controls.area";
-            rel2.relative: 1 0.8;
+            rel2.relative: 0.8 0.6;
+            rel2.offset: -4 -4;
+         }
+      }
+      part {
+         name: "text.length.swallow";
+         type: SWALLOW;
+         mouse_events:   0;
+         clip_to: "controls.clip";
+         description {
+            state: "default" 0.0;
+
+            rel1.to: "controls.area";
+            rel1.relative: 0.8 0.5;
+            rel1.offset: 4 4;
+
+            rel2.to: "controls.area";
+            rel2.relative: 1.0 0.6;
             rel2.offset: -4 -4;
          }
       }
@@ -136,12 +183,15 @@ group {
          type: SWALLOW;
          mouse_events:   1;
          clip_to: "controls.clip";
-         description { state: "default" 0.0;
-            rel1.relative: 0 1;
-            rel1.to: "slider.swallow";
-            rel1.offset: 0 4;
+         description {
+            state: "default" 0.0;
+
+            rel1.relative: 0 0.6;
+            rel1.to: "controls.area";
+            rel1.offset: 4 4;
+
             rel2.to: "controls.area";
-            rel2.relative: 1 1;
+            rel2.relative: 1 0.8;
             rel2.offset: -4 -4;
          }
       }
