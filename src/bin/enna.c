@@ -136,9 +136,31 @@ void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
                                                  obj);
 }
 
+static void
+_set_scale(int h)
+{
+    double scale = 1.0;
+    if (h)
+        scale = (h / 720.0);
+    if (scale < 1.0)
+        elm_scale_set(scale);
+
+    enna_log(ENNA_MSG_INFO, NULL, "Scale: %3.3f", scale);
+}
+
+
 static void _window_delete_cb(void *data, Evas_Object *obj, void *event_info)
 {
     ecore_main_loop_quit();
+}
+
+static void
+_window_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Evas_Coord h;
+
+    evas_object_geometry_get(enna->win, NULL, NULL, NULL, &h);
+    _set_scale(h);
 }
 
 static void _list_engines(void)
@@ -240,20 +262,6 @@ static int _enna_init(void)
     return 1;
 }
 
-static void
-_set_scale(int h)
-{
-    double scale = 1.0;
-    if (h)
-        scale = (h / 720.0);
-    if (scale < 1.0)
-    {
-        printf("%3.3f scale\n", scale);
-        elm_scale_set(scale);
-    }
-    enna_log(ENNA_MSG_INFO, NULL, "Scale: %3.3f", scale);
-}
-
 static int _create_gui(void)
 {
     // set custom elementary theme
@@ -273,7 +281,8 @@ static int _create_gui(void)
     elm_win_fullscreen_set(enna->win, enna->run_fullscreen);
     evas_object_smart_callback_add(enna->win, "delete-request",
                                    _window_delete_cb, NULL);
-
+    evas_object_event_callback_add(enna->win, EVAS_CALLBACK_RESIZE,
+                                   _window_resize_cb, NULL);
     //~ ecore_evas_shaped_set(enna->ee, 1);  //TODO why this ???
     enna->ee_winid = elm_win_xwindow_get(enna->win);
     enna->evas = evas_object_evas_get(enna->win);
