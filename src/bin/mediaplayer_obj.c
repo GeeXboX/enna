@@ -156,8 +156,8 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
                            enna_config_theme_get(), "cover/music/file");
     }
     enna_image_fill_inside_set(sd->cv, 0);
-    evas_object_size_hint_align_set(sd->cv, 1, 1);
-    evas_object_size_hint_weight_set(sd->cv, -1, -1);
+    evas_object_size_hint_align_set(sd->cv, 0.5, 0.5);
+    evas_object_size_hint_weight_set(sd->cv, 0, 0);
     elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
     evas_object_show(sd->cv);
 }
@@ -464,7 +464,6 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     Evas_Object *bx;
     Evas_Object *btn_box;
     Evas_Object *lb;
-    Evas_Object *sl_box;
     Evas_Object *sl;
     Evas_Object *ic;
     Evas_Object *bt;
@@ -541,18 +540,11 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     elm_layout_content_set(layout, "buttons.swallow", btn_box);
     evas_object_show(btn_box);
 
-    sl_box = elm_box_add(layout);
-    elm_box_horizontal_set(sl_box, 1);
-    //evas_object_size_hint_align_set(sl_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    evas_object_size_hint_align_set(sl_box, EVAS_HINT_FILL, 0.5);
-    evas_object_size_hint_weight_set(sl_box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_show(sl_box);
-    elm_box_pack_end(bx, sl_box);
 
     lb = elm_label_add(layout);
-    elm_box_pack_end(sl_box, lb);
     evas_object_show(lb);
     sd->current_time = lb;
+    elm_layout_content_set(layout, "text.pos.swallow", lb);
 
     sl = elm_slider_add(layout);
     elm_slider_span_size_set(sl, 80);
@@ -560,16 +552,15 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     elm_slider_min_max_set(sl, 0.0, 100.0);
     elm_slider_indicator_format_set(sl, "%1.0f %%");
     evas_object_size_hint_weight_set(sl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    elm_box_pack_end(sl_box, sl);
     evas_object_show(sl);
     evas_object_smart_callback_add(sl, "delay,changed", _slider_seek_cb, sd);
     sd->sl = sl;
+    elm_layout_content_set(layout, "slider.swallow", sl);
 
     lb = elm_label_add(layout);
-    elm_box_pack_end(sl_box, lb);
     evas_object_show(lb);
     sd->total_time = lb;
-    elm_layout_content_set(layout, "slider.swallow", sl_box);
+    elm_layout_content_set(layout, "text.length.swallow", lb);
 
     /* FIXME : WTF ? why we have a ref to the playlist there ? */
     _enna_playlist = enna_playlist;
