@@ -1,25 +1,18 @@
 Source: enna
-Section: audio
+Section: multimedia
 Priority: optional
 Maintainer: Nicoals Aguirre <captainigloo@geexbox.org>
-Build-Depends: debhelper (>= 6), cdbs, libecore-dev, libevas-dev, libeet-dev, libedje-dev, libeina-dev, libelm-dev, libplayer-dev, libdbus-1-dev, libxml2-dev, libcddb2-dev, libefreet-dev, libexif-dev, libexif12, libcddb2
+Build-Depends: debhelper (>= 6), cdbs, pkg-config, libecore-dev, libevas-dev, libeet-dev, libedje-dev, libeina-dev, libelm-dev, libvalhalla-dev, libplayer-dev, libdbus-1-dev, libedbus-dev, libxml2-dev, libcurl-dev, libcddb2-dev, libefreet-dev, libxrandr-dev
 Standards-Version: 3.8.2
+Vcs-Hg: http://hg.geexbox.org/enna
+Vcs-Browser: http://hg.geexbox.org/enna/summary
 Homepage: http://enna.geexbox.org
-
-Package: enna-modules
-Architecture: any
-Depends: ${shlibs:Depends}, enna
-Description: Enna - a media center application based on EFL.
- This package contains a set of modules to use with enna.
 
 Package: enna
 Architecture: any
-Depends: ${shlibs:Depends}, enna-data, enna-modules, libelm-svn-03, libevas-svn-03, libecore-evas-svn-03, libedje-svn-03, libecore-file-svn-03, libecore-ipc-svn-03, libecore-svn-03, libecore-txt-svn-03, libecore-x-svn-03, libecore-con-svn-03, libedbus-svn-03, libefreet-svn-03, 
-Description: Enna - a media center application based on EFL.
- This package contains binary file.
-
-Package: enna-data
-Architecture: all
-Depends: ${shlibs:Depends}
-Description: Enna - a media center application based on EFL.
- This package contains data use by enna (Theme, icons ...).
+Depends: ${shlibs:Depends}, libeina-svn-05, libeet1, libevas-svn-05, libecore-svn-05, libecore-evas-svn-05, libecore-file-svn-05, libecore-ipc-svn-05, libecore-txt-svn-05, libecore-x-svn-05, libecore-con-svn-05, libefreet-svn-05, libedbus-svn-05, libedje-svn-05, libelm-svn-05
+Description: Enna - a Powerful and Open MediaCenter application based on EFL.
+ Enna is a Media Center application.
+ Featuring a simple user interface, Enna is based on the powerful Enlightenment
+ Foundations Libraries (EFL) as for its graphical user interface
+ and GeeXboX libraries as for multimedia playback and information retrieval.

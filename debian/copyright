@@ -1,12 +1,43 @@
-This package was debianized by Nicolas Aguirre <captainigloo@geexbox.org> on
-Thu, 01 Jan 2009 23:48:48 +0200.
+This package was downloaded from <http://libnfo.geexbox.org>
 
-Author: Nicolas Aguirre <captainigloo@geexbox.org>
+Upstream Authors:
+    Nicolas Aguirre     <captainigloo@geexbox.org>
+    Benjamin Zores      <ben@geexbox.org>
+    Mathieu Schroeter   <mathieu.schroeter@mycable.ch>
+    Guillaume Lecerf    <fox@geexbox.org>
+    Davide Cavalca      <davide@geexbox.org>
+    Matthias Holzer     <n-billy@geexbox.org>
+    Mustafa Ozveren     <mustafa.ozveren@gmail.com>
+    Fabien Brisset      <fbrisset@gmail.com>
 
-Copyright: 
+License: BSD
 
-  Copyright (C) 2009 Nicolas Aguirre  <captainigloo@geexbox.org>
+  Permission is hereby granted, free of charge, to any person obtaining a
+  copy of this software and associated documentation files (the "Software"),
+  to deal in the Software without restriction, including without limitation
+  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  and/or sell copies of the Software, and to permit persons to whom the
+  Software is furnished to do so, subject to the following conditions:
 
-License:
+  The above copyright notice and this permission notice shall be included in
+  all copies of the Software and its Copyright notices. In addition publicly
+  documented acknowledgment must be given that this software has been used if
+  no source code of this software is made available publicly. This includes
+  acknowledgments in either Copyright notices, Manuals, Publicity and
+  Marketing documents or any documentation provided with any product
+  containing this software. This License does not apply to any software that
+  links to the libraries provided by this software (statically or
+  dynamically), but only to the software provided.
 
-  TBD (BSD like)
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+  THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+On Debian systems, the complete text of the BSD License
+can be found in `/usr/share/common-licenses/BSD'.
+
+The Debian packaging is (C) 2009, Nicolas Aguirre <captainigloo@geexbox.org>
+and is licensed under the GPL, see `/usr/share/common-licenses/GPL'.

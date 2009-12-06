@@ -6,6 +6,7 @@ include /usr/share/cdbs/1/class/autotools.mk
 DEB_DH_INSTALL_SOURCEDIR := debian/tmp
 
 DEB_MAKE_CLEAN_TARGET := distclean
+DEB_CONFIGURE_SCRIPT := ./autogen.sh
 DEB_CONFIGURE_EXTRA_FLAGS := --disable-rpath
 DEB_MAKE_INSTALL_TARGET := install DESTDIR=$(DEB_DESTDIR)
 
