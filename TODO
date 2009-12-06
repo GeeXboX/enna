@@ -2,9 +2,6 @@
 [Priority 10]
 
  * Photo Module
-      -> More transitions effects
-      -> Add next/prev/pause/stop control and increase/decrease time
-   between 2 pictures.
       -> Add State info with OSD
       -> Preload previous and next pictures
       -> hide photo after transition : add program in edje to send signal
@@ -27,12 +24,8 @@
  * Bugs
      -> When using 'back' in audio/video player, ui comes back to menu but
         timer renders media player view again after a few seconds.
-     -> 4:3 videos are cropped when displayed on a 16:10 window.
      -> Ensure media player works (do not segv) if
         libplayer has no x11 support.
-     -> Duplicated folder's name in location bar when a subfolder is opened
-        too fast
-     -> Don't try to create video thumbnails for net streams
 
 [Priority 9]
 
@@ -52,9 +45,6 @@
       -> Add configuration infrastructure for modules
       -> Add Main menu item for configuration
       -> Create GUI for config from registred modules
-      -> Add an option to enable/disable Internet usage
-
- * Theme : More colors
 
 [Priority 8]
 
@@ -63,7 +53,6 @@
 
 [Priority 0]
 
-  * Smooth selection in list (scroll animated)
   * Lastfm plugin
   * youtube plugin
   * Deezer plugin

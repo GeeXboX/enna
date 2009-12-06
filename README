@@ -1,37 +1,46 @@
 Enna 0.3.0
+==========
 
-Enna is a media center based on EFL.
-It tries to be simple to use, fast and modular.
-Version 0.3.0 is a new version rewrite from scratch.
+Enna is a Media Center application.
+Featuring a simple user interface, Enna is based on the powerful
+Enlightenment Foundations Libraries (EFL) as for its graphical user interface
+and GeeXboX libraries as for multimedia playback and information retrieval.
 
-Core dependencies :
+Enna's features
+===============
 
-* Eina
-* Eet 1.0.0
-* Evas
-* Ecore
-* Embryo
-* Edje
-* Elementary
-* Libplayer (can be found on geexbox server : http://libplayer.geexbox.org/)
+- Browse and listen to your music files,
+- Browse and watch at your videos files,
+- Browse and play slideshow with your photos,
+- Retrieve informations about your media files on the Internet,
+- Build a database of your medias and retrieve information from your music,
+  video ... (such as covers, fan arts, songs lyrics and many much more).
 
-Module dependencies (optional):
+Core dependencies
+=================
 
-* e_dbus / e_hal
-* efreet
+* Eina >= 0.9.9.063
+* Eet >= 1.2.2
+* Evas >= 0.9.9.063
+* Ecore >= 0.9.9.063
+* Embryo >= 0.9.9.063
+* Edje >= 0.9.93.063
+* Elementary >= 0.6.0.063
+* libplayer (http://libplayer.geexbox.org/) >= 1.0.0
+* libvalhalla (http://hg.geexbox.org/libvalhalla/) >= 1.0.0
+
+Module dependencies (optional)
+==============================
+
+* Edbus >= 0.5.0.063
+* Efreet >= 0.5.0.063
 * gUPnP
 * libcddb
 * libcurl
-* libexif
 * libsvdrp (http://hg.geexbox.org/libsvdrp/)
-* libvalhalla (http://hg.geexbox.org/libvalhalla/)
 * libxml2
 * libxrandr
-* LightMediaScanner (can be found here : http://lms.garage.maemo.org/)
 * Lirc (http://www.lirc.org/)
 * gettext
 
-This program is in heavy development and you can of course participate
-
-Have fun,
-Nico
+This program is under heavy development, so feel free to join.
