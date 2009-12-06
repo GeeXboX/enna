@@ -94,14 +94,14 @@ collections
             description { state: "default" 0.0;
                color: 255 255 255 255;
                visible: 1;
-               rel1.relative: -0.30 0;
+               rel1.relative: -0.35 0;
                rel2.relative:  0 1;
             }
             description { state: "visible" 0.0;
                color: 255 255 255 255;
                visible: 1;
                rel1.relative:  0 0;
-               rel2.relative:  0.30 1;
+               rel2.relative:  0.35 1;
             }
          }
          part { name: "mainmenu.shadow";

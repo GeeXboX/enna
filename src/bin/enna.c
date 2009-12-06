@@ -240,6 +240,20 @@ static int _enna_init(void)
     return 1;
 }
 
+static void
+_set_scale(int h)
+{
+    double scale = 1.0;
+    if (h)
+        scale = (h / 720.0);
+    if (scale < 1.0)
+    {
+        printf("%3.3f scale\n", scale);
+        elm_scale_set(scale);
+    }
+    enna_log(ENNA_MSG_INFO, NULL, "Scale: %3.3f", scale);
+}
+
 static int _create_gui(void)
 {
     // set custom elementary theme
@@ -295,9 +309,10 @@ static int _create_gui(void)
                                    _mousemove_cb,
                                    NULL);
     enna->cursor_is_shown=1;
-
+    
     // show all
     evas_object_resize(enna->win, app_w, app_h);
+    _set_scale(app_h);
     evas_object_show(enna->win);
 
     return 1;

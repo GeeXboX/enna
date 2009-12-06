@@ -38,7 +38,7 @@
 #include "utils.h"
 #include "logs.h"
 
-#define SMART_NAME "smart_mediaplayer"
+#define SMART_NAME "mediaplayer_obj"
 
 typedef struct _Smart_Data Smart_Data;
 
@@ -54,6 +54,7 @@ struct _Smart_Data
     Evas_Object *album;
     Evas_Object *title;
     Evas_Object *play_btn;
+    Eina_List *buttons;
     Ecore_Timer *timer;
     Ecore_Event_Handler *play_event_handler;
     Ecore_Event_Handler *stop_event_handler;
@@ -65,7 +66,16 @@ struct _Smart_Data
     Ecore_Event_Handler *eos_event_handler;
     double pos;
     double len;
+    unsigned char show : 1;
 };
+
+typedef struct _Button_Item
+{
+    Evas_Object *bt;
+    unsigned char selected : 1;
+    void (*func)(void *data, Evas_Object *obj, void *event_info);
+    void *data;
+}Button_Item;
 
 /* local subsystem globals */
 static Enna_Playlist *_enna_playlist;
@@ -86,8 +96,71 @@ static int _timer_cb(void *data);
 #define METADATA_APPLY                                          \
     Enna_Metadata *metadata;                                    \
     metadata = enna_mediaplayer_metadata_get(_enna_playlist);   \
-    enna_smart_player_metadata_set(sd->layout, metadata);       \
+    _metadata_set(sd->layout, metadata);                        \
     enna_metadata_meta_free(metadata);                          \
+
+
+static void
+metadata_set_text(Evas_Object *obj,
+                  Enna_Metadata *m, const char *name, int bold)
+{
+    char *str = NULL;
+    char tmp[4096];
+
+    if (m)
+        str = enna_metadata_meta_get(m, name, 1);
+
+    if(bold && str)
+        snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
+    else
+        snprintf(tmp, sizeof(tmp), "%s", str ? enna_util_str_chomp(str) : "");
+
+    elm_label_label_set(obj, tmp);
+    ENNA_FREE(str);
+}
+
+static void
+_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
+{
+    Smart_Data *sd;
+    char *cover;
+
+    sd = evas_object_data_get(obj, "sd");
+
+    if (!sd)
+        return;
+
+    metadata_set_text (sd->title, metadata, "title", 1);
+    metadata_set_text (sd->album, metadata, "album", 0);
+    metadata_set_text (sd->artist, metadata, "author", 0);
+
+    ENNA_OBJECT_DEL(sd->cv);
+    sd->cv = elm_image_add(sd->layout);
+
+    cover = enna_metadata_meta_get (metadata, "cover", 1);
+    if (cover)
+    {
+        char cv[1024] = { 0 };
+
+        if (*cover == '/')
+            snprintf(cv, sizeof (cv), "%s", cover);
+        else
+            snprintf(cv, sizeof (cv), "%s/.enna/covers/%s",
+                     enna_util_user_home_get (), cover);
+
+        elm_image_file_set(sd->cv, cv, NULL);
+    }
+    else
+    {
+        elm_image_file_set(sd->cv,
+                           enna_config_theme_get(), "cover/music/file");
+    }
+
+    evas_object_size_hint_align_set(sd->cv, 1, 1);
+    evas_object_size_hint_weight_set(sd->cv, -1, -1);
+    elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
+    evas_object_show(sd->cv);
+}
 
 static void
 media_cover_hide (Smart_Data *sd)
@@ -116,6 +189,7 @@ _start_cb(void *data, int type, void *event)
     sd->timer = ecore_timer_add(1, _timer_cb, sd);
     sd->len = enna_mediaplayer_length_get();
     sd->pos = 0.0;
+    sd->show = 1;
     return 1;
 }
 
@@ -129,7 +203,7 @@ _stop_cb(void *data, int type, void *event)
     sd->pos = 0.0;
     sd->len = 0.0;
     media_cover_hide(sd);
-
+    sd->show = 0;
     return 1;
 }
 
@@ -288,104 +362,102 @@ show_pause_button(Smart_Data * sd)
     evas_object_show(ic);
 }
 
-void
-enna_smart_player_position_set(Evas_Object *obj,
-                               double pos, double len, double percent)
+int
+_selected_button_get(Evas_Object *obj)
 {
-    Smart_Data *sd;
+    Eina_List *l;
+    Button_Item *button;
+    int i = 0;
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
 
-    sd = evas_object_data_get(obj, "sd");
-    if (!sd) return;
+    if (!sd->buttons) return -1;
+    EINA_LIST_FOREACH(sd->buttons,l, button)
+    {
+        if (button->selected)
+            return i;
+        i++;
+    }
+    return -1;
 }
 
 static void
-metadata_set_text(Evas_Object *obj,
-                  Enna_Metadata *m, const char *name, int bold)
+_unselect_button(Smart_Data *sd, int n)
 {
-    char *str = NULL;
-    char tmp[4096];
+    Button_Item *button;
 
-    if (m)
-        str = enna_metadata_meta_get(m, name, 1);
-
-    if(bold && str)
-        snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
-    else
-        snprintf(tmp, sizeof(tmp), "%s", str ? enna_util_str_chomp(str) : "");
-
-    elm_label_label_set(obj, tmp);
-    ENNA_FREE(str);
+    button = eina_list_nth(sd->buttons, n);
+    if (!button) return;
+    button->selected = 0;
+    elm_object_disabled_set(button->bt, EINA_FALSE);
 }
 
-void
-enna_smart_player_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
+static void
+_select_button(Smart_Data *sd, int n)
 {
-    Smart_Data *sd;
-    char *cover;
+    Button_Item *button;
 
-    sd = evas_object_data_get(obj, "sd");
-
-    if (!sd)
-        return;
-
-    metadata_set_text (sd->title, metadata, "title", 1);
-    metadata_set_text (sd->album, metadata, "album", 0);
-    metadata_set_text (sd->artist, metadata, "author", 0);
-
-    ENNA_OBJECT_DEL(sd->cv);
-    sd->cv = elm_image_add(sd->layout);
-
-    cover = enna_metadata_meta_get (metadata, "cover", 1);
-    if (cover)
-    {
-        char cv[1024] = { 0 };
-
-        if (*cover == '/')
-            snprintf(cv, sizeof (cv), "%s", cover);
-        else
-            snprintf(cv, sizeof (cv), "%s/.enna/covers/%s",
-                     enna_util_user_home_get (), cover);
-
-        elm_image_file_set(sd->cv, cv, NULL);
-    }
-    else
-    {
-        elm_image_file_set(sd->cv,
-                           enna_config_theme_get(), "cover/music/file");
-    }
-
-    evas_object_size_hint_align_set(sd->cv, 1, 1);
-    evas_object_size_hint_weight_set(sd->cv, -1, -1);
-    elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
-    evas_object_show(sd->cv);
+    button = eina_list_nth(sd->buttons, n);
+    if (!button) return;
+    button->selected = 1;
+    elm_object_disabled_set(button->bt, EINA_TRUE);
 }
 
-void
-enna_smart_player_metadata_unset(Evas_Object *obj)
+static void
+_activate_button(Smart_Data *sd, int n)
 {
-    Smart_Data *sd;
+    Button_Item *button;
 
-    sd = evas_object_data_get(obj, "sd");
-    edje_object_signal_emit(elm_layout_edje_get(sd->layout), "controls,hide", "enna");
+    button = eina_list_nth(sd->buttons, n);
+    if (!button || !button->func) return;
+    button->func(button->data, NULL, NULL);
+}
+
+static int
+_set_button(Smart_Data *sd, int start, int right)
+{
+    int n, ns;
+
+    ns = start;
+    n = start;
+
+    int boundary = right ? eina_list_count(sd->buttons) - 1 : 0;
+
+    if (n == boundary)
+        return ENNA_EVENT_CONTINUE;
+
+    n = right ? n + 1 : n - 1;
+
+    printf("%d %d\n", n, ns);
+    if (n != ns)
+    {
+        _unselect_button(sd, ns);
+        _select_button(sd, n);
+    }
+    return ENNA_EVENT_BLOCK;
 }
 
 #define ELM_ADD(icon, cb)                                            \
+    it = ENNA_NEW(Button_Item, 1);                                   \
     ic = elm_icon_add(layout);                                       \
     elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
     elm_icon_scale_set(ic, 0, 0);                                    \
     bt = elm_button_add(layout);                                     \
+    it->bt = bt;                                                     \
     evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
+    it->func = cb;                                                   \
+    it->data = sd;                                                   \
     elm_button_icon_set(bt, ic);                                     \
     elm_object_style_set(bt, "mediaplayer");                         \
-    evas_object_size_hint_weight_set(bt, 1.0, 1.0);                  \
-    evas_object_size_hint_align_set(bt, -1.0, -1.0);                 \
+    evas_object_size_hint_weight_set(bt, 0.0, 1.0);                  \
+    evas_object_size_hint_align_set(bt, 0.5, 0.5);                   \
     elm_box_pack_end(btn_box, bt);                                   \
     evas_object_show(bt);                                            \
     evas_object_show(ic);                                            \
+    sd->buttons = eina_list_append(sd->buttons, it);                 \
 
 /* externally accessible functions */
 Evas_Object *
-enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
+enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
 {
 
     Evas_Object *layout;
@@ -396,13 +468,15 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
     Evas_Object *sl;
     Evas_Object *ic;
     Evas_Object *bt;
-    Smart_Data *sd;
+    Smart_Data  *sd;
+    Button_Item *it;
 
     sd = ENNA_NEW(Smart_Data, 1);
 
     layout = elm_layout_add(enna->layout);
     elm_layout_file_set(layout, enna_config_theme_get(), "core/mediaplayer");
-    evas_object_size_hint_weight_set(enna->layout, 1.0, 1.0);
+    evas_object_size_hint_weight_set(layout, 0.0, 0.0);
+    evas_object_size_hint_align_set(layout, 0.5, 0.5);
     sd->layout = layout;
 
     bx = elm_box_add(enna->layout);
@@ -504,3 +578,33 @@ enna_smart_player_add(Evas * evas, Enna_Playlist *enna_playlist)
 
     return layout;
  }
+
+Eina_Bool
+enna_mediaplayer_obj_input_feed(Evas_Object *obj, enna_input event)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    int ns;
+
+    ns = _selected_button_get(obj);
+
+    switch (event)
+    {
+    case ENNA_INPUT_LEFT:
+        return _set_button(sd, ns, 0);
+    case ENNA_INPUT_RIGHT:
+        return _set_button(sd, ns, 1);
+    case ENNA_INPUT_OK:
+        _activate_button(sd, ns);
+        return ENNA_EVENT_BLOCK;
+    default:
+        return ENNA_EVENT_CONTINUE;
+    }
+
+}
+
+unsigned char
+enna_mediaplayer_show_get(Evas_Object *obj)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    return sd->show;
+}
