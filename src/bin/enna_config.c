@@ -149,7 +149,15 @@
     "# 0: normal, -20: higher, 19 lower\n" \
     "scan_priority=19\n" \
     "\n" \
-    "# blacklisted keywords\n" \
+    "# blacklisted keywords for the file titles\n" \
+    "# Normal keywords must use small letters, but it is possible to use\n" \
+    "# patterns for special keywords with numbers. So, the keyword is case\n" \
+    "# sensitive.\n" \
+    "#  NUM : for a number\n" \
+    "#  SE  : for a season\n" \
+    "#  EP  : for an episode\n" \
+    "# With SE and EP, the values are saved in the database.\n" \
+    "# Examples: sSEeEP, NUMxNUM\n" \
     "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,SExEP,sSEeEP,SSEEEP\n" \
     "\n" \
 
