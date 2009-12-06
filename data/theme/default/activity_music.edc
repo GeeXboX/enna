@@ -90,10 +90,11 @@ group {
             visible: 1;
             color: 255 255 255 255;
 
-            rel1.relative: 0.51 0.05;
+            rel1.relative: 0.5 0.0;
+            rel1.offset: 8 8;
             rel1.to: "content.clip";
 
-            rel2.relative: 1.0 0.99;
+            rel2.relative: 1.0 1.0;
             rel2.offset: 0 -50;
             rel2.to: "content.clip";
          }
@@ -153,11 +154,12 @@ group {
             visible: 1;
             color: 255 255 255 255;
 
-            rel1.relative: 0.01 0.05;
+            rel1.relative: 0.0 0.0;
+            rel1.offset: 8 8;
             rel1.to: "content.clip";
 
-            rel2.relative: 0.49 0.99;
-            rel2.offset: 0 -50;
+            rel2.relative: 0.50 1.0;
+            rel2.offset: -8 -50;
             rel2.to: "content.clip";
          }
       }
