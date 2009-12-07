@@ -14,9 +14,9 @@
  */
 
 
- group {
-    name: "activity/configuration";
-    parts {
+group {
+   name: "activity/configuration";
+   parts {
 
       /* background */
       part {
@@ -38,97 +38,97 @@
          }
       }
 
-        /* main config menu */
-        part {
-        name: "menu.clip";
-           type: RECT;
-           description {
-              state: "default" 0.0;
-              color: 255 255 255 100;
-              visible: 0;
-              rel1.relative: -1.0 0;
-              rel2.relative: 0.0 1.0;
-          }
-          description {
-             state: "show" 0.0;
-             color: 255 255 255 255;
-             visible: 1;
-          }
-        }
+      /* main config menu */
+      part {
+         name: "menu.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 100;
+            visible: 0;
+            rel1.relative: -1.0 0;
+            rel2.relative: 0.0 1.0;
+         }
+         description {
+            state: "show" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+         }
+      }
 
-        part {
-          name: "menu.swallow";
-          type: SWALLOW;
-          clip_to: "menu.clip";
-          description {
-             state: "default" 0.0;
-             rel1.to: "menu.clip";
-             rel2.to: "menu.clip";
-          }
-       }
+      part {
+         name: "menu.swallow";
+         type: SWALLOW;
+         clip_to: "menu.clip";
+         description {
+            state: "default" 0.0;
+            rel1.to: "menu.clip";
+            rel2.to: "menu.clip";
+         }
+      }
 
-       /* content (where subpanels are swallowed) */
-       part {
-          name: "content.clip";
-          type: RECT;
-          description {
-              state: "default" 0.0;
-              color: 255 255 255 0;
-              visible: 0;
-          }
-          description {
-             state: "show" 0.0;
-             color: 255 255 255 255;
-             visible: 1;
-          }
-       }
+      /* content (where subpanels are swallowed) */
+      part {
+         name: "content.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            visible: 0;
+         }
+         description {
+            state: "show" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+         }
+      }
 
-       part {
-          name: "content.swallow";
-          type: SWALLOW;
-          clip_to: "content.clip";
-          description {
-             state: "default" 0.0;
-             rel1.to: "content.clip";
-             rel2.to: "content.clip";
-          }
-       }
-    }
+      part {
+         name: "content.swallow";
+         type: SWALLOW;
+         clip_to: "content.clip";
+         description {
+            state: "default" 0.0;
+            rel1.to: "content.clip";
+            rel2.to: "content.clip";
+         }
+      }
+   }
 
-    programs {
-       program {
-          name: "menu,show";
-          signal: "menu,show";
-          source:  "enna";
-          action:  STATE_SET "show" 0.0;
-          transition: SINUSOIDAL 0.5;
-          target: "menu.clip";
-          target: "background";
-       }
-       program {
-          name: "menu,hide";
-          signal: "menu,hide";
-          source:  "enna";
-          action:  STATE_SET "default" 0.0;
-          transition: SINUSOIDAL 0.5;
-          target: "menu.clip";
-          target: "background";
-       }
-       program {
-          name: "content,show";
-          signal: "content,show";
-          source:  "enna";
-          action:  STATE_SET "show" 0.0;
-          transition: SINUSOIDAL 0.5;
-          target: "content.clip";
-       }
-       program {
-          name: "content,hide";
-          signal: "content,hide";
-          source:  "enna";
-          action:  STATE_SET "default" 0.0;
-          transition: SINUSOIDAL 0.5;
-          target: "content.clip";
-       }
-    }
- }
+   programs {
+      program {
+         name: "menu,show";
+         signal: "menu,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "menu.clip";
+         target: "background";
+      }
+      program {
+         name: "menu,hide";
+         signal: "menu,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "menu.clip";
+         target: "background";
+      }
+      program {
+         name: "content,show";
+         signal: "content,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "content.clip";
+      }
+      program {
+         name: "content,hide";
+         signal: "content,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "content.clip";
+      }
+   }
+}
