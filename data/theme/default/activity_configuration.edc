@@ -1,6 +1,6 @@
 /*
  *  Group: activity/configuration
- * 
+ *
  *   * This group MUST provide:
  *  enna.swallow.menu : Enna will put here the main configuration menu.
  *  enna.swallow.content : Enna will put here the various panels
@@ -10,10 +10,10 @@
  *  menu,hide : Enna ask to hide the config menu
  *  content,show : Enna ask to show the subpanel
  *  content, hide : Enna ask to hide the subpanel
- * 
+ *
  */
 
- 
+
  group {
     name: "activity/configuration";
     parts {
