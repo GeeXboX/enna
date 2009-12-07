@@ -1230,7 +1230,7 @@ group { name: "elm/genlist/item/default/default";
             rel2.to: "bg";
             image {
                normal: "sel_shine_white.png";
-               border: 6 6 6 6;
+               border: 12 12 6 6;
             }
          }
          description { state: "selected" 0.0;
@@ -1249,7 +1249,7 @@ group { name: "elm/genlist/item/default/default";
             rel2.to: "bg";
             image {
                normal: "sel_shine_black.png";
-               border: 6 6 6 0;
+               border: 12 12 6 6;
             }
          }
          description { state: "selected" 0.0;
@@ -1268,7 +1268,7 @@ group { name: "elm/genlist/item/default/default";
             rel2.to: "bg";
             image {
                normal: "sel_hilight.png";
-               border: 6 6 6 6;
+               border: 12 12 6 6;
             }
          }
          description { state: "selected" 0.0;
