@@ -305,7 +305,7 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 
     if (!ev || !ev->file) return;
 
-    if (ev->file->is_directory)
+    if (ev->file->is_directory || ev->file->is_menu)
     {
         enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
         update_songs_counter (ev->files);
