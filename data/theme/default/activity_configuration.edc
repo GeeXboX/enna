@@ -18,6 +18,26 @@
     name: "activity/configuration";
     parts {
 
+      /* background */
+      part {
+         name: "background";
+         mouse_events:  0;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            visible: 1;
+            image {
+               normal: "vertical_gradient.png";
+            }
+         }
+         description {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+         }
+      }
+
         /* main config menu */
         part {
         name: "menu.clip";
@@ -83,6 +103,7 @@
           action:  STATE_SET "show" 0.0;
           transition: SINUSOIDAL 0.5;
           target: "menu.clip";
+          target: "background";
        }
        program {
           name: "menu,hide";
@@ -91,6 +112,7 @@
           action:  STATE_SET "default" 0.0;
           transition: SINUSOIDAL 0.5;
           target: "menu.clip";
+          target: "background";
        }
        program {
           name: "content,show";
