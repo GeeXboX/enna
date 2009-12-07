@@ -744,7 +744,7 @@ group { name: "elm/button/base/mediaplayer";
             rel2.to: "bg";
             image {
                normal: "sel_shine_white.png";
-               border: 6 6 6 6;
+               border: 12 12 6 6;
             }
          }
       }
@@ -757,7 +757,7 @@ group { name: "elm/button/base/mediaplayer";
             rel2.to: "bg";
             image {
                normal: "sel_shine_black.png";
-               border: 6 6 6 0;
+               border: 12 12 6 6;
             }
          }
       }
@@ -770,7 +770,7 @@ group { name: "elm/button/base/mediaplayer";
             rel2.to: "bg";
             image {
                normal: "sel_hilight.png";
-               border: 6 6 6 6;
+               border: 12 12 6 6;
             }
          }
       }
