@@ -192,12 +192,14 @@ _activity_show (int dummy)
     // show the module
     enna_content_select(ENNA_MODULE_NAME);    
     edje_object_signal_emit (mod->o_edje, "menu,show", "enna");
+    edje_object_signal_emit (mod->o_edje, "module,show", "enna");
 }
 
 static void
 _activity_hide (int dummy)
 {
     edje_object_signal_emit (mod->o_edje, "menu,hide", "enna");
+    edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
     _hide_subpanel(mod->selected);
 }
 
