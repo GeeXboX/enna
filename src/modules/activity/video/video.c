@@ -106,6 +106,7 @@ struct _Enna_Module_Video
     int infos_displayed;
     int resume_displayed;
     int controls_displayed;
+    Enna_Volumes_Listener *vl;
 };
 
 static Enna_Module_Video *mod;
@@ -683,6 +684,7 @@ browse (void *data)
     edje_object_part_swallow (mod->o_edje,
                               "browser.swallow", mod->o_browser);
     enna_browser_root_set (mod->o_browser, vfs);
+    enna_volumes_listener_del(mod->vl);
     ENNA_OBJECT_DEL (mod->o_list);
 
     ENNA_OBJECT_DEL(mod->o_panel_infos);
@@ -703,6 +705,12 @@ browse (void *data)
     mod->state = BROWSER_VIEW;
 }
 
+static void
+_refresh_menu(void *data, Enna_Volume *volume)
+{
+    _create_menu();
+}
+
 /****************************************************************************/
 /*                                  GUI                                     */
 /****************************************************************************/
@@ -721,7 +729,6 @@ _create_menu (void)
     EINA_LIST_FOREACH(categories, l, cat)
     {
         Enna_Vfs_File *item;
-
         item = calloc(1, sizeof(Enna_Vfs_File));
         item->icon = (char*)eina_stringshare_add(cat->icon);
         item->label = (char*)eina_stringshare_add(gettext(cat->label));
@@ -733,6 +740,7 @@ _create_menu (void)
     mod->o_list = o;
     edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
     video_infos_del ();
+    mod->vl = enna_volumes_listener_add("video", _refresh_menu, _refresh_menu, NULL);
 }
 
 static void
