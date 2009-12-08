@@ -59,7 +59,8 @@ typedef struct _Enna_Module_Dvd
 
 static Enna_Module_Dvd *mod;
 
-static Eina_List *_class_browse_up(const char *path, void *cookie)
+static Eina_List *
+_class_browse_up(const char *path, void *cookie)
 {
     Enna_Vfs_File *f;
     Eina_List *l = NULL;
@@ -75,17 +76,19 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
 }
 
 
-static Eina_List * _class_browse_down(void *cookie)
+static Eina_List *
+_class_browse_down(void *cookie)
 {
     return NULL;
 }
 
-static Enna_Vfs_File * _class_vfs_get(void *cookie)
+static Enna_Vfs_File *
+_class_vfs_get(void *cookie)
 {
 
     return enna_vfs_create_directory(mod->dvd->uri,
-        ecore_file_file_get(mod->dvd->uri),
-        eina_stringshare_add("icon/dvd"), NULL);
+                                     ecore_file_file_get(mod->dvd->uri),
+                                     eina_stringshare_add("icon/dvd"), NULL);
 }
 
 
@@ -106,16 +109,18 @@ static Enna_Class_Vfs class_dvd = {
     NULL
 };
 
-static void _add_volumes_cb(void *data, Enna_Volume *v)
+static void
+_add_volumes_cb(void *data, Enna_Volume *v)
 {
     if (v && v->type == VOLUME_TYPE_DVD_VIDEO)
     {
-	mod->dvd->device = eina_stringshare_add(v->device_name);
+        mod->dvd->device = eina_stringshare_add(v->device_name);
         enna_vfs_append("dvd", ENNA_CAPS_VIDEO, &class_dvd);
     }
 }
 
-static void _remove_volumes_cb(void *data, Enna_Volume *v)
+static void
+_remove_volumes_cb(void *data, Enna_Volume *v)
 {
     if (v && v->type == VOLUME_TYPE_DVD_VIDEO)
     {
