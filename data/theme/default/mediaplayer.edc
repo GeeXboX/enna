@@ -13,16 +13,23 @@ group {
          type: RECT;
          mouse_events:   0;
          description { state: "default" 0.0;
-            color: 0 0 0 0;
+            color: 255 255 255 255;
             rel1.relative: 0 0;
             rel2.relative: 1 0.6;
          }
-         description { state: "vertical" 0.0;
-            color: 0 0 0 0;
+         description { state: "horizontal" 0.0;
+            color: 255 255 255 255;
             rel1.relative: 0 0;
             rel2.relative: 0.6 1;
          }
+         description { state: "video" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0;
+            rel2.relative: 1 1;
+            visible: 0;
+         }
       }
+
       part {
          name: "controls.area";
          type: RECT;
@@ -30,14 +37,83 @@ group {
          description { state: "default" 0.0;
             color: 0 0 0 0;
             rel1.relative: 0 0.6;
+            rel2.relative: 1 1.0;
+         }
+         description { state: "horizontal" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0;
+            rel2.relative: 0.6 1;
+         }
+         description { state: "video" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0;
             rel2.relative: 1 1;
          }
-         description { state: "vertical" 0.0;
+      }
+      /* In controls Area define 3 zones */
+      /* Text zone : display id3 tag or  video title*/
+      part {
+         name: "text.area";
+         type: RECT;
+         mouse_events:   0;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0.6;
+            rel2.relative: 1 0.8;
+         }
+         description { state: "horizontal" 0.0;
             color: 0 0 0 0;
             rel1.relative: 0.6 0;
             rel2.relative: 1 1;
          }
+         description { state: "video" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0;
+            rel2.relative: 0.33 1;
+         }
+      }
+      /* Display time slider */
+      part {
+         name: "timeline.area";
+         type: RECT;
+         mouse_events:   0;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0.8;
+            rel2.relative: 1 0.9;
+         }
+         description { state: "horizontal" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0.6 0;
+            rel2.relative: 1 1;
+         }
+         description { state: "video" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0.33 0;
+            rel2.relative: 0.66 1;
+         }
+      }
 
+      /* Display buttons control play/stop/next ...*/
+      part {
+         name: "buttons.area";
+         type: RECT;
+         mouse_events:   0;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0 0.9;
+            rel2.relative: 1 1;
+         }
+         description { state: "horizontal" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0.6 0;
+            rel2.relative: 1 1;
+         }
+         description { state: "video" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0.66 0;
+            rel2.relative: 1.0 1;
+         }
       }
 
       /* Cover Zone */
@@ -45,6 +121,7 @@ group {
          name: "cover.border";
          type: IMAGE;
          mouse_events: 0;
+         clip_to: "cover.area";
          description {
             state: "default" 0.0;
             color: 255 255 255 180;
@@ -63,6 +140,7 @@ group {
          name: "cover.bg.default";
          type: IMAGE;
          mouse_events: 0;
+         clip_to: "cover.area";
          description {
             state: "default" 0.0;
             rel1.to: "cover.swallow";
@@ -77,6 +155,7 @@ group {
          name: "cover.swallow";
          type: SWALLOW;
          mouse_events:   0;
+         clip_to: "cover.area";
          description { state: "default" 0.0;
             aspect_preference: BOTH;
             aspect: 1 1;
@@ -87,6 +166,7 @@ group {
          }
       }
       /* Control Zone */
+      /* Global clip : for fade in/fade out animation */
       part {
          name: "controls.clip";
          type: RECT;
@@ -117,30 +197,35 @@ group {
          description {
             state: "default" 0.0;
 
-            rel1.to: "controls.area";
+            rel1.to: "text.area";
             rel1.offset: 4 4;
 
-            rel2.to: "controls.area";
-            rel2.relative: 1 0.5;
+            rel2.to: "text.area";
             rel2.offset: -4 -4;
          }
       }
 
       part {
-         name: "text.pos.swallow";
-         type: SWALLOW;
+         name: "text.pos";
+         type: TEXT;
          mouse_events:   0;
          clip_to: "controls.clip";
          description {
             state: "default" 0.0;
 
-            rel1.relative: 0.0 0.5;
-            rel1.to: "controls.area";
+            rel1.to: "timeline.area";
             rel1.offset: 4 4;
 
-            rel2.relative: 0.2 0.7;
-            rel2.to: "controls.area";
+            rel2.relative: 0.2 1.0;
+            rel2.to: "timeline.area";
             rel2.offset: -4 -4;
+
+            text {
+               font: "content";
+               size: 20;
+               min: 0 0;
+               align: 1.0 0.5;
+            }
          }
       }
 
@@ -152,32 +237,40 @@ group {
          description {
             state: "default" 0.0;
 
-            rel1.relative: 0.2 0.5;
-            rel1.to: "controls.area";
+            rel1.relative: 0.2 0;
+            rel1.to: "timeline.area";
             rel1.offset: 4 4;
 
-            rel2.to: "controls.area";
-            rel2.relative: 0.8 0.7;
+            rel2.to: "timeline.area";
+            rel2.relative: 0.8 1.0;
             rel2.offset: -4 -4;
          }
       }
       part {
-         name: "text.length.swallow";
-         type: SWALLOW;
+         name: "text.length";
+         type: TEXT;
          mouse_events:   0;
          clip_to: "controls.clip";
+            scale: 1;
          description {
             state: "default" 0.0;
 
-            rel1.to: "controls.area";
-            rel1.relative: 0.8 0.5;
+            rel1.to: "timeline.area";
+            rel1.relative: 0.8 0.0;
             rel1.offset: 4 4;
 
-            rel2.to: "controls.area";
-            rel2.relative: 1.0 0.7;
+            rel2.to: "timeline.area";
             rel2.offset: -4 -4;
+
+            text {
+               font: "content";
+               size: 20;
+               min: 0 0;
+               align: 0.0 0.5;
+            }
          }
       }
+
       part {
          name: "buttons.swallow";
          type: SWALLOW;
@@ -186,12 +279,10 @@ group {
          description {
             state: "default" 0.0;
 
-            rel1.relative: 0 0.7;
-            rel1.to: "controls.area";
+            rel1.to: "buttons.area";
             rel1.offset: 4 4;
 
-            rel2.to: "controls.area";
-            rel2.relative: 1 0.9;
+            rel2.to: "buttons.area";
             rel2.offset: -4 -4;
          }
       }
@@ -211,6 +302,28 @@ group {
          action: STATE_SET "default" 0.0;
          transition: DECELERATE 2.0;
          target: "controls.clip";
+      }
+      program { name: "layout,video";
+         signal: "layout,video";
+         source: "enna";
+         action: STATE_SET "video" 0.0;
+         target: "controls.area";
+         target: "cover.area";
+         target: "text.area";
+         target: "timeline.area";
+         target: "buttons.area";
+
+      }
+      program { name: "layout,vertical";
+         signal: "layout,vertival";
+         source: "enna";
+         action: STATE_SET "default" 0.0;
+         target: "controls.area";
+         target: "cover.area";
+         target: "text.area";
+         target: "timeline.area";
+         target: "buttons.area";
+
       }
    }
 }
