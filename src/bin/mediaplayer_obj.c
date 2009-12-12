@@ -54,6 +54,8 @@ struct _Smart_Data
     Evas_Object *album;
     Evas_Object *title;
     Evas_Object *play_btn;
+    Evas_Object *btn_box;
+    Evas_Object *text_box;
     Eina_List *buttons;
     Ecore_Timer *timer;
     Ecore_Event_Handler *play_event_handler;
@@ -284,8 +286,9 @@ _timer_cb(void *data)
         snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
         snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
 
-        elm_label_label_set(sd->total_time, buf2);
-        elm_label_label_set(sd->current_time, buf);
+        edje_object_part_text_set(elm_layout_edje_get(sd->layout), "text.length", buf2);
+        edje_object_part_text_set(elm_layout_edje_get(sd->layout), "text.pos", buf);
+
         if (sd->len)
             elm_slider_value_set(sd->sl, sd->pos/sd->len * 100.0);
         enna_log(ENNA_MSG_EVENT, NULL, "Position %f %f", sd->pos, sd->len);
@@ -436,6 +439,27 @@ _set_button(Smart_Data *sd, int start, int right)
     return ENNA_EVENT_BLOCK;
 }
 
+static void
+_del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    ENNA_OBJECT_DEL(sd->cv);
+    ENNA_OBJECT_DEL(sd->btn_box);
+    ENNA_OBJECT_DEL(sd->text_box);
+    ecore_event_handler_del(sd->play_event_handler);
+    ecore_event_handler_del(sd->stop_event_handler);
+    ecore_event_handler_del(sd->prev_event_handler);
+    ecore_event_handler_del(sd->next_event_handler);
+    ecore_event_handler_del(sd->pause_event_handler);
+    ecore_event_handler_del(sd->unpause_event_handler);
+    ecore_event_handler_del(sd->seek_event_handler);
+    ecore_event_handler_del(sd->eos_event_handler);
+    eina_list_free(sd->buttons);
+    ENNA_TIMER_DEL(sd->timer);
+    free(sd);
+}
+
 #define ELM_ADD(icon, cb)                                            \
     it = ENNA_NEW(Button_Item, 1);                                   \
     ic = elm_icon_add(layout);                                       \
@@ -482,6 +506,7 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     evas_object_size_hint_weight_set(bx, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_layout_content_set(layout, "text.swallow", bx);
     evas_object_show(bx);
+    sd->text_box = bx;
 
     lb = elm_label_add(layout);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -539,15 +564,10 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     evas_object_size_hint_align_set(btn_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_layout_content_set(layout, "buttons.swallow", btn_box);
     evas_object_show(btn_box);
-
-
-    lb = elm_label_add(layout);
-    evas_object_show(lb);
-    sd->current_time = lb;
-    elm_layout_content_set(layout, "text.pos.swallow", lb);
+    sd->btn_box = btn_box;
 
     sl = elm_slider_add(layout);
-    elm_slider_span_size_set(sl, 80);
+    elm_slider_span_size_set(sl, 0);
     evas_object_size_hint_align_set(sl, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_slider_min_max_set(sl, 0.0, 100.0);
     elm_slider_indicator_format_set(sl, "%1.0f %%");
@@ -557,10 +577,7 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     sd->sl = sl;
     elm_layout_content_set(layout, "slider.swallow", sl);
 
-    lb = elm_label_add(layout);
-    evas_object_show(lb);
-    sd->total_time = lb;
-    elm_layout_content_set(layout, "text.length.swallow", lb);
+    evas_object_event_callback_add(layout, EVAS_CALLBACK_DEL, _del_cb, sd);
 
     /* FIXME : WTF ? why we have a ref to the playlist there ? */
     _enna_playlist = enna_playlist;
@@ -598,4 +615,11 @@ enna_mediaplayer_show_get(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     return sd->show;
+}
+
+void
+enna_mediaplayer_obj_layout_set(Evas_Object *obj, const char *layout)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    edje_object_signal_emit(elm_layout_edje_get(sd->layout), layout, "enna");
 }
