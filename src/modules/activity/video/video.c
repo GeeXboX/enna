@@ -106,6 +106,7 @@ struct _Enna_Module_Video
     int resume_displayed;
     int controls_displayed;
     Enna_Volumes_Listener *vl;
+    Ecore_Timer *controls_timer;
 };
 
 static Enna_Module_Video *mod;
@@ -132,6 +133,14 @@ end:
     edje_object_part_text_set(mod->o_edje, "movies.counter.label", label);
 }
 
+static int
+_controls_timer_cb(void *data)
+{
+    media_controls_display(0);
+    mod->controls_timer = NULL;
+    return 0;
+}
+
 void
 media_controls_display (int show)
 {
@@ -144,6 +153,8 @@ media_controls_display (int show)
     {
         enna_mediaplayer_video_resize(x, y, w, h - h2);
         mod->controls_displayed = 1;
+        ENNA_TIMER_DEL(mod->controls_timer);
+        mod->controls_timer = ecore_timer_add(5.0, _controls_timer_cb, NULL);
     }
     else
     {
@@ -210,6 +221,7 @@ _return_to_video_info_gui()
     double pos;
 
     media_controls_display(0);
+    ENNA_TIMER_DEL(mod->controls_timer);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediacontrols);
     popup_resume_display (0);
