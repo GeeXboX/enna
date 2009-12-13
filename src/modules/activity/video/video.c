@@ -153,8 +153,6 @@ media_controls_display (int show)
     {
         enna_mediaplayer_video_resize(x, y, w, h - h2);
         mod->controls_displayed = 1;
-        ENNA_TIMER_DEL(mod->controls_timer);
-        mod->controls_timer = ecore_timer_add(5.0, _controls_timer_cb, NULL);
     }
     else
     {
@@ -194,6 +192,8 @@ videoplayer_view_event (enna_input event)
         _return_to_video_info_gui ();
         break;
     default:
+        ENNA_TIMER_DEL(mod->controls_timer);
+        mod->controls_timer = ecore_timer_add(5.0, _controls_timer_cb, NULL);
         enna_mediaplayer_obj_input_feed(mod->o_mediacontrols, event);
         break;
     }
