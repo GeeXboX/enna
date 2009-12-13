@@ -54,12 +54,12 @@
 #include "panel_infos.h"
 #include "video.h"
 #include "video_flags.h"
-#include "video_controls.h"
 #include "resume.h"
 #include "volumes.h"
 #include "buffer.h"
 #include "metadata.h"
 #include "utils.h"
+#include "mediaplayer_obj.h"
 
 #define ENNA_MODULE_NAME "video"
 
@@ -70,7 +70,6 @@ static void browse (void *data);
 
 static void _create_menu(void);
 static void _return_to_video_info_gui();
-static void _seek_video(double value);
 
 static int _eos_cb(void *data, int type, void *event);
 static void video_infos_del (void);
@@ -143,14 +142,6 @@ media_controls_display (int show)
 
     if (show)
     {
-        Enna_Metadata *m;
-        char *title;
-
-        m = enna_mediaplayer_metadata_get(mod->enna_playlist);
-        title = enna_metadata_meta_get(m, "title", 1);
-        enna_video_controls_set_title(mod->o_mediacontrols, title);
-        ENNA_FREE(title);
-
         enna_mediaplayer_video_resize(x, y, w, h - h2);
         mod->controls_displayed = 1;
     }
@@ -182,100 +173,19 @@ menu_view_event (enna_input event)
 static void
 videoplayer_view_event (enna_input event)
 {
+    if (!mod->controls_displayed)
+        media_controls_display(1);
+
     switch (event)
     {
     case ENNA_INPUT_QUIT:
     case ENNA_INPUT_EXIT:
         _return_to_video_info_gui ();
         break;
-    case ENNA_INPUT_OK:
-        media_controls_display (!mod->controls_displayed);
-        break;
-    case ENNA_INPUT_SPACE:
-        enna_mediaplayer_play (mod->enna_playlist);
-        break;
-    case ENNA_INPUT_RIGHT:
-        _seek_video (+1);
-        break;
-    case ENNA_INPUT_LEFT:
-        _seek_video (-1);
-        break;
-    case ENNA_INPUT_UP:
-        _seek_video (+5);
-        break;
-    case ENNA_INPUT_DOWN:
-        _seek_video (-5);
-        break;
-    case ENNA_INPUT_PLUS:
-        enna_mediaplayer_default_increase_volume ();
-        break;
-    case ENNA_INPUT_MINUS:
-        enna_mediaplayer_default_decrease_volume ();
-        break;
-    case ENNA_INPUT_KEY_M:
-        enna_mediaplayer_mute ();
-        break;
-    case ENNA_INPUT_KEY_K:
-        enna_mediaplayer_audio_previous ();
-        break;
-    case ENNA_INPUT_KEY_L:
-        enna_mediaplayer_audio_next ();
-        break;
-    case ENNA_INPUT_KEY_P:
-        enna_mediaplayer_audio_increase_delay ();
-        break;
-    case ENNA_INPUT_KEY_O:
-        enna_mediaplayer_audio_decrease_delay ();
-        break;
-    case ENNA_INPUT_KEY_S:
-        enna_mediaplayer_subtitle_set_visibility ();
-        break;
-    case ENNA_INPUT_KEY_G:
-        enna_mediaplayer_subtitle_previous ();
-        break;
-    case ENNA_INPUT_KEY_Y:
-        enna_mediaplayer_subtitle_next ();
-        break;
-    case ENNA_INPUT_KEY_A:
-        enna_mediaplayer_subtitle_set_alignment ();
-        break;
-    case ENNA_INPUT_KEY_T:
-        enna_mediaplayer_subtitle_increase_position ();
-        break;
-    case ENNA_INPUT_KEY_R:
-        enna_mediaplayer_subtitle_decrease_position ();
-        break;
-    case ENNA_INPUT_KEY_J:
-        enna_mediaplayer_subtitle_increase_scale ();
-        break;
-    case ENNA_INPUT_KEY_I:
-        enna_mediaplayer_subtitle_decrease_scale ();
-        break;
-    case ENNA_INPUT_KEY_X:
-        enna_mediaplayer_subtitle_increase_delay ();
-        break;
-    case ENNA_INPUT_KEY_Z:
-        enna_mediaplayer_subtitle_decrease_delay ();
-        break;
-    case ENNA_INPUT_KEY_W:
-        enna_mediaplayer_set_framedrop ();
-        break;
     default:
+        enna_mediaplayer_obj_input_feed(mod->o_mediacontrols, event);
         break;
     }
-}
-
-static void
-_seek_video(double value)
-{
-    int pos = 0;
-    double seek = 0.0;
-
-    pos = enna_mediaplayer_position_percent_get();
-    seek = ((double) pos + value) / 100.0;
-    enna_mediaplayer_seek(seek);
-
-    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Seek value : %f", seek);
 }
 
 static void
@@ -299,6 +209,7 @@ _return_to_video_info_gui()
     Enna_Metadata *m;
     double pos;
 
+    media_controls_display(0);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediacontrols);
     popup_resume_display (0);
@@ -476,10 +387,11 @@ movie_start_playback (int resume)
                                     _mediaplayer_resize_cb, NULL);
 
     ENNA_OBJECT_DEL (mod->o_mediacontrols);
-    mod->o_mediacontrols = enna_video_controls_add (enna->evas);
+
+    mod->o_mediacontrols = enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
     edje_object_part_swallow (mod->o_edje, "controls.swallow",
                               mod->o_mediacontrols);
-
+    enna_mediaplayer_obj_layout_set(mod->o_mediacontrols, "layout,video");
     enna_mediaplayer_stop();
     enna_mediaplayer_play (mod->enna_playlist);
 #if 0
