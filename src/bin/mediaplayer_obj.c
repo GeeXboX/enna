@@ -268,13 +268,13 @@ _timer_cb(void *data)
 {
     Smart_Data *sd = data;
 
-    sd->pos += 1.0;
-
     if(enna_mediaplayer_state_get() == PLAYING)
     {
         long ph, pm, ps, lh, lm, ls;
         char buf[256];
         char buf2[256];
+
+        sd->pos += 1.0;
 
         /* FIXME : create a dedicated function to do that */
         lh = sd->len / 3600000;
