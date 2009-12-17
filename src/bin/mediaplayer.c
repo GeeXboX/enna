@@ -109,13 +109,13 @@ static Enna_Mediaplayer *mp = NULL;
 static Enna_Config_Video *config_video = NULL;
 
 static void
-_event_cb (void *data, enna_mediaplayer_event_t event)
+_event_cb(void *data, enna_mediaplayer_event_t event)
 {
     switch (event)
     {
     case ENNA_MP_EVENT_EOF:
-        enna_log (ENNA_MSG_EVENT, NULL, "End of stream");
-        ecore_event_add (ENNA_EVENT_MEDIAPLAYER_EOS, NULL, NULL, NULL);
+        enna_log(ENNA_MSG_EVENT, NULL, "End of stream");
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_EOS, NULL, NULL, NULL);
         break;
     default:
         break;
@@ -123,32 +123,32 @@ _event_cb (void *data, enna_mediaplayer_event_t event)
 }
 
 static void
-pipe_read (void *data, void *buf, unsigned int nbyte)
+pipe_read(void *data, void *buf, unsigned int nbyte)
 {
     enna_mediaplayer_event_t *event = buf;
 
     if (!mp->event_cb || !buf)
         return;
 
-    mp->event_cb (mp->event_cb_data, *event);
+    mp->event_cb(mp->event_cb_data, *event);
 }
 
 static int
-event_cb (player_event_t e, void *data)
+event_cb(player_event_t e, void *data)
 {
     enna_mediaplayer_event_t event;
 
     if (e == PLAYER_EVENT_PLAYBACK_FINISHED)
     {
         event = ENNA_MP_EVENT_EOF;
-        ecore_pipe_write (mp->pipe, &event, sizeof (event));
+        ecore_pipe_write(mp->pipe, &event, sizeof (event));
     }
 
     return 0;
 }
 
 static int
-event_key_down (void *data, int type, void *event)
+event_key_down(void *data, int type, void *event)
 {
     Ecore_Event_Key *e;
     e = event;
@@ -161,19 +161,38 @@ event_key_down (void *data, int type, void *event)
     */
     if (e->window != enna->ee_winid)
     {
-        enna_log (ENNA_MSG_EVENT, NULL,
-                  "Ecore_Event_Key_Down %s", e->keyname);
-        evas_event_feed_key_down (enna->evas, e->keyname, e->key,
-                                  e->compose, NULL, e->timestamp, NULL);
+        enna_log(ENNA_MSG_EVENT, NULL,
+                 "Ecore_Event_Key_Down %s", e->keyname);
+        evas_event_feed_key_down(enna->evas, e->keyname, e->key,
+                                 e->compose, NULL, e->timestamp, NULL);
     }
 
     return 1;
 }
 
 static int
-event_mouse_button (void *data, int type, void *event)
+event_mouse_button(void *data, int type, void *event)
 {
     Ecore_Event_Mouse_Button *e = event;
+
+    /* Broadcast mouse position only for dvd player and only
+       if libplayer window is on screen */
+    if ((e->window == enna->ee_winid) || !mp->uri ||
+        strncmp(mp->uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
+        return 1;
+
+    /* Set mouse position and send mouseclick event */
+    enna_log(ENNA_MSG_EVENT, NULL,
+             "Send Mouse click %d %d, uri : %s", e->x, e->y, mp->uri);
+    player_set_mouse_position(mp->players[mp->dvd_type], e->x, e->y);
+    player_dvd_nav(mp->players[mp->dvd_type], PLAYER_DVDNAV_MOUSECLICK);
+    return 1;
+}
+
+static int
+event_mouse_move(void *data, int type, void *event)
+{
+    Ecore_Event_Mouse_Move *e = event;
 
     /* Broadcast mouse position only for dvd player and only
        if libplayer window is on screen */
@@ -181,51 +200,32 @@ event_mouse_button (void *data, int type, void *event)
         strncmp (mp->uri, URI_TYPE_DVDNAV, strlen (URI_TYPE_DVDNAV)))
         return 1;
 
-    /* Set mouse position and send mouseclick event */
-    enna_log (ENNA_MSG_EVENT, NULL,
-              "Send Mouse click %d %d, uri : %s", e->x, e->y, mp->uri);
-    player_set_mouse_position (mp->players[mp->dvd_type], e->x, e->y);
-    player_dvd_nav (mp->players[mp->dvd_type], PLAYER_DVDNAV_MOUSECLICK);
-    return 1;
-}
-
-static int
-event_mouse_move (void *data, int type, void *event)
-{
-    Ecore_Event_Mouse_Move *e = event;
-
-    /* Broadcast mouse position only for dvd player and only
-       if libplayer window is on screen*/
-    if ((e->window == enna->ee_winid) || !mp->uri ||
-        strncmp (mp->uri, URI_TYPE_DVDNAV, strlen (URI_TYPE_DVDNAV)))
-        return 1;
-
     /* Send mouse position to libplayer */
-    player_set_mouse_position (mp->players[mp->dvd_type], e->x, e->y);
+    player_set_mouse_position(mp->players[mp->dvd_type], e->x, e->y);
     return 1;
 }
 
 static mrl_t *
-set_network_stream (const char *uri, mrl_resource_t type)
+set_network_stream(const char *uri, mrl_resource_t type)
 {
     mrl_t *mrl;
     mrl_resource_network_args_t *args;
 
-    enna_log (ENNA_MSG_INFO, NULL, "Load Network Stream : %s", uri);
+    enna_log(ENNA_MSG_INFO, NULL, "Load Network Stream : %s", uri);
 
-    args = calloc (1, sizeof (mrl_resource_network_args_t));
-    args->url = strdup (uri);
+    args = calloc(1, sizeof(mrl_resource_network_args_t));
+    args->url = strdup(uri);
 
     if (type == MRL_RESOURCE_NETVDR)
-        mrl = mrl_new (mp->players[mp->tv_type], type, args);
+        mrl = mrl_new(mp->players[mp->tv_type], type, args);
     else
-        mrl = mrl_new (mp->players[mp->default_type], type, args);
+        mrl = mrl_new(mp->players[mp->default_type], type, args);
 
     return mrl;
 }
 
 static mrl_t *
-set_dvd_stream (const char *uri, mrl_resource_t type)
+set_dvd_stream(const char *uri, mrl_resource_t type)
 {
     mrl_t *mrl;
     mrl_resource_videodisc_args_t *args;
@@ -235,47 +235,47 @@ set_dvd_stream (const char *uri, mrl_resource_t type)
     int title = 0;
     char *device;
 
-    enna_log (ENNA_MSG_INFO, NULL, "Load DVD Video : %s", uri);
+    enna_log(ENNA_MSG_INFO, NULL, "Load DVD Video : %s", uri);
 
-    args = calloc (1, sizeof (mrl_resource_videodisc_args_t));
-    device = strstr (uri, "://");
+    args = calloc(1, sizeof(mrl_resource_videodisc_args_t));
+    device = strstr(uri, "://");
     if (device)
-        args->device = strdup (device + 3);
+        args->device = strdup(device + 3);
 
-    mrl = mrl_new (mp->players[mp->dvd_type], type, args);
+    mrl = mrl_new(mp->players[mp->dvd_type], type, args);
 
-    meta = mrl_get_metadata_dvd (mp->players[mp->dvd_type],
-                                 mrl, (uint8_t *) &prop);
+    meta = mrl_get_metadata_dvd(mp->players[mp->dvd_type],
+                                mrl, (uint8_t *) &prop);
     if (meta)
     {
-        enna_log (ENNA_MSG_INFO, NULL, "Meta DVD VolumeID: %s", meta);
-        free (meta);
+        enna_log(ENNA_MSG_INFO, NULL, "Meta DVD VolumeID: %s", meta);
+        free(meta);
     }
 
     if (prop)
     {
         int i;
 
-        enna_log (ENNA_MSG_INFO, NULL, "Meta DVD Titles: %i", prop);
+        enna_log(ENNA_MSG_INFO, NULL, "Meta DVD Titles: %i", prop);
 
         for (i = 1; i <= prop; i++)
         {
             uint32_t chapters, angles, length;
 
             chapters =
-                mrl_get_metadata_dvd_title (mp->players[mp->dvd_type], mrl, i,
-                                            MRL_METADATA_DVD_TITLE_CHAPTERS);
+                mrl_get_metadata_dvd_title(mp->players[mp->dvd_type], mrl, i,
+                                           MRL_METADATA_DVD_TITLE_CHAPTERS);
             angles =
-                mrl_get_metadata_dvd_title (mp->players[mp->dvd_type], mrl, i,
-                                            MRL_METADATA_DVD_TITLE_ANGLES);
+                mrl_get_metadata_dvd_title(mp->players[mp->dvd_type], mrl, i,
+                                           MRL_METADATA_DVD_TITLE_ANGLES);
             length =
-                mrl_get_metadata_dvd_title (mp->players[mp->dvd_type], mrl, i,
-                                            MRL_METADATA_DVD_TITLE_LENGTH);
+                mrl_get_metadata_dvd_title(mp->players[mp->dvd_type], mrl, i,
+                                           MRL_METADATA_DVD_TITLE_LENGTH);
 
-            enna_log (ENNA_MSG_INFO, NULL,
-                      "Meta DVD Title %i (%.2f sec), " \
-                      "Chapters: %i, Angles: %i",
-                      i, length / 1000.0, chapters, angles);
+            enna_log(ENNA_MSG_INFO, NULL,
+                     "Meta DVD Title %i (%.2f sec), " \
+                     "Chapters: %i, Angles: %i",
+                     i, length / 1000.0, chapters, angles);
             if (length > tmp)
             {
                 tmp = length;
@@ -289,57 +289,57 @@ set_dvd_stream (const char *uri, mrl_resource_t type)
 }
 
 static mrl_t *
-set_tv_stream (const char *device, const char *driver, mrl_resource_t type)
+set_tv_stream(const char *device, const char *driver, mrl_resource_t type)
 {
     mrl_t *mrl;
     mrl_resource_tv_args_t *args;
 
-    args = calloc (1, sizeof (mrl_resource_tv_args_t));
+    args = calloc(1, sizeof(mrl_resource_tv_args_t));
 
     if (type == MRL_RESOURCE_VDR)
     {
-        enna_log (ENNA_MSG_INFO, NULL,
-                  "VDR stream; device: '%s' driver: '%s'", device, driver);
-        args->device = device ? strdup (device) : NULL;
-        args->driver = driver ? strdup (driver) : NULL;
+        enna_log(ENNA_MSG_INFO, NULL,
+                 "VDR stream; device: '%s' driver: '%s'", device, driver);
+        args->device = device ? strdup(device) : NULL;
+        args->driver = driver ? strdup(driver) : NULL;
     }
 
-    mrl = mrl_new (mp->players[mp->tv_type], type, args);
+    mrl = mrl_new(mp->players[mp->tv_type], type, args);
     return mrl;
 }
 
 static mrl_t *
-set_cdda_stream (const char *uri, mrl_resource_t type)
+set_cdda_stream(const char *uri, mrl_resource_t type)
 {
     mrl_t *mrl;
     mrl_resource_cd_args_t *args;
     char device[16];
     int track;
-    args = calloc (1, sizeof (mrl_resource_cd_args_t));
+    args = calloc(1, sizeof(mrl_resource_cd_args_t));
 
     sscanf(uri, "cdda://%d/%s", &track, device);
     args->device = strdup(device);
     args->track_start = track;
     args->track_end = track;
-    mrl = mrl_new (mp->player, type, args);
+    mrl = mrl_new(mp->player, type, args);
     return mrl;
 }
 
 static mrl_t *
-set_local_stream (const char *uri)
+set_local_stream(const char *uri)
 {
     mrl_t *mrl;
     mrl_resource_local_args_t *args;
 
-    args = calloc (1, sizeof (mrl_resource_local_args_t));
-    args->location = strdup (uri);
-    mrl = mrl_new (mp->players[mp->default_type], MRL_RESOURCE_FILE, args);
+    args = calloc(1, sizeof(mrl_resource_local_args_t));
+    args->location = strdup(uri);
+    mrl = mrl_new(mp->players[mp->default_type], MRL_RESOURCE_FILE, args);
 
     return mrl;
 }
 
 static void
-init_sub_align (void)
+init_sub_align(void)
 {
     if (!config_video || !config_video->sub_align ||
         !strcmp(config_video->sub_align, "auto"))
@@ -353,27 +353,27 @@ init_sub_align (void)
 }
 
 static void
-init_sub_pos (void)
+init_sub_pos(void)
 {
     if (!config_video || !config_video->sub_pos ||
         !strcmp(config_video->sub_pos, "auto"))
         mp->subtitle_position = SUB_POSITION_DEFAULT;
     else
-        mp->subtitle_position = atoi (config_video->sub_pos);
+        mp->subtitle_position = atoi(config_video->sub_pos);
 }
 
 static void
-init_sub_scale (void)
+init_sub_scale(void)
 {
     if (!config_video || !config_video->sub_scale ||
         !strcmp(config_video->sub_scale, "auto"))
         mp->subtitle_scale = SUB_SCALE_DEFAULT;
     else
-        mp->subtitle_scale = atoi (config_video->sub_scale);
+        mp->subtitle_scale = atoi(config_video->sub_scale);
 }
 
 static void
-init_sub_visibility (void)
+init_sub_visibility(void)
 {
     if (!config_video || !config_video->sub_visibility ||
         !strcmp(config_video->sub_visibility, "auto"))
@@ -385,7 +385,7 @@ init_sub_visibility (void)
 }
 
 static void
-init_framedrop (void)
+init_framedrop(void)
 {
     if (!config_video || !config_video->framedrop ||
         !strcmp(config_video->framedrop, "no"))
@@ -397,87 +397,87 @@ init_framedrop (void)
 }
 
 static int
-mp_file_set (const char *uri, const char *label)
+mp_file_set(const char *uri, const char *label)
 {
     mrl_t *mrl = NULL;
     player_type_t player_type = mp->default_type;
 
-    enna_log (ENNA_MSG_INFO, NULL, "Try to load : %s, %s", uri, label);
+    enna_log(ENNA_MSG_INFO, NULL, "Try to load : %s, %s", uri, label);
 
     /* try network streams */
-    if (!strncmp (uri, URI_TYPE_FTP, strlen (URI_TYPE_FTP)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_FTP);
-    else if (!strncmp (uri, URI_TYPE_HTTP, strlen (URI_TYPE_HTTP)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_HTTP);
-    else if (!strncmp (uri, URI_TYPE_MMS, strlen (URI_TYPE_MMS)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_MMS);
-    else if (!strncmp (uri, URI_TYPE_NETVDR, strlen (URI_TYPE_NETVDR)))
+    if (!strncmp(uri, URI_TYPE_FTP, strlen(URI_TYPE_FTP)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_FTP);
+    else if (!strncmp(uri, URI_TYPE_HTTP, strlen(URI_TYPE_HTTP)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_HTTP);
+    else if (!strncmp(uri, URI_TYPE_MMS, strlen(URI_TYPE_MMS)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_MMS);
+    else if (!strncmp(uri, URI_TYPE_NETVDR, strlen(URI_TYPE_NETVDR)))
     {
-        mrl = set_network_stream (uri, MRL_RESOURCE_NETVDR);
+        mrl = set_network_stream(uri, MRL_RESOURCE_NETVDR);
         player_type = mp->tv_type;
     }
-    else if (!strncmp (uri, URI_TYPE_RTP, strlen (URI_TYPE_RTP)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_RTP);
-    else if (!strncmp (uri, URI_TYPE_RTSP, strlen (URI_TYPE_RTSP)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_RTSP);
-    else if (!strncmp (uri, URI_TYPE_SMB, strlen (URI_TYPE_SMB)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_SMB);
-    else if (!strncmp (uri, URI_TYPE_TCP, strlen (URI_TYPE_TCP)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_TCP);
-    else if (!strncmp (uri, URI_TYPE_UDP, strlen (URI_TYPE_UDP)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_UDP);
-    else if (!strncmp (uri, URI_TYPE_UNSV, strlen (URI_TYPE_UNSV)))
-        mrl = set_network_stream (uri, MRL_RESOURCE_UNSV);
+    else if (!strncmp(uri, URI_TYPE_RTP, strlen(URI_TYPE_RTP)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_RTP);
+    else if (!strncmp(uri, URI_TYPE_RTSP, strlen(URI_TYPE_RTSP)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_RTSP);
+    else if (!strncmp(uri, URI_TYPE_SMB, strlen(URI_TYPE_SMB)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_SMB);
+    else if (!strncmp(uri, URI_TYPE_TCP, strlen(URI_TYPE_TCP)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_TCP);
+    else if (!strncmp(uri, URI_TYPE_UDP, strlen(URI_TYPE_UDP)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_UDP);
+    else if (!strncmp(uri, URI_TYPE_UNSV, strlen(URI_TYPE_UNSV)))
+        mrl = set_network_stream(uri, MRL_RESOURCE_UNSV);
 
     /* Try DVD video */
-    else if (!strncmp (uri, URI_TYPE_DVD, strlen (URI_TYPE_DVD)))
+    else if (!strncmp(uri, URI_TYPE_DVD, strlen(URI_TYPE_DVD)))
     {
-        mrl = set_dvd_stream (uri, MRL_RESOURCE_DVD);
+        mrl = set_dvd_stream(uri, MRL_RESOURCE_DVD);
         player_type = mp->dvd_type;
     }
-    else if (!strncmp (uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
+    else if (!strncmp(uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
     {
-        mrl = set_dvd_stream (uri, MRL_RESOURCE_DVDNAV);
+        mrl = set_dvd_stream(uri, MRL_RESOURCE_DVDNAV);
         player_type = mp->dvd_type;
     }
 
     /* Try TV */
-    else if (!strncmp (uri, URI_TYPE_VDR, strlen (URI_TYPE_VDR)))
+    else if (!strncmp(uri, URI_TYPE_VDR, strlen(URI_TYPE_VDR)))
     {
         char *device = NULL;
         char *driver = strstr (uri, "#");
-        size_t device_len = strlen (uri) - strlen (URI_TYPE_VDR);
+        size_t device_len = strlen(uri) - strlen(URI_TYPE_VDR);
 
         if (driver)
         {
-            device_len -= strlen (driver);
+            device_len -= strlen(driver);
             driver++;
-            device = malloc (device_len);
-            strncpy (device, uri + strlen(URI_TYPE_VDR), device_len);
+            device = malloc(device_len);
+            strncpy(device, uri + strlen(URI_TYPE_VDR), device_len);
         }
         else if (device_len)
-            device = strdup (uri + strlen (URI_TYPE_VDR));
+            device = strdup(uri + strlen(URI_TYPE_VDR));
 
-        mrl = set_tv_stream (device, driver, MRL_RESOURCE_VDR);
+        mrl = set_tv_stream(device, driver, MRL_RESOURCE_VDR);
         player_type = mp->tv_type;
     }
     /* Try CD Audio */
-    else if (!strncmp (uri, URI_TYPE_CDDA, strlen(URI_TYPE_CDDA)))
+    else if (!strncmp(uri, URI_TYPE_CDDA, strlen(URI_TYPE_CDDA)))
     {
-        mrl = set_cdda_stream (uri, MRL_RESOURCE_CDDA);
+        mrl = set_cdda_stream(uri, MRL_RESOURCE_CDDA);
     }
     /* default is local files */
     if (!mrl)
-        mrl = set_local_stream (uri);
+        mrl = set_local_stream(uri);
 
     if (!mrl)
         return 1;
 
-    ENNA_FREE (mp->uri);
-    mp->uri = strdup (uri);
+    ENNA_FREE(mp->uri);
+    mp->uri = strdup(uri);
 
-    ENNA_FREE (mp->label);
-    mp->label = label ? strdup (label) : NULL;
+    ENNA_FREE(mp->label);
+    mp->label = label ? strdup(label) : NULL;
 
     mp->audio_delay = AUDIO_DELAY_DEFAULT;
     mp->subtitle_delay = SUB_DELAY_DEFAULT;
@@ -486,107 +486,107 @@ mp_file_set (const char *uri, const char *label)
     config_video = enna_config->cfg_video;
 
     /* Initialization of subtitles variables */
-    init_sub_align ();
-    init_sub_pos ();
-    init_sub_scale ();
-    init_framedrop ();
-    init_sub_visibility ();
+    init_sub_align();
+    init_sub_pos();
+    init_sub_scale();
+    init_framedrop();
+    init_sub_visibility();
 
     mp->player_type = player_type;
     mp->player = mp->players[player_type];
 
-    player_mrl_set (mp->player, mrl);
+    player_mrl_set(mp->player, mrl);
 
     if (mp->subtitle_alignment != SUB_ALIGNMENT_DEFAULT)
-        player_subtitle_set_alignment (mp->player, mp->subtitle_alignment);
+        player_subtitle_set_alignment(mp->player, mp->subtitle_alignment);
     if (mp->subtitle_position != SUB_POSITION_DEFAULT)
-        player_subtitle_set_position (mp->player, mp->subtitle_position);
+        player_subtitle_set_position(mp->player, mp->subtitle_position);
     if (mp->subtitle_scale != SUB_SCALE_DEFAULT)
-        player_subtitle_scale (mp->player, mp->subtitle_scale, 1);
-    player_subtitle_set_visibility (mp->player,  mp->subtitle_visibility);
+        player_subtitle_scale(mp->player, mp->subtitle_scale, 1);
+    player_subtitle_set_visibility(mp->player, mp->subtitle_visibility);
     if (mp->framedrop != FRAMEDROP_DEFAULT)
-        player_set_framedrop (mp->player, mp->framedrop);
+        player_set_framedrop(mp->player, mp->framedrop);
 
     return 0;
 }
 
 static int
-mp_play (void)
+mp_play(void)
 {
-    player_pb_state_t state = player_playback_get_state (mp->player);
+    player_pb_state_t state = player_playback_get_state(mp->player);
 
     if (state == PLAYER_PB_STATE_PAUSE)
-        player_playback_pause (mp->player); /* unpause */
+        player_playback_pause(mp->player); /* unpause */
     else if (state == PLAYER_PB_STATE_IDLE)
-        player_playback_start (mp->player);
+        player_playback_start(mp->player);
 
     return 0;
 }
 
 static int
-mp_seek (double percent)
+mp_seek(double percent)
 {
-    player_playback_seek (mp->player,
-                          (int) (100 * percent), PLAYER_PB_SEEK_PERCENT);
+    player_playback_seek(mp->player,
+                         (int) (100 * percent), PLAYER_PB_SEEK_PERCENT);
     return 0;
 }
 
 static int
-mp_stop (void)
+mp_stop(void)
 {
-    player_playback_stop (mp->player);
+    player_playback_stop(mp->player);
     return 0;
 }
 
 static int
-mp_pause (void)
+mp_pause(void)
 {
-    enna_log (ENNA_MSG_INFO, NULL, "pause");
-    if (player_playback_get_state (mp->player) == PLAYER_PB_STATE_PLAY)
-        player_playback_pause (mp->player);
+    enna_log(ENNA_MSG_INFO, NULL, "pause");
+    if (player_playback_get_state(mp->player) == PLAYER_PB_STATE_PLAY)
+        player_playback_pause(mp->player);
 
     return 0;
 }
 
 static double
-mp_position_get (void)
+mp_position_get(void)
 {
     double time_pos = 0.0;
 
-    time_pos = (double) player_get_time_pos (mp->player) / 1000.0;
+    time_pos = (double) player_get_time_pos(mp->player) / 1000.0;
     return time_pos < 0.0 ? 0.0 : time_pos;
 }
 
 static int
-mp_position_percent_get (void)
+mp_position_percent_get(void)
 {
     int percent_pos = 0;
 
-    percent_pos = player_get_percent_pos (mp->player);
+    percent_pos = player_get_percent_pos(mp->player);
     return percent_pos < 0 ? 0 : percent_pos;
 }
 
 static double
-mp_length_get (void)
+mp_length_get(void)
 {
-    return (double) mrl_get_property (mp->player,
-                                      NULL, MRL_PROPERTY_LENGTH) / 1000.0;
+    return (double) mrl_get_property(mp->player,
+                                     NULL, MRL_PROPERTY_LENGTH) / 1000.0;
 }
 
 static void
-mp_video_resize (int x, int y, int w, int h)
+mp_video_resize(int x, int y, int w, int h)
 {
     const int flags = PLAYER_X_WINDOW_X | PLAYER_X_WINDOW_Y |
                       PLAYER_X_WINDOW_W | PLAYER_X_WINDOW_H;
 
     /* if w or h is 0, libplayer guess the best size automatically */
-    player_x_window_set_properties (mp->player, x, y, w, h, flags);
+    player_x_window_set_properties(mp->player, x, y, w, h, flags);
 }
 
 static void
-mp_event_cb_set (void (*event_cb)(void *data,
-                                  enna_mediaplayer_event_t event),
-                 void *data)
+mp_event_cb_set(void (*event_cb)(void *data,
+                                 enna_mediaplayer_event_t event),
+                void *data)
 {
     /* FIXME: function to call when end of stream is send by libplayer */
     mp->event_cb_data = data;
@@ -594,7 +594,7 @@ mp_event_cb_set (void (*event_cb)(void *data,
 }
 
 static void
-mp_send_key (enna_input event)
+mp_send_key(enna_input event)
 {
     const player_vdr_t vdr_keymap[] = {
         [ENNA_INPUT_MENU]       = PLAYER_VDR_MENU,
@@ -649,26 +649,26 @@ mp_send_key (enna_input event)
         [ENNA_INPUT_KEY_P]      = PLAYER_VDR_COMMANDS,
     };
 
-    if (mp->uri && strncmp (mp->uri, URI_TYPE_VDR, strlen (URI_TYPE_VDR)) &&
-        strncmp (mp->uri, URI_TYPE_NETVDR, strlen (URI_TYPE_NETVDR)))
+    if (mp->uri && strncmp(mp->uri, URI_TYPE_VDR, strlen(URI_TYPE_VDR)) &&
+        strncmp(mp->uri, URI_TYPE_NETVDR, strlen(URI_TYPE_NETVDR)))
         return;
 
-    if (event >= ARRAY_NB_ELEMENTS (vdr_keymap) || event < 0)
+    if (event >= ARRAY_NB_ELEMENTS(vdr_keymap) || event < 0)
         return;
 
     switch (event)
     {
     case ENNA_INPUT_UNKNOWN:
-        enna_log (ENNA_MSG_INFO, NULL, "Unknown event received: %d", event);
+        enna_log(ENNA_MSG_INFO, NULL, "Unknown event received: %d", event);
         break;
     default:
-        player_vdr (mp->player, vdr_keymap[event]);
+        player_vdr(mp->player, vdr_keymap[event]);
     }
 }
 
 /* externally accessible functions */
 int
-enna_mediaplayer_supported_uri_type (enna_mediaplayer_uri_type_t type)
+enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type)
 {
     struct {
         const mrl_resource_t res;
@@ -690,28 +690,28 @@ enna_mediaplayer_supported_uri_type (enna_mediaplayer_uri_type_t type)
         [ENNA_MP_URI_TYPE_VDR]    = { MRL_RESOURCE_VDR,     mp->tv_type      },
     };
 
-    if (type >= ARRAY_NB_ELEMENTS (type_list) || type < 0)
+    if (type >= ARRAY_NB_ELEMENTS(type_list) || type < 0)
         return 0;
 
-    return libplayer_wrapper_supported_res (type_list[type].p_type,
-                                            type_list[type].res);
+    return libplayer_wrapper_supported_res(type_list[type].p_type,
+                                           type_list[type].res);
 }
 
 #define ENNA_MP_PLAYER_INIT(type)                                            \
     do                                                                       \
     {                                                                        \
         mp->players[type] =                                                  \
-            player_init (type, ao, vo, verbosity, enna->ee_winid, event_cb); \
+            player_init(type, ao, vo, verbosity, enna->ee_winid, event_cb);  \
         if (!mp->players[type])                                              \
             goto err;                                                        \
     }                                                                        \
-    while (0)
+    while(0)
 
 #define CFG_VIDEO(field) \
-    enna_config_value_store (&video->field, #field, ENNA_CONFIG_STRING, pair);
+    enna_config_value_store(&video->field, #field, ENNA_CONFIG_STRING, pair);
 
 int
-enna_mediaplayer_init (void)
+enna_mediaplayer_init(void)
 {
     Enna_Config_Data *cfgdata;
     Enna_Config_Video *video;
@@ -727,13 +727,13 @@ enna_mediaplayer_init (void)
     int dvd_set = 0, tv_set = 0;
 
     /* set default video config */
-    enna_config->cfg_video = calloc (1, sizeof (Enna_Config_Video));
+    enna_config->cfg_video = calloc(1, sizeof (Enna_Config_Video));
     video = enna_config->cfg_video;
 
     /* Load Config file values */
-    cfgdata = enna_config_module_pair_get ("mediaplayer");
+    cfgdata = enna_config_module_pair_get("mediaplayer");
 
-    enna_log (ENNA_MSG_INFO, NULL, "parameters:");
+    enna_log(ENNA_MSG_INFO, NULL, "parameters:");
 
     if (cfgdata)
     {
@@ -745,142 +745,142 @@ enna_mediaplayer_init (void)
 
             if (!strcmp("type", pair->key))
             {
-                enna_config_value_store (&value, "type",
-                                         ENNA_CONFIG_STRING, pair);
-                enna_log (ENNA_MSG_INFO, NULL,
-                          " * type: %s", value);
+                enna_config_value_store(&value, "type",
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, NULL,
+                         " * type: %s", value);
 
-                if (!strcmp ("gstreamer", value))
+                if (!strcmp("gstreamer", value))
                     type = PLAYER_TYPE_GSTREAMER;
-                else if (!strcmp ("mplayer", value))
+                else if (!strcmp("mplayer", value))
                     type = PLAYER_TYPE_MPLAYER;
-                else if (!strcmp ("vlc", value))
+                else if (!strcmp("vlc", value))
                     type = PLAYER_TYPE_VLC;
-                else if (!strcmp ("xine", value))
+                else if (!strcmp("xine", value))
                     type = PLAYER_TYPE_XINE;
                 else
-                    enna_log (ENNA_MSG_WARNING, NULL,
-                              "   - unknown type, 'mplayer' used instead");
+                    enna_log(ENNA_MSG_WARNING, NULL,
+                             "   - unknown type, 'mplayer' used instead");
             }
-            else if (!strcmp ("dvd_type", pair->key))
+            else if (!strcmp("dvd_type", pair->key))
             {
-                enna_config_value_store (&value, "dvd_type",
-                                         ENNA_CONFIG_STRING, pair);
-                enna_log (ENNA_MSG_INFO, NULL,
-                          " * dvd_type: %s", value);
+                enna_config_value_store(&value, "dvd_type",
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, NULL,
+                         " * dvd_type: %s", value);
 
-                if (!strcmp ("gstreamer", value))
+                if (!strcmp("gstreamer", value))
                     dvd_type = PLAYER_TYPE_GSTREAMER;
-                else if (!strcmp ("mplayer", value))
+                else if (!strcmp("mplayer", value))
                     dvd_type = PLAYER_TYPE_MPLAYER;
-                else if (!strcmp ("vlc", value))
+                else if (!strcmp("vlc", value))
                     dvd_type = PLAYER_TYPE_VLC;
-                else if (!strcmp ("xine", value))
+                else if (!strcmp("xine", value))
                     dvd_type = PLAYER_TYPE_XINE;
                 else
-                    enna_log (ENNA_MSG_WARNING, NULL,
-                              "   - unknown dvd_type, 'xine' used instead");
+                    enna_log(ENNA_MSG_WARNING, NULL,
+                             "   - unknown dvd_type, 'xine' used instead");
                 dvd_set = 1;
             }
-            else if (!strcmp ("tv_type", pair->key))
+            else if (!strcmp("tv_type", pair->key))
             {
-                enna_config_value_store (&value, "tv_type",
-                                         ENNA_CONFIG_STRING, pair);
-                enna_log (ENNA_MSG_INFO, NULL,
-                          " * tv_type: %s", value);
+                enna_config_value_store(&value, "tv_type",
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, NULL,
+                         " * tv_type: %s", value);
 
-                if (!strcmp ("gstreamer", value))
+                if (!strcmp("gstreamer", value))
                     tv_type = PLAYER_TYPE_GSTREAMER;
-                else if (!strcmp ("mplayer", value))
+                else if (!strcmp("mplayer", value))
                     tv_type = PLAYER_TYPE_MPLAYER;
-                else if (!strcmp ("vlc", value))
+                else if (!strcmp("vlc", value))
                     tv_type = PLAYER_TYPE_VLC;
-                else if (!strcmp ("xine", value))
+                else if (!strcmp("xine", value))
                     tv_type = PLAYER_TYPE_XINE;
                 else
-                    enna_log (ENNA_MSG_WARNING, NULL,
-                              "   - unknown tv_type, 'xine' used instead");
+                    enna_log(ENNA_MSG_WARNING, NULL,
+                             "   - unknown tv_type, 'xine' used instead");
                 tv_set = 1;
             }
-            else if (!strcmp ("video_out", pair->key))
+            else if (!strcmp("video_out", pair->key))
             {
-                enna_config_value_store (&value, "video_out",
-                                         ENNA_CONFIG_STRING, pair);
-                enna_log (ENNA_MSG_INFO, NULL,
-                          " * video out: %s", value);
+                enna_config_value_store(&value, "video_out",
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, NULL,
+                         " * video out: %s", value);
 
-                if (!strcmp ("auto", value))
+                if (!strcmp("auto", value))
                     vo = PLAYER_VO_AUTO;
-                else if (!strcmp ("vdpau", value))
+                else if (!strcmp("vdpau", value))
                     vo = PLAYER_VO_VDPAU;
-                else if (!strcmp ("x11", value))
+                else if (!strcmp("x11", value))
                     vo = PLAYER_VO_X11;
-                else if (!strcmp ("xv", value))
+                else if (!strcmp("xv", value))
                     vo = PLAYER_VO_XV;
-                else if (!strcmp ("gl", value))
+                else if (!strcmp("gl", value))
                     vo = PLAYER_VO_GL;
-                else if (!strcmp ("fb", value))
+                else if (!strcmp("fb", value))
                     vo = PLAYER_VO_FB;
                 else
-                    enna_log (ENNA_MSG_WARNING, NULL,
-                              "   - unknown video_out, 'auto' used instead");
+                    enna_log(ENNA_MSG_WARNING, NULL,
+                             "   - unknown video_out, 'auto' used instead");
             }
-            else if (!strcmp ("audio_out", pair->key))
+            else if (!strcmp("audio_out", pair->key))
             {
-                enna_config_value_store (&value, "audio_out",
-                                         ENNA_CONFIG_STRING, pair);
-                enna_log (ENNA_MSG_INFO, NULL,
-                          " * audio out: %s", value);
+                enna_config_value_store(&value, "audio_out",
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, NULL,
+                         " * audio out: %s", value);
 
-                if (!strcmp ("auto", value))
+                if (!strcmp("auto", value))
                     ao = PLAYER_AO_AUTO;
-                else if (!strcmp ("alsa", value))
+                else if (!strcmp("alsa", value))
                     ao = PLAYER_AO_ALSA;
-                else if (!strcmp ("oss", value))
+                else if (!strcmp("oss", value))
                     ao = PLAYER_AO_OSS;
                 else
-                    enna_log (ENNA_MSG_WARNING, NULL,
-                              "   - unknown audio_out, 'auto' used instead");
+                    enna_log(ENNA_MSG_WARNING, NULL,
+                             "   - unknown audio_out, 'auto' used instead");
             }
-            else if (!strcmp ("verbosity", pair->key))
+            else if (!strcmp("verbosity", pair->key))
             {
-                enna_config_value_store (&value, "verbosity",
-                                         ENNA_CONFIG_STRING, pair);
-                enna_log (ENNA_MSG_INFO, NULL,
-                          " * verbosity level: %s", value);
+                enna_config_value_store(&value, "verbosity",
+                                        ENNA_CONFIG_STRING, pair);
+                enna_log(ENNA_MSG_INFO, NULL,
+                         " * verbosity level: %s", value);
 
-                if (!strcmp ("verbose", value))
+                if (!strcmp("verbose", value))
                     verbosity = PLAYER_MSG_VERBOSE;
-                else if (!strcmp ("info", value))
+                else if (!strcmp("info", value))
                     verbosity = PLAYER_MSG_INFO;
-                else if (!strcmp ("warning", value))
+                else if (!strcmp("warning", value))
                     verbosity = PLAYER_MSG_WARNING;
-                else if (!strcmp ("error", value))
+                else if (!strcmp("error", value))
                     verbosity = PLAYER_MSG_ERROR;
                 else if (!strcmp ("critical", value))
                     verbosity = PLAYER_MSG_CRITICAL;
-                else if (!strcmp ("none", value))
+                else if (!strcmp("none", value))
                     verbosity = PLAYER_MSG_NONE;
                 else
-                    enna_log (ENNA_MSG_WARNING, NULL,
-                              "   - unknown verbosity, " \
-                              "'warning' used instead");
+                    enna_log(ENNA_MSG_WARNING, NULL,
+                             "   - unknown verbosity, " \
+                             "'warning' used instead");
             }
 
-            CFG_VIDEO (sub_align);
-            CFG_VIDEO (sub_pos);
-            CFG_VIDEO (sub_scale);
-            CFG_VIDEO (sub_visibility);
-            CFG_VIDEO (framedrop);
+            CFG_VIDEO(sub_align);
+            CFG_VIDEO(sub_pos);
+            CFG_VIDEO(sub_scale);
+            CFG_VIDEO(sub_visibility);
+            CFG_VIDEO(framedrop);
         }
     }
 
     if (!value)
-        enna_log (ENNA_MSG_INFO, NULL,
-                  " * use all parameters by default");
+        enna_log(ENNA_MSG_INFO, NULL,
+                 " * use all parameters by default");
 
     /* Main player type is mandatory! */
-    if (!libplayer_wrapper_enabled (type))
+    if (!libplayer_wrapper_enabled(type))
         goto err;
 
     /*
@@ -890,40 +890,40 @@ enna_mediaplayer_init (void)
      * Otherwise, if nothing is changed by the user but the wrapper is not
      * enabled, then the main type is used instead.
      */
-    if (dvd_type != type && !libplayer_wrapper_enabled (dvd_type))
+    if (dvd_type != type && !libplayer_wrapper_enabled(dvd_type))
     {
         if (dvd_set)
             goto err;
         dvd_type = type;
     }
 
-    if (tv_type != type && !libplayer_wrapper_enabled (tv_type))
+    if (tv_type != type && !libplayer_wrapper_enabled(tv_type))
     {
         if (tv_set)
             goto err;
         tv_type = type;
     }
 
-    mp = calloc (1, sizeof (Enna_Mediaplayer));
+    mp = calloc(1, sizeof(Enna_Mediaplayer));
 
     mp->key_down_event_handler =
-        ecore_event_handler_add (ECORE_EVENT_KEY_DOWN, event_key_down, NULL);
+        ecore_event_handler_add(ECORE_EVENT_KEY_DOWN, event_key_down, NULL);
     mp->mouse_button_event_handler =
-        ecore_event_handler_add (ECORE_EVENT_MOUSE_BUTTON_DOWN,
-                                 event_mouse_button, NULL);
+        ecore_event_handler_add(ECORE_EVENT_MOUSE_BUTTON_DOWN,
+                                event_mouse_button, NULL);
     mp->mouse_move_event_handler =
-        ecore_event_handler_add (ECORE_EVENT_MOUSE_MOVE,
-                                 event_mouse_move, NULL);
+        ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE,
+                                event_mouse_move, NULL);
 
-    mp->pipe = ecore_pipe_add (pipe_read, NULL);
+    mp->pipe = ecore_pipe_add(pipe_read, NULL);
 
-    ENNA_MP_PLAYER_INIT (type);
+    ENNA_MP_PLAYER_INIT(type);
     if (dvd_type != type)
-        ENNA_MP_PLAYER_INIT (dvd_type);
+        ENNA_MP_PLAYER_INIT(dvd_type);
     if (tv_type != type && tv_type != dvd_type)
-        ENNA_MP_PLAYER_INIT (tv_type);
+        ENNA_MP_PLAYER_INIT(tv_type);
 
-    mp_event_cb_set (_event_cb, NULL);
+    mp_event_cb_set(_event_cb, NULL);
 
     mp->uri = NULL;
     mp->label = NULL;
@@ -935,21 +935,21 @@ enna_mediaplayer_init (void)
     mp->play_state = STOPPED;
 
     /* Create Ecore Event ID */
-    ENNA_EVENT_MEDIAPLAYER_EOS = ecore_event_type_new ();
-    ENNA_EVENT_MEDIAPLAYER_METADATA_UPDATE = ecore_event_type_new ();
-    ENNA_EVENT_MEDIAPLAYER_START = ecore_event_type_new ();
-    ENNA_EVENT_MEDIAPLAYER_STOP = ecore_event_type_new ();
-    ENNA_EVENT_MEDIAPLAYER_PAUSE = ecore_event_type_new ();
-    ENNA_EVENT_MEDIAPLAYER_UNPAUSE = ecore_event_type_new ();
-    ENNA_EVENT_MEDIAPLAYER_PREV = ecore_event_type_new ();
-    ENNA_EVENT_MEDIAPLAYER_NEXT = ecore_event_type_new ();
-    ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new ();
+    ENNA_EVENT_MEDIAPLAYER_EOS = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_METADATA_UPDATE = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_START = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_STOP = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_PAUSE = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_UNPAUSE = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_PREV = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_NEXT = ecore_event_type_new();
+    ENNA_EVENT_MEDIAPLAYER_SEEK = ecore_event_type_new();
 
     return 1;
 
  err:
-    enna_log (ENNA_MSG_ERROR, NULL, "Mediaplayer initialization");
-    enna_mediaplayer_shutdown ();
+    enna_log(ENNA_MSG_ERROR, NULL, "Mediaplayer initialization");
+    enna_mediaplayer_shutdown();
     return 0;
 }
 
@@ -961,18 +961,18 @@ enna_mediaplayer_shutdown(void)
     if (!mp)
         return;
 
-    ENNA_FREE (mp->uri);
-    ENNA_FREE (mp->label);
+    ENNA_FREE(mp->uri);
+    ENNA_FREE(mp->label);
     ENNA_EVENT_HANDLER_DEL(mp->key_down_event_handler);
     ENNA_EVENT_HANDLER_DEL(mp->mouse_button_event_handler);
     ENNA_EVENT_HANDLER_DEL(mp->mouse_move_event_handler);
     if (mp->pipe)
-        ecore_pipe_del (mp->pipe);
-    player_playback_stop (mp->player);
+        ecore_pipe_del(mp->pipe);
+    player_playback_stop(mp->player);
     for (i = 0; i < MAX_PLAYERS; i++)
         if (mp->players[i])
-            player_uninit (mp->players[i]);
-    ENNA_FREE (mp);
+            player_uninit(mp->players[i]);
+    ENNA_FREE(mp);
 }
 
 char *
@@ -983,19 +983,18 @@ enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
   item = eina_list_nth (enna_playlist->playlist, enna_playlist->selected);
   if (!item->uri)
     return NULL;
-  return strdup (item->uri);
+  return strdup(item->uri);
 }
 
-
 void
-enna_mediaplayer_uri_append (Enna_Playlist *enna_playlist,
-                             const char *uri, const char *label)
+enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,
+                            const char *uri, const char *label)
 {
-    list_item_t *item = calloc (1, sizeof (list_item_t));
-    item->uri = uri ? strdup (uri) : NULL;
-    item->label = label ? strdup (label) : NULL;
+    list_item_t *item = calloc(1, sizeof (list_item_t));
+    item->uri = uri ? strdup(uri) : NULL;
+    item->label = label ? strdup(label) : NULL;
     enna_playlist->playlist =
-        eina_list_append (enna_playlist->playlist, item);
+        eina_list_append(enna_playlist->playlist, item);
 }
 
 int
@@ -1006,24 +1005,24 @@ enna_mediaplayer_play(Enna_Playlist *enna_playlist)
     case STOPPED:
     {
         list_item_t *item;
-        item = eina_list_nth (enna_playlist->playlist,
-                              enna_playlist->selected);
-        mp_stop ();
+        item = eina_list_nth(enna_playlist->playlist,
+                             enna_playlist->selected);
+        mp_stop();
         if (item && item->uri)
-            mp_file_set (item->uri, item->label);
-        mp_play ();
+            mp_file_set(item->uri, item->label);
+        mp_play();
         mp->play_state = PLAYING;
-        ecore_event_add (ENNA_EVENT_MEDIAPLAYER_START, NULL, NULL, NULL);
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_START, NULL, NULL, NULL);
         break;
     }
     case PLAYING:
-        enna_mediaplayer_pause ();
+        enna_mediaplayer_pause();
         break;
     case PAUSE:
-        mp_play ();
+        mp_play();
         mp->play_state = PLAYING;
-        ecore_event_add (ENNA_EVENT_MEDIAPLAYER_UNPAUSE,
-                         NULL, NULL, NULL);
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_UNPAUSE,
+                        NULL, NULL, NULL);
         break;
     default:
         break;
@@ -1033,75 +1032,75 @@ enna_mediaplayer_play(Enna_Playlist *enna_playlist)
 }
 
 int
-enna_mediaplayer_select_nth (Enna_Playlist *enna_playlist,int n)
+enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist,int n)
 {
-    if (n < 0 || n > eina_list_count (enna_playlist->playlist) - 1)
+    if (n < 0 || n > eina_list_count(enna_playlist->playlist) - 1)
         return -1;
 
-    enna_log (ENNA_MSG_EVENT, NULL, "select %d", n);
+    enna_log(ENNA_MSG_EVENT, NULL, "select %d", n);
     enna_playlist->selected = n;
 
     return 0;
 }
 
 int
-enna_mediaplayer_selected_get (Enna_Playlist *enna_playlist)
+enna_mediaplayer_selected_get(Enna_Playlist *enna_playlist)
 {
     return enna_playlist->selected;
 }
 
 int
-enna_mediaplayer_stop (void)
+enna_mediaplayer_stop(void)
 {
-    mp_stop ();
+    mp_stop();
     mp->play_state = STOPPED;
-    ecore_event_add (ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
+    ecore_event_add(ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
 
     return 0;
 }
 
 int
-enna_mediaplayer_pause (void)
+enna_mediaplayer_pause(void)
 {
-    mp_pause ();
+    mp_pause();
     mp->play_state = PAUSE;
-    ecore_event_add (ENNA_EVENT_MEDIAPLAYER_PAUSE, NULL, NULL, NULL);
+    ecore_event_add(ENNA_EVENT_MEDIAPLAYER_PAUSE, NULL, NULL, NULL);
 
     return 0;
 }
 
 static void
-enna_mediaplayer_change (Enna_Playlist *enna_playlist, int type)
+enna_mediaplayer_change(Enna_Playlist *enna_playlist, int type)
 {
     list_item_t *item;
 
-    item = eina_list_nth (enna_playlist->playlist, enna_playlist->selected);
-    enna_log (ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
+    item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
+    enna_log(ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
     if (!item)
         return;
 
-    enna_mediaplayer_stop ();
-    enna_mediaplayer_play (enna_playlist);
-    ecore_event_add (type, NULL, NULL, NULL);
+    enna_mediaplayer_stop();
+    enna_mediaplayer_play(enna_playlist);
+    ecore_event_add(type, NULL, NULL, NULL);
 }
 
 int
-enna_mediaplayer_next (Enna_Playlist *enna_playlist)
+enna_mediaplayer_next(Enna_Playlist *enna_playlist)
 {
     enna_playlist->selected++;
-    if (enna_playlist->selected >
-        eina_list_count (enna_playlist->playlist) - 1)
+    if(enna_playlist->selected >
+       eina_list_count (enna_playlist->playlist) - 1)
     {
         enna_playlist->selected--;
         return -1;
     }
 
-    enna_mediaplayer_change (enna_playlist, ENNA_EVENT_MEDIAPLAYER_NEXT);
+    enna_mediaplayer_change(enna_playlist, ENNA_EVENT_MEDIAPLAYER_NEXT);
     return 0;
 }
 
 int
-enna_mediaplayer_prev (Enna_Playlist *enna_playlist)
+enna_mediaplayer_prev(Enna_Playlist *enna_playlist)
 {
     enna_playlist->selected--;
     if (enna_playlist->selected < 0)
@@ -1110,41 +1109,41 @@ enna_mediaplayer_prev (Enna_Playlist *enna_playlist)
         return -1;
     }
 
-    enna_mediaplayer_change (enna_playlist, ENNA_EVENT_MEDIAPLAYER_PREV);
+    enna_mediaplayer_change(enna_playlist, ENNA_EVENT_MEDIAPLAYER_PREV);
     return 0;
 }
 
 double
-enna_mediaplayer_position_get (void)
+enna_mediaplayer_position_get(void)
 {
     return (mp->play_state == PAUSE || mp->play_state == PLAYING) ?
-        mp_position_get (): 0.0;
+        mp_position_get(): 0.0;
 }
 
 int
-enna_mediaplayer_position_percent_get (void)
+enna_mediaplayer_position_percent_get(void)
 {
     return (mp->play_state == PAUSE || mp->play_state == PLAYING) ?
-            mp_position_percent_get () : 0;
+            mp_position_percent_get() : 0;
 }
 
 int
-enna_mediaplayer_position_set (double position)
+enna_mediaplayer_position_set(double position)
 {
-    enna_log (ENNA_MSG_EVENT, NULL, "Seeking to: %f seconds", position);
+    enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %f seconds", position);
 
     if (mp->play_state == PAUSE || mp->play_state == PLAYING)
     {
         Enna_Event_Mediaplayer_Seek_Data *ev;
 
-        ev = calloc (1, sizeof (Enna_Event_Mediaplayer_Seek_Data));
+        ev = calloc(1, sizeof(Enna_Event_Mediaplayer_Seek_Data));
         if (!ev)
             return 0;
 
         ev->seek_value = position;
-        ecore_event_add (ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-        player_playback_seek (mp->player,
-                              position, PLAYER_PB_SEEK_ABSOLUTE);
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
+        player_playback_seek(mp->player,
+                             position, PLAYER_PB_SEEK_ABSOLUTE);
 
     }
 
@@ -1152,177 +1151,177 @@ enna_mediaplayer_position_set (double position)
 }
 
 double
-enna_mediaplayer_length_get (void)
+enna_mediaplayer_length_get(void)
 {
     return (mp->play_state == PAUSE || mp->play_state == PLAYING) ?
-        mp_length_get () : 0.0;
+        mp_length_get() : 0.0;
 }
 
 int
-enna_mediaplayer_seek (double percent)
+enna_mediaplayer_seek(double percent)
 {
-    enna_log (ENNA_MSG_EVENT, NULL,
-              "Seeking to: %d%%", (int) (100 * percent));
+    enna_log(ENNA_MSG_EVENT, NULL,
+             "Seeking to: %d%%", (int) (100 * percent));
 
     if (mp->play_state == PAUSE || mp->play_state == PLAYING)
     {
         Enna_Event_Mediaplayer_Seek_Data *ev;
 
-        ev = calloc (1, sizeof (Enna_Event_Mediaplayer_Seek_Data));
+        ev = calloc(1, sizeof(Enna_Event_Mediaplayer_Seek_Data));
         if (!ev)
             return 0;
 
         ev->seek_value = percent;
-        ecore_event_add (ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-        return mp_seek (percent);
+        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
+        return mp_seek(percent);
     }
 
     return 0;
 }
 
 void
-enna_mediaplayer_default_seek_backward (void)
+enna_mediaplayer_default_seek_backward(void)
 {
     int pos;
-    pos = enna_mediaplayer_position_percent_get ();
-    enna_mediaplayer_seek (((double) pos - SEEK_STEP_DEFAULT) / 100.0);
+    pos = enna_mediaplayer_position_percent_get();
+    enna_mediaplayer_seek(((double) pos - SEEK_STEP_DEFAULT) / 100.0);
 }
 
 void
-enna_mediaplayer_default_seek_forward (void)
+enna_mediaplayer_default_seek_forward(void)
 {
     int pos;
-    pos = enna_mediaplayer_position_percent_get ();
-    enna_mediaplayer_seek (((double) pos + SEEK_STEP_DEFAULT) / 100.0);
+    pos = enna_mediaplayer_position_percent_get();
+    enna_mediaplayer_seek(((double) pos + SEEK_STEP_DEFAULT) / 100.0);
 }
 
 void
-enna_mediaplayer_video_resize (int x, int y, int w, int h)
+enna_mediaplayer_video_resize(int x, int y, int w, int h)
 {
-    mp_video_resize (x, y, w, h);
+    mp_video_resize(x, y, w, h);
 }
 
 int
-enna_mediaplayer_playlist_load (const char *filename)
+enna_mediaplayer_playlist_load(const char *filename)
 {
     return 0;
 }
 
 int
-enna_mediaplayer_playlist_save (const char *filename)
+enna_mediaplayer_playlist_save(const char *filename)
 {
     return 0;
 }
 
 void
-enna_mediaplayer_playlist_clear (Enna_Playlist *enna_playlist)
+enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
 {
-    eina_list_free (enna_playlist->playlist);
+    eina_list_free(enna_playlist->playlist);
     enna_playlist->playlist = NULL;
     enna_playlist->selected = 0;
 }
 
 Enna_Metadata *
-enna_mediaplayer_metadata_get (Enna_Playlist *enna_playlist)
+enna_mediaplayer_metadata_get(Enna_Playlist *enna_playlist)
 {
     list_item_t *item;
 
-    item = eina_list_nth (enna_playlist->playlist, enna_playlist->selected);
+    item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
     if (!item)
         return NULL;
 
     if (item->uri)
-        return enna_metadata_meta_new ((char *) item->uri);
+        return enna_metadata_meta_new((char *) item->uri);
 
     return NULL;
 }
 
 int
-enna_mediaplayer_playlist_count (Enna_Playlist *enna_playlist)
+enna_mediaplayer_playlist_count(Enna_Playlist *enna_playlist)
 {
-    return eina_list_count (enna_playlist->playlist);
+    return eina_list_count(enna_playlist->playlist);
 }
 
 PLAY_STATE
-enna_mediaplayer_state_get (void)
+enna_mediaplayer_state_get(void)
 {
     return mp->play_state;
 }
 
 Enna_Playlist *
-enna_mediaplayer_playlist_create (void)
+enna_mediaplayer_playlist_create(void)
 {
     Enna_Playlist *enna_playlist;
 
-    enna_playlist = calloc (1, sizeof (Enna_Playlist));
+    enna_playlist = calloc(1, sizeof(Enna_Playlist));
     enna_playlist->selected = 0;
     enna_playlist->playlist = NULL;
     return enna_playlist;
 }
 
 void
-enna_mediaplayer_playlist_free (Enna_Playlist *enna_playlist)
+enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist)
 {
-    eina_list_free (enna_playlist->playlist);
-    free (enna_playlist);
+    eina_list_free(enna_playlist->playlist);
+    free(enna_playlist);
 }
 
 void
-enna_mediaplayer_playlist_stop_clear (Enna_Playlist *enna_playlist)
+enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist)
 {
-    enna_mediaplayer_playlist_clear (enna_playlist);
-    mp_stop ();
+    enna_mediaplayer_playlist_clear(enna_playlist);
+    mp_stop();
     mp->play_state = STOPPED;
-    ecore_event_add (ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
+    ecore_event_add(ENNA_EVENT_MEDIAPLAYER_STOP, NULL, NULL, NULL);
 }
 
 void
-enna_mediaplayer_send_input (enna_input event)
+enna_mediaplayer_send_input(enna_input event)
 {
-    mp_send_key (event);
+    mp_send_key(event);
 }
 
 int
-enna_mediaplayer_volume_get (void)
+enna_mediaplayer_volume_get(void)
 {
-    return player_audio_volume_get (mp->player);
+    return player_audio_volume_get(mp->player);
 }
 
 void
-enna_mediaplayer_volume_set (int value)
+enna_mediaplayer_volume_set(int value)
 {
-    player_audio_volume_set (mp->player, value);
+    player_audio_volume_set(mp->player, value);
 }
 
 void
-enna_mediaplayer_default_increase_volume (void)
+enna_mediaplayer_default_increase_volume(void)
 {
-    int vol = enna_mediaplayer_volume_get ();
-    player_audio_volume_set (mp->player, vol + VOLUME_STEP_DEFAULT);
+    int vol = enna_mediaplayer_volume_get();
+    player_audio_volume_set(mp->player, vol + VOLUME_STEP_DEFAULT);
 }
 
 void
-enna_mediaplayer_default_decrease_volume (void)
+enna_mediaplayer_default_decrease_volume(void)
 {
-    int vol = enna_mediaplayer_volume_get ();
-    player_audio_volume_set (mp->player, vol - VOLUME_STEP_DEFAULT);
+    int vol = enna_mediaplayer_volume_get();
+    player_audio_volume_set(mp->player, vol - VOLUME_STEP_DEFAULT);
 }
 
 void
-enna_mediaplayer_mute (void)
+enna_mediaplayer_mute(void)
 {
     player_mute_t m;
 
-    m = player_audio_mute_get (mp->player);
-    player_audio_mute_set (mp->player, (m == PLAYER_MUTE_ON) ?
-                           PLAYER_MUTE_OFF : PLAYER_MUTE_ON);
+    m = player_audio_mute_get(mp->player);
+    player_audio_mute_set(mp->player, (m == PLAYER_MUTE_ON) ?
+                          PLAYER_MUTE_OFF : PLAYER_MUTE_ON);
 }
 
 int
-enna_mediaplayer_mute_get (void)
+enna_mediaplayer_mute_get(void)
 {
     player_mute_t m;
-    m = player_audio_mute_get (mp->player);
+    m = player_audio_mute_get(mp->player);
     if (m == PLAYER_MUTE_ON)
         return 1;
     else
@@ -1330,102 +1329,102 @@ enna_mediaplayer_mute_get (void)
 }
 
 void
-enna_mediaplayer_audio_previous (void)
+enna_mediaplayer_audio_previous(void)
 {
-    player_audio_prev (mp->player);
+    player_audio_prev(mp->player);
 }
 
 void
-enna_mediaplayer_audio_next (void)
+enna_mediaplayer_audio_next(void)
 {
-    player_audio_next (mp->player);
+    player_audio_next(mp->player);
 }
 
 void
-enna_mediaplayer_audio_increase_delay (void)
+enna_mediaplayer_audio_increase_delay(void)
 {
     mp->audio_delay += 100;
-    player_audio_set_delay  (mp->player, mp->audio_delay, 0);
+    player_audio_set_delay(mp->player, mp->audio_delay, 0);
 }
 
 void
-enna_mediaplayer_audio_decrease_delay (void)
+enna_mediaplayer_audio_decrease_delay(void)
 {
     mp->audio_delay -= 100;
-    player_audio_set_delay  (mp->player, mp->audio_delay, 0);
+    player_audio_set_delay(mp->player, mp->audio_delay, 0);
 }
 
 void
-enna_mediaplayer_subtitle_set_visibility (void)
+enna_mediaplayer_subtitle_set_visibility(void)
 {
     mp->subtitle_visibility = !mp->subtitle_visibility;
-    player_subtitle_set_visibility (mp->player, mp->subtitle_visibility);
+    player_subtitle_set_visibility(mp->player, mp->subtitle_visibility);
 }
 
 void
-enna_mediaplayer_subtitle_previous (void)
+enna_mediaplayer_subtitle_previous(void)
 {
-    player_subtitle_prev (mp->player);
+    player_subtitle_prev(mp->player);
 }
 
 void
-enna_mediaplayer_subtitle_next (void)
+enna_mediaplayer_subtitle_next(void)
 {
-    player_subtitle_next (mp->player);
+    player_subtitle_next(mp->player);
 }
 
 void
-enna_mediaplayer_subtitle_set_alignment (void)
+enna_mediaplayer_subtitle_set_alignment(void)
 {
     mp->subtitle_alignment = (mp->subtitle_alignment + 1) % 3;
-    player_subtitle_set_alignment (mp->player, mp->subtitle_alignment);
+    player_subtitle_set_alignment(mp->player, mp->subtitle_alignment);
 }
 
 void
-enna_mediaplayer_subtitle_increase_position (void)
+enna_mediaplayer_subtitle_increase_position(void)
 {
     mp->subtitle_position += 1;
-    player_subtitle_set_position (mp->player, mp->subtitle_position);
+    player_subtitle_set_position(mp->player, mp->subtitle_position);
 }
 
 void
-enna_mediaplayer_subtitle_decrease_position (void)
+enna_mediaplayer_subtitle_decrease_position(void)
 {
     mp->subtitle_position -= 1;
-    player_subtitle_set_position (mp->player, mp->subtitle_position);
+    player_subtitle_set_position(mp->player, mp->subtitle_position);
 }
 
 void
-enna_mediaplayer_subtitle_increase_scale (void)
+enna_mediaplayer_subtitle_increase_scale(void)
 {
     mp->subtitle_scale += 1;
-    player_subtitle_scale  (mp->player, mp->subtitle_scale, 1);
+    player_subtitle_scale(mp->player, mp->subtitle_scale, 1);
 }
 
 void
-enna_mediaplayer_subtitle_decrease_scale (void)
+enna_mediaplayer_subtitle_decrease_scale(void)
 {
     mp->subtitle_scale -= 1;
-    player_subtitle_scale  (mp->player, mp->subtitle_scale, 1);
+    player_subtitle_scale(mp->player, mp->subtitle_scale, 1);
 }
 
 void
-enna_mediaplayer_subtitle_increase_delay (void)
+enna_mediaplayer_subtitle_increase_delay(void)
 {
     mp->subtitle_delay += 100;
-    player_subtitle_set_delay  (mp->player, mp->subtitle_delay);
+    player_subtitle_set_delay(mp->player, mp->subtitle_delay);
 }
 
 void
-enna_mediaplayer_subtitle_decrease_delay (void)
+enna_mediaplayer_subtitle_decrease_delay(void)
 {
     mp->subtitle_delay -= 100;
-    player_subtitle_set_delay  (mp->player, mp->subtitle_delay);
+    player_subtitle_set_delay(mp->player, mp->subtitle_delay);
 }
 
 void
-enna_mediaplayer_set_framedrop (void)
+enna_mediaplayer_set_framedrop(void)
 {
     mp->framedrop = (mp->framedrop + 1) % 3;
-    player_set_framedrop (mp->player, mp->framedrop);
+    player_set_framedrop(mp->player, mp->framedrop);
 }

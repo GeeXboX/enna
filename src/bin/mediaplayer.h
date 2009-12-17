@@ -66,7 +66,6 @@ enum _PLAY_STATE
     STOPPED
 };
 
-
 typedef struct _Enna_Event_Mediaplayer_Seek_Data Enna_Event_Mediaplayer_Seek_Data;
 
 struct _Enna_Event_Mediaplayer_Seek_Data
@@ -97,8 +96,9 @@ int ENNA_EVENT_MEDIAPLAYER_SEEK;
 int enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type);
 int enna_mediaplayer_init(void);
 void enna_mediaplayer_shutdown(void);
-void enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,const char *uri, const char *label);
-int enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist,int n);
+void enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,
+                                 const char *uri, const char *label);
+int enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist, int n);
 int enna_mediaplayer_selected_get(Enna_Playlist *enna_playlist);
 Enna_Metadata *enna_mediaplayer_metadata_get(Enna_Playlist *enna_playlist);
 int enna_mediaplayer_play(Enna_Playlist *enna_playlist);
@@ -122,27 +122,27 @@ PLAY_STATE enna_mediaplayer_state_get(void);
 Enna_Playlist *enna_mediaplayer_playlist_create(void);
 void enna_mediaplayer_playlist_free(Enna_Playlist *enna_playlist);
 void enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist);
-void enna_mediaplayer_send_input (enna_input event);
-int enna_mediaplayer_volume_get (void);
-void enna_mediaplayer_volume_set (int volume);
-void enna_mediaplayer_default_increase_volume (void);
-void enna_mediaplayer_default_decrease_volume (void);
-void enna_mediaplayer_mute (void);
-int enna_mediaplayer_mute_get (void);
+void enna_mediaplayer_send_input(enna_input event);
+int enna_mediaplayer_volume_get(void);
+void enna_mediaplayer_volume_set(int volume);
+void enna_mediaplayer_default_increase_volume(void);
+void enna_mediaplayer_default_decrease_volume(void);
+void enna_mediaplayer_mute(void);
+int enna_mediaplayer_mute_get(void);
 char *enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist);
-void enna_mediaplayer_audio_previous (void);
-void enna_mediaplayer_audio_next (void);
-void enna_mediaplayer_audio_increase_delay (void);
-void enna_mediaplayer_audio_decrease_delay (void);
-void enna_mediaplayer_subtitle_set_visibility (void);
-void enna_mediaplayer_subtitle_previous (void);
-void enna_mediaplayer_subtitle_next (void);
-void enna_mediaplayer_subtitle_set_alignment (void);
-void enna_mediaplayer_subtitle_increase_position (void);
-void enna_mediaplayer_subtitle_decrease_position (void);
-void enna_mediaplayer_subtitle_increase_scale (void);
-void enna_mediaplayer_subtitle_decrease_scale (void);
-void enna_mediaplayer_subtitle_increase_delay (void);
-void enna_mediaplayer_subtitle_decrease_delay (void);
-void enna_mediaplayer_set_framedrop (void);
+void enna_mediaplayer_audio_previous(void);
+void enna_mediaplayer_audio_next(void);
+void enna_mediaplayer_audio_increase_delay(void);
+void enna_mediaplayer_audio_decrease_delay(void);
+void enna_mediaplayer_subtitle_set_visibility(void);
+void enna_mediaplayer_subtitle_previous(void);
+void enna_mediaplayer_subtitle_next(void);
+void enna_mediaplayer_subtitle_set_alignment(void);
+void enna_mediaplayer_subtitle_increase_position(void);
+void enna_mediaplayer_subtitle_decrease_position(void);
+void enna_mediaplayer_subtitle_increase_scale(void);
+void enna_mediaplayer_subtitle_decrease_scale(void);
+void enna_mediaplayer_subtitle_increase_delay(void);
+void enna_mediaplayer_subtitle_decrease_delay(void);
+void enna_mediaplayer_set_framedrop(void);
 #endif /* MEDIAPLAYER_H */
