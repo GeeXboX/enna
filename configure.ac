@@ -49,8 +49,8 @@ PKG_CHECK_MODULES([ENNA],
    embryo >= 0.9.9.063
    edje >= 0.9.93.063
    elementary >= 0.6.0.063
-   libplayer >= 1.0.0
-   libvalhalla >= 1.0.0
+   libplayer >= 1.0.0 libplayer < 1.1.0
+   libvalhalla >= 1.0.0 libvalhalla < 2.0.0
    dbus-1 >= 1.2.0
   ]
 )
