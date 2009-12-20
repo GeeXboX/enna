@@ -79,10 +79,10 @@ get_prop_value_from_xml_tree(xmlNode *root, const char *prop)
     return NULL;
 }
 
-xmlChar *
-get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
-                                      const char *attr_name,
-                                      const char *attr_value)
+xmlNode *
+get_node_from_xml_tree_by_attr (xmlNode *root, const char *prop,
+                                const char *attr_name,
+                                const char *attr_value)
 {
     xmlNode *n, *node;
     xmlAttr *attr;
@@ -113,10 +113,21 @@ get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
         }
 
         xmlFree (content);
-        return xmlNodeGetContent (n);
+        return n;
     }
 
     return NULL;
+}
+
+xmlChar *
+get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
+                                      const char *attr_name,
+                                      const char *attr_value)
+{
+    xmlNode *n;
+
+    n = get_node_from_xml_tree_by_attr (root, prop, attr_name, attr_value);
+    return n ? xmlNodeGetContent (n) : NULL;
 }
 
 xmlChar *
