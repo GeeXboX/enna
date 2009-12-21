@@ -4,6 +4,7 @@ configuration\
 games\
 gocomics\
 music\
+onemanga\
 photo\
 tv\
 video\
