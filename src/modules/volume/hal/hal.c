@@ -29,9 +29,7 @@
 
 #include <string.h>
 #include <E_Hal.h>
-#include <dbus/dbus.h>
-#include <libhal.h>
-#include <libhal-storage.h>
+
 
 #include "enna.h"
 #include "module.h"
@@ -41,7 +39,7 @@
 #include "hal_storage.h"
 #include "hal_volume.h"
 
-#define ENNA_MODULE_NAME   "hal"
+#define ENNA_MODULE_NAME   "hal2"
 
 #define EHAL_STORAGE_NAME  "storage"
 #define EHAL_VOLUME_NAME   "volume"
@@ -54,9 +52,6 @@ typedef struct _Enna_Module_Hal
     Evas *e;
     Enna_Module *em;
     E_DBus_Connection *dbus;
-    DBusConnection *conn;
-    LibHalContext *ctx;
-    DBusError error;
 
     Eina_List *storages;
     Eina_List *volumes;
@@ -64,325 +59,173 @@ typedef struct _Enna_Module_Hal
 
 static Enna_Module_Hal *mod;
 
-/***********************************************/
-/*          HAL Storage Management             */
-/***********************************************/
+E_DBus_Connection *dbus_conn;
 
 static void
-ehal_add_storage (char *udi)
+ehal_store_is_cb(void *user_data, void *reply_data, DBusError *error)
 {
-    storage_t *s;
+    char *udi = user_data;
+    E_Hal_Device_Query_Capability_Return *ret = reply_data;
 
-    if (!udi)
-        return;
-
-    s = storage_append (mod->ctx, udi);
-    mod->storages = eina_list_append (mod->storages, s);
-}
-
-static void
-ehal_remove_storage (char *udi)
-{
-    storage_t *s;
-    Eina_List *l;
-    if (!udi)
-        return;
-
-    EINA_LIST_FOREACH(mod->storages, l, s)
+    if (dbus_error_is_set(error))
     {
-        if (!strcmp (s->udi, udi))
-            storage_free (s);
+        dbus_error_free(error);
+        goto error;
     }
+
+    if (ret && ret->boolean)
+    {
+        storage_add(udi);
+    }
+
+error:
+    free(udi);
 }
 
 static void
-ehal_find_storages (void *data, void *reply, DBusError *error)
+ehal_volume_is_cb(void *user_data, void *reply_data, DBusError *error)
 {
+    char *udi = user_data;
+    E_Hal_Device_Query_Capability_Return *ret = reply_data;
+
+    if (dbus_error_is_set(error))
+    {
+        dbus_error_free(error);
+        goto error;
+    }
+    if (ret && ret->boolean)
+    {
+        volume_add(udi, 0);
+    }
+
+error:
+    free(udi);
+}
+
+static void
+ehal_get_all_dev_cb(void *user_data, void *reply_data, DBusError *error)
+{
+    E_Hal_Manager_Get_All_Devices_Return *ret = reply_data;
     Eina_List *l;
-    E_Hal_Manager_Find_Device_By_Capability_Return *ret = reply;
     char *udi;
 
-    if (!ret || !ret->strings)
-        return;
+    if (!ret || !ret->strings) return;
 
-    if (dbus_error_is_set (error))
+    if (dbus_error_is_set(error))
     {
-        dbus_error_free (error);
+        dbus_error_free(error);
         return;
     }
 
     EINA_LIST_FOREACH(ret->strings, l, udi)
-        ehal_add_storage (udi);
-}
-
-static void
-ehal_is_storage (void *data, void *reply, DBusError *error)
-{
-    E_Hal_Device_Query_Capability_Return *ret = reply;
-    char *udi = data;
-
-    if (dbus_error_is_set (error))
     {
-        dbus_error_free (error);
-        return;
-    }
-
-    if (ret && ret->boolean)
-        ehal_add_storage (udi);
-}
-
-/***********************************************/
-/*           HAL Volume Management             */
-/***********************************************/
-
-static void
-vfs_add_volume_entry (volume_t *v)
-{
-    char name[256], tmp[4096];
-    ENNA_VOLUME_TYPE type = VOLUME_TYPE_HDD;
-    const char *uri = NULL;
-    Enna_Volume *evol;
-
-    if (!v)
-        return;
-
-    switch (v->type)
-    {
-        /* discard unknown volumes */
-    case HAL_VOLUME_TYPE_UNKNOWN:
-        return;
-
-    case HAL_VOLUME_TYPE_HDD:
-        /* discarded un-accessible HDDs */
-        if (!v->mounted)
-            return;
-
-        switch (v->s->type)
-        {
-        case LIBHAL_DRIVE_TYPE_CAMERA:
-            type = VOLUME_TYPE_CAMERA;
-            break;
-
-        case LIBHAL_DRIVE_TYPE_PORTABLE_AUDIO_PLAYER:
-            type = VOLUME_TYPE_AUDIO_PLAYER;
-            break;
-
-        case LIBHAL_DRIVE_TYPE_FLASHKEY:
-            type = VOLUME_TYPE_FLASHKEY;
-            break;
-        case LIBHAL_DRIVE_TYPE_REMOVABLE_DISK:
-            type = VOLUME_TYPE_REMOVABLE_DISK;
-            break;
-
-        case LIBHAL_DRIVE_TYPE_COMPACT_FLASH:
-            type = VOLUME_TYPE_COMPACT_FLASH;
-            break;
-        case LIBHAL_DRIVE_TYPE_MEMORY_STICK:
-            type = VOLUME_TYPE_MEMORY_STICK;
-            break;
-        case LIBHAL_DRIVE_TYPE_SMART_MEDIA:
-            type = VOLUME_TYPE_SMART_MEDIA;
-            break;
-        case LIBHAL_DRIVE_TYPE_SD_MMC:
-            type = VOLUME_TYPE_SD_MMC;
-            break;
-        default:
-            type = VOLUME_TYPE_HDD;
-            break;
-        }
-        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
-        uri = eina_stringshare_add(tmp);
-        break;
-    case HAL_VOLUME_TYPE_CD:
-        type = VOLUME_TYPE_CD;
-        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
-        uri = eina_stringshare_add(tmp);
-        break;
-    case HAL_VOLUME_TYPE_CDDA:
-        type =  VOLUME_TYPE_CDDA;
-        uri  =  eina_stringshare_add("cdda://");
-        break;
-    case HAL_VOLUME_TYPE_DVD:
-        type =  VOLUME_TYPE_DVD;
-        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
-        uri = eina_stringshare_add(tmp);
-        break;
-    case HAL_VOLUME_TYPE_DVD_VIDEO:
-        type =  VOLUME_TYPE_DVD_VIDEO;
-        uri  =  eina_stringshare_add("dvd://");
-        break;
-    case HAL_VOLUME_TYPE_VCD:
-        type = VOLUME_TYPE_VCD;
-        uri =  eina_stringshare_add("vcd://");
-        break;
-    case HAL_VOLUME_TYPE_SVCD:
-        type = VOLUME_TYPE_SVCD;
-        uri =  eina_stringshare_add("vcd://");
-        break;
-    }
-
-    /* get volume displayed name/label */
-    memset (name, '\0', sizeof (name));
-    if (v->partition_label)
-        snprintf (name, sizeof (name), "%s", v->partition_label);
-    else if (v->label)
-        snprintf (name, sizeof (name), "%s", v->label);
-    else if (v->s)
-        snprintf (name, sizeof (name), "%s %s", v->s->vendor, v->s->model);
-
-    if (!v->name)
-        v->name = strdup (name);
-
-    evol = enna_volume_new ();
-    evol->label = eina_stringshare_add(name);
-    evol->type = type;
-    evol->mount_point = eina_stringshare_add(uri);
-    evol->device_name = eina_stringshare_add(v->device);
-    /* FIXME add this property correctly */
-    evol->eject = NULL;
-    evol->is_ejectable = EINA_FALSE;
-    v->enna_volume = evol;
-    enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point);
-    enna_volumes_add_emit(evol);
-}
-
-static void
-vfs_remove_volume_entry (volume_t *v)
-{
-    enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point);
-    enna_volumes_remove_emit(v->enna_volume);
-    enna_volume_free(v->enna_volume);
-}
-
-static void
-ehal_add_volume (char *udi)
-{
-    volume_t *v;
-
-    if (!udi)
-        return;
-
-    v = volume_append (mod->ctx, udi);
-    if (v && v->parent)
-    {
-        storage_t *s;
-        s = storage_find (mod->storages, v->parent);
-        if (s)
-            v->s = s;
-    }
-
-    mod->volumes = eina_list_append (mod->volumes, v);
-    vfs_add_volume_entry (v);
-}
-
-static void
-ehal_remove_volume (char *udi)
-{
-    volume_t *v;
-    Eina_List *l, *l_next;
-
-    if (!udi)
-        return;
-
-    EINA_LIST_FOREACH_SAFE(mod->volumes, l, l_next, v);
-    {
-        if (v && v->udi && !strcmp (v->udi, udi))
-        {
-            vfs_remove_volume_entry(v);
-            mod->volumes = eina_list_remove (mod->volumes, v);
-            volume_free(v);
-        }
+        e_hal_device_query_capability(dbus_conn, udi, EHAL_STORAGE_NAME,
+                                      ehal_store_is_cb, strdup(udi));
+        e_hal_device_query_capability(dbus_conn, udi, EHAL_VOLUME_NAME,
+                                      ehal_volume_is_cb, strdup(udi));
     }
 }
 
 static void
-ehal_find_volumes (void *data, void *reply, DBusError *error)
+ehal_dev_store_cb(void *user_data, void *reply_data, DBusError *error)
 {
+    E_Hal_Manager_Find_Device_By_Capability_Return *ret = reply_data;
     Eina_List *l;
-    E_Hal_Manager_Find_Device_By_Capability_Return *ret = reply;
-    char *udi;
+    char *device;
 
-    if (!ret || !ret->strings)
-        return;
+    if (!ret || !ret->strings) return;
 
-    if (dbus_error_is_set (error))
+    if (dbus_error_is_set(error))
     {
-        dbus_error_free (error);
+        dbus_error_free(error);
         return;
     }
 
-    EINA_LIST_FOREACH(ret->strings, l, udi)
-        ehal_add_volume (udi);
+    EINA_LIST_FOREACH(ret->strings, l, device)
+    {
+        storage_add(device);
+    }
 }
 
 static void
-ehal_is_volume (void *data, void *reply, DBusError *error)
+ehal_dev_vol_cb(void *user_data, void *reply_data, DBusError *error)
 {
-    E_Hal_Device_Query_Capability_Return *ret = reply;
-    char *udi = data;
+    E_Hal_Manager_Find_Device_By_Capability_Return *ret = reply_data;
+    Eina_List *l;
+    char *device;
 
-    if (dbus_error_is_set (error))
+    if (!ret || !ret->strings) return;
+
+    if (dbus_error_is_set(error))
     {
-        dbus_error_free (error);
+        dbus_error_free(error);
         return;
     }
 
-    if (ret && ret->boolean)
-      ehal_add_volume (udi);
+    EINA_LIST_FOREACH(ret->strings, l, device)
+    {
+        volume_add(device, 1);
+    }
 }
 
-/***********************************************/
-/*           HAL Device Management             */
-/***********************************************/
-
 static void
-ehal_device_added (void *data, DBusMessage *msg)
+ehal_dev_added_cb(void *data, DBusMessage *msg)
 {
-    Enna_Module_Hal *mod = data;
     DBusError err;
-    char *udi;
+    char *udi = NULL;
 
-    dbus_error_init (&err);
-    dbus_message_get_args (msg, &err,
-                           DBUS_TYPE_STRING, &udi, DBUS_TYPE_INVALID);
-
-    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-              "Adding newly discovered device: %s", udi);
-
-    e_hal_device_query_capability (mod->dbus, udi, EHAL_STORAGE_NAME,
-                                   ehal_is_storage, udi);
-    e_hal_device_query_capability (mod->dbus, udi, EHAL_VOLUME_NAME,
-                                   ehal_is_volume, udi);
+    dbus_error_init(&err);
+    dbus_message_get_args(msg, &err, DBUS_TYPE_STRING, &udi, DBUS_TYPE_INVALID);
+    if (!udi) return;
+    e_hal_device_query_capability(dbus_conn, udi, "storage",
+                                  ehal_store_is_cb, strdup(udi));
+    e_hal_device_query_capability(dbus_conn, udi, "volume",
+                                  ehal_volume_is_cb, strdup(udi));
 }
 
 static void
-ehal_device_removed (void *data, DBusMessage *msg)
+ehal_dev_removed_cb(void *data, DBusMessage *msg)
 {
     DBusError err;
     char *udi;
 
-    dbus_error_init (&err);
+    dbus_error_init(&err);
 
-    dbus_message_get_args (msg, &err,
-                           DBUS_TYPE_STRING, &udi, DBUS_TYPE_INVALID);
+    dbus_message_get_args(msg,
+                          &err, DBUS_TYPE_STRING,
+                          &udi, DBUS_TYPE_INVALID);
+    storage_del(udi);
+    volume_del(udi);
+}
 
-    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-              "Removing newly disconnected device: %s", udi);
+static void
+ehal_dev_update_cb(void *data, DBusMessage *msg)
+{
+    DBusError err;
+    char *udi, *capability;
 
-    ehal_remove_volume (udi);
-    ehal_remove_storage (udi);
+    dbus_error_init(&err);
+
+    dbus_message_get_args(msg,
+                          &err, DBUS_TYPE_STRING,
+                          &udi, DBUS_TYPE_STRING,
+                          &capability, DBUS_TYPE_INVALID);
+    if (!strcmp(capability, "storage"))
+    {
+        storage_add(udi);
+    }
 }
 
 /* Module interface */
 
 #ifdef USE_STATIC_MODULES
 #undef MOD_PREFIX
-#define MOD_PREFIX enna_mod_volume_hal
+#define MOD_PREFIX enna_mod_volume_hal2
 #endif /* USE_STATIC_MODULES */
 
 Enna_Module_Api ENNA_MODULE_API = {
     ENNA_MODULE_VERSION,
-    "volume_hal",
+    "volume_hal2",
     N_("Volumes from HAL"),
     NULL,
     N_("This module provide support for removable volumes"),
@@ -402,52 +245,36 @@ ENNA_MODULE_INIT(Enna_Module *em)
     e_dbus_init();
     e_hal_init();
 
-    mod->dbus = e_dbus_bus_get (DBUS_BUS_SYSTEM);
-    if (!mod->dbus)
-        goto edbus_error;
-
-    dbus_error_init (&mod->error);
-    mod->conn = dbus_bus_get (DBUS_BUS_SYSTEM, &mod->error);
-    if (!mod->conn)
+    dbus_conn = e_dbus_bus_get (DBUS_BUS_SYSTEM);
+    if (!dbus_conn)
         goto dbus_error;
-
-    mod->ctx = libhal_ctx_new ();
-    if (!mod->ctx)
-        goto hal_error;
-
-    libhal_ctx_set_dbus_connection (mod->ctx, mod->conn);
-    libhal_ctx_init (mod->ctx, &mod->error);
 
     mod->storages = NULL;
 
     mod->volumes = NULL;
 
-    e_hal_manager_find_device_by_capability (mod->dbus,
-                                             EHAL_STORAGE_NAME,
-                                             ehal_find_storages, mod);
-    e_hal_manager_find_device_by_capability (mod->dbus,
-                                             EHAL_VOLUME_NAME,
-                                             ehal_find_volumes, mod);
+    e_hal_manager_get_all_devices(dbus_conn, ehal_get_all_dev_cb, mod);
 
-    e_dbus_signal_handler_add (mod->dbus, E_HAL_SENDER, E_HAL_MANAGER_PATH,
-                               E_HAL_MANAGER_INTERFACE, EHAL_ACTION_ADD,
-                               ehal_device_added, mod);
+	e_hal_manager_find_device_by_capability(dbus_conn, EHAL_STORAGE_NAME,
+                                            ehal_dev_store_cb, mod);
+    e_hal_manager_find_device_by_capability(dbus_conn, EHAL_VOLUME_NAME,
+                                            ehal_dev_vol_cb, mod);
 
-    e_dbus_signal_handler_add (mod->dbus, E_HAL_SENDER, E_HAL_MANAGER_PATH,
-                               E_HAL_MANAGER_INTERFACE, EHAL_ACTION_REMOVE,
-                               ehal_device_removed, NULL);
-
+    e_dbus_signal_handler_add(dbus_conn, E_HAL_SENDER, E_HAL_MANAGER_PATH,
+                              E_HAL_MANAGER_INTERFACE, EHAL_ACTION_ADD,
+                              ehal_dev_added_cb, mod);
+    e_dbus_signal_handler_add(dbus_conn, E_HAL_SENDER, E_HAL_MANAGER_PATH,
+                              E_HAL_MANAGER_INTERFACE, EHAL_ACTION_REMOVE,
+                              ehal_dev_removed_cb, mod);
+    e_dbus_signal_handler_add(dbus_conn, E_HAL_SENDER, E_HAL_MANAGER_PATH,
+                              E_HAL_MANAGER_INTERFACE, EHAL_ACTION_UPDATE,
+                              ehal_dev_update_cb, mod);
     return;
 
- hal_error:
-    dbus_connection_unref (mod->conn);
-    dbus_error_free (&mod->error);
-
- dbus_error:
-    e_dbus_connection_close (mod->dbus);
+dbus_error:
+    e_dbus_connection_close (dbus_conn);
+    e_hal_shutdown();
     e_dbus_shutdown ();
-
- edbus_error:
     return;
 }
 
@@ -458,12 +285,7 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 
     mod = em->mod;;
 
-    libhal_ctx_shutdown (mod->ctx, &mod->error);
-    libhal_ctx_free (mod->ctx);
-
-    dbus_connection_unref (mod->conn);
-    dbus_error_free (&mod->error);
-
-    e_dbus_connection_close (mod->dbus);
+    e_dbus_connection_close (dbus_conn);
+    e_hal_shutdown();
     e_dbus_shutdown ();
 }
