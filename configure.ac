@@ -134,6 +134,19 @@ if test "x$want_activity_music" = "xyes"; then
   AC_DEFINE(BUILD_ACTIVITY_MUSIC, 1, [Music Activity])
 fi
 
+# OneManga.com
+want_activity_onemanga="yes"
+AC_MSG_CHECKING(whether OneManga.com activity module is to be built)
+AC_ARG_ENABLE(activity-onemanga,
+  AS_HELP_STRING([--enable-activity-onemanga],[Enable OneManga Activity Module]),
+  [ want_activity_onemanga=$enableval ]
+)
+AC_MSG_RESULT($want_activity_onemanga)
+AM_CONDITIONAL(BUILD_ACTIVITY_ONEMANGA, test "x$want_activity_onemanga" = "xyes")
+if test "x$want_activity_onemanga" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_ONEMANGA, 1, [OneManga.com Activity])
+fi
+
 # Photo
 want_activity_photo="yes"
 AC_MSG_CHECKING(whether photo activity module is to be built)
@@ -570,6 +583,7 @@ src/modules/activity/configuration/Makefile
 src/modules/activity/games/Makefile
 src/modules/activity/gocomics/Makefile
 src/modules/activity/music/Makefile
+src/modules/activity/onemanga/Makefile
 src/modules/activity/photo/Makefile
 src/modules/activity/tv/Makefile
 src/modules/activity/video/Makefile
@@ -618,6 +632,7 @@ echo "  configuration.................... : $want_activity_configuration"
 echo "  games............................ : $want_activity_games"
 echo "  GoComics.com..................... : $want_activity_gocomics"
 echo "  music............................ : $want_activity_music"
+echo "  OneManga.com..................... : $want_activity_onemanga"
 echo "  photo............................ : $want_activity_photo"
 echo "  tv............................... : $want_activity_tv"
 echo "  video............................ : $want_activity_video"

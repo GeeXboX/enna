@@ -442,7 +442,7 @@ Enna_Module_Api ENNA_MODULE_API =
     ENNA_MODULE_VERSION,
     "activity_gocomics",
     N_("GoComics.com Reader"),
-    "icon/weather",
+    "icon/gocomics",
     N_("Read your favorite comic books"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };

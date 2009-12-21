@@ -37,6 +37,9 @@
 xmlDocPtr get_xml_doc_from_memory (char *buffer);
 xmlNode *get_node_xml_tree(xmlNode *root, const char *prop);
 xmlChar *get_prop_value_from_xml_tree(xmlNode *root, const char *prop);
+xmlNode *get_node_from_xml_tree_by_attr (xmlNode *root, const char *prop,
+                                         const char *attr_name,
+                                         const char *attr_value);
 xmlChar *get_prop_value_from_xml_tree_by_attr (xmlNode *root, const char *prop,
                                                const char *attr_name,
                                                const char *attr_value);
