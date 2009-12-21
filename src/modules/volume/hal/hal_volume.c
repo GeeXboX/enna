@@ -31,13 +31,162 @@
 #include <string.h>
 #include <Eina.h>
 #include <E_Hal.h>
+#include <hal/libhal-storage.h>
 
 #include "enna.h"
 #include "logs.h"
+#include "volumes.h"
 #include "hal_storage.h"
 #include "hal_volume.h"
 
 static Eina_List *_volumes = NULL;
+
+static const struct {
+    const char *name;
+    const char *type;
+} vol_disc_type_mapping[] = {
+    { N_("CD-ROM"),                      "cdrom"        },
+    { N_("CD-R"),                        "cd_r"         },
+    { N_("CD-RW"),                       "cd_rw"        },
+    { N_("DVD-ROM"),                     "dvdrom"       },
+    { N_("DVD-RAM"),                     "dvdram"       },
+    { N_("DVD-R"),                       "dvd_r"        },
+    { N_("DVD-RW"),                      "dvd_rw"       },
+    { N_("DVD+R"),                       "dvd_plus_r"   },
+    { N_("DVD+RW"),                      "dvd_plus_rw"  },
+    { N_("DVD+R (DL)"),                  "dvd_plus_r_dl"}, //TO BE CONFIRMED
+    { N_("BD-ROM"),                      "bd_rom"       },
+    { N_("BD-R"),                        "bd_r"         },
+    { N_("BD-RE"),                       "bd_re"        },
+    { N_("HD-DVD-ROM"),                  "hddvd_rom"    },
+    { N_("HD-DVD-R"),                    "hddvd_r"      },
+    { N_("HD-DVD-RW"),                   "hddvd_rw"     },
+    { N_("MagnetoOptical"),              "magnotoptical"},//TO BE CONFIRMED
+    { NULL }
+};
+
+static const struct {
+    const char *name;
+    const char *property;
+    ENNA_VOLUME_TYPE type;
+} vol_disc_mapping[] = {
+    { N_("CDDA"),  "volume.disc.has_audio",    VOLUME_TYPE_CDDA              },
+    { N_("VCD"),   "volume.disc.is_vcd",       VOLUME_TYPE_VCD               },
+    { N_("SVCD"),  "volume.disc.is_svcd",      VOLUME_TYPE_SVCD              },
+    { N_("DVD"),   "volume.disc.is_videodvd",  VOLUME_TYPE_DVD_VIDEO         },
+    { N_("Data"),  "volume.disc.has_data",     VOLUME_TYPE_CD                },
+    { NULL }
+};
+
+enum {
+    HAL_VOLUME_TYPE_UNKNOWN,
+    HAL_VOLUME_TYPE_HDD,
+
+};
+
+static void
+volume_send_add_notification(volume_t *v)
+{
+
+     char name[256], tmp[4096];
+    ENNA_VOLUME_TYPE type = VOLUME_TYPE_HDD;
+    const char *uri = NULL;
+    Enna_Volume *evol;
+
+    if (!v)
+        return;
+
+    switch (v->type)
+    {
+        /* discard unknown volumes */
+    case VOLUME_TYPE_UNKNOWN:
+        return;
+
+    case VOLUME_TYPE_HDD:
+        /* discarded un-accessible HDDs */
+        if (!v->mounted)
+            return;
+
+        printf("storage type : %d\n", v->storage->type);
+        switch (v->storage->type)
+        {
+        case LIBHAL_DRIVE_TYPE_CAMERA:
+            type = VOLUME_TYPE_CAMERA;
+            break;
+
+        case LIBHAL_DRIVE_TYPE_PORTABLE_AUDIO_PLAYER:
+            type = VOLUME_TYPE_AUDIO_PLAYER;
+            break;
+
+        case LIBHAL_DRIVE_TYPE_FLASHKEY:
+            type = VOLUME_TYPE_FLASHKEY;
+            break;
+        case LIBHAL_DRIVE_TYPE_REMOVABLE_DISK:
+            type = VOLUME_TYPE_REMOVABLE_DISK;
+            break;
+
+        case LIBHAL_DRIVE_TYPE_COMPACT_FLASH:
+            type = VOLUME_TYPE_COMPACT_FLASH;
+            break;
+        case LIBHAL_DRIVE_TYPE_MEMORY_STICK:
+            type = VOLUME_TYPE_MEMORY_STICK;
+            break;
+        case LIBHAL_DRIVE_TYPE_SMART_MEDIA:
+            type = VOLUME_TYPE_SMART_MEDIA;
+            break;
+        case LIBHAL_DRIVE_TYPE_SD_MMC:
+            type = VOLUME_TYPE_SD_MMC;
+            break;
+        default:
+            type = VOLUME_TYPE_HDD;
+            break;
+        }
+        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
+        uri = eina_stringshare_add(tmp);
+        break;
+    case VOLUME_TYPE_CD:
+        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
+        uri = eina_stringshare_add(tmp);
+        break;
+    case VOLUME_TYPE_CDDA:
+        uri  =  eina_stringshare_add("cdda://");
+        break;
+    case VOLUME_TYPE_DVD:
+        snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
+        uri = eina_stringshare_add(tmp);
+        break;
+    case VOLUME_TYPE_DVD_VIDEO:
+        uri  =  eina_stringshare_add("dvd://");
+        break;
+    case VOLUME_TYPE_VCD:
+        uri =  eina_stringshare_add("vcd://");
+        break;
+    case VOLUME_TYPE_SVCD:
+        uri =  eina_stringshare_add("vcd://");
+        break;
+    }
+
+    /* get volume displayed name/label */
+    memset (name, '\0', sizeof (name));
+    if (v->partition_label)
+        snprintf (name, sizeof (name), "%s", v->partition_label);
+    else if (v->label)
+        snprintf (name, sizeof (name), "%s", v->label);
+    else if (v->storage)
+        snprintf (name, sizeof (name), "%s %s", v->storage->vendor, v->storage->model);
+
+    evol = enna_volume_new ();
+    evol->label = eina_stringshare_add(name);
+    evol->type = type;
+    evol->mount_point = eina_stringshare_add(uri);
+    evol->device_name = eina_stringshare_add(v->device);
+    /* FIXME add this property correctly */
+    evol->eject = NULL;
+    evol->is_ejectable = EINA_FALSE;
+    enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point);
+    enna_volumes_add_emit(evol);
+
+}
 
 static int
 _dbus_format_error_msg(char **buf, volume_t *v, DBusError *error)
@@ -149,6 +298,8 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
     E_Hal_Device_Get_All_Properties_Return *ret = reply_data;
     int err = 0;
     char *str = NULL;
+    char is_disc = 0;
+    int i;
 
     if (!ret) goto error;
     if (dbus_error_is_set(error))
@@ -161,13 +312,8 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
     if (e_hal_property_bool_get(ret, "volume.ignore", &err) || err)
         goto error;
 
-    /* skip volumes that aren't filesystems */
-
-    //str = e_hal_property_string_get(ret, "volume.fsusage", &err);
-    //if (err || !str) goto error;
-    //if (strcmp(str, "filesystem")) goto error;
-    //free(str);
-    //str = NULL;
+    str = e_hal_property_string_get(ret, "block.device", &err);
+    v->device = str;
 
     v->uuid = e_hal_property_string_get(ret, "volume.uuid", &err);
     if (err) goto error;
@@ -177,6 +323,46 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
     v->fstype = e_hal_property_string_get(ret, "volume.fstype", &err);
 
     v->size = e_hal_property_uint64_get(ret, "volume.size", &err);
+
+
+    v->type = VOLUME_TYPE_HDD;
+
+    /* Test if volume is an optical disc */
+    is_disc = e_hal_property_bool_get(ret, "volume.is_disc", &err);
+    if (err) goto error;
+
+    if (is_disc)
+    {
+        v->type = VOLUME_TYPE_CD;
+
+        str =  e_hal_property_string_get(ret, "volume.disc.type", &err);
+        for (i = 0; vol_disc_type_mapping[i].name; i++)
+            if (!strcmp(vol_disc_type_mapping[i].type, str))
+            {
+                v->cd_type = strdup (gettext(vol_disc_type_mapping[i].name));
+                break;
+            }
+        free(str);
+        str = NULL;
+        for (i = 0; vol_disc_mapping[i].name; i++)
+            if (e_hal_property_bool_get(ret, vol_disc_mapping[i].property, &err))
+            {
+                v->type = vol_disc_mapping[i].type;
+                v->cd_content_type = strdup (gettext(vol_disc_mapping[i].name));
+                break;
+            }
+    }
+
+    v->parent = e_hal_property_string_get(ret, "info.parent", &err);
+    if ((!err) && (v->parent))
+    {
+        s = storage_find(v->parent);
+        if (s)
+        {
+            v->storage = s;
+            s->volumes = eina_list_append(s->volumes, v);
+        }
+    }
 
     v->mounted = e_hal_property_bool_get(ret, "volume.is_mounted", &err);
     if (err) goto error;
@@ -193,68 +379,29 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
         v->partition_label = e_hal_property_string_get(ret, "volume.partition.label", NULL);
     }
 
-    v->parent = e_hal_property_string_get(ret, "info.parent", &err);
-    if ((!err) && (v->parent))
-    {
-        s = storage_find(v->parent);
-        if (s)
-        {
-            v->storage = s;
-            s->volumes = eina_list_append(s->volumes, v);
-        }
-    }
+
 
     enna_log (ENNA_MSG_EVENT, "hal-volume",
-              "Adding new HAL volume:\n" \
-              "  udi: %s\n" \
-              "  uuid: %s\n" \
-              "  fstype: %s\n" \
-              "  size: %llu\n" \
-              "  label: %s\n" \
-              "  partition: %d\n" \
-              "  partition_number: %d\n" \
-              "  partition_label: %s\n" \
-              "  mounted: %d\n" \
-              "  mount_point: %s\n",
+              "Adding new HAL volume:\n"        \
+              "  udi: %s\n"                     \
+              "  uuid: %s\n"                    \
+              "  fstype: %s\n"                  \
+              "  size: %llu\n"                  \
+              "  label: %s\n"                   \
+              "  partition: %d\n"               \
+              "  partition_number: %d\n"        \
+              "  partition_label: %s\n"         \
+              "  mounted: %d\n"                 \
+              "  mount_point: %s\n"             \
+              "  cd_type: %s\n"                 \
+              "  cd_content_type: %s\n",
               v->udi, v->uuid, v->fstype, v->size, v->label,
               v->partition, v->partition_number,
               v->partition ? v->partition_label : "(not a partition)",
-              v->mounted, v->mount_point);
+              v->mounted, v->mount_point, v->cd_type, v->cd_content_type);
     v->validated = 1;
-    {
-        /* ENNA_VOLUME_TYPE type = VOLUME_TYPE_UNKNOWN; */
+    volume_send_add_notification(v);
 
-        /* if (!strcmp(v->storage->drive_type, "disk")) */
-        /* { */
-        /*     if (v->storage->removable == 0) */
-        /*         type = VOLUME_TYPE_HDD; */
-        /*     else */
-        /*         icon = VOLUME_TYPE_REMOVABLE_DISK; */
-        /* } */
-        /* else if (!strcmp(v->storage->drive_type, "cdrom")) */
-        /*     icon = "drive-optical"; */
-        /* else if (!strcmp(v->storage->drive_type, "floppy")) */
-        /*     icon = "media-floppy"; */
-        /* else if (!strcmp(v->storage->drive_type, "tape")) */
-        /*     icon = "media-tape"; */
-        /* else if (!strcmp(v->storage->drive_type, "compact_flash") */
-        /*          || !strcmp(v->storage->drive_type, "memory_stick") */
-        /*          || !strcmp(v->storage->drive_type, "smart_media") */
-        /*          || !strcmp(v->storage->drive_type, "sd_mmc")) */
-        /*     icon = "media-flash"; */
-
-        /* evol = enna_volume_new (); */
-        /* evol->label = eina_stringshare_add(name); */
-        /* evol->type = type; */
-        /* evol->mount_point = eina_stringshare_add(uri); */
-        /* evol->device_name = eina_stringshare_add(v->device); */
-        /* /\* FIXME add this property correctly *\/ */
-        /* evol->eject = NULL; */
-        /* evol->is_ejectable = EINA_FALSE; */
-        /* enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point); */
-        /* enna_volumes_add_emit(evol); */
-        //}
-    }
     return;
 
 error:
@@ -275,6 +422,9 @@ _volume_free(volume_t *v)
     if (v->label) free(v->label);
     if (v->icon) free(v->icon);
     if (v->fstype) free(v->fstype);
+    if (v->cd_type) free(v->cd_type);
+    if (v->device) free(v->device);
+    if (v->cd_content_type) free(v->cd_content_type);
     if (v->partition_label) free(v->partition_label);
     if (v->mount_point) free(v->mount_point);
     if (v->parent) free(v->parent);
@@ -305,6 +455,7 @@ volume_add(const char *udi, char first_time)
     if (!v) return NULL;
     v->udi = strdup(udi);
     v->first_time = first_time;
+    v->type = HAL_VOLUME_TYPE_UNKNOWN;
     _volumes = eina_list_append(_volumes, v);
     e_hal_device_get_all_properties(dbus_conn, v->udi,
                                     _dbus_vol_prop_cb, v);
