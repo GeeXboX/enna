@@ -193,7 +193,7 @@ gocomics_set_comic_strip (void)
     snprintf (query, sizeof(query), GOCOMICS_QUERY, mod->comic_id, tdate);
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-             "Query Request: %d", query);
+             "Query Request: %s", query);
 
     /* perform request */
     data = url_get_data(mod->url, query);
@@ -201,7 +201,7 @@ gocomics_set_comic_strip (void)
         return;
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-             "Query Result: %d", data.buffer);
+             "Query Result: %s", data.buffer);
 
     /* find the comic strip url */
     ptr_start = strstr(data.buffer, GOCOMICS_NEEDLE_START);
