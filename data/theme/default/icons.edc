@@ -14,6 +14,23 @@ group {                                             \
     }                                               \
 }                                                   \
 
+#define STOCK_ICON_RATIO(icon_file, icon_name, r)                       \
+   images {                                                             \
+      image: icon_file COMP;                                            \
+   }                                                                    \
+   group {                                                              \
+      name: icon_name;                                                  \
+      parts {                                                           \
+         part { name: "icon";                                           \
+            description { state: "default" 0.0;                         \
+               aspect: r r;                                             \
+               aspect_preference: NONE;                                 \
+               align: 0.5 0.5;                                          \
+               image.normal: icon_file;                                 \
+            }                                                           \
+         }                                                              \
+      }                                                                 \
+   } 
 
 STOCK_ICON("icon_enna.png",  "icon/enna")
 STOCK_ICON("icon_music.png", "icon/music")
@@ -47,14 +64,14 @@ STOCK_ICON("arrow_left.png", "icon/arrow_left")
 STOCK_ICON("arrow_right.png", "icon/arrow_right")
 
 /* Activities Backgrounds */
-STOCK_ICON("default_backdrop.png",  "background/configuration")
-STOCK_ICON("default_backdrop.png",  "background/games")
-STOCK_ICON("bg_gocomics.png",       "background/gocomics")
-STOCK_ICON("bg3.jpg",               "background/music")
-STOCK_ICON("bg4.jpg",               "background/photo")
-STOCK_ICON("default_backdrop.png",  "background/tv")
-STOCK_ICON("bg1.jpg",               "background/video")
-STOCK_ICON("bg2.jpg",               "background/weather")
+STOCK_ICON_RATIO("default_backdrop.png",  "background/configuration", 16/9)
+STOCK_ICON_RATIO("default_backdrop.png",  "background/games", 16/9)
+STOCK_ICON_RATIO("bg_gocomics.png",       "background/gocomics", 16/9)
+STOCK_ICON_RATIO("bg3.jpg",               "background/music", 16/9)
+STOCK_ICON_RATIO("bg4.jpg",               "background/photo", 16/9)
+STOCK_ICON_RATIO("default_backdrop.png",  "background/tv", 16/9)
+STOCK_ICON_RATIO("bg1.jpg",               "background/video", 16/9)
+STOCK_ICON_RATIO("bg2.jpg",               "background/weather", 16/9)
 
 /* Devices */
 STOCK_ICON("dev_bluetooth.png",     "icon/dev/bluetooth")
