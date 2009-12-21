@@ -39,6 +39,9 @@ typedef struct volume_s {
     int type;
     char *udi, *uuid;
     char *label, *icon, *fstype;
+    char *cd_type;
+    char *cd_content_type;
+    char *device;
     unsigned long long size;
 
     char partition;
