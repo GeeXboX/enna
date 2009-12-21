@@ -27,182 +27,135 @@
  *
  */
 
+#include <Eina.h>
 #include <string.h>
 #include <E_Hal.h>
-#include <libhal.h>
-#include <libhal-storage.h>
 
 #include "enna.h"
 #include "logs.h"
 #include "hal_storage.h"
+#include "hal_volume.h"
 
-#define ENNA_MODULE_NAME   "hal-storage"
+static Eina_List *stores = NULL;
 
-static const struct {
-    const char *name;
-    LibHalDriveBus bus;
-} drv_bus_mapping[] = {
-    { N_("Unknown"),                LIBHAL_DRIVE_BUS_UNKNOWN                 },
-    { N_("IDE"),                    LIBHAL_DRIVE_BUS_IDE                     },
-    { N_("SCSI"),                   LIBHAL_DRIVE_BUS_SCSI                    },
-    { N_("USB"),                    LIBHAL_DRIVE_BUS_USB                     },
-    { N_("FireWire"),               LIBHAL_DRIVE_BUS_IEEE1394                },
-    { N_("CCW"),                    LIBHAL_DRIVE_BUS_CCW                     },
-    { NULL }
-};
+static void
+_storage_free(storage_t *s)
+{
+    volume_t *v;
+    EINA_LIST_FREE(s->volumes, v)
+    {
+        //volume_free(v);
+    }
+    if (s->udi) free(s->udi);
+    if (s->bus) free(s->bus);
+    if (s->drive_type) free(s->drive_type);
+    if (s->model) free(s->model);
+    if (s->vendor) free(s->vendor);
+    if (s->serial) free(s->serial);
+    if (s->icon.drive) free(s->icon.drive);
+    if (s->icon.volume) free(s->icon.volume);
+    free(s);
+}
 
-static const struct {
-    const char *name;
-    LibHalDriveType type;
-} drv_type_mapping[] = {
-    { N_("Removable Disk"),         LIBHAL_DRIVE_TYPE_REMOVABLE_DISK         },
-    { N_("Disk"),                   LIBHAL_DRIVE_TYPE_DISK                   },
-    { N_("CD-ROM"),                 LIBHAL_DRIVE_TYPE_CDROM                  },
-    { N_("Floppy"),                 LIBHAL_DRIVE_TYPE_FLOPPY                 },
-    { N_("Tape"),                   LIBHAL_DRIVE_TYPE_TAPE                   },
-    { N_("CompactFlash"),           LIBHAL_DRIVE_TYPE_COMPACT_FLASH          },
-    { N_("MemoryStick"),            LIBHAL_DRIVE_TYPE_MEMORY_STICK           },
-    { N_("SmartMedia"),             LIBHAL_DRIVE_TYPE_SMART_MEDIA            },
-    { N_("SD/MMC"),                 LIBHAL_DRIVE_TYPE_SD_MMC                 },
-    { N_("Camera"),                 LIBHAL_DRIVE_TYPE_CAMERA                 },
-    { N_("Portable Audio Player"),  LIBHAL_DRIVE_TYPE_PORTABLE_AUDIO_PLAYER  },
-    { N_("ZIP"),                    LIBHAL_DRIVE_TYPE_ZIP                    },
-    { N_("JAZ"),                    LIBHAL_DRIVE_TYPE_JAZ                    },
-    { N_("FlashKey"),               LIBHAL_DRIVE_TYPE_FLASHKEY               },
-    { N_("MagnetoOptical"),         LIBHAL_DRIVE_TYPE_MO                     },
-    { NULL }
-};
+static void
+_dbus_store_prop_cb(void *data, void *reply_data, DBusError *error)
+{
+    storage_t *s = data;
+    E_Hal_Properties *ret = reply_data;
+    int err = 0;
 
-static storage_t *
-storage_new (void)
+    if (!ret) goto error;
+
+    if (dbus_error_is_set(error))
+    {
+        dbus_error_free(error);
+        goto error;
+    }
+
+    s->bus = e_hal_property_string_get(ret, "storage.bus", &err);
+    if (err) goto error;
+    s->drive_type = e_hal_property_string_get(ret, "storage.drive_type", &err);
+    if (err) goto error;
+    s->model = e_hal_property_string_get(ret, "storage.model", &err);
+    if (err) goto error;
+    s->vendor = e_hal_property_string_get(ret, "storage.vendor", &err);
+    if (err) goto error;
+    s->serial = e_hal_property_string_get(ret, "storage.serial", &err);
+    if (err)  enna_log(ENNA_MSG_ERROR, "hal-storage",
+                       "Error getting serial for %s\n", s->udi);
+
+    s->removable = e_hal_property_bool_get(ret, "storage.removable", &err);
+
+    if (s->removable)
+    {
+        s->media_available = e_hal_property_bool_get(ret, "storage.removable.media_available", &err);
+        s->media_size = e_hal_property_uint64_get(ret, "storage.removable.media_size", &err);
+    }
+
+    s->requires_eject = e_hal_property_bool_get(ret, "storage.requires_eject", &err);
+    s->hotpluggable = e_hal_property_bool_get(ret, "storage.hotpluggable", &err);
+    s->media_check_enabled = e_hal_property_bool_get(ret, "storage.media_check_enabled", &err);
+
+    s->icon.drive = e_hal_property_string_get(ret, "storage.icon.drive", &err);
+    s->icon.volume = e_hal_property_string_get(ret, "storage.icon.volume", &err);
+    enna_log(ENNA_MSG_EVENT, "hal-storage",
+              "Adding new HAL storage:\n"       \
+              "  udi: %s\n"                     \
+              "  bus: %s\n"                     \
+              "  drive_type: %s\n"              \
+              "  model: %s\n"                   \
+              "  vendor: %s\n"                  \
+              "  serial: %s\n"                  \
+              "  icon drive: %s\n"              \
+              "  icon volume: %s\n",
+              s->udi, s->bus, s->drive_type, s->model, s->vendor,
+              s->serial, s->icon.drive, s->icon.volume);
+    s->validated = 1;
+    return;
+
+error:
+    enna_log(ENNA_MSG_ERROR, "hal-storage",
+             "Error %s\n", s->udi);
+    storage_del(s->udi);
+}
+
+storage_t *
+storage_find(const char *udi)
+{
+    Eina_List *l;
+    storage_t  *s;
+
+    EINA_LIST_FOREACH(stores, l, s)
+    {
+        if (!strcmp(udi, s->udi)) return s;
+    }
+    return NULL;
+}
+
+storage_t *
+storage_add(const char *udi)
 {
     storage_t *s;
 
-    s = calloc (1, sizeof (storage_t));
-
+    if (!udi) return NULL;
+    if (storage_find(udi)) return NULL;
+    s = ENNA_NEW(storage_t, 1);
+    s->udi = strdup(udi);
+    stores = eina_list_append(stores, s);
+    e_hal_device_get_all_properties(dbus_conn, s->udi,
+                                    _dbus_store_prop_cb, s);
     return s;
 }
 
 void
-storage_free (storage_t *s)
-{
-    if (!s)
-        return;
-
-    if (s->drv)
-        libhal_drive_free (s->drv);
-    if (s->udi)
-        free (s->udi);
-    if (s->bus)
-        free (s->bus);
-    if (s->drive_type)
-        free (s->drive_type);
-
-    if (s->model)
-        free (s->model);
-    if (s->vendor)
-        free (s->vendor);
-    if (s->serial)
-        free (s->serial);
-
-    free (s);
-}
-
-static void
-storage_get_properties (storage_t *s)
-{
-    LibHalDriveBus bus;
-    int i;
-
-    if (!s)
-        return;
-
-    bus = libhal_drive_get_bus (s->drv);
-    for (i = 0; drv_bus_mapping[i].name; i++)
-        if (drv_bus_mapping[i].bus == bus)
-        {
-            s->bus = strdup (gettext(drv_bus_mapping[i].name));
-            break;
-        }
-
-    s->type = libhal_drive_get_type (s->drv);
-    for (i = 0; drv_type_mapping[i].name; i++)
-        if (drv_type_mapping[i].type == s->type)
-        {
-            s->drive_type = strdup (gettext(drv_type_mapping[i].name));
-            break;
-        }
-
-    if (libhal_drive_get_model (s->drv))
-        s->model = strdup (libhal_drive_get_model (s->drv));
-
-    if (libhal_drive_get_vendor (s->drv))
-        s->vendor = strdup (libhal_drive_get_vendor (s->drv));
-
-    if (libhal_drive_get_serial (s->drv))
-        s->serial = strdup (libhal_drive_get_serial (s->drv));
-
-
-    s->removable = libhal_drive_uses_removable_media (s->drv);
-    s->media_available = libhal_drive_is_media_detected (s->drv);
-    s->media_size = libhal_drive_get_media_size (s->drv);
-
-    s->requires_eject = libhal_drive_requires_eject (s->drv);
-    s->hotpluggable = libhal_drive_is_hotpluggable (s->drv);
-
-    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-              "Adding new HAL storage:\n" \
-              "  udi: %s\n" \
-              "  bus: %s\n" \
-              "  drive_type: %s\n" \
-              "  model: %s\n" \
-              "  vendor: %s\n" \
-              "  serial: %s\n",
-              s->udi, s->bus, s->drive_type, s->model, s->vendor, s->serial);
-}
-
-storage_t *
-storage_append (LibHalContext *ctx, const char *udi)
+storage_del(const char *udi)
 {
     storage_t *s;
-    LibHalDrive *drv;
 
-    if (!ctx || !udi)
-        return NULL;
-
-    drv = libhal_drive_from_udi (ctx, udi);
-    if (!drv)
-        return NULL;
-
-    s = storage_new ();
-    s->drv = drv;
-    s->udi = strdup (udi);
-
-    storage_get_properties (s);
-
-    return s;
+    s = storage_find(udi);
+    if (!s) return;
+    stores = eina_list_remove(stores, s);
+    _storage_free(s);
 }
 
-static int
-storage_find_helper (storage_t *s, const char *udi)
-{
-    if (!s || !s->udi)
-        return -1;
-    return strcmp (s->udi, udi);
-}
 
-storage_t *
-storage_find (Eina_List *list, const char *udi)
-{
-    storage_t *s = NULL;
-    Eina_List *l;
-
-    if (!udi)
-        return NULL;
-
-    EINA_LIST_FOREACH(list, l, s)
-        if (!storage_find_helper(s, udi))
-             break;
-
-    return s;
-}

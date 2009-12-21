@@ -31,26 +31,34 @@
 #define HAL_STORAGE_H
 
 typedef struct storage_s {
-    LibHalDrive *drv;
-    LibHalDriveType type;
-    char *udi;
-    char *bus;
+
+    int type;
+    char *udi, *bus;
     char *drive_type;
 
-    char *model;
-    char *vendor;
-    char *serial;
+    char *model, *vendor, *serial;
 
-    int removable;
-    int media_available;
-    unsigned long media_size;
+    char removable, media_available;
+    unsigned long long media_size;
 
-    int requires_eject;
-    int hotpluggable;
+    char requires_eject, hotpluggable;
+    char media_check_enabled;
+
+    struct 
+    {
+        char *drive, *volume;
+    } icon;
+
+    Eina_List *volumes;
+
+    unsigned char validated;
+    unsigned char trackable;
 } storage_t;
 
-void storage_free (storage_t *s);
-storage_t *storage_append (LibHalContext *ctx, const char *udi);
-storage_t * storage_find (Eina_List *list, const char *udi);
+extern E_DBus_Connection *dbus_conn;
+
+storage_t *storage_add(const char *udi);
+void       storage_del(const char *udi);
+storage_t *storage_find(const char *udi);
 
 #endif /* HAL_STORAGE_H */

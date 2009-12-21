@@ -30,48 +30,40 @@
 #ifndef HAL_VOLUME_H
 #define HAL_VOLUME_H
 
-/* FIXME : I have changed VOLUME_TYPE_* in HAL_VOLUME_TYPE_*
- * There is a conflic with enum declared in volumes.h
- * We should improve code here to avoid the declaration
- * of two enums that seems to be the same i keep the code
- * for now, just change for the new voulme API
- */
-typedef enum {
-    HAL_VOLUME_TYPE_UNKNOWN,
-    HAL_VOLUME_TYPE_HDD,
-    HAL_VOLUME_TYPE_CD,
-    HAL_VOLUME_TYPE_CDDA,
-    HAL_VOLUME_TYPE_DVD,
-    HAL_VOLUME_TYPE_DVD_VIDEO,
-    HAL_VOLUME_TYPE_VCD,
-    HAL_VOLUME_TYPE_SVCD,
-} volume_type_t;
+#include <E_Hal.h>
+#include <Ecore.h>
+
+#include "hal_storage.h"
 
 typedef struct volume_s {
-    LibHalVolume *vol;
-    volume_type_t type;
-    char *name;
-    char *udi;
-    char *parent;
-    char *cd_type;
-    char *cd_content_type;
-    char *label;
-    char *fstype;
+    int type;
+    char *udi, *uuid;
+    char *label, *icon, *fstype;
+    unsigned long long size;
 
+    char partition;
+    int partition_number;
     char *partition_label;
-    int mounted;
+    char mounted;
     char *mount_point;
-    char *device;
-    unsigned long size;
 
-    storage_t *s;
+    char *parent;
+    storage_t *storage;
+    void *prop_handler;
+    Eina_List *mounts;
 
-    Enna_Volume *enna_volume;
+    unsigned char validated;
+
+    char auto_unmount;                  // unmount, when last associated fm window closed
+    char first_time;                    // volume discovery in init sequence
+    Ecore_Timer *guard;                 // operation guard tim
 
 } volume_t;
 
-void volume_free (volume_t *v);
-volume_t *volume_append (LibHalContext *ctx, const char *udi);
-volume_t *volume_find (Eina_List *list, const char *udi);
+extern E_DBus_Connection *dbus_conn;
+
+volume_t *volume_add (const char *udi, char first_time);
+volume_t *volume_find (const char *udi);
+void volume_del(const char *udi);
 
 #endif /* HAL_VOLUME_H */
