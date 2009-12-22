@@ -71,6 +71,7 @@ AM_CFLAGS += @EFREET_CFLAGS@
 enna_LDADD += @EFREET_LIBS@
 endif
 
+include ../modules/activity/bookstore/config.mak
 include ../modules/activity/configuration/config.mak
 include ../modules/activity/games/config.mak
 include ../modules/activity/gocomics/config.mak
@@ -92,6 +93,10 @@ include ../modules/input/keyb/config.mak
 include ../modules/input/lirc/config.mak
 include ../modules/volume/hal/config.mak
 include ../modules/volume/mtab/config.mak
+
+if BUILD_ACTIVITY_BOOKSTORE
+enna_SOURCES += $(SRCS_ACTIVITY_BOOKSTORE)
+endif
 
 if BUILD_ACTIVITY_CONFIGURATION
 enna_SOURCES += $(SRCS_ACTIVITY_CONFIGURATION)

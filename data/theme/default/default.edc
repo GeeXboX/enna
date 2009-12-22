@@ -31,6 +31,7 @@ spectra {
 collections
 {
 #include "mainmenu.edc"
+#include "activity_bookstore.edc"
 #include "activity_music.edc"
 #include "activity_video.edc"
 #include "activity_video_flags.edc"

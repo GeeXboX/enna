@@ -58,6 +58,9 @@ static void _config_panel_hide(void *data);
         .api      = &enna_mod_##name##_api,     \
     },
 
+#ifdef BUILD_ACTIVITY_BOOKSTORE
+ENNA_MOD_EXTERN(activity_bookstore)
+#endif /* BUILD_ACTIVITY_BOOKSTORE */
 #ifdef BUILD_ACTIVITY_CONFIGURATION
 ENNA_MOD_EXTERN(activity_configuration)
 #endif /* BUILD_ACTIVITY_CONFIGURATION */
@@ -131,6 +134,9 @@ struct _Static_Mod_List
 
 static struct _Static_Mod_List _static_mod_list[] =
 {
+#ifdef BUILD_ACTIVITY_BOOKSTORE
+ENNA_MOD_REG(activity_bookstore)
+#endif /* BUILD_ACTIVITY_BOOKSTORE */
 #ifdef BUILD_ACTIVITY_CONFIGURATION
 ENNA_MOD_REG(activity_configuration)
 #endif /* BUILD_ACTIVITY_CONFIGURATION */

@@ -82,6 +82,19 @@ AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
 # Activity Modules #
 ####################
 
+# BookStore
+want_activity_bookstore="yes"
+AC_MSG_CHECKING(whether bookstore activity module is to be built)
+AC_ARG_ENABLE(activity-bookstore,
+  AS_HELP_STRING([--enable-activity-bookstore],[Enable bookstore Activity Module]),
+  [ want_activity_bookstore=$enableval ]
+)
+AC_MSG_RESULT($want_activity_bookstore)
+AM_CONDITIONAL(BUILD_ACTIVITY_BOOKSTORE, test "x$want_activity_bookstore" = "xyes")
+if test "x$want_activity_bookstore" = "xyes"; then
+  AC_DEFINE(BUILD_ACTIVITY_BOOKSTORE, 1, [bookstore Activity])
+fi
+
 # Configuration
 want_activity_configuration="yes"
 AC_MSG_CHECKING(whether configuration activity module is to be built)
@@ -579,6 +592,7 @@ src/Makefile
 src/bin/Makefile
 src/modules/Makefile
 src/modules/activity/Makefile
+src/modules/activity/bookstore/Makefile
 src/modules/activity/configuration/Makefile
 src/modules/activity/games/Makefile
 src/modules/activity/gocomics/Makefile
@@ -629,6 +643,7 @@ echo "NLS................................ : $USE_NLS"
 echo
 echo "Supported Activity Modules:"
 echo
+echo "  BookStore........................ : $want_activity_bookstore"
 echo "  Configuration.................... : $want_activity_configuration"
 echo "  Games............................ : $want_activity_games"
 echo "  GoComics.com..................... : $want_activity_gocomics"
