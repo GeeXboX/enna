@@ -39,7 +39,7 @@
 #include "hal_storage.h"
 #include "hal_volume.h"
 
-#define ENNA_MODULE_NAME   "hal2"
+#define ENNA_MODULE_NAME   "hal"
 
 #define EHAL_STORAGE_NAME  "storage"
 #define EHAL_VOLUME_NAME   "volume"
@@ -220,12 +220,12 @@ ehal_dev_update_cb(void *data, DBusMessage *msg)
 
 #ifdef USE_STATIC_MODULES
 #undef MOD_PREFIX
-#define MOD_PREFIX enna_mod_volume_hal2
+#define MOD_PREFIX enna_mod_volume_hal
 #endif /* USE_STATIC_MODULES */
 
 Enna_Module_Api ENNA_MODULE_API = {
     ENNA_MODULE_VERSION,
-    "volume_hal2",
+    "volume_hal",
     N_("Volumes from HAL"),
     NULL,
     N_("This module provide support for removable volumes"),
