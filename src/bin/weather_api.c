@@ -76,9 +76,9 @@ static const struct {
     { "weather/windy",            "/flurries"                  },
     { "weather/rain_storm",       "/chance_of_storm"           },
     { "weather/rain_storm",       "/thunderstorm"              },
+    { "weather/ice",              "/icy"                       },
 #if 0
     /* matches to be found */
-    { "weather/ice",              "/"                          },
     { "weather/showers",          "/"                          },
     { "weather/sun_rain",         "/"                          },
     { "weather/sun_snow",         "/"                          },
