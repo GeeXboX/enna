@@ -56,10 +56,10 @@ PKG_CHECK_MODULES([ENNA],
 )
 
 AC_ARG_ENABLE(static_modules,
-  [AC_HELP_STRING([--enable-static-modules], [enable static modules.
-  [[default=disabled]]])],
+  [AC_HELP_STRING([--disable-static-modules], [disable static modules.
+  [[default=enabled]]])],
   [use_static_modules=$enableval],
-  [use_static_modules="no"]
+  [use_static_modules="yes"]
 )
 AM_CONDITIONAL([USE_STATIC_MODULES], test "x${use_static_modules}" = "xyes")
 if test "x$use_static_modules" = "xyes"; then
