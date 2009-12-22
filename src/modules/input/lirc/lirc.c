@@ -54,8 +54,10 @@ struct _Enna_Module_Lirc
 };
 
 static Enna_Module_Lirc *mod;
+#if 0
 static Enna_Config_Panel *_config_panel = NULL;
 static Evas_Object *_o_main = NULL;
+#endif
 
 
 static const struct
@@ -159,6 +161,7 @@ static int _lirc_code_received(void *data, Ecore_Fd_Handler * fd_handler)
     return 1;
 }
 
+#if 0
 /* Config Panel */
 
 static Evas_Object *
@@ -179,6 +182,7 @@ lirc_panel_hide(void *data)
 {
     ENNA_OBJECT_DEL(_o_main);
 }
+#endif
 
 /* Module interface */
 
@@ -232,15 +236,19 @@ ENNA_MODULE_INIT(Enna_Module *em)
     mod->fd_handler = ecore_main_fd_handler_add(fd, ECORE_FD_READ,
             _lirc_code_received, NULL, NULL, NULL);
 
+#if 0
     // register the configuration panel
     _config_panel = enna_config_panel_register(_("Remote"), "icon/music",
                                     lirc_panel_show, lirc_panel_hide, NULL);
+#endif
 }
 
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
+#if 0
     enna_config_panel_unregister(_config_panel);
+#endif
     if (mod->fd_handler)
     {
         lirc_freeconfig(mod->lirc_config);
