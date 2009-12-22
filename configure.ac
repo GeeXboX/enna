@@ -628,15 +628,15 @@ echo "NLS................................ : $USE_NLS"
 echo
 echo "Supported Activity Modules:"
 echo
-echo "  configuration.................... : $want_activity_configuration"
-echo "  games............................ : $want_activity_games"
+echo "  Configuration.................... : $want_activity_configuration"
+echo "  Games............................ : $want_activity_games"
 echo "  GoComics.com..................... : $want_activity_gocomics"
-echo "  music............................ : $want_activity_music"
+echo "  Music............................ : $want_activity_music"
 echo "  OneManga.com..................... : $want_activity_onemanga"
-echo "  photo............................ : $want_activity_photo"
-echo "  tv............................... : $want_activity_tv"
-echo "  video............................ : $want_activity_video"
-echo "  weather.......................... : $want_activity_weather"
+echo "  Photo............................ : $want_activity_photo"
+echo "  TV............................... : $want_activity_tv"
+echo "  Video............................ : $want_activity_video"
+echo "  Weather.......................... : $want_activity_weather"
 echo
 echo "Supported Browser Modules:"
 echo
