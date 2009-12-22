@@ -624,6 +624,7 @@ fi
 eval echo "\  Theme............................ : $exec_prefix/share/enna/theme"
 echo
 echo "Build theme........................ : $build_theme"
+echo "Static Modules..................... : $use_static_modules"
 echo "NLS................................ : $USE_NLS"
 echo
 echo "Supported Activity Modules:"
