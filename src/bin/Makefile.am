@@ -73,7 +73,9 @@ endif
 
 include ../modules/activity/configuration/config.mak
 include ../modules/activity/music/config.mak
+include ../modules/activity/onemanga/config.mak
 include ../modules/activity/games/config.mak
+include ../modules/activity/gocomics/config.mak
 include ../modules/activity/photo/config.mak
 include ../modules/activity/tv/config.mak
 include ../modules/activity/video/config.mak
@@ -99,10 +101,18 @@ if BUILD_ACTIVITY_MUSIC
 enna_SOURCES += $(SRCS_ACTIVITY_MUSIC)
 endif
 
+if BUILD_ACTIVITY_ONEMANGA
+enna_SOURCES += $(SRCS_ACTIVITY_ONEMANGA)
+endif
+
 if BUILD_ACTIVITY_GAMES
 if BUILD_EFREET
 enna_SOURCES += $(SRCS_ACTIVITY_GAMES)
 endif
+endif
+
+if BUILD_ACTIVITY_GOCOMICS
+enna_SOURCES += $(SRCS_ACTIVITY_GOCOMICS)
 endif
 
 if BUILD_ACTIVITY_PHOTO
