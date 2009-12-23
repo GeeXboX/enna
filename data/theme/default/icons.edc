@@ -32,46 +32,45 @@ group {                                             \
       }                                                                 \
    }
 
-STOCK_ICON("icon_enna.png",                     "icon/enna");
-STOCK_ICON("icon_music.png",                    "icon/music");
-STOCK_ICON("icon_video.png",                    "icon/video");
-STOCK_ICON("icon_photo.png",                    "icon/photo");
-STOCK_ICON("icon_games.png",                    "icon/games");
-STOCK_ICON("icon_gocomics.png",                 "icon/gocomics");
-STOCK_ICON("icon_onemanga.png",                 "icon/onemanga");
-STOCK_ICON("icon_bookstore.png",                "icon/bookstore");
-STOCK_ICON("icon_tv.png",                       "icon/tv");
-STOCK_ICON("icon_weather.png",                  "icon/weather");
-STOCK_ICON("icon_infos.png",                    "icon/infos");
-STOCK_ICON("icon_music_mini.png",               "icon/music_mini");
-STOCK_ICON("icon_home_mini.png",                "icon/home");
-STOCK_ICON("icon_library.png",                  "icon/library");
-STOCK_ICON("icon_album.png",                    "icon/album");
-STOCK_ICON("icon_artist.png",                   "icon/artist");
-STOCK_ICON("icon_genre.png",                    "icon/genre");
-STOCK_ICON("icon_song.png",                     "icon/song");
-STOCK_ICON("icon_config.png",                   "icon/config");
-STOCK_ICON("icon_module.png",                   "icon/module");
-
-STOCK_ICON("icon_hd.png",                       "icon/hd");
-STOCK_ICON("icon_directory.png",                "icon/directory");
-
-STOCK_ICON("unknown_cover.png",                 "icon/unknown_cover");
-STOCK_ICON("icon_shoutcast.png",                "icon/shoutcast");
-STOCK_ICON("icon_freeboxtv.png",                "icon/freeboxtv");
-STOCK_ICON("icon_rss.png",                      "icon/podcast");
-STOCK_ICON("icon_upnp.png",                     "icon/upnp");
-STOCK_ICON("icon_nofile.png",                   "icon/nofile");
+/* Icons */
 STOCK_ICON("arrow_left.png",                    "icon/arrow_left");
 STOCK_ICON("arrow_right.png",                   "icon/arrow_right");
+STOCK_ICON("icon_album.png",                    "icon/album");
+STOCK_ICON("icon_artist.png",                   "icon/artist");
+STOCK_ICON("icon_bookstore.png",                "icon/bookstore");
+STOCK_ICON("icon_config.png",                   "icon/config");
+STOCK_ICON("icon_directory.png",                "icon/directory");
+STOCK_ICON("icon_enna.png",                     "icon/enna");
+STOCK_ICON("icon_freeboxtv.png",                "icon/freeboxtv");
+STOCK_ICON("icon_games.png",                    "icon/games");
+STOCK_ICON("icon_genre.png",                    "icon/genre");
+STOCK_ICON("icon_gocomics.png",                 "icon/gocomics");
+STOCK_ICON("icon_hd.png",                       "icon/hd");
+STOCK_ICON("icon_home_mini.png",                "icon/home");
+STOCK_ICON("icon_infos.png",                    "icon/infos");
+STOCK_ICON("icon_library.png",                  "icon/library");
+STOCK_ICON("icon_module.png",                   "icon/module");
+STOCK_ICON("icon_music.png",                    "icon/music");
+STOCK_ICON("icon_music_mini.png",               "icon/music_mini");
+STOCK_ICON("icon_nofile.png",                   "icon/nofile");
+STOCK_ICON("icon_onemanga.png",                 "icon/onemanga");
+STOCK_ICON("icon_photo.png",                    "icon/photo");
+STOCK_ICON("icon_rss.png",                      "icon/podcast");
+STOCK_ICON("icon_shoutcast.png",                "icon/shoutcast");
+STOCK_ICON("icon_song.png",                     "icon/song");
+STOCK_ICON("icon_tv.png",                       "icon/tv");
+STOCK_ICON("icon_upnp.png",                     "icon/upnp");
+STOCK_ICON("icon_video.png",                    "icon/video");
+STOCK_ICON("icon_weather.png",                  "icon/weather");
+STOCK_ICON("unknown_cover.png",                 "icon/unknown_cover");
 
 /* Activities Backgrounds */
 STOCK_ICON_RATIO("bg_bookstore.png",      "background/bookstore",     16/9);
 STOCK_ICON_RATIO("bg_default.png",        "background/configuration", 16/9);
 STOCK_ICON_RATIO("bg_default.png",        "background/games",         16/9);
 STOCK_ICON_RATIO("bg_gocomics.png",       "background/gocomics",      16/9);
-STOCK_ICON_RATIO("bg_onemanga.png",       "background/onemanga",      16/9);
 STOCK_ICON_RATIO("bg_music.jpg",          "background/music",         16/9);
+STOCK_ICON_RATIO("bg_onemanga.png",       "background/onemanga",      16/9);
 STOCK_ICON_RATIO("bg_photo.jpg",          "background/photo",         16/9);
 STOCK_ICON_RATIO("bg_default.png",        "background/tv",            16/9);
 STOCK_ICON_RATIO("bg_video.jpg",          "background/video",         16/9);
@@ -103,30 +102,30 @@ STOCK_ICON("ctrl_shutdown.png",                 "ctrl/shutdown");
 STOCK_ICON("ctrl_warning.png",                  "ctrl/warning");
 
 /* File type icons */
-STOCK_ICON("icon_music.png",                    "icon/file/music");
-STOCK_ICON("icon_video.png",                    "icon/file/video");
-STOCK_ICON("icon_photo.png",                    "icon/file/photo");
 STOCK_ICON("folder_favorites.png",              "icon/favorite");
+STOCK_ICON("icon_music.png",                    "icon/file/music");
+STOCK_ICON("icon_photo.png",                    "icon/file/photo");
+STOCK_ICON("icon_video.png",                    "icon/file/video");
 
 /* Mediacontrol */
-STOCK_ICON("mp_play.png",                       "icon/mp_play");
-STOCK_ICON("mp_pause.png",                      "icon/mp_pause");
-STOCK_ICON("mp_next.png",                       "icon/mp_next");
-STOCK_ICON("mp_prev.png",                       "icon/mp_prev");
-STOCK_ICON("mp_rewind.png",                     "icon/mp_rewind");
-STOCK_ICON("mp_forward.png",                    "icon/mp_forward");
-STOCK_ICON("mp_stop.png",                       "icon/mp_stop");
 STOCK_ICON("go-first.png",                      "icon/go_first");
 STOCK_ICON("go-last.png",                       "icon/go_last");
-STOCK_ICON("icon_rotate_cw.png",                "icon/rotate_cw");
 STOCK_ICON("icon_rotate_ccw.png",               "icon/rotate_ccw");
+STOCK_ICON("icon_rotate_cw.png",                "icon/rotate_cw");
+STOCK_ICON("mp_forward.png",                    "icon/mp_forward");
+STOCK_ICON("mp_next.png",                       "icon/mp_next");
+STOCK_ICON("mp_pause.png",                      "icon/mp_pause");
+STOCK_ICON("mp_play.png",                       "icon/mp_play");
+STOCK_ICON("mp_prev.png",                       "icon/mp_prev");
+STOCK_ICON("mp_rewind.png",                     "icon/mp_rewind");
+STOCK_ICON("mp_stop.png",                       "icon/mp_stop");
 
 /* Weather */
+STOCK_ICON("weather_fall.jpeg",                 "weather/fall");
 STOCK_ICON("weather_spring.jpeg",               "weather/spring");
 STOCK_ICON("weather_summer.jpeg",               "weather/summer");
-STOCK_ICON("weather_fall.jpeg",                 "weather/fall");
-STOCK_ICON("weather_winter.jpeg",               "weather/winter");
 STOCK_ICON("weather_unknown.png",               "weather/unknown");
+STOCK_ICON("weather_winter.jpeg",               "weather/winter");
 
 /* Weather Daily */
 STOCK_ICON("weather_cloudy.png",                "weather/cloudy");
@@ -175,6 +174,7 @@ STOCK_ICON("flags/studio/artisan.png",          "flags/studio/artisan");
 STOCK_ICON("flags/studio/carolco.png",          "flags/studio/carolco");
 STOCK_ICON("flags/studio/castlerock.png",       "flags/studio/castlerock");
 STOCK_ICON("flags/studio/columbia.png",         "flags/studio/columbia");
+STOCK_ICON("flags/studio/default.png",          "flags/studio/default");
 STOCK_ICON("flags/studio/dimension.png",        "flags/studio/dimension");
 STOCK_ICON("flags/studio/disney.png",           "flags/studio/disney");
 STOCK_ICON("flags/studio/dreamworks.png",       "flags/studio/dreamworks");
@@ -196,7 +196,6 @@ STOCK_ICON("flags/studio/tristar.png",          "flags/studio/tristar");
 STOCK_ICON("flags/studio/unitedartists.png",    "flags/studio/united");
 STOCK_ICON("flags/studio/universal.png",        "flags/studio/universal");
 STOCK_ICON("flags/studio/warner.png",           "flags/studio/warner");
-STOCK_ICON("flags/studio/default.png",          "flags/studio/default");
 
 STOCK_ICON("flags/network/abc.png",             "flags/network/abc");
 STOCK_ICON("flags/network/bbc.png",             "flags/network/bbc");
@@ -222,8 +221,8 @@ STOCK_ICON("flags/video/540i.png",              "flags/video/540i");
 STOCK_ICON("flags/video/540p.png",              "flags/video/540p");
 STOCK_ICON("flags/video/480i.png",              "flags/video/480i");
 STOCK_ICON("flags/video/480p.png",              "flags/video/480p");
-STOCK_ICON("flags/video/sd.png",                "flags/video/sd");
 STOCK_ICON("flags/video/defaultscreen.png",     "flags/video/default");
+STOCK_ICON("flags/video/sd.png",                "flags/video/sd");
 
 /* Covers */
 STOCK_ICON("cover_music.png",                   "cover/music/file");
