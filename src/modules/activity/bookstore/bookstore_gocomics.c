@@ -423,6 +423,7 @@ bs_gocomics_hide (void *data)
 
 BookStore_Service bs_gocomics = {
     "GoComics",
+    "background/gocomics",
     "icon/gocomics",
     bs_gocomics_show,
     bs_gocomics_hide,

@@ -748,6 +748,7 @@ bs_onemanga_hide (void *data)
 
 BookStore_Service bs_onemanga = {
     "OneManga",
+    "background/onemanga",
     "icon/onemanga",
     bs_onemanga_show,
     bs_onemanga_hide,

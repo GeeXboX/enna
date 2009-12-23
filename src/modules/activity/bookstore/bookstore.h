@@ -32,6 +32,7 @@
 
 typedef struct _BookStore_Service {
     const char *label;
+    const char *bg;
     const char *icon;
     Evas_Object *(*show)(void *data);
     void (*hide)(void *data);
