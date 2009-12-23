@@ -231,7 +231,7 @@ static Enna_Class_Activity
 class =
 {
     ENNA_MODULE_NAME,
-    10,
+    9,
     N_("Games"),
     NULL,
     "icon/games",
