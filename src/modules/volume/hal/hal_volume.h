@@ -60,7 +60,7 @@ typedef struct volume_s {
     char auto_unmount;                  // unmount, when last associated fm window closed
     char first_time;                    // volume discovery in init sequence
     Ecore_Timer *guard;                 // operation guard tim
-
+    Enna_Volume *evol;
 } volume_t;
 
 extern E_DBus_Connection *dbus_conn;

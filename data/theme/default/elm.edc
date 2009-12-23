@@ -2747,6 +2747,7 @@ group { name: "elm/slider/horizontal/default";
             events: "elm.dragable.slider";
          }
          mouse_events: 1;
+         repeat_events: 1;
          description { state: "default" 0.0;
             fixed: 1 1;
             min: 16 16;

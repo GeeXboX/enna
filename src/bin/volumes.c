@@ -81,6 +81,8 @@ enna_volumes_listener_add(const char *name, EnnaVolumesFunc add, EnnaVolumesFunc
    vl->remove = remove;
    vl->data = data;
 
+   enna_log(ENNA_MSG_EVENT, "volumes", "Add: %s listener", vl->name);
+
    enna_volumes_listeners = eina_list_prepend(enna_volumes_listeners, vl);
    return vl;
 }

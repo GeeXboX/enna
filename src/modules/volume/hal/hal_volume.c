@@ -31,7 +31,6 @@
 #include <string.h>
 #include <Eina.h>
 #include <E_Hal.h>
-#include <hal/libhal-storage.h>
 
 #include "enna.h"
 #include "logs.h"
@@ -87,9 +86,7 @@ enum {
 static void
 volume_send_add_notification(volume_t *v)
 {
-
-     char name[256], tmp[4096];
-    ENNA_VOLUME_TYPE type = VOLUME_TYPE_HDD;
+    char name[256], tmp[4096];
     const char *uri = NULL;
     Enna_Volume *evol;
 
@@ -103,44 +100,15 @@ volume_send_add_notification(volume_t *v)
         return;
 
     case VOLUME_TYPE_HDD:
+    case VOLUME_TYPE_REMOVABLE_DISK:
+    case VOLUME_TYPE_COMPACT_FLASH:
+    case VOLUME_TYPE_MEMORY_STICK:
+    case VOLUME_TYPE_SMART_MEDIA:
+    case VOLUME_TYPE_SD_MMC:
+    case VOLUME_TYPE_FLASHKEY:
         /* discarded un-accessible HDDs */
         if (!v->mounted)
             return;
-
-        printf("storage type : %d\n", v->storage->type);
-        switch (v->storage->type)
-        {
-        case LIBHAL_DRIVE_TYPE_CAMERA:
-            type = VOLUME_TYPE_CAMERA;
-            break;
-
-        case LIBHAL_DRIVE_TYPE_PORTABLE_AUDIO_PLAYER:
-            type = VOLUME_TYPE_AUDIO_PLAYER;
-            break;
-
-        case LIBHAL_DRIVE_TYPE_FLASHKEY:
-            type = VOLUME_TYPE_FLASHKEY;
-            break;
-        case LIBHAL_DRIVE_TYPE_REMOVABLE_DISK:
-            type = VOLUME_TYPE_REMOVABLE_DISK;
-            break;
-
-        case LIBHAL_DRIVE_TYPE_COMPACT_FLASH:
-            type = VOLUME_TYPE_COMPACT_FLASH;
-            break;
-        case LIBHAL_DRIVE_TYPE_MEMORY_STICK:
-            type = VOLUME_TYPE_MEMORY_STICK;
-            break;
-        case LIBHAL_DRIVE_TYPE_SMART_MEDIA:
-            type = VOLUME_TYPE_SMART_MEDIA;
-            break;
-        case LIBHAL_DRIVE_TYPE_SD_MMC:
-            type = VOLUME_TYPE_SD_MMC;
-            break;
-        default:
-            type = VOLUME_TYPE_HDD;
-            break;
-        }
         snprintf(tmp, sizeof(tmp), "file://%s", v->mount_point);
         uri = eina_stringshare_add(tmp);
         break;
@@ -168,16 +136,36 @@ volume_send_add_notification(volume_t *v)
 
     /* get volume displayed name/label */
     memset (name, '\0', sizeof (name));
-    if (v->partition_label)
+    if (v->partition_label && v->partition_label[0])
         snprintf (name, sizeof (name), "%s", v->partition_label);
-    else if (v->label)
+    else if (v->label && v->label[0])
         snprintf (name, sizeof (name), "%s", v->label);
     else if (v->storage)
         snprintf (name, sizeof (name), "%s %s", v->storage->vendor, v->storage->model);
 
+    enna_log (ENNA_MSG_EVENT, "hal-volume",
+              "Adding new HAL volume:\n"        \
+              "  udi: %s\n"                     \
+              "  uuid: %s\n"                    \
+              "  fstype: %s\n"                  \
+              "  size: %llu\n"                  \
+              "  label: %s\n"                   \
+              "  partition: %d\n"               \
+              "  partition_number: %d\n"        \
+              "  partition_label: %s\n"         \
+              "  mounted: %d\n"                 \
+              "  mount_point: %s\n"             \
+              "  cd_type: %s\n"                 \
+              "  cd_content_type: %s\n"         \
+              "  Label to be used : %s\n",
+              v->udi, v->uuid, v->fstype, v->size, v->label,
+              v->partition, v->partition_number,
+              v->partition ? v->partition_label : "(not a partition)",
+              v->mounted, v->mount_point, v->cd_type, v->cd_content_type, name);
+
     evol = enna_volume_new ();
     evol->label = eina_stringshare_add(name);
-    evol->type = type;
+    evol->type = v->type;
     evol->mount_point = eina_stringshare_add(uri);
     evol->device_name = eina_stringshare_add(v->device);
     /* FIXME add this property correctly */
@@ -185,6 +173,7 @@ volume_send_add_notification(volume_t *v)
     evol->is_ejectable = EINA_FALSE;
     enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point);
     enna_volumes_add_emit(evol);
+    v->evol = evol;
 
 }
 
@@ -229,15 +218,15 @@ _dbus_vol_prop_mount_modified_cb(void *data, void *reply_data, DBusError *error)
 
     v->mounted = e_hal_property_bool_get(ret, "volume.is_mounted", &err);
     if (err)  enna_log(ENNA_MSG_ERROR, "hal-volume",
-                        "HAL Error : can't get volume.is_mounted property");
+                       "HAL Error : can't get volume.is_mounted property");
 
     if (v->mount_point) free(v->mount_point);
     v->mount_point = e_hal_property_string_get(ret, "volume.mount_point", &err);
     if (err) enna_log(ENNA_MSG_ERROR, "hal-volume",
-                        "HAL Error : can't get volume.is_mounted property");
+                      "HAL Error : can't get volume.is_mounted property");
 
     enna_log(ENNA_MSG_EVENT, "hal-volume", "udi: %s mount_point: %s mounted: %d\n", v->udi, v->mount_point, v->mounted);
-
+    volume_send_add_notification(v);
     return;
 }
 
@@ -257,8 +246,8 @@ _dbus_prop_modified_cb(void *data, DBusMessage *msg)
 
     if (dbus_message_get_error_name(msg))
     {
-       enna_log(ENNA_MSG_ERROR, "hal-volume", "DBUS ERROR: %s",
-                dbus_message_get_error_name(msg));
+        enna_log(ENNA_MSG_ERROR, "hal-volume", "DBUS ERROR: %s",
+                 dbus_message_get_error_name(msg));
         return;
     }
     if (!dbus_message_iter_init(msg, &iter)) return;
@@ -361,6 +350,8 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
         {
             v->storage = s;
             s->volumes = eina_list_append(s->volumes, v);
+            if (!is_disc)
+                v->type = s->type;
         }
     }
 
@@ -379,26 +370,6 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
         v->partition_label = e_hal_property_string_get(ret, "volume.partition.label", NULL);
     }
 
-
-
-    enna_log (ENNA_MSG_EVENT, "hal-volume",
-              "Adding new HAL volume:\n"        \
-              "  udi: %s\n"                     \
-              "  uuid: %s\n"                    \
-              "  fstype: %s\n"                  \
-              "  size: %llu\n"                  \
-              "  label: %s\n"                   \
-              "  partition: %d\n"               \
-              "  partition_number: %d\n"        \
-              "  partition_label: %s\n"         \
-              "  mounted: %d\n"                 \
-              "  mount_point: %s\n"             \
-              "  cd_type: %s\n"                 \
-              "  cd_content_type: %s\n",
-              v->udi, v->uuid, v->fstype, v->size, v->label,
-              v->partition, v->partition_number,
-              v->partition ? v->partition_label : "(not a partition)",
-              v->mounted, v->mount_point, v->cd_type, v->cd_content_type);
     v->validated = 1;
     volume_send_add_notification(v);
 
@@ -483,6 +454,8 @@ volume_del(const char *udi)
     if (v->prop_handler) e_dbus_signal_handler_del(dbus_conn, v->prop_handler);
     if (v->validated)
     {
+        enna_volumes_remove_emit(v->evol);
+        enna_volume_free(v->evol);
         enna_log (ENNA_MSG_EVENT, "hal-volume",
                   "Remove %s\n", v->udi);
     }
