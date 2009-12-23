@@ -651,12 +651,10 @@ bs_onemanga_event (Evas_Object *edje, enna_input event)
     switch (event)
     {
     case ENNA_INPUT_LEFT:
-        om_page_prev();
-        om_display();
+        om_button_prev_clicked_cb(NULL, NULL, NULL);
         return ENNA_EVENT_BLOCK;
     case ENNA_INPUT_RIGHT:
-        om_page_next();
-        om_display();
+        om_button_next_clicked_cb(NULL, NULL, NULL);
         return ENNA_EVENT_BLOCK;
     case ENNA_INPUT_EXIT:
         if (mod->main_menu)

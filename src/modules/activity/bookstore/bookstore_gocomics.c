@@ -350,12 +350,10 @@ bs_gocomics_event (Evas_Object *edje, enna_input event)
     switch (event)
     {
     case ENNA_INPUT_LEFT:
-        gocomics_date_previous();
-        gocomics_display();
+        gocomics_button_prev_clicked_cb(NULL, NULL, NULL);
         return ENNA_EVENT_BLOCK;
     case ENNA_INPUT_RIGHT:
-        gocomics_date_next();
-        gocomics_display();
+        gocomics_button_next_clicked_cb(NULL, NULL, NULL);
         return ENNA_EVENT_BLOCK;
     case ENNA_INPUT_EXIT:
         enna_content_hide();
