@@ -100,7 +100,7 @@ msgstr "Piste #%02d (%02d:%02d)"
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:351
 msgid "BookStore"
-msgstr ""
+msgstr "Bibliothèque"
 
 #: src/modules/activity/bookstore/bookstore.c:353
 msgid "Read your books"
