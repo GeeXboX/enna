@@ -504,7 +504,6 @@ _update_infos_cb(void *data)
 {
     buffer_t *b;
     Evas_Object *obj;
-printf("cb\n");
     obj = data;
     b = buffer_new();
     set_enna_information (b);
