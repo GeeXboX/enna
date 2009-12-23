@@ -27,7 +27,7 @@
 #include "metadata.h"
 #include "logs.h"
 #include "image.h"
-#include "photo_panel_infos.h"
+#include "photo_infos.h"
 
 #define SMART_NAME "photo_panel_infos"
 

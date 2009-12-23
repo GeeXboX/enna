@@ -25,8 +25,9 @@
 #include "enna_config.h"
 #include "view_list.h"
 #include "buffer.h"
-#include "resume.h"
+
 #include "video.h"
+#include "video_resume.h"
 
 #define SMART_NAME "video_resume"
 

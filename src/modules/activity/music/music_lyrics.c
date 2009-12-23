@@ -28,7 +28,7 @@
 #include "logs.h"
 #include "image.h"
 #include "buffer.h"
-
+#include "music_lyrics.h"
 
 typedef struct _Smart_Data Smart_Data;
 

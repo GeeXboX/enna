@@ -42,6 +42,7 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "buffer.h"
+#include "configuration_sysinfo.h"
 
 
 #ifdef BUILD_LIBSVDRP

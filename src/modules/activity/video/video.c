@@ -43,16 +43,17 @@
 #include "view_list.h"
 #include "browser.h"
 #include "mediaplayer.h"
-#include "picture.h"
-#include "panel_infos.h"
-#include "video.h"
-#include "video_flags.h"
-#include "resume.h"
 #include "volumes.h"
 #include "buffer.h"
 #include "metadata.h"
 #include "utils.h"
 #include "mediaplayer_obj.h"
+
+#include "video.h"
+#include "video_flags.h"
+#include "video_infos.h"
+#include "video_resume.h"
+#include "video_picture.h"
 
 #define ENNA_MODULE_NAME "video"
 

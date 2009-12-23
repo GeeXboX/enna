@@ -27,7 +27,8 @@
 #include "metadata.h"
 #include "logs.h"
 #include "image.h"
-#include "picture.h"
+
+#include "video_picture.h"
 
 typedef struct _Smart_Data Smart_Data;
 

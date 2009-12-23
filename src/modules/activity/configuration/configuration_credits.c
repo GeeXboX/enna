@@ -28,6 +28,7 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "buffer.h"
+#include "configuration_credits.h"
 
 /* local globals */
 static Evas_Object *o_edje = NULL;

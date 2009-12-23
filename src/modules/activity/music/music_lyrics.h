@@ -19,14 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef PANEL_INFO_H
-#define PANEL_INFO_H
+#ifndef MUSIC_LYRICS_H
+#define MUSIC_LYRICS_H
 
 #include "enna.h"
 
-Evas_Object *enna_panel_infos_add(Evas * evas);
-void enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m);
-void enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m);
-void enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m);
+Evas_Object *enna_panel_lyrics_add (Evas * evas);
+void enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m);
 
-#endif /* PANEL_INFOS_H */
+#endif /* MUSIC_LYRICS_H */

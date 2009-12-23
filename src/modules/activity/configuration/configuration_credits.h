@@ -19,12 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef VIDEO_PICTURE_H
-#define VIDEO_PICTURE_H
+#ifndef CONFIGURATION_CREDITS_H
+#define CONFIGURATION_CREDITS_H
 
-#include "enna.h"
+Evas_Object *credits_panel_show(void *data);
+void credits_panel_hide(void *data);
 
-Evas_Object *enna_video_picture_add(Evas * evas);
-void enna_video_picture_set(Evas_Object *obj, char *file, int from_vfs);
-void enna_video_picture_unset (Evas_Object *obj);
-#endif /* VIDEO_PICTURE_H */
+#endif /* CONFIGURATION_CREDITS_H */

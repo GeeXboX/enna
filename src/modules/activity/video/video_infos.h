@@ -19,10 +19,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef CREDITS_H
-#define CREDITS_H
+#ifndef VIDEO_INFOS_H
+#define VIDEO_INFOS_H
 
-Evas_Object *credits_panel_show(void *data);
-void credits_panel_hide(void *data);
+#include "enna.h"
 
-#endif /* CREDITS_H */
+Evas_Object *enna_panel_infos_add(Evas * evas);
+void enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m);
+void enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m);
+void enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m);
+
+#endif /* VIDEO_INFOS_H */

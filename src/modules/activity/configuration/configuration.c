@@ -31,8 +31,8 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "module.h"
-#include "infos.h"
-#include "credits.h"
+#include "configuration_sysinfo.h"
+#include "configuration_credits.h"
 
 #define ENNA_MODULE_NAME "configuration"
 
