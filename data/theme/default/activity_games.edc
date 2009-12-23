@@ -22,6 +22,17 @@ group {
          }
       }
 
+      /* gray shader */
+      part {
+         name: "module.shader";
+         mouse_events:  0;
+         clip_to: "module.clip";
+         description {
+            state: "default" 0.0;
+            image.normal: "vertical_gradient.png";
+         }
+      }
+
       /* Swallow for menu games */
       part { name: "menu.clip";
          type: RECT;
