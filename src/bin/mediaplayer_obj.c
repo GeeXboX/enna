@@ -314,6 +314,7 @@ _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
 
     enna_mediaplayer_default_seek_backward ();
     sd->pos = enna_mediaplayer_position_get();
+    slider_position_set(sd);
 }
 
 static void
@@ -323,6 +324,7 @@ _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
 
     enna_mediaplayer_default_seek_forward ();
     sd->pos = enna_mediaplayer_position_get();
+    slider_position_set(sd);
 }
 
 static void
