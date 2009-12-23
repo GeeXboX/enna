@@ -569,9 +569,7 @@ src/modules/activity/Makefile
 src/modules/activity/bookstore/Makefile
 src/modules/activity/configuration/Makefile
 src/modules/activity/games/Makefile
-src/modules/activity/gocomics/Makefile
 src/modules/activity/music/Makefile
-src/modules/activity/onemanga/Makefile
 src/modules/activity/photo/Makefile
 src/modules/activity/tv/Makefile
 src/modules/activity/video/Makefile
