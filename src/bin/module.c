@@ -30,12 +30,14 @@
 
 static Eina_List *_enna_modules = NULL;
 static Ecore_Path_Group *path_group = NULL;
+
+#if 0
 static Enna_Config_Panel *_config_panel = NULL;
 static Evas_Object *o_list = NULL;
 static Input_Listener *_listener = NULL;
-
 static Evas_Object *_config_panel_show(void *data);
 static void _config_panel_hide(void *data);
+#endif
 
 #ifdef USE_STATIC_MODULES
 #define ENNA_MOD_EXTERN(name)                                 \
@@ -221,8 +223,10 @@ enna_module_init(void)
         enna_log(ENNA_MSG_INFO, NULL, "\t * %s", p);
     }
 
+#if 0
     _config_panel = enna_config_panel_register(_("Modules"), "icon/module",
                                   _config_panel_show, _config_panel_hide, NULL);
+#endif
 
     return 0;
 }
@@ -260,7 +264,9 @@ enna_module_shutdown(void)
 {
     Enna_Module *m;
 
+#if 0
     enna_config_panel_unregister(_config_panel);
+#endif
 
     EINA_LIST_FREE(_enna_modules, m)
     {
@@ -402,14 +408,14 @@ enna_module_open(const char *name)
 /*                     Config Panel Stuff                                     */
 /******************************************************************************/
 
-
+#if 0
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
 {
     //~ printf("INPUT.. to module! %d\n", event);
     return enna_list2_input_feed(o_list, event);
 }
-
+#endif
 
 void
 _info_button_cb(void *data)
@@ -434,6 +440,7 @@ _enable_button_cb(void *data)
         enna_module_enable(m);
 }
 
+#if 0
 static Evas_Object *
 _config_panel_show(void *data)
 {
@@ -483,3 +490,4 @@ _config_panel_hide(void *data)
     _listener = NULL;
     ENNA_OBJECT_DEL(o_list);
 }
+#endif
