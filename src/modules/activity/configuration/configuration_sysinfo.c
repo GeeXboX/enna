@@ -56,9 +56,7 @@
 
 #include <player.h>
 
-#ifdef BUILD_BROWSER_VALHALLA
 #include <valhalla.h>
-#endif
 
 /* Refresh period : 2s */
 #define INFOS_REFRESH_PERIOD 2.0
@@ -103,10 +101,8 @@ set_enna_information (buffer_t *b)
     buffer_appendf (b, _("<hilight>Enna: </hilight>%s<br>"), VERSION);
     buffer_appendf (b, _("<hilight>libplayer: </hilight>%s<br>"),
                     LIBPLAYER_VERSION);
-#ifdef BUILD_BROWSER_VALHALLA
     buffer_appendf (b, _("<hilight>libvalhalla: </hilight>%s<br>"),
                     LIBVALHALLA_VERSION_STR);
-#endif
 #ifdef BUILD_LIBSVDRP
     buffer_appendf (b, _("<hilight>libsvdrp: </hilight>%s<br>"),
                     LIBSVDRP_VERSION);
