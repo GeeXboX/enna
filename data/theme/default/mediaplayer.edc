@@ -190,6 +190,23 @@ group {
       }
 
       part {
+         name: "controls.bg.img";
+         type: IMAGE;
+         mouse_events: 0;
+         clip_to: "controls.clip";
+         description {
+            state: "video" 0.0;
+
+            rel1.to: "controls.area";
+            rel2.to: "controls.area";
+
+            image.normal: "bottom_pane.png";
+            image.border: 0 0 10 0;
+            visible: 1;
+         }
+      }
+
+      part {
          name: "text.swallow";
          type: SWALLOW;
          mouse_events:   0;
