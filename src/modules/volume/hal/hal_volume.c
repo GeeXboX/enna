@@ -174,6 +174,7 @@ volume_send_add_notification(volume_t *v)
     evol->is_ejectable = EINA_FALSE;
     enna_log(ENNA_MSG_EVENT, "hal", "Add mount point [%s] %s", v->label, v->mount_point);
     enna_volumes_add_emit(evol);
+    v->evol = evol;
 
 }
 
@@ -351,9 +352,7 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
             v->storage = s;
             s->volumes = eina_list_append(s->volumes, v);
             if (!is_disc)
-            {
                 v->type = s->type;
-            }
         }
     }
 
@@ -456,6 +455,8 @@ volume_del(const char *udi)
     if (v->prop_handler) e_dbus_signal_handler_del(dbus_conn, v->prop_handler);
     if (v->validated)
     {
+        enna_volumes_remove_emit(v->evol);
+        enna_volume_free(v->evol);
         enna_log (ENNA_MSG_EVENT, "hal-volume",
                   "Remove %s\n", v->udi);
     }
