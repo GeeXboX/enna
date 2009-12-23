@@ -204,7 +204,7 @@ msgstr "<c>Informations Systèmes</c><br><br>"
 #: src/modules/activity/music/music.c:143
 #: src/modules/activity/music/music.c:647
 msgid "Music"
-msgstr "Music"
+msgstr "Musique"
 
 #: src/modules/activity/music/panel_lyrics.c:99
 #, fuzzy
