@@ -16,6 +16,18 @@ group {
          }
       }
 
+      /* service background image */
+      part {
+         name: "service.bg.swallow";
+         type: SWALLOW;
+         clip_to: "module.clip";
+         description {
+            state: "default" 0.0;
+            rel1.to: "module.clip";
+            rel2.to: "module.clip";
+         }
+      }
+
       /* background */
       part {
          name: "background";

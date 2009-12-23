@@ -57,6 +57,7 @@ typedef struct _Enna_Module_BookStore {
     Evas *e;
     Evas_Object *edje;
     Evas_Object *menu;
+    Evas_Object *service_bg;
     Eina_List *menu_items;
     BookStore_State state;
     BookStore_Service *current;
@@ -74,6 +75,7 @@ static void
 bs_service_show (BookStore_Service *s)
 {
     Evas_Object *obj = NULL;
+    Evas_Object *old_img;
 
     if (!s)
         return;
@@ -82,6 +84,13 @@ bs_service_show (BookStore_Service *s)
         obj = (s->show)(s->data);
     if (!obj)
         return;
+
+    old_img = mod->service_bg;
+    mod->service_bg = edje_object_add(evas_object_evas_get(mod->edje));
+    edje_object_file_set(mod->service_bg, enna_config_theme_get(), s->bg);
+    edje_object_part_swallow(mod->edje, "service.bg.swallow", mod->service_bg);
+    evas_object_show(mod->service_bg);
+    evas_object_del(old_img);
 
     edje_object_part_swallow(mod->edje, "content.swallow", obj);
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
@@ -100,6 +109,8 @@ bs_service_hide (BookStore_Service *s)
     if (s && s->hide)
         (s->hide)(s->data);
 
+    evas_object_hide(mod->service_bg);
+    edje_object_part_swallow(mod->edje, "service.bg.swallow", NULL);
     mod->current = NULL;
     mod->state = BS_MENU_VIEW;
 }
@@ -287,6 +298,7 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     enna_activity_del(ENNA_MODULE_NAME);
 
     ENNA_OBJECT_DEL(mod->edje);
+    ENNA_OBJECT_DEL(mod->service_bg);
     bs_menu_delete();
     ENNA_FREE(mod);
 }
