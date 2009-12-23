@@ -433,7 +433,6 @@ _set_button(Smart_Data *sd, int start, int right)
 
     n = right ? n + 1 : n - 1;
 
-    printf("%d %d\n", n, ns);
     if (n != ns)
     {
         _unselect_button(sd, ns);
