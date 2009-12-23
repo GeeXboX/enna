@@ -195,6 +195,7 @@ bs_service_hide (BookStore_Service *s)
 
     bs_service_set_bg(NULL);
     edje_object_signal_emit(mod->edje, "service,hide", "enna");
+    edje_object_signal_emit(mod->edje, "module,show", "enna");
     edje_object_signal_emit(mod->edje, "menu,show", "enna");
 }
 
@@ -275,13 +276,14 @@ _class_show (int dummy)
 
     /* show module */
     enna_content_select(ENNA_MODULE_NAME);
-    edje_object_signal_emit(mod->edje, "menu,show", "enna");
     edje_object_signal_emit(mod->edje, "module,show", "enna");
+    edje_object_signal_emit(mod->edje, "menu,show", "enna");
 }
 
 static void
 _class_hide (int dummy)
 {
+    edje_object_signal_emit(mod->edje, "service,hide", "enna");
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->edje, "module,hide", "enna");
     bs_service_hide(mod->current);
