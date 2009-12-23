@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-12-23 18:45+0100\n"
+"POT-Creation-Date: 2009-12-23 19:22+0100\n"
 "PO-Revision-Date: 2009-12-23 18:47+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -62,7 +62,9 @@ msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 #: src/bin/enna.c:401
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "  -g, (--geometry): specifica la geometria della finestra. (geometry=1280x720)\n"
+msgstr ""
+"  -g, (--geometry): specifica la geometria della finestra. "
+"(geometry=1280x720)\n"
 
 #: src/bin/enna.c:402
 #, c-format
@@ -292,8 +294,7 @@ msgstr "Sto registrando '%s'"
 msgid "Recording in progress"
 msgstr "Registrazione in corso"
 
-#: src/modules/activity/tv/tv.c:141
-#: src/modules/activity/tv/tv.c:169
+#: src/modules/activity/tv/tv.c:141 src/modules/activity/tv/tv.c:169
 msgid "Television"
 msgstr "Televisione"
 
@@ -589,4 +590,3 @@ msgstr ""
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module get volumes from the mtab file"
 msgstr ""
-

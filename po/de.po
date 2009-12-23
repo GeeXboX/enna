@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.3.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-10-11 13:06+0200\n"
+"POT-Creation-Date: 2009-12-23 19:22+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Matthias Hölzer <n-billy@geexbox.org>\n"
 "Language-Team: German\n"
@@ -18,515 +18,620 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
-#: src/bin/browser.c:492
+#: src/bin/browser.c:549
 msgid "No media found !"
 msgstr "Kein Medium gefunden!"
 
-#: src/bin/enna.c:376
+#: src/bin/browser.c:709
+msgid "Main Menu"
+msgstr ""
+
+#: src/bin/enna.c:394
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr ""
 
-#: src/bin/enna.c:377
+#: src/bin/enna.c:395
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Aufruf: %s [Optionen...]\n"
 
-#: src/bin/enna.c:378
+#: src/bin/enna.c:396
 #, c-format
 msgid " Available Options:\n"
 msgstr " Verfügbare Optionen:\n"
 
-#: src/bin/enna.c:379
+#: src/bin/enna.c:397
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angegebene Konfigurationsdatei benutzen.\n"
 
-#: src/bin/enna.c:380
+#: src/bin/enna.c:398
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      im Vollbild Modus starten.\n"
 
-#: src/bin/enna.c:381
+#: src/bin/enna.c:399
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Hilfe anzeigen.\n"
 
-#: src/bin/enna.c:382
+#: src/bin/enna.c:400
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angegebenen theme Namen benutzen.\n"
 
-#: src/bin/enna.c:383
+#: src/bin/enna.c:401
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):Angegebene Fenster Geometrie verwenden. "
 "(geometrie=1280x720)\n"
 
-#: src/bin/enna.c:384
+#: src/bin/enna.c:402
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna Version anzeiten version.\n"
 
-#: src/bin/exit.c:101
+#: src/bin/exit.c:93
 msgid "Are you sure you want to quit enna ?"
 msgstr "Soll Enna wirklich beendet werden?"
 
-#: src/bin/exit.c:156
+#: src/bin/exit.c:148
 msgid "Yes, Quit Enna"
 msgstr "Ja, Enna beenden"
 
-#: src/bin/exit.c:159
+#: src/bin/exit.c:151
 msgid "No, Continue using enna"
 msgstr "Nein, Enna weiter verwenden"
 
-#: src/bin/parser_cdda.c:304
+#: src/bin/module.c:227
+msgid "Modules"
+msgstr ""
+
+#: src/bin/module.c:466
+#, fuzzy
+msgid "No information provided"
+msgstr "Keine exif Informationen gefunden."
+
+#: src/bin/parser_cdda.c:296
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Titel #%02d (%02d:%02d)"
 
-#: src/modules/activity/games/games.c:242
-msgid "Games"
-msgstr "Spiele"
+#: src/modules/activity/bookstore/bookstore.c:323
+#: src/modules/activity/bookstore/bookstore.c:351
+msgid "BookStore"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration.c:227
+#: src/modules/activity/bookstore/bookstore.c:353
+msgid "Read your books"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration.c:223
+#: src/modules/activity/configuration/configuration.c:251
 msgid "Configuration"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration.c:266
-msgid "Infos"
-msgstr "Informationen"
+#: src/modules/activity/configuration/configuration.c:253
+msgid "This module create the enna configuration panel (DO NOT UNLOAD)"
+msgstr ""
 
-#: src/modules/activity/configuration/infos.c:109
+#: src/modules/activity/configuration/configuration.c:268
+#, fuzzy
+msgid "System Information"
+msgstr "<c>System Informationen</c><br><br>"
+
+#: src/modules/activity/configuration/configuration.c:271
+msgid "Credits"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_credits.c:45
+msgid "Enna is GeeXboX's team MediaCenter, "
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_credits.c:46
+msgid "based on Enlightenment Foundation Librairies (EFL)."
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_credits.c:48
+msgid "Credits go to:<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:100
 msgid "<c>Enna Information</c><br><br>"
 msgstr "<c>Enna Informationen</c><br><br>"
 
-#: src/modules/activity/configuration/infos.c:110
+#: src/modules/activity/configuration/configuration_sysinfo.c:101
 #, c-format
 msgid "<hilight>Enna: </hilight>%s<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:111
+#: src/modules/activity/configuration/configuration_sysinfo.c:102
 #, c-format
 msgid "<hilight>libplayer: </hilight>%s<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:114
+#: src/modules/activity/configuration/configuration_sysinfo.c:104
 #, c-format
 msgid "<hilight>libvalhalla: </hilight>%s<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:118
+#: src/modules/activity/configuration/configuration_sysinfo.c:107
 #, c-format
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:177
+#: src/modules/activity/configuration/configuration_sysinfo.c:166
 msgid "<hilight>Distribution: </hilight>"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:197
+#: src/modules/activity/configuration/configuration_sysinfo.c:186
 msgid "<hilight>OS: </hilight>"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:216
+#: src/modules/activity/configuration/configuration_sysinfo.c:205
 #, fuzzy
 msgid "<hilight>Available CPUs: </hilight>"
 msgstr "<hilight>Verfügbare Netzwerkadapter:</hilight><br>"
 
-#: src/modules/activity/configuration/infos.c:247
+#: src/modules/activity/configuration/configuration_sysinfo.c:236
 #, c-format
 msgid ", running at %d MHz"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:279
+#: src/modules/activity/configuration/configuration_sysinfo.c:268
 #, fuzzy
 msgid "<hilight>CPU Load: </hilight>"
 msgstr "<hilight>Standard Gateway: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:322
+#: src/modules/activity/configuration/configuration_sysinfo.c:311
 #, fuzzy
 msgid "<hilight>Memory: </hilight>"
 msgstr "<hilight>Standard Gateway: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:323
+#: src/modules/activity/configuration/configuration_sysinfo.c:312
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:359
+#: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
 msgstr "<hilight>Bildschirm-Auflösung: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:360
+#: src/modules/activity/configuration/configuration_sysinfo.c:349
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
 msgstr "%dx%d bei %d Hz (min: %dx%d, max: %dx%d)"
 
-#: src/modules/activity/configuration/infos.c:374
+#: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "<hilight>VDR:</hilight> "
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:376
+#: src/modules/activity/configuration/configuration_sysinfo.c:365
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
 msgstr "verbunden mit VDR %s auf %s (%s)<br>"
 
-#: src/modules/activity/configuration/infos.c:381
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "not connected<br>"
 msgstr "nicht verbunden<br>"
 
-#: src/modules/activity/configuration/infos.c:393
+#: src/modules/activity/configuration/configuration_sysinfo.c:382
 msgid "<hilight>Available network interfaces:</hilight><br>"
 msgstr "<hilight>Verfügbare Netzwerkadapter:</hilight><br>"
 
-#: src/modules/activity/configuration/infos.c:418
+#: src/modules/activity/configuration/configuration_sysinfo.c:407
 #, c-format
 msgid "  * %s (IP: %s, "
 msgstr ""
 
-#: src/modules/activity/configuration/infos.c:424
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
 #, c-format
 msgid "Netmask: %s)<br>"
 msgstr "Netzwerkmaske: %s)<br>"
 
-#: src/modules/activity/configuration/infos.c:447
+#: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "<hilight>Default Gateway: </hilight>"
 msgstr "<hilight>Standard Gateway: </hilight>"
 
-#: src/modules/activity/configuration/infos.c:474
+#: src/modules/activity/configuration/configuration_sysinfo.c:463
 msgid "None<br>"
 msgstr "Keine<br>"
 
-#: src/modules/activity/configuration/infos.c:485
+#: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>System Informationen</c><br><br>"
 
-#: src/modules/activity/music/music.c:143
-#: src/modules/activity/music/music.c:647
+#: src/modules/activity/games/games.c:235
+msgid "Games"
+msgstr "Spiele"
+
+#: src/modules/activity/games/games.c:263
+msgid "System games"
+msgstr ""
+
+#: src/modules/activity/games/games.c:265
+msgid "With this module you can play your games directly from enna"
+msgstr ""
+
+#: src/modules/activity/music/music.c:108
+#, c-format
+msgid "%d Songs"
+msgstr ""
+
+#: src/modules/activity/music/music.c:487
 msgid "Music"
 msgstr "Musik"
 
-#: src/modules/activity/music/panel_lyrics.c:99
+#: src/modules/activity/music/music.c:515
+#, fuzzy
+msgid "Music core"
+msgstr "Musik"
+
+#: src/modules/activity/music/music.c:517
+msgid "This is the main music module"
+msgstr ""
+
+#: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
 msgstr "Keine Texte gefunden!"
 
-#: src/modules/activity/photo/photo.c:398
+#: src/modules/activity/photo/photo.c:367
+#: src/modules/activity/photo/photo.c:395
 msgid "Photo"
 msgstr "Foto"
 
-#: src/modules/activity/tv/tv.c:98
+#: src/modules/activity/photo/photo.c:397
+msgid "View all your photos in a wall or as slideshow"
+msgstr ""
+
+#: src/modules/activity/tv/tv.c:90
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Aufnahme '%s' startet in %i Minute"
 msgstr[1] "Aufnahme '%s' startet in %i Minuten"
 
-#: src/modules/activity/tv/tv.c:100
+#: src/modules/activity/tv/tv.c:92
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Nimmt gerade '%s' auf"
 
-#: src/modules/activity/tv/tv.c:109
+#: src/modules/activity/tv/tv.c:101
 msgid "Recording in progress"
 msgstr "Aufnahme läuft"
 
-#: src/modules/activity/tv/tv.c:149
+#: src/modules/activity/tv/tv.c:141 src/modules/activity/tv/tv.c:169
 msgid "Television"
 msgstr "Fernsehen"
 
-#: src/modules/activity/video/panel_infos.c:194
+#: src/modules/activity/tv/tv.c:171
+msgid "View tv channels"
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:89
 msgid "No such information ..."
 msgstr "Keine solche Information ..."
 
-#: src/modules/activity/video/panel_infos.c:235
-#, c-format
-msgid "%.2d hour "
-msgid_plural "%.2d hours "
-msgstr[0] "%.2d Stunde"
-msgstr[1] "%.2d Stunden"
-
-#: src/modules/activity/video/panel_infos.c:239
-#, c-format
-msgid "%.2d minute"
-msgid_plural "%.2d minutes"
-msgstr[0] "%.2d Minute"
-msgstr[1] "%.2d Minuten"
-
-#: src/modules/activity/video/panel_infos.c:245
+#: src/modules/activity/video/video_infos.c:120
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr "<ul>Regisseur:</ul> %s<br>"
 
-#: src/modules/activity/video/panel_infos.c:249
+#: src/modules/activity/video/video_infos.c:124
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr "<ul>Schauspieler:</ul> %s<br>"
 
-#: src/modules/activity/video/panel_infos.c:260
+#: src/modules/activity/video/video_infos.c:135
 #, c-format
 msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 msgstr ""
 
-#: src/modules/activity/video/panel_infos.c:263
+#: src/modules/activity/video/video_infos.c:138
 #, c-format
 msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 msgstr ""
 
-#: src/modules/activity/video/panel_infos.c:266
+#: src/modules/activity/video/video_infos.c:141
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Größe: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video.c:789
-#: src/modules/activity/video/video.c:864
+#: src/modules/activity/video/video.c:127
+#, c-format
+msgid "%d Movies"
+msgstr ""
+
+#: src/modules/activity/video/video.c:808
+#: src/modules/activity/video/video.c:880
 msgid "Video"
 msgstr ""
 
-#: src/modules/activity/weather/weather.c:509
+#: src/modules/activity/video/video.c:882
+msgid "This is the main video module"
+msgstr ""
+
+#: src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Wetter"
 
-#: src/modules/browser/cdda/cdda.c:104
+#: src/modules/activity/weather/weather.c:301
+#, fuzzy
+msgid "Weather forecast"
+msgstr "Wetter"
+
+#: src/modules/activity/weather/weather.c:303
+msgid "Show the weather at your location"
+msgstr ""
+
+#: src/modules/browser/cdda/cdda.c:95
 msgid "Play Audio CD"
 msgstr "Spiele Audio CD ab"
 
-#: src/modules/browser/dvd/dvd.c:70
+#: src/modules/browser/cdda/cdda.c:138
+msgid "CDDA module"
+msgstr ""
+
+#: src/modules/browser/cdda/cdda.c:140
+msgid "Listen your favorite compact discs"
+msgstr ""
+
+#: src/modules/browser/dvd/dvd.c:62
 msgid "Play"
 msgstr "Spiele ab"
 
-#: src/modules/browser/dvd/dvd.c:73
+#: src/modules/browser/dvd/dvd.c:65
 msgid "Play (With Menus)"
 msgstr "Spiele ab (mit Menüs)"
 
-#: src/modules/browser/dvd/dvd.c:97
+#: src/modules/browser/dvd/dvd.c:91
 msgid "Watch DVD Video"
 msgstr "Schaue DVD Video"
 
-#: src/modules/browser/localfiles/localfiles.c:431
-#: src/modules/browser/localfiles/localfiles.c:449
-#: src/modules/browser/localfiles/localfiles.c:467
+#: src/modules/browser/dvd/dvd.c:136
+msgid "DVD module"
+msgstr ""
+
+#: src/modules/browser/dvd/dvd.c:138
+msgid "Watch movies from DVD"
+msgstr ""
+
+#: src/modules/browser/localfiles/localfiles.c:426
+#: src/modules/browser/localfiles/localfiles.c:444
+#: src/modules/browser/localfiles/localfiles.c:462
 msgid "Browse Local Devices"
 msgstr "Durchsuche lokale Geräte"
 
-#: src/modules/browser/netstreams/netstreams.c:319
-#: src/modules/browser/netstreams/netstreams.c:335
+#: src/modules/browser/localfiles/localfiles.c:487
+#, fuzzy
+msgid "Browse local files"
+msgstr "Durchsuche lokale Geräte"
+
+#: src/modules/browser/localfiles/localfiles.c:489
+msgid "Browse files in your local hard disk"
+msgstr ""
+
+#: src/modules/browser/netstreams/netstreams.c:311
+#: src/modules/browser/netstreams/netstreams.c:327
 msgid "Browse Network Streams"
 msgstr "Durchsuche Netzwerkstreams"
 
-#: src/modules/browser/podcasts/podcasts.c:312
+#: src/modules/browser/netstreams/netstreams.c:351
+msgid "Netstreams"
+msgstr ""
+
+#: src/modules/browser/netstreams/netstreams.c:353
+msgid "I really don't know :P"
+msgstr ""
+
+#: src/modules/browser/podcasts/podcasts.c:333
 msgid "Listen to Podcasts"
 msgstr "Höre Podcasts an"
 
-#: src/modules/browser/shoutcast/shoutcast.c:181
+#: src/modules/browser/podcasts/podcasts.c:357
+msgid "Podcast browser"
+msgstr ""
+
+#: src/modules/browser/podcasts/podcasts.c:359
+msgid "Podcast module"
+msgstr ""
+
+#: src/modules/browser/shoutcast/shoutcast.c:173
 msgid "SHOUTcast Streaming"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:450
+#: src/modules/browser/shoutcast/shoutcast.c:197
+msgid "Shoutcast browser"
+msgstr ""
+
+#: src/modules/browser/shoutcast/shoutcast.c:199
+#, fuzzy
+msgid "Listen to shoutcast stream"
+msgstr "Höre Podcasts an"
+
+#: src/modules/browser/upnp/upnp.c:442
 msgid "UPnP/DLNA Media Servers"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:504
+#: src/modules/browser/upnp/upnp.c:496
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:307
+#: src/modules/browser/upnp/upnp.c:510
+msgid "UPnP / DLNA module"
+msgstr ""
+
+#: src/modules/browser/upnp/upnp.c:512
+msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:299
 msgid "Artists"
 msgstr "Künstler"
 
-#: src/modules/browser/valhalla/valhalla.c:311
+#: src/modules/browser/valhalla/valhalla.c:303
 msgid "Albums"
 msgstr "Alben"
 
-#: src/modules/browser/valhalla/valhalla.c:315
+#: src/modules/browser/valhalla/valhalla.c:307
 msgid "Genres"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:319
+#: src/modules/browser/valhalla/valhalla.c:311
 msgid "Unclassified"
 msgstr "Unklassifiziert"
 
-#: src/modules/browser/valhalla/valhalla.c:476
+#: src/modules/browser/valhalla/valhalla.c:463
+msgid "Valhalla module"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:465
+msgid "Database stuff and metadata retrival from various sources"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:473
 msgid "Media Library"
 msgstr "Medien-Bibliothek"
 
-#: src/modules/volume/hal/hal_storage.c:45
-msgid "Unknown"
-msgstr "Unbekannt"
-
-#: src/modules/volume/hal/hal_storage.c:46
-msgid "IDE"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:47
-msgid "SCSI"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:48
-msgid "USB"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:49
-msgid "FireWire"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:50
-msgid "CCW"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:58
-msgid "Removable Disk"
-msgstr "Austauschbarer Datenträger"
-
-#: src/modules/volume/hal/hal_storage.c:59
-msgid "Disk"
-msgstr "Datenträger"
-
-#: src/modules/volume/hal/hal_storage.c:60
-#: src/modules/volume/hal/hal_volume.c:47
+#: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
 msgstr ""
 
-#: src/modules/volume/hal/hal_storage.c:61
-msgid "Floppy"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:62
-msgid "Tape"
-msgstr "Band"
-
-#: src/modules/volume/hal/hal_storage.c:63
-msgid "CompactFlash"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:64
-msgid "MemoryStick"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:65
-msgid "SmartMedia"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:66
-msgid "SD/MMC"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:67
-msgid "Camera"
-msgstr "Kamera"
-
-#: src/modules/volume/hal/hal_storage.c:68
-msgid "Portable Audio Player"
-msgstr "Tragbarer Audio Spieler"
-
-#: src/modules/volume/hal/hal_storage.c:69
-msgid "ZIP"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:70
-msgid "JAZ"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:71
-msgid "FlashKey"
-msgstr ""
-
-#: src/modules/volume/hal/hal_storage.c:72
-#: src/modules/volume/hal/hal_volume.c:63
-msgid "MagnetoOptical"
-msgstr ""
-
-#: src/modules/volume/hal/hal_volume.c:48
+#: src/modules/volume/hal/hal_volume.c:40
 msgid "CD-R"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:49
+#: src/modules/volume/hal/hal_volume.c:41
 msgid "CD-RW"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:50
+#: src/modules/volume/hal/hal_volume.c:42
 msgid "DVD-ROM"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:51
+#: src/modules/volume/hal/hal_volume.c:43
 msgid "DVD-RAM"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:52
+#: src/modules/volume/hal/hal_volume.c:44
 msgid "DVD-R"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:53
+#: src/modules/volume/hal/hal_volume.c:45
 msgid "DVD-RW"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:54
+#: src/modules/volume/hal/hal_volume.c:46
 msgid "DVD+R"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:55
+#: src/modules/volume/hal/hal_volume.c:47
 msgid "DVD+RW"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:56
+#: src/modules/volume/hal/hal_volume.c:48
 msgid "DVD+R (DL)"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:57
+#: src/modules/volume/hal/hal_volume.c:49
 msgid "BD-ROM"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:58
+#: src/modules/volume/hal/hal_volume.c:50
 msgid "BD-R"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:59
+#: src/modules/volume/hal/hal_volume.c:51
 msgid "BD-RE"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:60
+#: src/modules/volume/hal/hal_volume.c:52
 msgid "HD-DVD-ROM"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:61
+#: src/modules/volume/hal/hal_volume.c:53
 msgid "HD-DVD-R"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:62
+#: src/modules/volume/hal/hal_volume.c:54
 msgid "HD-DVD-RW"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:72
+#: src/modules/volume/hal/hal_volume.c:55
+msgid "MagnetoOptical"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:64
 msgid "CDDA"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:73
+#: src/modules/volume/hal/hal_volume.c:65
 msgid "VCD"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:74
+#: src/modules/volume/hal/hal_volume.c:66
 msgid "SVCD"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:75
+#: src/modules/volume/hal/hal_volume.c:67
 msgid "DVD"
 msgstr ""
 
-#: src/modules/volume/hal/hal_volume.c:76
+#: src/modules/volume/hal/hal_volume.c:68
 msgid "Data"
 msgstr "Daten"
 
-#: src/modules/volume/mtab/mtab.c:88
+#: src/modules/volume/mtab/mtab.c:77
 #, c-format
 msgid "[NFS] %s on %s"
 msgstr ""
 
-#: src/modules/volume/mtab/mtab.c:96
+#: src/modules/volume/mtab/mtab.c:87
 #, c-format
 msgid "[SAMBA] %s on %s"
 msgstr ""
+
+#: src/modules/volume/mtab/mtab.c:149
+msgid "Volumes from mtab"
+msgstr ""
+
+#: src/modules/volume/mtab/mtab.c:151
+msgid "This module get volumes from the mtab file"
+msgstr ""
+
+#~ msgid "Infos"
+#~ msgstr "Informationen"
+
+#~ msgid "%.2d hour "
+#~ msgid_plural "%.2d hours "
+#~ msgstr[0] "%.2d Stunde"
+#~ msgstr[1] "%.2d Stunden"
+
+#~ msgid "%.2d minute"
+#~ msgid_plural "%.2d minutes"
+#~ msgstr[0] "%.2d Minute"
+#~ msgstr[1] "%.2d Minuten"
+
+#~ msgid "Unknown"
+#~ msgstr "Unbekannt"
+
+#~ msgid "Removable Disk"
+#~ msgstr "Austauschbarer Datenträger"
+
+#~ msgid "Disk"
+#~ msgstr "Datenträger"
+
+#~ msgid "Tape"
+#~ msgstr "Band"
+
+#~ msgid "Camera"
+#~ msgstr "Kamera"
+
+#~ msgid "Portable Audio Player"
+#~ msgstr "Tragbarer Audio Spieler"
 
 #~ msgid "Browse Library"
 #~ msgstr "Durchsuche Bibliothek"
@@ -536,9 +641,6 @@ msgstr ""
 
 #~ msgid "Watch PODCAST Video"
 #~ msgstr "Schaue PODCAST Video an"
-
-#~ msgid "No exif information found."
-#~ msgstr "Keine exif Informationen gefunden."
 
 #~ msgid "Yes, I want to quit."
 #~ msgstr "Ja, ich möchte beenden."
