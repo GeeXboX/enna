@@ -262,7 +262,6 @@ static int _create_gui(void)
 
     // show supported engines
     _list_engines();
-    printf("TODO: respect engine: %s\n", enna_config->engine); //TODO
     enna_log(ENNA_MSG_INFO, NULL, "Using engine: %s", enna_config->engine); //FIXME
     //~ ENNA_FREE(enna_config->engine);
     //~ enna_config->engine=strdup(ecore_evas_engine_name_get(enna->ee));

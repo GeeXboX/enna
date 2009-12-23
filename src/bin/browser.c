@@ -812,7 +812,6 @@ enna_browser_input_feed(Evas_Object *obj, enna_input event)
 {
     API_ENTRY return;
 
-    //printf("INPUT.. to browser %d\n", event);
     if (!sd->accept_ev) return;
 
     edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),

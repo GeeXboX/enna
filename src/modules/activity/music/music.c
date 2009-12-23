@@ -117,7 +117,6 @@ _class_event_menu_view(enna_input event)
     {
     case ENNA_INPUT_RIGHT:
     case ENNA_INPUT_LEFT:
-        printf("left/right\n");
         enna_mediaplayer_obj_input_feed(mod->o_mediaplayer, event);
         break;
     case ENNA_INPUT_EXIT:
@@ -167,7 +166,6 @@ _class_event_mediaplayer_view(enna_input event)
     if (enna_mediaplayer_obj_input_feed(mod->o_mediaplayer, event) == ENNA_EVENT_BLOCK)
         return;
 
-    printf("Continue\n");
     switch (event)
     {
     case ENNA_INPUT_LEFT:
