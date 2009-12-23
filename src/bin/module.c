@@ -67,15 +67,9 @@ ENNA_MOD_EXTERN(activity_configuration)
 #ifdef BUILD_ACTIVITY_GAMES
 ENNA_MOD_EXTERN(activity_games)
 #endif /* BUILD_ACTIVITY_GAMES */
-#ifdef BUILD_ACTIVITY_GOCOMICS
-ENNA_MOD_EXTERN(activity_gocomics)
-#endif /* BUILD_ACTIVITY_GOCOMICS */
 #ifdef BUILD_ACTIVITY_MUSIC
 ENNA_MOD_EXTERN(activity_music)
 #endif /* BUILD_ACTIVITY_MUSIC */
-#ifdef BUILD_ACTIVITY_ONEMANGA
-ENNA_MOD_EXTERN(activity_onemanga)
-#endif /* BUILD_ACTIVITY_ONEMANGA */
 #ifdef BUILD_ACTIVITY_PHOTO
 ENNA_MOD_EXTERN(activity_photo)
 #endif /* BUILD_ACTIVITY_PHOTO */
@@ -143,15 +137,9 @@ ENNA_MOD_REG(activity_configuration)
 #ifdef BUILD_ACTIVITY_GAMES
 ENNA_MOD_REG(activity_games)
 #endif /* BUILD_ACTIVITY_GAMES */
-#ifdef BUILD_ACTIVITY_GOCOMICS
-ENNA_MOD_REG(activity_gocomics)
-#endif /* BUILD_ACTIVITY_GOCOMICS */
 #ifdef BUILD_ACTIVITY_MUSIC
 ENNA_MOD_REG(activity_music)
 #endif /* BUILD_ACTIVITY_MUSIC */
-#ifdef BUILD_ACTIVITY_ONEMANGA
-ENNA_MOD_REG(activity_onemanga)
-#endif /* BUILD_ACTIVITY_ONEMANGA */
 #ifdef BUILD_ACTIVITY_PHOTO
 ENNA_MOD_REG(activity_photo)
 #endif /* BUILD_ACTIVITY_PHOTO */

@@ -121,19 +121,6 @@ if test "x$want_activity_games" = "xyes"; then
   AC_DEFINE(BUILD_ACTIVITY_GAMES, 1, [Games Activity])
 fi
 
-# GoComics.com
-want_activity_gocomics="yes"
-AC_MSG_CHECKING(whether GoComics.com activity module is to be built)
-AC_ARG_ENABLE(activity-gocomics,
-  AS_HELP_STRING([--enable-activity-gocomics],[Enable GoComics Activity Module]),
-  [ want_activity_gocomics=$enableval ]
-)
-AC_MSG_RESULT($want_activity_gocomics)
-AM_CONDITIONAL(BUILD_ACTIVITY_GOCOMICS, test "x$want_activity_gocomics" = "xyes")
-if test "x$want_activity_gocomics" = "xyes"; then
-  AC_DEFINE(BUILD_ACTIVITY_GOCOMICS, 1, [GoComics.com Activity])
-fi
-
 # Music
 want_activity_music="yes"
 AC_MSG_CHECKING(whether music activity module is to be built)
@@ -145,19 +132,6 @@ AC_MSG_RESULT($want_activity_music)
 AM_CONDITIONAL(BUILD_ACTIVITY_MUSIC, test "x$want_activity_music" = "xyes")
 if test "x$want_activity_music" = "xyes"; then
   AC_DEFINE(BUILD_ACTIVITY_MUSIC, 1, [Music Activity])
-fi
-
-# OneManga.com
-want_activity_onemanga="yes"
-AC_MSG_CHECKING(whether OneManga.com activity module is to be built)
-AC_ARG_ENABLE(activity-onemanga,
-  AS_HELP_STRING([--enable-activity-onemanga],[Enable OneManga Activity Module]),
-  [ want_activity_onemanga=$enableval ]
-)
-AC_MSG_RESULT($want_activity_onemanga)
-AM_CONDITIONAL(BUILD_ACTIVITY_ONEMANGA, test "x$want_activity_onemanga" = "xyes")
-if test "x$want_activity_onemanga" = "xyes"; then
-  AC_DEFINE(BUILD_ACTIVITY_ONEMANGA, 1, [OneManga.com Activity])
 fi
 
 # Photo
@@ -646,9 +620,7 @@ echo
 echo "  BookStore........................ : $want_activity_bookstore"
 echo "  Configuration.................... : $want_activity_configuration"
 echo "  Games............................ : $want_activity_games"
-echo "  GoComics.com..................... : $want_activity_gocomics"
 echo "  Music............................ : $want_activity_music"
-echo "  OneManga.com..................... : $want_activity_onemanga"
 echo "  Photo............................ : $want_activity_photo"
 echo "  TV............................... : $want_activity_tv"
 echo "  Video............................ : $want_activity_video"
