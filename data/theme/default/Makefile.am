@@ -234,9 +234,7 @@ fonts/content.ttf \
 fonts/content_bold.ttf \
 default.edc \
 activity_bookstore.edc \
-activity_gocomics.edc \
 activity_music.edc \
-activity_onemanga.edc \
 video_info.edc \
 mainmenu.edc \
 mediacontrol.edc \

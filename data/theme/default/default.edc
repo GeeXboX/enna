@@ -37,8 +37,6 @@ collections
 #include "activity_video_flags.edc"
 #include "activity_video_controls.edc"
 #include "activity_games.edc"
-#include "activity_gocomics.edc"
-#include "activity_onemanga.edc"
 #include "activity_photo.edc"
 #include "activity_weather.edc"
 #include "activity_configuration.edc"
