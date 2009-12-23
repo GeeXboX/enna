@@ -55,6 +55,7 @@ typedef struct _BookStore_Service {
     const char *icon;
     Evas_Object *(*show)(void *data);
     void (*hide)(void *data);
+    void (*event) (void *data, enna_input event);
     void *data;
 } BookStore_Service;
 
@@ -64,6 +65,7 @@ typedef struct _Enna_Module_BookStore {
     Evas_Object *menu;
     Eina_List *menu_items;
     BookStore_State state;
+    BookStore_Service *current;
     BookStore_Service *gocomics;
     BookStore_Service *onemanga;
 } Enna_Module_BookStore;
@@ -78,6 +80,7 @@ static BookStore_Service *
 bs_service_register (const char *label, const char *icon,
                      Evas_Object *(*show) (void *data),
                      void (*hide) (void *data),
+                     void (*event) (void *data, enna_input event),
                      void *data)
 {
     BookStore_Service *s;
@@ -126,7 +129,7 @@ bs_service_show (BookStore_Service *s)
     edje_object_signal_emit(mod->edje, "content,show", "enna");
 
     mod->state = BS_SERVICE_VIEW;
-    //mod->selected = s;
+    mod->current = s;
 }
 
 static void
@@ -138,7 +141,7 @@ bs_service_hide (BookStore_Service *s)
     if (s && s->hide)
         (s->hide)(s->data);
 
-    //mod->selected = NULL;
+    mod->current = NULL;
     mod->state = BS_SERVICE_VIEW;
 }
 
@@ -228,7 +231,7 @@ _class_hide (int dummy)
 {
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->edje, "module,hide", "enna");
-    //bs_service_hide(mod->selected);
+    bs_service_hide(mod->current);
 }
 
 static void
@@ -254,14 +257,19 @@ _class_event (enna_input event)
     /* Service View */
     case BS_SERVICE_VIEW:
     {
-#if 0
-        if (event == ENNA_INPUT_EXIT)
+        switch (event)
         {
-            _hide_subpanel(mod->selected);
-            edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
+        case ENNA_INPUT_EXIT:
+        {
+            bs_service_hide(mod->current);
+            edje_object_signal_emit(mod->edje, "menu,show", "enna");
+            break;
         }
-#endif
-        break;
+        default:
+            if (mod->current && mod->current->hide)
+                (mod->current->event)(mod->current->data, event);
+            break;
+        }
     }
     default:
         break;
@@ -315,11 +323,11 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     mod->gocomics =
         bs_service_register(_("GoComics"), "icon/gocomics",
-                            NULL, NULL, NULL);
+                            NULL, NULL, NULL, NULL);
 
     mod->onemanga =
         bs_service_register(_("OneManga"), "icon/onemanga",
-                            NULL, NULL, NULL);
+                            NULL, NULL, NULL, NULL);
 }
 
 void
