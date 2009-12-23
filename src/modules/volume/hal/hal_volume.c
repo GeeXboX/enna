@@ -31,7 +31,6 @@
 #include <string.h>
 #include <Eina.h>
 #include <E_Hal.h>
-#include <hal/libhal-storage.h>
 
 #include "enna.h"
 #include "logs.h"

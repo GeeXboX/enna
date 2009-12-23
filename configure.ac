@@ -390,14 +390,14 @@ AC_MSG_RESULT($want_volume_hal)
 if test "x$want_volume_hal" = "xyes" -o "x$want_volume_hal" = "xauto"; then
   PKG_CHECK_MODULES(
     [EHAL],
-    [ehal hal-storage],
+    [ehal edbus],
     [
       AC_DEFINE(BUILD_VOLUME_HAL, 1, [HAL Volume])
       have_volume_hal="yes"
     ],
     [
       if test "x$want_volume_hal" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([ehal or hal-storage not found (strict dependencies checking)])
+        AC_MSG_ERROR([ehal or e-dbus not found (strict dependencies checking)])
       fi
     ]
   )
