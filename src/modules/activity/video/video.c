@@ -187,11 +187,103 @@ menu_view_event (enna_input event)
 }
 
 static void
+_seek_video(double value)
+{
+    int pos = 0;
+    double seek = 0.0;
+
+    pos = enna_mediaplayer_position_percent_get();
+    seek = ((double) pos + value) / 100.0;
+    enna_mediaplayer_seek(seek);
+
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Seek value : %f", seek);
+}
+
+static void
+videoplayer_view_event_no_display (enna_input event)
+{
+    switch (event)
+    {
+    case ENNA_INPUT_OK:
+        media_controls_display(!mod->controls_displayed);
+        break;
+    case ENNA_INPUT_SPACE:
+        enna_mediaplayer_play(mod->enna_playlist);
+        break;
+    case ENNA_INPUT_RIGHT:
+        _seek_video(+1);
+        break;
+    case ENNA_INPUT_LEFT:
+        _seek_video(-1);
+        break;
+    case ENNA_INPUT_UP:
+        _seek_video(+5);
+        break;
+    case ENNA_INPUT_DOWN:
+        _seek_video(-5);
+        break;
+    case ENNA_INPUT_PLUS:
+        enna_mediaplayer_default_increase_volume();
+        break;
+    case ENNA_INPUT_MINUS:
+        enna_mediaplayer_default_decrease_volume();
+        break;
+    case ENNA_INPUT_KEY_M:
+        enna_mediaplayer_mute();
+        break;
+    case ENNA_INPUT_KEY_K:
+        enna_mediaplayer_audio_previous();
+        break;
+    case ENNA_INPUT_KEY_L:
+        enna_mediaplayer_audio_next();
+        break;
+    case ENNA_INPUT_KEY_P:
+        enna_mediaplayer_audio_increase_delay();
+        break;
+    case ENNA_INPUT_KEY_O:
+        enna_mediaplayer_audio_decrease_delay();
+        break;
+    case ENNA_INPUT_KEY_S:
+        enna_mediaplayer_subtitle_set_visibility();
+        break;
+    case ENNA_INPUT_KEY_G:
+        enna_mediaplayer_subtitle_previous();
+        break;
+    case ENNA_INPUT_KEY_Y:
+        enna_mediaplayer_subtitle_next();
+        break;
+    case ENNA_INPUT_KEY_A:
+        enna_mediaplayer_subtitle_set_alignment();
+        break;
+    case ENNA_INPUT_KEY_T:
+        enna_mediaplayer_subtitle_increase_position();
+        break;
+    case ENNA_INPUT_KEY_R:
+        enna_mediaplayer_subtitle_decrease_position();
+        break;
+    case ENNA_INPUT_KEY_J:
+        enna_mediaplayer_subtitle_increase_scale();
+        break;
+    case ENNA_INPUT_KEY_I:
+        enna_mediaplayer_subtitle_decrease_scale();
+        break;
+    case ENNA_INPUT_KEY_X:
+        enna_mediaplayer_subtitle_increase_delay();
+        break;
+    case ENNA_INPUT_KEY_Z:
+        enna_mediaplayer_subtitle_decrease_delay();
+        break;
+    case ENNA_INPUT_KEY_W:
+        enna_mediaplayer_set_framedrop();
+        break;
+    default:
+        break;
+    }
+}
+
+static void
 videoplayer_view_event (enna_input event)
 {
-
-    media_controls_display(1);
-
     switch (event)
     {
     case ENNA_INPUT_QUIT:
@@ -199,7 +291,13 @@ videoplayer_view_event (enna_input event)
         _return_to_video_info_gui ();
         break;
     default:
-        enna_mediaplayer_obj_input_feed(mod->o_mediacontrols, event);
+        if (!mod->controls_displayed)
+            videoplayer_view_event_no_display (event);
+        else
+        {
+            media_controls_display(1);
+            enna_mediaplayer_obj_input_feed(mod->o_mediacontrols, event);
+        }
         break;
     }
 }
