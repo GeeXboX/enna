@@ -412,4 +412,6 @@ BookStore_Service bs_gocomics = {
     bs_gocomics_show,
     bs_gocomics_hide,
     bs_gocomics_event,
+    gocomics_button_prev_clicked_cb,
+    gocomics_button_next_clicked_cb,
 };

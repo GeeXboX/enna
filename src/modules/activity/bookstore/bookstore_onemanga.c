@@ -737,4 +737,6 @@ BookStore_Service bs_onemanga = {
     bs_onemanga_show,
     bs_onemanga_hide,
     bs_onemanga_event,
+    om_button_prev_clicked_cb,
+    om_button_next_clicked_cb,
 };

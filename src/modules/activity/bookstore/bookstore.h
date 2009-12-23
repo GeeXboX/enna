@@ -37,6 +37,8 @@ typedef struct _BookStore_Service {
     void (*show)(Evas_Object *edje);
     void (*hide)(Evas_Object *edje);
     Eina_Bool (*event) (Evas_Object *edje, enna_input event);
+    void (*prev)(void *data, Evas_Object *obj, void *ev);
+    void (*next)(void *data, Evas_Object *obj, void *ev);
 } BookStore_Service;
 
 #endif /* BOOKSTORE_H */
