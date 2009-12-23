@@ -305,13 +305,19 @@ _button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
 static void
 _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
 {
+    Smart_Data *sd = data;
+
     enna_mediaplayer_default_seek_backward ();
+    sd->pos = enna_mediaplayer_position_get();
 }
 
 static void
 _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
 {
+    Smart_Data *sd = data;
+
     enna_mediaplayer_default_seek_forward ();
+    sd->pos = enna_mediaplayer_position_get();
 }
 
 static void
