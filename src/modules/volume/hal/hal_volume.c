@@ -353,7 +353,6 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
             if (!is_disc)
             {
                 v->type = s->type;
-                printf("Type : %d\n", v->type);
             }
         }
     }
