@@ -30,7 +30,7 @@ group {                                             \
             }                                                           \
          }                                                              \
       }                                                                 \
-   } 
+   }
 
 STOCK_ICON("icon_enna.png",                     "icon/enna");
 STOCK_ICON("icon_music.png",                    "icon/music");
