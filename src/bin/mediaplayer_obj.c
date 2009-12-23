@@ -630,7 +630,6 @@ void
 enna_mediaplayer_position_update(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
-    enna_mediaplayer_default_seek_backward ();
     sd->pos = enna_mediaplayer_position_get();
     slider_position_update(sd);
 }
