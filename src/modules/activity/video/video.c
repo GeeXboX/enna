@@ -57,7 +57,7 @@
 
 #define ENNA_MODULE_NAME "video"
 
-#define TIMER_DELAY 5.0
+#define TIMER_DELAY 10.0
 
 static void browser_cb_root (void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_select (void *data, Evas_Object *obj, void *event_info);
