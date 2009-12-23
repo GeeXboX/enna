@@ -207,7 +207,7 @@ enna_thumb_icon_begin(Evas_Object *obj)
         {
             Ecore_Exe *exe;
 
-            snprintf(buf, sizeof(buf), PACKAGE_BIN_DIR"/enna_thumb --nice=%d", 20);
+            snprintf(buf, sizeof(buf), PACKAGE_BIN_DIR"/enna_thumb --nice=%d", 19);
             exe = ecore_exe_run(buf, NULL);
             _thumbnailers_exe = eina_list_append(_thumbnailers_exe, exe);
         }
