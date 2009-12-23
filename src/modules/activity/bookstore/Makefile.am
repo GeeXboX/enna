@@ -16,6 +16,11 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@ @LIBXML2_CFLAGS@ @LIBCURL_CFLAGS@
 
+EXTRA_DIST= \
+bookstore.h \
+bookstore_gocomics.h \
+bookstore_onemanga.h
+
 if BUILD_ACTIVITY_BOOKSTORE
 if BUILD_LIBXML2
 if BUILD_LIBCURL

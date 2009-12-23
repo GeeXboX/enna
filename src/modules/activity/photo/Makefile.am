@@ -16,6 +16,11 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
+EXTRA_DIST = \
+photo.h \
+photo_infos.h \
+photo_slideshow_view.h
+
 if BUILD_ACTIVITY_PHOTO
 
 pkgdir = $(libdir)/enna/modules

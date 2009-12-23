@@ -16,6 +16,10 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
+EXTRA_DIST = \
+configuration_credits.h \
+configuration_sysinfo.h
+
 if BUILD_BROWSER_VALHALLA
 INCLUDES += @VALHALLA_CFLAGS@
 endif

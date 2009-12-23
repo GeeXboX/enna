@@ -16,6 +16,10 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@ @EHAL_CFLAGS@
 
+EXTRA_DIST = \
+hal_storage.h \
+hal_volume.h
+
 if BUILD_VOLUME_HAL
 
 pkgdir = $(libdir)/enna/modules

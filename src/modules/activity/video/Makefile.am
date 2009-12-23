@@ -16,6 +16,13 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
+EXTRA_DIST = \
+video.h \
+video_flags.h \
+video_infos.h \
+video_picture.h \
+video_resume.h
+
 if BUILD_ACTIVITY_VIDEO
 
 pkgdir = $(libdir)/enna/modules
