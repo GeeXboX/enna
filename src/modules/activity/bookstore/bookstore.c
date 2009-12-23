@@ -74,16 +74,13 @@ static Enna_Module_BookStore *mod;
 static void
 bs_service_show (BookStore_Service *s)
 {
-    Evas_Object *obj = NULL;
     Evas_Object *old_img;
 
     if (!s)
         return;
 
     if (s->show)
-        obj = (s->show)(mod->edje);
-    if (!obj)
-        return;
+        (s->show)(mod->edje);
 
     old_img = mod->service_bg;
     mod->service_bg = edje_object_add(evas_object_evas_get(mod->edje));
@@ -92,7 +89,6 @@ bs_service_show (BookStore_Service *s)
     evas_object_show(mod->service_bg);
     evas_object_del(old_img);
 
-    //edje_object_part_swallow(mod->edje, "content.swallow", obj);
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->edje, "service,show", "enna");
 

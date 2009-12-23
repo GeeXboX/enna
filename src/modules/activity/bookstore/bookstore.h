@@ -34,7 +34,7 @@ typedef struct _BookStore_Service {
     const char *label;
     const char *bg;
     const char *icon;
-    Evas_Object *(*show)(Evas_Object *edje);
+    void (*show)(Evas_Object *edje);
     void (*hide)(Evas_Object *edje);
     Eina_Bool (*event) (Evas_Object *edje, enna_input event);
 } BookStore_Service;

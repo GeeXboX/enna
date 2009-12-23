@@ -680,7 +680,7 @@ bs_onemanga_event (Evas_Object *edje, enna_input event)
     }
 }
 
-static Evas_Object *
+static void
 bs_onemanga_show (Evas_Object *edje)
 {
    char dst[1024] = { 0 };
@@ -704,8 +704,6 @@ bs_onemanga_show (Evas_Object *edje)
         om_parse_manga_list();
         om_create_gui();
     }
-
-    return edje;
 }
 
 static void

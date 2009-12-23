@@ -367,7 +367,7 @@ bs_gocomics_event (Evas_Object *edje, enna_input event)
     }
 }
 
-static Evas_Object *
+static void
 bs_gocomics_show (Evas_Object *edje)
 {
     char dst[1024] = { 0 };
@@ -385,7 +385,6 @@ bs_gocomics_show (Evas_Object *edje)
     mod->edje = edje;
 
     gocomics_create_menu();
-    return edje;
 }
 
 static void
