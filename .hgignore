@@ -95,3 +95,5 @@ syntax: regexp
 ^src/bin/enna$
 ^src/bin/enna_thumb$
 ^.*\.edj$
+enna-.*\.tar.gz
+enna-.*\.tar.bz2
