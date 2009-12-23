@@ -37,6 +37,7 @@
 
 #include <Edje.h>
 #include <Elementary.h>
+#include <Ecore_Input.h>
 
 #include "enna.h"
 #include "enna_config.h"
@@ -107,6 +108,8 @@ struct _Enna_Module_Video
     int controls_displayed;
     Enna_Volumes_Listener *vl;
     Ecore_Timer *controls_timer;
+    Ecore_Event_Handler *mouse_button_event_handler;
+    Ecore_Event_Handler *mouse_move_event_handler;
 };
 
 static Enna_Module_Video *mod;
@@ -146,6 +149,15 @@ media_controls_display (int show)
 {
     Evas_Coord w, h, h2, x, y;
 
+    if (show)
+    {
+        ENNA_TIMER_DEL(mod->controls_timer);
+        mod->controls_timer = ecore_timer_add(5.0, _controls_timer_cb, NULL);
+    }
+
+    if (show == mod->controls_displayed)
+        return;
+
     evas_object_geometry_get(mod->o_mediaplayer, &x, &y, &w, &h);
     evas_object_geometry_get(mod->o_mediacontrols, NULL, NULL, NULL, &h2);
 
@@ -182,8 +194,8 @@ menu_view_event (enna_input event)
 static void
 videoplayer_view_event (enna_input event)
 {
-    if (!mod->controls_displayed)
-        media_controls_display(1);
+
+    media_controls_display(1);
 
     switch (event)
     {
@@ -192,8 +204,6 @@ videoplayer_view_event (enna_input event)
         _return_to_video_info_gui ();
         break;
     default:
-        ENNA_TIMER_DEL(mod->controls_timer);
-        mod->controls_timer = ecore_timer_add(5.0, _controls_timer_cb, NULL);
         enna_mediaplayer_obj_input_feed(mod->o_mediacontrols, event);
         break;
     }
@@ -385,11 +395,57 @@ _mediaplayer_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
     enna_mediaplayer_video_resize(x, y, w, h);
 }
 
+static void
+_mediaplayer_mouse_move_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    media_controls_display(1);
+}
+
+static void
+_mediaplayer_mouse_up_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    media_controls_display(1);
+}
+
+static int
+_mediaplayer_mouse_move_libplayer_cb(void *data, int type, void *event)
+{
+    Ecore_Event_Mouse_Move *e = event;
+    Evas_Coord y;
+
+    evas_object_geometry_get(mod->o_mediacontrols, NULL, &y, NULL, NULL);
+
+    if ((e->window != enna->ee_winid) && (e->y >= y))
+    {
+        media_controls_display(1);
+        return 1;
+    }
+    return 0;
+}
+
+static int
+_mediaplayer_mouse_down_libplayer_cb(void *data, int type, void *event)
+{
+    Ecore_Event_Mouse_Button *e = event;
+    Evas_Coord y;
+
+    evas_object_geometry_get(mod->o_mediacontrols, NULL, &y, NULL, NULL);
+
+    if ((e->window != enna->ee_winid) && (e->y >= y))
+    {
+        media_controls_display(1);
+        return 1;
+    }
+    return 0;
+}
+
 void
 movie_start_playback (int resume)
 {
     mod->state = VIDEOPLAYER_VIEW;
 
+    ENNA_EVENT_HANDLER_DEL(mod->mouse_button_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->mouse_move_event_handler);
     ENNA_OBJECT_DEL (mod->o_mediaplayer);
     mod->o_mediaplayer = evas_object_rectangle_add (enna->evas);
     evas_object_color_set (mod->o_mediaplayer, 0, 0, 0, 255);
@@ -404,6 +460,19 @@ movie_start_playback (int resume)
     edje_object_part_swallow (mod->o_edje, "controls.swallow",
                               mod->o_mediacontrols);
     enna_mediaplayer_obj_layout_set(mod->o_mediacontrols, "layout,video");
+
+    mod->mouse_button_event_handler =
+        ecore_event_handler_add(ECORE_EVENT_MOUSE_BUTTON_DOWN,
+                                _mediaplayer_mouse_down_libplayer_cb, NULL);
+    mod->mouse_move_event_handler =
+        ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE,
+                                _mediaplayer_mouse_move_libplayer_cb, NULL);
+
+    evas_object_event_callback_add (mod->o_mediacontrols, EVAS_CALLBACK_MOUSE_MOVE,
+                                    _mediaplayer_mouse_move_cb, NULL);
+    evas_object_event_callback_add (mod->o_mediacontrols, EVAS_CALLBACK_MOUSE_UP,
+                                    _mediaplayer_mouse_up_cb, NULL);
+
     enna_mediaplayer_stop();
     enna_mediaplayer_play (mod->enna_playlist);
 #if 0
@@ -787,6 +856,8 @@ em_shutdown(Enna_Module *em)
     evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
     evas_object_smart_callback_del(mod->o_browser, "selected", browser_cb_select);
     evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hilight);
+    ENNA_EVENT_HANDLER_DEL(mod->mouse_button_event_handler);
+    ENNA_EVENT_HANDLER_DEL(mod->mouse_move_event_handler);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     ENNA_OBJECT_DEL(mod->o_mediacontrols);
