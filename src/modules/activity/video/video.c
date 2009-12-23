@@ -57,6 +57,8 @@
 
 #define ENNA_MODULE_NAME "video"
 
+#define TIMER_DELAY 5.0
+
 static void browser_cb_root (void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_select (void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_hilight (void *data, Evas_Object *obj, void *event_info);
@@ -145,7 +147,7 @@ media_controls_display (int show)
     if (show)
     {
         ENNA_TIMER_DEL(mod->controls_timer);
-        mod->controls_timer = ecore_timer_add(5.0, _controls_timer_cb, NULL);
+        mod->controls_timer = ecore_timer_add(TIMER_DELAY, _controls_timer_cb, NULL);
     }
 
     if (show == mod->controls_displayed)
