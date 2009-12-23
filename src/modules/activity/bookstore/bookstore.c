@@ -235,9 +235,7 @@ _class_event (enna_input event)
             b = (mod->current->event)(mod->edje, event);
 
         if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_EXIT))
-        {
             bs_service_hide(mod->current);
-        }
         break;
     }
     default:
