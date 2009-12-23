@@ -94,8 +94,6 @@ STOCK_ICON("dev_photo.png",                     "icon/dev/photo");
 STOCK_ICON("dev_samba.png",                     "icon/dev/samba");
 STOCK_ICON("dev_usb_stick.png",                 "icon/dev/usbstick");
 
-STOCK_ICON("folder_favorites.png",              "icon/favorite");
-
 /* Generic Controls */
 STOCK_ICON("ctrl_back.png",                     "ctrl/back");
 STOCK_ICON("ctrl_hibernate.png",                "ctrl/hibernate");
@@ -108,6 +106,7 @@ STOCK_ICON("ctrl_warning.png",                  "ctrl/warning");
 STOCK_ICON("icon_music.png",                    "icon/file/music");
 STOCK_ICON("icon_video.png",                    "icon/file/video");
 STOCK_ICON("icon_photo.png",                    "icon/file/photo");
+STOCK_ICON("folder_favorites.png",              "icon/favorite");
 
 /* Mediacontrol */
 STOCK_ICON("mp_play.png",                       "icon/mp_play");
