@@ -265,7 +265,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     enna_activity_add (&class);
 
-    info1 = enna_config_panel_register(_("Infos"), "icon/infos",
+    info1 = enna_config_panel_register(_("System Information"), "icon/infos",
                                     info_panel_show, info_panel_hide, NULL);
 
     credits = enna_config_panel_register(_("Credits"), "icon/enna",
