@@ -34,55 +34,201 @@
 
 #include "enna.h"
 #include "enna_config.h"
+#include "view_wall.h"
 #include "activity.h"
 #include "logs.h"
 #include "module.h"
 #include "content.h"
 #include "mainmenu.h"
-#include "view_list.h"
 #include "vfs.h"
-#include "url_utils.h"
-#include "xml_utils.h"
-#include "utils.h"
-#include "image.h"
 
 #define ENNA_MODULE_NAME                 "bookstore"
 
+typedef enum _BookStore_State
+{
+    BS_MENU_VIEW,
+    BS_SERVICE_VIEW,
+} BookStore_State;
+
+typedef struct _BookStore_Service {
+    const char *label;
+    const char *icon;
+    Evas_Object *(*show)(void *data);
+    void (*hide)(void *data);
+    void *data;
+} BookStore_Service;
+
 typedef struct _Enna_Module_BookStore {
-  Evas *e;
-  Evas_Object *edje;
+    Evas *e;
+    Evas_Object *edje;
+    Evas_Object *menu;
+    Eina_List *menu_items;
+    BookStore_State state;
+    BookStore_Service *gocomics;
+    BookStore_Service *onemanga;
 } Enna_Module_BookStore;
 
 static Enna_Module_BookStore *mod;
 
 /****************************************************************************/
-/*                        Private Module API                                */
+/*                      BookStore Service API                               */
+/****************************************************************************/
+
+static BookStore_Service *
+bs_service_register (const char *label, const char *icon,
+                     Evas_Object *(*show) (void *data),
+                     void (*hide) (void *data),
+                     void *data)
+{
+    BookStore_Service *s;
+
+    if (!label || !icon)
+        return NULL;
+
+    s        = ENNA_NEW(BookStore_Service, 1);
+    s->label = eina_stringshare_add(label);
+    s->icon  = eina_stringshare_add(icon);
+    s->show  = show;
+    s->hide  = hide;
+    s->data  = data;
+
+    return s;
+}
+
+static void
+bs_service_unregister (BookStore_Service *s)
+{
+    if (!s)
+        return;
+
+    if (s->label)
+        eina_stringshare_del(s->label);
+    if (s->icon)
+        eina_stringshare_del(s->icon);
+    ENNA_FREE(s);
+}
+
+static void
+bs_service_show (BookStore_Service *s)
+{
+    Evas_Object *obj = NULL;
+
+    if (!s)
+        return;
+
+    if (s->show)
+        obj = (s->show)(s->data);
+    if (!obj)
+        return;
+
+    edje_object_part_swallow(mod->edje, "content.swallow", obj);
+    edje_object_signal_emit(mod->edje, "menu,hide", "enna");
+    edje_object_signal_emit(mod->edje, "content,show", "enna");
+
+    mod->state = BS_SERVICE_VIEW;
+    //mod->selected = s;
+}
+
+static void
+bs_service_hide (BookStore_Service *s)
+{
+    if (!s)
+        return;
+
+    if (s && s->hide)
+        (s->hide)(s->data);
+
+    //mod->selected = NULL;
+    mod->state = BS_SERVICE_VIEW;
+}
+
+/****************************************************************************/
+/*                         BookStore Menu API                               */
 /****************************************************************************/
 
 static void
-_class_init (int dummy)
+bs_menu_item_cb_selected (void *data)
 {
-    enna_content_append(ENNA_MODULE_NAME, mod->edje);
+    BookStore_Service *s = data;
+    bs_service_show(s);
 }
 
 static void
-_class_shutdown (int dummy)
+bs_menu_add (BookStore_Service *s)
 {
+    Enna_Vfs_File *f;
 
+    if (!s)
+        return;
+
+    f          = calloc (1, sizeof(Enna_Vfs_File));
+    f->icon    = (char *) eina_stringshare_add(s->icon);
+    f->label   = (char *) eina_stringshare_add(s->label);
+    f->is_menu = 1;
+
+    enna_wall_file_append(mod->menu, f, bs_menu_item_cb_selected, s);
+    mod->menu_items = eina_list_append (mod->menu_items, f);
 }
+
+static void
+bs_menu_create (void)
+{
+    mod->menu = enna_wall_add(enna->evas);
+
+    bs_menu_add(mod->gocomics);
+    bs_menu_add(mod->onemanga);
+
+    enna_wall_select_nth(mod->menu, 0, 0);
+    edje_object_part_swallow(mod->edje, "menu.swallow", mod->menu);
+    mod->state = BS_MENU_VIEW;
+}
+
+static void
+bs_menu_delete (void)
+{
+    Enna_Vfs_File *f;
+
+    if (!mod->menu)
+        return;
+
+    EINA_LIST_FREE(mod->menu_items, f);
+        enna_vfs_remove(f);
+
+    ENNA_OBJECT_DEL(mod->menu);
+}
+
+/****************************************************************************/
+/*                         Private Module API                               */
+/****************************************************************************/
 
 static void
 _class_show (int dummy)
 {
+    /* create the activity content once for all */
+    if (!mod->edje)
+    {
+        mod->edje = edje_object_add(enna->evas);
+        edje_object_file_set(mod->edje, enna_config_theme_get(),
+                             "activity/bookstore");
+        enna_content_append(ENNA_MODULE_NAME, mod->edje);
+    }
+
+    /* create the menu, once for all */
+    if (!mod->menu)
+        bs_menu_create();
+
+    /* show module */
     enna_content_select(ENNA_MODULE_NAME);
+    edje_object_signal_emit(mod->edje, "menu,show", "enna");
     edje_object_signal_emit(mod->edje, "module,show", "enna");
-    edje_object_signal_emit(mod->edje, "content,show", "enna");
 }
 
 static void
 _class_hide (int dummy)
 {
+    edje_object_signal_emit(mod->edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->edje, "module,hide", "enna");
+    //bs_service_hide(mod->selected);
 }
 
 static void
@@ -90,6 +236,36 @@ _class_event (enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
              "Key pressed BookStore : %d", event);
+
+    switch (mod->state)
+    {
+    /* Menu View */
+    case BS_MENU_VIEW:
+    {
+        if (event == ENNA_INPUT_EXIT)
+        {
+            enna_content_hide();
+            enna_mainmenu_show();
+        }
+        else
+            enna_wall_input_feed(mod->menu, event);
+        break;
+    }
+    /* Service View */
+    case BS_SERVICE_VIEW:
+    {
+#if 0
+        if (event == ENNA_INPUT_EXIT)
+        {
+            _hide_subpanel(mod->selected);
+            edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
+        }
+#endif
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 static Enna_Class_Activity class = {
@@ -100,9 +276,9 @@ static Enna_Class_Activity class = {
     "icon/bookstore",
     "background/bookstore",
     {
-        _class_init,
         NULL,
-        _class_shutdown,
+        NULL,
+        NULL,
         _class_show,
         _class_hide,
         _class_event
@@ -136,11 +312,24 @@ ENNA_MODULE_INIT(Enna_Module *em)
     em->mod = mod;
 
     enna_activity_add(&class);
+
+    mod->gocomics =
+        bs_service_register(_("GoComics"), "icon/gocomics",
+                            NULL, NULL, NULL);
+
+    mod->onemanga =
+        bs_service_register(_("OneManga"), "icon/onemanga",
+                            NULL, NULL, NULL);
 }
 
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
+    bs_service_unregister(mod->gocomics);
+    bs_service_unregister(mod->onemanga);
     enna_activity_del(ENNA_MODULE_NAME);
+
+    ENNA_OBJECT_DEL(mod->edje);
+    bs_menu_delete();
     ENNA_FREE(mod);
 }
