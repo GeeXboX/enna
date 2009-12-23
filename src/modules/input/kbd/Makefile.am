@@ -2,7 +2,7 @@ include ./config.mak
 
 MAINTAINERCLEANFILES = Makefile.in
 
-MODULE = keyb
+MODULE = kbd
 
 # data files for the module
 filesdir = $(libdir)/enna/modules/
@@ -16,17 +16,17 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
-if BUILD_INPUT_KEYB
+if BUILD_INPUT_KBD
 
 pkgdir = $(libdir)/enna/modules
 
-pkg_LTLIBRARIES = input_keyb.la
+pkg_LTLIBRARIES = input_kbd.la
 
-input_keyb_la_SOURCES = $(SRCS_INPUT_KEYB)
+input_kbd_la_SOURCES = $(SRCS_INPUT_KBD)
 
-input_keyb_la_LIBADD = @ENNA_LIBS@
-input_keyb_la_LDFLAGS = -module -avoid-version
-input_keyb_la_DEPENDENCIES = $(top_builddir)/config.h
+input_kbd_la_LIBADD = @ENNA_LIBS@
+input_kbd_la_LDFLAGS = -module -avoid-version
+input_kbd_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/input_$(MODULE).*

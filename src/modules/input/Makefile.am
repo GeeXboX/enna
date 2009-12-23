@@ -1,2 +1,2 @@
 MAINTAINERCLEANFILES = Makefile.in
-SUBDIRS = lirc keyb
+SUBDIRS = lirc kbd

@@ -98,9 +98,9 @@ ENNA_MOD_EXTERN(browser_upnp)
 #ifdef BUILD_BROWSER_VALHALLA
 ENNA_MOD_EXTERN(browser_valhalla)
 #endif /* BUILD_BROWSER_VALHALLA */
-#ifdef BUILD_INPUT_KEYB
-ENNA_MOD_EXTERN(input_keyb)
-#endif /* BUILD_INPUT_KEYB */
+#ifdef BUILD_INPUT_KBD
+ENNA_MOD_EXTERN(input_kbd)
+#endif /* BUILD_INPUT_KBD */
 #ifdef BUILD_INPUT_LIRC
 ENNA_MOD_EXTERN(input_lirc)
 #endif /* BUILD_INPUT_LIRC */
@@ -168,9 +168,9 @@ ENNA_MOD_REG(browser_upnp)
 #ifdef BUILD_BROWSER_VALHALLA
 ENNA_MOD_REG(browser_valhalla)
 #endif /* BUILD_BROWSER_VALHALLA */
-#ifdef BUILD_INPUT_KEYB
-ENNA_MOD_REG(input_keyb)
-#endif /* BUILD_INPUT_KEYB */
+#ifdef BUILD_INPUT_KBD
+ENNA_MOD_REG(input_kbd)
+#endif /* BUILD_INPUT_KBD */
 #ifdef BUILD_INPUT_LIRC
 ENNA_MOD_REG(input_lirc)
 #endif /* BUILD_INPUT_LIRC */

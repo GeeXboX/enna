@@ -87,7 +87,7 @@ include ../modules/browser/podcasts/config.mak
 include ../modules/browser/shoutcast/config.mak
 include ../modules/browser/upnp/config.mak
 include ../modules/browser/valhalla/config.mak
-include ../modules/input/keyb/config.mak
+include ../modules/input/kbd/config.mak
 include ../modules/input/lirc/config.mak
 include ../modules/volume/hal/config.mak
 include ../modules/volume/mtab/config.mak
@@ -160,8 +160,8 @@ if BUILD_BROWSER_VALHALLA
 enna_SOURCES += $(SRCS_BROWSER_VALHALLA)
 endif
 
-if BUILD_INPUT_KEYB
-enna_SOURCES += $(SRCS_INPUT_KEYB)
+if BUILD_INPUT_KBD
+enna_SOURCES += $(SRCS_INPUT_KBD)
 endif
 
 if BUILD_INPUT_LIRC

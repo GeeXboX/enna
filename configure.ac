@@ -335,7 +335,7 @@ if test "x$have_input_lirc" = "xyes"; then
 fi
 AM_CONDITIONAL(BUILD_INPUT_LIRC, test "x$have_input_lirc" = "xyes")
 
-# KEYB
+# Keyboard
 want_input_keyboard="yes"
 AC_MSG_CHECKING(whether keyboard input module is to be built)
 AC_ARG_ENABLE(input-keyboard,
@@ -343,9 +343,9 @@ AC_ARG_ENABLE(input-keyboard,
   [ want_input_keyboard=$enableval ]
 )
 AC_MSG_RESULT($want_input_keyboard)
-AM_CONDITIONAL(BUILD_INPUT_KEYB, test "x$want_input_keyboard" = "xyes")
+AM_CONDITIONAL(BUILD_INPUT_KBD, test "x$want_input_keyboard" = "xyes")
 if test "x$want_input_keyboard" = "xyes"; then
-  AC_DEFINE(BUILD_INPUT_KEYB, 1, [Keyboard Input])
+  AC_DEFINE(BUILD_INPUT_KBD, 1, [Keyboard Input])
 fi
 
 ##################

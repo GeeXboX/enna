@@ -27,7 +27,7 @@
 #include "input.h"
 #include "module.h"
 
-#define ENNA_MODULE_NAME "input_keyb"
+#define ENNA_MODULE_NAME "input_kbd"
 
 
 static const struct
@@ -166,7 +166,7 @@ _ecore_event_key_down_cb(void *data, int type, void *event)
 
 #ifdef USE_STATIC_MODULES
 #undef MOD_PREFIX
-#define MOD_PREFIX enna_mod_input_keyb
+#define MOD_PREFIX enna_mod_input_kbd
 #endif /* USE_STATIC_MODULES */
 
 Enna_Module_Api ENNA_MODULE_API =
