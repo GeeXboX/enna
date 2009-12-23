@@ -585,7 +585,7 @@ src/modules/browser/upnp/Makefile
 src/modules/browser/valhalla/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
-src/modules/input/keyb/Makefile
+src/modules/input/kbd/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
