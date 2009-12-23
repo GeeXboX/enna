@@ -1,5 +1,6 @@
 MAINTAINERCLEANFILES = Makefile.in
 SUBDIRS = \
+bookstore\
 configuration\
 games\
 music\
