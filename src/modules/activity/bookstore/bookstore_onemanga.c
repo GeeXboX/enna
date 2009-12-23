@@ -604,12 +604,6 @@ om_button_next_clicked_cb(void *data, Evas_Object *obj, void *ev)
     om_display();
 }
 
-static void
-om_create_gui (void)
-{
-    om_create_menu_list();
-}
-
 /****************************************************************************/
 /*                         Private Service API                              */
 /****************************************************************************/
@@ -673,7 +667,7 @@ bs_onemanga_show (Evas_Object *edje)
     if (!mod->manga_list)
     {
         om_parse_manga_list();
-        om_create_gui();
+        om_create_menu_list();
     }
 }
 
