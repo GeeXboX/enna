@@ -68,6 +68,24 @@ group {
          }
       }
 
+      /* service related objects */
+      part {
+         name: "service.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 100;
+            visible: 0;
+            rel1.relative: -1.0 0;
+            rel2.relative: 0.0 1.0;
+         }
+         description {
+            state: "show" 0.0;
+            color: 255 255 255 255;
+            visible: 1;
+         }
+      }
+
       /* content (where services are swallowed) */
       part {
          name: "content.clip";
@@ -112,6 +130,22 @@ group {
          action:  STATE_SET "default" 0.0;
          transition: SINUSOIDAL 0.5;
          target: "menu.clip";
+      }
+      program {
+         name: "service,show";
+         signal: "service,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "service.clip";
+      }
+      program {
+         name: "service,hide";
+         signal: "service,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "service.clip";
       }
       program {
          name: "module,show";
