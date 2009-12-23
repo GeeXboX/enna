@@ -35,7 +35,6 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "activity.h"
 #include "logs.h"
 #include "module.h"
 #include "content.h"
@@ -147,11 +146,11 @@ gocomics_strip_show (const char *file)
 {
     Evas_Object *old;
 
-    edje_object_signal_emit(mod->edje, "strip,hide", "enna");
+    edje_object_signal_emit(mod->edje, "page,hide", "enna");
 
     if (!file)
     {
-        edje_object_signal_emit(mod->edje, "strip,hide", "enna");
+        edje_object_signal_emit(mod->edje, "page,hide", "enna");
         evas_object_del(mod->strip);
         return;
     }
@@ -161,8 +160,9 @@ gocomics_strip_show (const char *file)
     enna_image_fill_inside_set(mod->strip, 1);
     enna_image_file_set(mod->strip, file, NULL);
 
-    edje_object_part_swallow(mod->edje, "comic.strip.swallow", mod->strip);
-    edje_object_signal_emit(mod->edje, "strip,show", "enna");
+    edje_object_part_swallow(mod->edje,
+                             "service.book.page.swallow", mod->strip);
+    edje_object_signal_emit(mod->edje, "page,show", "enna");
     evas_object_del(old);
     evas_object_show(mod->strip);
 }
@@ -236,13 +236,13 @@ gocomics_set_comic_name (void)
 
     if (!mod->comic_name)
     {
-        edje_object_part_text_set (mod->edje, "comic.name.str", "");
+        edje_object_part_text_set (mod->edje, "service.book.name.str", "");
         return;
     }
 
     snprintf (name, sizeof(name), "%s - %.4d/%.2d/%.2d",
               mod->comic_name, mod->year, mod->month, mod->day);
-    edje_object_part_text_set (mod->edje, "comic.name.str", name);
+    edje_object_part_text_set (mod->edje, "service.book.name.str", name);
 }
 
 static void
@@ -328,21 +328,12 @@ gocomics_create_menu (void)
 
     enna_list_select_nth(o, 0);
     mod->list = o;
-    edje_object_part_swallow(mod->edje, "browser.swallow", o);
+    edje_object_part_swallow(mod->edje, "service.browser.swallow", o);
 
-    gocomics_button_add ("icon/mp_rewind",  "comic.btn.prev.swallow",
+    gocomics_button_add ("icon/mp_rewind",  "service.btn.prev.swallow",
                          gocomics_button_prev_clicked_cb);
-    gocomics_button_add ("icon/mp_forward", "comic.btn.next.swallow",
+    gocomics_button_add ("icon/mp_forward", "service.btn.next.swallow",
                          gocomics_button_next_clicked_cb);
-}
-
-static void
-gocomics_create_gui (void)
-{
-    mod->edje = edje_object_add(enna->evas);
-    edje_object_file_set (mod->edje,
-                          enna_config_theme_get(), "activity/gocomics");
-    gocomics_create_menu();
 }
 
 /****************************************************************************/
@@ -391,28 +382,20 @@ bs_gocomics_show (Evas_Object *edje)
 
     mod->path = strdup (dst);
     mod->url = url_new();
+    mod->edje = edje;
 
-    gocomics_create_gui();
-    enna_content_append(ENNA_MODULE_NAME, mod->edje);
-    enna_content_select(ENNA_MODULE_NAME);
-
-    edje_object_signal_emit(mod->edje, "module,show", "enna");
-    edje_object_signal_emit(mod->edje, "content,show", "enna");
-
-    return mod->edje;
+    gocomics_create_menu();
+    return edje;
 }
 
 static void
 bs_gocomics_hide (Evas_Object *edje)
 {
-    edje_object_signal_emit(mod->edje, "module,hide", "enna");
-
     url_free(mod->url);
     ENNA_FREE(mod->comic_name);
     ENNA_FREE(mod->comic_id);
     ENNA_OBJECT_DEL(mod->strip);
     ENNA_OBJECT_DEL(mod->list);
-    ENNA_OBJECT_DEL(mod->edje);
     ENNA_FREE(mod->path);
     ENNA_FREE(mod);
 }

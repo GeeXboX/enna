@@ -34,7 +34,6 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "activity.h"
 #include "logs.h"
 #include "module.h"
 #include "content.h"
@@ -134,7 +133,7 @@ om_page_show (const char *file)
     enna_image_fill_inside_set(mod->page, 1);
     enna_image_file_set(mod->page, file, NULL);
 
-    edje_object_part_swallow(mod->edje, "manga.page.swallow", mod->page);
+    edje_object_part_swallow(mod->edje, "service.book.page.swallow", mod->page);
     edje_object_signal_emit(mod->edje, "page,show", "enna");
     evas_object_del(old);
     evas_object_show(mod->page);
@@ -278,7 +277,7 @@ om_set_manga_name (void)
     m = mod->current_manga;
     if (!m || !m->name)
     {
-        edje_object_part_text_set(mod->edje, "manga.name.str", "");
+        edje_object_part_text_set(mod->edje, "service.book.name.str", "");
         return;
     }
 
@@ -289,11 +288,11 @@ om_set_manga_name (void)
         snprintf(name, sizeof(name), "%s - %d - %s",
                  m->name, mod->current_chapter, mod->page_list ?
                  (char *) eina_list_data_get(mod->page_list) : "01");
-        edje_object_part_text_set(mod->edje, "manga.name.str", name);
+        edje_object_part_text_set(mod->edje, "service.book.name.str", name);
         return;
     }
     else
-        edje_object_part_text_set(mod->edje, "manga.name.str", m->name);
+        edje_object_part_text_set(mod->edje, "service.book.name.str", m->name);
 }
 
 static void
@@ -369,7 +368,7 @@ om_create_menu_manga_chapters_list (manga_t *m)
 
     enna_list_select_nth(o, 0);
     mod->list = o;
-    edje_object_part_swallow(mod->edje, "browser.swallow", o);
+    edje_object_part_swallow(mod->edje, "service.browser.swallow", o);
 }
 
 static void
@@ -587,7 +586,7 @@ om_create_menu_list (void)
 
     enna_list_select_nth(o, 0);
     mod->list = o;
-    edje_object_part_swallow(mod->edje, "browser.swallow", o);
+    edje_object_part_swallow(mod->edje, "service.browser.swallow", o);
 }
 
 static void
@@ -631,14 +630,10 @@ om_button_add (const char *icon, const char *edje,
 static void
 om_create_gui (void)
 {
-    mod->edje = edje_object_add(enna->evas);
-    edje_object_file_set (mod->edje,
-                          enna_config_theme_get(), "activity/onemanga");
-
     om_create_menu_list();
-    om_button_add ("icon/mp_rewind",  "manga.btn.prev.swallow",
+    om_button_add ("icon/mp_rewind",  "service.btn.prev.swallow",
                    om_button_prev_clicked_cb);
-    om_button_add ("icon/mp_forward", "manga.btn.next.swallow",
+    om_button_add ("icon/mp_forward", "service.btn.next.swallow",
                    om_button_next_clicked_cb);
 }
 
@@ -701,23 +696,16 @@ bs_onemanga_show (Evas_Object *edje)
     mod->path = strdup(dst);
     mod->main_menu = 1;
     mod->url = url_new();
-    enna_content_append(ENNA_MODULE_NAME, mod->edje);
+    mod->edje = edje;
 
-    /* parse manga list, once for all
-     * This is meant to be done in init() but would slow down startup.
-     */
+    /* parse manga list, once for all */
     if (!mod->manga_list)
     {
         om_parse_manga_list();
         om_create_gui();
-        enna_content_append(ENNA_MODULE_NAME, mod->edje);
     }
 
-    enna_content_select(ENNA_MODULE_NAME);
-    edje_object_signal_emit(mod->edje, "module,show", "enna");
-    edje_object_signal_emit(mod->edje, "content,show", "enna");
-
-    return mod->edje;
+    return edje;
 }
 
 static void
@@ -726,12 +714,9 @@ bs_onemanga_hide (Evas_Object *edje)
     Eina_List *l;
     manga_t *m;
 
-    edje_object_signal_emit(mod->edje, "module,hide", "enna");
-
     url_free(mod->url);
     ENNA_OBJECT_DEL(mod->page);
     ENNA_OBJECT_DEL(mod->list);
-    ENNA_OBJECT_DEL(mod->edje);
 
     EINA_LIST_FOREACH(mod->manga_list, l, m)
         manga_free(m);

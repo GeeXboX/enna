@@ -86,6 +86,180 @@ group {
          }
       }
 
+      /* gray shaded effect */
+      part {
+         name: "service.shader";
+         mouse_events:  0;
+         clip_to: "service.clip";
+         description {
+            state: "default" 0.0;
+            image.normal: "vertical_gradient.png";
+         }
+      }
+
+      /* Separator beetween list and image */
+      part {
+         name: "separator";
+         mouse_events:  0;
+         clip_to: "service.clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 200;
+            rel1.relative: 0.6 0.0;
+            rel1.offset: -1 0;
+            rel1.to: "service.clip";
+            rel2.relative: 0.6 1.0;
+            rel2.to: "service.clip";
+            image {
+               normal: "separator_v.png";
+            }
+         }
+      }
+
+      /* file browser */
+      part {
+         name: "service.browser.clip";
+         clip_to: "service.clip";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+
+            rel1.relative: 0.6 0.1;
+            rel1.offset: 8 8;
+            rel1.to: "service.clip";
+
+            rel2.relative: 1.0 1.0;
+            rel2.offset: 0 -50;
+            rel2.to: "service.clip";
+         }
+      }
+
+      part {
+         name: "service.browser.swallow";
+         type: SWALLOW;
+         mouse_events : 1;
+         clip_to: "service.browser.clip";
+         description {
+            state: "default" 0.0;
+            rel1.to: "service.browser.clip";
+            rel2.to: "service.browser.clip";
+         }
+      }
+
+      /* Book Name */
+      part {
+         name: "service.book.name.clip";
+         clip_to: "service.clip";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+
+            rel1.relative: 0.0 0.0;
+            rel1.offset: 8 8;
+            rel1.to: "service.clip";
+
+            rel2.relative: 0.6 0.1;
+            rel2.offset: -8 -8;
+            rel2.to: "service.clip";
+         }
+      }
+
+      part {
+         name: "service.book.name.str";
+         type: TEXT;
+         effect: GLOW;
+         clip_to: "service.book.name.clip";
+         description {
+            state: "default" 0.0;
+            color: 160 208 38 255;
+            visible: 1;
+
+            rel1.relative: 0 0;
+            rel1.to: "service.book.name.clip";
+            rel2.relative: 1 1;
+            rel2.to: "service.book.name.clip";
+
+            text.align: 0.5 0.5;
+            text.font: "content_bd";
+            text.size: 60;
+            text.fit: 1 1;
+        }
+      }
+
+      /* Book Page */
+      part {
+         name: "service.book.page.clip";
+         clip_to: "service.clip";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+
+            rel1.relative: 0.0 0.1;
+            rel1.offset: 8 8;
+            rel1.to: "service.clip";
+
+            rel2.relative: 0.6 1.0;
+            rel2.offset: -8 -75;
+            rel2.to: "service.clip";
+         }
+      }
+
+      part {
+         name: "service.book.page.swallow";
+         type: SWALLOW;
+         mouse_events : 1;
+         clip_to: "service.book.page.clip";
+         description {
+            state: "default" 0.0;
+            align: 0.5 0.0;
+
+            rel1.to: "service.book.page.clip";
+            rel2.to: "service.book.page.clip";
+         }
+      }
+
+      /* Control Buttons */
+      part {
+         name: "service.btn.prev.swallow";
+         type: SWALLOW;
+         mouse_events: 1;
+         clip_to: service.clip;
+         description {
+            state: "default" 0.0;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+            rel1.relative: 0.25 0.90;
+            rel1.to: "service.clip";
+            rel2.relative: 0.30 1.00;
+            rel2.to: "service.clip";
+         }
+      }
+
+      part {
+         name: "service.btn.next.swallow";
+         type: SWALLOW;
+         mouse_events: 1;
+         clip_to: service.clip;
+         description {
+            state: "default" 0.0;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+            rel1.relative: 0.30 0.90;
+            rel1.to: "service.clip";
+            rel2.relative: 0.35 1.00;
+            rel2.to: "service.clip";
+         }
+      }
+
    }
 
    programs {
@@ -136,6 +310,22 @@ group {
          action:  STATE_SET "default" 0.0;
          transition: SINUSOIDAL 0.5;
          target: "module.clip";
+      }
+      program {
+         name: "page,show";
+         signal: "page,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "service.book.page.clip";
+      }
+      program {
+         name: "page,hide";
+         signal: "page,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "service.book.page.clip";
       }
    }
 }

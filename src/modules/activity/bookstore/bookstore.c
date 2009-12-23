@@ -92,7 +92,7 @@ bs_service_show (BookStore_Service *s)
     evas_object_show(mod->service_bg);
     evas_object_del(old_img);
 
-    edje_object_part_swallow(mod->edje, "content.swallow", obj);
+    //edje_object_part_swallow(mod->edje, "content.swallow", obj);
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->edje, "service,show", "enna");
 
