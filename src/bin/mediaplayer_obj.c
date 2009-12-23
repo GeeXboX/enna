@@ -625,3 +625,12 @@ enna_mediaplayer_obj_layout_set(Evas_Object *obj, const char *layout)
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     edje_object_signal_emit(elm_layout_edje_get(sd->layout), layout, "enna");
 }
+
+void
+enna_mediaplayer_position_update(Evas_Object *obj)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    enna_mediaplayer_default_seek_backward ();
+    sd->pos = enna_mediaplayer_position_get();
+    slider_position_update(sd);
+}

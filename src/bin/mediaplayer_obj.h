@@ -28,4 +28,5 @@ Evas_Object *enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
 Eina_Bool enna_mediaplayer_obj_input_feed(Evas_Object *obj, enna_input event);
 unsigned char enna_mediaplayer_show_get(Evas_Object *obj);
 void enna_mediaplayer_obj_layout_set(Evas_Object *obj, const char *layout);
+void enna_mediaplayer_position_update(Evas_Object *obj);
 #endif /* MEDIAPLAYER_OBJ_H */
