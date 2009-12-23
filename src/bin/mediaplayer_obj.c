@@ -40,8 +40,6 @@ struct _Smart_Data
     Evas_Object *cv;
     Evas_Object *ctl;
     Evas_Object *sl;
-    Evas_Object *current_time;
-    Evas_Object *total_time;
     Evas_Object *artist;
     Evas_Object *album;
     Evas_Object *title;
