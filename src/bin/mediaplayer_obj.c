@@ -255,7 +255,7 @@ _eos_cb(void *data, int type, void *event)
 }
 
 static void
-slider_position_set(Smart_Data *sd)
+slider_position_update(Smart_Data *sd)
 {
     long ph, pm, ps, lh, lm, ls;
     char buf[256];
@@ -288,7 +288,7 @@ _timer_cb(void *data)
     if(enna_mediaplayer_state_get() == PLAYING)
     {
         sd->pos += 1.0;
-        slider_position_set(sd);
+        slider_position_update(sd);
     }
 
     return 1;
@@ -314,7 +314,7 @@ _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
 
     enna_mediaplayer_default_seek_backward ();
     sd->pos = enna_mediaplayer_position_get();
-    slider_position_set(sd);
+    slider_position_update(sd);
 }
 
 static void
@@ -324,7 +324,7 @@ _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
 
     enna_mediaplayer_default_seek_forward ();
     sd->pos = enna_mediaplayer_position_get();
-    slider_position_set(sd);
+    slider_position_update(sd);
 }
 
 static void
