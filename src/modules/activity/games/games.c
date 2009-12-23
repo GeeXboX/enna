@@ -127,7 +127,7 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
                     item->icon = (char*)eina_stringshare_add(iconpath);
                     item->label = (char*)eina_stringshare_add(desktop->name);
                     item->is_menu = 1;
-                    enna_list_file_append(list, item, _play, NULL, desktop->exec);
+                    enna_list_file_append(list, item, _play, desktop->exec);
                     break;
                 }
             }
