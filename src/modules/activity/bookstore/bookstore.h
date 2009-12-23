@@ -41,4 +41,6 @@ typedef struct _BookStore_Service {
     void (*next)(void *data, Evas_Object *obj, void *ev);
 } BookStore_Service;
 
+void bs_service_page_show (const char *file);
+
 #endif /* BOOKSTORE_H */

@@ -43,7 +43,6 @@
 #include "vfs.h"
 #include "url_utils.h"
 #include "utils.h"
-#include "image.h"
 #include "bookstore.h"
 #include "bookstore_gocomics.h"
 
@@ -64,7 +63,6 @@ typedef struct _BookStore_Service_GoComics {
     int day;
     struct tm *t;
     Evas_Object *edje;
-    Evas_Object *strip;
     Evas_Object *list;
 } BookStore_Service_GoComics;
 
@@ -142,32 +140,6 @@ gocomics_date_next (void)
 }
 
 static void
-gocomics_strip_show (const char *file)
-{
-    Evas_Object *old;
-
-    edje_object_signal_emit(mod->edje, "page,hide", "enna");
-
-    if (!file)
-    {
-        edje_object_signal_emit(mod->edje, "page,hide", "enna");
-        evas_object_del(mod->strip);
-        return;
-    }
-
-    old = mod->strip;
-    mod->strip = enna_image_add(enna->evas);
-    enna_image_fill_inside_set(mod->strip, 1);
-    enna_image_file_set(mod->strip, file, NULL);
-
-    edje_object_part_swallow(mod->edje,
-                             "service.book.page.swallow", mod->strip);
-    edje_object_signal_emit(mod->edje, "page,show", "enna");
-    evas_object_del(old);
-    evas_object_show(mod->strip);
-}
-
-static void
 gocomics_set_comic_strip (void)
 {
     char img_dst[1024] = { 0 };
@@ -222,7 +194,7 @@ gocomics_set_comic_strip (void)
 
     /* display the comic strip */
 comic_strip_show:
-    gocomics_strip_show (img_dst);
+    bs_service_page_show(img_dst);
 
 err_url:
     ENNA_FREE(img_src);
@@ -364,7 +336,6 @@ bs_gocomics_hide (Evas_Object *edje)
     url_free(mod->url);
     ENNA_FREE(mod->comic_name);
     ENNA_FREE(mod->comic_id);
-    ENNA_OBJECT_DEL(mod->strip);
     ENNA_OBJECT_DEL(mod->list);
     ENNA_FREE(mod->path);
     ENNA_FREE(mod);

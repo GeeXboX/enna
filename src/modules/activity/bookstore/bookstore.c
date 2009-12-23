@@ -41,6 +41,7 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "vfs.h"
+#include "image.h"
 #include "bookstore.h"
 #include "bookstore_gocomics.h"
 #include "bookstore_onemanga.h"
@@ -58,6 +59,7 @@ typedef struct _Enna_Module_BookStore {
     Evas_Object *edje;
     Evas_Object *menu;
     Evas_Object *service_bg;
+    Evas_Object *page;
     Eina_List *menu_items;
     BookStore_State state;
     BookStore_Service *current;
@@ -70,6 +72,32 @@ static Enna_Module_BookStore *mod;
 /****************************************************************************/
 /*                      BookStore Service API                               */
 /****************************************************************************/
+
+void
+bs_service_page_show (const char *file)
+{
+    Evas_Object *old;
+
+    edje_object_signal_emit(mod->edje, "page,hide", "enna");
+
+    if (!file)
+    {
+        edje_object_signal_emit(mod->edje, "page,hide", "enna");
+        evas_object_del(mod->page);
+        return;
+    }
+
+    old = mod->page;
+    mod->page = enna_image_add(enna->evas);
+    enna_image_fill_inside_set(mod->page, 1);
+    enna_image_file_set(mod->page, file, NULL);
+
+    edje_object_part_swallow(mod->edje,
+                             "service.book.page.swallow", mod->page);
+    edje_object_signal_emit(mod->edje, "page,show", "enna");
+    evas_object_del(old);
+    evas_object_show(mod->page);
+}
 
 static void
 bs_service_btn_prev_clicked_cb(void *data, Evas_Object *obj, void *ev)
@@ -350,6 +378,7 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     enna_activity_del(ENNA_MODULE_NAME);
 
     ENNA_OBJECT_DEL(mod->edje);
+    ENNA_OBJECT_DEL(mod->page);
     ENNA_OBJECT_DEL(mod->service_bg);
     bs_menu_delete();
     ENNA_FREE(mod);

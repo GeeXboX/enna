@@ -43,7 +43,6 @@
 #include "url_utils.h"
 #include "xml_utils.h"
 #include "utils.h"
-#include "image.h"
 #include "bookstore.h"
 #include "bookstore_onemanga.h"
 
@@ -77,7 +76,6 @@ typedef struct _BookStore_Service_OneManga {
 
     char *path;
     Evas_Object *edje;
-    Evas_Object *page;
     Evas_Object *list;
 } BookStore_Service_OneManga;
 
@@ -112,31 +110,6 @@ manga_free (manga_t *m)
     ENNA_FREE(m->name);
     ENNA_FREE(m->uri);
     ENNA_FREE(m);
-}
-
-static void
-om_page_show (const char *file)
-{
-    Evas_Object *old;
-
-    edje_object_signal_emit(mod->edje, "page,hide", "enna");
-
-    if (!file)
-    {
-        edje_object_signal_emit(mod->edje, "page,hide", "enna");
-        evas_object_del(mod->page);
-        return;
-    }
-
-    old = mod->page;
-    mod->page = enna_image_add(enna->evas);
-    enna_image_fill_inside_set(mod->page, 1);
-    enna_image_file_set(mod->page, file, NULL);
-
-    edje_object_part_swallow(mod->edje, "service.book.page.swallow", mod->page);
-    edje_object_signal_emit(mod->edje, "page,show", "enna");
-    evas_object_del(old);
-    evas_object_show(mod->page);
 }
 
 static void
@@ -266,7 +239,7 @@ err_url_img:
 err_url:
 page_show:
     /* display the manga page */
-    om_page_show(img_dst);
+    bs_service_page_show(img_dst);
 }
 
 static void
@@ -325,7 +298,7 @@ om_reset_current_settings (void)
     mod->current_chapter = 0;
 
     om_page_list_free();
-    om_page_show(NULL);
+    bs_service_page_show(NULL);
     om_display();
 }
 
@@ -678,7 +651,6 @@ bs_onemanga_hide (Evas_Object *edje)
     manga_t *m;
 
     url_free(mod->url);
-    ENNA_OBJECT_DEL(mod->page);
     ENNA_OBJECT_DEL(mod->list);
 
     EINA_LIST_FOREACH(mod->manga_list, l, m)
