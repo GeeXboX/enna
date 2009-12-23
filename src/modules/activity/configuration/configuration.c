@@ -155,18 +155,6 @@ _hide_subpanel(Enna_Config_Panel *p)
 /*                        Activity Class API                                */
 /****************************************************************************/
 static void
-_activity_init (int dummy)
-{
-    //printf("**** ACTIVITY INIT ****\n");
-}
-
-static void
-_activity_shutdown (int dummy)
-{
-    //printf("**** ACTIVITY SDOWN ****\n");
-}
-
-static void
 _activity_show (int dummy)
 {
     // create the enna_content if not created yet
@@ -225,9 +213,9 @@ static Enna_Class_Activity class = {
     "icon/config",
     "background/configuration",
     {
-        _activity_init,
         NULL,
-        _activity_shutdown,
+        NULL,
+        NULL,
         _activity_show,
         _activity_hide,
         _activity_event
