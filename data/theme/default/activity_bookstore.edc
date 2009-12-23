@@ -16,18 +16,6 @@ group {
          }
       }
 
-      /* service background image */
-      part {
-         name: "service.bg.swallow";
-         type: SWALLOW;
-         clip_to: "module.clip";
-         description {
-            state: "default" 0.0;
-            rel1.to: "module.clip";
-            rel2.to: "module.clip";
-         }
-      }
-
       /* gray shaded effect */
       part {
          name: "module.shader";
@@ -83,6 +71,18 @@ group {
             state: "show" 0.0;
             color: 255 255 255 255;
             visible: 1;
+         }
+      }
+
+      /* service background image */
+      part {
+         name: "service.bg.swallow";
+         type: SWALLOW;
+         clip_to: "service.clip";
+         description {
+            state: "default" 0.0;
+            rel1.to: "service.clip";
+            rel2.to: "service.clip";
          }
       }
 
