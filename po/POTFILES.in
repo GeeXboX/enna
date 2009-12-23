@@ -5,6 +5,7 @@ src/bin/exit.c
 src/bin/mainmenu.c
 src/bin/module.c
 src/bin/parser_cdda.c
+src/modules/activity/bookstore/bookstore.c
 src/modules/activity/configuration/configuration.c
 src/modules/activity/configuration/credits.c
 src/modules/activity/configuration/infos.c
