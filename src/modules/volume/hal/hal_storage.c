@@ -33,6 +33,7 @@
 
 #include "enna.h"
 #include "logs.h"
+#include "volumes.h"
 #include "hal_storage.h"
 #include "hal_volume.h"
 
@@ -63,6 +64,7 @@ _dbus_store_prop_cb(void *data, void *reply_data, DBusError *error)
     storage_t *s = data;
     E_Hal_Properties *ret = reply_data;
     int err = 0;
+    char *str = NULL;
 
     if (!ret) goto error;
 
@@ -98,18 +100,51 @@ _dbus_store_prop_cb(void *data, void *reply_data, DBusError *error)
 
     s->icon.drive = e_hal_property_string_get(ret, "storage.icon.drive", &err);
     s->icon.volume = e_hal_property_string_get(ret, "storage.icon.volume", &err);
+
+    str = e_hal_property_string_get(ret, "storage.drive_type", &err);
+
+    if (str)
+    {
+		if (!strcmp (str, "cdrom"))
+            s->type = VOLUME_TYPE_CD;
+        else if (!strcmp (str, "optical"))
+			s->type = VOLUME_TYPE_CD;
+        else if (!strcmp (str, "disk"))
+        {
+			if (s->removable)
+				s->type = VOLUME_TYPE_REMOVABLE_DISK;
+			else
+				s->type = VOLUME_TYPE_HDD;
+		}
+        else if (!strcmp (str, "compact_flash"))
+			s->type = VOLUME_TYPE_COMPACT_FLASH;
+        else if (!strcmp (str, "memory_stick"))
+			s->type = VOLUME_TYPE_MEMORY_STICK;
+        else if (!strcmp (str, "smart_media"))
+			s->type = VOLUME_TYPE_SMART_MEDIA;
+        else if (!strcmp (str, "sd_mmc"))
+			s->type = VOLUME_TYPE_SD_MMC;
+        else if (!strcmp (str, "flashkey"))
+			s->type = VOLUME_TYPE_FLASHKEY;
+        else
+            s->type = VOLUME_TYPE_HDD;
+	}
+
     enna_log(ENNA_MSG_EVENT, "hal-storage",
-              "Adding new HAL storage:\n"       \
-              "  udi: %s\n"                     \
-              "  bus: %s\n"                     \
-              "  drive_type: %s\n"              \
-              "  model: %s\n"                   \
-              "  vendor: %s\n"                  \
-              "  serial: %s\n"                  \
-              "  icon drive: %s\n"              \
-              "  icon volume: %s\n",
-              s->udi, s->bus, s->drive_type, s->model, s->vendor,
-              s->serial, s->icon.drive, s->icon.volume);
+             "Adding new HAL storage:\n"        \
+             "  udi: %s\n"                      \
+             "  bus: %s\n"                      \
+             "  drive_type: %s\n"               \
+             "  model: %s\n"                    \
+             "  vendor: %s\n"                   \
+             "  serial: %s\n"                   \
+             "  icon drive: %s\n"               \
+             "  icon volume: %s\n"              \
+             "  drive_type: %s\n"               \
+             "  removable: %d\n",
+             s->udi, s->bus, s->drive_type, s->model, s->vendor,
+             s->serial, s->icon.drive, s->icon.volume, str, s->removable);
+    free(str);
     s->validated = 1;
     return;
 
