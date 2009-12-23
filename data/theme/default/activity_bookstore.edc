@@ -28,9 +28,9 @@ group {
          }
       }
 
-      /* background */
+      /* gray shaded effect */
       part {
-         name: "background";
+         name: "module.shader";
          mouse_events:  0;
          clip_to: "module.clip";
          description {
