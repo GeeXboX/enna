@@ -42,6 +42,7 @@
 #include "mainmenu.h"
 #include "vfs.h"
 #include "bookstore_gocomics.h"
+#include "bookstore_onemanga.h"
 
 #define ENNA_MODULE_NAME                 "bookstore"
 
@@ -330,7 +331,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     mod->onemanga =
         bs_service_register(_("OneManga"), "icon/onemanga",
-                            NULL, NULL, NULL, NULL);
+                            bs_onemanga_show, bs_onemanga_hide,
+                            bs_onemanga_event, NULL);
 }
 
 void

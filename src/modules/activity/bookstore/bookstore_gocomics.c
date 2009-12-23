@@ -354,7 +354,6 @@ bs_gocomics_event (void *data, enna_input event)
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
              "Key pressed gocomics : %d", event);
 
-#if 0
     switch (event)
     {
     case ENNA_INPUT_LEFT:
@@ -376,7 +375,6 @@ bs_gocomics_event (void *data, enna_input event)
         enna_list_input_feed(mod->list, event);
         break;
     }
-#endif
 }
 
 Evas_Object *
