@@ -140,7 +140,7 @@ static Enna_Class_Activity class =
     2,
     N_("Television"),
     NULL,
-    "icon/tv",
+    "icon/dev/tv",
     "background/tv",
     {
     _class_init,
@@ -167,7 +167,7 @@ Enna_Module_Api ENNA_MODULE_API =
     ENNA_MODULE_VERSION,
     "activity_tv",
     N_("Television"),
-    "icon/tv",
+    "icon/dev/tv",
     N_("View tv channels"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
