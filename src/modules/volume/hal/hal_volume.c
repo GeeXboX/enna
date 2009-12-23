@@ -218,12 +218,12 @@ _dbus_vol_prop_mount_modified_cb(void *data, void *reply_data, DBusError *error)
 
     v->mounted = e_hal_property_bool_get(ret, "volume.is_mounted", &err);
     if (err)  enna_log(ENNA_MSG_ERROR, "hal-volume",
-                        "HAL Error : can't get volume.is_mounted property");
+                       "HAL Error : can't get volume.is_mounted property");
 
     if (v->mount_point) free(v->mount_point);
     v->mount_point = e_hal_property_string_get(ret, "volume.mount_point", &err);
     if (err) enna_log(ENNA_MSG_ERROR, "hal-volume",
-                        "HAL Error : can't get volume.is_mounted property");
+                      "HAL Error : can't get volume.is_mounted property");
 
     enna_log(ENNA_MSG_EVENT, "hal-volume", "udi: %s mount_point: %s mounted: %d\n", v->udi, v->mount_point, v->mounted);
     volume_send_add_notification(v);
@@ -246,8 +246,8 @@ _dbus_prop_modified_cb(void *data, DBusMessage *msg)
 
     if (dbus_message_get_error_name(msg))
     {
-       enna_log(ENNA_MSG_ERROR, "hal-volume", "DBUS ERROR: %s",
-                dbus_message_get_error_name(msg));
+        enna_log(ENNA_MSG_ERROR, "hal-volume", "DBUS ERROR: %s",
+                 dbus_message_get_error_name(msg));
         return;
     }
     if (!dbus_message_iter_init(msg, &iter)) return;
@@ -316,7 +316,7 @@ _dbus_vol_prop_cb(void *data, void *reply_data, DBusError *error)
 
     v->type = VOLUME_TYPE_HDD;
 
- /* Test if volume is an optical disc */
+    /* Test if volume is an optical disc */
     is_disc = e_hal_property_bool_get(ret, "volume.is_disc", &err);
     if (err) goto error;
 
