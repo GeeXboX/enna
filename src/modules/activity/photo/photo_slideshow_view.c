@@ -36,21 +36,121 @@
 #include "input.h"
 #include "photo_slideshow_view.h"
 
+#define ROTATION_DURATION 0.5
 
 typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
+    //Evas_Object *event_rect;
     Evas_Object *controls;
     Evas_Object *slideshow;
+    Evas_Object *event_rect;
     Input_Listener *listener;
     Eina_List *items;
     Evas_Object *btplay;
     Evas_Object *spin;
     int delay;
+    double start;
+    Ecore_Animator *animator;
+    unsigned char state;
 };
 
 /* local subsystem globals */
+
+#if 0
+static int
+_rotate(void *data)
+{
+    Smart_Data *sd = data;
+    double t = ecore_loop_time_get() - sd->start;
+    Evas_Coord x, y, w, h;
+    double p, deg;
+    Evas_Map *map;
+    Evas_Coord cx, cy, cz, px, py, foc;
+    int lx, ly, lz, lr, lg, lb, lar, lag, lab;
+    Evas_Object *photocam;
+    Elm_Slideshow_Item *item;
+
+    printf("Rotate\n");
+
+    item = elm_slideshow_item_current_get(sd->slideshow);
+    if(!item) return 1;
+    photocam = elm_slideshow_item_object_get(item);
+
+    if (!sd->animator) return 0;
+    t = t / ROTATION_DURATION;
+    if (t > 1.0) t = 1.0;
+
+    evas_object_geometry_get(photocam, &x, &y, &w, &h);
+    printf("%d %d %d %d\n", x, y, w, h);
+    map = evas_map_new(4);
+    evas_map_smooth_set(map, 0);
+
+    if (photocam)
+        evas_map_util_points_populate_from_object_full(map, photocam, 0);
+
+    x += (w / 2);
+    y += (h / 2);
+
+    px = x + (w / 2);
+    py = y + (h / 2);
+    foc = 2048;
+
+    lx = cx;
+    ly = cy;
+    lz = -10000;
+    lr = 255;
+    lg = 255;
+    lb = 255;
+    lar = 0;
+    lag = 0;
+    lab = 0;
+
+
+    p = 1.0 - t;
+    p = 1.0 - (p * p);
+    if (sd->state == 0)
+        deg = 90.0 * p;
+    else if (sd->state == 1)
+        deg = 90 + 90 *p;
+    else if (sd->state == 2)
+        deg = 180 + 90 * p;
+    else if (sd->state == 3)
+        deg = 270 + 90 * p;
+
+    evas_map_util_3d_rotate(map, 0.0, 0.0, deg, x, y, 0);
+
+    if (photocam)
+    {
+        evas_map_util_3d_lighting(map, lx, ly, lz, lr, lg, lb, lar, lag, lab);
+        evas_map_util_3d_perspective(map, px, py, 0, foc);
+        evas_object_map_set(photocam, map);
+        evas_object_map_enable_set(photocam, 1);
+    }
+
+    evas_map_free(map);
+
+    if (t >= 1.0)
+    {
+        evas_object_map_enable_set(photocam, 0);
+        sd->animator = NULL;
+        return 0;
+    }
+    return 1;
+}
+#endif
+
+static void
+_rotate_go(Smart_Data *sd)
+{
+#if 0
+    if (!sd->animator) sd->animator = ecore_animator_add(_rotate, sd);
+    sd->start = ecore_loop_time_get();
+    sd->state = (sd->state + 1) % 4;
+    printf("state : %d\n", sd->state);
+#endif
+}
 
 static void
 _controls_show(void *data, Evas *e, Evas_Object *obj, void *event_info)
@@ -123,21 +223,23 @@ _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
 static void
  _button_clicked_rotate_ccw_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    Evas_Object *im;
+    /* Evas_Object *im; */
     Smart_Data *sd = data;
-    Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
+    /*Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
     im = elm_slideshow_item_object_get(it);
-    elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CCW);
+    elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CCW);*/
+    _rotate_go(sd);
 }
 
 static void
  _button_clicked_rotate_cw_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    Evas_Object *im;
+    /* Evas_Object *im; */
     Smart_Data *sd = data;
-    Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
-    im = elm_slideshow_item_object_get(it);
-    elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CW);
+    /* Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow); */
+    /* im = elm_slideshow_item_object_get(it); */
+    /* elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CW); */
+    _rotate_go(sd);
 }
 
 static void
@@ -148,6 +250,38 @@ _spin(void *data, Evas_Object *obj, void *event_info)
     sd->delay = (int)elm_spinner_value_get(sd->spin);
     if (elm_slideshow_timeout_get(sd->slideshow) > 0)
         elm_slideshow_timeout_set(sd->slideshow, sd->delay);
+}
+
+static void
+_mouse_wheel_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    Evas_Object *photocam;
+    Elm_Slideshow_Item *item;
+    Evas_Event_Mouse_Wheel *ev = (Evas_Event_Mouse_Wheel*) event_info;
+    double zoom;
+
+    //unset the mouse wheel
+    ev->event_flags |= EVAS_EVENT_FLAG_ON_HOLD;
+
+    item = elm_slideshow_item_current_get(sd->slideshow);
+    if(!item) return ;
+    photocam = elm_slideshow_item_object_get(item);
+
+    zoom = elm_photocam_zoom_get(photocam);
+
+    if (ev->z > 0)
+        zoom *= 1.1;
+    else
+        zoom /= 1.1;
+
+
+    if (zoom < 10 && zoom > 0.1)
+    {
+        elm_photocam_zoom_mode_set(photocam, ELM_PHOTOCAM_ZOOM_MODE_MANUAL);
+        elm_photocam_zoom_set(photocam, zoom);
+    }
+
 }
 
 static Eina_Bool
@@ -195,8 +329,9 @@ static Evas_Object *
 _slideshow_item_get(void *data, Evas_Object *obj)
 {
     Evas_Object *im;
-    im = elm_image_add(obj);
-    elm_image_file_set(im, data, NULL);
+    im = elm_photocam_add(obj);
+    elm_photocam_zoom_mode_set(im,ELM_PHOTOCAM_ZOOM_MODE_AUTO_FIT);
+    elm_photocam_file_set(im, data);
     return im;
 }
 
@@ -299,12 +434,15 @@ enna_photo_slideshow_add(Evas * evas)
 
     evas_object_data_set(obj, "sd", sd);
 
+    /* Catch mouse wheel event */
+    evas_object_event_callback_add(obj, EVAS_CALLBACK_MOUSE_WHEEL,
+                                   _mouse_wheel_cb, sd);
     /* connect to the input signal */
     sd->listener = enna_input_listener_add("slideshow", _input_events_cb, obj);
     enna_input_listener_demote(sd->listener);
 
-    evas_object_event_callback_add(sd->slideshow, EVAS_CALLBACK_MOUSE_UP, _controls_show, sd);
-    evas_object_event_callback_add(sd->slideshow, EVAS_CALLBACK_MOUSE_MOVE, _controls_show, sd);
+    evas_object_event_callback_add(obj, EVAS_CALLBACK_MOUSE_UP, _controls_show, sd);
+    evas_object_event_callback_add(obj, EVAS_CALLBACK_MOUSE_MOVE, _controls_show, sd);
 
     evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
                                    _sd_del, sd);
