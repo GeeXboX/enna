@@ -204,6 +204,90 @@ images/cover_music2.png \
 images/cover_video.png \
 images/cover_video2.png
 
+# Check which of these files really are still relevant
+IMG_MISC = \
+images/background.png \
+images/black_frame.png \
+images/bottom_pane.png \
+images/browser_cover_bg.png \
+images/bt_base1.png \
+images/bt_base2.png \
+images/bt_base_menuitem.png \
+images/bt_glow.png \
+images/bt_hilight.png \
+images/bt_shine_menuitem.png \
+images/bt_shine.png \
+images/bt_sm_base1.png \
+images/bt_sm_base2.png \
+images/bt_sm_hilight.png \
+images/bt_sm_shine.png \
+images/cd_case.png \
+images/cd_case_reflect.png \
+images/check.png \
+images/circle_shade.png \
+images/clock_base.png \
+images/cover_border.png \
+images/credits.jpg \
+images/edit-redo.png \
+images/edit-undo.png \
+images/filebrowser_tile.png \
+images/frame.png \
+images/icon_playlist.png \
+images/left_pane.png \
+images/letter_bg.png \
+images/mainmenu_background.png \
+images/mainmenu_border_left.png \
+images/mainmenu_border_right.png \
+images/menu_sel_bg.png \
+images/menu_sel_fg.png \
+images/mp_bt_hilight.png \
+images/notifier_bg.png \
+images/panel_bottom.png \
+images/panel_info.png \
+images/panel_left.png \
+images/panel_right.png \
+images/picture_bar.png \
+images/pointer.png \
+images/popup.png \
+images/progress_bar_content.png \
+images/progress_bar_drag.png \
+images/progress_bar.png \
+images/sb_runnerh.png \
+images/sb_runnerv.png \
+images/sel_bg.png \
+images/sel_fg.png \
+images/sel_hilight.png \
+images/sel_shad.png \
+images/sel_shine_black.png \
+images/sel_shine_white.png \
+images/separator_h.png \
+images/separator_v.png \
+images/shad_circ.png \
+images/shadow.png \
+images/shad_square.png \
+images/sl_bg_over.png \
+images/sl_bg.png \
+images/sl_bt_0.png \
+images/sl_bt_1.png \
+images/sl_bt2_0_0.png \
+images/sl_bt2_0_1.png \
+images/sl_bt2_0_2.png \
+images/sl_bt2_1.png \
+images/sl_bt2_2.png \
+images/sl_bt_2.png \
+images/sl_units.png \
+images/text_border.png \
+images/transition_vswipe_gap.png \
+images/vertical_gradient.png \
+images/video_info_panel.png \
+images/volume_bg.png \
+images/volume_bg_shadow.png \
+images/volume_icon.png \
+images/volume_icon_reflection.png \
+images/volume_level_glow.png \
+images/volume_level.png \
+images/volume_level_shadow.png
+
 FONTS = \
 fonts/content.ttf \
 fonts/content_bold.ttf
@@ -249,6 +333,7 @@ EXTRA_DIST = \
   $(IMG_RATINGS) \
   $(IMG_MOVIE_FLAGS) \
   $(IMG_COVERS) \
+  $(IMG_MISC) \
   $(FONTS) \
   $(EDC)
 
