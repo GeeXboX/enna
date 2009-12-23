@@ -94,6 +94,7 @@ bs_service_register (const char *label, const char *icon,
     s->icon  = eina_stringshare_add(icon);
     s->show  = show;
     s->hide  = hide;
+    s->event = event;
     s->data  = data;
 
     return s;
