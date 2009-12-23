@@ -36,7 +36,6 @@
 #include "volumes.h"
 #include "module.h"
 
-#include "music.h"
 #include "music_lyrics.h"
 
 #define ENNA_MODULE_NAME "music"
