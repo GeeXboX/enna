@@ -350,7 +350,7 @@ gocomics_create_gui (void)
 /****************************************************************************/
 
 static Eina_Bool
-bs_gocomics_event (void *data, enna_input event)
+bs_gocomics_event (Evas_Object *edje, enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
              "Key pressed gocomics : %d", event);
@@ -377,7 +377,7 @@ bs_gocomics_event (void *data, enna_input event)
 }
 
 static Evas_Object *
-bs_gocomics_show (void *data)
+bs_gocomics_show (Evas_Object *edje)
 {
     char dst[1024] = { 0 };
 
@@ -403,7 +403,7 @@ bs_gocomics_show (void *data)
 }
 
 static void
-bs_gocomics_hide (void *data)
+bs_gocomics_hide (Evas_Object *edje)
 {
     edje_object_signal_emit(mod->edje, "module,hide", "enna");
 
@@ -428,5 +428,4 @@ BookStore_Service bs_gocomics = {
     bs_gocomics_show,
     bs_gocomics_hide,
     bs_gocomics_event,
-    NULL
 };

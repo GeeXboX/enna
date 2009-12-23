@@ -647,7 +647,7 @@ om_create_gui (void)
 /****************************************************************************/
 
 static Eina_Bool
-bs_onemanga_event (void *data, enna_input event)
+bs_onemanga_event (Evas_Object *edje, enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
              "Key pressed onemanga : %d", event);
@@ -686,7 +686,7 @@ bs_onemanga_event (void *data, enna_input event)
 }
 
 static Evas_Object *
-bs_onemanga_show (void *data)
+bs_onemanga_show (Evas_Object *edje)
 {
    char dst[1024] = { 0 };
 
@@ -721,7 +721,7 @@ bs_onemanga_show (void *data)
 }
 
 static void
-bs_onemanga_hide (void *data)
+bs_onemanga_hide (Evas_Object *edje)
 {
     Eina_List *l;
     manga_t *m;
@@ -753,5 +753,4 @@ BookStore_Service bs_onemanga = {
     bs_onemanga_show,
     bs_onemanga_hide,
     bs_onemanga_event,
-    NULL
 };

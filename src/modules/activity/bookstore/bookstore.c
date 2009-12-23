@@ -81,7 +81,7 @@ bs_service_show (BookStore_Service *s)
         return;
 
     if (s->show)
-        obj = (s->show)(s->data);
+        obj = (s->show)(mod->edje);
     if (!obj)
         return;
 
@@ -107,7 +107,7 @@ bs_service_hide (BookStore_Service *s)
         return;
 
     if (s && s->hide)
-        (s->hide)(s->data);
+        (s->hide)(mod->edje);
 
     evas_object_hide(mod->service_bg);
     edje_object_part_swallow(mod->edje, "service.bg.swallow", NULL);
@@ -229,7 +229,7 @@ _class_event (enna_input event)
     {
         Eina_Bool b = ENNA_EVENT_BLOCK;
         if (mod->current && mod->current->event)
-            b = (mod->current->event)(mod->current->data, event);
+            b = (mod->current->event)(mod->edje, event);
 
         if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_EXIT))
         {
