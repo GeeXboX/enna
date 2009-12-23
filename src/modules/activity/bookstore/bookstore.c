@@ -143,7 +143,7 @@ bs_service_hide (BookStore_Service *s)
         (s->hide)(s->data);
 
     mod->current = NULL;
-    mod->state = BS_SERVICE_VIEW;
+    mod->state = BS_MENU_VIEW;
 }
 
 /****************************************************************************/
