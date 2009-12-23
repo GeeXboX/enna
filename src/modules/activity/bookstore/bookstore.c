@@ -94,7 +94,7 @@ bs_service_show (BookStore_Service *s)
 
     edje_object_part_swallow(mod->edje, "content.swallow", obj);
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
-    edje_object_signal_emit(mod->edje, "content,show", "enna");
+    edje_object_signal_emit(mod->edje, "service,show", "enna");
 
     mod->state = BS_SERVICE_VIEW;
     mod->current = s;
@@ -113,6 +113,9 @@ bs_service_hide (BookStore_Service *s)
     edje_object_part_swallow(mod->edje, "service.bg.swallow", NULL);
     mod->current = NULL;
     mod->state = BS_MENU_VIEW;
+
+    edje_object_signal_emit(mod->edje, "service,hide", "enna");
+    edje_object_signal_emit(mod->edje, "menu,show", "enna");
 }
 
 /****************************************************************************/
@@ -234,7 +237,6 @@ _class_event (enna_input event)
         if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_EXIT))
         {
             bs_service_hide(mod->current);
-            edje_object_signal_emit(mod->edje, "menu,show", "enna");
         }
         break;
     }
