@@ -269,7 +269,7 @@ _class_event (enna_input event)
 
 static Enna_Class_Activity class = {
     ENNA_MODULE_NAME,
-    10,
+    9,
     N_("Weather"),
     NULL,
     "icon/weather",
