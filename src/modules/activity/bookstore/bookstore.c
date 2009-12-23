@@ -41,6 +41,7 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "vfs.h"
+#include "bookstore.h"
 #include "bookstore_gocomics.h"
 #include "bookstore_onemanga.h"
 
@@ -51,15 +52,6 @@ typedef enum _BookStore_State
     BS_MENU_VIEW,
     BS_SERVICE_VIEW,
 } BookStore_State;
-
-typedef struct _BookStore_Service {
-    const char *label;
-    const char *icon;
-    Evas_Object *(*show)(void *data);
-    void (*hide)(void *data);
-    Eina_Bool (*event) (void *data, enna_input event);
-    void *data;
-} BookStore_Service;
 
 typedef struct _Enna_Module_BookStore {
     Evas *e;
@@ -77,42 +69,6 @@ static Enna_Module_BookStore *mod;
 /****************************************************************************/
 /*                      BookStore Service API                               */
 /****************************************************************************/
-
-static BookStore_Service *
-bs_service_register (const char *label, const char *icon,
-                     Evas_Object *(*show) (void *data),
-                     void (*hide) (void *data),
-                     Eina_Bool (*event) (void *data, enna_input event),
-                     void *data)
-{
-    BookStore_Service *s;
-
-    if (!label || !icon)
-        return NULL;
-
-    s        = ENNA_NEW(BookStore_Service, 1);
-    s->label = eina_stringshare_add(label);
-    s->icon  = eina_stringshare_add(icon);
-    s->show  = show;
-    s->hide  = hide;
-    s->event = event;
-    s->data  = data;
-
-    return s;
-}
-
-static void
-bs_service_unregister (BookStore_Service *s)
-{
-    if (!s)
-        return;
-
-    if (s->label)
-        eina_stringshare_del(s->label);
-    if (s->icon)
-        eina_stringshare_del(s->icon);
-    ENNA_FREE(s);
-}
 
 static void
 bs_service_show (BookStore_Service *s)
@@ -321,22 +277,13 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     enna_activity_add(&class);
 
-    mod->gocomics =
-        bs_service_register(_("GoComics"), "icon/gocomics",
-                            bs_gocomics_show, bs_gocomics_hide,
-                            bs_gocomics_event, NULL);
-
-    mod->onemanga =
-        bs_service_register(_("OneManga"), "icon/onemanga",
-                            bs_onemanga_show, bs_onemanga_hide,
-                            bs_onemanga_event, NULL);
+    mod->gocomics = &bs_gocomics;
+    mod->onemanga = &bs_onemanga;
 }
 
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
-    bs_service_unregister(mod->gocomics);
-    bs_service_unregister(mod->onemanga);
     enna_activity_del(ENNA_MODULE_NAME);
 
     ENNA_OBJECT_DEL(mod->edje);

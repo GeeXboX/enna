@@ -45,6 +45,7 @@
 #include "url_utils.h"
 #include "utils.h"
 #include "image.h"
+#include "bookstore.h"
 #include "bookstore_gocomics.h"
 
 #define ENNA_MODULE_NAME         "gocomics"
@@ -345,10 +346,10 @@ gocomics_create_gui (void)
 }
 
 /****************************************************************************/
-/*                         Public Service API                               */
+/*                         Private Service API                              */
 /****************************************************************************/
 
-Eina_Bool
+static Eina_Bool
 bs_gocomics_event (void *data, enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -375,7 +376,7 @@ bs_gocomics_event (void *data, enna_input event)
     }
 }
 
-Evas_Object *
+static Evas_Object *
 bs_gocomics_show (void *data)
 {
     char dst[1024] = { 0 };
@@ -401,7 +402,7 @@ bs_gocomics_show (void *data)
     return mod->edje;
 }
 
-void
+static void
 bs_gocomics_hide (void *data)
 {
     edje_object_signal_emit(mod->edje, "module,hide", "enna");
@@ -415,3 +416,16 @@ bs_gocomics_hide (void *data)
     ENNA_FREE(mod->path);
     ENNA_FREE(mod);
 }
+
+/****************************************************************************/
+/*                         Public Service API                               */
+/****************************************************************************/
+
+BookStore_Service bs_gocomics = {
+    "GoComics",
+    "icon/gocomics",
+    bs_gocomics_show,
+    bs_gocomics_hide,
+    bs_gocomics_event,
+    NULL
+};

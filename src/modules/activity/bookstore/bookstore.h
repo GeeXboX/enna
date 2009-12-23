@@ -27,9 +27,16 @@
  *
  */
 
-#ifndef BOOKSTORE_ONEMANGA_H
-#define BOOKSTORE_ONEMANGA_H
+#ifndef BOOKSTORE_H
+#define BOOKSTORE_H
 
-BookStore_Service bs_onemanga;
+typedef struct _BookStore_Service {
+    const char *label;
+    const char *icon;
+    Evas_Object *(*show)(void *data);
+    void (*hide)(void *data);
+    Eina_Bool (*event) (void *data, enna_input event);
+    void *data;
+} BookStore_Service;
 
-#endif /* BOOKSTORE_ONEMANGA_H */
+#endif /* BOOKSTORE_H */

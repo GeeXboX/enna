@@ -45,6 +45,7 @@
 #include "xml_utils.h"
 #include "utils.h"
 #include "image.h"
+#include "bookstore.h"
 #include "bookstore_onemanga.h"
 
 #define ENNA_MODULE_NAME                 "onemanga"
@@ -642,10 +643,10 @@ om_create_gui (void)
 }
 
 /****************************************************************************/
-/*                         Public Service API                               */
+/*                         Private Service API                              */
 /****************************************************************************/
 
-Eina_Bool
+static Eina_Bool
 bs_onemanga_event (void *data, enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -684,7 +685,7 @@ bs_onemanga_event (void *data, enna_input event)
     }
 }
 
-Evas_Object *
+static Evas_Object *
 bs_onemanga_show (void *data)
 {
    char dst[1024] = { 0 };
@@ -719,7 +720,7 @@ bs_onemanga_show (void *data)
     return mod->edje;
 }
 
-void
+static void
 bs_onemanga_hide (void *data)
 {
     Eina_List *l;
@@ -740,3 +741,16 @@ bs_onemanga_hide (void *data)
     ENNA_FREE(mod->path);
     ENNA_FREE(mod);
 }
+
+/****************************************************************************/
+/*                         Public Service API                               */
+/****************************************************************************/
+
+BookStore_Service bs_onemanga = {
+    "OneManga",
+    "icon/onemanga",
+    bs_onemanga_show,
+    bs_onemanga_hide,
+    bs_onemanga_event,
+    NULL
+};
