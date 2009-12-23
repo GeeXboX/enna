@@ -283,30 +283,6 @@ gocomics_button_next_clicked_cb(void *data, Evas_Object *obj, void *ev)
 }
 
 static void
-gocomics_button_add (const char *icon, const char *edje,
-                     void (*cb) (void *data, Evas_Object *obj, void *ev))
-{
-    Evas_Object *layout, *ic, *bt;
-
-    layout = elm_layout_add(enna->layout);
-
-    ic = elm_icon_add(layout);
-    elm_icon_file_set(ic, enna_config_theme_get(), icon);
-    elm_icon_scale_set(ic, 0, 0);
-    evas_object_show(ic);
-
-    bt = elm_button_add(layout);
-    evas_object_smart_callback_add(bt, "clicked", cb, NULL);
-    elm_button_icon_set(bt, ic);
-    elm_object_style_set(bt, "mediaplayer");
-    evas_object_size_hint_weight_set(bt, 0.0, 1.0);
-    evas_object_size_hint_align_set(bt, 0.5, 0.5);
-    evas_object_show(bt);
-
-    edje_object_part_swallow(mod->edje, edje, bt);
-}
-
-static void
 gocomics_create_menu (void)
 {
     Evas_Object *o;
@@ -330,11 +306,6 @@ gocomics_create_menu (void)
     enna_list_select_nth(o, 0);
     mod->list = o;
     edje_object_part_swallow(mod->edje, "service.browser.swallow", o);
-
-    gocomics_button_add ("icon/mp_rewind",  "service.btn.prev.swallow",
-                         gocomics_button_prev_clicked_cb);
-    gocomics_button_add ("icon/mp_forward", "service.btn.next.swallow",
-                         gocomics_button_next_clicked_cb);
 }
 
 /****************************************************************************/

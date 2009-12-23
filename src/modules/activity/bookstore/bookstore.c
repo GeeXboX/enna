@@ -72,6 +72,44 @@ static Enna_Module_BookStore *mod;
 /****************************************************************************/
 
 static void
+bs_service_btn_prev_clicked_cb(void *data, Evas_Object *obj, void *ev)
+{
+    if (mod->current && mod->current->prev)
+        (mod->current->prev)(data, obj, ev);
+}
+
+static void
+bs_service_btn_next_clicked_cb(void *data, Evas_Object *obj, void *ev)
+{
+    if (mod->current && mod->current->next)
+        (mod->current->next)(data, obj, ev);
+}
+
+static void
+bs_service_ctrl_btn_add (const char *icon, const char *part,
+                         void (*cb) (void *data, Evas_Object *obj, void *ev))
+{
+    Evas_Object *layout, *ic, *bt;
+
+    layout = elm_layout_add(enna->layout);
+
+    ic = elm_icon_add(layout);
+    elm_icon_file_set(ic, enna_config_theme_get(), icon);
+    elm_icon_scale_set(ic, 0, 0);
+    evas_object_show(ic);
+
+    bt = elm_button_add(layout);
+    evas_object_smart_callback_add(bt, "clicked", cb, NULL);
+    elm_button_icon_set(bt, ic);
+    elm_object_style_set(bt, "mediaplayer");
+    evas_object_size_hint_weight_set(bt, 0.0, 1.0);
+    evas_object_size_hint_align_set(bt, 0.5, 0.5);
+    evas_object_show(bt);
+
+    edje_object_part_swallow(mod->edje, part, bt);
+}
+
+static void
 bs_service_set_bg (const char *bg)
 {
     if (bg)
@@ -103,6 +141,11 @@ bs_service_show (BookStore_Service *s)
         (s->show)(mod->edje);
 
     bs_service_set_bg(s->bg);
+    bs_service_ctrl_btn_add ("icon/mp_rewind",  "service.btn.prev.swallow",
+                             bs_service_btn_prev_clicked_cb);
+    bs_service_ctrl_btn_add ("icon/mp_forward", "service.btn.next.swallow",
+                             bs_service_btn_next_clicked_cb);
+
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->edje, "service,show", "enna");
 
