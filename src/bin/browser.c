@@ -546,7 +546,7 @@ _browse(void *data)
            if (!eina_list_count(sd->files))
             {
 
-                sd->file = enna_vfs_create_directory(sd->file->uri, _("No media found !"), "icon_nofile", NULL);
+                sd->file = enna_vfs_create_directory(sd->file->uri, _("No media found !"), "icon/nofile", NULL);
                 sd->files = NULL;
                 sd->files = eina_list_append(sd->files,sd->file);
 
