@@ -277,7 +277,8 @@ om_set_manga_name (void)
     m = mod->current_manga;
     if (!m || !m->name)
     {
-        edje_object_part_text_set(mod->edje, "service.book.name.str", "");
+        edje_object_part_text_set(mod->edje,
+                                  "service.book.name.str", "OneManga");
         return;
     }
 

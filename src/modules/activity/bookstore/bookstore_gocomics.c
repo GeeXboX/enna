@@ -236,7 +236,8 @@ gocomics_set_comic_name (void)
 
     if (!mod->comic_name)
     {
-        edje_object_part_text_set (mod->edje, "service.book.name.str", "");
+        edje_object_part_text_set (mod->edje,
+                                   "service.book.name.str", "GoComics");
         return;
     }
 
@@ -384,6 +385,7 @@ bs_gocomics_show (Evas_Object *edje)
     mod->url = url_new();
     mod->edje = edje;
 
+    gocomics_set_comic_name();
     gocomics_create_menu();
 }
 
