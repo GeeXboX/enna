@@ -66,7 +66,7 @@ STOCK_ICON("unknown_cover.png",                 "icon/unknown_cover");
 /* Activities Backgrounds */
 STOCK_ICON_RATIO("bg_bookstore.png",      "background/bookstore",     16/9);
 STOCK_ICON_RATIO("bg_default.png",        "background/configuration", 16/9);
-STOCK_ICON_RATIO("bg_default.png",        "background/games",         16/9);
+STOCK_ICON_RATIO("bg_games.png",          "background/games",         16/9);
 STOCK_ICON_RATIO("bg_gocomics.png",       "background/gocomics",      16/9);
 STOCK_ICON_RATIO("bg_music.jpg",          "background/music",         16/9);
 STOCK_ICON_RATIO("bg_onemanga.png",       "background/onemanga",      16/9);
