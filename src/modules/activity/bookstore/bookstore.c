@@ -267,7 +267,7 @@ _class_event (enna_input event)
             break;
         }
         default:
-            if (mod->current && mod->current->hide)
+            if (mod->current && mod->current->event)
                 (mod->current->event)(mod->current->data, event);
             break;
         }
