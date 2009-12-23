@@ -67,15 +67,15 @@ STOCK_ICON("arrow_right.png", "icon/arrow_right")
 
 /* Activities Backgrounds */
 STOCK_ICON_RATIO("bg_bookstore.png",      "background/bookstore", 16/9)
-STOCK_ICON_RATIO("default_backdrop.png",  "background/configuration", 16/9)
-STOCK_ICON_RATIO("default_backdrop.png",  "background/games", 16/9)
+STOCK_ICON_RATIO("bg_default.png",        "background/configuration", 16/9)
+STOCK_ICON_RATIO("bg_default.png",        "background/games", 16/9)
 STOCK_ICON_RATIO("bg_gocomics.png",       "background/gocomics", 16/9)
 STOCK_ICON_RATIO("bg_onemanga.png",       "background/onemanga", 16/9)
-STOCK_ICON_RATIO("bg3.jpg",               "background/music", 16/9)
-STOCK_ICON_RATIO("bg4.jpg",               "background/photo", 16/9)
-STOCK_ICON_RATIO("default_backdrop.png",  "background/tv", 16/9)
-STOCK_ICON_RATIO("bg1.jpg",               "background/video", 16/9)
-STOCK_ICON_RATIO("bg2.jpg",               "background/weather", 16/9)
+STOCK_ICON_RATIO("bg_music.jpg",          "background/music", 16/9)
+STOCK_ICON_RATIO("bg_photo.jpg",          "background/photo", 16/9)
+STOCK_ICON_RATIO("bg_default.png",        "background/tv", 16/9)
+STOCK_ICON_RATIO("bg_video.jpg",          "background/video", 16/9)
+STOCK_ICON_RATIO("bg_weather.jpg",        "background/weather", 16/9)
 
 /* Devices */
 STOCK_ICON("dev_bluetooth.png",     "icon/dev/bluetooth")
