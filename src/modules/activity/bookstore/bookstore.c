@@ -57,7 +57,7 @@ typedef struct _BookStore_Service {
     const char *icon;
     Evas_Object *(*show)(void *data);
     void (*hide)(void *data);
-    void (*event) (void *data, enna_input event);
+    Eina_Bool (*event) (void *data, enna_input event);
     void *data;
 } BookStore_Service;
 
@@ -82,7 +82,7 @@ static BookStore_Service *
 bs_service_register (const char *label, const char *icon,
                      Evas_Object *(*show) (void *data),
                      void (*hide) (void *data),
-                     void (*event) (void *data, enna_input event),
+                     Eina_Bool (*event) (void *data, enna_input event),
                      void *data)
 {
     BookStore_Service *s;
@@ -260,19 +260,16 @@ _class_event (enna_input event)
     /* Service View */
     case BS_SERVICE_VIEW:
     {
-        switch (event)
-        {
-        case ENNA_INPUT_EXIT:
+        Eina_Bool b = ENNA_EVENT_BLOCK;
+        if (mod->current && mod->current->event)
+            b = (mod->current->event)(mod->current->data, event);
+
+        if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_EXIT))
         {
             bs_service_hide(mod->current);
             edje_object_signal_emit(mod->edje, "menu,show", "enna");
-            break;
         }
-        default:
-            if (mod->current && mod->current->event)
-                (mod->current->event)(mod->current->data, event);
-            break;
-        }
+        break;
     }
     default:
         break;

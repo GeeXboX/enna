@@ -645,7 +645,7 @@ om_create_gui (void)
 /*                         Public Service API                               */
 /****************************************************************************/
 
-void
+Eina_Bool
 bs_onemanga_event (void *data, enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -656,29 +656,31 @@ bs_onemanga_event (void *data, enna_input event)
     case ENNA_INPUT_LEFT:
         om_page_prev();
         om_display();
-        break;
+        return ENNA_EVENT_BLOCK;
     case ENNA_INPUT_RIGHT:
         om_page_next();
         om_display();
-        break;
+        return ENNA_EVENT_BLOCK;
     case ENNA_INPUT_EXIT:
         if (mod->main_menu)
         {
             enna_content_hide();
-            enna_mainmenu_show();
+            return ENNA_EVENT_CONTINUE;
         }
         else
+        {
             om_create_menu_list();
+            return ENNA_EVENT_BLOCK;
+        }
         break;
     case ENNA_INPUT_OK:
         if (mod->main_menu)
             om_select_manga(enna_list_selected_data_get(mod->list));
         else
             om_select_chapter(enna_list_selected_data_get(mod->list));
-        break;
+        return ENNA_EVENT_BLOCK;
     default:
-        enna_list_input_feed(mod->list, event);
-        break;
+        return enna_list_input_feed(mod->list, event);
     }
 }
 

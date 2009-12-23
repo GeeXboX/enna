@@ -30,7 +30,7 @@
 #ifndef BOOKSTORE_GOCOMICS_H
 #define BOOKSTORE_GOCOMICS_H
 
-void bs_gocomics_event (void *data, enna_input event);
+Eina_Bool bs_gocomics_event (void *data, enna_input event);
 
 Evas_Object *bs_gocomics_show (void *data);
 

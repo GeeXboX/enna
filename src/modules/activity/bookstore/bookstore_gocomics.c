@@ -348,7 +348,7 @@ gocomics_create_gui (void)
 /*                         Public Service API                               */
 /****************************************************************************/
 
-void
+Eina_Bool
 bs_gocomics_event (void *data, enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -359,21 +359,19 @@ bs_gocomics_event (void *data, enna_input event)
     case ENNA_INPUT_LEFT:
         gocomics_date_previous();
         gocomics_display();
-        break;
+        return ENNA_EVENT_BLOCK;
     case ENNA_INPUT_RIGHT:
         gocomics_date_next();
         gocomics_display();
-        break;
+        return ENNA_EVENT_BLOCK;
     case ENNA_INPUT_EXIT:
         enna_content_hide();
-        enna_mainmenu_show();
-        break;
+        return ENNA_EVENT_CONTINUE;
     case ENNA_INPUT_OK:
         gocomics_select_comic(enna_list_selected_data_get(mod->list));
-        break;
+        return ENNA_EVENT_BLOCK;
     default:
-        enna_list_input_feed(mod->list, event);
-        break;
+        return enna_list_input_feed(mod->list, event);
     }
 }
 

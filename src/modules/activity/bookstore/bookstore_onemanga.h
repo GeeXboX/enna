@@ -30,7 +30,7 @@
 #ifndef BOOKSTORE_ONEMANGA_H
 #define BOOKSTORE_ONEMANGA_H
 
-void bs_onemanga_event (void *data, enna_input event);
+Eina_Bool bs_onemanga_event (void *data, enna_input event);
 
 Evas_Object *bs_onemanga_show (void *data);
 
