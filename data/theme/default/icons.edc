@@ -71,7 +71,7 @@ STOCK_ICON_RATIO("bg_gocomics.png",       "background/gocomics",      16/9);
 STOCK_ICON_RATIO("bg_music.jpg",          "background/music",         16/9);
 STOCK_ICON_RATIO("bg_onemanga.png",       "background/onemanga",      16/9);
 STOCK_ICON_RATIO("bg_photo.jpg",          "background/photo",         16/9);
-STOCK_ICON_RATIO("bg_default.png",        "background/tv",            16/9);
+STOCK_ICON_RATIO("bg_tv.jpg",             "background/tv",            16/9);
 STOCK_ICON_RATIO("bg_video.jpg",          "background/video",         16/9);
 STOCK_ICON_RATIO("bg_weather.jpg",        "background/weather",       16/9);
 

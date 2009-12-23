@@ -52,6 +52,7 @@ images/bg_gocomics.png \
 images/bg_music.jpg \
 images/bg_onemanga.png \
 images/bg_photo.jpg \
+images/bg_tv.jpg \
 images/bg_video.jpg \
 images/bg_weather.jpg
 
