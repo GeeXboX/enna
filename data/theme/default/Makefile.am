@@ -54,7 +54,7 @@ images/mp_stop.png \
 images/icon_artist.png \
 images/unknown_cover.png \
 images/icon_directory.png \
-images/default_backdrop.png \
+images/bg_default.png \
 images/icon_weather.png \
 images/ctrl_back.png \
 images/pointer.png \
