@@ -41,6 +41,7 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "vfs.h"
+#include "bookstore_gocomics.h"
 
 #define ENNA_MODULE_NAME                 "bookstore"
 
@@ -323,7 +324,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     mod->gocomics =
         bs_service_register(_("GoComics"), "icon/gocomics",
-                            NULL, NULL, NULL, NULL);
+                            bs_gocomics_show, bs_gocomics_hide,
+                            bs_gocomics_event, NULL);
 
     mod->onemanga =
         bs_service_register(_("OneManga"), "icon/onemanga",
