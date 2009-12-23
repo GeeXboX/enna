@@ -72,23 +72,37 @@ static Enna_Module_BookStore *mod;
 /****************************************************************************/
 
 static void
+bs_service_set_bg (const char *bg)
+{
+    if (bg)
+    {
+        Evas_Object *old;
+
+        old = mod->service_bg;
+        mod->service_bg = edje_object_add(evas_object_evas_get(mod->edje));
+        edje_object_file_set(mod->service_bg, enna_config_theme_get(), bg);
+        edje_object_part_swallow(mod->edje,
+                                 "service.bg.swallow", mod->service_bg);
+        evas_object_show(mod->service_bg);
+        evas_object_del(old);
+    }
+    else
+    {
+        evas_object_hide(mod->service_bg);
+        edje_object_part_swallow(mod->edje, "service.bg.swallow", NULL);
+    }
+}
+
+static void
 bs_service_show (BookStore_Service *s)
 {
-    Evas_Object *old_img;
-
     if (!s)
         return;
 
     if (s->show)
         (s->show)(mod->edje);
 
-    old_img = mod->service_bg;
-    mod->service_bg = edje_object_add(evas_object_evas_get(mod->edje));
-    edje_object_file_set(mod->service_bg, enna_config_theme_get(), s->bg);
-    edje_object_part_swallow(mod->edje, "service.bg.swallow", mod->service_bg);
-    evas_object_show(mod->service_bg);
-    evas_object_del(old_img);
-
+    bs_service_set_bg(s->bg);
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
     edje_object_signal_emit(mod->edje, "service,show", "enna");
 
@@ -105,11 +119,10 @@ bs_service_hide (BookStore_Service *s)
     if (s && s->hide)
         (s->hide)(mod->edje);
 
-    evas_object_hide(mod->service_bg);
-    edje_object_part_swallow(mod->edje, "service.bg.swallow", NULL);
     mod->current = NULL;
     mod->state = BS_MENU_VIEW;
 
+    bs_service_set_bg(NULL);
     edje_object_signal_emit(mod->edje, "service,hide", "enna");
     edje_object_signal_emit(mod->edje, "menu,show", "enna");
 }
