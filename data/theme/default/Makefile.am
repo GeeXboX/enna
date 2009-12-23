@@ -43,7 +43,6 @@ images/icon_video.png \
 images/weather_foggy.png \
 images/bt_glow.png \
 images/mp_next.png \
-images/loading-4.png \
 images/popup.png \
 images/rating1.png \
 images/volume_level_glow.png \
@@ -132,20 +131,16 @@ images/dev_tv.png \
 images/weather_sun_clouds.png \
 images/weather_sun_snow.png \
 images/menu_sel_bg.png \
-images/loading-7.png \
 images/icon_enna.png \
 images/icon_games.png \
 images/rating2.png \
-images/loading-0.png \
 images/bt_sm_base2.png \
 images/icon_home_mini.png \
 images/weather_sun_mostly_cloudy.png \
 images/cd_case.png \
 images/folder_favorites.png \
-images/loading-1.png \
 images/weather_heavy_rain.png \
 images/weather_windy.png \
-images/loading-5.png \
 images/volume_icon_reflection.png \
 images/progress_bar_drag.png \
 images/bt_shine_menuitem.png \
@@ -156,7 +151,6 @@ images/bt_shine.png \
 images/icon_library.png \
 images/rating5.png \
 images/letter_bg.png \
-images/loading-6.png \
 images/weather_summer.jpeg \
 images/weather_sun_light_clouds.png \
 images/bt_hilight.png \
@@ -164,7 +158,6 @@ images/dev_camera.png \
 images/icon_infos.png \
 images/mp_prev.png \
 images/panel_bottom.png \
-images/loading-3.png \
 images/icon_upnp.png \
 images/cd_case_reflect.png \
 images/weather_cloudy.png \
@@ -215,7 +208,6 @@ images/icon_music.png \
 images/clock_base.png \
 images/dev_nfs.png \
 images/icon_config.png \
-images/loading-2.png \
 images/go-first.png \
 images/go-last.png \
 images/icon_rotate_cw.png \
