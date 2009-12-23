@@ -254,6 +254,31 @@ _eos_cb(void *data, int type, void *event)
     return 1;
 }
 
+static void
+slider_position_set(Smart_Data *sd)
+{
+    long ph, pm, ps, lh, lm, ls;
+    char buf[256];
+    char buf2[256];
+
+    /* FIXME : create a dedicated function to do that */
+    lh = sd->len / 3600000;
+    lm = sd->len / 60 - (lh * 60);
+    ls = sd->len - (lm * 60);
+    ph = sd->pos / 3600;
+    pm = sd->pos / 60 - (ph * 60);
+    ps = sd->pos - (pm * 60);
+    snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
+    snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
+
+    edje_object_part_text_set(elm_layout_edje_get(sd->layout), "text.length", buf2);
+    edje_object_part_text_set(elm_layout_edje_get(sd->layout), "text.pos", buf);
+
+    if (sd->len)
+        elm_slider_value_set(sd->sl, sd->pos/sd->len * 100.0);
+    enna_log(ENNA_MSG_EVENT, NULL, "Position %f %f", sd->pos, sd->len);
+}
+
 /* Update position Timer callback */
 static int
 _timer_cb(void *data)
@@ -262,28 +287,8 @@ _timer_cb(void *data)
 
     if(enna_mediaplayer_state_get() == PLAYING)
     {
-        long ph, pm, ps, lh, lm, ls;
-        char buf[256];
-        char buf2[256];
-
         sd->pos += 1.0;
-
-        /* FIXME : create a dedicated function to do that */
-        lh = sd->len / 3600000;
-        lm = sd->len / 60 - (lh * 60);
-        ls = sd->len - (lm * 60);
-        ph = sd->pos / 3600;
-        pm = sd->pos / 60 - (ph * 60);
-        ps = sd->pos - (pm * 60);
-        snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
-        snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
-
-        edje_object_part_text_set(elm_layout_edje_get(sd->layout), "text.length", buf2);
-        edje_object_part_text_set(elm_layout_edje_get(sd->layout), "text.pos", buf);
-
-        if (sd->len)
-            elm_slider_value_set(sd->sl, sd->pos/sd->len * 100.0);
-        enna_log(ENNA_MSG_EVENT, NULL, "Position %f %f", sd->pos, sd->len);
+        slider_position_set(sd);
     }
 
     return 1;
