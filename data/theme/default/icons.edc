@@ -88,7 +88,7 @@ STOCK_ICON("dev_dvd.png",                       "icon/dev/dvd");
 STOCK_ICON("dev_hdd.png",                       "icon/dev/hdd");
 STOCK_ICON("dev_ipod.png",                      "icon/dev/ipod");
 STOCK_ICON("dev_mem_card.png",                  "icon/dev/memorycard");
-STOCK_ICON("icon_tv.png",                       "icon/dev/tv");
+STOCK_ICON("dev_tv.png",                        "icon/dev/tv");
 STOCK_ICON("dev_nfs.png",                       "icon/dev/nfs");
 STOCK_ICON("dev_photo.png",                     "icon/dev/photo");
 STOCK_ICON("dev_samba.png",                     "icon/dev/samba");
