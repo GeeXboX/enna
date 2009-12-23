@@ -632,7 +632,8 @@ browse (void *data)
 static void
 _refresh_menu(void *data, Enna_Volume *volume)
 {
-    _create_menu();
+    if (volume->type == VOLUME_TYPE_DVD_VIDEO)
+        _create_menu();
 }
 
 /****************************************************************************/
@@ -646,6 +647,8 @@ _create_menu (void)
     Eina_List *l, *categories;
     Enna_Class_Vfs *cat;
 
+    ENNA_OBJECT_DEL(mod->o_list);
+    enna_volumes_listener_del(mod->vl);
     /* Create List */
     o = enna_list_add(enna->evas);
 
