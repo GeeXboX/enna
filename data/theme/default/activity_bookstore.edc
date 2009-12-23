@@ -39,7 +39,7 @@ group {
          }
       }
 
-      /* main config menu */
+      /* main menu: list of available services */
       part {
          name: "menu.clip";
          type: RECT;
