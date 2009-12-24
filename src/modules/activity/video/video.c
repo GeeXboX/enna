@@ -771,7 +771,8 @@ browse (void *data)
     edje_object_part_swallow (mod->o_edje,
                               "browser.swallow", mod->o_browser);
     enna_browser_root_set (mod->o_browser, vfs);
-    enna_volumes_listener_del(mod->vl);
+    if (mod->vl) enna_volumes_listener_del(mod->vl);
+    mod->vl = NULL;
     ENNA_OBJECT_DEL (mod->o_list);
 
     ENNA_OBJECT_DEL(mod->o_panel_infos);
@@ -811,7 +812,8 @@ _create_menu (void)
     Enna_Class_Vfs *cat;
 
     ENNA_OBJECT_DEL(mod->o_list);
-    enna_volumes_listener_del(mod->vl);
+    if (mod->vl) enna_volumes_listener_del(mod->vl);
+    mod->vl = NULL;
     /* Create List */
     o = enna_list_add(enna->evas);
 
