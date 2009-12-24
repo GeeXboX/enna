@@ -45,26 +45,22 @@ struct _Smart_Data
     int delay;
     double start;
     Ecore_Animator *animator;
-    unsigned char state;
+    char state;
+    unsigned char mode;
 };
 
 /* local subsystem globals */
 
-#if 0
 static int
 _rotate(void *data)
 {
     Smart_Data *sd = data;
     double t = ecore_loop_time_get() - sd->start;
     Evas_Coord x, y, w, h;
-    double p, deg;
+    double p, deg = 0.0;
     Evas_Map *map;
-    Evas_Coord cx, cy, cz, px, py, foc;
-    int lx, ly, lz, lr, lg, lb, lar, lag, lab;
     Evas_Object *photocam;
     Elm_Slideshow_Item *item;
-
-    printf("Rotate\n");
 
     item = elm_slideshow_item_current_get(sd->slideshow);
     if(!item) return 1;
@@ -75,7 +71,6 @@ _rotate(void *data)
     if (t > 1.0) t = 1.0;
 
     evas_object_geometry_get(photocam, &x, &y, &w, &h);
-    printf("%d %d %d %d\n", x, y, w, h);
     map = evas_map_new(4);
     evas_map_smooth_set(map, 0);
 
@@ -85,63 +80,44 @@ _rotate(void *data)
     x += (w / 2);
     y += (h / 2);
 
-    px = x + (w / 2);
-    py = y + (h / 2);
-    foc = 2048;
-
-    lx = cx;
-    ly = cy;
-    lz = -10000;
-    lr = 255;
-    lg = 255;
-    lb = 255;
-    lar = 0;
-    lag = 0;
-    lab = 0;
-
-
     p = 1.0 - t;
     p = 1.0 - (p * p);
-    if (sd->state == 0)
-        deg = 90.0 * p;
-    else if (sd->state == 1)
-        deg = 90 + 90 *p;
-    else if (sd->state == 2)
-        deg = 180 + 90 * p;
-    else if (sd->state == 3)
-        deg = 270 + 90 * p;
+
+    if (sd->mode)
+        deg = 90.0 * p + sd->state * 90;
+    else
+        deg = - ((3 - sd->state) * 90.0) - (90.0 * p);
 
     evas_map_util_3d_rotate(map, 0.0, 0.0, deg, x, y, 0);
 
-    if (photocam)
-    {
-        evas_map_util_3d_lighting(map, lx, ly, lz, lr, lg, lb, lar, lag, lab);
-        evas_map_util_3d_perspective(map, px, py, 0, foc);
-        evas_object_map_set(photocam, map);
-        evas_object_map_enable_set(photocam, 1);
-    }
-
+    evas_object_map_set(photocam, map);
+    evas_object_map_enable_set(photocam, 1);
     evas_map_free(map);
 
     if (t >= 1.0)
     {
-        evas_object_map_enable_set(photocam, 0);
         sd->animator = NULL;
         return 0;
     }
     return 1;
 }
-#endif
 
 static void
-_rotate_go(Smart_Data *sd)
+_rotate_go(Smart_Data *sd, unsigned char mode)
 {
-#if 0
+    char inc = 1;
     if (!sd->animator) sd->animator = ecore_animator_add(_rotate, sd);
     sd->start = ecore_loop_time_get();
-    sd->state = (sd->state + 1) % 4;
-    printf("state : %d\n", sd->state);
-#endif
+
+    if (!mode)
+        inc = -1;
+
+    sd->state += inc;
+    if (sd->state < 0)
+        sd->state = 3;
+    else if (sd->state > 3)
+        sd->state = 0;
+    sd->mode = mode;
 }
 
 static void
@@ -220,7 +196,7 @@ static void
     /*Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
     im = elm_slideshow_item_object_get(it);
     elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CCW);*/
-    _rotate_go(sd);
+    _rotate_go(sd, 0);
 }
 
 static void
@@ -231,7 +207,7 @@ static void
     /* Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow); */
     /* im = elm_slideshow_item_object_get(it); */
     /* elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CW); */
-    _rotate_go(sd);
+    _rotate_go(sd, 1);
 }
 
 static void
@@ -425,7 +401,7 @@ enna_photo_slideshow_add(Evas * evas)
                            sd->slideshow);
 
     evas_object_data_set(obj, "sd", sd);
-
+    sd->state = 4;
     /* Catch mouse wheel event */
     evas_object_event_callback_add(obj, EVAS_CALLBACK_MOUSE_WHEEL,
                                    _mouse_wheel_cb, sd);
