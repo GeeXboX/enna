@@ -48,6 +48,8 @@ static void _create_mediaplayer_gui();
 static void _browse(void *data);
 static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
 static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
+static void _browser_delay_hilight_cb(void *data,
+                                      Evas_Object *obj, void *event_info);
 static void _class_event(enna_input event);
 static void _class_event_mediaplayer_view(enna_input event);
 
@@ -281,6 +283,8 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
     mod->state = MENU_VIEW;
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "delay,hilight", _browser_delay_hilight_cb);
     mod->accept_ev = 0;
 
     _create_menu();
@@ -324,6 +328,20 @@ _browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
+_browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Browser_Selected_File_Data *ev = event_info;
+
+    if (!ev || !ev->file)
+        return;
+
+    if (!ev->file->is_directory && !ev->file->is_menu)
+        /* ask for on-demand scan for local files */
+        if (!strncmp(ev->file->uri, "file://", 7))
+            enna_metadata_ondemand(ev->file->uri + 7);
+}
+
+static void
 _browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
@@ -334,6 +352,8 @@ _browse(void *data)
     mod->o_browser = enna_browser_add(enna->evas);
     evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
+    evas_object_smart_callback_add(mod->o_browser, "delay,hilight",
+                                   _browser_delay_hilight_cb, NULL);
 
     evas_object_show(mod->o_browser);
     edje_object_part_swallow(mod->o_edje, "browser.swallow", mod->o_browser);
@@ -540,6 +560,8 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
     evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "delay,hilight", _browser_delay_hilight_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
