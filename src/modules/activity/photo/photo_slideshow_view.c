@@ -106,6 +106,7 @@ static void
 _rotate_go(Smart_Data *sd, unsigned char mode)
 {
     char inc = 1;
+
     if (!sd->animator) sd->animator = ecore_animator_add(_rotate, sd);
     sd->start = ecore_loop_time_get();
 
@@ -191,22 +192,14 @@ _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
 static void
  _button_clicked_rotate_ccw_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    /* Evas_Object *im; */
     Smart_Data *sd = data;
-    /*Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow);
-    im = elm_slideshow_item_object_get(it);
-    elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CCW);*/
     _rotate_go(sd, 0);
 }
 
 static void
  _button_clicked_rotate_cw_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    /* Evas_Object *im; */
     Smart_Data *sd = data;
-    /* Elm_Slideshow_Item *it = elm_slideshow_item_current_get(sd->slideshow); */
-    /* im = elm_slideshow_item_object_get(it); */
-    /* elm_image_orient_set(im, ELM_IMAGE_ROTATE_90_CW); */
     _rotate_go(sd, 1);
 }
 
