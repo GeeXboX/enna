@@ -62,6 +62,8 @@
 static void browser_cb_root (void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_select (void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_hilight (void *data, Evas_Object *obj, void *event_info);
+static void browser_cb_delay_hilight(void *data,
+                                     Evas_Object *obj, void *event_info);
 static void browse (void *data);
 
 static void _create_menu(void);
@@ -472,6 +474,8 @@ browser_cb_root (void *data, Evas_Object *obj, void *event_info)
                                     "selected", browser_cb_select);
     evas_object_smart_callback_del (mod->o_browser,
                                     "hilight", browser_cb_hilight);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "delay,hilight", browser_cb_delay_hilight);
 
     ENNA_OBJECT_DEL (mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_infos);
@@ -952,6 +956,8 @@ em_shutdown(Enna_Module *em)
     evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
     evas_object_smart_callback_del(mod->o_browser, "selected", browser_cb_select);
     evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hilight);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "delay,hilight", browser_cb_delay_hilight);
     ENNA_EVENT_HANDLER_DEL(mod->mouse_button_event_handler);
     ENNA_EVENT_HANDLER_DEL(mod->mouse_move_event_handler);
     ENNA_OBJECT_DEL(mod->o_browser);
