@@ -59,18 +59,18 @@
 
 #define TIMER_DELAY 10.0
 
-static void browser_cb_root (void *data, Evas_Object *obj, void *event_info);
-static void browser_cb_select (void *data, Evas_Object *obj, void *event_info);
-static void browser_cb_hilight (void *data, Evas_Object *obj, void *event_info);
+static void browser_cb_root(void *data, Evas_Object *obj, void *event_info);
+static void browser_cb_select(void *data, Evas_Object *obj, void *event_info);
+static void browser_cb_hilight(void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_delay_hilight(void *data,
                                      Evas_Object *obj, void *event_info);
-static void browse (void *data);
+static void browse(void *data);
 
 static void _create_menu(void);
 static void _return_to_video_info_gui();
 
 static int _eos_cb(void *data, int type, void *event);
-static void video_infos_del (void);
+static void video_infos_del(void);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
 typedef enum _VIDEO_STATE VIDEO_STATE;
@@ -112,7 +112,7 @@ struct _Enna_Module_Video
 static Enna_Module_Video *mod;
 
 static void
-update_movies_counter (Eina_List *list)
+update_movies_counter(Eina_List *list)
 {
     Enna_Vfs_File *f;
     Eina_List *l;
@@ -142,14 +142,15 @@ _controls_timer_cb(void *data)
 }
 
 void
-media_controls_display (int show)
+media_controls_display(int show)
 {
     Evas_Coord w, h, h2, x, y;
 
     if (show)
     {
         ENNA_TIMER_DEL(mod->controls_timer);
-        mod->controls_timer = ecore_timer_add(TIMER_DELAY, _controls_timer_cb, NULL);
+        mod->controls_timer =
+            ecore_timer_add(TIMER_DELAY, _controls_timer_cb, NULL);
     }
 
     if (show == mod->controls_displayed)
@@ -171,7 +172,7 @@ media_controls_display (int show)
 }
 
 static void
-menu_view_event (enna_input event)
+menu_view_event(enna_input event)
 {
     switch (event)
     {
@@ -285,17 +286,17 @@ videoplayer_view_event_no_display (enna_input event)
 }
 
 static void
-videoplayer_view_event (enna_input event)
+videoplayer_view_event(enna_input event)
 {
     switch (event)
     {
     case ENNA_INPUT_QUIT:
     case ENNA_INPUT_EXIT:
-        _return_to_video_info_gui ();
+        _return_to_video_info_gui();
         break;
     default:
         if (!mod->controls_displayed)
-            videoplayer_view_event_no_display (event);
+            videoplayer_view_event_no_display(event);
         else
         {
             media_controls_display(1);
@@ -306,16 +307,16 @@ videoplayer_view_event (enna_input event)
 }
 
 static void
-popup_resume_display (int show)
+popup_resume_display(int show)
 {
     if (show)
     {
-        edje_object_signal_emit (mod->o_edje, "resume,show", "enna");
+        edje_object_signal_emit(mod->o_edje, "resume,show", "enna");
         mod->resume_displayed = 1;
     }
     else
     {
-        edje_object_signal_emit (mod->o_edje, "resume,hide", "enna");
+        edje_object_signal_emit(mod->o_edje, "resume,hide", "enna");
         mod->resume_displayed = 0;
     }
 }
@@ -333,7 +334,7 @@ _return_to_video_info_gui()
     popup_resume_display (0);
     m = enna_mediaplayer_metadata_get(mod->enna_playlist);
     pos = enna_mediaplayer_position_get();
-    enna_metadata_set_position (m, pos);
+    enna_metadata_set_position(m, pos);
     enna_mediaplayer_stop();
     mod->state = BROWSER_VIEW;
 }
@@ -350,30 +351,30 @@ _eos_cb(void *data, int type, void *event)
 /****************************************************************************/
 
 static void
-backdrop_show (Enna_Metadata *m)
+backdrop_show(Enna_Metadata *m)
 {
     char *file = NULL;
     int from_vfs = 1;
     char *backdrop;
 
-    backdrop = enna_metadata_meta_get (m, "fanart", 1);
+    backdrop = enna_metadata_meta_get(m, "fanart", 1);
     if (backdrop)
     {
         char dst[1024] = { 0 };
 
         if (*backdrop == '/')
-          snprintf (dst, sizeof (dst), "%s", backdrop);
+            snprintf(dst, sizeof (dst), "%s", backdrop);
         else
-          snprintf (dst, sizeof (dst), "%s/.enna/fanarts/%s",
-                    enna_util_user_home_get (), backdrop);
-        file = strdup (dst);
+            snprintf(dst, sizeof (dst), "%s/.enna/fanarts/%s",
+                     enna_util_user_home_get (), backdrop);
+        file = strdup(dst);
 
-        enna_video_picture_set (mod->o_backdrop, file, from_vfs);
-        evas_object_show (mod->o_backdrop);
-        edje_object_part_swallow (mod->o_edje,
-                                  "backdrop.swallow", mod->o_backdrop);
-        ENNA_FREE (backdrop);
-        ENNA_FREE (file);
+        enna_video_picture_set(mod->o_backdrop, file, from_vfs);
+        evas_object_show(mod->o_backdrop);
+        edje_object_part_swallow(mod->o_edje,
+                                 "backdrop.swallow", mod->o_backdrop);
+        ENNA_FREE(backdrop);
+        ENNA_FREE(file);
     }
     else
         enna_video_picture_unset(mod->o_backdrop);
@@ -384,7 +385,7 @@ backdrop_show (Enna_Metadata *m)
 /****************************************************************************/
 
 static void
-snapshot_show (Enna_Metadata *m, int dir)
+snapshot_show(Enna_Metadata *m, int dir)
 {
     char *file = NULL;
     int from_vfs = 1;
@@ -397,11 +398,11 @@ snapshot_show (Enna_Metadata *m, int dir)
         char dst[1024] = { 0 };
 
         if (*snapshot == '/')
-          snprintf(dst, sizeof(dst), "%s", snapshot);
+            snprintf(dst, sizeof(dst), "%s", snapshot);
         else
-          snprintf(dst, sizeof (dst), "%s/.enna/fanarts/%s",
-                   enna_util_user_home_get(), snapshot);
-        file = strdup (dst);
+            snprintf(dst, sizeof(dst), "%s/.enna/fanarts/%s",
+                     enna_util_user_home_get(), snapshot);
+        file = strdup(dst);
     }
     else
     {
@@ -419,16 +420,16 @@ snapshot_show (Enna_Metadata *m, int dir)
 }
 
 static void
-panel_infos_display (int show)
+panel_infos_display(int show)
 {
     if (show)
     {
-        edje_object_signal_emit (mod->o_edje, "infos,show", "enna");
+        edje_object_signal_emit(mod->o_edje, "infos,show", "enna");
         mod->infos_displayed = 1;
     }
     else
     {
-        edje_object_signal_emit (mod->o_edje, "infos,hide", "enna");
+        edje_object_signal_emit(mod->o_edje, "infos,hide", "enna");
         mod->infos_displayed = 0;
     }
 }
@@ -438,50 +439,49 @@ panel_infos_display (int show)
 /****************************************************************************/
 
 static void
-browser_view_event (enna_input event)
+browser_view_event(enna_input event)
 {
     /* handle resume popup, if any */
     if (mod->resume_displayed)
     {
         if (event == ENNA_INPUT_EXIT)
-            popup_resume_display (0);
+            popup_resume_display(0);
         else
-            video_resume_input_feed (mod->o_resume, event);
+            video_resume_input_feed(mod->o_resume, event);
         return;
     }
 
     if (event == ENNA_INPUT_KEY_I)
     {
-        panel_infos_display (!mod->infos_displayed);
+        panel_infos_display(!mod->infos_displayed);
         return;
     }
 
     if (event == ENNA_INPUT_EXIT)
     {
-        video_infos_del ();
+        video_infos_del();
         update_movies_counter(NULL);
     }
-    enna_browser_input_feed (mod->o_browser, event);
+    enna_browser_input_feed(mod->o_browser, event);
 }
 
 static void
-browser_cb_root (void *data, Evas_Object *obj, void *event_info)
+browser_cb_root(void *data, Evas_Object *obj, void *event_info)
 {
     mod->state = MENU_VIEW;
-    evas_object_smart_callback_del (mod->o_browser,
-                                    "root", browser_cb_root);
-    evas_object_smart_callback_del (mod->o_browser,
-                                    "selected", browser_cb_select);
-    evas_object_smart_callback_del (mod->o_browser,
-                                    "hilight", browser_cb_hilight);
+    evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "selected", browser_cb_select);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "hilight", browser_cb_hilight);
     evas_object_smart_callback_del(mod->o_browser,
                                    "delay,hilight", browser_cb_delay_hilight);
 
-    ENNA_OBJECT_DEL (mod->o_browser);
+    ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     ENNA_OBJECT_DEL(mod->o_resume);
 
-    _create_menu ();
+    _create_menu();
 }
 
 static void
@@ -494,13 +494,15 @@ _mediaplayer_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 }
 
 static void
-_mediaplayer_mouse_move_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_mediaplayer_mouse_move_cb(void *data,
+                           Evas *e, Evas_Object *obj, void *event_info)
 {
     media_controls_display(1);
 }
 
 static void
-_mediaplayer_mouse_up_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_mediaplayer_mouse_up_cb(void *data,
+                         Evas *e, Evas_Object *obj, void *event_info)
 {
     media_controls_display(1);
 }
@@ -538,25 +540,26 @@ _mediaplayer_mouse_down_libplayer_cb(void *data, int type, void *event)
 }
 
 void
-movie_start_playback (int resume)
+movie_start_playback(int resume)
 {
     mod->state = VIDEOPLAYER_VIEW;
 
     ENNA_EVENT_HANDLER_DEL(mod->mouse_button_event_handler);
     ENNA_EVENT_HANDLER_DEL(mod->mouse_move_event_handler);
-    ENNA_OBJECT_DEL (mod->o_mediaplayer);
-    mod->o_mediaplayer = evas_object_rectangle_add (enna->evas);
-    evas_object_color_set (mod->o_mediaplayer, 0, 0, 0, 255);
-    edje_object_part_swallow (mod->o_edje, "fullscreen.swallow",
-                              mod->o_mediaplayer);
-    evas_object_event_callback_add (mod->o_mediaplayer, EVAS_CALLBACK_RESIZE,
-                                    _mediaplayer_resize_cb, NULL);
+    ENNA_OBJECT_DEL(mod->o_mediaplayer);
+    mod->o_mediaplayer = evas_object_rectangle_add(enna->evas);
+    evas_object_color_set(mod->o_mediaplayer, 0, 0, 0, 255);
+    edje_object_part_swallow(mod->o_edje,
+                             "fullscreen.swallow", mod->o_mediaplayer);
+    evas_object_event_callback_add(mod->o_mediaplayer, EVAS_CALLBACK_RESIZE,
+                                   _mediaplayer_resize_cb, NULL);
 
-    ENNA_OBJECT_DEL (mod->o_mediacontrols);
+    ENNA_OBJECT_DEL(mod->o_mediacontrols);
 
-    mod->o_mediacontrols = enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
-    edje_object_part_swallow (mod->o_edje, "controls.swallow",
-                              mod->o_mediacontrols);
+    mod->o_mediacontrols =
+        enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
+    edje_object_part_swallow(mod->o_edje,
+                             "controls.swallow", mod->o_mediacontrols);
     enna_mediaplayer_obj_layout_set(mod->o_mediacontrols, "layout,video");
 
     mod->mouse_button_event_handler =
@@ -566,26 +569,28 @@ movie_start_playback (int resume)
         ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE,
                                 _mediaplayer_mouse_move_libplayer_cb, NULL);
 
-    evas_object_event_callback_add (mod->o_mediacontrols, EVAS_CALLBACK_MOUSE_MOVE,
-                                    _mediaplayer_mouse_move_cb, NULL);
-    evas_object_event_callback_add (mod->o_mediacontrols, EVAS_CALLBACK_MOUSE_UP,
-                                    _mediaplayer_mouse_up_cb, NULL);
+    evas_object_event_callback_add(mod->o_mediacontrols,
+                                   EVAS_CALLBACK_MOUSE_MOVE,
+                                   _mediaplayer_mouse_move_cb, NULL);
+    evas_object_event_callback_add(mod->o_mediacontrols,
+                                   EVAS_CALLBACK_MOUSE_UP,
+                                   _mediaplayer_mouse_up_cb, NULL);
 
     enna_mediaplayer_stop();
-    enna_mediaplayer_play (mod->enna_playlist);
+    enna_mediaplayer_play(mod->enna_playlist);
 #if 0
     if (resume)
     {
         Enna_Metadata *m;
-        m = enna_mediaplayer_metadata_get (mod->enna_playlist);
-        enna_mediaplayer_position_set (m->position);
+        m = enna_mediaplayer_metadata_get(mod->enna_playlist);
+        enna_mediaplayer_position_set(m->position);
     }
 #endif
-    popup_resume_display (0);
+    popup_resume_display(0);
 }
 
 static void
-browser_cb_select (void *data, Evas_Object *obj, void *event_info)
+browser_cb_select(void *data, Evas_Object *obj, void *event_info)
 {
     int i = 0;
     Enna_Vfs_File *f;
@@ -596,36 +601,36 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
 
     if (ev->file->is_directory || ev->file->is_menu)
     {
-        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "Directory Selected %s", ev->file->uri);
-        update_movies_counter (ev->files);
+        enna_log (ENNA_MSG_EVENT,
+                  ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
+        update_movies_counter(ev->files);
     }
     else
     {
         Enna_Metadata *m;
 
-        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "File Selected %s", ev->file->uri);
-        enna_mediaplayer_playlist_clear (mod->enna_playlist);
+        enna_log(ENNA_MSG_EVENT,
+                 ENNA_MODULE_NAME, "File Selected %s", ev->file->uri);
+        enna_mediaplayer_playlist_clear(mod->enna_playlist);
 
         /* File selected, create mediaplayer */
         EINA_LIST_FOREACH(ev->files, l, f)
         {
             if (!f->is_directory && !f->is_menu)
             {
-                enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                          "Append : %s %s to playlist", f->label, f->uri);
-                enna_mediaplayer_uri_append (mod->enna_playlist,
-                                             f->uri, f->label);
+                enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                         "Append : %s %s to playlist", f->label, f->uri);
+                enna_mediaplayer_uri_append(mod->enna_playlist,
+                                            f->uri, f->label);
 
-                if (!strcmp (f->uri, ev->file->uri))
+                if (!strcmp(f->uri, ev->file->uri))
                 {
-                    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                               "Select : %s %d in playlist", f->uri, i);
-                    enna_mediaplayer_select_nth (mod->enna_playlist,i);
+                    enna_mediaplayer_select_nth(mod->enna_playlist,i);
 
                     if (mod->o_current_uri)
-                        free (mod->o_current_uri);
+                        free(mod->o_current_uri);
                     mod->o_current_uri = strdup(f->uri);
                 }
                 i++;
@@ -633,23 +638,23 @@ browser_cb_select (void *data, Evas_Object *obj, void *event_info)
         }
 
         /* fetch new stream's metadata */
-        m = enna_mediaplayer_metadata_get (mod->enna_playlist);
+        m = enna_mediaplayer_metadata_get(mod->enna_playlist);
 #if 0
         if (m->position)
         {
             /* stream has already been played once, show resume popup */
-            popup_resume_display (1);
+            popup_resume_display(1);
         }
         else
 #endif
-            movie_start_playback (0);
+            movie_start_playback(0);
     }
-    free (ev);
+    free(ev);
 }
 
 
 static void
-video_infos_display (Enna_Vfs_File *file, int delay)
+video_infos_display(Enna_Vfs_File *file, int delay)
 {
     Enna_Metadata *m;
 
@@ -668,7 +673,7 @@ video_infos_display (Enna_Vfs_File *file, int delay)
         /* title */
         title = enna_metadata_meta_get(m, "title", 1);
         label = title ? title : file->label;
-        edje_object_part_text_set (mod->o_edje, "title.label", label);
+        edje_object_part_text_set(mod->o_edje, "title.label", label);
 
         /* genre */
         categories = enna_metadata_meta_get(m, "category", 5);
@@ -676,7 +681,7 @@ video_infos_display (Enna_Vfs_File *file, int delay)
                                   categories ? categories : "");
 
         /* length */
-        length = enna_metadata_meta_duration_get (m);
+        length = enna_metadata_meta_duration_get(m);
         edje_object_part_text_set(mod->o_edje, "length.label",
                                   length ? length : "");
 
@@ -684,8 +689,8 @@ video_infos_display (Enna_Vfs_File *file, int delay)
         synopsis = enna_metadata_meta_get(m, "synopsis", 1);
         edje_object_part_text_set(mod->o_edje, "synopsis.textblock",
                                   synopsis ? synopsis : "");
-        edje_object_signal_emit (mod->o_edje, synopsis ?
-                                 "separator,show" : "separator,hide", "enna");
+        edje_object_signal_emit(mod->o_edje, synopsis ?
+                                "separator,show" : "separator,hide", "enna");
 
         ENNA_FREE(title);
         ENNA_FREE(categories);
@@ -710,20 +715,20 @@ video_infos_display (Enna_Vfs_File *file, int delay)
 static void
 video_infos_del (void)
 {
-    edje_object_part_text_set (mod->o_edje, "title.label", "");
-    edje_object_part_text_set (mod->o_edje, "genre.label", "");
-    edje_object_part_text_set (mod->o_edje, "length.label", "");
-    edje_object_part_text_set (mod->o_edje, "synopsis.textblock", "");
-    panel_infos_display (0);
-    popup_resume_display (0);
-    enna_video_picture_set (mod->o_backdrop, NULL, 0);
-    enna_video_picture_set (mod->o_snapshot, NULL, 0);
-    enna_video_flags_update (mod->o_video_flags, NULL);
-    edje_object_signal_emit (mod->o_edje, "separator,hide", "enna");
+    edje_object_part_text_set(mod->o_edje, "title.label", "");
+    edje_object_part_text_set(mod->o_edje, "genre.label", "");
+    edje_object_part_text_set(mod->o_edje, "length.label", "");
+    edje_object_part_text_set(mod->o_edje, "synopsis.textblock", "");
+    panel_infos_display(0);
+    popup_resume_display(0);
+    enna_video_picture_set(mod->o_backdrop, NULL, 0);
+    enna_video_picture_set(mod->o_snapshot, NULL, 0);
+    enna_video_flags_update(mod->o_video_flags, NULL);
+    edje_object_signal_emit(mod->o_edje, "separator,hide", "enna");
 }
 
 static void
-browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
+browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
 
@@ -733,15 +738,15 @@ browser_cb_delay_hilight (void *data, Evas_Object *obj, void *event_info)
     if (!ev->file->is_directory && !ev->file->is_menu)
     {
         /* ask for on-demand scan for local files */
-        if (!strncmp (ev->file->uri, "file://", 7))
-            enna_metadata_ondemand (ev->file->uri + 7);
+        if (!strncmp(ev->file->uri, "file://", 7))
+            enna_metadata_ondemand(ev->file->uri + 7);
 
-        video_infos_display (ev->file, 1);
+        video_infos_display(ev->file, 1);
     }
 }
 
 static void
-browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
+browser_cb_hilight(void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
 
@@ -749,50 +754,51 @@ browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
         return;
 
     if (!ev->file->is_directory && !ev->file->is_menu)
-        video_infos_display (ev->file, 0);
+        video_infos_display(ev->file, 0);
 }
 
 static void
-browse (void *data)
+browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
 
     if (!vfs)
         return;
 
-    mod->o_browser = enna_browser_add (enna->evas);
+    mod->o_browser = enna_browser_add(enna->evas);
 
-    enna_browser_view_add (mod->o_browser, ENNA_BROWSER_VIEW_LIST);
-    evas_object_smart_callback_add (mod->o_browser,
+    enna_browser_view_add(mod->o_browser, ENNA_BROWSER_VIEW_LIST);
+    evas_object_smart_callback_add(mod->o_browser,
                                    "root", browser_cb_root, NULL);
-    evas_object_smart_callback_add (mod->o_browser,
-                                    "selected", browser_cb_select, NULL);
-    evas_object_smart_callback_add (mod->o_browser, "hilight",
-                                    browser_cb_hilight, NULL);
+    evas_object_smart_callback_add(mod->o_browser,
+                                   "selected", browser_cb_select, NULL);
+    evas_object_smart_callback_add(mod->o_browser,
+                                   "hilight", browser_cb_hilight, NULL);
     evas_object_smart_callback_add (mod->o_browser, "delay,hilight",
                                     browser_cb_delay_hilight, NULL);
 
-    edje_object_part_swallow (mod->o_edje,
-                              "browser.swallow", mod->o_browser);
-    enna_browser_root_set (mod->o_browser, vfs);
-    if (mod->vl) enna_volumes_listener_del(mod->vl);
+    edje_object_part_swallow(mod->o_edje,
+                             "browser.swallow", mod->o_browser);
+    enna_browser_root_set(mod->o_browser, vfs);
+    if (mod->vl)
+        enna_volumes_listener_del(mod->vl);
     mod->vl = NULL;
-    ENNA_OBJECT_DEL (mod->o_list);
+    ENNA_OBJECT_DEL(mod->o_list);
 
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     mod->o_panel_infos = enna_panel_infos_add(enna->evas);
-    edje_object_part_swallow (mod->o_edje,
-                              "infos.panel.swallow", mod->o_panel_infos);
+    edje_object_part_swallow(mod->o_edje,
+                             "infos.panel.swallow", mod->o_panel_infos);
 
     ENNA_OBJECT_DEL(mod->o_resume);
-    mod->o_resume = video_resume_add (enna->evas);
-    edje_object_part_swallow (mod->o_edje,
-                              "resume.swallow", mod->o_resume);
+    mod->o_resume = video_resume_add(enna->evas);
+    edje_object_part_swallow(mod->o_edje,
+                             "resume.swallow", mod->o_resume);
 
     ENNA_OBJECT_DEL(mod->o_video_flags);
     mod->o_video_flags = enna_video_flags_add(enna->evas);
-    edje_object_part_swallow (mod->o_edje,
-                              "infos.flags.swallow", mod->o_video_flags);
+    edje_object_part_swallow(mod->o_edje,
+                             "infos.flags.swallow", mod->o_video_flags);
 
     mod->state = BROWSER_VIEW;
 }
@@ -809,14 +815,15 @@ _refresh_menu(void *data, Enna_Volume *volume)
 /****************************************************************************/
 
 static void
-_create_menu (void)
+_create_menu(void)
 {
     Evas_Object *o;
     Eina_List *l, *categories;
     Enna_Class_Vfs *cat;
 
     ENNA_OBJECT_DEL(mod->o_list);
-    if (mod->vl) enna_volumes_listener_del(mod->vl);
+    if (mod->vl)
+        enna_volumes_listener_del(mod->vl);
     mod->vl = NULL;
     /* Create List */
     o = enna_list_add(enna->evas);
@@ -835,12 +842,13 @@ _create_menu (void)
     enna_list_select_nth(o, 0);
     mod->o_list = o;
     edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
-    video_infos_del ();
-    mod->vl = enna_volumes_listener_add("video", _refresh_menu, _refresh_menu, NULL);
+    video_infos_del();
+    mod->vl =
+        enna_volumes_listener_add("video", _refresh_menu, _refresh_menu, NULL);
 }
 
 static void
-_create_gui (void)
+_create_gui(void)
 {
     Evas_Object *o;
 
@@ -856,52 +864,52 @@ _create_gui (void)
 /****************************************************************************/
 
 static void
-_class_init (int dummy)
+_class_init(int dummy)
 {
-    _create_gui ();
-    enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
+    _create_gui();
+    enna_content_append(ENNA_MODULE_NAME, mod->o_edje);
 }
 
 static void
-_class_show (int dummy)
+_class_show(int dummy)
 {
     enna_content_select(ENNA_MODULE_NAME);
-    edje_object_signal_emit (mod->o_edje, "module,show", "enna");
+    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
 
     switch (mod->state)
     {
     case BROWSER_VIEW:
     case MENU_VIEW:
-        edje_object_signal_emit (mod->o_edje, "content,show", "enna");
+        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
         break;
 
     case VIDEOPLAYER_VIEW:
         break;
     default:
-        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "State Unknown in video module");
+        enna_log(ENNA_MSG_ERROR,
+                 ENNA_MODULE_NAME,  "State Unknown in video module");
     }
 }
 
 static void
-_class_hide (int dummy)
+_class_hide(int dummy)
 {
-    edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
 }
 
 static void
-_class_event (enna_input event)
+_class_event(enna_input event)
 {
     switch (mod->state)
     {
     case MENU_VIEW:
-        menu_view_event (event);
+        menu_view_event(event);
         break;
     case BROWSER_VIEW:
-        browser_view_event (event);
+        browser_view_event(event);
         break;
     case VIDEOPLAYER_VIEW:
-        videoplayer_view_event (event);
+        videoplayer_view_event(event);
         break;
     default:
         break;
@@ -923,7 +931,7 @@ static Enna_Class_Activity class =
         _class_show,
         _class_hide,
         _class_event,
-	NULL
+        NULL
     },
     NULL
 };
@@ -938,10 +946,10 @@ em_init(Enna_Module *em)
     mod->infos_displayed = 0;
     mod->resume_displayed = 0;
     mod->controls_displayed = 0;
-    mod->o_backdrop = enna_video_picture_add (enna->evas);
-    mod->o_snapshot = enna_video_picture_add (enna->evas);
+    mod->o_backdrop = enna_video_picture_add(enna->evas);
+    mod->o_snapshot = enna_video_picture_add(enna->evas);
     mod->eos_event_handler =
-	ecore_event_handler_add (ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
     enna_activity_add(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
 }
@@ -954,8 +962,10 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
-    evas_object_smart_callback_del(mod->o_browser, "selected", browser_cb_select);
-    evas_object_smart_callback_del(mod->o_browser, "hilight", browser_cb_hilight);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "selected", browser_cb_select);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "hilight", browser_cb_hilight);
     evas_object_smart_callback_del(mod->o_browser,
                                    "delay,hilight", browser_cb_delay_hilight);
     ENNA_EVENT_HANDLER_DEL(mod->mouse_button_event_handler);
