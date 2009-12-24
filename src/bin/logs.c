@@ -63,7 +63,7 @@ enna_log_print(int level, const char *module,
                char *file, int line, const char *format, ...)
 {
     FILE *f;
-    static const char const *c[] =
+    static const char *const c[] =
     {
         [ENNA_MSG_EVENT]    = F_BLUE,
         [ENNA_MSG_INFO]     = F_GREEN,
@@ -72,7 +72,7 @@ enna_log_print(int level, const char *module,
         [ENNA_MSG_CRITICAL] = B_RED,
     };
 
-    static const char const *l[] =
+    static const char *const l[] =
     {
         [ENNA_MSG_EVENT]    = "Event",
         [ENNA_MSG_INFO]     = "Info",
