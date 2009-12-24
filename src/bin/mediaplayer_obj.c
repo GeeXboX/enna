@@ -252,6 +252,9 @@ _eos_cb(void *data, int type, void *event)
     return 1;
 }
 
+#define SNPRINTF_TIME(buf, h, m, s) \
+    snprintf(buf, sizeof(buf), "%.0li%c%02li:%02li", h, h ? ':' : ' ', m, s)
+
 static void
 slider_position_update(Smart_Data *sd)
 {
@@ -260,14 +263,14 @@ slider_position_update(Smart_Data *sd)
     char buf2[256];
 
     /* FIXME : create a dedicated function to do that */
-    lh = sd->len / 3600000;
+    lh = sd->len / 3600;
     lm = sd->len / 60 - (lh * 60);
-    ls = sd->len - (lm * 60);
+    ls = sd->len - (lm * 60) - lh * 3600;
     ph = sd->pos / 3600;
     pm = sd->pos / 60 - (ph * 60);
-    ps = sd->pos - (pm * 60);
-    snprintf(buf, sizeof(buf), "%02li:%02li", pm, ps);
-    snprintf(buf2, sizeof(buf2), "%02li:%02li", lm, ls);
+    ps = sd->pos - (pm * 60) - ph * 3600;
+    SNPRINTF_TIME(buf,  ph, pm, ps);
+    SNPRINTF_TIME(buf2, lh, lm, ls);
 
     edje_object_part_text_set(elm_layout_edje_get(sd->layout), "text.length", buf2);
     edje_object_part_text_set(elm_layout_edje_get(sd->layout), "text.pos", buf);
