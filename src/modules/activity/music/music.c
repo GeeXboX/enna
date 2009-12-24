@@ -46,8 +46,9 @@ static void _create_menu();
 static void _create_gui();
 static void _create_mediaplayer_gui();
 static void _browse(void *data);
-static void _browser_root_cb (void *data, Evas_Object *obj, void *event_info);
-static void _browser_selected_cb (void *data, Evas_Object *obj, void *event_info);
+static void _browser_root_cb(void *data, Evas_Object *obj, void *event_info);
+static void _browser_selected_cb(void *data,
+                                 Evas_Object *obj, void *event_info);
 static void _browser_delay_hilight_cb(void *data,
                                       Evas_Object *obj, void *event_info);
 static void _class_event(enna_input event);
@@ -91,7 +92,7 @@ struct _Enna_Module_Music
 static Enna_Module_Music *mod;
 
 static void
-update_songs_counter (Eina_List *list)
+update_songs_counter(Eina_List *list)
 {
     Enna_Vfs_File *f;
     Eina_List *l;
@@ -165,7 +166,8 @@ _class_event_mediaplayer_view(enna_input event)
         return;
     }
 
-    if (enna_mediaplayer_obj_input_feed(mod->o_mediaplayer, event) == ENNA_EVENT_BLOCK)
+    if (enna_mediaplayer_obj_input_feed(mod->o_mediaplayer, event)
+        == ENNA_EVENT_BLOCK)
         return;
 
     switch (event)
@@ -187,7 +189,8 @@ _class_event_mediaplayer_view(enna_input event)
 
 
 static void
-_volume_hide_done_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
+_volume_hide_done_cb(void *data,
+                     Evas_Object *obj, const char *emission, const char *source)
 {
     edje_object_signal_callback_del(elm_layout_edje_get(enna->layout),
                                     "hide,done", "*", _volume_hide_done_cb);
@@ -201,7 +204,8 @@ _volume_hide_cb(void *data)
     edje_object_signal_callback_add(elm_layout_edje_get(enna->layout),
                                     "popup,hide,done", "*",
                                     _volume_hide_done_cb, NULL);
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "popup,hide","enna");
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+                            "popup,hide","enna");
     mod->timer_volume = NULL;
     return ECORE_CALLBACK_CANCEL;
 }
@@ -211,11 +215,12 @@ _volume_gui_update()
 {
     double vol = 0.0;
     if (enna_mediaplayer_mute_get())
-	edje_object_signal_emit(mod->o_volume, "mute,show","enna");
+        edje_object_signal_emit(mod->o_volume, "mute,show","enna");
     else
-	edje_object_signal_emit(mod->o_volume, "mute,hide","enna");
-    vol =  enna_mediaplayer_volume_get() / 100.0;
-    edje_object_part_drag_value_set(mod->o_volume, "enna.dragable.pos", vol,  0.0);
+        edje_object_signal_emit(mod->o_volume, "mute,hide","enna");
+    vol = enna_mediaplayer_volume_get() / 100.0;
+    edje_object_part_drag_value_set(mod->o_volume,
+                                    "enna.dragable.pos", vol,  0.0);
 
 }
 
@@ -226,18 +231,22 @@ _volume_core(enna_input event)
     {
         /* Volume popup doesn't exists, create it */
         mod->o_volume = edje_object_add(enna->evas);
-        edje_object_file_set(mod->o_volume, enna_config_theme_get(), "enna/volume");
-        elm_layout_content_set(enna->layout, "enna.popup.swallow", mod->o_volume);
+        edje_object_file_set(mod->o_volume,
+                             enna_config_theme_get(), "enna/volume");
+        elm_layout_content_set(enna->layout,
+                               "enna.popup.swallow", mod->o_volume);
     }
 
     /* Show volume popup */
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "popup,show","enna");
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+                            "popup,show","enna");
     //~ edje_object_signal_callback_del(elm_layout_edje_get(enna->layout), 
                                     //~ "hide,done", "*", _volume_hide_done_cb); //needed?
 
     /* Reset Timer */
     ENNA_TIMER_DEL(mod->timer_volume);
-    mod->timer_volume = ecore_timer_add(TIMER_VOLUME_VALUE, _volume_hide_cb, NULL);
+    mod->timer_volume =
+        ecore_timer_add(TIMER_VOLUME_VALUE, _volume_hide_cb, NULL);
 
     /* Performs volume action*/
     switch (event)
@@ -258,31 +267,32 @@ _volume_core(enna_input event)
 }
 
 static void
-panel_lyrics_display (int show)
+panel_lyrics_display(int show)
 {
     if (show)
     {
         Enna_Metadata *m;
 
-        m = enna_mediaplayer_metadata_get (mod->enna_playlist);
-        enna_panel_lyrics_set_text (mod->o_panel_lyrics, m);
-        edje_object_signal_emit (mod->o_edje, "lyrics,show", "enna");
+        m = enna_mediaplayer_metadata_get(mod->enna_playlist);
+        enna_panel_lyrics_set_text(mod->o_panel_lyrics, m);
+        edje_object_signal_emit(mod->o_edje, "lyrics,show", "enna");
         mod->lyrics_displayed = 1;
     }
     else
     {
-        enna_panel_lyrics_set_text (mod->o_panel_lyrics, NULL);
-        edje_object_signal_emit (mod->o_edje, "lyrics,hide", "enna");
+        enna_panel_lyrics_set_text(mod->o_panel_lyrics, NULL);
+        edje_object_signal_emit(mod->o_edje, "lyrics,hide", "enna");
         mod->lyrics_displayed = 0;
     }
 }
 
 static void
-_browser_root_cb (void *data, Evas_Object *obj, void *event_info)
+_browser_root_cb(void *data, Evas_Object *obj, void *event_info)
 {
     mod->state = MENU_VIEW;
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
-    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "selected", _browser_selected_cb);
     evas_object_smart_callback_del(mod->o_browser,
                                    "delay,hilight", _browser_delay_hilight_cb);
     mod->accept_ev = 0;
@@ -291,30 +301,34 @@ _browser_root_cb (void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_browser_selected_cb (void *data, Evas_Object *obj, void *event_info)
+_browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 {
     int i = 0;
     Enna_Vfs_File *f;
     Eina_List *l;
     Browser_Selected_File_Data *ev = event_info;
 
-    if (!ev || !ev->file) return;
+    if (!ev || !ev->file)
+        return;
 
     if (ev->file->is_directory || ev->file->is_menu)
     {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
-        update_songs_counter (ev->files);
+        enna_log(ENNA_MSG_EVENT,
+                 ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
+        update_songs_counter(ev->files);
     }
     else
     {
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME , "File Selected %s", ev->file->uri);
+        enna_log(ENNA_MSG_EVENT,
+                 ENNA_MODULE_NAME , "File Selected %s", ev->file->uri);
         enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
         /* File selected, create mediaplayer */
         EINA_LIST_FOREACH(ev->files, l, f)
         {
             if (!f->is_directory)
             {
-                enna_mediaplayer_uri_append(mod->enna_playlist,f->uri, f->label);
+                enna_mediaplayer_uri_append(mod->enna_playlist,
+                                            f->uri, f->label);
                 if (!strcmp(f->uri, ev->file->uri))
                 {
                     enna_mediaplayer_select_nth(mod->enna_playlist,i);
@@ -346,12 +360,15 @@ _browse(void *data)
 {
     Enna_Class_Vfs *vfs = data;
 
-    if (!vfs) return;
+    if (!vfs)
+        return;
 
     mod->accept_ev = 0;
     mod->o_browser = enna_browser_add(enna->evas);
-    evas_object_smart_callback_add(mod->o_browser, "root", _browser_root_cb, NULL);
-    evas_object_smart_callback_add(mod->o_browser, "selected", _browser_selected_cb, NULL);
+    evas_object_smart_callback_add(mod->o_browser, "root",
+                                   _browser_root_cb, NULL);
+    evas_object_smart_callback_add(mod->o_browser, "selected",
+                                   _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "delay,hilight",
                                    _browser_delay_hilight_cb, NULL);
 
@@ -438,7 +455,8 @@ _create_gui()
     _create_menu();
     _create_mediaplayer_gui();
 
-    mod->vl = enna_volumes_listener_add("activity_music", _refresh_list, _refresh_list, NULL);
+    mod->vl = enna_volumes_listener_add("activity_music",
+                                        _refresh_list, _refresh_list, NULL);
 
 }
 
@@ -465,8 +483,8 @@ _class_show(int dummy)
         edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
         break;
     default:
-        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-            "Error State Unknown in music module");
+        enna_log(ENNA_MSG_ERROR,
+                 ENNA_MODULE_NAME, "Error State Unknown in music module");
     }
 }
 
@@ -481,7 +499,8 @@ _class_event(enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Key pressed music : %d", event);
 
-    if (!mod->accept_ev) return;
+    if (!mod->accept_ev)
+        return;
 
     switch (mod->state)
     {
@@ -526,7 +545,7 @@ static Enna_Class_Activity class =
 #define MOD_PREFIX enna_mod_activity_music
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API  =
+Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "activity_music",
@@ -559,7 +578,8 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);
-    evas_object_smart_callback_del(mod->o_browser, "selected", _browser_selected_cb);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "selected", _browser_selected_cb);
     evas_object_smart_callback_del(mod->o_browser,
                                    "delay,hilight", _browser_delay_hilight_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
