@@ -65,6 +65,7 @@ static const struct
     { "Ok",           ENNA_INPUT_OK          },
     { "Prev",         ENNA_INPUT_PREV        },
     { "Next",         ENNA_INPUT_NEXT        },
+    { "Space",        ENNA_INPUT_SPACE       },
 
     { "Stop",         ENNA_INPUT_STOP        },
     { "Exit",         ENNA_INPUT_EXIT        },
