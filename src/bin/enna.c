@@ -472,11 +472,15 @@ int main(int argc, char **argv)
         return EXIT_SUCCESS;
 
     url_global_init();
-    elm_init(argc, argv);
+    eina_init();
 
     /* Must be called first */
     enna_config_init(conffile);
     ENNA_FREE(conffile);
+    
+    setenv("ELM_ENGINE", enna_config->engine, 1);
+    elm_init(argc, argv);
+    
     enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n",
              enna_config->log_file);
     enna_log_init(enna_config->log_file);
