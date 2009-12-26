@@ -1149,34 +1149,12 @@ enna_mediaplayer_length_get(void)
         mp_length_get() : 0.0;
 }
 
-int
-enna_mediaplayer_seek(double percent)
-{
-    enna_log(ENNA_MSG_EVENT, NULL,
-             "Seeking to: %d%%", (int) (100 * percent));
-
-    if (mp->play_state == PAUSE || mp->play_state == PLAYING)
-    {
-        Enna_Event_Mediaplayer_Seek_Data *ev;
-
-        ev = calloc(1, sizeof(Enna_Event_Mediaplayer_Seek_Data));
-        if (!ev)
-            return 0;
-
-        ev->seek_value = percent;
-        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-        return mp_seek(percent);
-    }
-
-    return 0;
-}
-
 void
 enna_mediaplayer_default_seek_backward(void)
 {
     int pos;
     pos = enna_mediaplayer_position_percent_get();
-    enna_mediaplayer_seek(((double) pos - SEEK_STEP_DEFAULT) / 100.0);
+    enna_mediaplayer_position_set(((double) pos - SEEK_STEP_DEFAULT) / 100.0);
 }
 
 void
@@ -1184,7 +1162,7 @@ enna_mediaplayer_default_seek_forward(void)
 {
     int pos;
     pos = enna_mediaplayer_position_percent_get();
-    enna_mediaplayer_seek(((double) pos + SEEK_STEP_DEFAULT) / 100.0);
+    enna_mediaplayer_position_set(((double) pos + SEEK_STEP_DEFAULT) / 100.0);
 }
 
 void
