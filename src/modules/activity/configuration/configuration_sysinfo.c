@@ -43,11 +43,7 @@
 #include "enna_config.h"
 #include "buffer.h"
 #include "configuration_sysinfo.h"
-
-
-#ifdef BUILD_LIBSVDRP
 #include "utils.h"
-#endif
 
 #ifdef BUILD_LIBXRANDR
 #include <X11/Xutil.h>
@@ -248,7 +244,6 @@ get_loadavg (buffer_t *b)
   char buf[256] = { 0 };
   char *ld, *x;
   float load;
-  char *prev_locale;
 
   f = fopen ("/proc/loadavg", "r");
   if (!f)
@@ -260,10 +255,7 @@ get_loadavg (buffer_t *b)
     goto err_loadavg;
 
   ld = strndup (buf, sizeof (x));
-  prev_locale = setlocale (LC_NUMERIC, NULL);
-  setlocale (LC_NUMERIC, "C");
-  load = strtod (ld, NULL) * 100;
-  setlocale (LC_NUMERIC, prev_locale);
+  load = enna_util_atof(ld) * 100.0;
 
   buffer_append  (b, _("<hilight>CPU Load: </hilight>"));
   buffer_appendf (b, "%d%%<br>", (int) load);
