@@ -367,3 +367,30 @@ enna_util_str_chomp(char *str)
 
     return str;
 }
+
+double
+enna_util_atof(const char *nptr)
+{
+    double div = 1.0;
+    int res, integer;
+    unsigned int frac = 0, start = 0, end = 0;
+
+    while (*nptr && !isdigit((int) (unsigned char) *nptr) && *nptr != '-')
+        nptr++;
+
+    if (!*nptr)
+        return 0.0;
+
+    res = sscanf(nptr, "%i.%n%u%n", &integer, &start, &frac, &end);
+    if (res < 1)
+        return 0.0;
+
+    if (!frac)
+        return integer;
+
+    if (integer < 0)
+        div = -div;
+
+    div *= pow(10.0, end - start);
+    return integer + frac / div;
+}
