@@ -141,11 +141,22 @@ _controls_timer_cb(void *data)
     return 0;
 }
 
+static void
+video_resize(void)
+{
+    Evas_Coord w, h, x, y;
+    Evas_Coord h2 = 0;
+
+    if (mod->controls_displayed)
+        evas_object_geometry_get(mod->o_mediacontrols, NULL, NULL, NULL, &h2);
+
+    evas_object_geometry_get(mod->o_mediaplayer, &x, &y, &w, &h);
+    enna_mediaplayer_video_resize(x, y, w, h - h2);
+}
+
 void
 media_controls_display(int show)
 {
-    Evas_Coord w, h, h2, x, y;
-
     if (show)
     {
         ENNA_TIMER_DEL(mod->controls_timer);
@@ -156,19 +167,8 @@ media_controls_display(int show)
     if (show == mod->controls_displayed)
         return;
 
-    evas_object_geometry_get(mod->o_mediaplayer, &x, &y, &w, &h);
-    evas_object_geometry_get(mod->o_mediacontrols, NULL, NULL, NULL, &h2);
-
-    if (show)
-    {
-        enna_mediaplayer_video_resize(x, y, w, h - h2);
-        mod->controls_displayed = 1;
-    }
-    else
-    {
-        enna_mediaplayer_video_resize(x, y, w, h);
-        mod->controls_displayed = 0;
-    }
+    mod->controls_displayed = show;
+    video_resize();
 }
 
 static void
@@ -487,10 +487,7 @@ browser_cb_root(void *data, Evas_Object *obj, void *event_info)
 static void
 _mediaplayer_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
-    Evas_Coord w, h, x, y;
-
-    evas_object_geometry_get(mod->o_mediaplayer, &x, &y, &w, &h);
-    enna_mediaplayer_video_resize(x, y, w, h);
+    video_resize();
 }
 
 static void
@@ -575,6 +572,9 @@ movie_start_playback(int resume)
     evas_object_event_callback_add(mod->o_mediacontrols,
                                    EVAS_CALLBACK_MOUSE_UP,
                                    _mediaplayer_mouse_up_cb, NULL);
+    evas_object_event_callback_add(mod->o_mediacontrols,
+                                   EVAS_CALLBACK_RESIZE,
+                                   _mediaplayer_resize_cb, NULL);
 
     enna_mediaplayer_stop();
     enna_mediaplayer_play(mod->enna_playlist);
