@@ -209,6 +209,9 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
 
+    if (!sd)
+      return;
+
     enna_list_clear(sd->obj);
     eina_list_free(sd->items);
     free(sd);
