@@ -150,7 +150,7 @@
     "#  EP  : for an episode\n" \
     "# With SE and EP, the values are saved in the database.\n" \
     "# Examples: sSEeEP, NUMxNUM\n" \
-    "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,SExEP,sSEeEP,SSEEEP\n" \
+    "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,orenji,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,SExEP,sSEeEP,SSEEEP\n" \
     "\n" \
 
 
