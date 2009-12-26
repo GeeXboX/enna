@@ -232,7 +232,8 @@ get_cpuinfos(buffer_t *b)
       else if (!strncmp(buf, STR_MHZ, strlen(STR_MHZ)))
       {
           x = strchr(buf, ':');
-          buffer_appendf(b, _(", running at %d MHz"), (int) atof(x + 2));
+          buffer_appendf(b, _(", running at %d MHz"),
+                         (int) enna_util_atof(x + 2));
           buffer_append(b, "<br>");
       }
   }
