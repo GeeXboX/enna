@@ -75,7 +75,7 @@ enna_volumes_listener_add(const char *name, EnnaVolumesFunc add, EnnaVolumesFunc
 
    enna_log(ENNA_MSG_EVENT, "volumes", "Add: %s listener", vl->name);
 
-   enna_volumes_listeners = eina_list_prepend(enna_volumes_listeners, vl);
+   enna_volumes_listeners = eina_list_append(enna_volumes_listeners, vl);
    return vl;
 }
 
@@ -93,7 +93,7 @@ enna_volumes_listener_del(Enna_Volumes_Listener *vl)
 void
 enna_volumes_add_emit(Enna_Volume *v)
 {
-    Eina_List *l;
+    Eina_List *l, *l_prev;
     Enna_Volumes_Listener *vl;
 
     if (!v)
@@ -101,9 +101,10 @@ enna_volumes_add_emit(Enna_Volume *v)
 
     enna_log(ENNA_MSG_EVENT, "volumes", "Add: %s volume  listeners: %d",
              v->label, eina_list_count(enna_volumes_listeners));
-    EINA_LIST_FOREACH(enna_volumes_listeners, l, vl)
+    EINA_LIST_FOREACH_SAFE(enna_volumes_listeners, l, l_prev, vl)
     {
         if (!vl->add) continue;
+
         vl->add(vl->data, v);
     }
     _volumes = eina_list_append(_volumes, v);
