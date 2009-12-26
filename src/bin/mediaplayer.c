@@ -516,14 +516,6 @@ mp_play(void)
 }
 
 static int
-mp_seek(double percent)
-{
-    player_playback_seek(mp->player,
-                         (int) (100 * percent), PLAYER_PB_SEEK_PERCENT);
-    return 0;
-}
-
-static int
 mp_stop(void)
 {
     player_playback_stop(mp->player);
