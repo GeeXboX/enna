@@ -236,12 +236,12 @@ static int _enna_init(int argc, char **argv)
     _elm_init(argc, argv);
     if (!_create_gui())
     {
-	/* try to init with failsafe settings (software_x11) */
+        /* try to init with failsafe settings (software_x11) */
         enna_log(ENNA_MSG_WARNING, NULL,
-		 "Requested engine '%s' has failed to register, " \
-		 "using software_x11 as a default.", enna_config->engine);
-	ENNA_FREE(enna_config->engine);
-	enna_config->engine = strdup("software_x11");
+                 "Requested engine '%s' has failed to register, " \
+                 "using software_x11 as a default.", enna_config->engine);
+        ENNA_FREE(enna_config->engine);
+        enna_config->engine = strdup("software_x11");
         _elm_init(argc, argv);
         if (!_create_gui())
             return 0;
