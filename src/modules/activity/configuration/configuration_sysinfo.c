@@ -88,22 +88,22 @@ static Ecore_Timer *update_timer = NULL;
 /****************************************************************************/
 
 static void
-set_enna_information (buffer_t *b)
+set_enna_information(buffer_t *b)
 {
     if (!b)
         return;
 
-    buffer_append (b, _("<c>Enna Information</c><br><br>"));
-    buffer_appendf (b, _("<hilight>Enna: </hilight>%s<br>"), VERSION);
-    buffer_appendf (b, _("<hilight>libplayer: </hilight>%s<br>"),
-                    LIBPLAYER_VERSION);
-    buffer_appendf (b, _("<hilight>libvalhalla: </hilight>%s<br>"),
-                    LIBVALHALLA_VERSION_STR);
+    buffer_append(b, _("<c>Enna Information</c><br><br>"));
+    buffer_appendf(b, _("<hilight>Enna: </hilight>%s<br>"), VERSION);
+    buffer_appendf(b, _("<hilight>libplayer: </hilight>%s<br>"),
+                   LIBPLAYER_VERSION);
+    buffer_appendf(b, _("<hilight>libvalhalla: </hilight>%s<br>"),
+                   LIBVALHALLA_VERSION_STR);
 #ifdef BUILD_LIBSVDRP
-    buffer_appendf (b, _("<hilight>libsvdrp: </hilight>%s<br>"),
-                    LIBSVDRP_VERSION);
+    buffer_appendf(b, _("<hilight>libsvdrp: </hilight>%s<br>"),
+                   LIBSVDRP_VERSION);
 #endif
-    buffer_append (b, "<br>");
+    buffer_append(b, "<br>");
 }
 
 /****************************************************************************/
@@ -111,7 +111,7 @@ set_enna_information (buffer_t *b)
 /****************************************************************************/
 
 static void
-get_distribution (buffer_t *b)
+get_distribution(buffer_t *b)
 {
     FILE *f;
     char buffer[BUF_LEN];
@@ -120,197 +120,200 @@ get_distribution (buffer_t *b)
     static const char *lsb_release = NULL;
 
     if (!lsb_distrib_id || !lsb_release)
-    //FIXME: i'm pretty sure that there's no need to try to read files 'cause the command lsb_release seems to be available anywhere
-    //if so, this can be stripped from here (Billy)
+    /* FIXME: i'm pretty sure that there's no need to try to read files
+     * 'cause the command lsb_release seems to be available anywhere
+     * if so, this can be stripped from here (Billy)
+     */
     {
-        f = fopen (LSB_FILE, "r");
+        f = fopen(LSB_FILE, "r");
         if (f)
         {
-            while (fgets (buffer, BUF_LEN, f))
+            while (fgets(buffer, BUF_LEN, f))
             {
-                if (!strncmp (buffer, DISTRIB_ID, DISTRIB_ID_LEN))
+                if (!strncmp(buffer, DISTRIB_ID, DISTRIB_ID_LEN))
                 {
-                    id = strdup (buffer + DISTRIB_ID_LEN);
-                    id[strlen (id) - 1] = '\0';
+                    id = strdup(buffer + DISTRIB_ID_LEN);
+                    id[strlen(id) - 1] = '\0';
                 }
-                if (!strncmp (buffer, DISTRIB_RELEASE, DISTRIB_RELEASE_LEN))
+                if (!strncmp(buffer, DISTRIB_RELEASE, DISTRIB_RELEASE_LEN))
                 {
-                    release = strdup (buffer + DISTRIB_RELEASE_LEN);
-                    release[strlen (release) - 1] = '\0';
+                    release = strdup(buffer + DISTRIB_RELEASE_LEN);
+                    release[strlen(release) - 1] = '\0';
                 }
-                memset (buffer, '\0', BUF_LEN);
+                memset(buffer, '\0', BUF_LEN);
             }
-            fclose (f);
+            fclose(f);
         }
-        if(!id || !release) {
-            f = fopen (DEBIAN_VERSION_FILE, "r");
+        if (!id || !release)
+        {
+            f = fopen(DEBIAN_VERSION_FILE, "r");
             if (f)
             {
-                id = strdup ("Debian");
-                id[strlen (id)] = '\0';
-                while (fgets (buffer, BUF_LEN, f))
+                id = strdup("Debian");
+                id[strlen(id)] = '\0';
+                while (fgets(buffer, BUF_LEN, f))
                 {
-                    release = strdup (buffer);
-                    release[strlen (release) - 1] = '\0';
-                    memset (buffer, '\0', BUF_LEN);
+                    release = strdup(buffer);
+                    release[strlen(release) - 1] = '\0';
+                    memset(buffer, '\0', BUF_LEN);
                 }
-                fclose (f);
+                fclose(f);
             }
         }
     }
 
-    buffer_append (b, _("<hilight>Distribution: </hilight>"));
+    buffer_append(b, _("<hilight>Distribution: </hilight>"));
     if (lsb_distrib_id && lsb_release)
-        buffer_appendf (b, "%s %s", lsb_distrib_id, lsb_release);
+        buffer_appendf(b, "%s %s", lsb_distrib_id, lsb_release);
     else if (id && release)
-        buffer_appendf (b, "%s %s", id, release);
+        buffer_appendf(b, "%s %s", id, release);
     else
-        buffer_append (b, BUF_DEFAULT);
-    buffer_append (b, "<br>");
+        buffer_append(b, BUF_DEFAULT);
+    buffer_append(b, "<br>");
 
     if (id)
-        free (id);
+        free(id);
     if (release)
-        free (release);
+        free(release);
 }
 
 static void
-get_uname (buffer_t *b)
+get_uname(buffer_t *b)
 {
     struct utsname name;
 
-    buffer_append (b, _("<hilight>OS: </hilight>"));
-    if (uname (&name) == -1)
-        buffer_append (b, BUF_DEFAULT);
+    buffer_append(b, _("<hilight>OS: </hilight>"));
+    if (uname(&name) == -1)
+        buffer_append(b, BUF_DEFAULT);
     else
-        buffer_appendf (b, "%s %s for %s",
-                        name.sysname, name.release, name.machine);
-    buffer_append (b, "<br>");
+        buffer_appendf(b, "%s %s for %s",
+                       name.sysname, name.release, name.machine);
+    buffer_append(b, "<br>");
 }
 
 static void
-get_cpuinfos (buffer_t *b)
+get_cpuinfos(buffer_t *b)
 {
   FILE *f;
   char buf[256] = { 0 };
 
-  f = fopen ("/proc/cpuinfo", "r");
+  f = fopen("/proc/cpuinfo", "r");
   if (!f)
-    return;
+      return;
 
-  buffer_append (b, _("<hilight>Available CPUs: </hilight>"));
-  buffer_append (b, "<br>");
-  while (fgets (buf, sizeof (buf), f))
+  buffer_append(b, _("<hilight>Available CPUs: </hilight>"));
+  buffer_append(b, "<br>");
+  while (fgets(buf, sizeof(buf), f))
   {
-    char *x;
-    buf[strlen (buf) - 1] = '\0';
-    if (!strncmp (buf, STR_CPU, strlen (STR_CPU)))
-    {
-      x = strchr (buf, ':');
-      buffer_appendf (b, " * CPU #%s: ", x + 2);
-    }
-    else if (!strncmp (buf, STR_MODEL, strlen (STR_MODEL)))
-    {
-      char *y;
-      x = strchr (buf, ':');
-      y = x + 2;
-      while (*y)
+      char *x;
+      buf[strlen(buf) - 1] = '\0';
+      if (!strncmp(buf, STR_CPU, strlen(STR_CPU)))
       {
-	if (*y != ' ')
-	  buffer_appendf (b, "%c", *y);
-	else
-	{
-	  if (*(y + 1) != ' ')
-	    buffer_appendf (b, " ");
-	}
-	(void) *y++;
+          x = strchr(buf, ':');
+          buffer_appendf(b, " * CPU #%s: ", x + 2);
       }
-    }
-    else if (!strncmp (buf, STR_MHZ, strlen (STR_MHZ)))
-    {
-      x = strchr (buf, ':');
-      buffer_appendf (b, _(", running at %d MHz"), (int) atof (x + 2));
-      buffer_append (b, "<br>");
-    }
+      else if (!strncmp(buf, STR_MODEL, strlen(STR_MODEL)))
+      {
+          char *y;
+          x = strchr(buf, ':');
+          y = x + 2;
+          while (*y)
+          {
+              if (*y != ' ')
+                  buffer_appendf(b, "%c", *y);
+              else
+              {
+                  if (*(y + 1) != ' ')
+                  buffer_appendf(b, " ");
+              }
+              (void) *y++;
+          }
+      }
+      else if (!strncmp(buf, STR_MHZ, strlen(STR_MHZ)))
+      {
+          x = strchr(buf, ':');
+          buffer_appendf(b, _(", running at %d MHz"), (int) atof(x + 2));
+          buffer_append(b, "<br>");
+      }
   }
 
-  fclose (f);
+  fclose(f);
 }
 
 static void
-get_loadavg (buffer_t *b)
+get_loadavg(buffer_t *b)
 {
-  FILE *f;
-  char buf[256] = { 0 };
-  char *ld, *x;
-  float load;
+    FILE *f;
+    char buf[256] = { 0 };
+    char *ld, *x;
+    float load;
 
-  f = fopen ("/proc/loadavg", "r");
-  if (!f)
-    return;
+    f = fopen("/proc/loadavg", "r");
+    if (!f)
+        return;
 
-  x = fgets (buf, sizeof (buf), f);
-  x = strchr (buf, ' ');
-  if (!x)
-    goto err_loadavg;
+    x = fgets(buf, sizeof(buf), f);
+    x = strchr(buf, ' ');
+    if (!x)
+        goto err_loadavg;
 
-  ld = strndup (buf, sizeof (x));
-  load = enna_util_atof(ld) * 100.0;
+    ld = strndup(buf, sizeof (x));
+    load = enna_util_atof(ld) * 100.0;
 
-  buffer_append  (b, _("<hilight>CPU Load: </hilight>"));
-  buffer_appendf (b, "%d%%<br>", (int) load);
+    buffer_append(b, _("<hilight>CPU Load: </hilight>"));
+    buffer_appendf(b, "%d%%<br>", (int) load);
 
  err_loadavg:
-  if (ld)
-    free (ld);
-  if (f)
-    fclose (f);
+    if (ld)
+        free(ld);
+    if (f)
+        fclose(f);
 }
 
 static void
-get_ram_usage (buffer_t *b)
+get_ram_usage(buffer_t *b)
 {
   FILE *f;
   char buf[256] = { 0 };
   int mem_total = 0, mem_active = 0;
 
-  f = fopen ("/proc/meminfo", "r");
+  f = fopen("/proc/meminfo", "r");
   if (!f)
-    return;
+      return;
 
-  while (fgets (buf, sizeof (buf), f))
+  while (fgets(buf, sizeof(buf), f))
   {
-    if (!strncmp (buf, STR_MEM_TOTAL, strlen (STR_MEM_TOTAL)))
-    {
-      char *x;
-      /* remove the trailing ' kB' from buffer */
-      buf[strlen (buf) - 4] = '\0';
-      x = strrchr (buf, ' ');
-      if (x)
-	mem_total = atoi (x + 1) / 1024;
-    }
-    else if (!strncmp (buf, STR_MEM_ACTIVE, strlen (STR_MEM_ACTIVE)))
-    {
-      char *x;
-      /* remove the trailing ' kB' from buffer */
-      buf[strlen (buf) - 4] = '\0';
-      x = strrchr (buf, ' ');
-      if (x)
-	mem_active = atoi (x + 1) / 1024;
-    }
+      if (!strncmp(buf, STR_MEM_TOTAL, strlen(STR_MEM_TOTAL)))
+      {
+          char *x;
+          /* remove the trailing ' kB' from buffer */
+          buf[strlen(buf) - 4] = '\0';
+          x = strrchr(buf, ' ');
+          if (x)
+              mem_total = atoi(x + 1) / 1024;
+      }
+      else if (!strncmp(buf, STR_MEM_ACTIVE, strlen(STR_MEM_ACTIVE)))
+      {
+          char *x;
+          /* remove the trailing ' kB' from buffer */
+          buf[strlen(buf) - 4] = '\0';
+          x = strrchr(buf, ' ');
+          if (x)
+              mem_active = atoi(x + 1) / 1024;
+      }
   }
 
-  buffer_append (b, _("<hilight>Memory: </hilight>"));
-  buffer_appendf (b, _("%d MB used on %d MB total (%d%%)"),
-		  mem_active, mem_total,
-		  (int) (mem_active * 100 / mem_total));
-  buffer_append (b, "<br>");
-  fclose (f);
+  buffer_append(b, _("<hilight>Memory: </hilight>"));
+  buffer_appendf(b, _("%d MB used on %d MB total (%d%%)"),
+                 mem_active, mem_total,
+                 (int) (mem_active * 100 / mem_total));
+  buffer_append(b, "<br>");
+  fclose(f);
 }
 
 #ifdef BUILD_LIBXRANDR
 static void
-get_resolution (buffer_t *b)
+get_resolution(buffer_t *b)
 {
     XRRScreenConfiguration *sc;
     Window root;
@@ -319,113 +322,113 @@ get_resolution (buffer_t *b)
     int screen;
     int minWidth, maxWidth, minHeight, maxHeight;
 
-    dpy = XOpenDisplay (":0.0");
+    dpy = XOpenDisplay(":0.0");
     if (!dpy)
         return;
 
-    screen = DefaultScreen (dpy);
-    if (screen >= ScreenCount (dpy))
+    screen = DefaultScreen(dpy);
+    if (screen >= ScreenCount(dpy))
         return;
 
-    root = RootWindow (dpy, screen);
+    root = RootWindow(dpy, screen);
 
-    sc = XRRGetScreenInfo (dpy, root);
+    sc = XRRGetScreenInfo(dpy, root);
     if (!sc)
         return;
 
-    rate = XRRConfigCurrentRate (sc);
-    XRRGetScreenSizeRange (dpy, root,
-                           &minWidth, &minHeight, &maxWidth, &maxHeight);
+    rate = XRRConfigCurrentRate(sc);
+    XRRGetScreenSizeRange(dpy, root,
+                          &minWidth, &minHeight, &maxWidth, &maxHeight);
 
-    buffer_append (b, _("<hilight>Screen Resolution: </hilight>"));
-    buffer_appendf (b, _("%dx%d at %d Hz (min: %dx%d, max: %dx%d)"),
-                    DisplayWidth (dpy, screen), DisplayHeight (dpy, screen),
-                    rate, minWidth, minHeight, maxWidth, maxHeight);
-    buffer_append (b, "<br>");
+    buffer_append(b, _("<hilight>Screen Resolution: </hilight>"));
+    buffer_appendf(b, _("%dx%d at %d Hz (min: %dx%d, max: %dx%d)"),
+                   DisplayWidth(dpy, screen), DisplayHeight(dpy, screen),
+                   rate, minWidth, minHeight, maxWidth, maxHeight);
+    buffer_append(b, "<br>");
     XCloseDisplay(dpy);
 }
 #endif
 
 #ifdef BUILD_LIBSVDRP
 static void
-get_vdr (buffer_t *b)
+get_vdr(buffer_t *b)
 {
     svdrp_t *svdrp = enna_svdrp_get();
 
-    buffer_append (b, _("<hilight>VDR:</hilight> "));
+    buffer_append(b, _("<hilight>VDR:</hilight> "));
     if (svdrp && svdrp_try_connect(svdrp))
         buffer_appendf(b, _("connected to VDR %s on %s (%s)<br>"),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_VERSION),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_NAME),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_HOSTNAME));
     else
-        buffer_append (b, _("not connected<br>"));
+        buffer_append(b, _("not connected<br>"));
 }
 #endif
 
 static void
-get_network (buffer_t *b)
+get_network(buffer_t *b)
 {
     int s, n, i;
     struct ifreq *ifr;
     struct ifconf ifc;
     char buf[1024];
 
-    buffer_append (b, _("<hilight>Available network interfaces:</hilight><br>"));
+    buffer_append(b, _("<hilight>Available network interfaces:</hilight><br>"));
 
     /* get a socket handle. */
-    s = socket (AF_INET, SOCK_STREAM, 0);
+    s = socket(AF_INET, SOCK_STREAM, 0);
     if (s < 0)
         return;
 
     /* query available interfaces. */
-    ifc.ifc_len = sizeof (buf);
+    ifc.ifc_len = sizeof(buf);
     ifc.ifc_buf = buf;
-    if (ioctl (s, SIOCGIFCONF, &ifc) < 0)
+    if (ioctl(s, SIOCGIFCONF, &ifc) < 0)
         goto err_net;
 
     /* iterate through the list of interfaces. */
     ifr = ifc.ifc_req;
-    n = ifc.ifc_len / sizeof (struct ifreq);
+    n = ifc.ifc_len / sizeof(struct ifreq);
     for (i = 0; i < n; i++)
     {
         struct ifreq *item = &ifr[i];
 
         /* discard loopback interface */
-        if (!strcmp (item->ifr_name, "lo"))
-          continue;
-
-        /* show the device name and IP address */
-        buffer_appendf (b, _("  * %s (IP: %s, "), item->ifr_name,
-                inet_ntoa (((struct sockaddr_in *)&item->ifr_addr)->sin_addr));
-
-        if (ioctl (s, SIOCGIFNETMASK, item) < 0)
+        if (!strcmp(item->ifr_name, "lo"))
             continue;
 
-        buffer_appendf (b, _("Netmask: %s)<br>"),
-              inet_ntoa (((struct sockaddr_in *)&item->ifr_netmask)->sin_addr));
+        /* show the device name and IP address */
+        buffer_appendf(b, _("  * %s (IP: %s, "), item->ifr_name,
+                 inet_ntoa(((struct sockaddr_in *) &item->ifr_addr)->sin_addr));
+
+        if (ioctl(s, SIOCGIFNETMASK, item) < 0)
+            continue;
+
+        buffer_appendf(b, _("Netmask: %s)<br>"),
+              inet_ntoa(((struct sockaddr_in *) &item->ifr_netmask)->sin_addr));
     }
 
  err_net:
-    close (s);
+    close(s);
 }
 
 static void
-get_default_gw (buffer_t *b)
+get_default_gw(buffer_t *b)
 {
     char devname[64];
     unsigned long d, g, m;
     int res, flgs, ref, use, metric, mtu, win, ir;
     FILE *fp;
 
-    fp = fopen ("/proc/net/route", "r");
+    fp = fopen("/proc/net/route", "r");
     if (!fp)
         return;
 
-    if (fscanf (fp, "%*[^\n]\n") < 0) /* Skip the first line. */
+    if (fscanf(fp, "%*[^\n]\n") < 0) /* Skip the first line. */
         return;
 
-    buffer_append (b, _("<hilight>Default Gateway: </hilight>"));
+    buffer_append(b, _("<hilight>Default Gateway: </hilight>"));
     res = 0;
 
     while (1)
@@ -433,12 +436,12 @@ get_default_gw (buffer_t *b)
         struct in_addr gw;
         int r;
 
-        r = fscanf (fp, "%63s%lx%lx%X%d%d%d%lx%d%d%d\n",
-                    devname, &d, &g, &flgs, &ref, &use, &metric, &m,
-                    &mtu, &win, &ir);
+        r = fscanf(fp, "%63s%lx%lx%X%d%d%d%lx%d%d%d\n",
+                   devname, &d, &g, &flgs, &ref, &use, &metric, &m,
+                   &mtu, &win, &ir);
 
         if (r != 11)
-            if ((r < 0) && feof (fp))
+            if ((r < 0) && feof(fp))
                 break;
 
         /* we only care about default gateway */
@@ -446,37 +449,37 @@ get_default_gw (buffer_t *b)
             continue;
 
         gw.s_addr = g;
-        buffer_appendf (b, "%s<br>", inet_ntoa (gw));
+        buffer_appendf(b, "%s<br>", inet_ntoa (gw));
         res = 1;
         break;
     }
 
     if (!res)
-       buffer_append (b, _("None<br>"));
+        buffer_append(b, _("None<br>"));
 
-    fclose (fp);
+    fclose(fp);
 }
 
 static void
-set_system_information (buffer_t *b)
+set_system_information(buffer_t *b)
 {
     if (!b)
         return;
 
-    buffer_append (b, _("<c>System Information</c><br><br>"));
-    get_distribution (b);
-    get_uname (b);
-    get_cpuinfos (b);
-    get_loadavg (b);
-    get_ram_usage (b);
+    buffer_append(b, _("<c>System Information</c><br><br>"));
+    get_distribution(b);
+    get_uname(b);
+    get_cpuinfos(b);
+    get_loadavg(b);
+    get_ram_usage(b);
 #ifdef BUILD_LIBSVDRP
-    get_vdr (b);
+    get_vdr(b);
 #endif
 #ifdef BUILD_LIBXRANDR
-    get_resolution (b);
+    get_resolution(b);
 #endif
-    get_network (b);
-    get_default_gw (b);
+    get_network(b);
+    get_default_gw(b);
 }
 
 /* ecore timer callback */
@@ -487,17 +490,18 @@ _update_infos_cb(void *data)
     Evas_Object *obj;
     obj = data;
     b = buffer_new();
-    set_enna_information (b);
-    set_system_information (b);
-    edje_object_part_text_set (obj, "sysinfo.text", b->buf);
-    edje_object_signal_emit (obj, "sysinfo,show", "enna");
+    set_enna_information(b);
+    set_system_information(b);
+    edje_object_part_text_set(obj, "sysinfo.text", b->buf);
+    edje_object_signal_emit(obj, "sysinfo,show", "enna");
     buffer_free(b);
 
     return ECORE_CALLBACK_RENEW;
 }
 
 /* externally accessible functions */
-Evas_Object *info_panel_show(void *data)
+Evas_Object *
+info_panel_show(void *data)
 {
     // create the panel main object
     o_edje = edje_object_add(enna->evas);
@@ -506,12 +510,14 @@ Evas_Object *info_panel_show(void *data)
 
     // update info once and fire the first callback
     _update_infos_cb(o_edje);
-    update_timer = ecore_timer_add(INFOS_REFRESH_PERIOD, _update_infos_cb, o_edje);
+    update_timer =
+        ecore_timer_add(INFOS_REFRESH_PERIOD, _update_infos_cb, o_edje);
 
     return o_edje;
 }
 
-void info_panel_hide(void *data)
+void
+info_panel_hide(void *data)
 {
     ENNA_TIMER_DEL(update_timer);
     ENNA_OBJECT_DEL(o_edje);
