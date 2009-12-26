@@ -190,7 +190,13 @@ static const struct {
     { NULL,         0                 }
 };
 
-static int _enna_init(void)
+static void _elm_init (int argc, char **argv)
+{
+    setenv("ELM_ENGINE", enna_config->engine, 1);
+    elm_init(argc, argv);
+}
+
+static int _enna_init(int argc, char **argv)
 {
     char tmp[PATH_MAX];
     int i;
@@ -226,9 +232,20 @@ static int _enna_init(void)
     /* Create ecore events (we should put here ALL the event_type_new) */
     ENNA_EVENT_ACTIVITIES_CHANGED = ecore_event_type_new();
 
-
+    /* try to init the requested video engine */
+    _elm_init(argc, argv);
     if (!_create_gui())
-        return 0;
+    {
+	/* try to init with failsafe settings (software_x11) */
+        enna_log(ENNA_MSG_WARNING, NULL,
+		 "Requested engine '%s' has failed to register, " \
+		 "using software_x11 as a default.", enna_config->engine);
+	ENNA_FREE(enna_config->engine);
+	enna_config->engine = strdup("software_x11");
+        _elm_init(argc, argv);
+        if (!_create_gui())
+            return 0;
+    }
 
     /* Init various stuff */
     enna_metadata_init ();
@@ -479,10 +496,7 @@ int main(int argc, char **argv)
     /* Must be called first */
     enna_config_init(conffile);
     ENNA_FREE(conffile);
-    
-    setenv("ELM_ENGINE", enna_config->engine, 1);
-    elm_init(argc, argv);
-    
+
     enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n",
              enna_config->log_file);
     enna_log_init(enna_config->log_file);
@@ -490,7 +504,7 @@ int main(int argc, char **argv)
 
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_signal, enna);
 
-    if (!_enna_init())
+    if (!_enna_init(argc, argv))
         goto out;
 
     ecore_main_loop_begin();
