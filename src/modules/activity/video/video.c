@@ -297,10 +297,7 @@ videoplayer_view_event(enna_input event)
     default:
         videoplayer_view_event_no_display(event);
         if (mod->controls_displayed)
-        {
             media_controls_display(1);
-            enna_mediaplayer_obj_input_feed(mod->o_mediacontrols, event);
-        }
         break;
     }
 }
