@@ -84,6 +84,7 @@ enna_volumes_listener_del(Enna_Volumes_Listener *vl)
 {
    if (!vl) return;
 
+   enna_log(ENNA_MSG_EVENT, "volumes", "Del: %s listener", vl->name);
    enna_volumes_listeners = eina_list_remove(enna_volumes_listeners, vl);
    ENNA_STRINGSHARE_DEL(vl->name);
    ENNA_FREE(vl);
