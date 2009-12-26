@@ -268,6 +268,8 @@ static int _create_gui(void)
 
     // main window
     enna->win = elm_win_add(NULL, "enna", ELM_WIN_BASIC);
+    if (!enna->win)
+      return 0;
     elm_win_title_set(enna->win, "Enna MediaCenter");
     enna->run_fullscreen = enna_config->fullscreen | run_fullscreen;
     elm_win_fullscreen_set(enna->win, enna->run_fullscreen);
