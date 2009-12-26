@@ -78,7 +78,7 @@ enna_video_picture_set (Evas_Object *obj, char *file, int from_vfs)
     if (!file)
     {
         edje_object_signal_emit(sd->o_edje, "snapshot,hide", "enna");
-        evas_object_del(sd->o_img);
+        ENNA_OBJECT_DEL(sd->o_img);
         return;
     }
 
