@@ -86,10 +86,14 @@ static void show_pause_button(Smart_Data * sd);
 static int _timer_cb(void *data);
 
 #define METADATA_APPLY                                          \
+    do                                                              \
+    {                                                               \
     Enna_Metadata *metadata;                                    \
     metadata = enna_mediaplayer_metadata_get(_enna_playlist);   \
     _metadata_set(sd->layout, metadata);                        \
     enna_metadata_meta_free(metadata);                          \
+    }                                                               \
+    while (0)
 
 
 static void
