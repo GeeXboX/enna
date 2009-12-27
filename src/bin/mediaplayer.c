@@ -133,7 +133,7 @@ event_cb(player_event_t e, void *data)
     if (e == PLAYER_EVENT_PLAYBACK_FINISHED)
     {
         event = ENNA_MP_EVENT_EOF;
-        ecore_pipe_write(mp->pipe, &event, sizeof (event));
+        ecore_pipe_write(mp->pipe, &event, sizeof(event));
     }
 
     return 0;
@@ -189,7 +189,7 @@ event_mouse_move(void *data, int type, void *event)
     /* Broadcast mouse position only for dvd player and only
        if libplayer window is on screen */
     if ((e->window == enna->ee_winid) || !mp->uri ||
-        strncmp (mp->uri, URI_TYPE_DVDNAV, strlen (URI_TYPE_DVDNAV)))
+        strncmp(mp->uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
         return 1;
 
     /* Send mouse position to libplayer */
@@ -964,7 +964,7 @@ enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
 {
   list_item_t *item;
 
-  item = eina_list_nth (enna_playlist->playlist, enna_playlist->selected);
+  item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
   if (!item->uri)
     return NULL;
   return strdup(item->uri);
@@ -974,7 +974,7 @@ void
 enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,
                             const char *uri, const char *label)
 {
-    list_item_t *item = calloc(1, sizeof (list_item_t));
+    list_item_t *item = calloc(1, sizeof(list_item_t));
     item->uri = uri ? strdup(uri) : NULL;
     item->label = label ? strdup(label) : NULL;
     enna_playlist->playlist =
@@ -1073,7 +1073,7 @@ enna_mediaplayer_next(Enna_Playlist *enna_playlist)
 {
     enna_playlist->selected++;
     if(enna_playlist->selected >
-       eina_list_count (enna_playlist->playlist) - 1)
+       eina_list_count(enna_playlist->playlist) - 1)
     {
         enna_playlist->selected--;
         return -1;
@@ -1130,7 +1130,7 @@ enna_mediaplayer_seek(int value, SEEK_TYPE type)
     enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %d%c",
              value, type == SEEK_ABS_PERCENT ? '%' : 's');
 
-    if (type >= ARRAY_NB_ELEMENTS (pl_seek))
+    if (type >= ARRAY_NB_ELEMENTS(pl_seek))
         return;
 
     if (mp->play_state == PAUSE || mp->play_state == PLAYING)
