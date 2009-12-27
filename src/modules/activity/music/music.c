@@ -53,6 +53,7 @@ static void _browser_delay_hilight_cb(void *data,
                                       Evas_Object *obj, void *event_info);
 static void _class_event(enna_input event);
 static void _class_event_mediaplayer_view(enna_input event);
+static void panel_lyrics_display(int show);
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
 typedef enum _MUSIC_STATE MUSIC_STATE;
@@ -154,6 +155,9 @@ _class_event_browser_view(enna_input event)
     case ENNA_INPUT_MINUS:
       enna_mediaplayer_default_decrease_volume();
       break;
+    case ENNA_INPUT_KEY_I:
+        panel_lyrics_display(!mod->lyrics_displayed);
+        break;
     default:
         enna_browser_input_feed(mod->o_browser, event);
     }
@@ -193,6 +197,9 @@ _class_event_mediaplayer_view(enna_input event)
     case ENNA_INPUT_MINUS:
       enna_mediaplayer_default_decrease_volume();
       break;
+    case ENNA_INPUT_KEY_I:
+        panel_lyrics_display(!mod->lyrics_displayed);
+        break;
     default:
         break;
     }
