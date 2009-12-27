@@ -6,26 +6,15 @@
       -> Preload previous and next pictures
       -> hide photo after transition : add program in edje to send signal
    when transition is finished.
-      -> Add start/stop slideshow key/button
       -> Define slideshow effect/timeout in config file.
 
  * Audio module
       -> Finish shoutcast support so that non-local streams can be played back.
       -> Playing now edje
 
- * Video module
-      -> Support Volume
-
  * Add Simple Widgets
       -> Checkbox
-      -> Slider
       -> TextBox
-
- * Bugs
-     -> When using 'back' in audio/video player, ui comes back to menu but
-        timer renders media player view again after a few seconds.
-     -> Ensure media player works (do not segv) if
-        libplayer has no x11 support.
 
 [Priority 9]
 
@@ -36,15 +25,9 @@
  * Add more complicated Widgets
       -> Virtual Keyboard (See Calaos or Illume for virtual keyboard
    integration)
-      -> Grid View
 
  * Configuration
       -> Save config to file
-
- * Configuration Module
-      -> Add configuration infrastructure for modules
-      -> Add Main menu item for configuration
-      -> Create GUI for config from registred modules
 
 [Priority 8]
 
