@@ -210,6 +210,7 @@ group {
          type: TEXT;
          mouse_events:   0;
          clip_to: "controls.clip";
+            scale: 1;
          description {
             state: "default" 0.0;
 
