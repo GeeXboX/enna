@@ -28,6 +28,8 @@
 #include "input.h"
 #include "photo_slideshow_view.h"
 
+#undef FEATURE_ROTATION
+
 #define ROTATION_DURATION 0.5
 
 typedef struct _Smart_Data Smart_Data;
@@ -50,7 +52,7 @@ struct _Smart_Data
 };
 
 /* local subsystem globals */
-
+#ifdef FEATURE_ROTATION
 static int
 _rotate(void *data)
 {
@@ -120,6 +122,7 @@ _rotate_go(Smart_Data *sd, unsigned char mode)
         sd->state = 0;
     sd->mode = mode;
 }
+#endif /* FEATURE_ROTATION */
 
 static void
 _controls_show(void *data, Evas *e, Evas_Object *obj, void *event_info)
@@ -189,6 +192,7 @@ _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
     elm_slideshow_timeout_set(sd->slideshow, 0);
 }
 
+#ifdef FEATURE_ROTATION
 static void
  _button_clicked_rotate_ccw_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -202,6 +206,7 @@ static void
     Smart_Data *sd = data;
     _rotate_go(sd, 1);
 }
+#endif /* FEATURE_ROTATION */
 
 static void
 _spin(void *data, Evas_Object *obj, void *event_info)
@@ -260,9 +265,11 @@ _input_events_cb(void *data, enna_input event)
     case ENNA_INPUT_OK:
         _button_clicked_play_cb(sd, data, NULL);
         break;
+#ifdef FEATURE_ROTATION
     case ENNA_INPUT_KEY_R:
         _button_clicked_rotate_ccw_cb(sd, data, NULL);
         break;
+#endif /* FEATURE_ROTATION */
     case ENNA_INPUT_DOWN:
         sd->delay--;
         if (sd->delay < 1)
@@ -385,8 +392,10 @@ enna_photo_slideshow_add(Evas * evas)
     elm_box_pack_end(bx, sd->spin);
     evas_object_show(sd->spin);
 
+#ifdef FEATURE_ROTATION
     ELM_ADD ("icon/rotate_ccw", _button_clicked_rotate_ccw_cb);
     ELM_ADD ("icon/rotate_cw",  _button_clicked_rotate_cw_cb);
+#endif /* FEATURE_ROTATION */
 
     evas_object_show(obj);
     evas_object_show(sd->slideshow);
