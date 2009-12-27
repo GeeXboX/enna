@@ -516,14 +516,6 @@ mp_play(void)
 }
 
 static int
-mp_seek(double percent)
-{
-    player_playback_seek(mp->player,
-                         (int) (100 * percent), PLAYER_PB_SEEK_PERCENT);
-    return 0;
-}
-
-static int
 mp_stop(void)
 {
     player_playback_stop(mp->player);
@@ -1150,10 +1142,9 @@ enna_mediaplayer_length_get(void)
 }
 
 int
-enna_mediaplayer_seek(double percent)
+enna_mediaplayer_seek(int percent)
 {
-    enna_log(ENNA_MSG_EVENT, NULL,
-             "Seeking to: %d%%", (int) (100 * percent));
+    enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %d%%", percent);
 
     if (mp->play_state == PAUSE || mp->play_state == PLAYING)
     {
@@ -1165,7 +1156,8 @@ enna_mediaplayer_seek(double percent)
 
         ev->seek_value = percent;
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-        return mp_seek(percent);
+        player_playback_seek(mp->player,
+                             percent, PLAYER_PB_SEEK_PERCENT);
     }
 
     return 0;
@@ -1176,7 +1168,7 @@ enna_mediaplayer_default_seek_backward(void)
 {
     int pos;
     pos = enna_mediaplayer_position_percent_get();
-    enna_mediaplayer_seek(((double) pos - SEEK_STEP_DEFAULT) / 100.0);
+    enna_mediaplayer_seek(pos - SEEK_STEP_DEFAULT);
 }
 
 void
@@ -1184,7 +1176,7 @@ enna_mediaplayer_default_seek_forward(void)
 {
     int pos;
     pos = enna_mediaplayer_position_percent_get();
-    enna_mediaplayer_seek(((double) pos + SEEK_STEP_DEFAULT) / 100.0);
+    enna_mediaplayer_seek(pos + SEEK_STEP_DEFAULT);
 }
 
 void

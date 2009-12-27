@@ -190,17 +190,13 @@ menu_view_event(enna_input event)
 }
 
 static void
-_seek_video(double value)
+_seek_video(int value)
 {
     int pos = 0;
-    double seek = 0.0;
 
     pos = enna_mediaplayer_position_percent_get();
-    seek = ((double) pos + value) / 100.0;
-    enna_mediaplayer_seek(seek);
+    enna_mediaplayer_seek(pos + value);
     enna_mediaplayer_position_update(mod->o_mediacontrols);
-
-    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Seek value : %f", seek);
 }
 
 static void

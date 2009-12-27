@@ -62,7 +62,7 @@ typedef struct _Enna_Event_Mediaplayer_Seek_Data Enna_Event_Mediaplayer_Seek_Dat
 
 struct _Enna_Event_Mediaplayer_Seek_Data
 {
-    double seek_value;
+    int seek_value;
 };
 
 typedef struct _Enna_Playlist Enna_Playlist;
@@ -102,7 +102,7 @@ double enna_mediaplayer_position_get(void);
 int enna_mediaplayer_position_percent_get(void);
 int enna_mediaplayer_position_set (double position);
 double enna_mediaplayer_length_get(void);
-int enna_mediaplayer_seek(double percent);
+int enna_mediaplayer_seek(int percent);
 void enna_mediaplayer_default_seek_backward (void);
 void enna_mediaplayer_default_seek_forward (void);
 void enna_mediaplayer_video_resize(int x, int y, int w, int h);

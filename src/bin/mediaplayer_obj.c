@@ -244,7 +244,7 @@ _seek_cb(void *data, int type, void *event)
 {
     Enna_Event_Mediaplayer_Seek_Data *ev;
     ev=event;
-    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event SEEK %d%%",(int) (100 * ev->seek_value));
+    enna_log(ENNA_MSG_EVENT, NULL, "Media control Event SEEK %d%%", ev->seek_value);
     return 1;
 }
 
@@ -351,7 +351,7 @@ _slider_seek_cb(void *data, Evas_Object *obj, void *event_info)
     Smart_Data *sd = data;
 
     value = elm_slider_value_get(sd->sl);
-    enna_mediaplayer_seek(value / 100.0);
+    enna_mediaplayer_seek(value);
     sd->pos = enna_mediaplayer_position_get();
 }
 
