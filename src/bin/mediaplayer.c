@@ -1142,9 +1142,19 @@ enna_mediaplayer_length_get(void)
 }
 
 static void
-enna_mediaplayer_seek(int value, int rel)
+enna_mediaplayer_seek(int value, SEEK_TYPE type)
 {
-    enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %d%c", value, rel ? 's' : '%');
+    const player_pb_seek_t pl_seek[] = {
+        [SEEK_ABS_PERCENT] = PLAYER_PB_SEEK_PERCENT,
+        [SEEK_ABS_SECONDS] = PLAYER_PB_SEEK_ABSOLUTE,
+        [SEEK_REL_SECONDS] = PLAYER_PB_SEEK_RELATIVE
+    };
+
+    enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %d%c",
+             value, type == SEEK_ABS_PERCENT ? '%' : 's');
+
+    if (type >= ARRAY_NB_ELEMENTS (pl_seek))
+        return;
 
     if (mp->play_state == PAUSE || mp->play_state == PLAYING)
     {
@@ -1155,24 +1165,22 @@ enna_mediaplayer_seek(int value, int rel)
             return;
 
         ev->seek_value = value;
-        ev->relative   = rel;
+        ev->type       = type;
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-        player_playback_seek(mp->player, value,
-                             rel ? PLAYER_PB_SEEK_RELATIVE
-                                 : PLAYER_PB_SEEK_PERCENT);
+        player_playback_seek(mp->player, value, pl_seek[type]);
     }
 }
 
 void
 enna_mediaplayer_seek_percent(int percent)
 {
-    enna_mediaplayer_seek(percent, 0);
+    enna_mediaplayer_seek(percent, SEEK_ABS_PERCENT);
 }
 
 void
 enna_mediaplayer_seek_relative(int seconds)
 {
-    enna_mediaplayer_seek(seconds, 1);
+    enna_mediaplayer_seek(seconds, SEEK_REL_SECONDS);
 }
 
 void

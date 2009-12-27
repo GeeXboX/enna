@@ -60,10 +60,19 @@ enum _PLAY_STATE
 
 typedef struct _Enna_Event_Mediaplayer_Seek_Data Enna_Event_Mediaplayer_Seek_Data;
 
+typedef enum _SEEK_TYPE SEEK_TYPE;
+
+enum _SEEK_TYPE
+{
+    SEEK_ABS_PERCENT = 0,
+    SEEK_ABS_SECONDS,
+    SEEK_REL_SECONDS
+};
+
 struct _Enna_Event_Mediaplayer_Seek_Data
 {
     int seek_value;
-    int relative;     /* false: percent,  true: +/- seconds */
+    SEEK_TYPE type;
 };
 
 typedef struct _Enna_Playlist Enna_Playlist;

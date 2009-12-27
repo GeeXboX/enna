@@ -245,7 +245,7 @@ _seek_cb(void *data, int type, void *event)
     Enna_Event_Mediaplayer_Seek_Data *ev;
     ev=event;
     enna_log(ENNA_MSG_EVENT, NULL, "Media control Event SEEK %d%c",
-             ev->seek_value, ev->relative ? 's' : '%');
+             ev->seek_value, ev->type == SEEK_ABS_PERCENT ? '%' : 's');
     return 1;
 }
 
