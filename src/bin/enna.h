@@ -132,6 +132,7 @@ struct _Enna
     Evas_Object *layout; /**< Main elementary layout widget. */
     Evas_Object *o_content; /** Edje Object to swallow content */
     Evas_Object *o_cursor; /** Edje Object for mouse cursor */
+    Evas_Object *o_button_back; /** Back button */
     enna_msg_level_t lvl; /**< Error message level */
     int slideshow_delay;
     int cursor_is_shown;

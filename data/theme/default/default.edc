@@ -165,6 +165,19 @@ collections
                rel2.offset:   -64    -8;
             }
          }
+         part {
+             name: "back.swallow";
+             type: SWALLOW;
+             description {
+               state: "default" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+               rel1.relative: 0  1;
+               rel1.offset:   0 -48;
+               rel2.relative: 0  1;
+               rel2.offset:   48 0;
+            }
+         }
          /* popup */
          part { name : "popup.clip";
             type: RECT;

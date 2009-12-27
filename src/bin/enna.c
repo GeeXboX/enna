@@ -156,6 +156,16 @@ _window_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
     _set_scale(h);
 }
 
+static void
+_button_back_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    if (enna_mainmenu_visible())
+        enna_input_event_emit(ENNA_INPUT_QUIT);
+    else
+        enna_input_event_emit(ENNA_INPUT_EXIT);
+}
+
+
 static void _list_engines(void)
 {
     Eina_List  *lst;
@@ -274,6 +284,8 @@ static int _enna_init(int argc, char **argv)
 
 static int _create_gui(void)
 {
+    Evas_Object *ic;
+
     // set custom elementary theme
     elm_theme_extension_add(enna_config_theme_get());
 
@@ -311,6 +323,16 @@ static int _create_gui(void)
     // exit dialog
     elm_layout_content_set(enna->layout, "enna.exit.swallow",
                            enna_exit_add(enna->evas));
+
+    // Back button
+    enna->o_button_back = elm_button_add(enna->layout);
+    elm_object_style_set(enna->o_button_back, "mediaplayer");
+    ic = elm_icon_add(enna->o_button_back);
+    elm_icon_file_set(ic, enna_config_theme_get(), "ctrl/shutdown");
+    elm_button_icon_set(enna->o_button_back, ic);
+
+    elm_layout_content_set(enna->layout, "back.swallow", enna->o_button_back);
+    evas_object_smart_callback_add(enna->o_button_back, "clicked", _button_back_clicked_cb, NULL);
 
     // mouse pointer
     enna->o_cursor = edje_object_add(enna->evas);
