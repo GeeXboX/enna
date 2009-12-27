@@ -150,11 +150,11 @@ _class_event_browser_view(enna_input event)
             mod->state = MEDIAPLAYER_VIEW;
         break;
     case ENNA_INPUT_PLUS:
-      enna_mediaplayer_default_increase_volume();
-      break;
+        enna_mediaplayer_default_increase_volume();
+        break;
     case ENNA_INPUT_MINUS:
-      enna_mediaplayer_default_decrease_volume();
-      break;
+        enna_mediaplayer_default_decrease_volume();
+        break;
     case ENNA_INPUT_KEY_I:
         panel_lyrics_display(!mod->lyrics_displayed);
         break;
@@ -192,11 +192,11 @@ _class_event_mediaplayer_view(enna_input event)
             mod->state = MENU_VIEW;
         break;
     case ENNA_INPUT_PLUS:
-      enna_mediaplayer_default_increase_volume();
-      break;
+        enna_mediaplayer_default_increase_volume();
+        break;
     case ENNA_INPUT_MINUS:
-      enna_mediaplayer_default_decrease_volume();
-      break;
+        enna_mediaplayer_default_decrease_volume();
+        break;
     case ENNA_INPUT_KEY_I:
         panel_lyrics_display(!mod->lyrics_displayed);
         break;
