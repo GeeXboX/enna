@@ -148,6 +148,12 @@ _class_event_browser_view(enna_input event)
         if (enna_mediaplayer_show_get(mod->o_mediaplayer))
             mod->state = MEDIAPLAYER_VIEW;
         break;
+    case ENNA_INPUT_PLUS:
+      enna_mediaplayer_default_increase_volume();
+      break;
+    case ENNA_INPUT_MINUS:
+      enna_mediaplayer_default_decrease_volume();
+      break;
     default:
         enna_browser_input_feed(mod->o_browser, event);
     }
@@ -181,6 +187,12 @@ _class_event_mediaplayer_view(enna_input event)
         else
             mod->state = MENU_VIEW;
         break;
+    case ENNA_INPUT_PLUS:
+      enna_mediaplayer_default_increase_volume();
+      break;
+    case ENNA_INPUT_MINUS:
+      enna_mediaplayer_default_decrease_volume();
+      break;
     default:
         break;
     }
