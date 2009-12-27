@@ -236,6 +236,8 @@ enna_mainmenu_selected_activity_get(void)
 void
 enna_mainmenu_show(void)
 {
+    Evas_Object *ic;
+
     if (!sd) return;
     sd->visible = 1;
     sd->selected = NULL;
@@ -244,11 +246,17 @@ enna_mainmenu_show(void)
                             "mainmenu,show", "enna");
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "weather,show", "enna");
+
+    ic = elm_icon_add(enna->layout);
+    elm_icon_file_set(ic, enna_config_theme_get(), "ctrl/shutdown");
+    elm_button_icon_set(enna->o_button_back, ic);
+
 }
 
 void
 enna_mainmenu_hide(void)
-{
+{ 
+    Evas_Object *ic;
     if (!sd) return;
     sd->visible = 0;
 
@@ -256,6 +264,10 @@ enna_mainmenu_hide(void)
                             "mainmenu,hide", "enna");
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "weather,hide", "enna");
+
+    ic = elm_icon_add(enna->layout);
+    elm_icon_file_set(ic, enna_config_theme_get(), "icon/arrow_left");
+    elm_button_icon_set(enna->o_button_back, ic);
 }
 
 void
