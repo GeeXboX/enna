@@ -62,9 +62,11 @@
     "photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm\n" \
     "\n" \
     "[mediaplayer]\n" \
-    "# Values by default are 'mplayer' type, 'auto' video_out, 'auto' audio_out\n" \
-    "# and 'warning' verbosity. Change these parameters only if that is really\n" \
-    "# necessary.\n" \
+    "# Values by default are 'auto' video_out, 'auto' audio_out and 'warning'\n" \
+    "# verbosity.\n" \
+    "# MPlayer is used for all streams excepted for DVD/DVDNAV and DVB where\n" \
+    "# xine is used if available. The parameters type, dvd_type and tv_type\n" \
+    "# can be used to overwrite this behaviour.\n" \
     "\n" \
     "#mplayer,xine\n" \
     "#type=\n" \
@@ -150,6 +152,8 @@
     "#  EP  : for an episode\n" \
     "# With SE and EP, the values are saved in the database.\n" \
     "# Examples: sSEeEP, NUMxNUM\n" \
+    "#\n" \
+    "# Only alphabetical and numerical letters can be used in the keywords.\n" \
     "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,orenji,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,cdNUM,CDNUM,SExEP,sSEeEP,SSEEEP\n" \
     "\n" \
 
