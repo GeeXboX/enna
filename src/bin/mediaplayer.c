@@ -1111,29 +1111,6 @@ enna_mediaplayer_position_percent_get(void)
             mp_position_percent_get() : 0;
 }
 
-int
-enna_mediaplayer_position_set(double position)
-{
-    enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %f seconds", position);
-
-    if (mp->play_state == PAUSE || mp->play_state == PLAYING)
-    {
-        Enna_Event_Mediaplayer_Seek_Data *ev;
-
-        ev = calloc(1, sizeof(Enna_Event_Mediaplayer_Seek_Data));
-        if (!ev)
-            return 0;
-
-        ev->seek_value = position;
-        ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-        player_playback_seek(mp->player,
-                             position, PLAYER_PB_SEEK_ABSOLUTE);
-
-    }
-
-    return 0;
-}
-
 double
 enna_mediaplayer_length_get(void)
 {
@@ -1169,6 +1146,12 @@ enna_mediaplayer_seek(int value, SEEK_TYPE type)
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
         player_playback_seek(mp->player, value, pl_seek[type]);
     }
+}
+
+void
+enna_mediaplayer_position_set(int seconds)
+{
+    enna_mediaplayer_seek(seconds, SEEK_ABS_SECONDS);
 }
 
 void

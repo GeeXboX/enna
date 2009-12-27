@@ -110,7 +110,7 @@ int enna_mediaplayer_next(Enna_Playlist *enna_playlist);
 int enna_mediaplayer_prev(Enna_Playlist *enna_playlist);
 double enna_mediaplayer_position_get(void);
 int enna_mediaplayer_position_percent_get(void);
-int enna_mediaplayer_position_set (double position);
+void enna_mediaplayer_position_set(int seconds);
 double enna_mediaplayer_length_get(void);
 void enna_mediaplayer_seek_percent(int percent);
 void enna_mediaplayer_seek_relative(int seconds);
