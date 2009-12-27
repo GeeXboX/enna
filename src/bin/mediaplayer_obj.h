@@ -29,4 +29,6 @@ Eina_Bool enna_mediaplayer_obj_input_feed(Evas_Object *obj, enna_input event);
 unsigned char enna_mediaplayer_show_get(Evas_Object *obj);
 void enna_mediaplayer_obj_layout_set(Evas_Object *obj, const char *layout);
 void enna_mediaplayer_position_update(Evas_Object *obj);
+void enna_mediaplayer_obj_event_catch(Evas_Object *obj);
+void enna_mediaplayer_obj_event_release(void);
 #endif /* MEDIAPLAYER_OBJ_H */

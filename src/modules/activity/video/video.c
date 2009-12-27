@@ -572,6 +572,7 @@ movie_start_playback(int resume)
                                    _mediaplayer_resize_cb, NULL);
 
     enna_mediaplayer_stop();
+    enna_mediaplayer_obj_event_catch(mod->o_mediacontrols);
     enna_mediaplayer_play(mod->enna_playlist);
 #if 0
     if (resume)
