@@ -32,6 +32,20 @@
 
 #define SMART_NAME "mediaplayer_obj"
 
+typedef struct _Mediaplayer_Events Mediaplayer_Events;
+
+static struct _Mediaplayer_Events
+{
+    Ecore_Event_Handler *play_event_handler;
+    Ecore_Event_Handler *stop_event_handler;
+    Ecore_Event_Handler *next_event_handler;
+    Ecore_Event_Handler *prev_event_handler;
+    Ecore_Event_Handler *pause_event_handler;
+    Ecore_Event_Handler *unpause_event_handler;
+    Ecore_Event_Handler *seek_event_handler;
+    Ecore_Event_Handler *eos_event_handler;
+} _mediaplayer_events;
+
 typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
@@ -48,14 +62,6 @@ struct _Smart_Data
     Evas_Object *text_box;
     Eina_List *buttons;
     Ecore_Timer *timer;
-    Ecore_Event_Handler *play_event_handler;
-    Ecore_Event_Handler *stop_event_handler;
-    Ecore_Event_Handler *next_event_handler;
-    Ecore_Event_Handler *prev_event_handler;
-    Ecore_Event_Handler *pause_event_handler;
-    Ecore_Event_Handler *unpause_event_handler;
-    Ecore_Event_Handler *seek_event_handler;
-    Ecore_Event_Handler *eos_event_handler;
     double pos;
     double len;
     unsigned char show : 1;
@@ -460,20 +466,58 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
 
+    enna_mediaplayer_obj_event_release();
+
     ENNA_OBJECT_DEL(sd->cv);
     ENNA_OBJECT_DEL(sd->btn_box);
     ENNA_OBJECT_DEL(sd->text_box);
-    ecore_event_handler_del(sd->play_event_handler);
-    ecore_event_handler_del(sd->stop_event_handler);
-    ecore_event_handler_del(sd->prev_event_handler);
-    ecore_event_handler_del(sd->next_event_handler);
-    ecore_event_handler_del(sd->pause_event_handler);
-    ecore_event_handler_del(sd->unpause_event_handler);
-    ecore_event_handler_del(sd->seek_event_handler);
-    ecore_event_handler_del(sd->eos_event_handler);
     eina_list_free(sd->buttons);
     ENNA_TIMER_DEL(sd->timer);
     free(sd);
+}
+
+void
+enna_mediaplayer_obj_event_catch(Evas_Object *obj)
+{
+    Mediaplayer_Events *ev = &_mediaplayer_events;
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+
+    if (!sd)
+        return;
+
+    enna_mediaplayer_obj_event_release();
+
+    ev->play_event_handler =
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_START, _start_cb, sd);
+    ev->stop_event_handler =
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_STOP, _stop_cb, sd);
+    ev->prev_event_handler =
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_PREV, _prev_cb, sd);
+    ev->next_event_handler =
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, sd);
+    ev->pause_event_handler =
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_PAUSE, _pause_cb, sd);
+    ev->unpause_event_handler =
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_UNPAUSE, _unpause_cb, sd);
+    ev->seek_event_handler =
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, sd);
+    ev->eos_event_handler =
+        ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, sd);
+}
+
+void
+enna_mediaplayer_obj_event_release(void)
+{
+    Mediaplayer_Events *ev = &_mediaplayer_events;
+
+    ENNA_EVENT_HANDLER_DEL(ev->play_event_handler);
+    ENNA_EVENT_HANDLER_DEL(ev->stop_event_handler);
+    ENNA_EVENT_HANDLER_DEL(ev->prev_event_handler);
+    ENNA_EVENT_HANDLER_DEL(ev->next_event_handler);
+    ENNA_EVENT_HANDLER_DEL(ev->pause_event_handler);
+    ENNA_EVENT_HANDLER_DEL(ev->unpause_event_handler);
+    ENNA_EVENT_HANDLER_DEL(ev->seek_event_handler);
+    ENNA_EVENT_HANDLER_DEL(ev->eos_event_handler);
 }
 
 #define ELM_ADD(icon, cb)                                            \
@@ -560,22 +604,6 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     ELM_ADD ("icon/mp_forward", _button_clicked_forward_cb);
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
 
-    sd->play_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_START, _start_cb, sd);
-    sd->stop_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_STOP, _stop_cb, sd);
-    sd->prev_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_PREV, _prev_cb, sd);
-    sd->next_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_NEXT, _next_cb, sd);
-    sd->pause_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_PAUSE, _pause_cb, sd);
-    sd->unpause_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_UNPAUSE, _unpause_cb, sd);
-    sd->seek_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_SEEK, _seek_cb, sd);
-    sd->eos_event_handler = ecore_event_handler_add(
-        ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, sd);
     evas_object_size_hint_weight_set(btn_box, EVAS_HINT_EXPAND, 0.5);
     evas_object_size_hint_align_set(btn_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_layout_content_set(layout, "buttons.swallow", btn_box);
