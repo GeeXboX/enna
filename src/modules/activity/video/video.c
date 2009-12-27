@@ -192,10 +192,7 @@ menu_view_event(enna_input event)
 static void
 _seek_video(int value)
 {
-    int pos = 0;
-
-    pos = enna_mediaplayer_position_percent_get();
-    enna_mediaplayer_seek_percent(pos + value);
+    enna_mediaplayer_seek_relative(value);
     enna_mediaplayer_position_update(mod->o_mediacontrols);
 }
 
@@ -211,16 +208,16 @@ videoplayer_view_event_no_display (enna_input event)
         enna_mediaplayer_play(mod->enna_playlist);
         break;
     case ENNA_INPUT_RIGHT:
-        _seek_video(+1);
+        _seek_video(+10); /* +10s */
         break;
     case ENNA_INPUT_LEFT:
-        _seek_video(-1);
+        _seek_video(-10); /* -10s */
         break;
     case ENNA_INPUT_UP:
-        _seek_video(+5);
+        _seek_video(+60); /* +60s */
         break;
     case ENNA_INPUT_DOWN:
-        _seek_video(-5);
+        _seek_video(-60); /* -60s */
         break;
     case ENNA_INPUT_PLUS:
         enna_mediaplayer_default_increase_volume();
