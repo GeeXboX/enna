@@ -53,7 +53,7 @@
 #define MAX_PLAYERS 4
 
 /* a/v controls */
-#define SEEK_STEP_DEFAULT         2.0 /* percent */
+#define SEEK_STEP_DEFAULT         10 /* seconds */
 #define VOLUME_STEP_DEFAULT       5 /* percent */
 #define AUDIO_DELAY_DEFAULT       0
 #define SUB_VISIBILITY_DEFAULT    1
@@ -1141,10 +1141,10 @@ enna_mediaplayer_length_get(void)
         mp_length_get() : 0.0;
 }
 
-int
-enna_mediaplayer_seek(int percent)
+static void
+enna_mediaplayer_seek(int value, int rel)
 {
-    enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %d%%", percent);
+    enna_log(ENNA_MSG_EVENT, NULL, "Seeking to: %d%c", value, rel ? 's' : '%');
 
     if (mp->play_state == PAUSE || mp->play_state == PLAYING)
     {
@@ -1152,31 +1152,39 @@ enna_mediaplayer_seek(int percent)
 
         ev = calloc(1, sizeof(Enna_Event_Mediaplayer_Seek_Data));
         if (!ev)
-            return 0;
+            return;
 
-        ev->seek_value = percent;
+        ev->seek_value = value;
+        ev->relative   = rel;
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
-        player_playback_seek(mp->player,
-                             percent, PLAYER_PB_SEEK_PERCENT);
+        player_playback_seek(mp->player, value,
+                             rel ? PLAYER_PB_SEEK_RELATIVE
+                                 : PLAYER_PB_SEEK_PERCENT);
     }
+}
 
-    return 0;
+void
+enna_mediaplayer_seek_percent(int percent)
+{
+    enna_mediaplayer_seek(percent, 0);
+}
+
+void
+enna_mediaplayer_seek_relative(int seconds)
+{
+    enna_mediaplayer_seek(seconds, 1);
 }
 
 void
 enna_mediaplayer_default_seek_backward(void)
 {
-    int pos;
-    pos = enna_mediaplayer_position_percent_get();
-    enna_mediaplayer_seek(pos - SEEK_STEP_DEFAULT);
+    enna_mediaplayer_seek_relative(-SEEK_STEP_DEFAULT);
 }
 
 void
 enna_mediaplayer_default_seek_forward(void)
 {
-    int pos;
-    pos = enna_mediaplayer_position_percent_get();
-    enna_mediaplayer_seek(pos + SEEK_STEP_DEFAULT);
+    enna_mediaplayer_seek_relative(SEEK_STEP_DEFAULT);
 }
 
 void
