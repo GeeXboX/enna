@@ -59,6 +59,7 @@ struct _Smart_Data
     double pos;
     double len;
     unsigned char show : 1;
+    Enna_Playlist *playlist;
 };
 
 typedef struct _Button_Item
@@ -68,9 +69,6 @@ typedef struct _Button_Item
     void (*func)(void *data, Evas_Object *obj, void *event_info);
     void *data;
 }Button_Item;
-
-/* local subsystem globals */
-static Enna_Playlist *_enna_playlist;
 
 static int _start_cb(void *data, int type, void *event);
 static int _pause_cb(void *data, int type, void *event);
@@ -89,7 +87,7 @@ static int _timer_cb(void *data);
     do                                                              \
     {                                                               \
         Enna_Metadata *metadata;                                    \
-        metadata = enna_mediaplayer_metadata_get(_enna_playlist);   \
+        metadata = enna_mediaplayer_metadata_get(sd->playlist);     \
         _metadata_set(sd->layout, metadata);                        \
         enna_metadata_meta_free(metadata);                          \
     }                                                               \
@@ -252,8 +250,10 @@ _seek_cb(void *data, int type, void *event)
 static int
 _eos_cb(void *data, int type, void *event)
 {
+    Smart_Data *sd = data;
+
     /* EOS received, update metadata */
-    enna_mediaplayer_next(_enna_playlist);
+    enna_mediaplayer_next(sd->playlist);
     return 1;
 }
 
@@ -304,13 +304,17 @@ _timer_cb(void *data)
 static void
 _button_clicked_play_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    enna_mediaplayer_play(_enna_playlist);
+    Smart_Data *sd = data;
+
+    enna_mediaplayer_play(sd->playlist);
 }
 
 static void
 _button_clicked_prev_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    enna_mediaplayer_prev(_enna_playlist);
+    Smart_Data *sd = data;
+
+    enna_mediaplayer_prev(sd->playlist);
 }
 
 static void
@@ -336,7 +340,9 @@ _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
 static void
 _button_clicked_next_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    enna_mediaplayer_next(_enna_playlist);
+    Smart_Data *sd = data;
+
+    enna_mediaplayer_next(sd->playlist);
 }
 
 static void
@@ -589,8 +595,7 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
 
     evas_object_event_callback_add(layout, EVAS_CALLBACK_DEL, _del_cb, sd);
 
-    /* FIXME : WTF ? why we have a ref to the playlist there ? */
-    _enna_playlist = enna_playlist;
+    sd->playlist = enna_playlist;
 
     evas_object_data_set(layout, "sd", sd);
 
