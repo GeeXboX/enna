@@ -32,6 +32,8 @@
 
 #define SMART_NAME "enna_panel_infos"
 
+#define VIDEO_DEFAULT_COVER "cover/movie"
+
 typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
@@ -201,7 +203,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
 
     if (!m)
     {
-        file = strdup("backdrop/default");
+        file = strdup(VIDEO_DEFAULT_COVER);
         from_vfs = 0;
     }
 
@@ -217,7 +219,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
 
     if (!file)
     {
-        file = strdup("backdrop/default");
+        file = strdup(VIDEO_DEFAULT_COVER);
         from_vfs = 0;
     }
 
@@ -238,7 +240,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     sd->o_cover = cover;
     edje_object_part_swallow(sd->o_edje,
                              "infos.panel.cover.swallow", sd->o_cover);
-    edje_object_signal_emit(sd->o_edje, strcmp(file, "backdrop/default")
+    edje_object_signal_emit(sd->o_edje, strcmp(file, VIDEO_DEFAULT_COVER)
                                         ? "cover,show" : "cover,hide", "enna");
     ENNA_FREE(cv);
     ENNA_FREE(file);
