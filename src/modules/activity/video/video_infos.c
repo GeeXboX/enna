@@ -240,8 +240,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     sd->o_cover = cover;
     edje_object_part_swallow(sd->o_edje,
                              "infos.panel.cover.swallow", sd->o_cover);
-    edje_object_signal_emit(sd->o_edje, strcmp(file, VIDEO_DEFAULT_COVER)
-                                        ? "cover,show" : "cover,hide", "enna");
+    edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
     ENNA_FREE(cv);
     ENNA_FREE(file);
 }
