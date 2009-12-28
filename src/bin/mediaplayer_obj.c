@@ -129,6 +129,7 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 {
     Smart_Data *sd;
     char *cover;
+    int res;
 
     sd = evas_object_data_get(obj, "sd");
 
@@ -137,7 +138,9 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
 
     metadata_set_text (sd->title, metadata, "title", 1);
     metadata_set_text (sd->album, metadata, "album", 0);
-    metadata_set_text (sd->artist, metadata, "author", 0);
+    res = metadata_set_text (sd->artist, metadata, "author", 0);
+    if (res)
+        metadata_set_text(sd->artist, metadata, "artist", 0);
 
     ENNA_OBJECT_DEL(sd->cv);
     sd->cv = enna_image_add(enna->evas);
