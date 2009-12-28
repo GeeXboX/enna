@@ -136,25 +136,25 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
     if (!sd)
         return;
 
-    metadata_set_text (sd->title, metadata, "title", 1);
-    metadata_set_text (sd->album, metadata, "album", 0);
-    res = metadata_set_text (sd->artist, metadata, "author", 0);
+    metadata_set_text(sd->title, metadata, "title", 1);
+    metadata_set_text(sd->album, metadata, "album", 0);
+    res = metadata_set_text(sd->artist, metadata, "author", 0);
     if (res)
         metadata_set_text(sd->artist, metadata, "artist", 0);
 
     ENNA_OBJECT_DEL(sd->cv);
     sd->cv = enna_image_add(enna->evas);
 
-    cover = enna_metadata_meta_get (metadata, "cover", 1);
+    cover = enna_metadata_meta_get(metadata, "cover", 1);
     if (cover)
     {
         char cv[1024] = { 0 };
 
         if (*cover == '/')
-            snprintf(cv, sizeof (cv), "%s", cover);
+            snprintf(cv, sizeof(cv), "%s", cover);
         else
-            snprintf(cv, sizeof (cv), "%s/.enna/covers/%s",
-                     enna_util_user_home_get (), cover);
+            snprintf(cv, sizeof(cv), "%s/.enna/covers/%s",
+                     enna_util_user_home_get(), cover);
 
         enna_image_file_set(sd->cv, cv, NULL);
     }
@@ -336,7 +336,7 @@ _button_clicked_rewind_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
 
-    enna_mediaplayer_default_seek_backward ();
+    enna_mediaplayer_default_seek_backward();
     sd->pos = enna_mediaplayer_position_get();
     slider_position_update(sd);
 }
@@ -346,7 +346,7 @@ _button_clicked_forward_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
 
-    enna_mediaplayer_default_seek_forward ();
+    enna_mediaplayer_default_seek_forward();
     sd->pos = enna_mediaplayer_position_get();
     slider_position_update(sd);
 }
@@ -604,13 +604,13 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     elm_box_homogenous_set(btn_box, 0);
     elm_box_horizontal_set(btn_box, 1);
 
-    ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
-    ELM_ADD ("icon/mp_prev",    _button_clicked_prev_cb);
-    ELM_ADD ("icon/mp_rewind",  _button_clicked_rewind_cb);
-    ELM_ADD ("icon/mp_play",    _button_clicked_play_cb);
+    ELM_ADD("icon/mp_stop",    _button_clicked_stop_cb);
+    ELM_ADD("icon/mp_prev",    _button_clicked_prev_cb);
+    ELM_ADD("icon/mp_rewind",  _button_clicked_rewind_cb);
+    ELM_ADD("icon/mp_play",    _button_clicked_play_cb);
     sd->play_btn = bt;
-    ELM_ADD ("icon/mp_forward", _button_clicked_forward_cb);
-    ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
+    ELM_ADD("icon/mp_forward", _button_clicked_forward_cb);
+    ELM_ADD("icon/mp_next",    _button_clicked_next_cb);
 
     evas_object_size_hint_weight_set(btn_box, EVAS_HINT_EXPAND, 0.5);
     evas_object_size_hint_align_set(btn_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
