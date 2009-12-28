@@ -209,7 +209,6 @@ images/cover_video2.png
 
 # Check which of these files really are still relevant
 IMG_MISC = \
-images/background.png \
 images/black_frame.png \
 images/bottom_pane.png \
 images/browser_cover_bg.png \
@@ -238,7 +237,6 @@ images/frame.png \
 images/icon_playlist.png \
 images/left_pane.png \
 images/letter_bg.png \
-images/mainmenu_background.png \
 images/mainmenu_border_left.png \
 images/mainmenu_border_right.png \
 images/menu_sel_bg.png \
