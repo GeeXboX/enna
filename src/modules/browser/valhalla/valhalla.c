@@ -194,13 +194,13 @@ static Eina_List *_browse_author(void)
 {
     vh_data_t vh;
     Eina_List *list = NULL;
-    valhalla_db_item_t search = VALHALLA_DB_SEARCH_TEXT("author", ENTITIES);
+    valhalla_db_item_t s1 = VALHALLA_DB_SEARCH_TEXT("author", ENTITIES);
     valhalla_db_item_t s2 = VALHALLA_DB_SEARCH_TEXT("artist", ENTITIES);
 
     vh.list  = &list;
     vh.level = BROWSER_LEVEL_AUTHOR_LIST;
     vh.icon  = "icon/artist";
-    valhalla_db_metalist_get(mod->valhalla, &search, NULL, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla, &s1, NULL, _result_dir_cb, &vh);
     valhalla_db_metalist_get(mod->valhalla, &s2, NULL, _result_dir_cb, &vh);
 
     list = eina_list_sort(list, eina_list_count(list), _sort_cb);
