@@ -47,7 +47,6 @@ images/unknown_cover.png
 IMG_ACTIVITIES = \
 images/bg_bookstore.png \
 images/bg_configuration.jpg \
-images/bg_default.png \
 images/bg_games.png \
 images/bg_gocomics.png \
 images/bg_music.jpg \
