@@ -100,15 +100,19 @@ static int _timer_cb(void *data);
     while (0)
 
 
-static void
+static int
 metadata_set_text(Evas_Object *obj,
                   Enna_Metadata *m, const char *name, int bold)
 {
+    int res = 0;
     char *str = NULL;
     char tmp[4096];
 
     if (m)
         str = enna_metadata_meta_get(m, name, 1);
+
+    if (!str)
+        res = -1;
 
     if(bold && str)
         snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
@@ -117,6 +121,7 @@ metadata_set_text(Evas_Object *obj,
 
     elm_label_label_set(obj, tmp);
     ENNA_FREE(str);
+    return res;
 }
 
 static void
