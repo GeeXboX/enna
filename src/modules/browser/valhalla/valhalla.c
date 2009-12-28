@@ -195,11 +195,13 @@ static Eina_List *_browse_author(void)
     vh_data_t vh;
     Eina_List *list = NULL;
     valhalla_db_item_t search = VALHALLA_DB_SEARCH_TEXT("author", ENTITIES);
+    valhalla_db_item_t s2 = VALHALLA_DB_SEARCH_TEXT("artist", ENTITIES);
 
     vh.list  = &list;
     vh.level = BROWSER_LEVEL_AUTHOR_LIST;
     vh.icon  = "icon/artist";
     valhalla_db_metalist_get(mod->valhalla, &search, NULL, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla, &s2, NULL, _result_dir_cb, &vh);
 
     list = eina_list_sort(list, eina_list_count(list), _sort_cb);
     return list;
@@ -278,7 +280,9 @@ static Eina_List *_browse_unclassified_list(void)
     valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_STR(NOTIN, "album", NULL);
     valhalla_db_restrict_t r2 = VALHALLA_DB_RESTRICT_STR(NOTIN, "author", NULL);
     valhalla_db_restrict_t r3 = VALHALLA_DB_RESTRICT_STR(NOTIN, "genre", NULL);
+    valhalla_db_restrict_t r4 = VALHALLA_DB_RESTRICT_STR(NOTIN, "artist", NULL);
 
+    VALHALLA_DB_RESTRICT_LINK(r4, r3);
     VALHALLA_DB_RESTRICT_LINK(r3, r2);
     VALHALLA_DB_RESTRICT_LINK(r2, r1);
     valhalla_db_filelist_get(mod->valhalla, VALHALLA_FILE_TYPE_AUDIO,
