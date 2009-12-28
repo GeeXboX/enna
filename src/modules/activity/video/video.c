@@ -534,6 +534,7 @@ _mediaplayer_mouse_down_libplayer_cb(void *data, int type, void *event)
 void
 movie_start_playback(int resume)
 {
+    panel_infos_display(0);
     mod->state = VIDEOPLAYER_VIEW;
 
     ENNA_EVENT_HANDLER_DEL(mod->mouse_button_event_handler);
