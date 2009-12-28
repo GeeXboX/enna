@@ -131,7 +131,6 @@ struct _Enna
     Evas_Object *o_background;/**< Background object, it handles key down. */
     Evas_Object *layout; /**< Main elementary layout widget. */
     Evas_Object *o_content; /** Edje Object to swallow content */
-    Evas_Object *o_cursor; /** Edje Object for mouse cursor */
     Evas_Object *o_button_back; /** Back button */
     enna_msg_level_t lvl; /**< Error message level */
     int slideshow_delay;
@@ -139,6 +138,7 @@ struct _Enna
     int run_fullscreen;
     Ecore_Timer *mouse_idle_timer;
     Ecore_Timer *idle_timer;
+    Ecore_Event_Handler *mouse_handler;
 };
 
 extern Enna *enna;

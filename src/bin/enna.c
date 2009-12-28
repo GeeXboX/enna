@@ -28,6 +28,7 @@
 #include <Ecore.h>
 #include <Ecore_File.h>
 #include <Ecore_Str.h>
+#include <Ecore_X.h>
 #include <Elementary.h>
 
 #include "enna.h"
@@ -98,34 +99,36 @@ static int _idle_timer_cb(void *data)
     return ECORE_CALLBACK_RENEW;
 }
 
+static void _mouse_display(int show)
+{
+    ecore_x_window_cursor_show(enna->ee_winid, show);
+    enna->cursor_is_shown = show;
+}
+
 static int _mouse_idle_timer_cb(void *data)
 {
-    Evas_Object *cursor = (Evas_Object*)data;
-    edje_object_signal_emit(cursor, "cursor,hide", "enna");
-    enna->cursor_is_shown=0;
-    enna_log(ENNA_MSG_EVENT, NULL, "hiding cursor.");
+    _mouse_display(0);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     return ECORE_CALLBACK_CANCEL;
 }
 
-void _mousemove_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+static int _mousemove_cb(void *data, int type, void *event)
 {
     if (!enna->cursor_is_shown)
     {
-        edje_object_signal_emit(obj, "cursor,show", "enna");
-        enna->cursor_is_shown=1;
-        enna_log(ENNA_MSG_EVENT, NULL, "unhiding cursor.",
-                 evas_object_visible_get(obj));
+        _mouse_display(1);
         enna_idle_timer_renew();
     }
+
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     if (enna->mouse_idle_timer)
         ecore_timer_interval_set(enna->mouse_idle_timer,
                                  ENNA_MOUSE_IDLE_TIMEOUT);
     else
         enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
-                                                 _mouse_idle_timer_cb,
-                                                 obj);
+                                                 _mouse_idle_timer_cb, NULL);
+
+    return 0;
 }
 
 static void
@@ -335,23 +338,13 @@ static int _create_gui(void)
     evas_object_smart_callback_add(enna->o_button_back, "clicked", _button_back_clicked_cb, NULL);
 
     // mouse pointer
-    enna->o_cursor = edje_object_add(enna->evas);
-    edje_object_file_set(enna->o_cursor,
-                         enna_config_theme_get(),
-                         "enna/cursor");
-    // hot_x/hot_y are about 4px/3px in original image which is scaled by 1.5
-    /* Comment until Dave patch elementary */
-    /*elm_win_cursor_set(enna->win, enna->o_cursor, 9, 6);*/
-    evas_object_show(enna->o_cursor);
+    _mouse_display(0);
     enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
-                                             _mouse_idle_timer_cb,
-                                             enna->o_cursor);
-    evas_object_event_callback_add(enna->o_cursor,
-                                   EVAS_CALLBACK_MOVE,
-                                   _mousemove_cb,
-                                   NULL);
-    enna->cursor_is_shown=1;
-    
+                                             _mouse_idle_timer_cb, NULL);
+
+    enna->mouse_handler =
+        ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE, _mousemove_cb, NULL);
+
     // show all
     evas_object_resize(enna->win, app_w, app_h);
     _set_scale(app_h);
@@ -364,6 +357,7 @@ static void _enna_shutdown(void)
 {
     ENNA_TIMER_DEL(enna->idle_timer);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
+    ENNA_EVENT_HANDLER_DEL(enna->mouse_handler);
 
     enna_activity_del_all();
     enna_config_shutdown();
