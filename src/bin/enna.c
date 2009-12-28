@@ -128,7 +128,7 @@ static int _mousemove_cb(void *data, int type, void *event)
         enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
                                                  _mouse_idle_timer_cb, NULL);
 
-    return 0;
+    return 1;
 }
 
 static void
