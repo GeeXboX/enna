@@ -224,6 +224,7 @@ STOCK_ICON("flags/video/defaultscreen.png",     "flags/video/default");
 STOCK_ICON("flags/video/sd.png",                "flags/video/sd");
 
 /* Covers */
+STOCK_ICON("cover_movie.png",                   "cover/movie");
 STOCK_ICON("cover_music.png",                   "cover/music/file");
 STOCK_ICON("cover_music2.png",                  "cover/music/dir");
 STOCK_ICON("cover_video.png",                   "cover/video/file");

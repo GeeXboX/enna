@@ -202,6 +202,7 @@ images/flags/video/defaultscreen.png \
 images/flags/video/sd.png
 
 IMG_COVERS = \
+images/cover_movie.png \
 images/cover_music.png \
 images/cover_music2.png \
 images/cover_video.png \
