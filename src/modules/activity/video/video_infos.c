@@ -79,6 +79,7 @@ void
 enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
 {
     buffer_t *buf;
+    char *codec;
     char *alternative_title, *title, *categories, *year;
     char *length, *director, *actors, *overview;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
@@ -130,14 +131,46 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
     if (overview)
         buffer_appendf(buf, "%s", overview);
 
-#if 0
     buffer_append(buf, "<br><br>");
-    buffer_appendf(buf, _("<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"),
-                   m->video->codec, m->video->width,
-                   m->video->height, m->video->framerate);
-    buffer_appendf(buf, _("<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"),
-                   m->music->codec, m->music->channels,
-                   m->music->bitrate / 1000, m->music->samplerate);
+    codec = enna_metadata_meta_get(m, "video_codec", 1);
+    if (codec)
+    {
+        char *width, *height, *aspect;
+        width  = enna_metadata_meta_get(m, "width", 1);
+        height = enna_metadata_meta_get(m, "height", 1);
+        aspect = enna_metadata_meta_get(m, "video_aspect", 1);
+        buffer_appendf(buf, _("<hl>Video: </hl> %s"), codec);
+        if (width && height)
+            buffer_appendf(buf, ", %sx%s", width, height);
+        if (aspect)
+        {
+            float ratio = enna_util_atof(aspect) / 10000;
+            if (ratio)
+                buffer_appendf(buf, ", %.2f", ratio);
+        }
+        buffer_appendf(buf, "<br>");
+        ENNA_FREE(width);
+        ENNA_FREE(height);
+        ENNA_FREE(aspect);
+        ENNA_FREE(codec);
+    }
+    codec = enna_metadata_meta_get(m, "audio_codec", 1);
+    if (codec)
+    {
+        char *channels, *bitrate;
+        channels = enna_metadata_meta_get(m, "audio_channels", 1);
+        bitrate  = enna_metadata_meta_get(m, "audio_bitrate", 1);
+        buffer_appendf(buf, _("<hl>Audio: </hl> %s"), codec);
+        if (channels)
+            buffer_appendf(buf, ", %s ch.", channels);
+        if (bitrate)
+            buffer_appendf(buf, ", %i kbps", atoi(bitrate) / 1000);
+        buffer_appendf(buf, "<br>");
+        ENNA_FREE(channels);
+        ENNA_FREE(bitrate);
+        ENNA_FREE(codec);
+    }
+#if 0
     buffer_appendf(buf, _("<hl>Size: </hl> %.2f MB<br>"),
                    m->size / 1024.0 / 1024.0);
 #endif
