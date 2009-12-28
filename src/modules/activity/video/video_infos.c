@@ -76,7 +76,7 @@ enna_panel_infos_add(Evas * evas)
 /****************************************************************************/
 
 void
-enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
+enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
 {
     buffer_t *buf;
     char *alternative_title, *title, *categories, *year;
@@ -85,73 +85,73 @@ enna_panel_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
 
     if (!m)
     {
-        edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
-	    _("No such information ..."));
+        edje_object_part_text_set(sd->o_edje, "infos.panel.textblock",
+                                  _("No such information ..."));
         return;
     }
 
-    buf = buffer_new ();
+    buf = buffer_new();
 
-    buffer_append (buf, "<h4><hl><sd><b>");
-    alternative_title = enna_metadata_meta_get (m, "alternative_title", 1);
-    title = enna_metadata_meta_get (m, "title", 1);
-    buffer_append (buf, alternative_title ? alternative_title : title);
-    buffer_append (buf, "</b></sd></hl></h4><br>");
+    buffer_append(buf, "<h4><hl><sd><b>");
+    alternative_title = enna_metadata_meta_get(m, "alternative_title", 1);
+    title = enna_metadata_meta_get(m, "title", 1);
+    buffer_append(buf, alternative_title ? alternative_title : title);
+    buffer_append(buf, "</b></sd></hl></h4><br>");
 
-    categories = enna_metadata_meta_get (m, "category", 5);
+    categories = enna_metadata_meta_get(m, "category", 5);
     if (categories)
-        buffer_appendf (buf, "<h2>%s</h2><br>", categories);
+        buffer_appendf(buf, "<h2>%s</h2><br>", categories);
 
-    year = enna_metadata_meta_get (m, "year", 1);
+    year = enna_metadata_meta_get(m, "year", 1);
     if (year)
-        buffer_append (buf, year);
+        buffer_append(buf, year);
 
-    length = enna_metadata_meta_duration_get (m);
+    length = enna_metadata_meta_duration_get(m);
     if (length)
     {
         if (year)
-            buffer_append (buf, " - ");
-        buffer_appendf (buf, "%s", length);
+            buffer_append(buf, " - ");
+        buffer_appendf(buf, "%s", length);
     }
-    buffer_append (buf, "<br><br>");
+    buffer_append(buf, "<br><br>");
 
-    director = enna_metadata_meta_get (m, "director", 1);
+    director = enna_metadata_meta_get(m, "director", 1);
     if (director)
-	buffer_appendf (buf, _("<ul>Director:</ul> %s<br>"), director);
+        buffer_appendf(buf, _("<ul>Director:</ul> %s<br>"), director);
 
-    actors = enna_metadata_meta_get (m, "actor", 5);
+    actors = enna_metadata_meta_get(m, "actor", 5);
     if (actors)
-        buffer_appendf (buf, _("<ul>Cast:</ul> %s<br>"), actors);
+        buffer_appendf(buf, _("<ul>Cast:</ul> %s<br>"), actors);
 
     if (director || actors)
-	buffer_append (buf, "<br>");
+        buffer_append(buf, "<br>");
 
-    overview = enna_metadata_meta_get (m, "synopsis", 1);
+    overview = enna_metadata_meta_get(m, "synopsis", 1);
     if (overview)
-        buffer_appendf (buf, "%s", overview);
+        buffer_appendf(buf, "%s", overview);
 
 #if 0
-    buffer_append (buf, "<br><br>");
-    buffer_appendf (buf, _("<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"),
-                    m->video->codec, m->video->width,
-                    m->video->height, m->video->framerate);
-    buffer_appendf (buf, _("<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"),
-                    m->music->codec, m->music->channels,
-                    m->music->bitrate / 1000, m->music->samplerate);
-    buffer_appendf (buf, _("<hl>Size: </hl> %.2f MB<br>"),
-                    m->size / 1024.0 / 1024.0);
+    buffer_append(buf, "<br><br>");
+    buffer_appendf(buf, _("<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"),
+                   m->video->codec, m->video->width,
+                   m->video->height, m->video->framerate);
+    buffer_appendf(buf, _("<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"),
+                   m->music->codec, m->music->channels,
+                   m->music->bitrate / 1000, m->music->samplerate);
+    buffer_appendf(buf, _("<hl>Size: </hl> %.2f MB<br>"),
+                   m->size / 1024.0 / 1024.0);
 #endif
-    edje_object_part_text_set (sd->o_edje, "infos.panel.textblock", buf->buf);
+    edje_object_part_text_set(sd->o_edje, "infos.panel.textblock", buf->buf);
 
-    buffer_free (buf);
-    ENNA_FREE (alternative_title);
-    ENNA_FREE (title);
-    ENNA_FREE (categories);
-    ENNA_FREE (year);
-    ENNA_FREE (length);
-    ENNA_FREE (director);
-    ENNA_FREE (actors);
-    ENNA_FREE (overview);
+    buffer_free(buf);
+    ENNA_FREE(alternative_title);
+    ENNA_FREE(title);
+    ENNA_FREE(categories);
+    ENNA_FREE(year);
+    ENNA_FREE(length);
+    ENNA_FREE(director);
+    ENNA_FREE(actors);
+    ENNA_FREE(overview);
 }
 
 void
@@ -165,46 +165,47 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
 
     if (!m)
     {
-        file = strdup ("backdrop/default");
+        file = strdup("backdrop/default");
         from_vfs = 0;
     }
 
-    cv = enna_metadata_meta_get (m, "cover", 1);
+    cv = enna_metadata_meta_get(m, "cover", 1);
     if (!file && cv)
     {
         char dst[1024] = { 0 };
 
-        snprintf (dst, sizeof (dst), "%s/.enna/covers/%s",
-                  enna_util_user_home_get (), cv);
-        file = strdup (dst);
+        snprintf(dst, sizeof(dst), "%s/.enna/covers/%s",
+                 enna_util_user_home_get(), cv);
+        file = strdup(dst);
     }
 
     if (!file)
     {
-        file = strdup ("backdrop/default");
+        file = strdup("backdrop/default");
         from_vfs = 0;
     }
 
     if (from_vfs)
     {
-        cover = enna_image_add (evas_object_evas_get(sd->o_edje));
-        enna_image_fill_inside_set (cover, 0);
-        enna_image_file_set (cover, file, NULL);
+        cover = enna_image_add(evas_object_evas_get(sd->o_edje));
+        enna_image_fill_inside_set(cover, 0);
+        enna_image_file_set(cover, file, NULL);
     }
     else
     {
-        cover = edje_object_add (evas_object_evas_get(sd->o_edje));
-        edje_object_file_set (cover, enna_config_theme_get(), file);
+        cover = edje_object_add(evas_object_evas_get(sd->o_edje));
+        edje_object_file_set(cover, enna_config_theme_get(), file);
     }
 
 
-    ENNA_OBJECT_DEL (sd->o_cover);
+    ENNA_OBJECT_DEL(sd->o_cover);
     sd->o_cover = cover;
-    edje_object_part_swallow (sd->o_edje,
-                              "infos.panel.cover.swallow", sd->o_cover);
-    edje_object_signal_emit (sd->o_edje, strcmp(file, "backdrop/default") ?  "cover,show": "cover,hide", "enna");
-    ENNA_FREE (cv);
-    ENNA_FREE (file);
+    edje_object_part_swallow(sd->o_edje,
+                             "infos.panel.cover.swallow", sd->o_cover);
+    edje_object_signal_emit(sd->o_edje, strcmp(file, "backdrop/default")
+                                        ? "cover,show" : "cover,hide", "enna");
+    ENNA_FREE(cv);
+    ENNA_FREE(file);
 }
 
 void
@@ -214,25 +215,23 @@ enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
     char *rt;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
-    rt = enna_metadata_meta_get (m, "rating", 1);
+    rt = enna_metadata_meta_get(m, "rating", 1);
     if (rt)
     {
         char rate[16];
         int r;
 
-        r = MAX (atoi (rt), 0);
-        r = MIN (r, 5);
-        memset (rate, '\0', sizeof (rate));
-        snprintf (rate, sizeof (rate), "rating/%d", r);
-        rating = edje_object_add (evas_object_evas_get(sd->o_edje));
-        edje_object_file_set (rating, enna_config_theme_get(), rate);
+        r = MAX(atoi(rt), 0);
+        r = MIN(r, 5);
+        memset(rate, '\0', sizeof(rate));
+        snprintf(rate, sizeof(rate), "rating/%d", r);
+        rating = edje_object_add(evas_object_evas_get(sd->o_edje));
+        edje_object_file_set(rating, enna_config_theme_get(), rate);
     }
 
-    ENNA_OBJECT_DEL (sd->o_rating);
+    ENNA_OBJECT_DEL(sd->o_rating);
     sd->o_rating = rating;
-    edje_object_part_swallow (sd->o_edje,
-                              "infos.panel.rating.swallow", sd->o_rating);
-    ENNA_FREE (rt);
+    edje_object_part_swallow(sd->o_edje,
+                             "infos.panel.rating.swallow", sd->o_rating);
+    ENNA_FREE(rt);
 }
-
-
