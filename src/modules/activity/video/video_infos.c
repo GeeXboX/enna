@@ -79,7 +79,7 @@ void
 enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
 {
     buffer_t *buf;
-    char *codec;
+    char *codec, *value;
     char *alternative_title, *title, *categories, *year;
     char *length, *director, *actors, *overview;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
@@ -170,10 +170,13 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         ENNA_FREE(bitrate);
         ENNA_FREE(codec);
     }
-#if 0
-    buffer_appendf(buf, _("<hl>Size: </hl> %.2f MB<br>"),
-                   m->size / 1024.0 / 1024.0);
-#endif
+
+    value = enna_metadata_meta_get(m, "filesize", 1);
+    if (value)
+        buffer_appendf(buf, _("<hl>Size: </hl> %.2f MB<br>"),
+                       atol(value) / 1024.0 / 1024.0);
+    ENNA_FREE(value);
+
     edje_object_part_text_set(sd->o_edje, "infos.panel.textblock", buf->buf);
 
     buffer_free(buf);
