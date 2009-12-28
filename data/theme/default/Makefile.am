@@ -306,6 +306,7 @@ activity_photo.edc \
 activity_video_controls.edc \
 activity_video.edc \
 activity_video_flags.edc \
+activity_video_infos.edc \
 activity_weather.edc \
 browser.edc \
 cover_video.edc \
@@ -321,8 +322,7 @@ notification_volume.edc \
 notification_weather.edc \
 picture.edc \
 popup.edc \
-slideshow.edc \
-video_info.edc
+slideshow.edc
 
 EXTRA_DIST = \
   $(IMG_ICONS) \
