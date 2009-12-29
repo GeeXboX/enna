@@ -162,6 +162,14 @@ _get_input_from_event(Ecore_Event_Key *ev)
     if (!ev)
         return ENNA_INPUT_UNKNOWN;
 
+    /* discard some modifiers */
+    if (ev->modifiers >= ECORE_EVENT_LOCK_CAPS)
+        ev->modifiers -= ECORE_EVENT_LOCK_CAPS;
+    if (ev->modifiers >= ECORE_EVENT_LOCK_NUM)
+        ev->modifiers -= ECORE_EVENT_LOCK_NUM;
+    if (ev->modifiers >= ECORE_EVENT_LOCK_SCROLL)
+        ev->modifiers -= ECORE_EVENT_LOCK_SCROLL;
+
     return (ev->modifiers && ev->modifiers < ECORE_LAST) ?
       _input_event_modifier(ev) : _input_event(ev);
 }
