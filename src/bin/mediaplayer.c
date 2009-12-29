@@ -34,6 +34,7 @@
 #include "module.h"
 #include "logs.h"
 #include "input.h"
+#include "utils.h"
 
 #define URI_TYPE_CDDA     "cdda://"
 #define URI_TYPE_DVD      "dvd://"
@@ -1280,18 +1281,16 @@ void
 enna_mediaplayer_default_increase_volume(void)
 {
     int vol = enna_mediaplayer_volume_get();
-    if ((vol + VOLUME_STEP_DEFAULT) > 100)
-        return;
-    player_audio_volume_set(mp->player, vol + VOLUME_STEP_DEFAULT);
+    vol = MMIN(vol + VOLUME_STEP_DEFAULT, 100);
+    player_audio_volume_set(mp->player, vol);
 }
 
 void
 enna_mediaplayer_default_decrease_volume(void)
 {
     int vol = enna_mediaplayer_volume_get();
-    if ((vol - VOLUME_STEP_DEFAULT) < 0)
-        return;
-    player_audio_volume_set(mp->player, vol - VOLUME_STEP_DEFAULT);
+    vol = MMAX(vol - VOLUME_STEP_DEFAULT, 0);
+    player_audio_volume_set(mp->player, vol);
 }
 
 void
