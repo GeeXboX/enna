@@ -108,13 +108,8 @@ static void _vfs_add_file(Eina_List **list,
     }
 
     if (track)
-    {
-        char *it2;
-        it2 = strchr(track, '/');
-        if (it2)
-          *it2 = '\0';
-        snprintf(name, sizeof(name), "%2s - %s", track, title ? title : it + 1);
-    }
+        snprintf(name, sizeof(name), "%2i - %s",
+                 atoi(track), title ? title : it + 1);
     else
         snprintf(name, sizeof(name), "%s", title ? title : it + 1);
 
