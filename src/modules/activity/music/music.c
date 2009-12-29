@@ -142,6 +142,10 @@ _class_event_browser_view(enna_input event)
     if (event == ENNA_INPUT_EXIT)
         update_songs_counter(NULL);
 
+    /* whichever action is, ensure lyrics panel gets hidden */
+    if (event != ENNA_INPUT_KEY_I)
+        panel_lyrics_display(0);
+
     switch (event)
     {
     case ENNA_INPUT_RIGHT:
@@ -166,6 +170,9 @@ _class_event_browser_view(enna_input event)
 static void
 _class_event_mediaplayer_view(enna_input event)
 {
+    /* whichever action is, ensure lyrics panel gets hidden */
+    if (event != ENNA_INPUT_KEY_I)
+        panel_lyrics_display(0);
 
     if (!enna_mediaplayer_show_get(mod->o_mediaplayer))
     {
