@@ -34,6 +34,7 @@
 #include "view_list.h"
 #include "image.h"
 #include "weather_notification.h"
+#include "mediaplayer.h"
 
 typedef struct _Background_Item Background_Item;
 
@@ -119,6 +120,23 @@ _input_events_cb(void *data, enna_input event)
         enna->run_fullscreen = ~enna->run_fullscreen;
         elm_win_fullscreen_set(enna->win, enna->run_fullscreen);
         return ENNA_EVENT_BLOCK;
+    }
+
+    /* check for volume control bindings */
+    if (event == ENNA_INPUT_MUTE)
+    {
+      enna_mediaplayer_mute();
+      return ENNA_EVENT_BLOCK;
+    }
+    else if (event == ENNA_INPUT_PLUS)
+    {
+      enna_mediaplayer_default_increase_volume();
+      return ENNA_EVENT_BLOCK;
+    }
+    else if (event == ENNA_INPUT_MINUS)
+    {
+      enna_mediaplayer_default_decrease_volume();
+      return ENNA_EVENT_BLOCK;
     }
 
     if (sd->visible)
