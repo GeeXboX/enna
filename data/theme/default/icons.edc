@@ -120,30 +120,30 @@ STOCK_ICON("mp_rewind.png",                     "icon/mp_rewind");
 STOCK_ICON("mp_stop.png",                       "icon/mp_stop");
 
 /* Weather */
-STOCK_ICON("weather_fall.png",                  "weather/fall");
-STOCK_ICON("weather_spring.png",                "weather/spring");
-STOCK_ICON("weather_summer.png",                "weather/summer");
-STOCK_ICON("weather_unknown.png",               "weather/unknown");
-STOCK_ICON("weather_winter.png",                "weather/winter");
+STOCK_ICON("weather/weather_fall.png",          "weather/fall");
+STOCK_ICON("weather/weather_spring.png",        "weather/spring");
+STOCK_ICON("weather/weather_summer.png",        "weather/summer");
+STOCK_ICON("weather/weather_unknown.png",       "weather/unknown");
+STOCK_ICON("weather/weather_winter.png",        "weather/winter");
 
 /* Weather Daily */
-STOCK_ICON("weather_cloudy.png",                "weather/cloudy");
-STOCK_ICON("weather_foggy.png",                 "weather/foggy");
-STOCK_ICON("weather_heavy_rain.png",            "weather/heavy_rain");
-STOCK_ICON("weather_ice.png",                   "weather/ice");
-STOCK_ICON("weather_light_snow.png",            "weather/light_snow");
-STOCK_ICON("weather_rain.png",                  "weather/rain");
-STOCK_ICON("weather_rain_storm.png",            "weather/rain_storm");
-STOCK_ICON("weather_showers.png",               "weather/showers");
-STOCK_ICON("weather_snow.png",                  "weather/snow");
-STOCK_ICON("weather_sun_clouds.png",            "weather/clouds");
-STOCK_ICON("weather_sun_light_clouds.png",      "weather/light_clouds");
-STOCK_ICON("weather_sun_mostly_cloudy.png",     "weather/mostly_cloudy");
-STOCK_ICON("weather_sunny.png",                 "weather/sunny");
-STOCK_ICON("weather_sun_rain.png",              "weather/sun_rain");
-STOCK_ICON("weather_sun_snow.png",              "weather/sun_snow");
-STOCK_ICON("weather_sun_storm.png",             "weather/sun_storm");
-STOCK_ICON("weather_windy.png",                 "weather/windy");
+STOCK_ICON("weather/weather_cloudy.png",        "weather/cloudy");
+STOCK_ICON("weather/weather_foggy.png",         "weather/foggy");
+STOCK_ICON("weather/weather_heavy_rain.png",    "weather/heavy_rain");
+STOCK_ICON("weather/weather_ice.png",           "weather/ice");
+STOCK_ICON("weather/weather_light_snow.png",    "weather/light_snow");
+STOCK_ICON("weather/weather_rain.png",          "weather/rain");
+STOCK_ICON("weather/weather_rain_storm.png",    "weather/rain_storm");
+STOCK_ICON("weather/weather_showers.png",       "weather/showers");
+STOCK_ICON("weather/weather_snow.png",          "weather/snow");
+STOCK_ICON("weather/weather_sun_clouds.png",    "weather/clouds");
+STOCK_ICON("weather/weather_sun_light_clouds.png",  "weather/light_clouds");
+STOCK_ICON("weather/weather_sun_mostly_cloudy.png", "weather/mostly_cloudy");
+STOCK_ICON("weather/weather_sunny.png",         "weather/sunny");
+STOCK_ICON("weather/weather_sun_rain.png",      "weather/sun_rain");
+STOCK_ICON("weather/weather_sun_snow.png",      "weather/sun_snow");
+STOCK_ICON("weather/weather_sun_storm.png",     "weather/sun_storm");
+STOCK_ICON("weather/weather_windy.png",         "weather/windy");
 
 /* Rating */
 STOCK_ICON("rating0.png",                       "rating/0");
