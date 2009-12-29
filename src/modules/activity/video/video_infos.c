@@ -85,6 +85,7 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
     char *alternative_title, *title, *categories, *year;
     char *length, *director, *actors, *overview;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
+    int len;
 
     if (!m)
     {
@@ -100,6 +101,7 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
     title = enna_metadata_meta_get(m, "title", 1);
     buffer_append(buf, alternative_title ? alternative_title : title);
     buffer_append(buf, "</b></sd></hl></h4><br>");
+    len = buf->len;
 
     categories = enna_metadata_meta_get(m, "category", 5);
     if (categories)
@@ -116,7 +118,9 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
             buffer_append(buf, " - ");
         buffer_appendf(buf, "%s", length);
     }
+
     buffer_append(buf, "<br><br>");
+    len += 8;
 
     director = enna_metadata_meta_get(m, "director", 1);
     if (director)
@@ -134,6 +138,8 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         buffer_appendf(buf, "%s", overview);
 
     buffer_append(buf, "<br><br>");
+    len += 8;
+
     codec = enna_metadata_meta_get(m, "video_codec", 1);
     if (codec)
     {
@@ -178,6 +184,10 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         buffer_appendf(buf, _("<hl>Size: </hl> %.2f MB<br>"),
                        atol(value) / 1024.0 / 1024.0);
     ENNA_FREE(value);
+
+    /* tell if no more infos are available */
+    if (buf->len == len)
+      buffer_append(buf, _("No further information can be retrieved"));
 
     edje_object_part_text_set(sd->o_edje, "panel.textblock", buf->buf);
 
