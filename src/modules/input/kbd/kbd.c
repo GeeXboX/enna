@@ -117,25 +117,33 @@ static const struct
 static Ecore_Event_Handler *key_down_event_handler;
 
 static enna_input
-_get_input_from_event(Ecore_Event_Key *ev)
+_input_event_modifier (Ecore_Event_Key *ev)
 {
     int i;
 
-    if (!ev) return ENNA_INPUT_UNKNOWN;
-    
     for (i = 0; enna_keymap[i].keyname; i++)
     {
-        /* Test First if modifer is set and is different than "None"*/
-        if (enna_keymap[i].modifier &&
-            ev->modifiers == enna_keymap[i].modifier &&
+        if (ev->modifiers == enna_keymap[i].modifier &&
             !strcmp(enna_keymap[i].keyname, ev->key))
         {
             enna_log(ENNA_MSG_EVENT, NULL, "Key pressed : [%d] + %s",
                      enna_keymap[i].modifier, enna_keymap[i] );
             return enna_keymap[i].input;
         }
-        /* Else just test if keyname match */
-        else if (!strcmp (enna_keymap[i].keyname, ev->key))
+    }
+
+    return ENNA_INPUT_UNKNOWN;
+}
+
+static enna_input
+_input_event (Ecore_Event_Key *ev)
+{
+    int i;
+
+    for (i = 0; enna_keymap[i].keyname; i++)
+    {
+        if ((enna_keymap[i].modifier == 0) &&
+            !strcmp(enna_keymap[i].keyname, ev->key))
         {
             enna_log(ENNA_MSG_EVENT, NULL, "Key pressed : %s",
                      enna_keymap[i].keyname );
@@ -144,6 +152,15 @@ _get_input_from_event(Ecore_Event_Key *ev)
     }
 
     return ENNA_INPUT_UNKNOWN;
+}
+
+static enna_input
+_get_input_from_event(Ecore_Event_Key *ev)
+{
+    if (!ev)
+        return ENNA_INPUT_UNKNOWN;
+
+    return (ev->modifiers) ? _input_event_modifier(ev) : _input_event(ev);
 }
 
 static int
