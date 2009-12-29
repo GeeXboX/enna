@@ -324,8 +324,8 @@ static int _create_gui(void)
     enna_mainmenu_init();
 
     // exit dialog
-    elm_layout_content_set(enna->layout, "enna.exit.swallow",
-                           enna_exit_add(enna->evas));
+    enna->o_exit = enna_exit_add(enna->evas);
+    elm_layout_content_set(enna->layout, "enna.exit.swallow", enna->o_exit);
 
     // Back button
     enna->o_button_back = elm_button_add(enna->layout);
@@ -358,6 +358,7 @@ static void _enna_shutdown(void)
     ENNA_TIMER_DEL(enna->idle_timer);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     ENNA_EVENT_HANDLER_DEL(enna->mouse_handler);
+    ENNA_OBJECT_DEL(enna->o_exit);
 
     enna_activity_del_all();
     enna_config_shutdown();
