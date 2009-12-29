@@ -162,7 +162,8 @@ _get_input_from_event(Ecore_Event_Key *ev)
     if (!ev)
         return ENNA_INPUT_UNKNOWN;
 
-    return (ev->modifiers) ? _input_event_modifier(ev) : _input_event(ev);
+    return (ev->modifiers && ev->modifiers < ECORE_LAST) ?
+      _input_event_modifier(ev) : _input_event(ev);
 }
 
 static int
