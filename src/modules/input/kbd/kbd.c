@@ -59,6 +59,7 @@ static const struct
     { "Meta_L",       ECORE_NONE,              ENNA_INPUT_MENU          },
     { "Hyper_L",      ECORE_NONE,              ENNA_INPUT_MENU          },
     { "plus",         ECORE_NONE,              ENNA_INPUT_PLUS          },
+    { "plus",         ECORE_SHIFT,             ENNA_INPUT_PLUS          },
     { "KP_Add",       ECORE_NONE,              ENNA_INPUT_PLUS          },
     { "minus",        ECORE_NONE,              ENNA_INPUT_MINUS         },
     { "KP_Subtract",  ECORE_NONE,              ENNA_INPUT_MINUS         },
