@@ -63,6 +63,7 @@ static const struct
     { "KP_Add",       ECORE_NONE,              ENNA_INPUT_PLUS          },
     { "minus",        ECORE_NONE,              ENNA_INPUT_MINUS         },
     { "KP_Subtract",  ECORE_NONE,              ENNA_INPUT_MINUS         },
+    { "m",            ECORE_CTRL,              ENNA_INPUT_MUTE          },
     { "f",            ECORE_CTRL,              ENNA_INPUT_FULLSCREEN    },
     { "0",            ECORE_NONE,              ENNA_INPUT_KEY_0         },
     { "KP_0",         ECORE_NONE,              ENNA_INPUT_KEY_0         },
