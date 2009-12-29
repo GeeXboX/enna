@@ -33,6 +33,7 @@
 #include "logs.h"
 #include "view_list.h"
 #include "image.h"
+#include "exit.h"
 #include "weather_notification.h"
 #include "volume_notification.h"
 #include "mediaplayer.h"
@@ -156,6 +157,10 @@ _input_events_cb(void *data, enna_input event)
                 enna_list_input_feed(sd->o_menu, event);
                 return ENNA_EVENT_BLOCK;
                 break;
+            case ENNA_INPUT_EXIT:
+                if (enna->o_exit)
+                    enna_exit_show(enna->o_exit);
+                return ENNA_EVENT_BLOCK;
             default:
                 break;
         }
