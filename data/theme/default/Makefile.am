@@ -101,11 +101,11 @@ images/mp_rewind.png \
 images/mp_stop.png
 
 IMG_WEATHER = \
-images/weather_fall.jpeg \
-images/weather_spring.jpeg \
-images/weather_summer.jpeg \
+images/weather_fall.png \
+images/weather_spring.png \
+images/weather_summer.png \
 images/weather_unknown.png \
-images/weather_winter.jpeg
+images/weather_winter.png
 
 IMG_WEATHER_ICONS = \
 images/weather_cloudy.png \

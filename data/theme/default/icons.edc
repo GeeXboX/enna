@@ -120,11 +120,11 @@ STOCK_ICON("mp_rewind.png",                     "icon/mp_rewind");
 STOCK_ICON("mp_stop.png",                       "icon/mp_stop");
 
 /* Weather */
-STOCK_ICON("weather_fall.jpeg",                 "weather/fall");
-STOCK_ICON("weather_spring.jpeg",               "weather/spring");
-STOCK_ICON("weather_summer.jpeg",               "weather/summer");
+STOCK_ICON("weather_fall.png",                  "weather/fall");
+STOCK_ICON("weather_spring.png",                "weather/spring");
+STOCK_ICON("weather_summer.png",                "weather/summer");
 STOCK_ICON("weather_unknown.png",               "weather/unknown");
-STOCK_ICON("weather_winter.jpeg",               "weather/winter");
+STOCK_ICON("weather_winter.png",                "weather/winter");
 
 /* Weather Daily */
 STOCK_ICON("weather_cloudy.png",                "weather/cloudy");
