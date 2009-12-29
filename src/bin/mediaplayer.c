@@ -1308,6 +1308,10 @@ int
 enna_mediaplayer_mute_get(void)
 {
     player_mute_t m;
+
+    if (!mp)
+      return 0;
+
     m = player_audio_mute_get(mp->player);
     if (m == PLAYER_MUTE_ON)
         return 1;
