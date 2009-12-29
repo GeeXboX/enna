@@ -240,7 +240,12 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     sd->o_cover = cover;
     edje_object_part_swallow(sd->o_edje,
                              "panel.cover.swallow", sd->o_cover);
-    //edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
+
+    /* hide underlying shadows with default movie poster cover */
+    edje_object_signal_emit(sd->o_edje,
+                            (!strcmp(file, VIDEO_DEFAULT_COVER)) ?
+                            "shadow,hide" : "shadow,show", "enna");
+
     ENNA_FREE(cv);
     ENNA_FREE(file);
 }
