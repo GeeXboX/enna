@@ -88,7 +88,7 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
 
     if (!m)
     {
-        edje_object_part_text_set(sd->o_edje, "infos.panel.textblock",
+        edje_object_part_text_set(sd->o_edje, "panel.textblock",
                                   _("No such information ..."));
         return;
     }
@@ -179,7 +179,7 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
                        atol(value) / 1024.0 / 1024.0);
     ENNA_FREE(value);
 
-    edje_object_part_text_set(sd->o_edje, "infos.panel.textblock", buf->buf);
+    edje_object_part_text_set(sd->o_edje, "panel.textblock", buf->buf);
 
     buffer_free(buf);
     ENNA_FREE(alternative_title);
@@ -239,8 +239,8 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     ENNA_OBJECT_DEL(sd->o_cover);
     sd->o_cover = cover;
     edje_object_part_swallow(sd->o_edje,
-                             "infos.panel.cover.swallow", sd->o_cover);
-    edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
+                             "panel.cover.swallow", sd->o_cover);
+    //edje_object_signal_emit(sd->o_edje, "cover,show", "enna");
     ENNA_FREE(cv);
     ENNA_FREE(file);
 }
@@ -269,6 +269,6 @@ enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
     ENNA_OBJECT_DEL(sd->o_rating);
     sd->o_rating = rating;
     edje_object_part_swallow(sd->o_edje,
-                             "infos.panel.rating.swallow", sd->o_rating);
+                             "panel.rating.swallow", sd->o_rating);
     ENNA_FREE(rt);
 }
