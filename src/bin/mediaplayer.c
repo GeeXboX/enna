@@ -1267,7 +1267,7 @@ enna_mediaplayer_send_input(enna_input event)
 int
 enna_mediaplayer_volume_get(void)
 {
-    return player_audio_volume_get(mp->player);
+    return (mp && mp->player) ? player_audio_volume_get(mp->player) : 0;
 }
 
 void
