@@ -220,7 +220,7 @@ panel_lyrics_display(int show)
 static void
 _mediaplayer_info_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    panel_lyrics_display(1);
+    panel_lyrics_display(!mod->lyrics_displayed);
 }
 
 static void
