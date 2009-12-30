@@ -365,6 +365,15 @@ _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
     enna_mediaplayer_stop();
 }
 
+
+static void
+_button_clicked_info_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    evas_object_smart_callback_call (sd->layout, "info,clicked", NULL);
+}
+
 static void
 _slider_seek_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -611,6 +620,7 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     sd->play_btn = bt;
     ELM_ADD("icon/mp_forward", _button_clicked_forward_cb);
     ELM_ADD("icon/mp_next",    _button_clicked_next_cb);
+    ELM_ADD("icon/info",    _button_clicked_info_cb);
 
     evas_object_size_hint_weight_set(btn_box, EVAS_HINT_EXPAND, 0.5);
     evas_object_size_hint_align_set(btn_box, EVAS_HINT_FILL, EVAS_HINT_FILL);
