@@ -191,7 +191,7 @@ fi
 ###################
 
 # Audio CD (CDDA)
-want_browser_cdda="yes"
+want_browser_cdda="no"
 AC_MSG_CHECKING(whether cdda browser module is to be built)
 AC_ARG_ENABLE(browser-cdda,
   AS_HELP_STRING([--enable-browser-cdda],[Enable CDDA Browser Module]),
