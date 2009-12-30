@@ -225,12 +225,6 @@ videoplayer_view_event_no_display (enna_input event)
     case ENNA_INPUT_NEXT:
         _seek_video(-600); /* -10min */
         break;
-    case ENNA_INPUT_PLUS:
-        enna_mediaplayer_default_increase_volume();
-        break;
-    case ENNA_INPUT_MINUS:
-        enna_mediaplayer_default_decrease_volume();
-        break;
     case ENNA_INPUT_KEY_M:
         enna_mediaplayer_mute();
         break;

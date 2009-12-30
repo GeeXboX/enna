@@ -36,80 +36,84 @@ static const struct
     Ecore_Event_Modifier modifier;
     enna_input input;
 } enna_keymap[] = {
-    { "Left",         0,              ENNA_INPUT_LEFT          },
-    { "Right",        0,              ENNA_INPUT_RIGHT         },
-    { "Up",           0,              ENNA_INPUT_UP            },
-    { "KP_Up",        0,              ENNA_INPUT_UP            },
-    { "Down",         0,              ENNA_INPUT_DOWN          },
-    { "KP_Down",      0,              ENNA_INPUT_DOWN          },
-    { "Home",         0,              ENNA_INPUT_HOME          },
-    { "KP_Home",      0,              ENNA_INPUT_HOME          },
-    { "End",          0,              ENNA_INPUT_END           },
-    { "KP_End",       0,              ENNA_INPUT_END           },
-    { "Prior",        0,              ENNA_INPUT_PREV          },
-    { "Next",         0,              ENNA_INPUT_NEXT          },
-    { "Return",       0,              ENNA_INPUT_OK            },
-    { "KP_Enter",     0,              ENNA_INPUT_OK            },
-    { "space",        0,              ENNA_INPUT_SPACE         },
-    //~ { "Stop",         0,              ENNA_KEY_STOP         }, stop on the keyboard? multimedia keyb?
-    { "BackSpace",    0,              ENNA_INPUT_EXIT          },
+    { "Left",         ECORE_NONE,              ENNA_INPUT_LEFT          },
+    { "Right",        ECORE_NONE,              ENNA_INPUT_RIGHT         },
+    { "Up",           ECORE_NONE,              ENNA_INPUT_UP            },
+    { "KP_Up",        ECORE_NONE,              ENNA_INPUT_UP            },
+    { "Down",         ECORE_NONE,              ENNA_INPUT_DOWN          },
+    { "KP_Down",      ECORE_NONE,              ENNA_INPUT_DOWN          },
+    { "Home",         ECORE_NONE,              ENNA_INPUT_HOME          },
+    { "KP_Home",      ECORE_NONE,              ENNA_INPUT_HOME          },
+    { "End",          ECORE_NONE,              ENNA_INPUT_END           },
+    { "KP_End",       ECORE_NONE,              ENNA_INPUT_END           },
+    { "Prior",        ECORE_NONE,              ENNA_INPUT_PREV          },
+    { "Next",         ECORE_NONE,              ENNA_INPUT_NEXT          },
+    { "Return",       ECORE_NONE,              ENNA_INPUT_OK            },
+    { "KP_Enter",     ECORE_NONE,              ENNA_INPUT_OK            },
+    { "space",        ECORE_NONE,              ENNA_INPUT_SPACE         },
+    //~ { "Stop",         ECORE_NONE,              ENNA_KEY_STOP         }, stop on the keyboard? multimedia keyb?
+    { "BackSpace",    ECORE_NONE,              ENNA_INPUT_EXIT          },
     
-    { "Escape",       0,              ENNA_INPUT_QUIT          },
-    { "Super_L",      0,              ENNA_INPUT_MENU          },
-    { "Meta_L",       0,              ENNA_INPUT_MENU          },
-    { "Hyper_L",      0,              ENNA_INPUT_MENU          },
-    { "plus",         0,              ENNA_INPUT_PLUS          },
-    { "KP_Add",       0,              ENNA_INPUT_PLUS          },
-    { "minus",        0,              ENNA_INPUT_MINUS         },
-    { "KP_Subtract",  0,              ENNA_INPUT_MINUS         },
-    { "f",            ECORE_CTRL,     ENNA_INPUT_FULLSCREEN    },
-    { "0",            0,              ENNA_INPUT_KEY_0         },
-    { "KP_0",         0,              ENNA_INPUT_KEY_0         },
-    { "1",            0,              ENNA_INPUT_KEY_1         },
-    { "KP_1",         0,              ENNA_INPUT_KEY_1         },
-    { "2",            0,              ENNA_INPUT_KEY_2         },
-    { "KP_2",         0,              ENNA_INPUT_KEY_2         },
-    { "3",            0,              ENNA_INPUT_KEY_3         },
-    { "KP_3",         0,              ENNA_INPUT_KEY_3         },
-    { "4",            0,              ENNA_INPUT_KEY_4         },
-    { "KP_4",         0,              ENNA_INPUT_KEY_4         },
-    { "5",            0,              ENNA_INPUT_KEY_5         },
-    { "KP_5",         0,              ENNA_INPUT_KEY_5         },
-    { "6",            0,              ENNA_INPUT_KEY_6         },
-    { "KP_6",         0,              ENNA_INPUT_KEY_6         },
-    { "7",            0,              ENNA_INPUT_KEY_7         },
-    { "KP_7",         0,              ENNA_INPUT_KEY_7         },
-    { "8",            0,              ENNA_INPUT_KEY_8         },
-    { "KP_8",         0,              ENNA_INPUT_KEY_8         },
-    { "9",            0,              ENNA_INPUT_KEY_9         },
-    { "KP_9",         0,              ENNA_INPUT_KEY_9         },
-    { "a",            0,              ENNA_INPUT_KEY_A         },
-    { "b",            0,              ENNA_INPUT_KEY_B         },
-    { "c",            0,              ENNA_INPUT_KEY_C         },
-    { "d",            0,              ENNA_INPUT_KEY_D         },
-    { "e",            0,              ENNA_INPUT_KEY_E         },
-    { "f",            0,              ENNA_INPUT_KEY_F         },
-    { "g",            0,              ENNA_INPUT_KEY_G         },
-    { "h",            0,              ENNA_INPUT_KEY_H         },
-    { "i",            0,              ENNA_INPUT_KEY_I         },
-    { "j",            0,              ENNA_INPUT_KEY_J         },
-    { "k",            0,              ENNA_INPUT_KEY_K         },
-    { "l",            0,              ENNA_INPUT_KEY_L         },
-    { "m",            0,              ENNA_INPUT_KEY_M         },
-    { "n",            0,              ENNA_INPUT_KEY_N         },
-    { "o",            0,              ENNA_INPUT_KEY_O         },
-    { "p",            0,              ENNA_INPUT_KEY_P         },
-    { "q",            0,              ENNA_INPUT_KEY_Q         },
-    { "r",            0,              ENNA_INPUT_KEY_R         },
-    { "s",            0,              ENNA_INPUT_KEY_S         },
-    { "t",            0,              ENNA_INPUT_KEY_T         },
-    { "u",            0,              ENNA_INPUT_KEY_U         },
-    { "v",            0,              ENNA_INPUT_KEY_V         },
-    { "w",            0,              ENNA_INPUT_KEY_W         },
-    { "x",            0,              ENNA_INPUT_KEY_X         },
-    { "y",            0,              ENNA_INPUT_KEY_Y         },
-    { "z",            0,              ENNA_INPUT_KEY_Z         },
-    { NULL,           0,              ENNA_INPUT_UNKNOWN       }
+    { "Escape",       ECORE_NONE,              ENNA_INPUT_QUIT          },
+    { "Super_L",      ECORE_NONE,              ENNA_INPUT_MENU          },
+    { "Meta_L",       ECORE_NONE,              ENNA_INPUT_MENU          },
+    { "Hyper_L",      ECORE_NONE,              ENNA_INPUT_MENU          },
+    { "plus",         ECORE_NONE,              ENNA_INPUT_PLUS          },
+    { "plus",         ECORE_SHIFT,             ENNA_INPUT_PLUS          },
+    { "KP_Add",       ECORE_NONE,              ENNA_INPUT_PLUS          },
+    { "minus",        ECORE_NONE,              ENNA_INPUT_MINUS         },
+    { "KP_Subtract",  ECORE_NONE,              ENNA_INPUT_MINUS         },
+    { "m",            ECORE_CTRL,              ENNA_INPUT_MUTE          },
+    { "M",            ECORE_CTRL,              ENNA_INPUT_MUTE          },
+    { "f",            ECORE_CTRL,              ENNA_INPUT_FULLSCREEN    },
+    { "F",            ECORE_CTRL,              ENNA_INPUT_FULLSCREEN    },
+    { "0",            ECORE_NONE,              ENNA_INPUT_KEY_0         },
+    { "KP_0",         ECORE_NONE,              ENNA_INPUT_KEY_0         },
+    { "1",            ECORE_NONE,              ENNA_INPUT_KEY_1         },
+    { "KP_1",         ECORE_NONE,              ENNA_INPUT_KEY_1         },
+    { "2",            ECORE_NONE,              ENNA_INPUT_KEY_2         },
+    { "KP_2",         ECORE_NONE,              ENNA_INPUT_KEY_2         },
+    { "3",            ECORE_NONE,              ENNA_INPUT_KEY_3         },
+    { "KP_3",         ECORE_NONE,              ENNA_INPUT_KEY_3         },
+    { "4",            ECORE_NONE,              ENNA_INPUT_KEY_4         },
+    { "KP_4",         ECORE_NONE,              ENNA_INPUT_KEY_4         },
+    { "5",            ECORE_NONE,              ENNA_INPUT_KEY_5         },
+    { "KP_5",         ECORE_NONE,              ENNA_INPUT_KEY_5         },
+    { "6",            ECORE_NONE,              ENNA_INPUT_KEY_6         },
+    { "KP_6",         ECORE_NONE,              ENNA_INPUT_KEY_6         },
+    { "7",            ECORE_NONE,              ENNA_INPUT_KEY_7         },
+    { "KP_7",         ECORE_NONE,              ENNA_INPUT_KEY_7         },
+    { "8",            ECORE_NONE,              ENNA_INPUT_KEY_8         },
+    { "KP_8",         ECORE_NONE,              ENNA_INPUT_KEY_8         },
+    { "9",            ECORE_NONE,              ENNA_INPUT_KEY_9         },
+    { "KP_9",         ECORE_NONE,              ENNA_INPUT_KEY_9         },
+    { "a",            ECORE_NONE,              ENNA_INPUT_KEY_A         },
+    { "b",            ECORE_NONE,              ENNA_INPUT_KEY_B         },
+    { "c",            ECORE_NONE,              ENNA_INPUT_KEY_C         },
+    { "d",            ECORE_NONE,              ENNA_INPUT_KEY_D         },
+    { "e",            ECORE_NONE,              ENNA_INPUT_KEY_E         },
+    { "f",            ECORE_NONE,              ENNA_INPUT_KEY_F         },
+    { "g",            ECORE_NONE,              ENNA_INPUT_KEY_G         },
+    { "h",            ECORE_NONE,              ENNA_INPUT_KEY_H         },
+    { "i",            ECORE_NONE,              ENNA_INPUT_KEY_I         },
+    { "j",            ECORE_NONE,              ENNA_INPUT_KEY_J         },
+    { "k",            ECORE_NONE,              ENNA_INPUT_KEY_K         },
+    { "l",            ECORE_NONE,              ENNA_INPUT_KEY_L         },
+    { "m",            ECORE_NONE,              ENNA_INPUT_KEY_M         },
+    { "n",            ECORE_NONE,              ENNA_INPUT_KEY_N         },
+    { "o",            ECORE_NONE,              ENNA_INPUT_KEY_O         },
+    { "p",            ECORE_NONE,              ENNA_INPUT_KEY_P         },
+    { "q",            ECORE_NONE,              ENNA_INPUT_KEY_Q         },
+    { "r",            ECORE_NONE,              ENNA_INPUT_KEY_R         },
+    { "s",            ECORE_NONE,              ENNA_INPUT_KEY_S         },
+    { "t",            ECORE_NONE,              ENNA_INPUT_KEY_T         },
+    { "u",            ECORE_NONE,              ENNA_INPUT_KEY_U         },
+    { "v",            ECORE_NONE,              ENNA_INPUT_KEY_V         },
+    { "w",            ECORE_NONE,              ENNA_INPUT_KEY_W         },
+    { "x",            ECORE_NONE,              ENNA_INPUT_KEY_X         },
+    { "y",            ECORE_NONE,              ENNA_INPUT_KEY_Y         },
+    { "z",            ECORE_NONE,              ENNA_INPUT_KEY_Z         },
+    { NULL,           ECORE_NONE,              ENNA_INPUT_UNKNOWN       }
 };
 
 
@@ -117,25 +121,33 @@ static const struct
 static Ecore_Event_Handler *key_down_event_handler;
 
 static enna_input
-_get_input_from_event(Ecore_Event_Key *ev)
+_input_event_modifier (Ecore_Event_Key *ev)
 {
     int i;
 
-    if (!ev) return ENNA_INPUT_UNKNOWN;
-    
     for (i = 0; enna_keymap[i].keyname; i++)
     {
-        /* Test First if modifer is set and is different than "None"*/
-        if (enna_keymap[i].modifier &&
-            ev->modifiers == enna_keymap[i].modifier &&
+        if (ev->modifiers == enna_keymap[i].modifier &&
             !strcmp(enna_keymap[i].keyname, ev->key))
         {
             enna_log(ENNA_MSG_EVENT, NULL, "Key pressed : [%d] + %s",
                      enna_keymap[i].modifier, enna_keymap[i] );
             return enna_keymap[i].input;
         }
-        /* Else just test if keyname match */
-        else if (!strcmp (enna_keymap[i].keyname, ev->key))
+    }
+
+    return ENNA_INPUT_UNKNOWN;
+}
+
+static enna_input
+_input_event (Ecore_Event_Key *ev)
+{
+    int i;
+
+    for (i = 0; enna_keymap[i].keyname; i++)
+    {
+        if ((enna_keymap[i].modifier == ECORE_NONE) &&
+            !strcmp(enna_keymap[i].keyname, ev->key))
         {
             enna_log(ENNA_MSG_EVENT, NULL, "Key pressed : %s",
                      enna_keymap[i].keyname );
@@ -144,6 +156,24 @@ _get_input_from_event(Ecore_Event_Key *ev)
     }
 
     return ENNA_INPUT_UNKNOWN;
+}
+
+static enna_input
+_get_input_from_event(Ecore_Event_Key *ev)
+{
+    if (!ev)
+        return ENNA_INPUT_UNKNOWN;
+
+    /* discard some modifiers */
+    if (ev->modifiers >= ECORE_EVENT_LOCK_CAPS)
+        ev->modifiers -= ECORE_EVENT_LOCK_CAPS;
+    if (ev->modifiers >= ECORE_EVENT_LOCK_NUM)
+        ev->modifiers -= ECORE_EVENT_LOCK_NUM;
+    if (ev->modifiers >= ECORE_EVENT_LOCK_SCROLL)
+        ev->modifiers -= ECORE_EVENT_LOCK_SCROLL;
+
+    return (ev->modifiers && ev->modifiers < ECORE_LAST) ?
+      _input_event_modifier(ev) : _input_event(ev);
 }
 
 static int

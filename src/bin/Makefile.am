@@ -44,6 +44,7 @@ thumb.c\
 ipc.c\
 weather_api.c\
 weather_notification.c\
+volume_notification.c\
 input.c
 
 
@@ -228,4 +229,5 @@ thumb.h\
 ipc.h\
 weather_api.h\
 weather_notification.h\
+volume_notification.h\
 input.h

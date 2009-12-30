@@ -478,6 +478,10 @@ images {
              state: "show" 0.0;
              visible: 1;
              color: 255 255 255 255;
+
+             rel1.relative: 0 0;
+             rel2.relative: 1 1;
+             rel2.offset: 0 -45;
           }
        }
        part {

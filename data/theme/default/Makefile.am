@@ -101,30 +101,30 @@ images/mp_rewind.png \
 images/mp_stop.png
 
 IMG_WEATHER = \
-images/weather_fall.jpeg \
-images/weather_spring.jpeg \
-images/weather_summer.jpeg \
-images/weather_unknown.png \
-images/weather_winter.jpeg
+images/weather/weather_fall.png \
+images/weather/weather_spring.png \
+images/weather/weather_summer.png \
+images/weather/weather_unknown.png \
+images/weather/weather_winter.png
 
 IMG_WEATHER_ICONS = \
-images/weather_cloudy.png \
-images/weather_foggy.png \
-images/weather_heavy_rain.png \
-images/weather_ice.png \
-images/weather_light_snow.png \
-images/weather_rain.png \
-images/weather_rain_storm.png \
-images/weather_showers.png \
-images/weather_snow.png \
-images/weather_sun_clouds.png \
-images/weather_sun_light_clouds.png \
-images/weather_sun_mostly_cloudy.png \
-images/weather_sunny.png \
-images/weather_sun_rain.png \
-images/weather_sun_snow.png \
-images/weather_sun_storm.png \
-images/weather_windy.png
+images/weather/weather_cloudy.png \
+images/weather/weather_foggy.png \
+images/weather/weather_heavy_rain.png \
+images/weather/weather_ice.png \
+images/weather/weather_light_snow.png \
+images/weather/weather_rain.png \
+images/weather/weather_rain_storm.png \
+images/weather/weather_showers.png \
+images/weather/weather_snow.png \
+images/weather/weather_sun_clouds.png \
+images/weather/weather_sun_light_clouds.png \
+images/weather/weather_sun_mostly_cloudy.png \
+images/weather/weather_sunny.png \
+images/weather/weather_sun_rain.png \
+images/weather/weather_sun_snow.png \
+images/weather/weather_sun_storm.png \
+images/weather/weather_windy.png
 
 IMG_RATINGS = \
 images/rating0.png \

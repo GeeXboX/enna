@@ -19,10 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef WEATHER_NOTIFICATION_H
-#define WEATHER_NOTIFICATION_H
+#ifndef VOLUME_NOTIFICATION_H
+#define VOLUME_NOTIFICATION_H
 
-Evas_Object *enna_weather_notification_smart_add (Evas *evas);
-void enna_weather_notification_update (Evas_Object *obj);
+Evas_Object *enna_volume_notification_smart_add (Evas *evas);
+void enna_volume_notification_show (Evas_Object *obj);
 
-#endif /* WEATHER_NOTIFICATION_H */
+#endif /* VOLUME_NOTIFICATION_H */

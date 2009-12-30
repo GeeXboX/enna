@@ -1,297 +1,123 @@
 images {
-   image: "volume_icon_reflection.png" COMP;
+   image: "notifier_bg.png" COMP;
    image: "volume_icon.png" COMP;
-   image: "volume_level.png" COMP;
-   image: "volume_level_glow.png" COMP;
-   image: "volume_level_shadow.png" COMP;
    image: "volume_bg.png" COMP;
-   image: "volume_bg_shadow.png" COMP;
-   image: "progress_bar_drag.png" COMP;
 }
 
 group {
-   name: "enna/volume";
-   min: 428 340;
-   max: 428 340;
+   name: "enna/notification/volume";
+
    parts {
-      part {
-         name: "volume_bg_shadow";
-         type: IMAGE;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            min: 428 340;
-            max: 428 340;
-            rel1 {
-               relative: 0.0 0.0;
-               offset: 0 0;
-            }
-            rel2 {
-               relative: 0.0 0.0;
-               offset: 428 340;
-            }
-            image {
-               normal: "volume_bg_shadow.png";
-            }
-            visible: 1;
-         }
-      }
-      part {
-         name: "volume_bg";
-         type: IMAGE;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            min: 428 340;
-            max: 428 340;
-            rel1 {
-               relative: 0.0 0.0;
-               offset: 0 0;
-            }
-            rel2 {
-               relative: 0.0 0.0;
-               offset: 428 340;
-            }
-            image {
-               normal: "volume_bg.png";
-            }
-            visible: 1;
-         }
-      }
-      part {
-         name: "volume_level_shadow";
-         type: IMAGE;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            min: 428 340;
-            max: 428 340;
-            rel1 {
-               relative: 0.0 0.0;
-               offset: 0 0;
-            }
-            rel2 {
-               relative: 0.0 0.0;
-               offset: 428 340;
-            }
-            image {
-               normal: "volume_level_shadow.png";
-            }
-            visible: 1;
-         }
-      }
-      part {
-         name: "progress_bar_clip";
-         type: IMAGE;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
 
-            rel1 {
-               relative: 0.0 0.0;
-               offset: 79 246;
-            }
-            rel2 {
-               relative: 0.0 0.0;
-               offset:  359 265;
-            }
-            visible: 1;
-         }
-      }
-      part
-      {
-         name: "progress_bar";
-         clip_to: "progress_bar_clip";
-	 mouse_events: 0;
+      part {
+         name: "volume.clip";
+         type: RECT;
          description {
             state: "default" 0.0;
-            visible: 1;
             color: 255 255 255 255;
-            rel1
-            {
-               relative: 0.0 0.0;
-               to: "progress_bar_clip";
-            }
-            rel2
-            {
-               to: "progress_bar_clip";
-               relative: 1 1;
-            }
-         }
-      }
-
-      part {
-      	 name: "volume_level";
-         mouse_events: 0;
-	 description{
-            state: "default" 0.0;
-
-	    rel1{
-               to: "progress_bar_clip";
-	    }
-	    rel2{
-               to_x: "enna.dragable.pos";
-               to_y: "progress_bar_clip";
-	    }
-            image {
-               normal: "volume_level.png";
-               border: 10 10 0 0;
-	    }
-	 }
-      }
-      part {
-         name: "volume_level_glow";
-         type: IMAGE;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-
-            rel1{
-               to: "progress_bar_clip";
-               offset: -12 -12;
-            }
-            rel2{
-               to_x: "enna.dragable.pos";
-               to_y: "progress_bar_clip";
-               offset: 12 12;
-            }
-
-            image {
-               normal: "volume_level_glow.png";
-               border: 22 22 0 0;
-            }
+            rel1.relative: 0 0;
+            rel2.relative: 1 1;
             visible: 1;
          }
       }
-      part {
-	 name: "enna.dragable.pos";
-         clip_to: "progress_bar_clip";
-         dragable {
-	    x: 1 1 1;
-	    y: 1 1 1;
-	    confine: "progress_bar";
-         }
-         description {
-	    state: "default" 0.0;
-            min: 20 12;
-	    visible: 0;
-	    color: 255 255 255 0;
-	    rel1{
-	       relative: 0 0.5;
-	       to: "progress_bar_clip";
-	    }
-	    rel2 {
-	       relative: 1 0.5;
-	       to: "progress_bar_clip";
-	    }
-	    image {
-               normal: "progress_bar_drag.png";
-               border: 6 6 6 6;
-	    }
-
-         }
-	 description {
-            state: "select" 0.0;
-            inherit: "default" 0.0;
-            visible: 1;
-            color: 255 255 255 255;
-	 }
-      }
 
       part {
-         name: "volume_icon";
+         name: "volume.frame";
          type: IMAGE;
+         clip_to: "volume.clip";
          mouse_events: 0;
          description {
             state: "default" 0.0;
-            min: 128 128;
-            max: 128 128;
-            rel1 {
-               relative: 0.0 0.0;
-               offset: 151 65;
-            }
-            rel2 {
-               relative: 0.0 0.0;
-               offset: 279 193;
-            }
-            image {
-               normal: "volume_icon.png";
-            }
-            visible: 1;
+
+            rel1.relative: 0 0;
+            rel1.to: "volume.clip";
+
+            rel2.relative: 1 1;
+            rel2.to: "volume.clip";
+
+            image.normal: "notifier_bg.png";
+            image.border: 5 5 5 5;
          }
       }
+
+      /* volume icon */
       part {
-         name: "volume_mute_icon";
-         type: IMAGE;
-         mouse_events: 0;
+         name: "volume.icon.clip";
+         type: RECT;
          description {
             state: "default" 0.0;
-            min: 85 85;
-            max: 85 85;
             color: 255 255 255 0;
-            rel1 {
-               relative: 0.0 0.0;
-               offset: 129 85;
-            }
-            rel2 {
-               relative: 0.0 0.0;
-               offset: 214 170;
-            }
-            image {
-               normal: "icon_nofile.png";
-            }
-            visible: 0;
-         }
-         description {
-            state: "show" 0.0;
-            inherit: "default" 0.0;
-            color: 255 255 255 100;
-            visible: 1;
+
+            rel1.relative: 0.00 0.00;
+            rel1.to: "volume.clip";
+            rel1.offset: 10 10;
+
+            rel2.relative: 0.40 1.00;
+            rel2.to: "volume.clip";
+            rel2.offset: -5 -10;
          }
       }
+
       part {
-         name: "volume_icon_reflection";
-         type: IMAGE;
-         mouse_events: 0;
+          name: "volume.icon.img";
+          type: IMAGE;
+          mouse_events : 0;
+          clip_to: "volume.clip";
+          description {
+             state: "default" 0.0;
+
+             rel1.relative: 0 0;
+             rel1.to: "volume.icon.clip";
+
+             rel2.relative: 1 1;
+             rel2.to: "volume.icon.clip";
+
+             image.normal: "volume_icon.png";
+             aspect: 1 1;
+             align: 0.5 0.5;
+             aspect_preference: BOTH;
+          }
+       }
+
+      /* volume text */
+      part {
+         name: "volume.text.clip";
+         type: RECT;
          description {
             state: "default" 0.0;
-            min: 128 128;
-            max: 128 128;
-            rel1 {
-               relative: 0.0 0.0;
-               offset: 150 165;
-            }
-            rel2 {
-               relative: 0.0 0.0;
-               offset: 278 293;
-            }
-            image {
-               normal: "volume_icon_reflection.png";
-            }
-            visible: 1;
+            color: 255 255 255 255;
+
+            rel1.relative: 0.40 0.00;
+            rel1.to: "volume.clip";
+            rel1.offset: 5 10;
+
+            rel2.relative: 1.00 1.00;
+            rel2.to: "volume.clip";
+            rel2.offset: -20 -10;
          }
       }
-   }
-   programs{
-      program
-      {
-         name: "mute,show";
-         signal: "mute,show";
-         source: "enna";
-         action: STATE_SET "show" 0.0;
-         transition: DECELERATE 0.5;
-         target: "volume_mute_icon";
-      }
-      program
-      {
-         name: "mute,hide";
-         signal: "mute,hide";
-         source: "enna";
-         action: STATE_SET "default" 0.0;
-         transition: ACCELERATE 0.5;
-         target: "volume_mute_icon";
+
+      part {
+         name: "volume.text.str";
+         type: TEXT;
+         effect: GLOW;
+         clip_to: "volume.text.clip";
+         description {
+            state: "default" 0.0;
+            color: 160 208 38 255;
+
+            rel1.relative: 0 0;
+            rel1.to: "volume.text.clip";
+
+            rel2.relative: 1 1;
+            rel2.to: "volume.text.clip";
+
+            text.align: 0.5 0.5;
+            text.text: "Volume";
+            text.font: "content_bd";
+            text.size: 60;
+            text.fit: 1 1;
+        }
       }
    }
 }
-
-

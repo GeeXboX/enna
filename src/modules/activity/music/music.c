@@ -39,8 +39,6 @@
 #include "music_lyrics.h"
 
 #define ENNA_MODULE_NAME "music"
-#define TIMER_VALUE 30
-#define TIMER_VOLUME_VALUE 3
 
 static void _create_menu();
 static void _create_gui();
@@ -78,9 +76,7 @@ struct _Enna_Module_Music
     Evas_Object *o_list;
     Evas_Object *o_browser;
     Evas_Object *o_mediaplayer;
-    Evas_Object *o_volume;
     Evas_Object *o_panel_lyrics;
-    Ecore_Timer *timer_volume;
     Enna_Module *em;
     MUSIC_STATE state;
     Enna_Playlist *enna_playlist;
@@ -153,12 +149,6 @@ _class_event_browser_view(enna_input event)
         if (enna_mediaplayer_show_get(mod->o_mediaplayer))
             mod->state = MEDIAPLAYER_VIEW;
         break;
-    case ENNA_INPUT_PLUS:
-        enna_mediaplayer_default_increase_volume();
-        break;
-    case ENNA_INPUT_MINUS:
-        enna_mediaplayer_default_decrease_volume();
-        break;
     case ENNA_INPUT_KEY_I:
         panel_lyrics_display(!mod->lyrics_displayed);
         break;
@@ -198,97 +188,12 @@ _class_event_mediaplayer_view(enna_input event)
         else
             mod->state = MENU_VIEW;
         break;
-    case ENNA_INPUT_PLUS:
-        enna_mediaplayer_default_increase_volume();
-        break;
-    case ENNA_INPUT_MINUS:
-        enna_mediaplayer_default_decrease_volume();
-        break;
     case ENNA_INPUT_KEY_I:
         panel_lyrics_display(!mod->lyrics_displayed);
         break;
     default:
         break;
     }
-
-}
-
-
-static void
-_volume_hide_done_cb(void *data,
-                     Evas_Object *obj, const char *emission, const char *source)
-{
-    edje_object_signal_callback_del(elm_layout_edje_get(enna->layout),
-                                    "hide,done", "*", _volume_hide_done_cb);
-    ENNA_OBJECT_DEL(mod->o_volume);
-    mod->o_volume = NULL;
-}
-
-static int
-_volume_hide_cb(void *data)
-{
-    edje_object_signal_callback_add(elm_layout_edje_get(enna->layout),
-                                    "popup,hide,done", "*",
-                                    _volume_hide_done_cb, NULL);
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
-                            "popup,hide","enna");
-    mod->timer_volume = NULL;
-    return ECORE_CALLBACK_CANCEL;
-}
-
-static void
-_volume_gui_update()
-{
-    double vol = 0.0;
-    if (enna_mediaplayer_mute_get())
-        edje_object_signal_emit(mod->o_volume, "mute,show","enna");
-    else
-        edje_object_signal_emit(mod->o_volume, "mute,hide","enna");
-    vol = enna_mediaplayer_volume_get() / 100.0;
-    edje_object_part_drag_value_set(mod->o_volume,
-                                    "enna.dragable.pos", vol,  0.0);
-
-}
-
-static void
-_volume_core(enna_input event)
-{
-    if (!mod->o_volume)
-    {
-        /* Volume popup doesn't exists, create it */
-        mod->o_volume = edje_object_add(enna->evas);
-        edje_object_file_set(mod->o_volume,
-                             enna_config_theme_get(), "enna/volume");
-        elm_layout_content_set(enna->layout,
-                               "enna.popup.swallow", mod->o_volume);
-    }
-
-    /* Show volume popup */
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
-                            "popup,show","enna");
-    //~ edje_object_signal_callback_del(elm_layout_edje_get(enna->layout), 
-                                    //~ "hide,done", "*", _volume_hide_done_cb); //needed?
-
-    /* Reset Timer */
-    ENNA_TIMER_DEL(mod->timer_volume);
-    mod->timer_volume =
-        ecore_timer_add(TIMER_VOLUME_VALUE, _volume_hide_cb, NULL);
-
-    /* Performs volume action*/
-    switch (event)
-    {
-    case ENNA_INPUT_KEY_M:
-        enna_mediaplayer_mute();
-        break;
-    case ENNA_INPUT_PLUS:
-        enna_mediaplayer_default_increase_volume();
-        break;
-    case ENNA_INPUT_MINUS:
-        enna_mediaplayer_default_decrease_volume();
-    default:
-        break;
-    }
-    _volume_gui_update();
 
 }
 
