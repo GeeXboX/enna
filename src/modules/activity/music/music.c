@@ -220,7 +220,6 @@ panel_lyrics_display(int show)
 static void
 _mediaplayer_info_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    printf(" display lyrics\n");
     panel_lyrics_display(1);
 }
 
