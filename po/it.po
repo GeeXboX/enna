@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-12-30 17:58+0100\n"
-"PO-Revision-Date: 2009-12-29 11:20+0100\n"
+"POT-Creation-Date: 2009-12-30 18:46+0100\n"
+"PO-Revision-Date: 2009-12-30 18:46+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -62,9 +62,7 @@ msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 #: src/bin/enna.c:436
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry): specifica la geometria della finestra. "
-"(geometry=1280x720)\n"
+msgstr "  -g, (--geometry): specifica la geometria della finestra. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:437
 #, c-format
@@ -165,6 +163,11 @@ msgstr "<hilight>Distribuzione: </hilight>"
 #: src/modules/activity/configuration/configuration_sysinfo.c:185
 msgid "<hilight>OS: </hilight>"
 msgstr "<hilight>OS: </hilight>"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:189
+#, c-format
+msgid "%s %s for %s"
+msgstr "%s %s per %s"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:204
 msgid "<hilight>Available CPUs: </hilight>"
@@ -294,7 +297,8 @@ msgstr "Sto registrando '%s'"
 msgid "Recording in progress"
 msgstr "Registrazione in corso"
 
-#: src/modules/activity/tv/tv.c:141 src/modules/activity/tv/tv.c:169
+#: src/modules/activity/tv/tv.c:141
+#: src/modules/activity/tv/tv.c:169
 msgid "Television"
 msgstr "Televisione"
 
@@ -594,3 +598,4 @@ msgstr ""
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module get volumes from the mtab file"
 msgstr ""
+
