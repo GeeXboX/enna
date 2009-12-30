@@ -313,6 +313,13 @@ panel_lyrics_display(int show)
 }
 
 static void
+_mediaplayer_info_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    printf(" display lyrics\n");
+    panel_lyrics_display(1);
+}
+
+static void
 _browser_root_cb(void *data, Evas_Object *obj, void *event_info)
 {
     mod->state = MENU_VIEW;
@@ -423,7 +430,8 @@ _create_mediaplayer_gui()
     edje_object_part_swallow(mod->o_edje, "mediaplayer.swallow", o);
     evas_object_show(o);
     mod->o_mediaplayer = o;
-
+    evas_object_smart_callback_add(mod->o_mediaplayer, "info,clicked",
+                                   _mediaplayer_info_clicked_cb, NULL);
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
     edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
 }

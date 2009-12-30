@@ -118,6 +118,7 @@ STOCK_ICON("mp_play.png",                       "icon/mp_play");
 STOCK_ICON("mp_prev.png",                       "icon/mp_prev");
 STOCK_ICON("mp_rewind.png",                     "icon/mp_rewind");
 STOCK_ICON("mp_stop.png",                       "icon/mp_stop");
+STOCK_ICON("icon_info.png",                     "icon/info");
 
 /* Weather */
 STOCK_ICON("weather_fall.jpeg",                 "weather/fall");
