@@ -186,7 +186,7 @@ get_uname(buffer_t *b)
     if (uname(&name) == -1)
         buffer_append(b, BUF_DEFAULT);
     else
-        buffer_appendf(b, "%s %s for %s",
+        buffer_appendf(b, _("%s %s for %s"),
                        name.sysname, name.release, name.machine);
     buffer_append(b, "<br>");
 }
