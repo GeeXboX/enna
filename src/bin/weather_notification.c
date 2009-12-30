@@ -20,6 +20,7 @@
  */
 
 #include <Edje.h>
+#include <Elementary.h>
 
 #include "enna.h"
 #include "enna_config.h"
@@ -69,6 +70,11 @@ enna_weather_notification_update (Evas_Object *obj)
                             sd->w->current.condition);
   edje_object_part_text_set(sd->edje, "weather.text.temp.str",
                             sd->w->current.temp);
+
+  /* check whether or not to display the notifier */
+  edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+                          sd->w->current.condition ?
+                          "weather,show" : "weather,hide", "enna");
 }
 
 Evas_Object *

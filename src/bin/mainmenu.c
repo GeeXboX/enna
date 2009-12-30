@@ -279,8 +279,6 @@ enna_mainmenu_show(void)
 
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,show", "enna");
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
-                            "weather,show", "enna");
 
     ic = elm_icon_add(enna->layout);
     elm_icon_file_set(ic, enna_config_theme_get(), "ctrl/shutdown");
