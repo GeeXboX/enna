@@ -285,6 +285,7 @@ enna_mainmenu_show(void)
     ic = elm_icon_add(enna->layout);
     elm_icon_file_set(ic, enna_config_theme_get(), "ctrl/shutdown");
     elm_button_icon_set(enna->o_button_back, ic);
+    enna_weather_notification_update(sd->o_weather);
 
 }
 
