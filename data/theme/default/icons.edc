@@ -112,13 +112,13 @@ STOCK_ICON("go-last.png",                       "icon/go_last");
 STOCK_ICON("icon_rotate_ccw.png",               "icon/rotate_ccw");
 STOCK_ICON("icon_rotate_cw.png",                "icon/rotate_cw");
 STOCK_ICON("mp_forward.png",                    "icon/mp_forward");
+STOCK_ICON("mp_info.png",                       "icon/mp_info");
 STOCK_ICON("mp_next.png",                       "icon/mp_next");
 STOCK_ICON("mp_pause.png",                      "icon/mp_pause");
 STOCK_ICON("mp_play.png",                       "icon/mp_play");
 STOCK_ICON("mp_prev.png",                       "icon/mp_prev");
 STOCK_ICON("mp_rewind.png",                     "icon/mp_rewind");
 STOCK_ICON("mp_stop.png",                       "icon/mp_stop");
-STOCK_ICON("icon_info.png",                     "icon/info");
 
 /* Weather */
 STOCK_ICON("weather/weather_fall.png",          "weather/fall");

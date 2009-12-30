@@ -93,6 +93,7 @@ images/go-last.png \
 images/icon_rotate_ccw.png \
 images/icon_rotate_cw.png \
 images/mp_forward.png \
+images/mp_info.png \
 images/mp_next.png \
 images/mp_pause.png \
 images/mp_play.png \
