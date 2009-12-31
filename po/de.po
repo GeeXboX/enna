@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-12-30 17:58+0100\n"
+"POT-Creation-Date: 2009-12-31 14:34+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Matthias Hölzer <n-billy@geexbox.org>\n"
 "Language-Team: German\n"
@@ -168,6 +168,11 @@ msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:185
 msgid "<hilight>OS: </hilight>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:189
+#, c-format
+msgid "%s %s for %s"
 msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:204
