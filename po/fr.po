@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2009-12-31 14:34+0100\n"
-"PO-Revision-Date: 2009-12-30 18:18+0100\n"
+"PO-Revision-Date: 2009-12-31 14:36+0100\n"
 "Last-Translator: Benjamin Zores <ben@geexbox.org>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -62,9 +62,7 @@ msgstr "  -t, (--theme):   Spécifie le nom du thème à utiliser.\n"
 #: src/bin/enna.c:436
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry): Spécifie la résolution de la fenêtre. "
-"(geometry=1280x720)\n"
+msgstr "  -g, (--geometry): Spécifie la résolution de la fenêtre. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:437
 #, c-format
@@ -170,9 +168,9 @@ msgid "<hilight>OS: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:189
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s for %s"
-msgstr "[NFS] %s sur %s"
+msgstr "%s %s sur %s"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:204
 #, fuzzy
@@ -257,9 +255,7 @@ msgstr "Jeux"
 
 #: src/modules/activity/games/games.c:265
 msgid "With this module you can play your games directly from enna"
-msgstr ""
-"Au travers de ce module, vous pouvez démarrer vos jeux directement depuis "
-"Enna"
+msgstr "Au travers de ce module, vous pouvez démarrer vos jeux directement depuis Enna"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -309,7 +305,8 @@ msgstr "Enregistrement de '%s'"
 msgid "Recording in progress"
 msgstr "Enregistrement en cours"
 
-#: src/modules/activity/tv/tv.c:141 src/modules/activity/tv/tv.c:169
+#: src/modules/activity/tv/tv.c:141
+#: src/modules/activity/tv/tv.c:169
 msgid "Television"
 msgstr "Télévision"
 
@@ -478,9 +475,7 @@ msgstr "Module UPnP / DLNA"
 
 #: src/modules/browser/upnp/upnp.c:512
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
-msgstr ""
-"Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
-"compatibles UPNP / DLNA"
+msgstr "Ce module permet à Enna de parcourir le contenu des serveurs multimédias compatibles UPNP / DLNA"
 
 #: src/modules/browser/valhalla/valhalla.c:298
 msgid "Artists"
@@ -504,8 +499,7 @@ msgstr "Module Valhalla"
 
 #: src/modules/browser/valhalla/valhalla.c:464
 msgid "Database stuff and metadata retrival from various sources"
-msgstr ""
-"Base de donnée et récupération de meta-informations depuis diverses sources"
+msgstr "Base de donnée et récupération de meta-informations depuis diverses sources"
 
 #: src/modules/browser/valhalla/valhalla.c:472
 msgid "Media Library"
@@ -619,103 +613,72 @@ msgstr "Ce module récupère la liste des volumes depuis le fichier mtab"
 
 #~ msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 #~ msgstr "<hl>Vidéo: </hl> %s, %dx%d, %.2f img/s<br>"
-
 #~ msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 #~ msgstr "<hl>Audio: </hl> %s, %d ch., %i kb/s, %d Hz<br>"
-
 #~ msgid "Infos"
 #~ msgstr "Infos"
-
 #~ msgid "%.2d hour "
 #~ msgid_plural "%.2d hours "
 #~ msgstr[0] "%.2d heure"
 #~ msgstr[1] "%.2d heures"
-
 #~ msgid "%.2d minute"
 #~ msgid_plural "%.2d minutes"
 #~ msgstr[0] "%.2d minute"
 #~ msgstr[1] "%.2d minutes"
-
 #~ msgid "Unknown"
 #~ msgstr "Inconnu"
-
 #~ msgid "IDE"
 #~ msgstr "IDE"
-
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
-
 #~ msgid "USB"
 #~ msgstr "USB"
-
 #~ msgid "FireWire"
 #~ msgstr "FireWire"
-
 #~ msgid "CCW"
 #~ msgstr "CCW"
-
 #~ msgid "Removable Disk"
 #~ msgstr "Disque Amovible"
-
 #~ msgid "Disk"
 #~ msgstr "Disque"
-
 #~ msgid "Floppy"
 #~ msgstr "Disquette"
-
 #~ msgid "Tape"
 #~ msgstr "Cassette"
-
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
-
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
-
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
-
 #~ msgid "SD/MMC"
 #~ msgstr "SD/MMC"
-
 #~ msgid "Camera"
 #~ msgstr "Appareil Photo"
-
 #~ msgid "Portable Audio Player"
 #~ msgstr "Lecteur Audio Portable"
-
 #~ msgid "ZIP"
 #~ msgstr "ZIP"
-
 #~ msgid "JAZ"
 #~ msgstr "JAZ"
-
 #~ msgid "FlashKey"
 #~ msgstr "Disque Flash"
-
 #~ msgid "enna HTPC"
 #~ msgstr "enna HTPC"
-
 #~ msgid "Browse Library"
 #~ msgstr "Parcourir la bibliothèque"
-
 #~ msgid "Artist"
 #~ msgstr "Artiste"
-
 #~ msgid "Album"
 #~ msgstr "Album"
-
 #~ msgid "Watch PODCAST Video"
 #~ msgstr "Regarder une vidéo PODCAST"
-
 #~ msgid "%s<hilight>%s%s:</hilight> %s"
 #~ msgstr "%s<hilight>%s%s:</hilight> %s"
-
 #~ msgid "Yes, I want to quit."
 #~ msgstr "Oui, je veux quitter."
-
 #~ msgid "No, I want to stay."
 #~ msgstr "Non, je veux rester."
-
 #~ msgid "...no activity seems busy right now."
 #~ msgstr "... aucune activité ne semble active actuellement."
+
