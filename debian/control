@@ -10,7 +10,7 @@ Homepage: http://enna.geexbox.org
 
 Package: enna
 Architecture: any
-Depends: ${shlibs:Depends}, libeina-svn-05, libeet1, libevas-svn-05, libecore-svn-05, libecore-evas-svn-05, libecore-file-svn-05, libecore-ipc-svn-05, libecore-txt-svn-05, libecore-x-svn-05, libecore-con-svn-05, libefreet-svn-05, libedbus-svn-05, libedje-svn-05, libelm-svn-05, libplayer (>= 1.0.0), libvalhalla (>= 1.0.0)
+Depends: ${shlibs:Depends}, libeina-svn-05, libeet1, libevas-svn-05, libevas-engines, libevas-engines-extras, libecore-svn-05, libecore-evas-svn-05, libecore-file-svn-05, libecore-ipc-svn-05, libecore-txt-svn-05, libecore-x-svn-05, libecore-con-svn-05, libecore-config-svn-05, libecore-fb-svn-05, libecore-imf-svn-05, libecore-input-svn-05, libecore-job-svn-05, libefreet-svn-05, libedbus-svn-05, libedje-svn-05, libelm-svn-05, libplayer (>= 1.0.0), libvalhalla (>= 1.0.0)
 Description: a powerful and Open MediaCenter application based on EFL.
  Enna is a Media Center application.
  Featuring a simple user interface, Enna is based on the powerful Enlightenment
