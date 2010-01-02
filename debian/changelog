@@ -1,5 +1,5 @@
-enna (0.3.0+hg2297) unstable; urgency=low
+enna (0.4.0) karmic; urgency=low
 
-  * a mercurial release.
+  * Initial project release (v0.4.0).
 
- -- Nicolas Aguirre <captainigloo@geexbox.org>  Thu, 1 Sept 2009 13:45:04 +0200
+ -- Mathieu Schroeter <mathieu.schroeter@gamesover.ch>  Sat, 02 Jan 2010 10:45:00 +0100
