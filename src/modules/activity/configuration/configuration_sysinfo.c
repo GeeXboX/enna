@@ -103,6 +103,8 @@ set_enna_information(buffer_t *b)
     buffer_appendf(b, _("<hilight>libsvdrp: </hilight>%s<br>"),
                    LIBSVDRP_VERSION);
 #endif
+    buffer_appendf(b, _("<hilight>Video Renderer:</hilight> %s"),
+                   enna_config->engine);
     buffer_append(b, "<br>");
 }
 
