@@ -75,7 +75,7 @@ _dbus_store_prop_cb(void *data, void *reply_data, DBusError *error)
     s->vendor = e_hal_property_string_get(ret, "storage.vendor", &err);
     if (err) goto error;
     s->serial = e_hal_property_string_get(ret, "storage.serial", &err);
-    if (err)  enna_log(ENNA_MSG_ERROR, "hal-storage",
+    if (err)  enna_log(ENNA_MSG_WARNING, "hal-storage",
                        "Error getting serial for %s\n", s->udi);
 
     s->removable = e_hal_property_bool_get(ret, "storage.removable", &err);
