@@ -264,7 +264,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     return;
 
 dbus_error:
-    e_dbus_connection_close (dbus_conn);
+    if (dbus_conn)
+        e_dbus_connection_close (dbus_conn);
     e_hal_shutdown();
     e_dbus_shutdown ();
     return;
@@ -276,8 +277,8 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     Enna_Module_Hal *mod;
 
     mod = em->mod;;
-
-    e_dbus_connection_close (dbus_conn);
+    if (dbus_conn)
+        e_dbus_connection_close (dbus_conn);
     e_hal_shutdown();
     e_dbus_shutdown ();
 }
