@@ -43,15 +43,12 @@ PKG_CHECK_MODULES([ENNA],
    evas >= 0.9.9.063
    ecore >= 0.9.9.063
    ecore-evas >= 0.9.9.063
-   ecore-txt >= 0.9.9.063
    ecore-file >= 0.9.9.063
    ecore-ipc >= 0.9.9.063
-   embryo >= 0.9.9.063
    edje >= 0.9.93.063
    elementary >= 0.6.0.063
    libplayer >= 1.0.0 libplayer < 1.1.0
    libvalhalla >= 1.0.0 libvalhalla < 2.0.0
-   dbus-1 >= 1.2.0
   ]
 )
 
