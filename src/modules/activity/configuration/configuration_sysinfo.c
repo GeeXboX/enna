@@ -334,7 +334,7 @@ get_resolution(buffer_t *b)
         return;
 
     root = RootWindow(dpy, screen);
-    if (!root)
+    if (root < 0)
         return;
 
     sc = XRRGetScreenInfo(dpy, root);
