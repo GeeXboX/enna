@@ -39,7 +39,7 @@
 #define DEFAULT_FILE \
     "[enna]\n" \
     "#none,event,info,warning,error,critical\n" \
-    "verbosity=info\n" \
+    "verbosity=warning\n" \
     "log_file=/var/log/enna.log\n" \
     "\n" \
     "\n" \
@@ -133,7 +133,7 @@
     "[media_db]\n" \
     "path=file:///path/to/Music\n" \
     "path=file:///path/to/server/Medias/Music\n" \
-    "verbosity=info\n" \
+    "verbosity=warning\n" \
     "parser_number=2\n" \
     "commit_interval=128\n" \
     "# <=0 for infinite\n" \

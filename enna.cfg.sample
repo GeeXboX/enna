@@ -1,6 +1,6 @@
 [enna]
 #none,event,info,warning,error,critical
-verbosity=info
+verbosity=warning
 log_file=/var/log/enna.log
 
 #0,1
@@ -91,7 +91,7 @@ city=New York
 [media_db]
 path=file:///path/to/Music
 path=file:///path/to/server/Medias/Music
-verbosity=info
+verbosity=warning
 parser_number=2
 commit_interval=128
 # <=0 for infinite
