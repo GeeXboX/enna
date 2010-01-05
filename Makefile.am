@@ -3,7 +3,7 @@
 
 SUBDIRS = po src data
 
-EXTRA_DIST = config.rpath  $(ennadoc_DATA)
+EXTRA_DIST = config.rpath enna.cfg.sample $(ennadoc_DATA)
 
 # Copy all the spec files. Of cource, only one is actually used.
 dist-hook:
