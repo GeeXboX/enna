@@ -135,6 +135,7 @@
     "path=file:///path/to/server/Medias/Music\n" \
     "verbosity=warning\n" \
     "parser_number=2\n" \
+    "grabber_number=4\n" \
     "commit_interval=128\n" \
     "# <=0 for infinite\n" \
     "scan_loop=-1\n" \

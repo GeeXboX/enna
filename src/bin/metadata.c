@@ -111,6 +111,8 @@ enna_metadata_db_init(void)
 
             enna_config_value_store(&parser_number, "parser_number",
                                     ENNA_CONFIG_INT, pair);
+            enna_config_value_store(&grabber_number, "grabber_number",
+                                    ENNA_CONFIG_INT, pair);
             enna_config_value_store(&commit_interval, "commit_interval",
                                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&scan_loop, "scan_loop",
@@ -153,6 +155,8 @@ enna_metadata_db_init(void)
     /* Configuration */
     enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* parser number  : %i", parser_number);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* grabber number : %i", grabber_number);
     enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* commit interval: %i", commit_interval);
     enna_log(ENNA_MSG_EVENT,

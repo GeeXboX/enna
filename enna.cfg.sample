@@ -93,6 +93,7 @@ path=file:///path/to/Music
 path=file:///path/to/server/Medias/Music
 verbosity=warning
 parser_number=2
+grabber_number=4
 commit_interval=128
 # <=0 for infinite
 scan_loop=-1
