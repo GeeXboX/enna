@@ -14,7 +14,7 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules/$(MODULE) \
 -I$(top_srcdir)/src/bin \
 -I$(top_srcdir)/src/modules \
-@ENNA_CFLAGS@ @VALHALLA_CFLAGS@
+@ENNA_CFLAGS@
 
 if BUILD_BROWSER_VALHALLA
 
@@ -24,7 +24,7 @@ pkg_LTLIBRARIES = browser_valhalla.la
 
 browser_valhalla_la_SOURCES = $(SRCS_BROWSER_VALHALLA)
 
-browser_valhalla_la_LIBADD = @ENNA_LIBS@ @VALHALLA_LIBS@
+browser_valhalla_la_LIBADD = @ENNA_LIBS@
 browser_valhalla_la_LDFLAGS = -module -avoid-version
 browser_valhalla_la_DEPENDENCIES = $(top_builddir)/config.h
 
