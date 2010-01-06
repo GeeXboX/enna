@@ -96,7 +96,7 @@ set_enna_information(buffer_t *b)
     buffer_append(b, _("<c>Enna Information</c><br><br>"));
     buffer_appendf(b, _("<hilight>Enna: </hilight>%s<br>"), VERSION);
     buffer_appendf(b, _("<hilight>libplayer: </hilight>%s<br>"),
-                   LIBPLAYER_VERSION);
+                   LIBPLAYER_VERSION_STR);
     buffer_appendf(b, _("<hilight>libvalhalla: </hilight>%s<br>"),
                    LIBVALHALLA_VERSION_STR);
 #ifdef BUILD_LIBSVDRP
