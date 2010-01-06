@@ -387,10 +387,7 @@ upnp_list_mediaservers (void)
         char name[256], uri[1024];
         Enna_Vfs_File *f;
 
-        memset (name, '\0', sizeof (name));
         snprintf (name, sizeof (name), "%s (%s)", srv->name, srv->model);
-
-        memset (uri, '\0', sizeof (uri));
         snprintf (uri, sizeof (uri), "udn:%s,id:%s",
                   srv->udn, UPNP_DEFAULT_ROOT);
 
