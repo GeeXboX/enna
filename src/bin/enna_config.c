@@ -143,6 +143,7 @@
     "scan_sleep=900\n" \
     "# 0: normal, -20: higher, 19 lower\n" \
     "scan_priority=19\n" \
+    "decrapifier=1\n" \
     "\n" \
     "# blacklisted keywords for the file titles\n" \
     "# Normal keywords must use small letters, but it is possible to use\n" \
@@ -153,6 +154,9 @@
     "#  EP  : for an episode\n" \
     "# With SE and EP, the values are saved in the database.\n" \
     "# Examples: sSEeEP, NUMxNUM\n" \
+    "#\n" \
+    "# If decrypifier=0, the keywords are ignored and the filenames are not\n" \
+    "# considered for the titles.\n" \
     "#\n" \
     "# Only alphabetical and numerical letters can be used in the keywords.\n" \
     "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,orenji,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,cdNUM,CDNUM,SExEP,sSEeEP,SSEEEP\n" \

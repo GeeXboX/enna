@@ -46,6 +46,7 @@
 #define ENNA_METADATA_DEFAULT_SCAN_LOOP              -1
 #define ENNA_METADATA_DEFAULT_SCAN_SLEEP              900
 #define ENNA_METADATA_DEFAULT_SCAN_PRIORITY           19
+#define ENNA_METADATA_DEFAULT_DECRAPIFIER             1
 
 #define PATH_FANARTS            "fanarts"
 #define PATH_COVERS             "covers"
@@ -96,6 +97,7 @@ enna_metadata_db_init(void)
     int scan_loop       = ENNA_METADATA_DEFAULT_SCAN_LOOP;
     int scan_sleep      = ENNA_METADATA_DEFAULT_SCAN_SLEEP;
     int scan_priority   = ENNA_METADATA_DEFAULT_SCAN_PRIORITY;
+    int decrapifier     = ENNA_METADATA_DEFAULT_DECRAPIFIER;
     valhalla_verb_t verbosity = VALHALLA_MSG_WARNING;
     valhalla_init_param_t param;
     char dst[1024];
@@ -120,6 +122,8 @@ enna_metadata_db_init(void)
             enna_config_value_store(&scan_sleep, "scan_sleep",
                                     ENNA_CONFIG_INT, pair);
             enna_config_value_store(&scan_priority, "scan_priority",
+                                    ENNA_CONFIG_INT, pair);
+            enna_config_value_store(&decrapifier, "decrapifier",
                                     ENNA_CONFIG_INT, pair);
             enna_config_value_store (&bl_words, "blacklist_keywords",
                                      ENNA_CONFIG_STRING_LIST, pair);
@@ -166,6 +170,8 @@ enna_metadata_db_init(void)
     enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* scan priority  : %i", scan_priority);
     enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* decrapifier    : %i", !!decrapifier);
+    enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* verbosity      : %i", verbosity);
 
     valhalla_verbosity(verbosity);
@@ -177,7 +183,7 @@ enna_metadata_db_init(void)
     param.parser_nb   = parser_number;
     param.grabber_nb  = grabber_number;
     param.commit_int  = commit_interval;
-    param.decrapifier = 1;
+    param.decrapifier = !!decrapifier;
     param.od_cb       = ondemand_cb;
 
     vh = valhalla_init(db, &param);
