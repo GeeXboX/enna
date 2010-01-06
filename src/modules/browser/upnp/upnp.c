@@ -52,6 +52,7 @@ typedef struct Enna_Module_UPnP_s
     GMainContext *mctx;
     GUPnPContext *ctx;
     GUPnPControlPoint *cp;
+    pthread_mutex_t mutex_id;
     char *current_id;
 } Enna_Module_UPnP;
 
@@ -68,6 +69,15 @@ typedef struct upnp_media_server_s {
 static Enna_Module_UPnP *mod;
 
 /* UPnP Internals */
+
+static void
+upnp_current_id_set (const char *id)
+{
+    pthread_mutex_lock (&mod->mutex_id);
+    ENNA_FREE (mod->current_id);
+    mod->current_id = id ? strdup (id) : NULL;
+    pthread_mutex_unlock (&mod->mutex_id);
+}
 
 static void
 upnp_media_server_free (upnp_media_server_t *srv)
@@ -359,8 +369,7 @@ browse_server_list (const char *uri)
         return NULL;
 
     /* memorize our position */
-    ENNA_FREE (mod->current_id);
-    mod->current_id = strdup (uri);
+    upnp_current_id_set (uri);
 
     return upnp_browse (srv, container_id, 0, UPNP_MAX_BROWSE);
 }
@@ -395,10 +404,12 @@ upnp_list_mediaservers (void)
 static Eina_List *
 _class_browse_up (const char *id, void *cookie)
 {
+    /* clean up our current position */
+    upnp_current_id_set (NULL);
+
     if (!id)
     {
         /* list available UPnP media servers */
-        ENNA_FREE (mod->current_id);
         return upnp_list_mediaservers ();
     }
 
@@ -413,14 +424,17 @@ _class_browse_down (void *cookie)
     char new_id[512] = { 0 };
     int i, len;
 
-    /* no recorded position, try root */
+    /* no recorded position, return to main browsers list */
     if (!mod->current_id)
-        return upnp_list_mediaservers ();
+        return NULL;
 
     /* try to guess where we come from */
     prev_id = strrchr (mod->current_id, '/');
     if (!prev_id)
+    {
+        upnp_current_id_set (NULL);
         return upnp_list_mediaservers ();
+    }
 
     len = strlen (mod->current_id) - strlen (prev_id);
     for (i = 0; i < len; i++)
@@ -432,8 +446,9 @@ _class_browse_down (void *cookie)
 static Enna_Vfs_File *
 _class_vfs_get (void *cookie)
 {
-    return enna_vfs_create_directory (NULL, NULL,
-            eina_stringshare_add ("icon/upnp"), NULL);
+    return enna_vfs_create_directory (mod->current_id, NULL,
+                                      eina_stringshare_add ("icon/upnp"),
+                                      NULL);
 }
 
 static Enna_Class_Vfs class_upnp = {
@@ -530,6 +545,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
     g_type_init ();
 
     pthread_mutex_init (&mod->mutex, NULL);
+    pthread_mutex_init (&mod->mutex_id, NULL);
 
     /* bind upnp context to ecore */
     mod->mctx = g_main_context_default ();
@@ -576,6 +592,7 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     g_object_unref (mod->cp);
     g_object_unref (mod->ctx);
 
-    ENNA_FREE (mod->current_id);
+    upnp_current_id_set (NULL);
     pthread_mutex_destroy (&mod->mutex);
+    pthread_mutex_destroy (&mod->mutex_id);
 }
