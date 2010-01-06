@@ -392,6 +392,32 @@ fi
 # Librairies #
 ##############
 
+# ecore-x
+want_ecore_x="auto"
+have_ecore_x="no"
+AC_MSG_CHECKING(whether ecore-x support is to be built)
+AC_ARG_ENABLE(ecore-x,
+    AS_HELP_STRING([--enable-ecore-x],[Enable ecore X11 support]),
+    [ want_ecore_x=$enableval ]
+)
+AC_MSG_RESULT($want_ecore_x)
+if test "x$want_ecore_x" = "xyes" -o "x$want_ecore_x" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [ECORE_X],
+    [ecore-x],
+    [
+      AC_DEFINE(BUILD_ECORE_X, 1, [ecore-x support])
+      have_ecore_x="yes"
+    ],
+    [
+      if test "x$want_ecore_x" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([ecore-x not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_ECORE_X, test "x$have_ecore_x" = "xyes")
+
 # efreet
 want_efreet="auto"
 have_efreet="no"
@@ -644,6 +670,7 @@ echo "  mtab............................. : $want_volume_mtab"
 echo
 echo "Optional linked-in librairies:"
 echo
+echo "  ecore-x.......................... : $have_ecore_x"
 echo "  efreet........................... : $have_efreet"
 echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"

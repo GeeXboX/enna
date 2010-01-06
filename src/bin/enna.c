@@ -28,7 +28,9 @@
 #include <Ecore.h>
 #include <Ecore_File.h>
 #include <Ecore_Str.h>
+#ifdef BUILD_ECORE_X
 #include <Ecore_X.h>
+#endif
 #include <Elementary.h>
 
 #include "enna.h"
@@ -99,6 +101,7 @@ static int _idle_timer_cb(void *data)
     return ECORE_CALLBACK_RENEW;
 }
 
+#ifdef BUILD_ECORE_X
 static void _mouse_display(int show)
 {
     ecore_x_window_cursor_show(enna->ee_winid, show);
@@ -130,6 +133,7 @@ static int _mousemove_cb(void *data, int type, void *event)
 
     return 1;
 }
+#endif
 
 static void
 _set_scale(int h)
@@ -336,7 +340,7 @@ static int _create_gui(void)
 
     elm_layout_content_set(enna->layout, "back.swallow", enna->o_button_back);
     evas_object_smart_callback_add(enna->o_button_back, "clicked", _button_back_clicked_cb, NULL);
-
+#ifdef BUILD_ECORE_X
     // mouse pointer
     _mouse_display(0);
     enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
@@ -344,7 +348,7 @@ static int _create_gui(void)
 
     enna->mouse_handler =
         ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE, _mousemove_cb, NULL);
-
+#endif
     // show all
     evas_object_resize(enna->win, app_w, app_h);
     _set_scale(app_h);
@@ -356,8 +360,10 @@ static int _create_gui(void)
 static void _enna_shutdown(void)
 {
     ENNA_TIMER_DEL(enna->idle_timer);
+#ifdef BUILD_ECORE_X    
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     ENNA_EVENT_HANDLER_DEL(enna->mouse_handler);
+#endif
     ENNA_OBJECT_DEL(enna->o_exit);
 
     enna_activity_del_all();
