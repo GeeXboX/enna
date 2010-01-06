@@ -130,7 +130,7 @@ xml_util_get_element (xmlNode *node, ...)
 }
 
 static Enna_Vfs_File *
-didl_process_object (xmlNode *e, char *udn)
+didl_process_object (xmlNode *e, char *udn, ENNA_VFS_CAPS cap)
 {
     char *id, *title;
     gboolean is_container;
@@ -170,15 +170,32 @@ didl_process_object (xmlNode *e, char *udn)
         if (!class_name)
             goto err_no_class;
 
-        if (!strncmp (class_name,
-                      ITEM_CLASS_IMAGE, strlen (ITEM_CLASS_IMAGE)))
-            icon = "icon/photo";
-        else if (!strncmp (class_name,
-                           ITEM_CLASS_AUDIO, strlen (ITEM_CLASS_AUDIO)))
-            icon = "icon/music";
-        else if (!strncmp (class_name,
-                           ITEM_CLASS_VIDEO, strlen (ITEM_CLASS_VIDEO)))
-            icon = "icon/video";
+        if (cap & ENNA_CAPS_PHOTO)
+        {
+            if (!strncmp (class_name,
+                          ITEM_CLASS_IMAGE, strlen (ITEM_CLASS_IMAGE)))
+                icon = "icon/photo";
+            else
+                goto err_resources;
+        }
+
+        if (cap & ENNA_CAPS_MUSIC)
+        {
+            if (!strncmp (class_name,
+                          ITEM_CLASS_AUDIO, strlen (ITEM_CLASS_AUDIO)))
+                icon = "icon/music";
+            else
+                goto err_resources;
+        }
+
+        if (cap & ENNA_CAPS_VIDEO)
+        {
+            if (!strncmp (class_name,
+                          ITEM_CLASS_VIDEO, strlen (ITEM_CLASS_VIDEO)))
+                icon = "icon/video";
+            else
+                goto err_resources;
+        }
 
         g_free (class_name);
 
@@ -217,7 +234,7 @@ didl_process_object (xmlNode *e, char *udn)
 }
 
 static Eina_List *
-didl_process (char *didl, char *udn)
+didl_process (char *didl, char *udn, ENNA_VFS_CAPS cap)
 {
     xmlNode *element;
     xmlDoc  *doc;
@@ -249,7 +266,7 @@ didl_process (char *didl, char *udn)
         {
             Enna_Vfs_File *f;
 
-            f = didl_process_object (element, udn);
+            f = didl_process_object (element, udn, cap);
             if (f)
                 list = eina_list_append (list, f);
         }
@@ -262,7 +279,8 @@ didl_process (char *didl, char *udn)
 
 static Eina_List *
 upnp_browse (upnp_media_server_t *srv, const char *container_id,
-             guint32 starting_index, guint32 requested_count)
+             guint32 starting_index, guint32 requested_count,
+             ENNA_VFS_CAPS cap)
 {
     guint32 number_returned, total_matches, si;
     Eina_List *results = NULL;
@@ -313,7 +331,7 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
         guint32 remaining;
         Eina_List *list;
 
-        list = didl_process (didl_xml, srv->udn);
+        list = didl_process (didl_xml, srv->udn, cap);
         results = eina_list_merge (results, list);
         g_free (didl_xml);
 
@@ -325,7 +343,7 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
         if (remaining)
         {
             list = upnp_browse (srv, container_id, si,
-                                MIN (remaining, UPNP_MAX_BROWSE));
+                                MIN (remaining, UPNP_MAX_BROWSE), cap);
             results = eina_list_merge (results, list);
         }
     }
@@ -336,7 +354,7 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
 }
 
 static Eina_List *
-browse_server_list (const char *uri)
+browse_server_list (const char *uri, ENNA_VFS_CAPS cap)
 {
     upnp_media_server_t *srv = NULL;
     char udn[512], id[512];
@@ -371,7 +389,7 @@ browse_server_list (const char *uri)
     /* memorize our position */
     upnp_current_id_set (uri);
 
-    return upnp_browse (srv, container_id, 0, UPNP_MAX_BROWSE);
+    return upnp_browse (srv, container_id, 0, UPNP_MAX_BROWSE, cap);
 }
 
 static Eina_List *
@@ -399,7 +417,7 @@ upnp_list_mediaservers (void)
 }
 
 static Eina_List *
-_class_browse_up (const char *id, void *cookie)
+_class_browse_up (const char *id, void *cookie, ENNA_VFS_CAPS cap)
 {
     /* clean up our current position */
     upnp_current_id_set (NULL);
@@ -411,11 +429,35 @@ _class_browse_up (const char *id, void *cookie)
     }
 
     /* browse content from a given media server */
-    return browse_server_list (id);
+    return browse_server_list (id, cap);
 }
 
+#ifdef BUILD_ACTIVITY_MUSIC
 static Eina_List *
-_class_browse_down (void *cookie)
+music_class_browse_up (const char *id, void *cookie)
+{
+    return _class_browse_up(id, cookie, ENNA_CAPS_MUSIC);
+}
+#endif
+
+#ifdef BUILD_ACTIVITY_VIDEO
+static Eina_List *
+video_class_browse_up (const char *id, void *cookie)
+{
+    return _class_browse_up(id, cookie, ENNA_CAPS_VIDEO);
+}
+#endif
+
+#ifdef BUILD_ACTIVITY_PHOTO
+static Eina_List *
+photo_class_browse_up (const char *id, void *cookie)
+{
+    return _class_browse_up(id, cookie, ENNA_CAPS_PHOTO);
+}
+#endif
+
+static Eina_List *
+_class_browse_down (void *cookie, ENNA_VFS_CAPS cap)
 {
     char *prev_id;
     char new_id[512] = { 0 };
@@ -437,8 +479,32 @@ _class_browse_down (void *cookie)
     for (i = 0; i < len; i++)
         new_id[i] = mod->current_id[i];
 
-    return browse_server_list (new_id);
+    return browse_server_list (new_id, cap);
 }
+
+#ifdef BUILD_ACTIVITY_MUSIC
+static Eina_List *
+music_class_browse_down (void *cookie)
+{
+    return _class_browse_down(cookie, ENNA_CAPS_MUSIC);
+}
+#endif
+
+#ifdef BUILD_ACTIVITY_VIDEO
+static Eina_List *
+video_class_browse_down (void *cookie)
+{
+    return _class_browse_down(cookie, ENNA_CAPS_VIDEO);
+}
+#endif
+
+#ifdef BUILD_ACTIVITY_PHOTO
+static Eina_List *
+photo_class_browse_down (void *cookie)
+{
+    return _class_browse_down(cookie, ENNA_CAPS_PHOTO);
+}
+#endif
 
 static Enna_Vfs_File *
 _class_vfs_get (void *cookie)
@@ -448,7 +514,8 @@ _class_vfs_get (void *cookie)
                                       NULL);
 }
 
-static Enna_Class_Vfs class_upnp = {
+#ifdef BUILD_ACTIVITY_MUSIC
+static Enna_Class_Vfs class_upnp_music = {
     ENNA_MODULE_NAME,
     10,
     N_("UPnP/DLNA Media Servers"),
@@ -457,12 +524,49 @@ static Enna_Class_Vfs class_upnp = {
     {
         NULL,
         NULL,
-        _class_browse_up,
-        _class_browse_down,
+        music_class_browse_up,
+        music_class_browse_down,
         _class_vfs_get,
     },
     NULL
 };
+#endif
+
+#ifdef BUILD_ACTIVITY_VIDEO
+static Enna_Class_Vfs class_upnp_video = {
+    ENNA_MODULE_NAME,
+    10,
+    N_("UPnP/DLNA Media Servers"),
+    NULL,
+    "icon/upnp",
+    {
+        NULL,
+        NULL,
+        video_class_browse_up,
+        video_class_browse_down,
+        _class_vfs_get,
+    },
+    NULL
+};
+#endif
+
+#ifdef BUILD_ACTIVITY_PHOTO
+static Enna_Class_Vfs class_upnp_photo = {
+    ENNA_MODULE_NAME,
+    10,
+    N_("UPnP/DLNA Media Servers"),
+    NULL,
+    "icon/upnp",
+    {
+        NULL,
+        NULL,
+        photo_class_browse_up,
+        photo_class_browse_down,
+        _class_vfs_get,
+    },
+    NULL
+};
+#endif
 
 /* Device Callbacks */
 
@@ -528,7 +632,6 @@ Enna_Module_Api ENNA_MODULE_API =
 void
 ENNA_MODULE_INIT(Enna_Module *em)
 {
-    int flags = ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO;
     GError *error;
 
     if (!em)
@@ -569,7 +672,15 @@ ENNA_MODULE_INIT(Enna_Module *em)
     gssdp_resource_browser_set_active
         (GSSDP_RESOURCE_BROWSER (mod->cp), TRUE);
 
-    enna_vfs_append (ENNA_MODULE_NAME, flags, &class_upnp);
+#ifdef BUILD_ACTIVITY_MUSIC
+    enna_vfs_append (ENNA_MODULE_NAME, ENNA_CAPS_MUSIC, &class_upnp_music);
+#endif
+#ifdef BUILD_ACTIVITY_VIDEO
+    enna_vfs_append (ENNA_MODULE_NAME, ENNA_CAPS_VIDEO, &class_upnp_video);
+#endif
+#ifdef BUILD_ACTIVITY_PHOTO
+    enna_vfs_append (ENNA_MODULE_NAME, ENNA_CAPS_PHOTO, &class_upnp_photo);
+#endif
 }
 
 void
