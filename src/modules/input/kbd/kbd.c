@@ -67,6 +67,8 @@ static const struct
     { "M",            ECORE_CTRL,              ENNA_INPUT_MUTE          },
     { "f",            ECORE_CTRL,              ENNA_INPUT_FULLSCREEN    },
     { "F",            ECORE_CTRL,              ENNA_INPUT_FULLSCREEN    },
+    { "i",            ECORE_CTRL,              ENNA_INPUT_INFO          },
+    { "I",            ECORE_CTRL,              ENNA_INPUT_INFO          },
     { "0",            ECORE_NONE,              ENNA_INPUT_KEY_0         },
     { "KP_0",         ECORE_NONE,              ENNA_INPUT_KEY_0         },
     { "1",            ECORE_NONE,              ENNA_INPUT_KEY_1         },
