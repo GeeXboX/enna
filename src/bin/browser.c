@@ -624,6 +624,9 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     Eina_List *l;
     Eina_List *files = sd->files;
 
+    if (!files)
+      return;
+
     if (!direction)
     {
         edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
