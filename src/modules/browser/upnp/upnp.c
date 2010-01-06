@@ -151,7 +151,6 @@ didl_process_object (xmlNode *e, char *udn, ENNA_VFS_CAPS cap)
     {
         char uri[1024];
 
-        memset(uri, '\0', sizeof (uri));
         snprintf(uri, sizeof (uri), "%s/%s", mod->current_id, id);
 
         f = enna_vfs_create_directory(uri, title, "icon/directory", NULL);
@@ -361,9 +360,6 @@ browse_server_list (const char *uri, ENNA_VFS_CAPS cap)
     char *container_id;
     int res;
     Eina_List *l;
-
-    memset (udn, '\0', sizeof (udn));
-    memset (id, '\0', sizeof (id));
 
     if (!uri)
         return NULL;
