@@ -20,10 +20,6 @@ EXTRA_DIST = \
 configuration_credits.h \
 configuration_sysinfo.h
 
-if BUILD_BROWSER_VALHALLA
-INCLUDES += @VALHALLA_CFLAGS@
-endif
-
 if BUILD_LIBSVDRP
 INCLUDES += @LIBSVDRP_CFLAGS@
 endif
