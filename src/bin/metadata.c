@@ -41,6 +41,7 @@
 
 #define ENNA_METADATA_DB_NAME                        "media.db"
 #define ENNA_METADATA_DEFAULT_PARSER_NUMBER           2
+#define ENNA_METADATA_DEFAULT_GRABBER_NUMBER          4
 #define ENNA_METADATA_DEFAULT_COMMIT_INTERVAL         128
 #define ENNA_METADATA_DEFAULT_SCAN_LOOP              -1
 #define ENNA_METADATA_DEFAULT_SCAN_SLEEP              900
@@ -57,23 +58,23 @@ static valhalla_t *vh = NULL;
     for (l = enna_config->type; l; l = l->next)                \
     {                                                          \
         const char *ext = l->data;                             \
-        valhalla_suffix_add(vh, ext);                          \
+        valhalla_config_set(vh, SCANNER_SUFFIX, ext);          \
     }                                                          \
 
 static void
-ondemand_cb(const char *file, valhalla_event_t e, const char *id, void *data)
+ondemand_cb(const char *file, valhalla_event_od_t e, const char *id, void *data)
 {
     switch (e)
     {
-    case VALHALLA_EVENT_PARSED:
+    case VALHALLA_EVENTOD_PARSED:
         enna_log(ENNA_MSG_EVENT,
                  MODULE_NAME, _("[%s]: parsing done."), file);
         break;
-    case VALHALLA_EVENT_GRABBED:
+    case VALHALLA_EVENTOD_GRABBED:
         enna_log(ENNA_MSG_EVENT,
                  MODULE_NAME, _("[%s]: %s grabber has finished"), file, id);
         break;
-    case VALHALLA_EVENT_ENDED:
+    case VALHALLA_EVENTOD_ENDED:
         enna_log(ENNA_MSG_INFO,
                  MODULE_NAME, _("[%s]: all metadata have been fetched."), file);
         break;
@@ -90,11 +91,13 @@ enna_metadata_db_init(void)
     Eina_List *path = NULL, *l;
     Eina_List *bl_words = NULL;
     int parser_number   = ENNA_METADATA_DEFAULT_PARSER_NUMBER;
+    int grabber_number  = ENNA_METADATA_DEFAULT_GRABBER_NUMBER;
     int commit_interval = ENNA_METADATA_DEFAULT_COMMIT_INTERVAL;
     int scan_loop       = ENNA_METADATA_DEFAULT_SCAN_LOOP;
     int scan_sleep      = ENNA_METADATA_DEFAULT_SCAN_SLEEP;
     int scan_priority   = ENNA_METADATA_DEFAULT_SCAN_PRIORITY;
     valhalla_verb_t verbosity = VALHALLA_MSG_WARNING;
+    valhalla_init_param_t param;
     char dst[1024];
 
     cfgdata = enna_config_module_pair_get("media_db");
@@ -166,8 +169,14 @@ enna_metadata_db_init(void)
     snprintf(db, sizeof(db),
              "%s/.enna/%s", enna_util_user_home_get(), ENNA_METADATA_DB_NAME);
 
-    vh = valhalla_init(db, parser_number, 1,
-                       commit_interval, ondemand_cb, NULL);
+    memset(&param, 0, sizeof(valhalla_init_param_t));
+    param.parser_nb   = parser_number;
+    param.grabber_nb  = grabber_number;
+    param.commit_int  = commit_interval;
+    param.decrapifier = 1;
+    param.od_cb       = ondemand_cb;
+
+    vh = valhalla_init(db, &param);
     if (!vh)
         goto err;
 
@@ -180,7 +189,7 @@ enna_metadata_db_init(void)
     for (l = path; l; l = l->next)
     {
         const char *str = l->data;
-        valhalla_path_add(vh, str, 1);
+        valhalla_config_set(vh, SCANNER_PATH, str, 1);
     }
     if (path)
     {
@@ -192,7 +201,7 @@ enna_metadata_db_init(void)
     for (l = bl_words; l; l = l->next)
     {
         const char *keyword = l->data;
-        valhalla_bl_keyword_add(vh, keyword);
+        valhalla_config_set(vh, PARSER_KEYWORD, keyword);
         enna_log(ENNA_MSG_EVENT, MODULE_NAME,
                  "Blacklisting '%s' from search", keyword);
     }
@@ -206,19 +215,19 @@ enna_metadata_db_init(void)
     memset(dst, '\0', sizeof(dst));
     snprintf(dst, sizeof(dst), "%s/.enna/%s",
              enna_util_user_home_get(), PATH_COVERS);
-    valhalla_downloader_dest_set(vh, VALHALLA_DL_COVER, dst);
+    valhalla_config_set(vh, DOWNLOADER_DEST, dst, VALHALLA_DL_COVER);
 
     memset(dst, '\0', sizeof(dst));
     snprintf(dst, sizeof(dst), "%s/.enna/%s",
              enna_util_user_home_get(), PATH_FANARTS);
-    valhalla_downloader_dest_set(vh, VALHALLA_DL_FAN_ART, dst);
+    valhalla_config_set(vh, DOWNLOADER_DEST, dst, VALHALLA_DL_FAN_ART);
 
     /* grabbers */
     value = get_lang();
     if (value)
     {
         if (strcmp(value, "fr"))
-            valhalla_grabber_state_set(vh, "allocine", 0);
+            valhalla_config_set(vh, GRABBER_STATE, "allocine", 0);
         free(value);
     }
 

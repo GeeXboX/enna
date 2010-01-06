@@ -173,7 +173,8 @@ static Eina_List *_browse_author_list(int64_t id_m, int64_t id_d)
     vh.list  = &list1;
     vh.level = BROWSER_LEVEL_AUTHOR_LIST_ALBUM;
     vh.icon  = "icon/album";
-    valhalla_db_metalist_get(mod->valhalla, &search, &r1, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla, &search, VALHALLA_FILE_TYPE_AUDIO,
+                             &r1, _result_dir_cb, &vh);
 
     /* files of the author without album */
     VALHALLA_DB_RESTRICT_LINK(r2, r1);
@@ -195,8 +196,10 @@ static Eina_List *_browse_author(void)
     vh.list  = &list;
     vh.level = BROWSER_LEVEL_AUTHOR_LIST;
     vh.icon  = "icon/artist";
-    valhalla_db_metalist_get(mod->valhalla, &s1, NULL, _result_dir_cb, &vh);
-    valhalla_db_metalist_get(mod->valhalla, &s2, NULL, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla, &s1, VALHALLA_FILE_TYPE_AUDIO,
+                             NULL, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla, &s2, VALHALLA_FILE_TYPE_AUDIO,
+                             NULL, _result_dir_cb, &vh);
 
     list = eina_list_sort(list, eina_list_count(list), _sort_cb);
     return list;
@@ -223,7 +226,8 @@ static Eina_List *_browse_album(void)
     vh.list  = &list;
     vh.level = BROWSER_LEVEL_ALBUM_LIST;
     vh.icon  = "icon/album";
-    valhalla_db_metalist_get(mod->valhalla, &search, NULL, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla, &search, VALHALLA_FILE_TYPE_AUDIO,
+                             NULL, _result_dir_cb, &vh);
 
     list = eina_list_sort(list, eina_list_count(list), _sort_cb);
     return list;
@@ -241,7 +245,8 @@ static Eina_List *_browse_genre_list(int64_t id_m, int64_t id_d)
     vh.list  = &list1;
     vh.level = BROWSER_LEVEL_GENRE_LIST_ALBUM;
     vh.icon  = "icon/album";
-    valhalla_db_metalist_get(mod->valhalla, &search, &r1, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla, &search, VALHALLA_FILE_TYPE_AUDIO,
+                             &r1, _result_dir_cb, &vh);
 
     /* files of the genre without album */
     VALHALLA_DB_RESTRICT_LINK(r2, r1);
@@ -263,7 +268,8 @@ static Eina_List *_browse_genre(void)
     vh.list  = &list;
     vh.level = BROWSER_LEVEL_GENRE_LIST;
     vh.icon  = "icon/genre";
-    valhalla_db_metalist_get(mod->valhalla, &search, NULL, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla, &search, VALHALLA_FILE_TYPE_AUDIO,
+                             NULL, _result_dir_cb, &vh);
 
     list = eina_list_sort(list, eina_list_count(list), _sort_cb);
     return list;
