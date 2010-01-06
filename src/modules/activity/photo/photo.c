@@ -274,7 +274,7 @@ static void photo_event_browser (enna_input event)
 {
     switch (event)
     {
-    case ENNA_INPUT_KEY_I:
+    case ENNA_INPUT_INFO:
         panel_infos_display(1);
         break;
     default:
@@ -288,7 +288,7 @@ static void photo_event_info (enna_input event)
     switch (event)
     {
     case ENNA_INPUT_EXIT:
-    case ENNA_INPUT_KEY_I:
+    case ENNA_INPUT_INFO:
         panel_infos_display(0);
         break;
     case ENNA_INPUT_OK:

@@ -440,7 +440,7 @@ browser_view_event(enna_input event)
         return;
     }
 
-    if (event == ENNA_INPUT_KEY_I)
+    if (event == ENNA_INPUT_INFO)
     {
         panel_infos_display(!mod->infos_displayed);
         return;
