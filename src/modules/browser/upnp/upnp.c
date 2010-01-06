@@ -73,10 +73,10 @@ static Enna_Module_UPnP *mod;
 static void
 upnp_current_id_set (const char *id)
 {
-    pthread_mutex_lock (&mod->mutex_id);
-    ENNA_FREE (mod->current_id);
-    mod->current_id = id ? strdup (id) : NULL;
-    pthread_mutex_unlock (&mod->mutex_id);
+    pthread_mutex_lock(&mod->mutex_id);
+    ENNA_FREE(mod->current_id);
+    mod->current_id = id ? strdup(id) : NULL;
+    pthread_mutex_unlock(&mod->mutex_id);
 }
 
 static void
@@ -85,15 +85,15 @@ upnp_media_server_free (upnp_media_server_t *srv)
     if (!srv)
         return;
 
-    g_object_unref (srv->info);
-    g_object_unref (srv->content_dir);
+    g_object_unref(srv->info);
+    g_object_unref(srv->content_dir);
 
-    ENNA_FREE (srv->type);
-    ENNA_FREE (srv->location);
-    ENNA_FREE (srv->udn);
-    ENNA_FREE (srv->name);
-    ENNA_FREE (srv->model);
-    free (srv);
+    ENNA_FREE(srv->type);
+    ENNA_FREE(srv->location);
+    ENNA_FREE(srv->udn);
+    ENNA_FREE(srv->name);
+    ENNA_FREE(srv->model);
+    ENNA_FREE(srv);
 }
 
 static xmlNode *
@@ -101,13 +101,13 @@ xml_util_get_element (xmlNode *node, ...)
 {
     va_list var_args;
 
-    va_start (var_args, node);
+    va_start(var_args, node);
 
     while (1)
     {
         const char *arg;
 
-        arg = va_arg (var_args, const char *);
+        arg = va_arg(var_args, const char *);
         if (!arg)
             break;
 
@@ -116,7 +116,7 @@ xml_util_get_element (xmlNode *node, ...)
             if (!node->name)
                 continue;
 
-            if (!strcmp (arg, (char *) node->name))
+            if (!strcmp(arg, (char *) node->name))
                 break;
         }
 
@@ -124,7 +124,7 @@ xml_util_get_element (xmlNode *node, ...)
             break;
     }
 
-    va_end (var_args);
+    va_end(var_args);
 
     return node;
 }
@@ -136,28 +136,28 @@ didl_process_object (xmlNode *e, char *udn, ENNA_VFS_CAPS cap)
     gboolean is_container;
     Enna_Vfs_File *f = NULL;
 
-    id = gupnp_didl_lite_object_get_id (e);
+    id = gupnp_didl_lite_object_get_id(e);
     if (!id)
         goto err_id;
 
-    title = gupnp_didl_lite_object_get_title (e);
+    title = gupnp_didl_lite_object_get_title(e);
     if (!title)
         goto err_title;
 
-    is_container = gupnp_didl_lite_object_is_container (e);
+    is_container = gupnp_didl_lite_object_is_container(e);
 
 
     if (is_container)
     {
         char uri[1024];
 
-        memset (uri, '\0', sizeof (uri));
-        snprintf (uri, sizeof (uri), "%s/%s", mod->current_id, id);
+        memset(uri, '\0', sizeof (uri));
+        snprintf(uri, sizeof (uri), "%s/%s", mod->current_id, id);
 
-        f = enna_vfs_create_directory (uri, title, "icon/directory", NULL);
+        f = enna_vfs_create_directory(uri, title, "icon/directory", NULL);
 
-        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "DIDL container '%s' (id: %s, uri: %s)", title, id, uri);
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                 "DIDL container '%s' (id: %s, uri: %s)", title, id, uri);
     }
     else
     {
@@ -166,14 +166,14 @@ didl_process_object (xmlNode *e, char *udn, ENNA_VFS_CAPS cap)
         GList *resources;
         xmlNode *n;
 
-        class_name = gupnp_didl_lite_object_get_upnp_class (e);
+        class_name = gupnp_didl_lite_object_get_upnp_class(e);
         if (!class_name)
             goto err_no_class;
 
         if (cap & ENNA_CAPS_PHOTO)
         {
-            if (!strncmp (class_name,
-                          ITEM_CLASS_IMAGE, strlen (ITEM_CLASS_IMAGE)))
+            if (!strncmp(class_name,
+                         ITEM_CLASS_IMAGE, strlen(ITEM_CLASS_IMAGE)))
                 icon = "icon/photo";
             else
                 goto err_resources;
@@ -181,8 +181,8 @@ didl_process_object (xmlNode *e, char *udn, ENNA_VFS_CAPS cap)
 
         if (cap & ENNA_CAPS_MUSIC)
         {
-            if (!strncmp (class_name,
-                          ITEM_CLASS_AUDIO, strlen (ITEM_CLASS_AUDIO)))
+            if (!strncmp(class_name,
+                         ITEM_CLASS_AUDIO, strlen(ITEM_CLASS_AUDIO)))
                 icon = "icon/music";
             else
                 goto err_resources;
@@ -190,20 +190,20 @@ didl_process_object (xmlNode *e, char *udn, ENNA_VFS_CAPS cap)
 
         if (cap & ENNA_CAPS_VIDEO)
         {
-            if (!strncmp (class_name,
-                          ITEM_CLASS_VIDEO, strlen (ITEM_CLASS_VIDEO)))
+            if (!strncmp(class_name,
+                         ITEM_CLASS_VIDEO, strlen(ITEM_CLASS_VIDEO)))
                 icon = "icon/video";
             else
                 goto err_resources;
         }
 
-        g_free (class_name);
+        g_free(class_name);
 
     err_no_class:
         if (!icon)
             icon = "icon/hd";
 
-        resources = gupnp_didl_lite_object_get_property (e, "res");
+        resources = gupnp_didl_lite_object_get_property(e, "res");
         if (!resources)
             goto err_resources;
 
@@ -211,24 +211,24 @@ didl_process_object (xmlNode *e, char *udn, ENNA_VFS_CAPS cap)
         if (!n)
             goto err_res_node;
 
-        uri = gupnp_didl_lite_property_get_value (n);
+        uri = gupnp_didl_lite_property_get_value(n);
         if (!uri)
             goto err_no_uri;
 
-        f = enna_vfs_create_file (uri, title, icon, NULL);
+        f = enna_vfs_create_file(uri, title, icon, NULL);
 
-        enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                  "DIDL item '%s' (id: %s, uri: %s)", title, id, uri);
+        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                 "DIDL item '%s' (id: %s, uri: %s)", title, id, uri);
 
     err_no_uri:
     err_res_node:
-        g_list_free (resources);
+        g_list_free(resources);
     }
 
  err_resources:
-    g_free (title);
+    g_free(title);
  err_title:
-    g_free (id);
+    g_free(id);
  err_id:
     return f;
 }
@@ -240,20 +240,20 @@ didl_process (char *didl, char *udn, ENNA_VFS_CAPS cap)
     xmlDoc  *doc;
     Eina_List *list = NULL;
 
-    doc = xmlParseMemory (didl, strlen (didl));
+    doc = xmlParseMemory(didl, strlen(didl));
     if (!doc)
     {
-        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "Unable to parse DIDL-Lite XML:\n%s", didl);
+        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 "Unable to parse DIDL-Lite XML:\n%s", didl);
         return NULL;
     }
 
     /* Get a pointer to root element */
-    element = xml_util_get_element ((xmlNode *) doc, "DIDL-Lite", NULL);
+    element = xml_util_get_element((xmlNode *) doc, "DIDL-Lite", NULL);
     if (!element)
     {
-        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "No 'DIDL-Lite' node found.");
+        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 "No 'DIDL-Lite' node found.");
         goto err_element;
     }
 
@@ -261,19 +261,19 @@ didl_process (char *didl, char *udn, ENNA_VFS_CAPS cap)
     {
         const char *name = (const char *) element->name;
 
-        if (!g_ascii_strcasecmp (name, "container") ||
-            !g_ascii_strcasecmp (name, "item"))
+        if (!g_ascii_strcasecmp(name, "container") ||
+            !g_ascii_strcasecmp(name, "item"))
         {
             Enna_Vfs_File *f;
 
-            f = didl_process_object (element, udn, cap);
+            f = didl_process_object(element, udn, cap);
             if (f)
-                list = eina_list_append (list, f);
+                list = eina_list_append(list, f);
         }
     }
 
  err_element:
-    xmlFreeDoc (doc);
+    xmlFreeDoc(doc);
     return list;
 }
 
@@ -287,7 +287,7 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
     char *didl_xml;
     GError *error;
 
-    g_object_ref (srv->content_dir);
+    g_object_ref(srv->content_dir);
     didl_xml = NULL;
     error = NULL;
 
@@ -318,11 +318,11 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
     {
         GUPnPServiceInfo *info;
 
-        info = GUPNP_SERVICE_INFO (srv->content_dir);
-        enna_log (ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                  "Failed to browse '%s': %s",
-                  gupnp_service_info_get_location (info), error->message);
-        g_error_free (error);
+        info = GUPNP_SERVICE_INFO(srv->content_dir);
+        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
+                 "Failed to browse '%s': %s",
+                 gupnp_service_info_get_location (info), error->message);
+        g_error_free(error);
         goto err;
     }
 
@@ -331,9 +331,9 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
         guint32 remaining;
         Eina_List *list;
 
-        list = didl_process (didl_xml, srv->udn, cap);
-        results = eina_list_merge (results, list);
-        g_free (didl_xml);
+        list = didl_process(didl_xml, srv->udn, cap);
+        results = eina_list_merge(results, list);
+        g_free(didl_xml);
 
         /* See if we have more objects to get */
         si += number_returned;
@@ -342,14 +342,14 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
         /* Keep browsing till we get each and every object */
         if (remaining)
         {
-            list = upnp_browse (srv, container_id, si,
-                                MIN (remaining, UPNP_MAX_BROWSE), cap);
-            results = eina_list_merge (results, list);
+            list = upnp_browse(srv, container_id, si,
+                               MIN(remaining, UPNP_MAX_BROWSE), cap);
+            results = eina_list_merge(results, list);
         }
     }
 
  err:
-    g_object_unref (srv->content_dir);
+    g_object_unref(srv->content_dir);
     return results;
 }
 
@@ -368,18 +368,18 @@ browse_server_list (const char *uri, ENNA_VFS_CAPS cap)
     if (!uri)
         return NULL;
 
-    res = sscanf (uri, "udn:%[^,],id:%[^,]", udn, id);
+    res = sscanf(uri, "udn:%[^,],id:%[^,]", udn, id);
     if (res != 2)
         return NULL;
 
-    container_id = strrchr (id, '/');
+    container_id = strrchr(id, '/');
     if (!container_id)
         container_id = UPNP_DEFAULT_ROOT;
     else
         container_id++;
 
     EINA_LIST_FOREACH(mod->devices, l, srv)
-        if (!strcmp (srv->udn, udn))
+        if (!strcmp(srv->udn, udn))
             break;
 
     /* no server to browse */
@@ -387,9 +387,9 @@ browse_server_list (const char *uri, ENNA_VFS_CAPS cap)
         return NULL;
 
     /* memorize our position */
-    upnp_current_id_set (uri);
+    upnp_current_id_set(uri);
 
-    return upnp_browse (srv, container_id, 0, UPNP_MAX_BROWSE, cap);
+    return upnp_browse(srv, container_id, 0, UPNP_MAX_BROWSE, cap);
 }
 
 static Eina_List *
@@ -405,12 +405,12 @@ upnp_list_mediaservers (void)
         char name[256], uri[1024];
         Enna_Vfs_File *f;
 
-        snprintf (name, sizeof (name), "%s (%s)", srv->name, srv->model);
-        snprintf (uri, sizeof (uri), "udn:%s,id:%s",
-                  srv->udn, UPNP_DEFAULT_ROOT);
+        snprintf(name, sizeof (name), "%s (%s)", srv->name, srv->model);
+        snprintf(uri, sizeof (uri), "udn:%s,id:%s",
+                 srv->udn, UPNP_DEFAULT_ROOT);
 
-        f = enna_vfs_create_directory (uri, name, "icon/dev/nfs", NULL);
-        servers = eina_list_append (servers, f);
+        f = enna_vfs_create_directory(uri, name, "icon/dev/nfs", NULL);
+        servers = eina_list_append(servers, f);
     }
 
     return servers;
@@ -420,16 +420,16 @@ static Eina_List *
 _class_browse_up (const char *id, void *cookie, ENNA_VFS_CAPS cap)
 {
     /* clean up our current position */
-    upnp_current_id_set (NULL);
+    upnp_current_id_set(NULL);
 
     if (!id)
     {
         /* list available UPnP media servers */
-        return upnp_list_mediaservers ();
+        return upnp_list_mediaservers();
     }
 
     /* browse content from a given media server */
-    return browse_server_list (id, cap);
+    return browse_server_list(id, cap);
 }
 
 #ifdef BUILD_ACTIVITY_MUSIC
@@ -468,18 +468,18 @@ _class_browse_down (void *cookie, ENNA_VFS_CAPS cap)
         return NULL;
 
     /* try to guess where we come from */
-    prev_id = strrchr (mod->current_id, '/');
+    prev_id = strrchr(mod->current_id, '/');
     if (!prev_id)
     {
-        upnp_current_id_set (NULL);
-        return upnp_list_mediaservers ();
+        upnp_current_id_set(NULL);
+        return upnp_list_mediaservers();
     }
 
-    len = strlen (mod->current_id) - strlen (prev_id);
+    len = strlen(mod->current_id) - strlen(prev_id);
     for (i = 0; i < len; i++)
         new_id[i] = mod->current_id[i];
 
-    return browse_server_list (new_id, cap);
+    return browse_server_list(new_id, cap);
 }
 
 #ifdef BUILD_ACTIVITY_MUSIC
@@ -509,9 +509,8 @@ photo_class_browse_down (void *cookie)
 static Enna_Vfs_File *
 _class_vfs_get (void *cookie)
 {
-    return enna_vfs_create_directory (mod->current_id, NULL,
-                                      eina_stringshare_add ("icon/upnp"),
-                                      NULL);
+    return enna_vfs_create_directory(mod->current_id, NULL,
+                                     eina_stringshare_add("icon/upnp"), NULL);
 }
 
 #ifdef BUILD_ACTIVITY_MUSIC
@@ -579,37 +578,37 @@ upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
     GUPnPServiceInfo *si;
     Eina_List *l;
 
-    type = gupnp_device_info_get_device_type (GUPNP_DEVICE_INFO (proxy));
-    if (!g_pattern_match_simple (UPNP_MEDIA_SERVER, type))
+    type = gupnp_device_info_get_device_type(GUPNP_DEVICE_INFO(proxy));
+    if (!g_pattern_match_simple(UPNP_MEDIA_SERVER, type))
         return;
 
-    location = gupnp_device_info_get_location (GUPNP_DEVICE_INFO (proxy));
-    udn      = gupnp_device_info_get_udn (GUPNP_DEVICE_INFO (proxy));
-    name     = gupnp_device_info_get_friendly_name (GUPNP_DEVICE_INFO (proxy));
-    model    = gupnp_device_info_get_model_name (GUPNP_DEVICE_INFO (proxy));
+    location = gupnp_device_info_get_location(GUPNP_DEVICE_INFO(proxy));
+    udn      = gupnp_device_info_get_udn(GUPNP_DEVICE_INFO(proxy));
+    name     = gupnp_device_info_get_friendly_name(GUPNP_DEVICE_INFO(proxy));
+    model    = gupnp_device_info_get_model_name(GUPNP_DEVICE_INFO(proxy));
 
     /* check if device is already known */
     EINA_LIST_FOREACH(mod->devices, l, srv)
-        if (location && !strcmp (srv->location, location))
+        if (location && !strcmp(srv->location, location))
             return;
 
-    srv              = calloc (1, sizeof (upnp_media_server_t));
-    srv->info        = GUPNP_DEVICE_INFO (proxy);
-    si               = gupnp_device_info_get_service (srv->info,
-                                                      UPNP_CONTENT_DIR);
-    srv->content_dir = GUPNP_SERVICE_PROXY (si);
-    srv->type        = type     ? strdup (type)     : NULL;
-    srv->location    = location ? strdup (location) : NULL;
-    srv->udn         = udn      ? strdup (udn)      : NULL;
-    srv->name        = name     ? strdup (name)     : NULL;
-    srv->model       = model    ? strdup (model)    : NULL;
+    srv              = calloc(1, sizeof(upnp_media_server_t));
+    srv->info        = GUPNP_DEVICE_INFO(proxy);
+    si               = gupnp_device_info_get_service(srv->info,
+                                                     UPNP_CONTENT_DIR);
+    srv->content_dir = GUPNP_SERVICE_PROXY(si);
+    srv->type        = type     ? strdup(type)     : NULL;
+    srv->location    = location ? strdup(location) : NULL;
+    srv->udn         = udn      ? strdup(udn)      : NULL;
+    srv->name        = name     ? strdup(name)     : NULL;
+    srv->model       = model    ? strdup(model)    : NULL;
 
-    pthread_mutex_lock (&mod->mutex);
-    mod->devices = eina_list_append (mod->devices, srv);
-    pthread_mutex_unlock (&mod->mutex);
+    pthread_mutex_lock(&mod->mutex);
+    mod->devices = eina_list_append(mod->devices, srv);
+    pthread_mutex_unlock(&mod->mutex);
 
-    enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-              _("Found new UPnP device '%s (%s)'"), name, model);
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             _("Found new UPnP device '%s (%s)'"), name, model);
 }
 
 /* Module interface */
@@ -637,49 +636,49 @@ ENNA_MODULE_INIT(Enna_Module *em)
     if (!em)
         return;
 
-    mod = calloc (1, sizeof (Enna_Module_UPnP));
+    mod = calloc(1, sizeof(Enna_Module_UPnP));
     mod->em = em;
     em->mod = mod;
 
-    g_thread_init (NULL);
-    g_type_init ();
+    g_thread_init(NULL);
+    g_type_init();
 
-    pthread_mutex_init (&mod->mutex, NULL);
-    pthread_mutex_init (&mod->mutex_id, NULL);
+    pthread_mutex_init(&mod->mutex, NULL);
+    pthread_mutex_init(&mod->mutex_id, NULL);
 
     /* bind upnp context to ecore */
-    mod->mctx = g_main_context_default ();
-    ecore_main_loop_glib_integrate ();
+    mod->mctx = g_main_context_default();
+    ecore_main_loop_glib_integrate();
 
     error = NULL;
-    mod->ctx = gupnp_context_new (mod->mctx, NULL, 0, &error);
+    mod->ctx = gupnp_context_new(mod->mctx, NULL, 0, &error);
     if (error)
     {
-        g_error_free (error);
+        g_error_free(error);
         return;
     }
 
-    mod->cp = gupnp_control_point_new (mod->ctx, GSSDP_ALL_RESOURCES);
+    mod->cp = gupnp_control_point_new(mod->ctx, GSSDP_ALL_RESOURCES);
     if (!mod->cp)
     {
-        g_object_unref (mod->ctx);
+        g_object_unref(mod->ctx);
         return;
     }
 
-    g_signal_connect (mod->cp, "device-proxy-available",
-                      G_CALLBACK (upnp_add_device), NULL);
+    g_signal_connect(mod->cp, "device-proxy-available",
+                     G_CALLBACK(upnp_add_device), NULL);
 
     gssdp_resource_browser_set_active
-        (GSSDP_RESOURCE_BROWSER (mod->cp), TRUE);
+        (GSSDP_RESOURCE_BROWSER(mod->cp), TRUE);
 
 #ifdef BUILD_ACTIVITY_MUSIC
-    enna_vfs_append (ENNA_MODULE_NAME, ENNA_CAPS_MUSIC, &class_upnp_music);
+    enna_vfs_append(ENNA_MODULE_NAME, ENNA_CAPS_MUSIC, &class_upnp_music);
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
-    enna_vfs_append (ENNA_MODULE_NAME, ENNA_CAPS_VIDEO, &class_upnp_video);
+    enna_vfs_append(ENNA_MODULE_NAME, ENNA_CAPS_VIDEO, &class_upnp_video);
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
-    enna_vfs_append (ENNA_MODULE_NAME, ENNA_CAPS_PHOTO, &class_upnp_photo);
+    enna_vfs_append(ENNA_MODULE_NAME, ENNA_CAPS_PHOTO, &class_upnp_photo);
 #endif
 }
 
@@ -693,14 +692,14 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     mod = em->mod;
 
     gssdp_resource_browser_set_active
-        (GSSDP_RESOURCE_BROWSER (mod->cp), FALSE);
+        (GSSDP_RESOURCE_BROWSER(mod->cp), FALSE);
 
     EINA_LIST_FOREACH(mod->devices, l, srv)
         upnp_media_server_free(srv);
-    g_object_unref (mod->cp);
-    g_object_unref (mod->ctx);
+    g_object_unref(mod->cp);
+    g_object_unref(mod->ctx);
 
-    upnp_current_id_set (NULL);
-    pthread_mutex_destroy (&mod->mutex);
-    pthread_mutex_destroy (&mod->mutex_id);
+    upnp_current_id_set(NULL);
+    pthread_mutex_destroy(&mod->mutex);
+    pthread_mutex_destroy(&mod->mutex_id);
 }
