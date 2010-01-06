@@ -292,30 +292,17 @@ fi
 AM_CONDITIONAL(BUILD_BROWSER_UPNP, test "x$have_browser_upnp" = "xyes")
 
 # Valhalla Scanner
-want_browser_valhalla="auto"
-have_browser_valhalla="no"
+want_browser_valhalla="yes"
 AC_MSG_CHECKING(whether Valhalla browser is to be built)
 AC_ARG_ENABLE(browser_valhalla,
   AS_HELP_STRING([--enable-browser-valhalla],[Enable Valhalla Browser Module]),
   [ want_browser_valhalla=$enableval ]
 )
 AC_MSG_RESULT($want_browser_valhalla)
-if test "x$want_browser_valhalla" = "xyes" -o "x$want_browser_valhalla" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [VALHALLA],
-    [libvalhalla >= 0.0.1],
-    [
+AM_CONDITIONAL(BUILD_BROWSER_VALHALLA, test "x$want_browser_valhalla" = "xyes")
+if test "x$want_browser_valhalla" = "xyes"; then
       AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
-      have_browser_valhalla="yes"
-    ],
-    [
-      if test "x$want_browser_valhalla" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([valhalla not found (strict dependencies checking)])
-      fi
-    ]
-  )
 fi
-AM_CONDITIONAL(BUILD_BROWSER_VALHALLA, test "x$have_browser_valhalla" = "xyes")
 
 #################
 # Input Modules #
@@ -656,7 +643,7 @@ echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  Podcasts......................... : $want_browser_podcasts"
 echo "  SHOUTcast........................ : $want_browser_shoutcast"
 echo "  UPnP/DLNA........................ : $have_browser_upnp"
-echo "  Valhalla Scanner................. : $have_browser_valhalla"
+echo "  Valhalla Scanner................. : $want_browser_valhalla"
 echo
 echo "Supported Input Modules:"
 echo
