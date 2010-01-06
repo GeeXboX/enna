@@ -301,7 +301,7 @@ AC_ARG_ENABLE(browser_valhalla,
 AC_MSG_RESULT($want_browser_valhalla)
 AM_CONDITIONAL(BUILD_BROWSER_VALHALLA, test "x$want_browser_valhalla" = "xyes")
 if test "x$want_browser_valhalla" = "xyes"; then
-      AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
+  AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
 fi
 
 #################
