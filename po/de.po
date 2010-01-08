@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-12-31 14:34+0100\n"
+"POT-Creation-Date: 2010-01-08 10:34+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Matthias Hölzer <n-billy@geexbox.org>\n"
 "Language-Team: German\n"
@@ -22,53 +22,53 @@ msgstr ""
 msgid "No media found !"
 msgstr "Kein Medium gefunden!"
 
-#: src/bin/browser.c:709
+#: src/bin/browser.c:712
 msgid "Main Menu"
 msgstr ""
 
-#: src/bin/enna.c:429
+#: src/bin/enna.c:437
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr ""
 
-#: src/bin/enna.c:430
+#: src/bin/enna.c:438
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Aufruf: %s [Optionen...]\n"
 
-#: src/bin/enna.c:431
+#: src/bin/enna.c:439
 #, c-format
 msgid " Available Options:\n"
 msgstr " Verfügbare Optionen:\n"
 
-#: src/bin/enna.c:432
+#: src/bin/enna.c:440
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angegebene Konfigurationsdatei benutzen.\n"
 
-#: src/bin/enna.c:433
+#: src/bin/enna.c:441
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      im Vollbild Modus starten.\n"
 
-#: src/bin/enna.c:434
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Hilfe anzeigen.\n"
 
-#: src/bin/enna.c:435
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angegebenen theme Namen benutzen.\n"
 
-#: src/bin/enna.c:436
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):Angegebene Fenster Geometrie verwenden. "
 "(geometrie=1280x720)\n"
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna Version anzeiten version.\n"
@@ -162,89 +162,94 @@ msgstr ""
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:165
+#: src/modules/activity/configuration/configuration_sysinfo.c:106
+#, fuzzy, c-format
+msgid "<hilight>Video Renderer:</hilight> %s"
+msgstr "<hilight>Standard Gateway: </hilight>"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:167
 msgid "<hilight>Distribution: </hilight>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:185
+#: src/modules/activity/configuration/configuration_sysinfo.c:187
 msgid "<hilight>OS: </hilight>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:189
+#: src/modules/activity/configuration/configuration_sysinfo.c:191
 #, c-format
 msgid "%s %s for %s"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:204
+#: src/modules/activity/configuration/configuration_sysinfo.c:206
 #, fuzzy
 msgid "<hilight>Available CPUs: </hilight>"
 msgstr "<hilight>Verfügbare Netzwerkadapter:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:235
+#: src/modules/activity/configuration/configuration_sysinfo.c:237
 #, c-format
 msgid ", running at %d MHz"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:264
+#: src/modules/activity/configuration/configuration_sysinfo.c:266
 #, fuzzy
 msgid "<hilight>CPU Load: </hilight>"
 msgstr "<hilight>Standard Gateway: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:307
+#: src/modules/activity/configuration/configuration_sysinfo.c:309
 #, fuzzy
 msgid "<hilight>Memory: </hilight>"
 msgstr "<hilight>Standard Gateway: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:308
+#: src/modules/activity/configuration/configuration_sysinfo.c:310
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:344
+#: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
 msgstr "<hilight>Bildschirm-Auflösung: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:345
+#: src/modules/activity/configuration/configuration_sysinfo.c:349
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
 msgstr "%dx%d bei %d Hz (min: %dx%d, max: %dx%d)"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:359
+#: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "<hilight>VDR:</hilight> "
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:361
+#: src/modules/activity/configuration/configuration_sysinfo.c:365
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
 msgstr "verbunden mit VDR %s auf %s (%s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:366
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "not connected<br>"
 msgstr "nicht verbunden<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:378
+#: src/modules/activity/configuration/configuration_sysinfo.c:382
 msgid "<hilight>Available network interfaces:</hilight><br>"
 msgstr "<hilight>Verfügbare Netzwerkadapter:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:403
+#: src/modules/activity/configuration/configuration_sysinfo.c:407
 #, c-format
 msgid "  * %s (IP: %s, "
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
 #, c-format
 msgid "Netmask: %s)<br>"
 msgstr "Netzwerkmaske: %s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:432
+#: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "<hilight>Default Gateway: </hilight>"
 msgstr "<hilight>Standard Gateway: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:459
+#: src/modules/activity/configuration/configuration_sysinfo.c:463
 msgid "None<br>"
 msgstr "Keine<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:470
+#: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>System Informationen</c><br><br>"
 
@@ -307,11 +312,11 @@ msgstr "Nimmt gerade '%s' auf"
 msgid "Recording in progress"
 msgstr "Aufnahme läuft"
 
-#: src/modules/activity/tv/tv.c:141 src/modules/activity/tv/tv.c:169
+#: src/modules/activity/tv/tv.c:142 src/modules/activity/tv/tv.c:170
 msgid "Television"
 msgstr "Fernsehen"
 
-#: src/modules/activity/tv/tv.c:171
+#: src/modules/activity/tv/tv.c:172
 msgid "View tv channels"
 msgstr ""
 
@@ -420,8 +425,9 @@ msgid "Browse local files"
 msgstr "Durchsuche lokale Geräte"
 
 #: src/modules/browser/localfiles/localfiles.c:489
-msgid "Browse files in your local hard disk"
-msgstr ""
+#, fuzzy
+msgid "Browse files in your local file systems"
+msgstr "Durchsuche lokale Geräte"
 
 #: src/modules/browser/netstreams/netstreams.c:311
 #: src/modules/browser/netstreams/netstreams.c:327
@@ -461,48 +467,49 @@ msgstr ""
 msgid "Listen to shoutcast stream"
 msgstr "Höre Podcasts an"
 
-#: src/modules/browser/upnp/upnp.c:442
+#: src/modules/browser/upnp/upnp.c:516 src/modules/browser/upnp/upnp.c:534
+#: src/modules/browser/upnp/upnp.c:552
 msgid "UPnP/DLNA Media Servers"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:496
+#: src/modules/browser/upnp/upnp.c:607
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:510
+#: src/modules/browser/upnp/upnp.c:621
 msgid "UPnP / DLNA module"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:512
+#: src/modules/browser/upnp/upnp.c:623
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:298
+#: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"
 msgstr "Künstler"
 
-#: src/modules/browser/valhalla/valhalla.c:302
+#: src/modules/browser/valhalla/valhalla.c:308
 msgid "Albums"
 msgstr "Alben"
 
-#: src/modules/browser/valhalla/valhalla.c:306
+#: src/modules/browser/valhalla/valhalla.c:312
 msgid "Genres"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:310
+#: src/modules/browser/valhalla/valhalla.c:316
 msgid "Unclassified"
 msgstr "Unklassifiziert"
 
-#: src/modules/browser/valhalla/valhalla.c:462
+#: src/modules/browser/valhalla/valhalla.c:468
 msgid "Valhalla module"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:464
+#: src/modules/browser/valhalla/valhalla.c:470
 msgid "Database stuff and metadata retrival from various sources"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:472
+#: src/modules/browser/valhalla/valhalla.c:478
 msgid "Media Library"
 msgstr "Medien-Bibliothek"
 

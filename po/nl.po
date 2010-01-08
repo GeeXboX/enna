@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-06 15:49+0100\n"
+"POT-Creation-Date: 2010-01-08 10:34+0100\n"
 "PO-Revision-Date: 2010-01-07 00:14+0100\n"
 "Last-Translator: Oliver Schinagl <oliver@schinagl.nl>\n"
 "Language-Team: Dutch\n"
@@ -20,51 +20,51 @@ msgstr ""
 msgid "No media found !"
 msgstr "Geen media aanwezig!"
 
-#: src/bin/browser.c:709
+#: src/bin/browser.c:712
 msgid "Main Menu"
 msgstr "Hoofdmenu"
 
-#: src/bin/enna.c:429
+#: src/bin/enna.c:437
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:430
+#: src/bin/enna.c:438
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Gebruik: %s [opties ...]\n"
 
-#: src/bin/enna.c:431
+#: src/bin/enna.c:439
 #, c-format
 msgid " Available Options:\n"
 msgstr "Beschikbare opties:\n"
 
-#: src/bin/enna.c:432
+#: src/bin/enna.c:440
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Geef te gebruiken configuratie bestand op.\n"
 
-#: src/bin/enna.c:433
+#: src/bin/enna.c:441
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      Dwing Fullscreen modus.\n"
 
-#: src/bin/enna.c:434
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Deze hulptekst tonen.\n"
 
-#: src/bin/enna.c:435
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Geef te gebruiken thema naam op.\n"
 
-#: src/bin/enna.c:436
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Geef venster geometrie op. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna programmaversie tonen.\n"
@@ -302,12 +302,11 @@ msgstr " '%s' wordt op het moment opgenomen"
 msgid "Recording in progress"
 msgstr "Opname in voortgang"
 
-#: src/modules/activity/tv/tv.c:141
-#: src/modules/activity/tv/tv.c:169
+#: src/modules/activity/tv/tv.c:142 src/modules/activity/tv/tv.c:170
 msgid "Television"
 msgstr "Televisie"
 
-#: src/modules/activity/tv/tv.c:171
+#: src/modules/activity/tv/tv.c:172
 msgid "View tv channels"
 msgstr "Bekijk tv kanalen"
 
@@ -413,7 +412,8 @@ msgid "Browse local files"
 msgstr "Blader lokale bestanden"
 
 #: src/modules/browser/localfiles/localfiles.c:489
-msgid "Browse files in your local hard disk"
+#, fuzzy
+msgid "Browse files in your local file systems"
 msgstr "Blader bestanden op je lokale harde schijf"
 
 #: src/modules/browser/netstreams/netstreams.c:311
@@ -453,22 +453,24 @@ msgstr "SHOUTcast bladeren"
 msgid "Listen to shoutcast stream"
 msgstr "Luister naar SHOUTcast stroom"
 
-#: src/modules/browser/upnp/upnp.c:442
+#: src/modules/browser/upnp/upnp.c:516 src/modules/browser/upnp/upnp.c:534
+#: src/modules/browser/upnp/upnp.c:552
 msgid "UPnP/DLNA Media Servers"
 msgstr "UPnP/DLNA Media Servers"
 
-#: src/modules/browser/upnp/upnp.c:496
+#: src/modules/browser/upnp/upnp.c:607
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Nieuw UPnP apparaat '%s (%s)' gevonden"
 
-#: src/modules/browser/upnp/upnp.c:510
+#: src/modules/browser/upnp/upnp.c:621
 msgid "UPnP / DLNA module"
 msgstr "UPnP/DLNA module"
 
-#: src/modules/browser/upnp/upnp.c:512
+#: src/modules/browser/upnp/upnp.c:623
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
-msgstr "Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
+msgstr ""
+"Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
 
 #: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"
@@ -603,5 +605,3 @@ msgstr "Volumes vanuit mtab"
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module get volumes from the mtab file"
 msgstr "Deze module haalt volumes vanuit het mtab bestand op"
-
-
