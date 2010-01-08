@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-12-31 14:34+0100\n"
+"POT-Creation-Date: 2010-01-08 10:34+0100\n"
 "PO-Revision-Date: 2009-12-31 14:36+0100\n"
 "Last-Translator: Benjamin Zores <ben@geexbox.org>\n"
 "Language-Team: French\n"
@@ -20,51 +20,53 @@ msgstr ""
 msgid "No media found !"
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/bin/browser.c:709
+#: src/bin/browser.c:712
 msgid "Main Menu"
 msgstr "Menu Principal"
 
-#: src/bin/enna.c:429
+#: src/bin/enna.c:437
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:430
+#: src/bin/enna.c:438
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Usage: %s [options ...]\n"
 
-#: src/bin/enna.c:431
+#: src/bin/enna.c:439
 #, c-format
 msgid " Available Options:\n"
 msgstr " Options disponibles:\n"
 
-#: src/bin/enna.c:432
+#: src/bin/enna.c:440
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Spécifie le fichier de configuration à utiliser.\n"
 
-#: src/bin/enna.c:433
+#: src/bin/enna.c:441
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      Forcer le mode plein écran.\n"
 
-#: src/bin/enna.c:434
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Affichager cette aide.\n"
 
-#: src/bin/enna.c:435
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Spécifie le nom du thème à utiliser.\n"
 
-#: src/bin/enna.c:436
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "  -g, (--geometry): Spécifie la résolution de la fenêtre. (geometry=1280x720)\n"
+msgstr ""
+"  -g, (--geometry): Spécifie la résolution de la fenêtre. "
+"(geometry=1280x720)\n"
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Affichage le numéro de version d'Enna.\n"
@@ -159,89 +161,94 @@ msgstr "<hilight>libvalhalla: </hilight>%s<br>"
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
 msgstr "<hilight>libsvdrp: </hilight>%s<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:165
+#: src/modules/activity/configuration/configuration_sysinfo.c:106
+#, fuzzy, c-format
+msgid "<hilight>Video Renderer:</hilight> %s"
+msgstr "<hilight>VDR:</hilight> "
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:167
 msgid "<hilight>Distribution: </hilight>"
 msgstr "<hilight>Distribution: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:185
+#: src/modules/activity/configuration/configuration_sysinfo.c:187
 msgid "<hilight>OS: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:189
+#: src/modules/activity/configuration/configuration_sysinfo.c:191
 #, c-format
 msgid "%s %s for %s"
 msgstr "%s %s sur %s"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:204
+#: src/modules/activity/configuration/configuration_sysinfo.c:206
 #, fuzzy
 msgid "<hilight>Available CPUs: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:235
+#: src/modules/activity/configuration/configuration_sysinfo.c:237
 #, c-format
 msgid ", running at %d MHz"
 msgstr ", tournant à %d MHz"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:264
+#: src/modules/activity/configuration/configuration_sysinfo.c:266
 #, fuzzy
 msgid "<hilight>CPU Load: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:307
+#: src/modules/activity/configuration/configuration_sysinfo.c:309
 #, fuzzy
 msgid "<hilight>Memory: </hilight>"
 msgstr "<hilight>Système d'exploitation: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:308
+#: src/modules/activity/configuration/configuration_sysinfo.c:310
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
 msgstr "%d Mo utilisés sur un total de %d Mo (%d%%)"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:344
+#: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
 msgstr "<hilight>Résolution d'écran: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:345
+#: src/modules/activity/configuration/configuration_sysinfo.c:349
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
 msgstr "%dx%d à %d Hz (min: %dx%d, max: %dx%d)"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:359
+#: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "<hilight>VDR:</hilight> "
 msgstr "<hilight>VDR:</hilight> "
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:361
+#: src/modules/activity/configuration/configuration_sysinfo.c:365
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
 msgstr "connecté à VDR %s sur %s (%s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:366
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "not connected<br>"
 msgstr "non connecté<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:378
+#: src/modules/activity/configuration/configuration_sysinfo.c:382
 msgid "<hilight>Available network interfaces:</hilight><br>"
 msgstr "<hilight>Interfaces réseau disponibles:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:403
+#: src/modules/activity/configuration/configuration_sysinfo.c:407
 #, c-format
 msgid "  * %s (IP: %s, "
 msgstr "  * %s (IP: %s, "
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
 #, c-format
 msgid "Netmask: %s)<br>"
 msgstr "Masque de sous-réseau: %s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:432
+#: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "<hilight>Default Gateway: </hilight>"
 msgstr "<hilight>Passerelle par défaut: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:459
+#: src/modules/activity/configuration/configuration_sysinfo.c:463
 msgid "None<br>"
 msgstr "Aucun<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:470
+#: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informations Systèmes</c><br><br>"
 
@@ -255,7 +262,9 @@ msgstr "Jeux"
 
 #: src/modules/activity/games/games.c:265
 msgid "With this module you can play your games directly from enna"
-msgstr "Au travers de ce module, vous pouvez démarrer vos jeux directement depuis Enna"
+msgstr ""
+"Au travers de ce module, vous pouvez démarrer vos jeux directement depuis "
+"Enna"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -305,12 +314,11 @@ msgstr "Enregistrement de '%s'"
 msgid "Recording in progress"
 msgstr "Enregistrement en cours"
 
-#: src/modules/activity/tv/tv.c:141
-#: src/modules/activity/tv/tv.c:169
+#: src/modules/activity/tv/tv.c:142 src/modules/activity/tv/tv.c:170
 msgid "Television"
 msgstr "Télévision"
 
-#: src/modules/activity/tv/tv.c:171
+#: src/modules/activity/tv/tv.c:172
 msgid "View tv channels"
 msgstr "Regardez les chaînes TV"
 
@@ -419,7 +427,8 @@ msgid "Browse local files"
 msgstr "Parcourir les disques locaux"
 
 #: src/modules/browser/localfiles/localfiles.c:489
-msgid "Browse files in your local hard disk"
+#, fuzzy
+msgid "Browse files in your local file systems"
 msgstr "Parcourez les fichiers de votre disque dur"
 
 #: src/modules/browser/netstreams/netstreams.c:311
@@ -460,48 +469,52 @@ msgstr "Explorateur de SHOUTcast"
 msgid "Listen to shoutcast stream"
 msgstr "Ecouter un podcast"
 
-#: src/modules/browser/upnp/upnp.c:442
+#: src/modules/browser/upnp/upnp.c:516 src/modules/browser/upnp/upnp.c:534
+#: src/modules/browser/upnp/upnp.c:552
 msgid "UPnP/DLNA Media Servers"
 msgstr "Serveurs Multimédia UPnP/DLNA"
 
-#: src/modules/browser/upnp/upnp.c:496
+#: src/modules/browser/upnp/upnp.c:607
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Découverte d'un nouveau périphérique UPnP '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:510
+#: src/modules/browser/upnp/upnp.c:621
 msgid "UPnP / DLNA module"
 msgstr "Module UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:512
+#: src/modules/browser/upnp/upnp.c:623
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
-msgstr "Ce module permet à Enna de parcourir le contenu des serveurs multimédias compatibles UPNP / DLNA"
+msgstr ""
+"Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
+"compatibles UPNP / DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:298
+#: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"
 msgstr "Artistes"
 
-#: src/modules/browser/valhalla/valhalla.c:302
+#: src/modules/browser/valhalla/valhalla.c:308
 msgid "Albums"
 msgstr "Albums"
 
-#: src/modules/browser/valhalla/valhalla.c:306
+#: src/modules/browser/valhalla/valhalla.c:312
 msgid "Genres"
 msgstr "Genres"
 
-#: src/modules/browser/valhalla/valhalla.c:310
+#: src/modules/browser/valhalla/valhalla.c:316
 msgid "Unclassified"
 msgstr "Non Classé"
 
-#: src/modules/browser/valhalla/valhalla.c:462
+#: src/modules/browser/valhalla/valhalla.c:468
 msgid "Valhalla module"
 msgstr "Module Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:464
+#: src/modules/browser/valhalla/valhalla.c:470
 msgid "Database stuff and metadata retrival from various sources"
-msgstr "Base de donnée et récupération de meta-informations depuis diverses sources"
+msgstr ""
+"Base de donnée et récupération de meta-informations depuis diverses sources"
 
-#: src/modules/browser/valhalla/valhalla.c:472
+#: src/modules/browser/valhalla/valhalla.c:478
 msgid "Media Library"
 msgstr "Bibliothèque Multimédia"
 
@@ -613,72 +626,103 @@ msgstr "Ce module récupère la liste des volumes depuis le fichier mtab"
 
 #~ msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 #~ msgstr "<hl>Vidéo: </hl> %s, %dx%d, %.2f img/s<br>"
+
 #~ msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 #~ msgstr "<hl>Audio: </hl> %s, %d ch., %i kb/s, %d Hz<br>"
+
 #~ msgid "Infos"
 #~ msgstr "Infos"
+
 #~ msgid "%.2d hour "
 #~ msgid_plural "%.2d hours "
 #~ msgstr[0] "%.2d heure"
 #~ msgstr[1] "%.2d heures"
+
 #~ msgid "%.2d minute"
 #~ msgid_plural "%.2d minutes"
 #~ msgstr[0] "%.2d minute"
 #~ msgstr[1] "%.2d minutes"
+
 #~ msgid "Unknown"
 #~ msgstr "Inconnu"
+
 #~ msgid "IDE"
 #~ msgstr "IDE"
+
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
+
 #~ msgid "USB"
 #~ msgstr "USB"
+
 #~ msgid "FireWire"
 #~ msgstr "FireWire"
+
 #~ msgid "CCW"
 #~ msgstr "CCW"
+
 #~ msgid "Removable Disk"
 #~ msgstr "Disque Amovible"
+
 #~ msgid "Disk"
 #~ msgstr "Disque"
+
 #~ msgid "Floppy"
 #~ msgstr "Disquette"
+
 #~ msgid "Tape"
 #~ msgstr "Cassette"
+
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
+
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
+
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
+
 #~ msgid "SD/MMC"
 #~ msgstr "SD/MMC"
+
 #~ msgid "Camera"
 #~ msgstr "Appareil Photo"
+
 #~ msgid "Portable Audio Player"
 #~ msgstr "Lecteur Audio Portable"
+
 #~ msgid "ZIP"
 #~ msgstr "ZIP"
+
 #~ msgid "JAZ"
 #~ msgstr "JAZ"
+
 #~ msgid "FlashKey"
 #~ msgstr "Disque Flash"
+
 #~ msgid "enna HTPC"
 #~ msgstr "enna HTPC"
+
 #~ msgid "Browse Library"
 #~ msgstr "Parcourir la bibliothèque"
+
 #~ msgid "Artist"
 #~ msgstr "Artiste"
+
 #~ msgid "Album"
 #~ msgstr "Album"
+
 #~ msgid "Watch PODCAST Video"
 #~ msgstr "Regarder une vidéo PODCAST"
+
 #~ msgid "%s<hilight>%s%s:</hilight> %s"
 #~ msgstr "%s<hilight>%s%s:</hilight> %s"
+
 #~ msgid "Yes, I want to quit."
 #~ msgstr "Oui, je veux quitter."
+
 #~ msgid "No, I want to stay."
 #~ msgstr "Non, je veux rester."
+
 #~ msgid "...no activity seems busy right now."
 #~ msgstr "... aucune activité ne semble active actuellement."
-

@@ -1,291 +1,281 @@
-# German translations for enna package.
-# Copyright (C) 2009 The Enna Project
+# Dutch translations for enna package.
+# Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
-# Matthias Hölzer <n-billy@geexbox.org>, 2009.
+# Oliver Schinagl <oliver@schinagl.nl>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-01-08 10:34+0100\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Matthias Hölzer <n-billy@geexbox.org>\n"
-"Language-Team: German\n"
+"PO-Revision-Date: 2010-01-07 00:14+0100\n"
+"Last-Translator: Oliver Schinagl <oliver@schinagl.nl>\n"
+"Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=0;\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/bin/browser.c:549
 msgid "No media found !"
-msgstr "Kein Medium gefunden!"
+msgstr "Geen media aanwezig!"
 
 #: src/bin/browser.c:712
 msgid "Main Menu"
-msgstr ""
+msgstr "Hoofdmenu"
 
 #: src/bin/enna.c:437
 #, c-format
 msgid "Enna MediaCenter\n"
-msgstr ""
+msgstr "Enna MediaCenter\n"
 
 #: src/bin/enna.c:438
 #, c-format
 msgid " Usage: %s [options ...]\n"
-msgstr " Aufruf: %s [Optionen...]\n"
+msgstr "Gebruik: %s [opties ...]\n"
 
 #: src/bin/enna.c:439
 #, c-format
 msgid " Available Options:\n"
-msgstr " Verfügbare Optionen:\n"
+msgstr "Beschikbare opties:\n"
 
 #: src/bin/enna.c:440
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr "  -c, (--config):  Angegebene Konfigurationsdatei benutzen.\n"
+msgstr "  -c, (--config):  Geef te gebruiken configuratie bestand op.\n"
 
 #: src/bin/enna.c:441
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
-msgstr "  -f, (--fs):      im Vollbild Modus starten.\n"
+msgstr "  -f, (--fs):      Dwing Fullscreen modus.\n"
 
 #: src/bin/enna.c:442
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
-msgstr "  -h, (--help):    Hilfe anzeigen.\n"
+msgstr "  -h, (--help):    Deze hulptekst tonen.\n"
 
 #: src/bin/enna.c:443
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr "  -t, (--theme):   Angegebenen theme Namen benutzen.\n"
+msgstr "  -t, (--theme):   Geef te gebruiken thema naam op.\n"
 
 #: src/bin/enna.c:444
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry):Angegebene Fenster Geometrie verwenden. "
-"(geometrie=1280x720)\n"
+msgstr "  -g, (--geometry):Geef venster geometrie op. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:445
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
-msgstr "  -V, (--version): Enna Version anzeiten version.\n"
+msgstr "  -V, (--version): Enna programmaversie tonen.\n"
 
 #: src/bin/exit.c:93
 msgid "Are you sure you want to quit enna ?"
-msgstr "Soll Enna wirklich beendet werden?"
+msgstr "Weet je zeker dat je Enna wilt afsluiten?"
 
 #: src/bin/exit.c:148
 msgid "Yes, Quit Enna"
-msgstr "Ja, Enna beenden"
+msgstr "Ja, sluit Enna af"
 
 #: src/bin/exit.c:151
 msgid "No, Continue using enna"
-msgstr "Nein, Enna weiter verwenden"
+msgstr "Nee, Enna verder blijven gebruiken"
 
 #: src/bin/module.c:227
 msgid "Modules"
-msgstr ""
+msgstr "Modules"
 
 #: src/bin/module.c:466
-#, fuzzy
 msgid "No information provided"
-msgstr "Keine exif Informationen gefunden."
+msgstr "Geen beschikbare informatie"
 
 #: src/bin/parser_cdda.c:296
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
-msgstr "Titel #%02d (%02d:%02d)"
+msgstr "Spoor #%02d (%02d:%02d)"
 
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:351
 msgid "BookStore"
-msgstr ""
+msgstr "Boekenwinkel"
 
 #: src/modules/activity/bookstore/bookstore.c:353
 msgid "Read your books"
-msgstr ""
+msgstr "Lees je boeken"
 
 #: src/modules/activity/configuration/configuration.c:211
 #: src/modules/activity/configuration/configuration.c:239
 msgid "Configuration"
-msgstr ""
+msgstr "Configuratie"
 
 #: src/modules/activity/configuration/configuration.c:241
 msgid "This module create the enna configuration panel (DO NOT UNLOAD)"
-msgstr ""
+msgstr "Deze module genereert het Enna configuratie panel (NIET VERWIJDEREN)"
 
 #: src/modules/activity/configuration/configuration.c:256
-#, fuzzy
 msgid "System Information"
-msgstr "<c>System Informationen</c><br><br>"
+msgstr "Systeem informatie"
 
 #: src/modules/activity/configuration/configuration.c:259
 msgid "Credits"
-msgstr ""
+msgstr "Met dank aan"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
 msgid "Enna is GeeXboX's team MediaCenter, "
-msgstr ""
+msgstr "Enna is een GeeXboX-team Mediacenter,"
 
 #: src/modules/activity/configuration/configuration_credits.c:46
 msgid "based on Enlightenment Foundation Librairies (EFL)."
-msgstr ""
+msgstr "gebaseerd op de Enlighenment Foundation Bibliotheken (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:48
 msgid "Credits go to:<br>"
-msgstr ""
+msgstr "Met dank aan:<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
-msgstr "<c>Enna Informationen</c><br><br>"
+msgstr "<c>Enna Informatie</c><br><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:97
 #, c-format
 msgid "<hilight>Enna: </hilight>%s<br>"
-msgstr ""
+msgstr "<hilight>Enna: </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:98
 #, c-format
 msgid "<hilight>libplayer: </hilight>%s<br>"
-msgstr ""
+msgstr "<hilight>libplayer: </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:100
 #, c-format
 msgid "<hilight>libvalhalla: </hilight>%s<br>"
-msgstr ""
+msgstr "<hilight>libvalhalla: </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:103
 #, c-format
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
-msgstr ""
+msgstr "<hilight>libsvdrp: </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:106
-#, fuzzy, c-format
+#, c-format
 msgid "<hilight>Video Renderer:</hilight> %s"
-msgstr "<hilight>Standard Gateway: </hilight>"
+msgstr "<hilight>Video Renderer:</hilight> %s"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:167
 msgid "<hilight>Distribution: </hilight>"
-msgstr ""
+msgstr "<hilight>Distributie: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:187
 msgid "<hilight>OS: </hilight>"
-msgstr ""
+msgstr "<hilight>OS: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:191
 #, c-format
 msgid "%s %s for %s"
-msgstr ""
+msgstr "%s %s voor %s"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:206
-#, fuzzy
 msgid "<hilight>Available CPUs: </hilight>"
-msgstr "<hilight>Verfügbare Netzwerkadapter:</hilight><br>"
+msgstr "<hilight>Beschikbare CPUs: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:237
 #, c-format
 msgid ", running at %d MHz"
-msgstr ""
+msgstr ", draaiend op %d MHz"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:266
-#, fuzzy
 msgid "<hilight>CPU Load: </hilight>"
-msgstr "<hilight>Standard Gateway: </hilight>"
+msgstr "<hilight>CPU belasting: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:309
-#, fuzzy
 msgid "<hilight>Memory: </hilight>"
-msgstr "<hilight>Standard Gateway: </hilight>"
+msgstr "<hilight>Geheugen: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:310
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
-msgstr ""
+msgstr "%d MB gebruikt van %d MB totaal (%d%%)"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
-msgstr "<hilight>Bildschirm-Auflösung: </hilight>"
+msgstr "<hilight>Scherm resolutie: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:349
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
-msgstr "%dx%d bei %d Hz (min: %dx%d, max: %dx%d)"
+msgstr "%dx%d op %d Hz (min: %dx%d, max: %dx%d)"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "<hilight>VDR:</hilight> "
-msgstr ""
+msgstr "<hilight>VDR:</hilight> "
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:365
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
-msgstr "verbunden mit VDR %s auf %s (%s)<br>"
+msgstr "verbonden met VDR %s op %s (%s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "not connected<br>"
-msgstr "nicht verbunden<br>"
+msgstr "niet verbonden<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:382
 msgid "<hilight>Available network interfaces:</hilight><br>"
-msgstr "<hilight>Verfügbare Netzwerkadapter:</hilight><br>"
+msgstr "<hilight>Beschikbare netwerk adapters:</hilight><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:407
 #, c-format
 msgid "  * %s (IP: %s, "
-msgstr ""
+msgstr "  * %s (IP: %s, "
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:413
 #, c-format
 msgid "Netmask: %s)<br>"
-msgstr "Netzwerkmaske: %s)<br>"
+msgstr "Netmask: %s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "<hilight>Default Gateway: </hilight>"
-msgstr "<hilight>Standard Gateway: </hilight>"
+msgstr "<hilight>Standaard gateway: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:463
 msgid "None<br>"
-msgstr "Keine<br>"
+msgstr "Geen<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "<c>System Information</c><br><br>"
-msgstr "<c>System Informationen</c><br><br>"
+msgstr "<c>Systeem informatie</c><br><br>"
 
 #: src/modules/activity/games/games.c:235
 msgid "Games"
-msgstr "Spiele"
+msgstr "Spellen"
 
 #: src/modules/activity/games/games.c:263
 msgid "System games"
-msgstr ""
+msgstr "Systeem spellen"
 
 #: src/modules/activity/games/games.c:265
 msgid "With this module you can play your games directly from enna"
-msgstr ""
+msgstr "Met deze module is het mogelijk  om je spellen direct vanuit enna"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
 msgid "%d Songs"
-msgstr ""
+msgstr "%d Liedjes"
 
 #: src/modules/activity/music/music.c:463
 msgid "Music"
-msgstr "Musik"
+msgstr "Muziek"
 
 #: src/modules/activity/music/music.c:491
-#, fuzzy
 msgid "Music core"
-msgstr "Musik"
+msgstr "Muziek kern"
 
 #: src/modules/activity/music/music.c:493
 msgid "This is the main music module"
-msgstr ""
+msgstr "Dit is de hoofd muziek module"
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
-msgstr "Keine Texte gefunden!"
+msgstr "Geen songtekst gevonden ..."
 
 #: src/modules/activity/photo/photo.c:367
 #: src/modules/activity/photo/photo.c:395
@@ -294,35 +284,35 @@ msgstr "Foto"
 
 #: src/modules/activity/photo/photo.c:397
 msgid "View all your photos in a wall or as slideshow"
-msgstr ""
+msgstr "Bekijk al je fotos aan een wand of als een diashow"
 
 #: src/modules/activity/tv/tv.c:90
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
-msgstr[0] "Aufnahme '%s' startet in %i Minute"
-msgstr[1] "Aufnahme '%s' startet in %i Minuten"
+msgstr[0] "Teller '%s' start in %i minuut"
+msgstr[1] "Teller '%s' start in %i minuten"
 
 #: src/modules/activity/tv/tv.c:92
 #, c-format
 msgid "Currently recording '%s'"
-msgstr "Nimmt gerade '%s' auf"
+msgstr " '%s' wordt op het moment opgenomen"
 
 #: src/modules/activity/tv/tv.c:101
 msgid "Recording in progress"
-msgstr "Aufnahme läuft"
+msgstr "Opname in voortgang"
 
 #: src/modules/activity/tv/tv.c:142 src/modules/activity/tv/tv.c:170
 msgid "Television"
-msgstr "Fernsehen"
+msgstr "Televisie"
 
 #: src/modules/activity/tv/tv.c:172
 msgid "View tv channels"
-msgstr ""
+msgstr "Bekijk tv kanalen"
 
 #: src/modules/activity/video/video_infos.c:93
 msgid "No such information ..."
-msgstr "Keine solche Information ..."
+msgstr "Informatie niet beschikbaar ..."
 
 #: src/modules/activity/video/video_infos.c:127
 #, c-format
@@ -332,338 +322,286 @@ msgstr "<ul>Regisseur:</ul> %s<br>"
 #: src/modules/activity/video/video_infos.c:131
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
-msgstr "<ul>Schauspieler:</ul> %s<br>"
+msgstr "<ul>Rolverdeling:</ul> %s<br>"
 
 #: src/modules/activity/video/video_infos.c:150
-#, fuzzy, c-format
+#, c-format
 msgid "<hl>Video: </hl> %s"
-msgstr "<hl>Größe: </hl> %.2f MB<br>"
+msgstr "<hl>Video: </hl> %s"
 
 #: src/modules/activity/video/video_infos.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "<hl>Audio: </hl> %s"
-msgstr "<hl>Größe: </hl> %.2f MB<br>"
+msgstr "<hl>Audio: </hl> %s"
 
 #: src/modules/activity/video/video_infos.c:184
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
-msgstr "<hl>Größe: </hl> %.2f MB<br>"
+msgstr "<hl>Grootte: </hl> %.2f MB<br>"
 
 #: src/modules/activity/video/video_infos.c:190
-#, fuzzy
 msgid "No further information can be retrieved"
-msgstr "Keine exif Informationen gefunden."
+msgstr "Geen additionele informatie kan worden opgehaald"
 
 #: src/modules/activity/video/video.c:131
 #, c-format
 msgid "%d Movies"
-msgstr ""
+msgstr "%d Films"
 
 #: src/modules/activity/video/video.c:914
 #: src/modules/activity/video/video.c:990
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: src/modules/activity/video/video.c:992
 msgid "This is the main video module"
-msgstr ""
+msgstr "Dit is de hoofd video module"
 
 #: src/modules/activity/weather/weather.c:273
 msgid "Weather"
-msgstr "Wetter"
+msgstr "Weer"
 
 #: src/modules/activity/weather/weather.c:301
-#, fuzzy
 msgid "Weather forecast"
-msgstr "Wetter"
+msgstr "Weervoorspelling"
 
 #: src/modules/activity/weather/weather.c:303
 msgid "Show the weather at your location"
-msgstr ""
+msgstr "Geef het weer op jou locatie weer"
 
 #: src/modules/browser/cdda/cdda.c:95
 msgid "Play Audio CD"
-msgstr "Spiele Audio CD ab"
+msgstr "Speel Audio CD"
 
 #: src/modules/browser/cdda/cdda.c:138
 msgid "CDDA module"
-msgstr ""
+msgstr "CDDA module"
 
 #: src/modules/browser/cdda/cdda.c:140
 msgid "Listen your favorite compact discs"
-msgstr ""
+msgstr "Beluister je favoriete CD's"
 
 #: src/modules/browser/dvd/dvd.c:62
 msgid "Play"
-msgstr "Spiele ab"
+msgstr "Afspelen"
 
 #: src/modules/browser/dvd/dvd.c:65
 msgid "Play (With Menus)"
-msgstr "Spiele ab (mit Menüs)"
+msgstr "Afspelen (met menu's)"
 
 #: src/modules/browser/dvd/dvd.c:91
 msgid "Watch DVD Video"
-msgstr "Schaue DVD Video"
+msgstr "Speel Video DVD"
 
 #: src/modules/browser/dvd/dvd.c:136
 msgid "DVD module"
-msgstr ""
+msgstr "DVD module"
 
 #: src/modules/browser/dvd/dvd.c:138
 msgid "Watch movies from DVD"
-msgstr ""
+msgstr "Bekijk films van een DVD"
 
 #: src/modules/browser/localfiles/localfiles.c:426
 #: src/modules/browser/localfiles/localfiles.c:444
 #: src/modules/browser/localfiles/localfiles.c:462
 msgid "Browse Local Devices"
-msgstr "Durchsuche lokale Geräte"
+msgstr "Blader lokale apparaten"
 
 #: src/modules/browser/localfiles/localfiles.c:487
-#, fuzzy
 msgid "Browse local files"
-msgstr "Durchsuche lokale Geräte"
+msgstr "Blader lokale bestanden"
 
 #: src/modules/browser/localfiles/localfiles.c:489
 #, fuzzy
 msgid "Browse files in your local file systems"
-msgstr "Durchsuche lokale Geräte"
+msgstr "Blader bestanden op je lokale harde schijf"
 
 #: src/modules/browser/netstreams/netstreams.c:311
 #: src/modules/browser/netstreams/netstreams.c:327
 msgid "Browse Network Streams"
-msgstr "Durchsuche Netzwerkstreams"
+msgstr "Blader netwerkstromen"
 
 #: src/modules/browser/netstreams/netstreams.c:351
 msgid "Netstreams"
-msgstr ""
+msgstr "Netwerkstromen"
 
 #: src/modules/browser/netstreams/netstreams.c:353
 msgid "I really don't know :P"
-msgstr ""
+msgstr "Ik weet het echt niet :P"
 
 #: src/modules/browser/podcasts/podcasts.c:333
 msgid "Listen to Podcasts"
-msgstr "Höre Podcasts an"
+msgstr "Luister naar podcasts"
 
 #: src/modules/browser/podcasts/podcasts.c:357
 msgid "Podcast browser"
-msgstr ""
+msgstr "Blader podcasts"
 
 #: src/modules/browser/podcasts/podcasts.c:359
 msgid "Podcast module"
-msgstr ""
+msgstr "Podcast module"
 
 #: src/modules/browser/shoutcast/shoutcast.c:173
 msgid "SHOUTcast Streaming"
-msgstr ""
+msgstr "SHOUTcast stromen"
 
 #: src/modules/browser/shoutcast/shoutcast.c:197
 msgid "Shoutcast browser"
-msgstr ""
+msgstr "SHOUTcast bladeren"
 
 #: src/modules/browser/shoutcast/shoutcast.c:199
-#, fuzzy
 msgid "Listen to shoutcast stream"
-msgstr "Höre Podcasts an"
+msgstr "Luister naar SHOUTcast stroom"
 
 #: src/modules/browser/upnp/upnp.c:516 src/modules/browser/upnp/upnp.c:534
 #: src/modules/browser/upnp/upnp.c:552
 msgid "UPnP/DLNA Media Servers"
-msgstr ""
+msgstr "UPnP/DLNA Media Servers"
 
 #: src/modules/browser/upnp/upnp.c:607
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
-msgstr ""
+msgstr "Nieuw UPnP apparaat '%s (%s)' gevonden"
 
 #: src/modules/browser/upnp/upnp.c:621
 msgid "UPnP / DLNA module"
-msgstr ""
+msgstr "UPnP/DLNA module"
 
 #: src/modules/browser/upnp/upnp.c:623
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
 msgstr ""
+"Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
 
 #: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"
-msgstr "Künstler"
+msgstr "Artiesten"
 
 #: src/modules/browser/valhalla/valhalla.c:308
 msgid "Albums"
-msgstr "Alben"
+msgstr "Albums"
 
 #: src/modules/browser/valhalla/valhalla.c:312
 msgid "Genres"
-msgstr ""
+msgstr "Genres"
 
 #: src/modules/browser/valhalla/valhalla.c:316
 msgid "Unclassified"
-msgstr "Unklassifiziert"
+msgstr "Niet gespecificeerd"
 
 #: src/modules/browser/valhalla/valhalla.c:468
 msgid "Valhalla module"
-msgstr ""
+msgstr "Valhalla module"
 
 #: src/modules/browser/valhalla/valhalla.c:470
 msgid "Database stuff and metadata retrival from various sources"
-msgstr ""
+msgstr "Database dingen en metadata ophalen van verschillende bronnen"
 
 #: src/modules/browser/valhalla/valhalla.c:478
 msgid "Media Library"
-msgstr "Medien-Bibliothek"
+msgstr "Media bibliotheek"
 
 #: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
-msgstr ""
+msgstr "CD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:40
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: src/modules/volume/hal/hal_volume.c:41
 msgid "CD-RW"
-msgstr ""
+msgstr "CD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:42
 msgid "DVD-ROM"
-msgstr ""
+msgstr "DVD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:43
 msgid "DVD-RAM"
-msgstr ""
+msgstr "DVD-RAM"
 
 #: src/modules/volume/hal/hal_volume.c:44
 msgid "DVD-R"
-msgstr ""
+msgstr "DVD-R"
 
 #: src/modules/volume/hal/hal_volume.c:45
 msgid "DVD-RW"
-msgstr ""
+msgstr "DVD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:46
 msgid "DVD+R"
-msgstr ""
+msgstr "DVD+R"
 
 #: src/modules/volume/hal/hal_volume.c:47
 msgid "DVD+RW"
-msgstr ""
+msgstr "DVD+RW"
 
 #: src/modules/volume/hal/hal_volume.c:48
 msgid "DVD+R (DL)"
-msgstr ""
+msgstr "DVD+R (DL)"
 
 #: src/modules/volume/hal/hal_volume.c:49
 msgid "BD-ROM"
-msgstr ""
+msgstr "BD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:50
 msgid "BD-R"
-msgstr ""
+msgstr "BD-R"
 
 #: src/modules/volume/hal/hal_volume.c:51
 msgid "BD-RE"
-msgstr ""
+msgstr "BD-RE"
 
 #: src/modules/volume/hal/hal_volume.c:52
 msgid "HD-DVD-ROM"
-msgstr ""
+msgstr "HD-DVD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:53
 msgid "HD-DVD-R"
-msgstr ""
+msgstr "HD-DVD-R"
 
 #: src/modules/volume/hal/hal_volume.c:54
 msgid "HD-DVD-RW"
-msgstr ""
+msgstr "HD-DVD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:55
 msgid "MagnetoOptical"
-msgstr ""
+msgstr "MagnetoOptical"
 
 #: src/modules/volume/hal/hal_volume.c:64
 msgid "CDDA"
-msgstr ""
+msgstr "CDDA"
 
 #: src/modules/volume/hal/hal_volume.c:65
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: src/modules/volume/hal/hal_volume.c:66
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: src/modules/volume/hal/hal_volume.c:67
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 #: src/modules/volume/hal/hal_volume.c:68
 msgid "Data"
-msgstr "Daten"
+msgstr "Data"
 
 #: src/modules/volume/mtab/mtab.c:77
 #, c-format
 msgid "[NFS] %s on %s"
-msgstr ""
+msgstr "[NFS] %s op %s"
 
 #: src/modules/volume/mtab/mtab.c:87
 #, c-format
 msgid "[SAMBA] %s on %s"
-msgstr ""
+msgstr "[SAMBA] %s op %s"
 
 #: src/modules/volume/mtab/mtab.c:149
 msgid "Volumes from mtab"
-msgstr ""
+msgstr "Volumes vanuit mtab"
 
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module get volumes from the mtab file"
-msgstr ""
-
-#~ msgid "Infos"
-#~ msgstr "Informationen"
-
-#~ msgid "%.2d hour "
-#~ msgid_plural "%.2d hours "
-#~ msgstr[0] "%.2d Stunde"
-#~ msgstr[1] "%.2d Stunden"
-
-#~ msgid "%.2d minute"
-#~ msgid_plural "%.2d minutes"
-#~ msgstr[0] "%.2d Minute"
-#~ msgstr[1] "%.2d Minuten"
-
-#~ msgid "Unknown"
-#~ msgstr "Unbekannt"
-
-#~ msgid "Removable Disk"
-#~ msgstr "Austauschbarer Datenträger"
-
-#~ msgid "Disk"
-#~ msgstr "Datenträger"
-
-#~ msgid "Tape"
-#~ msgstr "Band"
-
-#~ msgid "Camera"
-#~ msgstr "Kamera"
-
-#~ msgid "Portable Audio Player"
-#~ msgstr "Tragbarer Audio Spieler"
-
-#~ msgid "Browse Library"
-#~ msgstr "Durchsuche Bibliothek"
-
-#~ msgid "Artist"
-#~ msgstr "Künstler"
-
-#~ msgid "Watch PODCAST Video"
-#~ msgstr "Schaue PODCAST Video an"
-
-#~ msgid "Yes, I want to quit."
-#~ msgstr "Ja, ich möchte beenden."
-
-#~ msgid "No, I want to stay."
-#~ msgstr "Nein, ich möchte bleiben."
-
-#~ msgid "...no activity seems busy right now."
-#~ msgstr "...keine Aktivität scheint gerade beschäftigt."
+msgstr "Deze module haalt volumes vanuit het mtab bestand op"

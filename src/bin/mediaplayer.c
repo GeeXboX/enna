@@ -684,8 +684,7 @@ enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type)
 #define ENNA_MP_PLAYER_INIT(type)                                            \
     do                                                                       \
     {                                                                        \
-        mp->players[type] =                                                  \
-            player_init(type, ao, vo, verbosity, enna->ee_winid, event_cb);  \
+        mp->players[type] = player_init(type, verbosity, &param);            \
         if (!mp->players[type])                                              \
             goto err;                                                        \
     }                                                                        \
@@ -701,6 +700,7 @@ enna_mediaplayer_init(void)
     Enna_Config_Video *video;
     char *value = NULL;
 
+    player_init_param_t param;
     player_type_t type = PLAYER_TYPE_MPLAYER;
     player_type_t dvd_type = PLAYER_TYPE_XINE;
     player_type_t tv_type = PLAYER_TYPE_XINE;
@@ -862,6 +862,12 @@ enna_mediaplayer_init(void)
     if (!value)
         enna_log(ENNA_MSG_INFO, NULL,
                  " * use all parameters by default");
+
+    memset(&param, 0, sizeof(player_init_param_t));
+    param.ao       = ao;
+    param.vo       = vo;
+    param.winid    = (unsigned long) enna->ee_winid;
+    param.event_cb = event_cb;
 
     /* Main player type is mandatory! */
     if (!libplayer_wrapper_enabled(type))
