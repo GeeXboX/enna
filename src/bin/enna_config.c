@@ -40,7 +40,8 @@
     "[enna]\n" \
     "#none,event,info,warning,error,critical\n" \
     "verbosity=warning\n" \
-    "log_file=/var/log/enna.log\n" \
+    "# default: $HOME/.enna/enna.log\n" \
+    "#log_file=/tmp/enna.log\n" \
     "\n" \
     "\n" \
     "#0,1\n" \
@@ -296,6 +297,7 @@ _hash_foreach(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 {
     Enna_Config_Data *config_data;
     Eina_List *l;
+    char tmp[PATH_MAX];
     if (!strcmp(key, "enna"))
     {
         config_data = data;
@@ -326,6 +328,12 @@ _hash_foreach(const Eina_Hash *hash, const void *key, void *data, void *fdata)
                     ENNA_CONFIG_STRING_LIST, pair);
             enna_config_value_store(&enna_config->log_file, "log_file",
                     ENNA_CONFIG_STRING, pair);
+            
+            if (!enna_config->log_file)
+            {
+                snprintf(tmp, sizeof(tmp), "%s/.enna/enna.log", enna_util_user_home_get());
+                enna_config->log_file = strdup(tmp);
+            }
         }
     }
 
