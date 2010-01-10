@@ -35,6 +35,8 @@
 #include "enna_config.h"
 #include "utils.h"
 #include "vfs.h"
+#include "utils.h"
+#include "buffer.h"
 
 #ifdef BUILD_LIBSVDRP
 static svdrp_t *svdrp = NULL;
@@ -393,4 +395,50 @@ enna_util_atof(const char *nptr)
 
     div *= pow(10.0, end - start);
     return integer + frac / div;
+}
+
+Eina_List *
+enna_util_tuple_get (const char *str, const char *delimiter)
+{
+    Eina_List *tuple = NULL;
+    char *l, *s = NULL;
+
+    if (!str || !delimiter)
+        return NULL;
+
+    l = strdup(str);
+    s = strtok(l, delimiter);
+    do {
+      tuple = eina_list_append(tuple, s);
+      s = strtok(NULL, delimiter);
+    } while (s);
+
+    ENNA_FREE(l);
+
+    return tuple;
+}
+
+char *
+enna_util_tuple_set (Eina_List *tuple, const char *delimiter)
+{
+    char *buf;
+    buffer_t *b;
+    char *c;
+    Eina_List *l;
+
+    if (!tuple || !delimiter)
+        return NULL;
+
+    b = buffer_new();
+    EINA_LIST_FOREACH(tuple, l, c)
+    {
+        if (b->len > 0)
+            buffer_append(b, delimiter);
+        buffer_append(b, c);
+    }
+
+    buf = strdup(b->buf);
+    buffer_free(b);
+
+    return buf;
 }

@@ -47,4 +47,7 @@ void enna_util_env_set(const char *var, const char *val);
 char *enna_util_str_chomp(char *str);
 double enna_util_atof(const char *nptr);
 
+Eina_List *enna_util_tuple_get (const char *str, const char *delimiter);
+char *enna_util_tuple_set (Eina_List *tuple, const char *delimiter);
+
 #endif /* UTILS_H */
