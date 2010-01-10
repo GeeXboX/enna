@@ -86,6 +86,11 @@ typedef struct _Enna_Module_Podcast
     int                   prev_id;
 } Enna_Module_Podcast;
 
+typedef struct podcast_cfg_s {
+    Eina_List *list;
+} podcast_cfg_t;
+
+static podcast_cfg_t podcast_cfg;
 static Enna_Module_Podcast *mod;
 
 
@@ -205,34 +210,24 @@ error:
 
 static void _read_configuration()
 {
-    Enna_Config_Data *cfg;
     Eina_List *l;
-    Config_Pair *pair;
 
-    cfg = enna_config_module_pair_get("podcast");
-    if (!cfg)
+    if (!podcast_cfg.list)
         return;
 
-    EINA_LIST_FOREACH(cfg->pair, l, pair)
+    for (l = podcast_cfg.list; l; l = l->next)
     {
-	if (!strcmp(pair->key, "stream"))
-        {
-            char *value;
-            enna_config_value_store(&value, "stream",
-		ENNA_CONFIG_STRING, pair);
+        Channel *ch;
 
-            if (value)
-            {
-		Channel *ch;
+        if (!l->data)
+          continue;
 
-		ch = calloc(1, sizeof(Channel));
-		ch->url = strdup(value);
-		enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-		    "Podcast stream found : %s", ch->url);
-		_prepare_channel(ch);
-		mod->channels = eina_list_append(mod->channels, ch);
-            }
-        }
+        ch = calloc(1, sizeof(Channel));
+        ch->url = strdup(l->data);
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                 "Podcast stream found : %s", ch->url);
+        _prepare_channel(ch);
+        mod->channels = eina_list_append(mod->channels, ch);
     }
 }
 
@@ -343,6 +338,38 @@ static Enna_Class_Vfs class_podcast = {
     NULL
 };
 
+static void
+cfg_podcast_free (void)
+{
+    char *c;
+
+    EINA_LIST_FREE(podcast_cfg.list, c)
+      ENNA_FREE(c);
+}
+
+static void
+cfg_podcast_section_load (const char *section)
+{
+    cfg_podcast_free();
+    podcast_cfg.list = enna_config_string_list_get(section, "stream");
+}
+
+static void
+cfg_podcast_section_set_default (void)
+{
+    cfg_podcast_free();
+
+    podcast_cfg.list = NULL;
+}
+
+static Enna_Config_Section_Parser cfg_podcast = {
+    "podcast",
+    cfg_podcast_section_load,
+    NULL,
+    cfg_podcast_section_set_default,
+    cfg_podcast_free,
+};
+
 /* Module interface */
 
 #ifdef USE_STATIC_MODULES
@@ -367,6 +394,10 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     if (!em)
         return;
+
+    enna_config_section_parser_register(&cfg_podcast);
+    cfg_podcast_section_set_default();
+    cfg_podcast_section_load(cfg_podcast.section);
 
     mod = calloc(1, sizeof(Enna_Module_Podcast));
     mod->em = em;

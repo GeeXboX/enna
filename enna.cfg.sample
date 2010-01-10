@@ -57,6 +57,7 @@ sub_visibility=auto
 framedrop=no
 
 [localfiles]
+display_home=true
 path_music=file:///path/to/Music,Music,icon/favorite
 path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs
 path_video=file:///path/to/Videos,Videos,icon/favorite

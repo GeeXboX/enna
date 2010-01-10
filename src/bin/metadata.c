@@ -48,11 +48,27 @@
 #define ENNA_METADATA_DEFAULT_SCAN_PRIORITY           19
 #define ENNA_METADATA_DEFAULT_DECRAPIFIER             1
 
+#define ENNA_METADATA_DEFAULT_KEYWORDS "0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,orenji,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,cdNUM,CDNUM,SExEP,sSEeEP,SSEEEP"
+
 #define PATH_FANARTS            "fanarts"
 #define PATH_COVERS             "covers"
 
 #define PATH_BUFFER 4096
 
+typedef struct db_cfg_s {
+    Eina_List *path;
+    Eina_List *bl_words;
+    int parser_number;
+    int grabber_number;
+    int commit_interval;
+    int scan_loop;
+    int scan_sleep;
+    int scan_priority;
+    int decrapifier;
+    valhalla_verb_t verbosity;
+} db_cfg_t;
+
+static db_cfg_t db_cfg;
 static valhalla_t *vh = NULL;
 
 #define SUFFIX_ADD(type)                                       \
@@ -82,108 +98,153 @@ ondemand_cb(const char *file, valhalla_event_od_t e, const char *id, void *data)
     }
 }
 
+#define CFG_INT(field)                                                \
+    v = enna_config_int_get(section, #field);                         \
+    if (v) db_cfg.field = v;
+
+static void
+cfg_db_section_load (const char *section)
+{
+    const char *value;
+    Eina_List *vl;
+    int v;
+
+    vl = enna_config_string_list_get(section, "path");
+    if (vl)
+    {
+        Eina_List *l;
+        char *c;
+
+        EINA_LIST_FREE(db_cfg.path, c)
+            ENNA_FREE(c);
+
+        EINA_LIST_FOREACH(vl, l, c)
+            db_cfg.bl_words = eina_list_append(db_cfg.bl_words, strdup(c));
+    }
+
+    value = enna_config_string_get(section, "blacklist_keywords");
+    if (value)
+    {
+        char *c;
+
+        EINA_LIST_FREE(db_cfg.bl_words, c)
+            ENNA_FREE(c);
+
+        db_cfg.bl_words = enna_util_tuple_get(value, ",");
+    }
+
+    CFG_INT(parser_number);
+    CFG_INT(grabber_number);
+    CFG_INT(commit_interval);
+    CFG_INT(scan_loop);
+    CFG_INT(scan_sleep);
+    CFG_INT(scan_priority);
+    CFG_INT(decrapifier);
+
+    value = enna_config_string_get(section, "verbosity");
+    if (value)
+    {
+        if (!strcmp("verbose", value))
+            db_cfg.verbosity = VALHALLA_MSG_VERBOSE;
+        else if (!strcmp("info", value))
+            db_cfg.verbosity = VALHALLA_MSG_INFO;
+        else if (!strcmp("warning", value))
+            db_cfg.verbosity = VALHALLA_MSG_WARNING;
+        else if (!strcmp("error", value))
+            db_cfg.verbosity = VALHALLA_MSG_ERROR;
+        else if (!strcmp("critical", value))
+            db_cfg.verbosity = VALHALLA_MSG_CRITICAL;
+        else if (!strcmp("none", value))
+            db_cfg.verbosity = VALHALLA_MSG_NONE;
+    }
+
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* parser number  : %i", db_cfg.parser_number);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* grabber number : %i", db_cfg.grabber_number);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* commit interval: %i", db_cfg.commit_interval);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* scan loop      : %i", db_cfg.scan_loop);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* scan sleep     : %i", db_cfg.scan_sleep);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* scan priority  : %i", db_cfg.scan_priority);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* decrapifier    : %i", !!db_cfg.decrapifier);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* verbosity      : %i", db_cfg.verbosity);
+}
+
+static void
+cfg_db_free (void)
+{
+    char *c;
+
+    EINA_LIST_FREE(db_cfg.path, c)
+      ENNA_FREE(c);
+
+    EINA_LIST_FREE(db_cfg.bl_words, c)
+      ENNA_FREE(c);
+}
+
+static void
+cfg_db_section_set_default (void)
+{
+    cfg_db_free();
+
+    db_cfg.path            = NULL;
+    db_cfg.bl_words        = NULL;
+    db_cfg.parser_number   = ENNA_METADATA_DEFAULT_PARSER_NUMBER;
+    db_cfg.grabber_number  = ENNA_METADATA_DEFAULT_GRABBER_NUMBER;
+    db_cfg.commit_interval = ENNA_METADATA_DEFAULT_COMMIT_INTERVAL;
+    db_cfg.scan_loop       = ENNA_METADATA_DEFAULT_SCAN_LOOP;
+    db_cfg.scan_sleep      = ENNA_METADATA_DEFAULT_SCAN_SLEEP;
+    db_cfg.scan_priority   = ENNA_METADATA_DEFAULT_SCAN_PRIORITY;
+    db_cfg.decrapifier     = ENNA_METADATA_DEFAULT_DECRAPIFIER;
+    db_cfg.verbosity       = VALHALLA_MSG_WARNING;
+
+    /* set a default dummy path */
+    db_cfg.path = eina_list_append(db_cfg.path, strdup("/dev/null"));
+
+    /* set the blacklisted keywords list */
+    db_cfg.bl_words = enna_util_tuple_get(ENNA_METADATA_DEFAULT_KEYWORDS, ",");
+}
+
+static Enna_Config_Section_Parser cfg_db = {
+    "media_db",
+    cfg_db_section_load,
+    NULL,
+    cfg_db_section_set_default,
+    cfg_db_free,
+};
+
+void
+enna_metadata_cfg_register (void)
+{
+    enna_config_section_parser_register(&cfg_db);
+}
+
 static void
 enna_metadata_db_init(void)
 {
     int rc;
-    Enna_Config_Data *cfgdata;
     char *value = NULL;
     char db[PATH_BUFFER];
-    Eina_List *path = NULL, *l;
-    Eina_List *bl_words = NULL;
-    int parser_number   = ENNA_METADATA_DEFAULT_PARSER_NUMBER;
-    int grabber_number  = ENNA_METADATA_DEFAULT_GRABBER_NUMBER;
-    int commit_interval = ENNA_METADATA_DEFAULT_COMMIT_INTERVAL;
-    int scan_loop       = ENNA_METADATA_DEFAULT_SCAN_LOOP;
-    int scan_sleep      = ENNA_METADATA_DEFAULT_SCAN_SLEEP;
-    int scan_priority   = ENNA_METADATA_DEFAULT_SCAN_PRIORITY;
-    int decrapifier     = ENNA_METADATA_DEFAULT_DECRAPIFIER;
-    valhalla_verb_t verbosity = VALHALLA_MSG_WARNING;
+    Eina_List *l;
     valhalla_init_param_t param;
     char dst[1024];
 
-    cfgdata = enna_config_module_pair_get("media_db");
-    if (cfgdata)
-    {
-        Eina_List *list;
-
-        for (list = cfgdata->pair; list; list = list->next)
-        {
-            Config_Pair *pair = list->data;
-
-            enna_config_value_store(&parser_number, "parser_number",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&grabber_number, "grabber_number",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&commit_interval, "commit_interval",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&scan_loop, "scan_loop",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&scan_sleep, "scan_sleep",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&scan_priority, "scan_priority",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&decrapifier, "decrapifier",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store (&bl_words, "blacklist_keywords",
-                                     ENNA_CONFIG_STRING_LIST, pair);
-
-            if (!strcmp("path", pair->key))
-            {
-                enna_config_value_store(&value, "path",
-                                        ENNA_CONFIG_STRING, pair);
-                if (strstr(value, "file://") == value)
-                    path = eina_list_append(path, value + 7);
-            }
-            else if (!strcmp("verbosity", pair->key))
-            {
-                enna_config_value_store(&value, "verbosity",
-                                        ENNA_CONFIG_STRING, pair);
-
-                if (!strcmp("verbose", value))
-                    verbosity = VALHALLA_MSG_VERBOSE;
-                else if (!strcmp("info", value))
-                    verbosity = VALHALLA_MSG_INFO;
-                else if (!strcmp("warning", value))
-                    verbosity = VALHALLA_MSG_WARNING;
-                else if (!strcmp("error", value))
-                    verbosity = VALHALLA_MSG_ERROR;
-                else if (!strcmp("critical", value))
-                    verbosity = VALHALLA_MSG_CRITICAL;
-                else if (!strcmp("none", value))
-                    verbosity = VALHALLA_MSG_NONE;
-            }
-        }
-    }
-
-    /* Configuration */
-    enna_log(ENNA_MSG_EVENT,
-             MODULE_NAME, "* parser number  : %i", parser_number);
-    enna_log(ENNA_MSG_EVENT,
-             MODULE_NAME, "* grabber number : %i", grabber_number);
-    enna_log(ENNA_MSG_EVENT,
-             MODULE_NAME, "* commit interval: %i", commit_interval);
-    enna_log(ENNA_MSG_EVENT,
-             MODULE_NAME, "* scan loop      : %i", scan_loop);
-    enna_log(ENNA_MSG_EVENT,
-             MODULE_NAME, "* scan sleep     : %i", scan_sleep);
-    enna_log(ENNA_MSG_EVENT,
-             MODULE_NAME, "* scan priority  : %i", scan_priority);
-    enna_log(ENNA_MSG_EVENT,
-             MODULE_NAME, "* decrapifier    : %i", !!decrapifier);
-    enna_log(ENNA_MSG_EVENT,
-             MODULE_NAME, "* verbosity      : %i", verbosity);
-
-    valhalla_verbosity(verbosity);
+    valhalla_verbosity(db_cfg.verbosity);
 
     snprintf(db, sizeof(db),
              "%s/.enna/%s", enna_util_user_home_get(), ENNA_METADATA_DB_NAME);
 
     memset(&param, 0, sizeof(valhalla_init_param_t));
-    param.parser_nb   = parser_number;
-    param.grabber_nb  = grabber_number;
-    param.commit_int  = commit_interval;
-    param.decrapifier = !!decrapifier;
+    param.parser_nb   = db_cfg.parser_number;
+    param.grabber_nb  = db_cfg.grabber_number;
+    param.commit_int  = db_cfg.commit_interval;
+    param.decrapifier = !!db_cfg.decrapifier;
     param.od_cb       = ondemand_cb;
 
     vh = valhalla_init(db, &param);
@@ -196,29 +257,19 @@ enna_metadata_db_init(void)
     SUFFIX_ADD(photo_filters);
 
     /* Add paths */
-    for (l = path; l; l = l->next)
+    for (l = db_cfg.path; l; l = l->next)
     {
         const char *str = l->data;
         valhalla_config_set(vh, SCANNER_PATH, str, 1);
     }
-    if (path)
-    {
-        eina_list_free(path);
-        path = NULL;
-    }
 
     /* blacklist some keywords */
-    for (l = bl_words; l; l = l->next)
+    for (l = db_cfg.bl_words; l; l = l->next)
     {
         const char *keyword = l->data;
         valhalla_config_set(vh, PARSER_KEYWORD, keyword);
         enna_log(ENNA_MSG_EVENT, MODULE_NAME,
                  "Blacklisting '%s' from search", keyword);
-    }
-    if (bl_words)
-    {
-        eina_list_free(bl_words);
-        bl_words = NULL;
     }
 
     /* set file download destinations */
@@ -241,7 +292,8 @@ enna_metadata_db_init(void)
         free(value);
     }
 
-    rc = valhalla_run(vh, scan_loop, scan_sleep, scan_priority);
+    rc = valhalla_run(vh, db_cfg.scan_loop,
+                      db_cfg.scan_sleep, db_cfg.scan_priority);
     if (rc)
     {
         enna_log(ENNA_MSG_ERROR,
@@ -257,10 +309,6 @@ enna_metadata_db_init(void)
  err:
     enna_log(ENNA_MSG_ERROR,
              MODULE_NAME, "valhalla module initialization");
-    if (bl_words)
-        eina_list_free(bl_words);
-    if (path)
-        eina_list_free(path);
 }
 
 static void

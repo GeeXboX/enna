@@ -277,7 +277,7 @@ AC_MSG_RESULT($want_browser_upnp)
 if test "x$want_browser_upnp" = "xyes" -o "x$want_browser_upnp" = "xauto"; then
   PKG_CHECK_MODULES(
     [GUPNP],
-    [gssdp-1.0 >= 0.6.4 gupnp-1.0 >= 0.12.6 gupnp-av-1.0 >= 0.3.1],
+    [gssdp-1.0 >= 0.6.4 gupnp-1.0 >= 0.12.6 gupnp-1.0 <= 0.13.0 gupnp-av-1.0 >= 0.3.1],
     [
       AC_DEFINE(BUILD_BROWSER_UPNP, 1, [UPnP/DLNA Browser Module])
       have_browser_upnp="yes"

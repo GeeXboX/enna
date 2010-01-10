@@ -24,6 +24,7 @@
 
 typedef void * Enna_Metadata;
 
+void enna_metadata_cfg_register(void);
 void enna_metadata_init(void);
 void enna_metadata_shutdown(void);
 void *enna_metadata_get_db(void);

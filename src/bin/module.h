@@ -25,6 +25,7 @@
 #include <Ecore_Data.h>
 
 #include "enna.h"
+#include "enna_config.h"
 
 #define ENNA_MODULE_VERSION 3
 

@@ -69,6 +69,14 @@ typedef struct _Enna_Module_LocalFiles
 #endif
 } Enna_Module_LocalFiles;
 
+typedef struct localfiles_cfg_s {
+    Eina_List *path_music;
+    Eina_List *path_video;
+    Eina_List *path_photo;
+    Eina_Bool home;
+} localfiles_cfg_t;
+
+static localfiles_cfg_t localfiles_cfg;
 static Enna_Module_LocalFiles *mod;
 
 static unsigned char _uri_is_root(Class_Private_Data *data, const char *uri)
@@ -346,9 +354,9 @@ static void __class_init(const char *name, Class_Private_Data **priv,
                          ENNA_VFS_CAPS caps, Enna_Class_Vfs *class, char *key)
 {
     Class_Private_Data *data;
-    Enna_Config_Data *cfgdata;
     Root_Directories *root;
     char buf[PATH_MAX + 7];
+    Eina_List *path_list;
     Eina_List *l;
     Enna_Volume *v;
 
@@ -361,36 +369,42 @@ static void __class_init(const char *name, Class_Private_Data **priv,
     data->config = calloc(1, sizeof(Module_Config));
     data->config->root_directories = NULL;
 
-    cfgdata = enna_config_module_pair_get("localfiles");
-    if (!cfgdata)
+    switch (caps)
+    {
+    case ENNA_CAPS_MUSIC:
+        path_list = localfiles_cfg.path_music;
+        break;
+    case ENNA_CAPS_VIDEO:
+        path_list = localfiles_cfg.path_video;
+        break;
+    case ENNA_CAPS_PHOTO:
+        path_list = localfiles_cfg.path_photo;
+        break;
+    default:
+        return;
+    }
+
+    if (!path_list)
         return;
 
-    for (l = cfgdata->pair; l; l = l->next)
+    for (l = path_list; l; l = l->next)
     {
-        Config_Pair *pair = l->data;
-        if (!strcmp(pair->key, key))
+        Eina_List *tuple;
+
+        tuple = enna_util_tuple_get(l->data, ",");
+        if (tuple && eina_list_count(tuple) == 3)
         {
-            Eina_List *dir_data;
-            enna_config_value_store(&dir_data, key, ENNA_CONFIG_STRING_LIST,
-                                    pair);
-            if (dir_data)
-            {
-                if (eina_list_count(dir_data) != 3)
-                    continue;
-                else
-                {
-                    root = calloc(1, sizeof(Root_Directories));
-                    root->uri = eina_list_nth(dir_data, 0);
-                    root->label = eina_list_nth(dir_data, 1);
-                    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                             "Root Data: %s", root->uri);
-                    root->icon = eina_list_nth(dir_data, 2);
-                    data->config->root_directories = eina_list_append(
-                        data->config->root_directories, root);
-                }
-            }
+            root = calloc(1, sizeof(Root_Directories));
+            root->uri = eina_list_nth(tuple, 0);
+            root->label = eina_list_nth(tuple, 1);
+            enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                     "Root Data: %s", root->uri);
+            root->icon = eina_list_nth(tuple, 2);
+            data->config->root_directories =
+                eina_list_append(data->config->root_directories, root);
         }
     }
+
     /* Add All detected volumes */
     EINA_LIST_FOREACH(enna_volumes_get(), l, v)
     {
@@ -405,15 +419,18 @@ static void __class_init(const char *name, Class_Private_Data **priv,
             data->config->root_directories, root);
     }
 
-    // add home directory entry
-    root = ENNA_NEW(Root_Directories, 1);
-    snprintf(buf, sizeof(buf), "file://%s", enna_util_user_home_get());
-    root->uri = strdup(buf);
-    root->label = strdup("Home");
-    root->icon = strdup("icon/favorite");
+    if (localfiles_cfg.home)
+    {
+        // add home directory entry
+        root = ENNA_NEW(Root_Directories, 1);
+        snprintf(buf, sizeof(buf), "file://%s", enna_util_user_home_get());
+        root->uri = strdup(buf);
+        root->label = strdup("Home");
+        root->icon = strdup("icon/favorite");
 
-    data->config->root_directories = eina_list_append(
-        data->config->root_directories, root);
+        data->config->root_directories = eina_list_append(
+            data->config->root_directories, root);
+    }
 
     /* add localfiles to the list of volumes listener */
     data->vl = enna_volumes_listener_add("localfiles", _add_volumes_cb, _remove_volumes_cb, data);
@@ -473,6 +490,76 @@ static Enna_Class_Vfs class_photo = {
 };
 #endif
 
+static Eina_List *
+cfg_localfiles_section_list_get (const char *section, const char *key)
+{
+    Eina_List *vl;
+    Eina_List *list = NULL;
+
+    if (!section || !key)
+        return NULL;
+
+    vl = enna_config_string_list_get(section, key);
+    if (vl)
+    {
+        Eina_List *l;
+        char *c;
+
+        EINA_LIST_FOREACH(vl, l, c)
+            list = eina_list_append(list, strdup(c));
+    }
+
+    return list;
+}
+
+static void
+cfg_localfiles_free (void)
+{
+    char *c;
+
+    EINA_LIST_FREE(localfiles_cfg.path_music, c)
+      ENNA_FREE(c);
+
+    EINA_LIST_FREE(localfiles_cfg.path_video, c)
+      ENNA_FREE(c);
+
+    EINA_LIST_FREE(localfiles_cfg.path_photo, c)
+      ENNA_FREE(c);
+}
+
+static void
+cfg_localfiles_section_load (const char *section)
+{
+    cfg_localfiles_free();
+
+    localfiles_cfg.path_music =
+      cfg_localfiles_section_list_get(section, "path_music");
+    localfiles_cfg.path_video =
+        cfg_localfiles_section_list_get(section, "path_video");
+    localfiles_cfg.path_photo =
+        cfg_localfiles_section_list_get(section, "path_photo");
+    localfiles_cfg.home = enna_config_bool_get(section, "display_home");
+}
+
+static void
+cfg_localfiles_section_set_default (void)
+{
+    cfg_localfiles_free();
+
+    localfiles_cfg.path_music = NULL;
+    localfiles_cfg.path_video = NULL;
+    localfiles_cfg.path_photo = NULL;
+    localfiles_cfg.home = EINA_TRUE;
+}
+
+static Enna_Config_Section_Parser cfg_localfiles = {
+    "localfiles",
+    cfg_localfiles_section_load,
+    NULL,
+    cfg_localfiles_section_set_default,
+    cfg_localfiles_free,
+};
+
 /* Module interface */
 
 #ifdef USE_STATIC_MODULES
@@ -499,6 +586,10 @@ ENNA_MODULE_INIT(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_LocalFiles));
     mod->em = em;
     em->mod = mod;
+
+    enna_config_section_parser_register(&cfg_localfiles);
+    cfg_localfiles_section_set_default();
+    cfg_localfiles_section_load(cfg_localfiles.section);
 
 #ifdef BUILD_ACTIVITY_MUSIC
     __class_init("localfiles_music", &mod->music, ENNA_CAPS_MUSIC,

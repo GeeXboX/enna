@@ -30,6 +30,7 @@
 #include "url_utils.h"
 #include "vfs.h"
 #include "logs.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME "netstreams"
 
@@ -61,6 +62,12 @@ typedef struct Enna_Module_Netstreams_s
     netstreams_priv_t *video;
 } Enna_Module_Netstreams;
 
+typedef struct netstreams_cfg_s {
+    Eina_List *music;
+    Eina_List *video;
+} netstreams_cfg_t;
+
+static netstreams_cfg_t netstreams_cfg;
 static Enna_Module_Netstreams *mod;
 
 static Eina_List * browse_streams_list(netstreams_priv_t *data)
@@ -256,10 +263,10 @@ static Enna_Vfs_File * vfs_get_video(void *cookie)
 }
 
 static void class_init(const char *name, netstreams_priv_t **priv,
-        ENNA_VFS_CAPS caps, Enna_Class_Vfs *class, char *key)
+                       ENNA_VFS_CAPS caps, Enna_Class_Vfs *class)
 {
     netstreams_priv_t *data;
-    Enna_Config_Data *cfgdata;
+    Eina_List *stream_list;
     Eina_List *l;
 
     data = calloc(1, sizeof(netstreams_priv_t));
@@ -270,37 +277,41 @@ static void class_init(const char *name, netstreams_priv_t **priv,
     data->prev_uri = NULL;
     data->config_netstreams = NULL;
 
-    cfgdata = enna_config_module_pair_get("netstreams");
-    if (!cfgdata)
+    switch (caps)
+    {
+    case ENNA_CAPS_MUSIC:
+        stream_list = netstreams_cfg.music;
+        break;
+    case ENNA_CAPS_VIDEO:
+        stream_list = netstreams_cfg.video;
+        break;
+    default:
+        return;
+    }
+
+    if (!stream_list)
         return;
 
-    for (l = cfgdata->pair; l; l = l->next)
+    for (l = stream_list; l; l = l->next)
     {
-        Config_Pair *pair = l->data;
+        Eina_List *tuple;
 
-        if (pair->key && !strcmp(pair->key, key))
+        tuple = enna_util_tuple_get(l->data, ",");
+        if (tuple && eina_list_count(tuple) == 3)
         {
-            Eina_List *tuple;
-            netstream_t *stream = NULL;
+            netstream_t *stream;
 
-            enna_config_value_store(&tuple, key, ENNA_CONFIG_STRING_LIST, pair);
-            if (!tuple)
-                continue;
-
-            if (eina_list_count(tuple) != 3)
-                continue;
-
-            stream = calloc(1, sizeof(netstream_t));
-            stream->uri = eina_list_nth(tuple, 0);
+            stream        = calloc(1, sizeof(netstream_t));
+            stream->uri   = eina_list_nth(tuple, 0);
             stream->label = eina_list_nth(tuple, 1);
-            stream->icon = eina_list_nth(tuple, 2);
+            stream->icon  = eina_list_nth(tuple, 2);
 
             enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                    "Adding new netstream '%s' (using icon %s), URI is '%s'",
-                    stream->label, stream->icon, stream->uri);
+                     "Adding new netstream '%s' (using icon %s), URI is '%s'",
+                     stream->label, stream->icon, stream->uri);
 
-            data->config_netstreams = eina_list_append(data->config_netstreams,
-                    stream);
+            data->config_netstreams =
+                eina_list_append(data->config_netstreams, stream);
         }
     }
 }
@@ -337,6 +348,46 @@ static Enna_Class_Vfs class_video = {
     NULL
 };
 
+static void
+cfg_netstreams_free (void)
+{
+    char *c;
+
+    EINA_LIST_FREE(netstreams_cfg.music, c)
+        ENNA_FREE(c);
+
+    EINA_LIST_FREE(netstreams_cfg.video, c)
+        ENNA_FREE(c);
+}
+
+static void
+cfg_netstreams_section_load (const char *section)
+{
+    cfg_netstreams_free();
+
+    netstreams_cfg.music =
+        enna_config_string_list_get(section, "stream_music");
+    netstreams_cfg.video =
+        enna_config_string_list_get(section, "stream_video");
+}
+
+static void
+cfg_netstreams_section_set_default (void)
+{
+    cfg_netstreams_free();
+
+    netstreams_cfg.music = NULL;
+    netstreams_cfg.video = NULL;
+}
+
+static Enna_Config_Section_Parser cfg_netstreams = {
+    "netstreams",
+    cfg_netstreams_section_load,
+    NULL,
+    cfg_netstreams_section_set_default,
+    cfg_netstreams_free,
+};
+
 /* Module interface */
 
 #ifdef USE_STATIC_MODULES
@@ -360,16 +411,18 @@ ENNA_MODULE_INIT(Enna_Module *em)
     if (!em)
         return;
 
+    enna_config_section_parser_register(&cfg_netstreams);
+    cfg_netstreams_section_set_default();
+    cfg_netstreams_section_load(cfg_netstreams.section);
+
     mod = calloc(1, sizeof(Enna_Module_Netstreams));
     mod->em = em;
     em->mod = mod;
 
     mod->handler = url_new();
 
-    class_init("netstreams_music", &mod->music, ENNA_CAPS_MUSIC, &class_music,
-            "stream_music");
-    class_init("netstreams_video", &mod->video, ENNA_CAPS_VIDEO, &class_video,
-            "stream_video");
+    class_init("netstreams_music", &mod->music, ENNA_CAPS_MUSIC, &class_music);
+    class_init("netstreams_video", &mod->video, ENNA_CAPS_VIDEO, &class_video);
 }
 
 void
