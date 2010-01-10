@@ -449,13 +449,13 @@ ini_get_bool (ini_t *ini, const char *section, const char *key)
 
     s = ini_get_value(ini, section, key);
     if (!s)
-        return EINA_FALSE;
-
-    if (!strcmp(s, "true") || !strcmp(s, "TRUE") ||
-        !strcmp(s, "yes")  || !strcmp(s, "yes"))
         return EINA_TRUE;
 
-    return EINA_FALSE;
+    if (!strcmp(s, "false") || !strcmp(s, "FALSE") ||
+        !strcmp(s, "no")  || !strcmp(s, "NO"))
+        return EINA_FALSE;
+
+    return EINA_TRUE;
 }
 
 void
