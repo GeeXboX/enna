@@ -45,6 +45,7 @@ ipc.c\
 weather_api.c\
 weather_notification.c\
 volume_notification.c\
+ini_parser.c\
 input.c
 
 
@@ -223,4 +224,5 @@ ipc.h\
 weather_api.h\
 weather_notification.h\
 volume_notification.h\
+ini_parser.h\
 input.h
