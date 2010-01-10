@@ -216,7 +216,7 @@ ini_get_value_list(ini_t *ini, const char *section, const char *key)
         return NULL;
 
     EINA_LIST_FOREACH(tuple, l, f)
-        v = eina_list_append(v, f->value);
+        v = eina_list_append(v, strdup(f->value));
 
     return v;
 }
