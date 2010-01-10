@@ -188,7 +188,7 @@ cfg_tv_section_load (const char *section)
 
     value = enna_config_string_get(section, "svdrp_timeout");
     if (value)
-        svdrp_timeout = atoi(value);
+        tv_cfg.svdrp_timeout = atoi(value);
 
     value = enna_config_string_get(section, "svdrp_verbosity");
     if (value)
@@ -306,7 +306,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
                  " * unknown vdr uri '%s'", tv_cfg.vdr_uri);
     }
 
-    mod->timer_threshold = timer_threshold;
+    mod->timer_threshold = tv_cfg.timer_threshold;
 
     if (tv_cfg.svdrp_host)
         mod->svdrp = enna_svdrp_init(tv_cfg.svdrp_host,
