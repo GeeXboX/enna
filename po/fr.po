@@ -238,7 +238,7 @@ msgstr "Masque de sous-réseau: %s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "<hilight>Default Gateway: </hilight>"
-msgstr "<hilight>Passerelle par défaut: </hilight>"
+msgstr "<hilight>Passerelle par défaut : </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:463
 msgid "None<br>"
