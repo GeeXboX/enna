@@ -52,9 +52,9 @@ enna_util_user_home_get()
     if (home)
         return home;
 
-    home = strdup(getenv("HOME"));
+    home = getenv("HOME")?strdup(getenv("HOME")):NULL;
     if (!home)
-        return strdup(getenv("CWD"));
+        return getenv("CWD")?strdup(getenv("CWD")):NULL;
     return home;
 }
 
@@ -289,7 +289,8 @@ md5sum (char *str)
 char *init_locale (void)
 {
     char *curlocale=setlocale(LC_ALL, "");
-    mylocale = curlocale?strdup(curlocale):strdup(setlocale(LC_ALL, "C"));
+    curlocale=curlocale?curlocale:setlocale(LC_ALL, "C");
+    mylocale = curlocale?strdup(curlocale):NULL;
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 
