@@ -70,6 +70,22 @@ typedef struct list_item_s
     const char *label;
 } list_item_t;
 
+typedef struct mediaplayer_cfg_s {
+    player_type_t type;
+    player_type_t dvd_type;
+    player_type_t tv_type;
+    player_vo_t vo;
+    player_ao_t ao;
+    player_verbosity_level_t verbosity;
+    int dvd_set;
+    int tv_set;
+    char *sub_align;
+    char *sub_pos;
+    char *sub_scale;
+    char *sub_visibility;
+    char *framedrop;
+} mediaplayer_cfg_t;
+
 typedef struct _Enna_Mediaplayer Enna_Mediaplayer;
 
 struct _Enna_Mediaplayer
@@ -99,7 +115,7 @@ struct _Enna_Mediaplayer
 };
 
 static Enna_Mediaplayer *mp = NULL;
-static Enna_Config_Video *config_video = NULL;
+static mediaplayer_cfg_t mp_cfg;
 
 static void
 _event_cb(void *data, enna_mediaplayer_event_t event)
@@ -334,58 +350,53 @@ set_local_stream(const char *uri)
 static void
 init_sub_align(void)
 {
-    if (!config_video || !config_video->sub_align ||
-        !strcmp(config_video->sub_align, "auto"))
+    if (!mp_cfg.sub_align || !strcmp(mp_cfg.sub_align, "auto"))
         mp->subtitle_alignment = SUB_ALIGNMENT_DEFAULT;
-    else if (!strcmp(config_video->sub_align, "bottom"))
+    else if (!strcmp(mp_cfg.sub_align, "bottom"))
         mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_BOTTOM;
-    else if (!strcmp(config_video->sub_align, "middle"))
+    else if (!strcmp(mp_cfg.sub_align, "middle"))
         mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_CENTER;
-    else if (!strcmp(config_video->sub_align, "top"))
+    else if (!strcmp(mp_cfg.sub_align, "top"))
         mp->subtitle_alignment = PLAYER_SUB_ALIGNMENT_TOP;
 }
 
 static void
 init_sub_pos(void)
 {
-    if (!config_video || !config_video->sub_pos ||
-        !strcmp(config_video->sub_pos, "auto"))
+    if (!mp_cfg.sub_pos || !strcmp(mp_cfg.sub_pos, "auto"))
         mp->subtitle_position = SUB_POSITION_DEFAULT;
     else
-        mp->subtitle_position = atoi(config_video->sub_pos);
+        mp->subtitle_position = atoi(mp_cfg.sub_pos);
 }
 
 static void
 init_sub_scale(void)
 {
-    if (!config_video || !config_video->sub_scale ||
-        !strcmp(config_video->sub_scale, "auto"))
+    if (!mp_cfg.sub_scale || !strcmp(mp_cfg.sub_scale, "auto"))
         mp->subtitle_scale = SUB_SCALE_DEFAULT;
     else
-        mp->subtitle_scale = atoi(config_video->sub_scale);
+        mp->subtitle_scale = atoi(mp_cfg.sub_scale);
 }
 
 static void
 init_sub_visibility(void)
 {
-    if (!config_video || !config_video->sub_visibility ||
-        !strcmp(config_video->sub_visibility, "auto"))
+    if (!mp_cfg.sub_visibility || !strcmp(mp_cfg.sub_visibility, "auto"))
         mp->subtitle_visibility = SUB_VISIBILITY_DEFAULT;
-    else if (!strcmp(config_video->sub_visibility, "no"))
+    else if (!strcmp(mp_cfg.sub_visibility, "no"))
         mp->subtitle_visibility = 0;
-    else if (!strcmp(config_video->sub_visibility, "yes"))
+    else if (!strcmp(mp_cfg.sub_visibility, "yes"))
         mp->subtitle_visibility = 1;
 }
 
 static void
 init_framedrop(void)
 {
-    if (!config_video || !config_video->framedrop ||
-        !strcmp(config_video->framedrop, "no"))
+    if (!mp_cfg.framedrop || !strcmp(mp_cfg.framedrop, "no"))
         mp->framedrop = FRAMEDROP_DEFAULT;
-    else if (!strcmp(config_video->framedrop, "soft"))
+    else if (!strcmp(mp_cfg.framedrop, "soft"))
         mp->framedrop = PLAYER_FRAMEDROP_SOFT;
-    else if (!strcmp(config_video->framedrop, "hard"))
+    else if (!strcmp(mp_cfg.framedrop, "hard"))
         mp->framedrop = PLAYER_FRAMEDROP_HARD;
 }
 
@@ -474,9 +485,6 @@ mp_file_set(const char *uri, const char *label)
 
     mp->audio_delay = AUDIO_DELAY_DEFAULT;
     mp->subtitle_delay = SUB_DELAY_DEFAULT;
-
-    /* Get the video configuration parameters from file */
-    config_video = enna_config->cfg_video;
 
     /* Initialization of subtitles variables */
     init_sub_align();
@@ -684,193 +692,206 @@ enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type)
 #define ENNA_MP_PLAYER_INIT(type)                                            \
     do                                                                       \
     {                                                                        \
-        mp->players[type] = player_init(type, verbosity, &param);            \
+        mp->players[type] = player_init(type, mp_cfg.verbosity, &param);     \
         if (!mp->players[type])                                              \
             goto err;                                                        \
     }                                                                        \
     while(0)
 
-#define CFG_VIDEO(field) \
-    enna_config_value_store(&video->field, #field, ENNA_CONFIG_STRING, pair);
+#define CFG_VIDEO(field)                                                \
+    value = enna_config_string_get(section, #field);                    \
+    mp_cfg.field = value ? strdup(value) : NULL;
+
+static void
+cfg_mediaplayer_section_load (const char *section)
+{
+    const char *value = NULL;
+
+    enna_log(ENNA_MSG_INFO, NULL, "parameters:");
+
+    value = enna_config_string_get(section, "type");
+    if (value)
+    {
+        enna_log(ENNA_MSG_INFO, NULL, " * type: %s", value);
+
+        if (!strcmp("gstreamer", value))
+            mp_cfg.type = PLAYER_TYPE_GSTREAMER;
+        else if (!strcmp("mplayer", value))
+            mp_cfg.type = PLAYER_TYPE_MPLAYER;
+        else if (!strcmp("vlc", value))
+            mp_cfg.type = PLAYER_TYPE_VLC;
+        else if (!strcmp("xine", value))
+            mp_cfg.type = PLAYER_TYPE_XINE;
+        else
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "   - unknown type, 'mplayer' used instead");
+    }
+
+    value = enna_config_string_get(section, "dvd_type");
+    if (value)
+    {
+        enna_log(ENNA_MSG_INFO, NULL, " * dvd_type: %s", value);
+
+        if (!strcmp("gstreamer", value))
+            mp_cfg.dvd_type = PLAYER_TYPE_GSTREAMER;
+        else if (!strcmp("mplayer", value))
+            mp_cfg.dvd_type = PLAYER_TYPE_MPLAYER;
+        else if (!strcmp("vlc", value))
+            mp_cfg.dvd_type = PLAYER_TYPE_VLC;
+        else if (!strcmp("xine", value))
+            mp_cfg.dvd_type = PLAYER_TYPE_XINE;
+        else
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "   - unknown dvd_type, 'xine' used instead");
+        mp_cfg.dvd_set = 1;
+    }
+
+    value = enna_config_string_get(section, "tv_type");
+    if (value)
+    {
+        enna_log(ENNA_MSG_INFO, NULL, " * tv_type: %s", value);
+
+        if (!strcmp("gstreamer", value))
+            mp_cfg.tv_type = PLAYER_TYPE_GSTREAMER;
+        else if (!strcmp("mplayer", value))
+            mp_cfg.tv_type = PLAYER_TYPE_MPLAYER;
+        else if (!strcmp("vlc", value))
+            mp_cfg.tv_type = PLAYER_TYPE_VLC;
+        else if (!strcmp("xine", value))
+            mp_cfg.tv_type = PLAYER_TYPE_XINE;
+        else
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "   - unknown tv_type, 'xine' used instead");
+        mp_cfg.tv_set = 1;
+    }
+
+    value = enna_config_string_get(section, "video_out");
+    if (value)
+    {
+        enna_log(ENNA_MSG_INFO, NULL, " * video out: %s", value);
+
+        if (!strcmp("auto", value))
+            mp_cfg.vo = PLAYER_VO_AUTO;
+        else if (!strcmp("vdpau", value))
+            mp_cfg.vo = PLAYER_VO_VDPAU;
+        else if (!strcmp("x11", value))
+            mp_cfg.vo = PLAYER_VO_X11;
+        else if (!strcmp("xv", value))
+            mp_cfg.vo = PLAYER_VO_XV;
+        else if (!strcmp("gl", value))
+            mp_cfg.vo = PLAYER_VO_GL;
+        else if (!strcmp("fb", value))
+            mp_cfg.vo = PLAYER_VO_FB;
+        else
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "   - unknown video_out, 'auto' used instead");
+    }
+
+    value = enna_config_string_get(section, "audio_out");
+    if (value)
+    {
+        enna_log(ENNA_MSG_INFO, NULL, " * audio out: %s", value);
+
+        if (!strcmp("auto", value))
+            mp_cfg.ao = PLAYER_AO_AUTO;
+        else if (!strcmp("alsa", value))
+            mp_cfg.ao = PLAYER_AO_ALSA;
+        else if (!strcmp("oss", value))
+            mp_cfg.ao = PLAYER_AO_OSS;
+        else
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "   - unknown audio_out, 'auto' used instead");
+    }
+
+    value = enna_config_string_get(section, "verbosity");
+    if (value)
+    {
+        enna_log(ENNA_MSG_INFO, NULL, " * verbosity level: %s", value);
+
+        if (!strcmp("verbose", value))
+            mp_cfg.verbosity = PLAYER_MSG_VERBOSE;
+        else if (!strcmp("info", value))
+            mp_cfg.verbosity = PLAYER_MSG_INFO;
+        else if (!strcmp("warning", value))
+            mp_cfg.verbosity = PLAYER_MSG_WARNING;
+        else if (!strcmp("error", value))
+            mp_cfg.verbosity = PLAYER_MSG_ERROR;
+        else if (!strcmp ("critical", value))
+            mp_cfg.verbosity = PLAYER_MSG_CRITICAL;
+        else if (!strcmp("none", value))
+            mp_cfg.verbosity = PLAYER_MSG_NONE;
+        else
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "   - unknown verbosity, 'warning' used instead");
+    }
+
+    CFG_VIDEO(sub_align);
+    CFG_VIDEO(sub_pos);
+    CFG_VIDEO(sub_scale);
+    CFG_VIDEO(sub_visibility);
+    CFG_VIDEO(framedrop);
+
+    if (!value)
+        enna_log(ENNA_MSG_INFO, NULL, " * use all parameters by default");
+}
+
+static void
+cfg_mediaplayer_free (void)
+{
+    ENNA_FREE(mp_cfg.sub_align);
+    ENNA_FREE(mp_cfg.sub_pos);
+    ENNA_FREE(mp_cfg.sub_scale);
+    ENNA_FREE(mp_cfg.sub_visibility);
+    ENNA_FREE(mp_cfg.framedrop);
+}
+
+static void
+cfg_mediaplayer_section_set_default (void)
+{
+    cfg_mediaplayer_free();
+
+    mp_cfg.type           = PLAYER_TYPE_MPLAYER;
+    mp_cfg.dvd_type       = PLAYER_TYPE_XINE;
+    mp_cfg.tv_type        = PLAYER_TYPE_XINE;
+    mp_cfg.vo             = PLAYER_VO_AUTO;
+    mp_cfg.ao             = PLAYER_AO_AUTO;
+    mp_cfg.verbosity      = PLAYER_MSG_WARNING;
+    mp_cfg.dvd_set        = 0;
+    mp_cfg.tv_set         = 0;
+    mp_cfg.sub_align      = NULL;
+    mp_cfg.sub_pos        = NULL;
+    mp_cfg.sub_scale      = NULL;
+    mp_cfg.sub_visibility = NULL;
+    mp_cfg.framedrop      = NULL;
+}
+
+static Enna_Config_Section_Parser cfg_mediaplayer = {
+    "mediaplayer",
+    cfg_mediaplayer_section_load,
+    NULL,
+    cfg_mediaplayer_section_set_default,
+    cfg_mediaplayer_free,
+};
+
+void
+enna_mediaplayer_cfg_register (void)
+{
+    enna_config_section_parser_register(&cfg_mediaplayer);
+}
 
 int
 enna_mediaplayer_init(void)
 {
-    Enna_Config_Data *cfgdata;
-    Enna_Config_Video *video;
-    char *value = NULL;
-
     player_init_param_t param;
-    player_type_t type = PLAYER_TYPE_MPLAYER;
-    player_type_t dvd_type = PLAYER_TYPE_XINE;
-    player_type_t tv_type = PLAYER_TYPE_XINE;
-    player_vo_t vo = PLAYER_VO_AUTO;
-    player_ao_t ao = PLAYER_AO_AUTO;
-    player_verbosity_level_t verbosity = PLAYER_MSG_WARNING;
-
-    int dvd_set = 0, tv_set = 0;
-
-    /* set default video config */
-    enna_config->cfg_video = calloc(1, sizeof (Enna_Config_Video));
-    video = enna_config->cfg_video;
-
-    /* Load Config file values */
-    cfgdata = enna_config_module_pair_get("mediaplayer");
-
-    enna_log(ENNA_MSG_INFO, NULL, "parameters:");
-
-    if (cfgdata)
-    {
-        Eina_List *l;
-
-        for (l = cfgdata->pair; l; l = l->next)
-        {
-            Config_Pair *pair = l->data;
-
-            if (!strcmp("type", pair->key))
-            {
-                enna_config_value_store(&value, "type",
-                                        ENNA_CONFIG_STRING, pair);
-                enna_log(ENNA_MSG_INFO, NULL,
-                         " * type: %s", value);
-
-                if (!strcmp("gstreamer", value))
-                    type = PLAYER_TYPE_GSTREAMER;
-                else if (!strcmp("mplayer", value))
-                    type = PLAYER_TYPE_MPLAYER;
-                else if (!strcmp("vlc", value))
-                    type = PLAYER_TYPE_VLC;
-                else if (!strcmp("xine", value))
-                    type = PLAYER_TYPE_XINE;
-                else
-                    enna_log(ENNA_MSG_WARNING, NULL,
-                             "   - unknown type, 'mplayer' used instead");
-            }
-            else if (!strcmp("dvd_type", pair->key))
-            {
-                enna_config_value_store(&value, "dvd_type",
-                                        ENNA_CONFIG_STRING, pair);
-                enna_log(ENNA_MSG_INFO, NULL,
-                         " * dvd_type: %s", value);
-
-                if (!strcmp("gstreamer", value))
-                    dvd_type = PLAYER_TYPE_GSTREAMER;
-                else if (!strcmp("mplayer", value))
-                    dvd_type = PLAYER_TYPE_MPLAYER;
-                else if (!strcmp("vlc", value))
-                    dvd_type = PLAYER_TYPE_VLC;
-                else if (!strcmp("xine", value))
-                    dvd_type = PLAYER_TYPE_XINE;
-                else
-                    enna_log(ENNA_MSG_WARNING, NULL,
-                             "   - unknown dvd_type, 'xine' used instead");
-                dvd_set = 1;
-            }
-            else if (!strcmp("tv_type", pair->key))
-            {
-                enna_config_value_store(&value, "tv_type",
-                                        ENNA_CONFIG_STRING, pair);
-                enna_log(ENNA_MSG_INFO, NULL,
-                         " * tv_type: %s", value);
-
-                if (!strcmp("gstreamer", value))
-                    tv_type = PLAYER_TYPE_GSTREAMER;
-                else if (!strcmp("mplayer", value))
-                    tv_type = PLAYER_TYPE_MPLAYER;
-                else if (!strcmp("vlc", value))
-                    tv_type = PLAYER_TYPE_VLC;
-                else if (!strcmp("xine", value))
-                    tv_type = PLAYER_TYPE_XINE;
-                else
-                    enna_log(ENNA_MSG_WARNING, NULL,
-                             "   - unknown tv_type, 'xine' used instead");
-                tv_set = 1;
-            }
-            else if (!strcmp("video_out", pair->key))
-            {
-                enna_config_value_store(&value, "video_out",
-                                        ENNA_CONFIG_STRING, pair);
-                enna_log(ENNA_MSG_INFO, NULL,
-                         " * video out: %s", value);
-
-                if (!strcmp("auto", value))
-                    vo = PLAYER_VO_AUTO;
-                else if (!strcmp("vdpau", value))
-                    vo = PLAYER_VO_VDPAU;
-                else if (!strcmp("x11", value))
-                    vo = PLAYER_VO_X11;
-                else if (!strcmp("xv", value))
-                    vo = PLAYER_VO_XV;
-                else if (!strcmp("gl", value))
-                    vo = PLAYER_VO_GL;
-                else if (!strcmp("fb", value))
-                    vo = PLAYER_VO_FB;
-                else
-                    enna_log(ENNA_MSG_WARNING, NULL,
-                             "   - unknown video_out, 'auto' used instead");
-            }
-            else if (!strcmp("audio_out", pair->key))
-            {
-                enna_config_value_store(&value, "audio_out",
-                                        ENNA_CONFIG_STRING, pair);
-                enna_log(ENNA_MSG_INFO, NULL,
-                         " * audio out: %s", value);
-
-                if (!strcmp("auto", value))
-                    ao = PLAYER_AO_AUTO;
-                else if (!strcmp("alsa", value))
-                    ao = PLAYER_AO_ALSA;
-                else if (!strcmp("oss", value))
-                    ao = PLAYER_AO_OSS;
-                else
-                    enna_log(ENNA_MSG_WARNING, NULL,
-                             "   - unknown audio_out, 'auto' used instead");
-            }
-            else if (!strcmp("verbosity", pair->key))
-            {
-                enna_config_value_store(&value, "verbosity",
-                                        ENNA_CONFIG_STRING, pair);
-                enna_log(ENNA_MSG_INFO, NULL,
-                         " * verbosity level: %s", value);
-
-                if (!strcmp("verbose", value))
-                    verbosity = PLAYER_MSG_VERBOSE;
-                else if (!strcmp("info", value))
-                    verbosity = PLAYER_MSG_INFO;
-                else if (!strcmp("warning", value))
-                    verbosity = PLAYER_MSG_WARNING;
-                else if (!strcmp("error", value))
-                    verbosity = PLAYER_MSG_ERROR;
-                else if (!strcmp ("critical", value))
-                    verbosity = PLAYER_MSG_CRITICAL;
-                else if (!strcmp("none", value))
-                    verbosity = PLAYER_MSG_NONE;
-                else
-                    enna_log(ENNA_MSG_WARNING, NULL,
-                             "   - unknown verbosity, " \
-                             "'warning' used instead");
-            }
-
-            CFG_VIDEO(sub_align);
-            CFG_VIDEO(sub_pos);
-            CFG_VIDEO(sub_scale);
-            CFG_VIDEO(sub_visibility);
-            CFG_VIDEO(framedrop);
-        }
-    }
-
-    if (!value)
-        enna_log(ENNA_MSG_INFO, NULL,
-                 " * use all parameters by default");
 
     memset(&param, 0, sizeof(player_init_param_t));
-    param.ao       = ao;
-    param.vo       = vo;
+    param.ao       = mp_cfg.ao;
+    param.vo       = mp_cfg.vo;
     param.winid    = (unsigned long) enna->ee_winid;
     param.event_cb = event_cb;
 
     /* Main player type is mandatory! */
-    if (!libplayer_wrapper_enabled(type))
+    if (!libplayer_wrapper_enabled(mp_cfg.type))
         goto err;
 
     /*
@@ -880,18 +901,20 @@ enna_mediaplayer_init(void)
      * Otherwise, if nothing is changed by the user but the wrapper is not
      * enabled, then the main type is used instead.
      */
-    if (dvd_type != type && !libplayer_wrapper_enabled(dvd_type))
+    if (mp_cfg.dvd_type != mp_cfg.type &&
+        !libplayer_wrapper_enabled(mp_cfg.dvd_type))
     {
-        if (dvd_set)
+        if (mp_cfg.dvd_set)
             goto err;
-        dvd_type = type;
+        mp_cfg.dvd_type = mp_cfg.type;
     }
 
-    if (tv_type != type && !libplayer_wrapper_enabled(tv_type))
+    if (mp_cfg.tv_type != mp_cfg.type &&
+        !libplayer_wrapper_enabled(mp_cfg.tv_type))
     {
-        if (tv_set)
+        if (mp_cfg.tv_set)
             goto err;
-        tv_type = type;
+        mp_cfg.tv_type = mp_cfg.type;
     }
 
     mp = calloc(1, sizeof(Enna_Mediaplayer));
@@ -907,21 +930,21 @@ enna_mediaplayer_init(void)
 
     mp->pipe = ecore_pipe_add(pipe_read, NULL);
 
-    ENNA_MP_PLAYER_INIT(type);
-    if (dvd_type != type)
-        ENNA_MP_PLAYER_INIT(dvd_type);
-    if (tv_type != type && tv_type != dvd_type)
-        ENNA_MP_PLAYER_INIT(tv_type);
+    ENNA_MP_PLAYER_INIT(mp_cfg.type);
+    if (mp_cfg.dvd_type != mp_cfg.type)
+        ENNA_MP_PLAYER_INIT(mp_cfg.dvd_type);
+    if (mp_cfg.tv_type != mp_cfg.type && mp_cfg.tv_type != mp_cfg.dvd_type)
+        ENNA_MP_PLAYER_INIT(mp_cfg.tv_type);
 
     mp_event_cb_set(_event_cb, NULL);
 
     mp->uri = NULL;
     mp->label = NULL;
-    mp->default_type = type;
-    mp->dvd_type = dvd_type;
-    mp->tv_type = tv_type;
-    mp->player = mp->players[type];
-    mp->player_type = type;
+    mp->default_type = mp_cfg.type;
+    mp->dvd_type = mp_cfg.dvd_type;
+    mp->tv_type = mp_cfg.tv_type;
+    mp->player = mp->players[mp_cfg.type];
+    mp->player_type = mp_cfg.type;
     mp->play_state = STOPPED;
 
     /* Create Ecore Event ID */

@@ -52,6 +52,7 @@ typedef struct weather_smart_data_s {
     weather_forecast_t forecast[4];
 } weather_t;
 
+void enna_weather_cfg_register (void);
 void enna_weather_parse_config (weather_t *w);
 void enna_weather_update       (weather_t *w);
 void enna_weather_set_city     (weather_t *w, const char *city);

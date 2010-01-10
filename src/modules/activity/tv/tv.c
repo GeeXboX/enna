@@ -48,6 +48,18 @@ typedef struct _Enna_Module_Tv
 #endif
 } Enna_Module_Tv;
 
+typedef struct tv_cfg_s {
+    char *vdr_uri;
+#ifdef BUILD_LIBSVDRP
+    char *svdrp_host;
+    int svdrp_port;
+    int svdrp_timeout;
+    svdrp_verbosity_level_t svdrp_verb;
+    int timer_threshold;
+#endif /* BUILD_LIBSVDRP */
+} tv_cfg_t;
+
+static tv_cfg_t tv_cfg;
 static Enna_Module_Tv *mod;
 
 /*****************************************************************************/
@@ -154,6 +166,89 @@ static Enna_Class_Activity class =
     NULL
 };
 
+static void
+cfg_tv_section_load (const char *section)
+{
+    const char *value = NULL;
+
+    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:");
+
+    value = enna_config_string_get(section, "vdr_uri");
+    if (value)
+    {
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, " * vdr_uri: %s", value);
+        ENNA_FREE(tv_cfg.vdr_uri);
+        tv_cfg.vdr_uri = strdup(value);
+    }
+
+#ifdef BUILD_LIBSVDRP
+    value = enna_config_string_get(section, "svdrp_port");
+    if (value)
+        tv_cfg.svdrp_port = atoi(value);
+
+    value = enna_config_string_get(section, "svdrp_timeout");
+    if (value)
+        svdrp_timeout = atoi(value);
+
+    value = enna_config_string_get(section, "svdrp_verbosity");
+    if (value)
+    {
+        if (!strcmp("verbose", value))
+            tv_cfg.svdrp_verb = SVDRP_MSG_VERBOSE;
+        else if (!strcmp("info", value))
+            tv_cfg.svdrp_verb = SVDRP_MSG_INFO;
+        else if (!strcmp("warning", value))
+            tv_cfg.svdrp_verb = SVDRP_MSG_WARNING;
+        else if (!strcmp("error", value))
+            tv_cfg.svdrp_verb = SVDRP_MSG_ERROR;
+        else if (!strcmp("critical", value))
+            tv_cfg.svdrp_verb = SVDRP_MSG_CRITICAL;
+        else if (!strcmp("none", value))
+            tv_cfg.svdrp_verb = SVDRP_MSG_NONE;
+    }
+
+    value = enna_config_string_get(section, "timer_quit_threshold");
+    if (value)
+        tv_cfg.timer_threshold = atoi(value);
+#endif /* BUILD_LIBSVDRP */
+
+    if (!value)
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
+                 " * use all parameters by default");
+}
+
+static void
+cfg_tv_free (void)
+{
+    ENNA_FREE(tv_cfg.vdr_uri);
+#ifdef BUILD_LIBSVDRP
+    ENNA_FREE(tv_cfg.svdrp_host);
+#endif /* BUILD_LIBSVDRP */
+}
+
+static void
+cfg_tv_section_set_default (void)
+{
+    cfg_tv_free();
+
+    tv_cfg.vdr_uri         = strdup("vdr:/");
+#ifdef BUILD_LIBSVDRP
+    tv_cfg.svdrp_host      = NULL;
+    tv_cfg.svdrp_port      = SVDRP_DEFAULT_PORT;
+    tv_cfg.svdrp_timeout   = SVDRP_DEFAULT_TIMEOUT;
+    tv_cfg.svdrp_verb      = SVDRP_MSG_WARNING;
+    tv_cfg.timer_threshold = 15;
+#endif /* BUILD_LIBSVDRP */
+}
+
+static Enna_Config_Section_Parser cfg_tv = {
+    "tv",
+    cfg_tv_section_load,
+    NULL,
+    cfg_tv_section_set_default,
+    cfg_tv_free,
+};
+
 /*****************************************************************************/
 /*                          Public Module API                                */
 /*****************************************************************************/
@@ -176,19 +271,6 @@ Enna_Module_Api ENNA_MODULE_API =
 void
 ENNA_MODULE_INIT(Enna_Module *em)
 {
-    Enna_Config_Data *cfgdata;
-    char *value = NULL;
-
-    char *vdr_uri = NULL;
-    
-#ifdef BUILD_LIBSVDRP
-    char *svdrp_host = NULL;
-    int svdrp_port = 0;
-    int svdrp_timeout = 0;
-    svdrp_verbosity_level_t svdrp_verb = 0;
-    int timer_threshold = 15;
-#endif /* BUILD_LIBSVDRP */    
-
     if (!em)
         return;
 
@@ -196,134 +278,40 @@ ENNA_MODULE_INIT(Enna_Module *em)
         !enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_NETVDR))
         return;
 
-    /* Load Config file values */
-    cfgdata = enna_config_module_pair_get("tv");
-
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:");
-
-    if (cfgdata)
-    {
-        Eina_List *l;
-
-        for (l = cfgdata->pair; l; l = l->next)
-        {
-            Config_Pair *pair = l->data;
-
-            if (!strcmp("vdr_uri", pair->key))
-            {
-                enna_config_value_store(&value, "vdr_uri",
-                                        ENNA_CONFIG_STRING, pair);
-
-                if(value)
-                {
-                    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                             " * vdr_uri: %s", value);
-                    vdr_uri = value;
-                }
-            }
-#ifdef BUILD_LIBSVDRP
-            else if (!strcmp("svdrp_port", pair->key))
-            {
-                enna_config_value_store(&value, "svdrp_port",
-                                        ENNA_CONFIG_STRING, pair);
-
-                if (value)
-                    svdrp_port = atoi (value);
-            }
-            else if (!strcmp("svdrp_timeout", pair->key))
-            {
-                enna_config_value_store(&value, "svdrp_timeout",
-                                        ENNA_CONFIG_STRING, pair);
-
-                if (value)
-                    svdrp_timeout = atoi (value);
-            }
-            else if (!strcmp("svdrp_verbosity", pair->key))
-            {
-                enna_config_value_store(&value, "svdrp_verbosity",
-                                        ENNA_CONFIG_STRING, pair);
-
-                if (!strcmp("verbose", value))
-                    svdrp_verb = SVDRP_MSG_VERBOSE;
-                else if (!strcmp("info", value))
-                    svdrp_verb = SVDRP_MSG_INFO;
-                else if (!strcmp("warning", value))
-                    svdrp_verb = SVDRP_MSG_WARNING;
-                else if (!strcmp("error", value))
-                    svdrp_verb = SVDRP_MSG_ERROR;
-                else if (!strcmp("critical", value))
-                    svdrp_verb = SVDRP_MSG_CRITICAL;
-                else if (!strcmp("none", value))
-                    svdrp_verb = SVDRP_MSG_NONE;
-            }
-            else if (!strcmp("timer_quit_threshold", pair->key))
-            {
-                enna_config_value_store(&value, "timer_quit_threshold",
-                                        ENNA_CONFIG_STRING, pair);
-
-                if (value)
-                    timer_threshold = atoi (value);
-            }            
-#endif /* BUILD_LIBSVDRP */            
-        }
-    }
-
-    if (!value)
-        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                 " * use all parameters by default");
-
-    if (!vdr_uri)
-    {
-        vdr_uri = "vdr:/";
-        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                 "   - no vdr_uri found, using 'vdr:/' instead");
-    }
+    enna_config_section_parser_register(&cfg_tv);
+    cfg_tv_section_set_default();
+    cfg_tv_section_load(cfg_tv.section);
 
     mod = calloc(1, sizeof(Enna_Module_Tv));
     mod->em = em;
     em->mod = mod;
 
     mod->enna_playlist = enna_mediaplayer_playlist_create();
-    enna_mediaplayer_uri_append(mod->enna_playlist, vdr_uri, "vdr");
+    enna_mediaplayer_uri_append(mod->enna_playlist, tv_cfg.vdr_uri, "vdr");
 
 #ifdef BUILD_LIBSVDRP
-    if (strstr(vdr_uri, "vdr:/"))
-        svdrp_host = "localhost";
-    else if (strstr(vdr_uri, "netvdr:/"))
+    if (strstr(tv_cfg.vdr_uri, "vdr:/"))
+        tv_cfg.svdrp_host = strdup("localhost");
+    else if (strstr(tv_cfg.vdr_uri, "netvdr:/"))
     { /* TODO needs testing */
-        char *p = vdr_uri + strlen("netvdr://");
-        char *q = strstr(vdr_uri, ":");
-        
-        svdrp_host = malloc (q - p);
-        strncpy(svdrp_host, p, q - p);
+        char *p = tv_cfg.vdr_uri + strlen("netvdr://");
+        char *q = strstr(tv_cfg.vdr_uri, ":");
+
+        tv_cfg.svdrp_host = malloc (q - p);
+        strncpy(tv_cfg.svdrp_host, p, q - p);
     }
     else
     {
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                 " * unknown vdr uri '%s'", vdr_uri);
+                 " * unknown vdr uri '%s'", tv_cfg.vdr_uri);
     }
 
-    if (!svdrp_port)
-    {
-        svdrp_port = SVDRP_DEFAULT_PORT;
-        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-            "   - no svdrp_port found, using '%i' instead", svdrp_port);
-    }
-    
-    if (!svdrp_timeout)
-    {
-        svdrp_timeout = SVDRP_DEFAULT_TIMEOUT;
-        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-            "   - no svdrp_timeout found, using '%i' instead", svdrp_timeout);
-    }   
-    
-    if (!svdrp_verb)
-        svdrp_verb = SVDRP_MSG_WARNING;
-    
     mod->timer_threshold = timer_threshold;
-    
-    if (svdrp_host)
-        mod->svdrp = enna_svdrp_init(svdrp_host, svdrp_port, svdrp_timeout, svdrp_verb);
+
+    if (tv_cfg.svdrp_host)
+        mod->svdrp = enna_svdrp_init(tv_cfg.svdrp_host,
+                                     tv_cfg.svdrp_port,
+                                     tv_cfg.svdrp_timeout, tv_cfg.svdrp_verb);
 #endif /* BUILD_LIBSVDRP */
 
     enna_activity_add(&class);

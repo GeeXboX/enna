@@ -46,6 +46,7 @@
 #include "volumes.h"
 #include "metadata.h"
 #include "mediaplayer.h"
+#include "weather_api.h"
 #include "ipc.h"
 #include "input.h"
 #include "url_utils.h"
@@ -224,7 +225,15 @@ static int _enna_init(int argc, char **argv)
 
     enna->lvl = ENNA_MSG_INFO;
 
+    /* register configuration parsers */
+    enna_main_cfg_register();
+    enna_weather_cfg_register();
+    enna_mediaplayer_cfg_register();
+    enna_metadata_cfg_register();
+
     enna_module_init();
+    enna_config_set_default();
+    enna_config_load();
 
     snprintf(tmp, sizeof(tmp), "%s/.enna", enna_util_user_home_get());
 
@@ -274,6 +283,7 @@ static int _enna_init(int argc, char **argv)
 
     /* Load available modules */
     enna_module_load_all();
+    enna_config_load();
 
     /* Dinamically init activities */
     EINA_LIST_FOREACH(enna_activities_get(), l, a)

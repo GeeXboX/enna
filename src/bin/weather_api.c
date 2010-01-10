@@ -45,6 +45,12 @@
 
 #undef DEBUG
 
+typedef struct weather_cfg_s {
+    char *city;
+} weather_cfg_t;
+
+static weather_cfg_t weather_cfg;
+
 /****************************************************************************/
 /*                        Google Weather API                                */
 /****************************************************************************/
@@ -302,39 +308,58 @@ weather_google_search (weather_t *w)
 }
 
 /****************************************************************************/
+/*                      Configuration Section Parser                        */
+/****************************************************************************/
+
+static void
+cfg_weather_section_load (const char *section)
+{
+    const char *city = NULL;
+
+    city = enna_config_string_get(section, "city");
+    if (city)
+    {
+        ENNA_FREE(weather_cfg.city);
+        weather_cfg.city = strdup(city);
+    }
+}
+
+static void
+cfg_weather_free (void)
+{
+    ENNA_FREE(weather_cfg.city);
+}
+
+static void
+cfg_weather_section_set_default (void)
+{
+    cfg_weather_free();
+    weather_cfg.city = strdup(WEATHER_DEFAULT_CITY);
+}
+
+static Enna_Config_Section_Parser cfg_weather = {
+    "weather",
+    cfg_weather_section_load,
+    NULL,
+    cfg_weather_section_set_default,
+    cfg_weather_free,
+};
+
+/****************************************************************************/
 /*                         Public Module API                                */
 /****************************************************************************/
 
 void
 enna_weather_parse_config (weather_t *w)
 {
-    Enna_Config_Data *cfgdata;
-    Eina_List *l;
-
     if (!w)
         return;
 
-    cfgdata = enna_config_module_pair_get (ENNA_MODULE_NAME);
-    if (!cfgdata)
-        return;
+    cfg_weather_section_set_default();
+    cfg_weather_section_load(cfg_weather.section);
 
-    for (l = cfgdata->pair; l; l = l->next)
-    {
-        Config_Pair *pair = l->data;
-
-        if (!strcmp (pair->key, "city"))
-        {
-            char *city = NULL;
-            enna_config_value_store (&city, pair->key,
-                                     ENNA_CONFIG_STRING, pair);
-
-            if (city)
-            {
-                ENNA_FREE(w->city);
-                w->city = strdup(city);
-            }
-        }
-    }
+    ENNA_FREE(w->city);
+    w->city = strdup(weather_cfg.city);
 }
 
 void
@@ -411,4 +436,10 @@ enna_weather_free (weather_t *w)
     }
 
     ENNA_FREE(w);
+}
+
+void
+enna_weather_cfg_register (void)
+{
+    enna_config_section_parser_register(&cfg_weather);
 }

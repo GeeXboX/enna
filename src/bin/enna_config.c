@@ -35,140 +35,292 @@
 #include "enna_config.h"
 #include "utils.h"
 #include "logs.h"
+#include "buffer.h"
+#include "ini_parser.h"
+#include "utils.h"
 
-#define DEFAULT_FILE \
-    "[enna]\n" \
-    "#none,event,info,warning,error,critical\n" \
-    "verbosity=warning\n" \
-    "log_file=/var/log/enna.log\n" \
-    "\n" \
-    "\n" \
-    "#0,1\n" \
-    "fullscreen=0\n" \
-    "\n" \
-    "slideshow_delay=5\n" \
-    "\n" \
-    "idle_timeout=0\n" \
-    "\n" \
-    "#/home/user/theme.edj for specific file or just 'default' if theme is\n" \
-    "#located at /usr/share/enna/theme/default.edj\n" \
-    "theme=default\n" \
-    "\n" \
-    "#software_x11,xrender_x11,opengl_x11,software_x11_16\n" \
-    "engine=software_x11\n" \
-    "\n" \
-    "music_ext=3gp,aac,ape,apl,flac,m4a,mac,mka,mp2,mp3,mp4,mpc,ogg,ra,wav,wma\n" \
-    "video_ext=asf,avi,divx,dvr-ms,evo,flc,fli,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m\n" \
-    "photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm\n" \
-    "\n" \
-    "[mediaplayer]\n" \
-    "# Values by default are 'auto' video_out, 'auto' audio_out and 'warning'\n" \
-    "# verbosity.\n" \
-    "# MPlayer is used for all streams excepted for DVD/DVDNAV and DVB where\n" \
-    "# xine is used if available. The parameters type, dvd_type and tv_type\n" \
-    "# can be used to overwrite this behaviour.\n" \
-    "\n" \
-    "#mplayer,xine\n" \
-    "#type=\n" \
-    "#dvd_type=\n" \
-    "#tv_type=\n" \
-    "\n" \
-    "#auto,vdpau,x11,xv,gl,fb\n" \
-    "#video_out=\n" \
-    "\n" \
-    "#auto,alsa,oss\n" \
-    "#audio_out=\n" \
-    "\n" \
-    "#verbose,info,warning,error,critical,none\n" \
-    "#verbosity=\n" \
-    "\n" \
-    "#auto,top,middle,bottom\n" \
-    "sub_align=auto\n" \
-    "\n" \
-    "#auto (value set to 100 for bottom),M..N where M and N are integer\n" \
-    "sub_pos=auto\n" \
-    "\n" \
-    "#auto (value set to 5) ,M..N where M and N are integer\n" \
-    "sub_scale=auto\n" \
-    "\n" \
-    "#auto,yes,no\n" \
-    "sub_visibility=auto\n" \
-    "\n" \
-    "#no,soft,hard\n" \
-    "framedrop=no\n" \
-    "\n" \
-    "[localfiles]\n" \
-    "path_music=file:///path/to/Music,Music,icon/favorite\n" \
-    "path_music=file:///path/to/server/Medias/Music,Server,icon/dev/nfs\n" \
-    "path_video=file:///path/to/Videos,Videos,icon/favorite\n" \
-    "path_video=file:///path/to/server/Medias/Videos,Server,icon/dev/nfs\n" \
-    "path_photo=file:///path/to/Photos,Photos,icon/favorite\n" \
-    "path_photo=file:///path/to/server/Medias/Photos,Server,icon/dev/nfs\n" \
-    "\n" \
-    "[netstreams]\n" \
-    "stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv\n" \
-    "\n" \
-    "[tv]\n" \
-    "# Default: 'vdr:/' (autodetect local VDR)\n" \
-    "# Local VDR: 'vdr://tmp/vdr-xine/stream#demux:mpeg_pes\n" \
-    "# Remote VDR: 'netvdr://192.168.1.1:18701\n" \
-    "#vdr_uri=\n" \
-    "\n" \
-    "# Default: 2001\n" \
-    "#svdrp_port=\n" \
-    "\n" \
-    "# Default: 30\n" \
-    "#svdrp_timeout=\n" \
-    "\n" \
-    "#verbose,info,warning,error,critical,none\n" \
-    "#svdrp_verbosity=\n" \
-    "\n" \
-    "# Don't exit if a timer will fire before this value (in minutes)\n" \
-    "# Default: 15\n" \
-    "#timer_quit_threshold=\n" \
-    "\n" \
-    "[weather]\n" \
-    "city=New York\n" \
-    "\n" \
-    "[media_db]\n" \
-    "path=file:///path/to/Music\n" \
-    "path=file:///path/to/server/Medias/Music\n" \
-    "verbosity=warning\n" \
-    "parser_number=2\n" \
-    "grabber_number=4\n" \
-    "commit_interval=128\n" \
-    "# <=0 for infinite\n" \
-    "scan_loop=-1\n" \
-    "# time [sec] for sleeping between loops\n" \
-    "scan_sleep=900\n" \
-    "# 0: normal, -20: higher, 19 lower\n" \
-    "scan_priority=19\n" \
-    "decrapifier=1\n" \
-    "\n" \
-    "# blacklisted keywords for the file titles\n" \
-    "# Normal keywords must use small letters, but it is possible to use\n" \
-    "# patterns for special keywords with numbers. So, the keyword is case\n" \
-    "# sensitive.\n" \
-    "#  NUM : for a number\n" \
-    "#  SE  : for a season\n" \
-    "#  EP  : for an episode\n" \
-    "# With SE and EP, the values are saved in the database.\n" \
-    "# Examples: sSEeEP, NUMxNUM\n" \
-    "#\n" \
-    "# If decrypifier=0, the keywords are ignored and the filenames are not\n" \
-    "# considered for the titles.\n" \
-    "#\n" \
-    "# Only alphabetical and numerical letters can be used in the keywords.\n" \
-    "blacklist_keywords=0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,orenji,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,cdNUM,CDNUM,SExEP,sSEeEP,SSEEEP\n" \
-    "\n" \
+static Eina_List *cfg_parsers = NULL;
+static ini_t *cfg_ini = NULL;
 
+/****************************************************************************/
+/*                       Config File Main Section                           */
+/****************************************************************************/
 
-static Eina_Hash *hash_config;
+#define SLIDESHOW_DEFAULT_TIMER 5.0
 
-static Eina_Bool _hash_foreach(const Eina_Hash *hash, const void *key,
-        void *data, void *fdata);
-static Eina_Hash *_config_load_conf_file(char *filename);
-static Eina_Hash *_config_load_conf(char *conffile, int size);
+#define FILTER_DEFAULT_MUSIC \
+    "3gp,aac,ape,apl,flac,m4a,mac,mka,mp2,mp3,mp4,mpc,ogg,ra,wav,wma"
+
+#define FILTER_DEFAULT_VIDEO \
+    "asf,avi,divx,dvr-ms,evo,flc,fli,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m"
+
+#define FILTER_DEFAULT_PHOTO \
+    "jpg,jpeg,png,gif,tif,tiff,xpm"
+
+static void
+cfg_main_section_set_default (void)
+{
+
+    enna_config->idle_timeout    = 0;
+    enna_config->fullscreen      = 0;
+    enna_config->slideshow_delay = SLIDESHOW_DEFAULT_TIMER;
+
+    enna_config->theme     = strdup("default");
+    enna_config->engine    = strdup("software_x11");
+    enna_config->verbosity = strdup("warning");
+    enna_config->log_file  = NULL;
+
+    enna_config->music_filters =
+        enna_util_tuple_get(FILTER_DEFAULT_MUSIC, ",");
+    enna_config->video_filters =
+        enna_util_tuple_get(FILTER_DEFAULT_VIDEO, ",");
+    enna_config->photo_filters =
+        enna_util_tuple_get(FILTER_DEFAULT_PHOTO, ",");
+
+    if (!enna_config->theme)
+        enna_config->theme = strdup("default");
+    enna_config->theme_file = (char *)
+        enna_config_theme_file_get(enna_config->theme);
+
+    enna_log(ENNA_MSG_INFO, NULL, "Theme Name: %s", enna_config->theme);
+    enna_log(ENNA_MSG_INFO, NULL, "Theme File: %s", enna_config->theme_file);
+
+    if (enna_config->theme_file)
+        elm_theme_overlay_add(enna_config->theme_file);
+    else
+        enna_log(ENNA_MSG_CRITICAL, NULL, "couldn't load theme file!");
+}
+
+#define GET_STRING(v)                                                   \
+    value = enna_config_string_get(section, #v);                        \
+    if (value)                                                          \
+    {                                                                   \
+        ENNA_FREE(enna_config->v);                                      \
+        enna_config->v = strdup(value);                                 \
+    }
+
+#define GET_INT(v)                                                      \
+    i = enna_config_int_get(section, #v);                               \
+    if (i)                                                              \
+        enna_config->v = i;                                             \
+
+#define GET_TUPLE(f,v)                                                  \
+    value = enna_config_string_get(section, v);                         \
+    if (value)                                                          \
+        enna_config->f = enna_util_tuple_get(value, ",");
+
+static void
+cfg_main_section_free (void)
+{
+    char *c;
+
+    ENNA_FREE(enna_config->theme);
+    ENNA_FREE(enna_config->engine);
+    ENNA_FREE(enna_config->verbosity);
+    ENNA_FREE(enna_config->log_file);
+
+    EINA_LIST_FREE(enna_config->video_filters, c)
+        ENNA_FREE(c);
+
+    EINA_LIST_FREE(enna_config->video_filters, c)
+        ENNA_FREE(c);
+
+    EINA_LIST_FREE(enna_config->photo_filters, c)
+        ENNA_FREE(c);
+}
+
+static void
+cfg_main_section_load (const char *section)
+{
+    const char *value;
+    int i;
+
+    cfg_main_section_free();
+
+    GET_STRING(theme);
+    GET_STRING(engine);
+    GET_STRING(verbosity);
+    GET_STRING(log_file);
+
+    GET_INT(idle_timeout);
+    GET_INT(fullscreen);
+    GET_INT(slideshow_delay);
+
+    GET_TUPLE(music_filters, "music_ext");
+    GET_TUPLE(video_filters, "video_ext");
+    GET_TUPLE(photo_filters, "photo_ext");
+}
+
+static Enna_Config_Section_Parser cfg_main_section = {
+    "enna",
+    cfg_main_section_load,
+    NULL,
+    cfg_main_section_set_default,
+    cfg_main_section_free,
+};
+
+void
+enna_main_cfg_register (void)
+{
+    enna_config_section_parser_register(&cfg_main_section);
+}
+
+/****************************************************************************/
+/*                       Config File Reader/Writer                          */
+/****************************************************************************/
+
+void
+enna_config_section_parser_register (Enna_Config_Section_Parser *parser)
+{
+    if (!parser)
+        return;
+
+    cfg_parsers = eina_list_append(cfg_parsers, parser);
+}
+
+void
+enna_config_section_parser_unregister (Enna_Config_Section_Parser *parser)
+{
+    if (!parser)
+        return;
+
+    cfg_parsers = eina_list_remove(cfg_parsers, parser);
+}
+
+void
+enna_config_init (const char *file)
+{
+    char filename[4096];
+
+    enna_config = calloc(1, sizeof(Enna_Config));
+    if (file)
+        snprintf(filename, sizeof(filename), "%s", file);
+    else
+        snprintf(filename, sizeof(filename), "%s/.enna/enna.cfg",
+                 enna_util_user_home_get());
+
+    enna_config->cfg_file = strdup(filename);
+    enna_log(ENNA_MSG_INFO, NULL, "using config file: %s", filename);
+
+    if (!cfg_ini)
+        cfg_ini = ini_new(filename);
+    ini_parse(cfg_ini);
+}
+
+void
+enna_config_shutdown (void)
+{
+    Eina_List *l;
+    Enna_Config_Section_Parser *p;
+
+    EINA_LIST_FOREACH(cfg_parsers, l, p)
+    {
+        if (p->free)
+            p->free();
+        enna_config_section_parser_unregister(p);
+    }
+
+    if (cfg_ini)
+        ini_free(cfg_ini);
+    cfg_ini = NULL;
+}
+
+void
+enna_config_set_default (void)
+{
+    Eina_List *l;
+    Enna_Config_Section_Parser *p;
+
+    EINA_LIST_FOREACH(cfg_parsers, l, p)
+    {
+        if (p->set_default)
+            p->set_default();
+    }
+}
+
+void
+enna_config_load (void)
+{
+    Eina_List *l;
+    Enna_Config_Section_Parser *p;
+
+    ini_parse(cfg_ini);
+
+    EINA_LIST_FOREACH(cfg_parsers, l, p)
+    {
+        if (p->load)
+            p->load(p->section);
+    }
+}
+
+void
+enna_config_save (void)
+{
+    Eina_List *l;
+    Enna_Config_Section_Parser *p;
+
+    EINA_LIST_FOREACH(cfg_parsers, l, p)
+    {
+        if (p->save)
+            p->save(p->section);
+    }
+
+    ini_dump(cfg_ini);
+}
+
+const char *
+enna_config_string_get (const char *section, const char *key)
+{
+    return ini_get_string(cfg_ini, section, key);
+}
+
+Eina_List *
+enna_config_string_list_get (const char *section, const char *key)
+{
+    return ini_get_string_list(cfg_ini, section, key);
+}
+
+int
+enna_config_int_get (const char *section, const char *key)
+{
+    return ini_get_int(cfg_ini, section, key);
+}
+
+Eina_Bool
+enna_config_bool_get (const char *section, const char *key)
+{
+    return ini_get_bool(cfg_ini, section, key);
+}
+
+void
+enna_config_string_set (const char *section,
+                        const char *key, const char *value)
+{
+    ini_set_string(cfg_ini, section, key, value);
+}
+
+void
+enna_config_string_list_set (const char *section,
+                             const char *key, Eina_List *value)
+{
+    ini_set_string_list(cfg_ini, section, key, value);
+}
+
+void
+enna_config_int_set (const char *section, const char *key, int value)
+{
+    ini_set_int(cfg_ini, section, key, value);
+}
+
+void
+enna_config_bool_set (const char *section, const char *key, Eina_Bool value)
+{
+    ini_set_bool(cfg_ini, section, key, value);
+}
+
+/****************************************************************************/
+/*                                Theme                                     */
+/****************************************************************************/
 
 const char *
 enna_config_theme_get()
@@ -196,298 +348,6 @@ enna_config_theme_file_get(const char *s)
         return strdup(tmp);
     else
         return NULL;
-}
-
-void
-enna_config_value_store(void *var, char *section,
-                        ENNA_CONFIG_TYPE type, Config_Pair *pair)
-{
-    if (!strcmp(pair->key, section))
-    {
-        switch (type)
-        {
-        case ENNA_CONFIG_INT:
-        {
-            int *value = var;
-            *value = atoi(pair->value);
-            break;
-        }
-        case ENNA_CONFIG_STRING:
-        {
-            char **value = var;
-            *value = strdup(pair->value);
-            break;
-        }
-        case ENNA_CONFIG_STRING_LIST:
-        {
-            Eina_List *list;
-            Eina_List **value = var;
-            char **clist;
-            char *string;
-            int i;
-
-            list = NULL;
-            clist = ecore_str_split(pair->value, ",", 0);
-
-            for (i = 0; (string = clist[i]); i++)
-            {
-                if (!string)
-                    break;
-                list = eina_list_append(list, string);
-            }
-            *value = list;
-        }
-        default:
-            break;
-        }
-    }
-}
-
-Enna_Config_Data *
-enna_config_module_pair_get(const char *module_name)
-{
-    if(!hash_config || !module_name)
-    return NULL;
-
-    return eina_hash_find(hash_config, module_name);
-}
-
-void
-enna_config_init(const char* conffile)
-{
-    char filename[4096];
-
-    enna_config = calloc(1, sizeof(Enna_Config));
-    if (conffile)
-        snprintf(filename, sizeof(filename), "%s", conffile);
-    else
-        snprintf(filename, sizeof(filename), "%s/.enna/enna.cfg",
-            enna_util_user_home_get());
-
-    hash_config = _config_load_conf_file(filename);
-    if (hash_config) {
-        eina_hash_foreach(hash_config, _hash_foreach, NULL);
-        enna_log(ENNA_MSG_INFO, NULL, "using config file: %s.", filename);
-    }
-    else enna_log(ENNA_MSG_WARNING, NULL, "couldn't load enna config file: %s.", filename);
-
-    if (!enna_config->theme)
-        enna_config->theme=strdup("default");
-    enna_config->theme_file
-        = enna_config_theme_file_get(enna_config->theme);
-
-    enna_log(ENNA_MSG_INFO, NULL, "Theme Name: %s", enna_config->theme);
-    enna_log(ENNA_MSG_INFO, NULL, "Theme File: %s", enna_config->theme_file);
-    if (enna_config->theme_file)
-        elm_theme_overlay_add(enna_config->theme_file);
-    else
-        enna_log(ENNA_MSG_CRITICAL, NULL, "couldn't load theme file!");
-
-}
-
-void
-enna_config_shutdown(void)
-{
-
-}
-
-static Eina_Bool
-_hash_foreach(const Eina_Hash *hash, const void *key, void *data, void *fdata)
-{
-    Enna_Config_Data *config_data;
-    Eina_List *l;
-    if (!strcmp(key, "enna"))
-    {
-        config_data = data;
-
-        enna_config->slideshow_delay = SLIDESHOW_DEFAULT_TIMER;
-
-        for (l = config_data->pair; l; l = l->next)
-        {
-            Config_Pair *pair = l->data;
-            enna_config_value_store(&enna_config->theme, "theme",
-                    ENNA_CONFIG_STRING, pair);
-            enna_config_value_store(&enna_config->idle_timeout, "idle_timeout",
-                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&enna_config->fullscreen, "fullscreen",
-                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&enna_config->slideshow_delay,
-                                    "slideshow_delay",
-                                    ENNA_CONFIG_INT, pair);
-            enna_config_value_store(&enna_config->engine, "engine",
-                    ENNA_CONFIG_STRING, pair);
-            enna_config_value_store(&enna_config->verbosity, "verbosity",
-                    ENNA_CONFIG_STRING, pair);
-            enna_config_value_store(&enna_config->music_filters, "music_ext",
-                    ENNA_CONFIG_STRING_LIST, pair);
-            enna_config_value_store(&enna_config->video_filters, "video_ext",
-                    ENNA_CONFIG_STRING_LIST, pair);
-            enna_config_value_store(&enna_config->photo_filters, "photo_ext",
-                    ENNA_CONFIG_STRING_LIST, pair);
-            enna_config_value_store(&enna_config->log_file, "log_file",
-                    ENNA_CONFIG_STRING, pair);
-        }
-    }
-
-    return 1;
-}
-
-static Eina_Hash *
-_config_load_conf_file(char *filename)
-{
-    int fd;
-    FILE *f;
-    struct stat st;
-    char tmp[4096];
-    char *conffile;
-    int ret;
-
-    if (stat(filename, &st))
-    {
-        enna_log(ENNA_MSG_WARNING, NULL, "Cannot stat file %s", filename);
-        snprintf(tmp, sizeof(tmp), "%s/.enna", enna_util_user_home_get());
-        if (!ecore_file_is_dir(tmp))
-            ecore_file_mkdir(tmp);
-
-        if (!(f = fopen(filename, "w")))
-            return NULL;
-        else
-        {
-            fprintf(f, DEFAULT_FILE);
-            fclose(f);
-        }
-
-    }
-
-    if (stat(filename, &st))
-    {
-        enna_log(ENNA_MSG_ERROR, NULL, "Cannot stat file %s", filename);
-        return NULL;
-    }
-
-    conffile = malloc(st.st_size);
-
-    if ((fd = open(filename, O_RDONLY)) < 0)
-    {
-        enna_log(ENNA_MSG_ERROR, NULL, "Cannot open file");
-        return NULL;
-    }
-
-    ret = read(fd, conffile, st.st_size);
-
-    if (ret != st.st_size)
-    {
-        enna_log(ENNA_MSG_ERROR, NULL,
-                "Cannot read conf file entirely, read only %d bytes", ret);
-        return NULL;
-    }
-
-    return _config_load_conf(conffile, st.st_size);
-}
-
-static Eina_Hash *
-_config_load_conf(char *conffile, int size)
-{
-    char *current_section = NULL;
-    char *current_line = conffile;
-    Eina_Hash *config = NULL;
-    Enna_Config_Data *config_data;
-
-    config = eina_hash_string_superfast_new (NULL);
-
-    while (current_line < conffile + size)
-    {
-        char *eol = strchr(current_line, '\n');
-        Config_Pair *pair;
-        char *key;
-        char *value;
-        if (eol)
-            *eol = 0;
-        else
-            // Maybe the end of file
-            eol = conffile + size;
-
-        // Removing the leading spaces
-        while (*current_line && *current_line == ' ')
-            current_line++;
-
-        // Maybe an empty line
-        if (!(*current_line))
-        {
-            current_line = eol + 1;
-            continue;
-        }
-
-        // Maybe a comment line
-        if (*current_line == '#')
-        {
-            current_line = eol + 1;
-            continue;
-        }
-
-        // We are at a section definition
-        if (*current_line == '[')
-        {
-            // ']' must be the last char of this line
-            char *end_of_section_name = strchr(current_line + 1, ']');
-
-            if (end_of_section_name[1] != 0)
-            {
-                enna_log(ENNA_MSG_WARNING, NULL, "malformed section name %s",
-                        current_line);
-                return NULL;
-            }
-            current_line++;
-            *end_of_section_name = '\0';
-
-            // Building the section
-            if (current_section)
-                free(current_section);
-            current_section = strdup(current_line);
-            config_data = calloc(1, sizeof(Enna_Config_Data));
-            config_data->section = current_section;
-            config_data->pair = NULL;
-            eina_hash_add(config, current_section, config_data);
-            current_line = eol + 1;
-            continue;
-
-        }
-
-        // Must be in a section to provide a key/value pair
-        if (!current_section)
-        {
-            enna_log(ENNA_MSG_WARNING, NULL, "No section for this line %s",
-                    current_line);
-            /* FIXME : free hash and confile*/
-            return NULL;
-        }
-
-        // Building the key/value string pair
-        key = current_line;
-        value = strchr(current_line, '=');
-        if (!value)
-        {
-            enna_log(ENNA_MSG_WARNING, NULL, "Malformed line %s", current_line);
-            /* FIXME : free hash and confile*/
-            return NULL;
-        }
-        *value = '\0';
-        value++;
-        pair = calloc(1, sizeof(Config_Pair));
-        pair->key = strdup(key);
-        pair->value = strdup(value);
-        config_data = eina_hash_find(config, current_section);
-        if (config_data)
-        {
-            config_data->pair = eina_list_append(config_data->pair, pair);
-            /* Need this ? */
-            /*eina_hash_modify(hash, current_section, config_data);*/
-        }
-
-        current_line = eol + 1;
-    }
-    free(conffile);
-    return config;
 }
 
 /****************************************************************************/
