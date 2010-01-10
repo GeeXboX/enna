@@ -73,6 +73,7 @@ typedef struct localfiles_cfg_s {
     Eina_List *path_music;
     Eina_List *path_video;
     Eina_List *path_photo;
+    Eina_Bool home;
 } localfiles_cfg_t;
 
 static localfiles_cfg_t localfiles_cfg;
@@ -418,6 +419,8 @@ static void __class_init(const char *name, Class_Private_Data **priv,
             data->config->root_directories, root);
     }
 
+    if (localfiles_cfg.home)
+    {
     // add home directory entry
     root = ENNA_NEW(Root_Directories, 1);
     snprintf(buf, sizeof(buf), "file://%s", enna_util_user_home_get());
@@ -427,6 +430,7 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 
     data->config->root_directories = eina_list_append(
         data->config->root_directories, root);
+    }
 
     /* add localfiles to the list of volumes listener */
     data->vl = enna_volumes_listener_add("localfiles", _add_volumes_cb, _remove_volumes_cb, data);
@@ -534,6 +538,7 @@ cfg_localfiles_section_load (const char *section)
         cfg_localfiles_section_list_get(section, "path_video");
     localfiles_cfg.path_photo =
         cfg_localfiles_section_list_get(section, "path_photo");
+    localfiles_cfg.home = enna_config_bool_get(section, "display_home");
 }
 
 static void
@@ -544,6 +549,7 @@ cfg_localfiles_section_set_default (void)
     localfiles_cfg.path_music = NULL;
     localfiles_cfg.path_video = NULL;
     localfiles_cfg.path_photo = NULL;
+    localfiles_cfg.home = EINA_TRUE;
 }
 
 static Enna_Config_Section_Parser cfg_localfiles = {
