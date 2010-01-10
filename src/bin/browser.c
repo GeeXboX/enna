@@ -561,12 +561,6 @@ _browse(void *data)
         else if (sd->show_file)
         {
             /* File selected is a regular file */
-            Enna_Vfs_File *prev_vfs;
-            char *prev_uri;
-            prev_vfs = sd->vfs->func.class_vfs_get(sd->vfs->cookie);
-                prev_uri = prev_vfs->uri ? strdup(prev_vfs->uri) : NULL;
-            sd->files = sd->vfs->func.class_browse_up(prev_uri, sd->vfs->cookie);
-            ENNA_FREE(prev_uri);
             ev->files = sd->files;
             sd->accept_ev = 1;
             evas_object_smart_callback_call (sd->obj, "selected", ev);
