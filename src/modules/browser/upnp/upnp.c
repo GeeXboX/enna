@@ -96,183 +96,147 @@ upnp_media_server_free (upnp_media_server_t *srv)
     ENNA_FREE(srv);
 }
 
-static xmlNode *
-xml_util_get_element (xmlNode *node, ...)
+typedef struct upnp_filter_arg_s {
+    Eina_List **list;
+    ENNA_VFS_CAPS cap;
+} upnp_filter_arg_t;
+
+static void
+didl_parse_item (GUPnPDIDLLiteParser *parser,
+                 GUPnPDIDLLiteItem *item, gpointer user_data)
 {
-    va_list var_args;
+    GUPnPDIDLLiteObject *obj;
+    Enna_Vfs_File *f = NULL;
+    const char *id, *title;
+    const char *class_name, *uri;
+    Eina_List **list = NULL;
+    GUPnPDIDLLiteResource *res;
+    char *icon = NULL;
+    GList *resources;
+    upnp_filter_arg_t *arg;
+    ENNA_VFS_CAPS cap;
 
-    va_start(var_args, node);
+    arg  = user_data;
+    list = arg->list;
+    cap  = arg->cap;
+    obj  = (GUPnPDIDLLiteObject *) item;
 
-    while (1)
+    id = gupnp_didl_lite_object_get_id(obj);
+    if (!id)
+        return;
+
+    title = gupnp_didl_lite_object_get_title(obj);
+    if (!title)
+        return;
+
+    class_name = gupnp_didl_lite_object_get_upnp_class(obj);
+    if (!class_name)
+        return;
+
+    switch (cap)
     {
-        const char *arg;
-
-        arg = va_arg(var_args, const char *);
-        if (!arg)
-            break;
-
-        for (node = node->children; node; node = node->next)
-        {
-            if (!node->name)
-                continue;
-
-            if (!strcmp(arg, (char *) node->name))
-                break;
-        }
-
-        if (!node)
-            break;
+    case ENNA_CAPS_PHOTO:
+        if (!strncmp(class_name,
+                     ITEM_CLASS_IMAGE, strlen(ITEM_CLASS_IMAGE)))
+            icon = "icon/photo";
+        else
+            return;
+        break;
+    case ENNA_CAPS_MUSIC:
+        if (!strncmp(class_name,
+                     ITEM_CLASS_AUDIO, strlen(ITEM_CLASS_AUDIO)))
+            icon = "icon/music";
+        else
+            return;
+        break;
+    case ENNA_CAPS_VIDEO:
+        if (!strncmp(class_name,
+                     ITEM_CLASS_VIDEO, strlen(ITEM_CLASS_VIDEO)))
+            icon = "icon/video";
+        else
+            return;
+        break;
+    default:
+        return;
     }
 
-    va_end(var_args);
+    if (!icon)
+        icon = "icon/hd";
 
-    return node;
+    resources = gupnp_didl_lite_object_get_resources(obj);
+    if (!resources)
+        return;
+
+    res = resources->data;
+    if (!res)
+        goto err_res;
+
+    uri = gupnp_didl_lite_resource_get_uri(res);
+    if (!uri)
+        goto err_res;
+
+    f = enna_vfs_create_file(uri, title, icon, NULL);
+    *list = eina_list_append(*list, f);
+
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             "DIDL item '%s' (id: %s, uri: %s)", title, id, uri);
+
+err_res:
+    g_list_free(resources);
 }
 
-static Enna_Vfs_File *
-didl_process_object (xmlNode *e, char *udn, ENNA_VFS_CAPS cap)
+static void
+didl_parse_container (GUPnPDIDLLiteParser *parser,
+                      GUPnPDIDLLiteContainer *container,
+                      gpointer user_data)
 {
-    char *id, *title;
-    gboolean is_container;
+    GUPnPDIDLLiteObject *obj;
     Enna_Vfs_File *f = NULL;
+    const char *id, *title;
+    Eina_List **list = NULL;
+    char uri[512];
 
-    id = gupnp_didl_lite_object_get_id(e);
+    obj = (GUPnPDIDLLiteObject *) container;
+    list = user_data;
+
+    id = gupnp_didl_lite_object_get_id(obj);
     if (!id)
-        goto err_id;
+        return;
 
-    title = gupnp_didl_lite_object_get_title(e);
+    title = gupnp_didl_lite_object_get_title(obj);
     if (!title)
-        goto err_title;
+        return;
 
-    is_container = gupnp_didl_lite_object_is_container(e);
+    snprintf(uri, sizeof (uri), "%s/%s", mod->current_id, id);
 
+    f = enna_vfs_create_directory(uri, title, "icon/directory", NULL);
+    *list = eina_list_append(*list, f);
 
-    if (is_container)
-    {
-        char uri[1024];
-
-        snprintf(uri, sizeof (uri), "%s/%s", mod->current_id, id);
-
-        f = enna_vfs_create_directory(uri, title, "icon/directory", NULL);
-
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                 "DIDL container '%s' (id: %s, uri: %s)", title, id, uri);
-    }
-    else
-    {
-        char *class_name, *uri;
-        char *icon = NULL;
-        GList *resources;
-        xmlNode *n;
-
-        class_name = gupnp_didl_lite_object_get_upnp_class(e);
-        if (!class_name)
-            goto err_no_class;
-
-        if (cap & ENNA_CAPS_PHOTO)
-        {
-            if (!strncmp(class_name,
-                         ITEM_CLASS_IMAGE, strlen(ITEM_CLASS_IMAGE)))
-                icon = "icon/photo";
-            else
-                goto err_resources;
-        }
-
-        if (cap & ENNA_CAPS_MUSIC)
-        {
-            if (!strncmp(class_name,
-                         ITEM_CLASS_AUDIO, strlen(ITEM_CLASS_AUDIO)))
-                icon = "icon/music";
-            else
-                goto err_resources;
-        }
-
-        if (cap & ENNA_CAPS_VIDEO)
-        {
-            if (!strncmp(class_name,
-                         ITEM_CLASS_VIDEO, strlen(ITEM_CLASS_VIDEO)))
-                icon = "icon/video";
-            else
-                goto err_resources;
-        }
-
-        g_free(class_name);
-
-    err_no_class:
-        if (!icon)
-            icon = "icon/hd";
-
-        resources = gupnp_didl_lite_object_get_property(e, "res");
-        if (!resources)
-            goto err_resources;
-
-        n = (xmlNode *) resources->data;
-        if (!n)
-            goto err_res_node;
-
-        uri = gupnp_didl_lite_property_get_value(n);
-        if (!uri)
-            goto err_no_uri;
-
-        f = enna_vfs_create_file(uri, title, icon, NULL);
-
-        enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-                 "DIDL item '%s' (id: %s, uri: %s)", title, id, uri);
-
-    err_no_uri:
-    err_res_node:
-        g_list_free(resources);
-    }
-
- err_resources:
-    g_free(title);
- err_title:
-    g_free(id);
- err_id:
-    return f;
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             "DIDL container '%s' (id: %s, uri: %s)", title, id, uri);
 }
 
 static Eina_List *
 didl_process (char *didl, char *udn, ENNA_VFS_CAPS cap)
 {
-    xmlNode *element;
-    xmlDoc  *doc;
     Eina_List *list = NULL;
+    GUPnPDIDLLiteParser *parser;
+    upnp_filter_arg_t arg;
 
-    doc = xmlParseMemory(didl, strlen(didl));
-    if (!doc)
-    {
-        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                 "Unable to parse DIDL-Lite XML:\n%s", didl);
-        return NULL;
-    }
+    parser = gupnp_didl_lite_parser_new();
 
-    /* Get a pointer to root element */
-    element = xml_util_get_element((xmlNode *) doc, "DIDL-Lite", NULL);
-    if (!element)
-    {
-        enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
-                 "No 'DIDL-Lite' node found.");
-        goto err_element;
-    }
+    arg.list = &list;
+    arg.cap = cap;
 
-    for (element = element->children; element; element = element->next)
-    {
-        const char *name = (const char *) element->name;
+    g_signal_connect(parser, "container-available",
+                     G_CALLBACK(didl_parse_container), &list);
+    g_signal_connect(parser, "item-available",
+                     G_CALLBACK(didl_parse_item), &arg);
 
-        if (!g_ascii_strcasecmp(name, "container") ||
-            !g_ascii_strcasecmp(name, "item"))
-        {
-            Enna_Vfs_File *f;
+    gupnp_didl_lite_parser_parse_didl(parser, didl, NULL);
 
-            f = didl_process_object(element, udn, cap);
-            if (f)
-                list = eina_list_append(list, f);
-        }
-    }
+    g_object_unref(parser);
 
- err_element:
-    xmlFreeDoc(doc);
     return list;
 }
 
