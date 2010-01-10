@@ -46,7 +46,6 @@ PKG_CHECK_MODULES([ENNA],
    ecore-file >= 0.9.9.063
    ecore-ipc >= 0.9.9.063
    edje >= 0.9.93.063
-   efreet >= 0.5.0.063
    elementary >= 0.6.0.063
    libplayer >= 2.0.0 libplayer < 3.0.0
    libvalhalla >= 2.0.0 libvalhalla < 3.0.0
@@ -406,6 +405,32 @@ if test "x$want_ecore_x" = "xyes" -o "x$want_ecore_x" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_ECORE_X, test "x$have_ecore_x" = "xyes")
 
+# efreet
+want_efreet="auto"
+have_efreet="no"
+AC_MSG_CHECKING(whether efreet support is to be built)
+AC_ARG_ENABLE(efreet,
+    AS_HELP_STRING([--enable-efreet],[Enable efreet support]),
+    [ want_efreet=$enableval ]
+)
+AC_MSG_RESULT($want_efreet)
+if test "x$want_efreet" = "xyes" -o "x$want_efreet" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [EFREET],
+    [efreet],
+    [
+      AC_DEFINE(BUILD_EFREET, 1, [efreet support])
+      have_efreet="yes"
+    ],
+    [
+      if test "x$want_efreet" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([efreet not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_EFREET, test "x$have_efreet" = "xyes")
+
 # libcddb
 want_libcddb="auto"
 have_libcddb="no"
@@ -633,6 +658,7 @@ echo
 echo "Optional linked-in librairies:"
 echo
 echo "  ecore-x.......................... : $have_ecore_x"
+echo "  efreet........................... : $have_efreet"
 echo "  libcddb.......................... : $have_libcddb"
 echo "  libcurl.......................... : $have_libcurl"
 echo "  libsvdrp......................... : $have_libsvdrp"

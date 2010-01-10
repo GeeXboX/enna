@@ -68,6 +68,11 @@ AM_CFLAGS += @LIBXRANDR_CFLAGS@
 enna_LDADD += @LIBXRANDR_LIBS@
 endif
 
+if BUILD_EFREET
+AM_CFLAGS += @EFREET_CFLAGS@
+enna_LDADD += @EFREET_LIBS@
+endif
+
 include ../modules/activity/bookstore/config.mak
 include ../modules/activity/configuration/config.mak
 include ../modules/activity/games/config.mak
@@ -98,7 +103,9 @@ enna_SOURCES += $(SRCS_ACTIVITY_CONFIGURATION)
 endif
 
 if BUILD_ACTIVITY_GAMES
+if BUILD_EFREET
 enna_SOURCES += $(SRCS_ACTIVITY_GAMES)
+endif
 endif
 
 if BUILD_ACTIVITY_MUSIC

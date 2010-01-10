@@ -17,6 +17,7 @@ INCLUDES = \
 @ENNA_CFLAGS@ @EFREET_CFLAGS@
 
 if BUILD_ACTIVITY_GAMES
+if BUILD_EFREET
 
 pkgdir = $(libdir)/enna/modules
 
@@ -31,4 +32,5 @@ activity_games_la_DEPENDENCIES = $(top_builddir)/config.h
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/activity_$(MODULE).*
 
+endif
 endif
