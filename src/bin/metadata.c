@@ -120,7 +120,7 @@ cfg_db_section_load (const char *section)
             ENNA_FREE(c);
 
         EINA_LIST_FOREACH(vl, l, c)
-            db_cfg.bl_words = eina_list_append(db_cfg.bl_words, strdup(c));
+            db_cfg.path = eina_list_append(db_cfg.path, strdup(c));
     }
 
     value = enna_config_string_get(section, "blacklist_keywords");
