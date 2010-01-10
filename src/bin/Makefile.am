@@ -183,6 +183,7 @@ endif
 enna_thumb_SOURCES = \
 enna_thumb_main.c\
 utils.c\
+buffer.c\
 image.c
 
 enna_thumb_LDADD = @ENNA_LIBS@
