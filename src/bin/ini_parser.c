@@ -33,8 +33,11 @@
 #include "ini_parser.h"
 #include "buffer.h"
 #include "utils.h"
+#include "logs.h"
 
 #define BUFSIZE 1024
+
+#define MODULE_NAME "ini"
 
 /****************************************************************************/
 /*                         Private Module API                               */
@@ -202,6 +205,9 @@ ini_get_value (ini_t *ini, const char *section, const char *key)
     if (!f)
         return NULL;
 
+    enna_log(ENNA_MSG_EVENT, MODULE_NAME,
+             _("get_value: %s - %s - %s"), section, key, f->value);
+
     return f->value;
 }
 
@@ -216,7 +222,12 @@ ini_get_value_list(ini_t *ini, const char *section, const char *key)
         return NULL;
 
     EINA_LIST_FOREACH(tuple, l, f)
+    {
+        enna_log(ENNA_MSG_EVENT, MODULE_NAME,
+                 _("get_value: %s - %s - %s"), section, key, f->value);
+
         v = eina_list_append(v, strdup(f->value));
+    }
 
     return v;
 }
@@ -240,6 +251,9 @@ ini_set_value (ini_t *ini, const char *section, const char *key, const char *v)
     s = ini_get_section(ini, section);
     if (!s)
         return;
+
+    enna_log(ENNA_MSG_EVENT, MODULE_NAME,
+             _("set_value: %s - %s - %s"), section, key, v);
 
     f = ini_get_field(s, key);
     if (f)
@@ -281,6 +295,9 @@ ini_set_value_list (ini_t *ini, const char *section,
     /* add a new fields */
     EINA_LIST_FOREACH(values, l, v)
     {
+        enna_log(ENNA_MSG_EVENT, MODULE_NAME,
+                 _("set_value: %s - %s - %s"), section, key, v);
+
         f = ini_field_new(key, v);
         ini_section_append_field(s, f);
     }
