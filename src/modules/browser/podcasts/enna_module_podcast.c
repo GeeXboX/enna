@@ -142,8 +142,8 @@ static void _prepare_channel(Channel *ch)
     md5 = md5sum (ch->url);
 
     /* Create Channel directory if not existing*/
-    snprintf (dst, sizeof (dst), "%s/.enna/%s/%s/",
-	enna_util_user_home_get(), PATH_PODCASTS, md5);
+    snprintf (dst, sizeof (dst), "%s/enna/%s/%s/",
+	efreet_cache_home_get(), PATH_PODCASTS, md5);
     if (!ecore_file_is_dir (dst))
         ecore_file_mkdir (dst);
 
@@ -304,7 +304,7 @@ void module_init(Enna_Module *em)
     /* try to create podcasts directory storage */
     memset (dst, '\0', sizeof (dst));
     snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              enna_util_user_home_get (), PATH_PODCASTS);
+              efreet_cache_home_get(), PATH_PODCASTS);
     if (!ecore_file_is_dir (dst))
         ecore_file_mkdir (dst);
 

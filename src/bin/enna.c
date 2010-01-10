@@ -218,7 +218,6 @@ static void _elm_init (int argc, char **argv)
 
 static int _enna_init(int argc, char **argv)
 {
-    char tmp[PATH_MAX];
     int i;
     Eina_List *l;
     Enna_Class_Activity *a;
@@ -234,15 +233,6 @@ static int _enna_init(int argc, char **argv)
     enna_module_init();
     enna_config_set_default();
     enna_config_load();
-
-    snprintf(tmp, sizeof(tmp), "%s/.enna", enna_util_user_home_get());
-
-    if (!ecore_file_exists(tmp))
-        ecore_file_mkdir(tmp);
-
-    snprintf(tmp, sizeof(tmp), "%s/.enna/covers", enna_util_user_home_get());
-    if (!ecore_file_exists(tmp))
-        ecore_file_mkdir(tmp);
 
     if (enna_config->verbosity)
     {
@@ -519,6 +509,7 @@ static int parse_command_line(int argc, char **argv)
 int main(int argc, char **argv)
 {
     int res = EXIT_FAILURE;
+    char buf[PATH_MAX];
 
     init_locale();
 
@@ -527,6 +518,16 @@ int main(int argc, char **argv)
 
     url_global_init();
     eina_init();
+
+    snprintf(buf, sizeof(buf), "%s/enna", efreet_config_home_get());
+    if (!ecore_file_is_dir(buf))
+        ecore_file_mkpath(buf);
+    snprintf(buf, sizeof(buf), "%s/enna/covers", efreet_data_home_get());
+    if (!ecore_file_is_dir(buf))
+        ecore_file_mkpath(buf);              
+    snprintf(buf, sizeof(buf), "%s/enna", efreet_cache_home_get());
+    if (!ecore_file_is_dir(buf))
+        ecore_file_mkpath(buf);  
 
     /* Must be called first */
     enna_config_init(conffile);

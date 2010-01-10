@@ -222,8 +222,8 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     {
         char dst[1024] = { 0 };
 
-        snprintf(dst, sizeof(dst), "%s/.enna/covers/%s",
-                 enna_util_user_home_get(), cv);
+        snprintf(dst, sizeof(dst), "%s/enna/covers/%s",
+                 efreet_data_home_get(), cv);
         file = strdup(dst);
     }
 

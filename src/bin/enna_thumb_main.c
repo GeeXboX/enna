@@ -31,6 +31,7 @@
 #include <Evas.h>
 #include <Eet.h>
 #include <Edje.h>
+#include <Efreet.h>
 
 #include "utils.h"
 
@@ -97,7 +98,7 @@ main(int argc, char **argv)
     ecore_file_init();
     ecore_ipc_init();
 
-    snprintf(_thumbdir, sizeof(_thumbdir), "%s/.enna/thumbnails/", enna_util_user_home_get());
+    snprintf(_thumbdir, sizeof(_thumbdir), "%s/enna/thumbnails/", efreet_cache_home_get());
     ecore_file_mkpath(_thumbdir);
 
     if (_ipc_init()) ecore_main_loop_begin();

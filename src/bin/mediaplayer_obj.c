@@ -153,8 +153,8 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
         if (*cover == '/')
             snprintf(cv, sizeof(cv), "%s", cover);
         else
-            snprintf(cv, sizeof(cv), "%s/.enna/covers/%s",
-                     enna_util_user_home_get(), cover);
+            snprintf(cv, sizeof(cv), "%s/enna/covers/%s",
+                     efreet_data_home_get(), cover);
 
         enna_image_file_set(sd->cv, cv, NULL);
     }

@@ -354,8 +354,8 @@ backdrop_show(Enna_Metadata *m)
         if (*backdrop == '/')
             snprintf(dst, sizeof (dst), "%s", backdrop);
         else
-            snprintf(dst, sizeof (dst), "%s/.enna/fanarts/%s",
-                     enna_util_user_home_get (), backdrop);
+            snprintf(dst, sizeof (dst), "%s/enna/fanarts/%s",
+                     efreet_data_home_get(), backdrop);
         file = strdup(dst);
 
         enna_video_picture_set(mod->o_backdrop, file, from_vfs);
@@ -389,8 +389,8 @@ snapshot_show(Enna_Metadata *m, int dir)
         if (*snapshot == '/')
             snprintf(dst, sizeof(dst), "%s", snapshot);
         else
-            snprintf(dst, sizeof(dst), "%s/.enna/fanarts/%s",
-                     enna_util_user_home_get(), snapshot);
+            snprintf(dst, sizeof(dst), "%s/enna/fanarts/%s",
+                     efreet_data_home_get(), snapshot);
         file = strdup(dst);
     }
     else

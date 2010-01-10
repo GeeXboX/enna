@@ -309,8 +309,8 @@ bs_gocomics_show (Evas_Object *edje)
     mod = calloc (1, sizeof(BookStore_Service_GoComics));
 
     /* create comic strips download destination path */
-    snprintf(dst, sizeof(dst), "%s/.enna/%s",
-             enna_util_user_home_get(), GOCOMICS_PATH);
+    snprintf(dst, sizeof(dst), "%s/enna/%s",
+             efreet_cache_home_get(), GOCOMICS_PATH);
     if (!ecore_file_is_dir(dst))
         ecore_file_mkdir(dst);
 

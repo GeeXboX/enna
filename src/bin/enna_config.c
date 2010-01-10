@@ -196,8 +196,8 @@ enna_config_init (const char *file)
     if (file)
         snprintf(filename, sizeof(filename), "%s", file);
     else
-        snprintf(filename, sizeof(filename), "%s/.enna/enna.cfg",
-                 enna_util_user_home_get());
+        snprintf(filename, sizeof(filename), "%s/enna/enna.cfg",
+                 efreet_config_home_get());
 
     enna_config->cfg_file = strdup(filename);
     enna_log(ENNA_MSG_INFO, NULL, "using config file: %s", filename);
