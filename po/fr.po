@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-01-10 23:15+0100\n"
-"PO-Revision-Date: 2009-12-31 14:36+0100\n"
-"Last-Translator: Benjamin Zores <ben@geexbox.org>\n"
+"PO-Revision-Date: 2010-01-10 23:32+0100\n"
+"Last-Translator: Guillaume LECERF <fox@geexbox.org>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,43 +37,41 @@ msgstr " Usage: %s [options ...]\n"
 #: src/bin/enna.c:439
 #, c-format
 msgid " Available Options:\n"
-msgstr " Options disponibles:\n"
+msgstr " Options disponibles :\n"
 
 #: src/bin/enna.c:440
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr "  -c, (--config):  Spécifie le fichier de configuration à utiliser.\n"
+msgstr "  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
 
 #: src/bin/enna.c:441
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
-msgstr "  -f, (--fs):      Forcer le mode plein écran.\n"
+msgstr "  -f, (--fs) :       Force le mode plein écran.\n"
 
 #: src/bin/enna.c:442
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
-msgstr "  -h, (--help):    Affichager cette aide.\n"
+msgstr "  -h, (--help) :     Affiche cette aide.\n"
 
 #: src/bin/enna.c:443
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr "  -t, (--theme):   Spécifie le nom du thème à utiliser.\n"
+msgstr "  -t, (--theme) :    Spécifie le nom du thème à utiliser.\n"
 
 #: src/bin/enna.c:444
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry): Spécifie la résolution de la fenêtre. "
-"(geometry=1280x720)\n"
+msgstr "  -g, (--geometry) : Spécifie la résolution de la fenêtre. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:445
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
-msgstr "  -V, (--version): Affichage le numéro de version d'Enna.\n"
+msgstr "  -V, (--version) :  Affiche le numéro de version d'Enna.\n"
 
 #: src/bin/exit.c:93
 msgid "Are you sure you want to quit enna ?"
-msgstr "Souhaitez vous réellement quitter Enna ?"
+msgstr "Souhaitez-vous réellement quitter Enna ?"
 
 #: src/bin/exit.c:148
 msgid "Yes, Quit Enna"
@@ -88,7 +86,6 @@ msgid "Modules"
 msgstr "Modules"
 
 #: src/bin/module.c:466
-#, fuzzy
 msgid "No information provided"
 msgstr "Aucune information EXIF trouvée."
 
@@ -116,18 +113,16 @@ msgid "This module create the enna configuration panel (DO NOT UNLOAD)"
 msgstr "Ce module crée le panneau de contrôle d'Enna (ne pas décharger)"
 
 #: src/modules/activity/configuration/configuration.c:256
-#, fuzzy
 msgid "System Information"
-msgstr "<c>Informations Systèmes</c><br><br>"
+msgstr "Informations Systèmes"
 
 #: src/modules/activity/configuration/configuration.c:259
 msgid "Credits"
 msgstr "Crédits"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
-#, fuzzy
 msgid "Enna is GeeXboX's team MediaCenter, "
-msgstr "Enna MediaCenter\n"
+msgstr "Enna MediaCenter"
 
 #: src/modules/activity/configuration/configuration_credits.c:46
 msgid "based on Enlightenment Foundation Librairies (EFL)."
@@ -139,7 +134,7 @@ msgstr "Les remerciements vont à : <br>"
 
 #: src/modules/activity/configuration/configuration_credits.c:51
 msgid "and"
-msgstr ""
+msgstr "et"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
@@ -148,35 +143,35 @@ msgstr "<c>Informations d'Enna</c><br><br>"
 #: src/modules/activity/configuration/configuration_sysinfo.c:97
 #, c-format
 msgid "<hilight>Enna: </hilight>%s<br>"
-msgstr "<hilight>Enna: </hilight>%s<br>"
+msgstr "<hilight>Enna : </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:98
 #, c-format
 msgid "<hilight>libplayer: </hilight>%s<br>"
-msgstr "<hilight>libplayer: </hilight>%s<br>"
+msgstr "<hilight>libplayer : </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:100
 #, c-format
 msgid "<hilight>libvalhalla: </hilight>%s<br>"
-msgstr "<hilight>libvalhalla: </hilight>%s<br>"
+msgstr "<hilight>libvalhalla : </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:103
 #, c-format
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
-msgstr "<hilight>libsvdrp: </hilight>%s<br>"
+msgstr "<hilight>libsvdrp : </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:106
-#, fuzzy, c-format
+#, c-format
 msgid "<hilight>Video Renderer:</hilight> %s"
-msgstr "<hilight>VDR:</hilight> "
+msgstr "<hilight>Moteur de rendu vidéo :</hilight> %s"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:167
 msgid "<hilight>Distribution: </hilight>"
-msgstr "<hilight>Distribution: </hilight>"
+msgstr "<hilight>Distribution : </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:187
 msgid "<hilight>OS: </hilight>"
-msgstr "<hilight>Système d'exploitation: </hilight>"
+msgstr "<hilight>Système d'exploitation : </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:191
 #, c-format
@@ -184,9 +179,8 @@ msgid "%s %s for %s"
 msgstr "%s %s sur %s"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:206
-#, fuzzy
 msgid "<hilight>Available CPUs: </hilight>"
-msgstr "<hilight>Système d'exploitation: </hilight>"
+msgstr "<hilight>Processeurs disponibles : </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:237
 #, c-format
@@ -194,14 +188,12 @@ msgid ", running at %d MHz"
 msgstr ", tournant à %d MHz"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:266
-#, fuzzy
 msgid "<hilight>CPU Load: </hilight>"
-msgstr "<hilight>Système d'exploitation: </hilight>"
+msgstr "<hilight>Charge du processeur : </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:309
-#, fuzzy
 msgid "<hilight>Memory: </hilight>"
-msgstr "<hilight>Système d'exploitation: </hilight>"
+msgstr "<hilight>Mémoire : </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:310
 #, c-format
@@ -210,7 +202,7 @@ msgstr "%d Mo utilisés sur un total de %d Mo (%d%%)"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
-msgstr "<hilight>Résolution d'écran: </hilight>"
+msgstr "<hilight>Résolution d'écran : </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:349
 #, c-format
@@ -219,7 +211,7 @@ msgstr "%dx%d à %d Hz (min: %dx%d, max: %dx%d)"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "<hilight>VDR:</hilight> "
-msgstr "<hilight>VDR:</hilight> "
+msgstr "<hilight>VDR :</hilight> "
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:365
 #, c-format
@@ -232,7 +224,7 @@ msgstr "non connecté<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:382
 msgid "<hilight>Available network interfaces:</hilight><br>"
-msgstr "<hilight>Interfaces réseau disponibles:</hilight><br>"
+msgstr "<hilight>Interfaces réseau disponibles :</hilight><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:407
 #, c-format
@@ -266,9 +258,7 @@ msgstr "Jeux"
 
 #: src/modules/activity/games/games.c:265
 msgid "With this module you can play your games directly from enna"
-msgstr ""
-"Au travers de ce module, vous pouvez démarrer vos jeux directement depuis "
-"Enna"
+msgstr "Au travers de ce module, vous pouvez démarrer vos jeux directement depuis Enna"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -280,7 +270,6 @@ msgid "Music"
 msgstr "Musique"
 
 #: src/modules/activity/music/music.c:491
-#, fuzzy
 msgid "Music core"
 msgstr "Musique"
 
@@ -289,7 +278,6 @@ msgid "This is the main music module"
 msgstr "Ceci est le module pour la musique"
 
 #: src/modules/activity/music/music_lyrics.c:91
-#, fuzzy
 msgid "No lyrics found ..."
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
@@ -318,7 +306,8 @@ msgstr "Enregistrement de '%s'"
 msgid "Recording in progress"
 msgstr "Enregistrement en cours"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
+#: src/modules/activity/tv/tv.c:154
+#: src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "Télévision"
 
@@ -333,30 +322,29 @@ msgstr "Aucune information disponible ..."
 #: src/modules/activity/video/video_infos.c:127
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
-msgstr "<ul>Réalisateur:</ul> %s<br>"
+msgstr "<ul>Réalisateur :</ul> %s<br>"
 
 #: src/modules/activity/video/video_infos.c:131
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
-msgstr "<ul>Acteurs:</ul> %s<br>"
+msgstr "<ul>Acteurs :</ul> %s<br>"
 
 #: src/modules/activity/video/video_infos.c:150
-#, fuzzy, c-format
+#, c-format
 msgid "<hl>Video: </hl> %s"
-msgstr "<hl>Taille: </hl> %.2f Mo<br>"
+msgstr "<hl>Vidéo : </hl> %s"
 
 #: src/modules/activity/video/video_infos.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "<hl>Audio: </hl> %s"
-msgstr "<hl>Taille: </hl> %.2f Mo<br>"
+msgstr "<hl>Audio : </hl> %s"
 
 #: src/modules/activity/video/video_infos.c:184
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
-msgstr "<hl>Taille: </hl> %.2f Mo<br>"
+msgstr "<hl>Taille : </hl> %.2f Mo<br>"
 
 #: src/modules/activity/video/video_infos.c:190
-#, fuzzy
 msgid "No further information can be retrieved"
 msgstr "Aucune information EXIF trouvée."
 
@@ -379,7 +367,6 @@ msgid "Weather"
 msgstr "Météo"
 
 #: src/modules/activity/weather/weather.c:301
-#, fuzzy
 msgid "Weather forecast"
 msgstr "Météo"
 
@@ -426,12 +413,10 @@ msgid "Browse Local Devices"
 msgstr "Parcourir les disques locaux"
 
 #: src/modules/browser/localfiles/localfiles.c:574
-#, fuzzy
 msgid "Browse local files"
 msgstr "Parcourir les disques locaux"
 
 #: src/modules/browser/localfiles/localfiles.c:576
-#, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "Parcourez les fichiers de votre disque dur"
 
@@ -469,11 +454,11 @@ msgid "Shoutcast browser"
 msgstr "Explorateur de SHOUTcast"
 
 #: src/modules/browser/shoutcast/shoutcast.c:199
-#, fuzzy
 msgid "Listen to shoutcast stream"
 msgstr "Ecouter un podcast"
 
-#: src/modules/browser/upnp/upnp.c:516 src/modules/browser/upnp/upnp.c:534
+#: src/modules/browser/upnp/upnp.c:516
+#: src/modules/browser/upnp/upnp.c:534
 #: src/modules/browser/upnp/upnp.c:552
 msgid "UPnP/DLNA Media Servers"
 msgstr "Serveurs Multimédia UPnP/DLNA"
@@ -489,9 +474,7 @@ msgstr "Module UPnP / DLNA"
 
 #: src/modules/browser/upnp/upnp.c:623
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
-msgstr ""
-"Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
-"compatibles UPNP / DLNA"
+msgstr "Ce module permet à Enna de parcourir le contenu des serveurs multimédias compatibles UPNP / DLNA"
 
 #: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"
@@ -515,8 +498,7 @@ msgstr "Module Valhalla"
 
 #: src/modules/browser/valhalla/valhalla.c:470
 msgid "Database stuff and metadata retrival from various sources"
-msgstr ""
-"Base de donnée et récupération de meta-informations depuis diverses sources"
+msgstr "Base de donnée et récupération de meta-informations depuis diverses sources"
 
 #: src/modules/browser/valhalla/valhalla.c:478
 msgid "Media Library"
@@ -630,103 +612,72 @@ msgstr "Ce module récupère la liste des volumes depuis le fichier mtab"
 
 #~ msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 #~ msgstr "<hl>Vidéo: </hl> %s, %dx%d, %.2f img/s<br>"
-
 #~ msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 #~ msgstr "<hl>Audio: </hl> %s, %d ch., %i kb/s, %d Hz<br>"
-
 #~ msgid "Infos"
 #~ msgstr "Infos"
-
 #~ msgid "%.2d hour "
 #~ msgid_plural "%.2d hours "
 #~ msgstr[0] "%.2d heure"
 #~ msgstr[1] "%.2d heures"
-
 #~ msgid "%.2d minute"
 #~ msgid_plural "%.2d minutes"
 #~ msgstr[0] "%.2d minute"
 #~ msgstr[1] "%.2d minutes"
-
 #~ msgid "Unknown"
 #~ msgstr "Inconnu"
-
 #~ msgid "IDE"
 #~ msgstr "IDE"
-
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
-
 #~ msgid "USB"
 #~ msgstr "USB"
-
 #~ msgid "FireWire"
 #~ msgstr "FireWire"
-
 #~ msgid "CCW"
 #~ msgstr "CCW"
-
 #~ msgid "Removable Disk"
 #~ msgstr "Disque Amovible"
-
 #~ msgid "Disk"
 #~ msgstr "Disque"
-
 #~ msgid "Floppy"
 #~ msgstr "Disquette"
-
 #~ msgid "Tape"
 #~ msgstr "Cassette"
-
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
-
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
-
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
-
 #~ msgid "SD/MMC"
 #~ msgstr "SD/MMC"
-
 #~ msgid "Camera"
 #~ msgstr "Appareil Photo"
-
 #~ msgid "Portable Audio Player"
 #~ msgstr "Lecteur Audio Portable"
-
 #~ msgid "ZIP"
 #~ msgstr "ZIP"
-
 #~ msgid "JAZ"
 #~ msgstr "JAZ"
-
 #~ msgid "FlashKey"
 #~ msgstr "Disque Flash"
-
 #~ msgid "enna HTPC"
 #~ msgstr "enna HTPC"
-
 #~ msgid "Browse Library"
 #~ msgstr "Parcourir la bibliothèque"
-
 #~ msgid "Artist"
 #~ msgstr "Artiste"
-
 #~ msgid "Album"
 #~ msgstr "Album"
-
 #~ msgid "Watch PODCAST Video"
 #~ msgstr "Regarder une vidéo PODCAST"
-
 #~ msgid "%s<hilight>%s%s:</hilight> %s"
 #~ msgstr "%s<hilight>%s%s:</hilight> %s"
-
 #~ msgid "Yes, I want to quit."
 #~ msgstr "Oui, je veux quitter."
-
 #~ msgid "No, I want to stay."
 #~ msgstr "Non, je veux rester."
-
 #~ msgid "...no activity seems busy right now."
 #~ msgstr "... aucune activité ne semble active actuellement."
+
