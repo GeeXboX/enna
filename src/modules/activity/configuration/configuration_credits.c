@@ -48,7 +48,8 @@ Evas_Object *credits_panel_show(void *data)
     buffer_append (b, _("Credits go to:<br>"));
     buffer_append (b, "Nicolas Aguirre, Fabien Brisset, Davide Cavalca, ");
     buffer_append (b, "Matthias Hölzer, Guillaume Lecerf, Mathieu Schroeter ");
-    buffer_append (b, "and Benjamin Zores.");
+    buffer_append (b, _("and"));
+    buffer_append (b, " Benjamin Zores.");
     edje_object_part_text_set (o_edje, "credits.text", b->buf);
     buffer_free(b);
 

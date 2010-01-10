@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-10 23:08+0100\n"
+"POT-Creation-Date: 2010-01-10 23:15+0100\n"
 "PO-Revision-Date: 2010-01-08 10:44+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -133,6 +133,10 @@ msgstr "basato sulle Enlightenment Foundation Librairies (EFL)."
 #: src/modules/activity/configuration/configuration_credits.c:48
 msgid "Credits go to:<br>"
 msgstr "I ringraziamenti vanno a:<br>"
+
+#: src/modules/activity/configuration/configuration_credits.c:51
+msgid "and"
+msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
