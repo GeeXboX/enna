@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-08 10:34+0100\n"
+"POT-Creation-Date: 2010-01-10 23:08+0100\n"
 "PO-Revision-Date: 2010-01-08 10:44+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -288,27 +288,27 @@ msgstr "Foto"
 msgid "View all your photos in a wall or as slideshow"
 msgstr ""
 
-#: src/modules/activity/tv/tv.c:90
+#: src/modules/activity/tv/tv.c:102
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Il timer '%s' partirà tra %i minuto"
 msgstr[1] "Il timer '%s' partirà tra %i minuti"
 
-#: src/modules/activity/tv/tv.c:92
+#: src/modules/activity/tv/tv.c:104
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Sto registrando '%s'"
 
-#: src/modules/activity/tv/tv.c:101
+#: src/modules/activity/tv/tv.c:113
 msgid "Recording in progress"
 msgstr "Registrazione in corso"
 
-#: src/modules/activity/tv/tv.c:142 src/modules/activity/tv/tv.c:170
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "Televisione"
 
-#: src/modules/activity/tv/tv.c:172
+#: src/modules/activity/tv/tv.c:267
 msgid "View tv channels"
 msgstr ""
 
@@ -403,42 +403,42 @@ msgstr ""
 msgid "Watch movies from DVD"
 msgstr ""
 
-#: src/modules/browser/localfiles/localfiles.c:426
-#: src/modules/browser/localfiles/localfiles.c:444
-#: src/modules/browser/localfiles/localfiles.c:462
+#: src/modules/browser/localfiles/localfiles.c:443
+#: src/modules/browser/localfiles/localfiles.c:461
+#: src/modules/browser/localfiles/localfiles.c:479
 msgid "Browse Local Devices"
 msgstr "Sfoglia dispositivi locali"
 
-#: src/modules/browser/localfiles/localfiles.c:487
+#: src/modules/browser/localfiles/localfiles.c:574
 msgid "Browse local files"
 msgstr ""
 
-#: src/modules/browser/localfiles/localfiles.c:489
+#: src/modules/browser/localfiles/localfiles.c:576
 msgid "Browse files in your local file systems"
 msgstr ""
 
-#: src/modules/browser/netstreams/netstreams.c:311
-#: src/modules/browser/netstreams/netstreams.c:327
+#: src/modules/browser/netstreams/netstreams.c:322
+#: src/modules/browser/netstreams/netstreams.c:338
 msgid "Browse Network Streams"
 msgstr "Sfoglia flussi di rete"
 
-#: src/modules/browser/netstreams/netstreams.c:351
+#: src/modules/browser/netstreams/netstreams.c:402
 msgid "Netstreams"
 msgstr ""
 
-#: src/modules/browser/netstreams/netstreams.c:353
+#: src/modules/browser/netstreams/netstreams.c:404
 msgid "I really don't know :P"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:333
+#: src/modules/browser/podcasts/podcasts.c:328
 msgid "Listen to Podcasts"
 msgstr "Ascolta podcast"
 
-#: src/modules/browser/podcasts/podcasts.c:357
+#: src/modules/browser/podcasts/podcasts.c:384
 msgid "Podcast browser"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:359
+#: src/modules/browser/podcasts/podcasts.c:386
 msgid "Podcast module"
 msgstr ""
 
