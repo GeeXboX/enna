@@ -41,7 +41,6 @@
 
 static Eina_List *cfg_parsers = NULL;
 static ini_t *cfg_ini = NULL;
-    "#log_file=/tmp/enna.log\n" \
 
 /****************************************************************************/
 /*                       Config File Main Section                           */
@@ -236,12 +235,6 @@ enna_config_set_default (void)
     {
         if (p->set_default)
             p->set_default();
-            
-            if (!enna_config->log_file)
-            {
-                snprintf(tmp, sizeof(tmp), "%s/.enna/enna.log", enna_util_user_home_get());
-                enna_config->log_file = strdup(tmp);
-            }
     }
 }
 
