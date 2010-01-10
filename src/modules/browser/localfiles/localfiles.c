@@ -421,15 +421,15 @@ static void __class_init(const char *name, Class_Private_Data **priv,
 
     if (localfiles_cfg.home)
     {
-    // add home directory entry
-    root = ENNA_NEW(Root_Directories, 1);
-    snprintf(buf, sizeof(buf), "file://%s", enna_util_user_home_get());
-    root->uri = strdup(buf);
-    root->label = strdup("Home");
-    root->icon = strdup("icon/favorite");
+        // add home directory entry
+        root = ENNA_NEW(Root_Directories, 1);
+        snprintf(buf, sizeof(buf), "file://%s", enna_util_user_home_get());
+        root->uri = strdup(buf);
+        root->label = strdup("Home");
+        root->icon = strdup("icon/favorite");
 
-    data->config->root_directories = eina_list_append(
-        data->config->root_directories, root);
+        data->config->root_directories = eina_list_append(
+            data->config->root_directories, root);
     }
 
     /* add localfiles to the list of volumes listener */
