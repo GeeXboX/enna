@@ -1,7 +1,7 @@
 [enna]
 #none,event,info,warning,error,critical
 verbosity=warning
-# default: $HOME/.enna/enna.log
+# default: log to console
 #log_file=/var/log/enna.log
 
 #0,1
