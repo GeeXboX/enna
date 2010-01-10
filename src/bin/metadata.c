@@ -261,6 +261,9 @@ enna_metadata_db_init(void)
     for (l = db_cfg.path; l; l = l->next)
     {
         const char *str = l->data;
+
+        if (strstr(str, "file://") == str)
+            str += 7;
         valhalla_config_set(vh, SCANNER_PATH, str, 1);
     }
 
