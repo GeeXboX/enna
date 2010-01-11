@@ -443,3 +443,14 @@ enna_weather_cfg_register (void)
 {
     enna_config_section_parser_register(&cfg_weather);
 }
+
+void
+enna_weather_init(void)
+{
+
+}
+
+void
+enna_weather_shutdown(void)
+{
+}
