@@ -75,6 +75,72 @@ static Enna_Module_Games *mod;
 /*                              Games Helpers                                */
 /*****************************************************************************/
 
+static const char * _check_icon(const char *icon, const char *dir, const char *ext)
+{
+    char tmp[PATH_MAX];
+    char *format;
+   
+    if (ext)
+        format = "%s/%s.%s";
+    else
+        format = "%s/%s";
+
+    snprintf(tmp, sizeof (tmp), format, dir, icon, ext);
+
+    if (!ecore_file_is_dir(tmp) && ecore_file_can_read(tmp))
+        return strdup (tmp);
+    else
+        return NULL;
+}
+
+static const char * _check_icons(const char *icon, const char *dir)
+{
+    char *iconpath;
+
+    if ((iconpath = _check_icon(icon, dir, NULL)))
+        return iconpath;
+    else if ((iconpath = _check_icon(icon, dir, "svg")))
+        return iconpath;
+    else if ((iconpath = _check_icon(icon, dir, "png")))
+        return iconpath;
+    else if ((iconpath = _check_icon(icon, dir, "xpm")))
+        return iconpath;
+    else
+        return NULL;
+}
+
+/* Warning: this is NOT a proper implementation of the Icon Theme 
+   Specification; it is hugely simplified to cover only our needs */
+static const char * _find_icon(const char *icon, const char *dir)
+{
+    char *iconpath;
+
+    if ((iconpath = _check_icons(icon, dir)))
+        return iconpath;
+    else
+    {
+        char tmp[PATH_MAX];
+        
+        snprintf(tmp, sizeof (tmp), "%s/hicolor/scalable/apps", dir);
+        if ((iconpath = _check_icons(icon, strdup(tmp))))
+            return iconpath;
+        else
+        {
+            snprintf(tmp, sizeof (tmp), "%s/hicolor/64x64/apps", dir);
+            if ((iconpath = _check_icons(icon, strdup(tmp))))
+                return iconpath;
+            else
+            {
+                snprintf(tmp, sizeof (tmp), "%s/hicolor/48x48/apps", dir);
+                if ((iconpath = _check_icons(icon, strdup(tmp))))
+                    return iconpath;            
+            }
+        }
+    }
+    
+    return NULL;
+}
+
 static Game_Entry * _parse_desktop_game(const char *file)
 {
     Game_Entry *game = NULL;
@@ -86,37 +152,21 @@ static Game_Entry * _parse_desktop_game(const char *file)
     categories = ini_get_string(ini, "Desktop Entry", "Categories");
     if (categories && strstr(categories, "Game"))
     {
+        char *tmpicon;
         char *name = ini_get_string(ini, "Desktop Entry", "Name");
         char *icon = ini_get_string(ini, "Desktop Entry", "Icon");
         char *exec = ini_get_string(ini, "Desktop Entry", "Exec");
-    
-        if (!ecore_file_can_read(icon))
-        {
-          char tmp[PATH_MAX];
-          
-          snprintf(tmp, sizeof (tmp), "/usr/share/pixmaps/%s", icon);
-          if (ecore_file_can_read(tmp))
-              icon = strdup (tmp);
-              
-		  /* TODO handle theme icon specs, like we did before with efreet
-			Eina_List *theme_list;
-			Eina_List *l;
-			Efreet_Icon_Theme *theme;
-
-			theme_list = efreet_icon_theme_list_get();
-			EINA_LIST_FOREACH(theme_list, l, theme)
-			{
-				iconpath = efreet_icon_path_find((theme->name).name, desktop->icon, 64);
-				if(iconpath)
-				    break;
-			}
-		  */      
-        }
-    
+        
         game = calloc(1, sizeof(Game_Entry));
         game->name = strdup (name);
-        game->icon = strdup (icon);
-        game->exec = strdup (exec);
+        game->exec = strdup (exec);       
+
+        if (!ecore_file_is_dir(icon) && ecore_file_can_read(icon))
+            game->icon = strdup (icon);
+        else if ((tmpicon = _find_icon(icon, "/usr/share/icons")))
+            game->icon = strdup (tmpicon);
+        else if ((tmpicon = _find_icon(icon, "/usr/share/pixmaps")))
+            game->icon = strdup (tmpicon);
     }
   
     ini_free (ini);
@@ -155,7 +205,8 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
         {
             Enna_Vfs_File *item; 
             item = calloc(1, sizeof(Enna_Vfs_File));
-            item->icon = (char*)eina_stringshare_add(game->icon);
+            if (game->icon)
+                item->icon = (char*)eina_stringshare_add(game->icon);
             item->label = (char*)eina_stringshare_add(game->name);
             item->is_menu = 1;
             enna_list_file_append(list, item, _play, strdup(game->exec));
