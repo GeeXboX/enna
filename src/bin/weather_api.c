@@ -395,7 +395,7 @@ enna_weather_set_lang (weather_t *w, const char *lang)
 }
 
 weather_t *
-enna_weather_init (void)
+enna_weather_new (void)
 {
     weather_t *w;
 
