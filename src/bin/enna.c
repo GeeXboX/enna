@@ -231,6 +231,8 @@ static int _enna_init(int argc, char **argv)
     enna_mediaplayer_cfg_register();
     enna_metadata_cfg_register();
 
+    enna_weather_init();
+
     enna_module_init();
     enna_config_set_default();
     enna_config_load();
@@ -374,6 +376,8 @@ static void _enna_shutdown(void)
     enna_module_shutdown();
     enna_metadata_shutdown();
     enna_mediaplayer_shutdown();
+
+    enna_weather_shutdown();
 
     evas_object_del(enna->o_background);
     enna_mainmenu_shutdown();
