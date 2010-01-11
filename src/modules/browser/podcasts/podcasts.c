@@ -35,6 +35,7 @@
 #include "xml_utils.h"
 #include "utils.h"
 #include "volumes.h"
+#include "xdg.h"
 
 #define ENNA_MODULE_NAME "podcast"
 
@@ -172,8 +173,8 @@ static void _prepare_channel(Channel *ch)
     md5 = md5sum (ch->url);
 
     /* Create Channel directory if not existing*/
-    snprintf (dst, sizeof (dst), "%s/.enna/%s/%s/",
-	efreet_cache_home_get(), PATH_PODCASTS, md5);
+    snprintf (dst, sizeof (dst), "%s/%s/%s/",
+	enna_cache_home_get(), PATH_PODCASTS, md5);
     if (!ecore_file_is_dir (dst))
         ecore_file_mkdir (dst);
 
@@ -409,8 +410,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     /* try to create podcasts directory storage */
     memset (dst, '\0', sizeof (dst));
-    snprintf (dst, sizeof (dst), "%s/.enna/%s",
-              efreet_cache_home_get(), PATH_PODCASTS);
+    snprintf (dst, sizeof (dst), "%s/%s",
+              enna_cache_home_get(), PATH_PODCASTS);
     if (!ecore_file_is_dir (dst))
         ecore_file_mkdir (dst);
 

@@ -36,6 +36,7 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "input.h"
+#include "xdg.h"
 
 #define ENNA_MODULE_NAME "games"
 
@@ -146,7 +147,7 @@ static void _create_menu()
     o = enna_list_add(enna->evas);
     edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
 
-    sprintf(gamesdir, "%s/enna/games", enna_config_home_get());
+    sprintf(gamesdir, "%s/games", enna_config_home_get());
 
     /* Populate list */
     _parse_directory(o, gamesdir);

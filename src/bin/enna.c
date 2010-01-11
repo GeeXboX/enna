@@ -50,6 +50,7 @@
 #include "ipc.h"
 #include "input.h"
 #include "url_utils.h"
+#include "xdg.h"
 
 /* seconds after which the mouse pointer disappears*/
 #define ENNA_MOUSE_IDLE_TIMEOUT 10
@@ -380,6 +381,7 @@ static void _enna_shutdown(void)
 
     enna_ipc_shutdown();
     elm_shutdown();
+    enna_xdg_shutdown();
     enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !");
     enna_log_shutdown();
     ENNA_FREE(enna);
@@ -509,7 +511,6 @@ static int parse_command_line(int argc, char **argv)
 int main(int argc, char **argv)
 {
     int res = EXIT_FAILURE;
-    char buf[PATH_MAX];
 
     init_locale();
 
@@ -518,16 +519,7 @@ int main(int argc, char **argv)
 
     url_global_init();
     eina_init();
-
-    snprintf(buf, sizeof(buf), "%s/enna", efreet_config_home_get());
-    if (!ecore_file_is_dir(buf))
-        ecore_file_mkpath(buf);
-    snprintf(buf, sizeof(buf), "%s/enna/covers", efreet_data_home_get());
-    if (!ecore_file_is_dir(buf))
-        ecore_file_mkpath(buf);              
-    snprintf(buf, sizeof(buf), "%s/enna", efreet_cache_home_get());
-    if (!ecore_file_is_dir(buf))
-        ecore_file_mkpath(buf);  
+    enna_xdg_init();
 
     /* Must be called first */
     enna_config_init(conffile);

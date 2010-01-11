@@ -31,9 +31,9 @@
 #include <Evas.h>
 #include <Eet.h>
 #include <Edje.h>
-#include <Efreet.h>
 
 #include "utils.h"
+#include "xdg.h"
 
 typedef struct _E_Thumb E_Thumb;
 
@@ -97,8 +97,9 @@ main(int argc, char **argv)
     edje_init();
     ecore_file_init();
     ecore_ipc_init();
-
-    snprintf(_thumbdir, sizeof(_thumbdir), "%s/enna/thumbnails/", efreet_cache_home_get());
+    enna_xdg_init();
+    
+    snprintf(_thumbdir, sizeof(_thumbdir), "%s/thumbnails", enna_cache_home_get());
     ecore_file_mkpath(_thumbdir);
 
     if (_ipc_init()) ecore_main_loop_begin();
@@ -109,6 +110,7 @@ main(int argc, char **argv)
         _ipc_server = NULL;
     }
 
+    enna_xdg_shutdown();
     ecore_ipc_shutdown();
     ecore_file_shutdown();
     ecore_evas_shutdown();

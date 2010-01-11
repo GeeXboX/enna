@@ -46,7 +46,8 @@ weather_api.c\
 weather_notification.c\
 volume_notification.c\
 ini_parser.c\
-input.c
+input.c\
+xdg.c
 
 
 
@@ -191,7 +192,8 @@ enna_thumb_SOURCES = \
 enna_thumb_main.c\
 utils.c\
 buffer.c\
-image.c
+image.c\
+xdg.c
 
 enna_thumb_LDADD = @ENNA_LIBS@
 
@@ -233,4 +235,5 @@ weather_api.h\
 weather_notification.h\
 volume_notification.h\
 ini_parser.h\
-input.h
+input.h\
+xdg.h

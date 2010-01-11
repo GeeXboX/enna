@@ -27,7 +27,6 @@
 
 #include <Eina.h>
 #include <Ecore_File.h>
-#include <Efreet.h>
 
 #include <valhalla.h>
 
@@ -37,6 +36,7 @@
 #include "logs.h"
 #include "utils.h"
 #include "buffer.h"
+#include "xdg.h"
 
 #define MODULE_NAME "enna"
 
@@ -239,7 +239,7 @@ enna_metadata_db_init(void)
     valhalla_verbosity(db_cfg.verbosity);
 
     snprintf(db, sizeof(db),
-             "%s/enna/%s", efreet_data_home_get(), ENNA_METADATA_DB_NAME);
+             "%s/%s", enna_data_home_get(), ENNA_METADATA_DB_NAME);
 
     memset(&param, 0, sizeof(valhalla_init_param_t));
     param.parser_nb   = db_cfg.parser_number;
@@ -278,13 +278,13 @@ enna_metadata_db_init(void)
 
     /* set file download destinations */
     memset(dst, '\0', sizeof(dst));
-    snprintf(dst, sizeof(dst), "%s/enna/%s",
-             efreet_data_home_get(), PATH_COVERS);
+    snprintf(dst, sizeof(dst), "%s/%s",
+             enna_data_home_get(), PATH_COVERS);
     valhalla_config_set(vh, DOWNLOADER_DEST, dst, VALHALLA_DL_COVER);
 
     memset(dst, '\0', sizeof(dst));
-    snprintf(dst, sizeof(dst), "%s/enna/%s",
-             efreet_data_home_get(), PATH_FANARTS);
+    snprintf(dst, sizeof(dst), "%s/%s",
+             enna_data_home_get(), PATH_FANARTS);
     valhalla_config_set(vh, DOWNLOADER_DEST, dst, VALHALLA_DL_FAN_ART);
 
     /* grabbers */
@@ -329,15 +329,15 @@ enna_metadata_init(void)
 
     /* try to create backdrops directory storage */
     memset(dst, '\0', sizeof(dst));
-    snprintf(dst, sizeof(dst), "%s/.enna/%s",
-             efreet_data_home_get(), PATH_FANARTS);
+    snprintf(dst, sizeof(dst), "%s/%s",
+             enna_data_home_get(), PATH_FANARTS);
     if (!ecore_file_is_dir(dst))
         ecore_file_mkdir(dst);
 
     /* try to create covers directory storage */
     memset(dst, '\0', sizeof(dst));
-    snprintf(dst, sizeof(dst), "%s/.enna/%s",
-             efreet_data_home_get(), PATH_COVERS);
+    snprintf(dst, sizeof(dst), "%s/%s",
+             enna_data_home_get(), PATH_COVERS);
     if (!ecore_file_is_dir(dst))
         ecore_file_mkdir(dst);
 

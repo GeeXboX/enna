@@ -37,6 +37,7 @@
 #include "utils.h"
 #include "bookstore.h"
 #include "bookstore_onemanga.h"
+#include "xdg.h"
 
 #define ENNA_MODULE_NAME                 "onemanga"
 
@@ -618,8 +619,8 @@ bs_onemanga_show (Evas_Object *edje)
     mod = calloc (1, sizeof(BookStore_Service_OneManga));
 
     /* create manga pages download destination path */
-    snprintf(dst, sizeof(dst), "%s/enna/%s",
-             efreet_cache_home_get(), OM_PATH);
+    snprintf(dst, sizeof(dst), "%s/%s",
+             enna_cache_home_get(), OM_PATH);
     if (!ecore_file_is_dir(dst))
         ecore_file_mkdir(dst);
 

@@ -38,6 +38,7 @@
 #include "buffer.h"
 #include "ini_parser.h"
 #include "utils.h"
+#include "xdg.h"
 
 static Eina_List *cfg_parsers = NULL;
 static ini_t *cfg_ini = NULL;
@@ -196,8 +197,8 @@ enna_config_init (const char *file)
     if (file)
         snprintf(filename, sizeof(filename), "%s", file);
     else
-        snprintf(filename, sizeof(filename), "%s/enna/enna.cfg",
-                 efreet_config_home_get());
+        snprintf(filename, sizeof(filename), "%s/enna.cfg",
+                 enna_config_home_get());
 
     enna_config->cfg_file = strdup(filename);
     enna_log(ENNA_MSG_INFO, NULL, "using config file: %s", filename);
