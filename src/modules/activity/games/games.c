@@ -24,7 +24,6 @@
 #include <Ecore_File.h>
 #include <Ecore_Str.h>
 #include <Edje.h>
-#include <efreet/Efreet.h>
 #include <Elementary.h>
 
 #include "enna.h"
@@ -36,6 +35,7 @@
 #include "content.h"
 #include "mainmenu.h"
 #include "input.h"
+#include "ini_parser.h"
 #include "xdg.h"
 
 #define ENNA_MODULE_NAME "games"
@@ -62,11 +62,67 @@ typedef struct _Enna_Module_Games
     Enna_Module *em;
 } Enna_Module_Games;
 
+typedef struct _Game_Entry
+{
+    const char *name;
+    const char *icon;
+    const char *exec;
+} Game_Entry;
+
 static Enna_Module_Games *mod;
 
 /*****************************************************************************/
 /*                              Games Helpers                                */
 /*****************************************************************************/
+
+static Game_Entry * _parse_desktop_game(const char *file)
+{
+    Game_Entry *game = NULL;
+    char *categories;
+    ini_t *ini = ini_new (file);
+  
+    ini_parse (ini);
+  
+    categories = ini_get_string(ini, "Desktop Entry", "Categories");
+    if (categories && strstr(categories, "Game"))
+    {
+        char *name = ini_get_string(ini, "Desktop Entry", "Name");
+        char *icon = ini_get_string(ini, "Desktop Entry", "Icon");
+        char *exec = ini_get_string(ini, "Desktop Entry", "Exec");
+    
+        if (!ecore_file_can_read(icon))
+        {
+          char tmp[PATH_MAX];
+          
+          snprintf(tmp, sizeof (tmp), "/usr/share/pixmaps/%s", icon);
+          if (ecore_file_can_read(tmp))
+              icon = strdup (tmp);
+              
+		  /* TODO handle theme icon specs, like we did before with efreet
+			Eina_List *theme_list;
+			Eina_List *l;
+			Efreet_Icon_Theme *theme;
+
+			theme_list = efreet_icon_theme_list_get();
+			EINA_LIST_FOREACH(theme_list, l, theme)
+			{
+				iconpath = efreet_icon_path_find((theme->name).name, desktop->icon, 64);
+				if(iconpath)
+				    break;
+			}
+		  */      
+        }
+    
+        game = calloc(1, sizeof(Game_Entry));
+        game->name = strdup (name);
+        game->icon = strdup (icon);
+        game->exec = strdup (exec);
+    }
+  
+    ini_free (ini);
+  
+    return game;
+}
 
 static void _play(void *data)
 {
@@ -89,51 +145,26 @@ static void _parse_directory(Evas_Object *list, const char *dir_path)
 
     while ((dp = readdir(dir)))
     {
-        Efreet_Desktop *desktop;
+        Game_Entry *game;
         char dsfile[4096];
 
         if (!ecore_str_has_extension(dp->d_name, "desktop")) continue;
         sprintf(dsfile, "%s/%s", dir_path, dp->d_name);
-        desktop = efreet_desktop_get(dsfile);
-        if ((desktop = efreet_desktop_get(dsfile)))
+
+        if ((game = _parse_desktop_game(dsfile)))
         {
-            Eina_List *l;
-            const char *cat;
+            Enna_Vfs_File *item; 
+            item = calloc(1, sizeof(Enna_Vfs_File));
+            item->icon = (char*)eina_stringshare_add(game->icon);
+            item->label = (char*)eina_stringshare_add(game->name);
+            item->is_menu = 1;
+            enna_list_file_append(list, item, _play, strdup(game->exec));
 
-            EINA_LIST_FOREACH(desktop->categories, l, cat)
-            {
-                if(!strncmp(cat, "Game", strlen("Game")))
-                {
-                    char *iconpath = NULL;
-                    Enna_Vfs_File *item;
-
-                    if (ecore_file_can_read(desktop->icon))
-                    {
-                        iconpath = desktop->icon;
-                    } else {
-                        Eina_List *theme_list;
-                        Eina_List *l;
-                        Efreet_Icon_Theme *theme;
-
-                        theme_list = efreet_icon_theme_list_get();
-                        EINA_LIST_FOREACH(theme_list, l, theme)
-                        {
-                            iconpath = efreet_icon_path_find((theme->name).name, desktop->icon, 64);
-                            if(iconpath)
-                                break;
-                        }
-                    }
-
-                    item = calloc(1, sizeof(Enna_Vfs_File));
-                    item->icon = (char*)eina_stringshare_add(iconpath);
-                    item->label = (char*)eina_stringshare_add(desktop->name);
-                    item->is_menu = 1;
-                    enna_list_file_append(list, item, _play, desktop->exec);
-                    break;
-                }
-            }
+            free (game->name);
+            free (game->icon);
+            free (game->exec);
+            free (game);
         }
-        efreet_desktop_free(desktop);
     }
     closedir(dir);
 }
@@ -174,16 +205,6 @@ static void _create_gui(void)
 /*****************************************************************************/
 /*                         Private Module API                                */
 /*****************************************************************************/
-
-static void _class_init(int dummy)
-{
-    efreet_init();
-}
-
-static void _class_shutdown(int dummy)
-{
-    efreet_shutdown();
-}
 
 static void _class_show(int dummy)
 {
@@ -238,9 +259,9 @@ class =
     "icon/games",
     "background/games",
     {
-        _class_init,
         NULL,
-        _class_shutdown,
+        NULL,
+        NULL,
         _class_show,
         _class_hide,
         _class_event
