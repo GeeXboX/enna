@@ -22,8 +22,6 @@
 #ifndef WEATHER_API_H
 #define WEATHER_API_H
 
-#include "input.h"
-
 typedef enum {
     TEMP_CELCIUS,
     TEMP_FAHRENHEIT
@@ -52,9 +50,6 @@ typedef struct weather_smart_data_s {
     temp_type_t temp;
     weather_current_t current;
     weather_forecast_t forecast[4];
-    Evas_Object *o_cfg_panel;
-    Enna_Config_Panel *cfg_panel;
-    Input_Listener *input_listener;
 } weather_t;
 
 void enna_weather_cfg_register (void);
@@ -63,7 +58,7 @@ void enna_weather_update       (weather_t *w);
 void enna_weather_set_city     (weather_t *w, const char *city);
 void enna_weather_set_lang     (weather_t *w, const char *lang);
 
-weather_t *enna_weather_new (void);
+weather_t *enna_weather_init (void);
 void enna_weather_free (weather_t *w);
 
 #endif /* WEATHER_API_H */
