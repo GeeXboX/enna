@@ -61,7 +61,7 @@ void enna_weather_set_lang     (weather_t *w, const char *lang);
 weather_t *enna_weather_new (void);
 void enna_weather_free (weather_t *w);
 
-void enna_weather_init(void);
-void enna_weather_shutdown(void);
+int enna_weather_init(void);
+int enna_weather_shutdown(void);
 
 #endif /* WEATHER_API_H */
