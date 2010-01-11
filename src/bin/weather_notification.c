@@ -54,7 +54,7 @@ enna_weather_notification_update (Evas_Object *obj)
 
   sd = evas_object_data_get(obj, "sd");
   enna_weather_free(sd->w);
-  sd->w = enna_weather_init();
+  sd->w = enna_weather_new();
   enna_weather_update(sd->w);
 
   /* weather icon */
@@ -83,7 +83,7 @@ enna_weather_notification_smart_add (Evas *evas)
   weather_notifier_smart_data_t *sd;
 
   sd = ENNA_NEW(weather_notifier_smart_data_t, 1);
-  sd->w = enna_weather_init();
+  sd->w = enna_weather_new();
 
   sd->edje = edje_object_add(evas);
   evas_object_event_callback_add(sd->edje, EVAS_CALLBACK_DEL, cb_del, sd);

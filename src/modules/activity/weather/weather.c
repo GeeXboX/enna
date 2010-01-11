@@ -312,7 +312,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     mod = calloc (1, sizeof (Enna_Module_Weather));
     mod->em = em;
-    mod->w = enna_weather_init();
+    mod->w = enna_weather_new();
     em->mod = mod;
 
     enna_activity_add (&class);
