@@ -350,7 +350,7 @@ _weather_config_panel_show(void *data)
                                 NULL, _("Add"),
                                 NULL, NULL);
 
-    if (_input_listener)
+    if (!_input_listener)
         _input_listener = enna_input_listener_add("configuration/weather",
                                             _weather_config_panel_input_events_cb, NULL);
     return _o_cfg_panel;
