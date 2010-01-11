@@ -231,6 +231,11 @@ images/circle_shade.png \
 images/clock_base.png \
 images/cover_border.png \
 images/credits.jpg \
+images/cur_box.png\
+images/cur_glow.png\
+images/cur_hi.png\
+images/cur_shad.png\
+images/cur_shine.png\
 images/edit-redo.png \
 images/edit-undo.png \
 images/filebrowser_tile.png \
