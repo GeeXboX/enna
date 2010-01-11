@@ -34,6 +34,7 @@
 #include "mainmenu.h"
 #include "utils.h"
 #include "weather_api.h"
+#include "view_list2.h"
 
 #define ENNA_MODULE_NAME      "weather"
 
@@ -345,6 +346,67 @@ static Enna_Config_Section_Parser cfg_weather = {
     cfg_weather_free,
 };
 
+static Eina_Bool
+weather_config_panel_input_events_cb(void *data, enna_input event)
+{
+    weather_t *w = data;
+
+    return enna_list2_input_feed(w->o_cfg_panel, event);
+}
+
+static Evas_Object *
+weather_config_panel_show(void *data)
+{
+    weather_t *w = data;
+
+    w->o_cfg_panel = enna_list2_add(enna->evas);
+    evas_object_size_hint_align_set(w->o_cfg_panel, -1.0, -1.0);
+    evas_object_size_hint_weight_set(w->o_cfg_panel, 1.0, 1.0);
+    evas_object_show(w->o_cfg_panel);
+
+    Elm_Genlist_Item *item;
+    item = enna_list2_append(w->o_cfg_panel,
+                             _("City"),
+                             _("Choose your City"),
+                             NULL,
+                             NULL, NULL);
+    enna_list2_item_entry_add(item,
+                                NULL, w->city,
+                                NULL, NULL);
+
+    item = enna_list2_append(w->o_cfg_panel,
+                             _("Add New City"),
+                             _("Add more city to the list"),
+                             NULL,
+                             NULL, NULL);
+
+     enna_list2_item_button_add(item,
+                                NULL, _("Add"),
+                                NULL, NULL);
+
+    if (!w->input_listener)
+        w->input_listener = enna_input_listener_add("configuration/weather",
+                                            weather_config_panel_input_events_cb, w);
+    return w->o_cfg_panel;
+}
+
+static void
+weather_config_panel_hide(void *data)
+{
+    weather_t *w = data;
+    ENNA_OBJECT_DEL(w->o_cfg_panel);
+    enna_input_listener_del(w->input_listener);
+}
+
+static void
+weather_init_panel_config(weather_t *w)
+{
+    w->cfg_panel =
+        enna_config_panel_register(_("Weather"), "icon/weather",
+                                   weather_config_panel_show,
+                                   weather_config_panel_hide, w);
+}
+
 /****************************************************************************/
 /*                         Public Module API                                */
 /****************************************************************************/
@@ -395,16 +457,16 @@ enna_weather_set_lang (weather_t *w, const char *lang)
 }
 
 weather_t *
-enna_weather_init (void)
+enna_weather_new (void)
 {
     weather_t *w;
-
+    printf("Weather Init\n");
     w = ENNA_NEW(weather_t, 1);
     w->lang = get_lang();
     w->city = strdup(WEATHER_DEFAULT_CITY);
     w->temp = WEATHER_DEFAULT_TEMP;
     enna_weather_parse_config (w);
-
+    weather_init_panel_config(w);
     return w;
 }
 
@@ -434,6 +496,9 @@ enna_weather_free (weather_t *w)
         ENNA_FREE(w->forecast[i].icon);
         ENNA_FREE(w->forecast[i].condition);
     }
+
+    ENNA_OBJECT_DEL(w->o_cfg_panel);
+    enna_config_panel_unregister(w->cfg_panel);
 
     ENNA_FREE(w);
 }
