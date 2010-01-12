@@ -2,12 +2,12 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Oliver Schinagl <oliver@schinagl.nl>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-10 23:15+0100\n"
+"POT-Creation-Date: 2010-01-08 10:34+0100\n"
 "PO-Revision-Date: 2010-01-07 00:14+0100\n"
 "Last-Translator: Oliver Schinagl <oliver@schinagl.nl>\n"
 "Language-Team: Dutch\n"
@@ -131,10 +131,6 @@ msgstr "gebaseerd op de Enlighenment Foundation Bibliotheken (EFL)."
 #: src/modules/activity/configuration/configuration_credits.c:48
 msgid "Credits go to:<br>"
 msgstr "Met dank aan:<br>"
-
-#: src/modules/activity/configuration/configuration_credits.c:51
-msgid "and"
-msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
@@ -290,27 +286,27 @@ msgstr "Foto"
 msgid "View all your photos in a wall or as slideshow"
 msgstr "Bekijk al je fotos aan een wand of als een diashow"
 
-#: src/modules/activity/tv/tv.c:102
+#: src/modules/activity/tv/tv.c:90
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Teller '%s' start in %i minuut"
 msgstr[1] "Teller '%s' start in %i minuten"
 
-#: src/modules/activity/tv/tv.c:104
+#: src/modules/activity/tv/tv.c:92
 #, c-format
 msgid "Currently recording '%s'"
 msgstr " '%s' wordt op het moment opgenomen"
 
-#: src/modules/activity/tv/tv.c:113
+#: src/modules/activity/tv/tv.c:101
 msgid "Recording in progress"
 msgstr "Opname in voortgang"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
+#: src/modules/activity/tv/tv.c:142 src/modules/activity/tv/tv.c:170
 msgid "Television"
 msgstr "Televisie"
 
-#: src/modules/activity/tv/tv.c:267
+#: src/modules/activity/tv/tv.c:172
 msgid "View tv channels"
 msgstr "Bekijk tv kanalen"
 
@@ -405,43 +401,42 @@ msgstr "DVD module"
 msgid "Watch movies from DVD"
 msgstr "Bekijk films van een DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:443
-#: src/modules/browser/localfiles/localfiles.c:461
-#: src/modules/browser/localfiles/localfiles.c:479
+#: src/modules/browser/localfiles/localfiles.c:426
+#: src/modules/browser/localfiles/localfiles.c:444
+#: src/modules/browser/localfiles/localfiles.c:462
 msgid "Browse Local Devices"
 msgstr "Blader lokale apparaten"
 
-#: src/modules/browser/localfiles/localfiles.c:574
+#: src/modules/browser/localfiles/localfiles.c:487
 msgid "Browse local files"
 msgstr "Blader lokale bestanden"
 
-#: src/modules/browser/localfiles/localfiles.c:576
-#, fuzzy
+#: src/modules/browser/localfiles/localfiles.c:489
 msgid "Browse files in your local file systems"
-msgstr "Blader bestanden op je lokale harde schijf"
+msgstr "Blader bestanden op je lokale bestandssysteem"
 
-#: src/modules/browser/netstreams/netstreams.c:322
-#: src/modules/browser/netstreams/netstreams.c:338
+#: src/modules/browser/netstreams/netstreams.c:311
+#: src/modules/browser/netstreams/netstreams.c:327
 msgid "Browse Network Streams"
 msgstr "Blader netwerkstromen"
 
-#: src/modules/browser/netstreams/netstreams.c:402
+#: src/modules/browser/netstreams/netstreams.c:351
 msgid "Netstreams"
 msgstr "Netwerkstromen"
 
-#: src/modules/browser/netstreams/netstreams.c:404
+#: src/modules/browser/netstreams/netstreams.c:353
 msgid "I really don't know :P"
 msgstr "Ik weet het echt niet :P"
 
-#: src/modules/browser/podcasts/podcasts.c:328
+#: src/modules/browser/podcasts/podcasts.c:333
 msgid "Listen to Podcasts"
 msgstr "Luister naar podcasts"
 
-#: src/modules/browser/podcasts/podcasts.c:384
+#: src/modules/browser/podcasts/podcasts.c:357
 msgid "Podcast browser"
 msgstr "Blader podcasts"
 
-#: src/modules/browser/podcasts/podcasts.c:386
+#: src/modules/browser/podcasts/podcasts.c:359
 msgid "Podcast module"
 msgstr "Podcast module"
 
@@ -473,8 +468,7 @@ msgstr "UPnP/DLNA module"
 
 #: src/modules/browser/upnp/upnp.c:623
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
-msgstr ""
-"Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
+msgstr "Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
 
 #: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"
