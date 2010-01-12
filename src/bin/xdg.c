@@ -37,7 +37,7 @@ static const char *
 _makedir(const char * dir)
 {
    size_t len = strlen (dir) + strlen("/enna") + 1;
-   const char * ret = malloc (len);
+   char * ret = malloc (len);
    
    snprintf(ret, len, "%s/enna", dir);
    if (!ecore_file_is_dir(ret))
@@ -61,9 +61,9 @@ enna_xdg_shutdown(void)
   if (init_done == EINA_TRUE)
   {
     xdgWipeHandle (&xdg);
-    free (config_home);
-    free (data_home);
-    free (cache_home);
+    free ((void *) config_home);
+    free ((void *) data_home);
+    free ((void *) cache_home);
   }
 }
 
