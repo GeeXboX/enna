@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-08 10:34+0100\n"
+"POT-Creation-Date: 2010-01-12 12:21+0100\n"
 "PO-Revision-Date: 2010-01-07 00:14+0100\n"
 "Last-Translator: Oliver Schinagl <oliver@schinagl.nl>\n"
 "Language-Team: Dutch\n"
@@ -20,51 +20,51 @@ msgstr ""
 msgid "No media found !"
 msgstr "Geen media aanwezig!"
 
-#: src/bin/browser.c:712
+#: src/bin/browser.c:706
 msgid "Main Menu"
 msgstr "Hoofdmenu"
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:439
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:438
+#: src/bin/enna.c:440
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Gebruik: %s [opties ...]\n"
 
-#: src/bin/enna.c:439
+#: src/bin/enna.c:441
 #, c-format
 msgid " Available Options:\n"
 msgstr "Beschikbare opties:\n"
 
-#: src/bin/enna.c:440
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Geef te gebruiken configuratie bestand op.\n"
 
-#: src/bin/enna.c:441
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      Dwing Fullscreen modus.\n"
 
-#: src/bin/enna.c:442
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Deze hulptekst tonen.\n"
 
-#: src/bin/enna.c:443
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Geef te gebruiken thema naam op.\n"
 
-#: src/bin/enna.c:444
+#: src/bin/enna.c:446
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Geef venster geometrie op. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:445
+#: src/bin/enna.c:447
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna programmaversie tonen.\n"
@@ -131,6 +131,10 @@ msgstr "gebaseerd op de Enlighenment Foundation Bibliotheken (EFL)."
 #: src/modules/activity/configuration/configuration_credits.c:48
 msgid "Credits go to:<br>"
 msgstr "Met dank aan:<br>"
+
+#: src/modules/activity/configuration/configuration_credits.c:51
+msgid "and"
+msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
@@ -244,15 +248,15 @@ msgstr "Geen<br>"
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Systeem informatie</c><br><br>"
 
-#: src/modules/activity/games/games.c:235
+#: src/modules/activity/games/games.c:308
 msgid "Games"
 msgstr "Spellen"
 
-#: src/modules/activity/games/games.c:263
+#: src/modules/activity/games/games.c:336
 msgid "System games"
 msgstr "Systeem spellen"
 
-#: src/modules/activity/games/games.c:265
+#: src/modules/activity/games/games.c:338
 msgid "With this module you can play your games directly from enna"
 msgstr "Met deze module is het mogelijk  om je spellen direct vanuit enna"
 
@@ -286,74 +290,74 @@ msgstr "Foto"
 msgid "View all your photos in a wall or as slideshow"
 msgstr "Bekijk al je fotos aan een wand of als een diashow"
 
-#: src/modules/activity/tv/tv.c:90
+#: src/modules/activity/tv/tv.c:102
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Teller '%s' start in %i minuut"
 msgstr[1] "Teller '%s' start in %i minuten"
 
-#: src/modules/activity/tv/tv.c:92
+#: src/modules/activity/tv/tv.c:104
 #, c-format
 msgid "Currently recording '%s'"
 msgstr " '%s' wordt op het moment opgenomen"
 
-#: src/modules/activity/tv/tv.c:101
+#: src/modules/activity/tv/tv.c:113
 msgid "Recording in progress"
 msgstr "Opname in voortgang"
 
-#: src/modules/activity/tv/tv.c:142 src/modules/activity/tv/tv.c:170
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "Televisie"
 
-#: src/modules/activity/tv/tv.c:172
+#: src/modules/activity/tv/tv.c:267
 msgid "View tv channels"
 msgstr "Bekijk tv kanalen"
 
-#: src/modules/activity/video/video_infos.c:93
+#: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
 msgstr "Informatie niet beschikbaar ..."
 
-#: src/modules/activity/video/video_infos.c:127
+#: src/modules/activity/video/video_infos.c:128
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr "<ul>Regisseur:</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:131
+#: src/modules/activity/video/video_infos.c:132
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr "<ul>Rolverdeling:</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:150
+#: src/modules/activity/video/video_infos.c:151
 #, c-format
 msgid "<hl>Video: </hl> %s"
 msgstr "<hl>Video: </hl> %s"
 
-#: src/modules/activity/video/video_infos.c:171
+#: src/modules/activity/video/video_infos.c:172
 #, c-format
 msgid "<hl>Audio: </hl> %s"
 msgstr "<hl>Audio: </hl> %s"
 
-#: src/modules/activity/video/video_infos.c:184
+#: src/modules/activity/video/video_infos.c:185
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Grootte: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video_infos.c:190
+#: src/modules/activity/video/video_infos.c:191
 msgid "No further information can be retrieved"
 msgstr "Geen additionele informatie kan worden opgehaald"
 
-#: src/modules/activity/video/video.c:131
+#: src/modules/activity/video/video.c:132
 #, c-format
 msgid "%d Movies"
 msgstr "%d Films"
 
-#: src/modules/activity/video/video.c:914
-#: src/modules/activity/video/video.c:990
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/video/video.c:992
+#: src/modules/activity/video/video.c:993
 msgid "This is the main video module"
 msgstr "Dit is de hoofd video module"
 
@@ -401,42 +405,42 @@ msgstr "DVD module"
 msgid "Watch movies from DVD"
 msgstr "Bekijk films van een DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:426
-#: src/modules/browser/localfiles/localfiles.c:444
-#: src/modules/browser/localfiles/localfiles.c:462
+#: src/modules/browser/localfiles/localfiles.c:443
+#: src/modules/browser/localfiles/localfiles.c:461
+#: src/modules/browser/localfiles/localfiles.c:479
 msgid "Browse Local Devices"
 msgstr "Blader lokale apparaten"
 
-#: src/modules/browser/localfiles/localfiles.c:487
+#: src/modules/browser/localfiles/localfiles.c:574
 msgid "Browse local files"
 msgstr "Blader lokale bestanden"
 
-#: src/modules/browser/localfiles/localfiles.c:489
+#: src/modules/browser/localfiles/localfiles.c:576
 msgid "Browse files in your local file systems"
 msgstr "Blader bestanden op je lokale bestandssysteem"
 
-#: src/modules/browser/netstreams/netstreams.c:311
-#: src/modules/browser/netstreams/netstreams.c:327
+#: src/modules/browser/netstreams/netstreams.c:322
+#: src/modules/browser/netstreams/netstreams.c:338
 msgid "Browse Network Streams"
 msgstr "Blader netwerkstromen"
 
-#: src/modules/browser/netstreams/netstreams.c:351
+#: src/modules/browser/netstreams/netstreams.c:402
 msgid "Netstreams"
 msgstr "Netwerkstromen"
 
-#: src/modules/browser/netstreams/netstreams.c:353
+#: src/modules/browser/netstreams/netstreams.c:404
 msgid "I really don't know :P"
 msgstr "Ik weet het echt niet :P"
 
-#: src/modules/browser/podcasts/podcasts.c:333
+#: src/modules/browser/podcasts/podcasts.c:329
 msgid "Listen to Podcasts"
 msgstr "Luister naar podcasts"
 
-#: src/modules/browser/podcasts/podcasts.c:357
+#: src/modules/browser/podcasts/podcasts.c:385
 msgid "Podcast browser"
 msgstr "Blader podcasts"
 
-#: src/modules/browser/podcasts/podcasts.c:359
+#: src/modules/browser/podcasts/podcasts.c:387
 msgid "Podcast module"
 msgstr "Podcast module"
 
@@ -452,23 +456,24 @@ msgstr "SHOUTcast bladeren"
 msgid "Listen to shoutcast stream"
 msgstr "Luister naar SHOUTcast stroom"
 
-#: src/modules/browser/upnp/upnp.c:516 src/modules/browser/upnp/upnp.c:534
-#: src/modules/browser/upnp/upnp.c:552
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA Media Servers"
 msgstr "UPnP/DLNA Media Servers"
 
-#: src/modules/browser/upnp/upnp.c:607
+#: src/modules/browser/upnp/upnp.c:571
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Nieuw UPnP apparaat '%s (%s)' gevonden"
 
-#: src/modules/browser/upnp/upnp.c:621
+#: src/modules/browser/upnp/upnp.c:585
 msgid "UPnP / DLNA module"
 msgstr "UPnP/DLNA module"
 
-#: src/modules/browser/upnp/upnp.c:623
+#: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
-msgstr "Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
+msgstr ""
+"Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
 
 #: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"

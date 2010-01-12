@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-10 23:15+0100\n"
+"POT-Creation-Date: 2010-01-12 12:21+0100\n"
 "PO-Revision-Date: 2010-01-08 10:44+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -20,53 +20,53 @@ msgstr ""
 msgid "No media found !"
 msgstr "Nessun media trovato!"
 
-#: src/bin/browser.c:712
+#: src/bin/browser.c:706
 msgid "Main Menu"
 msgstr "Menu principale"
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:439
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:438
+#: src/bin/enna.c:440
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:439
+#: src/bin/enna.c:441
 #, c-format
 msgid " Available Options:\n"
 msgstr "Opzioni disponibili:\n"
 
-#: src/bin/enna.c:440
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:441
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:442
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:443
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:444
+#: src/bin/enna.c:446
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:445
+#: src/bin/enna.c:447
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
@@ -250,15 +250,15 @@ msgstr "nessuna<br>"
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informazioni di sistema</c><br><br>"
 
-#: src/modules/activity/games/games.c:235
+#: src/modules/activity/games/games.c:308
 msgid "Games"
 msgstr "Giochi"
 
-#: src/modules/activity/games/games.c:263
+#: src/modules/activity/games/games.c:336
 msgid "System games"
 msgstr ""
 
-#: src/modules/activity/games/games.c:265
+#: src/modules/activity/games/games.c:338
 msgid "With this module you can play your games directly from enna"
 msgstr ""
 
@@ -316,50 +316,50 @@ msgstr "Televisione"
 msgid "View tv channels"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:93
+#: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
 msgstr "Informazioni non trovate..."
 
-#: src/modules/activity/video/video_infos.c:127
+#: src/modules/activity/video/video_infos.c:128
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr "<ul>Regista:</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:131
+#: src/modules/activity/video/video_infos.c:132
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr "<ul>Attori:</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:150
+#: src/modules/activity/video/video_infos.c:151
 #, c-format
 msgid "<hl>Video: </hl> %s"
 msgstr "<hl>Video: </hl> %s"
 
-#: src/modules/activity/video/video_infos.c:171
+#: src/modules/activity/video/video_infos.c:172
 #, c-format
 msgid "<hl>Audio: </hl> %s"
 msgstr "<hl>Audio: </hl> %s"
 
-#: src/modules/activity/video/video_infos.c:184
+#: src/modules/activity/video/video_infos.c:185
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Dimensione: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video_infos.c:190
+#: src/modules/activity/video/video_infos.c:191
 msgid "No further information can be retrieved"
 msgstr "Non ci sono altre informazioni disponibili"
 
-#: src/modules/activity/video/video.c:131
+#: src/modules/activity/video/video.c:132
 #, c-format
 msgid "%d Movies"
 msgstr "%d video"
 
-#: src/modules/activity/video/video.c:914
-#: src/modules/activity/video/video.c:990
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/video/video.c:992
+#: src/modules/activity/video/video.c:993
 msgid "This is the main video module"
 msgstr ""
 
@@ -434,15 +434,15 @@ msgstr ""
 msgid "I really don't know :P"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:328
+#: src/modules/browser/podcasts/podcasts.c:329
 msgid "Listen to Podcasts"
 msgstr "Ascolta podcast"
 
-#: src/modules/browser/podcasts/podcasts.c:384
+#: src/modules/browser/podcasts/podcasts.c:385
 msgid "Podcast browser"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:386
+#: src/modules/browser/podcasts/podcasts.c:387
 msgid "Podcast module"
 msgstr ""
 
@@ -458,21 +458,21 @@ msgstr ""
 msgid "Listen to shoutcast stream"
 msgstr "Ascolta flusso shoutcast"
 
-#: src/modules/browser/upnp/upnp.c:516 src/modules/browser/upnp/upnp.c:534
-#: src/modules/browser/upnp/upnp.c:552
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA Media Servers"
 msgstr "UPnP/DLNA media server"
 
-#: src/modules/browser/upnp/upnp.c:607
+#: src/modules/browser/upnp/upnp.c:571
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Nuovo dispositivo UPnP trovato '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:621
+#: src/modules/browser/upnp/upnp.c:585
 msgid "UPnP / DLNA module"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:623
+#: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
 msgstr ""
 

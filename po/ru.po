@@ -2,12 +2,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Kostyantyn Derets <ua.motofan@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-1-12 12:20+0200\n"
+"POT-Creation-Date: 2010-01-12 12:21+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Ukraine\n"
@@ -22,52 +22,52 @@ msgstr ""
 msgid "No media found !"
 msgstr "Источник не найден!"
 
-#: src/bin/browser.c:709
+#: src/bin/browser.c:706
 msgid "Main Menu"
 msgstr "Главное меню"
 
-#: src/bin/enna.c:429
+#: src/bin/enna.c:439
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедиаЦентр Enna\n"
 
-#: src/bin/enna.c:430
+#: src/bin/enna.c:440
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Использование: %s [опции...]\n"
 
-#: src/bin/enna.c:431
+#: src/bin/enna.c:441
 #, c-format
 msgid " Available Options:\n"
 msgstr " Доступные опции:\n"
 
-#: src/bin/enna.c:432
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Укажите конфигурационный файл.\n"
 
-#: src/bin/enna.c:433
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs):      Принудительный полноэкранный режим.\n"
 
-#: src/bin/enna.c:434
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Выводит это сообщение.\n"
 
-#: src/bin/enna.c:435
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr "  -t, (--theme):   Укажите название темы, которая будет использована.\n"
+msgstr ""
+"  -t, (--theme):   Укажите название темы, которая будет использована.\n"
 
-#: src/bin/enna.c:436
+#: src/bin/enna.c:446
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry):Укажите размеры окна. (geometry=1280x720)\n"
+msgstr "  -g, (--geometry):Укажите размеры окна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:447
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Выводит номер версии Enna.\n"
@@ -137,6 +137,10 @@ msgstr "основаный на библиотеках Enlightenment Foundation 
 msgid "Credits go to:<br>"
 msgstr "Благодарности"
 
+#: src/modules/activity/configuration/configuration_credits.c:51
+msgid "and"
+msgstr ""
+
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
 msgstr "<c>Информация про Enna</c><br><br>"
@@ -161,101 +165,106 @@ msgstr ""
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:165
+#: src/modules/activity/configuration/configuration_sysinfo.c:106
+#, fuzzy, c-format
+msgid "<hilight>Video Renderer:</hilight> %s"
+msgstr "<hilight>Память: </hilight>"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:167
 msgid "<hilight>Distribution: </hilight>"
 msgstr "<hilight>Дистрибутив: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:185
+#: src/modules/activity/configuration/configuration_sysinfo.c:187
 msgid "<hilight>OS: </hilight>"
 msgstr "<hilight>ОС: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:189
+#: src/modules/activity/configuration/configuration_sysinfo.c:191
 #, c-format
 msgid "%s %s for %s"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:204
+#: src/modules/activity/configuration/configuration_sysinfo.c:206
 #, fuzzy
 msgid "<hilight>Available CPUs: </hilight>"
 msgstr "<hilight>Доступные ЦП:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:235
+#: src/modules/activity/configuration/configuration_sysinfo.c:237
 #, c-format
 msgid ", running at %d MHz"
 msgstr ", с частотой %d MHz"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:264
+#: src/modules/activity/configuration/configuration_sysinfo.c:266
 #, fuzzy
 msgid "<hilight>CPU Load: </hilight>"
 msgstr "<hilight>загрузка ЦП: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:307
+#: src/modules/activity/configuration/configuration_sysinfo.c:309
 #, fuzzy
 msgid "<hilight>Memory: </hilight>"
 msgstr "<hilight>Память: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:308
+#: src/modules/activity/configuration/configuration_sysinfo.c:310
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
 msgstr "%d MB использовано из %d MB всего (%d%%)"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:344
+#: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
 msgstr "<hilight>Разрешение экрана: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:345
+#: src/modules/activity/configuration/configuration_sysinfo.c:349
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
 msgstr "%dx%d на %d Hz (min: %dx%d, max: %dx%d)"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:359
+#: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "<hilight>VDR:</hilight> "
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:361
+#: src/modules/activity/configuration/configuration_sysinfo.c:365
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
 msgstr "установлено соединение с VDR %s на %s (%s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:366
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "not connected<br>"
 msgstr "нет соединений<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:378
+#: src/modules/activity/configuration/configuration_sysinfo.c:382
 msgid "<hilight>Available network interfaces:</hilight><br>"
 msgstr "<hilight>Доступные сетевые соединения:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:403
+#: src/modules/activity/configuration/configuration_sysinfo.c:407
 #, c-format
 msgid "  * %s (IP: %s, "
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
 #, c-format
 msgid "Netmask: %s)<br>"
 msgstr "Netmask: %s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:432
+#: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "<hilight>Default Gateway: </hilight>"
 msgstr "<hilight>Default Gateway: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:459
+#: src/modules/activity/configuration/configuration_sysinfo.c:463
 msgid "None<br>"
 msgstr "Нет<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:470
+#: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Информация про систему</c><br><br>"
 
-#: src/modules/activity/games/games.c:235
+#: src/modules/activity/games/games.c:308
 msgid "Games"
 msgstr "Игры"
 
-#: src/modules/activity/games/games.c:263
+#: src/modules/activity/games/games.c:336
 msgid "System games"
 msgstr "Системные игры"
 
-#: src/modules/activity/games/games.c:265
+#: src/modules/activity/games/games.c:338
 msgid "With this module you can play your games directly from enna"
 msgstr "С помощью этого модуля Вы можете играть в игры прямо из enna"
 
@@ -290,75 +299,75 @@ msgstr "Фото"
 msgid "View all your photos in a wall or as slideshow"
 msgstr "Просмотреть все Ваши фото 'на стене' или как слайдшоу"
 
-#: src/modules/activity/tv/tv.c:90
+#: src/modules/activity/tv/tv.c:102
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Таймер '%s' запустится через %i минут"
 msgstr[1] "Timer '%s' is due to start in %i minute"
 
-#: src/modules/activity/tv/tv.c:92
+#: src/modules/activity/tv/tv.c:104
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Сейчас записывается '%s'"
 
-#: src/modules/activity/tv/tv.c:101
+#: src/modules/activity/tv/tv.c:113
 msgid "Recording in progress"
 msgstr "Идет запись"
 
-#: src/modules/activity/tv/tv.c:141 src/modules/activity/tv/tv.c:169
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "Телевидение"
 
-#: src/modules/activity/tv/tv.c:171
+#: src/modules/activity/tv/tv.c:267
 msgid "View tv channels"
 msgstr "Смотреть телеканалы"
 
-#: src/modules/activity/video/video_infos.c:93
+#: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
 msgstr "Нет необходимой информации ..."
 
-#: src/modules/activity/video/video_infos.c:127
+#: src/modules/activity/video/video_infos.c:128
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr "<ul>Режисер:</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:131
+#: src/modules/activity/video/video_infos.c:132
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr "<ul>В ролях:</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:150
+#: src/modules/activity/video/video_infos.c:151
 #, fuzzy, c-format
 msgid "<hl>Video: </hl> %s"
 msgstr "<hl>Видео: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video_infos.c:171
+#: src/modules/activity/video/video_infos.c:172
 #, fuzzy, c-format
 msgid "<hl>Audio: </hl> %s"
 msgstr "<hl>Аудио: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video_infos.c:184
+#: src/modules/activity/video/video_infos.c:185
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Размер: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video_infos.c:190
+#: src/modules/activity/video/video_infos.c:191
 #, fuzzy
 msgid "No further information can be retrieved"
 msgstr "Невозможно получить больше информации."
 
-#: src/modules/activity/video/video.c:131
+#: src/modules/activity/video/video.c:132
 #, c-format
 msgid "%d Movies"
 msgstr "%d Фильмов"
 
-#: src/modules/activity/video/video.c:914
-#: src/modules/activity/video/video.c:990
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
 msgid "Video"
 msgstr "Видео"
 
-#: src/modules/activity/video/video.c:992
+#: src/modules/activity/video/video.c:993
 msgid "This is the main video module"
 msgstr "Это главный видео модуль"
 
@@ -407,43 +416,44 @@ msgstr "Модуль DVD"
 msgid "Watch movies from DVD"
 msgstr "Смотреть фильм с DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:426
-#: src/modules/browser/localfiles/localfiles.c:444
-#: src/modules/browser/localfiles/localfiles.c:462
+#: src/modules/browser/localfiles/localfiles.c:443
+#: src/modules/browser/localfiles/localfiles.c:461
+#: src/modules/browser/localfiles/localfiles.c:479
 msgid "Browse Local Devices"
 msgstr "Обзор локальных дисков"
 
-#: src/modules/browser/localfiles/localfiles.c:487
+#: src/modules/browser/localfiles/localfiles.c:574
 #, fuzzy
 msgid "Browse local files"
 msgstr "Обзор локальных файлов"
 
-#: src/modules/browser/localfiles/localfiles.c:489
-msgid "Browse files in your local hard disk"
+#: src/modules/browser/localfiles/localfiles.c:576
+#, fuzzy
+msgid "Browse files in your local file systems"
 msgstr "Обзор файлов на Вашем жестком диске"
 
-#: src/modules/browser/netstreams/netstreams.c:311
-#: src/modules/browser/netstreams/netstreams.c:327
+#: src/modules/browser/netstreams/netstreams.c:322
+#: src/modules/browser/netstreams/netstreams.c:338
 msgid "Browse Network Streams"
 msgstr "Обзор сетевых трансляций"
 
-#: src/modules/browser/netstreams/netstreams.c:351
+#: src/modules/browser/netstreams/netstreams.c:402
 msgid "Netstreams"
 msgstr "Сетевые трансляции"
 
-#: src/modules/browser/netstreams/netstreams.c:353
+#: src/modules/browser/netstreams/netstreams.c:404
 msgid "I really don't know :P"
 msgstr "Я действительно не знаю!"
 
-#: src/modules/browser/podcasts/podcasts.c:333
+#: src/modules/browser/podcasts/podcasts.c:329
 msgid "Listen to Podcasts"
 msgstr "Слушать подкасты"
 
-#: src/modules/browser/podcasts/podcasts.c:357
+#: src/modules/browser/podcasts/podcasts.c:385
 msgid "Podcast browser"
 msgstr "Обозреватель подкастов"
 
-#: src/modules/browser/podcasts/podcasts.c:359
+#: src/modules/browser/podcasts/podcasts.c:387
 msgid "Podcast module"
 msgstr "Модуль подкастов"
 
@@ -460,48 +470,49 @@ msgstr "Обозреватель сетевых трансляций"
 msgid "Listen to shoutcast stream"
 msgstr "Слушать сетевую радио станцию"
 
-#: src/modules/browser/upnp/upnp.c:442
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA Media Servers"
 msgstr "Медиа сервера UPnP/DLNA"
 
-#: src/modules/browser/upnp/upnp.c:496
+#: src/modules/browser/upnp/upnp.c:571
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Найдено новое UPnP устройство '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:510
+#: src/modules/browser/upnp/upnp.c:585
 msgid "UPnP / DLNA module"
 msgstr "Модуль UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:512
+#: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
 msgstr "Этот модуль позволяет Enna читать файлы с UPnP/DLNA медиа серверов"
 
-#: src/modules/browser/valhalla/valhalla.c:298
+#: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"
 msgstr "Исполнитель"
 
-#: src/modules/browser/valhalla/valhalla.c:302
+#: src/modules/browser/valhalla/valhalla.c:308
 msgid "Albums"
 msgstr "Альбом"
 
-#: src/modules/browser/valhalla/valhalla.c:306
+#: src/modules/browser/valhalla/valhalla.c:312
 msgid "Genres"
 msgstr "Жанр"
 
-#: src/modules/browser/valhalla/valhalla.c:310
+#: src/modules/browser/valhalla/valhalla.c:316
 msgid "Unclassified"
 msgstr "Неопределенный"
 
-#: src/modules/browser/valhalla/valhalla.c:462
+#: src/modules/browser/valhalla/valhalla.c:468
 msgid "Valhalla module"
 msgstr "Модуль Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:464
+#: src/modules/browser/valhalla/valhalla.c:470
 msgid "Database stuff and metadata retrival from various sources"
 msgstr "Данные из базы и метаданные, полученые из разных источников"
 
-#: src/modules/browser/valhalla/valhalla.c:472
+#: src/modules/browser/valhalla/valhalla.c:478
 msgid "Media Library"
 msgstr "Медиа библиотека"
 
