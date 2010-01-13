@@ -43,7 +43,7 @@ _makedir(const char * dir)
     if (!ecore_file_is_dir(ret))
         ecore_file_mkpath(ret);
 
-   return ret;
+    return ret;
 }
 
 Eina_Bool
@@ -52,7 +52,7 @@ enna_xdg_init(void)
     if (xdgInitHandle(&xdg))
         init_done = EINA_TRUE;
 
-  return init_done;
+    return init_done;
 }
 
 void
