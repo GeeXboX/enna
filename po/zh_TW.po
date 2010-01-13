@@ -34,12 +34,12 @@ msgstr "Enna 媒體中心\n"
 #: src/bin/enna.c:440
 #, c-format
 msgid " Usage: %s [options ...]\n"
-msgstr ""
+msgstr " 用法：%s [選項...]\n"
 
 #: src/bin/enna.c:441
 #, c-format
 msgid " Available Options:\n"
-msgstr ""
+msgstr "可選項:\n"
 
 #: src/bin/enna.c:442
 #, c-format
@@ -49,17 +49,17 @@ msgstr ""
 #: src/bin/enna.c:443
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
-msgstr ""
+msgstr "  -f, (--fs):      強制全螢幕顯示。\n"
 
 #: src/bin/enna.c:444
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
-msgstr ""
+msgstr "  -h, (--help):    顯示這個說明。\n"
 
 #: src/bin/enna.c:445
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr ""
+msgstr "  -t, (--theme):   指定要使用的佈景。\n"
 
 #: src/bin/enna.c:446
 #, c-format
@@ -69,7 +69,7 @@ msgstr ""
 #: src/bin/enna.c:447
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
-msgstr ""
+msgstr "  -V, (--version): 顯示 Enna 的版本。\n"
 
 #: src/bin/exit.c:93
 msgid "Are you sure you want to quit enna ?"
@@ -85,7 +85,7 @@ msgstr "不! 我要繼續使用 Enna"
 
 #: src/bin/module.c:227
 msgid "Modules"
-msgstr ""
+msgstr "模組"
 
 #: src/bin/module.c:466
 msgid "No information provided"
@@ -99,16 +99,16 @@ msgstr ""
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:351
 msgid "BookStore"
-msgstr ""
+msgstr "書店"
 
 #: src/modules/activity/bookstore/bookstore.c:353
 msgid "Read your books"
-msgstr ""
+msgstr "讀你的書"
 
 #: src/modules/activity/configuration/configuration.c:211
 #: src/modules/activity/configuration/configuration.c:239
 msgid "Configuration"
-msgstr "設定"
+msgstr "配置"
 
 #: src/modules/activity/configuration/configuration.c:241
 msgid "This module create the enna configuration panel (DO NOT UNLOAD)"
@@ -120,7 +120,7 @@ msgstr "系統資訊"
 
 #: src/modules/activity/configuration/configuration.c:259
 msgid "Credits"
-msgstr ""
+msgstr "感謝"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
 msgid "Enna is GeeXboX's team MediaCenter, "
@@ -132,7 +132,7 @@ msgstr ""
 
 #: src/modules/activity/configuration/configuration_credits.c:48
 msgid "Credits go to:<br>"
-msgstr ""
+msgstr "感謝:<br>"
 
 #: src/modules/activity/configuration/configuration_credits.c:51
 msgid "and"
@@ -140,7 +140,7 @@ msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
-msgstr ""
+msgstr "<c>Enna 資訊</c><br><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:97
 #, c-format
@@ -191,7 +191,7 @@ msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:266
 msgid "<hilight>CPU Load: </hilight>"
-msgstr ""
+msgstr "<hilight>CPU 負載: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:309
 msgid "<hilight>Memory: </hilight>"
@@ -200,7 +200,7 @@ msgstr "<hilight>記憶體: </hilight>"
 #: src/modules/activity/configuration/configuration_sysinfo.c:310
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
-msgstr ""
+msgstr "%d MB 被使用, 總共有 %d MB (%d%%)"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
@@ -487,11 +487,11 @@ msgstr "專輯"
 
 #: src/modules/browser/valhalla/valhalla.c:312
 msgid "Genres"
-msgstr ""
+msgstr "類別"
 
 #: src/modules/browser/valhalla/valhalla.c:316
 msgid "Unclassified"
-msgstr ""
+msgstr "沒有被分類的"
 
 #: src/modules/browser/valhalla/valhalla.c:468
 msgid "Valhalla module"
@@ -507,67 +507,67 @@ msgstr "媒體資料庫"
 
 #: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
-msgstr ""
+msgstr "CD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:40
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: src/modules/volume/hal/hal_volume.c:41
 msgid "CD-RW"
-msgstr ""
+msgstr "CD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:42
 msgid "DVD-ROM"
-msgstr ""
+msgstr "DVD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:43
 msgid "DVD-RAM"
-msgstr ""
+msgstr "DVD-RAM"
 
 #: src/modules/volume/hal/hal_volume.c:44
 msgid "DVD-R"
-msgstr ""
+msgstr "DVD-R"
 
 #: src/modules/volume/hal/hal_volume.c:45
 msgid "DVD-RW"
-msgstr ""
+msgstr "DVD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:46
 msgid "DVD+R"
-msgstr ""
+msgstr "DVD+R"
 
 #: src/modules/volume/hal/hal_volume.c:47
 msgid "DVD+RW"
-msgstr ""
+msgstr "DVD+RW"
 
 #: src/modules/volume/hal/hal_volume.c:48
 msgid "DVD+R (DL)"
-msgstr ""
+msgstr "DVD+R (DL)"
 
 #: src/modules/volume/hal/hal_volume.c:49
 msgid "BD-ROM"
-msgstr ""
+msgstr "BD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:50
 msgid "BD-R"
-msgstr ""
+msgstr "BD-R"
 
 #: src/modules/volume/hal/hal_volume.c:51
 msgid "BD-RE"
-msgstr ""
+msgstr "BD-RE"
 
 #: src/modules/volume/hal/hal_volume.c:52
 msgid "HD-DVD-ROM"
-msgstr ""
+msgstr "HD-DVD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:53
 msgid "HD-DVD-R"
-msgstr ""
+msgstr "HD-DVD-R"
 
 #: src/modules/volume/hal/hal_volume.c:54
 msgid "HD-DVD-RW"
-msgstr ""
+msgstr "HD-DVD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:55
 msgid "MagnetoOptical"
@@ -575,19 +575,19 @@ msgstr ""
 
 #: src/modules/volume/hal/hal_volume.c:64
 msgid "CDDA"
-msgstr ""
+msgstr "CDDA"
 
 #: src/modules/volume/hal/hal_volume.c:65
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: src/modules/volume/hal/hal_volume.c:66
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: src/modules/volume/hal/hal_volume.c:67
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 #: src/modules/volume/hal/hal_volume.c:68
 msgid "Data"
@@ -596,12 +596,12 @@ msgstr ""
 #: src/modules/volume/mtab/mtab.c:77
 #, c-format
 msgid "[NFS] %s on %s"
-msgstr ""
+msgstr "[NFS] %s on %s"
 
 #: src/modules/volume/mtab/mtab.c:87
 #, c-format
 msgid "[SAMBA] %s on %s"
-msgstr ""
+msgstr "[SAMBA] %s on %s"
 
 #: src/modules/volume/mtab/mtab.c:149
 msgid "Volumes from mtab"
