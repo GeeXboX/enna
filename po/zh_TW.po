@@ -1,0 +1,602 @@
+# Chinese translations for enna package
+# Traditional Chinese translation for enna.
+# Copyright (C) 2010 The Enna Project
+# This file is distributed under the same license as the enna package.
+#  <sword.huang@gmail.com>, 2010.
+#
+# msgfmt zh_TW.po -o zh_TW.gmo
+
+msgid ""
+msgstr ""
+"Project-Id-Version: enna 0.4.0\n"
+"Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
+"POT-Creation-Date: 2009-12-31 14:34+0100\n"
+"PO-Revision-Date: 2010-01-13 14:16+0800\n"
+"Last-Translator:  <sword.huang@gmail.com>\n"
+"Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/bin/browser.c:549
+msgid "No media found !"
+msgstr "沒有發現任何媒體!"
+
+#: src/bin/browser.c:709
+msgid "Main Menu"
+msgstr "主選單"
+
+#: src/bin/enna.c:429
+#, c-format
+msgid "Enna MediaCenter\n"
+msgstr "Enna 媒體中心\n"
+
+#: src/bin/enna.c:430
+#, c-format
+msgid " Usage: %s [options ...]\n"
+msgstr ""
+
+#: src/bin/enna.c:431
+#, c-format
+msgid " Available Options:\n"
+msgstr ""
+
+#: src/bin/enna.c:432
+#, c-format
+msgid "  -c, (--config):  Specify configuration file to be used.\n"
+msgstr ""
+
+#: src/bin/enna.c:433
+#, c-format
+msgid "  -f, (--fs):      Force Fullscreen mode.\n"
+msgstr ""
+
+#: src/bin/enna.c:434
+#, c-format
+msgid "  -h, (--help):    Display this help.\n"
+msgstr ""
+
+#: src/bin/enna.c:435
+#, c-format
+msgid "  -t, (--theme):   Specify theme name to be used.\n"
+msgstr ""
+
+#: src/bin/enna.c:436
+#, c-format
+msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
+msgstr ""
+
+#: src/bin/enna.c:437
+#, c-format
+msgid "  -V, (--version): Display Enna version number.\n"
+msgstr ""
+
+#: src/bin/exit.c:93
+msgid "Are you sure you want to quit enna ?"
+msgstr "你確定要離開 Enna?"
+
+#: src/bin/exit.c:148
+msgid "Yes, Quit Enna"
+msgstr "是! 我要離開 Enna。"
+
+#: src/bin/exit.c:151
+msgid "No, Continue using enna"
+msgstr "不! 我要繼續使用 Enna"
+
+#: src/bin/module.c:227
+msgid "Modules"
+msgstr ""
+
+#: src/bin/module.c:466
+msgid "No information provided"
+msgstr ""
+
+#: src/bin/parser_cdda.c:296
+#, c-format
+msgid "Track #%02d (%02d:%02d)"
+msgstr ""
+
+#: src/modules/activity/bookstore/bookstore.c:323
+#: src/modules/activity/bookstore/bookstore.c:351
+msgid "BookStore"
+msgstr ""
+
+#: src/modules/activity/bookstore/bookstore.c:353
+msgid "Read your books"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration.c:211
+#: src/modules/activity/configuration/configuration.c:239
+msgid "Configuration"
+msgstr "設定"
+
+#: src/modules/activity/configuration/configuration.c:241
+msgid "This module create the enna configuration panel (DO NOT UNLOAD)"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration.c:256
+msgid "System Information"
+msgstr "系統資訊"
+
+#: src/modules/activity/configuration/configuration.c:259
+msgid "Credits"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_credits.c:45
+msgid "Enna is GeeXboX's team MediaCenter, "
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_credits.c:46
+msgid "based on Enlightenment Foundation Librairies (EFL)."
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_credits.c:48
+msgid "Credits go to:<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:96
+msgid "<c>Enna Information</c><br><br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:97
+#, c-format
+msgid "<hilight>Enna: </hilight>%s<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:98
+#, c-format
+msgid "<hilight>libplayer: </hilight>%s<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:100
+#, c-format
+msgid "<hilight>libvalhalla: </hilight>%s<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:103
+#, c-format
+msgid "<hilight>libsvdrp: </hilight>%s<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:165
+msgid "<hilight>Distribution: </hilight>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:185
+msgid "<hilight>OS: </hilight>"
+msgstr "<hilight>作業系統: </hilight>"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:189
+#, c-format
+msgid "%s %s for %s"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:204
+msgid "<hilight>Available CPUs: </hilight>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:235
+#, c-format
+msgid ", running at %d MHz"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:264
+msgid "<hilight>CPU Load: </hilight>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:307
+msgid "<hilight>Memory: </hilight>"
+msgstr "<hilight>記憶體: </hilight>"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:308
+#, c-format
+msgid "%d MB used on %d MB total (%d%%)"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:344
+msgid "<hilight>Screen Resolution: </hilight>"
+msgstr "<hilight>螢幕解析度: </hilight>"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:345
+#, c-format
+msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:359
+msgid "<hilight>VDR:</hilight> "
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:361
+#, c-format
+msgid "connected to VDR %s on %s (%s)<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:366
+msgid "not connected<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:378
+msgid "<hilight>Available network interfaces:</hilight><br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:403
+#, c-format
+msgid "  * %s (IP: %s, "
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#, c-format
+msgid "Netmask: %s)<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:432
+msgid "<hilight>Default Gateway: </hilight>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:459
+msgid "None<br>"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:470
+msgid "<c>System Information</c><br><br>"
+msgstr "<c>系統資訊</c><br><br>"
+
+#: src/modules/activity/games/games.c:235
+msgid "Games"
+msgstr "遊戲"
+
+#: src/modules/activity/games/games.c:263
+msgid "System games"
+msgstr "系統遊戲"
+
+#: src/modules/activity/games/games.c:265
+msgid "With this module you can play your games directly from enna"
+msgstr ""
+
+#: src/modules/activity/music/music.c:108
+#, c-format
+msgid "%d Songs"
+msgstr ""
+
+#: src/modules/activity/music/music.c:463
+msgid "Music"
+msgstr "音樂"
+
+#: src/modules/activity/music/music.c:491
+msgid "Music core"
+msgstr ""
+
+#: src/modules/activity/music/music.c:493
+msgid "This is the main music module"
+msgstr ""
+
+#: src/modules/activity/music/music_lyrics.c:91
+msgid "No lyrics found ..."
+msgstr "沒有歌詞"
+
+#: src/modules/activity/photo/photo.c:367
+#: src/modules/activity/photo/photo.c:395
+msgid "Photo"
+msgstr "照片"
+
+#: src/modules/activity/photo/photo.c:397
+msgid "View all your photos in a wall or as slideshow"
+msgstr ""
+
+#: src/modules/activity/tv/tv.c:90
+#, c-format
+msgid "Timer '%s' is due to start in %i minute"
+msgid_plural "Timer '%s' is due to start in %i minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/modules/activity/tv/tv.c:92
+#, c-format
+msgid "Currently recording '%s'"
+msgstr ""
+
+#: src/modules/activity/tv/tv.c:101
+msgid "Recording in progress"
+msgstr ""
+
+#: src/modules/activity/tv/tv.c:141 src/modules/activity/tv/tv.c:169
+msgid "Television"
+msgstr "電視"
+
+#: src/modules/activity/tv/tv.c:171
+msgid "View tv channels"
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:93
+msgid "No such information ..."
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:127
+#, c-format
+msgid "<ul>Director:</ul> %s<br>"
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:131
+#, c-format
+msgid "<ul>Cast:</ul> %s<br>"
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:150
+#, c-format
+msgid "<hl>Video: </hl> %s"
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:171
+#, c-format
+msgid "<hl>Audio: </hl> %s"
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:184
+#, c-format
+msgid "<hl>Size: </hl> %.2f MB<br>"
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:190
+msgid "No further information can be retrieved"
+msgstr ""
+
+#: src/modules/activity/video/video.c:131
+#, c-format
+msgid "%d Movies"
+msgstr ""
+
+#: src/modules/activity/video/video.c:914
+#: src/modules/activity/video/video.c:990
+msgid "Video"
+msgstr "影片"
+
+#: src/modules/activity/video/video.c:992
+msgid "This is the main video module"
+msgstr ""
+
+#: src/modules/activity/weather/weather.c:273
+msgid "Weather"
+msgstr "天氣"
+
+#: src/modules/activity/weather/weather.c:301
+msgid "Weather forecast"
+msgstr "天氣預報"
+
+#: src/modules/activity/weather/weather.c:303
+msgid "Show the weather at your location"
+msgstr ""
+
+#: src/modules/browser/cdda/cdda.c:95
+msgid "Play Audio CD"
+msgstr "播放音樂光碟"
+
+#: src/modules/browser/cdda/cdda.c:138
+msgid "CDDA module"
+msgstr ""
+
+#: src/modules/browser/cdda/cdda.c:140
+msgid "Listen your favorite compact discs"
+msgstr ""
+
+#: src/modules/browser/dvd/dvd.c:62
+msgid "Play"
+msgstr "播放"
+
+#: src/modules/browser/dvd/dvd.c:65
+msgid "Play (With Menus)"
+msgstr ""
+
+#: src/modules/browser/dvd/dvd.c:91
+msgid "Watch DVD Video"
+msgstr ""
+
+#: src/modules/browser/dvd/dvd.c:136
+msgid "DVD module"
+msgstr ""
+
+#: src/modules/browser/dvd/dvd.c:138
+msgid "Watch movies from DVD"
+msgstr ""
+
+#: src/modules/browser/localfiles/localfiles.c:426
+#: src/modules/browser/localfiles/localfiles.c:444
+#: src/modules/browser/localfiles/localfiles.c:462
+msgid "Browse Local Devices"
+msgstr "瀏灠本機裝置"
+
+#: src/modules/browser/localfiles/localfiles.c:487
+msgid "Browse local files"
+msgstr "瀏灠本機檔案"
+
+#: src/modules/browser/localfiles/localfiles.c:489
+msgid "Browse files in your local hard disk"
+msgstr "瀏灠本機硬碟上的檔案"
+
+#: src/modules/browser/netstreams/netstreams.c:311
+#: src/modules/browser/netstreams/netstreams.c:327
+msgid "Browse Network Streams"
+msgstr ""
+
+#: src/modules/browser/netstreams/netstreams.c:351
+msgid "Netstreams"
+msgstr ""
+
+#: src/modules/browser/netstreams/netstreams.c:353
+msgid "I really don't know :P"
+msgstr ""
+
+#: src/modules/browser/podcasts/podcasts.c:333
+msgid "Listen to Podcasts"
+msgstr ""
+
+#: src/modules/browser/podcasts/podcasts.c:357
+msgid "Podcast browser"
+msgstr ""
+
+#: src/modules/browser/podcasts/podcasts.c:359
+msgid "Podcast module"
+msgstr ""
+
+#: src/modules/browser/shoutcast/shoutcast.c:173
+msgid "SHOUTcast Streaming"
+msgstr ""
+
+#: src/modules/browser/shoutcast/shoutcast.c:197
+msgid "Shoutcast browser"
+msgstr ""
+
+#: src/modules/browser/shoutcast/shoutcast.c:199
+msgid "Listen to shoutcast stream"
+msgstr ""
+
+#: src/modules/browser/upnp/upnp.c:442
+msgid "UPnP/DLNA Media Servers"
+msgstr ""
+
+#: src/modules/browser/upnp/upnp.c:496
+#, c-format
+msgid "Found new UPnP device '%s (%s)'"
+msgstr ""
+
+#: src/modules/browser/upnp/upnp.c:510
+msgid "UPnP / DLNA module"
+msgstr ""
+
+#: src/modules/browser/upnp/upnp.c:512
+msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:298
+msgid "Artists"
+msgstr "藝人"
+
+#: src/modules/browser/valhalla/valhalla.c:302
+msgid "Albums"
+msgstr "專輯"
+
+#: src/modules/browser/valhalla/valhalla.c:306
+msgid "Genres"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:310
+msgid "Unclassified"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:462
+msgid "Valhalla module"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:464
+msgid "Database stuff and metadata retrival from various sources"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:472
+msgid "Media Library"
+msgstr "媒體資料庫"
+
+#: src/modules/volume/hal/hal_volume.c:39
+msgid "CD-ROM"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:40
+msgid "CD-R"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:41
+msgid "CD-RW"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:42
+msgid "DVD-ROM"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:43
+msgid "DVD-RAM"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:44
+msgid "DVD-R"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:45
+msgid "DVD-RW"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:46
+msgid "DVD+R"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:47
+msgid "DVD+RW"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:48
+msgid "DVD+R (DL)"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:49
+msgid "BD-ROM"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:50
+msgid "BD-R"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:51
+msgid "BD-RE"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:52
+msgid "HD-DVD-ROM"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:53
+msgid "HD-DVD-R"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:54
+msgid "HD-DVD-RW"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:55
+msgid "MagnetoOptical"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:64
+msgid "CDDA"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:65
+msgid "VCD"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:66
+msgid "SVCD"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:67
+msgid "DVD"
+msgstr ""
+
+#: src/modules/volume/hal/hal_volume.c:68
+msgid "Data"
+msgstr ""
+
+#: src/modules/volume/mtab/mtab.c:77
+#, c-format
+msgid "[NFS] %s on %s"
+msgstr ""
+
+#: src/modules/volume/mtab/mtab.c:87
+#, c-format
+msgid "[SAMBA] %s on %s"
+msgstr ""
+
+#: src/modules/volume/mtab/mtab.c:149
+msgid "Volumes from mtab"
+msgstr ""
+
+#: src/modules/volume/mtab/mtab.c:151
+msgid "This module get volumes from the mtab file"
+msgstr ""
