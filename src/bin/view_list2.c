@@ -83,7 +83,7 @@ _list_item_selected_cb(void *data, Evas_Object *obj, void *event_info)
     Item_Button *b;
 
     EINA_LIST_FOREACH(id->buttons, l, b)
-        elm_object_disabled_set(b->obj, EINA_TRUE);
+        elm_object_disabled_set(b->obj, EINA_FALSE);
 }
 
 static void // called when one of the buttons is pressed
@@ -440,8 +440,8 @@ _list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
         if (l)
         {
             next = l->data;
-            elm_object_disabled_set(next->obj, EINA_FALSE);
-            elm_object_disabled_set(cur->obj, EINA_TRUE);
+            elm_object_disabled_set(next->obj, EINA_TRUE);
+            elm_object_disabled_set(cur->obj, EINA_FALSE);
             _list_item_button_event_input_focus_set(cur, EINA_FALSE);
             _list_item_button_event_input_focus_set(next, EINA_TRUE);
 
@@ -452,7 +452,7 @@ _list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
     else if (id->buttons)
     {
         next = (id->buttons->data);
-        elm_object_disabled_set(next->obj, EINA_FALSE);
+        elm_object_disabled_set(next->obj, EINA_TRUE);
          _list_item_button_event_input_focus_set(next, EINA_TRUE);
         return next;
     }
@@ -476,11 +476,11 @@ _list_item_button_focus_prev(Elm_Genlist_Item *item, Item_Button *cur)
         if (l)
         {
             prev = l->data;
-            elm_object_disabled_set(prev->obj, EINA_FALSE);
+            elm_object_disabled_set(prev->obj, EINA_TRUE);
             _list_item_button_event_input_focus_set(prev, EINA_TRUE);
             return prev;
         }
-        elm_object_disabled_set(cur->obj, EINA_TRUE);
+        elm_object_disabled_set(cur->obj, EINA_FALSE);
         _list_item_button_event_input_focus_set(cur, EINA_FALSE);
 
         return NULL;
