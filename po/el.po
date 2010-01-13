@@ -277,7 +277,7 @@ msgstr "Μουσικός πυρήνας"
 
 #: src/modules/activity/music/music.c:493
 msgid "This is the main music module"
-msgstr "Αυτό είναι το κύριο"
+msgstr "Αυτό είναι το κύριο άρθρωμα μουσικής"
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
