@@ -182,7 +182,7 @@ _list_item_buttons_create_all(const Item_Data *id)
         {
         case ENNA_BUTTON:
             o = elm_button_add(enna->layout);
-            elm_object_style_set(o, "simple");
+            elm_object_style_set(o, "view_list2");
             elm_button_label_set(o, b->label);
             elm_button_icon_set(o, ic);
             evas_object_smart_callback_add(o, "clicked", _list_button_clicked_cb, b);

@@ -638,6 +638,7 @@ group { name: "elm/button/base/simple";
 }
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/button/base/mediaplayer";
+   alias: elm/button/base/view_list2;
    images {
       image: "mp_bt_hilight.png" COMP;
    }
