@@ -29,11 +29,11 @@
 static xdgHandle xdg;
 static Eina_Bool init_done = EINA_FALSE;
 
-static const char *config_home;
-static const char *data_home;
-static const char *cache_home;
+static char *config_home;
+static char *data_home;
+static char *cache_home;
 
-static const char * 
+static char *
 _makedir(const char * dir)
 {
    size_t len = strlen (dir) + strlen("/enna") + 1;
@@ -61,9 +61,9 @@ enna_xdg_shutdown(void)
   if (init_done == EINA_TRUE)
   {
     xdgWipeHandle (&xdg);
-    free ((void *) config_home);
-    free ((void *) data_home);
-    free ((void *) cache_home);
+    free (config_home);
+    free (data_home);
+    free (cache_home);
   }
 }
 
