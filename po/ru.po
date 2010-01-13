@@ -1,4 +1,4 @@
-# Ukrainian translations for enna package.
+# Russian translations for enna package.
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Kostyantyn Derets <ua.motofan@gmail.com>, 2010.
