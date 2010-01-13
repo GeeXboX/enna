@@ -1046,6 +1046,8 @@ group { name: "elm/button/base/default";
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/genlist/item/default/default";
    alias: "elm/genlist/item_odd/default/default";
+   alias: "elm/genlist/item/view_list2/default";
+   alias: "elm/genlist/item_odd/view_list2/default";
    data.item: "stacking" "above";
    data.item: "selectraise" "on";
    data.item: "labels" "elm.text";

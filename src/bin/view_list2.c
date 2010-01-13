@@ -291,7 +291,7 @@ _list_item_del(const void *data, Evas_Object *obj)
 }
 
 static Elm_Genlist_Item_Class itc_single_label = {
-    "default",
+    "view_list2",
     {
         _list_item_label_get,
         _list_item_icon_get,
