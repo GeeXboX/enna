@@ -5,12 +5,11 @@
 #  <sword.huang@gmail.com>, 2010.
 #
 # msgfmt zh_TW.po -o zh_TW.gmo
-
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2009-12-31 14:34+0100\n"
+"POT-Creation-Date: 2010-01-12 12:21+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator:  <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -23,51 +22,51 @@ msgstr ""
 msgid "No media found !"
 msgstr "沒有發現任何媒體!"
 
-#: src/bin/browser.c:709
+#: src/bin/browser.c:706
 msgid "Main Menu"
 msgstr "主選單"
 
-#: src/bin/enna.c:429
+#: src/bin/enna.c:439
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna 媒體中心\n"
 
-#: src/bin/enna.c:430
+#: src/bin/enna.c:440
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr ""
 
-#: src/bin/enna.c:431
+#: src/bin/enna.c:441
 #, c-format
 msgid " Available Options:\n"
 msgstr ""
 
-#: src/bin/enna.c:432
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:433
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr ""
 
-#: src/bin/enna.c:434
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr ""
 
-#: src/bin/enna.c:435
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:436
+#: src/bin/enna.c:446
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:447
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr ""
@@ -135,6 +134,10 @@ msgstr ""
 msgid "Credits go to:<br>"
 msgstr ""
 
+#: src/modules/activity/configuration/configuration_credits.c:51
+msgid "and"
+msgstr ""
+
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
 msgstr ""
@@ -159,98 +162,103 @@ msgstr ""
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:165
+#: src/modules/activity/configuration/configuration_sysinfo.c:106
+#, fuzzy, c-format
+msgid "<hilight>Video Renderer:</hilight> %s"
+msgstr "<hilight>記憶體: </hilight>"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:167
 msgid "<hilight>Distribution: </hilight>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:185
+#: src/modules/activity/configuration/configuration_sysinfo.c:187
 msgid "<hilight>OS: </hilight>"
 msgstr "<hilight>作業系統: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:189
+#: src/modules/activity/configuration/configuration_sysinfo.c:191
 #, c-format
 msgid "%s %s for %s"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:204
+#: src/modules/activity/configuration/configuration_sysinfo.c:206
 msgid "<hilight>Available CPUs: </hilight>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:235
+#: src/modules/activity/configuration/configuration_sysinfo.c:237
 #, c-format
 msgid ", running at %d MHz"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:264
+#: src/modules/activity/configuration/configuration_sysinfo.c:266
 msgid "<hilight>CPU Load: </hilight>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:307
+#: src/modules/activity/configuration/configuration_sysinfo.c:309
 msgid "<hilight>Memory: </hilight>"
 msgstr "<hilight>記憶體: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:308
+#: src/modules/activity/configuration/configuration_sysinfo.c:310
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:344
+#: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
 msgstr "<hilight>螢幕解析度: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:345
+#: src/modules/activity/configuration/configuration_sysinfo.c:349
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:359
+#: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "<hilight>VDR:</hilight> "
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:361
+#: src/modules/activity/configuration/configuration_sysinfo.c:365
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:366
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "not connected<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:378
+#: src/modules/activity/configuration/configuration_sysinfo.c:382
 msgid "<hilight>Available network interfaces:</hilight><br>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:403
+#: src/modules/activity/configuration/configuration_sysinfo.c:407
 #, c-format
 msgid "  * %s (IP: %s, "
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
 #, c-format
 msgid "Netmask: %s)<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:432
+#: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "<hilight>Default Gateway: </hilight>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:459
+#: src/modules/activity/configuration/configuration_sysinfo.c:463
 msgid "None<br>"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:470
+#: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>系統資訊</c><br><br>"
 
-#: src/modules/activity/games/games.c:235
+#: src/modules/activity/games/games.c:308
 msgid "Games"
 msgstr "遊戲"
 
-#: src/modules/activity/games/games.c:263
+#: src/modules/activity/games/games.c:336
 msgid "System games"
 msgstr "系統遊戲"
 
-#: src/modules/activity/games/games.c:265
+#: src/modules/activity/games/games.c:338
 msgid "With this module you can play your games directly from enna"
 msgstr ""
 
@@ -284,74 +292,74 @@ msgstr "照片"
 msgid "View all your photos in a wall or as slideshow"
 msgstr ""
 
-#: src/modules/activity/tv/tv.c:90
+#: src/modules/activity/tv/tv.c:102
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/modules/activity/tv/tv.c:92
+#: src/modules/activity/tv/tv.c:104
 #, c-format
 msgid "Currently recording '%s'"
 msgstr ""
 
-#: src/modules/activity/tv/tv.c:101
+#: src/modules/activity/tv/tv.c:113
 msgid "Recording in progress"
 msgstr ""
 
-#: src/modules/activity/tv/tv.c:141 src/modules/activity/tv/tv.c:169
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "電視"
 
-#: src/modules/activity/tv/tv.c:171
+#: src/modules/activity/tv/tv.c:267
 msgid "View tv channels"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:93
+#: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:127
+#: src/modules/activity/video/video_infos.c:128
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:131
+#: src/modules/activity/video/video_infos.c:132
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:150
+#: src/modules/activity/video/video_infos.c:151
 #, c-format
 msgid "<hl>Video: </hl> %s"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:171
+#: src/modules/activity/video/video_infos.c:172
 #, c-format
 msgid "<hl>Audio: </hl> %s"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:184
+#: src/modules/activity/video/video_infos.c:185
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:190
+#: src/modules/activity/video/video_infos.c:191
 msgid "No further information can be retrieved"
 msgstr ""
 
-#: src/modules/activity/video/video.c:131
+#: src/modules/activity/video/video.c:132
 #, c-format
 msgid "%d Movies"
 msgstr ""
 
-#: src/modules/activity/video/video.c:914
-#: src/modules/activity/video/video.c:990
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
 msgid "Video"
 msgstr "影片"
 
-#: src/modules/activity/video/video.c:992
+#: src/modules/activity/video/video.c:993
 msgid "This is the main video module"
 msgstr ""
 
@@ -399,42 +407,43 @@ msgstr ""
 msgid "Watch movies from DVD"
 msgstr ""
 
-#: src/modules/browser/localfiles/localfiles.c:426
-#: src/modules/browser/localfiles/localfiles.c:444
-#: src/modules/browser/localfiles/localfiles.c:462
+#: src/modules/browser/localfiles/localfiles.c:443
+#: src/modules/browser/localfiles/localfiles.c:461
+#: src/modules/browser/localfiles/localfiles.c:479
 msgid "Browse Local Devices"
 msgstr "瀏灠本機裝置"
 
-#: src/modules/browser/localfiles/localfiles.c:487
+#: src/modules/browser/localfiles/localfiles.c:574
 msgid "Browse local files"
 msgstr "瀏灠本機檔案"
 
-#: src/modules/browser/localfiles/localfiles.c:489
-msgid "Browse files in your local hard disk"
+#: src/modules/browser/localfiles/localfiles.c:576
+#, fuzzy
+msgid "Browse files in your local file systems"
 msgstr "瀏灠本機硬碟上的檔案"
 
-#: src/modules/browser/netstreams/netstreams.c:311
-#: src/modules/browser/netstreams/netstreams.c:327
+#: src/modules/browser/netstreams/netstreams.c:322
+#: src/modules/browser/netstreams/netstreams.c:338
 msgid "Browse Network Streams"
 msgstr ""
 
-#: src/modules/browser/netstreams/netstreams.c:351
+#: src/modules/browser/netstreams/netstreams.c:402
 msgid "Netstreams"
 msgstr ""
 
-#: src/modules/browser/netstreams/netstreams.c:353
+#: src/modules/browser/netstreams/netstreams.c:404
 msgid "I really don't know :P"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:333
+#: src/modules/browser/podcasts/podcasts.c:329
 msgid "Listen to Podcasts"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:357
+#: src/modules/browser/podcasts/podcasts.c:385
 msgid "Podcast browser"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:359
+#: src/modules/browser/podcasts/podcasts.c:387
 msgid "Podcast module"
 msgstr ""
 
@@ -450,48 +459,49 @@ msgstr ""
 msgid "Listen to shoutcast stream"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:442
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA Media Servers"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:496
+#: src/modules/browser/upnp/upnp.c:571
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:510
+#: src/modules/browser/upnp/upnp.c:585
 msgid "UPnP / DLNA module"
 msgstr ""
 
-#: src/modules/browser/upnp/upnp.c:512
+#: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:298
+#: src/modules/browser/valhalla/valhalla.c:304
 msgid "Artists"
 msgstr "藝人"
 
-#: src/modules/browser/valhalla/valhalla.c:302
+#: src/modules/browser/valhalla/valhalla.c:308
 msgid "Albums"
 msgstr "專輯"
 
-#: src/modules/browser/valhalla/valhalla.c:306
+#: src/modules/browser/valhalla/valhalla.c:312
 msgid "Genres"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:310
+#: src/modules/browser/valhalla/valhalla.c:316
 msgid "Unclassified"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:462
+#: src/modules/browser/valhalla/valhalla.c:468
 msgid "Valhalla module"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:464
+#: src/modules/browser/valhalla/valhalla.c:470
 msgid "Database stuff and metadata retrival from various sources"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:472
+#: src/modules/browser/valhalla/valhalla.c:478
 msgid "Media Library"
 msgstr "媒體資料庫"
 
