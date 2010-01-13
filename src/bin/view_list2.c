@@ -518,7 +518,11 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
                 elm_genlist_item_selected_set(prev, EINA_TRUE);
                 elm_genlist_item_bring_in(prev);
                 _list_item_button_event_input_focus_set(focused, EINA_FALSE);
-                focused = NULL;
+                if (focused)
+                {
+                    elm_object_disabled_set(focused->obj, EINA_FALSE);
+                    focused = NULL;
+                }
                 return ENNA_EVENT_BLOCK;
             }
             break;
@@ -529,7 +533,11 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
                 elm_genlist_item_selected_set(next, EINA_TRUE);
                 elm_genlist_item_bring_in(next);
                 _list_item_button_event_input_focus_set(focused, EINA_FALSE);
-                focused = NULL;
+                if (focused)
+                {
+                    elm_object_disabled_set(focused->obj, EINA_FALSE);
+                    focused = NULL;
+                }
                 return ENNA_EVENT_BLOCK;
             }
             break;
