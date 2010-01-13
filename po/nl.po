@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-12 12:21+0100\n"
+"POT-Creation-Date: 2010-01-13 14:11+0100\n"
 "PO-Revision-Date: 2010-01-07 00:14+0100\n"
 "Last-Translator: Oliver Schinagl <oliver@schinagl.nl>\n"
 "Language-Team: Dutch\n"
@@ -405,17 +405,17 @@ msgstr "DVD module"
 msgid "Watch movies from DVD"
 msgstr "Bekijk films van een DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:443
-#: src/modules/browser/localfiles/localfiles.c:461
-#: src/modules/browser/localfiles/localfiles.c:479
+#: src/modules/browser/localfiles/localfiles.c:462
+#: src/modules/browser/localfiles/localfiles.c:480
+#: src/modules/browser/localfiles/localfiles.c:498
 msgid "Browse Local Devices"
 msgstr "Blader lokale apparaten"
 
-#: src/modules/browser/localfiles/localfiles.c:574
+#: src/modules/browser/localfiles/localfiles.c:593
 msgid "Browse local files"
 msgstr "Blader lokale bestanden"
 
-#: src/modules/browser/localfiles/localfiles.c:576
+#: src/modules/browser/localfiles/localfiles.c:595
 msgid "Browse files in your local file systems"
 msgstr "Blader bestanden op je lokale bestandssysteem"
 
@@ -475,31 +475,31 @@ msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
 msgstr ""
 "Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
 
-#: src/modules/browser/valhalla/valhalla.c:304
+#: src/modules/browser/valhalla/valhalla.c:317
 msgid "Artists"
 msgstr "Artiesten"
 
-#: src/modules/browser/valhalla/valhalla.c:308
+#: src/modules/browser/valhalla/valhalla.c:321
 msgid "Albums"
 msgstr "Albums"
 
-#: src/modules/browser/valhalla/valhalla.c:312
+#: src/modules/browser/valhalla/valhalla.c:325
 msgid "Genres"
 msgstr "Genres"
 
-#: src/modules/browser/valhalla/valhalla.c:316
+#: src/modules/browser/valhalla/valhalla.c:329
 msgid "Unclassified"
 msgstr "Niet gespecificeerd"
 
-#: src/modules/browser/valhalla/valhalla.c:468
+#: src/modules/browser/valhalla/valhalla.c:484
 msgid "Valhalla module"
 msgstr "Valhalla module"
 
-#: src/modules/browser/valhalla/valhalla.c:470
+#: src/modules/browser/valhalla/valhalla.c:486
 msgid "Database stuff and metadata retrival from various sources"
 msgstr "Database dingen en metadata ophalen van verschillende bronnen"
 
-#: src/modules/browser/valhalla/valhalla.c:478
+#: src/modules/browser/valhalla/valhalla.c:494
 msgid "Media Library"
 msgstr "Media bibliotheek"
 

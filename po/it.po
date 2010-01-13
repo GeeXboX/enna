@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-12 12:21+0100\n"
+"POT-Creation-Date: 2010-01-13 14:11+0100\n"
 "PO-Revision-Date: 2010-01-08 10:44+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -407,17 +407,17 @@ msgstr ""
 msgid "Watch movies from DVD"
 msgstr ""
 
-#: src/modules/browser/localfiles/localfiles.c:443
-#: src/modules/browser/localfiles/localfiles.c:461
-#: src/modules/browser/localfiles/localfiles.c:479
+#: src/modules/browser/localfiles/localfiles.c:462
+#: src/modules/browser/localfiles/localfiles.c:480
+#: src/modules/browser/localfiles/localfiles.c:498
 msgid "Browse Local Devices"
 msgstr "Sfoglia dispositivi locali"
 
-#: src/modules/browser/localfiles/localfiles.c:574
+#: src/modules/browser/localfiles/localfiles.c:593
 msgid "Browse local files"
 msgstr ""
 
-#: src/modules/browser/localfiles/localfiles.c:576
+#: src/modules/browser/localfiles/localfiles.c:595
 msgid "Browse files in your local file systems"
 msgstr ""
 
@@ -476,31 +476,31 @@ msgstr ""
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:304
+#: src/modules/browser/valhalla/valhalla.c:317
 msgid "Artists"
 msgstr "Artisti"
 
-#: src/modules/browser/valhalla/valhalla.c:308
+#: src/modules/browser/valhalla/valhalla.c:321
 msgid "Albums"
 msgstr "Album"
 
-#: src/modules/browser/valhalla/valhalla.c:312
+#: src/modules/browser/valhalla/valhalla.c:325
 msgid "Genres"
 msgstr "Generi"
 
-#: src/modules/browser/valhalla/valhalla.c:316
+#: src/modules/browser/valhalla/valhalla.c:329
 msgid "Unclassified"
 msgstr "Non classificato"
 
-#: src/modules/browser/valhalla/valhalla.c:468
+#: src/modules/browser/valhalla/valhalla.c:484
 msgid "Valhalla module"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:470
+#: src/modules/browser/valhalla/valhalla.c:486
 msgid "Database stuff and metadata retrival from various sources"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:478
+#: src/modules/browser/valhalla/valhalla.c:494
 msgid "Media Library"
 msgstr "Libreria dei media"
 

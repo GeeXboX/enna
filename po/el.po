@@ -1,12 +1,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # George Koutsikos <ragecryx@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-10 23:15+0100\n"
+"POT-Creation-Date: 2010-01-13 14:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: George Koutsikos <ragecryx@yahoo.gr>\n"
 "Language-Team: Greece\n"
@@ -21,51 +21,51 @@ msgstr ""
 msgid "No media found !"
 msgstr "Δεν βρέθηκαν αρχεία πολυμέσων!"
 
-#: src/bin/browser.c:712
+#: src/bin/browser.c:706
 msgid "Main Menu"
 msgstr "Κεντρικό μενού"
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:439
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:438
+#: src/bin/enna.c:440
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Χρήση: %s [επιλογές ...]\n"
 
-#: src/bin/enna.c:439
+#: src/bin/enna.c:441
 #, c-format
 msgid " Available Options:\n"
 msgstr "Διαθέσιμες επιλογές:\n"
 
-#: src/bin/enna.c:440
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:441
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr ""
 
-#: src/bin/enna.c:442
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr ""
 
-#: src/bin/enna.c:443
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:444
+#: src/bin/enna.c:446
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 
-#: src/bin/enna.c:445
+#: src/bin/enna.c:447
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr ""
@@ -111,7 +111,8 @@ msgstr "Ρύθμιση"
 
 #: src/modules/activity/configuration/configuration.c:241
 msgid "This module create the enna configuration panel (DO NOT UNLOAD)"
-msgstr "Αυτό το άρθρωμα δημιουργεί το πάνελ ρύθμισης του Enna (ΜΗ ΤΟ ΑΦΑΙΡΕΣΕΤΕ)"
+msgstr ""
+"Αυτό το άρθρωμα δημιουργεί το πάνελ ρύθμισης του Enna (ΜΗ ΤΟ ΑΦΑΙΡΕΣΕΤΕ)"
 
 #: src/modules/activity/configuration/configuration.c:256
 msgid "System Information"
@@ -249,15 +250,15 @@ msgstr "Κανένα<br>"
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Πληροφορίες συστήματος</c><br><br>"
 
-#: src/modules/activity/games/games.c:235
+#: src/modules/activity/games/games.c:308
 msgid "Games"
 msgstr "Παιχνίδια"
 
-#: src/modules/activity/games/games.c:263
+#: src/modules/activity/games/games.c:336
 msgid "System games"
 msgstr "Παιχνίδια συστήματος"
 
-#: src/modules/activity/games/games.c:265
+#: src/modules/activity/games/games.c:338
 msgid "With this module you can play your games directly from enna"
 msgstr "Με αυτό το άρθρωμα μπορείτε να παίξετε τα παιχνίδια σας μέσω του Enna"
 
@@ -307,8 +308,7 @@ msgstr "Εγγράφεται '%s'"
 msgid "Recording in progress"
 msgstr "Εγγραφή σε εξέλιξη"
 
-#: src/modules/activity/tv/tv.c:154
-#: src/modules/activity/tv/tv.c:265
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "Τηλεόραση"
 
@@ -316,50 +316,50 @@ msgstr "Τηλεόραση"
 msgid "View tv channels"
 msgstr "Προβολή καναλιών τηλεόρασης"
 
-#: src/modules/activity/video/video_infos.c:93
+#: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
 msgstr "Δεν υπάρχουν αυτές οι πληροφορίες..."
 
-#: src/modules/activity/video/video_infos.c:127
+#: src/modules/activity/video/video_infos.c:128
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr "<ul>Σκηνοθέτης:</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:131
+#: src/modules/activity/video/video_infos.c:132
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr "<ul>Παίζουν:</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:150
+#: src/modules/activity/video/video_infos.c:151
 #, c-format
 msgid "<hl>Video: </hl> %s"
 msgstr "<hl>Βίντεο: </hl> %s"
 
-#: src/modules/activity/video/video_infos.c:171
+#: src/modules/activity/video/video_infos.c:172
 #, c-format
 msgid "<hl>Audio: </hl> %s"
 msgstr "<hl>Ήχος: </hl> %s"
 
-#: src/modules/activity/video/video_infos.c:184
+#: src/modules/activity/video/video_infos.c:185
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Μέγεθος: </hl> %.2f MB<br>"
 
-#: src/modules/activity/video/video_infos.c:190
+#: src/modules/activity/video/video_infos.c:191
 msgid "No further information can be retrieved"
 msgstr "Καμία περαιτέρω πληροφορία δεν μπορεί να ανακτηθεί"
 
-#: src/modules/activity/video/video.c:131
+#: src/modules/activity/video/video.c:132
 #, c-format
 msgid "%d Movies"
 msgstr "%d Ταινίες"
 
-#: src/modules/activity/video/video.c:914
-#: src/modules/activity/video/video.c:990
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
 msgid "Video"
 msgstr "Βίντεο"
 
-#: src/modules/activity/video/video.c:992
+#: src/modules/activity/video/video.c:993
 msgid "This is the main video module"
 msgstr "Αυτό είναι το κυρίως άρθρωμα βίντεο"
 
@@ -407,17 +407,17 @@ msgstr "Άρθρωμα DVD"
 msgid "Watch movies from DVD"
 msgstr "Αναπαραγωγή ταινιών από DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:443
-#: src/modules/browser/localfiles/localfiles.c:461
-#: src/modules/browser/localfiles/localfiles.c:479
+#: src/modules/browser/localfiles/localfiles.c:462
+#: src/modules/browser/localfiles/localfiles.c:480
+#: src/modules/browser/localfiles/localfiles.c:498
 msgid "Browse Local Devices"
 msgstr "Περιήγηση στους τοπικούς δίσκους"
 
-#: src/modules/browser/localfiles/localfiles.c:574
+#: src/modules/browser/localfiles/localfiles.c:593
 msgid "Browse local files"
 msgstr "Περιήγηση σε τοπικά αρχεία"
 
-#: src/modules/browser/localfiles/localfiles.c:576
+#: src/modules/browser/localfiles/localfiles.c:595
 msgid "Browse files in your local file systems"
 msgstr "Περιήγηση στα τοπικά συστήματα αρχείων"
 
@@ -434,15 +434,15 @@ msgstr "Ροές δικτύου"
 msgid "I really don't know :P"
 msgstr "Δεν γνωρίζω ακριβώς :P"
 
-#: src/modules/browser/podcasts/podcasts.c:328
+#: src/modules/browser/podcasts/podcasts.c:329
 msgid "Listen to Podcasts"
 msgstr "Ακούστε podcasts"
 
-#: src/modules/browser/podcasts/podcasts.c:384
+#: src/modules/browser/podcasts/podcasts.c:385
 msgid "Podcast browser"
 msgstr "Περιηγητής podcast"
 
-#: src/modules/browser/podcasts/podcasts.c:386
+#: src/modules/browser/podcasts/podcasts.c:387
 msgid "Podcast module"
 msgstr "Άρθρωμα podcast"
 
@@ -458,50 +458,51 @@ msgstr "Περιηγητής shoutcast"
 msgid "Listen to shoutcast stream"
 msgstr "Ακούστε μια ροή shoutcast"
 
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
-#: src/modules/browser/upnp/upnp.c:534
-#: src/modules/browser/upnp/upnp.c:552
 msgid "UPnP/DLNA Media Servers"
 msgstr "Εξυπηρετητές UPnP/DLNA"
 
-#: src/modules/browser/upnp/upnp.c:607
+#: src/modules/browser/upnp/upnp.c:571
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Βρέθηκε νέα UPnP συσκευή '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:621
+#: src/modules/browser/upnp/upnp.c:585
 msgid "UPnP / DLNA module"
 msgstr "Άρθρωμα UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:623
+#: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
-msgstr "Αυτό το άρθρωμα επιτρέπει στο Enna να περιηγηθεί στο περιεχόμενο UPnP/DLNA εξυπηρετητών πολυμέσων"
+msgstr ""
+"Αυτό το άρθρωμα επιτρέπει στο Enna να περιηγηθεί στο περιεχόμενο UPnP/DLNA "
+"εξυπηρετητών πολυμέσων"
 
-#: src/modules/browser/valhalla/valhalla.c:304
+#: src/modules/browser/valhalla/valhalla.c:317
 msgid "Artists"
 msgstr "Καλιτέχνες"
 
-#: src/modules/browser/valhalla/valhalla.c:308
+#: src/modules/browser/valhalla/valhalla.c:321
 msgid "Albums"
 msgstr "Άλμπουμ"
 
-#: src/modules/browser/valhalla/valhalla.c:312
+#: src/modules/browser/valhalla/valhalla.c:325
 msgid "Genres"
 msgstr "Είδη"
 
-#: src/modules/browser/valhalla/valhalla.c:316
+#: src/modules/browser/valhalla/valhalla.c:329
 msgid "Unclassified"
 msgstr "Αταξινόμητο"
 
-#: src/modules/browser/valhalla/valhalla.c:468
+#: src/modules/browser/valhalla/valhalla.c:484
 msgid "Valhalla module"
 msgstr "Άρθρωμα Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:470
+#: src/modules/browser/valhalla/valhalla.c:486
 msgid "Database stuff and metadata retrival from various sources"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:478
+#: src/modules/browser/valhalla/valhalla.c:494
 msgid "Media Library"
 msgstr "Βιβλιοθήκη πολυμέσων"
 
@@ -614,36 +615,49 @@ msgstr "Αυτό το άρθρωμα πέρνει τόμους από το αρ�
 
 #~ msgid "Infos"
 #~ msgstr "Інформація"
+
 #~ msgid "%.2d hour "
 #~ msgid_plural "%.2d hours "
 #~ msgstr[0] "%.2d година"
 #~ msgstr[1] "%.2d годин"
+
 #~ msgid "%.2d minute"
 #~ msgid_plural "%.2d minutes"
 #~ msgstr[0] "%.2d хвилина"
 #~ msgstr[1] "%.2d хвилин"
+
 #~ msgid "Unknown"
 #~ msgstr "Невідомий"
+
 #~ msgid "Removable Disk"
 #~ msgstr "Змінний диск"
+
 #~ msgid "Disk"
 #~ msgstr "Диск"
+
 #~ msgid "Tape"
 #~ msgstr "Band"
+
 #~ msgid "Camera"
 #~ msgstr "Камера"
+
 #~ msgid "Portable Audio Player"
 #~ msgstr "Портативний аудіо плейєр"
+
 #~ msgid "Browse Library"
 #~ msgstr "Оглянути бібліотеку"
+
 #~ msgid "Artist"
 #~ msgstr "Виконавець"
+
 #~ msgid "Watch PODCAST Video"
 #~ msgstr "Переглянути подкаст відео"
+
 #~ msgid "Yes, I want to quit."
 #~ msgstr "Так, Я хочу вийти."
+
 #~ msgid "No, I want to stay."
 #~ msgstr "Ні, Я хочу залишитись."
+
 #~ msgid "...no activity seems busy right now."
 #~ msgstr "...схоже, що зараз немає активності."
-
