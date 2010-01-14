@@ -29,76 +29,76 @@
 static xdgHandle xdg;
 static Eina_Bool init_done = EINA_FALSE;
 
-static const char *config_home;
-static const char *data_home;
-static const char *cache_home;
+static char *config_home;
+static char *data_home;
+static char *cache_home;
 
-static const char * 
+static char *
 _makedir(const char * dir)
 {
-   size_t len = strlen (dir) + strlen("/enna") + 1;
-   const char * ret = malloc (len);
-   
-   snprintf(ret, len, "%s/enna", dir);
-   if (!ecore_file_is_dir(ret))
-     ecore_file_mkpath(ret);
-     
-   return ret;
+    size_t len = strlen(dir) + strlen("/enna") + 1;
+    char *ret  = malloc(len);
+
+    snprintf(ret, len, "%s/enna", dir);
+    if (!ecore_file_is_dir(ret))
+        ecore_file_mkpath(ret);
+
+    return ret;
 }
 
-Eina_Bool 
+Eina_Bool
 enna_xdg_init(void)
 {
-  if (xdgInitHandle (&xdg))
-    init_done = EINA_TRUE;
+    if (xdgInitHandle(&xdg))
+        init_done = EINA_TRUE;
 
-  return init_done;
+    return init_done;
 }
 
-void 
+void
 enna_xdg_shutdown(void)
 {
-  if (init_done == EINA_TRUE)
-  {
-    xdgWipeHandle (&xdg);
-    free (config_home);
-    free (data_home);
-    free (cache_home);
-  }
+    if (init_done == EINA_TRUE)
+    {
+        xdgWipeHandle(&xdg);
+        free(config_home);
+        free(data_home);
+        free(cache_home);
+    }
 }
 
 const char *
 enna_config_home_get(void)
 {
-  if (init_done != EINA_TRUE)
-    return NULL;
+    if (init_done != EINA_TRUE)
+        return NULL;
 
-  if (!config_home)
-    config_home = _makedir(xdgConfigHome(&xdg));
+    if (!config_home)
+        config_home = _makedir(xdgConfigHome(&xdg));
 
-  return config_home;
+    return config_home;
 }
 
 const char *
 enna_data_home_get(void)
 {
-  if (init_done != EINA_TRUE)
-    return NULL;
+    if (init_done != EINA_TRUE)
+        return NULL;
 
-  if (!data_home)
-    data_home = _makedir(xdgDataHome(&xdg));
- 
-  return data_home;
+    if (!data_home)
+        data_home = _makedir(xdgDataHome(&xdg));
+
+    return data_home;
 }
 
 const char *
 enna_cache_home_get(void)
 {
-  if (init_done != EINA_TRUE)
-    return NULL;
+    if (init_done != EINA_TRUE)
+        return NULL;
 
-  if (!cache_home)
-    cache_home = _makedir(xdgCacheHome(&xdg));
- 
-  return cache_home;
+    if (!cache_home)
+        cache_home = _makedir(xdgCacheHome(&xdg));
+
+    return cache_home;
 }

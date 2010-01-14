@@ -71,7 +71,7 @@ static Enna_Module_UPnP *mod;
 /* UPnP Internals */
 
 static void
-upnp_current_id_set (const char *id)
+upnp_current_id_set(const char *id)
 {
     pthread_mutex_lock(&mod->mutex_id);
     ENNA_FREE(mod->current_id);
@@ -80,7 +80,7 @@ upnp_current_id_set (const char *id)
 }
 
 static void
-upnp_media_server_free (upnp_media_server_t *srv)
+upnp_media_server_free(upnp_media_server_t *srv)
 {
     if (!srv)
         return;
@@ -102,8 +102,8 @@ typedef struct upnp_filter_arg_s {
 } upnp_filter_arg_t;
 
 static void
-didl_parse_item (GUPnPDIDLLiteParser *parser,
-                 GUPnPDIDLLiteItem *item, gpointer user_data)
+didl_parse_item(GUPnPDIDLLiteParser *parser,
+                GUPnPDIDLLiteItem *item, gpointer user_data)
 {
     GUPnPDIDLLiteObject *obj;
     Enna_Vfs_File *f = NULL;
@@ -186,9 +186,9 @@ err_res:
 }
 
 static void
-didl_parse_container (GUPnPDIDLLiteParser *parser,
-                      GUPnPDIDLLiteContainer *container,
-                      gpointer user_data)
+didl_parse_container(GUPnPDIDLLiteParser *parser,
+                     GUPnPDIDLLiteContainer *container,
+                     gpointer user_data)
 {
     GUPnPDIDLLiteObject *obj;
     Enna_Vfs_File *f = NULL;
@@ -207,7 +207,7 @@ didl_parse_container (GUPnPDIDLLiteParser *parser,
     if (!title)
         return;
 
-    snprintf(uri, sizeof (uri), "%s/%s", mod->current_id, id);
+    snprintf(uri, sizeof(uri), "%s/%s", mod->current_id, id);
 
     f = enna_vfs_create_directory(uri, title, "icon/directory", NULL);
     *list = eina_list_append(*list, f);
@@ -217,7 +217,7 @@ didl_parse_container (GUPnPDIDLLiteParser *parser,
 }
 
 static Eina_List *
-didl_process (char *didl, char *udn, ENNA_VFS_CAPS cap)
+didl_process(char *didl, char *udn, ENNA_VFS_CAPS cap)
 {
     Eina_List *list = NULL;
     GUPnPDIDLLiteParser *parser;
@@ -241,9 +241,9 @@ didl_process (char *didl, char *udn, ENNA_VFS_CAPS cap)
 }
 
 static Eina_List *
-upnp_browse (upnp_media_server_t *srv, const char *container_id,
-             guint32 starting_index, guint32 requested_count,
-             ENNA_VFS_CAPS cap)
+upnp_browse(upnp_media_server_t *srv, const char *container_id,
+            guint32 starting_index, guint32 requested_count,
+            ENNA_VFS_CAPS cap)
 {
     guint32 number_returned, total_matches, si;
     Eina_List *results = NULL;
@@ -284,7 +284,7 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
         info = GUPNP_SERVICE_INFO(srv->content_dir);
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
                  "Failed to browse '%s': %s",
-                 gupnp_service_info_get_location (info), error->message);
+                 gupnp_service_info_get_location(info), error->message);
         g_error_free(error);
         goto err;
     }
@@ -317,7 +317,7 @@ upnp_browse (upnp_media_server_t *srv, const char *container_id,
 }
 
 static Eina_List *
-browse_server_list (const char *uri, ENNA_VFS_CAPS cap)
+browse_server_list(const char *uri, ENNA_VFS_CAPS cap)
 {
     upnp_media_server_t *srv = NULL;
     char udn[512], id[512];
@@ -353,7 +353,7 @@ browse_server_list (const char *uri, ENNA_VFS_CAPS cap)
 }
 
 static Eina_List *
-upnp_list_mediaservers (void)
+upnp_list_mediaservers(void)
 {
     Eina_List *servers = NULL;
     Eina_List *l;
@@ -365,8 +365,8 @@ upnp_list_mediaservers (void)
         char name[256], uri[1024];
         Enna_Vfs_File *f;
 
-        snprintf(name, sizeof (name), "%s (%s)", srv->name, srv->model);
-        snprintf(uri, sizeof (uri), "udn:%s,id:%s",
+        snprintf(name, sizeof(name), "%s (%s)", srv->name, srv->model);
+        snprintf(uri, sizeof(uri), "udn:%s,id:%s",
                  srv->udn, UPNP_DEFAULT_ROOT);
 
         f = enna_vfs_create_directory(uri, name, "icon/dev/nfs", NULL);
@@ -377,7 +377,7 @@ upnp_list_mediaservers (void)
 }
 
 static Eina_List *
-_class_browse_up (const char *id, void *cookie, ENNA_VFS_CAPS cap)
+_class_browse_up(const char *id, void *cookie, ENNA_VFS_CAPS cap)
 {
     /* clean up our current position */
     upnp_current_id_set(NULL);
@@ -394,7 +394,7 @@ _class_browse_up (const char *id, void *cookie, ENNA_VFS_CAPS cap)
 
 #ifdef BUILD_ACTIVITY_MUSIC
 static Eina_List *
-music_class_browse_up (const char *id, void *cookie)
+music_class_browse_up(const char *id, void *cookie)
 {
     return _class_browse_up(id, cookie, ENNA_CAPS_MUSIC);
 }
@@ -402,7 +402,7 @@ music_class_browse_up (const char *id, void *cookie)
 
 #ifdef BUILD_ACTIVITY_VIDEO
 static Eina_List *
-video_class_browse_up (const char *id, void *cookie)
+video_class_browse_up(const char *id, void *cookie)
 {
     return _class_browse_up(id, cookie, ENNA_CAPS_VIDEO);
 }
@@ -410,14 +410,14 @@ video_class_browse_up (const char *id, void *cookie)
 
 #ifdef BUILD_ACTIVITY_PHOTO
 static Eina_List *
-photo_class_browse_up (const char *id, void *cookie)
+photo_class_browse_up(const char *id, void *cookie)
 {
     return _class_browse_up(id, cookie, ENNA_CAPS_PHOTO);
 }
 #endif
 
 static Eina_List *
-_class_browse_down (void *cookie, ENNA_VFS_CAPS cap)
+_class_browse_down(void *cookie, ENNA_VFS_CAPS cap)
 {
     char *prev_id;
     char new_id[512] = { 0 };
@@ -444,7 +444,7 @@ _class_browse_down (void *cookie, ENNA_VFS_CAPS cap)
 
 #ifdef BUILD_ACTIVITY_MUSIC
 static Eina_List *
-music_class_browse_down (void *cookie)
+music_class_browse_down(void *cookie)
 {
     return _class_browse_down(cookie, ENNA_CAPS_MUSIC);
 }
@@ -452,7 +452,7 @@ music_class_browse_down (void *cookie)
 
 #ifdef BUILD_ACTIVITY_VIDEO
 static Eina_List *
-video_class_browse_down (void *cookie)
+video_class_browse_down(void *cookie)
 {
     return _class_browse_down(cookie, ENNA_CAPS_VIDEO);
 }
@@ -460,14 +460,14 @@ video_class_browse_down (void *cookie)
 
 #ifdef BUILD_ACTIVITY_PHOTO
 static Eina_List *
-photo_class_browse_down (void *cookie)
+photo_class_browse_down(void *cookie)
 {
     return _class_browse_down(cookie, ENNA_CAPS_PHOTO);
 }
 #endif
 
 static Enna_Vfs_File *
-_class_vfs_get (void *cookie)
+_class_vfs_get(void *cookie)
 {
     return enna_vfs_create_directory(mod->current_id, NULL,
                                      eina_stringshare_add("icon/upnp"), NULL);
@@ -530,7 +530,7 @@ static Enna_Class_Vfs class_upnp_photo = {
 /* Device Callbacks */
 
 static void
-upnp_add_device (GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
+upnp_add_device(GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
 {
     const char *type, *location, *udn;
     char *name, *model;
@@ -628,8 +628,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
     g_signal_connect(mod->cp, "device-proxy-available",
                      G_CALLBACK(upnp_add_device), NULL);
 
-    gssdp_resource_browser_set_active
-        (GSSDP_RESOURCE_BROWSER(mod->cp), TRUE);
+    gssdp_resource_browser_set_active(GSSDP_RESOURCE_BROWSER(mod->cp), TRUE);
 
 #ifdef BUILD_ACTIVITY_MUSIC
     enna_vfs_append(ENNA_MODULE_NAME, ENNA_CAPS_MUSIC, &class_upnp_music);
@@ -651,8 +650,7 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 
     mod = em->mod;
 
-    gssdp_resource_browser_set_active
-        (GSSDP_RESOURCE_BROWSER(mod->cp), FALSE);
+    gssdp_resource_browser_set_active(GSSDP_RESOURCE_BROWSER(mod->cp), FALSE);
 
     EINA_LIST_FOREACH(mod->devices, l, srv)
         upnp_media_server_free(srv);

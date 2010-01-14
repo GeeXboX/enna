@@ -70,8 +70,9 @@ static Enna_Module_libvalhalla *mod;
 /*                         Private Module API                                */
 /*****************************************************************************/
 
-static void _vfs_add_dir(Eina_List **list, int level,
-                         valhalla_db_metares_t *res, const char *icon)
+static void
+_vfs_add_dir(Eina_List **list, int level,
+             valhalla_db_metares_t *res, const char *icon)
 {
     Enna_Vfs_File *file;
     char str[128];
@@ -82,10 +83,11 @@ static void _vfs_add_dir(Eina_List **list, int level,
     *list = eina_list_append(*list, file);
 }
 
-static void _vfs_add_file(Eina_List **list,
-                          valhalla_db_fileres_t *file,
-                          valhalla_db_filemeta_t *metadata,
-                          const char *icon)
+static void
+_vfs_add_file(Eina_List **list,
+              valhalla_db_fileres_t *file,
+              valhalla_db_filemeta_t *metadata,
+              const char *icon)
 {
     Enna_Vfs_File *f;
     char buf[PATH_BUFFER];
@@ -117,7 +119,8 @@ static void _vfs_add_file(Eina_List **list,
     *list = eina_list_append(*list, f);
 }
 
-static int _result_dir_cb(void *data, valhalla_db_metares_t *res)
+static int
+_result_dir_cb(void *data, valhalla_db_metares_t *res)
 {
     vh_data_t *vh = data;
 
@@ -128,7 +131,8 @@ static int _result_dir_cb(void *data, valhalla_db_metares_t *res)
     return 0;
 }
 
-static int _result_file_cb(void *data, valhalla_db_fileres_t *res)
+static int
+_result_file_cb(void *data, valhalla_db_fileres_t *res)
 {
     Eina_List **list = data;
     valhalla_db_filemeta_t *metadata = NULL;
@@ -147,7 +151,8 @@ static int _result_file_cb(void *data, valhalla_db_fileres_t *res)
     return 0;
 }
 
-static int _sort_cb(const void *d1, const void *d2)
+static int
+_sort_cb(const void *d1, const void *d2)
 {
     const Enna_Vfs_File *f1 = d1;
     const Enna_Vfs_File *f2 = d2;
@@ -161,7 +166,8 @@ static int _sort_cb(const void *d1, const void *d2)
     return strcasecmp(f1->label, f2->label);
 }
 
-static Eina_List *_browse_author_list(int64_t id_m, int64_t id_d)
+static Eina_List *
+_browse_author_list(int64_t id_m, int64_t id_d)
 {
     vh_data_t vh;
     Eina_List *list1 = NULL, *list2 = NULL;
@@ -186,7 +192,8 @@ static Eina_List *_browse_author_list(int64_t id_m, int64_t id_d)
     return eina_list_merge(list1, list2);
 }
 
-static Eina_List *_browse_author(void)
+static Eina_List *
+_browse_author(void)
 {
     vh_data_t vh;
     Eina_List *list = NULL;
@@ -205,7 +212,8 @@ static Eina_List *_browse_author(void)
     return list;
 }
 
-static Eina_List *_browse_album_file(int64_t id_m, int64_t id_d)
+static Eina_List *
+_browse_album_file(int64_t id_m, int64_t id_d)
 {
     Eina_List *list = NULL;
     valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d);
@@ -217,7 +225,8 @@ static Eina_List *_browse_album_file(int64_t id_m, int64_t id_d)
     return list;
 }
 
-static Eina_List *_browse_album(void)
+static Eina_List *
+_browse_album(void)
 {
     vh_data_t vh;
     Eina_List *list = NULL;
@@ -233,7 +242,8 @@ static Eina_List *_browse_album(void)
     return list;
 }
 
-static Eina_List *_browse_genre_list(int64_t id_m, int64_t id_d)
+static Eina_List *
+_browse_genre_list(int64_t id_m, int64_t id_d)
 {
     vh_data_t vh;
     Eina_List *list1 = NULL, *list2 = NULL;
@@ -258,7 +268,8 @@ static Eina_List *_browse_genre_list(int64_t id_m, int64_t id_d)
     return eina_list_merge (list1, list2);
 }
 
-static Eina_List *_browse_genre(void)
+static Eina_List *
+_browse_genre(void)
 {
     vh_data_t vh;
     Eina_List *list = NULL;
@@ -275,7 +286,8 @@ static Eina_List *_browse_genre(void)
     return list;
 }
 
-static Eina_List *_browse_unclassified_list(void)
+static Eina_List *
+_browse_unclassified_list(void)
 {
     Eina_List *list = NULL;
     valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_STR(NOTIN, "album", NULL);
@@ -293,7 +305,8 @@ static Eina_List *_browse_unclassified_list(void)
     return list;
 }
 
-static Eina_List *_browse_root(void)
+static Eina_List *
+_browse_root(void)
 {
     Eina_List *list = NULL;
     Enna_Vfs_File *file;
@@ -319,7 +332,8 @@ static Eina_List *_browse_root(void)
     return list;
 }
 
-static Eina_List *_class_browse_up(const char *path, void *cookie)
+static Eina_List *
+_class_browse_up(const char *path, void *cookie)
 {
     int64_t id_m, id_d;
     int rc;
@@ -383,7 +397,8 @@ static Eina_List *_class_browse_up(const char *path, void *cookie)
     return NULL;
 }
 
-static Eina_List *_class_browse_down(void *cookie)
+static Eina_List *
+_class_browse_down(void *cookie)
 {
     switch (mod->level)
     {
@@ -421,7 +436,8 @@ static Eina_List *_class_browse_down(void *cookie)
     return NULL;
 }
 
-static Enna_Vfs_File *_class_vfs_get(void *cookie)
+static Enna_Vfs_File *
+_class_vfs_get(void *cookie)
 {
     char str[128];
     int64_t id_m, id_d;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-10 23:15+0100\n"
+"POT-Creation-Date: 2010-01-13 14:11+0100\n"
 "PO-Revision-Date: 2010-01-10 23:32+0100\n"
 "Last-Translator: Guillaume LECERF <fox@geexbox.org>\n"
 "Language-Team: French\n"
@@ -20,51 +20,54 @@ msgstr ""
 msgid "No media found !"
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/bin/browser.c:712
+#: src/bin/browser.c:706
 msgid "Main Menu"
 msgstr "Menu Principal"
 
-#: src/bin/enna.c:437
+#: src/bin/enna.c:439
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:438
+#: src/bin/enna.c:440
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Usage: %s [options ...]\n"
 
-#: src/bin/enna.c:439
+#: src/bin/enna.c:441
 #, c-format
 msgid " Available Options:\n"
 msgstr " Options disponibles :\n"
 
-#: src/bin/enna.c:440
+#: src/bin/enna.c:442
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr "  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
+msgstr ""
+"  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
 
-#: src/bin/enna.c:441
+#: src/bin/enna.c:443
 #, c-format
 msgid "  -f, (--fs):      Force Fullscreen mode.\n"
 msgstr "  -f, (--fs) :       Force le mode plein écran.\n"
 
-#: src/bin/enna.c:442
+#: src/bin/enna.c:444
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help) :     Affiche cette aide.\n"
 
-#: src/bin/enna.c:443
+#: src/bin/enna.c:445
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme) :    Spécifie le nom du thème à utiliser.\n"
 
-#: src/bin/enna.c:444
+#: src/bin/enna.c:446
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "  -g, (--geometry) : Spécifie la résolution de la fenêtre. (geometry=1280x720)\n"
+msgstr ""
+"  -g, (--geometry) : Spécifie la résolution de la fenêtre. "
+"(geometry=1280x720)\n"
 
-#: src/bin/enna.c:445
+#: src/bin/enna.c:447
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version) :  Affiche le numéro de version d'Enna.\n"
@@ -248,17 +251,19 @@ msgstr "Aucun<br>"
 msgid "<c>System Information</c><br><br>"
 msgstr "<c>Informations Systèmes</c><br><br>"
 
-#: src/modules/activity/games/games.c:235
+#: src/modules/activity/games/games.c:308
 msgid "Games"
 msgstr "Jeux"
 
-#: src/modules/activity/games/games.c:263
+#: src/modules/activity/games/games.c:336
 msgid "System games"
 msgstr "Jeux"
 
-#: src/modules/activity/games/games.c:265
+#: src/modules/activity/games/games.c:338
 msgid "With this module you can play your games directly from enna"
-msgstr "Au travers de ce module, vous pouvez démarrer vos jeux directement depuis Enna"
+msgstr ""
+"Au travers de ce module, vous pouvez démarrer vos jeux directement depuis "
+"Enna"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -306,8 +311,7 @@ msgstr "Enregistrement de '%s'"
 msgid "Recording in progress"
 msgstr "Enregistrement en cours"
 
-#: src/modules/activity/tv/tv.c:154
-#: src/modules/activity/tv/tv.c:265
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "Télévision"
 
@@ -315,50 +319,50 @@ msgstr "Télévision"
 msgid "View tv channels"
 msgstr "Regardez les chaînes TV"
 
-#: src/modules/activity/video/video_infos.c:93
+#: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
 msgstr "Aucune information disponible ..."
 
-#: src/modules/activity/video/video_infos.c:127
+#: src/modules/activity/video/video_infos.c:128
 #, c-format
 msgid "<ul>Director:</ul> %s<br>"
 msgstr "<ul>Réalisateur :</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:131
+#: src/modules/activity/video/video_infos.c:132
 #, c-format
 msgid "<ul>Cast:</ul> %s<br>"
 msgstr "<ul>Acteurs :</ul> %s<br>"
 
-#: src/modules/activity/video/video_infos.c:150
+#: src/modules/activity/video/video_infos.c:151
 #, c-format
 msgid "<hl>Video: </hl> %s"
 msgstr "<hl>Vidéo : </hl> %s"
 
-#: src/modules/activity/video/video_infos.c:171
+#: src/modules/activity/video/video_infos.c:172
 #, c-format
 msgid "<hl>Audio: </hl> %s"
 msgstr "<hl>Audio : </hl> %s"
 
-#: src/modules/activity/video/video_infos.c:184
+#: src/modules/activity/video/video_infos.c:185
 #, c-format
 msgid "<hl>Size: </hl> %.2f MB<br>"
 msgstr "<hl>Taille : </hl> %.2f Mo<br>"
 
-#: src/modules/activity/video/video_infos.c:190
+#: src/modules/activity/video/video_infos.c:191
 msgid "No further information can be retrieved"
 msgstr "Aucune information EXIF trouvée."
 
-#: src/modules/activity/video/video.c:131
+#: src/modules/activity/video/video.c:132
 #, c-format
 msgid "%d Movies"
 msgstr "%d Films"
 
-#: src/modules/activity/video/video.c:914
-#: src/modules/activity/video/video.c:990
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
 msgid "Video"
 msgstr "Vidéo"
 
-#: src/modules/activity/video/video.c:992
+#: src/modules/activity/video/video.c:993
 msgid "This is the main video module"
 msgstr "Ceci est le module vidéo"
 
@@ -406,17 +410,17 @@ msgstr "Module DVD"
 msgid "Watch movies from DVD"
 msgstr "Regardez vos DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:443
-#: src/modules/browser/localfiles/localfiles.c:461
-#: src/modules/browser/localfiles/localfiles.c:479
+#: src/modules/browser/localfiles/localfiles.c:462
+#: src/modules/browser/localfiles/localfiles.c:480
+#: src/modules/browser/localfiles/localfiles.c:498
 msgid "Browse Local Devices"
 msgstr "Parcourir les disques locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:574
+#: src/modules/browser/localfiles/localfiles.c:593
 msgid "Browse local files"
 msgstr "Parcourir les disques locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:576
+#: src/modules/browser/localfiles/localfiles.c:595
 msgid "Browse files in your local file systems"
 msgstr "Parcourez les fichiers de votre disque dur"
 
@@ -433,15 +437,15 @@ msgstr "Flux réseaux"
 msgid "I really don't know :P"
 msgstr "Je ne sais vraiment pas :P"
 
-#: src/modules/browser/podcasts/podcasts.c:328
+#: src/modules/browser/podcasts/podcasts.c:329
 msgid "Listen to Podcasts"
 msgstr "Ecouter un podcast"
 
-#: src/modules/browser/podcasts/podcasts.c:384
+#: src/modules/browser/podcasts/podcasts.c:385
 msgid "Podcast browser"
 msgstr "Explorateur de Podcast"
 
-#: src/modules/browser/podcasts/podcasts.c:386
+#: src/modules/browser/podcasts/podcasts.c:387
 msgid "Podcast module"
 msgstr "Module Podcast"
 
@@ -457,50 +461,52 @@ msgstr "Explorateur de SHOUTcast"
 msgid "Listen to shoutcast stream"
 msgstr "Ecouter un podcast"
 
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
-#: src/modules/browser/upnp/upnp.c:534
-#: src/modules/browser/upnp/upnp.c:552
 msgid "UPnP/DLNA Media Servers"
 msgstr "Serveurs Multimédia UPnP/DLNA"
 
-#: src/modules/browser/upnp/upnp.c:607
+#: src/modules/browser/upnp/upnp.c:571
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Découverte d'un nouveau périphérique UPnP '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:621
+#: src/modules/browser/upnp/upnp.c:585
 msgid "UPnP / DLNA module"
 msgstr "Module UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:623
+#: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
-msgstr "Ce module permet à Enna de parcourir le contenu des serveurs multimédias compatibles UPNP / DLNA"
+msgstr ""
+"Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
+"compatibles UPNP / DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:304
+#: src/modules/browser/valhalla/valhalla.c:317
 msgid "Artists"
 msgstr "Artistes"
 
-#: src/modules/browser/valhalla/valhalla.c:308
+#: src/modules/browser/valhalla/valhalla.c:321
 msgid "Albums"
 msgstr "Albums"
 
-#: src/modules/browser/valhalla/valhalla.c:312
+#: src/modules/browser/valhalla/valhalla.c:325
 msgid "Genres"
 msgstr "Genres"
 
-#: src/modules/browser/valhalla/valhalla.c:316
+#: src/modules/browser/valhalla/valhalla.c:329
 msgid "Unclassified"
 msgstr "Non Classé"
 
-#: src/modules/browser/valhalla/valhalla.c:468
+#: src/modules/browser/valhalla/valhalla.c:484
 msgid "Valhalla module"
 msgstr "Module Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:470
+#: src/modules/browser/valhalla/valhalla.c:486
 msgid "Database stuff and metadata retrival from various sources"
-msgstr "Base de donnée et récupération de meta-informations depuis diverses sources"
+msgstr ""
+"Base de donnée et récupération de meta-informations depuis diverses sources"
 
-#: src/modules/browser/valhalla/valhalla.c:478
+#: src/modules/browser/valhalla/valhalla.c:494
 msgid "Media Library"
 msgstr "Bibliothèque Multimédia"
 
@@ -612,72 +618,103 @@ msgstr "Ce module récupère la liste des volumes depuis le fichier mtab"
 
 #~ msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 #~ msgstr "<hl>Vidéo: </hl> %s, %dx%d, %.2f img/s<br>"
+
 #~ msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 #~ msgstr "<hl>Audio: </hl> %s, %d ch., %i kb/s, %d Hz<br>"
+
 #~ msgid "Infos"
 #~ msgstr "Infos"
+
 #~ msgid "%.2d hour "
 #~ msgid_plural "%.2d hours "
 #~ msgstr[0] "%.2d heure"
 #~ msgstr[1] "%.2d heures"
+
 #~ msgid "%.2d minute"
 #~ msgid_plural "%.2d minutes"
 #~ msgstr[0] "%.2d minute"
 #~ msgstr[1] "%.2d minutes"
+
 #~ msgid "Unknown"
 #~ msgstr "Inconnu"
+
 #~ msgid "IDE"
 #~ msgstr "IDE"
+
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
+
 #~ msgid "USB"
 #~ msgstr "USB"
+
 #~ msgid "FireWire"
 #~ msgstr "FireWire"
+
 #~ msgid "CCW"
 #~ msgstr "CCW"
+
 #~ msgid "Removable Disk"
 #~ msgstr "Disque Amovible"
+
 #~ msgid "Disk"
 #~ msgstr "Disque"
+
 #~ msgid "Floppy"
 #~ msgstr "Disquette"
+
 #~ msgid "Tape"
 #~ msgstr "Cassette"
+
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
+
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
+
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
+
 #~ msgid "SD/MMC"
 #~ msgstr "SD/MMC"
+
 #~ msgid "Camera"
 #~ msgstr "Appareil Photo"
+
 #~ msgid "Portable Audio Player"
 #~ msgstr "Lecteur Audio Portable"
+
 #~ msgid "ZIP"
 #~ msgstr "ZIP"
+
 #~ msgid "JAZ"
 #~ msgstr "JAZ"
+
 #~ msgid "FlashKey"
 #~ msgstr "Disque Flash"
+
 #~ msgid "enna HTPC"
 #~ msgstr "enna HTPC"
+
 #~ msgid "Browse Library"
 #~ msgstr "Parcourir la bibliothèque"
+
 #~ msgid "Artist"
 #~ msgstr "Artiste"
+
 #~ msgid "Album"
 #~ msgstr "Album"
+
 #~ msgid "Watch PODCAST Video"
 #~ msgstr "Regarder une vidéo PODCAST"
+
 #~ msgid "%s<hilight>%s%s:</hilight> %s"
 #~ msgstr "%s<hilight>%s%s:</hilight> %s"
+
 #~ msgid "Yes, I want to quit."
 #~ msgstr "Oui, je veux quitter."
+
 #~ msgid "No, I want to stay."
 #~ msgstr "Non, je veux rester."
+
 #~ msgid "...no activity seems busy right now."
 #~ msgstr "... aucune activité ne semble active actuellement."
-
