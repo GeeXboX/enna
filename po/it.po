@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-01-13 14:11+0100\n"
-"PO-Revision-Date: 2010-01-08 10:44+0100\n"
+"PO-Revision-Date: 2010-01-14 08:58+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -62,9 +62,7 @@ msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 #: src/bin/enna.c:446
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry): specifica la geometria della finestra. "
-"(geometry=1280x720)\n"
+msgstr "  -g, (--geometry): specifica la geometria della finestra. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:447
 #, c-format
@@ -136,7 +134,7 @@ msgstr "I ringraziamenti vanno a:<br>"
 
 #: src/modules/activity/configuration/configuration_credits.c:51
 msgid "and"
-msgstr ""
+msgstr "e"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
@@ -308,7 +306,8 @@ msgstr "Sto registrando '%s'"
 msgid "Recording in progress"
 msgstr "Registrazione in corso"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
+#: src/modules/activity/tv/tv.c:154
+#: src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "Televisione"
 
@@ -458,7 +457,8 @@ msgstr ""
 msgid "Listen to shoutcast stream"
 msgstr "Ascolta flusso shoutcast"
 
-#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:480
+#: src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA Media Servers"
 msgstr "UPnP/DLNA media server"
@@ -609,3 +609,4 @@ msgstr ""
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module get volumes from the mtab file"
 msgstr ""
+
