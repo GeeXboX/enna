@@ -48,7 +48,7 @@
 #undef DEBUG
 
 typedef struct weather_cfg_s {
-    char *city;
+    Eina_List *cities;
 } weather_cfg_t;
 
 static weather_cfg_t weather_cfg;
@@ -325,20 +325,26 @@ _weather_config_panel_input_events_cb(void *data, enna_input event)
 static Evas_Object *
 _weather_config_panel_show(void *data)
 {
+    Eina_List *l;
+    char *city;
+    Elm_Genlist_Item *item;
+
     _o_cfg_panel= enna_list2_add(enna->evas);
     evas_object_size_hint_align_set(_o_cfg_panel, -1.0, -1.0);
     evas_object_size_hint_weight_set(_o_cfg_panel, 1.0, 1.0);
     evas_object_show(_o_cfg_panel);
 
-    Elm_Genlist_Item *item;
-    item = enna_list2_append(_o_cfg_panel,
-                             _("City"),
-                             _("Choose your City"),
-                             NULL,
-                             NULL, NULL);
-    enna_list2_item_entry_add(item,
-                                NULL, weather_cfg.city,
-                                NULL, NULL);
+    EINA_LIST_FOREACH(weather_cfg.cities, l, city)
+    {
+        item = enna_list2_append(_o_cfg_panel,
+                                 _("City"),
+                                 _("Choose your City"),
+                                 NULL,
+                                 NULL, NULL);
+        enna_list2_item_entry_add(item,
+                                  NULL, city,
+                                  NULL, NULL);
+    }
 
     item = enna_list2_append(_o_cfg_panel,
                              _("Add New City"),
@@ -370,27 +376,38 @@ _weather_config_panel_hide(void *data)
 static void
 cfg_weather_section_load (const char *section)
 {
-    const char *city = NULL;
-
-    city = enna_config_string_get(section, "city");
-    if (city)
+    Eina_List *cities;
+    printf("section: %s", section);
+    cities = enna_config_string_list_get(section, "city");
+    if (cities)
     {
-        ENNA_FREE(weather_cfg.city);
-        weather_cfg.city = strdup(city);
+        Eina_List *l;
+        char *city;
+
+        EINA_LIST_FREE(weather_cfg.cities, city)
+            free(city);
+
+        EINA_LIST_FOREACH(cities, l, city)
+            weather_cfg.cities = eina_list_append(weather_cfg.cities,
+                                                  strdup(city));
     }
 }
 
 static void
 cfg_weather_free (void)
 {
-    ENNA_FREE(weather_cfg.city);
+    char *city;
+
+    EINA_LIST_FREE(weather_cfg.cities, city)
+        free(city);
 }
 
 static void
 cfg_weather_section_set_default (void)
 {
     cfg_weather_free();
-    weather_cfg.city = strdup(WEATHER_DEFAULT_CITY);
+    weather_cfg.cities = eina_list_append(weather_cfg.cities,
+                                          strdup(WEATHER_DEFAULT_CITY));
 }
 
 static Enna_Config_Section_Parser cfg_weather = {
@@ -406,16 +423,10 @@ static Enna_Config_Section_Parser cfg_weather = {
 /****************************************************************************/
 
 void
-enna_weather_parse_config (weather_t *w)
+enna_weather_parse_config ()
 {
-    if (!w)
-        return;
-
     cfg_weather_section_set_default();
     cfg_weather_section_load(cfg_weather.section);
-
-    ENNA_FREE(w->city);
-    w->city = strdup(weather_cfg.city);
 }
 
 void
@@ -450,8 +461,14 @@ enna_weather_set_lang (weather_t *w, const char *lang)
     enna_weather_update(w);
 }
 
+Eina_List *
+enna_weather_cities_get(void)
+{
+    return weather_cfg.cities;
+}
+
 weather_t *
-enna_weather_new (void)
+enna_weather_new (char *city)
 {
     weather_t *w;
 
@@ -459,7 +476,7 @@ enna_weather_new (void)
     w->lang = get_lang();
     w->city = strdup(WEATHER_DEFAULT_CITY);
     w->temp = WEATHER_DEFAULT_TEMP;
-    enna_weather_parse_config (w);
+    w->city = strdup(city);
 
     return w;
 }
@@ -506,6 +523,8 @@ enna_weather_init(void)
     /* Prevent multiple loads */
     if (_weather_init_count > 0)
         return ++_weather_init_count;
+
+    enna_weather_parse_config();
 
     _cfg_panel =
         enna_config_panel_register(_("Weather"), "icon/weather",

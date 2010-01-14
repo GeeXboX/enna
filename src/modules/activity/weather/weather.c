@@ -307,12 +307,16 @@ Enna_Module_Api ENNA_MODULE_API =
 void
 ENNA_MODULE_INIT(Enna_Module *em)
 {
+    Eina_List *cities;
+
     if (!em)
         return;
 
     mod = calloc (1, sizeof (Enna_Module_Weather));
     mod->em = em;
-    mod->w = enna_weather_new();
+
+    cities = enna_weather_cities_get();
+    mod->w = enna_weather_new(cities->data);
     em->mod = mod;
 
     enna_activity_add (&class);
