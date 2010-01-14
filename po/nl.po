@@ -134,7 +134,7 @@ msgstr "Met dank aan:<br>"
 
 #: src/modules/activity/configuration/configuration_credits.c:51
 msgid "and"
-msgstr ""
+msgstr "en"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
