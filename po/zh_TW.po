@@ -124,11 +124,11 @@ msgstr "感謝"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
 msgid "Enna is GeeXboX's team MediaCenter, "
-msgstr ""
+msgstr "Enna is GeeXboX's team MediaCenter,"
 
 #: src/modules/activity/configuration/configuration_credits.c:46
 msgid "based on Enlightenment Foundation Librairies (EFL)."
-msgstr ""
+msgstr "based on Enlightenment Foundation Librairies (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:48
 msgid "Credits go to:<br>"
@@ -136,7 +136,7 @@ msgstr "感謝:<br>"
 
 #: src/modules/activity/configuration/configuration_credits.c:51
 msgid "and"
-msgstr ""
+msgstr "and"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:96
 msgid "<c>Enna Information</c><br><br>"
@@ -145,22 +145,22 @@ msgstr "<c>Enna 資訊</c><br><br>"
 #: src/modules/activity/configuration/configuration_sysinfo.c:97
 #, c-format
 msgid "<hilight>Enna: </hilight>%s<br>"
-msgstr ""
+msgstr "<hilight>Enna: </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:98
 #, c-format
 msgid "<hilight>libplayer: </hilight>%s<br>"
-msgstr ""
+msgstr "<hilight>libplayer: </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:100
 #, c-format
 msgid "<hilight>libvalhalla: </hilight>%s<br>"
-msgstr ""
+msgstr "<hilight>libvalhalla: </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:103
 #, c-format
 msgid "<hilight>libsvdrp: </hilight>%s<br>"
-msgstr ""
+msgstr "<hilight>libsvdrp: </hilight>%s<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:106
 #, fuzzy, c-format
@@ -169,7 +169,7 @@ msgstr "<hilight>記憶體: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:167
 msgid "<hilight>Distribution: </hilight>"
-msgstr ""
+msgstr "<hilight> 發行: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:187
 msgid "<hilight>OS: </hilight>"
@@ -178,16 +178,16 @@ msgstr "<hilight>作業系統: </hilight>"
 #: src/modules/activity/configuration/configuration_sysinfo.c:191
 #, c-format
 msgid "%s %s for %s"
-msgstr ""
+msgstr "%s %s for %s"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:206
 msgid "<hilight>Available CPUs: </hilight>"
-msgstr ""
+msgstr "<hilight>有效的 CPUs: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:237
 #, c-format
 msgid ", running at %d MHz"
-msgstr ""
+msgstr ", running at %d MHz"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:266
 msgid "<hilight>CPU Load: </hilight>"

@@ -47,6 +47,7 @@ weather_notification.c\
 volume_notification.c\
 ini_parser.c\
 input.c\
+geoip.c\
 xdg.c
 
 
@@ -229,4 +230,5 @@ weather_notification.h\
 volume_notification.h\
 ini_parser.h\
 input.h\
+geoip.h\
 xdg.h

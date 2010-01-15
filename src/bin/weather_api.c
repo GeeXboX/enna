@@ -407,7 +407,9 @@ cfg_weather_section_set_default (void)
 {
     cfg_weather_free();
     weather_cfg.cities = eina_list_append(weather_cfg.cities,
-                                          strdup(WEATHER_DEFAULT_CITY));
+                                          strdup(enna->geo_loc ?
+                                                 enna->geo_loc :
+                                                 WEATHER_DEFAULT_CITY));
 }
 
 static Enna_Config_Section_Parser cfg_weather = {
