@@ -112,6 +112,9 @@ ENNA_MOD_EXTERN(volume_hal)
 #ifdef BUILD_VOLUME_MTAB
 ENNA_MOD_EXTERN(volume_mtab)
 #endif /* BUILD_VOLUME_MTAB */
+#ifdef BUILD_VOLUME_UDEV
+ENNA_MOD_EXTERN(volume_udev)
+#endif /* BUILD_VOLUME_UDEV */
 
 struct _Static_Mod_List
 {
@@ -182,6 +185,9 @@ ENNA_MOD_REG(volume_hal)
 #ifdef BUILD_VOLUME_MTAB
 ENNA_MOD_REG(volume_mtab)
 #endif /* BUILD_VOLUME_MTAB */
+#ifdef BUILD_VOLUME_UDEV
+ENNA_MOD_REG(volume_udev)
+#endif /* BUILD_VOLUME_UDEV */
     { NULL, NULL, NULL }
 };
 #endif /* USE_STATIC_MODULES */

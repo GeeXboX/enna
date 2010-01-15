@@ -90,6 +90,7 @@ include ../modules/input/kbd/config.mak
 include ../modules/input/lirc/config.mak
 include ../modules/volume/hal/config.mak
 include ../modules/volume/mtab/config.mak
+include ../modules/volume/udev/config.mak
 
 if BUILD_ACTIVITY_BOOKSTORE
 enna_SOURCES += $(SRCS_ACTIVITY_BOOKSTORE)
@@ -174,6 +175,12 @@ endif
 
 if BUILD_VOLUME_MTAB
 enna_SOURCES += $(SRCS_VOLUME_MTAB)
+endif
+
+if BUILD_VOLUME_UDEV
+enna_SOURCES += $(SRCS_VOLUME_UDEV)
+AM_CFLAGS += @UDEV_CFLAGS@
+enna_LDADD += @UDEV_LIBS@
 endif
 
 endif

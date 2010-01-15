@@ -376,6 +376,32 @@ if test "x$want_volume_mtab" = "xyes"; then
   AC_DEFINE(BUILD_VOLUME_MTAB, 1, [mtab Volume])
 fi
 
+# Udev
+want_volume_udev="auto"
+have_volume_udev="no"
+AC_MSG_CHECKING(whether Udev volume module is to be built)
+AC_ARG_ENABLE(volume-udev,
+  AS_HELP_STRING([--enable-volume-udev],[Enable Udev Volume]),
+  [ want_volume_udev=$enableval ]
+)
+AC_MSG_RESULT($want_volume_udev)
+if test "x$want_volume_udev" = "xyes" -o "x$want_volume_udev" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [UDEV],
+    [libudev],
+    [
+      AC_DEFINE(BUILD_VOLUME_UDEV, 1, [Udev Volume])
+      have_volume_udev="yes"
+    ],
+    [
+      if test "x$want_volume_udev" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([udev not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_VOLUME_UDEV, test "x$have_volume_udev" = "xyes")
+
 ##############
 # Librairies #
 ##############
@@ -574,6 +600,7 @@ src/modules/input/kbd/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
+src/modules/volume/udev/Makefile
 data/Makefile
 data/other/Makefile
 data/theme/Makefile
@@ -629,6 +656,7 @@ echo "Supported Volume Modules:"
 echo
 echo "  HAL.............................. : $have_volume_hal"
 echo "  mtab............................. : $want_volume_mtab"
+echo "  Udev............................. : $have_volume_udev"
 echo
 echo "Optional linked-in librairies:"
 echo

@@ -54,6 +54,7 @@ Modules
   Volume:
     HAL:                                  Benjamin Zores
     mtab:                                 Benjamin Zores
+    UDEV:                                 Benjamin Zores
 
 Localizations
 =============
