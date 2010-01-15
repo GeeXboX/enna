@@ -140,6 +140,7 @@ struct _Enna
     Ecore_Timer *mouse_idle_timer;
     Ecore_Timer *idle_timer;
     Ecore_Event_Handler *mouse_handler;
+    char *geo_loc; /** IP-based Geolocalized city */
 };
 
 extern Enna *enna;
