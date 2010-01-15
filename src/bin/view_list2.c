@@ -30,6 +30,7 @@ typedef enum {
     ENNA_BUTTON,
     ENNA_TOGGLE,     //TODO finish
     ENNA_CHECKBOX,
+    ENNA_ENTRY,
     ENNA_HOVERSEL,   //TODO implement
     ENNA_SPINNER,    //TODO implement
 }list_control_type;
@@ -55,13 +56,15 @@ struct _Item_Button
     Eina_Bool status;          /**< initial status for checks buttons */
     void (*func) (void *data); /**< function to call when button pressed */
     void *func_data;           /**< data to return-back */
+    Input_Listener *input_listener;
 };
 
 /***   Local protos  ***/
 static void _list_item_activate(Item_Data *id);
 static void _list_button_activate(Item_Button *b);
 static Evas_Object *_list_item_buttons_create_all(const Item_Data *id);
-
+static Eina_Bool _list_item_button_input_events_cb(void *data, enna_input event);
+static void _list_item_button_event_input_focus_set(Item_Button *ib, Eina_Bool focus);
 /***   Callbacks  ***/
 /*static void // called on list item double-click
 _list_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
@@ -80,7 +83,7 @@ _list_item_selected_cb(void *data, Evas_Object *obj, void *event_info)
     Item_Button *b;
 
     EINA_LIST_FOREACH(id->buttons, l, b)
-        elm_object_disabled_set(b->obj, EINA_TRUE);
+        elm_object_disabled_set(b->obj, EINA_FALSE);
 }
 
 static void // called when one of the buttons is pressed
@@ -89,6 +92,15 @@ _list_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
     Item_Button *b = data;
 
     _list_button_activate(b);
+}
+
+static void
+_list_button_mouse_move_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Item_Button *ib = data;
+    Evas_Event_Mouse_Move *ev = (Evas_Event_Mouse_Move*) event_info;
+
+    ev->event_flags &= !EVAS_EVENT_FLAG_ON_HOLD;
 }
 
 /***   Privates  ***/
@@ -170,7 +182,7 @@ _list_item_buttons_create_all(const Item_Data *id)
         {
         case ENNA_BUTTON:
             o = elm_button_add(enna->layout);
-            elm_object_style_set(o, "enna_list");
+            elm_object_style_set(o, "view_list2");
             elm_button_label_set(o, b->label);
             elm_button_icon_set(o, ic);
             evas_object_smart_callback_add(o, "clicked", _list_button_clicked_cb, b);
@@ -180,11 +192,16 @@ _list_item_buttons_create_all(const Item_Data *id)
             break;
         case ENNA_CHECKBOX:
             o = elm_check_add(enna->layout);
-            elm_object_style_set(o, "enna_list");
+            //elm_object_style_set(o, "enna_list");
             elm_check_label_set(o, b->label);
             elm_check_icon_set(o, ic);
             elm_check_state_set(o, b->status);
             evas_object_smart_callback_add(o, "changed", _list_button_clicked_cb, b);
+            break;
+        case ENNA_ENTRY:
+            o = elm_entry_add(enna->layout);
+            elm_entry_single_line_set(o, 1);
+            elm_entry_entry_set(o, b->label);
             break;
         default:
             break;
@@ -192,11 +209,12 @@ _list_item_buttons_create_all(const Item_Data *id)
 
         if (o)
         {
-            evas_object_size_hint_weight_set(o, 1.0, 1.0);
-            evas_object_size_hint_align_set(o, -1.0, -1.0);
+            evas_object_size_hint_weight_set(o, EVAS_HINT_EXPAND, 0.0);
+            evas_object_size_hint_align_set(o, EVAS_HINT_FILL, EVAS_HINT_FILL);
             evas_object_show(o);
             elm_box_pack_end(box, o);
             b->obj = o;
+            evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_MOVE, _list_button_mouse_move_cb, b);
         }
     }
 
@@ -263,6 +281,7 @@ _list_item_del(const void *data, Evas_Object *obj)
     {
         ENNA_STRINGSHARE_DEL(b->label);
         ENNA_STRINGSHARE_DEL(b->icon);
+        _list_item_button_event_input_focus_set(b, EINA_FALSE);
         ENNA_FREE(b);
     }
     ENNA_STRINGSHARE_DEL(id->label1);
@@ -272,7 +291,7 @@ _list_item_del(const void *data, Evas_Object *obj)
 }
 
 static Elm_Genlist_Item_Class itc_single_label = {
-    "enna_list",
+    "view_list2",
     {
         _list_item_label_get,
         _list_item_icon_get,
@@ -300,7 +319,7 @@ enna_list2_add(Evas *evas) // evas is unused
 Elm_Genlist_Item *
 enna_list2_append(Evas_Object *obj, const char *label1, const char *label2,
                   const char *icon,
-                  void (*func)(void *data), void *func_data)
+                  void(*func)(void *data), void *func_data)
 {
     Elm_Genlist_Item *item;
     Item_Data *id;
@@ -355,7 +374,55 @@ enna_list2_item_check_add(Elm_Genlist_Item *item,
     _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_CHECKBOX, status);
 }
 
+void
+enna_list2_item_entry_add(Elm_Genlist_Item *item,
+                          const char *icon, const char *label,
+                          void (*func) (void *data), void *func_data)
+{
+    _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_ENTRY, EINA_FALSE);
+}
+
 /* Events input */
+
+static void
+_list_item_button_event_input_focus_set(Item_Button *ib, Eina_Bool focus)
+{
+    if (ib && ib->type == ENNA_ENTRY)
+    {
+        if (focus)
+        {
+            ib->input_listener = enna_input_listener_add("view_list2/entry",
+                                                          _list_item_button_input_events_cb, ib);
+            enna_input_listener_promote(ib->input_listener);
+            elm_object_focus(ib->obj);
+            //evas_object_focus_set(ib->obj, EINA_TRUE);
+        }
+        else
+        {
+            enna_input_listener_del(ib->input_listener);
+            ib->input_listener = NULL;
+            elm_object_unfocus(ib->obj);
+            //evas_object_focus_set(enna->win, EINA_TRUE);
+
+        }
+    }
+}
+
+static Eina_Bool
+_list_item_button_input_events_cb(void *data, enna_input event)
+{
+    Item_Button *ib = data;
+
+    //  if (event == ENNA_INPUT_MENU)
+//        return ENNA_EVENT_CONTINUE;
+    if (event == ENNA_INPUT_MENU || event == ENNA_INPUT_OK)
+    {
+        _list_item_button_event_input_focus_set(ib, EINA_FALSE);
+        return ENNA_EVENT_BLOCK;
+    }
+    return ENNA_EVENT_BLOCK;
+}
+
 static Item_Button *
 _list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
 {
@@ -373,8 +440,11 @@ _list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
         if (l)
         {
             next = l->data;
-            elm_object_disabled_set(next->obj, EINA_FALSE);
-            elm_object_disabled_set(cur->obj, EINA_TRUE);
+            elm_object_disabled_set(next->obj, EINA_TRUE);
+            elm_object_disabled_set(cur->obj, EINA_FALSE);
+            _list_item_button_event_input_focus_set(cur, EINA_FALSE);
+            _list_item_button_event_input_focus_set(next, EINA_TRUE);
+
             return next;
         }
     }
@@ -382,7 +452,8 @@ _list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
     else if (id->buttons)
     {
         next = (id->buttons->data);
-        elm_object_disabled_set(next->obj, EINA_FALSE);
+        elm_object_disabled_set(next->obj, EINA_TRUE);
+         _list_item_button_event_input_focus_set(next, EINA_TRUE);
         return next;
     }
 
@@ -405,11 +476,13 @@ _list_item_button_focus_prev(Elm_Genlist_Item *item, Item_Button *cur)
         if (l)
         {
             prev = l->data;
-            elm_object_disabled_set(prev->obj, EINA_FALSE);
-            elm_object_disabled_set(cur->obj, EINA_TRUE);
+            elm_object_disabled_set(prev->obj, EINA_TRUE);
+            _list_item_button_event_input_focus_set(prev, EINA_TRUE);
             return prev;
         }
-        elm_object_disabled_set(cur->obj, EINA_TRUE);
+        elm_object_disabled_set(cur->obj, EINA_FALSE);
+        _list_item_button_event_input_focus_set(cur, EINA_FALSE);
+
         return NULL;
     }
 
@@ -444,7 +517,12 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
             {
                 elm_genlist_item_selected_set(prev, EINA_TRUE);
                 elm_genlist_item_bring_in(prev);
-                focused = NULL;
+                _list_item_button_event_input_focus_set(focused, EINA_FALSE);
+                if (focused)
+                {
+                    elm_object_disabled_set(focused->obj, EINA_FALSE);
+                    focused = NULL;
+                }
                 return ENNA_EVENT_BLOCK;
             }
             break;
@@ -454,7 +532,12 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
             {
                 elm_genlist_item_selected_set(next, EINA_TRUE);
                 elm_genlist_item_bring_in(next);
-                focused = NULL;
+                _list_item_button_event_input_focus_set(focused, EINA_FALSE);
+                if (focused)
+                {
+                    elm_object_disabled_set(focused->obj, EINA_FALSE);
+                    focused = NULL;
+                }
                 return ENNA_EVENT_BLOCK;
             }
             break;

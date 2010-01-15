@@ -1,5 +1,5 @@
 images {
-   image: "cover_music2.png" COMP;
+   image: "cover_music2.png" LOSSY 80;
    image: "cover_border.png" COMP;
 }
 
