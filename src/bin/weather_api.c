@@ -47,6 +47,7 @@
 
 typedef struct weather_cfg_s {
     char *city;
+    temp_type_t unit;
 } weather_cfg_t;
 
 static weather_cfg_t weather_cfg;
@@ -119,6 +120,56 @@ weather_display_debug (weather_t *w)
 #endif
 }
 
+static int
+weather_c_to_f (int c)
+{
+    return ((int) ((9 * c / 5) + 32));
+}
+
+static int
+weather_f_to_c (int f)
+{
+    return ((int) (5 * (f - 32) / 9));
+}
+
+static int
+weather_get_degrees (weather_t *w, int value)
+{
+    if (!w)
+        return 0;
+
+    switch (w->temp)
+    {
+    case TEMP_CELCIUS:
+        return (weather_cfg.unit == TEMP_CELCIUS) ?
+            value : weather_c_to_f(value);
+    case TEMP_FAHRENHEIT:
+        return (weather_cfg.unit == TEMP_CELCIUS) ?
+            weather_f_to_c(value) : value;
+    }
+
+    return 0;
+}
+
+static void
+weather_update_degrees (weather_t *w, char **temp)
+{
+    int t1, t2;
+    char val[8];
+
+    if (!temp)
+        return;
+
+    t1 = atoi(*temp);
+    ENNA_FREE(*temp);
+
+    t2 = weather_get_degrees(w, t1);
+    snprintf(val, sizeof(val), "%d%s", t2,
+             (weather_cfg.unit == TEMP_CELCIUS) ? "°C" : "°F");
+
+    *temp = strdup(val);
+}
+
 static void
 weather_get_unit_system (weather_t *w, xmlDocPtr doc)
 {
@@ -189,7 +240,7 @@ weather_get_forecast (weather_t *w, xmlDocPtr doc)
     if (!w || !doc)
         return;
 
-    temp = (w->temp == TEMP_CELCIUS) ? "°C" : "°F";
+    temp = (weather_cfg.unit == TEMP_CELCIUS) ? "°C" : "°F";
 
     /* check for forecast information node */
     n = get_node_xml_tree(xmlDocGetRootElement(doc), "forecast_conditions");
@@ -203,6 +254,9 @@ weather_get_forecast (weather_t *w, xmlDocPtr doc)
         weather_set_field(n, "high",        temp, &w->forecast[i].high);
         weather_set_field(n, "icon",        NULL, &w->forecast[i].icon);
         weather_set_field(n, "condition",   NULL, &w->forecast[i].condition);
+
+        weather_update_degrees(w, &w->forecast[i].low);
+        weather_update_degrees(w, &w->forecast[i].high);
 
         n = n->next;
     }
@@ -223,9 +277,9 @@ weather_get_current (weather_t *w, xmlDocPtr doc)
 
     weather_set_field(n, "condition",      NULL, &w->current.condition);
 
-    if (w->temp == TEMP_CELCIUS)
+    if (weather_cfg.unit == TEMP_CELCIUS)
         weather_set_field(n, "temp_c", "°C", &w->current.temp);
-    else if (w->temp == TEMP_FAHRENHEIT)
+    else if (weather_cfg.unit == TEMP_FAHRENHEIT)
         weather_set_field(n, "temp_f", "°F", &w->current.temp);
 
     weather_set_field(n, "humidity",       NULL, &w->current.humidity);
@@ -315,12 +369,22 @@ static void
 cfg_weather_section_load (const char *section)
 {
     const char *city = NULL;
+    const char *unit = NULL;;
 
     city = enna_config_string_get(section, "city");
     if (city)
     {
         ENNA_FREE(weather_cfg.city);
         weather_cfg.city = strdup(city);
+    }
+
+    unit = enna_config_string_get(section, "unit");
+    if (unit)
+    {
+        if (!strcmp(unit, "C"))
+            weather_cfg.unit = TEMP_CELCIUS;
+        else if (!strcmp(unit, "F"))
+            weather_cfg.unit = TEMP_FAHRENHEIT;
     }
 }
 
@@ -336,6 +400,7 @@ cfg_weather_section_set_default (void)
     cfg_weather_free();
     weather_cfg.city =
         strdup(enna->geo_loc ? enna->geo_loc : WEATHER_DEFAULT_CITY);
+    weather_cfg.unit = WEATHER_DEFAULT_TEMP;
 }
 
 static Enna_Config_Section_Parser cfg_weather = {
