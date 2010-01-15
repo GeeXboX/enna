@@ -1,6 +1,6 @@
 images {
    image: "shadow.png" COMP;
-   image: "panel_info.png" COMP;
+   image: "panel_info.png" LOSSY 80;
 }
 
 group {

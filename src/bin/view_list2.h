@@ -46,6 +46,9 @@ void          enna_list2_item_check_add(Elm_Genlist_Item *item,
                                         const char *icon, const char *label,
                                         Eina_Bool status,
                                         void (*func) (void *data), void *func_data);
+void          enna_list2_item_entry_add(Elm_Genlist_Item *item,
+                                        const char *icon, const char *label,
+                                        void (*func) (void *data), void *func_data);
                                      
 //~ Eina_List* enna_list_files_get(Evas_Object* obj);
 //~ void enna_list_select_nth(Evas_Object *obj, int nth);

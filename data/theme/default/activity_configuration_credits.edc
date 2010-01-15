@@ -1,5 +1,5 @@
 images {
-   image: "credits.jpg" COMP;
+   image: "credits.jpg" LOSSY 80;
 }
 
 group {

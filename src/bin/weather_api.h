@@ -53,12 +53,15 @@ typedef struct weather_smart_data_s {
 } weather_t;
 
 void enna_weather_cfg_register (void);
-void enna_weather_parse_config (weather_t *w);
+void enna_weather_parse_config (void);
 void enna_weather_update       (weather_t *w);
 void enna_weather_set_city     (weather_t *w, const char *city);
 void enna_weather_set_lang     (weather_t *w, const char *lang);
 
-weather_t *enna_weather_init (void);
+weather_t *enna_weather_new (char *city);
 void enna_weather_free (weather_t *w);
+Eina_List *enna_weather_cities_get(void);
+int enna_weather_init(void);
+int enna_weather_shutdown(void);
 
 #endif /* WEATHER_API_H */

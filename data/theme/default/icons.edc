@@ -1,7 +1,7 @@
 
 #define STOCK_ICON(icon_file, icon_name)            \
 images {                                            \
-   image: icon_file COMP;                           \
+   image: icon_file LOSSY 80;                       \
 }                                                   \
 group {                                             \
    name: icon_name;                                 \
@@ -16,7 +16,7 @@ group {                                             \
 
 #define STOCK_ICON_RATIO(icon_file, icon_name, r)                       \
    images {                                                             \
-      image: icon_file COMP;                                            \
+      image: icon_file LOSSY 80;                                        \
    }                                                                    \
    group {                                                              \
       name: icon_name;                                                  \
