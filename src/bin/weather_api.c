@@ -334,7 +334,8 @@ static void
 cfg_weather_section_set_default (void)
 {
     cfg_weather_free();
-    weather_cfg.city = strdup(WEATHER_DEFAULT_CITY);
+    weather_cfg.city =
+        strdup(enna->geo_loc ? enna->geo_loc : WEATHER_DEFAULT_CITY);
 }
 
 static Enna_Config_Section_Parser cfg_weather = {
