@@ -2,7 +2,7 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Igor Szymanski <szymanski.igor@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
@@ -42,7 +42,8 @@ msgstr " Dostępne opcje :\n"
 #: src/bin/enna.c:442
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr "  -c, (--config) :   Określ plik konfiguracyjny, który ma zostać użyty.\n"
+msgstr ""
+"  -c, (--config) :   Określ plik konfiguracyjny, który ma zostać użyty.\n"
 
 #: src/bin/enna.c:443
 #, c-format
@@ -306,8 +307,7 @@ msgstr "Obecnie nagrywa '%s'"
 msgid "Recording in progress"
 msgstr "Nagrywanie w toku"
 
-#: src/modules/activity/tv/tv.c:154
-#: src/modules/activity/tv/tv.c:265
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
 msgid "Television"
 msgstr "Telewizja"
 
@@ -457,8 +457,7 @@ msgstr "Przeglądarka SHOUTcast'ów"
 msgid "Listen to shoutcast stream"
 msgstr "Słuchaj strumienia SHOUTcast"
 
-#: src/modules/browser/upnp/upnp.c:480
-#: src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA Media Servers"
 msgstr "Serwery multimediów UPnP/DLNA"
@@ -612,72 +611,103 @@ msgstr "This module get volumes from the mtab file"
 
 #~ msgid "<hl>Video: </hl> %s, %dx%d, %.2f fps<br>"
 #~ msgstr "<hl>Vidéo: </hl> %s, %dx%d, %.2f img/s<br>"
+
 #~ msgid "<hl>Audio: </hl> %s, %d ch., %i kbps, %d Hz<br>"
 #~ msgstr "<hl>Audio: </hl> %s, %d ch., %i kb/s, %d Hz<br>"
+
 #~ msgid "Infos"
 #~ msgstr "Infos"
+
 #~ msgid "%.2d hour "
 #~ msgid_plural "%.2d hours "
 #~ msgstr[0] "%.2d heure"
 #~ msgstr[1] "%.2d heures"
+
 #~ msgid "%.2d minute"
 #~ msgid_plural "%.2d minutes"
 #~ msgstr[0] "%.2d minute"
 #~ msgstr[1] "%.2d minutes"
+
 #~ msgid "Unknown"
 #~ msgstr "Inconnu"
+
 #~ msgid "IDE"
 #~ msgstr "IDE"
+
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
+
 #~ msgid "USB"
 #~ msgstr "USB"
+
 #~ msgid "FireWire"
 #~ msgstr "FireWire"
+
 #~ msgid "CCW"
 #~ msgstr "CCW"
+
 #~ msgid "Removable Disk"
 #~ msgstr "Disque Amovible"
+
 #~ msgid "Disk"
 #~ msgstr "Disque"
+
 #~ msgid "Floppy"
 #~ msgstr "Disquette"
+
 #~ msgid "Tape"
 #~ msgstr "Cassette"
+
 #~ msgid "CompactFlash"
 #~ msgstr "CompactFlash"
+
 #~ msgid "MemoryStick"
 #~ msgstr "MemoryStick"
+
 #~ msgid "SmartMedia"
 #~ msgstr "SmartMedia"
+
 #~ msgid "SD/MMC"
 #~ msgstr "SD/MMC"
+
 #~ msgid "Camera"
 #~ msgstr "Appareil Photo"
+
 #~ msgid "Portable Audio Player"
 #~ msgstr "Lecteur Audio Portable"
+
 #~ msgid "ZIP"
 #~ msgstr "ZIP"
+
 #~ msgid "JAZ"
 #~ msgstr "JAZ"
+
 #~ msgid "FlashKey"
 #~ msgstr "Disque Flash"
+
 #~ msgid "enna HTPC"
 #~ msgstr "enna HTPC"
+
 #~ msgid "Browse Library"
 #~ msgstr "Parcourir la bibliothèque"
+
 #~ msgid "Artist"
 #~ msgstr "Artiste"
+
 #~ msgid "Album"
 #~ msgstr "Album"
+
 #~ msgid "Watch PODCAST Video"
 #~ msgstr "Regarder une vidéo PODCAST"
+
 #~ msgid "%s<hilight>%s%s:</hilight> %s"
 #~ msgstr "%s<hilight>%s%s:</hilight> %s"
+
 #~ msgid "Yes, I want to quit."
 #~ msgstr "Oui, je veux quitter."
+
 #~ msgid "No, I want to stay."
 #~ msgstr "Non, je veux rester."
+
 #~ msgid "...no activity seems busy right now."
 #~ msgstr "... aucune activité ne semble active actuellement."
-
