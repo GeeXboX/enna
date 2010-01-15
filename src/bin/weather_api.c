@@ -398,6 +398,9 @@ _weather_config_panel_show(void *data)
         enna_list2_item_entry_add(item,
                                   NULL, city,
                                   NULL, NULL);
+        enna_list2_item_button_add(item,
+                                   NULL, _("Remove"),
+                                   NULL, NULL);
     }
 
     item = enna_list2_append(_o_cfg_panel,
