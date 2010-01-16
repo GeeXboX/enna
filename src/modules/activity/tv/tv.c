@@ -233,10 +233,7 @@ cfg_tv_section_save (const char *section)
 {
 #ifdef BUILD_LIBSVDRP
     int i;
-#endif
 
-    enna_config_string_set(section, "vdr_uri", tv_cfg.vdr_uri);
-#ifdef BUILD_LIBSVDRP
     enna_config_int_set(section, "svdrp_port", tv_cfg.svdrp_port);
     enna_config_int_set(section, "svdrp_timeout", tv_cfg.svdrp_timeout);
 
@@ -251,6 +248,8 @@ cfg_tv_section_save (const char *section)
     enna_config_int_set(section,
                         "timer_quit_threshold", tv_cfg.timer_threshold);
 #endif /* BUILD_LIBSVDRP */
+
+    enna_config_string_set(section, "vdr_uri", tv_cfg.vdr_uri);
 }
 
 static void
