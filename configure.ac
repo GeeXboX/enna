@@ -50,6 +50,8 @@ PKG_CHECK_MODULES([ENNA],
    libxdg-basedir >= 1.0.0
    libplayer >= 2.0.0 libplayer < 3.0.0
    libvalhalla >= 2.0.0 libvalhalla < 3.0.0
+   libxml-2.0
+   libcurl
   ]
 )
 
@@ -458,32 +460,6 @@ if test "x$want_libcddb" = "xyes" -o "x$want_libcddb" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LIBCDDB, test "x$have_libcddb" = "xyes")
 
-# libcurl
-want_libcurl="auto"
-have_libcurl="no"
-AC_MSG_CHECKING(whether libcurl support is to be built)
-AC_ARG_ENABLE(libcurl,
-    AS_HELP_STRING([--enable-libcurl],[Enable libcurl support]),
-    [ want_libcurl=$enableval ]
-)
-AC_MSG_RESULT($want_libcurl)
-if test "x$want_libcurl" = "xyes" -o "x$want_libcurl" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LIBCURL],
-    [libcurl],
-    [
-      AC_DEFINE(BUILD_LIBCURL, 1, [lib support])
-      have_libcurl="yes"
-    ],
-    [
-      if test "x$want_libcurl" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([libcurl not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_LIBCURL, test "x$have_libcurl" = "xyes")
-
 # libsvdrp
 want_libsvdrp="auto"
 have_libsvdrp="no"
@@ -509,32 +485,6 @@ if test "x$want_libsvdrp" = "xyes" -o "x$want_libsvdrp" = "xauto"; then
   )
 fi
 AM_CONDITIONAL(BUILD_LIBSVDRP, test "x$have_libsvdrp" = "xyes")
-
-# libxml2
-want_libxml2="auto"
-have_libxml2="no"
-AC_MSG_CHECKING(whether libxml2 support is to be built)
-AC_ARG_ENABLE(libxml2,
-    AS_HELP_STRING([--enable-libxml2],[Enable libxml2 support]),
-    [ want_libxml2=$enableval ]
-)
-AC_MSG_RESULT($want_libxml2)
-if test "x$want_libxml2" = "xyes" -o "x$want_libxml2" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LIBXML2],
-    [libxml-2.0],
-    [
-      AC_DEFINE(BUILD_LIBXML2, 1, [libxml2 support])
-      have_libxml2="yes"
-    ],
-    [
-      if test "x$want_libxml2" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([libxml2 not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_LIBXML2, test "x$have_libxml2" = "xyes")
 
 # libxrandr
 want_libxrandr="auto"
@@ -662,9 +612,7 @@ echo "Optional linked-in librairies:"
 echo
 echo "  ecore-x.......................... : $have_ecore_x"
 echo "  libcddb.......................... : $have_libcddb"
-echo "  libcurl.......................... : $have_libcurl"
 echo "  libsvdrp......................... : $have_libsvdrp"
-echo "  libxml2.......................... : $have_libxml2"
 echo "  libxrandr........................ : $have_libxrandr"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."

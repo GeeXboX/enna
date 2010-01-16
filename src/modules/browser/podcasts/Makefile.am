@@ -14,11 +14,9 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules/$(MODULE) \
 -I$(top_srcdir)/src/bin \
 -I$(top_srcdir)/src/modules \
-@ENNA_CFLAGS@ @LIBCURL_CFLAGS@ @LIBXML2_CFLAGS@
+@ENNA_CFLAGS@
 
 if BUILD_BROWSER_PODCASTS
-if BUILD_LIBXML2
-if BUILD_LIBCURL
 
 pkgdir = $(libdir)/enna/modules
 
@@ -26,13 +24,11 @@ pkg_LTLIBRARIES = browser_podcast.la
 
 browser_podcast_la_SOURCES = $(SRCS_BROWSER_PODCASTS)
 
-browser_podcast_la_LIBADD = @ENNA_LIBS@ @LIBCURL_LIBS@ @LIBXML2_LIBS@
+browser_podcast_la_LIBADD = @ENNA_LIBS@
 browser_podcast_la_LDFLAGS = -module -avoid-version
 browser_podcast_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/browser_$(MODULE).*
 
-endif
-endif
 endif
