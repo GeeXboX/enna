@@ -339,7 +339,7 @@ enna_metadata_db_init(void)
              enna_data_home_get(), PATH_FANARTS);
     valhalla_config_set(vh, DOWNLOADER_DEST, dst, VALHALLA_DL_FAN_ART);
 
-    /* grabbers */
+    /* lang-specific grabbers workaround */
     value = get_lang();
     if (value)
     {
