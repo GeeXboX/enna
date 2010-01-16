@@ -56,12 +56,13 @@ typedef struct _Callback_Data {
 
 typedef struct _Enna_Module_Valhalla
 {
-    Enna_Module     *em;
-    valhalla_t      *valhalla;
+    Enna_Module   *em;
+    valhalla_t    *valhalla;
+    Enna_Vfs_File *vfs;
     unsigned int   it;
-    int64_t          prev_id_m1, prev_id_d1;
-    int64_t          prev_id_m2, prev_id_d2;
-    Enna_Vfs_File   *vfs;
+
+    int64_t prev_id_m1, prev_id_d1;
+    int64_t prev_id_m2, prev_id_d2;
 } Enna_Module_Valhalla;
 
 #define ALBUM   VALHALLA_METADATA_ALBUM
@@ -236,7 +237,7 @@ _result_file_cb(void *data, valhalla_db_fileres_t *res)
     VALHALLA_DB_RESTRICT_LINK(r2, r1);
 
     /* retrieve the track and the title */
-    valhalla_db_file_get (mod->valhalla, res->id, NULL, &r1, &metadata);
+    valhalla_db_file_get(mod->valhalla, res->id, NULL, &r1, &metadata);
     _vfs_add_file(list, res, metadata, "icon/file/music");
     VALHALLA_DB_FILEMETA_FREE(metadata);
     return 0;
@@ -590,7 +591,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     mod->em = em;
     mod->it = 0;
-    mod->valhalla = enna_metadata_get_db ();
+    mod->valhalla = enna_metadata_get_db();
 
     if (!mod->valhalla)
         return;
