@@ -110,10 +110,21 @@ ini_section_append_field (ini_section_t *s, ini_field_t *f)
 static void
 ini_append_section (ini_t *ini, ini_section_t *s)
 {
+    Eina_List *l;
+    ini_section_t *se;
+
     if (!ini || !s)
         return;
 
     ini->current_section = s;
+
+    /* ensure we don't add the same section twice */
+    EINA_LIST_FOREACH(ini->sections, l, se)
+    {
+        if (!strcmp (s->name, se->name))
+            return;
+    }
+
     ini->sections = eina_list_append(ini->sections, s);
 }
 
