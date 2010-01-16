@@ -185,6 +185,7 @@ static void
 cfg_tv_section_load (const char *section)
 {
     const char *value = NULL;
+    int v;
 
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:");
 
@@ -197,13 +198,13 @@ cfg_tv_section_load (const char *section)
     }
 
 #ifdef BUILD_LIBSVDRP
-    value = enna_config_string_get(section, "svdrp_port");
-    if (value)
-        tv_cfg.svdrp_port = atoi(value);
+    v = enna_config_int_get(section, "svdrp_port");
+    if (v)
+        tv_cfg.svdrp_port = v;
 
-    value = enna_config_string_get(section, "svdrp_timeout");
-    if (value)
-        tv_cfg.svdrp_timeout = atoi(value);
+    v = enna_config_int_get(section, "svdrp_timeout");
+    if (v)
+        tv_cfg.svdrp_timeout = v;
 
     value = enna_config_string_get(section, "svdrp_verbosity");
     if (value)
@@ -218,9 +219,9 @@ cfg_tv_section_load (const char *section)
             }
     }
 
-    value = enna_config_string_get(section, "timer_quit_threshold");
-    if (value)
-        tv_cfg.timer_threshold = atoi(value);
+    v = enna_config_int_get(section, "timer_quit_threshold");
+    if (v)
+        tv_cfg.timer_threshold = v;
 #endif /* BUILD_LIBSVDRP */
 
     if (!value)
