@@ -218,6 +218,46 @@ cfg_tv_section_load (const char *section)
 }
 
 static void
+cfg_tv_section_save (const char *section)
+{
+#ifdef BUILD_LIBSVDRP
+    const char *value;
+#endif
+
+    enna_config_string_set(section, "vdr_uri", tv_cfg.vdr_uri);
+#ifdef BUILD_LIBSVDRP
+    enna_config_int_set(section, "svdrp_port", tv_cfg.svdrp_port);
+    enna_config_int_set(section, "svdrp_timeout", tv_cfg.svdrp_timeout);
+
+    switch (tv_cfg.svdrp_verb)
+    {
+    case SVDRP_MSG_VERBOSE:
+        value = "verbose";
+        break;
+    case SVDRP_MSG_INFO:
+        value = "info";
+        break;
+    case SVDRP_MSG_WARNING:
+        value = "warning";
+        break;
+    case SVDRP_MSG_ERROR:
+        value = "error";
+        break;
+    case SVDRP_MSG_CRITICAL:
+        value = "critical";
+        break;
+    case SVDRP_MSG_NONE:
+        value = "none";
+        break;
+    }
+    enna_config_string_set(section, "svdrp_verbosity", value);
+
+    enna_config_int_set(section,
+                        "timer_quit_threshold", tv_cfg.timer_threshold);
+#endif /* BUILD_LIBSVDRP */
+}
+
+static void
 cfg_tv_free (void)
 {
     ENNA_FREE(tv_cfg.vdr_uri);
@@ -244,7 +284,7 @@ cfg_tv_section_set_default (void)
 static Enna_Config_Section_Parser cfg_tv = {
     "tv",
     cfg_tv_section_load,
-    NULL,
+    cfg_tv_section_save,
     cfg_tv_section_set_default,
     cfg_tv_free,
 };

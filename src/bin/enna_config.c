@@ -152,10 +152,40 @@ cfg_main_section_load (const char *section)
     GET_TUPLE(photo_filters, "photo_ext");
 }
 
+#define SET_STRING(v)                                                   \
+    enna_config_string_set(section, #v, enna_config->v);
+
+#define SET_INT(v)                                                      \
+    enna_config_int_set(section, #v, enna_config->v);
+
+#define SET_TUPLE(f,v)                                                  \
+    filters = enna_util_tuple_set(enna_config->f, ",");                 \
+    enna_config_string_set(section, v, filters);                        \
+    ENNA_FREE(filters);
+
+static void
+cfg_main_section_save (const char *section)
+{
+    char *filters;
+
+    SET_STRING(theme);
+    SET_STRING(engine);
+    SET_STRING(verbosity);
+    SET_STRING(log_file);
+
+    SET_INT(idle_timeout);
+    SET_INT(fullscreen);
+    SET_INT(slideshow_delay);
+
+    SET_TUPLE(music_filters, "music_ext");
+    SET_TUPLE(video_filters, "video_ext");
+    SET_TUPLE(photo_filters, "photo_ext");
+}
+
 static Enna_Config_Section_Parser cfg_main_section = {
     "enna",
     cfg_main_section_load,
-    NULL,
+    cfg_main_section_save,
     cfg_main_section_set_default,
     cfg_main_section_free,
 };

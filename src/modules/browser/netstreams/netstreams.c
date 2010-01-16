@@ -372,6 +372,13 @@ cfg_netstreams_section_load (const char *section)
 }
 
 static void
+cfg_netstreams_section_save (const char *section)
+{
+    enna_config_string_list_set(section, "stream_music", netstreams_cfg.music);
+    enna_config_string_list_set(section, "stream_video", netstreams_cfg.video);
+}
+
+static void
 cfg_netstreams_section_set_default (void)
 {
     cfg_netstreams_free();
@@ -383,7 +390,7 @@ cfg_netstreams_section_set_default (void)
 static Enna_Config_Section_Parser cfg_netstreams = {
     "netstreams",
     cfg_netstreams_section_load,
-    NULL,
+    cfg_netstreams_section_save,
     cfg_netstreams_section_set_default,
     cfg_netstreams_free,
 };

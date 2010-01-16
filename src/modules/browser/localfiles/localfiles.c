@@ -580,6 +580,27 @@ cfg_localfiles_section_list_get(const char *section, const char *key)
 }
 
 static void
+cfg_localfiles_section_list_set(const char *section,
+                                const char *key, Eina_List *list)
+{
+    Eina_List *vl = NULL, *l;
+    localfiles_path_t *p;
+
+    if (!section || !key || !list)
+        return;
+
+    EINA_LIST_FOREACH(list, l, p)
+    {
+        char v[1024];
+
+        snprintf (v, sizeof(v), "%s,%s,%s", p->uri, p->label, p->icon);
+        vl = eina_list_append(vl, strdup(v));
+    }
+
+    enna_config_string_list_set(section, key, vl);
+}
+
+static void
 cfg_localfiles_free(void)
 {
     localfiles_path_t *p;
@@ -609,6 +630,18 @@ cfg_localfiles_section_load(const char *section)
 }
 
 static void
+cfg_localfiles_section_save(const char *section)
+{
+    cfg_localfiles_section_list_set(section,
+                                    "path_music", localfiles_cfg.path_music);
+    cfg_localfiles_section_list_set(section,
+                                    "path_video", localfiles_cfg.path_video);
+    cfg_localfiles_section_list_set(section,
+                                    "path_photo", localfiles_cfg.path_photo);
+    enna_config_bool_set(section, "display_home", localfiles_cfg.home);
+}
+
+static void
 cfg_localfiles_section_set_default(void)
 {
     cfg_localfiles_free();
@@ -622,7 +655,7 @@ cfg_localfiles_section_set_default(void)
 static Enna_Config_Section_Parser cfg_localfiles = {
     "localfiles",
     cfg_localfiles_section_load,
-    NULL,
+    cfg_localfiles_section_save,
     cfg_localfiles_section_set_default,
     cfg_localfiles_free,
 };

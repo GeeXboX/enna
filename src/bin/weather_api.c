@@ -389,6 +389,14 @@ cfg_weather_section_load (const char *section)
 }
 
 static void
+cfg_weather_section_save (const char *section)
+{
+    enna_config_string_set(section, "city", weather_cfg.city);
+    enna_config_string_set(section, "unit",
+                           (weather_cfg.unit == TEMP_CELCIUS) ? "C" : "F");
+}
+
+static void
 cfg_weather_free (void)
 {
     ENNA_FREE(weather_cfg.city);
@@ -406,7 +414,7 @@ cfg_weather_section_set_default (void)
 static Enna_Config_Section_Parser cfg_weather = {
     "weather",
     cfg_weather_section_load,
-    NULL,
+    cfg_weather_section_save,
     cfg_weather_section_set_default,
     cfg_weather_free,
 };

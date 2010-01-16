@@ -356,6 +356,12 @@ cfg_podcast_section_load (const char *section)
 }
 
 static void
+cfg_podcast_section_save (const char *section)
+{
+    enna_config_string_list_set(section, "stream", podcast_cfg.list);
+}
+
+static void
 cfg_podcast_section_set_default (void)
 {
     cfg_podcast_free();
@@ -366,7 +372,7 @@ cfg_podcast_section_set_default (void)
 static Enna_Config_Section_Parser cfg_podcast = {
     "podcast",
     cfg_podcast_section_load,
-    NULL,
+    cfg_podcast_section_save,
     cfg_podcast_section_set_default,
     cfg_podcast_free,
 };

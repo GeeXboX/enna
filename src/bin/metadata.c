@@ -193,6 +193,55 @@ cfg_db_section_load (const char *section)
              MODULE_NAME, "* verbosity      : %i", db_cfg.verbosity);
 }
 
+#define CFG_INT_SET(field)                                                \
+    enna_config_int_set(section, #field, db_cfg.field);
+
+static void
+cfg_db_section_save (const char *section)
+{
+    char *words;
+    const char *value = NULL;
+
+    enna_config_string_list_set(section, "path", db_cfg.path);
+
+    words = enna_util_tuple_set(db_cfg.bl_words, ",");
+    enna_config_string_set(section, "blacklist_keywords", words);
+    ENNA_FREE(words);
+
+    enna_config_string_list_set(section, "grabber", db_cfg.grabbers);
+
+    CFG_INT_SET(parser_number);
+    CFG_INT_SET(grabber_number);
+    CFG_INT_SET(commit_interval);
+    CFG_INT_SET(scan_loop);
+    CFG_INT_SET(scan_sleep);
+    CFG_INT_SET(scan_priority);
+    CFG_INT_SET(decrapifier);
+
+    switch (db_cfg.verbosity)
+    {
+    case VALHALLA_MSG_VERBOSE:
+        value = "verbose";
+        break;
+    case VALHALLA_MSG_INFO:
+        value = "info";
+        break;
+    case VALHALLA_MSG_WARNING:
+        value = "warning";
+        break;
+    case VALHALLA_MSG_ERROR:
+        value = "error";
+        break;
+    case VALHALLA_MSG_CRITICAL:
+        value = "critical";
+        break;
+    case VALHALLA_MSG_NONE:
+        value = "none";
+        break;
+    }
+    enna_config_string_set(section, "verbosity", value);
+}
+
 static void
 cfg_db_free (void)
 {
@@ -238,7 +287,7 @@ cfg_db_section_set_default (void)
 static Enna_Config_Section_Parser cfg_db = {
     "media_db",
     cfg_db_section_load,
-    NULL,
+    cfg_db_section_save,
     cfg_db_section_set_default,
     cfg_db_free,
 };

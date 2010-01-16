@@ -836,6 +836,145 @@ cfg_mediaplayer_section_load (const char *section)
 }
 
 static void
+cfg_mediaplayer_section_save (const char *section)
+{
+    const char *value = NULL;
+
+    /* Default type */
+    switch (mp_cfg.type)
+    {
+    case PLAYER_TYPE_GSTREAMER:
+        value = "gstreamer";
+        break;
+    case PLAYER_TYPE_MPLAYER:
+        value = "mplayer";
+        break;
+    case PLAYER_TYPE_VLC:
+        value = "vlc";
+        break;
+    case PLAYER_TYPE_XINE:
+        value = "xine";
+        break;
+    default:
+        value = NULL;
+    }
+    enna_config_string_set(section, "type", value);
+
+    /* DVD Type */
+    switch (mp_cfg.dvd_type)
+    {
+    case PLAYER_TYPE_GSTREAMER:
+        value = "gstreamer";
+        break;
+    case PLAYER_TYPE_MPLAYER:
+        value = "mplayer";
+        break;
+    case PLAYER_TYPE_VLC:
+        value = "vlc";
+        break;
+    case PLAYER_TYPE_XINE:
+        value = "xine";
+        break;
+    default:
+        value = NULL;
+    }
+    enna_config_string_set(section, "dvd_type", value);
+
+    /* TV Type */
+    switch (mp_cfg.tv_type)
+    {
+    case PLAYER_TYPE_GSTREAMER:
+        value = "gstreamer";
+        break;
+    case PLAYER_TYPE_MPLAYER:
+        value = "mplayer";
+        break;
+    case PLAYER_TYPE_VLC:
+        value = "vlc";
+        break;
+    case PLAYER_TYPE_XINE:
+        value = "xine";
+        break;
+    default:
+        value = NULL;
+    }
+    enna_config_string_set(section, "tv_type", value);
+
+    /* VO Type */
+    switch (mp_cfg.vo)
+    {
+    case PLAYER_VO_AUTO:
+        value = "auto";
+        break;
+    case PLAYER_VO_VDPAU:
+        value = "vdpau";
+        break;
+    case PLAYER_VO_X11:
+        value = "x11";
+        break;
+    case PLAYER_VO_XV:
+        value = "xv";
+        break;
+    case PLAYER_VO_GL:
+        value = "gl";
+        break;
+    case PLAYER_VO_FB:
+        value = "fb";
+        break;
+    default:
+        value = NULL;
+    }
+    enna_config_string_set(section, "video_out", value);
+
+    /* AO Type */
+    switch (mp_cfg.ao)
+    {
+    case PLAYER_AO_AUTO:
+        value = "auto";
+        break;
+    case PLAYER_AO_ALSA:
+        value = "alsa";
+        break;
+    case PLAYER_AO_OSS:
+        value = "oss";
+        break;
+    default:
+        value = NULL;
+    }
+    enna_config_string_set(section, "audio_out", value);
+
+    /* Verbosity */
+    switch (mp_cfg.verbosity)
+    {
+    case PLAYER_MSG_VERBOSE:
+        value = "verbose";
+        break;
+    case PLAYER_MSG_INFO:
+        value = "info";
+        break;
+    case PLAYER_MSG_WARNING:
+        value = "warning";
+        break;
+    case PLAYER_MSG_ERROR:
+        value = "error";
+        break;
+    case PLAYER_MSG_CRITICAL:
+        value = "critical";
+        break;
+    case PLAYER_MSG_NONE:
+        value = "none";
+        break;
+    }
+    enna_config_string_set(section, "verbosity", value);
+
+    enna_config_string_set(section, "sub_align",      mp_cfg.sub_align);
+    enna_config_string_set(section, "sub_pos",        mp_cfg.sub_pos);
+    enna_config_string_set(section, "sub_scale",      mp_cfg.sub_scale);
+    enna_config_string_set(section, "sub_visibility", mp_cfg.sub_visibility);
+    enna_config_string_set(section, "framedrop",      mp_cfg.framedrop);
+}
+
+static void
 cfg_mediaplayer_free (void)
 {
     ENNA_FREE(mp_cfg.sub_align);
@@ -868,7 +1007,7 @@ cfg_mediaplayer_section_set_default (void)
 static Enna_Config_Section_Parser cfg_mediaplayer = {
     "mediaplayer",
     cfg_mediaplayer_section_load,
-    NULL,
+    cfg_mediaplayer_section_save,
     cfg_mediaplayer_section_set_default,
     cfg_mediaplayer_free,
 };
