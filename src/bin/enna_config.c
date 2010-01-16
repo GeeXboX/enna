@@ -136,8 +136,6 @@ cfg_main_section_load (const char *section)
     const char *value;
     int i;
 
-    cfg_main_section_free();
-
     GET_STRING(theme);
     GET_STRING(engine);
     GET_STRING(verbosity);
