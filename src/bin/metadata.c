@@ -110,7 +110,7 @@ static void
 cfg_db_section_load (const char *section)
 {
     const char *value;
-    Eina_List *vl;
+    Eina_List *vl, *gl;
     int v;
 
     vl = enna_config_string_list_get(section, "path");
@@ -135,6 +135,19 @@ cfg_db_section_load (const char *section)
             ENNA_FREE(c);
 
         db_cfg.bl_words = enna_util_tuple_get(value, ",");
+    }
+
+    gl = enna_config_string_list_get(section, "grabber");
+    if (gl)
+    {
+        Eina_List *l;
+        char *c;
+
+        EINA_LIST_FREE(db_cfg.grabbers, c)
+            ENNA_FREE(c);
+
+        EINA_LIST_FOREACH(gl, l, c)
+            db_cfg.grabbers = eina_list_append(db_cfg.grabbers, c);
     }
 
     CFG_INT(parser_number);
