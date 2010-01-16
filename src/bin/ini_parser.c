@@ -302,8 +302,7 @@ ini_set_value_list (ini_t *ini, const char *section,
         ini_append_section(ini, s);
     }
 
-    f = ini_get_field(s, key);
-    if (f)
+    while ((f = ini_get_field(s, key)))
     {
         s->fields = eina_list_remove(s->fields, f);
         ini_field_free(f);
