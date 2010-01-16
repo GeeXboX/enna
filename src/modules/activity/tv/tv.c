@@ -166,6 +166,21 @@ static Enna_Class_Activity class =
     NULL
 };
 
+#ifdef BUILD_LIBSVDRP
+static const struct {
+    const char *name;
+    svdrp_verbosity_level_t verb;
+} map_svdrp_verbosity[] = {
+    { "none",        SVDRP_MSG_NONE        },
+    { "verbose",     SVDRP_MSG_VERBOSE     },
+    { "info",        SVDRP_MSG_INFO        },
+    { "warning",     SVDRP_MSG_WARNING     },
+    { "error",       SVDRP_MSG_ERROR       },
+    { "critical",    SVDRP_MSG_CRITICAL    },
+    { NULL,          SVDRP_MSG_NONE        }
+};
+#endif /* BUILD_LIBSVDRP */
+
 static void
 cfg_tv_section_load (const char *section)
 {
@@ -193,18 +208,14 @@ cfg_tv_section_load (const char *section)
     value = enna_config_string_get(section, "svdrp_verbosity");
     if (value)
     {
-        if (!strcmp("verbose", value))
-            tv_cfg.svdrp_verb = SVDRP_MSG_VERBOSE;
-        else if (!strcmp("info", value))
-            tv_cfg.svdrp_verb = SVDRP_MSG_INFO;
-        else if (!strcmp("warning", value))
-            tv_cfg.svdrp_verb = SVDRP_MSG_WARNING;
-        else if (!strcmp("error", value))
-            tv_cfg.svdrp_verb = SVDRP_MSG_ERROR;
-        else if (!strcmp("critical", value))
-            tv_cfg.svdrp_verb = SVDRP_MSG_CRITICAL;
-        else if (!strcmp("none", value))
-            tv_cfg.svdrp_verb = SVDRP_MSG_NONE;
+        int i;
+
+        for (i = 0; map_svdrp_verbosity[i].name; i++)
+            if (!strcmp(value, map_svdrp_verbosity[i].name))
+            {
+                tv_cfg.svdrp_verb = map_svdrp_verbosity[i].verb;
+                break;
+            }
     }
 
     value = enna_config_string_get(section, "timer_quit_threshold");
@@ -221,7 +232,7 @@ static void
 cfg_tv_section_save (const char *section)
 {
 #ifdef BUILD_LIBSVDRP
-    const char *value;
+    int i;
 #endif
 
     enna_config_string_set(section, "vdr_uri", tv_cfg.vdr_uri);
@@ -229,28 +240,13 @@ cfg_tv_section_save (const char *section)
     enna_config_int_set(section, "svdrp_port", tv_cfg.svdrp_port);
     enna_config_int_set(section, "svdrp_timeout", tv_cfg.svdrp_timeout);
 
-    switch (tv_cfg.svdrp_verb)
-    {
-    case SVDRP_MSG_VERBOSE:
-        value = "verbose";
-        break;
-    case SVDRP_MSG_INFO:
-        value = "info";
-        break;
-    case SVDRP_MSG_WARNING:
-        value = "warning";
-        break;
-    case SVDRP_MSG_ERROR:
-        value = "error";
-        break;
-    case SVDRP_MSG_CRITICAL:
-        value = "critical";
-        break;
-    case SVDRP_MSG_NONE:
-        value = "none";
-        break;
-    }
-    enna_config_string_set(section, "svdrp_verbosity", value);
+    for (i = 0; map_svdrp_verbosity[i].name; i++)
+        if (tv_cfg.svdrp_verb == map_svdrp_verbosity[i].verb)
+        {
+            enna_config_string_set(section, "svdrp_verbosity",
+                                   map_svdrp_verbosity[i].name);
+            break;
+        }
 
     enna_config_int_set(section,
                         "timer_quit_threshold", tv_cfg.timer_threshold);
