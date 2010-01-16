@@ -120,7 +120,7 @@ cfg_main_section_free (void)
     ENNA_FREE(enna_config->verbosity);
     ENNA_FREE(enna_config->log_file);
 
-    EINA_LIST_FREE(enna_config->video_filters, c)
+    EINA_LIST_FREE(enna_config->music_filters, c)
         ENNA_FREE(c);
 
     EINA_LIST_FREE(enna_config->video_filters, c)
