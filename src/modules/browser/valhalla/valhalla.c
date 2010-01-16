@@ -259,7 +259,8 @@ _sort_cb(const void *d1, const void *d2)
 }
 
 static Eina_List *
-_browse_list_data(const char *meta, unsigned int it, int64_t id_m, int64_t id_d)
+_browse_list_data(const char *meta, valhalla_file_type_t ftype,
+                  unsigned int it, int64_t id_m, int64_t id_d)
 {
     Callback_Data vh;
     Eina_List *l = NULL;
@@ -273,15 +274,15 @@ _browse_list_data(const char *meta, unsigned int it, int64_t id_m, int64_t id_d)
     if (tree_meta[it].level > LEVEL_ONE)
         r = &r1;
 
-    valhalla_db_metalist_get(mod->valhalla, &search,
-                             VALHALLA_FILE_TYPE_AUDIO, r, _result_dir_cb, &vh);
+    valhalla_db_metalist_get(mod->valhalla,
+                             &search, ftype, r, _result_dir_cb, &vh);
 
     l = eina_list_sort(l, eina_list_count(l), _sort_cb);
     return l;
 }
 
 static Eina_List *
-_browse_list_file(valhalla_db_restrict_t *rp,
+_browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
                   unsigned int it, int64_t id_m, int64_t id_d)
 {
     Eina_List *l = NULL;
@@ -290,8 +291,7 @@ _browse_list_file(valhalla_db_restrict_t *rp,
     if (rp)
         VALHALLA_DB_RESTRICT_LINK(*rp, r);
 
-    valhalla_db_filelist_get(mod->valhalla, VALHALLA_FILE_TYPE_AUDIO,
-                             &r, _result_file_cb, &l);
+    valhalla_db_filelist_get(mod->valhalla, ftype, &r, _result_file_cb, &l);
 
     l = eina_list_sort(l, eina_list_count(l), _sort_cb);
     return l;
@@ -335,7 +335,7 @@ _restr_free(valhalla_db_restrict_t *r)
 }
 
 static Eina_List *
-_browse_list(const Browser_Item *item,
+_browse_list(const Browser_Item *item, valhalla_file_type_t ftype,
              unsigned int it, int64_t id_m, int64_t id_d)
 {
     Eina_List *l = NULL;
@@ -357,7 +357,7 @@ _browse_list(const Browser_Item *item,
     }
 
     case DATALIST:
-        l = _browse_list_data(item->meta, it, id_m, id_d);
+        l = _browse_list_data(item->meta, ftype, it, id_m, id_d);
         break;
 
     case FILELIST:
@@ -388,7 +388,7 @@ _browse_list(const Browser_Item *item,
             }
         }
 
-        l = _browse_list_file(r, it, id_m, id_d);
+        l = _browse_list_file(r, ftype, it, id_m, id_d);
         _restr_free(r);
         break;
     }
@@ -398,7 +398,7 @@ _browse_list(const Browser_Item *item,
 }
 
 static Eina_List *
-_browse(unsigned int it, int64_t id_m, int64_t id_d)
+_browse(valhalla_file_type_t ftype, unsigned int it, int64_t id_m, int64_t id_d)
 {
     unsigned int i;
     Eina_List *l = NULL;
@@ -413,7 +413,7 @@ _browse(unsigned int it, int64_t id_m, int64_t id_d)
     {
         Eina_List *tmp;
 
-        tmp = _browse_list(&item[i], it, id_m, id_d);
+        tmp = _browse_list(&item[i], ftype, it, id_m, id_d);
         l = l ? eina_list_merge(l, tmp) : tmp;
 
         if (!item[i].meta)
@@ -424,7 +424,7 @@ _browse(unsigned int it, int64_t id_m, int64_t id_d)
 }
 
 static Eina_List *
-_browse_root(void)
+_browse_root(valhalla_file_type_t ftype)
 {
     unsigned int i;
     Eina_List *l = NULL;
@@ -436,7 +436,7 @@ _browse_root(void)
         if (tree_meta[i].level != LEVEL_ROOT)
             continue;
 
-        tmp = _browse_list(&tree_meta[i].items[0], i, 0, 0);
+        tmp = _browse_list(&tree_meta[i].items[0], ftype, i, 0, 0);
         l = l ? eina_list_merge(l, tmp) : tmp;
     }
 
@@ -446,13 +446,14 @@ _browse_root(void)
 static Eina_List *
 _class_browse_up(const char *path, void *cookie)
 {
+    const valhalla_file_type_t ftype = VALHALLA_FILE_TYPE_AUDIO;
     int64_t id_m, id_d;
     int rc;
 
     mod->it = 0;
 
     if (!path)
-        return _browse_root();
+        return _browse_root(ftype);
 
     rc = sscanf(path, "%u/%"PRIi64":%"PRIi64, &mod->it, &id_m, &id_d);
     if (rc != 3)
@@ -480,12 +481,13 @@ _class_browse_up(const char *path, void *cookie)
         break;
     }
 
-    return _browse(mod->it, id_m, id_d);
+    return _browse(ftype, mod->it, id_m, id_d);
 }
 
 static Eina_List *
 _class_browse_down(void *cookie)
 {
+    const valhalla_file_type_t ftype = VALHALLA_FILE_TYPE_AUDIO;
     unsigned int it;
     int64_t id_m = 0, id_d = 0;
 
@@ -502,7 +504,7 @@ _class_browse_down(void *cookie)
         break;
 
     case LEVEL_ONE:
-        return _browse_root();
+        return _browse_root(ftype);
 
     case LEVEL_ROOT:
         return NULL;
@@ -511,7 +513,7 @@ _class_browse_down(void *cookie)
         break;
     }
 
-    return _browse(mod->it, id_m, id_d);
+    return _browse(ftype, mod->it, id_m, id_d);
 }
 
 static Enna_Vfs_File *
