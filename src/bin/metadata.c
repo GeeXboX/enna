@@ -106,6 +106,19 @@ ondemand_cb(const char *file, valhalla_event_od_t e, const char *id, void *data)
     v = enna_config_int_get(section, #field);                         \
     if (v) db_cfg.field = v;
 
+static const struct {
+    const char *name;
+    valhalla_verb_t verb;
+} map_vh_verbosity[] = {
+    { "none",        VALHALLA_MSG_NONE         },
+    { "verbose",     VALHALLA_MSG_VERBOSE      },
+    { "info",        VALHALLA_MSG_INFO         },
+    { "warning",     VALHALLA_MSG_WARNING      },
+    { "error",       VALHALLA_MSG_ERROR        },
+    { "critical",    VALHALLA_MSG_CRITICAL     },
+    { NULL,          VALHALLA_MSG_NONE         }
+};
+
 static void
 cfg_db_section_load (const char *section)
 {
@@ -161,18 +174,14 @@ cfg_db_section_load (const char *section)
     value = enna_config_string_get(section, "verbosity");
     if (value)
     {
-        if (!strcmp("verbose", value))
-            db_cfg.verbosity = VALHALLA_MSG_VERBOSE;
-        else if (!strcmp("info", value))
-            db_cfg.verbosity = VALHALLA_MSG_INFO;
-        else if (!strcmp("warning", value))
-            db_cfg.verbosity = VALHALLA_MSG_WARNING;
-        else if (!strcmp("error", value))
-            db_cfg.verbosity = VALHALLA_MSG_ERROR;
-        else if (!strcmp("critical", value))
-            db_cfg.verbosity = VALHALLA_MSG_CRITICAL;
-        else if (!strcmp("none", value))
-            db_cfg.verbosity = VALHALLA_MSG_NONE;
+        int i;
+
+        for (i = 0; map_vh_verbosity[i].name; i++)
+            if (!strcmp(value, map_vh_verbosity[i].name))
+            {
+                db_cfg.verbosity = map_vh_verbosity[i].verb;
+                break;
+            }
     }
 
     enna_log(ENNA_MSG_EVENT,
@@ -200,7 +209,7 @@ static void
 cfg_db_section_save (const char *section)
 {
     char *words;
-    const char *value = NULL;
+    int i;
 
     enna_config_string_list_set(section, "path", db_cfg.path);
 
@@ -218,28 +227,13 @@ cfg_db_section_save (const char *section)
     CFG_INT_SET(scan_priority);
     CFG_INT_SET(decrapifier);
 
-    switch (db_cfg.verbosity)
-    {
-    case VALHALLA_MSG_VERBOSE:
-        value = "verbose";
-        break;
-    case VALHALLA_MSG_INFO:
-        value = "info";
-        break;
-    case VALHALLA_MSG_WARNING:
-        value = "warning";
-        break;
-    case VALHALLA_MSG_ERROR:
-        value = "error";
-        break;
-    case VALHALLA_MSG_CRITICAL:
-        value = "critical";
-        break;
-    case VALHALLA_MSG_NONE:
-        value = "none";
-        break;
-    }
-    enna_config_string_set(section, "verbosity", value);
+    for (i = 0; map_vh_verbosity[i].name; i++)
+        if (db_cfg.verbosity == map_vh_verbosity[i].verb)
+        {
+            enna_config_string_set(section, "verbosity",
+                                   map_vh_verbosity[i].name);
+            break;
+        }
 }
 
 static void
