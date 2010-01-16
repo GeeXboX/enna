@@ -261,7 +261,10 @@ ini_set_value (ini_t *ini, const char *section, const char *key, const char *v)
 
     s = ini_get_section(ini, section);
     if (!s)
-        return;
+    {
+        s = ini_section_new(section);
+        ini_append_section(ini, s);
+    }
 
     enna_log(ENNA_MSG_EVENT, MODULE_NAME,
              _("set_value: %s - %s - %s"), section, key, v);
@@ -294,7 +297,10 @@ ini_set_value_list (ini_t *ini, const char *section,
 
     s = ini_get_section(ini, section);
     if (!s)
-        return;
+    {
+        s = ini_section_new(section);
+        ini_append_section(ini, s);
+    }
 
     f = ini_get_field(s, key);
     if (f)
