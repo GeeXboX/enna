@@ -69,6 +69,12 @@ typedef struct _Enna_Module_LocalFiles
 #endif
 } Enna_Module_LocalFiles;
 
+typedef struct localfiles_path_s {
+    char *uri;
+    char *label;
+    char *icon;
+} localfiles_path_t;
+
 typedef struct localfiles_cfg_s {
     Eina_List *path_music;
     Eina_List *path_video;
@@ -78,6 +84,34 @@ typedef struct localfiles_cfg_s {
 
 static localfiles_cfg_t localfiles_cfg;
 static Enna_Module_LocalFiles *mod;
+
+static localfiles_path_t *
+localfiles_path_new (const char *uri, const char *label, const char *icon)
+{
+    localfiles_path_t *p;
+
+    if (!uri || !label || !icon)
+        return NULL;
+
+    p        = calloc(1, sizeof(localfiles_path_t));
+    p->uri   = strdup(uri);
+    p->label = strdup(label);
+    p->icon  = strdup(icon);
+
+    return p;
+}
+
+static void
+localfiles_path_free (localfiles_path_t *p)
+{
+    if (!p)
+        return;
+
+    ENNA_FREE(p->uri);
+    ENNA_FREE(p->label);
+    ENNA_FREE(p->icon);
+    ENNA_FREE(p);
+}
 
 static unsigned char
 _uri_is_root(Class_Private_Data *data, const char *uri)
@@ -407,20 +441,18 @@ __class_init(const char *name, Class_Private_Data **priv,
 
     for (l = path_list; l; l = l->next)
     {
-        Eina_List *tuple;
+        localfiles_path_t *p;
 
-        tuple = enna_util_tuple_get(l->data, ",");
-        if (tuple && eina_list_count(tuple) == 3)
-        {
-            root = calloc(1, sizeof(Root_Directories));
-            root->uri = eina_list_nth(tuple, 0);
-            root->label = eina_list_nth(tuple, 1);
-            enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                     "Root Data: %s", root->uri);
-            root->icon = eina_list_nth(tuple, 2);
-            data->config->root_directories =
-                eina_list_append(data->config->root_directories, root);
-        }
+        p = l->data;
+
+        root        = calloc(1, sizeof(Root_Directories));
+        root->uri   = strdup(p->uri);
+        root->label = strdup(p->label);
+        root->icon  = strdup(p->icon);
+
+        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Root Data: %s", root->uri);
+        data->config->root_directories =
+            eina_list_append(data->config->root_directories, root);
     }
 
     /* Add All detected volumes */
@@ -525,7 +557,23 @@ cfg_localfiles_section_list_get(const char *section, const char *key)
         char *c;
 
         EINA_LIST_FOREACH(vl, l, c)
-            list = eina_list_append(list, strdup(c));
+        {
+            Eina_List *tuple;
+
+            tuple = enna_util_tuple_get(c, ",");
+            if (tuple && eina_list_count(tuple) == 3)
+            {
+                localfiles_path_t *p;
+                const char *uri, *label, *icon;
+
+                uri   = eina_list_nth(tuple, 0);
+                label = eina_list_nth(tuple, 1);
+                icon  = eina_list_nth(tuple, 2);
+
+                p = localfiles_path_new (uri, label, icon);
+                list = eina_list_append(list, p);
+            }
+        }
     }
 
     return list;
@@ -534,16 +582,16 @@ cfg_localfiles_section_list_get(const char *section, const char *key)
 static void
 cfg_localfiles_free(void)
 {
-    char *c;
+    localfiles_path_t *p;
 
-    EINA_LIST_FREE(localfiles_cfg.path_music, c)
-        ENNA_FREE(c);
+    EINA_LIST_FREE(localfiles_cfg.path_music, p)
+        localfiles_path_free(p);
 
-    EINA_LIST_FREE(localfiles_cfg.path_video, c)
-        ENNA_FREE(c);
+    EINA_LIST_FREE(localfiles_cfg.path_video, p)
+        localfiles_path_free(p);
 
-    EINA_LIST_FREE(localfiles_cfg.path_photo, c)
-        ENNA_FREE(c);
+    EINA_LIST_FREE(localfiles_cfg.path_photo, p)
+        localfiles_path_free(p);
 }
 
 static void
