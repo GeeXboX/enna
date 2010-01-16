@@ -51,6 +51,8 @@
 
 #define ENNA_METADATA_DEFAULT_KEYWORDS "0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,orenji,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,cdNUM,CDNUM,SExEP,sSEeEP,SSEEEP"
 
+#define ENNA_METADATA_DEFAULT_GRABBERS "allocine,amazon,exif,imdb,lastfm,local,lyricwiki,nfo,tmdb,tvdb,tvrage"
+
 #define PATH_FANARTS            "fanarts"
 #define PATH_COVERS             "covers"
 
@@ -59,6 +61,7 @@
 typedef struct db_cfg_s {
     Eina_List *path;
     Eina_List *bl_words;
+    Eina_List *grabbers;
     int parser_number;
     int grabber_number;
     int commit_interval;
@@ -187,6 +190,9 @@ cfg_db_free (void)
 
     EINA_LIST_FREE(db_cfg.bl_words, c)
       ENNA_FREE(c);
+
+    EINA_LIST_FREE(db_cfg.grabbers, c)
+      ENNA_FREE(c);
 }
 
 static void
@@ -196,6 +202,7 @@ cfg_db_section_set_default (void)
 
     db_cfg.path            = NULL;
     db_cfg.bl_words        = NULL;
+    db_cfg.grabbers        = NULL;
     db_cfg.parser_number   = ENNA_METADATA_DEFAULT_PARSER_NUMBER;
     db_cfg.grabber_number  = ENNA_METADATA_DEFAULT_GRABBER_NUMBER;
     db_cfg.commit_interval = ENNA_METADATA_DEFAULT_COMMIT_INTERVAL;
@@ -210,6 +217,9 @@ cfg_db_section_set_default (void)
 
     /* set the blacklisted keywords list */
     db_cfg.bl_words = enna_util_tuple_get(ENNA_METADATA_DEFAULT_KEYWORDS, ",");
+
+    /* set the enabled grabbers list */
+    db_cfg.grabbers = enna_util_tuple_get(ENNA_METADATA_DEFAULT_GRABBERS, ",");
 }
 
 static Enna_Config_Section_Parser cfg_db = {
@@ -235,6 +245,8 @@ enna_metadata_db_init(void)
     Eina_List *l;
     valhalla_init_param_t param;
     char dst[1024];
+    const char *grabber = NULL;
+    Eina_List *glist = NULL;
 
     valhalla_verbosity(db_cfg.verbosity);
 
@@ -274,6 +286,33 @@ enna_metadata_db_init(void)
         valhalla_config_set(vh, PARSER_KEYWORD, keyword);
         enna_log(ENNA_MSG_EVENT, MODULE_NAME,
                  "Blacklisting '%s' from search", keyword);
+    }
+
+    /* fetch list of available grabbers and disable them all by default */
+    while ((grabber = valhalla_grabber_next(vh, grabber)))
+    {
+        valhalla_config_set(vh, GRABBER_STATE, grabber, 0);
+        glist = eina_list_append(glist, grabber);
+    }
+
+    /* enable requested grabbers */
+    for (l = db_cfg.grabbers; l; l = l->next)
+    {
+        const char *g = l->data;
+        const char *gl;
+        Eina_List *l;
+
+        EINA_LIST_FOREACH(glist, l, gl)
+        {
+            if (!strcmp (g, gl))
+            {
+                valhalla_config_set(vh, GRABBER_STATE, g, 1);
+
+                enna_log(ENNA_MSG_INFO, MODULE_NAME,
+                         "Enabling grabber '%s'", g);
+                break;
+            }
+        }
     }
 
     /* set file download destinations */
