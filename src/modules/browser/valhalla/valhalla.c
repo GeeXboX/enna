@@ -80,18 +80,18 @@ typedef struct _Browser_Item Browser_Item;
 /*
  * Levels
  *   0   1   2   3
- *   ·   ·   ·   ·
- *   Root·   ·   ·
- *   |-- Meta 1  ·                META
+ *
+ *   Root
+ *   |-- Meta 1                   META
  *   |   |-- Data 1               DATALIST
  *   |   '-- Data 2               DATALIST
- *   |   ·   |-- Data 2.1         DATALIST
- *   |   ·   |-- Data 2.2         DATALIST
- *   |   ·   |   |-- File 1       FILELIST
- *   |   ·   |   '-- File 2       FILELIST
- *   |   ·   |-- File 1           FILELIST
- *   |   ·   '-- File 2           FILELIST
- *   '-- Meta 2  ·                META
+ *   |       |-- Data 2.1         DATALIST
+ *   |       |-- Data 2.2         DATALIST
+ *   |       |   |-- File 1       FILELIST
+ *   |       |   '-- File 2       FILELIST
+ *   |       |-- File 1           FILELIST
+ *   |       '-- File 2           FILELIST
+ *   '-- Meta 2                   META
  *
  * When a FILELIST and a DATALIST exist in the same level, the FILELIST
  * limits the results to all files where no association exists with DATALIST.
