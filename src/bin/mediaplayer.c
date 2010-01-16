@@ -702,10 +702,58 @@ enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type)
     value = enna_config_string_get(section, #field);                    \
     mp_cfg.field = value ? strdup(value) : NULL;
 
+static const struct {
+    const char *name;
+    player_type_t type;
+} map_player_type[] = {
+    { "xine",       PLAYER_TYPE_XINE         },
+    { "mplayer",    PLAYER_TYPE_MPLAYER      },
+    { "vlc",        PLAYER_TYPE_VLC          },
+    { "gstreamer",  PLAYER_TYPE_GSTREAMER    },
+    { NULL,         PLAYER_TYPE_DUMMY        }
+};
+
+static const struct {
+    const char *name;
+    player_vo_t vo;
+} map_player_vo[] = {
+    { "auto",       PLAYER_VO_AUTO           },
+    { "vdpau",      PLAYER_VO_VDPAU          },
+    { "x11",        PLAYER_VO_X11            },
+    { "xv",         PLAYER_VO_XV             },
+    { "gl",         PLAYER_VO_GL             },
+    { "fb",         PLAYER_VO_FB             },
+    { NULL,         PLAYER_VO_NULL           }
+};
+
+static const struct {
+    const char *name;
+    player_ao_t ao;
+} map_player_ao[] = {
+    { "auto",       PLAYER_AO_AUTO           },
+    { "alsa",       PLAYER_AO_ALSA           },
+    { "oss",        PLAYER_AO_OSS            },
+    { NULL,         PLAYER_AO_NULL           }
+};
+
+static const struct {
+    const char *name;
+    player_verbosity_level_t verb;
+} map_player_verbosity[] = {
+    { "none",        PLAYER_MSG_NONE         },
+    { "verbose",     PLAYER_MSG_VERBOSE      },
+    { "info",        PLAYER_MSG_INFO         },
+    { "warning",     PLAYER_MSG_WARNING      },
+    { "error",       PLAYER_MSG_ERROR        },
+    { "critical",    PLAYER_MSG_CRITICAL     },
+    { NULL,          PLAYER_MSG_NONE         }
+};
+
 static void
 cfg_mediaplayer_section_load (const char *section)
 {
     const char *value = NULL;
+    int i;
 
     enna_log(ENNA_MSG_INFO, NULL, "parameters:");
 
@@ -714,17 +762,12 @@ cfg_mediaplayer_section_load (const char *section)
     {
         enna_log(ENNA_MSG_INFO, NULL, " * type: %s", value);
 
-        if (!strcmp("gstreamer", value))
-            mp_cfg.type = PLAYER_TYPE_GSTREAMER;
-        else if (!strcmp("mplayer", value))
-            mp_cfg.type = PLAYER_TYPE_MPLAYER;
-        else if (!strcmp("vlc", value))
-            mp_cfg.type = PLAYER_TYPE_VLC;
-        else if (!strcmp("xine", value))
-            mp_cfg.type = PLAYER_TYPE_XINE;
-        else
-            enna_log(ENNA_MSG_WARNING, NULL,
-                     "   - unknown type, 'mplayer' used instead");
+        for (i = 0; map_player_type[i].name; i++)
+            if (!strcmp(value, map_player_type[i].name))
+            {
+                mp_cfg.type = map_player_type[i].type;
+                break;
+            }
     }
 
     value = enna_config_string_get(section, "dvd_type");
@@ -732,17 +775,12 @@ cfg_mediaplayer_section_load (const char *section)
     {
         enna_log(ENNA_MSG_INFO, NULL, " * dvd_type: %s", value);
 
-        if (!strcmp("gstreamer", value))
-            mp_cfg.dvd_type = PLAYER_TYPE_GSTREAMER;
-        else if (!strcmp("mplayer", value))
-            mp_cfg.dvd_type = PLAYER_TYPE_MPLAYER;
-        else if (!strcmp("vlc", value))
-            mp_cfg.dvd_type = PLAYER_TYPE_VLC;
-        else if (!strcmp("xine", value))
-            mp_cfg.dvd_type = PLAYER_TYPE_XINE;
-        else
-            enna_log(ENNA_MSG_WARNING, NULL,
-                     "   - unknown dvd_type, 'xine' used instead");
+        for (i = 0; map_player_type[i].name; i++)
+            if (!strcmp(value, map_player_type[i].name))
+            {
+                mp_cfg.dvd_type = map_player_type[i].type;
+                break;
+            }
         mp_cfg.dvd_set = 1;
     }
 
@@ -751,17 +789,12 @@ cfg_mediaplayer_section_load (const char *section)
     {
         enna_log(ENNA_MSG_INFO, NULL, " * tv_type: %s", value);
 
-        if (!strcmp("gstreamer", value))
-            mp_cfg.tv_type = PLAYER_TYPE_GSTREAMER;
-        else if (!strcmp("mplayer", value))
-            mp_cfg.tv_type = PLAYER_TYPE_MPLAYER;
-        else if (!strcmp("vlc", value))
-            mp_cfg.tv_type = PLAYER_TYPE_VLC;
-        else if (!strcmp("xine", value))
-            mp_cfg.tv_type = PLAYER_TYPE_XINE;
-        else
-            enna_log(ENNA_MSG_WARNING, NULL,
-                     "   - unknown tv_type, 'xine' used instead");
+        for (i = 0; map_player_type[i].name; i++)
+            if (!strcmp(value, map_player_type[i].name))
+            {
+                mp_cfg.tv_type = map_player_type[i].type;
+                break;
+            }
         mp_cfg.tv_set = 1;
     }
 
@@ -770,21 +803,12 @@ cfg_mediaplayer_section_load (const char *section)
     {
         enna_log(ENNA_MSG_INFO, NULL, " * video out: %s", value);
 
-        if (!strcmp("auto", value))
-            mp_cfg.vo = PLAYER_VO_AUTO;
-        else if (!strcmp("vdpau", value))
-            mp_cfg.vo = PLAYER_VO_VDPAU;
-        else if (!strcmp("x11", value))
-            mp_cfg.vo = PLAYER_VO_X11;
-        else if (!strcmp("xv", value))
-            mp_cfg.vo = PLAYER_VO_XV;
-        else if (!strcmp("gl", value))
-            mp_cfg.vo = PLAYER_VO_GL;
-        else if (!strcmp("fb", value))
-            mp_cfg.vo = PLAYER_VO_FB;
-        else
-            enna_log(ENNA_MSG_WARNING, NULL,
-                     "   - unknown video_out, 'auto' used instead");
+        for (i = 0; map_player_vo[i].name; i++)
+            if (!strcmp(value, map_player_vo[i].name))
+            {
+                mp_cfg.vo = map_player_vo[i].vo;
+                break;
+            }
     }
 
     value = enna_config_string_get(section, "audio_out");
@@ -792,15 +816,12 @@ cfg_mediaplayer_section_load (const char *section)
     {
         enna_log(ENNA_MSG_INFO, NULL, " * audio out: %s", value);
 
-        if (!strcmp("auto", value))
-            mp_cfg.ao = PLAYER_AO_AUTO;
-        else if (!strcmp("alsa", value))
-            mp_cfg.ao = PLAYER_AO_ALSA;
-        else if (!strcmp("oss", value))
-            mp_cfg.ao = PLAYER_AO_OSS;
-        else
-            enna_log(ENNA_MSG_WARNING, NULL,
-                     "   - unknown audio_out, 'auto' used instead");
+        for (i = 0; map_player_ao[i].name; i++)
+            if (!strcmp(value, map_player_ao[i].name))
+            {
+                mp_cfg.ao = map_player_ao[i].ao;
+                break;
+            }
     }
 
     value = enna_config_string_get(section, "verbosity");
@@ -808,21 +829,12 @@ cfg_mediaplayer_section_load (const char *section)
     {
         enna_log(ENNA_MSG_INFO, NULL, " * verbosity level: %s", value);
 
-        if (!strcmp("verbose", value))
-            mp_cfg.verbosity = PLAYER_MSG_VERBOSE;
-        else if (!strcmp("info", value))
-            mp_cfg.verbosity = PLAYER_MSG_INFO;
-        else if (!strcmp("warning", value))
-            mp_cfg.verbosity = PLAYER_MSG_WARNING;
-        else if (!strcmp("error", value))
-            mp_cfg.verbosity = PLAYER_MSG_ERROR;
-        else if (!strcmp ("critical", value))
-            mp_cfg.verbosity = PLAYER_MSG_CRITICAL;
-        else if (!strcmp("none", value))
-            mp_cfg.verbosity = PLAYER_MSG_NONE;
-        else
-            enna_log(ENNA_MSG_WARNING, NULL,
-                     "   - unknown verbosity, 'warning' used instead");
+        for (i = 0; map_player_verbosity[i].name; i++)
+            if (!strcmp(value, map_player_verbosity[i].name))
+            {
+                mp_cfg.verbosity = map_player_verbosity[i].verb;
+                break;
+            }
     }
 
     CFG_VIDEO(sub_align);
@@ -838,134 +850,61 @@ cfg_mediaplayer_section_load (const char *section)
 static void
 cfg_mediaplayer_section_save (const char *section)
 {
-    const char *value = NULL;
+    int i;
 
     /* Default type */
-    switch (mp_cfg.type)
-    {
-    case PLAYER_TYPE_GSTREAMER:
-        value = "gstreamer";
-        break;
-    case PLAYER_TYPE_MPLAYER:
-        value = "mplayer";
-        break;
-    case PLAYER_TYPE_VLC:
-        value = "vlc";
-        break;
-    case PLAYER_TYPE_XINE:
-        value = "xine";
-        break;
-    default:
-        value = NULL;
-    }
-    enna_config_string_set(section, "type", value);
+    for (i = 0; map_player_type[i].name; i++)
+        if (mp_cfg.type == map_player_type[i].type)
+        {
+            enna_config_string_set(section, "type",
+                                   map_player_type[i].name);
+            break;
+        }
 
     /* DVD Type */
-    switch (mp_cfg.dvd_type)
-    {
-    case PLAYER_TYPE_GSTREAMER:
-        value = "gstreamer";
-        break;
-    case PLAYER_TYPE_MPLAYER:
-        value = "mplayer";
-        break;
-    case PLAYER_TYPE_VLC:
-        value = "vlc";
-        break;
-    case PLAYER_TYPE_XINE:
-        value = "xine";
-        break;
-    default:
-        value = NULL;
-    }
-    enna_config_string_set(section, "dvd_type", value);
+    for (i = 0; map_player_type[i].name; i++)
+        if (mp_cfg.dvd_type == map_player_type[i].type)
+        {
+            enna_config_string_set(section, "dvd_type",
+                                   map_player_type[i].name);
+            break;
+        }
 
     /* TV Type */
-    switch (mp_cfg.tv_type)
-    {
-    case PLAYER_TYPE_GSTREAMER:
-        value = "gstreamer";
-        break;
-    case PLAYER_TYPE_MPLAYER:
-        value = "mplayer";
-        break;
-    case PLAYER_TYPE_VLC:
-        value = "vlc";
-        break;
-    case PLAYER_TYPE_XINE:
-        value = "xine";
-        break;
-    default:
-        value = NULL;
-    }
-    enna_config_string_set(section, "tv_type", value);
+    for (i = 0; map_player_type[i].name; i++)
+        if (mp_cfg.tv_type == map_player_type[i].type)
+        {
+            enna_config_string_set(section, "tv_type",
+                                   map_player_type[i].name);
+            break;
+        }
 
     /* VO Type */
-    switch (mp_cfg.vo)
-    {
-    case PLAYER_VO_AUTO:
-        value = "auto";
-        break;
-    case PLAYER_VO_VDPAU:
-        value = "vdpau";
-        break;
-    case PLAYER_VO_X11:
-        value = "x11";
-        break;
-    case PLAYER_VO_XV:
-        value = "xv";
-        break;
-    case PLAYER_VO_GL:
-        value = "gl";
-        break;
-    case PLAYER_VO_FB:
-        value = "fb";
-        break;
-    default:
-        value = NULL;
-    }
-    enna_config_string_set(section, "video_out", value);
+    for (i = 0; map_player_vo[i].name; i++)
+        if (mp_cfg.vo == map_player_vo[i].vo)
+        {
+            enna_config_string_set(section, "video_out",
+                                   map_player_vo[i].name);
+            break;
+        }
 
     /* AO Type */
-    switch (mp_cfg.ao)
-    {
-    case PLAYER_AO_AUTO:
-        value = "auto";
-        break;
-    case PLAYER_AO_ALSA:
-        value = "alsa";
-        break;
-    case PLAYER_AO_OSS:
-        value = "oss";
-        break;
-    default:
-        value = NULL;
-    }
-    enna_config_string_set(section, "audio_out", value);
+    for (i = 0; map_player_ao[i].name; i++)
+        if (mp_cfg.ao == map_player_ao[i].ao)
+        {
+            enna_config_string_set(section, "audio_out",
+                                   map_player_ao[i].name);
+            break;
+        }
 
     /* Verbosity */
-    switch (mp_cfg.verbosity)
-    {
-    case PLAYER_MSG_VERBOSE:
-        value = "verbose";
-        break;
-    case PLAYER_MSG_INFO:
-        value = "info";
-        break;
-    case PLAYER_MSG_WARNING:
-        value = "warning";
-        break;
-    case PLAYER_MSG_ERROR:
-        value = "error";
-        break;
-    case PLAYER_MSG_CRITICAL:
-        value = "critical";
-        break;
-    case PLAYER_MSG_NONE:
-        value = "none";
-        break;
-    }
-    enna_config_string_set(section, "verbosity", value);
+    for (i = 0; map_player_verbosity[i].name; i++)
+        if (mp_cfg.verbosity == map_player_verbosity[i].verb)
+        {
+            enna_config_string_set(section, "verbosity",
+                                   map_player_verbosity[i].name);
+            break;
+        }
 
     enna_config_string_set(section, "sub_align",      mp_cfg.sub_align);
     enna_config_string_set(section, "sub_pos",        mp_cfg.sub_pos);
