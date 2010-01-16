@@ -244,6 +244,9 @@ enna_config_shutdown (void)
     Eina_List *l;
     Enna_Config_Section_Parser *p;
 
+    /* save current configuration to file */
+    enna_config_save();
+
     EINA_LIST_FOREACH(cfg_parsers, l, p)
     {
         if (p->free)
