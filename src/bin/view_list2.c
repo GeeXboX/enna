@@ -483,11 +483,11 @@ _list_item_button_input_events_cb(void *data, enna_input event)
 {
     Item_Button *ib = data;
 
-    //  if (event == ENNA_INPUT_MENU)
-//        return ENNA_EVENT_CONTINUE;
     if (event == ENNA_INPUT_MENU || event == ENNA_INPUT_OK)
     {
         _list_item_button_event_input_focus_set(ib, EINA_FALSE);
+        if (ib->func)
+            ib->func(ib->func_data);
         return ENNA_EVENT_BLOCK;
     }
     return ENNA_EVENT_BLOCK;
