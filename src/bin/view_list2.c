@@ -35,8 +35,8 @@ typedef enum {
     ENNA_SPINNER,    //TODO implement
 }list_control_type;
 
-typedef struct _Item_Button Item_Button;
-struct _Item_Button
+typedef struct _Enna_View_List2_Widget Enna_View_List2_Widget;
+struct _Enna_View_List2_Widget
 {
     Evas_Object *obj;          /**< elementary button */
     list_control_type type;    /**< type of the control (button, toggle, etc) */
@@ -56,16 +56,16 @@ struct _Item_Data
     const char *icon;          /**< icon for the list item */
     void (*func) (void *data); /**< function to call when list item is selected */
     void *func_data;           /**< data to return-back */
-    Eina_List *buttons;        /**< list of Item_Button pointers */
-    Item_Button *focused;      /**< focused button in buttons list */
+    Eina_List *buttons;        /**< list of Enna_View_List2_Widget pointers */
+    Enna_View_List2_Widget *focused;      /**< focused button in buttons list */
 };
 
 /***   Local protos  ***/
 static void _list_item_activate(Item_Data *id);
-static void _list_button_activate(Item_Button *b);
+static void _list_button_activate(Enna_View_List2_Widget *b);
 static Evas_Object *_list_item_buttons_create_all(const Item_Data *id);
 static Eina_Bool _list_item_button_input_events_cb(void *data, enna_input event);
-static void _list_item_button_event_input_focus_set(Item_Button *ib, Eina_Bool focus);
+static void _list_item_button_event_input_focus_set(Enna_View_List2_Widget *ib, Eina_Bool focus);
 /***   Callbacks  ***/
 /*static void // called on list item double-click
 _list_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
@@ -81,7 +81,7 @@ _list_item_selected_cb(void *data, Evas_Object *obj, void *event_info)
     //Elm_Genlist_Item *item = event_info;
     Item_Data *id = data;
     Eina_List *l;
-    Item_Button *b;
+    Enna_View_List2_Widget *b;
 
     EINA_LIST_FOREACH(id->buttons, l, b)
         elm_object_disabled_set(b->obj, EINA_FALSE);
@@ -90,7 +90,7 @@ _list_item_selected_cb(void *data, Evas_Object *obj, void *event_info)
 static void // called when one of the buttons is pressed
 _list_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    Item_Button *b = data;
+    Enna_View_List2_Widget *b = data;
     _list_button_activate(b);
 }
 
@@ -112,11 +112,11 @@ _enna_list_item_widget_add(Elm_Genlist_Item *item,
                            Eina_Bool status)
 {
     Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
-    Item_Button *b;
+    Enna_View_List2_Widget *b;
 
     if (!item) return;
 
-    b = ENNA_NEW(Item_Button, 1);
+    b = ENNA_NEW(Enna_View_List2_Widget, 1);
     if (!b) return;
 
     b->icon = eina_stringshare_add(icon);
@@ -139,7 +139,7 @@ _list_item_activate(Item_Data *id)
 }
 
 static void
-_list_button_activate(Item_Button *b)
+_list_button_activate(Enna_View_List2_Widget *b)
 {
     if (!b) return;
 
@@ -152,7 +152,7 @@ _list_item_buttons_create_all(const Item_Data *id)
 {
     Evas_Object *box;
     Eina_List *l;
-    Item_Button *b;
+    Enna_View_List2_Widget *b;
 
     if (!id->buttons) return NULL;
 
@@ -273,7 +273,7 @@ static void
 _list_item_del(const void *data, Evas_Object *obj)
 {
     Item_Data *id = (Item_Data *)data;
-    Item_Button *b;
+    Enna_View_List2_Widget *b;
 
     if (!id) return;
     EINA_LIST_FREE(id->buttons, b)
@@ -455,7 +455,7 @@ enna_list2_item_del(Elm_Genlist_Item *item)
 /* Events input */
 
 static void
-_list_item_button_event_input_focus_set(Item_Button *ib, Eina_Bool focus)
+_list_item_button_event_input_focus_set(Enna_View_List2_Widget *ib, Eina_Bool focus)
 {
     if (ib && ib->type == ENNA_ENTRY)
     {
@@ -481,7 +481,7 @@ _list_item_button_event_input_focus_set(Item_Button *ib, Eina_Bool focus)
 static Eina_Bool
 _list_item_button_input_events_cb(void *data, enna_input event)
 {
-    Item_Button *ib = data;
+    Enna_View_List2_Widget *ib = data;
 
     if (event == ENNA_INPUT_MENU || event == ENNA_INPUT_OK)
     {
@@ -493,11 +493,11 @@ _list_item_button_input_events_cb(void *data, enna_input event)
     return ENNA_EVENT_BLOCK;
 }
 
-static Item_Button *
-_list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
+static Enna_View_List2_Widget *
+_list_item_button_focus_next(Elm_Genlist_Item *item, Enna_View_List2_Widget *cur)
 {
     Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
-    Item_Button *next;
+    Enna_View_List2_Widget *next;
 
     if (!item || !id) return NULL;
 
@@ -527,11 +527,11 @@ _list_item_button_focus_next(Elm_Genlist_Item *item, Item_Button *cur)
     return cur;
 }
 
-static Item_Button *
-_list_item_button_focus_prev(Elm_Genlist_Item *item, Item_Button *cur)
+static Enna_View_List2_Widget *
+_list_item_button_focus_prev(Elm_Genlist_Item *item, Enna_View_List2_Widget *cur)
 {
     Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
-    Item_Button *prev;
+    Enna_View_List2_Widget *prev;
 
     if (!item || !id) return NULL;
 
