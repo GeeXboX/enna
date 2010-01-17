@@ -75,6 +75,11 @@ typedef struct _Enna_Module_Valhalla
 #define I_FLAG  (1 << 2)  /* image */
 #define AV_FLAG (A_FLAG | V_FLAG)
 
+#define CHECK_FLAGS(f, t)                                   \
+    (   ((t) == VALHALLA_FILE_TYPE_AUDIO && (f) & A_FLAG)   \
+     || ((t) == VALHALLA_FILE_TYPE_VIDEO && (f) & V_FLAG)   \
+     || ((t) == VALHALLA_FILE_TYPE_IMAGE && (f) & I_FLAG))
+
 typedef struct _Browser_Item Browser_Item;
 
 /*
@@ -413,6 +418,9 @@ _browse(valhalla_file_type_t ftype, unsigned int it, int64_t id_m, int64_t id_d)
     {
         Eina_List *tmp;
 
+        if (!CHECK_FLAGS(tree_meta[it].flags, ftype))
+            continue;
+
         tmp = _browse_list(&item[i], ftype, it, id_m, id_d);
         l = l ? eina_list_merge(l, tmp) : tmp;
 
@@ -434,6 +442,9 @@ _browse_root(valhalla_file_type_t ftype)
         Eina_List *tmp;
 
         if (tree_meta[i].level != LEVEL_ROOT)
+            continue;
+
+        if (!CHECK_FLAGS(tree_meta[i].flags, ftype))
             continue;
 
         tmp = _browse_list(&tree_meta[i].items[0], ftype, i, 0, 0);
