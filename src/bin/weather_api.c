@@ -376,11 +376,31 @@ _weather_config_panel_city_remove_cb(void *data)
     enna_list2_item_del(data);
 }
 
+static void
+_weather_config_panel_city_add_cb(void *data)
+{
+    Elm_Genlist_Item *item;
+
+    item = enna_list2_item_insert_before(_o_cfg_panel,
+                                         data,
+                                         _("City"),
+                                         _("Choose your City"),
+                                         NULL,
+                                         NULL, NULL);
+    enna_list2_item_entry_add(item,
+                              NULL, _("Enter your City here"),
+                              _weather_config_panel_city_add_cb, data);
+    enna_list2_item_button_add(item,
+                               NULL, _("Remove"),
+                               _weather_config_panel_city_remove_cb, item);
+}
+
 static Eina_Bool
 _weather_config_panel_input_events_cb(void *data, enna_input event)
 {
     return enna_list2_input_feed(_o_cfg_panel, event);
 }
+
 
 static Evas_Object *
 _weather_config_panel_show(void *data)
@@ -406,18 +426,18 @@ _weather_config_panel_show(void *data)
                                   NULL, NULL);
         enna_list2_item_button_add(item,
                                    NULL, _("Remove"),
-                                  _weather_config_panel_city_remove_cb, item);
+                                   _weather_config_panel_city_remove_cb, item);
     }
-
+    
     item = enna_list2_append(_o_cfg_panel,
                              _("Add New City"),
                              _("Add more city to the list"),
                              NULL,
                              NULL, NULL);
 
-     enna_list2_item_button_add(item,
-                                NULL, _("Add"),
-                                NULL, NULL);
+    enna_list2_item_button_add(item,
+                               NULL, _("Add"),
+                               _weather_config_panel_city_add_cb, item);
 
     if (!_input_listener)
         _input_listener = enna_input_listener_add("configuration/weather",
