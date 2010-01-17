@@ -423,7 +423,9 @@ static void
 _weather_config_panel_hide(void *data)
 {
     ENNA_OBJECT_DEL(_o_cfg_panel);
-    enna_input_listener_del(_input_listener);
+    if (!_input_listener)
+        enna_input_listener_del(_input_listener);
+    _input_listener = NULL;
 }
 
 /****************************************************************************/
@@ -464,7 +466,11 @@ cfg_weather_section_load (const char *section)
 static void
 cfg_weather_section_save (const char *section)
 {
-    enna_config_string_set(section, "city", weather_cfg.city);
+    Eina_List *l;
+    char *city;
+
+    EINA_LIST_FOREACH(weather_cfg.cities, l, city)
+        enna_config_string_set(section, "city", city);
     enna_config_string_set(section, "unit",
                            (weather_cfg.unit == TEMP_CELCIUS) ? "C" : "F");
 }
