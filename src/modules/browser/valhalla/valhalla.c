@@ -558,7 +558,7 @@ Enna_Module_Api ENNA_MODULE_API =
     "browser_valhalla",
     N_("Valhalla module"),
     "icon/config",
-    N_("Database stuff and metadata retrival from various sources"),
+    N_("Build a browseable catalog of your media files"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
@@ -566,7 +566,7 @@ static Enna_Class_Vfs class =
 {
     ENNA_MODULE_NAME,
     2,
-    N_("Media Library"),
+    N_("Media library"),
     NULL,
     "icon/library",
     {

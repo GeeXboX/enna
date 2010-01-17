@@ -90,7 +90,7 @@ _update_text(Evas_Object *lb)
 
     label = buffer_new();
     buffer_append(label, "<h3><c>");
-    buffer_append(label, _("Are you sure you want to quit enna ?"));
+    buffer_append(label, _("Are you sure you want to quit Enna?"));
     buffer_append(label, "</c></h3><br>");
     tmp =  enna_activity_request_quit_all();
 
@@ -145,17 +145,17 @@ enna_exit_add(Evas * evas)
     _update_text(sd->label);
 
     sd->list = enna_list_add(enna->evas);
-    it1 = _create_list_item (_("Yes, Quit Enna"), "ctrl/shutdown");
+    it1 = _create_list_item (_("Yes, quit Enna"), "ctrl/shutdown");
     enna_list_file_append(sd->list, it1, _yes_cb, obj);
 
-    it2 = _create_list_item (_("No, Continue using enna"), "ctrl/hibernate");
+    it2 = _create_list_item (_("No, continue using Enna"), "ctrl/hibernate");
     enna_list_file_append(sd->list, it2, _no_cb, obj);
     enna_list_select_nth(sd->list, 0);
 /*
-    enna_list2_append(list, _("Yes, Quit Enna"), NULL,  "ctrl/shutdown",
+    enna_list2_append(list, _("Yes, quit Enna"), NULL,  "ctrl/shutdown",
                       _yes_cb, obj);
 
-    enna_list2_append(list, _("No, Continue using enna"), NULL,  "ctrl/hibernate",
+    enna_list2_append(list, _("No, continue using Enna"), NULL,  "ctrl/hibernate",
                       _no_cb, obj);
 */
     elm_layout_content_set(sd->layout, "enna.content.swallow",

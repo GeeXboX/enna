@@ -661,7 +661,7 @@ scan_timer_cb (void *data)
 Enna_Module_Api ENNA_MODULE_API = {
     ENNA_MODULE_VERSION,
     "volume_udev",
-    N_("Volumes from Udev"),
+    N_("Volumes from udev"),
     NULL,
     N_("This module provide support for removable volumes"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."

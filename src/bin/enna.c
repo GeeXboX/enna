@@ -443,9 +443,9 @@ static void usage(char *binname)
 {
     printf(_("Enna MediaCenter\n"));
     printf(_(" Usage: %s [options ...]\n"), binname);
-    printf(_(" Available Options:\n"));
+    printf(_(" Available options:\n"));
     printf(_("  -c, (--config):  Specify configuration file to be used.\n"));
-    printf(_("  -f, (--fs):      Force Fullscreen mode.\n"));
+    printf(_("  -f, (--fs):      Force fullscreen mode.\n"));
     printf(_("  -h, (--help):    Display this help.\n"));
     printf(_("  -t, (--theme):   Specify theme name to be used.\n"));
     printf(_("  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"));

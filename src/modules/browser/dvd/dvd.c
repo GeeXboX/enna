@@ -62,7 +62,7 @@ _class_browse_up(const char *path, void *cookie)
     f = enna_vfs_create_file(uri, _("Play"), "icon/video", NULL);
     l = eina_list_append(l, f);
     snprintf(uri, sizeof(uri), "dvdnav://%s", mod->dvd->device);
-    f = enna_vfs_create_file(uri, _("Play (With Menus)"), "icon/video", NULL);
+    f = enna_vfs_create_file(uri, _("Play (with menus)"), "icon/video", NULL);
     l = eina_list_append(l, f);
     return l;
 }
@@ -88,7 +88,7 @@ _class_vfs_get(void *cookie)
 static Enna_Class_Vfs class_dvd = {
     "dvd_dvd",
     0,
-    N_("Watch DVD Video"),
+    N_("Watch DVD video"),
     NULL,
     "icon/dev/dvd",
     {

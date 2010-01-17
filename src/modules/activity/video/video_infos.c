@@ -124,12 +124,18 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
     len += 8;
 
     director = enna_metadata_meta_get(m, "director", 1);
-    if (director)
-        buffer_appendf(buf, _("<ul>Director:</ul> %s<br>"), director);
+    if (director) {
+        buffer_append(buf, "<ul>");
+        buffer_append(buf, _("Director:"));    
+        buffer_appendf(buf, " </ul> %s<br>", director);
+    }
 
     actors = enna_metadata_meta_get(m, "actor", 5);
-    if (actors)
-        buffer_appendf(buf, _("<ul>Cast:</ul> %s<br>"), actors);
+    if (actors) {
+        buffer_append(buf, "<ul>");
+        buffer_append(buf, _("Cast:"));
+        buffer_appendf(buf, " </ul> %s<br>", actors);
+    }
 
     if (director || actors)
         buffer_append(buf, "<br>");
@@ -148,7 +154,9 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         width  = enna_metadata_meta_get(m, "width", 1);
         height = enna_metadata_meta_get(m, "height", 1);
         aspect = enna_metadata_meta_get(m, "video_aspect", 1);
-        buffer_appendf(buf, _("<hl>Video: </hl> %s"), codec);
+        buffer_append(buf, "<hl>");
+        buffer_append(buf, _("Video:"));
+        buffer_appendf(buf, " </hl> %s", codec);
         if (width && height)
             buffer_appendf(buf, ", %sx%s", width, height);
         if (aspect)
@@ -169,7 +177,9 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         char *channels, *bitrate;
         channels = enna_metadata_meta_get(m, "audio_channels", 1);
         bitrate  = enna_metadata_meta_get(m, "audio_bitrate", 1);
-        buffer_appendf(buf, _("<hl>Audio: </hl> %s"), codec);
+        buffer_append(buf, "<hl>");
+        buffer_append(buf, _("Audio:"));
+        buffer_appendf(buf, " </hl> %s", codec);
         if (channels)
             buffer_appendf(buf, ", %s ch.", channels);
         if (bitrate)
@@ -181,9 +191,12 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
     }
 
     value = enna_metadata_meta_get(m, "filesize", 1);
-    if (value)
-        buffer_appendf(buf, _("<hl>Size: </hl> %.2f MB<br>"),
-                       atol(value) / 1024.0 / 1024.0);
+    if (value) {
+        buffer_append(buf, "<hl>");
+        buffer_append(buf, _("Size:"));
+        buffer_appendf(buf, " </hl> %.2f MB<br>",
+                atol(value) / 1024.0 / 1024.0);
+    }
     ENNA_FREE(value);
 
     /* tell if no more infos are available */

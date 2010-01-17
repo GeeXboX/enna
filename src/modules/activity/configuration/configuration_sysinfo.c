@@ -93,19 +93,21 @@ set_enna_information(buffer_t *b)
     if (!b)
         return;
 
-    buffer_append(b, _("<c>Enna Information</c><br><br>"));
-    buffer_appendf(b, _("<hilight>Enna: </hilight>%s<br>"), VERSION);
-    buffer_appendf(b, _("<hilight>libplayer: </hilight>%s<br>"),
-                   LIBPLAYER_VERSION_STR);
-    buffer_appendf(b, _("<hilight>libvalhalla: </hilight>%s<br>"),
-                   LIBVALHALLA_VERSION_STR);
+    buffer_append(b, "<c>");
+    buffer_append(b, _("Enna information"));
+    buffer_append(b, "</c><br><br><hilight>");
+    buffer_append(b, _("Enna:"));
+    buffer_appendf(b, "</hilight> %s<br><hilight>libplayer:</hilight> %s<br>",
+                    VERSION, LIBPLAYER_VERSION_STR);
+    buffer_appendf(b, "<hilight>libvalhalla:</hilight> %s<br>",
+                    LIBVALHALLA_VERSION_STR);
 #ifdef BUILD_LIBSVDRP
-    buffer_appendf(b, _("<hilight>libsvdrp: </hilight>%s<br>"),
-                   LIBSVDRP_VERSION);
+    buffer_appendf(b, "<hilight>libsvdrp:</hilight> %s<br>",
+                    LIBSVDRP_VERSION);
 #endif
-    buffer_appendf(b, _("<hilight>Video Renderer:</hilight> %s"),
-                   enna_config->engine);
-    buffer_append(b, "<br>");
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("Video renderer:"));
+    buffer_appendf(b, "</hilight> %s<br>", enna_config->engine);
 }
 
 /****************************************************************************/
@@ -164,7 +166,9 @@ get_distribution(buffer_t *b)
         }
     }
 
-    buffer_append(b, _("<hilight>Distribution: </hilight>"));
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("Distribution:"));
+    buffer_append(b, "</hilight> ");
     if (lsb_distrib_id && lsb_release)
         buffer_appendf(b, "%s %s", lsb_distrib_id, lsb_release);
     else if (id && release)
@@ -184,12 +188,18 @@ get_uname(buffer_t *b)
 {
     struct utsname name;
 
-    buffer_append(b, _("<hilight>OS: </hilight>"));
-    if (uname(&name) == -1)
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("OS:"));
+    buffer_append(b, "</hilight> ");
+    if (uname(&name) == -1) {
         buffer_append(b, BUF_DEFAULT);
+    }
     else
-        buffer_appendf(b, _("%s %s for %s"),
-                       name.sysname, name.release, name.machine);
+    {
+        buffer_appendf(b, "%s %s ", name.sysname, name.release);
+        buffer_append(b, _("for"));
+        buffer_appendf(b, " %s", name.machine);
+    }
     buffer_append(b, "<br>");
 }
 
@@ -203,8 +213,9 @@ get_cpuinfos(buffer_t *b)
     if (!f)
         return;
 
-    buffer_append(b, _("<hilight>Available CPUs: </hilight>"));
-    buffer_append(b, "<br>");
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("Available CPUs:"));
+    buffer_append(b, "</hilight><br>");
     while (fgets(buf, sizeof(buf), f))
     {
         char *x;
@@ -234,9 +245,8 @@ get_cpuinfos(buffer_t *b)
         else if (!strncmp(buf, STR_MHZ, strlen(STR_MHZ)))
         {
             x = strchr(buf, ':');
-            buffer_appendf(b, _(", running at %d MHz"),
-                           (int) enna_util_atof(x + 2));
-            buffer_append(b, "<br>");
+            buffer_append(b, _(", running at"));
+            buffer_appendf(b, " %d MHz<br>", (int) enna_util_atof(x + 2));
         }
     }
 
@@ -263,8 +273,9 @@ get_loadavg(buffer_t *b)
     ld = strndup(buf, sizeof (x));
     load = enna_util_atof(ld) * 100.0;
 
-    buffer_append(b, _("<hilight>CPU Load: </hilight>"));
-    buffer_appendf(b, "%d%%<br>", (int) load);
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("CPU Load:"));
+    buffer_appendf(b, "</hilight> %d%%<br>", (int) load);
 
  err_loadavg:
     if (ld)
@@ -306,11 +317,14 @@ get_ram_usage(buffer_t *b)
         }
     }
 
-    buffer_append(b, _("<hilight>Memory: </hilight>"));
-    buffer_appendf(b, _("%d MB used on %d MB total (%d%%)"),
-                   mem_active, mem_total,
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("Memory:"));
+    buffer_appendf(b, "</hilight> %d MB ", mem_active);
+    buffer_append(b, _("used on"));
+    buffer_appendf(b, " %d MB ", mem_total);
+    buffer_append(b, _("total"));
+    buffer_appendf(b, " (%d%%)</hilight> %d MB<br>", mem_total,
                    (int) (mem_active * 100 / mem_total));
-    buffer_append(b, "<br>");
     fclose(f);
 }
 
@@ -345,11 +359,16 @@ get_resolution(buffer_t *b)
     XRRGetScreenSizeRange(dpy, root,
                           &minWidth, &minHeight, &maxWidth, &maxHeight);
 
-    buffer_append(b, _("<hilight>Screen Resolution: </hilight>"));
-    buffer_appendf(b, _("%dx%d at %d Hz (min: %dx%d, max: %dx%d)"),
-                   DisplayWidth(dpy, screen), DisplayHeight(dpy, screen),
-                   rate, minWidth, minHeight, maxWidth, maxHeight);
-    buffer_append(b, "<br>");
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("Screen resolution:"));
+    buffer_appendf(b, "</hilight> %dx%d ",
+                   DisplayWidth(dpy, screen), DisplayHeight(dpy, screen));
+    buffer_append(b, _("at"));
+    buffer_appendf(b, " %d Hz (", rate);
+    buffer_append(b, _("min:"));
+    buffer_appendf(b, " %dx%d, ", minWidth, minHeight);
+    buffer_append(b, _("max:"));
+    buffer_appendf(b, " %dx%d)<br>", maxWidth, maxHeight);
     XCloseDisplay(dpy);
 }
 #endif
@@ -360,14 +379,21 @@ get_vdr(buffer_t *b)
 {
     svdrp_t *svdrp = enna_svdrp_get();
 
-    buffer_append(b, _("<hilight>VDR:</hilight> "));
-    if (svdrp && svdrp_try_connect(svdrp))
-        buffer_appendf(b, _("connected to VDR %s on %s (%s)<br>"),
-                       svdrp_get_property(svdrp, SVDRP_PROPERTY_VERSION),
+    buffer_append(b, "<hilight> ");
+    buffer_append(b, _("VDR:"));
+    buffer_append(b, "</hilight> ");
+    if (svdrp && svdrp_try_connect(svdrp)) {
+        buffer_appendf(b, _("connected to VDR"));
+        buffer_appendf(b, " %s )",
+                       svdrp_get_property(svdrp, SVDRP_PROPERTY_VERSION));
+	buffer_append(b, _("on"));
+        buffer_appendf(b, " %s on %s (%s)",
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_NAME),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_HOSTNAME));
-    else
-        buffer_append(b, _("not connected<br>"));
+    } else {
+        buffer_append(b, _("not connected"));
+    }
+    buffer_append(b, "<br>");
 }
 #endif
 
@@ -379,7 +405,9 @@ get_network(buffer_t *b)
     struct ifconf ifc;
     char buf[1024];
 
-    buffer_append(b, _("<hilight>Available network interfaces:</hilight><br>"));
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("Available network interfaces:"));
+    buffer_append(b, "</hilight><br>");
 
     /* get a socket handle. */
     s = socket(AF_INET, SOCK_STREAM, 0);
@@ -404,13 +432,16 @@ get_network(buffer_t *b)
             continue;
 
         /* show the device name and IP address */
-        buffer_appendf(b, _("  * %s (IP: %s, "), item->ifr_name,
+        buffer_appendf(b, "  * %s (", item->ifr_name);
+        buffer_append(b, _("IP:"));
+	buffer_appendf(b, "%s, ",
                  inet_ntoa(((struct sockaddr_in *) &item->ifr_addr)->sin_addr));
 
         if (ioctl(s, SIOCGIFNETMASK, item) < 0)
             continue;
 
-        buffer_appendf(b, _("Netmask: %s)<br>"),
+        buffer_append(b, _("Netmask:"));
+        buffer_appendf(b, " %s)<br>",
               inet_ntoa(((struct sockaddr_in *) &item->ifr_netmask)->sin_addr));
     }
 
@@ -433,7 +464,9 @@ get_default_gw(buffer_t *b)
     if (fscanf(fp, "%*[^\n]\n") < 0) /* Skip the first line. */
         return;
 
-    buffer_append(b, _("<hilight>Default Gateway: </hilight>"));
+    buffer_append(b, "<hilight>");
+    buffer_append(b, _("Default gateway:"));
+    buffer_append(b, "</hilight> ");
     res = 0;
 
     while (1)
@@ -459,8 +492,11 @@ get_default_gw(buffer_t *b)
         break;
     }
 
-    if (!res)
-        buffer_append(b, _("None<br>"));
+    if (!res) {
+        buffer_append(b, _("None"));
+        buffer_append(b, "<br>");
+    }
+
 
     fclose(fp);
 }
@@ -471,7 +507,9 @@ set_system_information(buffer_t *b)
     if (!b)
         return;
 
-    buffer_append(b, _("<c>System Information</c><br><br>"));
+    buffer_append(b, "<c>");
+    buffer_append(b, _("System information"));
+    buffer_append(b, "</c><br><br>");
     get_distribution(b);
     get_uname(b);
     get_cpuinfos(b);

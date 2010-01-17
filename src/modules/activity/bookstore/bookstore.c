@@ -320,7 +320,7 @@ _class_event (enna_input event)
 static Enna_Class_Activity class = {
     ENNA_MODULE_NAME,
     9,
-    N_("BookStore"),
+    N_("Bookstore"),
     NULL,
     "icon/bookstore",
     "background/bookstore",
@@ -348,7 +348,7 @@ Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "activity_bookstore",
-    N_("BookStore"),
+    N_("Bookstore"),
     "icon/bookstore",
     N_("Read your books"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."

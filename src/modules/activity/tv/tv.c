@@ -300,7 +300,7 @@ Enna_Module_Api ENNA_MODULE_API =
     "activity_tv",
     N_("Television"),
     "icon/dev/tv",
-    N_("View tv channels"),
+    N_("View TV channels"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

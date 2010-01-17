@@ -238,7 +238,7 @@ Enna_Module_Api ENNA_MODULE_API =
     "activity_configuration",
     N_("Configuration"),
     "icon/config",
-    N_("This module create the enna configuration panel (DO NOT UNLOAD)"),
+    N_("This module creates the Enna configuration panel"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
@@ -253,7 +253,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
 
     enna_activity_add (&class);
 
-    info1 = enna_config_panel_register(_("System Information"), "icon/infos",
+    info1 = enna_config_panel_register(_("System information"), "icon/infos",
                                     info_panel_show, info_panel_hide, NULL);
 
     credits = enna_config_panel_register(_("Credits"), "icon/enna",

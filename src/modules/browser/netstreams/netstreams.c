@@ -319,7 +319,7 @@ static void class_init(const char *name, netstreams_priv_t **priv,
 static Enna_Class_Vfs class_music = {
     "netstreams_music",
     1,
-    N_("Browse Network Streams"),
+    N_("Browse network streams"),
     NULL,
     "icon/music",
     {
@@ -335,7 +335,7 @@ static Enna_Class_Vfs class_music = {
 static Enna_Class_Vfs class_video = {
     "netstreams_video",
     1,
-    N_("Browse Network Streams"),
+    N_("Browse network streams"),
     NULL,
     "icon/video",
     {
@@ -408,7 +408,7 @@ Enna_Module_Api ENNA_MODULE_API =
     "browser_netstreams",
     N_("Netstreams"),
     "icon/module",
-    N_("I really don't know :P"), //TODO FIXME !!
+    N_("Browse and play network streams"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

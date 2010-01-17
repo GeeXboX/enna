@@ -546,7 +546,7 @@ _browse(void *data)
            if (!eina_list_count(sd->files))
             {
 
-                sd->file = enna_vfs_create_directory(sd->file->uri, _("No media found !"), "icon/nofile", NULL);
+                sd->file = enna_vfs_create_directory(sd->file->uri, _("No media found!"), "icon/nofile", NULL);
                 sd->files = NULL;
                 sd->files = eina_list_append(sd->files,sd->file);
 
@@ -703,7 +703,7 @@ _list_transition_core(Smart_Data *sd, unsigned char direction)
     sd->o_parent = elm_button_add(enna->layout);
     elm_object_style_set(sd->o_parent, "simple");
     evas_object_smart_callback_add(sd->o_parent, "clicked", _parent_clicked_cb, sd);
-    elm_button_label_set(sd->o_parent, sd->file ? sd->file->label : _("Main Menu"));
+    elm_button_label_set(sd->o_parent, sd->file ? sd->file->label : _("Main menu"));
     ic = elm_icon_add(enna->layout);
     if (!sd->file)
         elm_icon_file_set(ic, enna_config_theme_get(), "icon/home");

@@ -170,7 +170,7 @@ static Enna_Class_Vfs class_shoutcast =
 {
     "shoutcast",
     10,
-    N_("SHOUTcast Streaming"),
+    N_("SHOUTcast streaming"),
     NULL,
     "icon/shoutcast",
     {
@@ -194,9 +194,9 @@ Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "browser_shoutcast",
-    N_("Shoutcast browser"),
+    N_("SHOUTcast browser"),
     "icon/shoutcast",
-    N_("Listen to shoutcast stream"),
+    N_("Listen to SHOUTcast stream"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

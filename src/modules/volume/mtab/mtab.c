@@ -148,7 +148,7 @@ Enna_Module_Api ENNA_MODULE_API = {
     "volume_mtab",
     N_("Volumes from mtab"),
     NULL,
-    N_("This module get volumes from the mtab file"),
+    N_("This module provide support for already mounted volumes"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

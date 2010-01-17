@@ -477,7 +477,7 @@ _class_vfs_get(void *cookie)
 static Enna_Class_Vfs class_upnp_music = {
     ENNA_MODULE_NAME,
     10,
-    N_("UPnP/DLNA Media Servers"),
+    N_("UPnP/DLNA media servers"),
     NULL,
     "icon/upnp",
     {
@@ -495,7 +495,7 @@ static Enna_Class_Vfs class_upnp_music = {
 static Enna_Class_Vfs class_upnp_video = {
     ENNA_MODULE_NAME,
     10,
-    N_("UPnP/DLNA Media Servers"),
+    N_("UPnP/DLNA media servers"),
     NULL,
     "icon/upnp",
     {
@@ -513,7 +513,7 @@ static Enna_Class_Vfs class_upnp_video = {
 static Enna_Class_Vfs class_upnp_photo = {
     ENNA_MODULE_NAME,
     10,
-    N_("UPnP/DLNA Media Servers"),
+    N_("UPnP/DLNA media servers"),
     NULL,
     "icon/upnp",
     {
@@ -582,9 +582,9 @@ Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "browser_upnp",
-    N_("UPnP / DLNA module"),
+    N_("UPnP/DLNA module"),
     "icon/module",
-    N_("This module allows Enna to browse contents from UPnP/DLNA Media Servers"),
+    N_("This module allows Enna to browse contents from UPnP/DLNA media servers"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

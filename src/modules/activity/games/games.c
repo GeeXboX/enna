@@ -333,9 +333,9 @@ Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "activity_games",
-    N_("System games"),
+    N_("Games"),
     "icon/games",
-    N_("With this module you can play your games directly from enna"),
+    N_("Play all your games directly from Enna"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

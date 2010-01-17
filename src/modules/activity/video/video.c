@@ -990,7 +990,7 @@ Enna_Module_Api ENNA_MODULE_API =
     "activity_video",
     N_("Video"),
     "icon/video",
-    N_("This is the main video module"),
+    N_("Play your videos"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

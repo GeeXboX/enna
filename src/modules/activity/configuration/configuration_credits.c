@@ -42,18 +42,20 @@ Evas_Object *credits_panel_show(void *data)
                          "activity/configuration/credits");
 
     b = buffer_new();
-    buffer_append (b, _("Enna is GeeXboX's team MediaCenter, "));
-    buffer_append (b, _("based on Enlightenment Foundation Librairies (EFL)."));
-    buffer_append (b, "<br><br>");
-    buffer_append (b, _("Credits go to:<br>"));
-    buffer_append (b, "Nicolas Aguirre, Fabien Brisset, Davide Cavalca, ");
-    buffer_append (b, "Matthias HÃ¶lzer, Guillaume Lecerf, Mathieu Schroeter ");
-    buffer_append (b, _("and"));
-    buffer_append (b, " Benjamin Zores.");
-    edje_object_part_text_set (o_edje, "credits.text", b->buf);
+    buffer_append(b, _("Enna is a GeeXboX-team MediaCenter"));
+    buffer_append(b, ", ");
+    buffer_append(b, _("based on Enlightenment Foundation Librairies (EFL)."));
+    buffer_append(b, "<br><br>");
+    buffer_append(b, _("Credits go to:"));
+    buffer_append(b, "<br>");
+    buffer_append(b, "Nicolas Aguirre, Fabien Brisset, Davide Cavalca, ");
+    buffer_append(b, "Matthias Hölzer, Guillaume Lecerf, Mathieu Schroeter ");
+    buffer_append(b, _("and"));
+    buffer_append(b, " Benjamin Zores.");
+    edje_object_part_text_set(o_edje, "credits.text", b->buf);
     buffer_free(b);
 
-    edje_object_signal_emit (o_edje, "credits,show", "enna");
+    edje_object_signal_emit(o_edje, "credits,show", "enna");
 
     return o_edje;
 }

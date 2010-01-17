@@ -394,7 +394,7 @@ Enna_Module_Api ENNA_MODULE_API =
     "activity_photo",
     N_("Photo"),
     "icon/photo",
-    N_("View all your photos in a wall or as slideshow"),
+    N_("Browse your photos and create slideshows"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 

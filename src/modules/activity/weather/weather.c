@@ -298,7 +298,7 @@ Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
     "activity_weather",
-    N_("Weather forecast"),
+    N_("Weather forecasts"),
     "icon/weather",
     N_("Show the weather at your location"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."

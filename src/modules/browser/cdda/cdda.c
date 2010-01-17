@@ -92,7 +92,7 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
 static Enna_Class_Vfs class_cdda = {
     "cdda_cdda",
     0,
-    N_("Play Audio CD"),
+    N_("Play audio CD"),
     NULL,
     "icon/dev/cdda",
     {
@@ -137,7 +137,7 @@ Enna_Module_Api ENNA_MODULE_API =
     "browser_cdda",
     N_("CDDA module"),
     "icon/dev/cdda",
-    N_("Listen your favorite compact discs"),
+    N_("Listen your favorite CDs"),
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
