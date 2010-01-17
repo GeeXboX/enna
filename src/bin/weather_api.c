@@ -370,6 +370,12 @@ weather_google_search (weather_t *w)
 /*                      Configuration Panel section                         */
 /****************************************************************************/
 
+static void
+_weather_config_panel_city_remove_cb(void *data)
+{
+    enna_list2_item_del(data);
+}
+
 static Eina_Bool
 _weather_config_panel_input_events_cb(void *data, enna_input event)
 {
@@ -400,7 +406,7 @@ _weather_config_panel_show(void *data)
                                   NULL, NULL);
         enna_list2_item_button_add(item,
                                    NULL, _("Remove"),
-                                   NULL, NULL);
+                                  _weather_config_panel_city_remove_cb, item);
     }
 
     item = enna_list2_append(_o_cfg_panel,
