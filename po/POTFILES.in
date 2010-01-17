@@ -28,3 +28,4 @@ src/modules/browser/valhalla/valhalla.c
 src/modules/volume/hal/hal_storage.c
 src/modules/volume/hal/hal_volume.c
 src/modules/volume/mtab/mtab.c
+src/modules/volume/udev/udev.c
