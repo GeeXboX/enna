@@ -561,6 +561,16 @@ cfg_localfiles_section_list_get(const char *section, const char *key)
             Eina_List *tuple;
 
             tuple = enna_util_tuple_get(c, ",");
+
+            /* ensure that name and icon were specified */
+            if (tuple && eina_list_count(tuple) == 1)
+            {
+                const char *l = ecore_file_file_get(eina_list_nth(tuple, 0));
+                const char *i = "icon/favorite";
+                tuple = eina_list_append(tuple, strdup(l));
+                tuple = eina_list_append(tuple, strdup(i));
+            }
+
             if (tuple && eina_list_count(tuple) == 3)
             {
                 localfiles_path_t *p;
