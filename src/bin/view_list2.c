@@ -90,7 +90,6 @@ static void // called when one of the buttons is pressed
 _list_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Item_Button *b = data;
-
     _list_button_activate(b);
 }
 
@@ -382,6 +381,21 @@ enna_list2_item_entry_add(Elm_Genlist_Item *item,
                           void (*func) (void *data), void *func_data)
 {
     _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_ENTRY, EINA_FALSE);
+}
+
+void
+enna_list2_item_del(Elm_Genlist_Item *item)
+{
+    Elm_Genlist_Item *next;
+
+    next = elm_genlist_item_next_get(item);
+    if (!next)
+    {
+        next = elm_genlist_item_prev_get(item);
+    }
+
+    i (next) elm_genlist_item_selected_set(next, EINA_TRUE);
+    elm_genlist_item_del(item);
 }
 
 /* Events input */
