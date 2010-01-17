@@ -380,7 +380,7 @@ _browse_list(const Browser_Item *item, valhalla_file_type_t ftype,
 
         for (; j < last; j++)
         {
-            if (tree_meta[j].level != tree_meta[j].level)
+            if (tree_meta[j].level != tree_meta[it].level)
                 continue;
 
             for (i = 0; tree_meta[j].items[i].meta; i++)
