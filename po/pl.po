@@ -42,8 +42,7 @@ msgstr " Dostępne opcje :\n"
 #: src/bin/enna.c:442
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr ""
-"  -c, (--config) :   Określ plik konfiguracyjny, który ma zostać użyty.\n"
+msgstr "  -c, (--config) :   Określ plik konfiguracyjny, który ma zostać użyty.\n"
 
 #: src/bin/enna.c:443
 #, c-format
@@ -123,15 +122,15 @@ msgstr "Autorzy"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
 msgid "Enna is GeeXboX's team MediaCenter, "
-msgstr "Enna jest centrum multimedialny twórców GeexBox'a"
+msgstr "Enna jest centrum multimedialnym twórców GeexBox'a"
 
 #: src/modules/activity/configuration/configuration_credits.c:46
 msgid "based on Enlightenment Foundation Librairies (EFL)."
-msgstr "bazującą na bibliotekach Enlightenment Foundation Librairies (EFL)."
+msgstr "bazującym na bibliotekach Enlightenment Foundation Librairies (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:48
 msgid "Credits go to:<br>"
-msgstr "Podziękowania dla : <br>"
+msgstr "Autorzy : <br>"
 
 #: src/modules/activity/configuration/configuration_credits.c:51
 msgid "and"
@@ -168,7 +167,7 @@ msgstr "<hilight>Renderowanie wideo :</hilight> %s"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:167
 msgid "<hilight>Distribution: </hilight>"
-msgstr "<hilight>Distrybucja : </hilight>"
+msgstr "<hilight>Dystrybucja : </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:187
 msgid "<hilight>OS: </hilight>"
@@ -199,7 +198,7 @@ msgstr "<hilight>Pamięć : </hilight>"
 #: src/modules/activity/configuration/configuration_sysinfo.c:310
 #, c-format
 msgid "%d MB used on %d MB total (%d%%)"
-msgstr "%d MB used on %d MB total (%d%%)"
+msgstr "%d MB w użyciu spośród %d MB ogółem (%d%%)"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:348
 msgid "<hilight>Screen Resolution: </hilight>"
