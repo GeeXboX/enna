@@ -96,7 +96,6 @@ _list_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 static void
 _list_button_mouse_move_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
-    Item_Button *ib = data;
     Evas_Event_Mouse_Move *ev = (Evas_Event_Mouse_Move*) event_info;
 
     ev->event_flags &= !EVAS_EVENT_FLAG_ON_HOLD;
