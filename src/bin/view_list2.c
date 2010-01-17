@@ -390,11 +390,11 @@ enna_list2_item_del(Elm_Genlist_Item *item)
 
     next = elm_genlist_item_next_get(item);
     if (!next)
-    {
         next = elm_genlist_item_prev_get(item);
-    }
 
-    i (next) elm_genlist_item_selected_set(next, EINA_TRUE);
+    if (next)
+        elm_genlist_item_selected_set(next, EINA_TRUE);
+
     elm_genlist_item_del(item);
 }
 
