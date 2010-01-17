@@ -279,9 +279,11 @@ _list_item_del(const void *data, Evas_Object *obj)
     if (!id) return;
     EINA_LIST_FREE(id->buttons, b)
     {
+        _list_item_button_event_input_focus_set(b, EINA_FALSE);
+        if (b->input_listener)
+            enna_input_listener_del(b->input_listener);
         ENNA_STRINGSHARE_DEL(b->label);
         ENNA_STRINGSHARE_DEL(b->icon);
-        _list_item_button_event_input_focus_set(b, EINA_FALSE);
         ENNA_FREE(b);
     }
     ENNA_STRINGSHARE_DEL(id->label1);
