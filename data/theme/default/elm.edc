@@ -3887,6 +3887,20 @@ group { name: "elm/photocam/base/default";
 	       }
 	    }
 	 }
+         part {
+             name: "bg";
+             type: RECT;
+             description {
+                 state: "default" 0.0;
+                 color: 255 255 255 0;
+                 visible: 0;
+             }
+             description {
+                 state: "disabled" 0.0;
+                 color: 255 255 255 100;
+                 visible: 1;
+             }
+         }
       }
       programs {
 	 program { name: "focus";
@@ -3900,12 +3914,14 @@ group { name: "elm/photocam/base/default";
 	    source: "elm";
 	    action: STATE_SET "disabled" 0.0;
 	    target: "elm.text";
+            target: "bg";
 	 }
 	 program { name: "enable";
 	    signal: "elm,state,enabled";
 	    source: "elm";
 	    action: STATE_SET "default" 0.0;
 	    target: "elm.text";
+            target: "bg";
 	 }
       }
    }
