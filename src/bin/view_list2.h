@@ -28,6 +28,7 @@
 #include "vfs.h"
 #include "input.h"
 
+typedef struct _Enna_View_List2_Widget Enna_View_List2_Widget;
 
 Evas_Object      *enna_list2_add(Evas *evas);
 Elm_Genlist_Item *enna_list2_append(Evas_Object *obj, const char *label1,
