@@ -342,6 +342,60 @@ enna_list2_append(Evas_Object *obj, const char *label1, const char *label2,
     return item;
 }
 
+Elm_Genlist_Item *
+enna_list2_item_insert_after(Evas_Object *obj, Elm_Genlist_Item *after,
+                             const char *label1, const char *label2,
+                             const char *icon,
+                             void(*func)(void *data), void *func_data)
+{
+    Elm_Genlist_Item *item;
+    Item_Data *id;
+
+    id = ENNA_NEW(Item_Data, 1);
+    if (!id) return NULL;
+    id->func = func;
+    id->func_data = func_data;
+    id->label1 = eina_stringshare_add(label1);
+    id->label2 = eina_stringshare_add(label2);
+    id->icon = eina_stringshare_add(icon);
+
+    item = elm_genlist_item_insert_after(obj, &itc_single_label, id, after,
+                                         ELM_GENLIST_ITEM_NONE,
+                                         _list_item_selected_cb, id);
+
+    if (!elm_genlist_selected_item_get(obj))
+        elm_genlist_item_selected_set(item, EINA_TRUE);
+
+    return item;
+}
+
+Elm_Genlist_Item *
+enna_list2_item_insert_before(Evas_Object *obj, Elm_Genlist_Item *before,
+                              const char *label1, const char *label2,
+                              const char *icon,
+                              void(*func)(void *data), void *func_data)
+{
+    Elm_Genlist_Item *item;
+    Item_Data *id;
+
+    id = ENNA_NEW(Item_Data, 1);
+    if (!id) return NULL;
+    id->func = func;
+    id->func_data = func_data;
+    id->label1 = eina_stringshare_add(label1);
+    id->label2 = eina_stringshare_add(label2);
+    id->icon = eina_stringshare_add(icon);
+
+    item = elm_genlist_item_insert_before(obj, &itc_single_label, id, before,
+                                          ELM_GENLIST_ITEM_NONE,
+                                          _list_item_selected_cb, id);
+
+    if (!elm_genlist_selected_item_get(obj))
+        elm_genlist_item_selected_set(item, EINA_TRUE);
+
+    return item;
+}
+
 void
 enna_list2_file_append(Evas_Object *obj, Enna_Vfs_File *file,
                        void (*func)(void *data), void *func_data)
