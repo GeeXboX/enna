@@ -476,6 +476,7 @@ _list_item_button_focus_prev(Elm_Genlist_Item *item, Item_Button *cur)
         {
             prev = l->data;
             elm_object_disabled_set(prev->obj, EINA_TRUE);
+            elm_object_disabled_set(cur->obj, EINA_FALSE);
             return prev;
         }
         elm_object_disabled_set(cur->obj, EINA_FALSE);
