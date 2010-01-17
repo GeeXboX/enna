@@ -209,42 +209,42 @@ msgstr "<hilight>螢幕解析度: </hilight>"
 #: src/modules/activity/configuration/configuration_sysinfo.c:349
 #, c-format
 msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
-msgstr ""
+msgstr "%dx%d at %d Hz (最小: %dx%d, 最大: %dx%d)"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "<hilight>VDR:</hilight> "
-msgstr ""
+msgstr "<hilight>VDR:</hilight> "
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:365
 #, c-format
 msgid "connected to VDR %s on %s (%s)<br>"
-msgstr ""
+msgstr "connected to VDR %s on %s (%s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "not connected<br>"
-msgstr ""
+msgstr "沒有被連接<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:382
 msgid "<hilight>Available network interfaces:</hilight><br>"
-msgstr ""
+msgstr "<hilight>有效的網路介面:</hilight><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:407
 #, c-format
 msgid "  * %s (IP: %s, "
-msgstr ""
+msgstr "* %s (IP: %s, "
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:413
 #, c-format
 msgid "Netmask: %s)<br>"
-msgstr ""
+msgstr "Netmask: %s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "<hilight>Default Gateway: </hilight>"
-msgstr ""
+msgstr "<hilight>預設閘道: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:463
 msgid "None<br>"
-msgstr ""
+msgstr "None<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "<c>System Information</c><br><br>"
@@ -273,11 +273,11 @@ msgstr "音樂"
 
 #: src/modules/activity/music/music.c:491
 msgid "Music core"
-msgstr ""
+msgstr "音樂核心"
 
 #: src/modules/activity/music/music.c:493
 msgid "This is the main music module"
-msgstr ""
+msgstr "這是主要音樂模組"
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
@@ -302,11 +302,11 @@ msgstr[1] ""
 #: src/modules/activity/tv/tv.c:104
 #, c-format
 msgid "Currently recording '%s'"
-msgstr ""
+msgstr "現在正在記錄 '%s'"
 
 #: src/modules/activity/tv/tv.c:113
 msgid "Recording in progress"
-msgstr ""
+msgstr "記錄正在進行中"
 
 #: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
 msgid "Television"
@@ -318,7 +318,7 @@ msgstr ""
 
 #: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
-msgstr ""
+msgstr "沒有如此的資料 ..."
 
 #: src/modules/activity/video/video_infos.c:128
 #, c-format
@@ -333,12 +333,12 @@ msgstr ""
 #: src/modules/activity/video/video_infos.c:151
 #, c-format
 msgid "<hl>Video: </hl> %s"
-msgstr ""
+msgstr " <hl>影像: </hl> %s"
 
 #: src/modules/activity/video/video_infos.c:172
 #, c-format
 msgid "<hl>Audio: </hl> %s"
-msgstr ""
+msgstr "<hl>聲音: </hl> %s"
 
 #: src/modules/activity/video/video_infos.c:185
 #, c-format
@@ -361,7 +361,7 @@ msgstr "影片"
 
 #: src/modules/activity/video/video.c:993
 msgid "This is the main video module"
-msgstr ""
+msgstr "這是主要的影像模組"
 
 #: src/modules/activity/weather/weather.c:273
 msgid "Weather"
@@ -373,7 +373,7 @@ msgstr "天氣預報"
 
 #: src/modules/activity/weather/weather.c:303
 msgid "Show the weather at your location"
-msgstr ""
+msgstr "顯示你本地的天氣"
 
 #: src/modules/browser/cdda/cdda.c:95
 msgid "Play Audio CD"
