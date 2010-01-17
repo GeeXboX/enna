@@ -3,13 +3,13 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 #  <sword.huang@gmail.com>, 2010.
-# 
+#
 # msgfmt zh_TW.po -o zh_TW.gmo
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-13 14:11+0100\n"
+"POT-Creation-Date: 2010-01-17 10:15+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -19,75 +19,80 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/bin/browser.c:549
-msgid "No media found !"
+#, fuzzy
+msgid "No media found!"
 msgstr "沒有發現任何媒體!"
 
 #: src/bin/browser.c:706
-msgid "Main Menu"
+#, fuzzy
+msgid "Main menu"
 msgstr "主選單"
 
-#: src/bin/enna.c:439
+#: src/bin/enna.c:444
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna 媒體中心\n"
 
-#: src/bin/enna.c:440
+#: src/bin/enna.c:445
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " 用法：%s [選項...]\n"
 
-#: src/bin/enna.c:441
-#, c-format
-msgid " Available Options:\n"
+#: src/bin/enna.c:446
+#, fuzzy, c-format
+msgid " Available options:\n"
 msgstr "可選項:\n"
 
-#: src/bin/enna.c:442
+#: src/bin/enna.c:447
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置檔。\n"
 
-#: src/bin/enna.c:443
-#, c-format
-msgid "  -f, (--fs):      Force Fullscreen mode.\n"
+#: src/bin/enna.c:448
+#, fuzzy, c-format
+msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      強制全螢幕顯示。\n"
 
-#: src/bin/enna.c:444
+#: src/bin/enna.c:449
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    顯示這個說明。\n"
 
-#: src/bin/enna.c:445
+#: src/bin/enna.c:450
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   指定要使用的佈景。\n"
 
-#: src/bin/enna.c:446
+#: src/bin/enna.c:451
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定視窗大小。 (geometry=1280x720)\n"
 
-#: src/bin/enna.c:447
+#: src/bin/enna.c:452
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): 顯示 Enna 的版本。\n"
 
 #: src/bin/exit.c:93
-msgid "Are you sure you want to quit enna ?"
+#, fuzzy
+msgid "Are you sure you want to quit Enna?"
 msgstr "你確定要離開 Enna?"
 
 #: src/bin/exit.c:148
-msgid "Yes, Quit Enna"
+#, fuzzy
+msgid "Yes, quit Enna"
 msgstr "是! 我要離開 Enna。"
 
 #: src/bin/exit.c:151
-msgid "No, Continue using enna"
+#, fuzzy
+msgid "No, continue using Enna"
 msgstr "不! 我要繼續使用 Enna"
 
-#: src/bin/module.c:227
+#: src/bin/module.c:233
 msgid "Modules"
 msgstr "模組"
 
-#: src/bin/module.c:466
+#: src/bin/module.c:472
 msgid "No information provided"
 msgstr "沒有提供任何資訊"
 
@@ -98,7 +103,8 @@ msgstr "音軌 #%02d (%02d:%02d)"
 
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:351
-msgid "BookStore"
+#, fuzzy
+msgid "Bookstore"
 msgstr "書店"
 
 #: src/modules/activity/bookstore/bookstore.c:353
@@ -111,11 +117,13 @@ msgid "Configuration"
 msgstr "配置"
 
 #: src/modules/activity/configuration/configuration.c:241
-msgid "This module create the enna configuration panel (DO NOT UNLOAD)"
+msgid "This module creates the Enna configuration panel"
 msgstr ""
 
 #: src/modules/activity/configuration/configuration.c:256
-msgid "System Information"
+#: src/modules/activity/configuration/configuration_sysinfo.c:511
+#, fuzzy
+msgid "System information"
 msgstr "系統資訊"
 
 #: src/modules/activity/configuration/configuration.c:259
@@ -123,143 +131,141 @@ msgid "Credits"
 msgstr "感謝"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
-msgid "Enna is GeeXboX's team MediaCenter, "
+#, fuzzy
+msgid "Enna is a GeeXboX-team MediaCenter"
 msgstr "Enna is GeeXboX's team MediaCenter,"
 
-#: src/modules/activity/configuration/configuration_credits.c:46
+#: src/modules/activity/configuration/configuration_credits.c:47
 msgid "based on Enlightenment Foundation Librairies (EFL)."
 msgstr "based on Enlightenment Foundation Librairies (EFL)."
 
-#: src/modules/activity/configuration/configuration_credits.c:48
-msgid "Credits go to:<br>"
+#: src/modules/activity/configuration/configuration_credits.c:49
+#, fuzzy
+msgid "Credits go to:"
 msgstr "感謝:<br>"
 
-#: src/modules/activity/configuration/configuration_credits.c:51
+#: src/modules/activity/configuration/configuration_credits.c:53
 msgid "and"
 msgstr "and"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:96
-msgid "<c>Enna Information</c><br><br>"
-msgstr "<c>Enna 資訊</c><br><br>"
-
 #: src/modules/activity/configuration/configuration_sysinfo.c:97
-#, c-format
-msgid "<hilight>Enna: </hilight>%s<br>"
-msgstr "<hilight>Enna: </hilight>%s<br>"
+#, fuzzy
+msgid "Enna information"
+msgstr "系統資訊"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:98
-#, c-format
-msgid "<hilight>libplayer: </hilight>%s<br>"
-msgstr "<hilight>libplayer: </hilight>%s<br>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:99
+msgid "Enna:"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:100
-#, c-format
-msgid "<hilight>libvalhalla: </hilight>%s<br>"
-msgstr "<hilight>libvalhalla: </hilight>%s<br>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:109
+msgid "Video renderer:"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:103
-#, c-format
-msgid "<hilight>libsvdrp: </hilight>%s<br>"
-msgstr "<hilight>libsvdrp: </hilight>%s<br>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:170
+msgid "Distribution:"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:106
-#, fuzzy, c-format
-msgid "<hilight>Video Renderer:</hilight> %s"
-msgstr "<hilight>記憶體: </hilight>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:192
+msgid "OS:"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:167
-msgid "<hilight>Distribution: </hilight>"
-msgstr "<hilight> 發行: </hilight>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:200
+msgid "for"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:187
-msgid "<hilight>OS: </hilight>"
-msgstr "<hilight>作業系統: </hilight>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:217
+#, fuzzy
+msgid "Available CPUs:"
+msgstr "可選項:\n"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:191
-#, c-format
-msgid "%s %s for %s"
-msgstr "%s %s for %s"
-
-#: src/modules/activity/configuration/configuration_sysinfo.c:206
-msgid "<hilight>Available CPUs: </hilight>"
-msgstr "<hilight>有效的 CPUs: </hilight>"
-
-#: src/modules/activity/configuration/configuration_sysinfo.c:237
-#, c-format
-msgid ", running at %d MHz"
+#: src/modules/activity/configuration/configuration_sysinfo.c:248
+#, fuzzy
+msgid ", running at"
 msgstr ", running at %d MHz"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:266
-msgid "<hilight>CPU Load: </hilight>"
-msgstr "<hilight>CPU 負載: </hilight>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:277
+msgid "CPU Load:"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:309
-msgid "<hilight>Memory: </hilight>"
-msgstr "<hilight>記憶體: </hilight>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:321
+msgid "Memory:"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:310
-#, c-format
-msgid "%d MB used on %d MB total (%d%%)"
-msgstr "%d MB 被使用, 總共有 %d MB (%d%%)"
+#: src/modules/activity/configuration/configuration_sysinfo.c:323
+msgid "used on"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:348
-msgid "<hilight>Screen Resolution: </hilight>"
-msgstr "<hilight>螢幕解析度: </hilight>"
-
-#: src/modules/activity/configuration/configuration_sysinfo.c:349
-#, c-format
-msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
-msgstr "%dx%d at %d Hz (最小: %dx%d, 最大: %dx%d)"
+#: src/modules/activity/configuration/configuration_sysinfo.c:325
+msgid "total"
+msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:363
-msgid "<hilight>VDR:</hilight> "
-msgstr "<hilight>VDR:</hilight> "
+#, fuzzy
+msgid "Screen resolution:"
+msgstr "<hilight>螢幕解析度: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:365
-#, c-format
-msgid "connected to VDR %s on %s (%s)<br>"
-msgstr "connected to VDR %s on %s (%s)<br>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:366
+#, fuzzy
+msgid "at"
+msgstr "Data"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:368
+msgid "min:"
+msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:370
-msgid "not connected<br>"
+msgid "max:"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:383
+#, fuzzy
+msgid "VDR:"
+msgstr "DVD-R"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:386
+#, fuzzy
+msgid "connected to VDR"
+msgstr "connected to VDR %s on %s (%s)<br>"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:389
+msgid "on"
+msgstr ""
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:394
+#, fuzzy
+msgid "not connected"
 msgstr "沒有被連接<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:382
-msgid "<hilight>Available network interfaces:</hilight><br>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#, fuzzy
+msgid "Available network interfaces:"
 msgstr "<hilight>有效的網路介面:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:407
-#, c-format
-msgid "  * %s (IP: %s, "
-msgstr "* %s (IP: %s, "
+#: src/modules/activity/configuration/configuration_sysinfo.c:436
+msgid "IP:"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:413
-#, c-format
-msgid "Netmask: %s)<br>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:443
+#, fuzzy
+msgid "Netmask:"
 msgstr "Netmask: %s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:436
-msgid "<hilight>Default Gateway: </hilight>"
-msgstr "<hilight>預設閘道: </hilight>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:468
+msgid "Default gateway:"
+msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:463
-msgid "None<br>"
+#: src/modules/activity/configuration/configuration_sysinfo.c:496
+#, fuzzy
+msgid "None"
 msgstr "None<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:474
-msgid "<c>System Information</c><br><br>"
-msgstr "<c>系統資訊</c><br><br>"
-
 #: src/modules/activity/games/games.c:308
+#: src/modules/activity/games/games.c:336
 msgid "Games"
 msgstr "遊戲"
 
-#: src/modules/activity/games/games.c:336
-msgid "System games"
-msgstr "系統遊戲"
-
 #: src/modules/activity/games/games.c:338
-msgid "With this module you can play your games directly from enna"
+msgid "Play all your games directly from Enna"
 msgstr ""
 
 #: src/modules/activity/music/music.c:108
@@ -268,16 +274,13 @@ msgid "%d Songs"
 msgstr ""
 
 #: src/modules/activity/music/music.c:463
+#: src/modules/activity/music/music.c:491
 msgid "Music"
 msgstr "音樂"
 
-#: src/modules/activity/music/music.c:491
-msgid "Music core"
-msgstr "音樂核心"
-
 #: src/modules/activity/music/music.c:493
-msgid "This is the main music module"
-msgstr "這是主要音樂模組"
+msgid "Listen to your music"
+msgstr ""
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
@@ -289,7 +292,7 @@ msgid "Photo"
 msgstr "照片"
 
 #: src/modules/activity/photo/photo.c:397
-msgid "View all your photos in a wall or as slideshow"
+msgid "Browse your photos and create slideshows"
 msgstr ""
 
 #: src/modules/activity/tv/tv.c:102
@@ -308,44 +311,40 @@ msgstr "現在正在記錄 '%s'"
 msgid "Recording in progress"
 msgstr "記錄正在進行中"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:265
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:301
 msgid "Television"
 msgstr "電視"
 
-#: src/modules/activity/tv/tv.c:267
-msgid "View tv channels"
+#: src/modules/activity/tv/tv.c:303
+msgid "View TV channels"
 msgstr ""
 
 #: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
 msgstr "沒有如此的資料 ..."
 
-#: src/modules/activity/video/video_infos.c:128
-#, c-format
-msgid "<ul>Director:</ul> %s<br>"
+#: src/modules/activity/video/video_infos.c:129
+msgid "Director:"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:132
-#, c-format
-msgid "<ul>Cast:</ul> %s<br>"
+#: src/modules/activity/video/video_infos.c:136
+msgid "Cast:"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:151
-#, c-format
-msgid "<hl>Video: </hl> %s"
-msgstr " <hl>影像: </hl> %s"
+#: src/modules/activity/video/video_infos.c:158
+#, fuzzy
+msgid "Video:"
+msgstr "影片"
 
-#: src/modules/activity/video/video_infos.c:172
-#, c-format
-msgid "<hl>Audio: </hl> %s"
-msgstr "<hl>聲音: </hl> %s"
-
-#: src/modules/activity/video/video_infos.c:185
-#, c-format
-msgid "<hl>Size: </hl> %.2f MB<br>"
+#: src/modules/activity/video/video_infos.c:181
+msgid "Audio:"
 msgstr ""
 
-#: src/modules/activity/video/video_infos.c:191
+#: src/modules/activity/video/video_infos.c:196
+msgid "Size:"
+msgstr ""
+
+#: src/modules/activity/video/video_infos.c:204
 msgid "No further information can be retrieved"
 msgstr ""
 
@@ -360,15 +359,16 @@ msgid "Video"
 msgstr "影片"
 
 #: src/modules/activity/video/video.c:993
-msgid "This is the main video module"
-msgstr "這是主要的影像模組"
+msgid "Play your videos"
+msgstr ""
 
 #: src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "天氣"
 
 #: src/modules/activity/weather/weather.c:301
-msgid "Weather forecast"
+#, fuzzy
+msgid "Weather forecasts"
 msgstr "天氣預報"
 
 #: src/modules/activity/weather/weather.c:303
@@ -376,7 +376,8 @@ msgid "Show the weather at your location"
 msgstr "顯示你本地的天氣"
 
 #: src/modules/browser/cdda/cdda.c:95
-msgid "Play Audio CD"
+#, fuzzy
+msgid "Play audio CD"
 msgstr "播放音樂光碟"
 
 #: src/modules/browser/cdda/cdda.c:138
@@ -384,7 +385,7 @@ msgid "CDDA module"
 msgstr ""
 
 #: src/modules/browser/cdda/cdda.c:140
-msgid "Listen your favorite compact discs"
+msgid "Listen your favorite CDs"
 msgstr ""
 
 #: src/modules/browser/dvd/dvd.c:62
@@ -392,11 +393,11 @@ msgid "Play"
 msgstr "播放"
 
 #: src/modules/browser/dvd/dvd.c:65
-msgid "Play (With Menus)"
+msgid "Play (with menus)"
 msgstr ""
 
 #: src/modules/browser/dvd/dvd.c:91
-msgid "Watch DVD Video"
+msgid "Watch DVD video"
 msgstr ""
 
 #: src/modules/browser/dvd/dvd.c:136
@@ -407,61 +408,62 @@ msgstr ""
 msgid "Watch movies from DVD"
 msgstr ""
 
-#: src/modules/browser/localfiles/localfiles.c:462
-#: src/modules/browser/localfiles/localfiles.c:480
-#: src/modules/browser/localfiles/localfiles.c:498
-msgid "Browse Local Devices"
+#: src/modules/browser/localfiles/localfiles.c:494
+#: src/modules/browser/localfiles/localfiles.c:512
+#: src/modules/browser/localfiles/localfiles.c:530
+#, fuzzy
+msgid "Browse local devices"
 msgstr "瀏灠本機裝置"
 
-#: src/modules/browser/localfiles/localfiles.c:593
+#: src/modules/browser/localfiles/localfiles.c:674
 msgid "Browse local files"
 msgstr "瀏灠本機檔案"
 
-#: src/modules/browser/localfiles/localfiles.c:595
+#: src/modules/browser/localfiles/localfiles.c:676
 #, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "瀏灠本機硬碟上的檔案"
 
 #: src/modules/browser/netstreams/netstreams.c:322
 #: src/modules/browser/netstreams/netstreams.c:338
-msgid "Browse Network Streams"
+msgid "Browse network streams"
 msgstr ""
 
-#: src/modules/browser/netstreams/netstreams.c:402
+#: src/modules/browser/netstreams/netstreams.c:409
 msgid "Netstreams"
 msgstr ""
 
-#: src/modules/browser/netstreams/netstreams.c:404
-msgid "I really don't know :P"
+#: src/modules/browser/netstreams/netstreams.c:411
+msgid "Browse and play network streams"
 msgstr ""
 
 #: src/modules/browser/podcasts/podcasts.c:329
-msgid "Listen to Podcasts"
+msgid "Listen to podcasts"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:385
+#: src/modules/browser/podcasts/podcasts.c:391
 msgid "Podcast browser"
 msgstr ""
 
-#: src/modules/browser/podcasts/podcasts.c:387
+#: src/modules/browser/podcasts/podcasts.c:393
 msgid "Podcast module"
 msgstr ""
 
 #: src/modules/browser/shoutcast/shoutcast.c:173
-msgid "SHOUTcast Streaming"
+msgid "SHOUTcast streaming"
 msgstr ""
 
 #: src/modules/browser/shoutcast/shoutcast.c:197
-msgid "Shoutcast browser"
+msgid "SHOUTcast browser"
 msgstr ""
 
 #: src/modules/browser/shoutcast/shoutcast.c:199
-msgid "Listen to shoutcast stream"
+msgid "Listen to SHOUTcast stream"
 msgstr ""
 
 #: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
-msgid "UPnP/DLNA Media Servers"
+msgid "UPnP/DLNA media servers"
 msgstr ""
 
 #: src/modules/browser/upnp/upnp.c:571
@@ -470,39 +472,44 @@ msgid "Found new UPnP device '%s (%s)'"
 msgstr ""
 
 #: src/modules/browser/upnp/upnp.c:585
-msgid "UPnP / DLNA module"
+msgid "UPnP/DLNA module"
 msgstr ""
 
 #: src/modules/browser/upnp/upnp.c:587
-msgid "This module allows Enna to browse contents from UPnP/DLNA Media Servers"
+msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:317
+#: src/modules/browser/valhalla/valhalla.c:129
+msgid "Authors"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:136
 msgid "Artists"
 msgstr "藝人"
 
-#: src/modules/browser/valhalla/valhalla.c:321
+#: src/modules/browser/valhalla/valhalla.c:143
 msgid "Albums"
 msgstr "專輯"
 
-#: src/modules/browser/valhalla/valhalla.c:325
+#: src/modules/browser/valhalla/valhalla.c:148
 msgid "Genres"
 msgstr "類別"
 
-#: src/modules/browser/valhalla/valhalla.c:329
+#: src/modules/browser/valhalla/valhalla.c:155
 msgid "Unclassified"
 msgstr "沒有被分類的"
 
-#: src/modules/browser/valhalla/valhalla.c:484
+#: src/modules/browser/valhalla/valhalla.c:559
 msgid "Valhalla module"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:486
-msgid "Database stuff and metadata retrival from various sources"
+#: src/modules/browser/valhalla/valhalla.c:561
+msgid "Build a browseable catalog of your media files"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:494
-msgid "Media Library"
+#: src/modules/browser/valhalla/valhalla.c:569
+#, fuzzy
+msgid "Media library"
 msgstr "媒體資料庫"
 
 #: src/modules/volume/hal/hal_volume.c:39
@@ -608,5 +615,86 @@ msgid "Volumes from mtab"
 msgstr ""
 
 #: src/modules/volume/mtab/mtab.c:151
-msgid "This module get volumes from the mtab file"
+msgid "This module provide support for already mounted volumes"
 msgstr ""
+
+#: src/modules/volume/udev/udev.c:664
+msgid "Volumes from udev"
+msgstr ""
+
+#: src/modules/volume/udev/udev.c:666
+msgid "This module provide support for removable volumes"
+msgstr ""
+
+#~ msgid "System games"
+#~ msgstr "系統遊戲"
+
+#~ msgid "Music core"
+#~ msgstr "音樂核心"
+
+#~ msgid "This is the main music module"
+#~ msgstr "這是主要音樂模組"
+
+#~ msgid "This is the main video module"
+#~ msgstr "這是主要的影像模組"
+
+#~ msgid "<c>Enna Information</c><br><br>"
+#~ msgstr "<c>Enna 資訊</c><br><br>"
+
+#~ msgid "<hilight>Enna: </hilight>%s<br>"
+#~ msgstr "<hilight>Enna: </hilight>%s<br>"
+
+#~ msgid "<hilight>libplayer: </hilight>%s<br>"
+#~ msgstr "<hilight>libplayer: </hilight>%s<br>"
+
+#~ msgid "<hilight>libvalhalla: </hilight>%s<br>"
+#~ msgstr "<hilight>libvalhalla: </hilight>%s<br>"
+
+#~ msgid "<hilight>libsvdrp: </hilight>%s<br>"
+#~ msgstr "<hilight>libsvdrp: </hilight>%s<br>"
+
+#, fuzzy
+#~ msgid "<hilight>Video Renderer:</hilight> %s"
+#~ msgstr "<hilight>記憶體: </hilight>"
+
+#~ msgid "<hilight>Distribution: </hilight>"
+#~ msgstr "<hilight> 發行: </hilight>"
+
+#~ msgid "<hilight>OS: </hilight>"
+#~ msgstr "<hilight>作業系統: </hilight>"
+
+#~ msgid "%s %s for %s"
+#~ msgstr "%s %s for %s"
+
+#~ msgid "<hilight>Available CPUs: </hilight>"
+#~ msgstr "<hilight>有效的 CPUs: </hilight>"
+
+#~ msgid "<hilight>CPU Load: </hilight>"
+#~ msgstr "<hilight>CPU 負載: </hilight>"
+
+#~ msgid "<hilight>Memory: </hilight>"
+#~ msgstr "<hilight>記憶體: </hilight>"
+
+#~ msgid "%d MB used on %d MB total (%d%%)"
+#~ msgstr "%d MB 被使用, 總共有 %d MB (%d%%)"
+
+#~ msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
+#~ msgstr "%dx%d at %d Hz (最小: %dx%d, 最大: %dx%d)"
+
+#~ msgid "<hilight>VDR:</hilight> "
+#~ msgstr "<hilight>VDR:</hilight> "
+
+#~ msgid "  * %s (IP: %s, "
+#~ msgstr "* %s (IP: %s, "
+
+#~ msgid "<hilight>Default Gateway: </hilight>"
+#~ msgstr "<hilight>預設閘道: </hilight>"
+
+#~ msgid "<c>System Information</c><br><br>"
+#~ msgstr "<c>系統資訊</c><br><br>"
+
+#~ msgid "<hl>Video: </hl> %s"
+#~ msgstr " <hl>影像: </hl> %s"
+
+#~ msgid "<hl>Audio: </hl> %s"
+#~ msgstr "<hl>聲音: </hl> %s"
