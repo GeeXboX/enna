@@ -455,9 +455,8 @@ _browse_root(valhalla_file_type_t ftype)
 }
 
 static Eina_List *
-_class_browse_up(const char *path, void *cookie)
+_class_browse_up(const char *path, valhalla_file_type_t ftype)
 {
-    const valhalla_file_type_t ftype = VALHALLA_FILE_TYPE_AUDIO;
     int64_t id_m, id_d;
     int rc;
 
@@ -496,9 +495,14 @@ _class_browse_up(const char *path, void *cookie)
 }
 
 static Eina_List *
-_class_browse_down(void *cookie)
+_class_browse_up_music(const char *path, void *cookie)
 {
-    const valhalla_file_type_t ftype = VALHALLA_FILE_TYPE_AUDIO;
+    return _class_browse_up(path, VALHALLA_FILE_TYPE_AUDIO);
+}
+
+static Eina_List *
+_class_browse_down(valhalla_file_type_t ftype)
+{
     unsigned int it;
     int64_t id_m = 0, id_d = 0;
 
@@ -525,6 +529,12 @@ _class_browse_down(void *cookie)
     }
 
     return _browse(ftype, mod->it, id_m, id_d);
+}
+
+static Eina_List *
+_class_browse_down_music(void *cookie)
+{
+    return _class_browse_down(VALHALLA_FILE_TYPE_AUDIO);
 }
 
 static Enna_Vfs_File *
@@ -583,8 +593,8 @@ static Enna_Class_Vfs class =
     {
         NULL,
         NULL,
-        _class_browse_up,
-        _class_browse_down,
+        _class_browse_up_music,
+        _class_browse_down_music,
         _class_vfs_get,
     },
     NULL,
