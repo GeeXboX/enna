@@ -51,7 +51,7 @@
 
 #define ENNA_METADATA_DEFAULT_KEYWORDS "0tv,1080p,2hd,720p,ac3,booya,caph,crimson,ctu,dimension,divx,dot,dsr,dvdrip,dvdscr,e7,etach,fov,fqm,hdq,hdtv,lol,mainevent,notv,orenji,pdtv,proper,pushercrew,repack,reseed,screencam,screener,sys,vtv,x264,xor,xvid,cdNUM,CDNUM,SExEP,sSEeEP,SSEEEP"
 
-#define ENNA_METADATA_DEFAULT_GRABBERS "allocine,amazon,exif,imdb,lastfm,local,lyricwiki,nfo,tmdb,tvdb,tvrage"
+#define ENNA_METADATA_DEFAULT_GRABBERS "allocine,amazon,exif,ffmpeg,imdb,lastfm,local,lyricwiki,nfo,tmdb,tvdb,tvrage"
 
 #define PATH_FANARTS            "fanarts"
 #define PATH_COVERS             "covers"
