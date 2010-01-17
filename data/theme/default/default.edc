@@ -1,4 +1,3 @@
-#define COMP LOSSY 80
 
 images{
    image: "mainmenu_border_left.png" COMP;
@@ -198,6 +197,7 @@ collections
                state: "default" 0.0;
                color: 255 255 255 255;
                visible: 1;
+               fixed: 1 1;
                rel1.relative: 0  1;
                rel1.offset:   0 -48;
                rel2.relative: 0  1;
