@@ -173,6 +173,10 @@ static const struct
     { LEVEL_ONE,   V_FLAG,  {{ DATALIST, VMD(DIRECTOR),      VPL(HIGH)    }, }},
     { LEVEL_TWO,   V_FLAG,  {{ FILELIST, VMD(DIRECTOR),      VPL(HIGH)    }, }},
 
+    /* Years */
+    { LEVEL_ROOT,  V_FLAG,  {{ META,     N_("Years"),        0            }, }},
+    { LEVEL_ONE,   V_FLAG,  {{ DATALIST, VMD(YEAR),          VPL(HIGH)    }, }},
+    { LEVEL_TWO,   V_FLAG,  {{ FILELIST, VMD(YEAR),          VPL(HIGH)    }, }},
 
 
     /*************************************************************************/
