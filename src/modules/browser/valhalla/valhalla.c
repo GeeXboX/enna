@@ -319,14 +319,18 @@ _browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
     Eina_List *l = NULL;
     valhalla_db_restrict_t r = VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d);
 
-    if (rp)
+    if (id_m && id_d)
+    {
+        if (rp)
         VALHALLA_DB_RESTRICT_LINK(*rp, r);
+        rp = &r;
+    }
 
     vh.list  = &l;
     vh.it    = it;
     vh.ftype = ftype;
 
-    valhalla_db_filelist_get(mod->valhalla, ftype, &r, _result_file_cb, &vh);
+    valhalla_db_filelist_get(mod->valhalla, ftype, rp, _result_file_cb, &vh);
 
     l = eina_list_sort(l, eina_list_count(l), _sort_cb);
     return l;
