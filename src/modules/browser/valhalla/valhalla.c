@@ -47,6 +47,12 @@ typedef enum _Item_Type
     FILELIST,
 } Item_Type;
 
+typedef enum _Meta_Name
+{
+    META_TITLE = 0,
+    META_TRACK,
+} Meta_Name;
+
 typedef struct _Callback_Data {
     Eina_List  **list;
     unsigned int it;
@@ -217,30 +223,32 @@ _vfs_add_file(Eina_List **list,
     char buf[PATH_BUFFER];
     char name[256];
     char *it;
-    const char *track = NULL, *title = NULL;
+    unsigned int i;
     valhalla_db_filemeta_t *md_it;
+
+    struct {
+        const char *n;
+        const char *v;
+    } map[] = {
+        [META_TITLE]     = { "title",              NULL },
+        [META_TRACK]     = { "track",              NULL },
+    };
 
     snprintf(buf, sizeof(buf), "file://%s", file->path);
     it = strrchr(buf, '/');
 
     for (md_it = metadata; md_it; md_it = md_it->next)
-    {
-        if (!track && !strcmp(md_it->meta_name, "track")
-            && md_it->group == VALHALLA_META_GRP_ORGANIZATIONAL)
-            track = md_it->data_value;
-        else if (!title && !strcmp(md_it->meta_name, "title")
-                 && md_it->group == VALHALLA_META_GRP_TITLES)
-            title = md_it->data_value;
+        for (i = 0; i < ARRAY_NB_ELEMENTS(map); i++)
+            if (!map[i].v && !strcmp(md_it->meta_name, map[i].n))
+                map[i].v = md_it->data_value;
 
-        if (track && title)
-            break;
-    }
-
-    if (track)
+    if (map[META_TRACK].v)
         snprintf(name, sizeof(name), "%2i - %s",
-                 atoi(track), title ? title : it + 1);
+                 atoi(map[META_TRACK].v),
+                 map[META_TITLE].v ? map[META_TITLE].v : it + 1);
     else
-        snprintf(name, sizeof(name), "%s", title ? title : it + 1);
+        snprintf(name, sizeof(name), "%s",
+                 map[META_TITLE].v ? map[META_TITLE].v : it + 1);
 
     f = enna_vfs_create_file(buf, name, icon, NULL);
     *list = eina_list_append(*list, f);
