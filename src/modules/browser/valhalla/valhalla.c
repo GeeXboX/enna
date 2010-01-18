@@ -413,6 +413,9 @@ _browse_list(const Browser_Item *item, valhalla_file_type_t ftype,
             if (tree_meta[j].level != tree_meta[it].level)
                 continue;
 
+            if (!CHECK_FLAGS(tree_meta[j].flags, ftype))
+                continue;
+
             for (i = 0; tree_meta[j].items[i].meta; i++)
             {
                 if (tree_meta[j].items[i].type != DATALIST)
