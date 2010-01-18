@@ -240,6 +240,7 @@ _result_file_cb(void *data, valhalla_db_fileres_t *res)
     if (!res)
         return 0;
 
+    if (vh->ftype == VALHALLA_FILE_TYPE_AUDIO)
     VALHALLA_DB_RESTRICT_LINK(r2, r1);
 
     /* retrieve the track and the title */
