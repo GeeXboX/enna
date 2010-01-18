@@ -52,6 +52,7 @@ typedef enum _Item_Type
 typedef struct _Callback_Data {
     Eina_List  **list;
     unsigned int it;
+    valhalla_file_type_t ftype;
 } Callback_Data;
 
 typedef struct _Enna_Module_Valhalla
@@ -231,7 +232,7 @@ _result_dir_cb(void *data, valhalla_db_metares_t *res)
 static int
 _result_file_cb(void *data, valhalla_db_fileres_t *res)
 {
-    Eina_List **list = data;
+    Callback_Data *vh = data;
     valhalla_db_filemeta_t *metadata = NULL;
     valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_STR(EQUAL, "track", NULL);
     valhalla_db_restrict_t r2 = VALHALLA_DB_RESTRICT_STR(EQUAL, "title", NULL);
@@ -243,7 +244,7 @@ _result_file_cb(void *data, valhalla_db_fileres_t *res)
 
     /* retrieve the track and the title */
     valhalla_db_file_get(mod->valhalla, res->id, NULL, &r1, &metadata);
-    _vfs_add_file(list, res, metadata, "icon/file/music");
+    _vfs_add_file(vh->list, res, metadata, "icon/file/music");
     VALHALLA_DB_FILEMETA_FREE(metadata);
     return 0;
 }
@@ -275,6 +276,7 @@ _browse_list_data(const char *meta, valhalla_file_type_t ftype,
 
     vh.list = &l;
     vh.it   = it;
+    vh.ftype = ftype;
 
     if (tree_meta[it].level > LEVEL_ONE)
         r = &r1;
@@ -290,13 +292,18 @@ static Eina_List *
 _browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
                   unsigned int it, int64_t id_m, int64_t id_d)
 {
+    Callback_Data vh;
     Eina_List *l = NULL;
     valhalla_db_restrict_t r = VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d);
 
     if (rp)
         VALHALLA_DB_RESTRICT_LINK(*rp, r);
 
-    valhalla_db_filelist_get(mod->valhalla, ftype, &r, _result_file_cb, &l);
+    vh.list  = &l;
+    vh.it    = it;
+    vh.ftype = ftype;
+
+    valhalla_db_filelist_get(mod->valhalla, ftype, &r, _result_file_cb, &vh);
 
     l = eina_list_sort(l, eina_list_count(l), _sort_cb);
     return l;
