@@ -66,10 +66,7 @@ typedef struct _Enna_Module_Valhalla
     int64_t prev_id_m2, prev_id_d2;
 } Enna_Module_Valhalla;
 
-#define ALBUM   VALHALLA_METADATA_ALBUM
-#define ARTIST  VALHALLA_METADATA_ARTIST
-#define AUTHOR  VALHALLA_METADATA_AUTHOR
-#define GENRE   VALHALLA_METADATA_GENRE
+#define VMD(m) VALHALLA_METADATA_##m
 
 #define A_FLAG  (1 << 0)  /* audio */
 #define V_FLAG  (1 << 1)  /* video */
@@ -133,29 +130,29 @@ static const struct
 } tree_meta[] = {
     /* Authors */
     { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Authors")       }, } },
-    { LEVEL_ONE,   A_FLAG,  { { DATALIST, AUTHOR              }, } },
-    { LEVEL_TWO,   A_FLAG,  { { DATALIST, ALBUM               },
-                              { FILELIST, AUTHOR              }, } },
-    { LEVEL_THREE, A_FLAG,  { { FILELIST, ALBUM               }, } },
+    { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(AUTHOR)         }, } },
+    { LEVEL_TWO,   A_FLAG,  { { DATALIST, VMD(ALBUM)          },
+                              { FILELIST, VMD(AUTHOR)         }, } },
+    { LEVEL_THREE, A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
 
     /* Artists */
     { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Artists")       }, } },
-    { LEVEL_ONE,   A_FLAG,  { { DATALIST, ARTIST              }, } },
-    { LEVEL_TWO,   A_FLAG,  { { DATALIST, ALBUM               },
-                              { FILELIST, ARTIST              }, } },
-    { LEVEL_THREE, A_FLAG,  { { FILELIST, ALBUM               }, } },
+    { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(ARTIST)         }, } },
+    { LEVEL_TWO,   A_FLAG,  { { DATALIST, VMD(ALBUM)          },
+                              { FILELIST, VMD(ARTIST)         }, } },
+    { LEVEL_THREE, A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
 
     /* Albums */
     { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Albums")        }, } },
-    { LEVEL_ONE,   A_FLAG,  { { DATALIST, ALBUM               }, } },
-    { LEVEL_TWO,   A_FLAG,  { { FILELIST, ALBUM               }, } },
+    { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(ALBUM)          }, } },
+    { LEVEL_TWO,   A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
 
     /* Genres */
     { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Genres")        }, } },
-    { LEVEL_ONE,   A_FLAG,  { { DATALIST, GENRE               }, } },
-    { LEVEL_TWO,   A_FLAG,  { { DATALIST, ALBUM               },
-                              { FILELIST, GENRE               }, } },
-    { LEVEL_THREE, A_FLAG,  { { FILELIST, ALBUM               }, } },
+    { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(GENRE)          }, } },
+    { LEVEL_TWO,   A_FLAG,  { { DATALIST, VMD(ALBUM)          },
+                              { FILELIST, VMD(GENRE)          }, } },
+    { LEVEL_THREE, A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
 
     /* Unclassified */
     { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Unclassified")  }, } },
