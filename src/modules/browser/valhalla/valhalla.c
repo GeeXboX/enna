@@ -65,6 +65,7 @@ typedef struct _Enna_Module_Valhalla
 } Enna_Module_Valhalla;
 
 #define VMD(m) VALHALLA_METADATA_##m
+#define VPL(p) VALHALLA_METADATA_PL_##p
 
 #define A_FLAG  (1 << 0)  /* audio */
 #define V_FLAG  (1 << 1)  /* video */
@@ -123,6 +124,7 @@ static const struct
     {
         Item_Type   type;
         const char *meta;
+        valhalla_metadata_pl_t priority;
     } items[4];
 
 } tree_meta[] = {
@@ -131,30 +133,30 @@ static const struct
     /***************************************************************/
 
     /* Authors */
-    { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Authors")       }, } },
-    { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(AUTHOR)         }, } },
-    { LEVEL_TWO,   A_FLAG,  { { DATALIST, VMD(ALBUM)          },
-                              { FILELIST, VMD(AUTHOR)         }, } },
-    { LEVEL_THREE, A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
+    { LEVEL_ROOT,  A_FLAG,  {{ META,     N_("Authors"),      0            }, }},
+    { LEVEL_ONE,   A_FLAG,  {{ DATALIST, VMD(AUTHOR),        VPL(HIGH)    }, }},
+    { LEVEL_TWO,   A_FLAG,  {{ DATALIST, VMD(ALBUM),         VPL(HIGH)    },
+                             { FILELIST, VMD(AUTHOR),        VPL(HIGH)    }, }},
+    { LEVEL_THREE, A_FLAG,  {{ FILELIST, VMD(ALBUM),         VPL(HIGH)    }, }},
 
     /* Artists */
-    { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Artists")       }, } },
-    { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(ARTIST)         }, } },
-    { LEVEL_TWO,   A_FLAG,  { { DATALIST, VMD(ALBUM)          },
-                              { FILELIST, VMD(ARTIST)         }, } },
-    { LEVEL_THREE, A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
+    { LEVEL_ROOT,  A_FLAG,  {{ META,     N_("Artists"),      0            }, }},
+    { LEVEL_ONE,   A_FLAG,  {{ DATALIST, VMD(ARTIST),        VPL(HIGH)    }, }},
+    { LEVEL_TWO,   A_FLAG,  {{ DATALIST, VMD(ALBUM),         VPL(HIGH)    },
+                             { FILELIST, VMD(ARTIST),        VPL(HIGH)    }, }},
+    { LEVEL_THREE, A_FLAG,  {{ FILELIST, VMD(ALBUM),         VPL(HIGH)    }, }},
 
     /* Albums */
-    { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Albums")        }, } },
-    { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(ALBUM)          }, } },
-    { LEVEL_TWO,   A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
+    { LEVEL_ROOT,  A_FLAG,  {{ META,     N_("Albums"),       0            }, }},
+    { LEVEL_ONE,   A_FLAG,  {{ DATALIST, VMD(ALBUM),         VPL(HIGH)    }, }},
+    { LEVEL_TWO,   A_FLAG,  {{ FILELIST, VMD(ALBUM),         VPL(HIGH)    }, }},
 
     /* Genres */
-    { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Genres")        }, } },
-    { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(GENRE)          }, } },
-    { LEVEL_TWO,   A_FLAG,  { { DATALIST, VMD(ALBUM)          },
-                              { FILELIST, VMD(GENRE)          }, } },
-    { LEVEL_THREE, A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
+    { LEVEL_ROOT,  A_FLAG,  {{ META,     N_("Genres"),       0            }, }},
+    { LEVEL_ONE,   A_FLAG,  {{ DATALIST, VMD(GENRE),         VPL(HIGH)    }, }},
+    { LEVEL_TWO,   A_FLAG,  {{ DATALIST, VMD(ALBUM),         VPL(HIGH)    },
+                             { FILELIST, VMD(GENRE),         VPL(HIGH)    }, }},
+    { LEVEL_THREE, A_FLAG,  {{ FILELIST, VMD(ALBUM),         VPL(HIGH)    }, }},
 
 
     /***************************************************************/
@@ -162,14 +164,14 @@ static const struct
     /***************************************************************/
 
     /* Categories */
-    { LEVEL_ROOT,  V_FLAG,  { { META,     N_("Categories")    }, } },
-    { LEVEL_ONE,   V_FLAG,  { { DATALIST, VMD(CATEGORY)       }, } },
-    { LEVEL_TWO,   V_FLAG,  { { FILELIST, VMD(CATEGORY)       }, } },
+    { LEVEL_ROOT,  V_FLAG,  {{ META,     N_("Categories"),   0            }, }},
+    { LEVEL_ONE,   V_FLAG,  {{ DATALIST, VMD(CATEGORY),      VPL(HIGH)    }, }},
+    { LEVEL_TWO,   V_FLAG,  {{ FILELIST, VMD(CATEGORY),      VPL(HIGH)    }, }},
 
     /* Directors */
-    { LEVEL_ROOT,  V_FLAG,  { { META,     N_("Directors")     }, } },
-    { LEVEL_ONE,   V_FLAG,  { { DATALIST, VMD(DIRECTOR)       }, } },
-    { LEVEL_TWO,   V_FLAG,  { { FILELIST, VMD(DIRECTOR)       }, } },
+    { LEVEL_ROOT,  V_FLAG,  {{ META,     N_("Directors"),    0            }, }},
+    { LEVEL_ONE,   V_FLAG,  {{ DATALIST, VMD(DIRECTOR),      VPL(HIGH)    }, }},
+    { LEVEL_TWO,   V_FLAG,  {{ FILELIST, VMD(DIRECTOR),      VPL(HIGH)    }, }},
 
 
     /***************************************************************/
@@ -177,8 +179,8 @@ static const struct
     /***************************************************************/
 
     /* Unclassified */
-    { LEVEL_ROOT,  AV_FLAG, { { META,     N_("Unclassified")  }, } },
-    { LEVEL_ONE,   AV_FLAG, { { FILELIST, NULL                }, } },
+    { LEVEL_ROOT,  AV_FLAG, {{ META,     N_("Unclassified"), 0            }, }},
+    { LEVEL_ONE,   AV_FLAG, {{ FILELIST, NULL,               VPL(HIGH)    }, }},
 };
 
 static Enna_Module_Valhalla *mod;
@@ -254,10 +256,13 @@ _result_dir_cb(void *data, valhalla_db_metares_t *res)
 static int
 _result_file_cb(void *data, valhalla_db_fileres_t *res)
 {
+    const valhalla_metadata_pl_t priority = VALHALLA_METADATA_PL_NORMAL;
     Callback_Data *vh = data;
     valhalla_db_filemeta_t *metadata = NULL;
-    valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_STR(EQUAL, "title", NULL);
-    valhalla_db_restrict_t r2 = VALHALLA_DB_RESTRICT_STR(EQUAL, "track", NULL);
+    valhalla_db_restrict_t r1 =
+        VALHALLA_DB_RESTRICT_STR(EQUAL, "title", NULL, priority);
+    valhalla_db_restrict_t r2 =
+        VALHALLA_DB_RESTRICT_STR(EQUAL, "track", NULL, priority);
 
     if (!res)
         return 0;
@@ -288,13 +293,15 @@ _sort_cb(const void *d1, const void *d2)
 }
 
 static Eina_List *
-_browse_list_data(const char *meta, valhalla_file_type_t ftype,
+_browse_list_data(const Browser_Item *item, valhalla_file_type_t ftype,
                   unsigned int it, int64_t id_m, int64_t id_d)
 {
     Callback_Data vh;
     Eina_List *l = NULL;
-    valhalla_db_item_t search = VALHALLA_DB_SEARCH_TEXT(meta, NIL);
-    valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d);
+    valhalla_db_item_t search =
+        VALHALLA_DB_SEARCH_TEXT(item->meta, NIL, item->priority);
+    valhalla_db_restrict_t r1 =
+        VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d, item->priority);
     valhalla_db_restrict_t *r = NULL;
 
     vh.list  = &l;
@@ -313,11 +320,13 @@ _browse_list_data(const char *meta, valhalla_file_type_t ftype,
 
 static Eina_List *
 _browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
-                  unsigned int it, int64_t id_m, int64_t id_d)
+                  unsigned int it, int64_t id_m, int64_t id_d,
+                  valhalla_metadata_pl_t priority)
 {
     Callback_Data vh;
     Eina_List *l = NULL;
-    valhalla_db_restrict_t r = VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d);
+    valhalla_db_restrict_t r =
+        VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d, priority);
 
     if (id_m && id_d)
     {
@@ -337,8 +346,8 @@ _browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
 }
 
 static void
-_restr_add(valhalla_db_restrict_t **r,
-           valhalla_db_operator_t op, const char *meta)
+_restr_add(valhalla_db_restrict_t **r, valhalla_db_operator_t op,
+           const char *meta, valhalla_metadata_pl_t p)
 {
     valhalla_db_restrict_t *n, *it;
 
@@ -349,6 +358,7 @@ _restr_add(valhalla_db_restrict_t **r,
     n->op        = op;
     n->meta.text = meta;
     n->meta.type = VALHALLA_DB_TYPE_TEXT;
+    n->meta.priority = p;
 
     if (*r)
     {
@@ -396,7 +406,7 @@ _browse_list(const Browser_Item *item, valhalla_file_type_t ftype,
     }
 
     case DATALIST:
-        l = _browse_list_data(item->meta, ftype, it, id_m, id_d);
+        l = _browse_list_data(item, ftype, it, id_m, id_d);
         break;
 
     case FILELIST:
@@ -426,11 +436,12 @@ _browse_list(const Browser_Item *item, valhalla_file_type_t ftype,
                     continue;
 
                 _restr_add(&r, VALHALLA_DB_OPERATOR_NOTIN,
-                           tree_meta[j].items[i].meta);
+                           tree_meta[j].items[i].meta,
+                           tree_meta[j].items[i].priority);
             }
         }
 
-        l = _browse_list_file(r, ftype, it, id_m, id_d);
+        l = _browse_list_file(r, ftype, it, id_m, id_d, item->priority);
         _restr_free(r);
         break;
     }
