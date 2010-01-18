@@ -234,8 +234,8 @@ _result_file_cb(void *data, valhalla_db_fileres_t *res)
 {
     Callback_Data *vh = data;
     valhalla_db_filemeta_t *metadata = NULL;
-    valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_STR(EQUAL, "track", NULL);
-    valhalla_db_restrict_t r2 = VALHALLA_DB_RESTRICT_STR(EQUAL, "title", NULL);
+    valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_STR(EQUAL, "title", NULL);
+    valhalla_db_restrict_t r2 = VALHALLA_DB_RESTRICT_STR(EQUAL, "track", NULL);
 
     if (!res)
         return 0;
