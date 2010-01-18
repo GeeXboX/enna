@@ -322,7 +322,7 @@ _browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
     if (id_m && id_d)
     {
         if (rp)
-        VALHALLA_DB_RESTRICT_LINK(*rp, r);
+            VALHALLA_DB_RESTRICT_LINK(*rp, r);
         rp = &r;
     }
 
