@@ -371,13 +371,13 @@ weather_google_search (weather_t *w)
 /****************************************************************************/
 
 static void
-_weather_config_panel_city_remove_cb(void *data)
+_weather_config_panel_city_remove_cb(void *data, Enna_View_List2_Widget *widget)
 {
     enna_list2_item_del(data);
 }
 
 static void
-_weather_config_panel_city_add_cb(void *data)
+_weather_config_panel_city_add_cb(void *data, Enna_View_List2_Widget *widget)
 {
     Elm_Genlist_Item *item;
 
@@ -395,12 +395,17 @@ _weather_config_panel_city_add_cb(void *data)
                                _weather_config_panel_city_remove_cb, item);
 }
 
+static void
+_weather_config_panel_city_validate_cb(void *data, Enna_View_List2_Widget *widget)
+{
+    
+}
+
 static Eina_Bool
 _weather_config_panel_input_events_cb(void *data, enna_input event)
 {
     return enna_list2_input_feed(_o_cfg_panel, event);
 }
-
 
 static Evas_Object *
 _weather_config_panel_show(void *data)
@@ -423,7 +428,7 @@ _weather_config_panel_show(void *data)
                                  NULL, NULL);
         enna_list2_item_entry_add(item,
                                   NULL, city,
-                                  NULL, NULL);
+                                  _weather_config_panel_city_validate_cb, NULL);
         enna_list2_item_button_add(item,
                                    NULL, _("Remove"),
                                    _weather_config_panel_city_remove_cb, item);
