@@ -274,8 +274,8 @@ _browse_list_data(const char *meta, valhalla_file_type_t ftype,
     valhalla_db_restrict_t r1 = VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d);
     valhalla_db_restrict_t *r = NULL;
 
-    vh.list = &l;
-    vh.it   = it;
+    vh.list  = &l;
+    vh.it    = it;
     vh.ftype = ftype;
 
     if (tree_meta[it].level > LEVEL_ONE)
