@@ -199,12 +199,15 @@ _vfs_add_file(Eina_List **list,
 
     for (md_it = metadata; md_it; md_it = md_it->next)
     {
-        if (!strcmp(md_it->meta_name, "track")
+        if (!track && !strcmp(md_it->meta_name, "track")
             && md_it->group == VALHALLA_META_GRP_ORGANIZATIONAL)
             track = md_it->data_value;
-        else if (!strcmp(md_it->meta_name, "title")
+        else if (!title && !strcmp(md_it->meta_name, "title")
                  && md_it->group == VALHALLA_META_GRP_TITLES)
             title = md_it->data_value;
+
+        if (track && title)
+            break;
     }
 
     if (track)
