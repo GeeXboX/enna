@@ -30,8 +30,6 @@
 #include "utils.h"
 #include "metadata.h"
 
-#define ENNA_MODULE_NAME "valhalla"
-
 #define PATH_BUFFER 4096
 
 typedef enum _Browser_Level
@@ -128,6 +126,10 @@ static const struct
     } items[4];
 
 } tree_meta[] = {
+    /***************************************************************/
+    /*                          AUDIO                              */
+    /***************************************************************/
+
     /* Authors */
     { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Authors")       }, } },
     { LEVEL_ONE,   A_FLAG,  { { DATALIST, VMD(AUTHOR)         }, } },
@@ -154,9 +156,29 @@ static const struct
                               { FILELIST, VMD(GENRE)          }, } },
     { LEVEL_THREE, A_FLAG,  { { FILELIST, VMD(ALBUM)          }, } },
 
+
+    /***************************************************************/
+    /*                          VIDEO                              */
+    /***************************************************************/
+
+    /* Categories */
+    { LEVEL_ROOT,  V_FLAG,  { { META,     N_("Categories")    }, } },
+    { LEVEL_ONE,   V_FLAG,  { { DATALIST, VMD(CATEGORY)       }, } },
+    { LEVEL_TWO,   V_FLAG,  { { FILELIST, VMD(CATEGORY)       }, } },
+
+    /* Directors */
+    { LEVEL_ROOT,  V_FLAG,  { { META,     N_("Directors")     }, } },
+    { LEVEL_ONE,   V_FLAG,  { { DATALIST, VMD(DIRECTOR)       }, } },
+    { LEVEL_TWO,   V_FLAG,  { { FILELIST, VMD(DIRECTOR)       }, } },
+
+
+    /***************************************************************/
+    /*                       AUDIO & VIDEO                         */
+    /***************************************************************/
+
     /* Unclassified */
-    { LEVEL_ROOT,  A_FLAG,  { { META,     N_("Unclassified")  }, } },
-    { LEVEL_ONE,   A_FLAG,  { { FILELIST, NULL                }, } },
+    { LEVEL_ROOT,  AV_FLAG, { { META,     N_("Unclassified")  }, } },
+    { LEVEL_ONE,   AV_FLAG, { { FILELIST, NULL                }, } },
 };
 
 static Enna_Module_Valhalla *mod;
@@ -509,6 +531,12 @@ _class_browse_up_music(const char *path, void *cookie)
 }
 
 static Eina_List *
+_class_browse_up_video(const char *path, void *cookie)
+{
+    return _class_browse_up(path, VALHALLA_FILE_TYPE_VIDEO);
+}
+
+static Eina_List *
 _class_browse_down(valhalla_file_type_t ftype)
 {
     unsigned int it;
@@ -543,6 +571,12 @@ static Eina_List *
 _class_browse_down_music(void *cookie)
 {
     return _class_browse_down(VALHALLA_FILE_TYPE_AUDIO);
+}
+
+static Eina_List *
+_class_browse_down_video(void *cookie)
+{
+    return _class_browse_down(VALHALLA_FILE_TYPE_VIDEO);
 }
 
 static Enna_Vfs_File *
@@ -591,9 +625,9 @@ Enna_Module_Api ENNA_MODULE_API =
     "bla bla bla<br><b>bla bla bla</b><br><br>bla."
 };
 
-static Enna_Class_Vfs class =
+static Enna_Class_Vfs class_music =
 {
-    ENNA_MODULE_NAME,
+    "valhalla_music",
     2,
     N_("Media library"),
     NULL,
@@ -608,11 +642,26 @@ static Enna_Class_Vfs class =
     NULL,
 };
 
+static Enna_Class_Vfs class_video =
+{
+    "valhalla_video",
+    2,
+    N_("Media library"),
+    NULL,
+    "icon/library",
+    {
+        NULL,
+        NULL,
+        _class_browse_up_video,
+        _class_browse_down_video,
+        _class_vfs_get,
+    },
+    NULL,
+};
+
 void
 ENNA_MODULE_INIT(Enna_Module *em)
 {
-    int flags = ENNA_CAPS_MUSIC;
-
     if (!em)
         return;
 
@@ -627,7 +676,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     if (!mod->valhalla)
         return;
 
-    enna_vfs_append(ENNA_MODULE_NAME, flags, &class);
+    enna_vfs_append("valhalla_music", ENNA_CAPS_MUSIC, &class_music);
+    enna_vfs_append("valhalla_video", ENNA_CAPS_VIDEO, &class_video);
 }
 
 void
