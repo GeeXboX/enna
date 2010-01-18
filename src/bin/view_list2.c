@@ -35,7 +35,6 @@ typedef enum {
     ENNA_SPINNER,    //TODO implement
 }list_control_type;
 
-typedef struct _Enna_View_List2_Widget Enna_View_List2_Widget;
 struct _Enna_View_List2_Widget
 {
     Evas_Object *obj;          /**< elementary button */
@@ -43,7 +42,7 @@ struct _Enna_View_List2_Widget
     const char *label;         /**< label for the button */
     const char *icon;          /**< icon for the button */
     Eina_Bool status;          /**< initial status for checks buttons */
-    void (*func) (void *data); /**< function to call when button pressed */
+    void (*func) (void *data, Enna_View_List2_Widget *widget); /**< function to call when button pressed */
     void *func_data;           /**< data to return-back */
     Input_Listener *input_listener;
 };
@@ -103,10 +102,10 @@ _list_button_mouse_move_cb(void *data, Evas *e, Evas_Object *obj, void *event_in
 }
 
 /***   Privates  ***/
-static void
+static Enna_View_List2_Widget *
 _enna_list_item_widget_add(Elm_Genlist_Item *item,
                            const char *icon, const char *label,
-                           void (*func) (void *data),
+                           void (*func) (void *data, Enna_View_List2_Widget *widget),
                            void *func_data,
                            list_control_type type,
                            Eina_Bool status)
@@ -114,10 +113,10 @@ _enna_list_item_widget_add(Elm_Genlist_Item *item,
     Item_Data *id = (Item_Data *)elm_genlist_item_data_get(item);
     Enna_View_List2_Widget *b;
 
-    if (!item) return;
+    if (!item) return NULL;
 
     b = ENNA_NEW(Enna_View_List2_Widget, 1);
-    if (!b) return;
+    if (!b) return NULL;
 
     b->icon = eina_stringshare_add(icon);
     b->label = eina_stringshare_add(label);
@@ -127,6 +126,7 @@ _enna_list_item_widget_add(Elm_Genlist_Item *item,
     b->status = status;
 
     id->buttons = eina_list_append(id->buttons, b);
+    return b;
 }
 
 static void
@@ -144,7 +144,7 @@ _list_button_activate(Enna_View_List2_Widget *b)
     if (!b) return;
 
     // execute the button activate callback
-    if (b->func) b->func(b->func_data);
+    if (b->func) b->func(b->func_data, b);
 }
 
 static Evas_Object *
@@ -405,36 +405,36 @@ enna_list2_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     //TODO the caller expect I will free the Vfs_File ??
 }
 
-void
+Enna_View_List2_Widget *
 enna_list2_item_button_add(Elm_Genlist_Item *item,
                            const char *icon, const char *label,
-                           void (*func) (void *data), void *func_data)
+                           void (*func) (void *data,Enna_View_List2_Widget *widget), void *func_data)
 {
-    _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_BUTTON, EINA_FALSE);
+    return _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_BUTTON, EINA_FALSE);
 }
 
-void //TODO to finish
+Enna_View_List2_Widget * //TODO to finish
 enna_list2_item_toggle_add(Elm_Genlist_Item *item,
                            const char *icon, const char *label,
-                           void (*func) (void *data), void *func_data)
+                           void (*func) (void *data, Enna_View_List2_Widget *widget), void *func_data)
 {
-    _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_TOGGLE, EINA_FALSE);
+    return _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_TOGGLE, EINA_FALSE);
 }
 
-void
+Enna_View_List2_Widget *
 enna_list2_item_check_add(Elm_Genlist_Item *item,
                           const char *icon, const char *label, Eina_Bool status,
-                          void (*func) (void *data), void *func_data)
+                          void (*func) (void *data, Enna_View_List2_Widget *widget), void *func_data)
 {
-    _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_CHECKBOX, status);
+    return _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_CHECKBOX, status);
 }
 
-void
+Enna_View_List2_Widget *
 enna_list2_item_entry_add(Elm_Genlist_Item *item,
                           const char *icon, const char *label,
-                          void (*func) (void *data), void *func_data)
+                          void (*func) (void *data, Enna_View_List2_Widget *widget), void *func_data)
 {
-    _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_ENTRY, EINA_FALSE);
+    return _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_ENTRY, EINA_FALSE);
 }
 
 void
@@ -487,7 +487,7 @@ _list_item_button_input_events_cb(void *data, enna_input event)
     {
         _list_item_button_event_input_focus_set(ib, EINA_FALSE);
         if (ib->func)
-            ib->func(ib->func_data);
+            ib->func(ib->func_data, ib);
         return ENNA_EVENT_BLOCK;
     }
     return ENNA_EVENT_BLOCK;
