@@ -486,6 +486,9 @@ _list_item_button_input_events_cb(void *data, enna_input event)
     if (event == ENNA_INPUT_MENU || event == ENNA_INPUT_OK)
     {
         _list_item_button_event_input_focus_set(ib, EINA_FALSE);
+        if (ib->label)
+            eina_stringshare_del(ib->label);
+        ib->label = eina_stringshare_add(elm_entry_entry_get(ib->obj));
         if (ib->func)
             ib->func(ib->func_data, ib);
         return ENNA_EVENT_BLOCK;
