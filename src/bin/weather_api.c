@@ -444,6 +444,16 @@ _weather_config_panel_show(void *data)
                                NULL, _("Add"),
                                _weather_config_panel_city_add_cb, item);
 
+    item = enna_list2_append(_o_cfg_panel,
+                             _("Select unit"),
+                             _("Select the unit to display temperature"),
+                             NULL,
+                             NULL, NULL);
+
+    enna_list2_item_toggle_add(item,
+                               NULL, _("°C"), _("°F"),
+                               NULL, item);
+
     if (!_input_listener)
         _input_listener = enna_input_listener_add("configuration/weather",
                                             _weather_config_panel_input_events_cb, NULL);
