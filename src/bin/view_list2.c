@@ -40,6 +40,7 @@ struct _Enna_View_List2_Widget
     Evas_Object *obj;          /**< elementary button */
     list_control_type type;    /**< type of the control (button, toggle, etc) */
     const char *label;         /**< label for the button */
+    const char *label2;        /**< Secondary label */
     const char *icon;          /**< icon for the button */
     Eina_Bool status;          /**< initial status for checks buttons */
     void (*func) (void *data, Enna_View_List2_Widget *widget); /**< function to call when button pressed */
@@ -104,7 +105,7 @@ _list_button_mouse_move_cb(void *data, Evas *e, Evas_Object *obj, void *event_in
 /***   Privates  ***/
 static Enna_View_List2_Widget *
 _enna_list_item_widget_add(Elm_Genlist_Item *item,
-                           const char *icon, const char *label,
+                           const char *icon, const char *label, const char *label2,
                            void (*func) (void *data, Enna_View_List2_Widget *widget),
                            void *func_data,
                            list_control_type type,
@@ -120,6 +121,7 @@ _enna_list_item_widget_add(Elm_Genlist_Item *item,
 
     b->icon = eina_stringshare_add(icon);
     b->label = eina_stringshare_add(label);
+    b->label2 = eina_stringshare_add(label2);
     b->func = func;
     b->func_data = func_data;
     b->type = type;
@@ -188,6 +190,7 @@ _list_item_buttons_create_all(const Item_Data *id)
             break;
         case ENNA_TOGGLE:
             o = elm_toggle_add(enna->layout);
+            elm_toggle_states_labels_set(o, b->label, b->label2);
             break;
         case ENNA_CHECKBOX:
             o = elm_check_add(enna->layout);
@@ -282,6 +285,7 @@ _list_item_del(const void *data, Evas_Object *obj)
         if (b->input_listener)
             enna_input_listener_del(b->input_listener);
         ENNA_STRINGSHARE_DEL(b->label);
+        ENNA_STRINGSHARE_DEL(b->label2);
         ENNA_STRINGSHARE_DEL(b->icon);
         ENNA_FREE(b);
     }
@@ -410,15 +414,15 @@ enna_list2_item_button_add(Elm_Genlist_Item *item,
                            const char *icon, const char *label,
                            void (*func) (void *data,Enna_View_List2_Widget *widget), void *func_data)
 {
-    return _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_BUTTON, EINA_FALSE);
+    return _enna_list_item_widget_add(item, icon, label, NULL, func, func_data, ENNA_BUTTON, EINA_FALSE);
 }
 
 Enna_View_List2_Widget * //TODO to finish
 enna_list2_item_toggle_add(Elm_Genlist_Item *item,
-                           const char *icon, const char *label,
+                           const char *icon, const char *onlabel, const char *offlabel,
                            void (*func) (void *data, Enna_View_List2_Widget *widget), void *func_data)
 {
-    return _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_TOGGLE, EINA_FALSE);
+    return _enna_list_item_widget_add(item, icon, onlabel, offlabel, func, func_data, ENNA_TOGGLE, EINA_FALSE);
 }
 
 Enna_View_List2_Widget *
@@ -426,7 +430,7 @@ enna_list2_item_check_add(Elm_Genlist_Item *item,
                           const char *icon, const char *label, Eina_Bool status,
                           void (*func) (void *data, Enna_View_List2_Widget *widget), void *func_data)
 {
-    return _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_CHECKBOX, status);
+    return _enna_list_item_widget_add(item, icon, label, NULL,  func, func_data, ENNA_CHECKBOX, status);
 }
 
 Enna_View_List2_Widget *
@@ -434,7 +438,7 @@ enna_list2_item_entry_add(Elm_Genlist_Item *item,
                           const char *icon, const char *label,
                           void (*func) (void *data, Enna_View_List2_Widget *widget), void *func_data)
 {
-    return _enna_list_item_widget_add(item, icon, label, func, func_data, ENNA_ENTRY, EINA_FALSE);
+    return _enna_list_item_widget_add(item, icon, label, NULL, func, func_data, ENNA_ENTRY, EINA_FALSE);
 }
 
 void
