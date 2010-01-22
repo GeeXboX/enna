@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-01-19 19:54+0100\n"
-"PO-Revision-Date: 2010-01-10 23:32+0100\n"
+"PO-Revision-Date: 2010-01-22 13:37+0100\n"
 "Last-Translator: Guillaume LECERF <fox@geexbox.org>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -17,12 +17,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/bin/browser.c:549
-#, fuzzy
 msgid "No media found!"
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
 #: src/bin/browser.c:706
-#, fuzzy
 msgid "Main menu"
 msgstr "Menu Principal"
 
@@ -34,10 +32,10 @@ msgstr "Enna MediaCenter\n"
 #: src/bin/enna.c:449
 #, c-format
 msgid " Usage: %s [options ...]\n"
-msgstr " Usage: %s [options ...]\n"
+msgstr " Usage : %s [options ...]\n"
 
 #: src/bin/enna.c:450
-#, fuzzy, c-format
+#, c-format
 msgid " Available options:\n"
 msgstr " Options disponibles :\n"
 
@@ -48,7 +46,7 @@ msgstr ""
 "  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
 
 #: src/bin/enna.c:452
-#, fuzzy, c-format
+#, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs) :       Force le mode plein écran.\n"
 
@@ -75,17 +73,14 @@ msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version) :  Affiche le numéro de version d'Enna.\n"
 
 #: src/bin/exit.c:93
-#, fuzzy
 msgid "Are you sure you want to quit Enna?"
 msgstr "Souhaitez-vous réellement quitter Enna ?"
 
 #: src/bin/exit.c:148
-#, fuzzy
 msgid "Yes, quit Enna"
 msgstr "Oui, quitter Enna"
 
 #: src/bin/exit.c:151
-#, fuzzy
 msgid "No, continue using Enna"
 msgstr "Non, continuer d'utiliser Enna"
 
@@ -104,7 +99,6 @@ msgstr "Piste #%02d (%02d:%02d)"
 
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:351
-#, fuzzy
 msgid "Bookstore"
 msgstr "Bibliothèque"
 
@@ -118,13 +112,11 @@ msgid "Configuration"
 msgstr "Configuration"
 
 #: src/modules/activity/configuration/configuration.c:241
-#, fuzzy
 msgid "This module creates the Enna configuration panel"
-msgstr "Ce module crée le panneau de contrôle d'Enna (ne pas décharger)"
+msgstr "Ce module crée le panneau de contrôle d'Enna"
 
 #: src/modules/activity/configuration/configuration.c:256
 #: src/modules/activity/configuration/configuration_sysinfo.c:511
-#, fuzzy
 msgid "System information"
 msgstr "Informations Systèmes"
 
@@ -133,7 +125,6 @@ msgid "Credits"
 msgstr "Crédits"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
-#, fuzzy
 msgid "Enna is a GeeXboX-team MediaCenter"
 msgstr "Enna MediaCenter"
 
@@ -142,126 +133,112 @@ msgid "based on Enlightenment Foundation Librairies (EFL)."
 msgstr "basé sur les Enlightenment Foundation Librairies (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
-#, fuzzy
 msgid "Credits go to:"
-msgstr "Les remerciements vont à : <br>"
+msgstr "Les remerciements vont à :"
 
 #: src/modules/activity/configuration/configuration_credits.c:53
 msgid "and"
 msgstr "et"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:97
-#, fuzzy
 msgid "Enna information"
-msgstr "Informations Systèmes"
+msgstr "Informations sur Enna"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:99
 msgid "Enna:"
-msgstr ""
+msgstr "Enna :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:109
 msgid "Video renderer:"
-msgstr ""
+msgstr "Moteur de rendu vidéo :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:170
 msgid "Distribution:"
-msgstr ""
+msgstr "Distribution :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:192
 msgid "OS:"
-msgstr ""
+msgstr "Système d'exploitation :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:200
 msgid "for"
-msgstr ""
+msgstr "pour"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:217
-#, fuzzy
 msgid "Available CPUs:"
-msgstr " Options disponibles :\n"
+msgstr "Processeurs disponibles :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:248
-#, fuzzy
 msgid ", running at"
-msgstr ", tournant à %d MHz"
+msgstr ", tournant à"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:277
 msgid "CPU Load:"
-msgstr ""
+msgstr "Charge processeur :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:321
-#, fuzzy
 msgid "Memory:"
-msgstr "MemoryStick"
+msgstr "Mémoire :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:323
 msgid "used on"
-msgstr ""
+msgstr "utilisés sur"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:325
 msgid "total"
-msgstr ""
+msgstr "disponibles"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:363
-#, fuzzy
 msgid "Screen resolution:"
-msgstr "<hilight>Résolution d'écran : </hilight>"
+msgstr "Résolution de l'écran :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:366
-#, fuzzy
 msgid "at"
-msgstr "Données"
+msgstr "à"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:368
 msgid "min:"
-msgstr ""
+msgstr "min :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "max:"
-msgstr ""
+msgstr "max :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:383
-#, fuzzy
 msgid "VDR:"
-msgstr "DVD-R"
+msgstr "VDR :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:386
-#, fuzzy
 msgid "connected to VDR"
-msgstr "connecté à VDR %s sur %s (%s)<br>"
+msgstr "connecté à VDR"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:389
 msgid "on"
-msgstr ""
+msgstr "sur"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:394
-#, fuzzy
 msgid "not connected"
-msgstr "non connecté<br>"
+msgstr "non connecté"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:409
-#, fuzzy
 msgid "Available network interfaces:"
-msgstr "<hilight>Interfaces réseau disponibles :</hilight><br>"
+msgstr "Interfaces réseau disponibles :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:436
-#, fuzzy
 msgid "IP:"
-msgstr "ZIP"
+msgstr "IP :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:443
-#, fuzzy
 msgid "Netmask:"
-msgstr "Masque de sous-réseau: %s)<br>"
+msgstr "Masque de sous-réseau :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:468
 msgid "Default gateway:"
-msgstr ""
+msgstr "Passerelle par défaut :"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:496
-#, fuzzy
 msgid "None"
-msgstr "Aucun<br>"
+msgstr "Aucun"
 
 #: src/modules/activity/games/games.c:308
 #: src/modules/activity/games/games.c:336
@@ -269,7 +246,6 @@ msgid "Games"
 msgstr "Jeux"
 
 #: src/modules/activity/games/games.c:338
-#, fuzzy
 msgid "Play all your games directly from Enna"
 msgstr ""
 "Au travers de ce module, vous pouvez démarrer vos jeux directement depuis "
@@ -286,9 +262,8 @@ msgid "Music"
 msgstr "Musique"
 
 #: src/modules/activity/music/music.c:493
-#, fuzzy
 msgid "Listen to your music"
-msgstr "Ecouter un podcast"
+msgstr "Ecoutez votre musique"
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
@@ -300,7 +275,6 @@ msgid "Photo"
 msgstr "Photo"
 
 #: src/modules/activity/photo/photo.c:397
-#, fuzzy
 msgid "Browse your photos and create slideshows"
 msgstr "Visualisez vos photos au travers d'un mur d'images ou un diaporama"
 
@@ -325,7 +299,6 @@ msgid "Television"
 msgstr "Télévision"
 
 #: src/modules/activity/tv/tv.c:303
-#, fuzzy
 msgid "View TV channels"
 msgstr "Regardez les chaînes TV"
 
@@ -335,24 +308,23 @@ msgstr "Aucune information disponible ..."
 
 #: src/modules/activity/video/video_infos.c:129
 msgid "Director:"
-msgstr ""
+msgstr "Réalisateur :"
 
 #: src/modules/activity/video/video_infos.c:136
 msgid "Cast:"
-msgstr ""
+msgstr "Casting :"
 
 #: src/modules/activity/video/video_infos.c:158
-#, fuzzy
 msgid "Video:"
-msgstr "Vidéo"
+msgstr "Vidéo :"
 
 #: src/modules/activity/video/video_infos.c:181
 msgid "Audio:"
-msgstr ""
+msgstr "Audio :"
 
 #: src/modules/activity/video/video_infos.c:196
 msgid "Size:"
-msgstr ""
+msgstr "Taille :"
 
 #: src/modules/activity/video/video_infos.c:204
 msgid "No further information can be retrieved"
@@ -370,14 +342,13 @@ msgstr "Vidéo"
 
 #: src/modules/activity/video/video.c:993
 msgid "Play your videos"
-msgstr ""
+msgstr "Lisez vos vidéos"
 
 #: src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Météo"
 
 #: src/modules/activity/weather/weather.c:301
-#, fuzzy
 msgid "Weather forecasts"
 msgstr "Météo"
 
@@ -386,16 +357,14 @@ msgid "Show the weather at your location"
 msgstr "Affichez la météo depuis votre emplacement"
 
 #: src/modules/browser/cdda/cdda.c:95
-#, fuzzy
 msgid "Play audio CD"
-msgstr "Ecouter un CD Audio"
+msgstr "Ecoutez un CD Audio"
 
 #: src/modules/browser/cdda/cdda.c:138
 msgid "CDDA module"
 msgstr "Module CDDA"
 
 #: src/modules/browser/cdda/cdda.c:140
-#, fuzzy
 msgid "Listen your favorite CDs"
 msgstr "Ecoutez vos CD préférés"
 
@@ -404,14 +373,12 @@ msgid "Play"
 msgstr "Lecture"
 
 #: src/modules/browser/dvd/dvd.c:65
-#, fuzzy
 msgid "Play (with menus)"
-msgstr "Lecture (avec menus interractifs)"
+msgstr "Lecture (avec menus interactifs)"
 
 #: src/modules/browser/dvd/dvd.c:91
-#, fuzzy
 msgid "Watch DVD video"
-msgstr "Regarder un DVD Vidéo"
+msgstr "Regardez un DVD Vidéo"
 
 #: src/modules/browser/dvd/dvd.c:136
 msgid "DVD module"
@@ -424,13 +391,12 @@ msgstr "Regardez vos DVD"
 #: src/modules/browser/localfiles/localfiles.c:494
 #: src/modules/browser/localfiles/localfiles.c:512
 #: src/modules/browser/localfiles/localfiles.c:530
-#, fuzzy
 msgid "Browse local devices"
-msgstr "Parcourir les disques locaux"
+msgstr "Parcourez les disques locaux"
 
 #: src/modules/browser/localfiles/localfiles.c:684
 msgid "Browse local files"
-msgstr "Parcourir les disques locaux"
+msgstr "Parcourez les fichiers locaux"
 
 #: src/modules/browser/localfiles/localfiles.c:686
 msgid "Browse files in your local file systems"
@@ -438,23 +404,20 @@ msgstr "Parcourez les fichiers de votre disque dur"
 
 #: src/modules/browser/netstreams/netstreams.c:322
 #: src/modules/browser/netstreams/netstreams.c:338
-#, fuzzy
 msgid "Browse network streams"
-msgstr "Parcourir les flux réseau"
+msgstr "Parcourez les flux réseau"
 
 #: src/modules/browser/netstreams/netstreams.c:409
 msgid "Netstreams"
 msgstr "Flux réseaux"
 
 #: src/modules/browser/netstreams/netstreams.c:411
-#, fuzzy
 msgid "Browse and play network streams"
-msgstr "Parcourir les flux réseau"
+msgstr "Parcourez et jouez les flux réseau"
 
 #: src/modules/browser/podcasts/podcasts.c:329
-#, fuzzy
 msgid "Listen to podcasts"
-msgstr "Ecouter un podcast"
+msgstr "Ecoutez un podcast"
 
 #: src/modules/browser/podcasts/podcasts.c:391
 msgid "Podcast browser"
@@ -465,23 +428,19 @@ msgid "Podcast module"
 msgstr "Module Podcast"
 
 #: src/modules/browser/shoutcast/shoutcast.c:173
-#, fuzzy
 msgid "SHOUTcast streaming"
 msgstr "Flux SHOUTcast"
 
 #: src/modules/browser/shoutcast/shoutcast.c:197
-#, fuzzy
 msgid "SHOUTcast browser"
 msgstr "Explorateur de SHOUTcast"
 
 #: src/modules/browser/shoutcast/shoutcast.c:199
-#, fuzzy
 msgid "Listen to SHOUTcast stream"
-msgstr "Ecouter un podcast"
+msgstr "Ecoutez un flux SHOUTcast"
 
 #: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
-#, fuzzy
 msgid "UPnP/DLNA media servers"
 msgstr "Serveurs Multimédia UPnP/DLNA"
 
@@ -491,12 +450,10 @@ msgid "Found new UPnP device '%s (%s)'"
 msgstr "Découverte d'un nouveau périphérique UPnP '%s (%s)'"
 
 #: src/modules/browser/upnp/upnp.c:585
-#, fuzzy
 msgid "UPnP/DLNA module"
 msgstr "Module UPnP / DLNA"
 
 #: src/modules/browser/upnp/upnp.c:587
-#, fuzzy
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 "Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
@@ -504,7 +461,7 @@ msgstr ""
 
 #: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
-msgstr ""
+msgstr "Auteurs"
 
 #: src/modules/browser/valhalla/valhalla.c:149
 msgid "Artists"
@@ -520,15 +477,15 @@ msgstr "Genres"
 
 #: src/modules/browser/valhalla/valhalla.c:173
 msgid "Categories"
-msgstr ""
+msgstr "Catégories"
 
 #: src/modules/browser/valhalla/valhalla.c:178
 msgid "Directors"
-msgstr ""
+msgstr "Réalisateurs"
 
 #: src/modules/browser/valhalla/valhalla.c:183
 msgid "Years"
-msgstr ""
+msgstr "Années"
 
 #: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
@@ -540,11 +497,10 @@ msgstr "Module Valhalla"
 
 #: src/modules/browser/valhalla/valhalla.c:655
 msgid "Build a browseable catalog of your media files"
-msgstr ""
+msgstr "Construisez un catalogue navigable de vos fichiers multimédia"
 
 #: src/modules/browser/valhalla/valhalla.c:663
 #: src/modules/browser/valhalla/valhalla.c:680
-#, fuzzy
 msgid "Media library"
 msgstr "Bibliothèque Multimédia"
 
@@ -652,16 +608,15 @@ msgstr "Volumes via mtab"
 
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module provide support for already mounted volumes"
-msgstr ""
+msgstr "Ce module prends en charge les volumes montés"
 
 #: src/modules/volume/udev/udev.c:664
-#, fuzzy
 msgid "Volumes from udev"
-msgstr "Volumes via mtab"
+msgstr "Volumes via udev"
 
 #: src/modules/volume/udev/udev.c:666
 msgid "This module provide support for removable volumes"
-msgstr ""
+msgstr "Ce module prends en charge les volumes amovibles"
 
 #, fuzzy
 #~ msgid "This module gets volumes from the mtab file"
