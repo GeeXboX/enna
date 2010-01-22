@@ -434,7 +434,7 @@ get_network(buffer_t *b)
         /* show the device name and IP address */
         buffer_appendf(b, "  * %s (", item->ifr_name);
         buffer_append(b, _("IP:"));
-	buffer_appendf(b, "%s, ",
+	buffer_appendf(b, " %s, ",
                  inet_ntoa(((struct sockaddr_in *) &item->ifr_addr)->sin_addr));
 
         if (ioctl(s, SIOCGIFNETMASK, item) < 0)
