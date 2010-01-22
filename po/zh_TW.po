@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-17 10:15+0100\n"
+"POT-Creation-Date: 2010-01-19 19:54+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -28,47 +28,47 @@ msgstr "沒有發現任何媒體!"
 msgid "Main menu"
 msgstr "主選單"
 
-#: src/bin/enna.c:444
+#: src/bin/enna.c:448
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna 媒體中心\n"
 
-#: src/bin/enna.c:445
+#: src/bin/enna.c:449
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " 用法：%s [選項...]\n"
 
-#: src/bin/enna.c:446
+#: src/bin/enna.c:450
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr "可選項:\n"
 
-#: src/bin/enna.c:447
+#: src/bin/enna.c:451
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置檔。\n"
 
-#: src/bin/enna.c:448
+#: src/bin/enna.c:452
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      強制全螢幕顯示。\n"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:453
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    顯示這個說明。\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:454
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   指定要使用的佈景。\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:455
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定視窗大小。 (geometry=1280x720)\n"
 
-#: src/bin/enna.c:452
+#: src/bin/enna.c:456
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): 顯示 Enna 的版本。\n"
@@ -415,11 +415,11 @@ msgstr ""
 msgid "Browse local devices"
 msgstr "瀏灠本機裝置"
 
-#: src/modules/browser/localfiles/localfiles.c:674
+#: src/modules/browser/localfiles/localfiles.c:684
 msgid "Browse local files"
 msgstr "瀏灠本機檔案"
 
-#: src/modules/browser/localfiles/localfiles.c:676
+#: src/modules/browser/localfiles/localfiles.c:686
 #, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "瀏灠本機硬碟上的檔案"
@@ -479,35 +479,48 @@ msgstr ""
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:129
+#: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:136
+#: src/modules/browser/valhalla/valhalla.c:149
 msgid "Artists"
 msgstr "藝人"
 
-#: src/modules/browser/valhalla/valhalla.c:143
+#: src/modules/browser/valhalla/valhalla.c:156
 msgid "Albums"
 msgstr "專輯"
 
-#: src/modules/browser/valhalla/valhalla.c:148
+#: src/modules/browser/valhalla/valhalla.c:161
 msgid "Genres"
 msgstr "類別"
 
-#: src/modules/browser/valhalla/valhalla.c:155
+#: src/modules/browser/valhalla/valhalla.c:173
+msgid "Categories"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:178
+msgid "Directors"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:183
+msgid "Years"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
 msgstr "沒有被分類的"
 
-#: src/modules/browser/valhalla/valhalla.c:559
+#: src/modules/browser/valhalla/valhalla.c:653
 msgid "Valhalla module"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:561
+#: src/modules/browser/valhalla/valhalla.c:655
 msgid "Build a browseable catalog of your media files"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:569
+#: src/modules/browser/valhalla/valhalla.c:663
+#: src/modules/browser/valhalla/valhalla.c:680
 #, fuzzy
 msgid "Media library"
 msgstr "媒體資料庫"

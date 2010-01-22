@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-17 10:15+0100\n"
+"POT-Creation-Date: 2010-01-19 19:54+0100\n"
 "PO-Revision-Date: 2010-01-13 22:45-0300\n"
 "Last-Translator: André Luís de Andrade Mendes <andreluis.mendes+poedit@gmail."
 "com>\n"
@@ -27,49 +27,49 @@ msgstr "Nenhum arquivo multimídia foi encontrado!"
 msgid "Main menu"
 msgstr "Menu Principal"
 
-#: src/bin/enna.c:444
+#: src/bin/enna.c:448
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:445
+#: src/bin/enna.c:449
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opções ...]\n"
 
-#: src/bin/enna.c:446
+#: src/bin/enna.c:450
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Opções disponíveis:\n"
 
-#: src/bin/enna.c:447
+#: src/bin/enna.c:451
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 "  -c, (--config):   Especifique o arquivo de configuração a ser utilizado.\n"
 
-#: src/bin/enna.c:448
+#: src/bin/enna.c:452
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):       Forçar modo de tela cheia.\n"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:453
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     Mostra esta ajuda.\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:454
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    Especifique o nome do tema a ser usado.\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:455
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): Especifique a resolução da janela. (geometria=1280x720)\n"
 
-#: src/bin/enna.c:452
+#: src/bin/enna.c:456
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  Mostra o número da versão do Enna.\n"
@@ -428,11 +428,11 @@ msgstr "Veja os filmes de DVD"
 msgid "Browse local devices"
 msgstr "Navegar através dos discos locais"
 
-#: src/modules/browser/localfiles/localfiles.c:674
+#: src/modules/browser/localfiles/localfiles.c:684
 msgid "Browse local files"
 msgstr "Navegar através dos arquivos locais"
 
-#: src/modules/browser/localfiles/localfiles.c:676
+#: src/modules/browser/localfiles/localfiles.c:686
 msgid "Browse files in your local file systems"
 msgstr "Navegar através dos arquivos do seu sistema de arquivos local"
 
@@ -501,35 +501,48 @@ msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 "Este módulo permite ao Enna explorar o conteúdo dos servidores UPNP / DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:129
+#: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:136
+#: src/modules/browser/valhalla/valhalla.c:149
 msgid "Artists"
 msgstr "Artistas"
 
-#: src/modules/browser/valhalla/valhalla.c:143
+#: src/modules/browser/valhalla/valhalla.c:156
 msgid "Albums"
 msgstr "Álbuns"
 
-#: src/modules/browser/valhalla/valhalla.c:148
+#: src/modules/browser/valhalla/valhalla.c:161
 msgid "Genres"
 msgstr "Gêneros"
 
-#: src/modules/browser/valhalla/valhalla.c:155
+#: src/modules/browser/valhalla/valhalla.c:173
+msgid "Categories"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:178
+msgid "Directors"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:183
+msgid "Years"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
 msgstr "Não classificados"
 
-#: src/modules/browser/valhalla/valhalla.c:559
+#: src/modules/browser/valhalla/valhalla.c:653
 msgid "Valhalla module"
 msgstr "Módulo Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:561
+#: src/modules/browser/valhalla/valhalla.c:655
 msgid "Build a browseable catalog of your media files"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:569
+#: src/modules/browser/valhalla/valhalla.c:663
+#: src/modules/browser/valhalla/valhalla.c:680
 #, fuzzy
 msgid "Media library"
 msgstr "Biblioteca Multimídia"

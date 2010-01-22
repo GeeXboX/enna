@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-17 10:15+0100\n"
+"POT-Creation-Date: 2010-01-19 19:54+0100\n"
 "PO-Revision-Date: 2010-01-10 23:32+0100\n"
 "Last-Translator: Guillaume LECERF <fox@geexbox.org>\n"
 "Language-Team: French\n"
@@ -26,50 +26,50 @@ msgstr "Aucun contenu multimédia ne semble disponible !"
 msgid "Main menu"
 msgstr "Menu Principal"
 
-#: src/bin/enna.c:444
+#: src/bin/enna.c:448
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:445
+#: src/bin/enna.c:449
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Usage: %s [options ...]\n"
 
-#: src/bin/enna.c:446
+#: src/bin/enna.c:450
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Options disponibles :\n"
 
-#: src/bin/enna.c:447
+#: src/bin/enna.c:451
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 "  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
 
-#: src/bin/enna.c:448
+#: src/bin/enna.c:452
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs) :       Force le mode plein écran.\n"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:453
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help) :     Affiche cette aide.\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:454
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme) :    Spécifie le nom du thème à utiliser.\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:455
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry) : Spécifie la résolution de la fenêtre. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:452
+#: src/bin/enna.c:456
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version) :  Affiche le numéro de version d'Enna.\n"
@@ -428,11 +428,11 @@ msgstr "Regardez vos DVD"
 msgid "Browse local devices"
 msgstr "Parcourir les disques locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:674
+#: src/modules/browser/localfiles/localfiles.c:684
 msgid "Browse local files"
 msgstr "Parcourir les disques locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:676
+#: src/modules/browser/localfiles/localfiles.c:686
 msgid "Browse files in your local file systems"
 msgstr "Parcourez les fichiers de votre disque dur"
 
@@ -502,35 +502,48 @@ msgstr ""
 "Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
 "compatibles UPNP / DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:129
+#: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:136
+#: src/modules/browser/valhalla/valhalla.c:149
 msgid "Artists"
 msgstr "Artistes"
 
-#: src/modules/browser/valhalla/valhalla.c:143
+#: src/modules/browser/valhalla/valhalla.c:156
 msgid "Albums"
 msgstr "Albums"
 
-#: src/modules/browser/valhalla/valhalla.c:148
+#: src/modules/browser/valhalla/valhalla.c:161
 msgid "Genres"
 msgstr "Genres"
 
-#: src/modules/browser/valhalla/valhalla.c:155
+#: src/modules/browser/valhalla/valhalla.c:173
+msgid "Categories"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:178
+msgid "Directors"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:183
+msgid "Years"
+msgstr ""
+
+#: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
 msgstr "Non Classé"
 
-#: src/modules/browser/valhalla/valhalla.c:559
+#: src/modules/browser/valhalla/valhalla.c:653
 msgid "Valhalla module"
 msgstr "Module Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:561
+#: src/modules/browser/valhalla/valhalla.c:655
 msgid "Build a browseable catalog of your media files"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:569
+#: src/modules/browser/valhalla/valhalla.c:663
+#: src/modules/browser/valhalla/valhalla.c:680
 #, fuzzy
 msgid "Media library"
 msgstr "Bibliothèque Multimédia"
