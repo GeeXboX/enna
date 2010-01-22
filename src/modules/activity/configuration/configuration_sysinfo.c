@@ -323,7 +323,7 @@ get_ram_usage(buffer_t *b)
     buffer_append(b, _("used on"));
     buffer_appendf(b, " %d MB ", mem_total);
     buffer_append(b, _("total"));
-    buffer_appendf(b, " (%d%%)</hilight> %d MB<br>", mem_total,
+    buffer_appendf(b, " (%d%%)</hilight><br>",
                    (int) (mem_active * 100 / mem_total));
     fclose(f);
 }
