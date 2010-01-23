@@ -3,13 +3,13 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 #  <sword.huang@gmail.com>, 2010.
-#
+# 
 # msgfmt zh_TW.po -o zh_TW.gmo
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-19 19:54+0100\n"
+"POT-Creation-Date: 2010-01-17 10:15+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -19,72 +19,67 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/bin/browser.c:549
-#, fuzzy
 msgid "No media found!"
 msgstr "沒有發現任何媒體!"
 
 #: src/bin/browser.c:706
-#, fuzzy
 msgid "Main menu"
 msgstr "主選單"
 
-#: src/bin/enna.c:448
+#: src/bin/enna.c:444
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna 媒體中心\n"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:445
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " 用法：%s [選項...]\n"
 
-#: src/bin/enna.c:450
-#, fuzzy, c-format
+#: src/bin/enna.c:446
+#, c-format
 msgid " Available options:\n"
 msgstr "可選項:\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:447
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置檔。\n"
 
-#: src/bin/enna.c:452
-#, fuzzy, c-format
+#: src/bin/enna.c:448
+#, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      強制全螢幕顯示。\n"
 
-#: src/bin/enna.c:453
+#: src/bin/enna.c:449
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    顯示這個說明。\n"
 
-#: src/bin/enna.c:454
+#: src/bin/enna.c:450
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   指定要使用的佈景。\n"
 
-#: src/bin/enna.c:455
+#: src/bin/enna.c:451
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定視窗大小。 (geometry=1280x720)\n"
 
-#: src/bin/enna.c:456
+#: src/bin/enna.c:452
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): 顯示 Enna 的版本。\n"
 
 #: src/bin/exit.c:93
-#, fuzzy
 msgid "Are you sure you want to quit Enna?"
 msgstr "你確定要離開 Enna?"
 
 #: src/bin/exit.c:148
-#, fuzzy
 msgid "Yes, quit Enna"
 msgstr "是! 我要離開 Enna。"
 
 #: src/bin/exit.c:151
-#, fuzzy
 msgid "No, continue using Enna"
 msgstr "不! 我要繼續使用 Enna"
 
@@ -122,7 +117,6 @@ msgstr ""
 
 #: src/modules/activity/configuration/configuration.c:256
 #: src/modules/activity/configuration/configuration_sysinfo.c:511
-#, fuzzy
 msgid "System information"
 msgstr "系統資訊"
 
@@ -131,31 +125,28 @@ msgid "Credits"
 msgstr "感謝"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
-#, fuzzy
 msgid "Enna is a GeeXboX-team MediaCenter"
-msgstr "Enna is GeeXboX's team MediaCenter,"
+msgstr "Enna is GeeXboX-team MediaCenter"
 
 #: src/modules/activity/configuration/configuration_credits.c:47
 msgid "based on Enlightenment Foundation Librairies (EFL)."
 msgstr "based on Enlightenment Foundation Librairies (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
-#, fuzzy
 msgid "Credits go to:"
-msgstr "感謝:<br>"
+msgstr "感謝:"
 
 #: src/modules/activity/configuration/configuration_credits.c:53
 msgid "and"
 msgstr "and"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:97
-#, fuzzy
 msgid "Enna information"
-msgstr "系統資訊"
+msgstr "Enna 資訊"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:99
 msgid "Enna:"
-msgstr ""
+msgstr "Enna:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:109
 msgid "Video renderer:"
@@ -163,33 +154,31 @@ msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:170
 msgid "Distribution:"
-msgstr ""
+msgstr "發行:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:192
 msgid "OS:"
-msgstr ""
+msgstr "作業系統:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:200
 msgid "for"
-msgstr ""
+msgstr "for"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:217
-#, fuzzy
 msgid "Available CPUs:"
-msgstr "可選項:\n"
+msgstr "有效的 CPU:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:248
-#, fuzzy
 msgid ", running at"
-msgstr ", running at %d MHz"
+msgstr ", running at"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:277
 msgid "CPU Load:"
-msgstr ""
+msgstr "CPU 負載:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:321
 msgid "Memory:"
-msgstr ""
+msgstr "記憶體:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:323
 msgid "used on"
@@ -200,27 +189,24 @@ msgid "total"
 msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:363
-#, fuzzy
 msgid "Screen resolution:"
-msgstr "<hilight>螢幕解析度: </hilight>"
+msgstr "螢幕解析度:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:366
-#, fuzzy
 msgid "at"
-msgstr "Data"
+msgstr "at"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:368
 msgid "min:"
-msgstr ""
+msgstr "最小:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "max:"
-msgstr ""
+msgstr "最大:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:383
-#, fuzzy
 msgid "VDR:"
-msgstr "DVD-R"
+msgstr "VDR:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:386
 #, fuzzy
@@ -229,7 +215,7 @@ msgstr "connected to VDR %s on %s (%s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:389
 msgid "on"
-msgstr ""
+msgstr "on"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:394
 #, fuzzy
@@ -243,21 +229,19 @@ msgstr "<hilight>有效的網路介面:</hilight><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "IP:"
-msgstr ""
+msgstr "IP:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:443
-#, fuzzy
 msgid "Netmask:"
-msgstr "Netmask: %s)<br>"
+msgstr "Netmask:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:468
 msgid "Default gateway:"
-msgstr ""
+msgstr "預設閘道:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:496
-#, fuzzy
 msgid "None"
-msgstr "None<br>"
+msgstr "None"
 
 #: src/modules/activity/games/games.c:308
 #: src/modules/activity/games/games.c:336
@@ -284,7 +268,7 @@ msgstr ""
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
-msgstr "沒有歌詞"
+msgstr "沒有歌詞..."
 
 #: src/modules/activity/photo/photo.c:367
 #: src/modules/activity/photo/photo.c:395
@@ -332,17 +316,16 @@ msgid "Cast:"
 msgstr ""
 
 #: src/modules/activity/video/video_infos.c:158
-#, fuzzy
 msgid "Video:"
-msgstr "影片"
+msgstr "影像:"
 
 #: src/modules/activity/video/video_infos.c:181
 msgid "Audio:"
-msgstr ""
+msgstr "聲音:"
 
 #: src/modules/activity/video/video_infos.c:196
 msgid "Size:"
-msgstr ""
+msgstr "尺寸:"
 
 #: src/modules/activity/video/video_infos.c:204
 msgid "No further information can be retrieved"
@@ -360,7 +343,7 @@ msgstr "影片"
 
 #: src/modules/activity/video/video.c:993
 msgid "Play your videos"
-msgstr ""
+msgstr "播放你的影片"
 
 #: src/modules/activity/weather/weather.c:273
 msgid "Weather"
@@ -382,7 +365,7 @@ msgstr "播放音樂光碟"
 
 #: src/modules/browser/cdda/cdda.c:138
 msgid "CDDA module"
-msgstr ""
+msgstr "CDDA 模組"
 
 #: src/modules/browser/cdda/cdda.c:140
 msgid "Listen your favorite CDs"
@@ -398,15 +381,15 @@ msgstr ""
 
 #: src/modules/browser/dvd/dvd.c:91
 msgid "Watch DVD video"
-msgstr ""
+msgstr "觀看 DVD 影片"
 
 #: src/modules/browser/dvd/dvd.c:136
 msgid "DVD module"
-msgstr ""
+msgstr "DVD 模組"
 
 #: src/modules/browser/dvd/dvd.c:138
 msgid "Watch movies from DVD"
-msgstr ""
+msgstr "從 DVD 觀看電影"
 
 #: src/modules/browser/localfiles/localfiles.c:494
 #: src/modules/browser/localfiles/localfiles.c:512
@@ -415,11 +398,11 @@ msgstr ""
 msgid "Browse local devices"
 msgstr "瀏灠本機裝置"
 
-#: src/modules/browser/localfiles/localfiles.c:684
+#: src/modules/browser/localfiles/localfiles.c:674
 msgid "Browse local files"
 msgstr "瀏灠本機檔案"
 
-#: src/modules/browser/localfiles/localfiles.c:686
+#: src/modules/browser/localfiles/localfiles.c:676
 #, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "瀏灠本機硬碟上的檔案"
@@ -479,48 +462,35 @@ msgstr ""
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:142
+#: src/modules/browser/valhalla/valhalla.c:129
 msgid "Authors"
-msgstr ""
+msgstr "作者"
 
-#: src/modules/browser/valhalla/valhalla.c:149
+#: src/modules/browser/valhalla/valhalla.c:136
 msgid "Artists"
 msgstr "藝人"
 
-#: src/modules/browser/valhalla/valhalla.c:156
+#: src/modules/browser/valhalla/valhalla.c:143
 msgid "Albums"
 msgstr "專輯"
 
-#: src/modules/browser/valhalla/valhalla.c:161
+#: src/modules/browser/valhalla/valhalla.c:148
 msgid "Genres"
 msgstr "類別"
 
-#: src/modules/browser/valhalla/valhalla.c:173
-msgid "Categories"
-msgstr ""
-
-#: src/modules/browser/valhalla/valhalla.c:178
-msgid "Directors"
-msgstr ""
-
-#: src/modules/browser/valhalla/valhalla.c:183
-msgid "Years"
-msgstr ""
-
-#: src/modules/browser/valhalla/valhalla.c:193
+#: src/modules/browser/valhalla/valhalla.c:155
 msgid "Unclassified"
 msgstr "沒有被分類的"
 
-#: src/modules/browser/valhalla/valhalla.c:653
+#: src/modules/browser/valhalla/valhalla.c:559
 msgid "Valhalla module"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:655
+#: src/modules/browser/valhalla/valhalla.c:561
 msgid "Build a browseable catalog of your media files"
 msgstr ""
 
-#: src/modules/browser/valhalla/valhalla.c:663
-#: src/modules/browser/valhalla/valhalla.c:680
+#: src/modules/browser/valhalla/valhalla.c:569
 #, fuzzy
 msgid "Media library"
 msgstr "媒體資料庫"
@@ -666,7 +636,6 @@ msgstr ""
 #~ msgid "<hilight>libsvdrp: </hilight>%s<br>"
 #~ msgstr "<hilight>libsvdrp: </hilight>%s<br>"
 
-#, fuzzy
 #~ msgid "<hilight>Video Renderer:</hilight> %s"
 #~ msgstr "<hilight>記憶體: </hilight>"
 
