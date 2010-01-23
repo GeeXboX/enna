@@ -2,7 +2,7 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Igor Szymanski <szymanski.igor@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
@@ -470,16 +470,15 @@ msgstr "Gatunki"
 
 #: src/modules/browser/valhalla/valhalla.c:173
 msgid "Categories"
-msgstr ""
+msgstr "Kategorie"
 
 #: src/modules/browser/valhalla/valhalla.c:178
-#, fuzzy
 msgid "Directors"
-msgstr "Reżyser:"
+msgstr "Reżyserzy"
 
 #: src/modules/browser/valhalla/valhalla.c:183
 msgid "Years"
-msgstr ""
+msgstr "Lata"
 
 #: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
