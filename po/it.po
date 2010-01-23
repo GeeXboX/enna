@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-01-23 09:20+0100\n"
-"PO-Revision-Date: 2010-01-17 10:13+0100\n"
+"PO-Revision-Date: 2010-01-23 17:12+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -62,9 +62,7 @@ msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 #: src/bin/enna.c:455
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry): specifica la geometria della finestra. "
-"(geometry=1280x720)\n"
+msgstr "  -g, (--geometry): specifica la geometria della finestra. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:456
 #, c-format
@@ -291,7 +289,8 @@ msgstr "Sto registrando '%s'"
 msgid "Recording in progress"
 msgstr "Registrazione in corso"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:301
+#: src/modules/activity/tv/tv.c:154
+#: src/modules/activity/tv/tv.c:301
 msgid "Television"
 msgstr "Televisione"
 
@@ -436,7 +435,8 @@ msgstr "Browser SHOUTcast"
 msgid "Listen to SHOUTcast stream"
 msgstr "Ascolta flussi SHOUTcast"
 
-#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:480
+#: src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA media servers"
 msgstr "Media server UPnP/DLNA"
@@ -452,9 +452,7 @@ msgstr "Modulo UPnP/DLNA"
 
 #: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr ""
-"Questo modulo permette ad Enna di sfogliare contenuti da media server UPnP/"
-"DLNA"
+msgstr "Questo modulo permette ad Enna di sfogliare contenuti da media server UPnP/DLNA"
 
 #: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
@@ -474,16 +472,15 @@ msgstr "Generi"
 
 #: src/modules/browser/valhalla/valhalla.c:173
 msgid "Categories"
-msgstr ""
+msgstr "Categorie"
 
 #: src/modules/browser/valhalla/valhalla.c:178
-#, fuzzy
 msgid "Directors"
-msgstr "Regista:"
+msgstr "Registi"
 
 #: src/modules/browser/valhalla/valhalla.c:183
 msgid "Years"
-msgstr ""
+msgstr "Anni"
 
 #: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
@@ -615,3 +612,4 @@ msgstr "Volumi da udev"
 #: src/modules/volume/udev/udev.c:666
 msgid "This module provide support for removable volumes"
 msgstr "Questo modulo fornisce supporto per i volumi rimovibili"
+
