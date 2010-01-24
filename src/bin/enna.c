@@ -109,7 +109,8 @@ static int _idle_timer_cb(void *data)
 #ifdef BUILD_ECORE_X
 static void _mouse_display(int show)
 {
-    ecore_x_window_cursor_show(enna->ee_winid, show);
+    if (strcmp (enna_config->engine, "fb"))
+        ecore_x_window_cursor_show(enna->ee_winid, show);
     enna->cursor_is_shown = show;
 }
 
