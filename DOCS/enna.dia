@@ -1047,11 +1047,14 @@ Eina, Eet, Evas, Ecore, Edje, Elementary#</dia:string>
       <dia:attribute name="elem_height">
         <dia:real val="3"/>
       </dia:attribute>
+      <dia:attribute name="border_width">
+        <dia:real val="0.10000000149011612"/>
+      </dia:attribute>
       <dia:attribute name="border_color">
-        <dia:color val="#a020f0"/>
+        <dia:color val="#00ff00"/>
       </dia:attribute>
       <dia:attribute name="inner_color">
-        <dia:color val="#f0d7ff"/>
+        <dia:color val="#b6f6b6"/>
       </dia:attribute>
       <dia:attribute name="show_background">
         <dia:boolean val="true"/>
@@ -1126,7 +1129,7 @@ Metadata Engine#</dia:string>
             <dia:real val="0.80000000000000004"/>
           </dia:attribute>
           <dia:attribute name="pos">
-            <dia:point val="24.3697,6.09501"/>
+            <dia:point val="24.3697,6.095"/>
           </dia:attribute>
           <dia:attribute name="color">
             <dia:color val="#000000"/>
@@ -1243,11 +1246,14 @@ Metadata Engine#</dia:string>
       <dia:attribute name="elem_height">
         <dia:real val="3"/>
       </dia:attribute>
+      <dia:attribute name="border_width">
+        <dia:real val="0.10000000149011612"/>
+      </dia:attribute>
       <dia:attribute name="border_color">
-        <dia:color val="#a020f0"/>
+        <dia:color val="#00ff00"/>
       </dia:attribute>
       <dia:attribute name="inner_color">
-        <dia:color val="#f0d7ff"/>
+        <dia:color val="#b6f6b6"/>
       </dia:attribute>
       <dia:attribute name="show_background">
         <dia:boolean val="true"/>
@@ -1568,7 +1574,7 @@ Metadata Engine#</dia:string>
         <dia:point val="6,22"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="5.64841,19.9493;6.37972,22.0507"/>
+        <dia:rectangle val="5.64841,19.9493;6.37971,22.0507"/>
       </dia:attribute>
       <dia:attribute name="conn_endpoints">
         <dia:point val="6,22"/>
