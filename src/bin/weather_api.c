@@ -370,6 +370,37 @@ weather_google_search (weather_t *w)
 /*                      Configuration Panel section                         */
 /****************************************************************************/
 
+static void
+_weather_config_panel_city_remove_cb(void *data, Enna_View_List2_Widget *widget)
+{
+    printf("remove\n");
+    enna_list2_item_del(data);
+}
+
+static void
+_weather_config_panel_city_validate_cb(void *data, Enna_View_List2_Widget *widget)
+{
+}
+
+static void
+_weather_config_panel_city_add_cb(void *data, Enna_View_List2_Widget *widget)
+{
+    Elm_Genlist_Item *item;
+
+    item = enna_list2_item_insert_before(_o_cfg_panel,
+                                         data,
+                                         _("City"),
+                                         _("Choose your City"),
+                                         NULL,
+                                         NULL, NULL);
+    enna_list2_item_entry_add(item,
+                              NULL, _("Enter your City here"),
+                              _weather_config_panel_city_validate_cb, NULL);
+    enna_list2_item_button_add(item,
+                               NULL, _("Remove"),
+                               _weather_config_panel_city_remove_cb, item);
+}
+
 static Eina_Bool
 _weather_config_panel_input_events_cb(void *data, enna_input event)
 {
@@ -397,10 +428,10 @@ _weather_config_panel_show(void *data)
                                  NULL, NULL);
         enna_list2_item_entry_add(item,
                                   NULL, city,
-                                  NULL, NULL);
+                                  _weather_config_panel_city_validate_cb, NULL);
         enna_list2_item_button_add(item,
                                    NULL, _("Remove"),
-                                   NULL, NULL);
+                                   _weather_config_panel_city_remove_cb, item);
     }
 
     item = enna_list2_append(_o_cfg_panel,
@@ -409,9 +440,19 @@ _weather_config_panel_show(void *data)
                              NULL,
                              NULL, NULL);
 
-     enna_list2_item_button_add(item,
-                                NULL, _("Add"),
-                                NULL, NULL);
+    enna_list2_item_button_add(item,
+                               NULL, _("Add"),
+                               _weather_config_panel_city_add_cb, item);
+
+    item = enna_list2_append(_o_cfg_panel,
+                             _("Select unit"),
+                             _("Select the unit to display temperature"),
+                             NULL,
+                             NULL, NULL);
+
+    enna_list2_item_toggle_add(item,
+                               NULL, _("°C"), _("°F"),
+                               NULL, item);
 
     if (!_input_listener)
         _input_listener = enna_input_listener_add("configuration/weather",
@@ -438,7 +479,6 @@ cfg_weather_section_load (const char *section)
     Eina_List *cities;
     const char *unit = NULL;
 
-    printf("section: %s", section);
     cities = enna_config_string_list_get(section, "city");
     if (cities)
     {
