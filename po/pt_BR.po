@@ -2,12 +2,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Benjamin Zores <ben@geexbox.org>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-23 09:20+0100\n"
+"POT-Creation-Date: 2010-01-25 10:35+0100\n"
 "PO-Revision-Date: 2010-01-19 12:17-0300\n"
 "Last-Translator: André Luís de Andrade Mendes <andreluis.mendes+poedit@gmail."
 "com>\n"
@@ -25,49 +25,49 @@ msgstr "Nenhum arquivo multimídia encontrado!"
 msgid "Main menu"
 msgstr "Menu principal"
 
-#: src/bin/enna.c:448
+#: src/bin/enna.c:449
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:450
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opções ...]\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:451
 #, c-format
 msgid " Available options:\n"
 msgstr "Opções disponíveis:\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:452
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 "  -c, (--config):   Especifique o arquivo de configuração a ser utilizado.\n"
 
-#: src/bin/enna.c:452
+#: src/bin/enna.c:453
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
-msgstr "-f, (--fs):       Forçar modo de tela cheia.\n"
+msgstr "  -f, (--fs):       Forçar modo de tela cheia.\n"
 
-#: src/bin/enna.c:453
+#: src/bin/enna.c:454
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     Mostra esta ajuda.\n"
 
-#: src/bin/enna.c:454
+#: src/bin/enna.c:455
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    Especifique o nome do tema a ser usado.\n"
 
-#: src/bin/enna.c:455
+#: src/bin/enna.c:456
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): Especifique a resolução da janela. (geometria=1280x720)\n"
 
-#: src/bin/enna.c:456
+#: src/bin/enna.c:457
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  Mostra o número da versão do Enna.\n"
@@ -474,16 +474,15 @@ msgstr "Gêneros"
 
 #: src/modules/browser/valhalla/valhalla.c:173
 msgid "Categories"
-msgstr ""
+msgstr "Categorias"
 
 #: src/modules/browser/valhalla/valhalla.c:178
-#, fuzzy
 msgid "Directors"
-msgstr "Diretor:"
+msgstr "Diretores"
 
 #: src/modules/browser/valhalla/valhalla.c:183
 msgid "Years"
-msgstr ""
+msgstr "Anos"
 
 #: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
@@ -610,13 +609,12 @@ msgstr "Este módulo suporta os volumes já montados"
 
 #: src/modules/volume/udev/udev.c:664
 msgid "Volumes from udev"
-msgstr "Volumes do udev"
+msgstr "Volumes via udev"
 
 #: src/modules/volume/udev/udev.c:666
 msgid "This module provide support for removable volumes"
 msgstr "Este módulo suporta os volumes removíveis"
 
-#, fuzzy
 #~ msgid "This module gets volumes from the mtab file"
 #~ msgstr "Este módulo recupera a lista de volumes do arquivo mtab"
 
