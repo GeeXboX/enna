@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-23 09:20+0100\n"
+"POT-Creation-Date: 2010-01-25 10:35+0100\n"
 "PO-Revision-Date: 2010-01-23 17:12+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -24,47 +24,49 @@ msgstr "Nessun media trovato!"
 msgid "Main menu"
 msgstr "Menu principale"
 
-#: src/bin/enna.c:448
+#: src/bin/enna.c:449
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:450
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:451
 #, c-format
 msgid " Available options:\n"
 msgstr " Opzioni disponibili:\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:452
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:452
+#: src/bin/enna.c:453
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:453
+#: src/bin/enna.c:454
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:454
+#: src/bin/enna.c:455
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:455
+#: src/bin/enna.c:456
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "  -g, (--geometry): specifica la geometria della finestra. (geometry=1280x720)\n"
+msgstr ""
+"  -g, (--geometry): specifica la geometria della finestra. "
+"(geometry=1280x720)\n"
 
-#: src/bin/enna.c:456
+#: src/bin/enna.c:457
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
@@ -289,8 +291,7 @@ msgstr "Sto registrando '%s'"
 msgid "Recording in progress"
 msgstr "Registrazione in corso"
 
-#: src/modules/activity/tv/tv.c:154
-#: src/modules/activity/tv/tv.c:301
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:301
 msgid "Television"
 msgstr "Televisione"
 
@@ -435,8 +436,7 @@ msgstr "Browser SHOUTcast"
 msgid "Listen to SHOUTcast stream"
 msgstr "Ascolta flussi SHOUTcast"
 
-#: src/modules/browser/upnp/upnp.c:480
-#: src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA media servers"
 msgstr "Media server UPnP/DLNA"
@@ -452,7 +452,9 @@ msgstr "Modulo UPnP/DLNA"
 
 #: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr "Questo modulo permette ad Enna di sfogliare contenuti da media server UPnP/DLNA"
+msgstr ""
+"Questo modulo permette ad Enna di sfogliare contenuti da media server UPnP/"
+"DLNA"
 
 #: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
@@ -612,4 +614,3 @@ msgstr "Volumi da udev"
 #: src/modules/volume/udev/udev.c:666
 msgid "This module provide support for removable volumes"
 msgstr "Questo modulo fornisce supporto per i volumi rimovibili"
-

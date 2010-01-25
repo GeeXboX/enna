@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-23 09:20+0100\n"
+"POT-Creation-Date: 2010-01-25 10:35+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: George Koutsikos <ragecryx@yahoo.gr>\n"
 "Language-Team: Greece\n"
@@ -27,47 +27,47 @@ msgstr "Δεν βρέθηκαν αρχεία πολυμέσων!"
 msgid "Main menu"
 msgstr "Κεντρικό μενού"
 
-#: src/bin/enna.c:448
+#: src/bin/enna.c:449
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:450
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Χρήση: %s [επιλογές ...]\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:451
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr "Διαθέσιμες επιλογές:\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:452
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:452
+#: src/bin/enna.c:453
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr ""
 
-#: src/bin/enna.c:453
+#: src/bin/enna.c:454
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr ""
 
-#: src/bin/enna.c:454
+#: src/bin/enna.c:455
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:455
+#: src/bin/enna.c:456
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 
-#: src/bin/enna.c:456
+#: src/bin/enna.c:457
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr ""
