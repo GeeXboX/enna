@@ -3,13 +3,13 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 #  <sword.huang@gmail.com>, 2010.
-#
+# 
 # msgfmt zh_TW.po -o zh_TW.gmo
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-23 09:20+0100\n"
+"POT-Creation-Date: 2010-01-25 10:35+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -26,47 +26,47 @@ msgstr "沒有發現任何媒體!"
 msgid "Main menu"
 msgstr "主選單"
 
-#: src/bin/enna.c:448
+#: src/bin/enna.c:449
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna 媒體中心\n"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:450
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " 用法：%s [選項...]\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:451
 #, c-format
 msgid " Available options:\n"
 msgstr "可選項:\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:452
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置檔。\n"
 
-#: src/bin/enna.c:452
-#, c-format
-msgid "  -f, (--fs):      Force fullscreen mode.\n"
-msgstr "  -f, (--fs):      強制全螢幕顯示。\n"
-
 #: src/bin/enna.c:453
 #, c-format
-msgid "  -h, (--help):    Display this help.\n"
-msgstr "  -h, (--help):    顯示這個說明。\n"
+msgid "  -f, (--fs):      Force fullscreen mode.\n"
+msgstr "  -f, (--fs): 強制全螢幕顯示。\n"
 
 #: src/bin/enna.c:454
 #, c-format
-msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr "  -t, (--theme):   指定要使用的佈景。\n"
+msgid "  -h, (--help):    Display this help.\n"
+msgstr "  -h, (--help): 顯示這個說明。\n"
 
 #: src/bin/enna.c:455
 #, c-format
-msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "-g, (--geometry):指定視窗大小。 (geometry=1280x720)\n"
+msgid "  -t, (--theme):   Specify theme name to be used.\n"
+msgstr "  -t, (--theme): 指定要使用的佈景。\n"
 
 #: src/bin/enna.c:456
+#, c-format
+msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
+msgstr "-g, (--geometry):指定視窗大小。(geometry=1280x720)\n"
+
+#: src/bin/enna.c:457
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): 顯示 Enna 的版本。\n"
@@ -113,7 +113,7 @@ msgstr "配置"
 
 #: src/modules/activity/configuration/configuration.c:241
 msgid "This module creates the Enna configuration panel"
-msgstr ""
+msgstr "這個模組是用來建立Enna配置面板"
 
 #: src/modules/activity/configuration/configuration.c:256
 #: src/modules/activity/configuration/configuration_sysinfo.c:511
@@ -166,7 +166,7 @@ msgstr "for"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:217
 msgid "Available CPUs:"
-msgstr "有效的 CPU:"
+msgstr "可用的 CPU:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:248
 msgid ", running at"
@@ -186,7 +186,7 @@ msgstr ""
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:325
 msgid "total"
-msgstr ""
+msgstr "全部"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:363
 msgid "Screen resolution:"
@@ -209,9 +209,8 @@ msgid "VDR:"
 msgstr "VDR:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:386
-#, fuzzy
 msgid "connected to VDR"
-msgstr "connected to VDR %s on %s (%s)<br>"
+msgstr "connected to VDR"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:389
 msgid "on"
@@ -223,9 +222,8 @@ msgid "not connected"
 msgstr "沒有被連接<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:409
-#, fuzzy
 msgid "Available network interfaces:"
-msgstr "<hilight>有效的網路介面:</hilight><br>"
+msgstr "可用的網路介面:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "IP:"
@@ -250,12 +248,12 @@ msgstr "遊戲"
 
 #: src/modules/activity/games/games.c:338
 msgid "Play all your games directly from Enna"
-msgstr ""
+msgstr "直接由 Enna 玩你所有的遊戲"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
 msgid "%d Songs"
-msgstr ""
+msgstr "%d 歌曲"
 
 #: src/modules/activity/music/music.c:463
 #: src/modules/activity/music/music.c:491
@@ -264,7 +262,7 @@ msgstr "音樂"
 
 #: src/modules/activity/music/music.c:493
 msgid "Listen to your music"
-msgstr ""
+msgstr "聆聽你的音樂"
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
@@ -277,7 +275,7 @@ msgstr "照片"
 
 #: src/modules/activity/photo/photo.c:397
 msgid "Browse your photos and create slideshows"
-msgstr ""
+msgstr "瀏灠你的照片並建立幻燈片"
 
 #: src/modules/activity/tv/tv.c:102
 #, c-format
@@ -301,7 +299,7 @@ msgstr "電視"
 
 #: src/modules/activity/tv/tv.c:303
 msgid "View TV channels"
-msgstr ""
+msgstr "觀看電視頻道"
 
 #: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
@@ -334,7 +332,7 @@ msgstr ""
 #: src/modules/activity/video/video.c:132
 #, c-format
 msgid "%d Movies"
-msgstr ""
+msgstr "%d 電影"
 
 #: src/modules/activity/video/video.c:915
 #: src/modules/activity/video/video.c:991
@@ -369,7 +367,7 @@ msgstr "CDDA 模組"
 
 #: src/modules/browser/cdda/cdda.c:140
 msgid "Listen your favorite CDs"
-msgstr ""
+msgstr "聆聽你最愛的光碟"
 
 #: src/modules/browser/dvd/dvd.c:62
 msgid "Play"
@@ -377,7 +375,7 @@ msgstr "播放"
 
 #: src/modules/browser/dvd/dvd.c:65
 msgid "Play (with menus)"
-msgstr ""
+msgstr "播放(有選單)"
 
 #: src/modules/browser/dvd/dvd.c:91
 msgid "Watch DVD video"
@@ -410,57 +408,57 @@ msgstr "瀏灠本機硬碟上的檔案"
 #: src/modules/browser/netstreams/netstreams.c:322
 #: src/modules/browser/netstreams/netstreams.c:338
 msgid "Browse network streams"
-msgstr ""
+msgstr "瀏灠網路串流"
 
 #: src/modules/browser/netstreams/netstreams.c:409
 msgid "Netstreams"
-msgstr ""
+msgstr "網路串流"
 
 #: src/modules/browser/netstreams/netstreams.c:411
 msgid "Browse and play network streams"
-msgstr ""
+msgstr " 瀏灠並播放網路串流"
 
 #: src/modules/browser/podcasts/podcasts.c:329
 msgid "Listen to podcasts"
-msgstr ""
+msgstr "聆聽 podcasts"
 
 #: src/modules/browser/podcasts/podcasts.c:391
 msgid "Podcast browser"
-msgstr ""
+msgstr "Podcast 瀏灠器"
 
 #: src/modules/browser/podcasts/podcasts.c:393
 msgid "Podcast module"
-msgstr ""
+msgstr "Podcast 模組"
 
 #: src/modules/browser/shoutcast/shoutcast.c:173
 msgid "SHOUTcast streaming"
-msgstr ""
+msgstr "SHOUTcast 串流"
 
 #: src/modules/browser/shoutcast/shoutcast.c:197
 msgid "SHOUTcast browser"
-msgstr ""
+msgstr "SHOUTcast 瀏灠器"
 
 #: src/modules/browser/shoutcast/shoutcast.c:199
 msgid "Listen to SHOUTcast stream"
-msgstr ""
+msgstr "聆聽 SHOUTcast 串流"
 
 #: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
 #: src/modules/browser/upnp/upnp.c:516
 msgid "UPnP/DLNA media servers"
-msgstr ""
+msgstr "UPnP/DLNA 媒體伺服器"
 
 #: src/modules/browser/upnp/upnp.c:571
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
-msgstr ""
+msgstr "發現新的 UPnP 裝置 '%s (%s)'"
 
 #: src/modules/browser/upnp/upnp.c:585
 msgid "UPnP/DLNA module"
-msgstr ""
+msgstr "UPnP/DLNA 模組"
 
 #: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr ""
+msgstr "這個模組讓 Enna 能夠瀏灠 UPnP/DLNA 上的內容"
 
 #: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
@@ -480,7 +478,7 @@ msgstr "類別"
 
 #: src/modules/browser/valhalla/valhalla.c:173
 msgid "Categories"
-msgstr ""
+msgstr "分類"
 
 #: src/modules/browser/valhalla/valhalla.c:178
 msgid "Directors"
@@ -488,7 +486,7 @@ msgstr ""
 
 #: src/modules/browser/valhalla/valhalla.c:183
 msgid "Years"
-msgstr ""
+msgstr "年份"
 
 #: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
