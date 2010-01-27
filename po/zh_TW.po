@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-25 10:35+0100\n"
+"POT-Creation-Date: 2010-01-27 16:25+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -34,7 +34,7 @@ msgstr "Enna 媒體中心\n"
 #: src/bin/enna.c:450
 #, c-format
 msgid " Usage: %s [options ...]\n"
-msgstr " 用法：%s [選項...]\n"
+msgstr "用法：%s [選項...]\n"
 
 #: src/bin/enna.c:451
 #, c-format
@@ -49,12 +49,12 @@ msgstr "-c, (--config): 指定要使用的配置檔。\n"
 #: src/bin/enna.c:453
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
-msgstr "  -f, (--fs): 強制全螢幕顯示。\n"
+msgstr "-f, (--fs): 強制全螢幕顯示。\n"
 
 #: src/bin/enna.c:454
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
-msgstr "  -h, (--help): 顯示這個說明。\n"
+msgstr "-h, (--help): 顯示這個說明。\n"
 
 #: src/bin/enna.c:455
 #, c-format
@@ -69,7 +69,7 @@ msgstr "-g, (--geometry):指定視窗大小。(geometry=1280x720)\n"
 #: src/bin/enna.c:457
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
-msgstr "  -V, (--version): 顯示 Enna 的版本。\n"
+msgstr "-V, (--version): 顯示 Enna 的版本。\n"
 
 #: src/bin/exit.c:93
 msgid "Are you sure you want to quit Enna?"
@@ -126,7 +126,7 @@ msgstr "感謝"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
 msgid "Enna is a GeeXboX-team MediaCenter"
-msgstr "Enna is GeeXboX-team MediaCenter"
+msgstr "Enna 是 GeeXboX-team 媒體中心"
 
 #: src/modules/activity/configuration/configuration_credits.c:47
 msgid "based on Enlightenment Foundation Librairies (EFL)."
@@ -150,7 +150,7 @@ msgstr "Enna:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:109
 msgid "Video renderer:"
-msgstr ""
+msgstr "影像描繪器:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:170
 msgid "Distribution:"
@@ -182,7 +182,7 @@ msgstr "記憶體:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:323
 msgid "used on"
-msgstr ""
+msgstr "用於"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:325
 msgid "total"
@@ -206,11 +206,11 @@ msgstr "最大:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:383
 msgid "VDR:"
-msgstr "VDR:"
+msgstr "數位錄放影機:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:386
 msgid "connected to VDR"
-msgstr "connected to VDR"
+msgstr "連接到數位錄放影機"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:389
 msgid "on"
@@ -227,11 +227,11 @@ msgstr "可用的網路介面:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:436
 msgid "IP:"
-msgstr "IP:"
+msgstr "網路位址:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:443
 msgid "Netmask:"
-msgstr "Netmask:"
+msgstr "網路遮罩:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:468
 msgid "Default gateway:"
@@ -281,8 +281,8 @@ msgstr "瀏灠你的照片並建立幻燈片"
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "計時器 '%s' 是因為開始在 %i 分鐘內"
+msgstr[1] "計時器 '%s' 是因為開始在 %i 分鐘內"
 
 #: src/modules/activity/tv/tv.c:104
 #, c-format
@@ -307,11 +307,11 @@ msgstr "沒有如此的資料 ..."
 
 #: src/modules/activity/video/video_infos.c:129
 msgid "Director:"
-msgstr ""
+msgstr "導演:"
 
 #: src/modules/activity/video/video_infos.c:136
 msgid "Cast:"
-msgstr ""
+msgstr "演員陣容:"
 
 #: src/modules/activity/video/video_infos.c:158
 msgid "Video:"
@@ -327,7 +327,7 @@ msgstr "尺寸:"
 
 #: src/modules/activity/video/video_infos.c:204
 msgid "No further information can be retrieved"
-msgstr ""
+msgstr "沒有進一步資訊能被擷取"
 
 #: src/modules/activity/video/video.c:132
 #, c-format
@@ -389,18 +389,18 @@ msgstr "DVD 模組"
 msgid "Watch movies from DVD"
 msgstr "從 DVD 觀看電影"
 
-#: src/modules/browser/localfiles/localfiles.c:494
-#: src/modules/browser/localfiles/localfiles.c:512
-#: src/modules/browser/localfiles/localfiles.c:530
+#: src/modules/browser/localfiles/localfiles.c:491
+#: src/modules/browser/localfiles/localfiles.c:509
+#: src/modules/browser/localfiles/localfiles.c:527
 #, fuzzy
 msgid "Browse local devices"
 msgstr "瀏灠本機裝置"
 
-#: src/modules/browser/localfiles/localfiles.c:684
+#: src/modules/browser/localfiles/localfiles.c:681
 msgid "Browse local files"
 msgstr "瀏灠本機檔案"
 
-#: src/modules/browser/localfiles/localfiles.c:686
+#: src/modules/browser/localfiles/localfiles.c:683
 #, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "瀏灠本機硬碟上的檔案"
@@ -416,7 +416,7 @@ msgstr "網路串流"
 
 #: src/modules/browser/netstreams/netstreams.c:411
 msgid "Browse and play network streams"
-msgstr " 瀏灠並播放網路串流"
+msgstr "瀏灠並播放網路串流"
 
 #: src/modules/browser/podcasts/podcasts.c:329
 msgid "Listen to podcasts"
@@ -482,7 +482,7 @@ msgstr "分類"
 
 #: src/modules/browser/valhalla/valhalla.c:178
 msgid "Directors"
-msgstr ""
+msgstr "指揮"
 
 #: src/modules/browser/valhalla/valhalla.c:183
 msgid "Years"
@@ -494,11 +494,11 @@ msgstr "沒有被分類的"
 
 #: src/modules/browser/valhalla/valhalla.c:653
 msgid "Valhalla module"
-msgstr ""
+msgstr "Valhalla 模組"
 
 #: src/modules/browser/valhalla/valhalla.c:655
 msgid "Build a browseable catalog of your media files"
-msgstr ""
+msgstr "將你的媒體建立一個可瀏灠的分類"
 
 #: src/modules/browser/valhalla/valhalla.c:663
 #: src/modules/browser/valhalla/valhalla.c:680
@@ -572,7 +572,7 @@ msgstr "HD-DVD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:55
 msgid "MagnetoOptical"
-msgstr ""
+msgstr "磁光碟"
 
 #: src/modules/volume/hal/hal_volume.c:64
 msgid "CDDA"
@@ -606,19 +606,19 @@ msgstr "[SAMBA] %s on %s"
 
 #: src/modules/volume/mtab/mtab.c:149
 msgid "Volumes from mtab"
-msgstr ""
+msgstr "在 mtab 中的 Volume"
 
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module provide support for already mounted volumes"
-msgstr ""
+msgstr "這個模組用來提供已經安裝好的 volume"
 
 #: src/modules/volume/udev/udev.c:664
 msgid "Volumes from udev"
-msgstr ""
+msgstr "在 udev 中的 Volume"
 
 #: src/modules/volume/udev/udev.c:666
 msgid "This module provide support for removable volumes"
-msgstr ""
+msgstr "這個模組提供可移動的 volume"
 
 #~ msgid "System games"
 #~ msgstr "系統遊戲"
