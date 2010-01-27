@@ -436,9 +436,6 @@ __class_init(const char *name, Class_Private_Data **priv,
         return;
     }
 
-    if (!path_list)
-        return;
-
     for (l = path_list; l; l = l->next)
     {
         localfiles_path_t *p;
