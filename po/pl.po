@@ -2,12 +2,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Igor Szymanski <szymanski.igor@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-25 10:35+0100\n"
+"POT-Creation-Date: 2010-01-27 16:25+0100\n"
 "PO-Revision-Date: 2010-01-15 00:53+0100\n"
 "Last-Translator: Igor Szymanski <szymanski.igor@gmail.com>\n"
 "Language-Team: Polish\n"
@@ -127,7 +127,7 @@ msgstr "Enna jest centrum multimedialnym twórców GeexBox'a"
 
 #: src/modules/activity/configuration/configuration_credits.c:47
 msgid "based on Enlightenment Foundation Librairies (EFL)."
-msgstr "bazującym na bibliotekach Enlightenment Foundation Librairies (EFL)."
+msgstr "bazującym na bibliotekach Enlightenment Foundation Libraries (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
 msgid "Credits go to:"
@@ -262,7 +262,7 @@ msgstr "Słuchaj muzyki"
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
-msgstr "Nie znaleziono słów utworu !"
+msgstr "Nie znaleziono słów utworu ..."
 
 #: src/modules/activity/photo/photo.c:367
 #: src/modules/activity/photo/photo.c:395
@@ -383,17 +383,17 @@ msgstr "Moduł DVD"
 msgid "Watch movies from DVD"
 msgstr "Oglądaj filmy z płyt DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:494
-#: src/modules/browser/localfiles/localfiles.c:512
-#: src/modules/browser/localfiles/localfiles.c:530
+#: src/modules/browser/localfiles/localfiles.c:491
+#: src/modules/browser/localfiles/localfiles.c:509
+#: src/modules/browser/localfiles/localfiles.c:527
 msgid "Browse local devices"
 msgstr "Przeglądaj lokalne urządzenia"
 
-#: src/modules/browser/localfiles/localfiles.c:684
+#: src/modules/browser/localfiles/localfiles.c:681
 msgid "Browse local files"
 msgstr "Przeglądaj pliki lokalne"
 
-#: src/modules/browser/localfiles/localfiles.c:686
+#: src/modules/browser/localfiles/localfiles.c:683
 msgid "Browse files in your local file systems"
 msgstr "Przeglądaj pliki w lokalnym systemie plików"
 
@@ -596,16 +596,18 @@ msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s na %s"
 
 #: src/modules/volume/mtab/mtab.c:149
+#, fuzzy
 msgid "Volumes from mtab"
-msgstr "Woluminów z mtab"
+msgstr "Woluminy z mtab"
 
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module provide support for already mounted volumes"
 msgstr "Ten moduł zapewnia wsparcie dla już zamontowanych woluminów"
 
 #: src/modules/volume/udev/udev.c:664
+#, fuzzy
 msgid "Volumes from udev"
-msgstr "Woluminów z udev"
+msgstr "Woluminy z udev"
 
 #: src/modules/volume/udev/udev.c:666
 msgid "This module provide support for removable volumes"
