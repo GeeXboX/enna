@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-25 10:35+0100\n"
+"POT-Creation-Date: 2010-01-27 16:25+0100\n"
 "PO-Revision-Date: 2010-01-16 18:44-0500\n"
 "Last-Translator: Alexander Osorio <maosorionet@hotmail.com>\n"
 "Language-Team: Spanish\n"
@@ -418,18 +418,18 @@ msgstr "Modulo DVD"
 msgid "Watch movies from DVD"
 msgstr "Ver películas de DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:494
-#: src/modules/browser/localfiles/localfiles.c:512
-#: src/modules/browser/localfiles/localfiles.c:530
+#: src/modules/browser/localfiles/localfiles.c:491
+#: src/modules/browser/localfiles/localfiles.c:509
+#: src/modules/browser/localfiles/localfiles.c:527
 #, fuzzy
 msgid "Browse local devices"
 msgstr "Explorar Dispositivos Locales"
 
-#: src/modules/browser/localfiles/localfiles.c:684
+#: src/modules/browser/localfiles/localfiles.c:681
 msgid "Browse local files"
 msgstr "Explorar archivos locales"
 
-#: src/modules/browser/localfiles/localfiles.c:686
+#: src/modules/browser/localfiles/localfiles.c:683
 msgid "Browse files in your local file systems"
 msgstr "Explorar archivos en el sistema de archivos local"
 
