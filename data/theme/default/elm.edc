@@ -2469,34 +2469,6 @@ group { name: "elm/win/inwin/infos";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-group { name: "elm/label/base/default";
-   styles
-   {
-      style { name: "enna_style";
-         base: "font=content font_size=14 align=left color=#fff wrap=word";
-         tag:  "br" "\n";
-         tag:  "hilight" "+ font_size=18 font=content_bd color=#A0D026";
-         tag:  "b" "+ font=content_bd";
-         tag:  "tab" "\t";
-         tag:  "c" "+ align=center font_size=24 font=content_bd color=#A0D026A0 color2=#A0D026A0 style=GLOW";
-      }
-   }
-   parts {
-      part { name: "elm.text";
-         type: TEXTBLOCK;
-         mouse_events: 0;
-         scale: 1;
-         description { state: "default" 0.0;
-            text {
-               style: "enna_style";
-               min: 1 1;
-            }
-         }
-      }
-   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/notify/base/bottom";
    //this group is a design similar to the inwin group
    images {
@@ -3163,6 +3135,7 @@ group { name: "elm/label/base/default";
          tag:  "hilight" "+ font=content_bd";
          tag:  "b" "+ font=content_bd";
          tag:  "tab" "\t";
+         tag:  "c" "+ align=center font_size=24 font=content_bd color=#A0D026A0 color2=#A0D026A0 style=GLOW";
       }
    }
    parts {
