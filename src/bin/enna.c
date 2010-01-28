@@ -242,6 +242,10 @@ static int _enna_init(int argc, char **argv)
     enna_config_set_default();
     enna_config_load();
 
+    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n",
+             enna_config->log_file);
+    enna_log_init(enna_config->log_file);
+
     if (enna_config->verbosity)
     {
         for (i = 0; msg_level_mapping[i].name; i++)
@@ -535,9 +539,6 @@ int main(int argc, char **argv)
     enna_config_init(conffile);
     ENNA_FREE(conffile);
 
-    enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n",
-             enna_config->log_file);
-    enna_log_init(enna_config->log_file);
     enna = calloc(1, sizeof(Enna));
 
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_signal, enna);
