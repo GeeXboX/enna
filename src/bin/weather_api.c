@@ -392,7 +392,7 @@ _weather_config_panel_show(void *data)
     {
         item = enna_list2_append(_o_cfg_panel,
                                  _("City"),
-                                 _("Choose your City"),
+                                 _("Choose your city"),
                                  NULL,
                                  NULL, NULL);
         enna_list2_item_entry_add(item,
@@ -404,8 +404,8 @@ _weather_config_panel_show(void *data)
     }
 
     item = enna_list2_append(_o_cfg_panel,
-                             _("Add New City"),
-                             _("Add more city to the list"),
+                             _("Add new city"),
+                             _("Add more cities to the list"),
                              NULL,
                              NULL, NULL);
 
