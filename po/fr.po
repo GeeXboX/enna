@@ -99,28 +99,27 @@ msgstr "Piste #%02d (%02d:%02d)"
 
 #: src/bin/weather_api.c:394
 msgid "City"
-msgstr ""
+msgstr "Ville"
 
 #: src/bin/weather_api.c:395
 msgid "Choose your city"
-msgstr ""
+msgstr "Choisissez votre ville"
 
 #: src/bin/weather_api.c:402
-#, fuzzy
 msgid "Remove"
-msgstr "Disque Amovible"
+msgstr "Supprimer"
 
 #: src/bin/weather_api.c:407
 msgid "Add new city"
-msgstr ""
+msgstr "Ajoutez une nouvelle ville"
 
 #: src/bin/weather_api.c:408
 msgid "Add more cities to the list"
-msgstr ""
+msgstr "Ajoutez plus de villes à la liste"
 
 #: src/bin/weather_api.c:413
 msgid "Add"
-msgstr ""
+msgstr "Ajouter"
 
 #: src/bin/weather_api.c:618 src/modules/activity/weather/weather.c:273
 msgid "Weather"
