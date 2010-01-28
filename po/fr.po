@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-27 16:25+0100\n"
+"POT-Creation-Date: 2010-01-28 12:41+0100\n"
 "PO-Revision-Date: 2010-01-22 13:37+0100\n"
 "Last-Translator: Guillaume LECERF <fox@geexbox.org>\n"
 "Language-Team: French\n"
@@ -96,6 +96,35 @@ msgstr "Aucune information EXIF trouvée."
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Piste #%02d (%02d:%02d)"
+
+#: src/bin/weather_api.c:394
+msgid "City"
+msgstr ""
+
+#: src/bin/weather_api.c:395
+msgid "Choose your city"
+msgstr ""
+
+#: src/bin/weather_api.c:402
+#, fuzzy
+msgid "Remove"
+msgstr "Disque Amovible"
+
+#: src/bin/weather_api.c:407
+msgid "Add new city"
+msgstr ""
+
+#: src/bin/weather_api.c:408
+msgid "Add more cities to the list"
+msgstr ""
+
+#: src/bin/weather_api.c:413
+msgid "Add"
+msgstr ""
+
+#: src/bin/weather_api.c:618 src/modules/activity/weather/weather.c:273
+msgid "Weather"
+msgstr "Météo"
 
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:351
@@ -343,10 +372,6 @@ msgstr "Vidéo"
 #: src/modules/activity/video/video.c:993
 msgid "Play your videos"
 msgstr "Lisez vos vidéos"
-
-#: src/modules/activity/weather/weather.c:273
-msgid "Weather"
-msgstr "Météo"
 
 #: src/modules/activity/weather/weather.c:301
 msgid "Weather forecasts"
@@ -747,9 +772,6 @@ msgstr "Ce module prends en charge les volumes amovibles"
 
 #~ msgid "CCW"
 #~ msgstr "CCW"
-
-#~ msgid "Removable Disk"
-#~ msgstr "Disque Amovible"
 
 #~ msgid "Disk"
 #~ msgstr "Disque"
