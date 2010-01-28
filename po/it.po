@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-27 16:25+0100\n"
-"PO-Revision-Date: 2010-01-23 17:12+0100\n"
+"POT-Creation-Date: 2010-01-28 12:41+0100\n"
+"PO-Revision-Date: 2010-01-28 12:42+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -95,6 +95,34 @@ msgstr "Nessuna informazione disponibile"
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Traccia #%02d (%02d:%02d)"
+
+#: src/bin/weather_api.c:394
+msgid "City"
+msgstr "Città"
+
+#: src/bin/weather_api.c:395
+msgid "Choose your city"
+msgstr "Scegli la tua città"
+
+#: src/bin/weather_api.c:402
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: src/bin/weather_api.c:407
+msgid "Add new city"
+msgstr "Aggiungi nuova città"
+
+#: src/bin/weather_api.c:408
+msgid "Add more cities to the list"
+msgstr "Aggiungi altre città alla lista"
+
+#: src/bin/weather_api.c:413
+msgid "Add"
+msgstr "Aggiungi"
+
+#: src/bin/weather_api.c:618 src/modules/activity/weather/weather.c:273
+msgid "Weather"
+msgstr "Meteo"
 
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:351
@@ -340,10 +368,6 @@ msgstr "Video"
 #: src/modules/activity/video/video.c:993
 msgid "Play your videos"
 msgstr "Guarda video e filmati"
-
-#: src/modules/activity/weather/weather.c:273
-msgid "Weather"
-msgstr "Meteo"
 
 #: src/modules/activity/weather/weather.c:301
 msgid "Weather forecasts"
