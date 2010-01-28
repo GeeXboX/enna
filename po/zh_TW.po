@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-27 16:25+0100\n"
+"POT-Creation-Date: 2010-01-28 12:41+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -59,7 +59,7 @@ msgstr "-h, (--help): 顯示這個說明。\n"
 #: src/bin/enna.c:455
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr "  -t, (--theme): 指定要使用的佈景。\n"
+msgstr "-t, (--theme): 指定要使用的佈景。\n"
 
 #: src/bin/enna.c:456
 #, c-format
@@ -96,9 +96,36 @@ msgstr "沒有提供任何資訊"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "音軌 #%02d (%02d:%02d)"
 
+#: src/bin/weather_api.c:394
+msgid "City"
+msgstr ""
+
+#: src/bin/weather_api.c:395
+msgid "Choose your city"
+msgstr ""
+
+#: src/bin/weather_api.c:402
+msgid "Remove"
+msgstr ""
+
+#: src/bin/weather_api.c:407
+msgid "Add new city"
+msgstr ""
+
+#: src/bin/weather_api.c:408
+msgid "Add more cities to the list"
+msgstr ""
+
+#: src/bin/weather_api.c:413
+msgid "Add"
+msgstr ""
+
+#: src/bin/weather_api.c:618 src/modules/activity/weather/weather.c:273
+msgid "Weather"
+msgstr "天氣"
+
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:351
-#, fuzzy
 msgid "Bookstore"
 msgstr "書店"
 
@@ -217,9 +244,8 @@ msgid "on"
 msgstr "on"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:394
-#, fuzzy
 msgid "not connected"
-msgstr "沒有被連接<br>"
+msgstr "沒有被連接"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:409
 msgid "Available network interfaces:"
@@ -343,12 +369,7 @@ msgstr "影片"
 msgid "Play your videos"
 msgstr "播放你的影片"
 
-#: src/modules/activity/weather/weather.c:273
-msgid "Weather"
-msgstr "天氣"
-
 #: src/modules/activity/weather/weather.c:301
-#, fuzzy
 msgid "Weather forecasts"
 msgstr "天氣預報"
 
@@ -357,7 +378,6 @@ msgid "Show the weather at your location"
 msgstr "顯示你本地的天氣"
 
 #: src/modules/browser/cdda/cdda.c:95
-#, fuzzy
 msgid "Play audio CD"
 msgstr "播放音樂光碟"
 
@@ -392,7 +412,6 @@ msgstr "從 DVD 觀看電影"
 #: src/modules/browser/localfiles/localfiles.c:491
 #: src/modules/browser/localfiles/localfiles.c:509
 #: src/modules/browser/localfiles/localfiles.c:527
-#, fuzzy
 msgid "Browse local devices"
 msgstr "瀏灠本機裝置"
 
@@ -401,7 +420,6 @@ msgid "Browse local files"
 msgstr "瀏灠本機檔案"
 
 #: src/modules/browser/localfiles/localfiles.c:683
-#, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "瀏灠本機硬碟上的檔案"
 
@@ -502,7 +520,6 @@ msgstr "將你的媒體建立一個可瀏灠的分類"
 
 #: src/modules/browser/valhalla/valhalla.c:663
 #: src/modules/browser/valhalla/valhalla.c:680
-#, fuzzy
 msgid "Media library"
 msgstr "媒體資料庫"
 
