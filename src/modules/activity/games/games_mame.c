@@ -30,6 +30,7 @@
 #include "browser.h"
 #include "games.h"
 #include "games_mame.h"
+#include "xdg.h"
 
 #define ENNA_MODULE_NAME "games_mame"
 
@@ -226,7 +227,7 @@ _mame_update_info(Mame_Game *game)
     }
     
     /* Snapshot not found in snap_paths, let's try our cache */
-    snprintf(buf, sizeof(buf), "%s/%s/0000.png", mod->snap_path, game->id);
+    snprintf(buf, sizeof(buf), "%s/%s.png", mod->snap_path, game->id);
 
     if (ecore_file_exists(buf))
     {
@@ -352,7 +353,7 @@ mame_show(Evas_Object *edje)
     {
         mod = ENNA_NEW(Games_Service_Mame, 1);
         mod->o_edje = edje;
-        snprintf(buf, sizeof(buf), "%s/.mame/snap", enna_util_user_home_get());
+        snprintf(buf, sizeof(buf), "%s/mame", enna_cache_home_get());
         mod->snap_path = strdup(buf);
         mod->mame_cfg = _mame_parseconfig();
     }
