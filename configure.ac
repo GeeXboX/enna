@@ -339,32 +339,6 @@ fi
 # Volume Modules #
 ##################
 
-# HAL
-want_volume_hal="auto"
-have_volume_hal="no"
-AC_MSG_CHECKING(whether hal volume module is to be built)
-AC_ARG_ENABLE(volume-hal,
-  AS_HELP_STRING([--enable-volume-hal],[Enable HAL Volume]),
-  [ want_volume_hal=$enableval ]
-)
-AC_MSG_RESULT($want_volume_hal)
-if test "x$want_volume_hal" = "xyes" -o "x$want_volume_hal" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [EHAL],
-    [ehal edbus],
-    [
-      AC_DEFINE(BUILD_VOLUME_HAL, 1, [HAL Volume])
-      have_volume_hal="yes"
-    ],
-    [
-      if test "x$want_volume_hal" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([ehal or e-dbus not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_VOLUME_HAL, test "x$have_volume_hal" = "xyes")
-
 # mtab
 want_volume_mtab="yes"
 AC_MSG_CHECKING(whether mtab volume module is to be built)
@@ -548,7 +522,6 @@ src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/input/kbd/Makefile
 src/modules/volume/Makefile
-src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
 src/modules/volume/udev/Makefile
 data/Makefile
@@ -604,7 +577,6 @@ echo "  LIRC client...................... : $have_input_lirc"
 echo
 echo "Supported Volume Modules:"
 echo
-echo "  HAL.............................. : $have_volume_hal"
 echo "  mtab............................. : $want_volume_mtab"
 echo "  Udev............................. : $have_volume_udev"
 echo
