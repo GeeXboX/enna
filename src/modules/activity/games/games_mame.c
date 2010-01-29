@@ -43,6 +43,7 @@ typedef struct _Mame_Game {
 
 typedef struct _Mame_Config {
     Eina_List   *rom_paths;  
+    Eina_List   *snap_paths;   
 } Mame_Config;
 
 typedef struct _Games_Service_Mame {
@@ -141,6 +142,8 @@ _mame_parseconfig(void)
         {
             if (!strncmp(key, "rompath", strlen(key)))
                 mame_config->rom_paths = _parse_mame_path(value);
+            if (!strncmp(key, "snapshot_directory", strlen(key)))
+                mame_config->snap_paths = _parse_mame_path(value);
         }
     }
     pclose(fp);
@@ -206,10 +209,23 @@ _mame_update_info(Mame_Game *game)
     char buf[PATH_MAX];
     char url[PATH_MAX];
     char *dir;
+    Eina_List *l;
 
     mod->current_game = game;
     games_service_title_show(game->name);
+
+    EINA_LIST_FOREACH(mod->mame_cfg->snap_paths, l, dir)
+    {
+        snprintf(buf, sizeof(buf), "%s/%s/0000.png", dir, game->id);
+        if (ecore_file_exists(buf))
+        {
+            /* Show snapshot */
+            games_service_image_show(buf);
+            return;
+        }
+    }
     
+    /* Snapshot not found in snap_paths, let's try our cache */
     snprintf(buf, sizeof(buf), "%s/%s/0000.png", mod->snap_path, game->id);
 
     if (ecore_file_exists(buf))
