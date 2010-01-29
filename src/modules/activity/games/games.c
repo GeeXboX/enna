@@ -27,47 +27,40 @@
 #include <Elementary.h>
 
 #include "enna.h"
-#include "enna_config.h"
 #include "module.h"
 #include "logs.h"
-#include "view_list.h"
-#include "utils.h"
+#include "view_wall.h"
 #include "content.h"
 #include "mainmenu.h"
 #include "input.h"
-#include "ini_parser.h"
-#include "xdg.h"
+#include "image.h"
+#include "games.h"
+#include "games_sys.h"
+#include "games_mame.h"
 
 #define ENNA_MODULE_NAME "games"
 
-static void _play(void *data);
-static void _parse_directory();
-static void _create_menu();
-static void _create_gui();
 
-typedef enum _GAMES_STATE GAMES_STATE;
-
-enum _GAMES_STATE
-{
+typedef enum _GAMES_STATE {
     MENU_VIEW,
-    GAME_VIEW
-};
+    SERVICE_VIEW
+} GAMES_STATE;
 
-typedef struct _Enna_Module_Games
-{
-    Evas *e;
-    Evas_Object *o_edje;
-    Evas_Object *o_menu;
-    GAMES_STATE state;
-    Enna_Module *em;
+typedef struct _Enna_Module_Games {
+    Evas_Object  *o_edje;
+    Evas_Object  *o_menu;
+    Evas_Object  *o_image;
+    Evas_Object  *o_bg;
+    GAMES_STATE   state;
+    Eina_Bool     was_fs;
+    Ecore_Event_Handler *exe_handler;
+    Enna_Module  *em;
+    Games_Service *current;
+    Games_Service *sys;
+    Games_Service *mame;
 } Enna_Module_Games;
 
-typedef struct _Game_Entry
-{
-    const char *name;
-    const char *icon;
-    const char *exec;
-} Game_Entry;
+
 
 static Enna_Module_Games *mod;
 
@@ -75,229 +68,306 @@ static Enna_Module_Games *mod;
 /*                              Games Helpers                                */
 /*****************************************************************************/
 
-static const char * _check_icon(const char *icon, const char *dir, const char *ext)
+static void
+_game_service_set_bg(const char *bg)
 {
-    char tmp[PATH_MAX];
-    char *format;
-   
-    if (ext)
-        format = "%s/%s.%s";
-    else
-        format = "%s/%s";
+    if (bg)
+    {
+        Evas_Object *old;
 
-    snprintf(tmp, sizeof (tmp), format, dir, icon, ext);
-
-    if (!ecore_file_is_dir(tmp) && ecore_file_can_read(tmp))
-        return strdup (tmp);
-    else
-        return NULL;
-}
-
-static const char * _check_icons(const char *icon, const char *dir)
-{
-    char *iconpath;
-
-    if ((iconpath = _check_icon(icon, dir, NULL)))
-        return iconpath;
-    else if ((iconpath = _check_icon(icon, dir, "svg")))
-        return iconpath;
-    else if ((iconpath = _check_icon(icon, dir, "png")))
-        return iconpath;
-    else if ((iconpath = _check_icon(icon, dir, "xpm")))
-        return iconpath;
-    else
-        return NULL;
-}
-
-/* Warning: this is NOT a proper implementation of the Icon Theme 
-   Specification; it is hugely simplified to cover only our needs */
-static const char * _find_icon(const char *icon, const char *dir)
-{
-    char *iconpath;
-
-    if ((iconpath = _check_icons(icon, dir)))
-        return iconpath;
+        old = mod->o_bg;
+        mod->o_bg = edje_object_add(evas_object_evas_get(mod->o_edje));
+        edje_object_file_set(mod->o_bg, enna_config_theme_get(), bg);
+        edje_object_part_swallow(mod->o_edje,
+                                 "service.bg.swallow", mod->o_bg);
+        evas_object_show(mod->o_bg);
+        evas_object_del(old);
+    }
     else
     {
-        char tmp[PATH_MAX];
-        
-        snprintf(tmp, sizeof (tmp), "%s/hicolor/scalable/apps", dir);
-        if ((iconpath = _check_icons(icon, strdup(tmp))))
-            return iconpath;
-        else
-        {
-            snprintf(tmp, sizeof (tmp), "%s/hicolor/64x64/apps", dir);
-            if ((iconpath = _check_icons(icon, strdup(tmp))))
-                return iconpath;
-            else
-            {
-                snprintf(tmp, sizeof (tmp), "%s/hicolor/48x48/apps", dir);
-                if ((iconpath = _check_icons(icon, strdup(tmp))))
-                    return iconpath;            
-            }
-        }
+        evas_object_hide(mod->o_bg);
+        edje_object_part_swallow(mod->o_edje, "service.bg.swallow", NULL);
     }
+}
+
+static void
+_game_service_show(Games_Service *s)
+{
+    if (!s)
+        return;
+
+    if (s->show)
+        (s->show)(mod->o_edje);
+
+    _game_service_set_bg(s->bg);
+
+    edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "service,show", "enna");
+
+    mod->state = SERVICE_VIEW;
+    mod->current = s;
+}
+
+static void
+_game_service_hide(Games_Service *s)
+{
+    if (!s)
+        return;
+
+    if (s && s->hide)
+        (s->hide)(mod->o_edje);
+
+    mod->current = NULL;
+    mod->state = MENU_VIEW;
+
+    edje_object_signal_emit(mod->o_edje, "service,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
+    edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
+}
+
+static void
+_menu_item_cb_selected(void *data)
+{
+    Games_Service *s = data;
+
+    _game_service_show(s);
+}
+
+static void
+_menu_add(Games_Service *s)
+{
+    Enna_Vfs_File *f;
+
+    if (!s)
+        return;
+
+    f          = calloc (1, sizeof(Enna_Vfs_File));
+    f->icon    = (char *) eina_stringshare_add(s->icon);
+    f->label   = (char *) eina_stringshare_add(s->label);
+    f->is_menu = 1;
+
+    enna_wall_file_append(mod->o_menu, f, _menu_item_cb_selected, s);
+}
+/*****************************************************************************/
+/*                         Games Public API                                  */
+/*****************************************************************************/
+void
+games_service_image_show(const char *file)
+{
+    Evas_Object *old;
+
+    edje_object_signal_emit(mod->o_edje, "info,hide", "enna");
+
+    if (!file)
+    {
+        edje_object_signal_emit(mod->o_edje, "info,hide", "enna");
+        evas_object_del(mod->o_image);
+        return;
+    }
+
+    old = mod->o_image;
+    mod->o_image = enna_image_add(enna->evas);
+    enna_image_fill_inside_set(mod->o_image, 1);
+    enna_image_file_set(mod->o_image, file, NULL);
+
+    edje_object_part_swallow(mod->o_edje,
+                             "service.games.info.swallow", mod->o_image);
+    edje_object_signal_emit(mod->o_edje, "info,show", "enna");
+    evas_object_del(old);
+    evas_object_show(mod->o_image);
+}
+
+void
+games_service_title_show(const char *title)
+{
+    edje_object_part_text_set(mod->o_edje, "service.games.name.str", title);
+}
+
+void
+games_service_total_show(int tot)
+{
+    char buf[128];
+
+    if (tot == 0)
+        snprintf(buf, sizeof(buf), "no games found");
+    else if (tot == 1)
+        snprintf(buf, sizeof(buf), "one game");
+    else
+        snprintf(buf, sizeof(buf), "%d games", tot);
+    edje_object_part_text_set(mod->o_edje, "service.games.counter.str", buf);
+}
+
+static int
+_games_service_exec_exit_cb(void *data, int ev_type, void *ev)
+{
+    // Ecore_Exe_Event_Del *e = ev;
+    Evas_Object *o_msg = data;
+
+    /* Delete messagge */
+    ENNA_OBJECT_DEL(o_msg);
     
-    return NULL;
+    ecore_event_handler_del(mod->exe_handler);
+    mod->exe_handler = NULL;
+
+    //~ enna_input_event_thaw();
+
+    /* Restore fullscreen state */
+    if (mod->was_fs)
+        elm_win_fullscreen_set(enna->win, EINA_TRUE);
+
+   return 1;
 }
 
-static Game_Entry * _parse_desktop_game(const char *file)
+void
+games_service_exec(const char *cmd, const char *text)
 {
-    Game_Entry *game = NULL;
-    char *categories;
-    ini_t *ini = ini_new (file);
-  
-    ini_parse (ini);
-  
-    categories = ini_get_string(ini, "Desktop Entry", "Categories");
-    if (categories && strstr(categories, "Game"))
+    Evas_Object *o_msg;
+
+    //~ enna_input_event_freeze();
+
+    /* This hack to prevent gnome (at least) to get confused on having
+     * two fullscreen windows (enna + mame) */
+    mod->was_fs = elm_win_fullscreen_get(enna->win);
+    elm_win_fullscreen_set(enna->win, EINA_FALSE);
+
+    /* Exec Command */
+    o_msg = enna_util_message_show(text);
+    ecore_exe_run(cmd, NULL);
+    mod->exe_handler = ecore_event_handler_add(ECORE_EXE_EVENT_DEL,
+                                            _games_service_exec_exit_cb, o_msg);
+    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "Game started: %s", cmd);
+}
+/**
+ * TODO move this functions in a proper file
+ **/
+static void
+_enna_util_message_del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Input_Listener *listener = data;
+
+    enna_input_listener_del(listener);
+}
+
+static Eina_Bool
+_enna_util_message_events_cb(void *data, enna_input event)
+{
+    Evas_Object *inwin = data;
+
+    switch(event)
     {
-        char *tmpicon;
-        char *name = ini_get_string(ini, "Desktop Entry", "Name");
-        char *icon = ini_get_string(ini, "Desktop Entry", "Icon");
-        char *exec = ini_get_string(ini, "Desktop Entry", "Exec");
-        
-        game = calloc(1, sizeof(Game_Entry));
-        game->name = strdup (name);
-        game->exec = strdup (exec);       
-
-        if (!ecore_file_is_dir(icon) && ecore_file_can_read(icon))
-            game->icon = strdup (icon);
-        else if ((tmpicon = _find_icon(icon, "/usr/share/icons")))
-            game->icon = strdup (tmpicon);
-        else if ((tmpicon = _find_icon(icon, "/usr/share/pixmaps")))
-            game->icon = strdup (tmpicon);
+        case ENNA_INPUT_QUIT:
+        case ENNA_INPUT_EXIT:
+        case ENNA_INPUT_OK:
+            ENNA_OBJECT_DEL(inwin);
+            break;
+        default:
+            break;
     }
-  
-    ini_free (ini);
-  
-    return game;
+    return ENNA_EVENT_BLOCK;
 }
 
-static void _play(void *data)
+Evas_Object *
+enna_util_message_show(const char *text)
 {
-    int ret;
-    char* game = data;
+    Evas_Object *inwin;
+    Evas_Object *label;
+    Input_Listener *listener;
 
-    mod->state = GAME_VIEW;
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "starting game: %s", game);
-    ret = system(game);
-    enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "game stopped: %s", game);
-    mod->state = MENU_VIEW;
-}
+    inwin = elm_win_inwin_add(enna->win);
+    elm_object_style_set(inwin, "enna_minimal");
+    
+    label = elm_label_add(inwin);
+    elm_label_label_set(label, text);
+    evas_object_show(label);
+    
+    elm_win_inwin_content_set(inwin, label);
+    elm_win_inwin_activate(inwin);
 
-static void _parse_directory(Evas_Object *list, const char *dir_path)
-{
-    struct dirent *dp;
-    DIR *dir;
-
-    if (!(dir = opendir(dir_path))) return;
-
-    while ((dp = readdir(dir)))
-    {
-        Game_Entry *game;
-        char dsfile[4096];
-
-        if (!ecore_str_has_extension(dp->d_name, "desktop")) continue;
-        sprintf(dsfile, "%s/%s", dir_path, dp->d_name);
-
-        if ((game = _parse_desktop_game(dsfile)))
-        {
-            Enna_Vfs_File *item; 
-            item = calloc(1, sizeof(Enna_Vfs_File));
-            if (game->icon)
-                item->icon = (char*)eina_stringshare_add(game->icon);
-            item->label = (char*)eina_stringshare_add(game->name);
-            item->is_menu = 1;
-            enna_list_file_append(list, item, _play, strdup(game->exec));
-
-            free (game->name);
-            free (game->icon);
-            free (game->exec);
-            free (game);
-        }
-    }
-    closedir(dir);
-}
-
-static void _create_menu()
-{
-    Evas_Object *o;
-    char gamesdir[4096];
-
-    /* Create List */
-    o = enna_list_add(enna->evas);
-    edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
-
-    sprintf(gamesdir, "%s/games", enna_config_home_get());
-
-    /* Populate list */
-    _parse_directory(o, gamesdir);
-    _parse_directory(o, "/usr/share/applications");
-
-    enna_list_select_nth(o, 0);
-    mod->o_menu = o;
-    edje_object_part_swallow(mod->o_edje, "menu.swallow", o);
-    edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
-}
-
-static void _create_gui(void)
-{
-    /* Set default state */
-    mod->state = MENU_VIEW;
-
-    /* Create main edje object */
-    mod->o_edje = edje_object_add(enna->evas);
-    edje_object_file_set(mod->o_edje, enna_config_theme_get(), "activity/games");
-
-    _create_menu();
+    listener = enna_input_listener_add("enna_msg",
+                                       _enna_util_message_events_cb, inwin);
+    evas_object_event_callback_add(inwin, EVAS_CALLBACK_DEL,
+                                   _enna_util_message_del_cb, listener);
+    return inwin;
 }
 
 /*****************************************************************************/
 /*                         Private Module API                                */
 /*****************************************************************************/
 
-static void _class_show(int dummy)
+static void
+_class_show(int dummy)
 {
+    /* create the activity content once for all */
     if (!mod->o_edje)
     {
-        _create_gui();
+        mod->o_edje = edje_object_add(enna->evas);
+        edje_object_file_set(mod->o_edje, enna_config_theme_get(),
+                             "activity/games");
         enna_content_append(ENNA_MODULE_NAME, mod->o_edje);
     }
 
-    enna_content_select(ENNA_MODULE_NAME);
-    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
-}
-
-static void _class_hide(int dummy)
-{
-    edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
-}
-
-static void _class_event(enna_input event)
-{
-    switch (mod->state)
+    /* create the menu, once for all */
+    if (!mod->o_menu)
     {
-        case MENU_VIEW:
-            switch (event)
-            {
-                case ENNA_INPUT_LEFT:
-                case ENNA_INPUT_EXIT:
-                    enna_content_hide();
-                    enna_mainmenu_show();
-                    break;
-                case ENNA_INPUT_RIGHT:
-                case ENNA_INPUT_OK:
-                    _play(enna_list_selected_data_get(mod->o_menu));
-                   break;
-                default:
-                   enna_list_input_feed(mod->o_menu, event);
-            }
-            break;
-        default:
-            break;
+        mod->o_menu = enna_wall_add(enna->evas);
+
+        _menu_add(mod->sys);
+        _menu_add(mod->mame);
+
+        enna_wall_select_nth(mod->o_menu, 0, 0);
+        edje_object_part_swallow(mod->o_edje, "menu.swallow", mod->o_menu);
+        mod->state = MENU_VIEW;
     }
 
+    /* show module */
+    enna_content_select(ENNA_MODULE_NAME);
+    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
+    edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
+}
+
+static void
+_class_hide(int dummy)
+{
+    edje_object_signal_emit(mod->o_edje, "service,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
+    _game_service_hide(mod->current);
+}
+
+static void
+_class_event(enna_input event)
+{
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             "Key pressed Games : %d", event);
+
+    switch (mod->state)
+    {
+    /* Menu View */
+    case MENU_VIEW:
+    {
+        if (event == ENNA_INPUT_EXIT)
+        {
+            enna_content_hide();
+            enna_mainmenu_show();
+        }
+        else
+            enna_wall_input_feed(mod->o_menu, event);
+        break;
+    }
+    /* Service View */
+    case SERVICE_VIEW:
+    {
+        Eina_Bool b = ENNA_EVENT_BLOCK;
+        if (mod->current && mod->current->event)
+            b = (mod->current->event)(mod->o_edje, event);
+
+        if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_EXIT))
+            _game_service_hide(mod->current);
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 static Enna_Class_Activity
@@ -345,19 +415,22 @@ ENNA_MODULE_INIT(Enna_Module *em)
     if (!em)
         return;
 
-    mod = calloc(1, sizeof(Enna_Module_Games));
+    mod = ENNA_NEW(Enna_Module_Games, 1);
     mod->em = em;
     em->mod = mod;
 
     /* Add activity */
     enna_activity_add(&class);
+
+    mod->sys = &games_sys;
+    mod->mame = &games_mame;
 }
 
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     enna_activity_del(ENNA_MODULE_NAME);
-    evas_object_del(mod->o_edje);
+    ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);
-    free(mod);
+    ENNA_FREE(mod);
 }

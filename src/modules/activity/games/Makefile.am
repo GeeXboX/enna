@@ -16,6 +16,11 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
+EXTRA_DIST= \
+games.h \
+games_sys.h \
+games_mame.h
+
 if BUILD_ACTIVITY_GAMES
 
 pkgdir = $(libdir)/enna/modules

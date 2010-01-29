@@ -2329,12 +2329,28 @@ group { name: "elm/check/base/enna_list";
 group { name: "elm/win/inwin/enna_minimal";
    parts {
       part {
+         name: "mouse_event_catcher";
+         mouse_events: 1;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+      part {
          name: "base";
          type: IMAGE;
          mouse_events: 0;
          description {
             state: "default" 0.0;
             color: 0 0 0 0;
+            rel1 {
+               to: "elm.swallow.content";
+               offset: -30 -30;
+            }
+            rel2 {
+               to: "elm.swallow.content";
+               offset: 30 30;
+            }
             image {
                normal: "volume_bg.png";
                border: 60 60 60 60;
