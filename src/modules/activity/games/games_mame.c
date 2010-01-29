@@ -109,7 +109,7 @@ _parse_mame_path(char * path)
         /* Consider relative paths in MAME configuration 
            as subdirectories of $HOME/.mame */
         if (token[0] == '/')
-            strncpy(buf, token, strlen(token));
+            strncpy(buf, token, strlen(token) + 1);
         else
             snprintf(buf, PATH_MAX, "%s/.mame/%s", enna_util_user_home_get(), token);
         
@@ -187,10 +187,6 @@ _mame_listfull(void)
         }
     }
     pclose(fp);
-
-    if (eina_list_count(mod->mame_games) < 1000)
-        enna_util_message_show(_("<c>Mame Error</c><br><b>Can not get supported "
-                             "games list</b><br>Is sdlmame installed?"));
 
     mod->mame_games = eina_list_sort(mod->mame_games, 0, _mame_sort_cb);
 }
@@ -341,6 +337,12 @@ mame_event(Evas_Object *edje, enna_input event)
         return ENNA_EVENT_CONTINUE;
 }
 
+static Eina_Bool
+mame_init(void)
+{
+    return ecore_file_app_installed("sdlmame") ? EINA_TRUE : EINA_FALSE;
+}
+
 static void
 mame_show(Evas_Object *edje)
 {
@@ -354,7 +356,7 @@ mame_show(Evas_Object *edje)
         mod = ENNA_NEW(Games_Service_Mame, 1);
         mod->o_edje = edje;
         snprintf(buf, sizeof(buf), "%s/mame", enna_cache_home_get());
-        mod->snap_cache = strdup(buf);
+        mod->snap_cache = strdup(buf);           
         mod->mame_cfg = _mame_parseconfig();
     }
 
@@ -383,6 +385,7 @@ Games_Service games_mame = {
     "M.A.M.E.",
     "background/games",
     "icon/mame",
+    mame_init,
     mame_show,
     mame_hide,
     mame_event
