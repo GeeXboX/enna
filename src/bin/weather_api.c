@@ -448,7 +448,6 @@ cfg_weather_section_load (const char *section)
     Eina_List *cities;
     const char *unit = NULL;
 
-    printf("section: %s", section);
     cities = enna_config_string_list_get(section, "city");
     if (cities)
     {
