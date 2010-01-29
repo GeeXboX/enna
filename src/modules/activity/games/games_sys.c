@@ -158,7 +158,7 @@ _play(void *data)
 {
     char* game = data;
 
-    games_service_exec(game, "<c>System Games</c><br>Game running...");
+    games_service_exec(game, _("<c>System Games</c><br>Game running..."));
 }
 
 static void
@@ -254,8 +254,8 @@ games_sys_hide(Evas_Object *edje)
 /****************************************************************************/
 
 Games_Service games_sys = {
-    "System Games",
-    "background/games",
+    N_("System Games"),
+    "background/gocomics",
     "icon/games",
     games_sys_show,
     games_sys_hide,

@@ -189,11 +189,11 @@ games_service_total_show(int tot)
     char buf[128];
 
     if (tot == 0)
-        snprintf(buf, sizeof(buf), "no games found");
+        snprintf(buf, sizeof(buf), _("no games found"));
     else if (tot == 1)
-        snprintf(buf, sizeof(buf), "one game");
+        snprintf(buf, sizeof(buf), _("one game"));
     else
-        snprintf(buf, sizeof(buf), "%d games", tot);
+        snprintf(buf, sizeof(buf), _("%d games"), tot);
     edje_object_part_text_set(mod->o_edje, "service.games.counter.str", buf);
 }
 

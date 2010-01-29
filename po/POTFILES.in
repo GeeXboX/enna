@@ -11,6 +11,8 @@ src/modules/activity/configuration/configuration.c
 src/modules/activity/configuration/configuration_credits.c
 src/modules/activity/configuration/configuration_sysinfo.c
 src/modules/activity/games/games.c
+src/modules/activity/games/games_mame.c
+src/modules/activity/games/games_sys.c
 src/modules/activity/music/music.c
 src/modules/activity/music/music_lyrics.c
 src/modules/activity/photo/photo.c

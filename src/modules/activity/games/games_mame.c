@@ -72,7 +72,7 @@ _mame_run(void *data)
      * snprintf(cmd, sizeof(cmd), "SDL_WINDOWID=%d sdlmame -window  %s",
      *                             enna->ee_winid, game->id);
      */
-    games_service_exec(cmd, "<c>M.A.M.E.</c><br>Game running...");
+    games_service_exec(cmd, _("<c>M.A.M.E.</c><br>Game running..."));
 }
 
 static int
@@ -124,8 +124,8 @@ _mame_listfull(void)
     pclose(fp);
 
     if (eina_list_count(mod->mame_games) < 1000)
-        enna_util_message_show("<c>Mame Error</c><br><b>Can not get supported "
-                             "games list</b><br>Is sdlmame installed and updated?");
+        enna_util_message_show(_("<c>Mame Error</c><br><b>Can not get supported "
+                             "games list</b><br>Is sdlmame installed?"));
 
     mod->mame_games = eina_list_sort(mod->mame_games, 0, _mame_sort_cb);
 }
@@ -229,8 +229,8 @@ mame_my_games_list(void)
     }
     else
     {
-        enna_util_message_show("<c>Mame Error</c><br><b>No roms found in path</b>"
-                               "<br>Roms must be located at: ~/.mame/roms<br>");
+        enna_util_message_show(_("<c>Mame Error</c><br><b>No roms found in path</b>"
+                               "<br>Roms must be located at: ~/.mame/roms<br>"));
         ENNA_OBJECT_DEL(o);
     }
     games_service_total_show(count);
