@@ -45,7 +45,6 @@ typedef struct _Games_Service_Mame {
     Evas_Object *o_edje;
     Evas_Object *o_list;
     const char  *snap_path;
-    const char  *rom_path;
     Mame_Game   *current_game;
     Eina_List   *mame_games;
     Eina_Hash   *mame_games_hash;
@@ -179,36 +178,51 @@ _mame_game_selected_cb(void *data, Evas_Object *obj, void *event_info)
     if (game) _mame_update_info(game);
 }
 
-static void
-mame_my_games_list(void)
+static Eina_List *
+_mame_add_games_to_list(Eina_List *games_list, char *rom_path)
 {
-    Evas_Object *o;
-    Eina_List *file_list, *game_list = NULL;
-    char *rom, *id;
-    Mame_Game *game;
+    Eina_List *file_list;
+    char *rom;
+
+    if (!mod->mame_games)
+        _mame_listfull();
+        
+    /* Populate a list with existing roms */
+    file_list = ecore_file_ls(rom_path);
+    EINA_LIST_FREE(file_list, rom)
+    {
+        char *id;
+        Mame_Game *game;
+        
+        id = ecore_file_strip_ext(rom);
+        game = eina_hash_find(mod->mame_games_hash, id);
+        if (game)
+            games_list = eina_list_append(games_list, game);
+        free(id);
+        free(rom);
+    }
+    
+    return games_list;
+}
+
+static void
+mame_my_games_list(Eina_List *games_list)
+{
     int count = 0;
 
     if (!mod->mame_games)
         return;
 
-    /* Populate a list with existing roms */
-    file_list = ecore_file_ls(mod->rom_path);
-    EINA_LIST_FREE(file_list, rom)
-    {
-        id = ecore_file_strip_ext(rom);
-        game = eina_hash_find(mod->mame_games_hash, id);
-        if (game) game_list = eina_list_append(game_list, game);
-        free(id);
-        free(rom);
-    }
-
     /* Show the enna_list or an error message */
-    if (game_list)
+    if (games_list)
     {
+        Evas_Object *o;
+        Mame_Game *game;
+        
         o = enna_list_add(enna->evas);
         evas_object_smart_callback_add(o, "selected", _mame_game_selected_cb, NULL);
-        game_list = eina_list_sort(game_list, 0, _mame_sort_cb);
-        EINA_LIST_FREE(game_list, game)
+        games_list = eina_list_sort(games_list, 0, _mame_sort_cb);
+        EINA_LIST_FREE(games_list, game)
         {
             Enna_Vfs_File *item;
 
@@ -227,11 +241,8 @@ mame_my_games_list(void)
         edje_object_part_swallow(mod->o_edje, "service.browser.swallow", o);
     }
     else
-    {
         enna_util_message_show(_("<c>Mame Error</c><br><b>No roms found in path</b>"
                                "<br>Roms must be located at: ~/.mame/roms<br>"));
-        ENNA_OBJECT_DEL(o);
-    }
     games_service_total_show(count);
 }
 
@@ -255,6 +266,7 @@ static void
 mame_show(Evas_Object *edje)
 {
     char buf[PATH_MAX];
+    Eina_List *games;
 
     /* Alloc local data once for all */
     if (!mod)
@@ -263,19 +275,13 @@ mame_show(Evas_Object *edje)
         mod->o_edje = edje;
         snprintf(buf, sizeof(buf), "%s/.mame/snap", enna_util_user_home_get());
         mod->snap_path = strdup(buf);
-        snprintf(buf, sizeof(buf), "%s/.mame/roms", enna_util_user_home_get());
-        mod->rom_path = strdup(buf);
     }
-
-    /* Build game list once for all */
-    if (!mod->mame_games)
-    {
-      //TODO show a dialog while doing this
-      _mame_listfull();
-    }
-
-    /* Show the list of local roms */
-    mame_my_games_list();
+    
+    games = _mame_add_games_to_list(NULL, strdup("/usr/share/games/sdlmame/roms"));
+    snprintf(buf, sizeof(buf), "%s/.mame/roms", enna_util_user_home_get());
+    _mame_add_games_to_list(games, strdup(buf));
+    
+    mame_my_games_list(games);
 }
 
 static void
