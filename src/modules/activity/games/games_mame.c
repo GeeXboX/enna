@@ -279,7 +279,7 @@ mame_show(Evas_Object *edje)
     
     games = _mame_add_games_to_list(NULL, strdup("/usr/share/games/sdlmame/roms"));
     snprintf(buf, sizeof(buf), "%s/.mame/roms", enna_util_user_home_get());
-    _mame_add_games_to_list(games, strdup(buf));
+    games = _mame_add_games_to_list(games, strdup(buf));
     
     mame_my_games_list(games);
 }
