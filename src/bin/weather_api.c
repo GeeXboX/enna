@@ -194,6 +194,8 @@ weather_get_unit_system (weather_t *w, xmlDocPtr doc)
 
     w->temp = (!xmlStrcmp ((unsigned char *) "SI", tmp))
         ? TEMP_CELCIUS : TEMP_FAHRENHEIT;
+
+    xmlFree(tmp);
 }
 
 static void
@@ -224,7 +226,7 @@ weather_set_field (xmlNode *n, char *prop, char *extra, char **field)
             if (strstr((char *) tmp, weather_icon_mapping[i].data))
             {
                 *field = strdup(weather_icon_mapping[i].icon);
-                return;
+                goto out;
             }
 
         enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
@@ -233,6 +235,9 @@ weather_set_field (xmlNode *n, char *prop, char *extra, char **field)
     }
     else
         *field = strdup(val);
+
+ out:
+    xmlFree(tmp);
 }
 
 static void
