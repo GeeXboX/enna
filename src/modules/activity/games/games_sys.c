@@ -255,7 +255,7 @@ games_sys_hide(Evas_Object *edje)
 
 Games_Service games_sys = {
     "System Games",
-    "background/gocomics",
+    "background/games",
     "icon/games",
     games_sys_show,
     games_sys_hide,
