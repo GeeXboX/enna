@@ -257,6 +257,7 @@ Games_Service games_sys = {
     N_("System Games"),
     "background/games",
     "icon/games",
+    NULL,
     games_sys_show,
     games_sys_hide,
     games_sys_event

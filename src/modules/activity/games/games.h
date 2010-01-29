@@ -26,6 +26,7 @@ typedef struct _Games_Service {
     const char *label;
     const char *bg;
     const char *icon;
+    Eina_Bool (*init)(void);
     void (*show)(Evas_Object *edje);
     void (*hide)(Evas_Object *edje);
     Eina_Bool (*event) (Evas_Object *edje, enna_input event);

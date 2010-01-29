@@ -383,6 +383,7 @@ Games_Service games_mame = {
     "M.A.M.E.",
     "background/games",
     "icon/mame",
+    NULL,
     mame_show,
     mame_hide,
     mame_event

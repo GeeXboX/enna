@@ -90,6 +90,18 @@ _game_service_set_bg(const char *bg)
     }
 }
 
+static Eina_Bool
+_game_service_init(Games_Service *s)
+{
+    if (!s)
+        return EINA_FALSE;
+
+    if (s->init)
+        return (s->init)();
+    else
+        return EINA_TRUE;
+}
+
 static void
 _game_service_show(Games_Service *s)
 {
@@ -312,8 +324,11 @@ _class_show(int dummy)
     {
         mod->o_menu = enna_wall_add(enna->evas);
 
-        _menu_add(mod->sys);
-        _menu_add(mod->mame);
+        if (mod->sys)
+            _menu_add(mod->sys);
+
+        if (mod->mame)
+            _menu_add(mod->mame);
 
         enna_wall_select_nth(mod->o_menu, 0, 0);
         edje_object_part_swallow(mod->o_edje, "menu.swallow", mod->o_menu);
@@ -423,8 +438,11 @@ ENNA_MODULE_INIT(Enna_Module *em)
     /* Add activity */
     enna_activity_add(&class);
 
-    mod->sys = &games_sys;
-    mod->mame = &games_mame;
+    if (_game_service_init(&games_sys) == EINA_TRUE)
+        mod->sys = &games_sys;
+
+    if (_game_service_init(&games_mame) == EINA_TRUE)
+        mod->mame = &games_mame;
 }
 
 void
