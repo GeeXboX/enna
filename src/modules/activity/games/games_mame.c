@@ -94,7 +94,7 @@ _mame_listfull(void)
     char line[1024];
 
     if (!mod->mame_games_hash)
-        mod->mame_games_hash = eina_hash_string_superfast_new(NULL); //TODO: or use stringshare hash?
+        mod->mame_games_hash = eina_hash_string_superfast_new(NULL);
    
     fp = popen("sdlmame -listfull", "r");
     if (fp == NULL)
@@ -136,8 +136,7 @@ _mame_dwnl_snap_complete_cb(void *data, const char *file, int status)
     Mame_Game *game = data;
 
     if (mod->current_game == game)
-        _mame_update_info
-        (game);
+        _mame_update_info(game);
 }
 
 static void
