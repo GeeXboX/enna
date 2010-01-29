@@ -74,16 +74,25 @@ enna_get_city_by_ip (void)
     {
         enna_log(ENNA_MSG_WARNING, ENNA_MODULE_NAME,
                  "Error returned by website.");
+        if (tmp)
+            xmlFree(tmp);
         goto error;
     }
+    xmlFree(tmp);
 
     tmp = get_prop_value_from_xml_tree(n, "CountryCode");
     if (tmp)
+    {
         country = strdup((char *) tmp);
+        xmlFree(tmp);
+    }
 
     tmp = get_prop_value_from_xml_tree(n, "City");
     if (tmp)
+    {
         city = strdup((char *) tmp);
+        xmlFree(tmp);
+    }
 
     if (city)
     {
