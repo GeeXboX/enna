@@ -317,6 +317,7 @@ static void
 weather_google_search (weather_t *w)
 {
     char url[MAX_URL_SIZE];
+    char *escaped_city;
     url_data_t data;
     url_t handler;
     xmlDocPtr doc = NULL;
@@ -329,10 +330,14 @@ weather_google_search (weather_t *w)
     if (!handler)
         goto error;
 
+    escaped_city = url_escape_string(handler, w->city);
+    if (!escaped_city)
+        goto error;
+
     /* proceed with Google Weather API request */
     memset(url, '\0', MAX_URL_SIZE);
-    snprintf(url, MAX_URL_SIZE, WEATHER_QUERY,
-             url_escape_string(handler, w->city), w->lang);
+    snprintf(url, MAX_URL_SIZE, WEATHER_QUERY, escaped_city, w->lang);
+    free(escaped_city);
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME, "Search Request: %s", url);
 
     data = url_get_data(handler, url);
