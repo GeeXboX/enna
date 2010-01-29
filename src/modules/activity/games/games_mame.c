@@ -50,7 +50,7 @@ typedef struct _Mame_Config {
 typedef struct _Games_Service_Mame {
     Evas_Object *o_edje;
     Evas_Object *o_list;
-    const char  *snap_path;
+    const char  *snap_cache;
     Mame_Game   *current_game;
     Mame_Config *mame_cfg;
     Eina_List   *mame_games;
@@ -227,7 +227,7 @@ _mame_update_info(Mame_Game *game)
     }
     
     /* Snapshot not found in snap_paths, let's try our cache */
-    snprintf(buf, sizeof(buf), "%s/%s.png", mod->snap_path, game->id);
+    snprintf(buf, sizeof(buf), "%s/%s.png", mod->snap_cache, game->id);
 
     if (ecore_file_exists(buf))
     {
@@ -354,7 +354,7 @@ mame_show(Evas_Object *edje)
         mod = ENNA_NEW(Games_Service_Mame, 1);
         mod->o_edje = edje;
         snprintf(buf, sizeof(buf), "%s/mame", enna_cache_home_get());
-        mod->snap_path = strdup(buf);
+        mod->snap_cache = strdup(buf);
         mod->mame_cfg = _mame_parseconfig();
     }
 
