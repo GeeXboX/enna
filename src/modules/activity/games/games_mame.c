@@ -41,11 +41,16 @@ typedef struct _Mame_Game {
    const char  *name;
 }Mame_Game;
 
+typedef struct _Mame_Config {
+    Eina_List   *rom_paths;  
+} Mame_Config;
+
 typedef struct _Games_Service_Mame {
     Evas_Object *o_edje;
     Evas_Object *o_list;
     const char  *snap_path;
     Mame_Game   *current_game;
+    Mame_Config *mame_cfg;
     Eina_List   *mame_games;
     Eina_Hash   *mame_games_hash;
    
@@ -84,6 +89,63 @@ _mame_sort_cb(const void *d1, const void *d2)
    if(!game2 || !game2->name) return(-1);
 
    return(strcmp(game1->name, game2->name));
+}
+
+static Eina_List *
+_parse_mame_path(char * path)
+{
+    char *saveptr = NULL, *str, *token;
+    Eina_List *list = NULL;
+    int i;
+    char buf[PATH_MAX];
+    
+    for (i = 1, str = strdup(path); ; i++, str = NULL) {
+        token = strtok_r(str, ";", &saveptr);
+        if (token == NULL)
+            break;
+        
+        /* Consider relative paths in MAME configuration 
+           as subdirectories of $HOME/.mame */
+        if (token[0] == '/')
+            strncpy(buf, token, strlen(token));
+        else
+            snprintf(buf, PATH_MAX, "%s/.mame/%s", enna_util_user_home_get(), token);
+        
+        list = eina_list_append(list, strdup(buf));
+    }
+    
+    return list;
+}
+
+static Mame_Config *
+_mame_parseconfig(void)
+{
+    Mame_Config *mame_config;
+    FILE *fp;
+    char line[1024];
+    
+    fp = popen("sdlmame -showconfig", "r");
+    if (fp == NULL)
+        return NULL;
+    
+    mame_config = ENNA_NEW(Mame_Config, 1);
+ 
+    while (fgets(line, sizeof(line), fp) != NULL)
+    {
+        char key[64];
+        char value[256];
+        int res;
+
+        res = sscanf(line, "%[^# ] %s", key, value);
+        if (res == 2)
+        {
+            if (!strncmp(key, "rompath", strlen(key)))
+                mame_config->rom_paths = _parse_mame_path(value);
+        }
+    }
+    pclose(fp);
+    
+    return mame_config;
 }
 
 static void
@@ -266,7 +328,8 @@ static void
 mame_show(Evas_Object *edje)
 {
     char buf[PATH_MAX];
-    Eina_List *games;
+    char *path;
+    Eina_List *games = NULL, *l;
 
     /* Alloc local data once for all */
     if (!mod)
@@ -275,12 +338,14 @@ mame_show(Evas_Object *edje)
         mod->o_edje = edje;
         snprintf(buf, sizeof(buf), "%s/.mame/snap", enna_util_user_home_get());
         mod->snap_path = strdup(buf);
+        mod->mame_cfg = _mame_parseconfig();
     }
-    
-    games = _mame_add_games_to_list(NULL, strdup("/usr/share/games/sdlmame/roms"));
-    snprintf(buf, sizeof(buf), "%s/.mame/roms", enna_util_user_home_get());
-    games = _mame_add_games_to_list(games, strdup(buf));
-    
+
+    EINA_LIST_FOREACH(mod->mame_cfg->rom_paths, l, path)
+    {
+        games = _mame_add_games_to_list(games, strdup(path));
+    }
+
     mame_my_games_list(games);
 }
 
