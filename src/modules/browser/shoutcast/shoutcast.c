@@ -36,57 +36,115 @@
 #define SHOUTCAST_STATION  "http://www.shoutcast.com/sbin/newxml.phtml?genre="
 #define MAX_URL 1024
 
+typedef struct shoutcast_genre_s {
+    char *name;
+} shoutcast_genre_t;
+
 typedef struct Enna_Module_Music_s
 {
     Evas *e;
     url_t handler;
+    Eina_List *sgl;
 } Enna_Module_Music;
 
 static Enna_Module_Music *mod;
 
-static Eina_List * browse_list(void)
+static shoutcast_genre_t *
+shoutcast_genre_new (const char *name)
+{
+    shoutcast_genre_t *g;
+
+    if (!name)
+        return NULL;
+
+    g = calloc(1, sizeof(shoutcast_genre_t));
+    g->name = strdup(name);
+
+    return g;
+}
+
+static void
+shoutcast_genre_free (shoutcast_genre_t *g)
+{
+    if (!g)
+        return;
+
+    ENNA_FREE(g->name);
+    ENNA_FREE(g);
+}
+
+static Eina_List *
+get_vfs_genre_list (void)
+{
+    Eina_List *l, *list = NULL;
+    shoutcast_genre_t *g;
+
+    EINA_LIST_FOREACH(mod->sgl, l, g)
+    {
+        Enna_Vfs_File *f;
+        char *uri;
+        int len;
+
+        len = strlen(SHOUTCAST_GENRE) + strlen(g->name) + 1;
+        uri = malloc(len);
+        snprintf(uri, len, "%s%s", SHOUTCAST_GENRE, g->name);
+
+        f = enna_vfs_create_directory(uri, (const char *) g->name,
+                                      "icon/webradio", NULL);
+        ENNA_FREE(uri);
+        list = eina_list_append(list, f);
+    }
+
+    return list;
+}
+
+static Eina_List *
+browse_genre_list (void)
 {
     url_data_t chunk;
     xmlDocPtr doc;
     xmlNode *list, *n;
-    Eina_List *files = NULL;
+
+    /* check if we already fetched the list of genres */
+    if (mod->sgl)
+        goto get_list;
 
     chunk = url_get_data(mod->handler, SHOUTCAST_LIST);
     if (!chunk.buffer)
         return NULL;
 
-    doc = get_xml_doc_from_memory (chunk.buffer);
+    doc = get_xml_doc_from_memory(chunk.buffer);
     if (!doc)
-        return NULL;
+        goto err_doc;
 
     list = get_node_xml_tree(xmlDocGetRootElement(doc), "genrelist");
     for (n = list->children; n; n = n->next)
     {
-        Enna_Vfs_File *file;
         xmlChar *genre;
-        char *uri;
+        shoutcast_genre_t *g;
 
         if (!xmlHasProp(n, (xmlChar *) "name"))
             continue;
 
         genre = xmlGetProp(n, (xmlChar *) "name");
+        g = shoutcast_genre_new((char *) genre);
+        xmlFree(genre);
 
-        uri = malloc(strlen(SHOUTCAST_GENRE) + strlen((char *) genre) + 1);
-        sprintf(uri, "%s%s", SHOUTCAST_GENRE, genre);
-
-        file = enna_vfs_create_directory(uri, (const char *) genre, "icon/webradio",
-                NULL);
-        ENNA_FREE(uri);
-        files = eina_list_append(files, file);
+        mod->sgl = eina_list_append(mod->sgl, g);
     }
 
-    free(chunk.buffer);
-    xmlFreeDoc(doc);
+    if (doc)
+        xmlFreeDoc(doc);
 
-    return files;
+err_doc:
+    ENNA_FREE(chunk.buffer);
+
+get_list:
+    return get_vfs_genre_list();
 }
 
-static Eina_List * browse_by_genre(const char *path)
+static Eina_List *
+browse_by_genre (const char *path)
 {
     url_data_t chunk;
     xmlDocPtr doc;
@@ -148,7 +206,7 @@ static Eina_List * browse_by_genre(const char *path)
 static Eina_List * _class_browse_up(const char *path, void *cookie)
 {
     if (!path)
-        return browse_list();
+        return browse_genre_list();
 
     if (strstr(path, SHOUTCAST_GENRE))
         return browse_by_genre(path);
@@ -158,7 +216,7 @@ static Eina_List * _class_browse_up(const char *path, void *cookie)
 
 static Eina_List * _class_browse_down(void *cookie)
 {
-    return browse_list();
+    return browse_genre_list();
 }
 
 static Enna_Vfs_File * _class_vfs_get(void *cookie)
@@ -218,5 +276,10 @@ ENNA_MODULE_INIT(Enna_Module *em)
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
+    shoutcast_genre_t *g;
+
+    EINA_LIST_FREE(mod->sgl, g)
+        shoutcast_genre_free(g);
+
     url_free (mod->handler);
 }
