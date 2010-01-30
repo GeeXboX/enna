@@ -459,14 +459,15 @@ ENNA_MODULE_INIT(Enna_Module *em)
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
-    Eina_List *l;
     Games_Service *s;
     
-    EINA_LIST_FOREACH(mod->services, l, s)
+    EINA_LIST_FREE(mod->services, s)
         _game_service_shutdown(s);
 
     enna_activity_del(ENNA_MODULE_NAME);
-    ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);
+    ENNA_OBJECT_DEL(mod->o_image);
+    ENNA_OBJECT_DEL(mod->o_bg);
+    ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_FREE(mod);
 }

@@ -352,7 +352,7 @@ mame_shutdown(void)
 {
     char *p;
     Mame_Game *game;
-    
+
     ENNA_OBJECT_DEL(mod->o_list);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_FREE(mod->snap_cache);
