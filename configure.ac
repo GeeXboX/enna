@@ -340,7 +340,7 @@ fi
 ##################
 
 # HAL
-want_volume_hal="auto"
+want_volume_hal="no"
 have_volume_hal="no"
 AC_MSG_CHECKING(whether hal volume module is to be built)
 AC_ARG_ENABLE(volume-hal,
