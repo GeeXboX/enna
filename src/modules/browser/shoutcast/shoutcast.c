@@ -52,6 +52,8 @@ static Eina_List * browse_list(void)
     Eina_List *files = NULL;
 
     chunk = url_get_data(mod->handler, SHOUTCAST_LIST);
+    if (!chunk.buffer)
+        return NULL;
 
     doc = get_xml_doc_from_memory (chunk.buffer);
     if (!doc)
