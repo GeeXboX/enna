@@ -76,7 +76,7 @@ static Eina_List * browse_list(void)
 
         file = enna_vfs_create_directory(uri, (const char *) genre, "icon/webradio",
                 NULL);
-        free(uri);
+        ENNA_FREE(uri);
         files = eina_list_append(files, file);
     }
 
