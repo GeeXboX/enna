@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2009 The Enna Project
+ * Copyright (C) 2005-2010 The Enna Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
