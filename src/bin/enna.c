@@ -413,6 +413,43 @@ static void _opt_geometry_parse(const char *optarg,
     if (ph) *ph = h;
 }
 
+static const struct {
+    const char *name;
+    int width;
+    int height;
+} profile_resolution_mapping[] = {
+    { "480p",        640,  480 },
+    { "576p",        720,  576 },
+    { "720p",       1280,  720 },
+    { "1080p",      1920, 1080 },
+    { "vga",         640,  480 },
+    { "ntsc",        720,  480 },
+    { "pal",         768,  576 },
+    { "n900",        800,  480 },
+    { "svga",        800,  600 },
+    { "hdready",    1366,  768 },
+    { "fullhd",     1920, 1080 },
+    { NULL,            0,    0 }
+};
+
+static void
+_opt_profile_parse (const char *optarg,
+                    unsigned int *pw, unsigned int *ph)
+{
+    int i;
+
+    if (!optarg)
+        return;
+
+    for (i = 0; profile_resolution_mapping[i].name; i++)
+        if (!strcasecmp(optarg, profile_resolution_mapping[i].name))
+        {
+            *pw = profile_resolution_mapping[i].width;
+            *ph = profile_resolution_mapping[i].height;
+            break;
+        }
+}
+
 void enna_idle_timer_renew(void)
 {
     if (enna_config->idle_timeout)
@@ -450,6 +487,8 @@ static int exit_signal(void *data, int type, void *e)
 
 static void usage(char *binname)
 {
+    int i;
+
     printf(_("Enna MediaCenter\n"));
     printf(_(" Usage: %s [options ...]\n"), binname);
     printf(_(" Available options:\n"));
@@ -458,6 +497,11 @@ static void usage(char *binname)
     printf(_("  -h, (--help):    Display this help.\n"));
     printf(_("  -t, (--theme):   Specify theme name to be used.\n"));
     printf(_("  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"));
+    printf(_("  -p, (--profile): Specify display profile\n"));
+    printf(_("    Supported: "));
+    for (i = 0; profile_resolution_mapping[i].name; i++)
+        printf("%s ", profile_resolution_mapping[i].name);
+    printf("\n");
     printf(_("  -V, (--version): Display Enna version number.\n"));
     exit(EXIT_SUCCESS);
 }
@@ -465,7 +509,7 @@ static void usage(char *binname)
 static int parse_command_line(int argc, char **argv)
 {
     int c, index;
-    char short_options[] = "Vhfc:t:b:g:";
+    char short_options[] = "Vhfc:t:b:g:p:";
     struct option long_options [] =
         {
             { "help",          no_argument,       0, 'h' },
@@ -474,6 +518,7 @@ static int parse_command_line(int argc, char **argv)
             { "config",        required_argument, 0, 'c' },
             { "theme",         required_argument, 0, 't' },
             { "geometry",      required_argument, 0, 'g' },
+            { "profile",       required_argument, 0, 'p' },
             { 0,               0,                 0,  0  }
         };
 
@@ -512,6 +557,9 @@ static int parse_command_line(int argc, char **argv)
             break;
         case 'g':
             _opt_geometry_parse(optarg, &app_w, &app_h);
+            break;
+        case 'p':
+            _opt_profile_parse(optarg, &app_w, &app_h);
             break;
         default:
             usage(argv[0]);
