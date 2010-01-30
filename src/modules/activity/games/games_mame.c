@@ -366,7 +366,7 @@ mame_show(Evas_Object *edje)
 
     EINA_LIST_FOREACH(mod->mame_cfg->rom_paths, l, path)
     {
-        games = _mame_add_games_to_list(games, strdup(path));
+        games = _mame_add_games_to_list(games, path);
     }
 
     mame_my_games_list(games);
