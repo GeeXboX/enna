@@ -5,6 +5,7 @@ XXXX-XX-XX Release A.B.C
 	* Drop Efreet dependancy.
 
   - Browsers:
+	* Complete SHOUTcast browser plugin.
 	* Complete UPnP/DLNA browser plugin.
 	* Massive rework of valhalla browser
 	  (now for both music and video activities).
