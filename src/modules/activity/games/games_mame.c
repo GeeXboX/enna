@@ -236,12 +236,6 @@ _mame_update_info(Mame_Game *game)
     }
     else
     {
-        /* Create snapshot path */
-        dir = ecore_file_dir_get(buf);
-        if (!ecore_file_exists(dir))
-            ecore_file_mkpath(dir);
-        free(dir);
-
         /* Download snapshot */ 
         snprintf(url, sizeof(url), MAME_SNAP_URL, game->id);
         ecore_file_download(url, buf, _mame_dwnl_snap_complete_cb, NULL, game, NULL);
