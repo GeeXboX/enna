@@ -180,11 +180,11 @@ games_service_image_show(const char *file)
 {
     Evas_Object *old;
 
-    edje_object_signal_emit(mod->o_edje, "info,hide", "enna");
+    edje_object_signal_emit(mod->o_edje, "image,hide", "enna");
 
     if (!file)
     {
-        edje_object_signal_emit(mod->o_edje, "info,hide", "enna");
+        edje_object_signal_emit(mod->o_edje, "image,hide", "enna");
         evas_object_del(mod->o_image);
         return;
     }
@@ -195,8 +195,8 @@ games_service_image_show(const char *file)
     enna_image_file_set(mod->o_image, file, NULL);
 
     edje_object_part_swallow(mod->o_edje,
-                             "service.games.info.swallow", mod->o_image);
-    edje_object_signal_emit(mod->o_edje, "info,show", "enna");
+                             "service.games.image.swallow", mod->o_image);
+    edje_object_signal_emit(mod->o_edje, "image,show", "enna");
     evas_object_del(old);
     evas_object_show(mod->o_image);
 }
