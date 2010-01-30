@@ -40,14 +40,14 @@ typedef struct shoutcast_genre_s {
     char *name;
 } shoutcast_genre_t;
 
-typedef struct Enna_Module_Music_s
+typedef struct Enna_Module_Shoutcast_s
 {
     Evas *e;
     url_t handler;
     Eina_List *sgl;
-} Enna_Module_Music;
+} Enna_Module_Shoutcast;
 
-static Enna_Module_Music *mod;
+static Enna_Module_Shoutcast *mod;
 
 static shoutcast_genre_t *
 shoutcast_genre_new (const char *name)
@@ -265,7 +265,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
     if (!em)
         return;
 
-    mod = calloc(1, sizeof(Enna_Module_Music));
+    mod = calloc(1, sizeof(Enna_Module_Shoutcast));
     em->mod = mod;
 
     mod->handler = url_new();
