@@ -382,7 +382,9 @@ mame_show(Evas_Object *edje)
         mod = ENNA_NEW(Games_Service_Mame, 1);
         mod->o_edje = edje;
         snprintf(buf, sizeof(buf), "%s/mame", enna_cache_home_get());
-        mod->snap_cache = strdup(buf);           
+        mod->snap_cache = strdup(buf);
+        if (!ecore_file_exists(buf))
+            ecore_file_mkpath(buf);
         mod->mame_cfg = _mame_parseconfig();
     }
 
