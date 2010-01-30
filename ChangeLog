@@ -1,7 +1,7 @@
 XXXX-XX-XX Release A.B.C
 
   - Dependancies:
-	* Rely on new libplayer and libvalhalla APIs.
+	* Rely on new libplayer and libvalhalla APIs (2.0.x).
 	* Drop Efreet dependancy.
 
   - Browsers:
