@@ -2,7 +2,7 @@ Source: enna
 Section: multimedia
 Priority: optional
 Maintainer: Nicolas Aguirre <captainigloo@geexbox.org>
-Build-Depends: debhelper (>= 6), cdbs, pkg-config, libecore-dev, libevas-dev, libeet-dev, libedje-dev, libeina-dev, libelm-dev, libvalhalla-dev, libplayer-dev, libdbus-1-dev, libedbus-dev, libhal-dev, libhal-storage-dev, libxml2-dev, libcurl-dev, libcddb2-dev, libefreet-dev, libxrandr-dev, liblircclient-dev
+Build-Depends: debhelper (>= 6), cdbs, pkg-config, libecore-dev, libevas-dev, libeet-dev, libedje-dev, libeina-dev, libelm-dev, libvalhalla-dev, libplayer-dev, libdbus-1-dev, libedbus-dev, libxml2-dev, libcurl-dev, libcddb2-dev, libefreet-dev, libxrandr-dev, liblircclient-dev
 Standards-Version: 3.8.2
 Vcs-Hg: http://hg.geexbox.org/enna
 Vcs-Browser: http://hg.geexbox.org/enna/summary
