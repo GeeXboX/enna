@@ -65,7 +65,7 @@ shoutcast_station_new (const char *name, const char *tunein, const char *id)
     if (!name || !tunein || !id)
         return NULL;
 
-    s = calloc(1, sizeof(shoutcast_station_t));
+    s         = calloc(1, sizeof(shoutcast_station_t));
     s->name   = strdup(name);
     s->tunein = strdup(tunein);
     s->id     = strdup(id);
@@ -368,7 +368,7 @@ ENNA_MODULE_INIT(Enna_Module *em)
     if (!em)
         return;
 
-    mod = calloc(1, sizeof(Enna_Module_Shoutcast));
+    mod     = calloc(1, sizeof(Enna_Module_Shoutcast));
     em->mod = mod;
 
     mod->handler = url_new();
@@ -384,5 +384,5 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     EINA_LIST_FREE(mod->sgl, g)
         shoutcast_genre_free(g);
 
-    url_free (mod->handler);
+    url_free(mod->handler);
 }
