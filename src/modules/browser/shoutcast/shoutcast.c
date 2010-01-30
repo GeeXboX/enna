@@ -39,7 +39,6 @@
 typedef struct Enna_Module_Music_s
 {
     Evas *e;
-    Enna_Module *em;
     url_t handler;
 } Enna_Module_Music;
 
@@ -207,7 +206,6 @@ ENNA_MODULE_INIT(Enna_Module *em)
         return;
 
     mod = calloc(1, sizeof(Enna_Module_Music));
-    mod->em = em;
     em->mod = mod;
 
     mod->handler = url_new();
@@ -218,7 +216,5 @@ ENNA_MODULE_INIT(Enna_Module *em)
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
-    Enna_Module_Music *mod = em->mod;
-
     url_free (mod->handler);
 }
