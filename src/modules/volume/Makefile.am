@@ -1,2 +1,2 @@
 MAINTAINERCLEANFILES = Makefile.in
-SUBDIRS = mtab udev
+SUBDIRS = hal mtab udev

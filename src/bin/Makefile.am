@@ -88,6 +88,7 @@ include ../modules/browser/upnp/config.mak
 include ../modules/browser/valhalla/config.mak
 include ../modules/input/kbd/config.mak
 include ../modules/input/lirc/config.mak
+include ../modules/volume/hal/config.mak
 include ../modules/volume/mtab/config.mak
 include ../modules/volume/udev/config.mak
 
@@ -164,6 +165,12 @@ endif
 if BUILD_INPUT_LIRC
 enna_SOURCES += $(SRCS_INPUT_LIRC)
 enna_LDADD += @LIRC_LIBS@
+endif
+
+if BUILD_VOLUME_HAL
+enna_SOURCES += $(SRCS_VOLUME_HAL)
+AM_CFLAGS += @EHAL_CFLAGS@
+enna_LDADD += @EHAL_LIBS@
 endif
 
 if BUILD_VOLUME_MTAB

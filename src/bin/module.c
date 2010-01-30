@@ -106,6 +106,9 @@ ENNA_MOD_EXTERN(input_kbd)
 #ifdef BUILD_INPUT_LIRC
 ENNA_MOD_EXTERN(input_lirc)
 #endif /* BUILD_INPUT_LIRC */
+#ifdef BUILD_VOLUME_HAL
+ENNA_MOD_EXTERN(volume_hal)
+#endif /* BUILD_VOLUME_HAL */
 #ifdef BUILD_VOLUME_MTAB
 ENNA_MOD_EXTERN(volume_mtab)
 #endif /* BUILD_VOLUME_MTAB */
@@ -176,6 +179,9 @@ ENNA_MOD_REG(input_kbd)
 #ifdef BUILD_INPUT_LIRC
 ENNA_MOD_REG(input_lirc)
 #endif /* BUILD_INPUT_LIRC */
+#ifdef BUILD_VOLUME_HAL
+ENNA_MOD_REG(volume_hal)
+#endif /* BUILD_VOLUME_HAL */
 #ifdef BUILD_VOLUME_MTAB
 ENNA_MOD_REG(volume_mtab)
 #endif /* BUILD_VOLUME_MTAB */
