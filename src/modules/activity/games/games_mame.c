@@ -50,7 +50,7 @@ typedef struct _Mame_Config {
 typedef struct _Games_Service_Mame {
     Evas_Object *o_edje;
     Evas_Object *o_list;
-    const char  *snap_cache;
+    char        *snap_cache;
     Mame_Game   *current_game;
     Mame_Config *mame_cfg;
     Eina_List   *mame_games;
@@ -350,7 +350,28 @@ mame_init(void)
 static Eina_Bool
 mame_shutdown(void)
 {
-    //printf("\n*****  FREE STUFF HERE ******\n\n");
+    char *p;
+    Mame_Game *game;
+    
+    ENNA_OBJECT_DEL(mod->o_list);
+    ENNA_OBJECT_DEL(mod->o_edje);
+    ENNA_FREE(mod->snap_cache);
+    EINA_LIST_FREE(mod->mame_cfg->rom_paths, p)
+        ENNA_FREE(p);
+    EINA_LIST_FREE(mod->mame_cfg->snap_paths, p)
+        ENNA_FREE(p);
+    ENNA_FREE(mod->mame_cfg);
+    EINA_LIST_FREE(mod->mame_games, game)
+    {
+        eina_stringshare_del(game->id);
+        eina_stringshare_del(game->name);
+        ENNA_FREE(game);
+    }
+    mod->mame_games = NULL;
+    eina_hash_free(mod->mame_games_hash);
+    mod->mame_games_hash = NULL;
+    ENNA_FREE(mod);
+    
     return EINA_TRUE;
 }
 
