@@ -36,8 +36,15 @@
 #define SHOUTCAST_STATION  "http://www.shoutcast.com/sbin/newxml.phtml?genre="
 #define MAX_URL 1024
 
+typedef struct shoutcast_station_s {
+    char *name;
+    char *tunein;
+    char *id;
+} shoutcast_station_t;
+
 typedef struct shoutcast_genre_s {
     char *name;
+    Eina_List *ssl;
 } shoutcast_genre_t;
 
 typedef struct Enna_Module_Shoutcast_s
@@ -48,6 +55,34 @@ typedef struct Enna_Module_Shoutcast_s
 } Enna_Module_Shoutcast;
 
 static Enna_Module_Shoutcast *mod;
+
+static shoutcast_station_t *
+shoutcast_station_new (const char *name, const char *tunein, const char *id)
+{
+    shoutcast_station_t *s;
+
+    if (!name || !tunein || !id)
+        return NULL;
+
+    s = calloc(1, sizeof(shoutcast_station_t));
+    s->name   = strdup(name);
+    s->tunein = strdup(tunein);
+    s->id     = strdup(id);
+
+    return s;
+}
+
+static void
+shoutcast_station_free (shoutcast_station_t *s)
+{
+    if (!s)
+        return;
+
+    ENNA_FREE(s->name);
+    ENNA_FREE(s->tunein);
+    ENNA_FREE(s->id);
+    ENNA_FREE(s);
+}
 
 static shoutcast_genre_t *
 shoutcast_genre_new (const char *name)
@@ -66,9 +101,13 @@ shoutcast_genre_new (const char *name)
 static void
 shoutcast_genre_free (shoutcast_genre_t *g)
 {
+    shoutcast_station_t *s;
+
     if (!g)
         return;
 
+    EINA_LIST_FREE(g->ssl, s)
+        shoutcast_station_free(s);
     ENNA_FREE(g->name);
     ENNA_FREE(g);
 }
@@ -92,6 +131,29 @@ get_vfs_genre_list (void)
         f = enna_vfs_create_directory(uri, (const char *) g->name,
                                       "icon/webradio", NULL);
         ENNA_FREE(uri);
+        list = eina_list_append(list, f);
+    }
+
+    return list;
+}
+
+static Eina_List *
+get_vfs_station_list (shoutcast_genre_t *g)
+{
+    Eina_List *l, *list = NULL;
+    shoutcast_station_t *s;
+
+    if (!g || !g->ssl)
+        return NULL;
+
+    EINA_LIST_FOREACH(g->ssl, l, s)
+    {
+        Enna_Vfs_File *f;
+        char uri[MAX_URL];
+
+        snprintf(uri, MAX_URL, "%s%s?id=%s", SHOUTCAST_URL, s->tunein, s->id);
+        f = enna_vfs_create_file(uri, (const char *) s->name,
+                                 "icon/music", NULL);
         list = eina_list_append(list, f);
     }
 
@@ -150,17 +212,43 @@ browse_by_genre (const char *path)
     xmlDocPtr doc;
     xmlNode *list, *n;
     char url[MAX_URL];
-    Eina_List *files = NULL;
+    const char *genre;
+    Eina_List *l;
+    shoutcast_genre_t *g, *sg = NULL;
     xmlChar *tunein = NULL;
-    const char *genre = path + strlen(SHOUTCAST_GENRE);
 
-    memset(url, '\0', MAX_URL);
+    if (!path)
+        return NULL;
+
+    genre = path + strlen(SHOUTCAST_GENRE);
+
+    /* ensure the genre list exists */
+    if (!mod->sgl)
+        return NULL;
+
+    /* check for the requested genre in list */
+    EINA_LIST_FOREACH(mod->sgl, l, g)
+        if (!strcmp(g->name, genre))
+        {
+            sg = g;
+            break;
+        }
+
+    if (!sg)
+        return NULL;
+
+    /* check if we already fetched the list of stations */
+    if (sg->ssl)
+        goto get_list;
+
+    /* perform web request */
     snprintf(url, MAX_URL, "%s%s", SHOUTCAST_STATION, genre);
     chunk = url_get_data(mod->handler, url);
 
+    /* parse it */
     doc = xmlReadMemory(chunk.buffer, chunk.size, NULL, NULL, 0);
     if (!doc)
-        return NULL;
+        goto err_doc;
 
     list = get_node_xml_tree(xmlDocGetRootElement(doc), "stationlist");
     for (n = list->children; n; n = n->next)
@@ -179,28 +267,38 @@ browse_by_genre (const char *path)
 
         if (!xmlStrcmp(n->name, (xmlChar *) "station"))
         {
-            Enna_Vfs_File *file;
             xmlChar *id, *name;
-            char uri[MAX_URL];
+            shoutcast_station_t *s;
 
-            if (!xmlHasProp(n, (xmlChar *) "name") || !xmlHasProp(n,
-                    (xmlChar *) "id") || !tunein)
+            if (!xmlHasProp(n, (xmlChar *) "name") ||
+                !xmlHasProp(n, (xmlChar *) "id") ||
+                !tunein)
                 continue;
 
             name = xmlGetProp(n, (xmlChar *) "name");
-            id = xmlGetProp(n, (xmlChar *) "id");
-            memset(uri, '\0', MAX_URL);
-            snprintf(uri, MAX_URL, "%s%s?id=%s", SHOUTCAST_URL, tunein, id);
+            id   = xmlGetProp(n, (xmlChar *) "id");
 
-            file = enna_vfs_create_file(uri, (const char *) name, "icon/music", NULL);
-            files = eina_list_append(files, file);
+            s = shoutcast_station_new((char *) name,
+                                      (char *) tunein, (char *) id);
+            if (s)
+                sg->ssl = eina_list_append(sg->ssl, s);
+
+            xmlFree(name);
+            xmlFree(id);
         }
     }
 
-    free(chunk.buffer);
-    xmlFreeDoc(doc);
+    if (tunein)
+        xmlFree(tunein);
 
-    return files;
+    if (doc)
+        xmlFreeDoc(doc);
+
+err_doc:
+    ENNA_FREE(chunk.buffer);
+
+get_list:
+    return get_vfs_station_list(sg);
 }
 
 static Eina_List * _class_browse_up(const char *path, void *cookie)
