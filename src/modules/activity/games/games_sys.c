@@ -258,6 +258,7 @@ Games_Service games_sys = {
     "background/games",
     "icon/games",
     NULL,
+    NULL,
     games_sys_show,
     games_sys_hide,
     games_sys_event

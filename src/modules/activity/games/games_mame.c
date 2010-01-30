@@ -347,6 +347,13 @@ mame_init(void)
     return ecore_file_app_installed("sdlmame") ? EINA_TRUE : EINA_FALSE;
 }
 
+static Eina_Bool
+mame_shutdown(void)
+{
+    //printf("\n*****  FREE STUFF HERE ******\n\n");
+    return EINA_TRUE;
+}
+
 static void
 mame_show(Evas_Object *edje)
 {
@@ -390,6 +397,7 @@ Games_Service games_mame = {
     "background/games",
     "icon/mame",
     mame_init,
+    mame_shutdown,
     mame_show,
     mame_hide,
     mame_event

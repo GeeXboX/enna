@@ -102,6 +102,18 @@ _game_service_init(Games_Service *s)
         return EINA_TRUE;
 }
 
+static Eina_Bool
+_game_service_shutdown(Games_Service *s)
+{
+    if (!s)
+        return EINA_FALSE;
+
+    if (s->shutdown)
+        return (s->shutdown)();
+    else
+        return EINA_TRUE;
+}
+
 static void
 _game_service_show(Games_Service *s)
 {
@@ -448,6 +460,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
+    if (mod->sys) _game_service_shutdown(&games_sys); 
+    if (mod->mame) _game_service_shutdown(&games_mame); 
     enna_activity_del(ENNA_MODULE_NAME);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);
