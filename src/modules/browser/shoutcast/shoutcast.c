@@ -50,6 +50,7 @@ typedef struct shoutcast_genre_s {
 typedef struct Enna_Module_Shoutcast_s
 {
     Evas *e;
+    Eina_Bool root_menu;
     url_t handler;
     Eina_List *sgl;
 } Enna_Module_Shoutcast;
@@ -167,6 +168,8 @@ browse_genre_list (void)
     xmlDocPtr doc;
     xmlNode *list, *n;
 
+    mod->root_menu = EINA_TRUE;
+
     /* check if we already fetched the list of genres */
     if (mod->sgl)
         goto get_list;
@@ -216,6 +219,8 @@ browse_by_genre (const char *path)
     Eina_List *l;
     shoutcast_genre_t *g, *sg = NULL;
     xmlChar *tunein = NULL;
+
+    mod->root_menu = EINA_FALSE;
 
     if (!path)
         return NULL;
@@ -314,7 +319,7 @@ static Eina_List * _class_browse_up(const char *path, void *cookie)
 
 static Eina_List * _class_browse_down(void *cookie)
 {
-    return browse_genre_list();
+    return (mod->root_menu == EINA_TRUE) ? NULL : browse_genre_list();
 }
 
 static Enna_Vfs_File * _class_vfs_get(void *cookie)
