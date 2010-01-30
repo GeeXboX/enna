@@ -105,10 +105,14 @@ _parse_mame_path(char * path)
         token = strtok_r(str, ";", &saveptr);
         if (token == NULL)
             break;
-        
+
+        /* Substitute $HOME/ with the correct dir */
+        if (!strncmp(token, "$HOME/", 6))
+            snprintf(buf, sizeof(buf), "%s/%s",
+                     enna_util_user_home_get(), token + 6);
         /* Consider relative paths in MAME configuration 
            as subdirectories of $HOME/.mame */
-        if (token[0] == '/')
+        else if (token[0] == '/')
             strncpy(buf, token, strlen(token) + 1);
         else
             snprintf(buf, PATH_MAX, "%s/.mame/%s", enna_util_user_home_get(), token);
