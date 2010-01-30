@@ -256,7 +256,7 @@ if test "x$want_browser_podcasts" = "xyes"; then
 fi
 
 # SHOUTcast
-want_browser_shoutcast="no"
+want_browser_shoutcast="yes"
 AC_MSG_CHECKING(whether shoutcast browser module is to be built)
 AC_ARG_ENABLE(browser-shoutcast,
   AS_HELP_STRING([--enable-browser-shoutcast],[Enable SHOUTcast Browser Module]),
