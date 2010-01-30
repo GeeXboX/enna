@@ -56,8 +56,7 @@ typedef struct _Enna_Module_Games {
     Ecore_Event_Handler *exe_handler;
     Enna_Module  *em;
     Games_Service *current;
-    Games_Service *sys;
-    Games_Service *mame;
+    Eina_List     *services;
 } Enna_Module_Games;
 
 
@@ -334,13 +333,13 @@ _class_show(int dummy)
     /* create the menu, once for all */
     if (!mod->o_menu)
     {
+        Eina_List *l;
+        Games_Service *s;
+    
         mod->o_menu = enna_wall_add(enna->evas);
 
-        if (mod->sys)
-            _menu_add(mod->sys);
-
-        if (mod->mame)
-            _menu_add(mod->mame);
+        EINA_LIST_FOREACH(mod->services, l, s)
+            _menu_add(s);
 
         enna_wall_select_nth(mod->o_menu, 0, 0);
         edje_object_part_swallow(mod->o_edje, "menu.swallow", mod->o_menu);
@@ -451,17 +450,21 @@ ENNA_MODULE_INIT(Enna_Module *em)
     enna_activity_add(&class);
 
     if (_game_service_init(&games_sys) == EINA_TRUE)
-        mod->sys = &games_sys;
+        mod->services = eina_list_append(mod->services, &games_sys);
 
     if (_game_service_init(&games_mame) == EINA_TRUE)
-        mod->mame = &games_mame;
+        mod->services = eina_list_append(mod->services, &games_mame);
 }
 
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
-    if (mod->sys) _game_service_shutdown(&games_sys); 
-    if (mod->mame) _game_service_shutdown(&games_mame); 
+    Eina_List *l;
+    Games_Service *s;
+    
+    EINA_LIST_FOREACH(mod->services, l, s)
+        _game_service_shutdown(s);
+
     enna_activity_del(ENNA_MODULE_NAME);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);
