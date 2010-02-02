@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-28 12:41+0100\n"
+"POT-Creation-Date: 2010-02-02 10:33+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -28,48 +28,58 @@ msgstr "Источник не найден!"
 msgid "Main menu"
 msgstr "Главное меню"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:492
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедиаЦентр Enna\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:493
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Использование: %s [опции...]\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:494
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Доступные опции:\n"
 
-#: src/bin/enna.c:452
+#: src/bin/enna.c:495
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Укажите конфигурационный файл.\n"
 
-#: src/bin/enna.c:453
+#: src/bin/enna.c:496
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Принудительный полноэкранный режим.\n"
 
-#: src/bin/enna.c:454
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Выводит это сообщение.\n"
 
-#: src/bin/enna.c:455
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr ""
 "  -t, (--theme):   Укажите название темы, которая будет использована.\n"
 
-#: src/bin/enna.c:456
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Укажите размеры окна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:457
+#: src/bin/enna.c:500
+#, c-format
+msgid "  -p, (--profile): Specify display profile\n"
+msgstr ""
+
+#: src/bin/enna.c:501
+#, c-format
+msgid "    Supported: "
+msgstr ""
+
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Выводит номер версии Enna.\n"
@@ -103,32 +113,32 @@ msgstr "Необходимая информация не задана"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Дорожка №%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:394
+#: src/bin/weather_api.c:404
 msgid "City"
 msgstr ""
 
-#: src/bin/weather_api.c:395
+#: src/bin/weather_api.c:405
 msgid "Choose your city"
 msgstr ""
 
-#: src/bin/weather_api.c:402
+#: src/bin/weather_api.c:412
 #, fuzzy
 msgid "Remove"
 msgstr "Сменный носитель"
 
-#: src/bin/weather_api.c:407
+#: src/bin/weather_api.c:417
 msgid "Add new city"
 msgstr ""
 
-#: src/bin/weather_api.c:408
+#: src/bin/weather_api.c:418
 msgid "Add more cities to the list"
 msgstr ""
 
-#: src/bin/weather_api.c:413
+#: src/bin/weather_api.c:423
 msgid "Add"
 msgstr ""
 
-#: src/bin/weather_api.c:618 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:627 src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Погода"
 
@@ -290,15 +300,49 @@ msgstr ""
 msgid "None"
 msgstr "Нет<br>"
 
-#: src/modules/activity/games/games.c:308
-#: src/modules/activity/games/games.c:336
+#: src/modules/activity/games/games.c:216
+#, fuzzy, c-format
+msgid "no games found"
+msgstr "Источник не найден!"
+
+#: src/modules/activity/games/games.c:218
+#, fuzzy, c-format
+msgid "one game"
+msgstr "Системные игры"
+
+#: src/modules/activity/games/games.c:220
+#, fuzzy, c-format
+msgid "%d games"
+msgstr "%d Песня"
+
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:433
 msgid "Games"
 msgstr "Игры"
 
-#: src/modules/activity/games/games.c:338
+#: src/modules/activity/games/games.c:435
 #, fuzzy
 msgid "Play all your games directly from Enna"
 msgstr "С помощью этого модуля Вы можете играть в игры прямо из enna"
+
+#: src/modules/activity/games/games_mame.c:81
+msgid "<c>M.A.M.E.</c><br>Game running..."
+msgstr ""
+
+#: src/modules/activity/games/games_mame.c:317
+msgid ""
+"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
+"at: ~/.mame/roms<br>"
+msgstr ""
+
+#: src/modules/activity/games/games_sys.c:161
+msgid "<c>System Games</c><br>Game running..."
+msgstr ""
+
+#: src/modules/activity/games/games_sys.c:257
+#, fuzzy
+msgid "System Games"
+msgstr "Системные игры"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -488,17 +532,17 @@ msgstr "Обозреватель подкастов"
 msgid "Podcast module"
 msgstr "Модуль подкастов"
 
-#: src/modules/browser/shoutcast/shoutcast.c:173
+#: src/modules/browser/shoutcast/shoutcast.c:335
 #, fuzzy
 msgid "SHOUTcast streaming"
 msgstr "Сетевые радио трансляции"
 
-#: src/modules/browser/shoutcast/shoutcast.c:197
+#: src/modules/browser/shoutcast/shoutcast.c:359
 #, fuzzy
 msgid "SHOUTcast browser"
 msgstr "Обозреватель сетевых трансляций"
 
-#: src/modules/browser/shoutcast/shoutcast.c:199
+#: src/modules/browser/shoutcast/shoutcast.c:361
 #, fuzzy
 msgid "Listen to SHOUTcast stream"
 msgstr "Слушать сетевую радио станцию"
@@ -691,9 +735,6 @@ msgstr ""
 
 #~ msgid "Database stuff and metadata retrival from various sources"
 #~ msgstr "Данные из базы и метаданные, полученые из разных источников"
-
-#~ msgid "System games"
-#~ msgstr "Системные игры"
 
 #, fuzzy
 #~ msgid "Music core"

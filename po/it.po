@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-01-28 12:41+0100\n"
+"POT-Creation-Date: 2010-02-02 10:33+0100\n"
 "PO-Revision-Date: 2010-01-28 12:42+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -24,49 +24,59 @@ msgstr "Nessun media trovato!"
 msgid "Main menu"
 msgstr "Menu principale"
 
-#: src/bin/enna.c:449
+#: src/bin/enna.c:492
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:450
+#: src/bin/enna.c:493
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:451
+#: src/bin/enna.c:494
 #, c-format
 msgid " Available options:\n"
 msgstr " Opzioni disponibili:\n"
 
-#: src/bin/enna.c:452
+#: src/bin/enna.c:495
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:453
+#: src/bin/enna.c:496
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:454
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:455
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:456
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:457
+#: src/bin/enna.c:500
+#, c-format
+msgid "  -p, (--profile): Specify display profile\n"
+msgstr ""
+
+#: src/bin/enna.c:501
+#, c-format
+msgid "    Supported: "
+msgstr ""
+
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
@@ -96,31 +106,31 @@ msgstr "Nessuna informazione disponibile"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Traccia #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:394
+#: src/bin/weather_api.c:404
 msgid "City"
 msgstr "Città"
 
-#: src/bin/weather_api.c:395
+#: src/bin/weather_api.c:405
 msgid "Choose your city"
 msgstr "Scegli la tua città"
 
-#: src/bin/weather_api.c:402
+#: src/bin/weather_api.c:412
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: src/bin/weather_api.c:407
+#: src/bin/weather_api.c:417
 msgid "Add new city"
 msgstr "Aggiungi nuova città"
 
-#: src/bin/weather_api.c:408
+#: src/bin/weather_api.c:418
 msgid "Add more cities to the list"
 msgstr "Aggiungi altre città alla lista"
 
-#: src/bin/weather_api.c:413
+#: src/bin/weather_api.c:423
 msgid "Add"
 msgstr "Aggiungi"
 
-#: src/bin/weather_api.c:618 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:627 src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Meteo"
 
@@ -267,14 +277,47 @@ msgstr "Gateway:"
 msgid "None"
 msgstr "Nessuno"
 
-#: src/modules/activity/games/games.c:308
-#: src/modules/activity/games/games.c:336
+#: src/modules/activity/games/games.c:216
+#, fuzzy, c-format
+msgid "no games found"
+msgstr "Nessun media trovato!"
+
+#: src/modules/activity/games/games.c:218
+#, c-format
+msgid "one game"
+msgstr ""
+
+#: src/modules/activity/games/games.c:220
+#, fuzzy, c-format
+msgid "%d games"
+msgstr "%d canzoni"
+
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:433
 msgid "Games"
 msgstr "Giochi"
 
-#: src/modules/activity/games/games.c:338
+#: src/modules/activity/games/games.c:435
 msgid "Play all your games directly from Enna"
 msgstr "Usa tutti i tuoi giochi direttamente da Enna"
+
+#: src/modules/activity/games/games_mame.c:81
+msgid "<c>M.A.M.E.</c><br>Game running..."
+msgstr ""
+
+#: src/modules/activity/games/games_mame.c:317
+msgid ""
+"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
+"at: ~/.mame/roms<br>"
+msgstr ""
+
+#: src/modules/activity/games/games_sys.c:161
+msgid "<c>System Games</c><br>Game running..."
+msgstr ""
+
+#: src/modules/activity/games/games_sys.c:257
+msgid "System Games"
+msgstr ""
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -448,15 +491,15 @@ msgstr "Browser podcast"
 msgid "Podcast module"
 msgstr "Modulo podcast"
 
-#: src/modules/browser/shoutcast/shoutcast.c:173
+#: src/modules/browser/shoutcast/shoutcast.c:335
 msgid "SHOUTcast streaming"
 msgstr "Flussi SHOUTcast"
 
-#: src/modules/browser/shoutcast/shoutcast.c:197
+#: src/modules/browser/shoutcast/shoutcast.c:359
 msgid "SHOUTcast browser"
 msgstr "Browser SHOUTcast"
 
-#: src/modules/browser/shoutcast/shoutcast.c:199
+#: src/modules/browser/shoutcast/shoutcast.c:361
 msgid "Listen to SHOUTcast stream"
 msgstr "Ascolta flussi SHOUTcast"
 
