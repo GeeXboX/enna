@@ -90,6 +90,8 @@ static Ecore_Timer *update_timer = NULL;
 static void
 set_enna_information(buffer_t *b)
 {
+    unsigned int ver;
+
     if (!b)
         return;
 
@@ -97,10 +99,12 @@ set_enna_information(buffer_t *b)
     buffer_append(b, _("Enna information"));
     buffer_append(b, "</c><br><br><hilight>");
     buffer_append(b, _("Enna:"));
-    buffer_appendf(b, "</hilight> %s<br><hilight>libplayer:</hilight> %s<br>",
-                    VERSION, LIBPLAYER_VERSION_STR);
-    buffer_appendf(b, "<hilight>libvalhalla:</hilight> %s<br>",
-                    LIBVALHALLA_VERSION_STR);
+    ver = libplayer_version();
+    buffer_appendf(b, "</hilight> %s<br><hilight>libplayer:</hilight> %u.%u.%u<br>",
+                    VERSION, ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
+    ver = libvalhalla_version();
+    buffer_appendf(b, "<hilight>libvalhalla:</hilight> %u.%u.%u<br>",
+                    ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
 #ifdef BUILD_LIBSVDRP
     buffer_appendf(b, "<hilight>libsvdrp:</hilight> %s<br>",
                     LIBSVDRP_VERSION);
