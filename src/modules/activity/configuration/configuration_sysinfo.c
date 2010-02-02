@@ -100,14 +100,14 @@ set_enna_information(buffer_t *b)
     buffer_append(b, "</c><br><br><hilight>");
     buffer_append(b, _("Enna:"));
     ver = libplayer_version();
-    buffer_appendf(b, "</hilight> %s<br><hilight>libplayer:</hilight> %u.%u.%u<br>",
-                    VERSION, ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
+    buffer_appendf(b, "</hilight> %s<br>"
+                      "<hilight>libplayer:</hilight> %u.%u.%u<br>",
+                   VERSION, ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
     ver = libvalhalla_version();
     buffer_appendf(b, "<hilight>libvalhalla:</hilight> %u.%u.%u<br>",
-                    ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
+                   ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
 #ifdef BUILD_LIBSVDRP
-    buffer_appendf(b, "<hilight>libsvdrp:</hilight> %s<br>",
-                    LIBSVDRP_VERSION);
+    buffer_appendf(b, "<hilight>libsvdrp:</hilight> %s<br>", LIBSVDRP_VERSION);
 #endif
     buffer_append(b, "<hilight>");
     buffer_append(b, _("Video renderer:"));
@@ -274,7 +274,7 @@ get_loadavg(buffer_t *b)
     if (!x)
         goto err_loadavg;
 
-    ld = strndup(buf, sizeof (x));
+    ld = strndup(buf, sizeof(x));
     load = enna_util_atof(ld) * 100.0;
 
     buffer_append(b, "<hilight>");
@@ -390,7 +390,7 @@ get_vdr(buffer_t *b)
         buffer_appendf(b, _("connected to VDR"));
         buffer_appendf(b, " %s )",
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_VERSION));
-	buffer_append(b, _("on"));
+        buffer_append(b, _("on"));
         buffer_appendf(b, " %s on %s (%s)",
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_NAME),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_HOSTNAME));
@@ -438,7 +438,7 @@ get_network(buffer_t *b)
         /* show the device name and IP address */
         buffer_appendf(b, "  * %s (", item->ifr_name);
         buffer_append(b, _("IP:"));
-	buffer_appendf(b, " %s, ",
+        buffer_appendf(b, " %s, ",
                  inet_ntoa(((struct sockaddr_in *) &item->ifr_addr)->sin_addr));
 
         if (ioctl(s, SIOCGIFNETMASK, item) < 0)
@@ -550,12 +550,12 @@ _update_infos_cb(void *data)
 Evas_Object *
 info_panel_show(void *data)
 {
-    // create the panel main object
+    /* create the panel main object */
     o_edje = edje_object_add(enna->evas);
     edje_object_file_set(o_edje, enna_config_theme_get (),
                          "activity/configuration/sysinfo");
 
-    // update info once and fire the first callback
+    /* update info once and fire the first callback */
     _update_infos_cb(o_edje);
     update_timer =
         ecore_timer_add(INFOS_REFRESH_PERIOD, _update_infos_cb, o_edje);
