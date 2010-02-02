@@ -98,27 +98,27 @@ msgstr "音軌 #%02d (%02d:%02d)"
 
 #: src/bin/weather_api.c:394
 msgid "City"
-msgstr ""
+msgstr "城市"
 
 #: src/bin/weather_api.c:395
 msgid "Choose your city"
-msgstr ""
+msgstr "選擇你的城市"
 
 #: src/bin/weather_api.c:402
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
 #: src/bin/weather_api.c:407
 msgid "Add new city"
-msgstr ""
+msgstr "加入新城市"
 
 #: src/bin/weather_api.c:408
 msgid "Add more cities to the list"
-msgstr ""
+msgstr "加入更多的城市到這個清單中"
 
 #: src/bin/weather_api.c:413
 msgid "Add"
-msgstr ""
+msgstr "新增"
 
 #: src/bin/weather_api.c:618 src/modules/activity/weather/weather.c:273
 msgid "Weather"
@@ -609,17 +609,17 @@ msgstr "DVD"
 
 #: src/modules/volume/hal/hal_volume.c:68
 msgid "Data"
-msgstr "Data"
+msgstr "資料"
 
 #: src/modules/volume/mtab/mtab.c:77
 #, c-format
 msgid "[NFS] %s on %s"
-msgstr "[NFS] %s on %s"
+msgstr "[NFS] %s 在 %s"
 
 #: src/modules/volume/mtab/mtab.c:87
 #, c-format
 msgid "[SAMBA] %s on %s"
-msgstr "[SAMBA] %s on %s"
+msgstr "[SAMBA] %s 在 %s"
 
 #: src/modules/volume/mtab/mtab.c:149
 msgid "Volumes from mtab"
