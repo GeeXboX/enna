@@ -1,0 +1,639 @@
+# German translations for enna package.
+# Copyright (C) 2010 The Enna Project & Joe Hansen.
+# This file is distributed under the same license as the enna package.
+# Joe Hansen <joedalton2@yahoo.dk>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: enna 0.4.0\n"
+"Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
+"POT-Creation-Date: 2010-01-28 12:41+0100\n"
+"PO-Revision-Date: 2010-02-01 17:30+01:00\n"
+"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=0;\n"
+
+# ingen medier fundet!
+#: src/bin/browser.c:549
+msgid "No media found!"
+msgstr "Intet medie fundet!"
+
+#: src/bin/browser.c:706
+msgid "Main menu"
+msgstr "Hovedmenu"
+
+#: src/bin/enna.c:449
+#, c-format
+msgid "Enna MediaCenter\n"
+msgstr "Enna - mediecenter\n"
+
+#: src/bin/enna.c:450
+#, c-format
+msgid " Usage: %s [options ...]\n"
+msgstr " Brug: %s [tilvalg...]\n"
+
+#: src/bin/enna.c:451
+#, c-format
+msgid " Available options:\n"
+msgstr " Tilgængelige tilvalg:\n"
+
+#: src/bin/enna.c:452
+#, c-format
+msgid "  -c, (--config):  Specify configuration file to be used.\n"
+msgstr "  -c, (--config):  Angiv den konfigurationsfil der skal bruges.\n"
+
+# måske Start i fuldskærmtilstand
+#: src/bin/enna.c:453
+#, c-format
+msgid "  -f, (--fs):      Force fullscreen mode.\n"
+msgstr "  -f, (--fs):      Fremtving fuldskærmtilstand.\n"
+
+#: src/bin/enna.c:454
+#, c-format
+msgid "  -h, (--help):    Display this help.\n"
+msgstr "  -h, (--help):    Vis denne hjælpetekst.\n"
+
+#: src/bin/enna.c:455
+#, c-format
+msgid "  -t, (--theme):   Specify theme name to be used.\n"
+msgstr "  -t, (--theme):   Angiv temanavn der skal bruges.\n"
+
+#: src/bin/enna.c:456
+#, c-format
+msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
+msgstr "  -g, (--geometry):Angiv vinduesgeometri. (geometri=1280x720)\n"
+
+#: src/bin/enna.c:457
+#, c-format
+msgid "  -V, (--version): Display Enna version number.\n"
+msgstr "  -V, (--version): Vis versionsnummeret for Enna.\n"
+
+#: src/bin/exit.c:93
+msgid "Are you sure you want to quit Enna?"
+msgstr "Er du sikker på, at du ønsker at afslutte Enna?"
+
+#: src/bin/exit.c:148
+msgid "Yes, quit Enna"
+msgstr "Ja, afslut Enna"
+
+#: src/bin/exit.c:151
+msgid "No, continue using Enna"
+msgstr "Nej, fortsæt med at bruge Enna"
+
+#: src/bin/module.c:233
+msgid "Modules"
+msgstr "Moduler"
+
+#: src/bin/module.c:472
+msgid "No information provided"
+msgstr "Ingen information angivet"
+
+#: src/bin/parser_cdda.c:296
+#, c-format
+msgid "Track #%02d (%02d:%02d)"
+msgstr "Titel #%02d (%02d:%02d)"
+
+#: src/bin/weather_api.c:394
+msgid "City"
+msgstr "By"
+
+#: src/bin/weather_api.c:395
+msgid "Choose your city"
+msgstr "Vælg din by"
+
+#: src/bin/weather_api.c:402
+msgid "Remove"
+msgstr "Fjern"
+
+#: src/bin/weather_api.c:407
+msgid "Add new city"
+msgstr "Tilføj ny by"
+
+#: src/bin/weather_api.c:408
+msgid "Add more cities to the list"
+msgstr "Tilføj flere byer til listen"
+
+#: src/bin/weather_api.c:413
+msgid "Add"
+msgstr "Tilføj"
+
+#: src/bin/weather_api.c:618 src/modules/activity/weather/weather.c:273
+msgid "Weather"
+msgstr "Vejr"
+
+#: src/modules/activity/bookstore/bookstore.c:323
+#: src/modules/activity/bookstore/bookstore.c:351
+msgid "Bookstore"
+msgstr "Boghandel"
+
+#: src/modules/activity/bookstore/bookstore.c:353
+msgid "Read your books"
+msgstr "Læs dine bøger"
+
+#: src/modules/activity/configuration/configuration.c:211
+#: src/modules/activity/configuration/configuration.c:239
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: src/modules/activity/configuration/configuration.c:241
+msgid "This module creates the Enna configuration panel"
+msgstr "Dette modul opretter Ennas konfigurationspanel"
+
+#: src/modules/activity/configuration/configuration.c:256
+#: src/modules/activity/configuration/configuration_sysinfo.c:511
+msgid "System information"
+msgstr "Systeminformation"
+
+#: src/modules/activity/configuration/configuration.c:259
+msgid "Credits"
+msgstr "Rulletekster"
+
+#: src/modules/activity/configuration/configuration_credits.c:45
+msgid "Enna is a GeeXboX-team MediaCenter"
+msgstr "Enna er et mediecenter fra GeeXboX-holdet"
+
+#: src/modules/activity/configuration/configuration_credits.c:47
+msgid "based on Enlightenment Foundation Librairies (EFL)."
+msgstr "baseret på Enlightenment Foundation Librairies (EFL)."
+
+#: src/modules/activity/configuration/configuration_credits.c:49
+msgid "Credits go to:"
+msgstr "Tak til:"
+
+#: src/modules/activity/configuration/configuration_credits.c:53
+msgid "and"
+msgstr "og"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:97
+msgid "Enna information"
+msgstr "Information om Enna"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:99
+msgid "Enna:"
+msgstr "Enna:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:109
+msgid "Video renderer:"
+msgstr "Videorendering:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:170
+msgid "Distribution:"
+msgstr "Distribution:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:192
+msgid "OS:"
+msgstr "Os:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:200
+msgid "for"
+msgstr "for"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:217
+msgid "Available CPUs:"
+msgstr "Tilgængelige cpu'er:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:248
+msgid ", running at"
+msgstr ", kører på"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:277
+msgid "CPU Load:"
+msgstr "CPU-belastning:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:321
+msgid "Memory:"
+msgstr "Hukommelse:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:323
+msgid "used on"
+msgstr "brugt på"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:325
+msgid "total"
+msgstr "i alt"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:363
+msgid "Screen resolution:"
+msgstr "Skærmopløsning:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:366
+msgid "at"
+msgstr "den"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:368
+msgid "min:"
+msgstr "min:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
+msgid "max:"
+msgstr "maks:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:383
+msgid "VDR:"
+msgstr "VDR:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:386
+msgid "connected to VDR"
+msgstr "forbundet med VDR"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:389
+msgid "on"
+msgstr "tændt"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:394
+msgid "not connected"
+msgstr "ikke forbundet"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:409
+msgid "Available network interfaces:"
+msgstr "Tilgængelige netværksgrænseflader:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:436
+msgid "IP:"
+msgstr "IP:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:443
+msgid "Netmask:"
+msgstr "Netmaske:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:468
+msgid "Default gateway:"
+msgstr "Standardadgangspunkt:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:496
+msgid "None"
+msgstr "Ingen"
+
+#: src/modules/activity/games/games.c:308
+#: src/modules/activity/games/games.c:336
+msgid "Games"
+msgstr "Spil"
+
+#: src/modules/activity/games/games.c:338
+msgid "Play all your games directly from Enna"
+msgstr "Spil alle dine spil direkte fra Enna"
+
+#: src/modules/activity/music/music.c:108
+#, c-format
+msgid "%d Songs"
+msgstr "%d sange"
+
+#: src/modules/activity/music/music.c:463
+#: src/modules/activity/music/music.c:491
+msgid "Music"
+msgstr "Musik"
+
+#: src/modules/activity/music/music.c:493
+msgid "Listen to your music"
+msgstr "Hør musik"
+
+#: src/modules/activity/music/music_lyrics.c:91
+msgid "No lyrics found ..."
+msgstr "Ingen tekster blev fundet..."
+
+#: src/modules/activity/photo/photo.c:367
+#: src/modules/activity/photo/photo.c:395
+msgid "Photo"
+msgstr "Foto"
+
+#: src/modules/activity/photo/photo.c:397
+msgid "Browse your photos and create slideshows"
+msgstr "Se dine billeder og opret diasshow"
+
+#: src/modules/activity/tv/tv.c:102
+#, c-format
+msgid "Timer '%s' is due to start in %i minute"
+msgid_plural "Timer '%s' is due to start in %i minutes"
+msgstr[0] "Tidtager '%s' starter om %i minut"
+msgstr[1] "Tidtager '%s' starter om %i minutter"
+
+#: src/modules/activity/tv/tv.c:104
+#, c-format
+msgid "Currently recording '%s'"
+msgstr "Optager aktuelt '%s'"
+
+#: src/modules/activity/tv/tv.c:113
+msgid "Recording in progress"
+msgstr "Optagelse i gang"
+
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:301
+msgid "Television"
+msgstr "Fjernsyn"
+
+#: src/modules/activity/tv/tv.c:303
+msgid "View TV channels"
+msgstr "Vis tv-kanaler"
+
+#: src/modules/activity/video/video_infos.c:94
+msgid "No such information ..."
+msgstr "Ingen sådan information..."
+
+#: src/modules/activity/video/video_infos.c:129
+msgid "Director:"
+msgstr "Instruktør:"
+
+#: src/modules/activity/video/video_infos.c:136
+msgid "Cast:"
+msgstr "Skuespillere:"
+
+#: src/modules/activity/video/video_infos.c:158
+msgid "Video:"
+msgstr "Video:"
+
+#: src/modules/activity/video/video_infos.c:181
+msgid "Audio:"
+msgstr "Lyd:"
+
+#: src/modules/activity/video/video_infos.c:196
+msgid "Size:"
+msgstr "Størrelse:"
+
+#: src/modules/activity/video/video_infos.c:204
+msgid "No further information can be retrieved"
+msgstr "Ingen yderligere information kan indhentes"
+
+#: src/modules/activity/video/video.c:132
+#, c-format
+msgid "%d Movies"
+msgstr "%d film"
+
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
+msgid "Video"
+msgstr "Video"
+
+#: src/modules/activity/video/video.c:993
+msgid "Play your videos"
+msgstr "Afspil dine videoer"
+
+#: src/modules/activity/weather/weather.c:301
+msgid "Weather forecasts"
+msgstr "Vejrmeldinger"
+
+#: src/modules/activity/weather/weather.c:303
+msgid "Show the weather at your location"
+msgstr "Vis vejret hvor du bor"
+
+#: src/modules/browser/cdda/cdda.c:95
+msgid "Play audio CD"
+msgstr "Afspil lyd-cd"
+
+#: src/modules/browser/cdda/cdda.c:138
+msgid "CDDA module"
+msgstr "CDDA-modul"
+
+#: src/modules/browser/cdda/cdda.c:140
+msgid "Listen your favorite CDs"
+msgstr "Lyt til dine favorit cd'er"
+
+#: src/modules/browser/dvd/dvd.c:62
+msgid "Play"
+msgstr "Afspil"
+
+#: src/modules/browser/dvd/dvd.c:65
+msgid "Play (with menus)"
+msgstr "Afspil (med menuer)"
+
+#: src/modules/browser/dvd/dvd.c:91
+msgid "Watch DVD video"
+msgstr "Se dvd-video"
+
+#: src/modules/browser/dvd/dvd.c:136
+msgid "DVD module"
+msgstr "Dvd-modul"
+
+#: src/modules/browser/dvd/dvd.c:138
+msgid "Watch movies from DVD"
+msgstr "Se dvd-film"
+
+#: src/modules/browser/localfiles/localfiles.c:491
+#: src/modules/browser/localfiles/localfiles.c:509
+#: src/modules/browser/localfiles/localfiles.c:527
+msgid "Browse local devices"
+msgstr "Gennemse lokale enheder"
+
+#: src/modules/browser/localfiles/localfiles.c:681
+msgid "Browse local files"
+msgstr "Gennemse lokale filer"
+
+#: src/modules/browser/localfiles/localfiles.c:683
+msgid "Browse files in your local file systems"
+msgstr "Gennemse filer på dit lokale filsystem"
+
+#: src/modules/browser/netstreams/netstreams.c:322
+#: src/modules/browser/netstreams/netstreams.c:338
+msgid "Browse network streams"
+msgstr "Gennemse netværksstrømme"
+
+#: src/modules/browser/netstreams/netstreams.c:409
+msgid "Netstreams"
+msgstr "Netstrømme"
+
+#: src/modules/browser/netstreams/netstreams.c:411
+msgid "Browse and play network streams"
+msgstr "Gennemse og afspil netværksstrømme"
+
+#: src/modules/browser/podcasts/podcasts.c:329
+msgid "Listen to podcasts"
+msgstr "Lyt til podcast'er"
+
+#: src/modules/browser/podcasts/podcasts.c:391
+msgid "Podcast browser"
+msgstr "Podcastbrowser"
+
+#: src/modules/browser/podcasts/podcasts.c:393
+msgid "Podcast module"
+msgstr "Podcastmodul"
+
+#: src/modules/browser/shoutcast/shoutcast.c:173
+msgid "SHOUTcast streaming"
+msgstr "SHOUTcast-streaming"
+
+#: src/modules/browser/shoutcast/shoutcast.c:197
+msgid "SHOUTcast browser"
+msgstr "SHOUTcast-browser"
+
+#: src/modules/browser/shoutcast/shoutcast.c:199
+msgid "Listen to SHOUTcast stream"
+msgstr "Lyt til SHOUTcast-strøm"
+
+#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:516
+msgid "UPnP/DLNA media servers"
+msgstr "UPnp/DLNA-medieservere"
+
+#: src/modules/browser/upnp/upnp.c:571
+#, c-format
+msgid "Found new UPnP device '%s (%s)'"
+msgstr "Fandt ny UPnP-enhed '%s (%s)'"
+
+#: src/modules/browser/upnp/upnp.c:585
+msgid "UPnP/DLNA module"
+msgstr "UPnP/DLNA-modul"
+
+#: src/modules/browser/upnp/upnp.c:587
+msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
+msgstr "Dette modul tillader Enna at gennemse indhold fra UPnP/DLNA-medieservere"
+
+#: src/modules/browser/valhalla/valhalla.c:142
+msgid "Authors"
+msgstr "Forfattere"
+
+#: src/modules/browser/valhalla/valhalla.c:149
+msgid "Artists"
+msgstr "Kunstnere"
+
+#: src/modules/browser/valhalla/valhalla.c:156
+msgid "Albums"
+msgstr "Album"
+
+#: src/modules/browser/valhalla/valhalla.c:161
+msgid "Genres"
+msgstr "Genre"
+
+#: src/modules/browser/valhalla/valhalla.c:173
+msgid "Categories"
+msgstr "Kategorier"
+
+#: src/modules/browser/valhalla/valhalla.c:178
+msgid "Directors"
+msgstr "Instruktører"
+
+#: src/modules/browser/valhalla/valhalla.c:183
+msgid "Years"
+msgstr "År"
+
+#: src/modules/browser/valhalla/valhalla.c:193
+msgid "Unclassified"
+msgstr "Unklassifiseret"
+
+#: src/modules/browser/valhalla/valhalla.c:653
+msgid "Valhalla module"
+msgstr "Valhallamodul"
+
+#: src/modules/browser/valhalla/valhalla.c:655
+msgid "Build a browseable catalog of your media files"
+msgstr "Byg et katalog over dine mediefiler der kan søges i"
+
+#: src/modules/browser/valhalla/valhalla.c:663
+#: src/modules/browser/valhalla/valhalla.c:680
+msgid "Media library"
+msgstr "Mediebibliotek"
+
+#: src/modules/volume/hal/hal_volume.c:39
+msgid "CD-ROM"
+msgstr "Cd-rom"
+
+#: src/modules/volume/hal/hal_volume.c:40
+msgid "CD-R"
+msgstr "Cd-R"
+
+#: src/modules/volume/hal/hal_volume.c:41
+msgid "CD-RW"
+msgstr "Cd-RW"
+
+#: src/modules/volume/hal/hal_volume.c:42
+msgid "DVD-ROM"
+msgstr "Dvd-ROM"
+
+#: src/modules/volume/hal/hal_volume.c:43
+msgid "DVD-RAM"
+msgstr "Dvd-RAM"
+
+#: src/modules/volume/hal/hal_volume.c:44
+msgid "DVD-R"
+msgstr "Dvd-R"
+
+#: src/modules/volume/hal/hal_volume.c:45
+msgid "DVD-RW"
+msgstr "Dvd-RW"
+
+#: src/modules/volume/hal/hal_volume.c:46
+msgid "DVD+R"
+msgstr "Dvd+R"
+
+#: src/modules/volume/hal/hal_volume.c:47
+msgid "DVD+RW"
+msgstr "Dvd+RW"
+
+#: src/modules/volume/hal/hal_volume.c:48
+msgid "DVD+R (DL)"
+msgstr "Dvd+R (DL)"
+
+#: src/modules/volume/hal/hal_volume.c:49
+msgid "BD-ROM"
+msgstr "BD-ROM"
+
+#: src/modules/volume/hal/hal_volume.c:50
+msgid "BD-R"
+msgstr "BD-R"
+
+#: src/modules/volume/hal/hal_volume.c:51
+msgid "BD-RE"
+msgstr "BD-RE"
+
+#: src/modules/volume/hal/hal_volume.c:52
+msgid "HD-DVD-ROM"
+msgstr "HD-dvd-ROM"
+
+#: src/modules/volume/hal/hal_volume.c:53
+msgid "HD-DVD-R"
+msgstr "HD-dvd-R"
+
+#: src/modules/volume/hal/hal_volume.c:54
+msgid "HD-DVD-RW"
+msgstr "HD-dvd-RW"
+
+#: src/modules/volume/hal/hal_volume.c:55
+msgid "MagnetoOptical"
+msgstr "MagnetoOptical"
+
+#: src/modules/volume/hal/hal_volume.c:64
+msgid "CDDA"
+msgstr "CDDA"
+
+#: src/modules/volume/hal/hal_volume.c:65
+msgid "VCD"
+msgstr "VCD"
+
+#: src/modules/volume/hal/hal_volume.c:66
+msgid "SVCD"
+msgstr "SVCD"
+
+#: src/modules/volume/hal/hal_volume.c:67
+msgid "DVD"
+msgstr "Dvd"
+
+#: src/modules/volume/hal/hal_volume.c:68
+msgid "Data"
+msgstr "Data"
+
+#: src/modules/volume/mtab/mtab.c:77
+#, c-format
+msgid "[NFS] %s on %s"
+msgstr "[NFS] %s på %s"
+
+#: src/modules/volume/mtab/mtab.c:87
+#, c-format
+msgid "[SAMBA] %s on %s"
+msgstr "[SAMBA] %s på %s"
+
+#: src/modules/volume/mtab/mtab.c:149
+msgid "Volumes from mtab"
+msgstr "Arkiver fra mtab"
+
+#: src/modules/volume/mtab/mtab.c:151
+msgid "This module provide support for already mounted volumes"
+msgstr "Dette modul giver understøttelse for allerede monterede arkiver"
+
+#: src/modules/volume/udev/udev.c:664
+msgid "Volumes from udev"
+msgstr "Arkiver fra udev"
+
+#: src/modules/volume/udev/udev.c:666
+msgid "This module provide support for removable volumes"
+msgstr "Dette modul giver understøttelse for arkiver der kan fjernes"
+
