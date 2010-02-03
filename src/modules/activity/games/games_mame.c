@@ -118,6 +118,7 @@ _parse_mame_path(char * path)
             snprintf(buf, PATH_MAX, "%s/.mame/%s", enna_util_user_home_get(), token);
         
         list = eina_list_append(list, strdup(buf));
+        free(str);
     }
     
     return list;
