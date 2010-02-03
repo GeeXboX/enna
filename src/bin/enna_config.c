@@ -50,10 +50,10 @@ static ini_t *cfg_ini = NULL;
 #define SLIDESHOW_DEFAULT_TIMER 5.0
 
 #define FILTER_DEFAULT_MUSIC \
-    "3gp,aac,ape,apl,flac,m4a,mac,mka,mp2,mp3,mp4,mpc,ogg,ra,wav,wma"
+    "3gp,aac,ape,apl,flac,m4a,mac,mka,mp2,mp3,mp4,mpc,oga,ogg,ra,wav,wma"
 
 #define FILTER_DEFAULT_VIDEO \
-    "asf,avi,divx,dvr-ms,evo,flc,fli,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m"
+    "asf,avi,divx,dvr-ms,evo,flc,fli,flv,m1v,m2v,m4p,m4v,mkv,mov,mp4,mp4v,mpe,mpeg,mpg,ogm,ogv,qt,rm,rmvb,swf,ts,vdr,vob,vro,wmv,y4m"
 
 #define FILTER_DEFAULT_PHOTO \
     "jpg,jpeg,png,gif,tif,tiff,xpm"
