@@ -730,4 +730,5 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     enna_volumes_listener_del(mod->photo->vl);
     free(mod->photo);
 #endif
+    ENNA_FREE(mod);
 }
