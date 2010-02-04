@@ -286,12 +286,13 @@ enna_module_shutdown(void)
 #endif /* USE_STATIC_MODULES */
         free(m);
     }
-
+#ifndef USE_STATIC_MODULES
     if (path_group)
     {
         ecore_path_group_del(path_group);
         path_group = NULL;
     }
+#endif
 }
 
 int
