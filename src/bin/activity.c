@@ -185,6 +185,6 @@ enna_activity_request_quit_all(void)
     }
     if (msg->buf)
         tmp = strdup(msg->buf);
-        buffer_free(msg);
+    buffer_free(msg);
     return tmp;
 }
