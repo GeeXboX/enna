@@ -20,7 +20,6 @@
  */
 
 #include <Ecore.h>
-#include <Ecore_Str.h>
 #include <Elementary.h>
 #include <Edje.h>
 
@@ -174,7 +173,7 @@ _parse_directory(Evas_Object *list, const char *dir_path)
         Game_Entry *game;
         char dsfile[4096];
 
-        if (!ecore_str_has_extension(dp->d_name, "desktop")) continue;
+        if (!eina_str_has_extension(dp->d_name, "desktop")) continue;
         sprintf(dsfile, "%s/%s", dir_path, dp->d_name);
 
         if ((game = _parse_desktop_game(dsfile)))

@@ -28,7 +28,6 @@
 #include <locale.h>
 
 #include <Eina.h>
-#include <Ecore_Str.h>
 #include <Edje.h>
 
 #include "enna.h"
@@ -75,7 +74,7 @@ enna_util_has_suffix(char *str, Eina_List * patterns)
         tmp = calloc(1, strlen(str) + 1);
         for (i = 0; i < strlen(str); i++)
             tmp[i] = tolower(str[i]);
-        result |= ecore_str_has_suffix(tmp, (char *)l->data);
+        result |= eina_str_has_suffix(tmp, (char *)l->data);
         ENNA_FREE(tmp);
     }
     return result;
@@ -101,7 +100,7 @@ enna_util_uri_has_extension(const char *uri, int type)
     for (l = filters; l; l = l->next)
     {
         const char *ext = l->data;
-        if (ecore_str_has_extension(uri, ext))
+        if (eina_str_has_extension(uri, ext))
             return 1;
     }
 
