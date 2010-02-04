@@ -172,7 +172,7 @@ enna_activity_request_quit_all(void)
     Eina_List *l;
     buffer_t *msg;
     Enna_Class_Activity *act;
-    const char *tmp;
+    const char *tmp = NULL;
     msg = buffer_new();
     EINA_LIST_FOREACH(_enna_activities, l,  act)
     {
@@ -184,10 +184,7 @@ enna_activity_request_quit_all(void)
         }
     }
     if (msg->buf)
-    {
         tmp = strdup(msg->buf);
         buffer_free(msg);
-        return tmp;
-    }
-    return NULL;
+    return tmp;
 }
