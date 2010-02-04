@@ -65,7 +65,7 @@ get_prop_value_from_xml_tree(xmlNode *root, const char *prop)
     if (!node)
         return NULL;
 
-        return xmlNodeGetContent(node);
+    return xmlNodeGetContent(node);
 }
 
 xmlNode *
