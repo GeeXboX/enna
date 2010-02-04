@@ -427,6 +427,7 @@ static const struct {
     { "pal",         768,  576 },
     { "n900",        800,  480 },
     { "svga",        800,  600 },
+    { "netbook",    1024,  600 },
     { "hdready",    1366,  768 },
     { "fullhd",     1920, 1080 },
     { NULL,            0,    0 }
