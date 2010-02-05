@@ -571,9 +571,8 @@ enna_weather_new (char *city)
 
     w = ENNA_NEW(weather_t, 1);
     w->lang = get_lang();
-    w->city = strdup(WEATHER_DEFAULT_CITY);
     w->temp = WEATHER_DEFAULT_TEMP;
-    w->city = strdup(city);
+    w->city = city ? strdup(city) : strdup(WEATHER_DEFAULT_CITY);
 
     return w;
 }
