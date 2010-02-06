@@ -45,7 +45,6 @@ typedef struct _Enna_Module_Udev
 {
     Evas *e;
     struct udev *udev;
-    struct udev_enumerate *en;
     struct udev_monitor *monitor;
     Eina_List *volumes;
     Ecore_Timer *timer;
@@ -608,14 +607,19 @@ handle_device (struct udev_device *dev, const char *action)
 static void
 scan_block_devices (void)
 {
+    struct udev_enumerate *en;
     struct udev_list_entry *device_list, *device_p;
 
+    en = udev_enumerate_new(mod->udev);
+    if (!en)
+        return;
+
     /* we only care about block devices */
-    udev_enumerate_add_match_subsystem(mod->en, UDEV_FILTER_SUBSYTEM);
+    udev_enumerate_add_match_subsystem(en, UDEV_FILTER_SUBSYTEM);
 
     /* scan for available devices */
-    udev_enumerate_scan_devices(mod->en);
-    device_list = udev_enumerate_get_list_entry(mod->en);
+    udev_enumerate_scan_devices(en);
+    device_list = udev_enumerate_get_list_entry(en);
 
     udev_list_entry_foreach(device_p, device_list)
     {
@@ -642,6 +646,8 @@ scan_block_devices (void)
 
         udev_device_unref(dev);
     }
+
+    udev_enumerate_unref(en);
 }
 
 static int
@@ -683,10 +689,6 @@ ENNA_MODULE_INIT(Enna_Module *em)
     if (!mod->udev)
         goto err_udev;
 
-    mod->en = udev_enumerate_new(mod->udev);
-    if (!mod->en)
-        goto err_enumerator;
-
     mod->monitor = udev_monitor_new_from_netlink(mod->udev, "udev");
     if (!mod->monitor)
         goto err_monitor;
@@ -709,8 +711,6 @@ err_filter:
 err_receiver:
     udev_monitor_unref(mod->monitor);
 err_monitor:
-    udev_enumerate_unref(mod->en);
-err_enumerator:
     udev_unref(mod->udev);
 err_udev:
 
@@ -729,8 +729,6 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 
     if (mod->monitor)
         udev_monitor_unref(mod->monitor);
-    if (mod->en)
-        udev_enumerate_unref(mod->en);
     if (mod->udev)
         udev_unref(mod->udev);
 
