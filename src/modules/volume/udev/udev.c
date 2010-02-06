@@ -112,7 +112,7 @@ static const struct {
 static Enna_Module_Udev *mod;
 
 static void
-scan_device_properties (struct udev_device *dev)
+scan_device_properties(struct udev_device *dev)
 {
 #ifdef DEBUG
     struct udev_list_entry *list, *p;
@@ -134,7 +134,7 @@ scan_device_properties (struct udev_device *dev)
 }
 
 static volume_t *
-volume_new (void)
+volume_new(void)
 {
     volume_t *v;
 
@@ -144,7 +144,7 @@ volume_new (void)
 }
 
 static void
-volume_free (volume_t *v)
+volume_free(volume_t *v)
 {
     if (!v)
         return;
@@ -159,7 +159,7 @@ volume_free (volume_t *v)
 }
 
 static void
-volume_display (volume_t *v)
+volume_display(volume_t *v)
 {
     if (!v)
         return;
@@ -182,7 +182,7 @@ volume_display (volume_t *v)
 }
 
 static volume_t *
-volume_list_get (const char *syspath)
+volume_list_get(const char *syspath)
 {
     Eina_List *l;
     volume_t *v;
@@ -200,7 +200,7 @@ volume_list_get (const char *syspath)
 }
 
 static int
-disk_get_number (int major, int minor)
+disk_get_number(int major, int minor)
 {
     switch (major)
     {
@@ -220,7 +220,7 @@ disk_get_number (int major, int minor)
 }
 
 static int
-mtab_is_mounted (const char *devname)
+mtab_is_mounted(const char *devname)
 {
     struct mntent *mnt;
     FILE *fp;
@@ -246,7 +246,7 @@ mtab_is_mounted (const char *devname)
 }
 
 static char *
-mtab_get_mount_point (const char *devname)
+mtab_get_mount_point(const char *devname)
 {
     struct mntent *mnt;
     FILE *fp;
@@ -274,7 +274,7 @@ mtab_get_mount_point (const char *devname)
 }
 
 static int
-get_property_value_int (struct udev_device *dev, const char *property)
+get_property_value_int(struct udev_device *dev, const char *property)
 {
     const char *value;
 
@@ -283,7 +283,7 @@ get_property_value_int (struct udev_device *dev, const char *property)
 }
 
 static volume_t *
-handle_disc (struct udev_device *dev)
+handle_disc(struct udev_device *dev)
 {
     const char *id_type;
     volume_t *v;
@@ -322,12 +322,12 @@ handle_disc (struct udev_device *dev)
     label     = udev_device_get_property_value(dev, "ID_FS_LABEL");
 
     disk = disk_get_number(major, minor);
-    snprintf (dsk, sizeof (dsk), "#%d", disk);
+    snprintf(dsk, sizeof(dsk), "#%d", disk);
 
-    v->syspath = strdup(udev_device_get_syspath (dev));
+    v->syspath = strdup(udev_device_get_syspath(dev));
     v->device  = strdup(device ? device : "Unknown");
     v->fstype  = strdup(fs ? fs : "Unknown");
-    v->mounted = mtab_is_mounted (device);
+    v->mounted = mtab_is_mounted(device);
 
     if (v->mounted)
         v->mount_point = mtab_get_mount_point(device);
@@ -378,7 +378,7 @@ handle_disc (struct udev_device *dev)
 }
 
 static volume_t *
-handle_partition (struct udev_device *dev)
+handle_partition(struct udev_device *dev)
 {
     int major, minor, disk, partition;
     const char *usage, *type, *bus, *fs;
@@ -411,8 +411,8 @@ handle_partition (struct udev_device *dev)
     label     = udev_device_get_property_value(dev, "ID_FS_LABEL");
 
     disk = disk_get_number(major, minor);
-    snprintf (dsk,  sizeof(dsk),  "#%d", disk);
-    snprintf (part, sizeof(part), "(%d)", partition);
+    snprintf(dsk,  sizeof(dsk),  "#%d", disk);
+    snprintf(part, sizeof(part), "(%d)", partition);
 
     v->syspath = strdup(udev_device_get_syspath(dev));
     v->device  = strdup(device ? device : "Unknown");
@@ -425,7 +425,7 @@ handle_partition (struct udev_device *dev)
 
     /* get bus' type */
     for (i = 0; drv_bus_mapping[i].name; i++)
-        if (bus && !strcmp (bus, drv_bus_mapping[i].bus))
+        if (bus && !strcmp(bus, drv_bus_mapping[i].bus))
         {
             bus_type = drv_bus_mapping[i].name;
             break;
@@ -435,7 +435,7 @@ handle_partition (struct udev_device *dev)
 
     /* get drive's type */
     for (i = 0; drv_type_mapping[i].name; i++)
-        if (type && !strcmp (type, drv_type_mapping[i].type))
+        if (type && !strcmp(type, drv_type_mapping[i].type))
         {
             drive_type = drv_type_mapping[i].name;
             v->vtype   = drv_type_mapping[i].vtype;
@@ -463,7 +463,7 @@ handle_partition (struct udev_device *dev)
 }
 
 static void
-volume_add_notification (volume_t *v)
+volume_add_notification(volume_t *v)
 {
     const char *uri = NULL;
     Enna_Volume *evol;
@@ -531,7 +531,7 @@ volume_add_notification (volume_t *v)
 }
 
 static void
-add_device (struct udev_device *dev)
+add_device(struct udev_device *dev)
 {
     const char *syspath;
     const char *devtype;
@@ -564,7 +564,7 @@ add_device (struct udev_device *dev)
 }
 
 static void
-remove_device (struct udev_device *dev)
+remove_device(struct udev_device *dev)
 {
     const char *syspath;
     volume_t *v;
@@ -584,14 +584,14 @@ remove_device (struct udev_device *dev)
 }
 
 static void
-change_device (struct udev_device *dev)
+change_device(struct udev_device *dev)
 {
     remove_device(dev);
     add_device(dev);
 }
 
 static void
-handle_device (struct udev_device *dev, const char *action)
+handle_device(struct udev_device *dev, const char *action)
 {
     scan_device_properties(dev);
 
@@ -605,7 +605,7 @@ handle_device (struct udev_device *dev, const char *action)
 }
 
 static void
-scan_block_devices (void)
+scan_block_devices(void)
 {
     struct udev_enumerate *en;
     struct udev_list_entry *device_list, *device_p;
@@ -637,7 +637,7 @@ scan_block_devices (void)
         if (!dev)
             continue;
 
-        action = udev_device_get_action (dev);
+        action = udev_device_get_action(dev);
         if (!action ||
             !strcmp(action, "add") ||
             !strcmp(action, "remove") ||
@@ -651,7 +651,7 @@ scan_block_devices (void)
 }
 
 static int
-scan_timer_cb (void *data)
+scan_timer_cb(void *data)
 {
     scan_block_devices();
     return 1; /* go on */
