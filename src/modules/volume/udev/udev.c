@@ -298,7 +298,7 @@ handle_disc (struct udev_device *dev)
 
     id_type = udev_device_get_property_value(dev, "ID_TYPE");
     if (!id_type)
-        return NULL;;
+        return NULL;
 
     /* only care about CDs */
     if (strcmp(id_type, "cd"))
