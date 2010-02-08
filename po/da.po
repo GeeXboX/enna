@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-02 10:33+0100\n"
-"PO-Revision-Date: 2010-02-01 17:30+01:00\n"
+"POT-Creation-Date: 2010-02-08 11:37+0100\n"
+"PO-Revision-Date: 2010-02-02 17:30+01:00\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -25,58 +25,58 @@ msgstr "Intet medie fundet!"
 msgid "Main menu"
 msgstr "Hovedmenu"
 
-#: src/bin/enna.c:492
+#: src/bin/enna.c:493
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna - mediecenter\n"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:494
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Brug: %s [tilvalg...]\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:495
 #, c-format
 msgid " Available options:\n"
 msgstr " Tilgængelige tilvalg:\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:496
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angiv den konfigurationsfil der skal bruges.\n"
 
 # måske Start i fuldskærmtilstand
-#: src/bin/enna.c:496
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Fremtving fuldskærmtilstand.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Vis denne hjælpetekst.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angiv temanavn der skal bruges.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:500
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Angiv vinduesgeometri. (geometri=1280x720)\n"
 
-#: src/bin/enna.c:500
-#, c-format
-msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
-
 #: src/bin/enna.c:501
 #, c-format
-msgid "    Supported: "
-msgstr ""
+msgid "  -p, (--profile): Specify display profile\n"
+msgstr "  -p, (--profile): Angiv skærmprofil\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:502
+#, c-format
+msgid "    Supported: "
+msgstr "    Understøttet: "
+
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Vis versionsnummeret for Enna.\n"
@@ -130,7 +130,7 @@ msgstr "Tilføj flere byer til listen"
 msgid "Add"
 msgstr "Tilføj"
 
-#: src/bin/weather_api.c:627 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:626 src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Vejr"
 
@@ -153,7 +153,7 @@ msgid "This module creates the Enna configuration panel"
 msgstr "Dette modul opretter Ennas konfigurationspanel"
 
 #: src/modules/activity/configuration/configuration.c:256
-#: src/modules/activity/configuration/configuration_sysinfo.c:511
+#: src/modules/activity/configuration/configuration_sysinfo.c:515
 msgid "System information"
 msgstr "Systeminformation"
 
@@ -177,121 +177,120 @@ msgstr "Tak til:"
 msgid "and"
 msgstr "og"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:97
+#: src/modules/activity/configuration/configuration_sysinfo.c:99
 msgid "Enna information"
 msgstr "Information om Enna"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:99
+#: src/modules/activity/configuration/configuration_sysinfo.c:101
 msgid "Enna:"
 msgstr "Enna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:109
+#: src/modules/activity/configuration/configuration_sysinfo.c:113
 msgid "Video renderer:"
 msgstr "Videorendering:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:170
+#: src/modules/activity/configuration/configuration_sysinfo.c:174
 msgid "Distribution:"
 msgstr "Distribution:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:192
+#: src/modules/activity/configuration/configuration_sysinfo.c:196
 msgid "OS:"
 msgstr "Os:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:200
+#: src/modules/activity/configuration/configuration_sysinfo.c:204
 msgid "for"
 msgstr "for"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:217
+#: src/modules/activity/configuration/configuration_sysinfo.c:221
 msgid "Available CPUs:"
 msgstr "Tilgængelige cpu'er:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:248
+#: src/modules/activity/configuration/configuration_sysinfo.c:252
 msgid ", running at"
 msgstr ", kører på"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:277
+#: src/modules/activity/configuration/configuration_sysinfo.c:281
 msgid "CPU Load:"
 msgstr "CPU-belastning:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:321
+#: src/modules/activity/configuration/configuration_sysinfo.c:325
 msgid "Memory:"
 msgstr "Hukommelse:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:323
+#: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "used on"
 msgstr "brugt på"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:325
+#: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "total"
 msgstr "i alt"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:363
+#: src/modules/activity/configuration/configuration_sysinfo.c:367
 msgid "Screen resolution:"
 msgstr "Skærmopløsning:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:366
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "at"
 msgstr "den"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:368
+#: src/modules/activity/configuration/configuration_sysinfo.c:372
 msgid "min:"
 msgstr "min:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:370
+#: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "max:"
 msgstr "maks:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:383
+#: src/modules/activity/configuration/configuration_sysinfo.c:387
 msgid "VDR:"
 msgstr "VDR:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:386
+#: src/modules/activity/configuration/configuration_sysinfo.c:390
 msgid "connected to VDR"
 msgstr "forbundet med VDR"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:389
+#: src/modules/activity/configuration/configuration_sysinfo.c:393
 msgid "on"
 msgstr "tændt"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:394
+#: src/modules/activity/configuration/configuration_sysinfo.c:398
 msgid "not connected"
 msgstr "ikke forbundet"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
 msgid "Available network interfaces:"
 msgstr "Tilgængelige netværksgrænseflader:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:436
+#: src/modules/activity/configuration/configuration_sysinfo.c:440
 msgid "IP:"
 msgstr "IP:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:443
+#: src/modules/activity/configuration/configuration_sysinfo.c:447
 msgid "Netmask:"
 msgstr "Netmaske:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:468
+#: src/modules/activity/configuration/configuration_sysinfo.c:472
 msgid "Default gateway:"
 msgstr "Standardadgangspunkt:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:496
+#: src/modules/activity/configuration/configuration_sysinfo.c:500
 msgid "None"
 msgstr "Ingen"
 
-# ingen medier fundet!
 #: src/modules/activity/games/games.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "no games found"
-msgstr "Intet medie fundet!"
+msgstr "ingen spil fundet"
 
 #: src/modules/activity/games/games.c:218
 #, c-format
 msgid "one game"
-msgstr ""
+msgstr "et spil"
 
 #: src/modules/activity/games/games.c:220
-#, fuzzy, c-format
+#, c-format
 msgid "%d games"
-msgstr "%d sange"
+msgstr "%d spil"
 
 #: src/modules/activity/games/games.c:405
 #: src/modules/activity/games/games.c:433
@@ -304,21 +303,23 @@ msgstr "Spil alle dine spil direkte fra Enna"
 
 #: src/modules/activity/games/games_mame.c:81
 msgid "<c>M.A.M.E.</c><br>Game running..."
-msgstr ""
+msgstr "<c>M.A.M.E.</c><br>Spil kører..."
 
-#: src/modules/activity/games/games_mame.c:317
+#: src/modules/activity/games/games_mame.c:318
 msgid ""
 "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
 "at: ~/.mame/roms<br>"
 msgstr ""
+"<c>Mame-fejl</c><br><b>Ingen rom fundet i stien</b><br>Rom skal være "
+"placeret i: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
-msgstr ""
+msgstr "<c>Systemspil</c><br>Spil kører..."
 
 #: src/modules/activity/games/games_sys.c:257
 msgid "System Games"
-msgstr ""
+msgstr "Systemspil"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -674,10 +675,10 @@ msgstr "Arkiver fra mtab"
 msgid "This module provide support for already mounted volumes"
 msgstr "Dette modul giver understøttelse for allerede monterede arkiver"
 
-#: src/modules/volume/udev/udev.c:664
+#: src/modules/volume/udev/udev.c:670
 msgid "Volumes from udev"
 msgstr "Arkiver fra udev"
 
-#: src/modules/volume/udev/udev.c:666
+#: src/modules/volume/udev/udev.c:672
 msgid "This module provide support for removable volumes"
 msgstr "Dette modul giver understøttelse for arkiver der kan fjernes"
