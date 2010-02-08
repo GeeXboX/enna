@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-02 10:33+0100\n"
+"POT-Creation-Date: 2010-02-08 11:37+0100\n"
 "PO-Revision-Date: 2010-01-28 12:42+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
@@ -24,59 +24,59 @@ msgstr "Nessun media trovato!"
 msgid "Main menu"
 msgstr "Menu principale"
 
-#: src/bin/enna.c:492
+#: src/bin/enna.c:493
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:494
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:495
 #, c-format
 msgid " Available options:\n"
 msgstr " Opzioni disponibili:\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:496
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:500
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr ""
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:502
 #, c-format
 msgid "    Supported: "
 msgstr ""
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
@@ -130,7 +130,7 @@ msgstr "Aggiungi altre città alla lista"
 msgid "Add"
 msgstr "Aggiungi"
 
-#: src/bin/weather_api.c:627 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:626 src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Meteo"
 
@@ -153,7 +153,7 @@ msgid "This module creates the Enna configuration panel"
 msgstr "Questo modulo crea il pannello di configurazione di Enna"
 
 #: src/modules/activity/configuration/configuration.c:256
-#: src/modules/activity/configuration/configuration_sysinfo.c:511
+#: src/modules/activity/configuration/configuration_sysinfo.c:515
 msgid "System information"
 msgstr "Informazioni di sistema"
 
@@ -177,103 +177,103 @@ msgstr "I ringraziamenti vanno a:"
 msgid "and"
 msgstr "e"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:97
+#: src/modules/activity/configuration/configuration_sysinfo.c:99
 msgid "Enna information"
 msgstr "Informazioni su Enna"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:99
+#: src/modules/activity/configuration/configuration_sysinfo.c:101
 msgid "Enna:"
 msgstr "Enna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:109
+#: src/modules/activity/configuration/configuration_sysinfo.c:113
 msgid "Video renderer:"
 msgstr "Motore di rendering:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:170
+#: src/modules/activity/configuration/configuration_sysinfo.c:174
 msgid "Distribution:"
 msgstr "Distribuzione:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:192
+#: src/modules/activity/configuration/configuration_sysinfo.c:196
 msgid "OS:"
 msgstr "OS:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:200
+#: src/modules/activity/configuration/configuration_sysinfo.c:204
 msgid "for"
 msgstr "per"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:217
+#: src/modules/activity/configuration/configuration_sysinfo.c:221
 msgid "Available CPUs:"
 msgstr "Processori disponibili:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:248
+#: src/modules/activity/configuration/configuration_sysinfo.c:252
 msgid ", running at"
 msgstr ", con frequenza"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:277
+#: src/modules/activity/configuration/configuration_sysinfo.c:281
 msgid "CPU Load:"
 msgstr "Carico di CPU:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:321
+#: src/modules/activity/configuration/configuration_sysinfo.c:325
 msgid "Memory:"
 msgstr "Memoria:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:323
+#: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "used on"
 msgstr "occupati su"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:325
+#: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "total"
 msgstr "totali"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:363
+#: src/modules/activity/configuration/configuration_sysinfo.c:367
 msgid "Screen resolution:"
 msgstr "Risoluzione:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:366
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
 msgid "at"
 msgstr "a"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:368
+#: src/modules/activity/configuration/configuration_sysinfo.c:372
 msgid "min:"
 msgstr "min:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:370
+#: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "max:"
 msgstr "max:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:383
+#: src/modules/activity/configuration/configuration_sysinfo.c:387
 msgid "VDR:"
 msgstr "VDR:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:386
+#: src/modules/activity/configuration/configuration_sysinfo.c:390
 msgid "connected to VDR"
 msgstr "connesso a VDR"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:389
+#: src/modules/activity/configuration/configuration_sysinfo.c:393
 msgid "on"
 msgstr "su"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:394
+#: src/modules/activity/configuration/configuration_sysinfo.c:398
 msgid "not connected"
 msgstr "non connesso"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
 msgid "Available network interfaces:"
 msgstr "Interfacce di rete disponibili:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:436
+#: src/modules/activity/configuration/configuration_sysinfo.c:440
 msgid "IP:"
 msgstr "IP:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:443
+#: src/modules/activity/configuration/configuration_sysinfo.c:447
 msgid "Netmask:"
 msgstr "Maschera:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:468
+#: src/modules/activity/configuration/configuration_sysinfo.c:472
 msgid "Default gateway:"
 msgstr "Gateway:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:496
+#: src/modules/activity/configuration/configuration_sysinfo.c:500
 msgid "None"
 msgstr "Nessuno"
 
@@ -305,7 +305,7 @@ msgstr "Usa tutti i tuoi giochi direttamente da Enna"
 msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr ""
 
-#: src/modules/activity/games/games_mame.c:317
+#: src/modules/activity/games/games_mame.c:318
 msgid ""
 "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
 "at: ~/.mame/roms<br>"
@@ -674,10 +674,10 @@ msgstr "Volumi da mtab"
 msgid "This module provide support for already mounted volumes"
 msgstr "Questo modulo fornisce supporto per i volumi già montati"
 
-#: src/modules/volume/udev/udev.c:664
+#: src/modules/volume/udev/udev.c:670
 msgid "Volumes from udev"
 msgstr "Volumi da udev"
 
-#: src/modules/volume/udev/udev.c:666
+#: src/modules/volume/udev/udev.c:672
 msgid "This module provide support for removable volumes"
 msgstr "Questo modulo fornisce supporto per i volumi rimovibili"
