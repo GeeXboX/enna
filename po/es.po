@@ -2,12 +2,12 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 #  Alex Osorio <maosorionet@hotmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-02 10:33+0100\n"
+"POT-Creation-Date: 2010-02-08 11:37+0100\n"
 "PO-Revision-Date: 2010-01-16 18:44-0500\n"
 "Last-Translator: Alexander Osorio <maosorionet@hotmail.com>\n"
 "Language-Team: Spanish\n"
@@ -28,59 +28,59 @@ msgstr "¡No se encuentran medios!"
 msgid "Main menu"
 msgstr "Menú Principal"
 
-#: src/bin/enna.c:492
+#: src/bin/enna.c:493
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:494
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opciones ...]\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:495
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Opciones Disponibles:\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:496
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Especifica el archivo de configuración a usar.\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:497
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Obliga a modo de Pantalla Completa.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Muestra esta pantalla de ayuda.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Especifica el nombre del tema a usar.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:500
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):   Especifica la geometría de la pantalla. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr ""
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:502
 #, c-format
 msgid "    Supported: "
 msgstr ""
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Muestra la versión de Enna.\n"
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: src/bin/weather_api.c:627 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:626 src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Clima"
 
@@ -162,7 +162,7 @@ msgid "This module creates the Enna configuration panel"
 msgstr "Este modulo crea el panel del configuración de Enna (NO DESCARGAR)"
 
 #: src/modules/activity/configuration/configuration.c:256
-#: src/modules/activity/configuration/configuration_sysinfo.c:511
+#: src/modules/activity/configuration/configuration_sysinfo.c:515
 #, fuzzy
 msgid "System information"
 msgstr "Información del Sistema"
@@ -189,113 +189,113 @@ msgstr "Créditos para:"
 msgid "and"
 msgstr "y"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:97
+#: src/modules/activity/configuration/configuration_sysinfo.c:99
 #, fuzzy
 msgid "Enna information"
 msgstr "Información del Sistema"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:99
+#: src/modules/activity/configuration/configuration_sysinfo.c:101
 msgid "Enna:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:109
+#: src/modules/activity/configuration/configuration_sysinfo.c:113
 msgid "Video renderer:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:170
+#: src/modules/activity/configuration/configuration_sysinfo.c:174
 msgid "Distribution:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:192
+#: src/modules/activity/configuration/configuration_sysinfo.c:196
 msgid "OS:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:200
+#: src/modules/activity/configuration/configuration_sysinfo.c:204
 msgid "for"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:217
+#: src/modules/activity/configuration/configuration_sysinfo.c:221
 #, fuzzy
 msgid "Available CPUs:"
 msgstr " Opciones Disponibles:\n"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:248
+#: src/modules/activity/configuration/configuration_sysinfo.c:252
 #, fuzzy
 msgid ", running at"
 msgstr ", corriendo a %d MHz"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:277
+#: src/modules/activity/configuration/configuration_sysinfo.c:281
 msgid "CPU Load:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:321
+#: src/modules/activity/configuration/configuration_sysinfo.c:325
 msgid "Memory:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:323
+#: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "used on"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:325
+#: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "total"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:363
+#: src/modules/activity/configuration/configuration_sysinfo.c:367
 #, fuzzy
 msgid "Screen resolution:"
 msgstr "<hilight>Resoluciones de Pantalla: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:366
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
 #, fuzzy
 msgid "at"
 msgstr "Datos"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:368
+#: src/modules/activity/configuration/configuration_sysinfo.c:372
 msgid "min:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:370
+#: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "max:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:383
+#: src/modules/activity/configuration/configuration_sysinfo.c:387
 #, fuzzy
 msgid "VDR:"
 msgstr "DVD-R"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:386
+#: src/modules/activity/configuration/configuration_sysinfo.c:390
 #, fuzzy
 msgid "connected to VDR"
 msgstr "conectado a VDR %s en %s (%s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:389
+#: src/modules/activity/configuration/configuration_sysinfo.c:393
 msgid "on"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:394
+#: src/modules/activity/configuration/configuration_sysinfo.c:398
 #, fuzzy
 msgid "not connected"
 msgstr "sin conectar<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:409
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
 #, fuzzy
 msgid "Available network interfaces:"
 msgstr "<hilight>Interfaces de red disponibles:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:436
+#: src/modules/activity/configuration/configuration_sysinfo.c:440
 msgid "IP:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:443
+#: src/modules/activity/configuration/configuration_sysinfo.c:447
 #, fuzzy
 msgid "Netmask:"
 msgstr "Mascara de red: %s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:468
+#: src/modules/activity/configuration/configuration_sysinfo.c:472
 msgid "Default gateway:"
 msgstr ""
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:496
+#: src/modules/activity/configuration/configuration_sysinfo.c:500
 #, fuzzy
 msgid "None"
 msgstr "Nada<br>"
@@ -329,7 +329,7 @@ msgstr "Con este modulo puedes utilizar tus juegos directamente desde Enna"
 msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr ""
 
-#: src/modules/activity/games/games_mame.c:317
+#: src/modules/activity/games/games_mame.c:318
 msgid ""
 "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
 "at: ~/.mame/roms<br>"
@@ -585,15 +585,15 @@ msgstr "Géneros"
 
 #: src/modules/browser/valhalla/valhalla.c:173
 msgid "Categories"
-msgstr ""
+msgstr "Categorías"
 
 #: src/modules/browser/valhalla/valhalla.c:178
 msgid "Directors"
-msgstr ""
+msgstr "Directores"
 
 #: src/modules/browser/valhalla/valhalla.c:183
 msgid "Years"
-msgstr ""
+msgstr "Años"
 
 #: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
@@ -605,7 +605,7 @@ msgstr "Modulo Valhalla"
 
 #: src/modules/browser/valhalla/valhalla.c:655
 msgid "Build a browseable catalog of your media files"
-msgstr ""
+msgstr "Hacer un catálogo navegable de tus archivos multimedia"
 
 #: src/modules/browser/valhalla/valhalla.c:663
 #: src/modules/browser/valhalla/valhalla.c:680
@@ -717,18 +717,16 @@ msgstr "Volúmenes del archivo mtab"
 
 #: src/modules/volume/mtab/mtab.c:151
 msgid "This module provide support for already mounted volumes"
-msgstr ""
+msgstr "Este módulo ofrece soporte para cualquier unidad montada"
 
-#: src/modules/volume/udev/udev.c:664
-#, fuzzy
+#: src/modules/volume/udev/udev.c:670
 msgid "Volumes from udev"
-msgstr "Volúmenes del archivo mtab"
+msgstr "Volúmenes de udev"
 
-#: src/modules/volume/udev/udev.c:666
+#: src/modules/volume/udev/udev.c:672
 msgid "This module provide support for removable volumes"
-msgstr ""
+msgstr "Este módulo ofrece soporte para unidades extraibles"
 
-#, fuzzy
 #~ msgid "This module gets volumes from the mtab file"
 #~ msgstr "Este modulo obtiene volúmenes desde el archivo mtab"
 
