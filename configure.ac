@@ -243,7 +243,7 @@ if test "x$want_browser_netstreams" = "xyes"; then
 fi
 
 # Podcast
-want_browser_podcasts="no"
+want_browser_podcasts="yes"
 AC_MSG_CHECKING(whether podcasts browser module is to be built)
 AC_ARG_ENABLE(browser-podcasts,
   AS_HELP_STRING([--enable-browser-podcasts],[Enable Podcasts Browser Module]),
