@@ -24,8 +24,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <Ecore_File.h>
-
 #include "enna.h"
 #include "enna_config.h"
 #include "module.h"
@@ -34,294 +32,183 @@
 #include "logs.h"
 #include "xml_utils.h"
 #include "utils.h"
-#include "volumes.h"
-#include "xdg.h"
 
 #define ENNA_MODULE_NAME "podcast"
 
-#define PATH_PODCASTS    "podcasts"
+typedef enum browser_level {
+    PODCAST_BROWSER_LEVEL_ROOT,
+    PODCAST_BROWSER_LEVEL_CHANNELS,
+} podcast_browser_level_t;
 
-typedef enum browser_level
-{
-    BROWSER_LEVEL_ROOT,
-    BROWSER_LEVEL_CHANNELS,
-    BROWSER_LEVEL_ITEMS
-} browser_level_t;
-
-typedef struct _Item
-{
-    char *title;
-    char *link;
-    char *description;
-    char *author;
-    char *category;
-    char *pub_date;
-    char *url;
-}Item;
-
-typedef struct _Channel
-{
-    char *url;
-    char *title;
-    char *link;
-    char *description;
-    char *language;
-    char *copyright;
-    char *last_data;
-    char *generator;
-    char *cover;
-    Eina_List *items;
-
-
-}Channel;
-
-typedef struct _Enna_Module_Podcast
-{
-    Evas                 *e;
-    Enna_Module          *em;
-    Eina_List            *channels;
-    Ecore_Event_Handler  *volume_add_handler;
-    Ecore_Event_Handler  *volume_remove_handler;
-    url_t                *handler;
-    browser_level_t       level;
-    int                   prev_id;
+typedef struct _Enna_Module_Podcast {
+    Evas *e;
+    url_t *handler;
+    podcast_browser_level_t level;
 } Enna_Module_Podcast;
 
+typedef struct podcast_stream_s {
+    char *uri;
+    char *name;
+} podcast_stream_t;
+
 typedef struct podcast_cfg_s {
-    Eina_List *list;
+    Eina_List *streams;
 } podcast_cfg_t;
 
 static podcast_cfg_t podcast_cfg;
 static Enna_Module_Podcast *mod;
 
-
-
-/*
- * Timer function : check for updates each 1 our
- *
- */
-
-
-#define GET_PROP_VALUE(var, prop)					\
-    tmp = get_prop_value_from_xml_tree (n , prop);			\
-    if (tmp) var = strdup ((char *) tmp);				\
-    if (tmp) enna_log (ENNA_MSG_EVENT, ENNA_MODULE_NAME,		\
-	" --- " prop " : %s", tmp);					\
-
-/*
- * Create channel members from xml Node
- */
-static void xml_to_channel(xmlNode *node, Channel *channel)
+static podcast_stream_t *
+podcast_stream_new (const char *name, const char *uri)
 {
-    xmlChar *tmp;
-    xmlNode *n, *cover, *items;
-    Item *item;
+    podcast_stream_t *s;
 
-    if (!node || !channel) return;
+    if (!name || !uri)
+        return NULL;
 
-    n = get_node_xml_tree(node, "channel");
+    s       = calloc(1, sizeof(podcast_stream_t));
+    s->name = strdup(name);
+    s->uri  = strdup(uri);
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             "Adding new podcast: %s - %s", name, uri);
 
-    GET_PROP_VALUE(channel->title, "title");
-    GET_PROP_VALUE(channel->link, "link");
-    GET_PROP_VALUE(channel->description, "description");
-    GET_PROP_VALUE(channel->language, "language");
-    GET_PROP_VALUE(channel->copyright, "copyright");
-    GET_PROP_VALUE(channel->last_data, "lastBuildDate");
-    GET_PROP_VALUE(channel->generator, "generator");
-
-    cover = get_node_xml_tree (n, "image");
-    GET_PROP_VALUE(channel->cover, "url");
-
-    items = get_node_xml_tree(node, "item");
-    for (n = items; n; n = n->next)
-    {
-	if (!n) break;
-	item = calloc(sizeof(Item), 1);
-	GET_PROP_VALUE(item->title, "title");
-	GET_PROP_VALUE(item->link, "link");
-	GET_PROP_VALUE(item->description, "description");
-	GET_PROP_VALUE(item->author, "author");
-	GET_PROP_VALUE(item->category, "category");
-	GET_PROP_VALUE(item->pub_date, "pubDate");
-	GET_PROP_VALUE(item->url, "guid");
-	if (!item->url)
-	{
-	    free(item);
-	    continue;
-	}
-	channel->items = eina_list_append(channel->items, item);
-    }
+    return s;
 }
 
-
-/*
- * Prepare channel :
- * Create podcast directory
- * Download podcast file
- */
-
-static void _prepare_channel(Channel *ch)
+static void
+podcast_stream_free (podcast_stream_t *s)
 {
-    char  dst[1024];
-    char  file[1024];
-    char *md5;
-    xmlDocPtr doc = NULL;
-
-    if (!ch || !ch->url) return;
-
-    /* Compute MD5 Sum based on url */
-    md5 = md5sum (ch->url);
-
-    /* Create Channel directory if not existing*/
-    snprintf (dst, sizeof (dst), "%s/%s/%s/",
-	enna_cache_home_get(), PATH_PODCASTS, md5);
-    if (!ecore_file_is_dir (dst))
-        ecore_file_mkdir (dst);
-
-    /* Download and save xml file */
-    snprintf (file, sizeof (file), "%s/channel.xml", dst);
-
-    enna_log (ENNA_MSG_INFO, ENNA_MODULE_NAME,
-	"Downloading podcast channel : %s", ch->url);
-    url_save_to_disk (mod->handler, ch->url, file);
-
-    doc = xmlReadFile(file, NULL, 0);
-    if (!doc)
-	goto error;
-
-    xml_to_channel(xmlDocGetRootElement(doc), ch);
-    snprintf (file, sizeof (file), "%s/%s", dst, ecore_file_file_get(ch->cover));
-    url_save_to_disk (mod->handler, ch->cover, file);
-    free(ch->cover);
-    ch->cover = strdup(file);
-
-
-error:
-    if (doc)
-        xmlFreeDoc (doc);
-    /* clean up */
-    free (md5);
-}
-
-
-/*
- * Read Configuration
- * Add streams found in configuration file in streams list
- */
-
-static void _read_configuration()
-{
-    Eina_List *l;
-
-    if (!podcast_cfg.list)
+    if (!s)
         return;
 
-    for (l = podcast_cfg.list; l; l = l->next)
-    {
-        Channel *ch;
-
-        if (!l->data)
-          continue;
-
-        ch = calloc(1, sizeof(Channel));
-        ch->url = strdup(l->data);
-        enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                 "Podcast stream found : %s", ch->url);
-        _prepare_channel(ch);
-        mod->channels = eina_list_append(mod->channels, ch);
-    }
+    ENNA_FREE(s->name);
+    ENNA_FREE(s->uri);
+    ENNA_FREE(s);
 }
 
-static Eina_List *_browse_root()
+static Eina_List *
+podcast_browse_channel (const char *uri)
 {
+    xmlDocPtr doc;
+    url_data_t chunk;
+    xmlNode *n, *channel;
     Eina_List *list = NULL;
-    Eina_List *l;
-    Channel *ch;
-    char str[64];
-    Enna_Vfs_File *f;
-    int i = 0;
 
-    mod->level = BROWSER_LEVEL_ROOT;
+    if (!uri)
+        return NULL;
 
-    EINA_LIST_FOREACH(mod->channels, l, ch)
+    /* perform web request */
+    chunk = url_get_data(mod->handler, (char *) uri);
+
+    /* parse it */
+    doc = xmlReadMemory(chunk.buffer, chunk.size, NULL, NULL, 0);
+    if (!doc)
+        goto err_doc;
+
+    channel = get_node_xml_tree(xmlDocGetRootElement(doc), "channel");
+    if (!channel)
+        goto err_parser;
+
+    for (n = channel->children; n; n = n->next)
     {
-	snprintf(str, sizeof(str), "0/%i", i);
-	f = enna_vfs_create_directory(str, ch->title, ch->cover, NULL);
-	list = eina_list_append(list, f);
-	i++;
+        if (!n)
+            continue;
+
+        if (n->next && !xmlStrcmp(n->next->name, (const xmlChar *) "item"))
+        {
+            xmlChar *title;
+            xmlChar *link;
+
+            title = get_prop_value_from_xml_tree(n, "title");
+            link  = get_attr_value_from_xml_tree(n, "enclosure", "url");
+
+            if (title && link)
+            {
+                Enna_Vfs_File *f;
+
+                enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+                         "New podcast item: %s at %s", title, link);
+                f = enna_vfs_create_file((const char *) link,
+                                         (const char *) title,
+                                         "icon/music", NULL);
+                list = eina_list_append(list, f);
+            }
+
+            if (title)
+                xmlFree(title);
+            if (link)
+                xmlFree(link);
+        }
     }
+
+
+err_parser:
+    if (doc)
+        xmlFreeDoc(doc);
+
+err_doc:
+    ENNA_FREE(chunk.buffer);
+
     return list;
 }
 
-static Eina_List *_browse_channels(int id)
+static Eina_List *
+podcast_browse_feeds (const char *name)
 {
-    Eina_List *files = NULL;
+    podcast_stream_t *s;
     Eina_List *l;
-    Item *it;
-    Enna_Vfs_File *f;
-    Channel *ch;
-    char title[4096];
 
-    ch = eina_list_nth(mod->channels, id);
-
-    EINA_LIST_FOREACH(ch->items, l, it)
-    {
-	snprintf(title, sizeof(title), "%s - %s", it->pub_date, it->title);
-    	f = enna_vfs_create_file(it->url, title, "icon/music", NULL);
-    	files = eina_list_append(files, f);
-    }
-    return files;
-}
-
-static Eina_List *_class_browse_up(const char *path, void *cookie)
-{
-    int id = 0;
-    int rc = 0;
-
-    mod->level = BROWSER_LEVEL_ROOT;
-
-    if (!path)
-	return _browse_root();
-
-    rc = sscanf(path, "%i/%i", (int *)&mod->level, &id);
-
-    if (rc != 2)
+    if (!name)
         return NULL;
 
-    switch(mod->level)
-    {
-    case BROWSER_LEVEL_CHANNELS:
-    case BROWSER_LEVEL_ROOT:
-	mod->prev_id = id;
-	mod->level = BROWSER_LEVEL_CHANNELS;
-	return _browse_channels(id);
-    default:
-	break;
-    }
+    mod->level = PODCAST_BROWSER_LEVEL_CHANNELS;
+    EINA_LIST_FOREACH(podcast_cfg.streams, l, s)
+        if (!strcmp(s->name, name))
+            return podcast_browse_channel(s->uri);
+
     return NULL;
 }
 
-static Eina_List * _class_browse_down(void *cookie)
+static Eina_List *
+podcast_browse_streams (void)
 {
-    switch(mod->level)
+    Eina_List *l, *list = NULL;
+    podcast_stream_t *s;
+
+    EINA_LIST_FOREACH(podcast_cfg.streams, l, s)
     {
-    case BROWSER_LEVEL_CHANNELS:
-	mod->level = BROWSER_LEVEL_ROOT;
-	return _browse_root();
-    default:
-	break;
+        Enna_Vfs_File *f;
+
+	f = enna_vfs_create_directory(s->name, s->name, NULL, NULL);
+	list = eina_list_append(list, f);
     }
-    return NULL;
+
+    return list;
 }
 
+static Eina_List *
+_class_browse_up (const char *path, void *cookie)
+{
+    mod->level = PODCAST_BROWSER_LEVEL_ROOT;
+    return path ? podcast_browse_feeds(path) : podcast_browse_streams();
+}
+
+static Eina_List *
+_class_browse_down (void *cookie)
+{
+    if (mod->level == PODCAST_BROWSER_LEVEL_CHANNELS)
+    {
+	mod->level = PODCAST_BROWSER_LEVEL_ROOT;
+	return podcast_browse_streams();
+    }
+
+    return NULL;
+}
 
 static Enna_Vfs_File * _class_vfs_get(void *cookie)
 {
-    char str[64];
-    snprintf(str, sizeof(str), "%i/%i", mod->level, mod->prev_id);
-    return enna_vfs_create_directory(str, NULL, NULL, NULL);
+    return enna_vfs_create_directory(NULL, NULL, NULL, NULL);
 }
-
 
 static Enna_Class_Vfs class_podcast = {
     "podcast_podcast",
@@ -342,23 +229,69 @@ static Enna_Class_Vfs class_podcast = {
 static void
 cfg_podcast_free (void)
 {
-    char *c;
+    podcast_stream_t *s;
 
-    EINA_LIST_FREE(podcast_cfg.list, c)
-      ENNA_FREE(c);
+    EINA_LIST_FREE(podcast_cfg.streams, s)
+        podcast_stream_free(s);
 }
 
 static void
 cfg_podcast_section_load (const char *section)
 {
+    Eina_List *sl;
+
     cfg_podcast_free();
-    podcast_cfg.list = enna_config_string_list_get(section, "stream");
+
+    if (!section)
+        return;
+
+    sl = enna_config_string_list_get(section, "stream");
+    if (sl)
+    {
+        Eina_List *l;
+        char *c;
+
+        EINA_LIST_FOREACH(sl, l, c)
+        {
+            Eina_List *tuple;
+
+            tuple = enna_util_tuple_get(c, ",");
+
+            if (tuple && eina_list_count(tuple) == 2)
+            {
+                podcast_stream_t *s;
+                const char *name, *uri;
+
+                name = eina_list_nth(tuple, 0);
+                uri  = eina_list_nth(tuple, 1);
+
+                s = podcast_stream_new(name, uri);
+                if (s)
+                    podcast_cfg.streams =
+                        eina_list_append(podcast_cfg.streams, s);
+            }
+        }
+    }
 }
 
 static void
 cfg_podcast_section_save (const char *section)
 {
-    enna_config_string_list_set(section, "stream", podcast_cfg.list);
+    podcast_stream_t *s;
+    Eina_List *l, *sl = NULL;
+
+    if (!section)
+        return;
+
+    EINA_LIST_FOREACH(podcast_cfg.streams, l, s)
+    {
+        char v[1024];
+
+        snprintf(v, sizeof(v), "%s,%s", s->name, s->uri);
+        sl = eina_list_append(sl, strdup(v));
+    }
+
+    enna_config_string_list_set(section, "stream", sl);
 }
 
 static void
@@ -366,7 +299,7 @@ cfg_podcast_section_set_default (void)
 {
     cfg_podcast_free();
 
-    podcast_cfg.list = NULL;
+    podcast_cfg.streams = NULL;
 }
 
 static Enna_Config_Section_Parser cfg_podcast = {
@@ -397,8 +330,6 @@ Enna_Module_Api ENNA_MODULE_API =
 void
 ENNA_MODULE_INIT(Enna_Module *em)
 {
-    char dst[1024];
-
     if (!em)
         return;
 
@@ -407,44 +338,19 @@ ENNA_MODULE_INIT(Enna_Module *em)
     cfg_podcast_section_load(cfg_podcast.section);
 
     mod = calloc(1, sizeof(Enna_Module_Podcast));
-    mod->em = em;
     em->mod = mod;
 
     mod->handler = url_new();
 
-    enna_vfs_append ("podcast", ENNA_CAPS_MUSIC, &class_podcast);
-
-    /* try to create podcasts directory storage */
-    memset (dst, '\0', sizeof (dst));
-    snprintf (dst, sizeof (dst), "%s/%s",
-              enna_cache_home_get(), PATH_PODCASTS);
-    if (!ecore_file_is_dir (dst))
-        ecore_file_mkdir (dst);
-
-    /* read configuration file */
-    _read_configuration();
+    enna_vfs_append("podcast", ENNA_CAPS_MUSIC, &class_podcast);
 }
 
 void
 ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 {
     Enna_Module_Podcast *mod;
-    Channel *ch;
 
     mod = em->mod;
-    mod->level = BROWSER_LEVEL_ROOT;
-    /* Clean up channels list */
-    while(mod->channels)
-    {
-	ch = mod->channels->data;
-	mod->channels = eina_list_remove_list(mod->channels, mod->channels);
-	free(ch->url);
-	free(ch);
-    }
-    eina_list_free(mod->channels);
-
-    url_free (mod->handler);
-
-    /* Clean up module */
-    free(mod);
+    url_free(mod->handler);
+    ENNA_FREE(mod);
 }
