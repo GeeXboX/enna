@@ -4,7 +4,7 @@
    Adapted for The Enna Project by Davide Cavalca <davide@geexbox.org>.
 
    This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published
+   under the terms of the GNU Library General Public License as published
    by the Free Software Foundation; either version 2, or (at your option)
    any later version.
 
@@ -13,7 +13,7 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Library General Public License for more details.
 
-   You should have received a copy of the GNU General Public
+   You should have received a copy of the GNU Library General Public
    License along with this program; if not, write to the Free Software
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
    USA.  */
