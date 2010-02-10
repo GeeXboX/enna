@@ -14,7 +14,7 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules/$(MODULE) \
 -I$(top_srcdir)/src/bin \
 -I$(top_srcdir)/src/modules \
-@ENNA_CFLAGS@ @LIBCURL_CFLAGS@ @LIBXML2_CFLAGS@
+@ENNA_CFLAGS@
 
 if BUILD_BROWSER_SHOUTCAST
 
@@ -24,7 +24,7 @@ pkg_LTLIBRARIES = browser_shoutcast.la
 
 browser_shoutcast_la_SOURCES = $(SRCS_BROWSER_SHOUTCAST)
 
-browser_shoutcast_la_LIBADD = @ENNA_LIBS@ @LIBCURL_LIBS@ @LIBXML2_LIBS@
+browser_shoutcast_la_LIBADD = @ENNA_LIBS@
 browser_shoutcast_la_LDFLAGS = -module -avoid-version
 browser_shoutcast_la_DEPENDENCIES = $(top_builddir)/config.h
 

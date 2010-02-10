@@ -56,6 +56,10 @@ PKG_CHECK_MODULES([ENNA],
   ]
 )
 
+##################
+# Static Modules #
+##################
+
 AC_ARG_ENABLE(static_modules,
   [AC_HELP_STRING([--disable-static-modules], [disable static modules.
   [[default=enabled]]])],
