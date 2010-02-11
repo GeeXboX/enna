@@ -69,9 +69,7 @@ static void
 _item_click_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     Elm_Genlist_Item *item = data;
-    List_Item *li;
 
-    li = (List_Item*)elm_genlist_item_data_get(item);
     /* Activate item only if it's already selected */
     if (elm_genlist_item_selected_get(item))
         _item_activate(item);

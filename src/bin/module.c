@@ -262,6 +262,7 @@ enna_module_shutdown(void)
 #ifdef USE_STATIC_MODULES
     /* Free the Eina_Array of static pointer */
     if (_plugins_array)
+
     {
         eina_array_free(_plugins_array);
         _plugins_array = NULL;
