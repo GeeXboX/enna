@@ -107,6 +107,29 @@ extern Enna_Module_Api enna_mod_volume_udev_api;
 #endif
 
 
+static Enna_Module *
+enna_module_open(Enna_Module_Api *api)
+{
+    Enna_Module *m;
+
+    if (!api || !api->name) return NULL;
+
+    if (api->version != ENNA_MODULE_VERSION )
+    {
+        /* FIXME: popup error message */
+        /* Module version doesn't match enna version */
+        enna_log(ENNA_MSG_WARNING, NULL,
+                  "Bad module version, %s module", api->name);
+        return NULL;
+    }
+
+    m = ENNA_NEW(Enna_Module, 1);
+    m->api = api;
+    m->enabled = 0;
+    _enna_modules = eina_list_append(_enna_modules, m);
+    return m;
+}
+
 /**
  * @brief Init the module system
  */
@@ -256,6 +279,41 @@ enna_module_shutdown(void)
 }
 
 /**
+ * @brief Enable the given module
+ */
+int
+enna_module_enable(Enna_Module *m)
+{
+    if (!m)
+        return -1;
+    if (m->enabled)
+        return 0;
+    if (m->api->func.init)
+        m->api->func.init(m);
+    m->enabled = 1;
+    return 0;
+}
+
+/**
+ * @brief Disable the given module
+ */
+int
+enna_module_disable(Enna_Module *m)
+{
+    if (!m)
+        return -1;
+    if (!m->enabled)
+        return 0;
+    if (m->api->func.shutdown)
+    {
+        m->api->func.shutdown(m);
+        m->enabled = 0;
+        return 0;
+    }
+    return -1;
+}
+
+/**
  * @brief Load/Enable all the know modules
  */
 void
@@ -285,63 +343,6 @@ enna_module_load_all(void)
         em = enna_module_open(api);
         enna_module_enable(em);
     }
-}
-
-int
-enna_module_enable(Enna_Module *m)
-{
-    if (!m)
-        return -1;
-    if (m->enabled)
-        return 0;
-    if (m->api->func.init)
-        m->api->func.init(m);
-    m->enabled = 1;
-    return 0;
-}
-
-int
-enna_module_disable(Enna_Module *m)
-{
-    if (!m)
-        return -1;
-    if (!m->enabled)
-        return 0;
-    if (m->api->func.shutdown)
-    {
-        m->api->func.shutdown(m);
-        m->enabled = 0;
-        return 0;
-    }
-    return -1;
-}
-
-/**
- * @brief Open a module
- * @param api the module api
- * @return Enna_Module loaded
- */
-Enna_Module *
-enna_module_open(Enna_Module_Api *api)
-{
-    Enna_Module *m;
-
-    if (!api || !api->name) return NULL;
-
-    if (api->version != ENNA_MODULE_VERSION )
-    {
-        /* FIXME: popup error message */
-        /* Module version doesn't match enna version */
-        enna_log(ENNA_MSG_WARNING, NULL,
-                  "Bad module version, %s module", api->name);
-        return NULL;
-    }
-
-    m = ENNA_NEW(Enna_Module, 1);
-    m->api = api;
-    m->enabled = 0;
-    _enna_modules = eina_list_append(_enna_modules, m);
-    return m;
 }
 
 /******************************************************************************/
