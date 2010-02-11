@@ -74,7 +74,7 @@ enna_util_has_suffix(char *str, Eina_List * patterns)
         tmp = calloc(1, strlen(str) + 1);
         for (i = 0; i < strlen(str); i++)
             tmp[i] = tolower(str[i]);
-        result |= eina_str_has_suffix(tmp, (char *)l->data);
+        result |= enna_util_str_has_suffix(tmp, (char *)l->data);
         ENNA_FREE(tmp);
     }
     return result;
@@ -100,7 +100,7 @@ enna_util_uri_has_extension(const char *uri, int type)
     for (l = filters; l; l = l->next)
     {
         const char *ext = l->data;
-        if (eina_str_has_extension(uri, ext))
+        if (enna_util_str_has_extension(uri, ext))
             return 1;
     }
 
@@ -444,7 +444,7 @@ enna_util_tuple_set (Eina_List *tuple, const char *delimiter)
 }
 
 static Eina_Bool
-eina_str_has_suffix_helper(const char *str,
+enna_util_str_has_suffix_helper(const char *str,
 			   const char *suffix,
 			   int (*cmp)(const char *, const char *))
 {
@@ -504,7 +504,7 @@ enna_util_str_has_prefix(const char *str, const char *prefix)
 EAPI Eina_Bool
 enna_util_str_has_suffix(const char *str, const char *suffix)
 {
-   return eina_str_has_suffix_helper(str, suffix, strcmp);
+   return enna_util_str_has_suffix_helper(str, suffix, strcmp);
 }
 
 /**
@@ -514,11 +514,11 @@ enna_util_str_has_suffix(const char *str, const char *suffix)
  * @param ext The  extension to check for.
  * @return #EINA_TRUE if the string has the given extension, #EINA_FALSE otherwise.
  *
- * This function does the same like eina_str_has_suffix(), but with a
+ * This function does the same like enna_util_str_has_suffix(), but with a
  * case insensitive compare.
  */
 EAPI Eina_Bool
 enna_util_str_has_extension(const char *str, const char *ext)
 {
-   return eina_str_has_suffix_helper(str, ext, strcasecmp);
+   return enna_util_str_has_suffix_helper(str, ext, strcasecmp);
 }
