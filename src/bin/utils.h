@@ -50,4 +50,9 @@ double enna_util_atof(const char *nptr);
 Eina_List *enna_util_tuple_get (const char *str, const char *delimiter);
 char *enna_util_tuple_set (Eina_List *tuple, const char *delimiter);
 
+Eina_Bool enna_util_str_has_prefix(const char *str, const char *prefix);
+
+Eina_Bool enna_util_str_has_suffix(const char *str, const char *suffix);
+Eina_Bool enna_util_str_has_extension(const char *str, const char *ext);
+
 #endif /* UTILS_H */

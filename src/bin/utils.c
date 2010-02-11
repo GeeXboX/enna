@@ -442,3 +442,83 @@ enna_util_tuple_set (Eina_List *tuple, const char *delimiter)
 
     return buf;
 }
+
+static Eina_Bool
+eina_str_has_suffix_helper(const char *str,
+			   const char *suffix,
+			   int (*cmp)(const char *, const char *))
+{
+   size_t str_len;
+   size_t suffix_len;
+
+   str_len = strlen(str);
+   suffix_len = strlen(suffix);
+   if (suffix_len > str_len)
+     return EINA_FALSE;
+
+   return cmp(str + str_len - suffix_len, suffix) == 0;
+}
+
+/**
+ * @brief Check if the given string has the given prefix.
+ *
+ * @param str The string to work with.
+ * @param prefix The prefix to check for.
+ * @return #EINA_TRUE if the string has the given prefix, #EINA_FALSE otherwise.
+ *
+ * This function returns #EINA_TRUE if @p str has the prefix
+ * @p prefix, #EINA_FALSE otherwise. If the length of @p prefix is
+ * greater than @p str, #EINA_FALSE is returned.
+ */
+EAPI Eina_Bool
+enna_util_str_has_prefix(const char *str, const char *prefix)
+{
+   size_t str_len;
+   size_t prefix_len;
+
+   str_len = strlen(str);
+   prefix_len = strlen(prefix);
+   if (prefix_len > str_len)
+     return EINA_FALSE;
+
+   return (strncmp(str, prefix, prefix_len) == 0);
+}
+
+/**
+ * @brief Check if the given string has the given suffix.
+ *
+ * @param str The string to work with.
+ * @param suffix The suffix to check for.
+ * @return #EINA_TRUE if the string has the given suffix, #EINA_FALSE otherwise.
+ *
+ * This function returns #EINA_TRUE if @p str has the suffix
+ * @p suffix, #EINA_FALSE otherwise. If the length of @p suffix is
+ * greater than @p str, #EINA_FALSE is returned.
+ */
+/**
+ * @param str the string to work with
+ * @param suffix the suffix to check for
+ * @return true if str has the given suffix
+ * @brief checks if the string has the given suffix
+ */
+EAPI Eina_Bool
+enna_util_str_has_suffix(const char *str, const char *suffix)
+{
+   return eina_str_has_suffix_helper(str, suffix, strcmp);
+}
+
+/**
+ * @brief Check if the given string has the given suffix.
+ *
+ * @param str The string to work with.
+ * @param ext The  extension to check for.
+ * @return #EINA_TRUE if the string has the given extension, #EINA_FALSE otherwise.
+ *
+ * This function does the same like eina_str_has_suffix(), but with a
+ * case insensitive compare.
+ */
+EAPI Eina_Bool
+enna_util_str_has_extension(const char *str, const char *ext)
+{
+   return eina_str_has_suffix_helper(str, ext, strcasecmp);
+}
