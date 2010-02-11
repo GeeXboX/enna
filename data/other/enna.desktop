@@ -1,5 +1,6 @@
 [Desktop Entry]
 Type=Application
+Encoding=UTF-8
 Name=Enna
 GenericName=Media Center
 Comment=EFL Multimedia Center
@@ -8,4 +9,4 @@ TryExec=enna
 Exec=enna
 Terminal=false
 Categories=ENLIGHTENMENT;Application;AudioVideo;Player;
-StartupWmClass=enna
+StartupWMClass=enna
