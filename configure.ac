@@ -45,7 +45,6 @@ PKG_CHECK_MODULES([ENNA],
    ecore-evas >= 0.9.9.063
    ecore-file >= 0.9.9.063
    ecore-ipc >= 0.9.9.063
-   ecore-data >= 0.9.9.063
    edje >= 0.9.93.063
    elementary >= 0.6.0.063
    libxdg-basedir >= 1.0.0
