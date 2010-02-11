@@ -23,9 +23,6 @@
 #define MODULE_H
 
 
-#include "enna.h"
-#include "enna_config.h"
-
 #define ENNA_MODULE_VERSION 4
 
 #define MOD_PREFIX module /* default name for dynamic linking */

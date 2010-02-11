@@ -32,6 +32,7 @@
 #include "view_wall.h"
 #include "content.h"
 #include "mainmenu.h"
+#include "enna_config.h"
 #include "input.h"
 #include "image.h"
 #include "games.h"
