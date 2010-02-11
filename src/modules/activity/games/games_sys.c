@@ -30,6 +30,7 @@
 #include "games.h"
 #include "games_sys.h"
 #include "xdg.h"
+#include "utils.h"
 
 #define ENNA_MODULE_NAME "games_system"
 
