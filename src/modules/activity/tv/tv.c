@@ -294,18 +294,8 @@ static Enna_Config_Section_Parser cfg_tv = {
 #define MOD_PREFIX enna_mod_activity_tv
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "activity_tv",
-    N_("Television"),
-    "icon/dev/tv",
-    N_("View TV channels"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -353,8 +343,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     enna_activity_add(&class);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     if (!mod)
         return;
@@ -367,3 +357,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 #endif
     free(mod);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "activity_tv",
+    N_("Television"),
+    "icon/dev/tv",
+    N_("View TV channels"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

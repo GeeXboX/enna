@@ -344,18 +344,8 @@ static Enna_Class_Activity class = {
 #define MOD_PREFIX enna_mod_activity_bookstore
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "activity_bookstore",
-    N_("Bookstore"),
-    "icon/bookstore",
-    N_("Read your books"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     mod = calloc (1, sizeof(Enna_Module_BookStore));
     em->mod = mod;
@@ -366,8 +356,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     mod->onemanga = &bs_onemanga;
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     enna_activity_del(ENNA_MODULE_NAME);
 
@@ -377,3 +367,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     bs_menu_delete();
     ENNA_FREE(mod);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "activity_bookstore",
+    N_("Bookstore"),
+    "icon/bookstore",
+    N_("Read your books"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

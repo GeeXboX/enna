@@ -674,18 +674,8 @@ static Enna_Config_Section_Parser cfg_localfiles = {
 #define MOD_PREFIX enna_mod_browser_localfiles
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "browser_localfiles",
-    N_("Browse local files"),
-    "icon/hd",
-    N_("Browse files in your local file systems"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -712,8 +702,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
 #endif
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Enna_Module_LocalFiles *mod;
 
@@ -732,3 +722,18 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 #endif
     ENNA_FREE(mod);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "browser_localfiles",
+    N_("Browse local files"),
+    "icon/hd",
+    N_("Browse files in your local file systems"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};
+

@@ -352,18 +352,8 @@ static Enna_Class_Vfs class_shoutcast =
 #define MOD_PREFIX enna_mod_browser_shoutcast
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "browser_shoutcast",
-    N_("SHOUTcast browser"),
-    "icon/shoutcast",
-    N_("Listen to SHOUTcast stream"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -376,8 +366,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     enna_vfs_append("shoutcast", ENNA_CAPS_MUSIC, &class_shoutcast);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     shoutcast_genre_t *g;
 
@@ -386,3 +376,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 
     url_free(mod->handler);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "browser_shoutcast",
+    N_("SHOUTcast browser"),
+    "icon/shoutcast",
+    N_("Listen to SHOUTcast stream"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

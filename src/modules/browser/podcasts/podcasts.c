@@ -317,18 +317,8 @@ static Enna_Config_Section_Parser cfg_podcast = {
 #define MOD_PREFIX enna_mod_browser_podcasts
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "browser_podcast",
-    N_("Podcast browser"),
-    "icon/podcast",
-    N_("Podcast module"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -345,8 +335,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     enna_vfs_append("podcast", ENNA_CAPS_MUSIC, &class_podcast);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Enna_Module_Podcast *mod;
 
@@ -354,3 +344,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     url_free(mod->handler);
     ENNA_FREE(mod);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "browser_podcast",
+    N_("Podcast browser"),
+    "icon/podcast",
+    N_("Podcast module"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

@@ -129,18 +129,8 @@ _remove_volumes_cb(void *data, Enna_Volume *v)
 #define MOD_PREFIX enna_mod_browser_dvd
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "browser_dvd",
-    N_("DVD module"),
-    "icon/dev/dvd",
-    N_("Watch movies from DVD"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -156,11 +146,26 @@ ENNA_MODULE_INIT(Enna_Module *em)
                                    _remove_volumes_cb, mod->dvd);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Enna_Module_Dvd *mod;
 
     mod = em->mod;
     free(mod->dvd);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "browser_dvd",
+    N_("DVD module"),
+    "icon/dev/dvd",
+    N_("Watch movies from DVD"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};
+

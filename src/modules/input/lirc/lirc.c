@@ -184,18 +184,8 @@ lirc_panel_hide(void *data)
 #define MOD_PREFIX enna_mod_input_lirc
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    ENNA_MODULE_NAME,
-    N_("LIRC Remote"),
-    NULL,
-    N_("Module to control enna from your remote"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     struct lirc_config *config;
     int fd;
@@ -236,8 +226,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
 #endif
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
 #if 0
     enna_config_panel_unregister(_config_panel);
@@ -249,3 +239,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
         lirc_deinit();
     }
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    ENNA_MODULE_NAME,
+    N_("LIRC Remote"),
+    NULL,
+    N_("Module to control enna from your remote"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

@@ -484,18 +484,8 @@ static Enna_Class_Activity class =
 #define MOD_PREFIX enna_mod_activity_music
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "activity_music",
-    N_("Music"),
-    "icon/music",
-    N_("Listen to your music"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -509,8 +499,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     mod->enna_playlist = enna_mediaplayer_playlist_create();
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     enna_volumes_listener_del(mod->vl);
     enna_activity_del(ENNA_MODULE_NAME);
@@ -527,3 +517,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "activity_music",
+    N_("Music"),
+    "icon/music",
+    N_("Listen to your music"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

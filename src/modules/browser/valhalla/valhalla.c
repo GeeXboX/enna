@@ -646,16 +646,6 @@ _class_vfs_get(void *cookie)
 #define MOD_PREFIX enna_mod_browser_valhalla
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "browser_valhalla",
-    N_("Valhalla module"),
-    "icon/config",
-    N_("Build a browseable catalog of your media files"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
 static Enna_Class_Vfs class_music =
 {
     "valhalla_music",
@@ -690,8 +680,8 @@ static Enna_Class_Vfs class_video =
     NULL,
 };
 
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -711,9 +701,23 @@ ENNA_MODULE_INIT(Enna_Module *em)
     enna_vfs_append("valhalla_video", ENNA_CAPS_VIDEO, &class_video);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     free(mod);
     mod = NULL;
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "browser_valhalla",
+    N_("Valhalla module"),
+    "icon/config",
+    N_("Build a browseable catalog of your media files"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

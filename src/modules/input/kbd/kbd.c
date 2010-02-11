@@ -201,6 +201,19 @@ _ecore_event_key_down_cb(void *data, int type, void *event)
 #define MOD_PREFIX enna_mod_input_kbd
 #endif /* USE_STATIC_MODULES */
 
+static void
+module_init(Enna_Module *em)
+{
+    key_down_event_handler =
+        ecore_event_handler_add (ECORE_EVENT_KEY_DOWN, _ecore_event_key_down_cb, NULL);
+}
+
+static void
+module_shutdown(Enna_Module *em)
+{
+    ENNA_EVENT_HANDLER_DEL(key_down_event_handler);
+}
+
 Enna_Module_Api ENNA_MODULE_API =
 {
     ENNA_MODULE_VERSION,
@@ -208,18 +221,9 @@ Enna_Module_Api ENNA_MODULE_API =
     N_("Keyboard controls"),
     NULL,
     N_("Module to control enna from the keyboard"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
 };
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
-{
-    key_down_event_handler =
-        ecore_event_handler_add (ECORE_EVENT_KEY_DOWN, _ecore_event_key_down_cb, NULL);
-}
-
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
-{
-    ENNA_EVENT_HANDLER_DEL(key_down_event_handler);
-}

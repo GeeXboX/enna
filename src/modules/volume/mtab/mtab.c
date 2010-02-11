@@ -143,23 +143,14 @@ mtab_parse(void)
 #define MOD_PREFIX enna_mod_volume_mtab
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API = {
-    ENNA_MODULE_VERSION,
-    "volume_mtab",
-    N_("Volumes from mtab"),
-    NULL,
-    N_("This module provide support for already mounted volumes"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     mtab_parse();
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Enna_Volume *v;
     Eina_List *l, *l_next;
@@ -172,3 +163,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     _mount_points = NULL;
     enna_log(ENNA_MSG_EVENT, "mtab", "mtab module shutdown");
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "volume_mtab",
+    N_("Volumes from mtab"),
+    NULL,
+    N_("This module provide support for already mounted volumes"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

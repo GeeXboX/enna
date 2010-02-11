@@ -402,18 +402,8 @@ static Enna_Config_Section_Parser cfg_netstreams = {
 #define MOD_PREFIX enna_mod_browser_netstreams
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "browser_netstreams",
-    N_("Netstreams"),
-    "icon/module",
-    N_("Browse and play network streams"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -432,8 +422,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     class_init("netstreams_video", &mod->video, ENNA_CAPS_VIDEO, &class_video);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Enna_Module_Netstreams *mod;
 
@@ -443,3 +433,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
 
     url_free(mod->handler);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "browser_netstreams",
+    N_("Netstreams"),
+    "icon/module",
+    N_("Browse and play network streams"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

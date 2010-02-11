@@ -294,18 +294,8 @@ static Enna_Class_Activity class = {
 #define MOD_PREFIX enna_mod_activity_weather
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "activity_weather",
-    N_("Weather forecasts"),
-    "icon/weather",
-    N_("Show the weather at your location"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     Eina_List *cities;
 
@@ -322,8 +312,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
     enna_activity_add (&class);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     enna_activity_del(ENNA_MODULE_NAME);
 
@@ -332,3 +322,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     ENNA_OBJECT_DEL (mod->edje);
     ENNA_FREE (mod);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "activity_weather",
+    N_("Weather forecasts"),
+    "icon/weather",
+    N_("Show the weather at your location"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

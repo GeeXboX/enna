@@ -232,18 +232,8 @@ static Enna_Class_Activity class = {
 #define MOD_PREFIX enna_mod_activity_configuration
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "activity_configuration",
-    N_("Configuration"),
-    "icon/config",
-    N_("This module creates the Enna configuration panel"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -261,8 +251,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
                                          credits_panel_hide, NULL);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     enna_config_panel_unregister(info1);
     enna_config_panel_unregister(credits);
@@ -272,4 +262,18 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     _delete_menu ();
     free (mod);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "activity_configuration",
+    N_("Configuration"),
+    "icon/config",
+    N_("This module creates the Enna configuration panel"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};
 

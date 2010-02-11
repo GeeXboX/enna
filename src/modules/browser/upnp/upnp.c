@@ -578,18 +578,8 @@ upnp_add_device(GUPnPControlPoint *cp, GUPnPDeviceProxy  *proxy)
 #define MOD_PREFIX enna_mod_browser_upnp
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "browser_upnp",
-    N_("UPnP/DLNA module"),
-    "icon/module",
-    N_("This module allows Enna to browse contents from UPnP/DLNA media servers"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     GError *error;
 
@@ -641,8 +631,8 @@ ENNA_MODULE_INIT(Enna_Module *em)
 #endif
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Enna_Module_UPnP *mod;
     upnp_media_server_t *srv;
@@ -661,3 +651,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     pthread_mutex_destroy(&mod->mutex);
     pthread_mutex_destroy(&mod->mutex_id);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "browser_upnp",
+    N_("UPnP/DLNA module"),
+    "icon/module",
+    N_("This module allows Enna to browse contents from UPnP/DLNA media servers"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

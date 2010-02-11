@@ -426,18 +426,8 @@ class =
 #define MOD_PREFIX enna_mod_activity_games
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "activity_games",
-    N_("Games"),
-    "icon/games",
-    N_("Play all your games directly from Enna"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -456,11 +446,11 @@ ENNA_MODULE_INIT(Enna_Module *em)
         mod->services = eina_list_append(mod->services, &games_mame);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Games_Service *s;
-    
+
     EINA_LIST_FREE(mod->services, s)
         _game_service_shutdown(s);
 
@@ -471,3 +461,17 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_FREE(mod);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "activity_games",
+    N_("Games"),
+    "icon/games",
+    N_("Play all your games directly from Enna"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

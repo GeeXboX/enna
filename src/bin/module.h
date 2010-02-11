@@ -22,40 +22,26 @@
 #ifndef MODULE_H
 #define MODULE_H
 
-#include <Ecore_Data.h>
 
 #include "enna.h"
 #include "enna_config.h"
 
-#define ENNA_MODULE_VERSION 3
+#define ENNA_MODULE_VERSION 4
 
 #define MOD_PREFIX module /* default name for dynamic linking */
 #define MOD_APPEND_API(prefix)           prefix##_api
-#define MOD_APPEND_INIT(prefix)          prefix##_init
-#define MOD_APPEND_SHUTDOWN(prefix)      prefix##_shutdown
 #define ENNA_MOD_PREFIX_API(prefix)      MOD_APPEND_API(prefix)
-#define ENNA_MOD_PREFIX_INIT(prefix)     MOD_APPEND_INIT(prefix)
-#define ENNA_MOD_PREFIX_SHUTDOWN(prefix) MOD_APPEND_SHUTDOWN(prefix)
+
 /* Entries to use in the modules. */
 #define ENNA_MODULE_API                  ENNA_MOD_PREFIX_API(MOD_PREFIX)
-#define ENNA_MODULE_INIT                 ENNA_MOD_PREFIX_INIT(MOD_PREFIX)
-#define ENNA_MODULE_SHUTDOWN             ENNA_MOD_PREFIX_SHUTDOWN(MOD_PREFIX)
 
 typedef struct _Enna_Module Enna_Module;
 typedef struct _Enna_Module_Api Enna_Module_Api;
 
 struct _Enna_Module
 {
-    const char *name;
-    struct
-    {
-        void (*init)(Enna_Module *m);
-        void (*shutdown)(Enna_Module *m);
-    } func;
-
     Enna_Module_Api *api;
     unsigned char enabled;
-    Ecore_Plugin *plugin;
     void *mod;
 };
 
@@ -67,12 +53,17 @@ struct _Enna_Module_Api
     const char *icon;
     const char *short_desc;
     const char *long_desc;
+    struct
+    {
+        void (*init)(Enna_Module *m);
+        void (*shutdown)(Enna_Module *m);
+    } func;
 };
 
 int          enna_module_init(void);
 void         enna_module_shutdown(void);
 void         enna_module_load_all(void);
-Enna_Module *enna_module_open(const char *name);
+Enna_Module *enna_module_open(Enna_Module_Api *api);
 int          enna_module_enable(Enna_Module *m);
 int          enna_module_disable(Enna_Module *m);
 

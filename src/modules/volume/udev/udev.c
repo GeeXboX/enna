@@ -664,17 +664,8 @@ scan_timer_cb(void *data)
 #define MOD_PREFIX enna_mod_volume_udev
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API = {
-    ENNA_MODULE_VERSION,
-    "volume_udev",
-    N_("Volumes from udev"),
-    NULL,
-    N_("This module provide support for removable volumes"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     int err;
 
@@ -717,8 +708,8 @@ err_udev:
     return;
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Enna_Module_Udev *mod;
     volume_t *v;
@@ -735,3 +726,16 @@ ENNA_MODULE_SHUTDOWN(Enna_Module *em)
     EINA_LIST_FREE(mod->volumes, v)
         volume_free(v);
 }
+
+Enna_Module_Api ENNA_MODULE_API = {
+    ENNA_MODULE_VERSION,
+    "volume_udev",
+    N_("Volumes from udev"),
+    NULL,
+    N_("This module provide support for removable volumes"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

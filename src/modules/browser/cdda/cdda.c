@@ -131,18 +131,8 @@ static void _remove_volumes_cb(void *data, Enna_Volume *v)
 #define MOD_PREFIX enna_mod_browser_cdda
 #endif /* USE_STATIC_MODULES */
 
-Enna_Module_Api ENNA_MODULE_API =
-{
-    ENNA_MODULE_VERSION,
-    "browser_cdda",
-    N_("CDDA module"),
-    "icon/dev/cdda",
-    N_("Listen your favorite CDs"),
-    "bla bla bla<br><b>bla bla bla</b><br><br>bla."
-};
-
-void
-ENNA_MODULE_INIT(Enna_Module *em)
+static void
+module_init(Enna_Module *em)
 {
     if (!em)
         return;
@@ -158,11 +148,25 @@ ENNA_MODULE_INIT(Enna_Module *em)
                                    _remove_volumes_cb, mod->cdda);
 }
 
-void
-ENNA_MODULE_SHUTDOWN(Enna_Module *em)
+static void
+module_shutdown(Enna_Module *em)
 {
     Enna_Module_Cdda *mod;
 
     mod = em->mod;
     free(mod->cdda);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    "browser_cdda",
+    N_("CDDA module"),
+    "icon/dev/cdda",
+    N_("Listen your favorite CDs"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};
