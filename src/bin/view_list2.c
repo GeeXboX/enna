@@ -441,6 +441,14 @@ enna_list2_item_entry_add(Elm_Genlist_Item *item,
     return _enna_list_item_widget_add(item, icon, label, NULL, func, func_data, ENNA_ENTRY, EINA_FALSE);
 }
 
+const char *
+enna_list2_item_entry_get(Enna_View_List2_Widget *entry)
+{
+    if (!entry || !entry->obj)
+        return NULL;
+    return elm_entry_entry_get(entry->obj);
+}
+
 void
 enna_list2_item_del(Elm_Genlist_Item *item)
 {

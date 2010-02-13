@@ -63,6 +63,7 @@ Enna_View_List2_Widget *enna_list2_item_check_add(Elm_Genlist_Item *item,
 Enna_View_List2_Widget *enna_list2_item_entry_add(Elm_Genlist_Item *item,
                                         const char *icon, const char *label,
                                                   void (*func) (void *data, Enna_View_List2_Widget *widget), void *func_data);
+const char             *enna_list2_item_entry_get(Enna_View_List2_Widget *entry);
 void          enna_list2_item_del(Elm_Genlist_Item *item);
 
 //~ Eina_List* enna_list_files_get(Evas_Object* obj);
