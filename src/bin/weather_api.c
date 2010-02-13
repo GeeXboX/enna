@@ -474,9 +474,11 @@ static void
 _weather_config_panel_hide(void *data)
 {
     ENNA_OBJECT_DEL(_o_cfg_panel);
-    if (!_input_listener)
+    if (_input_listener)
+    {
         enna_input_listener_del(_input_listener);
-    _input_listener = NULL;
+        _input_listener = NULL;
+    }
 }
 
 /****************************************************************************/
