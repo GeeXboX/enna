@@ -47,16 +47,20 @@ weather_notification.c\
 volume_notification.c\
 ini_parser.c\
 input.c\
-geoip.c\
-xdg.c
-
-
+geoip.c
 
 enna_LDADD = @ENNA_LIBS@ @LIBCDDB_LIBS@
 enna_LDFLAGS = -rdynamic
 
 if BUILD_LIBSVDRP
 enna_LDADD += @LIBSVDRP_LIBS@
+endif
+
+if BUILD_LIBXDG_BASEDIR
+enna_SOURCES += xdg.c
+enna_LDADD += @LIBXDG_BASEDIR_LIBS@
+else
+enna_SOURCES += xdg-dummy.c
 endif
 
 ##########################################################################
@@ -193,8 +197,7 @@ enna_thumb_SOURCES = \
 enna_thumb_main.c\
 utils.c\
 buffer.c\
-image.c\
-xdg.c
+image.c
 
 enna_thumb_LDADD = @ENNA_LIBS@
 
@@ -202,6 +205,12 @@ if BUILD_LIBSVDRP
 enna_thumb_LDADD += @LIBSVDRP_LIBS@
 endif
 
+if BUILD_LIBXDG_BASEDIR
+enna_thumb_SOURCES += xdg.c
+enna_thumb_LDADD += @LIBXDG_BASEDIR_LIBS@
+else
+enna_thumb_SOURCES += xdg-dummy.c
+endif
 
 EXTRA_DIST= \
 enna.h\
