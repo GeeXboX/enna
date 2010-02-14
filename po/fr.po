@@ -2,7 +2,7 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Benjamin Zores <ben@geexbox.org>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
@@ -42,8 +42,7 @@ msgstr " Options disponibles :\n"
 #: src/bin/enna.c:496
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr ""
-"  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
+msgstr "  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
 
 #: src/bin/enna.c:497
 #, c-format
@@ -63,19 +62,17 @@ msgstr "  -t, (--theme) :    Spécifie le nom du thème à utiliser.\n"
 #: src/bin/enna.c:500
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry) : Spécifie la résolution de la fenêtre. "
-"(geometry=1280x720)\n"
+msgstr "  -g, (--geometry) : Spécifie la résolution de la fenêtre. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:501
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
+msgstr " -p, (--profile) :  Spécifie le type d'affichage\n"
 
 #: src/bin/enna.c:502
 #, c-format
 msgid "    Supported: "
-msgstr ""
+msgstr "Valeurs supportées :"
 
 #: src/bin/enna.c:506
 #, c-format
@@ -279,19 +276,19 @@ msgid "None"
 msgstr "Aucun"
 
 #: src/modules/activity/games/games.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "no games found"
-msgstr "Aucun contenu multimédia ne semble disponible !"
+msgstr "aucun jeu trouvé"
 
 #: src/modules/activity/games/games.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "one game"
-msgstr "Jeux"
+msgstr "un jeu"
 
 #: src/modules/activity/games/games.c:220
-#, fuzzy, c-format
+#, c-format
 msgid "%d games"
-msgstr "%d Chansons"
+msgstr "%d jeux"
 
 #: src/modules/activity/games/games.c:405
 #: src/modules/activity/games/games.c:433
@@ -300,28 +297,23 @@ msgstr "Jeux"
 
 #: src/modules/activity/games/games.c:435
 msgid "Play all your games directly from Enna"
-msgstr ""
-"Au travers de ce module, vous pouvez démarrer vos jeux directement depuis "
-"Enna"
+msgstr "Au travers de ce module, vous pouvez démarrer vos jeux directement depuis Enna"
 
 #: src/modules/activity/games/games_mame.c:81
 msgid "<c>M.A.M.E.</c><br>Game running..."
-msgstr ""
+msgstr "<c>M.A.M.E.</c><br>Lancement du jeu..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Erreur M.A.M.E.</c><br><b>Aucune rom trouvée</b><br>Les roms sont à déposer dans : ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
-msgstr ""
+msgstr "<c>Jeux Système</c><br>Lancement du jeu..."
 
 #: src/modules/activity/games/games_sys.c:257
-#, fuzzy
 msgid "System Games"
-msgstr "Jeux"
+msgstr "Jeux Système"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -523,9 +515,7 @@ msgstr "Module UPnP / DLNA"
 
 #: src/modules/browser/upnp/upnp.c:587
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr ""
-"Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
-"compatibles UPNP / DLNA"
+msgstr "Ce module permet à Enna de parcourir le contenu des serveurs multimédias compatibles UPNP / DLNA"
 
 #: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
@@ -686,14 +676,11 @@ msgstr "Volumes via udev"
 msgid "This module provide support for removable volumes"
 msgstr "Ce module prends en charge les volumes amovibles"
 
-#, fuzzy
 #~ msgid "This module gets volumes from the mtab file"
 #~ msgstr "Ce module récupère la liste des volumes depuis le fichier mtab"
 
 #~ msgid "Database stuff and metadata retrival from various sources"
-#~ msgstr ""
-#~ "Base de donnée et récupération de meta-informations depuis diverses "
-#~ "sources"
+#~ msgstr "Base de donnée et récupération de meta-informations depuis diverses sources"
 
 #~ msgid "Music core"
 #~ msgstr "Musique"
