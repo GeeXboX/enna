@@ -124,7 +124,7 @@ msgstr "加入新城市"
 
 #: src/bin/weather_api.c:418
 msgid "Add more cities to the list"
-msgstr "加入更多的城市到這個清單中"
+msgstr "加入更多的城市到清單中"
 
 #: src/bin/weather_api.c:423
 msgid "Add"
@@ -167,7 +167,7 @@ msgstr "Enna 是 GeeXboX-team 媒體中心"
 
 #: src/modules/activity/configuration/configuration_credits.c:47
 msgid "based on Enlightenment Foundation Librairies (EFL)."
-msgstr "based on Enlightenment Foundation Librairies (EFL)."
+msgstr "基於 Enlightenment Foundation Librairies (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
 msgid "Credits go to:"
@@ -306,12 +306,8 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>遊戲正在執行..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
-"<c>Mame 錯誤</c><br><b>在路徑上沒有發現任何 roms</b><br>Roms 必需放在: ~/."
-"mame/roms<br>"
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Mame 錯誤</c><br><b>在路徑上沒有發現任何 roms</b><br>Roms 必需放在: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
