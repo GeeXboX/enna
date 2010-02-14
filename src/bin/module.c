@@ -30,8 +30,8 @@
 
 #define ENABLE_CONFIG_PANEL 0
 
-static Eina_List *_enna_modules = NULL;
-static Eina_Array *_plugins_array = NULL;
+static Eina_List *_enna_modules = NULL;   /** List of Enna_Modules* */
+static Eina_Array *_plugins_array = NULL; /** Array of Eina_Modules* (or api* in static mode)*/
 
 #if ENABLE_CONFIG_PANEL
 static Enna_Config_Panel *_config_panel = NULL;
@@ -259,24 +259,20 @@ enna_module_shutdown(void)
     }
     _enna_modules = NULL;
 
-#ifdef USE_STATIC_MODULES
-    /* Free the Eina_Array of static pointer */
     if (_plugins_array)
-
     {
+#ifdef USE_STATIC_MODULES
+        /* Free the Eina_Array of static pointer */
         eina_array_free(_plugins_array);
         _plugins_array = NULL;
-    }
 #else
-    /* Free the Eina_Array of Eina_Module */
-    if (_plugins_array)
-    {
+        /* Free the Eina_Array of Eina_Module */
         eina_module_list_unload(_plugins_array);
         eina_module_list_free(_plugins_array);
         eina_array_free(_plugins_array);
         _plugins_array = NULL;
-    }
 #endif /* USE_STATIC_MODULES */
+    }
 }
 
 /**
