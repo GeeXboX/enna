@@ -1,0 +1,804 @@
+# Russian translations for enna package.
+# Copyright (C) 2009 The Enna Project
+# This file is distributed under the same license as the enna package.
+# Kostyantyn Derets <ua.motofan@gmail.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: enna 0.4.0\n"
+"Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
+"POT-Creation-Date: 2010-02-08 11:37+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: winn <mutoturk@gmail.com>\n"
+"Language-Team: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=0;\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIA\n"
+
+#: src/bin/browser.c:549
+msgid "No media found!"
+msgstr "Medya Bulunamadı"
+
+#: src/bin/browser.c:706
+msgid "Main menu"
+msgstr "Ana Menü"
+
+#: src/bin/enna.c:493
+#, c-format
+msgid "Enna MediaCenter\n"
+msgstr "Enna MediaMerkezi\n"
+
+#: src/bin/enna.c:494
+#, c-format
+msgid " Usage: %s [options ...]\n"
+msgstr "Kullanım: %s [seçenekler ...]\n"
+
+#: src/bin/enna.c:495
+#, c-format
+msgid " Available options:\n"
+msgstr "Kullanılabilir seçenekler:\n"
+
+#: src/bin/enna.c:496
+#, c-format
+msgid "  -c, (--config):  Specify configuration file to be used.\n"
+msgstr "  -c, (--config):  Kullanılan Yapılandırma dosyasını belirtin.\n"
+
+#: src/bin/enna.c:497
+#, c-format
+msgid "  -f, (--fs):      Force fullscreen mode.\n"
+msgstr "  -f, (--fs):      Tam ekran modu gücü.\n"
+
+#: src/bin/enna.c:498
+#, c-format
+msgid "  -h, (--help):    Display this help.\n"
+msgstr "  -h, (--help):    Yardımı görüntüle.\n"
+
+#: src/bin/enna.c:499
+#, c-format
+msgid "  -t, (--theme):   Specify theme name to be used.\n"
+msgstr "  -t, (--theme):   Kullanılan tema adını belirtin.\n"
+
+#: src/bin/enna.c:500
+#, c-format
+msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
+msgstr "  -g, (--geometry):Pencere geometrisini belirtin. (geometry=1280x720)\n"
+
+#: src/bin/enna.c:501
+#, c-format
+msgid "  -p, (--profile): Specify display profile\n"
+msgstr "  -p, (--profile): Profil görünümünü belirt\n"
+
+#: src/bin/enna.c:502
+#, c-format
+msgid "    Supported: "
+msgstr "    Desteklendi: "
+
+#: src/bin/enna.c:506
+#, c-format
+msgid "  -V, (--version): Display Enna version number.\n"
+msgstr "  -V, (--version): Enna versiyon numarasını görüntüle.\n"
+
+#: src/bin/exit.c:93
+msgid "Are you sure you want to quit Enna?"
+msgstr "Enna'dan çıkmak istediğine emin misin?"
+
+#: src/bin/exit.c:148
+msgid "Yes, quit Enna"
+msgstr "Evet, Enna'dan çık"
+
+#: src/bin/exit.c:151
+msgid "No, continue using Enna"
+msgstr "Hayır, Enna'yı kullanmaya devam et"
+
+#: src/bin/module.c:233
+msgid "Modules"
+msgstr "Modüller"
+
+#: src/bin/module.c:472
+msgid "No information provided"
+msgstr "Bilgi sağlanamadı"
+
+#: src/bin/parser_cdda.c:296
+#, c-format
+msgid "Track #%02d (%02d:%02d)"
+msgstr "Parça #%02d (%02d:%02d)"
+
+#: src/bin/weather_api.c:404
+msgid "City"
+msgstr "Şehir"
+
+#: src/bin/weather_api.c:405
+msgid "Choose your city"
+msgstr "Şehrini seç"
+
+#: src/bin/weather_api.c:412
+msgid "Remove"
+msgstr "Kaldır"
+
+#: src/bin/weather_api.c:417
+msgid "Add new city"
+msgstr "Yeni şehir ekle"
+
+#: src/bin/weather_api.c:418
+msgid "Add more cities to the list"
+msgstr "Listeden daha fazla şehir ekle"
+
+#: src/bin/weather_api.c:423
+msgid "Add"
+msgstr "Ekle"
+
+#: src/bin/weather_api.c:626
+#: src/modules/activity/weather/weather.c:273
+msgid "Weather"
+msgstr "Hava"
+
+#: src/modules/activity/bookstore/bookstore.c:323
+#: src/modules/activity/bookstore/bookstore.c:351
+msgid "Bookstore"
+msgstr "Kitapçı"
+
+#: src/modules/activity/bookstore/bookstore.c:353
+msgid "Read your books"
+msgstr "Kitaplarını oku"
+
+#: src/modules/activity/configuration/configuration.c:211
+#: src/modules/activity/configuration/configuration.c:239
+msgid "Configuration"
+msgstr "Yapılandırma"
+
+#: src/modules/activity/configuration/configuration.c:241
+msgid "This module creates the Enna configuration panel"
+msgstr "Bu modül Enna yapılandırma panelinde oluşturuldu"
+
+#: src/modules/activity/configuration/configuration.c:256
+#: src/modules/activity/configuration/configuration_sysinfo.c:515
+msgid "System information"
+msgstr "Sistem Bilgisi"
+
+#: src/modules/activity/configuration/configuration.c:259
+msgid "Credits"
+msgstr "Hazırlayanlar"
+
+#: src/modules/activity/configuration/configuration_credits.c:45
+msgid "Enna is a GeeXboX-team MediaCenter"
+msgstr "Enna GeeXboX-takımı Medya Merkezi"
+
+#: src/modules/activity/configuration/configuration_credits.c:47
+msgid "based on Enlightenment Foundation Librairies (EFL)."
+msgstr "Enlightenment tabanlı temel kütüphaneleri (EFL)."
+
+#: src/modules/activity/configuration/configuration_credits.c:49
+msgid "Credits go to:"
+msgstr "Hazırlayanlara:"
+
+#: src/modules/activity/configuration/configuration_credits.c:53
+msgid "and"
+msgstr "ve"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:99
+msgid "Enna information"
+msgstr "Enna Bilgi"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:101
+msgid "Enna:"
+msgstr "Enna:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:113
+msgid "Video renderer:"
+msgstr "Video çevireni:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:174
+msgid "Distribution:"
+msgstr "Dağıtım:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:196
+msgid "OS:"
+msgstr "İS:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:204
+msgid "for"
+msgstr "için"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:221
+msgid "Available CPUs:"
+msgstr "Kullanılabilir İşlemciler:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:252
+msgid ", running at"
+msgstr ", de yürütülüyor"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:281
+msgid "CPU Load:"
+msgstr "İşlemci Yükü:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:325
+msgid "Memory:"
+msgstr "Bellek:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:327
+msgid "used on"
+msgstr "kullanılan"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:329
+msgid "total"
+msgstr "toplam"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:367
+msgid "Screen resolution:"
+msgstr "Ekran çözünürlüğü:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
+msgid "at"
+msgstr "da"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:372
+msgid "min:"
+msgstr "en az:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:374
+msgid "max:"
+msgstr "en fazla:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:387
+msgid "VDR:"
+msgstr "VDR:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:390
+msgid "connected to VDR"
+msgstr "VDR bağlı"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:393
+msgid "on"
+msgstr "olan"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:398
+msgid "not connected"
+msgstr "bağlı değil"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:413
+msgid "Available network interfaces:"
+msgstr "Kullanılabilir ağ arabirimleri:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:440
+msgid "IP:"
+msgstr "IP:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:447
+msgid "Netmask:"
+msgstr "Ağ maskesi:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:472
+msgid "Default gateway:"
+msgstr "Varsayılan ağ geçidi:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:500
+msgid "None"
+msgstr "Yok"
+
+#: src/modules/activity/games/games.c:216
+#, c-format
+msgid "no games found"
+msgstr "hiçbir oyun bulunamadı"
+
+#: src/modules/activity/games/games.c:218
+#, c-format
+msgid "one game"
+msgstr "bir oyun"
+
+#: src/modules/activity/games/games.c:220
+#, c-format
+msgid "%d games"
+msgstr "%d oyunlar"
+
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:433
+msgid "Games"
+msgstr "Oyunlar"
+
+#: src/modules/activity/games/games.c:435
+msgid "Play all your games directly from Enna"
+msgstr "Bütün oyunları doğrudan Enna'dan oynayın"
+
+#: src/modules/activity/games/games_mame.c:81
+msgid "<c>M.A.M.E.</c><br>Game running..."
+msgstr "<c>M.A.M.E.</c><br>Oyun Başlatılıyor..."
+
+#: src/modules/activity/games/games_mame.c:318
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Mame Hata</c><br><b>Yolda rom bulunamadı</b><br>Romların konumu burada olacak: ~/.mame/roms<br>"
+
+#: src/modules/activity/games/games_sys.c:161
+msgid "<c>System Games</c><br>Game running..."
+msgstr "<c>Sistem Oyunları</c><br>Oyun Başlatılıyor..."
+
+#: src/modules/activity/games/games_sys.c:257
+msgid "System Games"
+msgstr "Sistem Oyunları"
+
+#: src/modules/activity/music/music.c:108
+#, c-format
+msgid "%d Songs"
+msgstr "%d Şarkılar"
+
+#: src/modules/activity/music/music.c:463
+#: src/modules/activity/music/music.c:491
+msgid "Music"
+msgstr "Müzik"
+
+#: src/modules/activity/music/music.c:493
+msgid "Listen to your music"
+msgstr "Müzik dinle"
+
+#: src/modules/activity/music/music_lyrics.c:91
+msgid "No lyrics found ..."
+msgstr "lyric dosyaları bulunamadı ..."
+
+#: src/modules/activity/photo/photo.c:367
+#: src/modules/activity/photo/photo.c:395
+msgid "Photo"
+msgstr "Resim"
+
+#: src/modules/activity/photo/photo.c:397
+msgid "Browse your photos and create slideshows"
+msgstr "Resimleri tara ve slayt gösterisi oluştur"
+
+#: src/modules/activity/tv/tv.c:102
+#, c-format
+msgid "Timer '%s' is due to start in %i minute"
+msgid_plural "Timer '%s' is due to start in %i minutes"
+msgstr[0] "Geri sayım '%s' içinde başlayacak %i dakika"
+msgstr[1] "Geri sayım '%s' içinde başlayacak %i dakikalar"
+
+#: src/modules/activity/tv/tv.c:104
+#, c-format
+msgid "Currently recording '%s'"
+msgstr "Halen kaydediliyor '%s'"
+
+#: src/modules/activity/tv/tv.c:113
+msgid "Recording in progress"
+msgstr "Durum kaydediliyor"
+
+#: src/modules/activity/tv/tv.c:154
+#: src/modules/activity/tv/tv.c:301
+msgid "Television"
+msgstr "Televizyon"
+
+#: src/modules/activity/tv/tv.c:303
+msgid "View TV channels"
+msgstr "TV kanal görünümü"
+
+#: src/modules/activity/video/video_infos.c:94
+msgid "No such information ..."
+msgstr "Böyle bir bilgi yok ..."
+
+#: src/modules/activity/video/video_infos.c:129
+msgid "Director:"
+msgstr "Yönetmen:"
+
+#: src/modules/activity/video/video_infos.c:136
+msgid "Cast:"
+msgstr "Oyuncular:"
+
+#: src/modules/activity/video/video_infos.c:158
+msgid "Video:"
+msgstr "Video:"
+
+#: src/modules/activity/video/video_infos.c:181
+msgid "Audio:"
+msgstr "Ses:"
+
+#: src/modules/activity/video/video_infos.c:196
+msgid "Size:"
+msgstr "Boyut:"
+
+#: src/modules/activity/video/video_infos.c:204
+msgid "No further information can be retrieved"
+msgstr "daha fazla bilgi toplanaması"
+
+#: src/modules/activity/video/video.c:132
+#, c-format
+msgid "%d Movies"
+msgstr "%d Filmler"
+
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
+msgid "Video"
+msgstr "Video"
+
+#: src/modules/activity/video/video.c:993
+msgid "Play your videos"
+msgstr "Videolarını oynat"
+
+#: src/modules/activity/weather/weather.c:301
+msgid "Weather forecasts"
+msgstr "Hava tahminleri"
+
+#: src/modules/activity/weather/weather.c:303
+msgid "Show the weather at your location"
+msgstr "Konumunuzdaki havaya göster"
+
+#: src/modules/browser/cdda/cdda.c:95
+msgid "Play audio CD"
+msgstr "Ses CD sini oynat"
+
+#: src/modules/browser/cdda/cdda.c:138
+msgid "CDDA module"
+msgstr "CDDA modülü"
+
+#: src/modules/browser/cdda/cdda.c:140
+msgid "Listen your favorite CDs"
+msgstr "Favori CD lerini dinle"
+
+#: src/modules/browser/dvd/dvd.c:62
+msgid "Play"
+msgstr "Oynat"
+
+#: src/modules/browser/dvd/dvd.c:65
+msgid "Play (with menus)"
+msgstr "Oynat (menüler ile)"
+
+#: src/modules/browser/dvd/dvd.c:91
+msgid "Watch DVD video"
+msgstr "DVD video izle"
+
+#: src/modules/browser/dvd/dvd.c:136
+msgid "DVD module"
+msgstr "DVD modülü"
+
+#: src/modules/browser/dvd/dvd.c:138
+msgid "Watch movies from DVD"
+msgstr "DVD den film izle"
+
+#: src/modules/browser/localfiles/localfiles.c:491
+#: src/modules/browser/localfiles/localfiles.c:509
+#: src/modules/browser/localfiles/localfiles.c:527
+msgid "Browse local devices"
+msgstr "Yerel sürücülere gözat"
+
+#: src/modules/browser/localfiles/localfiles.c:681
+msgid "Browse local files"
+msgstr "Yerel dosyalara gözat"
+
+#: src/modules/browser/localfiles/localfiles.c:683
+msgid "Browse files in your local file systems"
+msgstr "Yerel dosya sistemindeki dosyalara gözat"
+
+#: src/modules/browser/netstreams/netstreams.c:322
+#: src/modules/browser/netstreams/netstreams.c:338
+msgid "Browse network streams"
+msgstr "Ağ akışlarını tara"
+
+#: src/modules/browser/netstreams/netstreams.c:409
+msgid "Netstreams"
+msgstr "Ağ akışları"
+
+#: src/modules/browser/netstreams/netstreams.c:411
+msgid "Browse and play network streams"
+msgstr "Tara ve oynat ağ akışlarından"
+
+#: src/modules/browser/podcasts/podcasts.c:329
+msgid "Listen to podcasts"
+msgstr "Podcasttan dinle"
+
+#: src/modules/browser/podcasts/podcasts.c:391
+msgid "Podcast browser"
+msgstr "Podcast tarayıcısı"
+
+#: src/modules/browser/podcasts/podcasts.c:393
+msgid "Podcast module"
+msgstr "Podcast modülü"
+
+#: src/modules/browser/shoutcast/shoutcast.c:335
+msgid "SHOUTcast streaming"
+msgstr "SHOUTcast akışı"
+
+#: src/modules/browser/shoutcast/shoutcast.c:359
+msgid "SHOUTcast browser"
+msgstr "SHOUTcast tarayıcı"
+
+#: src/modules/browser/shoutcast/shoutcast.c:361
+msgid "Listen to SHOUTcast stream"
+msgstr "SHOUTcast akışlarını dinle"
+
+#: src/modules/browser/upnp/upnp.c:480
+#: src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:516
+msgid "UPnP/DLNA media servers"
+msgstr "UPnP/DLNA medya sunucusu"
+
+#: src/modules/browser/upnp/upnp.c:571
+#, c-format
+msgid "Found new UPnP device '%s (%s)'"
+msgstr "Yeni UPnP sürücüsü bulundu  '%s (%s)'"
+
+#: src/modules/browser/upnp/upnp.c:585
+msgid "UPnP/DLNA module"
+msgstr "UPnP/DLNA modülü"
+
+#: src/modules/browser/upnp/upnp.c:587
+msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
+msgstr "bu modülün Enna dan tarayarak UPnP/DLNA medya sunucularına bağlanmasına izin verin"
+
+#: src/modules/browser/valhalla/valhalla.c:142
+msgid "Authors"
+msgstr "Yazarlar"
+
+#: src/modules/browser/valhalla/valhalla.c:149
+msgid "Artists"
+msgstr "Sanatçılar"
+
+#: src/modules/browser/valhalla/valhalla.c:156
+msgid "Albums"
+msgstr "Albümler"
+
+#: src/modules/browser/valhalla/valhalla.c:161
+msgid "Genres"
+msgstr "Tarzlar"
+
+#: src/modules/browser/valhalla/valhalla.c:173
+msgid "Categories"
+msgstr "Kategoriler"
+
+#: src/modules/browser/valhalla/valhalla.c:178
+msgid "Directors"
+msgstr "Yönetmenler"
+
+#: src/modules/browser/valhalla/valhalla.c:183
+msgid "Years"
+msgstr "Yıllar"
+
+#: src/modules/browser/valhalla/valhalla.c:193
+msgid "Unclassified"
+msgstr "Sınıflandırılmamış"
+
+#: src/modules/browser/valhalla/valhalla.c:653
+msgid "Valhalla module"
+msgstr "Valhalla modülü"
+
+#: src/modules/browser/valhalla/valhalla.c:655
+msgid "Build a browseable catalog of your media files"
+msgstr "Medya dosyaları yeşil katalog kur"
+
+#: src/modules/browser/valhalla/valhalla.c:663
+#: src/modules/browser/valhalla/valhalla.c:680
+msgid "Media library"
+msgstr "Medya kütüphanesi"
+
+#: src/modules/volume/hal/hal_volume.c:39
+msgid "CD-ROM"
+msgstr "CD-ROM"
+
+#: src/modules/volume/hal/hal_volume.c:40
+msgid "CD-R"
+msgstr "CD-R"
+
+#: src/modules/volume/hal/hal_volume.c:41
+msgid "CD-RW"
+msgstr "CD-RW"
+
+#: src/modules/volume/hal/hal_volume.c:42
+msgid "DVD-ROM"
+msgstr "DVD-ROM"
+
+#: src/modules/volume/hal/hal_volume.c:43
+msgid "DVD-RAM"
+msgstr "DVD-RAM"
+
+#: src/modules/volume/hal/hal_volume.c:44
+msgid "DVD-R"
+msgstr "DVD-R"
+
+#: src/modules/volume/hal/hal_volume.c:45
+msgid "DVD-RW"
+msgstr "DVD-RW"
+
+#: src/modules/volume/hal/hal_volume.c:46
+msgid "DVD+R"
+msgstr "DVD+R"
+
+#: src/modules/volume/hal/hal_volume.c:47
+msgid "DVD+RW"
+msgstr "DVD+RW"
+
+#: src/modules/volume/hal/hal_volume.c:48
+msgid "DVD+R (DL)"
+msgstr "DVD+R (DL)"
+
+#: src/modules/volume/hal/hal_volume.c:49
+msgid "BD-ROM"
+msgstr "BD-ROM"
+
+#: src/modules/volume/hal/hal_volume.c:50
+msgid "BD-R"
+msgstr "BD-R"
+
+#: src/modules/volume/hal/hal_volume.c:51
+msgid "BD-RE"
+msgstr "BD-RE"
+
+#: src/modules/volume/hal/hal_volume.c:52
+msgid "HD-DVD-ROM"
+msgstr "HD-DVD-ROM"
+
+#: src/modules/volume/hal/hal_volume.c:53
+msgid "HD-DVD-R"
+msgstr "HD-DVD-R"
+
+#: src/modules/volume/hal/hal_volume.c:54
+msgid "HD-DVD-RW"
+msgstr "HD-DVD-RW"
+
+#: src/modules/volume/hal/hal_volume.c:55
+msgid "MagnetoOptical"
+msgstr "Manyeto-optik"
+
+#: src/modules/volume/hal/hal_volume.c:64
+msgid "CDDA"
+msgstr "CDDA"
+
+#: src/modules/volume/hal/hal_volume.c:65
+msgid "VCD"
+msgstr "VCD"
+
+#: src/modules/volume/hal/hal_volume.c:66
+msgid "SVCD"
+msgstr "SVCD"
+
+#: src/modules/volume/hal/hal_volume.c:67
+msgid "DVD"
+msgstr "DVD"
+
+#: src/modules/volume/hal/hal_volume.c:68
+msgid "Data"
+msgstr "Veri"
+
+#: src/modules/volume/mtab/mtab.c:77
+#, c-format
+msgid "[NFS] %s on %s"
+msgstr "[NFS] %s da %s"
+
+#: src/modules/volume/mtab/mtab.c:87
+#, c-format
+msgid "[SAMBA] %s on %s"
+msgstr "[SAMBA] %s da %s"
+
+#: src/modules/volume/mtab/mtab.c:149
+msgid "Volumes from mtab"
+msgstr "birimler mtab dan"
+
+#: src/modules/volume/mtab/mtab.c:151
+msgid "This module provide support for already mounted volumes"
+msgstr "Bu nodül zaten bağlanmış birimleri destekliyor"
+
+#: src/modules/volume/udev/udev.c:670
+msgid "Volumes from udev"
+msgstr "birimler udev den"
+
+#: src/modules/volume/udev/udev.c:672
+msgid "This module provide support for removable volumes"
+msgstr "Bu modül çıkarılabilir birimlere destek sağlamaktadır"
+
+#, fuzzy
+#~ msgid "This module gets volumes from the mtab file"
+#~ msgstr "Этот модуль получает список разделов из файла mtab"
+
+#~ msgid "Database stuff and metadata retrival from various sources"
+#~ msgstr "Данные из базы и метаданные, полученые из разных источников"
+
+#, fuzzy
+#~ msgid "Music core"
+#~ msgstr "Музыкальное ядро"
+
+#~ msgid "This is the main music module"
+#~ msgstr "Это основной музыкальный модуль"
+
+#~ msgid "This is the main video module"
+#~ msgstr "Это главный видео модуль"
+
+#~ msgid "<c>Enna Information</c><br><br>"
+#~ msgstr "<c>Информация про Enna</c><br><br>"
+
+#, fuzzy
+#~ msgid "<hilight>Video Renderer:</hilight> %s"
+#~ msgstr "<hilight>Память: </hilight>"
+
+#~ msgid "<hilight>Distribution: </hilight>"
+#~ msgstr "<hilight>Дистрибутив: </hilight>"
+
+#~ msgid "<hilight>OS: </hilight>"
+#~ msgstr "<hilight>ОС: </hilight>"
+
+#, fuzzy
+#~ msgid "<hilight>Available CPUs: </hilight>"
+#~ msgstr "<hilight>Доступные ЦП:</hilight><br>"
+
+#, fuzzy
+#~ msgid "<hilight>CPU Load: </hilight>"
+#~ msgstr "<hilight>загрузка ЦП: </hilight>"
+
+#, fuzzy
+#~ msgid "<hilight>Memory: </hilight>"
+#~ msgstr "<hilight>Память: </hilight>"
+
+#~ msgid "%d MB used on %d MB total (%d%%)"
+#~ msgstr "%d MB использовано из %d MB всего (%d%%)"
+
+#~ msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
+#~ msgstr "%dx%d на %d Hz (min: %dx%d, max: %dx%d)"
+
+#~ msgid "<hilight>Default Gateway: </hilight>"
+#~ msgstr "<hilight>Default Gateway: </hilight>"
+
+#~ msgid "<c>System Information</c><br><br>"
+#~ msgstr "<c>Информация про систему</c><br><br>"
+
+#~ msgid "<ul>Director:</ul> %s<br>"
+#~ msgstr "<ul>Режисер:</ul> %s<br>"
+
+#~ msgid "<ul>Cast:</ul> %s<br>"
+#~ msgstr "<ul>В ролях:</ul> %s<br>"
+
+#, fuzzy
+#~ msgid "<hl>Video: </hl> %s"
+#~ msgstr "<hl>Видео: </hl> %.2f MB<br>"
+
+#, fuzzy
+#~ msgid "<hl>Audio: </hl> %s"
+#~ msgstr "<hl>Аудио: </hl> %.2f MB<br>"
+
+#~ msgid "<hl>Size: </hl> %.2f MB<br>"
+#~ msgstr "<hl>Размер: </hl> %.2f MB<br>"
+
+#~ msgid "I really don't know :P"
+#~ msgstr "Я действительно не знаю!"
+
+#~ msgid "Infos"
+#~ msgstr "Информация"
+
+#~ msgid "%.2d hour "
+
+#~ msgid_plural "%.2d hours "
+#~ msgstr[0] "%.2d час"
+#~ msgstr[1] "%.2d часа"
+
+#~ msgid "%.2d minute"
+
+#~ msgid_plural "%.2d minutes"
+#~ msgstr[0] "%.2d минута"
+#~ msgstr[1] "%.2d минут"
+
+#~ msgid "Unknown"
+#~ msgstr "Неизвестный"
+
+#~ msgid "Disk"
+#~ msgstr "Диск"
+
+#~ msgid "Tape"
+#~ msgstr "Band"
+
+#~ msgid "Camera"
+#~ msgstr "Камера"
+
+#~ msgid "Portable Audio Player"
+#~ msgstr "Портативный аудио плейер"
+
+#~ msgid "Browse Library"
+#~ msgstr "Обзор библиотеки"
+
+#~ msgid "Artist"
+#~ msgstr "Исполнитель"
+
+#~ msgid "Watch PODCAST Video"
+#~ msgstr "Смотреть видео подкаст"
+
+#~ msgid "Yes, I want to quit."
+#~ msgstr "Да, Я хочу выйти."
+
+#~ msgid "No, I want to stay."
+#~ msgstr "Нет, Я хочу остаться."
+
+#~ msgid "...no activity seems busy right now."
+#~ msgstr "...нет активности."
