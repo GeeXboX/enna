@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-08 11:37+0100\n"
+"POT-Creation-Date: 2010-02-14 09:12+0100\n"
 "PO-Revision-Date: 2010-01-15 00:53+0100\n"
 "Last-Translator: Igor Szymanski <szymanski.igor@gmail.com>\n"
 "Language-Team: Polish\n"
@@ -95,7 +95,7 @@ msgstr "Nie, kontynuuj używanie Enna"
 msgid "Modules"
 msgstr "Moduły"
 
-#: src/bin/module.c:472
+#: src/bin/module.c:406
 msgid "No information provided"
 msgstr "Nie znaleziono informacji"
 
@@ -104,60 +104,85 @@ msgstr "Nie znaleziono informacji"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Utwór #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:404
+#: src/bin/weather_api.c:402 src/bin/weather_api.c:435
 msgid "City"
 msgstr "Miasto"
 
-#: src/bin/weather_api.c:405
-msgid "Choose your city"
+#: src/bin/weather_api.c:403
+#, fuzzy
+msgid "Choose your City"
 msgstr "Wybierz miasto"
 
-#: src/bin/weather_api.c:412
+#: src/bin/weather_api.c:407
+msgid "Enter your City here"
+msgstr ""
+
+#: src/bin/weather_api.c:410 src/bin/weather_api.c:443
 msgid "Remove"
 msgstr "Usuń"
 
-#: src/bin/weather_api.c:417
+#: src/bin/weather_api.c:436
+msgid "Choose your city"
+msgstr "Wybierz miasto"
+
+#: src/bin/weather_api.c:448
 msgid "Add new city"
 msgstr "Dodaj nowe miasto"
 
-#: src/bin/weather_api.c:418
+#: src/bin/weather_api.c:449
 msgid "Add more cities to the list"
 msgstr "Dodaj więcej miast do listy"
 
-#: src/bin/weather_api.c:423
+#: src/bin/weather_api.c:454
 msgid "Add"
 msgstr "Dodaj"
 
-#: src/bin/weather_api.c:626 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:458
+msgid "Select unit"
+msgstr ""
+
+#: src/bin/weather_api.c:459
+msgid "Select the unit to display temperature"
+msgstr ""
+
+#: src/bin/weather_api.c:464
+msgid "°C"
+msgstr ""
+
+#: src/bin/weather_api.c:464
+msgid "°F"
+msgstr ""
+
+#: src/bin/weather_api.c:669 src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Pogoda"
 
 #: src/modules/activity/bookstore/bookstore.c:323
-#: src/modules/activity/bookstore/bookstore.c:351
+#: src/modules/activity/bookstore/bookstore.c:375
 msgid "Bookstore"
 msgstr "Biblioteka"
 
-#: src/modules/activity/bookstore/bookstore.c:353
+#: src/modules/activity/bookstore/bookstore.c:377
 msgid "Read your books"
 msgstr "Czytaj książki"
 
 #: src/modules/activity/configuration/configuration.c:211
-#: src/modules/activity/configuration/configuration.c:239
+#: src/modules/activity/configuration/configuration.c:270
 msgid "Configuration"
 msgstr "Konfiguracja"
 
-#: src/modules/activity/configuration/configuration.c:241
-msgid "This module creates the Enna configuration panel"
-msgstr "Ten moduł tworzy panel konfiguracyjny Enna"
-
-#: src/modules/activity/configuration/configuration.c:256
+#: src/modules/activity/configuration/configuration.c:246
 #: src/modules/activity/configuration/configuration_sysinfo.c:515
 msgid "System information"
 msgstr "Informacje systemowe"
 
-#: src/modules/activity/configuration/configuration.c:259
+#: src/modules/activity/configuration/configuration.c:249
 msgid "Credits"
 msgstr "Autorzy"
+
+#: src/modules/activity/configuration/configuration.c:272
+msgid "This module creates the Enna configuration panel"
+msgstr "Ten moduł tworzy panel konfiguracyjny Enna"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
 msgid "Enna is a GeeXboX-team MediaCenter"
@@ -275,27 +300,27 @@ msgstr "Brama domyślna:"
 msgid "None"
 msgstr "Żaden"
 
-#: src/modules/activity/games/games.c:216
+#: src/modules/activity/games/games.c:217
 #, c-format
 msgid "no games found"
 msgstr "nie znaleziono gier"
 
-#: src/modules/activity/games/games.c:218
+#: src/modules/activity/games/games.c:219
 #, fuzzy, c-format
 msgid "one game"
 msgstr "jedna gra"
 
-#: src/modules/activity/games/games.c:220
+#: src/modules/activity/games/games.c:221
 #, c-format
 msgid "%d games"
 msgstr "%d gier"
 
-#: src/modules/activity/games/games.c:405
-#: src/modules/activity/games/games.c:433
+#: src/modules/activity/games/games.c:406
+#: src/modules/activity/games/games.c:470
 msgid "Games"
 msgstr "Gry"
 
-#: src/modules/activity/games/games.c:435
+#: src/modules/activity/games/games.c:472
 msgid "Play all your games directly from Enna"
 msgstr "Graj w gry bezpośrednio z Enna"
 
@@ -325,11 +350,11 @@ msgid "%d Songs"
 msgstr "%d Utworów"
 
 #: src/modules/activity/music/music.c:463
-#: src/modules/activity/music/music.c:491
+#: src/modules/activity/music/music.c:525
 msgid "Music"
 msgstr "Muzyka"
 
-#: src/modules/activity/music/music.c:493
+#: src/modules/activity/music/music.c:527
 msgid "Listen to your music"
 msgstr "Słuchaj muzyki"
 
@@ -338,11 +363,11 @@ msgid "No lyrics found ..."
 msgstr "Nie znaleziono słów utworu ..."
 
 #: src/modules/activity/photo/photo.c:367
-#: src/modules/activity/photo/photo.c:395
+#: src/modules/activity/photo/photo.c:419
 msgid "Photo"
 msgstr "Zdjęcia"
 
-#: src/modules/activity/photo/photo.c:397
+#: src/modules/activity/photo/photo.c:421
 msgid "Browse your photos and create slideshows"
 msgstr "Przeglądanie zdjęć i tworzenia pokazów slajdów"
 
@@ -362,11 +387,11 @@ msgstr "Obecnie nagrywa '%s'"
 msgid "Recording in progress"
 msgstr "Nagrywanie w toku"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:301
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:365
 msgid "Television"
 msgstr "Telewizja"
 
-#: src/modules/activity/tv/tv.c:303
+#: src/modules/activity/tv/tv.c:367
 msgid "View TV channels"
 msgstr "Wyświetl kanały TV"
 
@@ -404,19 +429,19 @@ msgid "%d Movies"
 msgstr "%d Filmów"
 
 #: src/modules/activity/video/video.c:915
-#: src/modules/activity/video/video.c:991
+#: src/modules/activity/video/video.c:1006
 msgid "Video"
 msgstr "Wideo"
 
-#: src/modules/activity/video/video.c:993
+#: src/modules/activity/video/video.c:1008
 msgid "Play your videos"
 msgstr "Odtwarzaj pliki wideo"
 
-#: src/modules/activity/weather/weather.c:301
+#: src/modules/activity/weather/weather.c:330
 msgid "Weather forecasts"
 msgstr "Prognozy pogody"
 
-#: src/modules/activity/weather/weather.c:303
+#: src/modules/activity/weather/weather.c:332
 msgid "Show the weather at your location"
 msgstr "Pokaż pogodę w Twojej lokalizacji"
 
@@ -424,11 +449,11 @@ msgstr "Pokaż pogodę w Twojej lokalizacji"
 msgid "Play audio CD"
 msgstr "Odtwarzaj Audio CD"
 
-#: src/modules/browser/cdda/cdda.c:138
+#: src/modules/browser/cdda/cdda.c:164
 msgid "CDDA module"
 msgstr "Moduł CDDA"
 
-#: src/modules/browser/cdda/cdda.c:140
+#: src/modules/browser/cdda/cdda.c:166
 msgid "Listen your favorite CDs"
 msgstr "Słuchaj ulubionych płyt"
 
@@ -444,11 +469,11 @@ msgstr "Odtwarzaj (wyświetl menu)"
 msgid "Watch DVD video"
 msgstr "Oglądaj film DVD"
 
-#: src/modules/browser/dvd/dvd.c:136
+#: src/modules/browser/dvd/dvd.c:162
 msgid "DVD module"
 msgstr "Moduł DVD"
 
-#: src/modules/browser/dvd/dvd.c:138
+#: src/modules/browser/dvd/dvd.c:164
 msgid "Watch movies from DVD"
 msgstr "Oglądaj filmy z płyt DVD"
 
@@ -458,11 +483,11 @@ msgstr "Oglądaj filmy z płyt DVD"
 msgid "Browse local devices"
 msgstr "Przeglądaj lokalne urządzenia"
 
-#: src/modules/browser/localfiles/localfiles.c:681
+#: src/modules/browser/localfiles/localfiles.c:730
 msgid "Browse local files"
 msgstr "Przeglądaj pliki lokalne"
 
-#: src/modules/browser/localfiles/localfiles.c:683
+#: src/modules/browser/localfiles/localfiles.c:732
 msgid "Browse files in your local file systems"
 msgstr "Przeglądaj pliki w lokalnym systemie plików"
 
@@ -471,23 +496,23 @@ msgstr "Przeglądaj pliki w lokalnym systemie plików"
 msgid "Browse network streams"
 msgstr "Przeglądaj strumienie sieciowe"
 
-#: src/modules/browser/netstreams/netstreams.c:409
+#: src/modules/browser/netstreams/netstreams.c:441
 msgid "Netstreams"
 msgstr "Strumienie sieciowe"
 
-#: src/modules/browser/netstreams/netstreams.c:411
+#: src/modules/browser/netstreams/netstreams.c:443
 msgid "Browse and play network streams"
 msgstr "Przeglądaj i odtwarzaj strumienie sieciowe"
 
-#: src/modules/browser/podcasts/podcasts.c:329
+#: src/modules/browser/podcasts/podcasts.c:216
 msgid "Listen to podcasts"
 msgstr "Słuchaj podcastów"
 
-#: src/modules/browser/podcasts/podcasts.c:391
+#: src/modules/browser/podcasts/podcasts.c:352
 msgid "Podcast browser"
 msgstr "Przeglądarka podcastów"
 
-#: src/modules/browser/podcasts/podcasts.c:393
+#: src/modules/browser/podcasts/podcasts.c:354
 msgid "Podcast module"
 msgstr "Moduł Podcast"
 
@@ -495,11 +520,11 @@ msgstr "Moduł Podcast"
 msgid "SHOUTcast streaming"
 msgstr "Strumień SHOUTcast"
 
-#: src/modules/browser/shoutcast/shoutcast.c:359
+#: src/modules/browser/shoutcast/shoutcast.c:384
 msgid "SHOUTcast browser"
 msgstr "Przeglądarka SHOUTcast"
 
-#: src/modules/browser/shoutcast/shoutcast.c:361
+#: src/modules/browser/shoutcast/shoutcast.c:386
 msgid "Listen to SHOUTcast stream"
 msgstr "Słuchaj strumienia SHOUTcast"
 
@@ -513,11 +538,11 @@ msgstr "Serwery multimediów UPnP/DLNA"
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Znaleziono nowe urządzenie UPnP '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:585
+#: src/modules/browser/upnp/upnp.c:659
 msgid "UPnP/DLNA module"
 msgstr "Moduł UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:587
+#: src/modules/browser/upnp/upnp.c:661
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "Ten moduł pozwala Enna przeglądać zawartość serwerów UPnP / DLNA"
 
@@ -554,17 +579,17 @@ msgid "Unclassified"
 msgstr "Niesklasyfikowane"
 
 #: src/modules/browser/valhalla/valhalla.c:653
+#: src/modules/browser/valhalla/valhalla.c:670
+msgid "Media library"
+msgstr "Biblioteka multimediów"
+
+#: src/modules/browser/valhalla/valhalla.c:715
 msgid "Valhalla module"
 msgstr "Moduł Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:655
+#: src/modules/browser/valhalla/valhalla.c:717
 msgid "Build a browseable catalog of your media files"
 msgstr "Zbuduj katalog swoich multimediów"
-
-#: src/modules/browser/valhalla/valhalla.c:663
-#: src/modules/browser/valhalla/valhalla.c:680
-msgid "Media library"
-msgstr "Biblioteka multimediów"
 
 #: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
@@ -664,21 +689,21 @@ msgstr "[NFS] %s na %s"
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s na %s"
 
-#: src/modules/volume/mtab/mtab.c:149
+#: src/modules/volume/mtab/mtab.c:171
 #, fuzzy
 msgid "Volumes from mtab"
 msgstr "Woluminy z mtab"
 
-#: src/modules/volume/mtab/mtab.c:151
+#: src/modules/volume/mtab/mtab.c:173
 msgid "This module provide support for already mounted volumes"
 msgstr "Ten moduł zapewnia wsparcie dla już zamontowanych woluminów"
 
-#: src/modules/volume/udev/udev.c:670
+#: src/modules/volume/udev/udev.c:733
 #, fuzzy
 msgid "Volumes from udev"
 msgstr "Woluminy z udev"
 
-#: src/modules/volume/udev/udev.c:672
+#: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "Ten moduł zapewnia wsparcie dla dysków wymiennych"
 

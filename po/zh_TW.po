@@ -3,13 +3,13 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 #  <sword.huang@gmail.com>, 2010.
-# 
+#
 # msgfmt zh_TW.po -o zh_TW.gmo
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-08 11:37+0100\n"
+"POT-Creation-Date: 2010-02-14 09:12+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -97,7 +97,7 @@ msgstr "不! 我要繼續使用 Enna"
 msgid "Modules"
 msgstr "模組"
 
-#: src/bin/module.c:472
+#: src/bin/module.c:406
 msgid "No information provided"
 msgstr "沒有提供任何資訊"
 
@@ -106,60 +106,85 @@ msgstr "沒有提供任何資訊"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "音軌 #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:404
+#: src/bin/weather_api.c:402 src/bin/weather_api.c:435
 msgid "City"
 msgstr "城市"
 
-#: src/bin/weather_api.c:405
-msgid "Choose your city"
+#: src/bin/weather_api.c:403
+#, fuzzy
+msgid "Choose your City"
 msgstr "選擇你的城市"
 
-#: src/bin/weather_api.c:412
+#: src/bin/weather_api.c:407
+msgid "Enter your City here"
+msgstr ""
+
+#: src/bin/weather_api.c:410 src/bin/weather_api.c:443
 msgid "Remove"
 msgstr "移除"
 
-#: src/bin/weather_api.c:417
+#: src/bin/weather_api.c:436
+msgid "Choose your city"
+msgstr "選擇你的城市"
+
+#: src/bin/weather_api.c:448
 msgid "Add new city"
 msgstr "加入新城市"
 
-#: src/bin/weather_api.c:418
+#: src/bin/weather_api.c:449
 msgid "Add more cities to the list"
 msgstr "加入更多的城市到清單中"
 
-#: src/bin/weather_api.c:423
+#: src/bin/weather_api.c:454
 msgid "Add"
 msgstr "新增"
 
-#: src/bin/weather_api.c:626 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:458
+msgid "Select unit"
+msgstr ""
+
+#: src/bin/weather_api.c:459
+msgid "Select the unit to display temperature"
+msgstr ""
+
+#: src/bin/weather_api.c:464
+msgid "°C"
+msgstr ""
+
+#: src/bin/weather_api.c:464
+msgid "°F"
+msgstr ""
+
+#: src/bin/weather_api.c:669 src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "天氣"
 
 #: src/modules/activity/bookstore/bookstore.c:323
-#: src/modules/activity/bookstore/bookstore.c:351
+#: src/modules/activity/bookstore/bookstore.c:375
 msgid "Bookstore"
 msgstr "書店"
 
-#: src/modules/activity/bookstore/bookstore.c:353
+#: src/modules/activity/bookstore/bookstore.c:377
 msgid "Read your books"
 msgstr "讀你的書"
 
 #: src/modules/activity/configuration/configuration.c:211
-#: src/modules/activity/configuration/configuration.c:239
+#: src/modules/activity/configuration/configuration.c:270
 msgid "Configuration"
 msgstr "配置"
 
-#: src/modules/activity/configuration/configuration.c:241
-msgid "This module creates the Enna configuration panel"
-msgstr "這個模組是用來建立Enna配置面板"
-
-#: src/modules/activity/configuration/configuration.c:256
+#: src/modules/activity/configuration/configuration.c:246
 #: src/modules/activity/configuration/configuration_sysinfo.c:515
 msgid "System information"
 msgstr "系統資訊"
 
-#: src/modules/activity/configuration/configuration.c:259
+#: src/modules/activity/configuration/configuration.c:249
 msgid "Credits"
 msgstr "感謝"
+
+#: src/modules/activity/configuration/configuration.c:272
+msgid "This module creates the Enna configuration panel"
+msgstr "這個模組是用來建立Enna配置面板"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
 msgid "Enna is a GeeXboX-team MediaCenter"
@@ -277,27 +302,27 @@ msgstr "預設閘道:"
 msgid "None"
 msgstr "None"
 
-#: src/modules/activity/games/games.c:216
+#: src/modules/activity/games/games.c:217
 #, c-format
 msgid "no games found"
 msgstr "沒有發現任何遊戲"
 
-#: src/modules/activity/games/games.c:218
+#: src/modules/activity/games/games.c:219
 #, c-format
 msgid "one game"
 msgstr "一個遊戲"
 
-#: src/modules/activity/games/games.c:220
+#: src/modules/activity/games/games.c:221
 #, c-format
 msgid "%d games"
 msgstr "%d 遊戲"
 
-#: src/modules/activity/games/games.c:405
-#: src/modules/activity/games/games.c:433
+#: src/modules/activity/games/games.c:406
+#: src/modules/activity/games/games.c:470
 msgid "Games"
 msgstr "遊戲"
 
-#: src/modules/activity/games/games.c:435
+#: src/modules/activity/games/games.c:472
 msgid "Play all your games directly from Enna"
 msgstr "直接由 Enna 玩你所有的遊戲"
 
@@ -306,8 +331,12 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>遊戲正在執行..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
-msgstr "<c>Mame 錯誤</c><br><b>在路徑上沒有發現任何 roms</b><br>Roms 必需放在: ~/.mame/roms<br>"
+msgid ""
+"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
+"at: ~/.mame/roms<br>"
+msgstr ""
+"<c>Mame 錯誤</c><br><b>在路徑上沒有發現任何 roms</b><br>Roms 必需放在: ~/."
+"mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
@@ -323,11 +352,11 @@ msgid "%d Songs"
 msgstr "%d 歌曲"
 
 #: src/modules/activity/music/music.c:463
-#: src/modules/activity/music/music.c:491
+#: src/modules/activity/music/music.c:525
 msgid "Music"
 msgstr "音樂"
 
-#: src/modules/activity/music/music.c:493
+#: src/modules/activity/music/music.c:527
 msgid "Listen to your music"
 msgstr "聆聽你的音樂"
 
@@ -336,11 +365,11 @@ msgid "No lyrics found ..."
 msgstr "沒有歌詞..."
 
 #: src/modules/activity/photo/photo.c:367
-#: src/modules/activity/photo/photo.c:395
+#: src/modules/activity/photo/photo.c:419
 msgid "Photo"
 msgstr "照片"
 
-#: src/modules/activity/photo/photo.c:397
+#: src/modules/activity/photo/photo.c:421
 msgid "Browse your photos and create slideshows"
 msgstr "瀏灠你的照片並建立幻燈片"
 
@@ -360,11 +389,11 @@ msgstr "現在正在記錄 '%s'"
 msgid "Recording in progress"
 msgstr "記錄正在進行中"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:301
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:365
 msgid "Television"
 msgstr "電視"
 
-#: src/modules/activity/tv/tv.c:303
+#: src/modules/activity/tv/tv.c:367
 msgid "View TV channels"
 msgstr "觀看電視頻道"
 
@@ -402,19 +431,19 @@ msgid "%d Movies"
 msgstr "%d 電影"
 
 #: src/modules/activity/video/video.c:915
-#: src/modules/activity/video/video.c:991
+#: src/modules/activity/video/video.c:1006
 msgid "Video"
 msgstr "影片"
 
-#: src/modules/activity/video/video.c:993
+#: src/modules/activity/video/video.c:1008
 msgid "Play your videos"
 msgstr "播放你的影片"
 
-#: src/modules/activity/weather/weather.c:301
+#: src/modules/activity/weather/weather.c:330
 msgid "Weather forecasts"
 msgstr "天氣預報"
 
-#: src/modules/activity/weather/weather.c:303
+#: src/modules/activity/weather/weather.c:332
 msgid "Show the weather at your location"
 msgstr "顯示你本地的天氣"
 
@@ -422,11 +451,11 @@ msgstr "顯示你本地的天氣"
 msgid "Play audio CD"
 msgstr "播放音樂光碟"
 
-#: src/modules/browser/cdda/cdda.c:138
+#: src/modules/browser/cdda/cdda.c:164
 msgid "CDDA module"
 msgstr "CDDA 模組"
 
-#: src/modules/browser/cdda/cdda.c:140
+#: src/modules/browser/cdda/cdda.c:166
 msgid "Listen your favorite CDs"
 msgstr "聆聽你最愛的光碟"
 
@@ -442,11 +471,11 @@ msgstr "播放(有選單)"
 msgid "Watch DVD video"
 msgstr "觀看 DVD 影片"
 
-#: src/modules/browser/dvd/dvd.c:136
+#: src/modules/browser/dvd/dvd.c:162
 msgid "DVD module"
 msgstr "DVD 模組"
 
-#: src/modules/browser/dvd/dvd.c:138
+#: src/modules/browser/dvd/dvd.c:164
 msgid "Watch movies from DVD"
 msgstr "從 DVD 觀看電影"
 
@@ -456,11 +485,11 @@ msgstr "從 DVD 觀看電影"
 msgid "Browse local devices"
 msgstr "瀏灠本機裝置"
 
-#: src/modules/browser/localfiles/localfiles.c:681
+#: src/modules/browser/localfiles/localfiles.c:730
 msgid "Browse local files"
 msgstr "瀏灠本機檔案"
 
-#: src/modules/browser/localfiles/localfiles.c:683
+#: src/modules/browser/localfiles/localfiles.c:732
 msgid "Browse files in your local file systems"
 msgstr "瀏灠本機硬碟上的檔案"
 
@@ -469,23 +498,23 @@ msgstr "瀏灠本機硬碟上的檔案"
 msgid "Browse network streams"
 msgstr "瀏灠網路串流"
 
-#: src/modules/browser/netstreams/netstreams.c:409
+#: src/modules/browser/netstreams/netstreams.c:441
 msgid "Netstreams"
 msgstr "網路串流"
 
-#: src/modules/browser/netstreams/netstreams.c:411
+#: src/modules/browser/netstreams/netstreams.c:443
 msgid "Browse and play network streams"
 msgstr "瀏灠並播放網路串流"
 
-#: src/modules/browser/podcasts/podcasts.c:329
+#: src/modules/browser/podcasts/podcasts.c:216
 msgid "Listen to podcasts"
 msgstr "聆聽 podcasts"
 
-#: src/modules/browser/podcasts/podcasts.c:391
+#: src/modules/browser/podcasts/podcasts.c:352
 msgid "Podcast browser"
 msgstr "Podcast 瀏灠器"
 
-#: src/modules/browser/podcasts/podcasts.c:393
+#: src/modules/browser/podcasts/podcasts.c:354
 msgid "Podcast module"
 msgstr "Podcast 模組"
 
@@ -493,11 +522,11 @@ msgstr "Podcast 模組"
 msgid "SHOUTcast streaming"
 msgstr "SHOUTcast 串流"
 
-#: src/modules/browser/shoutcast/shoutcast.c:359
+#: src/modules/browser/shoutcast/shoutcast.c:384
 msgid "SHOUTcast browser"
 msgstr "SHOUTcast 瀏灠器"
 
-#: src/modules/browser/shoutcast/shoutcast.c:361
+#: src/modules/browser/shoutcast/shoutcast.c:386
 msgid "Listen to SHOUTcast stream"
 msgstr "聆聽 SHOUTcast 串流"
 
@@ -511,11 +540,11 @@ msgstr "UPnP/DLNA 媒體伺服器"
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "發現新的 UPnP 裝置 '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:585
+#: src/modules/browser/upnp/upnp.c:659
 msgid "UPnP/DLNA module"
 msgstr "UPnP/DLNA 模組"
 
-#: src/modules/browser/upnp/upnp.c:587
+#: src/modules/browser/upnp/upnp.c:661
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "這個模組讓 Enna 能夠瀏灠 UPnP/DLNA 上的內容"
 
@@ -552,17 +581,17 @@ msgid "Unclassified"
 msgstr "沒有被分類的"
 
 #: src/modules/browser/valhalla/valhalla.c:653
+#: src/modules/browser/valhalla/valhalla.c:670
+msgid "Media library"
+msgstr "媒體資料庫"
+
+#: src/modules/browser/valhalla/valhalla.c:715
 msgid "Valhalla module"
 msgstr "Valhalla 模組"
 
-#: src/modules/browser/valhalla/valhalla.c:655
+#: src/modules/browser/valhalla/valhalla.c:717
 msgid "Build a browseable catalog of your media files"
 msgstr "將你的媒體建立一個可瀏灠的分類"
-
-#: src/modules/browser/valhalla/valhalla.c:663
-#: src/modules/browser/valhalla/valhalla.c:680
-msgid "Media library"
-msgstr "媒體資料庫"
 
 #: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
@@ -662,19 +691,19 @@ msgstr "[NFS] %s 在 %s"
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s 在 %s"
 
-#: src/modules/volume/mtab/mtab.c:149
+#: src/modules/volume/mtab/mtab.c:171
 msgid "Volumes from mtab"
 msgstr "在 mtab 中的 Volume"
 
-#: src/modules/volume/mtab/mtab.c:151
+#: src/modules/volume/mtab/mtab.c:173
 msgid "This module provide support for already mounted volumes"
 msgstr "這個模組用來提供已經安裝好的 volume"
 
-#: src/modules/volume/udev/udev.c:670
+#: src/modules/volume/udev/udev.c:733
 msgid "Volumes from udev"
 msgstr "在 udev 中的 Volume"
 
-#: src/modules/volume/udev/udev.c:672
+#: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "這個模組提供可移動的 volume"
 

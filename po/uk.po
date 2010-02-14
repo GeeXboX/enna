@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-08 11:37+0100\n"
+"POT-Creation-Date: 2010-02-14 09:12+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Ukraine\n"
@@ -102,7 +102,7 @@ msgstr "Ні, продовжити користуватись enna"
 msgid "Modules"
 msgstr "Модулі"
 
-#: src/bin/module.c:472
+#: src/bin/module.c:406
 #, fuzzy
 msgid "No information provided"
 msgstr "Не надано необхідної інформації."
@@ -112,64 +112,88 @@ msgstr "Не надано необхідної інформації."
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Доріжка #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:404
+#: src/bin/weather_api.c:402 src/bin/weather_api.c:435
 msgid "City"
 msgstr ""
 
-#: src/bin/weather_api.c:405
-msgid "Choose your city"
+#: src/bin/weather_api.c:403
+msgid "Choose your City"
 msgstr ""
 
-#: src/bin/weather_api.c:412
+#: src/bin/weather_api.c:407
+msgid "Enter your City here"
+msgstr ""
+
+#: src/bin/weather_api.c:410 src/bin/weather_api.c:443
 #, fuzzy
 msgid "Remove"
 msgstr "Змінний диск"
 
-#: src/bin/weather_api.c:417
+#: src/bin/weather_api.c:436
+msgid "Choose your city"
+msgstr ""
+
+#: src/bin/weather_api.c:448
 msgid "Add new city"
 msgstr ""
 
-#: src/bin/weather_api.c:418
+#: src/bin/weather_api.c:449
 msgid "Add more cities to the list"
 msgstr ""
 
-#: src/bin/weather_api.c:423
+#: src/bin/weather_api.c:454
 msgid "Add"
 msgstr ""
 
-#: src/bin/weather_api.c:626 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:458
+msgid "Select unit"
+msgstr ""
+
+#: src/bin/weather_api.c:459
+msgid "Select the unit to display temperature"
+msgstr ""
+
+#: src/bin/weather_api.c:464
+msgid "°C"
+msgstr ""
+
+#: src/bin/weather_api.c:464
+msgid "°F"
+msgstr ""
+
+#: src/bin/weather_api.c:669 src/modules/activity/weather/weather.c:273
 msgid "Weather"
 msgstr "Погода"
 
 #: src/modules/activity/bookstore/bookstore.c:323
-#: src/modules/activity/bookstore/bookstore.c:351
+#: src/modules/activity/bookstore/bookstore.c:375
 #, fuzzy
 msgid "Bookstore"
 msgstr "Книжна полиця"
 
-#: src/modules/activity/bookstore/bookstore.c:353
+#: src/modules/activity/bookstore/bookstore.c:377
 msgid "Read your books"
 msgstr "Читати книжки"
 
 #: src/modules/activity/configuration/configuration.c:211
-#: src/modules/activity/configuration/configuration.c:239
+#: src/modules/activity/configuration/configuration.c:270
 msgid "Configuration"
 msgstr "Налаштування"
 
-#: src/modules/activity/configuration/configuration.c:241
-#, fuzzy
-msgid "This module creates the Enna configuration panel"
-msgstr "Цей модуль створює конфігураційну панель enna (НЕ ВИМИКАТИ!)"
-
-#: src/modules/activity/configuration/configuration.c:256
+#: src/modules/activity/configuration/configuration.c:246
 #: src/modules/activity/configuration/configuration_sysinfo.c:515
 #, fuzzy
 msgid "System information"
 msgstr "<c>Інформація про систему</c><br><br>"
 
-#: src/modules/activity/configuration/configuration.c:259
+#: src/modules/activity/configuration/configuration.c:249
 msgid "Credits"
 msgstr "Подяка"
+
+#: src/modules/activity/configuration/configuration.c:272
+#, fuzzy
+msgid "This module creates the Enna configuration panel"
+msgstr "Цей модуль створює конфігураційну панель enna (НЕ ВИМИКАТИ!)"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
 #, fuzzy
@@ -299,27 +323,27 @@ msgstr ""
 msgid "None"
 msgstr "Немає<br>"
 
-#: src/modules/activity/games/games.c:216
+#: src/modules/activity/games/games.c:217
 #, fuzzy, c-format
 msgid "no games found"
 msgstr "Не знайдено джерела!"
 
-#: src/modules/activity/games/games.c:218
+#: src/modules/activity/games/games.c:219
 #, fuzzy, c-format
 msgid "one game"
 msgstr "Системні ігри"
 
-#: src/modules/activity/games/games.c:220
+#: src/modules/activity/games/games.c:221
 #, fuzzy, c-format
 msgid "%d games"
 msgstr "%d Пісня"
 
-#: src/modules/activity/games/games.c:405
-#: src/modules/activity/games/games.c:433
+#: src/modules/activity/games/games.c:406
+#: src/modules/activity/games/games.c:470
 msgid "Games"
 msgstr "Ігри"
 
-#: src/modules/activity/games/games.c:435
+#: src/modules/activity/games/games.c:472
 #, fuzzy
 msgid "Play all your games directly from Enna"
 msgstr ""
@@ -350,11 +374,11 @@ msgid "%d Songs"
 msgstr "%d Пісня"
 
 #: src/modules/activity/music/music.c:463
-#: src/modules/activity/music/music.c:491
+#: src/modules/activity/music/music.c:525
 msgid "Music"
 msgstr "Музика"
 
-#: src/modules/activity/music/music.c:493
+#: src/modules/activity/music/music.c:527
 #, fuzzy
 msgid "Listen to your music"
 msgstr "Слухати подкасти"
@@ -364,11 +388,11 @@ msgid "No lyrics found ..."
 msgstr "Не знайдено жодної пісні..."
 
 #: src/modules/activity/photo/photo.c:367
-#: src/modules/activity/photo/photo.c:395
+#: src/modules/activity/photo/photo.c:419
 msgid "Photo"
 msgstr "Фото"
 
-#: src/modules/activity/photo/photo.c:397
+#: src/modules/activity/photo/photo.c:421
 #, fuzzy
 msgid "Browse your photos and create slideshows"
 msgstr "Переглянути всі Ваші фото 'на стіні' або як слайдшоу"
@@ -389,11 +413,11 @@ msgstr "Зараз записується '%s'"
 msgid "Recording in progress"
 msgstr "Триває запис"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:301
+#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:365
 msgid "Television"
 msgstr "Телебачення"
 
-#: src/modules/activity/tv/tv.c:303
+#: src/modules/activity/tv/tv.c:367
 #, fuzzy
 msgid "View TV channels"
 msgstr "Дивитись телебачення"
@@ -434,20 +458,20 @@ msgid "%d Movies"
 msgstr "%d Фільмів"
 
 #: src/modules/activity/video/video.c:915
-#: src/modules/activity/video/video.c:991
+#: src/modules/activity/video/video.c:1006
 msgid "Video"
 msgstr "Відео"
 
-#: src/modules/activity/video/video.c:993
+#: src/modules/activity/video/video.c:1008
 msgid "Play your videos"
 msgstr ""
 
-#: src/modules/activity/weather/weather.c:301
+#: src/modules/activity/weather/weather.c:330
 #, fuzzy
 msgid "Weather forecasts"
 msgstr "Погода"
 
-#: src/modules/activity/weather/weather.c:303
+#: src/modules/activity/weather/weather.c:332
 msgid "Show the weather at your location"
 msgstr "Показувати погоду у вашому місті"
 
@@ -456,11 +480,11 @@ msgstr "Показувати погоду у вашому місті"
 msgid "Play audio CD"
 msgstr "Відтворити Audio CD"
 
-#: src/modules/browser/cdda/cdda.c:138
+#: src/modules/browser/cdda/cdda.c:164
 msgid "CDDA module"
 msgstr "модуль CDDA"
 
-#: src/modules/browser/cdda/cdda.c:140
+#: src/modules/browser/cdda/cdda.c:166
 #, fuzzy
 msgid "Listen your favorite CDs"
 msgstr "Слухати Ваші улюбленіші диски"
@@ -479,11 +503,11 @@ msgstr "Грати (з меню)"
 msgid "Watch DVD video"
 msgstr "Дивитись DVD відео"
 
-#: src/modules/browser/dvd/dvd.c:136
+#: src/modules/browser/dvd/dvd.c:162
 msgid "DVD module"
 msgstr "модуль DVD"
 
-#: src/modules/browser/dvd/dvd.c:138
+#: src/modules/browser/dvd/dvd.c:164
 msgid "Watch movies from DVD"
 msgstr "Дивитись фільмі з DVD"
 
@@ -494,12 +518,12 @@ msgstr "Дивитись фільмі з DVD"
 msgid "Browse local devices"
 msgstr "Оглянути локальні пристрої"
 
-#: src/modules/browser/localfiles/localfiles.c:681
+#: src/modules/browser/localfiles/localfiles.c:730
 #, fuzzy
 msgid "Browse local files"
 msgstr "Переглянути локальні файли"
 
-#: src/modules/browser/localfiles/localfiles.c:683
+#: src/modules/browser/localfiles/localfiles.c:732
 #, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "Переглянути файли на Вашому локальному жорсткому диску"
@@ -510,25 +534,25 @@ msgstr "Переглянути файли на Вашому локальному
 msgid "Browse network streams"
 msgstr "Переглянути мережеві трансляції"
 
-#: src/modules/browser/netstreams/netstreams.c:409
+#: src/modules/browser/netstreams/netstreams.c:441
 msgid "Netstreams"
 msgstr "Мережеві трансляції"
 
-#: src/modules/browser/netstreams/netstreams.c:411
+#: src/modules/browser/netstreams/netstreams.c:443
 #, fuzzy
 msgid "Browse and play network streams"
 msgstr "Переглянути мережеві трансляції"
 
-#: src/modules/browser/podcasts/podcasts.c:329
+#: src/modules/browser/podcasts/podcasts.c:216
 #, fuzzy
 msgid "Listen to podcasts"
 msgstr "Слухати подкасти"
 
-#: src/modules/browser/podcasts/podcasts.c:391
+#: src/modules/browser/podcasts/podcasts.c:352
 msgid "Podcast browser"
 msgstr "Оглядач подкастів"
 
-#: src/modules/browser/podcasts/podcasts.c:393
+#: src/modules/browser/podcasts/podcasts.c:354
 msgid "Podcast module"
 msgstr "Модуль подкастів"
 
@@ -537,12 +561,12 @@ msgstr "Модуль подкастів"
 msgid "SHOUTcast streaming"
 msgstr "Мережеві радіо трансляції"
 
-#: src/modules/browser/shoutcast/shoutcast.c:359
+#: src/modules/browser/shoutcast/shoutcast.c:384
 #, fuzzy
 msgid "SHOUTcast browser"
 msgstr "Оглядач мережевих трансляцій"
 
-#: src/modules/browser/shoutcast/shoutcast.c:361
+#: src/modules/browser/shoutcast/shoutcast.c:386
 #, fuzzy
 msgid "Listen to SHOUTcast stream"
 msgstr "Слухати мережеву радіо трансляцію"
@@ -558,12 +582,12 @@ msgstr "UPnP/DLNA медіа сервера"
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Знайдено новий UPnP пристрій '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:585
+#: src/modules/browser/upnp/upnp.c:659
 #, fuzzy
 msgid "UPnP/DLNA module"
 msgstr "Модуль UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:587
+#: src/modules/browser/upnp/upnp.c:661
 #, fuzzy
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "Цей модуль дозволяє Enna переглядати файли з UPnP/DLNA медіа серверів"
@@ -601,18 +625,18 @@ msgid "Unclassified"
 msgstr "Невизначений"
 
 #: src/modules/browser/valhalla/valhalla.c:653
-msgid "Valhalla module"
-msgstr "Модуль Valhalla"
-
-#: src/modules/browser/valhalla/valhalla.c:655
-msgid "Build a browseable catalog of your media files"
-msgstr ""
-
-#: src/modules/browser/valhalla/valhalla.c:663
-#: src/modules/browser/valhalla/valhalla.c:680
+#: src/modules/browser/valhalla/valhalla.c:670
 #, fuzzy
 msgid "Media library"
 msgstr "Медіа бібліотека"
+
+#: src/modules/browser/valhalla/valhalla.c:715
+msgid "Valhalla module"
+msgstr "Модуль Valhalla"
+
+#: src/modules/browser/valhalla/valhalla.c:717
+msgid "Build a browseable catalog of your media files"
+msgstr ""
 
 #: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
@@ -712,20 +736,20 @@ msgstr "[NFS] %s на %s"
 msgid "[SAMBA] %s on %s"
 msgstr "[SAMBA] %s на %s"
 
-#: src/modules/volume/mtab/mtab.c:149
+#: src/modules/volume/mtab/mtab.c:171
 msgid "Volumes from mtab"
 msgstr "Розділ з mtab"
 
-#: src/modules/volume/mtab/mtab.c:151
+#: src/modules/volume/mtab/mtab.c:173
 msgid "This module provide support for already mounted volumes"
 msgstr ""
 
-#: src/modules/volume/udev/udev.c:670
+#: src/modules/volume/udev/udev.c:733
 #, fuzzy
 msgid "Volumes from udev"
 msgstr "Розділ з mtab"
 
-#: src/modules/volume/udev/udev.c:672
+#: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr ""
 
