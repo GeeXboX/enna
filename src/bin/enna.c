@@ -583,8 +583,10 @@ int main(int argc, char **argv)
 
     url_global_init();
 
+#ifdef BUILD_ECORE_X
     /* Prevent thread safety issues if the libplayer xlib hack is enabled */
     XInitThreads();
+#endif
 
     eina_init();
     enna_xdg_init();
