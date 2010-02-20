@@ -185,7 +185,9 @@ static void
 cfg_tv_section_load (const char *section)
 {
     const char *value = NULL;
+#ifdef BUILD_LIBSVDRP
     int v;
+#endif /* BUILD_LIBSVDRP */
 
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "parameters:");
 
