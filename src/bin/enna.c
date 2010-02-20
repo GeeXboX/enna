@@ -32,6 +32,7 @@
 #include <Ecore_Str.h>
 #ifdef BUILD_ECORE_X
 #include <Ecore_X.h>
+#include <X11/Xlib.h>
 #endif
 #include <Elementary.h>
 
@@ -581,6 +582,10 @@ int main(int argc, char **argv)
         return EXIT_SUCCESS;
 
     url_global_init();
+
+    /* Prevent thread safety issues if the libplayer xlib hack is enabled */
+    XInitThreads();
+
     eina_init();
     enna_xdg_init();
 
