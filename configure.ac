@@ -633,7 +633,7 @@ echo "  LIRC client...................... : $have_input_lirc"
 echo
 echo "Supported Volume Modules:"
 echo
-echo "  HAL.............................. : $have_volume_hal"
+echo "  HAL (deprecated)................. : $have_volume_hal"
 echo "  mtab............................. : $want_volume_mtab"
 echo "  Udev............................. : $have_volume_udev"
 echo
