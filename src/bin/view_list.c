@@ -386,11 +386,11 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
             list_set_item(sd, ns, 1, 5);
             return ENNA_EVENT_BLOCK;
             break;
-        case ENNA_INPUT_HOME:
+        case ENNA_INPUT_FIRST:
             list_set_item(sd, -1, 1, 1);
             return ENNA_EVENT_BLOCK;
             break;
-        case ENNA_INPUT_END:
+        case ENNA_INPUT_LAST:
             list_set_item(sd, eina_list_count(sd->items), 0, 1);
             return ENNA_EVENT_BLOCK;
             break;

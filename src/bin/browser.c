@@ -835,8 +835,8 @@ enna_browser_input_feed(Evas_Object *obj, enna_input event)
     case ENNA_INPUT_LEFT:
     case ENNA_INPUT_NEXT:
     case ENNA_INPUT_PREV:
-    case ENNA_INPUT_HOME:
-    case ENNA_INPUT_END:
+    case ENNA_INPUT_FIRST:
+    case ENNA_INPUT_LAST:
         if (sd->view_funcs.view_key_down)
             sd->view_funcs.view_key_down(sd->o_view, event);
         break;

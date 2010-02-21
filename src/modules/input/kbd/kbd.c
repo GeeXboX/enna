@@ -36,39 +36,108 @@ static const struct
     Ecore_Event_Modifier modifier;
     enna_input input;
 } enna_keymap[] = {
+    { "Super_R",      ECORE_NONE,              ENNA_INPUT_MENU          },
+    { "Meta_R",       ECORE_NONE,              ENNA_INPUT_MENU          },
+    { "Hyper_R",      ECORE_NONE,              ENNA_INPUT_MENU          },
+    { "Escape",       ECORE_NONE,              ENNA_INPUT_QUIT          },
+    { "BackSpace",    ECORE_NONE,              ENNA_INPUT_EXIT          },
+    { "Return",       ECORE_NONE,              ENNA_INPUT_OK            },
+    { "KP_Enter",     ECORE_NONE,              ENNA_INPUT_OK            },
+    { "Super_L",      ECORE_NONE,              ENNA_INPUT_HOME          },
+    { "Meta_L",       ECORE_NONE,              ENNA_INPUT_HOME          },
+    { "Hyper_L",      ECORE_NONE,              ENNA_INPUT_HOME          },
+
     { "Left",         ECORE_NONE,              ENNA_INPUT_LEFT          },
     { "Right",        ECORE_NONE,              ENNA_INPUT_RIGHT         },
     { "Up",           ECORE_NONE,              ENNA_INPUT_UP            },
     { "KP_Up",        ECORE_NONE,              ENNA_INPUT_UP            },
     { "Down",         ECORE_NONE,              ENNA_INPUT_DOWN          },
     { "KP_Down",      ECORE_NONE,              ENNA_INPUT_DOWN          },
-    { "Home",         ECORE_NONE,              ENNA_INPUT_HOME          },
-    { "KP_Home",      ECORE_NONE,              ENNA_INPUT_HOME          },
-    { "End",          ECORE_NONE,              ENNA_INPUT_END           },
-    { "KP_End",       ECORE_NONE,              ENNA_INPUT_END           },
-    { "Prior",        ECORE_NONE,              ENNA_INPUT_PREV          },
+
     { "Next",         ECORE_NONE,              ENNA_INPUT_NEXT          },
-    { "Return",       ECORE_NONE,              ENNA_INPUT_OK            },
-    { "KP_Enter",     ECORE_NONE,              ENNA_INPUT_OK            },
-    { "space",        ECORE_NONE,              ENNA_INPUT_SPACE         },
-    //~ { "Stop",         ECORE_NONE,              ENNA_KEY_STOP         }, stop on the keyboard? multimedia keyb?
-    { "BackSpace",    ECORE_NONE,              ENNA_INPUT_EXIT          },
-    
-    { "Escape",       ECORE_NONE,              ENNA_INPUT_QUIT          },
-    { "Super_L",      ECORE_NONE,              ENNA_INPUT_MENU          },
-    { "Meta_L",       ECORE_NONE,              ENNA_INPUT_MENU          },
-    { "Hyper_L",      ECORE_NONE,              ENNA_INPUT_MENU          },
-    { "plus",         ECORE_NONE,              ENNA_INPUT_PLUS          },
-    { "plus",         ECORE_SHIFT,             ENNA_INPUT_PLUS          },
-    { "KP_Add",       ECORE_NONE,              ENNA_INPUT_PLUS          },
-    { "minus",        ECORE_NONE,              ENNA_INPUT_MINUS         },
-    { "KP_Subtract",  ECORE_NONE,              ENNA_INPUT_MINUS         },
-    { "m",            ECORE_CTRL,              ENNA_INPUT_MUTE          },
-    { "M",            ECORE_CTRL,              ENNA_INPUT_MUTE          },
+    { "Prior",        ECORE_NONE,              ENNA_INPUT_PREV          },
+    { "Home",         ECORE_NONE,              ENNA_INPUT_FIRST         },
+    { "KP_Home",      ECORE_NONE,              ENNA_INPUT_FIRST         },
+    { "End",          ECORE_NONE,              ENNA_INPUT_LAST          },
+    { "KP_End",       ECORE_NONE,              ENNA_INPUT_LAST          },
+
     { "f",            ECORE_CTRL,              ENNA_INPUT_FULLSCREEN    },
     { "F",            ECORE_CTRL,              ENNA_INPUT_FULLSCREEN    },
     { "i",            ECORE_CTRL,              ENNA_INPUT_INFO          },
     { "I",            ECORE_CTRL,              ENNA_INPUT_INFO          },
+    { "w",            ECORE_CTRL,              ENNA_INPUT_FRAMEDROP     },
+    { "W",            ECORE_CTRL,              ENNA_INPUT_FRAMEDROP     },
+    { "r",            ECORE_CTRL,              ENNA_INPUT_ROTATE        },
+    { "R",            ECORE_CTRL,              ENNA_INPUT_ROTATE        },
+
+    /* Player controls */
+    { "space",        ECORE_CTRL,              ENNA_INPUT_PLAY          },
+    { "v",            ECORE_CTRL,              ENNA_INPUT_STOP          },
+    { "V",            ECORE_CTRL,              ENNA_INPUT_STOP          },
+    { "b",            ECORE_CTRL,              ENNA_INPUT_PAUSE         },
+    { "B",            ECORE_CTRL,              ENNA_INPUT_PAUSE         },
+    { "h",            ECORE_CTRL,              ENNA_INPUT_FORWARD       },
+    { "H",            ECORE_CTRL,              ENNA_INPUT_FORWARD       },
+    { "g",            ECORE_CTRL,              ENNA_INPUT_REWIND        },
+    { "G",            ECORE_CTRL,              ENNA_INPUT_REWIND        },
+    { "n",            ECORE_CTRL,              ENNA_INPUT_RECORD        },
+    { "N",            ECORE_CTRL,              ENNA_INPUT_RECORD        },
+
+    /* Audio controls */
+    { "plus",         ECORE_NONE,              ENNA_INPUT_VOLPLUS           },
+    { "plus",         ECORE_SHIFT,             ENNA_INPUT_VOLPLUS           },
+    { "KP_Add",       ECORE_NONE,              ENNA_INPUT_VOLPLUS           },
+    { "minus",        ECORE_NONE,              ENNA_INPUT_VOLMINUS          },
+    { "KP_Subtract",  ECORE_NONE,              ENNA_INPUT_VOLMINUS          },
+    { "m",            ECORE_CTRL,              ENNA_INPUT_MUTE              },
+    { "M",            ECORE_CTRL,              ENNA_INPUT_MUTE              },
+    { "k",            ECORE_CTRL,              ENNA_INPUT_AUDIO_PREV        },
+    { "K",            ECORE_CTRL,              ENNA_INPUT_AUDIO_PREV        },
+    { "l",            ECORE_CTRL,              ENNA_INPUT_AUDIO_NEXT        },
+    { "L",            ECORE_CTRL,              ENNA_INPUT_AUDIO_NEXT        },
+    { "p",            ECORE_CTRL,              ENNA_INPUT_AUDIO_DELAY_PLUS  },
+    { "P",            ECORE_CTRL,              ENNA_INPUT_AUDIO_DELAY_PLUS  },
+    { "o",            ECORE_CTRL,              ENNA_INPUT_AUDIO_DELAY_MINUS },
+    { "O",            ECORE_CTRL,              ENNA_INPUT_AUDIO_DELAY_MINUS },
+
+    /* Subtitles controls */
+    { "s",            ECORE_CTRL,              ENNA_INPUT_SUBTITLES        },
+    { "S",            ECORE_CTRL,              ENNA_INPUT_SUBTITLES        },
+    { "g",            ECORE_CTRL,              ENNA_INPUT_SUBS_PREV        },
+    { "G",            ECORE_CTRL,              ENNA_INPUT_SUBS_PREV        },
+    { "y",            ECORE_CTRL,              ENNA_INPUT_SUBS_NEXT        },
+    { "Y",            ECORE_CTRL,              ENNA_INPUT_SUBS_NEXT        },
+    { "a",            ECORE_CTRL,              ENNA_INPUT_SUBS_ALIGN       },
+    { "A",            ECORE_CTRL,              ENNA_INPUT_SUBS_ALIGN       },
+    { "t",            ECORE_CTRL,              ENNA_INPUT_SUBS_POS_PLUS    },
+    { "T",            ECORE_CTRL,              ENNA_INPUT_SUBS_POS_PLUS    },
+    { "r",            ECORE_CTRL,              ENNA_INPUT_SUBS_POS_MINUS   },
+    { "R",            ECORE_CTRL,              ENNA_INPUT_SUBS_POS_MINUS   },
+    { "j",            ECORE_CTRL,              ENNA_INPUT_SUBS_SCALE_PLUS  },
+    { "J",            ECORE_CTRL,              ENNA_INPUT_SUBS_SCALE_PLUS  },
+    { "i",            ECORE_CTRL,              ENNA_INPUT_SUBS_SCALE_MINUS },
+    { "I",            ECORE_CTRL,              ENNA_INPUT_SUBS_SCALE_MINUS },
+    { "x",            ECORE_CTRL,              ENNA_INPUT_SUBS_DELAY_PLUS  },
+    { "X",            ECORE_CTRL,              ENNA_INPUT_SUBS_DELAY_PLUS  },
+    { "z",            ECORE_CTRL,              ENNA_INPUT_SUBS_DELAY_MINUS },
+    { "Z",            ECORE_CTRL,              ENNA_INPUT_SUBS_DELAY_MINUS },
+
+    /* TV controls */
+    { "F1",           ECORE_NONE,              ENNA_INPUT_RED           },
+    { "F2",           ECORE_NONE,              ENNA_INPUT_GREEN         },
+    { "F3",           ECORE_NONE,              ENNA_INPUT_YELLOW        },
+    { "F4",           ECORE_NONE,              ENNA_INPUT_BLUE          },
+    { "c",            ECORE_CTRL,              ENNA_INPUT_CHANPREV      },
+    { "C",            ECORE_CTRL,              ENNA_INPUT_CHANPREV      },
+    { "F5",           ECORE_NONE,              ENNA_INPUT_SCHEDULE      },
+    { "F6",           ECORE_NONE,              ENNA_INPUT_CHANNELS      },
+    { "F7",           ECORE_NONE,              ENNA_INPUT_TIMERS        },
+    { "F8",           ECORE_NONE,              ENNA_INPUT_RECORDINGS    },
+
+    /* Special characters */
+    { "space",        ECORE_NONE,              ENNA_INPUT_KEY_SPACE     },
+
+    /* Number characters */
     { "0",            ECORE_NONE,              ENNA_INPUT_KEY_0         },
     { "KP_0",         ECORE_NONE,              ENNA_INPUT_KEY_0         },
     { "1",            ECORE_NONE,              ENNA_INPUT_KEY_1         },
@@ -89,6 +158,8 @@ static const struct
     { "KP_8",         ECORE_NONE,              ENNA_INPUT_KEY_8         },
     { "9",            ECORE_NONE,              ENNA_INPUT_KEY_9         },
     { "KP_9",         ECORE_NONE,              ENNA_INPUT_KEY_9         },
+
+    /* Alphabetical characters */
     { "a",            ECORE_NONE,              ENNA_INPUT_KEY_A         },
     { "b",            ECORE_NONE,              ENNA_INPUT_KEY_B         },
     { "c",            ECORE_NONE,              ENNA_INPUT_KEY_C         },
@@ -115,6 +186,7 @@ static const struct
     { "x",            ECORE_NONE,              ENNA_INPUT_KEY_X         },
     { "y",            ECORE_NONE,              ENNA_INPUT_KEY_Y         },
     { "z",            ECORE_NONE,              ENNA_INPUT_KEY_Z         },
+
     { NULL,           ECORE_NONE,              ENNA_INPUT_UNKNOWN       }
 };
 

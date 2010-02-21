@@ -495,7 +495,7 @@ _list_item_button_input_events_cb(void *data, enna_input event)
 {
     Enna_View_List2_Widget *ib = data;
 
-    if (event == ENNA_INPUT_MENU || event == ENNA_INPUT_OK)
+    if (event == ENNA_INPUT_HOME || event == ENNA_INPUT_OK)
     {
         _list_item_button_event_input_focus_set(ib, EINA_FALSE);
         if (ib->label)
@@ -648,13 +648,13 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
             }
             return ENNA_EVENT_BLOCK;
             break;
-        case ENNA_INPUT_HOME:
+        case ENNA_INPUT_FIRST:
             prev = elm_genlist_first_item_get(obj);
             elm_genlist_item_selected_set(prev, EINA_TRUE);
             elm_genlist_item_bring_in(prev);
             return ENNA_EVENT_BLOCK;
             break;
-        case ENNA_INPUT_END:
+        case ENNA_INPUT_LAST:
             next = elm_genlist_last_item_get(obj);
             elm_genlist_item_selected_set(next, EINA_TRUE);
             elm_genlist_item_bring_in(next);

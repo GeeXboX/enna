@@ -205,7 +205,7 @@ videoplayer_view_event_no_display (enna_input event)
     case ENNA_INPUT_OK:
         media_controls_display(!mod->controls_displayed);
         break;
-    case ENNA_INPUT_SPACE:
+    case ENNA_INPUT_PLAY:
         enna_mediaplayer_play(mod->enna_playlist);
         break;
     case ENNA_INPUT_RIGHT:
@@ -220,58 +220,58 @@ videoplayer_view_event_no_display (enna_input event)
     case ENNA_INPUT_DOWN:
         _seek_video(-60); /* -60s */
         break;
-    case ENNA_INPUT_PREV:
+    case ENNA_INPUT_FORWARD:
         _seek_video(+600); /* +10min */
         break;
-    case ENNA_INPUT_NEXT:
+    case ENNA_INPUT_REWIND:
         _seek_video(-600); /* -10min */
         break;
-    case ENNA_INPUT_KEY_M:
+    case ENNA_INPUT_MUTE:
         enna_mediaplayer_mute();
         break;
-    case ENNA_INPUT_KEY_K:
+    case ENNA_INPUT_AUDIO_PREV:
         enna_mediaplayer_audio_previous();
         break;
-    case ENNA_INPUT_KEY_L:
+    case ENNA_INPUT_AUDIO_NEXT:
         enna_mediaplayer_audio_next();
         break;
-    case ENNA_INPUT_KEY_P:
+    case ENNA_INPUT_AUDIO_DELAY_PLUS:
         enna_mediaplayer_audio_increase_delay();
         break;
-    case ENNA_INPUT_KEY_O:
+    case ENNA_INPUT_AUDIO_DELAY_MINUS:
         enna_mediaplayer_audio_decrease_delay();
         break;
-    case ENNA_INPUT_KEY_S:
+    case ENNA_INPUT_SUBTITLES:
         enna_mediaplayer_subtitle_set_visibility();
         break;
-    case ENNA_INPUT_KEY_G:
+    case ENNA_INPUT_SUBS_PREV:
         enna_mediaplayer_subtitle_previous();
         break;
-    case ENNA_INPUT_KEY_Y:
+    case ENNA_INPUT_SUBS_NEXT:
         enna_mediaplayer_subtitle_next();
         break;
-    case ENNA_INPUT_KEY_A:
+    case ENNA_INPUT_SUBS_ALIGN:
         enna_mediaplayer_subtitle_set_alignment();
         break;
-    case ENNA_INPUT_KEY_T:
+    case ENNA_INPUT_SUBS_POS_PLUS:
         enna_mediaplayer_subtitle_increase_position();
         break;
-    case ENNA_INPUT_KEY_R:
+    case ENNA_INPUT_SUBS_POS_MINUS:
         enna_mediaplayer_subtitle_decrease_position();
         break;
-    case ENNA_INPUT_KEY_J:
+    case ENNA_INPUT_SUBS_SCALE_PLUS:
         enna_mediaplayer_subtitle_increase_scale();
         break;
-    case ENNA_INPUT_KEY_I:
+    case ENNA_INPUT_SUBS_SCALE_MINUS:
         enna_mediaplayer_subtitle_decrease_scale();
         break;
-    case ENNA_INPUT_KEY_X:
+    case ENNA_INPUT_SUBS_DELAY_PLUS:
         enna_mediaplayer_subtitle_increase_delay();
         break;
-    case ENNA_INPUT_KEY_Z:
+    case ENNA_INPUT_SUBS_DELAY_MINUS:
         enna_mediaplayer_subtitle_decrease_delay();
         break;
-    case ENNA_INPUT_KEY_W:
+    case ENNA_INPUT_FRAMEDROP:
         enna_mediaplayer_set_framedrop();
         break;
     default:
@@ -286,6 +286,7 @@ videoplayer_view_event(enna_input event)
     {
     case ENNA_INPUT_QUIT:
     case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_STOP:
         _return_to_video_info_gui();
         break;
     default:

@@ -132,13 +132,13 @@ _input_events_cb(void *data, enna_input event)
       enna_volume_notification_show(sd->o_volume);
       return ENNA_EVENT_BLOCK;
     }
-    else if (event == ENNA_INPUT_PLUS)
+    else if (event == ENNA_INPUT_VOLPLUS)
     {
       enna_mediaplayer_default_increase_volume();
       enna_volume_notification_show(sd->o_volume);
       return ENNA_EVENT_BLOCK;
     }
-    else if (event == ENNA_INPUT_MINUS)
+    else if (event == ENNA_INPUT_VOLMINUS)
     {
       enna_mediaplayer_default_decrease_volume();
       enna_volume_notification_show(sd->o_volume);
@@ -165,7 +165,7 @@ _input_events_cb(void *data, enna_input event)
                 break;
         }
     }
-    else if (event == ENNA_INPUT_MENU)
+    else if (event == ENNA_INPUT_HOME)
     {
         enna_content_hide();
         enna_mainmenu_show();

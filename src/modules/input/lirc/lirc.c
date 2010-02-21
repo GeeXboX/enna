@@ -57,25 +57,71 @@ static const struct
     const char *keyname;
     enna_input input;
 } enna_lircmap[] = {
+    { "Menu",         ENNA_INPUT_MENU        },
+    { "Quit",         ENNA_INPUT_QUIT        },
+    { "Exit",         ENNA_INPUT_EXIT        },
+    { "Home",         ENNA_INPUT_HOME        },
+    { "Ok",           ENNA_INPUT_OK          },
+
     { "Left",         ENNA_INPUT_LEFT        },
     { "Right",        ENNA_INPUT_RIGHT       },
     { "Up",           ENNA_INPUT_UP          },
     { "Down",         ENNA_INPUT_DOWN        },
-    { "Home",         ENNA_INPUT_HOME        },
-    { "Ok",           ENNA_INPUT_OK          },
-    { "Prev",         ENNA_INPUT_PREV        },
+
     { "Next",         ENNA_INPUT_NEXT        },
-    { "Space",        ENNA_INPUT_SPACE       },
+    { "Prev",         ENNA_INPUT_PREV        },
+    { "First",        ENNA_INPUT_FIRST       },
+    { "Last",         ENNA_INPUT_LAST        },
 
+    { "Fullscreen",   ENNA_INPUT_FULLSCREEN  },
+    { "Info",         ENNA_INPUT_INFO        },
+    { "Framedrop",    ENNA_INPUT_FRAMEDROP   },
+    { "Rotate",       ENNA_INPUT_ROTATE      },
+
+    /* Player controls */
+    { "Play",         ENNA_INPUT_PLAY        },
     { "Stop",         ENNA_INPUT_STOP        },
-    { "Exit",         ENNA_INPUT_EXIT        },
+    { "Pause",        ENNA_INPUT_PAUSE       },
+    { "Forward",      ENNA_INPUT_FORWARD     },
+    { "Rewind",       ENNA_INPUT_REWIND      },
+    { "Record",       ENNA_INPUT_RECORD      },
 
-    { "Quit",         ENNA_INPUT_QUIT        },
-    { "Menu",         ENNA_INPUT_MENU        },
+    /* Audio controls */
+    { "VolPlus",         ENNA_INPUT_VOLPLUS           },
+    { "VolMinus",        ENNA_INPUT_VOLMINUS          },
+    { "Mute",            ENNA_INPUT_MUTE              },
+    { "AudioPrev",       ENNA_INPUT_AUDIO_PREV        },
+    { "AudioNext",       ENNA_INPUT_AUDIO_NEXT        },
+    { "AudioDelayPlus",  ENNA_INPUT_AUDIO_DELAY_PLUS  },
+    { "AudioDelayMinus", ENNA_INPUT_AUDIO_DELAY_MINUS },
 
-    { "Plus",         ENNA_INPUT_PLUS        },
-    { "Minus",        ENNA_INPUT_MINUS       },
+    /* Subtitles controls */
+    { "Subtitles",      ENNA_INPUT_SUBTITLES        },
+    { "SubsPrev",       ENNA_INPUT_SUBS_PREV        },
+    { "SubsNext",       ENNA_INPUT_SUBS_NEXT        },
+    { "SubsAlign",      ENNA_INPUT_SUBS_ALIGN       },
+    { "SubsPosPlus",    ENNA_INPUT_SUBS_POS_PLUS    },
+    { "SubsPosMinus",   ENNA_INPUT_SUBS_POS_MINUS   },
+    { "SubsScalePlus",  ENNA_INPUT_SUBS_SCALE_PLUS  },
+    { "SubsScaleMinus", ENNA_INPUT_SUBS_SCALE_MINUS },
+    { "SubsDelayPlus",  ENNA_INPUT_SUBS_DELAY_PLUS  },
+    { "SubsDelayMinus", ENNA_INPUT_SUBS_DELAY_MINUS },
 
+    /* TV controls */
+    { "Red",          ENNA_INPUT_RED         },
+    { "Green",        ENNA_INPUT_GREEN       },
+    { "Yellow",       ENNA_INPUT_YELLOW      },
+    { "Blue",         ENNA_INPUT_BLUE        },
+    { "ChanPrev",     ENNA_INPUT_CHANPREV    },
+    { "Schedule",     ENNA_INPUT_SCHEDULE    },
+    { "Channels",     ENNA_INPUT_CHANNELS    },
+    { "Timers",       ENNA_INPUT_TIMERS      },
+    { "Recordings",   ENNA_INPUT_RECORDINGS  },
+
+    /* Special characters */
+    { "Space",        ENNA_INPUT_KEY_SPACE   },
+
+    /* Number characters */
     { "0",            ENNA_INPUT_KEY_0       },
     { "1",            ENNA_INPUT_KEY_1       },
     { "2",            ENNA_INPUT_KEY_2       },
@@ -87,6 +133,7 @@ static const struct
     { "8",            ENNA_INPUT_KEY_8       },
     { "9",            ENNA_INPUT_KEY_9       },
 
+    /* Alphabetical characters */
     { "a",            ENNA_INPUT_KEY_A       },
     { "b",            ENNA_INPUT_KEY_B       },
     { "c",            ENNA_INPUT_KEY_C       },
