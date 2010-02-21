@@ -76,7 +76,8 @@ static const struct
     { "Fullscreen",   ENNA_INPUT_FULLSCREEN  },
     { "Info",         ENNA_INPUT_INFO        },
     { "Framedrop",    ENNA_INPUT_FRAMEDROP   },
-    { "Rotate",       ENNA_INPUT_ROTATE      },
+    { "RotateCW",     ENNA_INPUT_ROTATE_CW   },
+    { "RotateCCW",    ENNA_INPUT_ROTATE_CCW  },
 
     /* Player controls */
     { "Play",         ENNA_INPUT_PLAY        },

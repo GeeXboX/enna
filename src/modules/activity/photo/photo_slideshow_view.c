@@ -266,7 +266,10 @@ _input_events_cb(void *data, enna_input event)
         _button_clicked_play_cb(sd, data, NULL);
         break;
 #ifdef FEATURE_ROTATION
-    case ENNA_INPUT_ROTATE:
+    case ENNA_INPUT_ROTATE_CW:
+        _button_clicked_rotate_cw_cb(sd, data, NULL);
+        break;
+    case ENNA_INPUT_ROTATE_CCW:
         _button_clicked_rotate_ccw_cb(sd, data, NULL);
         break;
 #endif /* FEATURE_ROTATION */

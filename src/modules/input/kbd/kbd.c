@@ -67,8 +67,10 @@ static const struct
     { "I",            ECORE_CTRL,              ENNA_INPUT_INFO          },
     { "w",            ECORE_CTRL,              ENNA_INPUT_FRAMEDROP     },
     { "W",            ECORE_CTRL,              ENNA_INPUT_FRAMEDROP     },
-    { "r",            ECORE_CTRL,              ENNA_INPUT_ROTATE        },
-    { "R",            ECORE_CTRL,              ENNA_INPUT_ROTATE        },
+    { "e",            ECORE_CTRL,              ENNA_INPUT_ROTATE_CW     },
+    { "E",            ECORE_CTRL,              ENNA_INPUT_ROTATE_CW     },
+    { "r",            ECORE_CTRL,              ENNA_INPUT_ROTATE_CCW    },
+    { "R",            ECORE_CTRL,              ENNA_INPUT_ROTATE_CCW    },
 
     /* Player controls */
     { "space",        ECORE_CTRL,              ENNA_INPUT_PLAY          },
