@@ -135,13 +135,6 @@ didl_parse_item(GUPnPDIDLLiteParser *parser,
 
     switch (cap)
     {
-    case ENNA_CAPS_PHOTO:
-        if (!strncmp(class_name,
-                     ITEM_CLASS_IMAGE, strlen(ITEM_CLASS_IMAGE)))
-            icon = "icon/photo";
-        else
-            return;
-        break;
     case ENNA_CAPS_MUSIC:
         if (!strncmp(class_name,
                      ITEM_CLASS_AUDIO, strlen(ITEM_CLASS_AUDIO)))
@@ -408,14 +401,6 @@ video_class_browse_up(const char *id, void *cookie)
 }
 #endif
 
-#ifdef BUILD_ACTIVITY_PHOTO
-static Eina_List *
-photo_class_browse_up(const char *id, void *cookie)
-{
-    return _class_browse_up(id, cookie, ENNA_CAPS_PHOTO);
-}
-#endif
-
 static Eina_List *
 _class_browse_down(void *cookie, ENNA_VFS_CAPS cap)
 {
@@ -458,14 +443,6 @@ video_class_browse_down(void *cookie)
 }
 #endif
 
-#ifdef BUILD_ACTIVITY_PHOTO
-static Eina_List *
-photo_class_browse_down(void *cookie)
-{
-    return _class_browse_down(cookie, ENNA_CAPS_PHOTO);
-}
-#endif
-
 static Enna_Vfs_File *
 _class_vfs_get(void *cookie)
 {
@@ -503,24 +480,6 @@ static Enna_Class_Vfs class_upnp_video = {
         NULL,
         video_class_browse_up,
         video_class_browse_down,
-        _class_vfs_get,
-    },
-    NULL
-};
-#endif
-
-#ifdef BUILD_ACTIVITY_PHOTO
-static Enna_Class_Vfs class_upnp_photo = {
-    ENNA_MODULE_NAME,
-    10,
-    N_("UPnP/DLNA media servers"),
-    NULL,
-    "icon/upnp",
-    {
-        NULL,
-        NULL,
-        photo_class_browse_up,
-        photo_class_browse_down,
         _class_vfs_get,
     },
     NULL
@@ -625,9 +584,6 @@ module_init(Enna_Module *em)
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
     enna_vfs_append(ENNA_MODULE_NAME, ENNA_CAPS_VIDEO, &class_upnp_video);
-#endif
-#ifdef BUILD_ACTIVITY_PHOTO
-    enna_vfs_append(ENNA_MODULE_NAME, ENNA_CAPS_PHOTO, &class_upnp_photo);
 #endif
 }
 
