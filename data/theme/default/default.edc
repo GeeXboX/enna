@@ -42,6 +42,7 @@ collections
 #include "activity_configuration.edc"
 #include "activity_configuration_sysinfo.edc"
 #include "activity_configuration_credits.edc"
+#include "activity_tv.edc"
 #include "icons.edc"
 #include "list.edc"
 #include "browser.edc"

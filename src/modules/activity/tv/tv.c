@@ -21,6 +21,8 @@
 
 #include <string.h>
 
+#include <Edje.h>
+
 #include "enna.h"
 #include "enna_config.h"
 #include "module.h"
@@ -39,7 +41,7 @@
 typedef struct _Enna_Module_Tv
 {
     Evas *e;
-    Evas_Object *o_background;
+    Evas_Object *edje;
     Enna_Playlist *enna_playlist;
     Enna_Module *em;
 #ifdef BUILD_LIBSVDRP
@@ -68,9 +70,9 @@ static Enna_Module_Tv *mod;
 
 static void _class_init(int dummy)
 {
-    mod->o_background = evas_object_rectangle_add(enna->evas);
-    evas_object_color_set(mod->o_background, 0, 0, 0, 255);
-    enna_content_append(ENNA_MODULE_NAME, mod->o_background);
+    mod->edje = edje_object_add (enna->evas);
+    edje_object_file_set (mod->edje, enna_config_theme_get (), "activity/tv");
+    enna_content_append (ENNA_MODULE_NAME, mod->edje);
 }
 
 static const char* _class_quit_request(int dummy)
@@ -122,14 +124,14 @@ static void _class_show(int dummy)
     enna_content_select(ENNA_MODULE_NAME);
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "starting playback");
     enna_mediaplayer_play(mod->enna_playlist);
-    evas_object_show(mod->o_background);
+    edje_object_signal_emit (mod->edje, "tv,show", "enna");
 }
 
 static void _class_hide(int dummy)
 {
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "stopping playback");
     enna_mediaplayer_stop();
-    evas_object_hide(mod->o_background);
+    edje_object_signal_emit (mod->edje, "tv,hide", "enna");
 }
 
 static void _class_event(enna_input event)
@@ -352,7 +354,7 @@ module_shutdown(Enna_Module *em)
         return;
 
     enna_activity_del(ENNA_MODULE_NAME);
-    ENNA_OBJECT_DEL(mod->o_background);
+    ENNA_OBJECT_DEL (mod->edje);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
 #ifdef BUILD_LIBSVDRP
     enna_svdrp_uninit();

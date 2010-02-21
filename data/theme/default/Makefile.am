@@ -307,6 +307,7 @@ activity_configuration_sysinfo.edc \
 activity_games.edc \
 activity_music.edc \
 activity_photo.edc \
+activity_tv.edc \
 activity_video.edc \
 activity_video_controls.edc \
 activity_video_flags.edc \
