@@ -40,7 +40,7 @@ static const struct
     { "Meta_R",       ECORE_NONE,              ENNA_INPUT_MENU          },
     { "Hyper_R",      ECORE_NONE,              ENNA_INPUT_MENU          },
     { "Escape",       ECORE_NONE,              ENNA_INPUT_QUIT          },
-    { "BackSpace",    ECORE_NONE,              ENNA_INPUT_EXIT          },
+    { "BackSpace",    ECORE_NONE,              ENNA_INPUT_BACK          },
     { "Return",       ECORE_NONE,              ENNA_INPUT_OK            },
     { "KP_Enter",     ECORE_NONE,              ENNA_INPUT_OK            },
     { "Super_L",      ECORE_NONE,              ENNA_INPUT_HOME          },

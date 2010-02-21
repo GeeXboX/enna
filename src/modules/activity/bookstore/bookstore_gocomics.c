@@ -293,7 +293,7 @@ bs_gocomics_event (Evas_Object *edje, enna_input event)
     case ENNA_INPUT_RIGHT:
         gocomics_button_next_clicked_cb(NULL, NULL, NULL);
         return ENNA_EVENT_BLOCK;
-    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_BACK:
         enna_content_hide();
         return ENNA_EVENT_CONTINUE;
     case ENNA_INPUT_OK:

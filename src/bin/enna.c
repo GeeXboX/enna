@@ -176,7 +176,7 @@ _button_back_clicked_cb(void *data, Evas_Object *obj, void *event_info)
     if (enna_mainmenu_visible())
         enna_input_event_emit(ENNA_INPUT_QUIT);
     else
-        enna_input_event_emit(ENNA_INPUT_EXIT);
+        enna_input_event_emit(ENNA_INPUT_BACK);
 }
 
 

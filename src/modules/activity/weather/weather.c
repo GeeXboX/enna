@@ -260,7 +260,7 @@ _class_hide (int dummy)
 static void
 _class_event (enna_input event)
 {
-    if (event != ENNA_INPUT_EXIT)
+    if (event != ENNA_INPUT_BACK)
         return;
 
     enna_content_hide();

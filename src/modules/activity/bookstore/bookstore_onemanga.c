@@ -590,7 +590,7 @@ bs_onemanga_event (Evas_Object *edje, enna_input event)
     case ENNA_INPUT_RIGHT:
         om_button_next_clicked_cb(NULL, NULL, NULL);
         return ENNA_EVENT_BLOCK;
-    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_BACK:
         if (mod->main_menu)
         {
             enna_content_hide();

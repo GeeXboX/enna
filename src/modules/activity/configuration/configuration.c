@@ -189,7 +189,7 @@ _activity_event (enna_input event)
     // menu view
     if (mod->state == MENU_VIEW)
     {
-        if (event == ENNA_INPUT_EXIT)
+        if (event == ENNA_INPUT_BACK)
         {
             enna_content_hide();
             enna_mainmenu_show();
@@ -198,7 +198,7 @@ _activity_event (enna_input event)
             enna_wall_input_feed(mod->o_menu, event);
     }
     // subpanel view
-    else if (event == ENNA_INPUT_EXIT)
+    else if (event == ENNA_INPUT_BACK)
     {
         _hide_subpanel(mod->selected);
         edje_object_signal_emit(mod->o_edje, "menu,show", "enna");

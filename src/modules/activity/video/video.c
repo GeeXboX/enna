@@ -177,7 +177,7 @@ menu_view_event(enna_input event)
 {
     switch (event)
     {
-    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_BACK:
         enna_content_hide();
         enna_mainmenu_show();
         break;
@@ -285,7 +285,7 @@ videoplayer_view_event(enna_input event)
     switch (event)
     {
     case ENNA_INPUT_QUIT:
-    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_BACK:
     case ENNA_INPUT_STOP:
         _return_to_video_info_gui();
         break;
@@ -435,7 +435,7 @@ browser_view_event(enna_input event)
     /* handle resume popup, if any */
     if (mod->resume_displayed)
     {
-        if (event == ENNA_INPUT_EXIT)
+        if (event == ENNA_INPUT_BACK)
             popup_resume_display(0);
         else
             video_resume_input_feed(mod->o_resume, event);
@@ -448,7 +448,7 @@ browser_view_event(enna_input event)
         return;
     }
 
-    if (event == ENNA_INPUT_EXIT)
+    if (event == ENNA_INPUT_BACK)
     {
         video_infos_del();
         update_movies_counter(NULL);

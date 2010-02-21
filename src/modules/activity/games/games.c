@@ -281,7 +281,7 @@ _enna_util_message_events_cb(void *data, enna_input event)
     switch(event)
     {
         case ENNA_INPUT_QUIT:
-        case ENNA_INPUT_EXIT:
+        case ENNA_INPUT_BACK:
         case ENNA_INPUT_OK:
             ENNA_OBJECT_DEL(inwin);
             break;
@@ -373,7 +373,7 @@ _class_event(enna_input event)
     /* Menu View */
     case MENU_VIEW:
     {
-        if (event == ENNA_INPUT_EXIT)
+        if (event == ENNA_INPUT_BACK)
         {
             enna_content_hide();
             enna_mainmenu_show();
@@ -389,7 +389,7 @@ _class_event(enna_input event)
         if (mod->current && mod->current->event)
             b = (mod->current->event)(mod->o_edje, event);
 
-        if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_EXIT))
+        if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_BACK))
             _game_service_hide(mod->current);
         break;
     }

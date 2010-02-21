@@ -35,7 +35,7 @@ typedef enum
 
     ENNA_INPUT_MENU,
     ENNA_INPUT_QUIT,
-    ENNA_INPUT_EXIT,
+    ENNA_INPUT_BACK,
     ENNA_INPUT_OK,
     ENNA_INPUT_HOME,
 

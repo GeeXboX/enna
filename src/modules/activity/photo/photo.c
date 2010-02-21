@@ -257,7 +257,7 @@ static void photo_event_menu (enna_input event)
     switch (event)
     {
     case ENNA_INPUT_LEFT:
-    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_BACK:
         enna_content_hide();
         enna_mainmenu_show();
         break;
@@ -287,7 +287,7 @@ static void photo_event_info (enna_input event)
 {
     switch (event)
     {
-    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_BACK:
     case ENNA_INPUT_INFO:
         panel_infos_display(0);
         break;
@@ -304,7 +304,7 @@ static void photo_event_slideshow (enna_input event)
 {
     switch (event)
     {
-    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_BACK:
         ENNA_OBJECT_DEL (mod->o_slideshow);
         mod->state = BROWSER_VIEW;
         edje_object_signal_emit(mod->o_edje, "wall,show", "enna");

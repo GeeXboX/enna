@@ -59,7 +59,7 @@ static const struct
 } enna_lircmap[] = {
     { "Menu",         ENNA_INPUT_MENU        },
     { "Quit",         ENNA_INPUT_QUIT        },
-    { "Exit",         ENNA_INPUT_EXIT        },
+    { "Back",         ENNA_INPUT_BACK        },
     { "Home",         ENNA_INPUT_HOME        },
     { "Ok",           ENNA_INPUT_OK          },
 

@@ -157,7 +157,7 @@ _input_events_cb(void *data, enna_input event)
                 enna_list_input_feed(sd->o_menu, event);
                 return ENNA_EVENT_BLOCK;
                 break;
-            case ENNA_INPUT_EXIT:
+            case ENNA_INPUT_BACK:
                 if (enna->o_exit)
                     enna_exit_show(enna->o_exit);
                 return ENNA_EVENT_BLOCK;

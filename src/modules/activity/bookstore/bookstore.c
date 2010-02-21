@@ -292,7 +292,7 @@ _class_event (enna_input event)
     /* Menu View */
     case BS_MENU_VIEW:
     {
-        if (event == ENNA_INPUT_EXIT)
+        if (event == ENNA_INPUT_BACK)
         {
             enna_content_hide();
             enna_mainmenu_show();
@@ -308,7 +308,7 @@ _class_event (enna_input event)
         if (mod->current && mod->current->event)
             b = (mod->current->event)(mod->edje, event);
 
-        if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_EXIT))
+        if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_BACK))
             bs_service_hide(mod->current);
         break;
     }

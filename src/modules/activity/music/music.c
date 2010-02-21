@@ -119,7 +119,7 @@ _class_event_menu_view(enna_input event)
     case ENNA_INPUT_LEFT:
         enna_mediaplayer_obj_input_feed(mod->o_mediaplayer, event);
         break;
-    case ENNA_INPUT_EXIT:
+    case ENNA_INPUT_BACK:
         enna_content_hide();
         enna_mainmenu_show();
         break;
@@ -135,7 +135,7 @@ _class_event_menu_view(enna_input event)
 static void
 _class_event_browser_view(enna_input event)
 {
-    if (event == ENNA_INPUT_EXIT)
+    if (event == ENNA_INPUT_BACK)
         update_songs_counter(NULL);
 
     /* whichever action is, ensure lyrics panel gets hidden */

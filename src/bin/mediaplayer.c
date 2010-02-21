@@ -600,7 +600,7 @@ mp_send_key(enna_input event)
         [ENNA_INPUT_FIRST]      = PLAYER_VDR_PREVIOUS,
         [ENNA_INPUT_LAST]       = PLAYER_VDR_NEXT,
         [ENNA_INPUT_OK]         = PLAYER_VDR_OK,
-        [ENNA_INPUT_EXIT]       = PLAYER_VDR_BACK,
+        [ENNA_INPUT_BACK]       = PLAYER_VDR_BACK,
         [ENNA_INPUT_INFO]       = PLAYER_VDR_INFO,
         [ENNA_INPUT_KEY_0]      = PLAYER_VDR_0,
         [ENNA_INPUT_KEY_1]      = PLAYER_VDR_1,
