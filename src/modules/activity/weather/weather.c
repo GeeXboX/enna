@@ -204,7 +204,7 @@ set_default_background (void)
     ti = localtime (&t);
 
     /* spring: March - May */
-    if (ti->tm_mon >= 0 && ti->tm_mon <= 4)
+    if (ti->tm_mon >= 2 && ti->tm_mon <= 4)
         season = 0;
     /* summer: June - August */
     else if (ti->tm_mon >= 5 && ti->tm_mon <= 7)
