@@ -2,12 +2,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Kostyantyn Derets <ua.motofan@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-14 09:12+0100\n"
+"POT-Creation-Date: 2010-02-22 16:32+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -28,58 +28,58 @@ msgstr "Источник не найден!"
 msgid "Main menu"
 msgstr "Главное меню"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:494
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедиаЦентр Enna\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:495
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Использование: %s [опции...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:496
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Доступные опции:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Укажите конфигурационный файл.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:498
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Принудительный полноэкранный режим.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Выводит это сообщение.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:500
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr ""
 "  -t, (--theme):   Укажите название темы, которая будет использована.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Укажите размеры окна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:501
-#, c-format
-msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
-
 #: src/bin/enna.c:502
 #, c-format
-msgid "    Supported: "
-msgstr ""
+msgid "  -p, (--profile): Specify display profile\n"
+msgstr "-p, (--profile): Укажите профиль дисплея\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:503
+#, c-format
+msgid "    Supported: "
+msgstr "Поддерживает:"
+
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Выводит номер версии Enna.\n"
@@ -103,7 +103,7 @@ msgstr "Нет, продолжить работать в enna"
 msgid "Modules"
 msgstr "Модули"
 
-#: src/bin/module.c:406
+#: src/bin/module.c:402
 #, fuzzy
 msgid "No information provided"
 msgstr "Необходимая информация не задана"
@@ -113,56 +113,73 @@ msgstr "Необходимая информация не задана"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Дорожка №%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:402 src/bin/weather_api.c:435
+#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
 msgid "City"
-msgstr ""
+msgstr "Город"
 
-#: src/bin/weather_api.c:403
+#: src/bin/weather_api.c:406
 msgid "Choose your City"
-msgstr ""
+msgstr "Найти Ваш Город"
 
-#: src/bin/weather_api.c:407
+#: src/bin/weather_api.c:410
 msgid "Enter your City here"
-msgstr ""
+msgstr "Введите город"
 
-#: src/bin/weather_api.c:410 src/bin/weather_api.c:443
+#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 #, fuzzy
 msgid "Remove"
 msgstr "Сменный носитель"
 
-#: src/bin/weather_api.c:436
+#: src/bin/weather_api.c:439
 msgid "Choose your city"
-msgstr ""
+msgstr "Выберите город"
 
-#: src/bin/weather_api.c:448
+#: src/bin/weather_api.c:451
 msgid "Add new city"
-msgstr ""
+msgstr "Добавить новый город"
 
-#: src/bin/weather_api.c:449
+#: src/bin/weather_api.c:452
 msgid "Add more cities to the list"
-msgstr ""
+msgstr "Добавить больше городов в список"
 
-#: src/bin/weather_api.c:454
+#: src/bin/weather_api.c:457
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
-#: src/bin/weather_api.c:458
+#: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr ""
+msgstr "Выбрать"
 
-#: src/bin/weather_api.c:459
+#: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr ""
+msgstr "Выбрать единицу температуры"
 
-#: src/bin/weather_api.c:464
+#: src/bin/weather_api.c:467
 msgid "°C"
-msgstr ""
+msgstr "градус Цельсия"
 
-#: src/bin/weather_api.c:464
+#: src/bin/weather_api.c:467
 msgid "°F"
+msgstr "градус Фаренгейта"
+
+#: src/bin/weather_api.c:471
+msgid "Select hemisphere"
 msgstr ""
 
-#: src/bin/weather_api.c:669 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:472
+#, fuzzy
+msgid "Select the hemisphere you are located in"
+msgstr "Показывать погоду в Вашем городе"
+
+#: src/bin/weather_api.c:477
+msgid "Northern"
+msgstr ""
+
+#: src/bin/weather_api.c:477
+msgid "Southern"
+msgstr ""
+
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
 msgstr "Погода"
 
@@ -212,7 +229,7 @@ msgstr "Благодарности"
 
 #: src/modules/activity/configuration/configuration_credits.c:53
 msgid "and"
-msgstr ""
+msgstr "И"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:99
 #, fuzzy
@@ -221,23 +238,23 @@ msgstr "<c>Информация о системе</c><br><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:101
 msgid "Enna:"
-msgstr ""
+msgstr "Enna"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:113
 msgid "Video renderer:"
-msgstr ""
+msgstr "видео"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:174
 msgid "Distribution:"
-msgstr ""
+msgstr "Дистрибутив"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:196
 msgid "OS:"
-msgstr ""
+msgstr "ОС:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:204
 msgid "for"
-msgstr ""
+msgstr "для"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:221
 #, fuzzy
@@ -251,19 +268,19 @@ msgstr ", с частотой %d MHz"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:281
 msgid "CPU Load:"
-msgstr ""
+msgstr "Загрузка процессора"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:325
 msgid "Memory:"
-msgstr ""
+msgstr "Память"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "used on"
-msgstr ""
+msgstr "использовано"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "total"
-msgstr ""
+msgstr "полный объем"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:367
 #, fuzzy
@@ -277,15 +294,15 @@ msgstr "Данные"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:372
 msgid "min:"
-msgstr ""
+msgstr "мин."
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "max:"
-msgstr ""
+msgstr "макс."
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:387
 msgid "VDR:"
-msgstr ""
+msgstr "VDR:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:390
 #, fuzzy
@@ -294,7 +311,7 @@ msgstr "установлено соединение с VDR %s на %s (%s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:393
 msgid "on"
-msgstr ""
+msgstr "на, в"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:398
 #, fuzzy
@@ -308,7 +325,7 @@ msgstr "<hilight>Доступные сетевые соединения:</hiligh
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:440
 msgid "IP:"
-msgstr ""
+msgstr "IP:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:447
 #, fuzzy
@@ -317,7 +334,7 @@ msgstr "Netmask: %s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:472
 msgid "Default gateway:"
-msgstr ""
+msgstr "Default gateway"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:500
 #, fuzzy
@@ -351,17 +368,19 @@ msgstr "С помощью этого модуля Вы можете играть
 
 #: src/modules/activity/games/games_mame.c:81
 msgid "<c>M.A.M.E.</c><br>Game running..."
-msgstr ""
+msgstr "<c>M.A.M.E.</c><br>Запуск игры..."
 
 #: src/modules/activity/games/games_mame.c:318
 msgid ""
 "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
 "at: ~/.mame/roms<br>"
 msgstr ""
+"<c>Ошибка Mame</c><br><b>Нет roms в папке </b><br>Путь для Roms: ~/.mame/"
+"roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
-msgstr ""
+msgstr "<c>Системные Игры</c><br>Запуск игры..."
 
 #: src/modules/activity/games/games_sys.c:257
 #, fuzzy
@@ -397,27 +416,27 @@ msgstr "Фото"
 msgid "Browse your photos and create slideshows"
 msgstr "Просмотреть все Ваши фото 'на стене' или как слайдшоу"
 
-#: src/modules/activity/tv/tv.c:102
+#: src/modules/activity/tv/tv.c:104
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Таймер '%s' запустится через %i минут"
 msgstr[1] "Timer '%s' is due to start in %i minute"
 
-#: src/modules/activity/tv/tv.c:104
+#: src/modules/activity/tv/tv.c:106
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Сейчас записывается '%s'"
 
-#: src/modules/activity/tv/tv.c:113
+#: src/modules/activity/tv/tv.c:115
 msgid "Recording in progress"
 msgstr "Идет запись"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:365
+#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Телевидение"
 
-#: src/modules/activity/tv/tv.c:367
+#: src/modules/activity/tv/tv.c:371
 #, fuzzy
 msgid "View TV channels"
 msgstr "Смотреть телеканалы"
@@ -428,11 +447,11 @@ msgstr "Нет необходимой информации ..."
 
 #: src/modules/activity/video/video_infos.c:129
 msgid "Director:"
-msgstr ""
+msgstr "Режисер"
 
 #: src/modules/activity/video/video_infos.c:136
 msgid "Cast:"
-msgstr ""
+msgstr "Каст"
 
 #: src/modules/activity/video/video_infos.c:158
 #, fuzzy
@@ -441,11 +460,11 @@ msgstr "Видео"
 
 #: src/modules/activity/video/video_infos.c:181
 msgid "Audio:"
-msgstr ""
+msgstr "Аудио"
 
 #: src/modules/activity/video/video_infos.c:196
 msgid "Size:"
-msgstr ""
+msgstr "Размер"
 
 #: src/modules/activity/video/video_infos.c:204
 #, fuzzy
@@ -457,21 +476,21 @@ msgstr "Невозможно получить больше информации.
 msgid "%d Movies"
 msgstr "%d Фильмов"
 
-#: src/modules/activity/video/video.c:915
-#: src/modules/activity/video/video.c:1006
+#: src/modules/activity/video/video.c:916
+#: src/modules/activity/video/video.c:1007
 msgid "Video"
 msgstr "Видео"
 
-#: src/modules/activity/video/video.c:1008
+#: src/modules/activity/video/video.c:1009
 msgid "Play your videos"
-msgstr ""
+msgstr "Проиграть видео"
 
-#: src/modules/activity/weather/weather.c:330
+#: src/modules/activity/weather/weather.c:348
 #, fuzzy
 msgid "Weather forecasts"
 msgstr "Прогноз погоды"
 
-#: src/modules/activity/weather/weather.c:332
+#: src/modules/activity/weather/weather.c:350
 msgid "Show the weather at your location"
 msgstr "Показывать погоду в Вашем городе"
 
@@ -571,30 +590,29 @@ msgstr "Обозреватель сетевых трансляций"
 msgid "Listen to SHOUTcast stream"
 msgstr "Слушать сетевую радио станцию"
 
-#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
-#: src/modules/browser/upnp/upnp.c:516
+#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
 #, fuzzy
 msgid "UPnP/DLNA media servers"
 msgstr "Медиа сервера UPnP/DLNA"
 
-#: src/modules/browser/upnp/upnp.c:571
+#: src/modules/browser/upnp/upnp.c:530
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Найдено новое UPnP устройство '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:659
+#: src/modules/browser/upnp/upnp.c:615
 #, fuzzy
 msgid "UPnP/DLNA module"
 msgstr "Модуль UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:661
+#: src/modules/browser/upnp/upnp.c:617
 #, fuzzy
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "Этот модуль позволяет Enna читать файлы с UPnP/DLNA медиа серверов"
 
 #: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
-msgstr ""
+msgstr "Авторы"
 
 #: src/modules/browser/valhalla/valhalla.c:149
 msgid "Artists"
@@ -610,15 +628,15 @@ msgstr "Жанр"
 
 #: src/modules/browser/valhalla/valhalla.c:173
 msgid "Categories"
-msgstr ""
+msgstr "Категории"
 
 #: src/modules/browser/valhalla/valhalla.c:178
 msgid "Directors"
-msgstr ""
+msgstr "Директор"
 
 #: src/modules/browser/valhalla/valhalla.c:183
 msgid "Years"
-msgstr ""
+msgstr "Годы"
 
 #: src/modules/browser/valhalla/valhalla.c:193
 msgid "Unclassified"
@@ -636,91 +654,91 @@ msgstr "Модуль Valhalla"
 
 #: src/modules/browser/valhalla/valhalla.c:717
 msgid "Build a browseable catalog of your media files"
-msgstr ""
+msgstr "Сделать базу медиа-файлов"
 
 #: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
-msgstr ""
+msgstr "CD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:40
 msgid "CD-R"
-msgstr ""
+msgstr "CD-R"
 
 #: src/modules/volume/hal/hal_volume.c:41
 msgid "CD-RW"
-msgstr ""
+msgstr "CD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:42
 msgid "DVD-ROM"
-msgstr ""
+msgstr "DVD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:43
 msgid "DVD-RAM"
-msgstr ""
+msgstr "DVD-RAM"
 
 #: src/modules/volume/hal/hal_volume.c:44
 msgid "DVD-R"
-msgstr ""
+msgstr "DVD-R"
 
 #: src/modules/volume/hal/hal_volume.c:45
 msgid "DVD-RW"
-msgstr ""
+msgstr "DVD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:46
 msgid "DVD+R"
-msgstr ""
+msgstr "DVD+R"
 
 #: src/modules/volume/hal/hal_volume.c:47
 msgid "DVD+RW"
-msgstr ""
+msgstr "DVD+RW"
 
 #: src/modules/volume/hal/hal_volume.c:48
 msgid "DVD+R (DL)"
-msgstr ""
+msgstr "DVD-R (DL)"
 
 #: src/modules/volume/hal/hal_volume.c:49
 msgid "BD-ROM"
-msgstr ""
+msgstr "BD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:50
 msgid "BD-R"
-msgstr ""
+msgstr "BD-R"
 
 #: src/modules/volume/hal/hal_volume.c:51
 msgid "BD-RE"
-msgstr ""
+msgstr "BD-RE"
 
 #: src/modules/volume/hal/hal_volume.c:52
 msgid "HD-DVD-ROM"
-msgstr ""
+msgstr "HD-DVD-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:53
 msgid "HD-DVD-R"
-msgstr ""
+msgstr "HD-DVD-R"
 
 #: src/modules/volume/hal/hal_volume.c:54
 msgid "HD-DVD-RW"
-msgstr ""
+msgstr "HD-DVD-RW"
 
 #: src/modules/volume/hal/hal_volume.c:55
 msgid "MagnetoOptical"
-msgstr ""
+msgstr "МагнитоОптика"
 
 #: src/modules/volume/hal/hal_volume.c:64
 msgid "CDDA"
-msgstr ""
+msgstr "CDDA"
 
 #: src/modules/volume/hal/hal_volume.c:65
 msgid "VCD"
-msgstr ""
+msgstr "VCD"
 
 #: src/modules/volume/hal/hal_volume.c:66
 msgid "SVCD"
-msgstr ""
+msgstr "SVCD"
 
 #: src/modules/volume/hal/hal_volume.c:67
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 #: src/modules/volume/hal/hal_volume.c:68
 msgid "Data"
@@ -742,7 +760,7 @@ msgstr "Раздел из mtab"
 
 #: src/modules/volume/mtab/mtab.c:173
 msgid "This module provide support for already mounted volumes"
-msgstr ""
+msgstr "Этот модуль обеспечивает поддержку уже монтированных томов"
 
 #: src/modules/volume/udev/udev.c:733
 #, fuzzy
@@ -751,16 +769,14 @@ msgstr "Раздел из mtab"
 
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
-msgstr ""
+msgstr "Этот модуль обеспечивает поддержку отсоединяемых томов"
 
-#, fuzzy
 #~ msgid "This module gets volumes from the mtab file"
 #~ msgstr "Этот модуль получает список разделов из файла mtab"
 
 #~ msgid "Database stuff and metadata retrival from various sources"
 #~ msgstr "Данные из базы и метаданные, полученые из разных источников"
 
-#, fuzzy
 #~ msgid "Music core"
 #~ msgstr "Музыкальное ядро"
 
@@ -773,7 +789,6 @@ msgstr ""
 #~ msgid "<c>Enna Information</c><br><br>"
 #~ msgstr "<c>Информация про Enna</c><br><br>"
 
-#, fuzzy
 #~ msgid "<hilight>Video Renderer:</hilight> %s"
 #~ msgstr "<hilight>Память: </hilight>"
 
@@ -783,15 +798,12 @@ msgstr ""
 #~ msgid "<hilight>OS: </hilight>"
 #~ msgstr "<hilight>ОС: </hilight>"
 
-#, fuzzy
 #~ msgid "<hilight>Available CPUs: </hilight>"
 #~ msgstr "<hilight>Доступные ЦП:</hilight><br>"
 
-#, fuzzy
 #~ msgid "<hilight>CPU Load: </hilight>"
 #~ msgstr "<hilight>загрузка ЦП: </hilight>"
 
-#, fuzzy
 #~ msgid "<hilight>Memory: </hilight>"
 #~ msgstr "<hilight>Память: </hilight>"
 
@@ -813,11 +825,9 @@ msgstr ""
 #~ msgid "<ul>Cast:</ul> %s<br>"
 #~ msgstr "<ul>В ролях:</ul> %s<br>"
 
-#, fuzzy
 #~ msgid "<hl>Video: </hl> %s"
 #~ msgstr "<hl>Видео: </hl> %.2f MB<br>"
 
-#, fuzzy
 #~ msgid "<hl>Audio: </hl> %s"
 #~ msgstr "<hl>Аудио: </hl> %.2f MB<br>"
 
