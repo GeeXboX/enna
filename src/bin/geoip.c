@@ -34,8 +34,6 @@
 #define GEOIP_QUERY           "http://www.ipinfodb.com/ip_query.php"
 #define MAX_URL_SIZE          1024
 
-Geo *geo = NULL;
-
 Geo *
 enna_get_geo_by_ip (void)
 {
@@ -44,6 +42,7 @@ enna_get_geo_by_ip (void)
     xmlDocPtr doc = NULL;
     xmlNode *n;
     xmlChar *tmp;
+    Geo *geo = NULL;
 
     handler = url_new();
     if (!handler)
