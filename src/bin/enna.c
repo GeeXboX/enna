@@ -229,7 +229,7 @@ static int _enna_init(int argc, char **argv)
     enna->lvl = ENNA_MSG_INFO;
 
     /* try to geolocate */
-    enna->geo_loc = enna_get_city_by_ip();
+    enna->geo_loc = enna_get_geo_by_ip();
 
     /* register configuration parsers */
     enna_main_cfg_register();
@@ -380,7 +380,7 @@ static void _enna_shutdown(void)
     ENNA_EVENT_HANDLER_DEL(enna->mouse_handler);
 #endif
     ENNA_OBJECT_DEL(enna->o_exit);
-    ENNA_FREE(enna->geo_loc);
+    enna_geo_free(enna->geo_loc);
 
     enna_activity_del_all();
     enna_config_shutdown();

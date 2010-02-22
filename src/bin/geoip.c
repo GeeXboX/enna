@@ -25,25 +25,25 @@
 #include "enna_config.h"
 #include "xml_utils.h"
 #include "url_utils.h"
+#include "utils.h"
 #include "logs.h"
-//#include "geoip.h"
+#include "geoip.h"
 
 #define ENNA_MODULE_NAME      "geoip"
 
 #define GEOIP_QUERY           "http://www.ipinfodb.com/ip_query.php"
 #define MAX_URL_SIZE          1024
 
-char *
-enna_get_city_by_ip (void)
+Geo *geo = NULL;
+
+Geo *
+enna_get_geo_by_ip (void)
 {
     url_data_t data;
     url_t handler;
     xmlDocPtr doc = NULL;
     xmlNode *n;
     xmlChar *tmp;
-    char *city = NULL;
-    char *country = NULL;
-    char *geo = NULL;
 
     handler = url_new();
     if (!handler)
@@ -80,31 +80,47 @@ enna_get_city_by_ip (void)
     }
     xmlFree(tmp);
 
+    geo = calloc(1, sizeof(Geo));
+
+    tmp = get_prop_value_from_xml_tree(n, "Latitude");
+    if (tmp)
+    {
+        geo->latitude = enna_util_atof((char *) tmp);
+        xmlFree(tmp);
+    }
+
+    tmp = get_prop_value_from_xml_tree(n, "Longitude");
+    if (tmp)
+    {
+        geo->longitude = enna_util_atof((char *) tmp);
+        xmlFree(tmp);
+    }
+
     tmp = get_prop_value_from_xml_tree(n, "CountryCode");
     if (tmp)
     {
-        country = strdup((char *) tmp);
+        geo->country = strdup((char *) tmp);
         xmlFree(tmp);
     }
 
     tmp = get_prop_value_from_xml_tree(n, "City");
     if (tmp)
     {
-        city = strdup((char *) tmp);
+        geo->city = strdup((char *) tmp);
         xmlFree(tmp);
     }
 
-    if (city)
+    if (geo->city)
     {
         char res[256];
-        if (country)
-            snprintf(res, sizeof(res), "%s, %s", city, country);
+        if (geo->country)
+            snprintf(res, sizeof(res), "%s, %s", geo->city, geo->country);
         else
-            snprintf(res, sizeof(res), "%s", city);
-        geo = strdup(res);
+            snprintf(res, sizeof(res), "%s", geo->city);
+        geo->geo = strdup(res);
 
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
-                 "Geolocalized in: %s.", geo);
+                 "Geolocalized in: %s (%f ; %f).", geo->geo, geo->latitude, geo->longitude);
     }
 
 error:
@@ -115,8 +131,24 @@ error:
     }
 
     url_free(handler);
-    ENNA_FREE(country);
-    ENNA_FREE(city);
 
     return geo;
+}
+
+void
+enna_geo_free (Geo *geo)
+{
+    if (!geo)
+        return;
+
+    if (geo->city)
+        ENNA_FREE (geo->city);
+
+    if (geo->country)
+        ENNA_FREE (geo->country);
+
+    if (geo->geo)
+        ENNA_FREE (geo->geo);
+
+    ENNA_FREE (geo);
 }

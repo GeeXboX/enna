@@ -543,7 +543,7 @@ cfg_weather_section_set_default (void)
 
     weather_cfg.cities = eina_list_append(weather_cfg.cities,
                                           strdup(enna->geo_loc ?
-                                                 enna->geo_loc :
+                                                 enna->geo_loc->geo :
                                                  WEATHER_DEFAULT_CITY));
 
     weather_cfg.unit = WEATHER_DEFAULT_TEMP;

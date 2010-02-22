@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include "gettext.h"
+#include "geoip.h"
 
 //#define ENNA_DEBUG0
 #define ENNA_DEBUG 2
@@ -140,7 +141,7 @@ struct _Enna
     Ecore_Timer *mouse_idle_timer;
     Ecore_Timer *idle_timer;
     Ecore_Event_Handler *mouse_handler;
-    char *geo_loc; /** IP-based Geolocalized city */
+    Geo *geo_loc; /** IP-based Geolocalized information */
 };
 
 extern Enna *enna;

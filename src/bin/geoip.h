@@ -22,6 +22,18 @@
 #ifndef GEOIP_H
 #define GEOIP_H
 
-char *enna_get_city_by_ip (void);
+typedef struct _Geo Geo;
+
+struct _Geo
+{
+    char *city;
+    char *country;
+    char *geo;
+    float latitude;
+    float longitude;
+};
+
+Geo *enna_get_geo_by_ip (void);
+void enna_geo_free (Geo *geo);
 
 #endif /* GEOIP_H */
