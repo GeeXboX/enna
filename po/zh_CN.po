@@ -1,0 +1,691 @@
+# Chinese translations for enna package
+# Traditional Chinese translation for enna.
+# Copyright (C) 2010 The Enna Project
+# This file is distributed under the same license as the enna package.
+#  <sword.huang@gmail.com>, 2010.
+#
+# msgfmt zh_CN.po -o zh_CN.gmo
+msgid ""
+msgstr ""
+"Project-Id-Version: enna 0.4.0\n"
+"Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
+"POT-Creation-Date: 2010-01-28 12:41+0100\n"
+"PO-Revision-Date: 2010-02-17 15:11+0800\n"
+"Last-Translator: swinkworld <swinkworld@163.com>\n"
+"Language-Team: Chinese (Simplified)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/bin/browser.c:549
+msgid "No media found!"
+msgstr "没有发现任何媒体!"
+
+#: src/bin/browser.c:706
+msgid "Main menu"
+msgstr "主菜单"
+
+#: src/bin/enna.c:449
+#, c-format
+msgid "Enna MediaCenter\n"
+msgstr "Enna媒体中心\n"
+
+#: src/bin/enna.c:450
+#, c-format
+msgid " Usage: %s [options ...]\n"
+msgstr "用法：%s [选项...]\n"
+
+#: src/bin/enna.c:451
+#, c-format
+msgid " Available options:\n"
+msgstr "可选项:\n"
+
+#: src/bin/enna.c:452
+#, c-format
+msgid "  -c, (--config):  Specify configuration file to be used.\n"
+msgstr "-c, (--config): 指定要使用的配置文件。\n"
+
+#: src/bin/enna.c:453
+#, c-format
+msgid "  -f, (--fs):      Force fullscreen mode.\n"
+msgstr "-f, (--fs): 强制全屏幕显示。\n"
+
+#: src/bin/enna.c:454
+#, c-format
+msgid "  -h, (--help):    Display this help.\n"
+msgstr "-h, (--help): 显示这个说明。\n"
+
+#: src/bin/enna.c:455
+#, c-format
+msgid "  -t, (--theme):   Specify theme name to be used.\n"
+msgstr "-t, (--theme): 指定要使用的主题。\n"
+
+#: src/bin/enna.c:456
+#, c-format
+msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
+msgstr "-g, (--geometry):指定窗口大小。(geometry=1280x720)\n"
+
+#: src/bin/enna.c:457
+#, c-format
+msgid "  -V, (--version): Display Enna version number.\n"
+msgstr "-V, (--version): 显示Enna的版本。\n"
+
+#: src/bin/exit.c:93
+msgid "Are you sure you want to quit Enna?"
+msgstr "你确定要关闭Enna吗?"
+
+#: src/bin/exit.c:148
+msgid "Yes, quit Enna"
+msgstr "是的! 我要关闭Enna。"
+
+#: src/bin/exit.c:151
+msgid "No, continue using Enna"
+msgstr "不! 我要继续使用Enna。"
+
+#: src/bin/module.c:233
+msgid "Modules"
+msgstr "模块"
+
+#: src/bin/module.c:472
+msgid "No information provided"
+msgstr "没有提供任何信息"
+
+#: src/bin/parser_cdda.c:296
+#, c-format
+msgid "Track #%02d (%02d:%02d)"
+msgstr "音轨 #%02d (%02d:%02d)"
+
+#: src/bin/weather_api.c:394
+msgid "City"
+msgstr "城市"
+
+#: src/bin/weather_api.c:395
+msgid "Choose your city"
+msgstr "选择你的城市"
+
+#: src/bin/weather_api.c:402
+msgid "Remove"
+msgstr "移除"
+
+#: src/bin/weather_api.c:407
+msgid "Add new city"
+msgstr "添加新的城市"
+
+#: src/bin/weather_api.c:408
+msgid "Add more cities to the list"
+msgstr "添加更多的城市到列表中"
+
+#: src/bin/weather_api.c:413
+msgid "Add"
+msgstr "添加"
+
+#: src/bin/weather_api.c:618
+#: src/modules/activity/weather/weather.c:273
+msgid "Weather"
+msgstr "天气"
+
+#: src/modules/activity/bookstore/bookstore.c:323
+#: src/modules/activity/bookstore/bookstore.c:351
+msgid "Bookstore"
+msgstr "书店"
+
+#: src/modules/activity/bookstore/bookstore.c:353
+msgid "Read your books"
+msgstr "阅读图书"
+
+#: src/modules/activity/configuration/configuration.c:211
+#: src/modules/activity/configuration/configuration.c:239
+msgid "Configuration"
+msgstr "配置"
+
+#: src/modules/activity/configuration/configuration.c:241
+msgid "This module creates the Enna configuration panel"
+msgstr "这个模块用来建立Enna配置面板"
+
+#: src/modules/activity/configuration/configuration.c:256
+#: src/modules/activity/configuration/configuration_sysinfo.c:511
+msgid "System information"
+msgstr "系统信息"
+
+#: src/modules/activity/configuration/configuration.c:259
+msgid "Credits"
+msgstr "感谢"
+
+#: src/modules/activity/configuration/configuration_credits.c:45
+msgid "Enna is a GeeXboX-team MediaCenter"
+msgstr "Enna是GeeXboX-team的媒体中心"
+
+#: src/modules/activity/configuration/configuration_credits.c:47
+msgid "based on Enlightenment Foundation Librairies (EFL)."
+msgstr "基于Enlightenment Foundation Librairies (EFL)来设计"
+
+#: src/modules/activity/configuration/configuration_credits.c:49
+msgid "Credits go to:"
+msgstr "感谢:"
+
+#: src/modules/activity/configuration/configuration_credits.c:53
+msgid "and"
+msgstr "和"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:97
+msgid "Enna information"
+msgstr "Enna信息"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:99
+msgid "Enna:"
+msgstr "Enna:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:109
+msgid "Video renderer:"
+msgstr "视频渲染器:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:170
+msgid "Distribution:"
+msgstr "发行:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:192
+msgid "OS:"
+msgstr "操作系统:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:200
+msgid "for"
+msgstr "为"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:217
+msgid "Available CPUs:"
+msgstr "可用的CPU:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:248
+msgid ", running at"
+msgstr ", 运行在"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:277
+msgid "CPU Load:"
+msgstr "CPU使用:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:321
+msgid "Memory:"
+msgstr "内存:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:323
+msgid "used on"
+msgstr "用于"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:325
+msgid "total"
+msgstr "全部"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:363
+msgid "Screen resolution:"
+msgstr "屏幕分辨率:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:366
+msgid "at"
+msgstr "在"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:368
+msgid "min:"
+msgstr "最小:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:370
+msgid "max:"
+msgstr "最大:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:383
+msgid "VDR:"
+msgstr "视频录放机:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:386
+msgid "connected to VDR"
+msgstr "连接到视频录放机"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:389
+msgid "on"
+msgstr "在"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:394
+msgid "not connected"
+msgstr "没有被连接"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:409
+msgid "Available network interfaces:"
+msgstr "可用的网络接口:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:436
+msgid "IP:"
+msgstr "IP地址:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:443
+msgid "Netmask:"
+msgstr "网络掩码:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:468
+msgid "Default gateway:"
+msgstr "缺省网关:"
+
+#: src/modules/activity/configuration/configuration_sysinfo.c:496
+msgid "None"
+msgstr "无"
+
+#: src/modules/activity/games/games.c:308
+#: src/modules/activity/games/games.c:336
+msgid "Games"
+msgstr "游戏"
+
+#: src/modules/activity/games/games.c:338
+msgid "Play all your games directly from Enna"
+msgstr "直接用Enna来玩你所有的游戏"
+
+#: src/modules/activity/music/music.c:108
+#, c-format
+msgid "%d Songs"
+msgstr "%d 歌曲"
+
+#: src/modules/activity/music/music.c:463
+#: src/modules/activity/music/music.c:491
+msgid "Music"
+msgstr "音乐"
+
+#: src/modules/activity/music/music.c:493
+msgid "Listen to your music"
+msgstr "聆听你的音乐"
+
+#: src/modules/activity/music/music_lyrics.c:91
+msgid "No lyrics found ..."
+msgstr "没有歌词..."
+
+#: src/modules/activity/photo/photo.c:367
+#: src/modules/activity/photo/photo.c:395
+msgid "Photo"
+msgstr "照片"
+
+#: src/modules/activity/photo/photo.c:397
+msgid "Browse your photos and create slideshows"
+msgstr "浏览你的照片并建立幻灯片"
+
+#: src/modules/activity/tv/tv.c:102
+#, c-format
+msgid "Timer '%s' is due to start in %i minute"
+msgid_plural "Timer '%s' is due to start in %i minutes"
+msgstr[0] "计时器 '%s' 是因为开始在 %i 分钟内"
+msgstr[1] "计时器 '%s' 是因为开始在 %i 分钟内"
+
+#: src/modules/activity/tv/tv.c:104
+#, c-format
+msgid "Currently recording '%s'"
+msgstr "现在正在记录 '%s'"
+
+#: src/modules/activity/tv/tv.c:113
+msgid "Recording in progress"
+msgstr "正在记录中"
+
+#: src/modules/activity/tv/tv.c:154
+#: src/modules/activity/tv/tv.c:301
+msgid "Television"
+msgstr "电视"
+
+#: src/modules/activity/tv/tv.c:303
+msgid "View TV channels"
+msgstr "观看电视频道"
+
+#: src/modules/activity/video/video_infos.c:94
+msgid "No such information ..."
+msgstr "没有这些信息..."
+
+#: src/modules/activity/video/video_infos.c:129
+msgid "Director:"
+msgstr "导演:"
+
+#: src/modules/activity/video/video_infos.c:136
+msgid "Cast:"
+msgstr "演员表:"
+
+#: src/modules/activity/video/video_infos.c:158
+msgid "Video:"
+msgstr "视频:"
+
+#: src/modules/activity/video/video_infos.c:181
+msgid "Audio:"
+msgstr "声音:"
+
+#: src/modules/activity/video/video_infos.c:196
+msgid "Size:"
+msgstr "尺寸:"
+
+#: src/modules/activity/video/video_infos.c:204
+msgid "No further information can be retrieved"
+msgstr "不能获取更多的信息"
+
+#: src/modules/activity/video/video.c:132
+#, c-format
+msgid "%d Movies"
+msgstr "%d 电影"
+
+#: src/modules/activity/video/video.c:915
+#: src/modules/activity/video/video.c:991
+msgid "Video"
+msgstr "影片"
+
+#: src/modules/activity/video/video.c:993
+msgid "Play your videos"
+msgstr "播放你的影片"
+
+#: src/modules/activity/weather/weather.c:301
+msgid "Weather forecasts"
+msgstr "天气预报"
+
+#: src/modules/activity/weather/weather.c:303
+msgid "Show the weather at your location"
+msgstr "显示你本地的天气"
+
+#: src/modules/browser/cdda/cdda.c:95
+msgid "Play audio CD"
+msgstr "播放音乐光盘"
+
+#: src/modules/browser/cdda/cdda.c:138
+msgid "CDDA module"
+msgstr "CDDA模块"
+
+#: src/modules/browser/cdda/cdda.c:140
+msgid "Listen your favorite CDs"
+msgstr "聆听你最喜欢的光盘"
+
+#: src/modules/browser/dvd/dvd.c:62
+msgid "Play"
+msgstr "播放"
+
+#: src/modules/browser/dvd/dvd.c:65
+msgid "Play (with menus)"
+msgstr "播放(带菜单)"
+
+#: src/modules/browser/dvd/dvd.c:91
+msgid "Watch DVD video"
+msgstr "观看DVD影片"
+
+#: src/modules/browser/dvd/dvd.c:136
+msgid "DVD module"
+msgstr "DVD模块"
+
+#: src/modules/browser/dvd/dvd.c:138
+msgid "Watch movies from DVD"
+msgstr "从DVD观看电影"
+
+#: src/modules/browser/localfiles/localfiles.c:491
+#: src/modules/browser/localfiles/localfiles.c:509
+#: src/modules/browser/localfiles/localfiles.c:527
+msgid "Browse local devices"
+msgstr "浏览本机驱动器"
+
+#: src/modules/browser/localfiles/localfiles.c:681
+msgid "Browse local files"
+msgstr "浏览本机文件"
+
+#: src/modules/browser/localfiles/localfiles.c:683
+msgid "Browse files in your local file systems"
+msgstr "浏览本机硬盘上的文件"
+
+#: src/modules/browser/netstreams/netstreams.c:322
+#: src/modules/browser/netstreams/netstreams.c:338
+msgid "Browse network streams"
+msgstr "浏览网络数据流"
+
+#: src/modules/browser/netstreams/netstreams.c:409
+msgid "Netstreams"
+msgstr "网络数据流"
+
+#: src/modules/browser/netstreams/netstreams.c:411
+msgid "Browse and play network streams"
+msgstr "浏览并播放网络数据流"
+
+#: src/modules/browser/podcasts/podcasts.c:329
+msgid "Listen to podcasts"
+msgstr "聆听播客"
+
+#: src/modules/browser/podcasts/podcasts.c:391
+msgid "Podcast browser"
+msgstr "播客浏览器"
+
+#: src/modules/browser/podcasts/podcasts.c:393
+msgid "Podcast module"
+msgstr "播客模块"
+
+#: src/modules/browser/shoutcast/shoutcast.c:173
+msgid "SHOUTcast streaming"
+msgstr "广播数据流"
+
+#: src/modules/browser/shoutcast/shoutcast.c:197
+msgid "SHOUTcast browser"
+msgstr "广播浏览器"
+
+#: src/modules/browser/shoutcast/shoutcast.c:199
+msgid "Listen to SHOUTcast stream"
+msgstr "聆听广播数据流"
+
+#: src/modules/browser/upnp/upnp.c:480
+#: src/modules/browser/upnp/upnp.c:498
+#: src/modules/browser/upnp/upnp.c:516
+msgid "UPnP/DLNA media servers"
+msgstr "UPnP/DLNA媒体服务器"
+
+#: src/modules/browser/upnp/upnp.c:571
+#, c-format
+msgid "Found new UPnP device '%s (%s)'"
+msgstr "发现新的UPnP设备 '%s (%s)'"
+
+#: src/modules/browser/upnp/upnp.c:585
+msgid "UPnP/DLNA module"
+msgstr "UPnP/DLNA模块"
+
+#: src/modules/browser/upnp/upnp.c:587
+msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
+msgstr "这个模块让Enna能够浏览UPnP/DLNA上的内容"
+
+#: src/modules/browser/valhalla/valhalla.c:142
+msgid "Authors"
+msgstr "作者"
+
+#: src/modules/browser/valhalla/valhalla.c:149
+msgid "Artists"
+msgstr "艺术家"
+
+#: src/modules/browser/valhalla/valhalla.c:156
+msgid "Albums"
+msgstr "专辑"
+
+#: src/modules/browser/valhalla/valhalla.c:161
+msgid "Genres"
+msgstr "类别"
+
+#: src/modules/browser/valhalla/valhalla.c:173
+msgid "Categories"
+msgstr "分类"
+
+#: src/modules/browser/valhalla/valhalla.c:178
+msgid "Directors"
+msgstr "指挥"
+
+#: src/modules/browser/valhalla/valhalla.c:183
+msgid "Years"
+msgstr "年份"
+
+#: src/modules/browser/valhalla/valhalla.c:193
+msgid "Unclassified"
+msgstr "没有被分类的"
+
+#: src/modules/browser/valhalla/valhalla.c:653
+msgid "Valhalla module"
+msgstr "Valhalla模块"
+
+#: src/modules/browser/valhalla/valhalla.c:655
+msgid "Build a browseable catalog of your media files"
+msgstr "将你的媒体建立一个可浏览的分类"
+
+#: src/modules/browser/valhalla/valhalla.c:663
+#: src/modules/browser/valhalla/valhalla.c:680
+msgid "Media library"
+msgstr "媒体资料库"
+
+#: src/modules/volume/hal/hal_volume.c:39
+msgid "CD-ROM"
+msgstr "CD-ROM光盘"
+
+#: src/modules/volume/hal/hal_volume.c:40
+msgid "CD-R"
+msgstr "CD-R光盘"
+
+#: src/modules/volume/hal/hal_volume.c:41
+msgid "CD-RW"
+msgstr "CD-RW光盘"
+
+#: src/modules/volume/hal/hal_volume.c:42
+msgid "DVD-ROM"
+msgstr "DVD-ROM光盘"
+
+#: src/modules/volume/hal/hal_volume.c:43
+msgid "DVD-RAM"
+msgstr "DVD-RAM光盘"
+
+#: src/modules/volume/hal/hal_volume.c:44
+msgid "DVD-R"
+msgstr "DVD-R光盘"
+
+#: src/modules/volume/hal/hal_volume.c:45
+msgid "DVD-RW"
+msgstr "DVD-RW光盘"
+
+#: src/modules/volume/hal/hal_volume.c:46
+msgid "DVD+R"
+msgstr "DVD+R光盘"
+
+#: src/modules/volume/hal/hal_volume.c:47
+msgid "DVD+RW"
+msgstr "DVD+RW光盘"
+
+#: src/modules/volume/hal/hal_volume.c:48
+msgid "DVD+R (DL)"
+msgstr "DVD+R (DL)光盘"
+
+#: src/modules/volume/hal/hal_volume.c:49
+msgid "BD-ROM"
+msgstr "BD-ROM光盘"
+
+#: src/modules/volume/hal/hal_volume.c:50
+msgid "BD-R"
+msgstr "BD-R光盘"
+
+#: src/modules/volume/hal/hal_volume.c:51
+msgid "BD-RE"
+msgstr "BD-RE光盘"
+
+#: src/modules/volume/hal/hal_volume.c:52
+msgid "HD-DVD-ROM"
+msgstr "HD-DVD-ROM光盘"
+
+#: src/modules/volume/hal/hal_volume.c:53
+msgid "HD-DVD-R"
+msgstr "HD-DVD-R光盘"
+
+#: src/modules/volume/hal/hal_volume.c:54
+msgid "HD-DVD-RW"
+msgstr "HD-DVD-RW光盘"
+
+#: src/modules/volume/hal/hal_volume.c:55
+msgid "MagnetoOptical"
+msgstr "磁光盘"
+
+#: src/modules/volume/hal/hal_volume.c:64
+msgid "CDDA"
+msgstr "CDDA"
+
+#: src/modules/volume/hal/hal_volume.c:65
+msgid "VCD"
+msgstr "VCD光盘"
+
+#: src/modules/volume/hal/hal_volume.c:66
+msgid "SVCD"
+msgstr "SVCD光盘"
+
+#: src/modules/volume/hal/hal_volume.c:67
+msgid "DVD"
+msgstr "DVD光盘"
+
+#: src/modules/volume/hal/hal_volume.c:68
+msgid "Data"
+msgstr "数据"
+
+#: src/modules/volume/mtab/mtab.c:77
+#, c-format
+msgid "[NFS] %s on %s"
+msgstr "[NFS] %s 在 %s"
+
+#: src/modules/volume/mtab/mtab.c:87
+#, c-format
+msgid "[SAMBA] %s on %s"
+msgstr "[SAMBA] %s 在 %s"
+
+#: src/modules/volume/mtab/mtab.c:149
+msgid "Volumes from mtab"
+msgstr "在mtab中的卷"
+
+#: src/modules/volume/mtab/mtab.c:151
+msgid "This module provide support for already mounted volumes"
+msgstr "这个模块用来提供已经安装好的卷"
+
+#: src/modules/volume/udev/udev.c:664
+msgid "Volumes from udev"
+msgstr "在udev中的卷"
+
+#: src/modules/volume/udev/udev.c:666
+msgid "This module provide support for removable volumes"
+msgstr "这个模块提供可移动的卷"
+
+#~ msgid "System games"
+#~ msgstr "系统游戏"
+#~ msgid "Music core"
+#~ msgstr "音乐核心"
+#~ msgid "This is the main music module"
+#~ msgstr "这是主要的音乐模块"
+#~ msgid "This is the main video module"
+#~ msgstr "这是主要的视频模块"
+#~ msgid "<c>Enna Information</c><br><br>"
+#~ msgstr "<c>Enna信息</c><br><br>"
+#~ msgid "<hilight>Enna: </hilight>%s<br>"
+#~ msgstr "<hilight>Enna: </hilight>%s<br>"
+#~ msgid "<hilight>libplayer: </hilight>%s<br>"
+#~ msgstr "<hilight>libplayer: </hilight>%s<br>"
+#~ msgid "<hilight>libvalhalla: </hilight>%s<br>"
+#~ msgstr "<hilight>libvalhalla: </hilight>%s<br>"
+#~ msgid "<hilight>libsvdrp: </hilight>%s<br>"
+#~ msgstr "<hilight>libsvdrp: </hilight>%s<br>"
+#~ msgid "<hilight>Video Renderer:</hilight> %s"
+#~ msgstr "<hilight>视频渲染器: </hilight>"
+#~ msgid "<hilight>Distribution: </hilight>"
+#~ msgstr "<hilight> 发行: </hilight>"
+#~ msgid "<hilight>OS: </hilight>"
+#~ msgstr "<hilight>操作系统: </hilight>"
+#~ msgid "%s %s for %s"
+#~ msgstr "%s %s 为 %s"
+#~ msgid "<hilight>Available CPUs: </hilight>"
+#~ msgstr "<hilight>可用的CPUs: </hilight>"
+#~ msgid "<hilight>CPU Load: </hilight>"
+#~ msgstr "<hilight>CPU使用: </hilight>"
+#~ msgid "<hilight>Memory: </hilight>"
+#~ msgstr "<hilight>内存: </hilight>"
+#~ msgid "%d MB used on %d MB total (%d%%)"
+#~ msgstr "%d MB 被使用, 总共有 %d MB (%d%%)"
+#~ msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
+#~ msgstr "%dx%d 在 %d Hz (最小: %dx%d, 最大: %dx%d)"
+#~ msgid "<hilight>VDR:</hilight> "
+#~ msgstr "<hilight>VDR:</hilight> "
+#~ msgid "  * %s (IP: %s, "
+#~ msgstr "* %s (IP地址: %s, "
+#~ msgid "<hilight>Default Gateway: </hilight>"
+#~ msgstr "<hilight>缺省网关: </hilight>"
+#~ msgid "<c>System Information</c><br><br>"
+#~ msgstr "<c>系统信息</c><br><br>"
+#~ msgid "<hl>Video: </hl> %s"
+#~ msgstr " <hl>视频: </hl> %s"
+#~ msgid "<hl>Audio: </hl> %s"
+#~ msgstr "<hl>声音: </hl> %s"
+
