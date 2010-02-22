@@ -27,6 +27,11 @@ typedef enum {
     TEMP_FAHRENHEIT
 } temp_type_t;
 
+typedef enum {
+    NORTHERN_HEMISPHERE,
+    SOUTHERN_HEMISPHERE
+} hemisphere_t;
+
 typedef struct weather_current_s {
     char *condition;
     char *temp;
@@ -48,6 +53,7 @@ typedef struct weather_smart_data_s {
     char *lang;
     char *date;
     temp_type_t temp;
+    hemisphere_t hemisphere;
     weather_current_t current;
     weather_forecast_t forecast[4];
 } weather_t;

@@ -90,6 +90,7 @@ stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/f
 [weather]
 city=New York
 unit=C
+hemisphere=N
 
 [media_db]
 path=file:///path/to/Music

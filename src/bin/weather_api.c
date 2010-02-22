@@ -44,12 +44,14 @@
 
 #define WEATHER_DEFAULT_CITY  "Paris"
 #define WEATHER_DEFAULT_TEMP  TEMP_CELCIUS
+#define WEATHER_DEFAULT_HEMISPHERE  NORTHERN_HEMISPHERE
 
 #undef DEBUG
 
 typedef struct weather_cfg_s {
     Eina_List *cities;
     temp_type_t unit;
+    hemisphere_t hemisphere;
 } weather_cfg_t;
 
 static weather_cfg_t weather_cfg;
@@ -104,6 +106,7 @@ weather_display_debug (weather_t *w)
     printf("** City: %s\n", w->city);
     printf("** Lang: %s\n", w->lang);
     printf("** Temp: %s\n", w->temp ? "F" : "C");
+    printf("** Hemisphere: %s\n", w->hemisphere ? "S" : "N");
     printf("** Date: %s\n", w->date);
     printf("**   Current:\n");
     printf("**     Condition: %s\n", w->current.condition);
@@ -464,6 +467,16 @@ _weather_config_panel_show(void *data)
                                NULL, _("°C"), _("°F"),
                                NULL, item);
 
+    item = enna_list2_append(_o_cfg_panel,
+                             _("Select hemisphere"),
+                             _("Select the hemisphere you are located in"),
+                             NULL,
+                             NULL, NULL);
+
+    enna_list2_item_toggle_add(item,
+                               NULL, _("Northern"), _("Southern"),
+                               NULL, item);                               
+
     if (!_input_listener)
         _input_listener = enna_input_listener_add("configuration/weather",
                                             _weather_config_panel_input_events_cb, NULL);
@@ -489,6 +502,7 @@ static void
 cfg_weather_section_load (const char *section)
 {
     Eina_List *cities;
+    const char *hemisphere = NULL;
     const char *unit = NULL;
 
     cities = enna_config_string_list_get(section, "city");
@@ -513,6 +527,15 @@ cfg_weather_section_load (const char *section)
         else if (!strcmp(unit, "F"))
             weather_cfg.unit = TEMP_FAHRENHEIT;
     }
+
+    hemisphere = enna_config_string_get(section, "hemisphere");
+    if (hemisphere)
+    {
+        if (!strcmp(hemisphere, "N"))
+            weather_cfg.hemisphere = NORTHERN_HEMISPHERE;
+        else if (!strcmp(hemisphere, "S"))
+            weather_cfg.hemisphere = SOUTHERN_HEMISPHERE;
+    }
 }
 
 static void
@@ -525,6 +548,8 @@ cfg_weather_section_save (const char *section)
         enna_config_string_set(section, "city", city);
     enna_config_string_set(section, "unit",
                            (weather_cfg.unit == TEMP_CELCIUS) ? "C" : "F");
+    enna_config_string_set(section, "hemisphere",
+                           (weather_cfg.hemisphere == NORTHERN_HEMISPHERE) ? "N" : "S");                           
 }
 
 static void
@@ -541,13 +566,23 @@ cfg_weather_section_set_default (void)
 {
     cfg_weather_free();
 
-    weather_cfg.cities = eina_list_append(weather_cfg.cities,
-                                          strdup(enna->geo_loc ?
-                                                 enna->geo_loc->geo :
-                                                 WEATHER_DEFAULT_CITY));
-
     weather_cfg.unit = WEATHER_DEFAULT_TEMP;
-
+    
+    if (enna->geo_loc)
+    {
+        weather_cfg.cities = eina_list_append(weather_cfg.cities,
+                                              strdup(enna->geo_loc->geo));
+        if(enna->geo_loc->latitude >= 0)
+            weather_cfg.hemisphere = NORTHERN_HEMISPHERE;
+        else
+            weather_cfg.hemisphere = SOUTHERN_HEMISPHERE;
+    }
+    else
+    {
+        weather_cfg.cities = eina_list_append(weather_cfg.cities,
+                                              strdup(WEATHER_DEFAULT_CITY));
+        weather_cfg.hemisphere = WEATHER_DEFAULT_HEMISPHERE;
+    }
 }
 
 static Enna_Config_Section_Parser cfg_weather = {
@@ -615,6 +650,7 @@ enna_weather_new (char *city)
     w = ENNA_NEW(weather_t, 1);
     w->lang = get_lang();
     w->temp = WEATHER_DEFAULT_TEMP;
+    w->hemisphere = weather_cfg.hemisphere;
     w->city = city ? strdup(city) : strdup(WEATHER_DEFAULT_CITY);
 
     return w;

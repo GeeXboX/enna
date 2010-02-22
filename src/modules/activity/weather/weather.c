@@ -203,18 +203,36 @@ set_default_background (void)
     t = time (NULL);
     ti = localtime (&t);
 
-    /* spring: March - May */
-    if (ti->tm_mon >= 2 && ti->tm_mon <= 4)
-        season = 0;
-    /* summer: June - August */
-    else if (ti->tm_mon >= 5 && ti->tm_mon <= 7)
-        season = 1;
-    /* fall: September - November */
-    else if (ti->tm_mon >= 8 && ti->tm_mon <= 10)
-        season = 2;
-    /* winter: December - February */
-    else if (ti->tm_mon >= 11 || ti->tm_mon <= 1)
-        season = 3;
+    if (mod->w->hemisphere == NORTHERN_HEMISPHERE)
+    {
+        /* spring: March - May */
+        if (ti->tm_mon >= 2 && ti->tm_mon <= 4)
+            season = 0;
+        /* summer: June - August */
+        else if (ti->tm_mon >= 5 && ti->tm_mon <= 7)
+            season = 1;
+        /* fall: September - November */
+        else if (ti->tm_mon >= 8 && ti->tm_mon <= 10)
+            season = 2;
+        /* winter: December - February */
+        else if (ti->tm_mon >= 11 || ti->tm_mon <= 1)
+            season = 3;
+    }
+    else
+    {
+        /* spring: September - November */
+        if (ti->tm_mon >= 8 && ti->tm_mon <= 10)
+            season = 0;
+        /* summer: December - February */
+        else if (ti->tm_mon >= 11 || ti->tm_mon <= 1)
+            season = 1;
+        /* fall: March - May */
+        else if (ti->tm_mon >= 2 && ti->tm_mon <= 4)
+            season = 2;
+        /* winter: June - August */
+        else if (ti->tm_mon >= 5 && ti->tm_mon <= 7)
+            season = 3;
+    }
 
     set_background (season);
 }
