@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-14 09:12+0100\n"
+"POT-Creation-Date: 2010-02-22 16:32+0100\n"
 "PO-Revision-Date: 2010-01-19 12:17-0300\n"
 "Last-Translator: André Luís de Andrade Mendes <andreluis.mendes+poedit@gmail."
 "com>\n"
@@ -25,59 +25,59 @@ msgstr "Nenhum arquivo multimídia encontrado!"
 msgid "Main menu"
 msgstr "Menu principal"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:494
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:495
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opções ...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:496
 #, c-format
 msgid " Available options:\n"
 msgstr "Opções disponíveis:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 "  -c, (--config):   Especifique o arquivo de configuração a ser utilizado.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):       Forçar modo de tela cheia.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     Mostra esta ajuda.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:500
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    Especifique o nome do tema a ser usado.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): Especifique a resolução da janela. (geometria=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:502
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (--perfil): Especifique um perfil para a tela\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:503
 #, c-format
 msgid "    Supported: "
 msgstr "Suportados:"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  Mostra o número da versão do Enna.\n"
@@ -98,7 +98,7 @@ msgstr "Não, quero continuar a usar o Enna."
 msgid "Modules"
 msgstr "Módulos"
 
-#: src/bin/module.c:406
+#: src/bin/module.c:402
 msgid "No information provided"
 msgstr "Nenhuma informação EXIF encontrada."
 
@@ -107,56 +107,72 @@ msgstr "Nenhuma informação EXIF encontrada."
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Faixa #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:402 src/bin/weather_api.c:435
+#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
 msgid "City"
 msgstr "Cidade"
 
-#: src/bin/weather_api.c:403
-#, fuzzy
+#: src/bin/weather_api.c:406
 msgid "Choose your City"
-msgstr "Escolha a sua cidade"
+msgstr "Escolha a sua Cidade"
 
-#: src/bin/weather_api.c:407
+#: src/bin/weather_api.c:410
 msgid "Enter your City here"
-msgstr ""
+msgstr "Entra a sua Cidade aqui"
 
-#: src/bin/weather_api.c:410 src/bin/weather_api.c:443
+#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
 msgstr "Remover"
 
-#: src/bin/weather_api.c:436
+#: src/bin/weather_api.c:439
 msgid "Choose your city"
 msgstr "Escolha a sua cidade"
 
-#: src/bin/weather_api.c:448
+#: src/bin/weather_api.c:451
 msgid "Add new city"
 msgstr "Adicionar uma nova cidade"
 
-#: src/bin/weather_api.c:449
+#: src/bin/weather_api.c:452
 msgid "Add more cities to the list"
 msgstr "Adicionar mais cidades a lista"
 
-#: src/bin/weather_api.c:454
+#: src/bin/weather_api.c:457
 msgid "Add"
 msgstr "Adicionar"
 
-#: src/bin/weather_api.c:458
+#: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr ""
+msgstr "Selecione a unidade"
 
-#: src/bin/weather_api.c:459
+#: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr ""
+msgstr "Selecionar a unidade para mostrar a temperatura"
 
-#: src/bin/weather_api.c:464
+#: src/bin/weather_api.c:467
 msgid "°C"
-msgstr ""
+msgstr "°C"
 
-#: src/bin/weather_api.c:464
+#: src/bin/weather_api.c:467
 msgid "°F"
+msgstr "°F"
+
+#: src/bin/weather_api.c:471
+msgid "Select hemisphere"
 msgstr ""
 
-#: src/bin/weather_api.c:669 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:472
+#, fuzzy
+msgid "Select the hemisphere you are located in"
+msgstr "Mostra a previsão do tempo para a sua localidade"
+
+#: src/bin/weather_api.c:477
+msgid "Northern"
+msgstr ""
+
+#: src/bin/weather_api.c:477
+msgid "Southern"
+msgstr ""
+
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
 msgstr "Meteorologia"
 
@@ -374,27 +390,27 @@ msgstr "Foto"
 msgid "Browse your photos and create slideshows"
 msgstr "Navegue por suas fotos e crie apresentações de slides"
 
-#: src/modules/activity/tv/tv.c:102
+#: src/modules/activity/tv/tv.c:104
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "O cronômetro '%s' vai começar em %i minuto"
 msgstr[1] "O cronômetro '%s' vai começar em %i minutos"
 
-#: src/modules/activity/tv/tv.c:104
+#: src/modules/activity/tv/tv.c:106
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Gravando '%s'"
 
-#: src/modules/activity/tv/tv.c:113
+#: src/modules/activity/tv/tv.c:115
 msgid "Recording in progress"
 msgstr "Gravação em andamento"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:365
+#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Televisão"
 
-#: src/modules/activity/tv/tv.c:367
+#: src/modules/activity/tv/tv.c:371
 msgid "View TV channels"
 msgstr "Veja os canais da TV"
 
@@ -431,20 +447,20 @@ msgstr "Nenhuma informação adicional pode ser encontrada"
 msgid "%d Movies"
 msgstr "%d Filmes"
 
-#: src/modules/activity/video/video.c:915
-#: src/modules/activity/video/video.c:1006
+#: src/modules/activity/video/video.c:916
+#: src/modules/activity/video/video.c:1007
 msgid "Video"
 msgstr "Vídeo"
 
-#: src/modules/activity/video/video.c:1008
+#: src/modules/activity/video/video.c:1009
 msgid "Play your videos"
 msgstr "Assistir seus vídeos:"
 
-#: src/modules/activity/weather/weather.c:330
+#: src/modules/activity/weather/weather.c:348
 msgid "Weather forecasts"
 msgstr "Previsão do tempo"
 
-#: src/modules/activity/weather/weather.c:332
+#: src/modules/activity/weather/weather.c:350
 msgid "Show the weather at your location"
 msgstr "Mostra a previsão do tempo para a sua localidade"
 
@@ -531,21 +547,20 @@ msgstr "Navegador do SHOUTcast"
 msgid "Listen to SHOUTcast stream"
 msgstr "Escutar um fluxo SHOUTcast"
 
-#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
-#: src/modules/browser/upnp/upnp.c:516
+#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
 msgid "UPnP/DLNA media servers"
 msgstr "Servidores multimídia UPnP/DLNA"
 
-#: src/modules/browser/upnp/upnp.c:571
+#: src/modules/browser/upnp/upnp.c:530
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Encontrado um novo periférico UPnP '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:659
+#: src/modules/browser/upnp/upnp.c:615
 msgid "UPnP/DLNA module"
 msgstr "Módulo do UPnP/DLNA"
 
-#: src/modules/browser/upnp/upnp.c:661
+#: src/modules/browser/upnp/upnp.c:617
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 "Este módulo permite ao Enna explorar o conteúdo de servidores UPnP/DLNA"
