@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-14 09:12+0100\n"
+"POT-Creation-Date: 2010-02-22 16:32+0100\n"
 "PO-Revision-Date: 2010-02-02 17:30+01:00\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -25,58 +25,58 @@ msgstr "Intet medie fundet!"
 msgid "Main menu"
 msgstr "Hovedmenu"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:494
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna - mediecenter\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:495
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Brug: %s [tilvalg...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:496
 #, c-format
 msgid " Available options:\n"
 msgstr " Tilgængelige tilvalg:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angiv den konfigurationsfil der skal bruges.\n"
 
 # måske Start i fuldskærmtilstand
-#: src/bin/enna.c:497
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Fremtving fuldskærmtilstand.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Vis denne hjælpetekst.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:500
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angiv temanavn der skal bruges.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Angiv vinduesgeometri. (geometri=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:502
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Angiv skærmprofil\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:503
 #, c-format
 msgid "    Supported: "
 msgstr "    Understøttet: "
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Vis versionsnummeret for Enna.\n"
@@ -97,7 +97,7 @@ msgstr "Nej, fortsæt med at bruge Enna"
 msgid "Modules"
 msgstr "Moduler"
 
-#: src/bin/module.c:406
+#: src/bin/module.c:402
 msgid "No information provided"
 msgstr "Ingen information angivet"
 
@@ -106,56 +106,73 @@ msgstr "Ingen information angivet"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Titel #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:402 src/bin/weather_api.c:435
+#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
 msgid "City"
 msgstr "By"
 
-#: src/bin/weather_api.c:403
+#: src/bin/weather_api.c:406
 #, fuzzy
 msgid "Choose your City"
 msgstr "Vælg din by"
 
-#: src/bin/weather_api.c:407
+#: src/bin/weather_api.c:410
 msgid "Enter your City here"
 msgstr ""
 
-#: src/bin/weather_api.c:410 src/bin/weather_api.c:443
+#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
 msgstr "Fjern"
 
-#: src/bin/weather_api.c:436
+#: src/bin/weather_api.c:439
 msgid "Choose your city"
 msgstr "Vælg din by"
 
-#: src/bin/weather_api.c:448
+#: src/bin/weather_api.c:451
 msgid "Add new city"
 msgstr "Tilføj ny by"
 
-#: src/bin/weather_api.c:449
+#: src/bin/weather_api.c:452
 msgid "Add more cities to the list"
 msgstr "Tilføj flere byer til listen"
 
-#: src/bin/weather_api.c:454
+#: src/bin/weather_api.c:457
 msgid "Add"
 msgstr "Tilføj"
 
-#: src/bin/weather_api.c:458
+#: src/bin/weather_api.c:461
 msgid "Select unit"
 msgstr ""
 
-#: src/bin/weather_api.c:459
+#: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
 msgstr ""
 
-#: src/bin/weather_api.c:464
+#: src/bin/weather_api.c:467
 msgid "°C"
 msgstr ""
 
-#: src/bin/weather_api.c:464
+#: src/bin/weather_api.c:467
 msgid "°F"
 msgstr ""
 
-#: src/bin/weather_api.c:669 src/modules/activity/weather/weather.c:273
+#: src/bin/weather_api.c:471
+msgid "Select hemisphere"
+msgstr ""
+
+#: src/bin/weather_api.c:472
+#, fuzzy
+msgid "Select the hemisphere you are located in"
+msgstr "Vis vejret hvor du bor"
+
+#: src/bin/weather_api.c:477
+msgid "Northern"
+msgstr ""
+
+#: src/bin/weather_api.c:477
+msgid "Southern"
+msgstr ""
+
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
 msgstr "Vejr"
 
@@ -373,27 +390,27 @@ msgstr "Foto"
 msgid "Browse your photos and create slideshows"
 msgstr "Se dine billeder og opret diasshow"
 
-#: src/modules/activity/tv/tv.c:102
+#: src/modules/activity/tv/tv.c:104
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Tidtager '%s' starter om %i minut"
 msgstr[1] "Tidtager '%s' starter om %i minutter"
 
-#: src/modules/activity/tv/tv.c:104
+#: src/modules/activity/tv/tv.c:106
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Optager aktuelt '%s'"
 
-#: src/modules/activity/tv/tv.c:113
+#: src/modules/activity/tv/tv.c:115
 msgid "Recording in progress"
 msgstr "Optagelse i gang"
 
-#: src/modules/activity/tv/tv.c:154 src/modules/activity/tv/tv.c:365
+#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Fjernsyn"
 
-#: src/modules/activity/tv/tv.c:367
+#: src/modules/activity/tv/tv.c:371
 msgid "View TV channels"
 msgstr "Vis tv-kanaler"
 
@@ -430,20 +447,20 @@ msgstr "Ingen yderligere information kan indhentes"
 msgid "%d Movies"
 msgstr "%d film"
 
-#: src/modules/activity/video/video.c:915
-#: src/modules/activity/video/video.c:1006
+#: src/modules/activity/video/video.c:916
+#: src/modules/activity/video/video.c:1007
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/video/video.c:1008
+#: src/modules/activity/video/video.c:1009
 msgid "Play your videos"
 msgstr "Afspil dine videoer"
 
-#: src/modules/activity/weather/weather.c:330
+#: src/modules/activity/weather/weather.c:348
 msgid "Weather forecasts"
 msgstr "Vejrmeldinger"
 
-#: src/modules/activity/weather/weather.c:332
+#: src/modules/activity/weather/weather.c:350
 msgid "Show the weather at your location"
 msgstr "Vis vejret hvor du bor"
 
@@ -530,21 +547,20 @@ msgstr "SHOUTcast-browser"
 msgid "Listen to SHOUTcast stream"
 msgstr "Lyt til SHOUTcast-strøm"
 
-#: src/modules/browser/upnp/upnp.c:480 src/modules/browser/upnp/upnp.c:498
-#: src/modules/browser/upnp/upnp.c:516
+#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
 msgid "UPnP/DLNA media servers"
 msgstr "UPnp/DLNA-medieservere"
 
-#: src/modules/browser/upnp/upnp.c:571
+#: src/modules/browser/upnp/upnp.c:530
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Fandt ny UPnP-enhed '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:659
+#: src/modules/browser/upnp/upnp.c:615
 msgid "UPnP/DLNA module"
 msgstr "UPnP/DLNA-modul"
 
-#: src/modules/browser/upnp/upnp.c:661
+#: src/modules/browser/upnp/upnp.c:617
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 "Dette modul tillader Enna at gennemse indhold fra UPnP/DLNA-medieservere"
