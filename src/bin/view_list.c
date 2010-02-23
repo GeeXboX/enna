@@ -360,6 +360,8 @@ enna_list_jump_ascii(Evas_Object *obj, char k)
     }
 }
 
+#define LIST_SEEK_OFFSET 5
+
 Eina_Bool
 enna_list_input_feed(Evas_Object *obj, enna_input event)
 {
@@ -381,10 +383,10 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
         case ENNA_INPUT_PREV:
             if (ns == 0) /* we're at first one, go to last */
                 _smart_select_item(sd, total - 1);
-            else if (ns - 5 < 0) /* go to first element */
+            else if (ns - LIST_SEEK_OFFSET < 0) /* go to first element */
                 _smart_select_item(sd, 0);
             else
-                list_set_item(sd, ns, 0, 5);
+                list_set_item(sd, ns, 0, LIST_SEEK_OFFSET);
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_DOWN:
@@ -397,10 +399,10 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
         case ENNA_INPUT_NEXT:
             if (ns == total - 1) /* we're at last one, go to first */
                 _smart_select_item(sd, 0);
-            else if (ns + 5 > total - 1) /* go to last element */
+            else if (ns + LIST_SEEK_OFFSET > total - 1) /* go to last element */
                 _smart_select_item(sd, total - 1);
             else
-                list_set_item(sd, ns, 1, 5);
+                list_set_item(sd, ns, 1, LIST_SEEK_OFFSET);
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_FIRST:
