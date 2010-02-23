@@ -363,27 +363,44 @@ enna_list_jump_ascii(Evas_Object *obj, char k)
 Eina_Bool
 enna_list_input_feed(Evas_Object *obj, enna_input event)
 {
-    int ns;
+    int ns, total;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
     ns = enna_list_selected_get(obj);
+    total = eina_list_count(sd->items);
 
     switch (event)
     {
         case ENNA_INPUT_UP:
-            list_set_item(sd, ns, 0, 1);
+            if (ns == 0)
+                _smart_select_item(sd, total - 1);
+            else
+                list_set_item(sd, ns, 0, 1);
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_PREV:
-            list_set_item(sd, ns, 0, 5);
+            if (ns == 0) /* we're at first one, go to last */
+                _smart_select_item(sd, total - 1);
+            else if (ns - 5 < 0) /* go to first element */
+                _smart_select_item(sd, 0);
+            else
+                list_set_item(sd, ns, 0, 5);
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_DOWN:
-            list_set_item(sd, ns, 1, 1);
+            if (ns == total - 1)
+                _smart_select_item(sd, 0);
+            else
+                list_set_item(sd, ns, 1, 1);
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_NEXT:
-            list_set_item(sd, ns, 1, 5);
+            if (ns == total - 1) /* we're at last one, go to first */
+                _smart_select_item(sd, 0);
+            else if (ns + 5 > total - 1) /* go to last element */
+                _smart_select_item(sd, total - 1);
+            else
+                list_set_item(sd, ns, 1, 5);
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_FIRST:
