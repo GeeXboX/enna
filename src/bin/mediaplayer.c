@@ -729,6 +729,7 @@ static const struct {
     { "auto",       PLAYER_AO_AUTO           },
     { "alsa",       PLAYER_AO_ALSA           },
     { "oss",        PLAYER_AO_OSS            },
+    { "pulse",      PLAYER_AO_PULSE          },
     { NULL,         PLAYER_AO_NULL           }
 };
 
