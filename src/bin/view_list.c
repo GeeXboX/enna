@@ -404,11 +404,11 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_FIRST:
-            list_set_item(sd, -1, 1, 1);
+            _smart_select_item(sd, 0);
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_LAST:
-            list_set_item(sd, eina_list_count(sd->items), 0, 1);
+            _smart_select_item(sd, total - 1);
             return ENNA_EVENT_BLOCK;
             break;
         case ENNA_INPUT_OK:
