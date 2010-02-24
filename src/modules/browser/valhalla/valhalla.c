@@ -53,12 +53,6 @@ typedef enum _Meta_Name
     META_TRACK,
 } Meta_Name;
 
-typedef struct _Callback_Data {
-    Eina_List  **list;
-    unsigned int it;
-    valhalla_file_type_t ftype;
-} Callback_Data;
-
 typedef struct _Enna_Module_Valhalla
 {
     Enna_Module   *em;
@@ -202,7 +196,7 @@ static Enna_Module_Valhalla *mod;
 
 static void
 _vfs_add_dir(Eina_List **list, unsigned int it,
-             valhalla_db_metares_t *res, const char *icon)
+             const valhalla_db_metares_t *res, const char *icon)
 {
     Enna_Vfs_File *file;
     char str[128];
@@ -215,79 +209,70 @@ _vfs_add_dir(Eina_List **list, unsigned int it,
 
 static void
 _vfs_add_file(Eina_List **list,
-              valhalla_db_fileres_t *file,
-              valhalla_db_filemeta_t *metadata,
-              const char *icon)
+              const valhalla_db_fileres_t *file,
+              const char *title, const char *track, const char *icon)
 {
     Enna_Vfs_File *f;
     char buf[PATH_BUFFER];
     char name[256];
     char *it;
-    unsigned int i;
-    valhalla_db_filemeta_t *md_it;
-
-    struct {
-        const char *n;
-        const char *v;
-    } map[] = {
-        [META_TITLE]     = { "title",              NULL },
-        [META_TRACK]     = { "track",              NULL },
-    };
 
     snprintf(buf, sizeof(buf), "file://%s", file->path);
     it = strrchr(buf, '/');
 
-    for (md_it = metadata; md_it; md_it = md_it->next)
-        for (i = 0; i < ARRAY_NB_ELEMENTS(map); i++)
-            if (!map[i].v && !strcmp(md_it->meta_name, map[i].n))
-                map[i].v = md_it->data_value;
-
-    if (map[META_TRACK].v)
+    if (track)
         snprintf(name, sizeof(name), "%2i - %s",
-                 atoi(map[META_TRACK].v),
-                 map[META_TITLE].v ? map[META_TITLE].v : it + 1);
+                 atoi(track), title ? title : it + 1);
     else
-        snprintf(name, sizeof(name), "%s",
-                 map[META_TITLE].v ? map[META_TITLE].v : it + 1);
+        snprintf(name, sizeof(name), "%s", title ? title : it + 1);
 
     f = enna_vfs_create_file(buf, name, icon, NULL);
     *list = eina_list_append(*list, f);
 }
 
-static int
-_result_dir_cb(void *data, valhalla_db_metares_t *res)
-{
-    Callback_Data *vh = data;
-
-    if (!data || !res)
-        return 0;
-
-    _vfs_add_dir(vh->list, vh->it, res, NULL);
-    return 0;
-}
-
-static int
-_result_file_cb(void *data, valhalla_db_fileres_t *res)
+static void
+_result_file(const valhalla_db_fileres_t *res,
+             valhalla_file_type_t ftype, Eina_List **list)
 {
     const valhalla_metadata_pl_t priority = VALHALLA_METADATA_PL_NORMAL;
-    Callback_Data *vh = data;
-    valhalla_db_filemeta_t *metadata = NULL;
+    valhalla_db_stmt_t *stmt;
+    const valhalla_db_metares_t *metares;
     valhalla_db_restrict_t r1 =
         VALHALLA_DB_RESTRICT_STR(EQUAL, "title", NULL, priority);
     valhalla_db_restrict_t r2 =
         VALHALLA_DB_RESTRICT_STR(EQUAL, "track", NULL, priority);
+    unsigned int i;
+
+    struct {
+        const char *n;
+        char *v;
+    } map[] = {
+        [META_TITLE]     = { "title",              NULL },
+        [META_TRACK]     = { "track",              NULL },
+    };
 
     if (!res)
-        return 0;
+        return;
 
-    if (vh->ftype == VALHALLA_FILE_TYPE_AUDIO)
+    if (ftype == VALHALLA_FILE_TYPE_AUDIO)
         VALHALLA_DB_RESTRICT_LINK(r2, r1);
 
     /* retrieve the track and the title */
-    valhalla_db_file_get(mod->valhalla, res->id, NULL, &r1, &metadata);
-    _vfs_add_file(vh->list, res, metadata, "icon/file/music");
-    VALHALLA_DB_FILEMETA_FREE(metadata);
-    return 0;
+    stmt = valhalla_db_file_get(mod->valhalla, res->id, NULL, &r1);
+    if (!stmt)
+        return;
+
+    while ((metares = valhalla_db_file_read(mod->valhalla, stmt)))
+        for (i = 0; i < ARRAY_NB_ELEMENTS(map); i++)
+            if (!map[i].v && !strcmp(metares->meta_name, map[i].n))
+                map[i].v = strdup(metares->data_value);
+
+    _vfs_add_file(list, res,
+                  map[META_TITLE].v, map[META_TRACK].v, "icon/file/music");
+
+    for (i = 0; i < ARRAY_NB_ELEMENTS(map); i++)
+        if (map[i].v)
+            free(map[i].v);
 }
 
 static int
@@ -309,23 +294,24 @@ static Eina_List *
 _browse_list_data(const Browser_Item *item, valhalla_file_type_t ftype,
                   unsigned int it, int64_t id_m, int64_t id_d)
 {
-    Callback_Data vh;
     Eina_List *l = NULL;
+    valhalla_db_stmt_t *stmt;
+    const valhalla_db_metares_t *metares;
     valhalla_db_item_t search =
         VALHALLA_DB_SEARCH_TEXT(item->meta, NIL, item->priority);
     valhalla_db_restrict_t r1 =
         VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d, item->priority);
     valhalla_db_restrict_t *r = NULL;
 
-    vh.list  = &l;
-    vh.it    = it;
-    vh.ftype = ftype;
-
     if (tree_meta[it].level > LEVEL_ONE)
         r = &r1;
 
-    valhalla_db_metalist_get(mod->valhalla,
-                             &search, ftype, r, _result_dir_cb, &vh);
+    stmt = valhalla_db_metalist_get(mod->valhalla, &search, ftype, r);
+    if (!stmt)
+        return NULL;
+
+    while ((metares = valhalla_db_metalist_read(mod->valhalla, stmt)))
+        _vfs_add_dir(&l, it, metares, NULL);
 
     l = eina_list_sort(l, eina_list_count(l), _sort_cb);
     return l;
@@ -336,8 +322,9 @@ _browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
                   unsigned int it, int64_t id_m, int64_t id_d,
                   valhalla_metadata_pl_t priority)
 {
-    Callback_Data vh;
     Eina_List *l = NULL;
+    valhalla_db_stmt_t *stmt;
+    const valhalla_db_fileres_t *fileres;
     valhalla_db_restrict_t r =
         VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d, priority);
 
@@ -348,11 +335,12 @@ _browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
         rp = &r;
     }
 
-    vh.list  = &l;
-    vh.it    = it;
-    vh.ftype = ftype;
+    stmt = valhalla_db_filelist_get(mod->valhalla, ftype, rp);
+    if (!stmt)
+        return NULL;
 
-    valhalla_db_filelist_get(mod->valhalla, ftype, rp, _result_file_cb, &vh);
+    while ((fileres = valhalla_db_filelist_read(mod->valhalla, stmt)))
+        _result_file(fileres, ftype, &l);
 
     l = eina_list_sort(l, eina_list_count(l), _sort_cb);
     return l;
