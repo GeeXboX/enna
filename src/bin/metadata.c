@@ -72,6 +72,13 @@ typedef struct db_cfg_s {
     valhalla_verb_t verbosity;
 } db_cfg_t;
 
+struct _Enna_Metadata
+{
+    struct _Enna_Metadata *next;
+    char *meta;
+    char *data;
+};
+
 static db_cfg_t db_cfg;
 static valhalla_t *vh = NULL;
 
@@ -456,7 +463,9 @@ enna_metadata_get_db(void)
 Enna_Metadata *
 enna_metadata_meta_new(const char *file)
 {
-  valhalla_db_filemeta_t *m = NULL;
+  Enna_Metadata *m = NULL, *it;
+  valhalla_db_stmt_t *stmt;
+  const valhalla_db_metares_t *metares;
   int shift = 0;
 
   if (!vh || !file)
@@ -467,24 +476,55 @@ enna_metadata_meta_new(const char *file)
 
   enna_log (ENNA_MSG_EVENT,
             MODULE_NAME, "Request for metadata on %s", file + shift);
-  valhalla_db_file_get(vh, 0, file + shift, NULL, &m);
+  stmt = valhalla_db_file_get(vh, 0, file + shift, NULL);
+  if (!stmt)
+      return NULL;
 
-  return (Enna_Metadata *) m;
+  while ((metares = valhalla_db_file_read(vh, stmt)))
+  {
+    Enna_Metadata *new;
+    new = calloc(1, sizeof(Enna_Metadata));
+    if (!new)
+        continue;
+
+    new->meta = strdup(metares->meta_name);
+    new->data = strdup(metares->data_value);
+
+    if (m)
+    {
+        it->next = new;
+        it = it->next;
+    }
+    else
+        m = it = new;
+  }
+
+  return m;
 }
 
 void
 enna_metadata_meta_free(Enna_Metadata *meta)
 {
-    valhalla_db_filemeta_t *m = (void *) meta;
+    Enna_Metadata *next;
 
-    if (m)
-        VALHALLA_DB_FILEMETA_FREE(m);
+    if (!meta)
+        return;
+
+    while (meta)
+    {
+        next = meta->next;
+        if (meta->meta)
+            free(meta->meta);
+        if (meta->data)
+            free(meta->data);
+        free(meta);
+        meta = next;
+    }
 }
 
 char *
 enna_metadata_meta_get(Enna_Metadata *meta, const char *name, int max)
 {
-  valhalla_db_filemeta_t *m, *n;
   int count = 0;
   buffer_t *b;
   char *str = NULL;
@@ -493,23 +533,18 @@ enna_metadata_meta_get(Enna_Metadata *meta, const char *name, int max)
       return NULL;
 
   b = buffer_new();
-  m = (valhalla_db_filemeta_t *) meta;
-  n = m;
 
-  while (n)
-  {
-      if (n->meta_name && !strcmp(n->meta_name, name))
+  for (; meta; meta = meta->next)
+      if (meta->meta && !strcmp(meta->meta, name))
       {
           if (count == 0)
-              buffer_append(b, n->data_value);
+              buffer_append(b, meta->data);
           else
-              buffer_appendf(b, ", %s", n->data_value);
+              buffer_appendf(b, ", %s", meta->data);
           count++;
           if (count >= max)
               break;
       }
-      n = n->next;
-  }
 
   str = b->buf ? strdup(b->buf) : NULL;
   if (str)
@@ -524,7 +559,6 @@ enna_metadata_meta_get(Enna_Metadata *meta, const char *name, int max)
 char *
 enna_metadata_meta_get_all(Enna_Metadata *meta)
 {
-  valhalla_db_filemeta_t *m, *n;
   buffer_t *b;
   char *str = NULL;
 
@@ -532,14 +566,9 @@ enna_metadata_meta_get_all(Enna_Metadata *meta)
       return NULL;
 
   b = buffer_new();
-  m = (valhalla_db_filemeta_t *) meta;
-  n = m;
 
-  while (n)
-  {
-      buffer_appendf(b, "%s: %s\n", n->meta_name, n->data_value);
-      n = n->next;
-  }
+  for (; meta; meta = meta->next)
+      buffer_appendf(b, "%s: %s\n", meta->meta, meta->data);
 
   str = b->buf ? strdup(b->buf) : NULL;
   buffer_free(b);

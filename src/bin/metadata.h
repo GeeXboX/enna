@@ -22,7 +22,7 @@
 #ifndef METADATA_H
 #define METADATA_H
 
-typedef void * Enna_Metadata;
+typedef struct _Enna_Metadata Enna_Metadata;
 
 void enna_metadata_cfg_register(void);
 void enna_metadata_init(void);
