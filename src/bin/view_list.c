@@ -106,7 +106,7 @@ _list_item_label_get(const void *data, Evas_Object *obj, const char *part)
 
     if (!li || !li->file) return NULL;
 
-    return strdup(li->file->label);
+    return li->file->label ? strdup(li->file->label) : NULL;
 }
 
 static Evas_Object *
