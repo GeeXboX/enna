@@ -9,8 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-02-22 16:32+0100\n"
 "PO-Revision-Date: 2010-01-19 12:17-0300\n"
-"Last-Translator: André Luís de Andrade Mendes <andreluis.mendes+poedit@gmail."
-"com>\n"
+"Last-Translator: André Luís de Andrade Mendes <andreluis.mendes+poedit@gmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,8 +42,7 @@ msgstr "Opções disponíveis:\n"
 #: src/bin/enna.c:497
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr ""
-"  -c, (--config):   Especifique o arquivo de configuração a ser utilizado.\n"
+msgstr "  -c, (--config):   Especifique o arquivo de configuração a ser utilizado.\n"
 
 #: src/bin/enna.c:498
 #, c-format
@@ -64,8 +62,7 @@ msgstr "  -t, (--theme):    Especifique o nome do tema a ser usado.\n"
 #: src/bin/enna.c:501
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry): Especifique a resolução da janela. (geometria=1280x720)\n"
+msgstr "  -g, (--geometry): Especifique a resolução da janela. (geometria=1280x720)\n"
 
 #: src/bin/enna.c:502
 #, c-format
@@ -141,7 +138,7 @@ msgstr "Adicionar"
 
 #: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr "Selecione a unidade"
+msgstr "Selecionar a unidade"
 
 #: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
@@ -157,20 +154,19 @@ msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Selecionar o hemisfério"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Mostra a previsão do tempo para a sua localidade"
+msgstr "Selecionar o hemisfério no qual você está localizado"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Norte"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Sul"
 
 #: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
@@ -348,12 +344,8 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>Jogo rodando..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
-"<c>Erro do Mame</c><br><b>Nenhuma ROM encontrado neste caminho<b><br>ROMs "
-"devem estar localizadas em: ~/.mame/roms<br> "
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Erro do Mame</c><br><b>Nenhuma ROM encontrado neste caminho<b><br>ROMs devem estar localizadas em: ~/.mame/roms<br> "
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
@@ -562,8 +554,7 @@ msgstr "Módulo do UPnP/DLNA"
 
 #: src/modules/browser/upnp/upnp.c:617
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr ""
-"Este módulo permite ao Enna explorar o conteúdo de servidores UPnP/DLNA"
+msgstr "Este módulo permite ao Enna explorar o conteúdo de servidores UPnP/DLNA"
 
 #: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
