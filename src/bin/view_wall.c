@@ -668,6 +668,7 @@ _smart_add(Evas_Object * obj)
     sd->obj = obj;
     sd->nb = -1;
     sd->o_scroll = elm_scroller_add(obj);
+    elm_object_style_set(sd->o_scroll, "enna");
 
     elm_scroller_policy_set(sd->o_scroll, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_OFF);
     elm_scroller_bounce_set(sd->o_scroll, 0, 0);

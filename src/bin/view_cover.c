@@ -429,6 +429,7 @@ enna_view_cover_add(Evas * evas, int horizontal)
     Smart_Data *sd;
 
     obj = elm_scroller_add(enna->layout);
+    elm_object_style_set(obj, "enna");
     sd = calloc(1, sizeof(Smart_Data));
 
     sd->obj = obj;
