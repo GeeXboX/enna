@@ -69,12 +69,12 @@ msgstr "-g, (--geometry):指定窗口大小。(geometry=1280x720)\n"
 #: src/bin/enna.c:502
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
+msgstr "  -p, (--profile): 指定显示文件\n"
 
 #: src/bin/enna.c:503
-#, c-format
+#, c-format, fuzzy
 msgid "    Supported: "
-msgstr ""
+msgstr "已支持: "
 
 #: src/bin/enna.c:507
 #, c-format
@@ -117,7 +117,7 @@ msgstr "选择你的城市"
 
 #: src/bin/weather_api.c:410
 msgid "Enter your City here"
-msgstr ""
+msgstr "输入你的城市"
 
 #: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
@@ -141,23 +141,25 @@ msgstr "添加"
 
 #: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr ""
+msgstr "选择单位"
 
 #: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr ""
+msgstr "选择显示温度的单位"
 
 #: src/bin/weather_api.c:467
+#, fuzzy
 msgid "°C"
-msgstr ""
+msgstr "°C"
 
 #: src/bin/weather_api.c:467
+#, fuzzy
 msgid "°F"
-msgstr ""
+msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "选择半球"
 
 #: src/bin/weather_api.c:472
 #, fuzzy
@@ -166,11 +168,11 @@ msgstr "显示你本地的天气"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "北半球"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "南半球"
 
 #: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
@@ -344,18 +346,19 @@ msgid "Play all your games directly from Enna"
 msgstr "直接用Enna来玩你所有的游戏"
 
 #: src/modules/activity/games/games_mame.c:81
+#, fuzzy
 msgid "<c>M.A.M.E.</c><br>Game running..."
-msgstr ""
+msgstr "<c>M.A.M.E.</c><br>游戏正在运行中..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
+#, fuzzy
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Mame错误</c><br><b>没有找到roms</b><br>Roms必需放置在以下目录: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
+#, fuzzy
 msgid "<c>System Games</c><br>Game running..."
-msgstr ""
+msgstr "<c>系统游戏</c><br>游戏正在运行中..."
 
 #: src/modules/activity/games/games_sys.c:257
 #, fuzzy
