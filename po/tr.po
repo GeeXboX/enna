@@ -1,30 +1,32 @@
-# Russian translations for enna package.
+# translation of enna.trunk.po to
+# Turkish translations for enna package.
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
-# Kostyantyn Derets <ua.motofan@gmail.com>, 2010.
-# 
+# winn <mutoturk@gmail.com>, 2010.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: enna 0.4.0\n"
+"Project-Id-Version: enna.trunk\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-02-22 16:32+0100\n"
-"PO-Revision-Date: \n"
-"Last-Translator: winn <mutoturk@gmail.com>\n"
-"Language-Team: Russian\n"
+"PO-Revision-Date: 2010-02-26 18:22+0200\n"
+"Last-Translator: \n"
+"Language-Team:  <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=0;\n"
-"X-Poedit-Language: Russian\n"
-"X-Poedit-Country: RUSSIA\n"
+"X-Poedit-Language: Turkish\n"
+"X-Poedit-Country: TURKEY\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: src/bin/browser.c:549
 msgid "No media found!"
-msgstr "Medya Bulunamadı"
+msgstr "Medya bulunamadı"
 
 #: src/bin/browser.c:706
 msgid "Main menu"
-msgstr "Ana Menü"
+msgstr "Ana menü"
 
 #: src/bin/enna.c:494
 #, c-format
@@ -44,7 +46,7 @@ msgstr "Kullanılabilir seçenekler:\n"
 #: src/bin/enna.c:497
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr "  -c, (--config):  Kullanılan Yapılandırma dosyasını belirtin.\n"
+msgstr "  -c, (--config): Yapılandırmada kullanılacak dosyayı belirtin.\n"
 
 #: src/bin/enna.c:498
 #, c-format
@@ -64,8 +66,7 @@ msgstr "  -t, (--theme):   Kullanılan tema adını belirtin.\n"
 #: src/bin/enna.c:501
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry):Pencere geometrisini belirtin. (geometry=1280x720)\n"
+msgstr "  -g, (--geometry):Pencere geometrisini belirtin. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:502
 #, c-format
@@ -75,7 +76,7 @@ msgstr "  -p, (--profile): Profil görünümünü belirt\n"
 #: src/bin/enna.c:503
 #, c-format
 msgid "    Supported: "
-msgstr "    Desteklendi: "
+msgstr "Desteklenen: "
 
 #: src/bin/enna.c:507
 #, c-format
@@ -107,7 +108,8 @@ msgstr "Bilgi sağlanamadı"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Parça #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
+#: src/bin/weather_api.c:405
+#: src/bin/weather_api.c:438
 msgid "City"
 msgstr "Şehir"
 
@@ -119,7 +121,8 @@ msgstr "Şehrini seç"
 msgid "Enter your City here"
 msgstr "Şehrini buraya gir"
 
-#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
+#: src/bin/weather_api.c:413
+#: src/bin/weather_api.c:446
 msgid "Remove"
 msgstr "Kaldır"
 
@@ -157,22 +160,22 @@ msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Yarım küre seç"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Konumunuzdaki havaya göster"
+msgstr "Konumunuzdaki yarım küreyi seç"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Kuzey"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Güney"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705
+#: src/modules/activity/weather/weather.c:291
 msgid "Weather"
 msgstr "Hava"
 
@@ -213,7 +216,7 @@ msgstr "Enlightenment tabanlı temel kütüphaneleri (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
 msgid "Credits go to:"
-msgstr "Hazırlayanlara:"
+msgstr "Hazırlayanlar:"
 
 #: src/modules/activity/configuration/configuration_credits.c:53
 msgid "and"
@@ -348,12 +351,8 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>Oyun Başlatılıyor..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
-"<c>Mame Hata</c><br><b>Yolda rom bulunamadı</b><br>Romların konumu burada "
-"olacak: ~/.mame/roms<br>"
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Mame Hata</c><br><b>Yolda rom bulunamadı</b><br>Romların konumu burada olacak: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
@@ -406,7 +405,8 @@ msgstr "Halen kaydediliyor '%s'"
 msgid "Recording in progress"
 msgstr "Durum kaydediliyor"
 
-#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:156
+#: src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Televizyon"
 
@@ -547,7 +547,8 @@ msgstr "SHOUTcast tarayıcı"
 msgid "Listen to SHOUTcast stream"
 msgstr "SHOUTcast akışlarını dinle"
 
-#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
+#: src/modules/browser/upnp/upnp.c:457
+#: src/modules/browser/upnp/upnp.c:475
 msgid "UPnP/DLNA media servers"
 msgstr "UPnP/DLNA medya sunucusu"
 
@@ -562,9 +563,7 @@ msgstr "UPnP/DLNA modülü"
 
 #: src/modules/browser/upnp/upnp.c:617
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr ""
-"bu modülün Enna dan tarayarak UPnP/DLNA medya sunucularına bağlanmasına izin "
-"verin"
+msgstr "bu modülün Enna dan tarayarak UPnP/DLNA medya sunucularına bağlanmasına izin verin"
 
 #: src/modules/browser/valhalla/valhalla.c:142
 msgid "Authors"
@@ -725,114 +724,3 @@ msgstr "birimler udev den"
 msgid "This module provide support for removable volumes"
 msgstr "Bu modül çıkarılabilir birimlere destek sağlamaktadır"
 
-#~ msgid "This module gets volumes from the mtab file"
-#~ msgstr "Этот модуль получает список разделов из файла mtab"
-
-#~ msgid "Database stuff and metadata retrival from various sources"
-#~ msgstr "Данные из базы и метаданные, полученые из разных источников"
-
-#~ msgid "Music core"
-#~ msgstr "Музыкальное ядро"
-
-#~ msgid "This is the main music module"
-#~ msgstr "Это основной музыкальный модуль"
-
-#~ msgid "This is the main video module"
-#~ msgstr "Это главный видео модуль"
-
-#~ msgid "<c>Enna Information</c><br><br>"
-#~ msgstr "<c>Информация про Enna</c><br><br>"
-
-#~ msgid "<hilight>Video Renderer:</hilight> %s"
-#~ msgstr "<hilight>Память: </hilight>"
-
-#~ msgid "<hilight>Distribution: </hilight>"
-#~ msgstr "<hilight>Дистрибутив: </hilight>"
-
-#~ msgid "<hilight>OS: </hilight>"
-#~ msgstr "<hilight>ОС: </hilight>"
-
-#~ msgid "<hilight>Available CPUs: </hilight>"
-#~ msgstr "<hilight>Доступные ЦП:</hilight><br>"
-
-#~ msgid "<hilight>CPU Load: </hilight>"
-#~ msgstr "<hilight>загрузка ЦП: </hilight>"
-
-#~ msgid "<hilight>Memory: </hilight>"
-#~ msgstr "<hilight>Память: </hilight>"
-
-#~ msgid "%d MB used on %d MB total (%d%%)"
-#~ msgstr "%d MB использовано из %d MB всего (%d%%)"
-
-#~ msgid "%dx%d at %d Hz (min: %dx%d, max: %dx%d)"
-#~ msgstr "%dx%d на %d Hz (min: %dx%d, max: %dx%d)"
-
-#~ msgid "<hilight>Default Gateway: </hilight>"
-#~ msgstr "<hilight>Default Gateway: </hilight>"
-
-#~ msgid "<c>System Information</c><br><br>"
-#~ msgstr "<c>Информация про систему</c><br><br>"
-
-#~ msgid "<ul>Director:</ul> %s<br>"
-#~ msgstr "<ul>Режисер:</ul> %s<br>"
-
-#~ msgid "<ul>Cast:</ul> %s<br>"
-#~ msgstr "<ul>В ролях:</ul> %s<br>"
-
-#~ msgid "<hl>Video: </hl> %s"
-#~ msgstr "<hl>Видео: </hl> %.2f MB<br>"
-
-#~ msgid "<hl>Audio: </hl> %s"
-#~ msgstr "<hl>Аудио: </hl> %.2f MB<br>"
-
-#~ msgid "<hl>Size: </hl> %.2f MB<br>"
-#~ msgstr "<hl>Размер: </hl> %.2f MB<br>"
-
-#~ msgid "I really don't know :P"
-#~ msgstr "Я действительно не знаю!"
-
-#~ msgid "Infos"
-#~ msgstr "Информация"
-
-#~ msgid "%.2d hour "
-#~ msgid_plural "%.2d hours "
-#~ msgstr[0] "%.2d час"
-#~ msgstr[1] "%.2d часа"
-
-#~ msgid "%.2d minute"
-#~ msgid_plural "%.2d minutes"
-#~ msgstr[0] "%.2d минута"
-#~ msgstr[1] "%.2d минут"
-
-#~ msgid "Unknown"
-#~ msgstr "Неизвестный"
-
-#~ msgid "Disk"
-#~ msgstr "Диск"
-
-#~ msgid "Tape"
-#~ msgstr "Band"
-
-#~ msgid "Camera"
-#~ msgstr "Камера"
-
-#~ msgid "Portable Audio Player"
-#~ msgstr "Портативный аудио плейер"
-
-#~ msgid "Browse Library"
-#~ msgstr "Обзор библиотеки"
-
-#~ msgid "Artist"
-#~ msgstr "Исполнитель"
-
-#~ msgid "Watch PODCAST Video"
-#~ msgstr "Смотреть видео подкаст"
-
-#~ msgid "Yes, I want to quit."
-#~ msgstr "Да, Я хочу выйти."
-
-#~ msgid "No, I want to stay."
-#~ msgstr "Нет, Я хочу остаться."
-
-#~ msgid "...no activity seems busy right now."
-#~ msgstr "...нет активности."
