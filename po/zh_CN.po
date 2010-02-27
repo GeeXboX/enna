@@ -3,13 +3,13 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 #  <sword.huang@gmail.com>, 2010.
-# 
+#
 # msgfmt zh_CN.po -o zh_CN.gmo
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-22 16:32+0100\n"
+"POT-Creation-Date: 2010-02-27 16:11+0100\n"
 "PO-Revision-Date: 2010-02-17 15:11+0800\n"
 "Last-Translator: swinkworld <swinkworld@163.com>\n"
 "Language-Team: Chinese (Simplified)\n"
@@ -72,7 +72,7 @@ msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): 指定显示文件\n"
 
 #: src/bin/enna.c:503
-#, c-format, fuzzy
+#, fuzzy, c-format
 msgid "    Supported: "
 msgstr "已支持: "
 
@@ -101,7 +101,7 @@ msgstr "模块"
 msgid "No information provided"
 msgstr "没有提供任何信息"
 
-#: src/bin/parser_cdda.c:296
+#: src/bin/parser_cdda.c:461
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "音轨 #%02d (%02d:%02d)"
@@ -352,8 +352,12 @@ msgstr "<c>M.A.M.E.</c><br>游戏正在运行中..."
 
 #: src/modules/activity/games/games_mame.c:318
 #, fuzzy
-msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
-msgstr "<c>Mame错误</c><br><b>没有找到roms</b><br>Roms必需放置在以下目录: ~/.mame/roms<br>"
+msgid ""
+"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
+"at: ~/.mame/roms<br>"
+msgstr ""
+"<c>Mame错误</c><br><b>没有找到roms</b><br>Roms必需放置在以下目录: ~/.mame/"
+"roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 #, fuzzy
@@ -566,48 +570,48 @@ msgstr "UPnP/DLNA模块"
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "这个模块让Enna能够浏览UPnP/DLNA上的内容"
 
-#: src/modules/browser/valhalla/valhalla.c:142
+#: src/modules/browser/valhalla/valhalla.c:136
 msgid "Authors"
 msgstr "作者"
 
-#: src/modules/browser/valhalla/valhalla.c:149
+#: src/modules/browser/valhalla/valhalla.c:143
 msgid "Artists"
 msgstr "艺术家"
 
-#: src/modules/browser/valhalla/valhalla.c:156
+#: src/modules/browser/valhalla/valhalla.c:150
 msgid "Albums"
 msgstr "专辑"
 
-#: src/modules/browser/valhalla/valhalla.c:161
+#: src/modules/browser/valhalla/valhalla.c:155
 msgid "Genres"
 msgstr "类别"
 
-#: src/modules/browser/valhalla/valhalla.c:173
+#: src/modules/browser/valhalla/valhalla.c:167
 msgid "Categories"
 msgstr "分类"
 
-#: src/modules/browser/valhalla/valhalla.c:178
+#: src/modules/browser/valhalla/valhalla.c:172
 msgid "Directors"
 msgstr "指挥"
 
-#: src/modules/browser/valhalla/valhalla.c:183
+#: src/modules/browser/valhalla/valhalla.c:177
 msgid "Years"
 msgstr "年份"
 
-#: src/modules/browser/valhalla/valhalla.c:193
+#: src/modules/browser/valhalla/valhalla.c:187
 msgid "Unclassified"
 msgstr "没有被分类的"
 
-#: src/modules/browser/valhalla/valhalla.c:653
-#: src/modules/browser/valhalla/valhalla.c:670
+#: src/modules/browser/valhalla/valhalla.c:641
+#: src/modules/browser/valhalla/valhalla.c:658
 msgid "Media library"
 msgstr "媒体资料库"
 
-#: src/modules/browser/valhalla/valhalla.c:715
+#: src/modules/browser/valhalla/valhalla.c:703
 msgid "Valhalla module"
 msgstr "Valhalla模块"
 
-#: src/modules/browser/valhalla/valhalla.c:717
+#: src/modules/browser/valhalla/valhalla.c:705
 msgid "Build a browseable catalog of your media files"
 msgstr "将你的媒体建立一个可浏览的分类"
 

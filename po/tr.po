@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna.trunk\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-22 16:32+0100\n"
+"POT-Creation-Date: 2010-02-27 16:11+0100\n"
 "PO-Revision-Date: 2010-02-26 18:22+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <tr@li.org>\n"
@@ -66,7 +66,8 @@ msgstr "  -t, (--theme):   Kullanılan tema adını belirtin.\n"
 #: src/bin/enna.c:501
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "  -g, (--geometry):Pencere geometrisini belirtin. (geometry=1280x720)\n"
+msgstr ""
+"  -g, (--geometry):Pencere geometrisini belirtin. (geometry=1280x720)\n"
 
 #: src/bin/enna.c:502
 #, c-format
@@ -103,13 +104,12 @@ msgstr "Modüller"
 msgid "No information provided"
 msgstr "Bilgi sağlanamadı"
 
-#: src/bin/parser_cdda.c:296
+#: src/bin/parser_cdda.c:461
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Parça #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:405
-#: src/bin/weather_api.c:438
+#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
 msgid "City"
 msgstr "Şehir"
 
@@ -121,8 +121,7 @@ msgstr "Şehrini seç"
 msgid "Enter your City here"
 msgstr "Şehrini buraya gir"
 
-#: src/bin/weather_api.c:413
-#: src/bin/weather_api.c:446
+#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
 msgstr "Kaldır"
 
@@ -174,8 +173,7 @@ msgstr "Kuzey"
 msgid "Southern"
 msgstr "Güney"
 
-#: src/bin/weather_api.c:705
-#: src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
 msgstr "Hava"
 
@@ -351,8 +349,12 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>Oyun Başlatılıyor..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
-msgstr "<c>Mame Hata</c><br><b>Yolda rom bulunamadı</b><br>Romların konumu burada olacak: ~/.mame/roms<br>"
+msgid ""
+"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
+"at: ~/.mame/roms<br>"
+msgstr ""
+"<c>Mame Hata</c><br><b>Yolda rom bulunamadı</b><br>Romların konumu burada "
+"olacak: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
@@ -405,8 +407,7 @@ msgstr "Halen kaydediliyor '%s'"
 msgid "Recording in progress"
 msgstr "Durum kaydediliyor"
 
-#: src/modules/activity/tv/tv.c:156
-#: src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Televizyon"
 
@@ -547,8 +548,7 @@ msgstr "SHOUTcast tarayıcı"
 msgid "Listen to SHOUTcast stream"
 msgstr "SHOUTcast akışlarını dinle"
 
-#: src/modules/browser/upnp/upnp.c:457
-#: src/modules/browser/upnp/upnp.c:475
+#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
 msgid "UPnP/DLNA media servers"
 msgstr "UPnP/DLNA medya sunucusu"
 
@@ -563,50 +563,52 @@ msgstr "UPnP/DLNA modülü"
 
 #: src/modules/browser/upnp/upnp.c:617
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr "bu modülün Enna dan tarayarak UPnP/DLNA medya sunucularına bağlanmasına izin verin"
+msgstr ""
+"bu modülün Enna dan tarayarak UPnP/DLNA medya sunucularına bağlanmasına izin "
+"verin"
 
-#: src/modules/browser/valhalla/valhalla.c:142
+#: src/modules/browser/valhalla/valhalla.c:136
 msgid "Authors"
 msgstr "Yazarlar"
 
-#: src/modules/browser/valhalla/valhalla.c:149
+#: src/modules/browser/valhalla/valhalla.c:143
 msgid "Artists"
 msgstr "Sanatçılar"
 
-#: src/modules/browser/valhalla/valhalla.c:156
+#: src/modules/browser/valhalla/valhalla.c:150
 msgid "Albums"
 msgstr "Albümler"
 
-#: src/modules/browser/valhalla/valhalla.c:161
+#: src/modules/browser/valhalla/valhalla.c:155
 msgid "Genres"
 msgstr "Tarzlar"
 
-#: src/modules/browser/valhalla/valhalla.c:173
+#: src/modules/browser/valhalla/valhalla.c:167
 msgid "Categories"
 msgstr "Kategoriler"
 
-#: src/modules/browser/valhalla/valhalla.c:178
+#: src/modules/browser/valhalla/valhalla.c:172
 msgid "Directors"
 msgstr "Yönetmenler"
 
-#: src/modules/browser/valhalla/valhalla.c:183
+#: src/modules/browser/valhalla/valhalla.c:177
 msgid "Years"
 msgstr "Yıllar"
 
-#: src/modules/browser/valhalla/valhalla.c:193
+#: src/modules/browser/valhalla/valhalla.c:187
 msgid "Unclassified"
 msgstr "Sınıflandırılmamış"
 
-#: src/modules/browser/valhalla/valhalla.c:653
-#: src/modules/browser/valhalla/valhalla.c:670
+#: src/modules/browser/valhalla/valhalla.c:641
+#: src/modules/browser/valhalla/valhalla.c:658
 msgid "Media library"
 msgstr "Medya kütüphanesi"
 
-#: src/modules/browser/valhalla/valhalla.c:715
+#: src/modules/browser/valhalla/valhalla.c:703
 msgid "Valhalla module"
 msgstr "Valhalla modülü"
 
-#: src/modules/browser/valhalla/valhalla.c:717
+#: src/modules/browser/valhalla/valhalla.c:705
 msgid "Build a browseable catalog of your media files"
 msgstr "Medya dosyaları yeşil katalog kur"
 
@@ -723,4 +725,3 @@ msgstr "birimler udev den"
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "Bu modül çıkarılabilir birimlere destek sağlamaktadır"
-

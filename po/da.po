@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-22 16:32+0100\n"
+"POT-Creation-Date: 2010-02-27 16:11+0100\n"
 "PO-Revision-Date: 2010-02-02 17:30+01:00\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -101,7 +101,7 @@ msgstr "Moduler"
 msgid "No information provided"
 msgstr "Ingen information angivet"
 
-#: src/bin/parser_cdda.c:296
+#: src/bin/parser_cdda.c:461
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Titel #%02d (%02d:%02d)"
@@ -565,48 +565,48 @@ msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 "Dette modul tillader Enna at gennemse indhold fra UPnP/DLNA-medieservere"
 
-#: src/modules/browser/valhalla/valhalla.c:142
+#: src/modules/browser/valhalla/valhalla.c:136
 msgid "Authors"
 msgstr "Forfattere"
 
-#: src/modules/browser/valhalla/valhalla.c:149
+#: src/modules/browser/valhalla/valhalla.c:143
 msgid "Artists"
 msgstr "Kunstnere"
 
-#: src/modules/browser/valhalla/valhalla.c:156
+#: src/modules/browser/valhalla/valhalla.c:150
 msgid "Albums"
 msgstr "Album"
 
-#: src/modules/browser/valhalla/valhalla.c:161
+#: src/modules/browser/valhalla/valhalla.c:155
 msgid "Genres"
 msgstr "Genre"
 
-#: src/modules/browser/valhalla/valhalla.c:173
+#: src/modules/browser/valhalla/valhalla.c:167
 msgid "Categories"
 msgstr "Kategorier"
 
-#: src/modules/browser/valhalla/valhalla.c:178
+#: src/modules/browser/valhalla/valhalla.c:172
 msgid "Directors"
 msgstr "Instruktører"
 
-#: src/modules/browser/valhalla/valhalla.c:183
+#: src/modules/browser/valhalla/valhalla.c:177
 msgid "Years"
 msgstr "År"
 
-#: src/modules/browser/valhalla/valhalla.c:193
+#: src/modules/browser/valhalla/valhalla.c:187
 msgid "Unclassified"
 msgstr "Unklassifiseret"
 
-#: src/modules/browser/valhalla/valhalla.c:653
-#: src/modules/browser/valhalla/valhalla.c:670
+#: src/modules/browser/valhalla/valhalla.c:641
+#: src/modules/browser/valhalla/valhalla.c:658
 msgid "Media library"
 msgstr "Mediebibliotek"
 
-#: src/modules/browser/valhalla/valhalla.c:715
+#: src/modules/browser/valhalla/valhalla.c:703
 msgid "Valhalla module"
 msgstr "Valhallamodul"
 
-#: src/modules/browser/valhalla/valhalla.c:717
+#: src/modules/browser/valhalla/valhalla.c:705
 msgid "Build a browseable catalog of your media files"
 msgstr "Byg et katalog over dine mediefiler der kan søges i"
 
