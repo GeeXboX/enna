@@ -156,20 +156,19 @@ msgstr "華氏"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "選擇哪個半球"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "顯示你本地的天氣"
+msgstr "選擇你所在的位置是哪個半球"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "北半球"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "南半球"
 
 #: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
@@ -347,12 +346,8 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>遊戲正在執行..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
-"<c>Mame 錯誤</c><br><b>在路徑上沒有發現任何 roms</b><br>Roms 必需放在: ~/."
-"mame/roms<br>"
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Mame 錯誤</c><br><b>在路徑上沒有發現任何 roms</b><br>Roms 必需放在: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
@@ -536,15 +531,15 @@ msgstr "Podcast 模組"
 
 #: src/modules/browser/shoutcast/shoutcast.c:335
 msgid "SHOUTcast streaming"
-msgstr "SHOUTcast 串流"
+msgstr "網路廣播串流"
 
 #: src/modules/browser/shoutcast/shoutcast.c:384
 msgid "SHOUTcast browser"
-msgstr "SHOUTcast 瀏灠器"
+msgstr "網路廣播瀏灠器"
 
 #: src/modules/browser/shoutcast/shoutcast.c:386
 msgid "Listen to SHOUTcast stream"
-msgstr "聆聽 SHOUTcast 串流"
+msgstr "聆聽網路廣播串流"
 
 #: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
 msgid "UPnP/DLNA media servers"
