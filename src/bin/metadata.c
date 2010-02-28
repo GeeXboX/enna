@@ -463,7 +463,7 @@ enna_metadata_get_db(void)
 Enna_Metadata *
 enna_metadata_meta_new(const char *file)
 {
-  Enna_Metadata *m = NULL, *it;
+  Enna_Metadata *m = NULL, *it = NULL;
   valhalla_db_stmt_t *stmt;
   const valhalla_db_metares_t *metares;
   int shift = 0;
