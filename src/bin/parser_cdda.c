@@ -25,7 +25,19 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/ioctl.h>
+
+#if defined(__linux__)
 #include <linux/cdrom.h>
+#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__)
+#include <sys/cdio.h>
+#elif defined(__MINGW32__) || defined(__CYGWIN__)
+#include <ddk/ntddcdrm.h>
+#elif (__bsdi__)
+#include <dvd.h>
+#elif defined(__APPLE__) || defined(__DARWIN__)
+#include <IOKit/storage/IOCDTypes.h>
+#include <IOKit/storage/IOCDMediaBSDClient.h>
+#endif
 
 #include "enna.h"
 #include "logs.h"
@@ -96,10 +108,44 @@ cdda_free (cdda_t *c)
 static int
 cd_read_toc (cdda_t *cd, const char *dev)
 {
-    struct cdrom_tochdr tochdr;
     int first = 0, last = -1;
-    int drive;
     int i;
+#if defined(__MINGW32__) || defined(__CYGWIN__)
+    HANDLE drive;
+    DWORD r;
+    CDROM_TOC toc;
+    char device[10];
+
+    if (!cd || !dev)
+        return 1;
+
+    sprintf(device, "\\\\.\\%s", dev);
+    drive = CreateFile(device, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, 0);
+
+    if(!DeviceIoControl(drive, IOCTL_CDROM_READ_TOC, NULL, 0, &toc, sizeof(CDROM_TOC), &r, 0))
+    {
+        mp_msg(MSGT_OPEN, MSGL_ERR, MSGTR_MPDEMUX_CDDB_FailedToReadTOC);
+        return 1;
+    }
+
+    first = toc.FirstTrack - 1; last = toc.LastTrack;
+    cd->total_tracks = last;
+    cd->tracks = calloc (cd->total_tracks + 1, sizeof (cdda_track_t *));
+
+    for (i = first; i <= last; i++)
+    {
+        cdda_track_t *track;
+
+        track         = cdda_track_new ();
+        track->min    = toc.TrackData[i].Address[1];
+        track->sec    = toc.TrackData[i].Address[2];
+        track->frame  = toc.TrackData[i].Address[3];
+
+        cd->tracks[i] = track:
+    }
+    CloseHandle(drive);
+#else /* !defined(__MINGW32__) && !defined(__CYGWIN__) */
+    int drive;
 
     if (!cd || !dev)
         return 1;
@@ -107,6 +153,9 @@ cd_read_toc (cdda_t *cd, const char *dev)
     drive = open (dev, O_RDONLY | O_NONBLOCK);
     if (drive < 0)
         return 1;
+
+#if defined(__linux__) || defined(__bsdi__)
+    struct cdrom_tochdr tochdr;
 
     ioctl (drive, CDROMREADTOCHDR, &tochdr);
     first = tochdr.cdth_trk0 - 1;
@@ -132,9 +181,125 @@ cd_read_toc (cdda_t *cd, const char *dev)
 
         cd->tracks[i] = track;
     }
+#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+    struct ioc_toc_header tochdr;
 
+    ioctl(drive, CDIOREADTOCHEADER, &tochdr);
+    first = tochdr.starting_track - 1;
+    last = tochdr.ending_track;
+
+    cd->total_tracks = last;
+    cd->tracks = calloc (cd->total_tracks + 1, sizeof (cdda_track_t *));
+
+    for (i = first; i <= last; i++)
+    {
+        struct ioc_read_toc_single_entry tocentry;
+        cdda_track_t *track;
+
+        tocentry.track = (i == last) ? 0xAA : i + 1;
+        tocentry.address_format = CD_MSF_FORMAT;
+
+        ioctl(drive, CDIOREADTOCENTRY, &tocentry);
+
+        track         = cdda_track_new ();
+        track->min    = tocentry.entry.addr.msf.minute;
+        track->sec    = tocentry.entry.addr.msf.second;
+        track->frame  = tocentry.entry.addr.msf.frame;
+
+        cd->tracks[i] = track;
+    }
+#elif defined(__NetBSD__) || defined(__OpenBSD__)
+    struct ioc_toc_header tochdr;
+
+    ioctl(drive, CDIOREADTOCHEADER, &tochdr);
+    first = tochdr.starting_track - 1;
+    last = tochdr.ending_track;
+
+    cd->total_tracks = last;
+    cd->tracks = calloc (cd->total_tracks + 1, sizeof (cdda_track_t *));
+
+    for (i = first; i <= last; i++)
+    {
+        struct ioc_read_toc_entry tocentry;
+        struct cd_toc_entry toc_buffer;
+        cdda_track_t *track;
+
+        tocentry.starting_track = (i == last) ? 0xAA : i + 1;
+        tocentry.address_format = CD_MSF_FORMAT;
+        tocentry.data = &toc_buffer;
+        tocentry.data_len = sizeof(toc_buffer);
+        ioctl(drive, CDIOREADTOCENTRYS, &tocentry);
+
+        track         = cdda_track_new ();
+        track->min    = toc_buffer.addr.msf.minute;
+        track->sec    = toc_buffer.addr.msf.second;
+        track->frame  = toc_buffer.addr.msf.frame;
+
+        cd->tracks[i] = track;
+    }
+#elif defined(__APPLE__) || defined(__DARWIN__)
+    dk_cd_read_toc_t tochdr;
+    uint8_t buf[4];
+    uint8_t buf2[100 * sizeof(CDTOCDescriptor) + sizeof(CDTOC)];
+
+    memset(&tochdr, 0, sizeof(tochdr));
+    tochdr.bufferLength = sizeof(buf);
+    tochdr.buffer = &buf;
+    if (!ioctl(drive, DKIOCCDREADTOC, &tochdr) && tochdr.bufferLength == sizeof(buf))
+    {
+        first = buf[2] - 1;
+        last = buf[3];
+    }
+    if (last >= 0)
+    {
+        memset(&tochdr, 0, sizeof(tochdr));
+        tochdr.bufferLength = sizeof(buf2);
+        tochdr.buffer = &buf2;
+        tochdr.format = kCDTOCFormatTOC;
+        if (ioctl(drive, DKIOCCDREADTOC, &tochdr) || tochdr.bufferLength < sizeof(CDTOC))
+            last = -1;
+    }
+    if (last >= 0)
+    {
+        CDTOC *cdToc = (CDTOC *)buf2;
+        CDTrackInfo lastTrack;
+        dk_cd_read_track_info_t trackInfoParams;
+
+        for (i = first; i < last; ++i)
+        {
+            CDMSF msf = CDConvertTrackNumberToMSF(i + 1, cdToc);
+            cdda_track_t *track;
+
+            track         = cdda_track_new ();
+            track->min    = msf.minute;
+            track->sec    = msf.second;
+            track->frame  = msf.frame;
+
+            cd->tracks[i] = track;
+        }
+
+        memset(&trackInfoParams, 0, sizeof(trackInfoParams));
+        trackInfoParams.addressType = kCDTrackInfoAddressTypeTrackNumber;
+        trackInfoParams.bufferLength = sizeof(lastTrack);
+        trackInfoParams.address = last;
+        trackInfoParams.buffer = &lastTrack;
+
+        if (!ioctl(drive, DKIOCCDREADTRACKINFO, &trackInfoParams))
+        {
+            CDMSF msf = CDConvertLBAToMSF(be2me_32(lastTrack.trackStartAddress) + be2me_32(lastTrack.trackSize));
+            cdda_track_t *track;
+
+            track         = cdda_track_new ();
+            track->min    = msf.minute;
+            track->sec    = msf.second;
+            track->frame  = msf.frame;
+
+            cd->tracks[i] = track;
+        }
+    }
+#endif /* defined(__APPLE__) || defined(__DARWIN__) */
     close (drive);
-
+#endif /* defined(__MINGW32__) || defined(__CYGWIN__) */
     for (i = first; i <= last; i++)
         cd->tracks[i]->frame
             += (cd->tracks[i]->min * 60 + cd->tracks[i]->sec) * 75;
