@@ -114,6 +114,8 @@ static const struct
     { "Yellow",       ENNA_INPUT_YELLOW      },
     { "Blue",         ENNA_INPUT_BLUE        },
     { "ChanPrev",     ENNA_INPUT_CHANPREV    },
+    { "ChanPlus",     ENNA_INPUT_CHANPLUS    },
+    { "ChanMinus",    ENNA_INPUT_CHANMINUS   },
     { "Schedule",     ENNA_INPUT_SCHEDULE    },
     { "Channels",     ENNA_INPUT_CHANNELS    },
     { "Timers",       ENNA_INPUT_TIMERS      },
