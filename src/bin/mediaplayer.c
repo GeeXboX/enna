@@ -685,15 +685,6 @@ enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type)
                                            type_list[type].res);
 }
 
-#define ENNA_MP_PLAYER_INIT(type)                                            \
-    do                                                                       \
-    {                                                                        \
-        mp->players[type] = player_init(type, mp_cfg.verbosity, &param);     \
-        if (!mp->players[type])                                              \
-            goto err;                                                        \
-    }                                                                        \
-    while(0)
-
 #define CFG_VIDEO(field)                                                \
     value = enna_config_string_get(section, #field);                    \
     mp_cfg.field = value ? strdup(value) : NULL;
@@ -1005,11 +996,36 @@ enna_mediaplayer_init(void)
 
     mp->pipe = ecore_pipe_add(pipe_read, NULL);
 
-    ENNA_MP_PLAYER_INIT(mp_cfg.type);
+    mp->players[mp_cfg.type] =
+        player_init(mp_cfg.type, mp_cfg.verbosity, &param);
+    if (!mp->players[mp_cfg.type])
+        goto err;
+    
     if (mp_cfg.dvd_type != mp_cfg.type)
-        ENNA_MP_PLAYER_INIT(mp_cfg.dvd_type);
+    {
+        mp->players[mp_cfg.dvd_type] =
+            player_init(mp_cfg.dvd_type, mp_cfg.verbosity, &param);
+        if (!mp->players[mp_cfg.dvd_type])
+        {
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "DVD mediaplayer initialization failed, "
+                     "falling back to the default mediaplayer");
+            mp_cfg.dvd_type = mp_cfg.type;
+        }
+    }
+    
     if (mp_cfg.tv_type != mp_cfg.type && mp_cfg.tv_type != mp_cfg.dvd_type)
-        ENNA_MP_PLAYER_INIT(mp_cfg.tv_type);
+    {
+        mp->players[mp_cfg.tv_type] =
+            player_init(mp_cfg.tv_type, mp_cfg.verbosity, &param);
+        if (!mp->players[mp_cfg.tv_type])
+        {
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "TV mediaplayer initialization failed, "
+                     "falling back to the default mediaplayer");
+            mp_cfg.tv_type = mp_cfg.type;
+        }
+    }
 
     mp_event_cb_set(_event_cb, NULL);
 
