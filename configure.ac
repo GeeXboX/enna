@@ -545,11 +545,10 @@ if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
 
-SHAVE_INIT([.], [enable])
+# silent rules require automake 1.11
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 AC_CONFIG_FILES([
-shave
-shave-libtool
 Makefile
 po/Makefile.in
 src/Makefile

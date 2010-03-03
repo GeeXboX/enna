@@ -5,9 +5,12 @@ MAINTAINERCLEANFILES = Makefile.in
 EDJE_CC = edje_cc
 
 EDJE_FLAGS = \
--v \
 -id $(top_srcdir)/data/theme/default/images \
 -fd $(top_srcdir)/data/theme/default/fonts
+
+EDJE_VERB = $(EDJE_VERB_$(V))
+EDJE_VERB_ = $(EDJE_VERB_$(AM_DEFAULT_VERBOSITY))
+EDJE_VERB_1 = -v
 
 defaultdir = $(pkgdatadir)/theme
 
@@ -346,7 +349,7 @@ EXTRA_DIST = \
   $(EDC)
 
 default.edj: Makefile $(EXTRA_DIST)
-	$(EDJE_CC) $(EDJE_FLAGS) \
+	$(AM_V_GEN)$(EDJE_CC) $(EDJE_VERB) $(EDJE_FLAGS) \
 	$(top_srcdir)/data/theme/default/default.edc \
 	$(top_builddir)/data/theme/default/default.edj
 

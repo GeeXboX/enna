@@ -74,8 +74,6 @@ syntax: regexp
 ^m4/wint_t\.m4$
 ^m4/xsize\.m4$
 ^missing$
-^shave$
-^shave-libtool$
 ^stamp-h1$
 ^TAGS$
 
