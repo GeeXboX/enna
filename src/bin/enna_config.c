@@ -28,7 +28,6 @@
 
 #include <Eina.h>
 #include <Ecore_File.h>
-#include <Ecore_Str.h>
 #include <Elementary.h>
 
 #include "enna.h"

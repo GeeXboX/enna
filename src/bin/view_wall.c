@@ -23,7 +23,6 @@
 
 #include <Ecore.h>
 #include <Ecore_File.h>
-#include <Ecore_Data.h>
 #include <Edje.h>
 #include <Elementary.h>
 

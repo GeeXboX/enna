@@ -29,7 +29,6 @@
 #include <Edje.h>
 #include <Ecore.h>
 #include <Ecore_File.h>
-#include <Ecore_Str.h>
 #ifdef BUILD_ECORE_X
 #include <Ecore_X.h>
 #include <X11/Xlib.h>

@@ -23,7 +23,6 @@
 #include <string.h>
 
 #include <Ecore.h>
-#include <Ecore_Data.h>
 #include <Ecore_Input.h>
 
 #include <player.h>

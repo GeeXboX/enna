@@ -23,7 +23,6 @@
 #include <ctype.h>
 
 #include <Ecore.h>
-#include <Ecore_Data.h>
 
 #include "enna.h"
 #include "input.h"

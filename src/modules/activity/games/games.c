@@ -22,7 +22,6 @@
 #include <dirent.h>
 
 #include <Ecore_File.h>
-#include <Ecore_Str.h>
 #include <Edje.h>
 #include <Elementary.h>
 
