@@ -507,6 +507,12 @@ static void usage(char *binname)
     exit(EXIT_SUCCESS);
 }
 
+static void version()
+{
+    printf(PACKAGE_STRING"\n");
+    exit(EXIT_SUCCESS);
+}
+
 static int parse_command_line(int argc, char **argv)
 {
     int c, index;
@@ -543,6 +549,7 @@ static int parse_command_line(int argc, char **argv)
         return -1;
 
         case 'V':
+            version();
             break;
 
         case 'f':
