@@ -12,6 +12,14 @@ if BUILD_LIBSVDRP
 AM_CFLAGS += @LIBSVDRP_CFLAGS@
 endif
 
+if BUILD_BACKEND_LIBPLAYER
+AM_CFLAGS += @LIBPLAYER_CFLAGS@
+endif
+
+if BUILD_BACKEND_EMOTION
+AM_CFLAGS += @EMOTION_CFLAGS@
+endif
+
 bin_PROGRAMS = enna enna_thumb
 
 enna_SOURCES = \
@@ -31,7 +39,6 @@ content.c\
 view_list.c\
 view_list2.c\
 view_wall.c\
-mediaplayer.c\
 mediaplayer_obj.c\
 xml_utils.c\
 url_utils.c\
@@ -49,8 +56,22 @@ ini_parser.c\
 input.c\
 geoip.c
 
-enna_LDADD = @ENNA_LIBS@ @LIBCDDB_LIBS@
+if BUILD_BACKEND_EMOTION
+enna_SOURCES += mediaplayer_emotion.c
+else
+enna_SOURCES += mediaplayer.c
+endif
+
+enna_LDADD = @ENNA_LIBS@ @LIBCDDB_LIBS@ @LIBPLAYER_LIBS@
 enna_LDFLAGS = -rdynamic
+
+if BUILD_BACKEND_LIBPLAYER
+enna_LDADD += @LIBPLAYER_LIBS@
+endif
+
+if BUILD_BACKEND_EMOTION
+enna_LDADD += @EMOTION_LIBS@
+endif
 
 if BUILD_LIBSVDRP
 enna_LDADD += @LIBSVDRP_LIBS@

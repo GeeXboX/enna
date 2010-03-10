@@ -47,7 +47,6 @@ PKG_CHECK_MODULES([ENNA],
    ecore-ipc >= 0.9.9.063
    edje >= 0.9.93.063
    elementary >= 0.6.0.063
-   libplayer >= 2.0.0 libplayer < 3.0.0
    libvalhalla >= 2.0.0 libvalhalla < 3.0.0
    libxml-2.0
    libcurl
@@ -80,6 +79,63 @@ AC_ARG_ENABLE(theme,
 	[build_theme="yes"]
 )
 AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
+
+###############
+# A/V Backend #
+#########"#####
+
+# Libplayer
+want_backend_libplayer="yes"
+AC_MSG_CHECKING(whether libplayer backend is to be built)
+AC_ARG_ENABLE(backend-libplayer,
+  AS_HELP_STRING([--enable-backend-libplayer],[Enable Libplayer A/V backend]),
+  [ want_backend_libplayer=$enableval ]
+)
+AC_MSG_RESULT($want_backend_libplayer)
+AM_CONDITIONAL(BUILD_BACKEND_LIBPLAYER, test "x$want_backend_libplayer" = "xyes")
+if test "x$want_backend_libplayer" = "xyes"; then
+ PKG_CHECK_MODULES(
+    [LIBPLAYER],
+    [libplayer >= 2.0.0 libplayer < 3.0.0],
+    [
+      AC_DEFINE(BUILD_BACKEND_LIBPLAYER, 1, [Libplayer Backend])
+      have_backend_libplayer="yes"
+    ],
+    [
+      if test "x$want_backend_libplayer" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libplayer >= 2.0.0 not found (strict dependencies checking)])
+      fi
+    ]
+  )
+  AC_DEFINE(BUILD_BACKEND_LIBPLAYER, 1, [libplayer Backend])
+fi
+
+# Emotion
+want_backend_emotion="no"
+have_backend_emotion="no"
+AC_MSG_CHECKING(whether emotion backend is to be built)
+AC_ARG_ENABLE(backend-emotion,
+  AS_HELP_STRING([--enable-backend-emotion],[Enable Emotion A/V backend]),
+  [ want_backend_emotion=$enableval ]
+)
+AC_MSG_RESULT($want_backend_emotion)
+AM_CONDITIONAL(BUILD_BACKEND_EMOTION, test "x$want_backend_emotion" = "xyes")
+if test "x$want_backend_emotion" = "xyes"; then
+ PKG_CHECK_MODULES(
+    [EMOTION],
+    [emotion],
+    [
+      AC_DEFINE(BUILD_BACKEND_EMOTION, 1, [Emotion Backend])
+      have_backend_emotion="yes"
+    ],
+    [
+      if test "x$want_backend_emotion" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([emotion not found (strict dependencies checking)])
+      fi
+    ]
+  )
+  AC_DEFINE(BUILD_BACKEND_EMOTION, 1, [emotion Backend])
+fi
 
 ####################
 # Activity Modules #
@@ -613,6 +669,12 @@ echo "  Photo............................ : $want_activity_photo"
 echo "  TV............................... : $want_activity_tv"
 echo "  Video............................ : $want_activity_video"
 echo "  Weather.......................... : $want_activity_weather"
+echo
+echo
+echo "Supported Backend:"
+echo
+echo "  Libplayer........................ : $have_backend_libplayer"
+echo "  Emotion.......................... : $have_backend_emotion"
 echo
 echo "Supported Browser Modules:"
 echo

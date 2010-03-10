@@ -145,14 +145,16 @@ _controls_timer_cb(void *data)
 static void
 video_resize(void)
 {
+
     Evas_Coord w, h, x, y;
     Evas_Coord h2 = 0;
-
+#ifndef BUILD_BACKEND_EMOTION
     if (mod->controls_displayed)
         evas_object_geometry_get(mod->o_mediacontrols, NULL, NULL, NULL, &h2);
-
+#endif
     evas_object_geometry_get(mod->o_mediaplayer, &x, &y, &w, &h);
     enna_mediaplayer_video_resize(x, y, w, h - h2);
+
 }
 
 void
@@ -169,6 +171,8 @@ media_controls_display(int show)
         return;
 
     mod->controls_displayed = show;
+    show ? evas_object_show(mod->o_mediacontrols) : evas_object_hide(mod->o_mediacontrols);
+
     video_resize();
 }
 
@@ -530,6 +534,9 @@ _mediaplayer_mouse_down_libplayer_cb(void *data, int type, void *event)
 void
 movie_start_playback(int resume)
 {
+    const Evas_Object *ed;
+    Evas_Coord x, y, w, h;
+
     panel_infos_display(0);
     mod->state = VIDEOPLAYER_VIEW;
 
@@ -547,8 +554,15 @@ movie_start_playback(int resume)
 
     mod->o_mediacontrols =
         enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
-    edje_object_part_swallow(mod->o_edje,
-                             "controls.swallow", mod->o_mediacontrols);
+    
+    ed = edje_object_part_object_get(mod->o_edje, "controls.swallow");
+    evas_object_geometry_get(ed, &x, &y, &w, &h);
+    evas_object_move(mod->o_mediacontrols, x, y);
+    evas_object_resize(mod->o_mediacontrols, w, h);
+    evas_object_show(mod->o_mediacontrols);
+
+    /*edje_object_part_swallow(mod->o_edje,
+                             "controls.swallow", mod->o_mediacontrols);*/
     enna_mediaplayer_obj_layout_set(mod->o_mediacontrols, "layout,video");
 
     mod->mouse_button_event_handler =
@@ -557,7 +571,7 @@ movie_start_playback(int resume)
     mod->mouse_move_event_handler =
         ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE,
                                 _mediaplayer_mouse_move_libplayer_cb, NULL);
-
+#ifdef BUILD_BACKEND_LIBPLAYER
     evas_object_event_callback_add(mod->o_mediacontrols,
                                    EVAS_CALLBACK_MOUSE_MOVE,
                                    _mediaplayer_mouse_move_cb, NULL);
@@ -567,7 +581,17 @@ movie_start_playback(int resume)
     evas_object_event_callback_add(mod->o_mediacontrols,
                                    EVAS_CALLBACK_RESIZE,
                                    _mediaplayer_resize_cb, NULL);
-
+#else
+    evas_object_event_callback_add(enna_mediaplayer_obj_get(),
+                                   EVAS_CALLBACK_MOUSE_MOVE,
+                                   _mediaplayer_mouse_move_cb, NULL);
+    evas_object_event_callback_add(enna_mediaplayer_obj_get(),
+                                   EVAS_CALLBACK_MOUSE_UP,
+                                   _mediaplayer_mouse_up_cb, NULL);
+    evas_object_event_callback_add(enna_mediaplayer_obj_get(),
+                                   EVAS_CALLBACK_RESIZE,
+                                   _mediaplayer_resize_cb, NULL);
+#endif
     enna_mediaplayer_stop();
     enna_mediaplayer_obj_event_catch(mod->o_mediacontrols);
     enna_mediaplayer_play(mod->enna_playlist);
