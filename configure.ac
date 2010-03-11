@@ -86,6 +86,7 @@ AM_CONDITIONAL([ENNA_BUILD_THEME], test "x${build_theme}" = "xyes")
 
 # Libplayer
 want_backend_libplayer="yes"
+have_backend_libplayer="no"
 AC_MSG_CHECKING(whether libplayer backend is to be built)
 AC_ARG_ENABLE(backend-libplayer,
   AS_HELP_STRING([--enable-backend-libplayer],[Enable Libplayer A/V backend]),
