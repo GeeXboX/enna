@@ -640,6 +640,7 @@ data/Makefile
 data/other/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
+data/theme/n900/Makefile
 ])
 
 AC_OUTPUT
