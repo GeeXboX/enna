@@ -505,6 +505,7 @@ static void usage(char *binname)
     printf(_("  -c, (--config):  Specify configuration file to be used.\n"));
     printf(_("  -f, (--fs):      Force fullscreen mode.\n"));
     printf(_("  -h, (--help):    Display this help.\n"));
+    printf(_("  -t, (--theme):   Specify theme name to be used.\n"));
     printf(_("  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"));
     printf(_("  -p, (--profile): Specify display profile\n"));
     printf(_("    Supported: "));
@@ -524,13 +525,14 @@ static void version()
 static int parse_command_line(int argc, char **argv)
 {
     int c, index;
-    char short_options[] = "Vhfc:b:g:p:";
+    char short_options[] = "Vhfc:t:b:g:p:";
     struct option long_options [] =
         {
             { "help",          no_argument,       0, 'h' },
             { "version",       no_argument,       0, 'V' },
             { "fs",            no_argument,       0, 'f' },
             { "config",        required_argument, 0, 'c' },
+            { "theme",         required_argument, 0, 't' },
             { "geometry",      required_argument, 0, 'g' },
             { "profile",       required_argument, 0, 'p' },
             { 0,               0,                 0,  0  }
@@ -565,6 +567,10 @@ static int parse_command_line(int argc, char **argv)
 
         case 'c':
             conffile = strdup(optarg);
+            break;
+
+        case 't':
+            app_theme = strdup(optarg);
             break;
 
         case 'g':
