@@ -3,7 +3,7 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 #  <sword.huang@gmail.com>, 2010.
-#
+# 
 # msgfmt zh_CN.po -o zh_CN.gmo
 msgid ""
 msgstr ""
@@ -148,14 +148,13 @@ msgid "Select the unit to display temperature"
 msgstr "选择显示温度的单位"
 
 #: src/bin/weather_api.c:467
-#, fuzzy
 msgid "°C"
-msgstr "°C"
+msgstr "摄氏"
 
 #: src/bin/weather_api.c:467
 #, fuzzy
 msgid "°F"
-msgstr "°F"
+msgstr "华氏"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
@@ -352,12 +351,8 @@ msgstr "<c>M.A.M.E.</c><br>游戏正在运行中..."
 
 #: src/modules/activity/games/games_mame.c:318
 #, fuzzy
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
-"<c>Mame错误</c><br><b>没有找到roms</b><br>Roms必需放置在以下目录: ~/.mame/"
-"roms<br>"
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Mame错误</c><br><b>没有找到roms</b><br>Roms必需放置在以下目录: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 #, fuzzy
