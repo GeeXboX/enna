@@ -156,8 +156,6 @@ cfg_main_section_load (const char *section)
     GET_TUPLE(music_filters, "music_ext");
     GET_TUPLE(video_filters, "video_ext");
     GET_TUPLE(photo_filters, "photo_ext");
-
-    config_load_theme();
 }
 
 #define SET_STRING(v)                                                   \
