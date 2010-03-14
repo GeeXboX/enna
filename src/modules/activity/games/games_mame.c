@@ -366,8 +366,7 @@ mame_shutdown(void)
         ENNA_FREE(game);
     }
     mod->mame_games = NULL;
-    eina_hash_free(mod->mame_games_hash);
-    mod->mame_games_hash = NULL;
+    ENNA_HASH_FREE(mod->mame_games_hash);
     ENNA_FREE(mod);
     
     return EINA_TRUE;

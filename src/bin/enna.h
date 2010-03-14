@@ -26,6 +26,7 @@
 
 #include <Ecore_Evas.h>
 #include <Ecore.h>
+#include <Eina.h>
 
 #include "config.h"
 #include "gettext.h"
@@ -60,6 +61,13 @@
 	 }						\
     }							\
   while (0)
+
+#define ENNA_HASH_FREE(hash)                            \
+    if (hash)                                           \
+    {                                                   \
+        eina_hash_free(hash);                           \
+        hash = NULL;                                    \
+    }
 
 #define ENNA_TIMER_DEL(timer)                           \
     if (timer)                                          \

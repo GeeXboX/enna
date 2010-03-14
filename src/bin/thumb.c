@@ -86,8 +86,7 @@ enna_thumb_shutdown(void)
     }
     _thumb_queue = eina_list_free(_thumb_queue);
     _objid = 0;
-    eina_hash_free(_thumbs);
-    _thumbs = NULL;
+    ENNA_HASH_FREE(_thumbs);
     _pending = 0;
     return 1;
 }
