@@ -109,13 +109,12 @@ msgid "City"
 msgstr "Miasto"
 
 #: src/bin/weather_api.c:406
-#, fuzzy
 msgid "Choose your City"
 msgstr "Wybierz miasto"
 
 #: src/bin/weather_api.c:410
 msgid "Enter your City here"
-msgstr ""
+msgstr "Wpisz swoje miasto"
 
 #: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
@@ -139,36 +138,35 @@ msgstr "Dodaj"
 
 #: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr ""
+msgstr "Wybierz jednostkę"
 
 #: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr ""
+msgstr "Wybierz  jednostkę wyświetlania temperatury"
 
 #: src/bin/weather_api.c:467
 msgid "°C"
-msgstr ""
+msgstr "° C"
 
 #: src/bin/weather_api.c:467
 msgid "°F"
-msgstr ""
+msgstr "° F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Wybierz półkulę"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Pokaż pogodę w Twojej lokalizacji"
+msgstr "Wybierz półkulę na której się znajdujesz"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Północna"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Południowa"
 
 #: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
@@ -346,12 +344,8 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c> MAME </c><br> Uruchamianie gry ..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
-"<c> Błąd Mame </c><br> <b>Nie znaleziono rom'ów w odpowiedniej ścieżce</b> "
-"<br> Rom'y muszą znajdować się w: ~ /.mame /roms <br>"
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c> Błąd Mame </c><br> <b>Nie znaleziono rom'ów w odpowiedniej ścieżce</b> <br> Rom'y muszą znajdować się w: ~ /.mame /roms <br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
