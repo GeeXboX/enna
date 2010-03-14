@@ -43,6 +43,7 @@ struct _Enna_Config
 
 Enna_Config *enna_config;
 
+void enna_config_load_theme (void);
 const char *enna_config_theme_get(void);
 const char *enna_config_theme_file_get(const char *s);
 

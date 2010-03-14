@@ -364,6 +364,12 @@ enna_config_bool_set (const char *section, const char *key, Eina_Bool value)
 /*                                Theme                                     */
 /****************************************************************************/
 
+void
+enna_config_load_theme (void)
+{
+    config_load_theme();
+}
+
 const char *
 enna_config_theme_get()
 {
