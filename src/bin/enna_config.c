@@ -58,6 +58,25 @@ static ini_t *cfg_ini = NULL;
     "jpg,jpeg,png,gif,tif,tiff,xpm"
 
 static void
+config_load_theme (void)
+{
+    if (!enna_config->theme)
+        goto err_theme;
+
+    enna_config->theme_file = (char *)
+        enna_config_theme_file_get(enna_config->theme);
+
+    if (!enna_config->theme_file)
+        goto err_theme;
+
+    elm_theme_overlay_add(enna_config->theme_file);
+    return;
+
+err_theme:
+      enna_log(ENNA_MSG_CRITICAL, NULL, "couldn't load theme file!");
+}
+
+static void
 cfg_main_section_set_default (void)
 {
 
@@ -79,13 +98,6 @@ cfg_main_section_set_default (void)
 
     if (!enna_config->theme)
         enna_config->theme = strdup("default");
-    enna_config->theme_file = (char *)
-        enna_config_theme_file_get(enna_config->theme);
-
-    if (enna_config->theme_file)
-        elm_theme_overlay_add(enna_config->theme_file);
-    else
-        enna_log(ENNA_MSG_CRITICAL, NULL, "couldn't load theme file!");
 }
 
 #define GET_STRING(v)                                                   \
@@ -144,6 +156,8 @@ cfg_main_section_load (const char *section)
     GET_TUPLE(music_filters, "music_ext");
     GET_TUPLE(video_filters, "video_ext");
     GET_TUPLE(photo_filters, "photo_ext");
+
+    config_load_theme();
 }
 
 #define SET_STRING(v)                                                   \
