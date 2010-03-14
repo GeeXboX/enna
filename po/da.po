@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-27 16:11+0100\n"
+"POT-Creation-Date: 2010-03-14 15:00+0100\n"
 "PO-Revision-Date: 2010-02-02 17:30+01:00\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -25,58 +25,58 @@ msgstr "Intet medie fundet!"
 msgid "Main menu"
 msgstr "Hovedmenu"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:493
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna - mediecenter\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:494
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Brug: %s [tilvalg...]\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:495
 #, c-format
 msgid " Available options:\n"
 msgstr " Tilgængelige tilvalg:\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:496
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angiv den konfigurationsfil der skal bruges.\n"
 
 # måske Start i fuldskærmtilstand
-#: src/bin/enna.c:498
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Fremtving fuldskærmtilstand.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Vis denne hjælpetekst.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angiv temanavn der skal bruges.\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:500
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Angiv vinduesgeometri. (geometri=1280x720)\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Angiv skærmprofil\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:502
 #, c-format
 msgid "    Supported: "
 msgstr "    Understøttet: "
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Vis versionsnummeret for Enna.\n"
@@ -191,7 +191,7 @@ msgid "Configuration"
 msgstr "Konfiguration"
 
 #: src/modules/activity/configuration/configuration.c:246
-#: src/modules/activity/configuration/configuration_sysinfo.c:515
+#: src/modules/activity/configuration/configuration_sysinfo.c:517
 msgid "System information"
 msgstr "Systeminformation"
 
@@ -227,119 +227,119 @@ msgstr "Information om Enna"
 msgid "Enna:"
 msgstr "Enna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:113
+#: src/modules/activity/configuration/configuration_sysinfo.c:115
 msgid "Video renderer:"
 msgstr "Videorendering:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:174
+#: src/modules/activity/configuration/configuration_sysinfo.c:176
 msgid "Distribution:"
 msgstr "Distribution:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:196
+#: src/modules/activity/configuration/configuration_sysinfo.c:198
 msgid "OS:"
 msgstr "Os:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:204
+#: src/modules/activity/configuration/configuration_sysinfo.c:206
 msgid "for"
 msgstr "for"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:221
+#: src/modules/activity/configuration/configuration_sysinfo.c:223
 msgid "Available CPUs:"
 msgstr "Tilgængelige cpu'er:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:252
+#: src/modules/activity/configuration/configuration_sysinfo.c:254
 msgid ", running at"
 msgstr ", kører på"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:281
+#: src/modules/activity/configuration/configuration_sysinfo.c:283
 msgid "CPU Load:"
 msgstr "CPU-belastning:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:325
+#: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "Memory:"
 msgstr "Hukommelse:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:327
+#: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "used on"
 msgstr "brugt på"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:329
+#: src/modules/activity/configuration/configuration_sysinfo.c:331
 msgid "total"
 msgstr "i alt"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:367
+#: src/modules/activity/configuration/configuration_sysinfo.c:369
 msgid "Screen resolution:"
 msgstr "Skærmopløsning:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:370
+#: src/modules/activity/configuration/configuration_sysinfo.c:372
 msgid "at"
 msgstr "den"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:372
+#: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "min:"
 msgstr "min:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:374
+#: src/modules/activity/configuration/configuration_sysinfo.c:376
 msgid "max:"
 msgstr "maks:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:387
+#: src/modules/activity/configuration/configuration_sysinfo.c:389
 msgid "VDR:"
 msgstr "VDR:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:390
+#: src/modules/activity/configuration/configuration_sysinfo.c:392
 msgid "connected to VDR"
 msgstr "forbundet med VDR"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:393
+#: src/modules/activity/configuration/configuration_sysinfo.c:395
 msgid "on"
 msgstr "tændt"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:398
+#: src/modules/activity/configuration/configuration_sysinfo.c:400
 msgid "not connected"
 msgstr "ikke forbundet"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:413
+#: src/modules/activity/configuration/configuration_sysinfo.c:415
 msgid "Available network interfaces:"
 msgstr "Tilgængelige netværksgrænseflader:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:440
+#: src/modules/activity/configuration/configuration_sysinfo.c:442
 msgid "IP:"
 msgstr "IP:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:447
+#: src/modules/activity/configuration/configuration_sysinfo.c:449
 msgid "Netmask:"
 msgstr "Netmaske:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:472
+#: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "Default gateway:"
 msgstr "Standardadgangspunkt:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:500
+#: src/modules/activity/configuration/configuration_sysinfo.c:502
 msgid "None"
 msgstr "Ingen"
 
-#: src/modules/activity/games/games.c:217
+#: src/modules/activity/games/games.c:216
 #, c-format
 msgid "no games found"
 msgstr "ingen spil fundet"
 
-#: src/modules/activity/games/games.c:219
+#: src/modules/activity/games/games.c:218
 #, c-format
 msgid "one game"
 msgstr "et spil"
 
-#: src/modules/activity/games/games.c:221
+#: src/modules/activity/games/games.c:220
 #, c-format
 msgid "%d games"
 msgstr "%d spil"
 
-#: src/modules/activity/games/games.c:406
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:404
+#: src/modules/activity/games/games.c:468
 msgid "Games"
 msgstr "Spil"
 
-#: src/modules/activity/games/games.c:472
+#: src/modules/activity/games/games.c:470
 msgid "Play all your games directly from Enna"
 msgstr "Spil alle dine spil direkte fra Enna"
 
@@ -447,12 +447,12 @@ msgstr "Ingen yderligere information kan indhentes"
 msgid "%d Movies"
 msgstr "%d film"
 
-#: src/modules/activity/video/video.c:916
-#: src/modules/activity/video/video.c:1007
+#: src/modules/activity/video/video.c:940
+#: src/modules/activity/video/video.c:1031
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/video/video.c:1009
+#: src/modules/activity/video/video.c:1033
 msgid "Play your videos"
 msgstr "Afspil dine videoer"
 

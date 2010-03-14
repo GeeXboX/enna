@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-27 16:11+0100\n"
+"POT-Creation-Date: 2010-03-14 15:00+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -26,57 +26,57 @@ msgstr "沒有發現任何媒體!"
 msgid "Main menu"
 msgstr "主選單"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:493
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna 媒體中心\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:494
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "用法：%s [選項...]\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:495
 #, c-format
 msgid " Available options:\n"
 msgstr "可選項:\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:496
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置檔。\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:497
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "-f, (--fs): 強制全螢幕顯示。\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:498
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "-h, (--help): 顯示這個說明。\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:499
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "-t, (--theme): 指定要使用的佈景。\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:500
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定視窗大小。(geometry=1280x720)\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (--profile): 指定顯示的描述記錄。\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:502
 #, c-format
 msgid "    Supported: "
 msgstr "被支援的:"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "-V, (--version): 顯示 Enna 的版本。\n"
@@ -189,7 +189,7 @@ msgid "Configuration"
 msgstr "配置"
 
 #: src/modules/activity/configuration/configuration.c:246
-#: src/modules/activity/configuration/configuration_sysinfo.c:515
+#: src/modules/activity/configuration/configuration_sysinfo.c:517
 msgid "System information"
 msgstr "系統資訊"
 
@@ -225,119 +225,119 @@ msgstr "Enna 資訊"
 msgid "Enna:"
 msgstr "Enna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:113
+#: src/modules/activity/configuration/configuration_sysinfo.c:115
 msgid "Video renderer:"
 msgstr "影像描繪器:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:174
+#: src/modules/activity/configuration/configuration_sysinfo.c:176
 msgid "Distribution:"
 msgstr "發行:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:196
+#: src/modules/activity/configuration/configuration_sysinfo.c:198
 msgid "OS:"
 msgstr "作業系統:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:204
+#: src/modules/activity/configuration/configuration_sysinfo.c:206
 msgid "for"
 msgstr "for"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:221
+#: src/modules/activity/configuration/configuration_sysinfo.c:223
 msgid "Available CPUs:"
 msgstr "可用的 CPU:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:252
+#: src/modules/activity/configuration/configuration_sysinfo.c:254
 msgid ", running at"
 msgstr ", running at"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:281
+#: src/modules/activity/configuration/configuration_sysinfo.c:283
 msgid "CPU Load:"
 msgstr "CPU 負載:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:325
+#: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "Memory:"
 msgstr "記憶體:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:327
+#: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "used on"
 msgstr "用於"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:329
+#: src/modules/activity/configuration/configuration_sysinfo.c:331
 msgid "total"
 msgstr "全部"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:367
+#: src/modules/activity/configuration/configuration_sysinfo.c:369
 msgid "Screen resolution:"
 msgstr "螢幕解析度:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:370
+#: src/modules/activity/configuration/configuration_sysinfo.c:372
 msgid "at"
 msgstr "at"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:372
+#: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "min:"
 msgstr "最小:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:374
+#: src/modules/activity/configuration/configuration_sysinfo.c:376
 msgid "max:"
 msgstr "最大:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:387
+#: src/modules/activity/configuration/configuration_sysinfo.c:389
 msgid "VDR:"
 msgstr "數位錄放影機:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:390
+#: src/modules/activity/configuration/configuration_sysinfo.c:392
 msgid "connected to VDR"
 msgstr "連接到數位錄放影機"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:393
+#: src/modules/activity/configuration/configuration_sysinfo.c:395
 msgid "on"
 msgstr "on"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:398
+#: src/modules/activity/configuration/configuration_sysinfo.c:400
 msgid "not connected"
 msgstr "沒有被連接"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:413
+#: src/modules/activity/configuration/configuration_sysinfo.c:415
 msgid "Available network interfaces:"
 msgstr "可用的網路介面:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:440
+#: src/modules/activity/configuration/configuration_sysinfo.c:442
 msgid "IP:"
 msgstr "網路位址:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:447
+#: src/modules/activity/configuration/configuration_sysinfo.c:449
 msgid "Netmask:"
 msgstr "網路遮罩:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:472
+#: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "Default gateway:"
 msgstr "預設閘道:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:500
+#: src/modules/activity/configuration/configuration_sysinfo.c:502
 msgid "None"
 msgstr "None"
 
-#: src/modules/activity/games/games.c:217
+#: src/modules/activity/games/games.c:216
 #, c-format
 msgid "no games found"
 msgstr "沒有發現任何遊戲"
 
-#: src/modules/activity/games/games.c:219
+#: src/modules/activity/games/games.c:218
 #, c-format
 msgid "one game"
 msgstr "一個遊戲"
 
-#: src/modules/activity/games/games.c:221
+#: src/modules/activity/games/games.c:220
 #, c-format
 msgid "%d games"
 msgstr "%d 遊戲"
 
-#: src/modules/activity/games/games.c:406
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:404
+#: src/modules/activity/games/games.c:468
 msgid "Games"
 msgstr "遊戲"
 
-#: src/modules/activity/games/games.c:472
+#: src/modules/activity/games/games.c:470
 msgid "Play all your games directly from Enna"
 msgstr "直接由 Enna 玩你所有的遊戲"
 
@@ -445,12 +445,12 @@ msgstr "沒有進一步資訊能被擷取"
 msgid "%d Movies"
 msgstr "%d 電影"
 
-#: src/modules/activity/video/video.c:916
-#: src/modules/activity/video/video.c:1007
+#: src/modules/activity/video/video.c:940
+#: src/modules/activity/video/video.c:1031
 msgid "Video"
 msgstr "影片"
 
-#: src/modules/activity/video/video.c:1009
+#: src/modules/activity/video/video.c:1033
 msgid "Play your videos"
 msgstr "播放你的影片"
 
