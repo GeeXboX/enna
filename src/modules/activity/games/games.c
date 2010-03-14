@@ -230,8 +230,7 @@ _games_service_exec_exit_cb(void *data, int ev_type, void *ev)
     /* Delete messagge */
     ENNA_OBJECT_DEL(o_msg);
     
-    ecore_event_handler_del(mod->exe_handler);
-    mod->exe_handler = NULL;
+    ENNA_EVENT_HANDLER_DEL(mod->exe_handler);
 
     //~ enna_input_event_thaw();
 

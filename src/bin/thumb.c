@@ -77,8 +77,7 @@ enna_thumb_shutdown(void)
 {
     _thumb_thumbnailers_kill_cancel();
     _thumb_cb_kill(NULL);
-    ecore_event_handler_del(_exe_del_handler);
-    _exe_del_handler = NULL;
+    ENNA_EVENT_HANDLER_DEL(_exe_del_handler);
     _thumbnailers = eina_list_free(_thumbnailers);
     while (_thumbnailers_exe)
     {
