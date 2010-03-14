@@ -61,6 +61,7 @@
 Enna *enna;
 
 static char *conffile = NULL;
+static const char *app_theme = NULL;
 static unsigned int app_w = 1280;
 static unsigned int app_h = 720;
 static int run_fullscreen = 0;
@@ -241,6 +242,13 @@ static int _enna_init(int argc, char **argv)
     enna_config_set_default();
     enna_config_load();
 
+    if (app_theme)
+    {
+        ENNA_FREE(enna_config->theme);
+        enna_config->theme = strdup(app_theme);
+    }
+    enna_config_load_theme();
+
     enna_log(ENNA_MSG_INFO, NULL, "enna log file : %s\n",
              enna_config->log_file);
     enna_log_init(enna_config->log_file);
@@ -414,26 +422,27 @@ static void _opt_geometry_parse(const char *optarg,
 
 static const struct {
     const char *name;
+    const char *theme;
     int width;
     int height;
 } profile_resolution_mapping[] = {
-    { "480p",        640,  480 },
-    { "576p",        720,  576 },
-    { "720p",       1280,  720 },
-    { "1080p",      1920, 1080 },
-    { "vga",         640,  480 },
-    { "ntsc",        720,  480 },
-    { "pal",         768,  576 },
-    { "n900",        800,  480 },
-    { "svga",        800,  600 },
-    { "netbook",    1024,  600 },
-    { "hdready",    1366,  768 },
-    { "fullhd",     1920, 1080 },
-    { NULL,            0,    0 }
+    { "480p",       "default",   640,  480 },
+    { "576p",       "default",   720,  576 },
+    { "720p",       "default",  1280,  720 },
+    { "1080p",      "default",  1920, 1080 },
+    { "vga",        "default",   640,  480 },
+    { "ntsc",       "default",   720,  480 },
+    { "pal",        "default",   768,  576 },
+    { "n900",          "n900",   800,  480 },
+    { "svga",       "default",   800,  600 },
+    { "netbook",    "default",  1024,  600 },
+    { "hdready",    "default",  1366,  768 },
+    { "fullhd",     "default",  1920, 1080 },
+    { NULL,              NULL,     0,    0 }
 };
 
 static void
-_opt_profile_parse (const char *optarg,
+_opt_profile_parse (const char *optarg, const char **pt,
                     unsigned int *pw, unsigned int *ph)
 {
     int i;
@@ -444,6 +453,7 @@ _opt_profile_parse (const char *optarg,
     for (i = 0; profile_resolution_mapping[i].name; i++)
         if (!strcasecmp(optarg, profile_resolution_mapping[i].name))
         {
+            *pt = profile_resolution_mapping[i].theme;
             *pw = profile_resolution_mapping[i].width;
             *ph = profile_resolution_mapping[i].height;
             break;
@@ -561,7 +571,7 @@ static int parse_command_line(int argc, char **argv)
             _opt_geometry_parse(optarg, &app_w, &app_h);
             break;
         case 'p':
-            _opt_profile_parse(optarg, &app_w, &app_h);
+            _opt_profile_parse(optarg, &app_theme, &app_w, &app_h);
             break;
         default:
             usage(argv[0]);
