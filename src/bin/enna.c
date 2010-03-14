@@ -579,6 +579,7 @@ static int parse_command_line(int argc, char **argv)
         case 'p':
             _opt_profile_parse(optarg, &app_theme, &app_w, &app_h);
             break;
+
         default:
             usage(argv[0]);
             return -1;
