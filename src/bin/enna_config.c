@@ -82,9 +82,6 @@ cfg_main_section_set_default (void)
     enna_config->theme_file = (char *)
         enna_config_theme_file_get(enna_config->theme);
 
-    enna_log(ENNA_MSG_INFO, NULL, "Theme Name: %s", enna_config->theme);
-    enna_log(ENNA_MSG_INFO, NULL, "Theme File: %s", enna_config->theme_file);
-
     if (enna_config->theme_file)
         elm_theme_overlay_add(enna_config->theme_file);
     else
