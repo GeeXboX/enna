@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-02-27 16:11+0100\n"
 "PO-Revision-Date: 2010-01-07 00:14+0100\n"
-"Last-Translator: Oliver Schinagl <oliver@schinagl.nl>\n"
+"Last-Translator: Geert Deboutte deg@mail.be\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,12 +44,12 @@ msgstr "Beschikbare opties:\n"
 #: src/bin/enna.c:497
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
-msgstr "  -c, (--config):  Geef te gebruiken configuratie bestand op.\n"
+msgstr "  -c, (--config):  Geef te gebruiken configuratiebestand op.\n"
 
 #: src/bin/enna.c:498
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
-msgstr "  -f, (--fs):      Dwing Fullscreen modus.\n"
+msgstr "  -f, (--fs):      Dwing fullscreen modus.\n"
 
 #: src/bin/enna.c:499
 #, c-format
@@ -59,22 +59,22 @@ msgstr "  -h, (--help):    Deze hulptekst tonen.\n"
 #: src/bin/enna.c:500
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr "  -t, (--theme):   Geef te gebruiken thema naam op.\n"
+msgstr "  -t, (--theme):   Geef te gebruiken themanaam op.\n"
 
 #: src/bin/enna.c:501
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "  -g, (--geometry):Geef venster geometrie op. (geometry=1280x720)\n"
+msgstr "  -g, (--geometry):Geef venstergeometrie op. (geometrie=1280x720)\n"
 
 #: src/bin/enna.c:502
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
+msgstr "  -p, (--profile): Geef schermprofiel op\n"
 
 #: src/bin/enna.c:503
 #, c-format
 msgid "    Supported: "
-msgstr ""
+msgstr "    Ondersteund: "
 
 #: src/bin/enna.c:507
 #, c-format
@@ -84,7 +84,7 @@ msgstr "  -V, (--version): Enna programmaversie tonen.\n"
 #: src/bin/exit.c:93
 #, fuzzy
 msgid "Are you sure you want to quit Enna?"
-msgstr "Weet je zeker dat je Enna wilt afsluiten?"
+msgstr "Weet je zeker dat je Enna wil afsluiten?"
 
 #: src/bin/exit.c:148
 #, fuzzy
@@ -111,68 +111,67 @@ msgstr "Spoor #%02d (%02d:%02d)"
 
 #: src/bin/weather_api.c:405 src/bin/weather_api.c:438
 msgid "City"
-msgstr ""
+msgstr "Stad"
 
 #: src/bin/weather_api.c:406
 msgid "Choose your City"
-msgstr ""
+msgstr "Kies je stad"
 
 #: src/bin/weather_api.c:410
 msgid "Enter your City here"
-msgstr ""
+msgstr "Geef je stad in"
 
 #: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
-msgstr ""
+msgstr "Verwijder"
 
 #: src/bin/weather_api.c:439
 msgid "Choose your city"
-msgstr ""
+msgstr "Kies je stad"
 
 #: src/bin/weather_api.c:451
 msgid "Add new city"
-msgstr ""
+msgstr "Nieuwe stad toevoegen"
 
 #: src/bin/weather_api.c:452
 msgid "Add more cities to the list"
-msgstr ""
+msgstr "Meer steden toevoegen aan de lijst"
 
 #: src/bin/weather_api.c:457
 msgid "Add"
-msgstr ""
+msgstr "Toevoegen"
 
 #: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr ""
+msgstr "Kies je waarde"
 
 #: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr ""
+msgstr "Kies de waarde om de temperatuur weer te geven"
 
 #: src/bin/weather_api.c:467
 msgid "°C"
-msgstr ""
+msgstr "°C"
 
 #: src/bin/weather_api.c:467
 msgid "°F"
-msgstr ""
+msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Kies halfrond"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Geef het weer op jou locatie weer"
+msgstr "Kies het halfrond waar jij je bevindt"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Noordelijk"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Zuidelijk"
 
 #: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
@@ -180,7 +179,6 @@ msgstr "Weer"
 
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:375
-#, fuzzy
 msgid "Bookstore"
 msgstr "Boekenwinkel"
 
@@ -195,30 +193,26 @@ msgstr "Configuratie"
 
 #: src/modules/activity/configuration/configuration.c:246
 #: src/modules/activity/configuration/configuration_sysinfo.c:515
-#, fuzzy
 msgid "System information"
-msgstr "Systeem informatie"
+msgstr "Systeeminformatie"
 
 #: src/modules/activity/configuration/configuration.c:249
 msgid "Credits"
 msgstr "Met dank aan"
 
 #: src/modules/activity/configuration/configuration.c:272
-#, fuzzy
 msgid "This module creates the Enna configuration panel"
-msgstr "Deze module genereert het Enna configuratie panel (NIET VERWIJDEREN)"
+msgstr "Deze module genereert het Enna configuratiepaneel (NIET VERWIJDEREN)"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
-#, fuzzy
 msgid "Enna is a GeeXboX-team MediaCenter"
 msgstr "Enna is een GeeXboX-team Mediacenter,"
 
 #: src/modules/activity/configuration/configuration_credits.c:47
 msgid "based on Enlightenment Foundation Librairies (EFL)."
-msgstr "gebaseerd op de Enlighenment Foundation Bibliotheken (EFL)."
+msgstr "gebaseerd op de Enlightenment Foundation Bibliotheken (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
-#, fuzzy
 msgid "Credits go to:"
 msgstr "Met dank aan:<br>"
 
@@ -227,34 +221,32 @@ msgid "and"
 msgstr "en"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:99
-#, fuzzy
 msgid "Enna information"
-msgstr "Systeem informatie"
+msgstr "Systeeminformatie"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:101
 msgid "Enna:"
-msgstr ""
+msgstr "Enna:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:113
 msgid "Video renderer:"
-msgstr ""
+msgstr "Videorenderer:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:174
 msgid "Distribution:"
-msgstr ""
+msgstr "Versie:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:196
 msgid "OS:"
-msgstr ""
+msgstr "OS:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:204
 msgid "for"
-msgstr ""
+msgstr "voor"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:221
-#, fuzzy
 msgid "Available CPUs:"
-msgstr "Beschikbare opties:\n"
+msgstr "Beschikbare CPU's:\n"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:252
 #, fuzzy
@@ -263,24 +255,23 @@ msgstr ", draaiend op %d MHz"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:281
 msgid "CPU Load:"
-msgstr ""
+msgstr "CPU Volume:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:325
 msgid "Memory:"
-msgstr ""
+msgstr "Geheugen:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "used on"
-msgstr ""
+msgstr "gebruikt om"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "total"
-msgstr ""
+msgstr "totaal"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:367
-#, fuzzy
 msgid "Screen resolution:"
-msgstr "<hilight>Scherm resolutie: </hilight>"
+msgstr "<hilight>Schermresolutie: </hilight>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:370
 #, fuzzy
@@ -289,11 +280,11 @@ msgstr "Data"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:372
 msgid "min:"
-msgstr ""
+msgstr "min:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "max:"
-msgstr ""
+msgstr "max:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:387
 #, fuzzy
@@ -307,21 +298,19 @@ msgstr "verbonden met VDR %s op %s (%s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:393
 msgid "on"
-msgstr ""
+msgstr "aan"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:398
-#, fuzzy
 msgid "not connected"
 msgstr "niet verbonden<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:413
-#, fuzzy
 msgid "Available network interfaces:"
-msgstr "<hilight>Beschikbare netwerk adapters:</hilight><br>"
+msgstr "<hilight>Beschikbare netwerkadapters:</hilight><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:440
 msgid "IP:"
-msgstr ""
+msgstr "IP:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:447
 #, fuzzy
@@ -330,7 +319,7 @@ msgstr "Netmask: %s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:472
 msgid "Default gateway:"
-msgstr ""
+msgstr "Standaardgateway:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:500
 #, fuzzy
@@ -340,17 +329,17 @@ msgstr "Geen<br>"
 #: src/modules/activity/games/games.c:217
 #, fuzzy, c-format
 msgid "no games found"
-msgstr "Geen media aanwezig!"
+msgstr "Geen spellen gevonden!"
 
 #: src/modules/activity/games/games.c:219
 #, fuzzy, c-format
 msgid "one game"
-msgstr "Systeem spellen"
+msgstr "Eén spel"
 
 #: src/modules/activity/games/games.c:221
 #, fuzzy, c-format
 msgid "%d games"
-msgstr "%d Liedjes"
+msgstr "%d spellen"
 
 #: src/modules/activity/games/games.c:406
 #: src/modules/activity/games/games.c:470
@@ -360,26 +349,26 @@ msgstr "Spellen"
 #: src/modules/activity/games/games.c:472
 #, fuzzy
 msgid "Play all your games directly from Enna"
-msgstr "Met deze module is het mogelijk  om je spellen direct vanuit enna"
+msgstr "Met deze module is het mogelijk om je spellen direct vanuit Enna te spelen"
 
 #: src/modules/activity/games/games_mame.c:81
 msgid "<c>M.A.M.E.</c><br>Game running..."
-msgstr ""
+msgstr "<c>M.A.M.E.</c><br>Spel geactiveerd..."
 
 #: src/modules/activity/games/games_mame.c:318
 msgid ""
 "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
 "at: ~/.mame/roms<br>"
-msgstr ""
+msgstr "<c>Mame fout</c><br><b>Geen roms gevonden in pad</b><br>Roms moeten hier staan "
+"at: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
-msgstr ""
+msgstr "<c>Systeemspellen</c><br>Spel geactiveerd..."
 
 #: src/modules/activity/games/games_sys.c:257
-#, fuzzy
 msgid "System Games"
-msgstr "Systeem spellen"
+msgstr "Systeemspellen"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -392,9 +381,8 @@ msgid "Music"
 msgstr "Muziek"
 
 #: src/modules/activity/music/music.c:527
-#, fuzzy
 msgid "Listen to your music"
-msgstr "Luister naar podcasts"
+msgstr "Luister naar je muziek"
 
 #: src/modules/activity/music/music_lyrics.c:91
 msgid "No lyrics found ..."
@@ -408,7 +396,7 @@ msgstr "Foto"
 #: src/modules/activity/photo/photo.c:421
 #, fuzzy
 msgid "Browse your photos and create slideshows"
-msgstr "Bekijk al je fotos aan een wand of als een diashow"
+msgstr "Bekijk al je foto's aan een wand of als een diashow"
 
 #: src/modules/activity/tv/tv.c:104
 #, c-format
@@ -424,16 +412,15 @@ msgstr " '%s' wordt op het moment opgenomen"
 
 #: src/modules/activity/tv/tv.c:115
 msgid "Recording in progress"
-msgstr "Opname in voortgang"
+msgstr "Opname is bezig"
 
 #: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Televisie"
 
 #: src/modules/activity/tv/tv.c:371
-#, fuzzy
 msgid "View TV channels"
-msgstr "Bekijk tv kanalen"
+msgstr "Bekijk tv-kanalen"
 
 #: src/modules/activity/video/video_infos.c:94
 msgid "No such information ..."
@@ -441,28 +428,27 @@ msgstr "Informatie niet beschikbaar ..."
 
 #: src/modules/activity/video/video_infos.c:129
 msgid "Director:"
-msgstr ""
+msgstr "Regisseur:"
 
 #: src/modules/activity/video/video_infos.c:136
 msgid "Cast:"
-msgstr ""
+msgstr "Rolverdeling:"
 
 #: src/modules/activity/video/video_infos.c:158
-#, fuzzy
 msgid "Video:"
-msgstr "Video"
+msgstr "Video:"
 
 #: src/modules/activity/video/video_infos.c:181
 msgid "Audio:"
-msgstr ""
+msgstr "Audio:"
 
 #: src/modules/activity/video/video_infos.c:196
 msgid "Size:"
-msgstr ""
+msgstr "Grootte:"
 
 #: src/modules/activity/video/video_infos.c:204
 msgid "No further information can be retrieved"
-msgstr "Geen additionele informatie kan worden opgehaald"
+msgstr "Er kan geen additionele informatie worden opgehaald"
 
 #: src/modules/activity/video/video.c:132
 #, c-format
@@ -476,21 +462,21 @@ msgstr "Video"
 
 #: src/modules/activity/video/video.c:1009
 msgid "Play your videos"
-msgstr ""
+msgstr "Vertoon je video's"
 
 #: src/modules/activity/weather/weather.c:348
 #, fuzzy
 msgid "Weather forecasts"
-msgstr "Weervoorspelling"
+msgstr "Weersvoorspelling"
 
 #: src/modules/activity/weather/weather.c:350
 msgid "Show the weather at your location"
-msgstr "Geef het weer op jou locatie weer"
+msgstr "Geef het weer op jouw locatie weer"
 
 #: src/modules/browser/cdda/cdda.c:95
 #, fuzzy
 msgid "Play audio CD"
-msgstr "Speel Audio CD"
+msgstr "Speel Audio-cd"
 
 #: src/modules/browser/cdda/cdda.c:164
 msgid "CDDA module"
@@ -499,7 +485,7 @@ msgstr "CDDA module"
 #: src/modules/browser/cdda/cdda.c:166
 #, fuzzy
 msgid "Listen your favorite CDs"
-msgstr "Beluister je favoriete CD's"
+msgstr "Beluister je favoriete cd's"
 
 #: src/modules/browser/dvd/dvd.c:62
 msgid "Play"
@@ -513,36 +499,35 @@ msgstr "Afspelen (met menu's)"
 #: src/modules/browser/dvd/dvd.c:91
 #, fuzzy
 msgid "Watch DVD video"
-msgstr "Speel Video DVD"
+msgstr "Speel Video-dvd"
 
 #: src/modules/browser/dvd/dvd.c:162
 msgid "DVD module"
-msgstr "DVD module"
+msgstr "dvd-module"
 
 #: src/modules/browser/dvd/dvd.c:164
 msgid "Watch movies from DVD"
-msgstr "Bekijk films van een DVD"
+msgstr "Bekijk films van een dvd"
 
 #: src/modules/browser/localfiles/localfiles.c:491
 #: src/modules/browser/localfiles/localfiles.c:509
 #: src/modules/browser/localfiles/localfiles.c:527
-#, fuzzy
 msgid "Browse local devices"
-msgstr "Blader lokale apparaten"
+msgstr "Blader door de lokale apparaten"
 
 #: src/modules/browser/localfiles/localfiles.c:730
 msgid "Browse local files"
-msgstr "Blader lokale bestanden"
+msgstr "Blader door de lokale bestanden"
 
 #: src/modules/browser/localfiles/localfiles.c:732
 msgid "Browse files in your local file systems"
-msgstr "Blader bestanden op je lokale bestandssysteem"
+msgstr "Blader door bestanden op het lokale bestandssysteem"
 
 #: src/modules/browser/netstreams/netstreams.c:322
 #: src/modules/browser/netstreams/netstreams.c:338
 #, fuzzy
 msgid "Browse network streams"
-msgstr "Blader netwerkstromen"
+msgstr "Blader door netwerkstromen"
 
 #: src/modules/browser/netstreams/netstreams.c:441
 msgid "Netstreams"
@@ -551,7 +536,7 @@ msgstr "Netwerkstromen"
 #: src/modules/browser/netstreams/netstreams.c:443
 #, fuzzy
 msgid "Browse and play network streams"
-msgstr "Blader netwerkstromen"
+msgstr "Blader door de netwerkstromen"
 
 #: src/modules/browser/podcasts/podcasts.c:216
 #, fuzzy
@@ -560,51 +545,44 @@ msgstr "Luister naar podcasts"
 
 #: src/modules/browser/podcasts/podcasts.c:352
 msgid "Podcast browser"
-msgstr "Blader podcasts"
+msgstr "Blader door de podcasts"
 
 #: src/modules/browser/podcasts/podcasts.c:354
 msgid "Podcast module"
-msgstr "Podcast module"
+msgstr "Podcastmodule"
 
 #: src/modules/browser/shoutcast/shoutcast.c:335
-#, fuzzy
 msgid "SHOUTcast streaming"
-msgstr "SHOUTcast stromen"
+msgstr "SHOUTcaststreaming"
 
 #: src/modules/browser/shoutcast/shoutcast.c:384
-#, fuzzy
 msgid "SHOUTcast browser"
-msgstr "SHOUTcast bladeren"
+msgstr "SHOUTcastbrowser"
 
 #: src/modules/browser/shoutcast/shoutcast.c:386
-#, fuzzy
 msgid "Listen to SHOUTcast stream"
-msgstr "Luister naar SHOUTcast stroom"
+msgstr "Luister naar SHOUTcaststream"
 
 #: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
-#, fuzzy
 msgid "UPnP/DLNA media servers"
-msgstr "UPnP/DLNA Media Servers"
+msgstr "UPnP/DLNA-mediaservers"
 
 #: src/modules/browser/upnp/upnp.c:530
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
-msgstr "Nieuw UPnP apparaat '%s (%s)' gevonden"
+msgstr "Nieuw UPnP-apparaat '%s (%s)' gevonden"
 
 #: src/modules/browser/upnp/upnp.c:615
-#, fuzzy
 msgid "UPnP/DLNA module"
-msgstr "UPnP/DLNA module"
+msgstr "UPnP/DLNA-module"
 
 #: src/modules/browser/upnp/upnp.c:617
-#, fuzzy
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr ""
-"Met deze module kan Enna door de inhoud van UPnP/DLNA Media Servers bladeren"
+msgstr "Met deze module kan Enna door de inhoud van UPnP/DLNA-mediaservers bladeren"
 
 #: src/modules/browser/valhalla/valhalla.c:136
 msgid "Authors"
-msgstr ""
+msgstr "Auteurs"
 
 #: src/modules/browser/valhalla/valhalla.c:143
 msgid "Artists"
@@ -620,15 +598,15 @@ msgstr "Genres"
 
 #: src/modules/browser/valhalla/valhalla.c:167
 msgid "Categories"
-msgstr ""
+msgstr "Categorieën"
 
 #: src/modules/browser/valhalla/valhalla.c:172
 msgid "Directors"
-msgstr ""
+msgstr "Regisseurs"
 
 #: src/modules/browser/valhalla/valhalla.c:177
 msgid "Years"
-msgstr ""
+msgstr "Jaren"
 
 #: src/modules/browser/valhalla/valhalla.c:187
 msgid "Unclassified"
@@ -636,9 +614,8 @@ msgstr "Niet gespecificeerd"
 
 #: src/modules/browser/valhalla/valhalla.c:641
 #: src/modules/browser/valhalla/valhalla.c:658
-#, fuzzy
 msgid "Media library"
-msgstr "Media bibliotheek"
+msgstr "Mediabibliotheek"
 
 #: src/modules/browser/valhalla/valhalla.c:703
 msgid "Valhalla module"
@@ -646,91 +623,91 @@ msgstr "Valhalla module"
 
 #: src/modules/browser/valhalla/valhalla.c:705
 msgid "Build a browseable catalog of your media files"
-msgstr ""
+msgstr "Maak een catalogus van je mediabestanden"
 
 #: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
-msgstr "CD-ROM"
+msgstr "cd-ROM"
 
 #: src/modules/volume/hal/hal_volume.c:40
 msgid "CD-R"
-msgstr "CD-R"
+msgstr "cd-r"
 
 #: src/modules/volume/hal/hal_volume.c:41
 msgid "CD-RW"
-msgstr "CD-RW"
+msgstr "cd-rw"
 
 #: src/modules/volume/hal/hal_volume.c:42
 msgid "DVD-ROM"
-msgstr "DVD-ROM"
+msgstr "dvd-rom"
 
 #: src/modules/volume/hal/hal_volume.c:43
 msgid "DVD-RAM"
-msgstr "DVD-RAM"
+msgstr "dvd-ram"
 
 #: src/modules/volume/hal/hal_volume.c:44
 msgid "DVD-R"
-msgstr "DVD-R"
+msgstr "dvd-r"
 
 #: src/modules/volume/hal/hal_volume.c:45
 msgid "DVD-RW"
-msgstr "DVD-RW"
+msgstr "dvd-rw"
 
 #: src/modules/volume/hal/hal_volume.c:46
 msgid "DVD+R"
-msgstr "DVD+R"
+msgstr "dvd+r"
 
 #: src/modules/volume/hal/hal_volume.c:47
 msgid "DVD+RW"
-msgstr "DVD+RW"
+msgstr "dvd+rw"
 
 #: src/modules/volume/hal/hal_volume.c:48
 msgid "DVD+R (DL)"
-msgstr "DVD+R (DL)"
+msgstr "dvd+r (dl)"
 
 #: src/modules/volume/hal/hal_volume.c:49
 msgid "BD-ROM"
-msgstr "BD-ROM"
+msgstr "bd-rom"
 
 #: src/modules/volume/hal/hal_volume.c:50
 msgid "BD-R"
-msgstr "BD-R"
+msgstr "bd-r"
 
 #: src/modules/volume/hal/hal_volume.c:51
 msgid "BD-RE"
-msgstr "BD-RE"
+msgstr "bd-re"
 
 #: src/modules/volume/hal/hal_volume.c:52
 msgid "HD-DVD-ROM"
-msgstr "HD-DVD-ROM"
+msgstr "hd-dvd-rom"
 
 #: src/modules/volume/hal/hal_volume.c:53
 msgid "HD-DVD-R"
-msgstr "HD-DVD-R"
+msgstr "hd-dvd-r"
 
 #: src/modules/volume/hal/hal_volume.c:54
 msgid "HD-DVD-RW"
-msgstr "HD-DVD-RW"
+msgstr "hd-dvd-rw"
 
 #: src/modules/volume/hal/hal_volume.c:55
 msgid "MagnetoOptical"
-msgstr "MO"
+msgstr "Magneet-o-Optisch"
 
 #: src/modules/volume/hal/hal_volume.c:64
 msgid "CDDA"
-msgstr "CDDA"
+msgstr "cdda"
 
 #: src/modules/volume/hal/hal_volume.c:65
 msgid "VCD"
-msgstr "VCD"
+msgstr "vcd"
 
 #: src/modules/volume/hal/hal_volume.c:66
 msgid "SVCD"
-msgstr "SVCD"
+msgstr "svcd"
 
 #: src/modules/volume/hal/hal_volume.c:67
 msgid "DVD"
-msgstr "DVD"
+msgstr "dvd"
 
 #: src/modules/volume/hal/hal_volume.c:68
 msgid "Data"
@@ -752,7 +729,7 @@ msgstr "Volumes vanuit mtab"
 
 #: src/modules/volume/mtab/mtab.c:173
 msgid "This module provide support for already mounted volumes"
-msgstr "Deze module bied ondersteuning voor reeds gekoppelde volumes"
+msgstr "Deze module biedt ondersteuning voor reeds gekoppelde volumes"
 
 #: src/modules/volume/udev/udev.c:733
 msgid "Volumes from udev"
@@ -769,13 +746,13 @@ msgstr "Deze module geeft ondersteuning voor verwijderbare volumes"
 #~ msgstr "Database dingen en metadata ophalen van verschillende bronnen"
 
 #~ msgid "Music core"
-#~ msgstr "Muziek kern"
+#~ msgstr "Muziekkern"
 
 #~ msgid "This is the main music module"
-#~ msgstr "Dit is de hoofd muziek module"
+#~ msgstr "Dit is de hoofdmuziekmodule"
 
 #~ msgid "This is the main video module"
-#~ msgstr "Dit is de hoofd video module"
+#~ msgstr "Dit is de hoofdvideomodule"
 
 #~ msgid "<c>Enna Information</c><br><br>"
 #~ msgstr "<c>Enna Informatie</c><br><br>"
@@ -805,7 +782,7 @@ msgstr "Deze module geeft ondersteuning voor verwijderbare volumes"
 #~ msgstr "%s %s voor %s"
 
 #~ msgid "<hilight>Available CPUs: </hilight>"
-#~ msgstr "<hilight>Beschikbare CPUs: </hilight>"
+#~ msgstr "<hilight>Beschikbare CPU's: </hilight>"
 
 #~ msgid "<hilight>CPU Load: </hilight>"
 #~ msgstr "<hilight>CPU belasting: </hilight>"
@@ -820,7 +797,7 @@ msgstr "Deze module geeft ondersteuning voor verwijderbare volumes"
 #~ msgstr "%dx%d op %d Hz (min: %dx%d, max: %dx%d)"
 
 #~ msgid "<hilight>VDR:</hilight> "
-#~ msgstr "<hilight>VDR:</hilight> "
+#~ msgstr "<hilight>vdr:</hilight> "
 
 #~ msgid "  * %s (IP: %s, "
 #~ msgstr "  * %s (IP: %s, "
@@ -829,7 +806,7 @@ msgstr "Deze module geeft ondersteuning voor verwijderbare volumes"
 #~ msgstr "<hilight>Standaard gateway: </hilight>"
 
 #~ msgid "<c>System Information</c><br><br>"
-#~ msgstr "<c>Systeem informatie</c><br><br>"
+#~ msgstr "<c>Systeeminformatie</c><br><br>"
 
 #~ msgid "<ul>Director:</ul> %s<br>"
 #~ msgstr "<ul>Regisseur:</ul> %s<br>"
