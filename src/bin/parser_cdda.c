@@ -123,8 +123,9 @@ cd_read_toc (cdda_t *cd, const char *dev)
     drive = CreateFile(device, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, 0);
 
     if(!DeviceIoControl(drive, IOCTL_CDROM_READ_TOC, NULL, 0, &toc, sizeof(CDROM_TOC), &r, 0))
-    {
-        mp_msg(MSGT_OPEN, MSGL_ERR, MSGTR_MPDEMUX_CDDB_FailedToReadTOC);
+    {  
+        enna_log(ENNA_MSG_ERR, "parser_cdda",
+                 "Device IO Control Failed");
         return 1;
     }
 
@@ -141,7 +142,7 @@ cd_read_toc (cdda_t *cd, const char *dev)
         track->sec    = toc.TrackData[i].Address[2];
         track->frame  = toc.TrackData[i].Address[3];
 
-        cd->tracks[i] = track:
+        cd->tracks[i] = track;
     }
     CloseHandle(drive);
 #else /* !defined(__MINGW32__) && !defined(__CYGWIN__) */
