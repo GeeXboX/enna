@@ -155,11 +155,11 @@ group {
             color: 255 255 255 255;
 
             rel1.relative: 0.0 0.0;
-            rel1.offset: 8 8;
+            rel1.offset: -8 -8;
             rel1.to: "content.clip";
 
             rel2.relative: 0.50 1.0;
-            rel2.offset: -8 -50;
+            rel2.offset: +8 +8;
             rel2.to: "content.clip";
          }
       }
