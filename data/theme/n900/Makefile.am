@@ -324,6 +324,7 @@ exit.edc \
 icons.edc \
 list.edc \
 mainmenu.edc \
+box.edc \
 mediacontrol.edc \
 mediaplayer.edc \
 notification_volume.edc \

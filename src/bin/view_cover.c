@@ -41,8 +41,7 @@ typedef struct _Smart_Item Smart_Item;
 struct _Smart_Item
 {
     Evas_Object *o_edje;
-    int row;
-    Evas_Object *o_pict; // Elm image object
+    Evas_Object *o_icon; // Elm image object
     Smart_Data *sd;
     const char *label;
     Enna_Vfs_File *file;
@@ -53,7 +52,8 @@ struct _Smart_Item
 
 struct _Smart_Data
 {
-    Evas_Object *obj;
+    Evas_Object *o_layout;
+    Evas_Object *o_scroll;
     Evas_Object *o_box;
     Eina_List *items;
     int horizontal;
@@ -69,60 +69,50 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 
 /* local subsystem globals */
 
-static void
-enna_view_cover_display_icon (Evas_Object *o, Evas_Object *p, Evas_Object *e,
-                              const char *file, const char *group,
-                              Evas_Coord w, Evas_Coord h,
-                              char *signal)
-{
-    elm_image_file_set (p, file, group);
-    elm_image_smooth_set (p, 1);
-
-    /* Fit container but keep aspect ratio */
-    evas_object_size_hint_min_set (o, w, h);
-    evas_object_show (p);
-    edje_object_part_swallow (o, "enna.swallow.content", p);
-    edje_object_signal_emit (e, signal, "enna");
-    evas_object_show (o);
-}
 
 void
 enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
                             void (*func_activated) (void *data), void *data)
 {
-    Evas_Object *o, *o_pict;
+    Evas_Object *o_edje;
     Smart_Item *si;
-    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    Smart_Data *sd;
+    Evas_Coord x, y, w, h;
+
+    sd = evas_object_data_get(obj, "sd");
 
     si = calloc(1, sizeof(Smart_Item));
 
-    o = edje_object_add(evas_object_evas_get(obj));
-    edje_object_file_set(o, enna_config_theme_get(), "enna/mainmenu/item");
+    si->o_edje = elm_layout_add(sd->o_box);
+    elm_layout_file_set(si->o_edje, enna_config_theme_get(), "enna/box/item/list");
     si->label = eina_stringshare_add(file->label);
-    o_pict = elm_image_add(obj);
     si->data = data;
     si->func_activated = func_activated;
     si->file = file;
 
-    if (file->icon && file->icon[0] != '/')
-        enna_view_cover_display_icon (o, o_pict, si->o_edje,
-                                      enna_config_theme_get (), file->icon,
-                                      32, 32, "shadow,hide");
-    else
-        enna_view_cover_display_icon (o, o_pict, si->o_edje,
-                                      file->icon, NULL,
-                                      32, 32 * 3/2, "shadow,show");
-    edje_object_part_text_set(o, "enna.text.label", si->label);
+    si->o_icon = elm_icon_add(enna->layout);
+    elm_icon_file_set(si->o_icon, enna_config_theme_get(), file->icon);
+    evas_object_show(si->o_icon);
 
-    elm_box_pack_end(sd->o_box, o);
-    si->o_pict = o_pict;
-    si->o_edje = o;
+    o_edje = elm_layout_edje_get(si->o_edje);
+    edje_object_part_swallow (o_edje, "enna.swallow.icon", si->o_icon);
+    edje_object_part_text_set(o_edje, "enna.text.label", si->label);
+    evas_object_show(si->o_edje);
+
+    evas_object_size_hint_weight_set(si->o_edje, 1.0, 1.0);
+    evas_object_size_hint_align_set(si->o_edje, -1.0, -1.0);
+    edje_object_parts_extends_calc(o_edje, &x, &y, &w, &h);
+    evas_object_size_hint_min_set(o_edje, w, h);
+    evas_object_resize(si->o_edje, w, h);
+
     si->sd = sd;
-
     si->selected = 0;
+
     sd->items = eina_list_append(sd->items, si);
 
-    evas_object_event_callback_add(o, EVAS_CALLBACK_MOUSE_DOWN,
+    elm_box_pack_end(sd->o_box, si->o_edje);
+  
+    evas_object_event_callback_add(si->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
             _smart_event_mouse_down, si);
 }
 
@@ -261,9 +251,7 @@ enna_view_cover_item_remove(Evas_Object *obj, Smart_Item *item)
     if (!sd || !item) return;
 
     sd->items = eina_list_remove(sd->items, item);
-
-    //~ enna_vfs_remove(item->file); //TODO need to free file ?
-    ENNA_OBJECT_DEL(item->o_pict);
+    ENNA_OBJECT_DEL(item->o_icon);
     ENNA_OBJECT_DEL(item->o_edje);
     ENNA_STRINGSHARE_DEL(item->label);
     ENNA_FREE(item);
@@ -278,6 +266,8 @@ enna_view_cover_clear(Evas_Object *obj)
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     Smart_Item *item;
     Eina_List *l, *l_next;
+
+    elm_box_clear(sd->o_box);
 
     EINA_LIST_FOREACH_SAFE(sd->items, l, l_next, item)
     {
@@ -311,14 +301,14 @@ _view_cover_select(Evas_Object *obj, int pos)
         Evas_Coord xedje, yedje, wedje, hedje;
 
         evas_object_geometry_get(si->o_edje, &xedje, &yedje, &wedje, &hedje);
-        elm_scroller_region_get(obj, &x, &y, &w, &h);
+        elm_scroller_region_get(sd->o_scroll, &x, &y, &w, &h);
 
         if (sd->horizontal)
             x += xedje;
         else
             y += yedje;
 
-        elm_scroller_region_bring_in(obj, x, y, wedje, hedje);
+        elm_scroller_region_bring_in(sd->o_scroll, x, y, wedje, hedje);
 
         _smart_item_select(sd, si);
         if (ssi) _smart_item_unselect(sd, ssi);
@@ -349,10 +339,14 @@ _smart_selected_item_get(Smart_Data *sd, int *nth)
 static void
 _smart_item_unselect(Smart_Data *sd, Smart_Item *si)
 {
+    Evas_Object *o_edje;
+
     if (!si || !si->selected) return;
 
+    o_edje = elm_layout_edje_get(si->o_edje);
+
     si->selected = 0;
-    edje_object_signal_emit(si->o_edje, "unselect", "enna");
+    edje_object_signal_emit(o_edje, "unselect", "enna");
     evas_object_lower(si->o_edje);
 
 }
@@ -360,13 +354,15 @@ _smart_item_unselect(Smart_Data *sd, Smart_Item *si)
 static void
 _smart_item_select(Smart_Data *sd, Smart_Item *si)
 {
+    Evas_Object *o_edje;
     if (si->selected) return;
 
-    si->selected = 1;
-    edje_object_signal_emit(si->o_edje, "select", "enna");
-    evas_object_raise(si->o_edje);
-    evas_object_smart_callback_call (sd->obj, "hilight", si->data);
+    o_edje = elm_layout_edje_get(si->o_edje);
 
+    si->selected = 1;
+    edje_object_signal_emit(o_edje, "select", "enna");
+    evas_object_raise(si->o_edje);
+    evas_object_smart_callback_call (sd->o_layout, "hilight", si->data);
 }
 
 static void
@@ -401,53 +397,109 @@ _smart_event_mouse_down(void *data, Evas *evas,
 }
 
 static void
-_custom_resize(void *data, Evas *a, Evas_Object *obj, void *event_info)
+_box_size_hints_changed(void *data, Evas *e, Evas_Object *o, void *event_info)
 {
-    Evas_Coord x, y, w, h;
+#if 0
     Smart_Data *sd = data;
     Eina_List *l;
-    Smart_Item *it;
+    Evas_Coord w, h, x, y;
+    Smart_Item *si;
+    elm_scroller_child_size_get(sd->o_scroll, &w, &h);
+    evas_object_geometry_get(sd->o_scroll, NULL, NULL, &w, &h);
+    evas_object_size_hint_min_get(sd->o_grid, NULL, &h);
+    evas_object_size_hint_min_set(sd->o_grid, w-8, h);
+    evas_object_resize(sd->o_grid, w-8, h);
+    printf("resize %d %d\n", w, h);
 
-    elm_scroller_region_get(obj, &x, &y, &w, &h);
 
-    EINA_LIST_FOREACH(sd->items, l, it)
+    EINA_LIST_FOREACH(sd->items, l, si)
     {
-        if (sd->horizontal)
-            evas_object_size_hint_min_set (it->o_edje, h, h);
-        else
-            evas_object_size_hint_min_set (it->o_edje, w, w);
+        edje_object_parts_extends_calc(si->o_edje, &x, &y, &w, &h);
+        evas_object_size_hint_min_set(si->o_edje, w, h);
     }
+#endif
 }
 
 /* externally accessible functions */
 Evas_Object *
-enna_view_cover_add(Evas * evas, int horizontal)
+enna_view_cover_add(Evas_Object *parent, const char *style)
 {
-
-    Evas_Object *obj;
     Smart_Data *sd;
+    Evas_Object *o_edje;
+    const char *s;
+    Eina_Bool bw, bh;
+    Elm_Scroller_Policy pw, ph;
 
-    obj = elm_scroller_add(enna->layout);
-    elm_object_style_set(obj, "enna");
     sd = calloc(1, sizeof(Smart_Data));
 
-    sd->obj = obj;
+    sd->o_layout = elm_layout_add(parent);
+    elm_layout_file_set(sd->o_layout, enna_config_theme_get(), "enna/box/layout");
+    o_edje = elm_layout_edje_get(sd->o_layout);
+    evas_object_show(sd->o_layout);
 
-    elm_scroller_policy_set(obj, ELM_SCROLLER_POLICY_OFF, ELM_SCROLLER_POLICY_OFF);
-    elm_scroller_bounce_set(obj, 0, 0);
+    s = edje_object_data_get(o_edje, "scroll_horizontal");
+    if (s && (strcmp(s, "off") == 0))
+        pw = ELM_SCROLLER_POLICY_OFF;
+    else if (s && (strcmp(s, "on") == 0))
+        pw  = ELM_SCROLLER_POLICY_ON;
+    else
+        pw = ELM_SCROLLER_POLICY_AUTO;
 
-    sd->o_box = elm_box_add(obj);
-    elm_box_homogenous_set(sd->o_box, 0);
-    elm_box_horizontal_set(sd->o_box, horizontal);
-    sd->horizontal = horizontal;
+    s = edje_object_data_get(o_edje, "scroll_vertical");
+    if (s && (strcmp(s, "off") == 0))
+        ph = ELM_SCROLLER_POLICY_OFF;
+    else if (s && (strcmp(s, "on") == 0))
+        ph  = ELM_SCROLLER_POLICY_ON;
+    else
+        ph = ELM_SCROLLER_POLICY_AUTO;
 
+    s = edje_object_data_get(o_edje, "bounce_horizontal");
+    if (s && (strcmp(s, "off") == 0))
+        bw = EINA_FALSE;
+    else if (s && (strcmp(s, "on") == 0))
+        bw  = EINA_TRUE;
+    else
+        bw = EINA_TRUE;
+
+    s = edje_object_data_get(o_edje, "bounce_vertical");
+    if (s && (strcmp(s, "off") == 0))
+        bh = EINA_FALSE;
+    else if (s && (strcmp(s, "on") == 0))
+        bh  = EINA_TRUE;
+    else
+        bh = EINA_TRUE;
+
+    s = edje_object_data_get(o_edje, "orientation");
+    if (s && (strcmp(s, "vertical") == 0))
+        sd->horizontal = EINA_FALSE;
+    else if (s && (strcmp(s, "horizontal") == 0))
+        sd->horizontal  = EINA_TRUE;
+    else
+        sd->horizontal = EINA_FALSE;
+
+    sd->o_scroll = elm_scroller_add(sd->o_layout);
+    elm_object_style_set(sd->o_scroll, "enna");
+
+    elm_scroller_policy_set(sd->o_scroll, pw, ph);
+    elm_scroller_bounce_set(sd->o_scroll, bw, bh);
+
+    sd->o_box = elm_box_add(sd->o_scroll);
+    elm_box_horizontal_set(sd->o_box, sd->horizontal);
+    elm_box_homogenous_set(sd->o_box, 1);
     evas_object_show(sd->o_box);
-    elm_scroller_content_set(obj, sd->o_box);
 
-    evas_object_event_callback_add(obj, EVAS_CALLBACK_RESIZE,
-                                   _custom_resize, sd);
+    elm_scroller_content_set(sd->o_scroll, sd->o_box);
+    elm_layout_content_set(sd->o_layout, "enna.swallow.content", sd->o_scroll);
 
-    evas_object_data_set(obj, "sd", sd);
+    evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
+    evas_object_size_hint_align_set(sd->o_box, -1.0, -1.0);
 
-    return obj;
+    evas_object_show(sd->o_scroll);
+
+    evas_object_event_callback_add
+        (sd->o_box, EVAS_CALLBACK_CHANGED_SIZE_HINTS, _box_size_hints_changed, sd);
+
+    evas_object_data_set(sd->o_layout, "sd", sd);
+
+    return sd->o_layout;
 }
