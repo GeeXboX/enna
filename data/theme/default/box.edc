@@ -22,7 +22,7 @@ images {
 }
 
 group {
-   name: "enna/box/layout";
+   name: "enna/box/layout/list";
 
    data {
       item: "scroll_horizontal" "off";

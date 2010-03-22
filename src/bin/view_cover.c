@@ -433,7 +433,7 @@ enna_view_cover_add(Evas_Object *parent, const char *style)
     sd = calloc(1, sizeof(Smart_Data));
 
     sd->o_layout = elm_layout_add(parent);
-    elm_layout_file_set(sd->o_layout, enna_config_theme_get(), "enna/box/layout");
+    elm_layout_file_set(sd->o_layout, enna_config_theme_get(), "enna/box/layout/list");
     o_edje = elm_layout_edje_get(sd->o_layout);
     evas_object_show(sd->o_layout);
 
