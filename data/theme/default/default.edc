@@ -12,21 +12,6 @@ fonts{
    font:"content_bold.ttf" "content_bd";
 }
 
-spectra {
-   spectrum {
-      name: "Reflect";
-      color: 255 255 255 50 1;
-      color: 255 255 255 10 1;
-   }
-   spectrum {
-      name: "grey_gradient";
-      color: 34 34 34 255 1;
-      color: 01 01 01 255 1;
-   }
-}
-
-#define TITLEBAR_FONT_COLOR 200 200 200 200
-
 collections
 {
 #include "mainmenu.edc"
