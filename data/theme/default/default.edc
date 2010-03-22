@@ -43,7 +43,7 @@ collections
 #include "exit.edc"
 #include "mediaplayer.edc"
 
-   group { name: "main_layout";
+   group { name: "enna/main/layout";
       parts {
          /* background  */
          part { name: "enna.background.swallow";

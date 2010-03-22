@@ -340,7 +340,7 @@ static int _create_gui(void)
 
     // main layout widget
     enna->layout = elm_layout_add(enna->win);
-    elm_layout_file_set(enna->layout, enna_config_theme_get(), "main_layout");
+    elm_layout_file_set(enna->layout, enna_config_theme_get(), "enna/main/layout");
     evas_object_size_hint_weight_set(enna->layout, 1.0, 1.0);
     elm_win_resize_object_add(enna->win, enna->layout);
     evas_object_show(enna->layout);
