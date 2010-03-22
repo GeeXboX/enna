@@ -435,6 +435,7 @@ static const struct {
     { "pal",        "default",   768,  576 },
     { "n900",          "n900",   800,  480 },
     { "svga",       "default",   800,  600 },
+    { "touchbook","touchbook",  1024,  600 },
     { "netbook",    "default",  1024,  600 },
     { "hdready",    "default",  1366,  768 },
     { "fullhd",     "default",  1920, 1080 },
