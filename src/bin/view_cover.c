@@ -397,27 +397,23 @@ _smart_event_mouse_down(void *data, Evas *evas,
 }
 
 static void
-_box_size_hints_changed(void *data, Evas *e, Evas_Object *o, void *event_info)
+_box_resize(void *data, Evas *e, Evas_Object *o, void *event_info)
 {
-#if 0
     Smart_Data *sd = data;
     Eina_List *l;
     Evas_Coord w, h, x, y;
     Smart_Item *si;
-    elm_scroller_child_size_get(sd->o_scroll, &w, &h);
-    evas_object_geometry_get(sd->o_scroll, NULL, NULL, &w, &h);
-    evas_object_size_hint_min_get(sd->o_grid, NULL, &h);
-    evas_object_size_hint_min_set(sd->o_grid, w-8, h);
-    evas_object_resize(sd->o_grid, w-8, h);
-    printf("resize %d %d\n", w, h);
 
+    elm_scroller_region_get(sd->o_scroll, NULL, NULL, &w, &h);
+    evas_object_size_hint_min_get(sd->o_box, NULL, &h);
+    evas_object_size_hint_min_set(sd->o_box, w, h);
+    evas_object_resize(sd->o_box, w, h);
 
     EINA_LIST_FOREACH(sd->items, l, si)
     {
         edje_object_parts_extends_calc(si->o_edje, &x, &y, &w, &h);
         evas_object_size_hint_min_set(si->o_edje, w, h);
     }
-#endif
 }
 
 /* externally accessible functions */
@@ -490,14 +486,14 @@ enna_view_cover_add(Evas_Object *parent, const char *style)
 
     elm_scroller_content_set(sd->o_scroll, sd->o_box);
     elm_layout_content_set(sd->o_layout, "enna.swallow.content", sd->o_scroll);
-
+    elm_scroller_content_min_limit(sd->o_scroll, 1, 1);
     evas_object_size_hint_weight_set(sd->o_box, 1.0, 1.0);
     evas_object_size_hint_align_set(sd->o_box, -1.0, -1.0);
 
     evas_object_show(sd->o_scroll);
 
     evas_object_event_callback_add
-        (sd->o_box, EVAS_CALLBACK_CHANGED_SIZE_HINTS, _box_size_hints_changed, sd);
+        (sd->o_scroll, EVAS_CALLBACK_RESIZE, _box_resize, sd);
 
     evas_object_data_set(sd->o_layout, "sd", sd);
 
