@@ -641,6 +641,7 @@ data/other/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
 data/theme/n900/Makefile
+data/theme/touchbook/Makefile
 ])
 
 AC_OUTPUT

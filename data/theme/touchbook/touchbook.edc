@@ -1,0 +1,10 @@
+
+collections
+{
+   group { name: "enna/main/layout";
+      parts {
+      }
+      programs {
+      }
+   }
+}
