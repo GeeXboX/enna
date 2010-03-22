@@ -1,29 +1,14 @@
-
-images
-{
-   image: "menu_sel_bg.png" COMP;
-   image: "menu_sel_fg.png" COMP;
-   image: "bt_shine.png" COMP;
-   image: "bt_hilight.png" COMP;
-   image: "sel_fg.png" COMP;
-   image: "pointer.png" COMP;
-   image: "frame.png" COMP;
-   image: "bt_shine_menuitem.png" RAW;
-   image: "bt_base_menuitem.png" RAW;
-}
-
-images {
-   image: "sel_bg.png" COMP;
-   image: "sel_shad.png" COMP;
-   image: "sel_hilight.png" COMP;
-   image: "sel_shine_white.png" COMP;
-   image: "sel_shine_black.png" COMP;
-   image: "separator_h.png" COMP;
-}
-
 group {
    name: "enna/box/layout/list";
 
+   images {
+      image: "sel_bg.png" COMP;
+      image: "sel_shad.png" COMP;
+      image: "sel_hilight.png" COMP;
+      image: "sel_shine_white.png" COMP;
+      image: "sel_shine_black.png" COMP;
+      image: "separator_h.png" COMP;
+   }
    data {
       item: "scroll_horizontal" "off";
       item: "bounce_horizontal" "off";
@@ -38,23 +23,20 @@ group {
          type: SWALLOW;
          description {
             state: "default" 0.0;
- rel1 {
-      relative: 0.0 0.0;
-      offset: 0 0;
-     }
-     rel2 {
-      relative: 1.0 1.0;
-      offset: -1 -1;
-     }
-          
+            rel1 {
+               relative: 0.0 0.0;
+               offset: 0 0;
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               offset: -1 -1;
+            }
          }
       }
    }
 }
 
 group { name: "enna/box/item/list";
-      
-     
    parts {
       part {
          name: "base";
@@ -259,11 +241,6 @@ group { name: "enna/box/item/list";
       }
    }
    programs {
-      // signal: elm,state,%s,active
-      //   a "check" item named %s went active
-      // signal: elm,state,%s,passive
-      //   a "check" item named %s went passive
-      // default is passive
       program {
          name:    "go_active";
          signal:  "select";
@@ -293,15 +270,15 @@ group { name: "enna/box/item/list";
       }
       program {
          name:    "go_disabled";
-         signal:  "elm,state,disabled";
-         source:  "elm";
+         signal:  "enna,state,disabled";
+         source:  "enna";
          action:  STATE_SET "disabled" 0.0;
          target:  "disclip";
       }
       program {
          name:    "go_enabled";
-         signal:  "elm,state,enabled";
-         source:  "elm";
+         signal:  "enna,state,enabled";
+         source:  "enna";
          action:  STATE_SET "default" 0.0;
          target:  "disclip";
       }
