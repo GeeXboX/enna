@@ -381,7 +381,7 @@ static int _create_gui(void)
 static void _enna_shutdown(void)
 {
     ENNA_TIMER_DEL(enna->idle_timer);
-#ifdef BUILD_ECORE_X    
+#ifdef BUILD_ECORE_X
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     ENNA_EVENT_HANDLER_DEL(enna->mouse_handler);
 #endif
