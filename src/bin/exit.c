@@ -128,6 +128,7 @@ _inwin_add()
     evas_object_show(sd->layout);
 
     sd->label = elm_label_add(sd->layout);
+    elm_object_style_set(sd->label, "enna");
     _update_text(sd->label);
 
     sd->list = enna_list_add(evas_object_evas_get(enna->win));

@@ -587,6 +587,7 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     sd->text_box = bx;
 
     lb = elm_label_add(layout);
+    elm_object_style_set(lb, "enna");
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "");
@@ -595,6 +596,7 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     sd->title = lb;
 
     lb = elm_label_add(layout);
+    elm_object_style_set(lb, "enna");
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "");
@@ -603,6 +605,7 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     sd->album = lb;
 
     lb = elm_label_add(layout);
+    elm_object_style_set(lb, "enna");
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "");

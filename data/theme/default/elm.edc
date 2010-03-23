@@ -3203,7 +3203,7 @@ group { name: "elm/slider/horizontal/default";
 
 ///////////////////////////////////////////////////////////////////////////////
 
-group { name: "elm/label/base/default";
+group { name: "elm/label/base/enna";
    styles
    {
       style { name: "textblock_style";

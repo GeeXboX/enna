@@ -300,6 +300,7 @@ enna_util_message_show(const char *text)
     elm_object_style_set(inwin, "enna_minimal");
     
     label = elm_label_add(inwin);
+    elm_object_style_set(label, enna);
     elm_label_label_set(label, text);
     evas_object_show(label);
     

@@ -54,6 +54,7 @@ enna_panel_lyrics_add (Evas *evas)
     elm_win_inwin_activate(obj);
     sc = elm_scroller_add (enna->layout);
     lb = elm_label_add(enna->layout);
+    elm_object_style_set(lb, "enna");
 
     elm_scroller_content_set (sc, lb);
     elm_win_inwin_content_set(obj, sc);
