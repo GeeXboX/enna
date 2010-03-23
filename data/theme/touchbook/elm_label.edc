@@ -1,0 +1,27 @@
+
+group { name: "elm/label/base/enna";
+   styles
+   {
+      style { name: "textblock_style";
+         base: "font=Sans font_size=12 align=center effect=glow color=#EEE color3=#FFF wrap=word";
+         tag:  "br" "\n";
+         tag:  "hilight" "+ font=Sans:style=Bold";
+         tag:  "b" "+ font=Sans:style=Bold";
+         tag:  "tab" "\t";
+         tag:  "c" "+ align=center font_size=14 font=Sans color=#A0D026A0 color2=#A0D026A0 style=GLOW";
+      }
+   }
+   parts {
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            text {
+               style: "textblock_style";
+               min: 1 1;
+            }
+         }
+      }
+   }
+}

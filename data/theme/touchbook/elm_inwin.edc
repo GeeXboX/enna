@@ -1,0 +1,70 @@
+group { name: "elm/win/inwin/enna";
+   images {
+      image: "inwin_bg.png" COMP;
+   }
+   parts {
+      part {
+         name: "clip";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.relative: 0.2 0.2;
+            rel2.relative: 0.8 0.8;
+         }
+         description {
+            state: "visible" 0.0;
+            inherit: "default" 1.0;
+            color: 255 255 255 255;
+         }
+      }
+      part {
+         name: "base";
+         type: IMAGE;
+         mouse_events: 0;
+         clip_to: "clip";
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 200;
+            rel1.to: "clip";
+            rel2.to: "clip";
+            image {
+               normal: "inwin_bg.png";
+               border: 7 7 7 7;
+            }
+         }
+
+      }
+      part {
+         name: "elm.swallow.content";
+         type: SWALLOW;
+         clip_to: "clip";
+         description { state: "default" 0.0;
+            color: 255 255 255 255;
+            fixed: 1 1;
+            rel1.relative: 0.1 0.1;
+            rel1.to: "base";
+            rel2.relative: 0.9 0.9;
+            rel2.to: "base";
+         }
+      }
+   }
+   programs {
+      program { name: "show";
+         signal: "elm,action,show";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         transition: DECELERATE 0.5;
+         target: "clip";
+      }
+      program { name: "hide";
+         signal: "elm,action,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         transition: DECELERATE 0.5;
+         target: "clip";
+      }
+   }
+}
+

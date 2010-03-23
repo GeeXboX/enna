@@ -16,11 +16,17 @@ defaultdir = $(pkgdatadir)/theme
 default_DATA = touchbook.edj
 
 EDC = \
+elm_inwin.edc \
+elm_label.edc \
+exit.edc      \
 touchbook.edc
 
+IMGS = \
+images/inwin_bg.png
 
 EXTRA_DIST = \
-  $(EDC)
+  $(EDC) \
+  $(IMGS)
 
 touchbook.edj: Makefile $(EXTRA_DIST)
 	$(AM_V_GEN)$(EDJE_CC) $(EDJE_VERB) $(EDJE_FLAGS) \

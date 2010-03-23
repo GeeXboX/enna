@@ -1,6 +1,10 @@
 
 collections
 {
+   #include "elm_inwin.edc"
+   #include "elm_label.edc"
+   #include "exit.edc"
+
    group { name: "enna/main/layout";
       parts {
          /* background  */
