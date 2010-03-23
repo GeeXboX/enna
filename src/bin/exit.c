@@ -123,7 +123,7 @@ _inwin_add()
     elm_object_style_set(sd->inwin, "enna");
 
     sd->layout = elm_layout_add(sd->inwin);
-    elm_layout_file_set(sd->layout, enna_config_theme_get(), "exit_layout");
+    elm_layout_file_set(sd->layout, enna_config_theme_get(), "enna/exit/layout");
     evas_object_size_hint_weight_set(sd->layout, 1.0, 1.0);
     evas_object_show(sd->layout);
 

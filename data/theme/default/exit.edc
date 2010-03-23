@@ -1,6 +1,6 @@
 
 group {
-   name: "exit_layout";
+   name: "enna/exit/layout";
    parts {
       part {
          name: "enna.label.swallow";
