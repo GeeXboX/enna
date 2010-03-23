@@ -37,6 +37,7 @@ typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
+    Evas_Object *inwin;
     Evas_Object *layout;
     Evas_Object *list;
     Evas_Object *label;
@@ -44,42 +45,19 @@ struct _Smart_Data
     Eina_Bool visible: 1;
 };
 
+static Smart_Data *sd = NULL;
+static int _exit_init_count = -1;
+
 /* local subsystem globals */
 
 static void
-_yes_cb(void *data)
+_inwin_del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
-    ecore_main_loop_quit();
-}
+    Smart_Data *sd = data;
 
-static void
-_no_cb(void *data)
-{
-    Evas_Object *obj = data;
-
-    enna_exit_hide(obj);
-}
-
-static Eina_Bool
-_input_events_cb(void *data, enna_input event)
-{
-    Evas_Object *obj = data;
-    Smart_Data *sd = evas_object_data_get(obj, "sd");
-
-    if (event == ENNA_INPUT_QUIT)
-    {
-        if (sd->visible)
-            enna_exit_hide(obj);
-        else
-            enna_exit_show(obj);
-        return ENNA_EVENT_BLOCK;
-    }
-    if (sd->visible)
-    {
-        enna_list_input_feed(sd->list, event);
-        return ENNA_EVENT_BLOCK;
-    }
-    return ENNA_EVENT_CONTINUE;
+    ENNA_OBJECT_DEL(sd->label);
+    ENNA_OBJECT_DEL(sd->list);
+    ENNA_OBJECT_DEL(sd->layout);
 }
 
 static void
@@ -112,31 +90,39 @@ _create_list_item (char *label, char *icon)
     return it;
 }
 
-static void
-_sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
-{
-    Smart_Data *sd = data;
 
-    ENNA_OBJECT_DEL(sd->label);
-    ENNA_OBJECT_DEL(sd->list);
-    ENNA_OBJECT_DEL(sd->layout);
-    ENNA_FREE(sd);
+static void
+_inwin_hide()
+{
+    ENNA_OBJECT_DEL(sd->inwin);
+    sd->visible = EINA_FALSE;
+    enna_input_listener_demote(sd->listener);
 }
 
-/* externally accessible functions */
-Evas_Object *
-enna_exit_add(Evas * evas)
+static void
+_yes_cb(void *data)
 {
-    Evas_Object *obj;
-    Smart_Data *sd;
+    ecore_main_loop_quit();
+}
+
+static void
+_no_cb(void *data)
+{
+    _inwin_hide();
+}
+
+static void
+_inwin_add()
+{
     Enna_Vfs_File *it1, *it2;
 
-    sd = calloc(1, sizeof(Smart_Data));
+    if (sd->inwin)
+        _inwin_del_cb(sd, NULL, NULL, NULL);
 
-    obj = elm_win_inwin_add(enna->win);
-    elm_object_style_set(obj, "enna");
+    sd->inwin = elm_win_inwin_add(enna->win);
+    elm_object_style_set(sd->inwin, "enna");
 
-    sd->layout = elm_layout_add(obj);
+    sd->layout = elm_layout_add(sd->inwin);
     elm_layout_file_set(sd->layout, enna_config_theme_get(), "exit_layout");
     evas_object_size_hint_weight_set(sd->layout, 1.0, 1.0);
     evas_object_show(sd->layout);
@@ -144,12 +130,12 @@ enna_exit_add(Evas * evas)
     sd->label = elm_label_add(sd->layout);
     _update_text(sd->label);
 
-    sd->list = enna_list_add(enna->evas);
+    sd->list = enna_list_add(evas_object_evas_get(enna->win));
     it1 = _create_list_item (_("Yes, quit Enna"), "ctrl/shutdown");
-    enna_list_file_append(sd->list, it1, _yes_cb, obj);
+    enna_list_file_append(sd->list, it1, _yes_cb, sd);
 
     it2 = _create_list_item (_("No, continue using Enna"), "ctrl/hibernate");
-    enna_list_file_append(sd->list, it2, _no_cb, obj);
+    enna_list_file_append(sd->list, it2, _no_cb, sd);
     enna_list_select_nth(sd->list, 0);
 /*
     enna_list2_append(list, _("Yes, quit Enna"), NULL,  "ctrl/shutdown",
@@ -163,49 +149,86 @@ enna_exit_add(Evas * evas)
     elm_layout_content_set(sd->layout, "enna.label.swallow",
                            sd->label);
 
-    elm_win_inwin_content_set(obj, sd->layout);
-    elm_win_inwin_activate(obj);
+    elm_win_inwin_content_set(sd->inwin, sd->layout);
+    elm_win_inwin_activate(sd->inwin);
 
-    evas_object_data_set(obj, "sd", sd);
     /* connect to the input signal */
 
-    sd->listener = enna_input_listener_add("exit_dialog", _input_events_cb, obj);
-    enna_input_listener_demote(sd->listener);
-
-    evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
-                                   _sd_del, sd);
-    //  sd->label = lb;
-    return obj;
+    evas_object_event_callback_add(sd->inwin, EVAS_CALLBACK_DEL,
+                                   _inwin_del_cb, sd);
 }
 
-void
-enna_exit_show(Evas_Object *obj)
+static void
+_inwin_show()
 {
-    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    _inwin_add();
 
     if (sd->visible)
-        enna_exit_update_text(obj);
+        enna_exit_update_text();
     enna_list_select_nth(sd->list, 0);
     sd->visible = EINA_TRUE;
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,show", "enna");
     enna_input_listener_promote(sd->listener);
 }
 
-void
-enna_exit_hide(Evas_Object *obj)
+static Eina_Bool
+_input_events_cb(void *data, enna_input event)
 {
-    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    Smart_Data *sd = data;
 
-    sd->visible = EINA_FALSE;
+    if (event == ENNA_INPUT_QUIT)
+    {
+        if (sd->visible)
+            _inwin_hide();
+        else
+            _inwin_show();
+        return ENNA_EVENT_BLOCK;
+    }
+    if (sd->visible)
+    {
+        enna_list_input_feed(sd->list, event);
+        return ENNA_EVENT_BLOCK;
+    }
+    return ENNA_EVENT_CONTINUE;
+}
+
+
+
+/* externally accessible functions */
+
+
+int
+enna_exit_init()
+{
+     /* Prevent multiple loads */
+    if (_exit_init_count > 0)
+        return ++_exit_init_count;
+
+    sd = calloc(1, sizeof(Smart_Data));
+
+    /* Add input listener at the lowest level */
+    sd->listener = enna_input_listener_add("exit_dialog", _input_events_cb, sd);
     enna_input_listener_demote(sd->listener);
-    edje_object_signal_emit(elm_layout_edje_get(enna->layout), "exit,hide", "enna");
+
+    _exit_init_count = 1;
+    return 1;
+}
+
+int
+enna_exit_shutdown()
+{
+    /* Shutdown only when all clients have called this function */
+    _exit_init_count--;
+    if (_exit_init_count == 0)
+    {
+        _inwin_del_cb(sd, NULL, NULL, NULL);
+        enna_input_listener_del(sd->listener);
+        ENNA_FREE(sd);
+    }
+    return _exit_init_count;
 }
 
 void
-enna_exit_update_text(Evas_Object *obj)
+enna_exit_update_text()
 {
-    Smart_Data *sd = evas_object_data_get(obj, "sd");
-
     _update_text(sd->label);
 }
-

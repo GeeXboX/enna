@@ -22,9 +22,9 @@
 #ifndef EXIT_H
 #define EXIT_H
 
-Evas_Object *enna_exit_add(Evas * evas);
-void enna_exit_update_text(Evas_Object *obj);
-void enna_exit_show(Evas_Object *obj);
-void enna_exit_hide(Evas_Object *obj);
+int enna_exit_init();
+int enna_exit_shutdown();
+
+void enna_exit_update_text();
 
 #endif /* EXIT_H */

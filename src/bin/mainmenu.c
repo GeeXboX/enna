@@ -158,8 +158,6 @@ _input_events_cb(void *data, enna_input event)
                 return ENNA_EVENT_BLOCK;
                 break;
             case ENNA_INPUT_BACK:
-                if (enna->o_exit)
-                    enna_exit_show(enna->o_exit);
                 return ENNA_EVENT_BLOCK;
             default:
                 break;
