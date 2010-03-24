@@ -131,20 +131,15 @@ _inwin_add()
     elm_object_style_set(sd->label, "enna");
     _update_text(sd->label);
 
-    sd->list = enna_list_add(evas_object_evas_get(enna->win));
+    sd->list =  enna_view_cover_add(enna->win, "list");
+
     it1 = _create_list_item (_("Yes, quit Enna"), "ctrl/shutdown");
-    enna_list_file_append(sd->list, it1, _yes_cb, sd);
+    enna_view_cover_file_append(sd->list, it1, _yes_cb, sd);
 
     it2 = _create_list_item (_("No, continue using Enna"), "ctrl/hibernate");
-    enna_list_file_append(sd->list, it2, _no_cb, sd);
-    enna_list_select_nth(sd->list, 0);
-/*
-    enna_list2_append(list, _("Yes, quit Enna"), NULL,  "ctrl/shutdown",
-                      _yes_cb, obj);
+    enna_view_cover_file_append(sd->list, it2, _no_cb, sd);
+    enna_view_cover_select_nth(sd->list, 0);
 
-    enna_list2_append(list, _("No, continue using Enna"), NULL,  "ctrl/hibernate",
-                      _no_cb, obj);
-*/
     elm_layout_content_set(sd->layout, "enna.content.swallow",
                            sd->list);
     elm_layout_content_set(sd->layout, "enna.label.swallow",
@@ -166,7 +161,7 @@ _inwin_show()
 
     if (sd->visible)
         enna_exit_update_text();
-    enna_list_select_nth(sd->list, 0);
+    enna_view_cover_select_nth(sd->list, 0);
     sd->visible = EINA_TRUE;
     enna_input_listener_promote(sd->listener);
 }
@@ -186,7 +181,7 @@ _input_events_cb(void *data, enna_input event)
     }
     if (sd->visible)
     {
-        enna_list_input_feed(sd->list, event);
+        enna_view_cover_input_feed(sd->list, event);
         return ENNA_EVENT_BLOCK;
     }
     return ENNA_EVENT_CONTINUE;
