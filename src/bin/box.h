@@ -19,22 +19,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef VIEW_COVER_H
-#define VIEW_COVER_H
+#ifndef BOX_H
+#define BOX_H
 
 #include "enna.h"
 #include "vfs.h"
 #include "input.h"
 
-Evas_Object * enna_view_cover_add(Evas_Object *parent, const char *stylel);
-void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+Evas_Object * enna_box_add(Evas_Object *parent, const char *stylel);
+void enna_box_file_append(Evas_Object *obj, Enna_Vfs_File *file,
      void (*func_activated) (void *data), void *data);
-Eina_List* enna_view_cover_files_get(Evas_Object* obj);
-void enna_view_cover_select_nth(Evas_Object *obj, int nth);
-Eina_Bool enna_view_cover_input_feed(Evas_Object *obj, enna_input event);
-void *enna_view_cover_selected_data_get(Evas_Object *obj);
-int enna_view_cover_jump_label(Evas_Object *obj, const char *label);
-void enna_view_cover_jump_ascii(Evas_Object *obj, char k);
-void enna_view_cover_clear(Evas_Object *obj);
+Eina_List* enna_box_files_get(Evas_Object* obj);
+void enna_box_select_nth(Evas_Object *obj, int nth);
+Eina_Bool enna_box_input_feed(Evas_Object *obj, enna_input event);
+void *enna_box_selected_data_get(Evas_Object *obj);
+int enna_box_jump_label(Evas_Object *obj, const char *label);
+void enna_box_jump_ascii(Evas_Object *obj, char k);
+void enna_box_clear(Evas_Object *obj);
 
-#endif /* VIEW_COVER_H */
+#endif /* BOX_H */
