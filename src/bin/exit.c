@@ -115,9 +115,13 @@ static void
 _inwin_add()
 {
     Enna_Vfs_File *it1, *it2;
-
+/*
     if (sd->inwin)
+    {
+        L(sd->inwin);
         _inwin_del_cb(sd, NULL, NULL, NULL);
+        }*/
+    ENNA_OBJECT_DEL(sd->inwin);
 
     sd->inwin = elm_win_inwin_add(enna->win);
     elm_object_style_set(sd->inwin, "enna");
@@ -131,7 +135,7 @@ _inwin_add()
     elm_object_style_set(sd->label, "enna");
     _update_text(sd->label);
 
-    sd->list =  enna_view_cover_add(enna->win, "list");
+    sd->list =  enna_view_cover_add(enna->win, "exit");
 
     it1 = _create_list_item (_("Yes, quit Enna"), "ctrl/shutdown");
     enna_view_cover_file_append(sd->list, it1, _yes_cb, sd);
@@ -216,7 +220,7 @@ enna_exit_shutdown()
     _exit_init_count--;
     if (_exit_init_count == 0)
     {
-        _inwin_del_cb(sd, NULL, NULL, NULL);
+        ENNA_OBJECT_DEL(sd->inwin);
         enna_input_listener_del(sd->listener);
         ENNA_FREE(sd);
     }

@@ -1,5 +1,6 @@
 group {
    name: "enna/box/layout/list";
+   alias: "enna/box/layout/exit";
 
    images {
       image: "sel_bg.png" COMP;
@@ -36,7 +37,9 @@ group {
    }
 }
 
-group { name: "enna/box/item/list";
+group {
+   name: "enna/box/item/list";
+   alias: "enna/box/item/exit";
    parts {
       part {
          name: "base";
