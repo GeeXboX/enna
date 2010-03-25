@@ -31,7 +31,7 @@
 #include "content.h"
 #include "input.h"
 #include "logs.h"
-#include "view_list.h"
+#include "view_cover.h"
 #include "image.h"
 #include "exit.h"
 #include "weather_notification.h"

@@ -24,6 +24,7 @@
 
 #include "enna.h"
 #include "vfs.h"
+#include "input.h"
 
 Evas_Object * enna_view_cover_add(Evas_Object *parent, const char *stylel);
 void enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,

@@ -25,7 +25,7 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "view_list.h"
+#include "view_cover.h"
 #include "buffer.h"
 #include "activity.h"
 #include "input.h"
