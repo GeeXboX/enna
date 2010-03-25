@@ -16,6 +16,7 @@ defaultdir = $(pkgdatadir)/theme
 default_DATA = touchbook.edj
 
 EDC = \
+box.edc \
 elm_inwin.edc \
 elm_label.edc \
 exit.edc      \

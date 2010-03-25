@@ -10,7 +10,8 @@ group {
          description { state: "default" 0.0;
             visible: 1;
             rel1.relative: 0.0 0.0;
-            rel2.relative: 1.0 0.35;
+            rel2.relative: 1.0 0.2;
+             //rel2.offset: 0 32;
          }
       }
       part {
@@ -19,8 +20,13 @@ group {
          type: SWALLOW;
          description{
             state: "default" 0.0;
-            rel1.relative: 0.05 0.35;
-            rel2.relative: 0.95 0.90;
+             //       fixed: 1 1;
+            rel1.relative: 0.1 0.2;
+            rel1.offset: 0 32;
+             //rel1.to: "enna.label.swallow";
+            rel2.relative: 0.9 1.0;
+//         align: 0.5 0.5;
+             //         rel2.offset: 0 64;
          }
       }
    }

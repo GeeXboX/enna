@@ -3,12 +3,12 @@ group { name: "elm/label/base/enna";
    styles
    {
       style { name: "textblock_style";
-         base: "font=Sans font_size=12 align=center effect=glow color=#EEE color3=#FFF wrap=word";
+         base: "font=Sans font_size=12 align=center effect=soft_shadow color=#EEE color3=#FFF wrap=word";
          tag:  "br" "\n";
          tag:  "hilight" "+ font=Sans:style=Bold";
          tag:  "b" "+ font=Sans:style=Bold";
          tag:  "tab" "\t";
-         tag:  "c" "+ align=center font_size=14 font=Sans color=#A0D026A0 color2=#A0D026A0 style=GLOW";
+         tag:  "c" "+ align=center font_size=14 font=Sans color=#FFF color2=#000";
       }
    }
    parts {

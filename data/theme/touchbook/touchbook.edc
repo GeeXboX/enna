@@ -1,13 +1,28 @@
 
 collections
 {
+   #include "box.edc"
+   #include "elm_genlist.edc"
    #include "elm_inwin.edc"
    #include "elm_label.edc"
    #include "exit.edc"
 
    group { name: "enna/main/layout";
+      images {
+         image: "bg_video.jpg" COMP;
+      }
       parts {
          /* background  */
+         part {
+            type: IMAGE;
+            description {
+               state: "default" 0.0;
+               image {
+                  normal: "bg_video.jpg";
+                  
+               }
+            }
+         }
          part { name: "enna.background.swallow";
             type: SWALLOW;
             mouse_events: 0;
