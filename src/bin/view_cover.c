@@ -89,7 +89,7 @@ enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
         snprintf(tmp_style, sizeof(tmp_style), "enna/box/item/%s", sd->style);
     else
         snprintf(tmp_style, sizeof(tmp_style), "enna/box/item/default");
-    printf("%s\n", tmp_style);
+
     si->o_edje = elm_layout_add(sd->o_box);
     elm_layout_file_set(si->o_edje, enna_config_theme_get(), tmp_style);
     si->label = eina_stringshare_add(file->label);
@@ -455,8 +455,6 @@ enna_view_cover_add(Evas_Object *parent, const char *style)
     else
         snprintf(tmp_style, sizeof(tmp_style), "enna/box/layout/default");
 
-    
-    printf("%s\n", tmp_style);
     sd->o_layout = elm_layout_add(parent);
     elm_layout_file_set(sd->o_layout, enna_config_theme_get(), tmp_style);
     o_edje = elm_layout_edje_get(sd->o_layout);
