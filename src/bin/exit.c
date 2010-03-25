@@ -78,19 +78,6 @@ _update_text(Evas_Object *lb)
     buffer_free(label);
 }
 
-static Enna_Vfs_File *
-_create_list_item (char *label, char *icon)
-{
-    Enna_Vfs_File *it;
-
-    it = calloc (1, sizeof (Enna_Vfs_File));
-    it->label = (char*)eina_stringshare_add (label);
-    it->icon = (char*)eina_stringshare_add (icon);
-    it->is_menu = 1;
-    return it;
-}
-
-
 static void
 _inwin_hide()
 {
@@ -114,13 +101,6 @@ _no_cb(void *data)
 static void
 _inwin_add()
 {
-    Enna_Vfs_File *it1, *it2;
-/*
-    if (sd->inwin)
-    {
-        L(sd->inwin);
-        _inwin_del_cb(sd, NULL, NULL, NULL);
-        }*/
     ENNA_OBJECT_DEL(sd->inwin);
 
     sd->inwin = elm_win_inwin_add(enna->win);
@@ -137,11 +117,8 @@ _inwin_add()
 
     sd->list =  enna_box_add(enna->win, "exit");
 
-    it1 = _create_list_item (_("Yes, quit Enna"), "ctrl/shutdown");
-    enna_box_file_append(sd->list, it1, _yes_cb, sd);
-
-    it2 = _create_list_item (_("No, continue using Enna"), "ctrl/hibernate");
-    enna_box_file_append(sd->list, it2, _no_cb, sd);
+    enna_box_append(sd->list, _("Yes"), _("quit Enna"), "ctrl/shutdown", _yes_cb, sd);
+    enna_box_append(sd->list, _("No"), _("continue using Enna"), "ctrl/hibernate", _no_cb, sd);
     enna_box_select_nth(sd->list, 0);
 
     elm_layout_content_set(sd->layout, "enna.content.swallow",

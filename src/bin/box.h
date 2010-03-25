@@ -29,6 +29,9 @@
 Evas_Object * enna_box_add(Evas_Object *parent, const char *stylel);
 void enna_box_file_append(Evas_Object *obj, Enna_Vfs_File *file,
      void (*func_activated) (void *data), void *data);
+void enna_box_append(Evas_Object *obj, const char *label,
+                     const char *description, const char *icon,
+                     void (*func_activated) (void *data), void *data);
 Eina_List* enna_box_files_get(Evas_Object* obj);
 void enna_box_select_nth(Evas_Object *obj, int nth);
 Eina_Bool enna_box_input_feed(Evas_Object *obj, enna_input event);

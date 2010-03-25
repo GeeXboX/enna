@@ -70,10 +70,10 @@ static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
 
 /* local subsystem globals */
 
-
-void
-enna_box_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-                            void (*func_activated) (void *data), void *data)
+static Smart_Item *
+_append_helper(Evas_Object *obj, const char *label,
+               const char *description, const char *icon,
+               void (*func_activated) (void *data), void *data)
 {
     Evas_Object *o_edje;
     Smart_Item *si;
@@ -92,18 +92,23 @@ enna_box_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     si->o_edje = elm_layout_add(sd->o_box);
     elm_layout_file_set(si->o_edje, enna_config_theme_get(), tmp_style);
-    si->label = eina_stringshare_add(file->label);
+    si->label = eina_stringshare_add(label);
     si->data = data;
     si->func_activated = func_activated;
-    si->file = file;
-
-    si->o_icon = elm_icon_add(enna->layout);
-    elm_icon_file_set(si->o_icon, enna_config_theme_get(), file->icon);
-    evas_object_show(si->o_icon);
 
     o_edje = elm_layout_edje_get(si->o_edje);
-    edje_object_part_swallow (o_edje, "enna.swallow.icon", si->o_icon);
-    edje_object_part_text_set(o_edje, "enna.text.label", si->label);
+    if (icon)
+    {
+        si->o_icon = elm_icon_add(enna->layout);
+        elm_icon_file_set(si->o_icon, enna_config_theme_get(), icon);
+        evas_object_show(si->o_icon);
+        edje_object_part_swallow (o_edje, "enna.swallow.icon", si->o_icon);
+    }
+    if (label)
+        edje_object_part_text_set(o_edje, "enna.text.label", label);
+    if(description)
+        edje_object_part_text_set(o_edje, "enna.text.description", description);
+
     evas_object_show(si->o_edje);
 
     evas_object_size_hint_weight_set(si->o_edje, 1.0, 1.0);
@@ -118,9 +123,30 @@ enna_box_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     sd->items = eina_list_append(sd->items, si);
 
     elm_box_pack_end(sd->o_box, si->o_edje);
-  
+
     evas_object_event_callback_add(si->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
             _smart_event_mouse_down, si);
+
+    return si;
+}
+
+void
+enna_box_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+                            void (*func_activated) (void *data), void *data)
+{
+    Smart_Item *si;
+
+    si = _append_helper(obj, file->label, NULL, file->icon,
+                   func_activated, data);
+    si->file = file;
+}
+
+void enna_box_append(Evas_Object *obj, const char *label,
+                     const char *description, const char *icon,
+                     void (*func_activated) (void *data), void *data)
+{
+    _append_helper(obj, label, description, icon,
+                   func_activated, data);
 }
 
 Eina_Bool
