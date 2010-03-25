@@ -31,7 +31,7 @@
 #include "content.h"
 #include "input.h"
 #include "logs.h"
-#include "view_cover.h"
+#include "box.h"
 #include "image.h"
 #include "exit.h"
 #include "weather_notification.h"
@@ -73,12 +73,12 @@ _enna_mainmenu_load_from_activities(void)
     Enna_Class_Activity *act;
     Eina_List *l;
 
-    enna_view_cover_clear(sd->o_menu);
+    enna_box_clear(sd->o_menu);
     EINA_LIST_FOREACH(enna_activities_get(), l, act)
     {
         enna_mainmenu_append(act);
     }
-    enna_view_cover_select_nth(sd->o_menu, 0);
+    enna_box_select_nth(sd->o_menu, 0);
 }
 
 static void
@@ -154,7 +154,7 @@ _input_events_cb(void *data, enna_input event)
             case ENNA_INPUT_UP:
             case ENNA_INPUT_DOWN:
             case ENNA_INPUT_OK:
-                enna_view_cover_input_feed(sd->o_menu, event);
+                enna_box_input_feed(sd->o_menu, event);
                 return ENNA_EVENT_BLOCK;
                 break;
             case ENNA_INPUT_BACK:
@@ -187,7 +187,7 @@ enna_mainmenu_init(void)
     if (!sd) return NULL;
 
     /* cover view */
-    sd->o_menu = enna_view_cover_add(enna->layout, "list");
+    sd->o_menu = enna_box_add(enna->layout, "list");
     elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", sd->o_menu);
     evas_object_size_hint_align_set(sd->o_menu, -1.0, -1.0);
     evas_object_size_hint_weight_set(sd->o_menu, 1.0, 1.0);
@@ -253,7 +253,7 @@ enna_mainmenu_append(Enna_Class_Activity *act)
     f->label = _((char*)eina_stringshare_add(act->label));
     f->icon = (char*)eina_stringshare_add(act->icon);
     f->is_menu = 1;
-    enna_view_cover_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, act);
+    enna_box_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, act);
     evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, act);
     if (act->bg && act->bg[0] == '/')
         enna_mainmenu_background_add(act->name, act->bg, NULL);

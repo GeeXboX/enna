@@ -36,7 +36,7 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "browser.h"
-#include "view_cover.h"
+#include "box.h"
 #include "view_list.h"
 #include "view_wall.h"
 #include "image.h"
@@ -149,13 +149,13 @@ _browser_view_list_add(Smart_Data *sd)
 
 
 static Evas_Object *
-_browser_view_cover_add(Smart_Data *sd)
+_browser_box_add(Smart_Data *sd)
 {
     Evas_Object *view;
 
     if (!sd) return NULL;
 
-    view = enna_view_cover_add(enna->layout, NULL);
+    view = enna_box_add(enna->layout, NULL);
 
     elm_layout_content_set(sd->layout, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
@@ -247,15 +247,15 @@ enna_browser_view_add(Evas_Object *obj, Enna_Browser_View_Type view_type)
         sd->view_funcs.view_files_get = enna_list_files_get;
         sd->view_funcs.view_jump_ascii = enna_list_jump_ascii;
         break;
-    case ENNA_BROWSER_VIEW_COVER:
-        sd->view_funcs.view_add = _browser_view_cover_add;
-        sd->view_funcs.view_append = enna_view_cover_file_append;
-        sd->view_funcs.view_selected_data_get = enna_view_cover_selected_data_get;
-        sd->view_funcs.view_jump_label = enna_view_cover_jump_label;
-        sd->view_funcs.view_key_down = enna_view_cover_input_feed;
-        sd->view_funcs.view_select_nth = enna_view_cover_select_nth;
-        sd->view_funcs.view_files_get = enna_view_cover_files_get;
-        sd->view_funcs.view_jump_ascii = enna_view_cover_jump_ascii;
+    case ENNA_BROWSER_BOX:
+        sd->view_funcs.view_add = _browser_box_add;
+        sd->view_funcs.view_append = enna_box_file_append;
+        sd->view_funcs.view_selected_data_get = enna_box_selected_data_get;
+        sd->view_funcs.view_jump_label = enna_box_jump_label;
+        sd->view_funcs.view_key_down = enna_box_input_feed;
+        sd->view_funcs.view_select_nth = enna_box_select_nth;
+        sd->view_funcs.view_files_get = enna_box_files_get;
+        sd->view_funcs.view_jump_ascii = enna_box_jump_ascii;
         break;
     case ENNA_BROWSER_VIEW_WALL:
         sd->view_funcs.view_add = _browser_view_wall_add;

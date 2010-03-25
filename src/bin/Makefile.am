@@ -45,7 +45,7 @@ url_utils.c\
 logs.c\
 parser_cdda.c\
 reflection.c\
-view_cover.c\
+box.c\
 exit.c\
 thumb.c\
 ipc.c\
@@ -257,7 +257,7 @@ url_utils.h\
 logs.h\
 parser_cdda.h\
 reflection.h\
-view_cover.h\
+box.h\
 exit.h\
 gettext.h\
 thumb.h\

@@ -39,7 +39,7 @@ typedef enum _Enna_Browser_View_Type Enna_Browser_View_Type;
 enum _Enna_Browser_View_Type
 {
     ENNA_BROWSER_VIEW_LIST,
-    ENNA_BROWSER_VIEW_COVER,
+    ENNA_BROWSER_BOX,
     ENNA_BROWSER_VIEW_WALL
 };
 

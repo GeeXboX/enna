@@ -25,7 +25,7 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "view_cover.h"
+#include "box.h"
 #include "buffer.h"
 #include "activity.h"
 #include "input.h"
@@ -135,14 +135,14 @@ _inwin_add()
     elm_object_style_set(sd->label, "enna");
     _update_text(sd->label);
 
-    sd->list =  enna_view_cover_add(enna->win, "exit");
+    sd->list =  enna_box_add(enna->win, "exit");
 
     it1 = _create_list_item (_("Yes, quit Enna"), "ctrl/shutdown");
-    enna_view_cover_file_append(sd->list, it1, _yes_cb, sd);
+    enna_box_file_append(sd->list, it1, _yes_cb, sd);
 
     it2 = _create_list_item (_("No, continue using Enna"), "ctrl/hibernate");
-    enna_view_cover_file_append(sd->list, it2, _no_cb, sd);
-    enna_view_cover_select_nth(sd->list, 0);
+    enna_box_file_append(sd->list, it2, _no_cb, sd);
+    enna_box_select_nth(sd->list, 0);
 
     elm_layout_content_set(sd->layout, "enna.content.swallow",
                            sd->list);
@@ -165,7 +165,7 @@ _inwin_show()
 
     if (sd->visible)
         enna_exit_update_text();
-    enna_view_cover_select_nth(sd->list, 0);
+    enna_box_select_nth(sd->list, 0);
     sd->visible = EINA_TRUE;
     enna_input_listener_promote(sd->listener);
 }
@@ -185,7 +185,7 @@ _input_events_cb(void *data, enna_input event)
     }
     if (sd->visible)
     {
-        enna_view_cover_input_feed(sd->list, event);
+        enna_box_input_feed(sd->list, event);
         return ENNA_EVENT_BLOCK;
     }
     return ENNA_EVENT_CONTINUE;
