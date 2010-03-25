@@ -57,6 +57,7 @@ struct _Smart_Data
     Evas_Object *o_box;
     Eina_List *items;
     int horizontal;
+    const char *style;
 };
 
 /* local subsystem functions */
@@ -78,13 +79,19 @@ enna_view_cover_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     Smart_Item *si;
     Smart_Data *sd;
     Evas_Coord x, y, w, h;
+    char tmp_style[128];
 
     sd = evas_object_data_get(obj, "sd");
 
     si = calloc(1, sizeof(Smart_Item));
 
+    if (sd->style)
+        snprintf(tmp_style, sizeof(tmp_style), "enna/box/item/%s", sd->style);
+    else
+        snprintf(tmp_style, sizeof(tmp_style), "enna/box/item/default");
+    printf("%s\n", tmp_style);
     si->o_edje = elm_layout_add(sd->o_box);
-    elm_layout_file_set(si->o_edje, enna_config_theme_get(), "enna/box/item/list");
+    elm_layout_file_set(si->o_edje, enna_config_theme_get(), tmp_style);
     si->label = eina_stringshare_add(file->label);
     si->data = data;
     si->func_activated = func_activated;
@@ -416,6 +423,18 @@ _box_resize(void *data, Evas *e, Evas_Object *o, void *event_info)
     }
 }
 
+static void
+_del_cb(void *data, Evas *e, Evas_Object *o, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    enna_view_cover_clear(sd->o_layout);
+    ENNA_OBJECT_DEL(sd->o_scroll);
+    //ENNA_OBJECT_DEL(sd->o_layout);
+    eina_stringshare_del(sd->style);
+    ENNA_FREE(sd);
+}
+
 /* externally accessible functions */
 Evas_Object *
 enna_view_cover_add(Evas_Object *parent, const char *style)
@@ -425,11 +444,21 @@ enna_view_cover_add(Evas_Object *parent, const char *style)
     const char *s;
     Eina_Bool bw, bh;
     Elm_Scroller_Policy pw, ph;
+    char tmp_style[128];
 
     sd = calloc(1, sizeof(Smart_Data));
 
+    sd->style = eina_stringshare_add(style);
+
+    if (sd->style)
+        snprintf(tmp_style, sizeof(tmp_style), "enna/box/layout/%s", sd->style);
+    else
+        snprintf(tmp_style, sizeof(tmp_style), "enna/box/layout/default");
+
+    
+    printf("%s\n", tmp_style);
     sd->o_layout = elm_layout_add(parent);
-    elm_layout_file_set(sd->o_layout, enna_config_theme_get(), "enna/box/layout/list");
+    elm_layout_file_set(sd->o_layout, enna_config_theme_get(), tmp_style);
     o_edje = elm_layout_edje_get(sd->o_layout);
     evas_object_show(sd->o_layout);
 
@@ -494,6 +523,8 @@ enna_view_cover_add(Evas_Object *parent, const char *style)
 
     evas_object_event_callback_add
         (sd->o_scroll, EVAS_CALLBACK_RESIZE, _box_resize, sd);
+    evas_object_event_callback_add
+        (sd->o_layout, EVAS_CALLBACK_DEL, _del_cb, sd);
 
     evas_object_data_set(sd->o_layout, "sd", sd);
 
