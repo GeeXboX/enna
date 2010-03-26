@@ -78,7 +78,7 @@ _append_helper(Evas_Object *obj, const char *label,
     Evas_Object *o_edje;
     Smart_Item *si;
     Smart_Data *sd;
-    Evas_Coord x, y, w, h;
+    Evas_Coord w, h;
     char tmp_style[128];
 
     sd = evas_object_data_get(obj, "sd");
@@ -113,7 +113,8 @@ _append_helper(Evas_Object *obj, const char *label,
 
     evas_object_size_hint_weight_set(si->o_edje, 1.0, 1.0);
     evas_object_size_hint_align_set(si->o_edje, -1.0, -1.0);
-    edje_object_parts_extends_calc(o_edje, &x, &y, &w, &h);
+
+    edje_object_size_min_calc(si->o_edje, &w, &h);
     evas_object_size_hint_min_set(o_edje, w, h);
     evas_object_resize(si->o_edje, w, h);
 
