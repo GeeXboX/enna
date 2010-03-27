@@ -19,12 +19,10 @@ msgstr ""
 "X-Poedit-Country: RUSSIA\n"
 
 #: src/bin/browser.c:549
-#, fuzzy
 msgid "No media found!"
 msgstr "Источник не найден!"
 
 #: src/bin/browser.c:706
-#, fuzzy
 msgid "Main menu"
 msgstr "Главное меню"
 
@@ -39,7 +37,7 @@ msgid " Usage: %s [options ...]\n"
 msgstr " Использование: %s [опции...]\n"
 
 #: src/bin/enna.c:495
-#, fuzzy, c-format
+#, c-format
 msgid " Available options:\n"
 msgstr " Доступные опции:\n"
 
@@ -49,7 +47,7 @@ msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Укажите конфигурационный файл.\n"
 
 #: src/bin/enna.c:497
-#, fuzzy, c-format
+#, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Принудительный полноэкранный режим.\n"
 
@@ -61,8 +59,7 @@ msgstr "  -h, (--help):    Выводит это сообщение.\n"
 #: src/bin/enna.c:499
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr ""
-"  -t, (--theme):   Укажите название темы, которая будет использована.\n"
+msgstr "  -t, (--theme):   Укажите название темы, которая будет использована.\n"
 
 #: src/bin/enna.c:500
 #, c-format
@@ -85,26 +82,22 @@ msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Выводит номер версии Enna.\n"
 
 #: src/bin/exit.c:93
-#, fuzzy
 msgid "Are you sure you want to quit Enna?"
 msgstr "Вы действительно хотите выйти из программы?"
 
 #: src/bin/exit.c:148
-#, fuzzy
 msgid "Yes, quit Enna"
 msgstr "Да, Выйти из Enna"
 
 #: src/bin/exit.c:151
-#, fuzzy
 msgid "No, continue using Enna"
-msgstr "Нет, продолжить работать в enna"
+msgstr "Нет, продолжить работать в Enna"
 
 #: src/bin/module.c:233
 msgid "Modules"
 msgstr "Модули"
 
 #: src/bin/module.c:402
-#, fuzzy
 msgid "No information provided"
 msgstr "Необходимая информация не задана"
 
@@ -164,20 +157,19 @@ msgstr "градус Фаренгейта"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Выберите полушарие"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Показывать погоду в Вашем городе"
+msgstr "Выберите полушарие в котором Вы находитесь"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Северное"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Южное"
 
 #: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
@@ -185,9 +177,8 @@ msgstr "Погода"
 
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:375
-#, fuzzy
 msgid "Bookstore"
-msgstr "Книжная полка"
+msgstr "Книжный магазин"
 
 #: src/modules/activity/bookstore/bookstore.c:377
 msgid "Read your books"
@@ -200,9 +191,8 @@ msgstr "Настройка"
 
 #: src/modules/activity/configuration/configuration.c:246
 #: src/modules/activity/configuration/configuration_sysinfo.c:517
-#, fuzzy
 msgid "System information"
-msgstr "<c>Информация о системе</c><br><br>"
+msgstr "Информация о системе"
 
 #: src/modules/activity/configuration/configuration.c:249
 msgid "Credits"
@@ -214,7 +204,6 @@ msgid "This module creates the Enna configuration panel"
 msgstr "Этот модуль создает панель настроек enna (НЕ ВЫКЛЮЧАТЬ!)"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
-#, fuzzy
 msgid "Enna is a GeeXboX-team MediaCenter"
 msgstr "Enna это МедиаЦентр команды GeeXboX,"
 
@@ -223,18 +212,16 @@ msgid "based on Enlightenment Foundation Librairies (EFL)."
 msgstr "основаный на библиотеках Enlightenment Foundation Librairies (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
-#, fuzzy
 msgid "Credits go to:"
-msgstr "Благодарности"
+msgstr "Благодарности:"
 
 #: src/modules/activity/configuration/configuration_credits.c:53
 msgid "and"
 msgstr "И"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:99
-#, fuzzy
 msgid "Enna information"
-msgstr "<c>Информация о системе</c><br><br>"
+msgstr "Информация об Enna"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:101
 msgid "Enna:"
@@ -257,9 +244,8 @@ msgid "for"
 msgstr "для"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:223
-#, fuzzy
 msgid "Available CPUs:"
-msgstr " Доступные опции:\n"
+msgstr " Доступные процессоры:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:254
 #, fuzzy
@@ -371,12 +357,8 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>Запуск игры..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
-"<c>Ошибка Mame</c><br><b>Нет roms в папке </b><br>Путь для Roms: ~/.mame/"
-"roms<br>"
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c>Ошибка Mame</c><br><b>Нет roms в папке </b><br>Путь для Roms: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
