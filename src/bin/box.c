@@ -435,7 +435,7 @@ _box_resize(void *data, Evas *e, Evas_Object *o, void *event_info)
 {
     Smart_Data *sd = data;
     Eina_List *l;
-    Evas_Coord w, h, x, y;
+    Evas_Coord w, h;
     Smart_Item *si;
 
     elm_scroller_region_get(sd->o_scroll, NULL, NULL, &w, &h);
@@ -445,7 +445,7 @@ _box_resize(void *data, Evas *e, Evas_Object *o, void *event_info)
 
     EINA_LIST_FOREACH(sd->items, l, si)
     {
-        edje_object_parts_extends_calc(si->o_edje, &x, &y, &w, &h);
+        edje_object_size_min_calc(si->o_edje, &w, &h);
         evas_object_size_hint_min_set(si->o_edje, w, h);
     }
 }
