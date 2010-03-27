@@ -25,6 +25,19 @@
 #include "view_list2.h"
 #include "enna_config.h"
 
+/* Elementary API used to be incomplete, so wrap this function */
+#ifndef elm_object_unfocus
+int elm_widget_can_focus_get(Evas_Object *obj);
+void elm_widget_focused_object_clear(Evas_Object *obj);
+
+static void
+elm_object_unfocus (Evas_Object *obj)
+{
+    if (!elm_widget_can_focus_get(obj)) return;
+    elm_widget_focused_object_clear(obj);
+}
+#endif
+
 typedef enum {
     ENNA_UNKNOW,
     ENNA_BUTTON,
