@@ -246,7 +246,7 @@ msgstr "voor"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:221
 msgid "Available CPUs:"
-msgstr "Beschikbare CPU's:\n"
+msgstr "Beschikbare CPU's:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:252
 #, fuzzy
