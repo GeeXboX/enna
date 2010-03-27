@@ -2,12 +2,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Igor Szymanski <szymanski.igor@gmail.com>, 2010.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-02-27 16:11+0100\n"
+"POT-Creation-Date: 2010-03-27 15:47+0100\n"
 "PO-Revision-Date: 2010-01-15 00:53+0100\n"
 "Last-Translator: Igor Szymanski <szymanski.igor@gmail.com>\n"
 "Language-Team: Polish\n"
@@ -24,71 +24,83 @@ msgstr "Nie znaleziono multimediów !"
 msgid "Main menu"
 msgstr "Menu główne"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:503
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Użycie: %s [options ...]\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:504
 #, c-format
 msgid " Available options:\n"
 msgstr "Dostępne opcje :\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr " -c, (--config) : Określ plik konfiguracyjny, który ma zostać użyty.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr " -f, (--fs) : Wymuś tryb pełnoekranowy.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr " -h, (--help) : Wyświetl pomoc.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme) :    Określ nazwę skórki która ma zostać użyta.\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry) : Określ rozmiar okna. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:510
 #, fuzzy, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (- profil): Określ profil wyświetlania\\ n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:511
 #, fuzzy, c-format
 msgid "    Supported: "
 msgstr "Wspierany:"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version) :  Wyświetl numer wersji Enna.\n"
 
-#: src/bin/exit.c:93
+#: src/bin/exit.c:71
 msgid "Are you sure you want to quit Enna?"
 msgstr "Czy na pewno chcesz zamknąć Enna ?"
 
-#: src/bin/exit.c:148
-msgid "Yes, quit Enna"
+#: src/bin/exit.c:120
+#, fuzzy
+msgid "Yes"
+msgstr "Lata"
+
+#: src/bin/exit.c:120
+#, fuzzy
+msgid "quit Enna"
 msgstr "Tak, zamknij Enna"
 
-#: src/bin/exit.c:151
-msgid "No, continue using Enna"
+#: src/bin/exit.c:121
+#, fuzzy
+msgid "No"
+msgstr "Żaden"
+
+#: src/bin/exit.c:121
+#, fuzzy
+msgid "continue using Enna"
 msgstr "Nie, kontynuuj używanie Enna"
 
 #: src/bin/module.c:233
@@ -99,7 +111,7 @@ msgstr "Moduły"
 msgid "No information provided"
 msgstr "Nie znaleziono informacji"
 
-#: src/bin/parser_cdda.c:461
+#: src/bin/parser_cdda.c:462
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Utwór #%02d (%02d:%02d)"
@@ -187,7 +199,7 @@ msgid "Configuration"
 msgstr "Konfiguracja"
 
 #: src/modules/activity/configuration/configuration.c:246
-#: src/modules/activity/configuration/configuration_sysinfo.c:515
+#: src/modules/activity/configuration/configuration_sysinfo.c:517
 msgid "System information"
 msgstr "Informacje systemowe"
 
@@ -223,119 +235,119 @@ msgstr "Informacje o Enna"
 msgid "Enna:"
 msgstr "Enna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:113
+#: src/modules/activity/configuration/configuration_sysinfo.c:115
 msgid "Video renderer:"
 msgstr "Rendererowanie wideo:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:174
+#: src/modules/activity/configuration/configuration_sysinfo.c:176
 msgid "Distribution:"
 msgstr "Dystrybucja:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:196
+#: src/modules/activity/configuration/configuration_sysinfo.c:198
 msgid "OS:"
 msgstr "System operacyjny:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:204
+#: src/modules/activity/configuration/configuration_sysinfo.c:206
 msgid "for"
 msgstr "dla"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:221
+#: src/modules/activity/configuration/configuration_sysinfo.c:223
 msgid "Available CPUs:"
 msgstr "Dostępne procesory:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:252
+#: src/modules/activity/configuration/configuration_sysinfo.c:254
 msgid ", running at"
 msgstr ", taktowany"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:281
+#: src/modules/activity/configuration/configuration_sysinfo.c:283
 msgid "CPU Load:"
 msgstr "Obciążenie procesora:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:325
+#: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "Memory:"
 msgstr "Pamięć:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:327
+#: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "used on"
 msgstr "w użyciu z"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:329
+#: src/modules/activity/configuration/configuration_sysinfo.c:331
 msgid "total"
 msgstr "ogółem"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:367
+#: src/modules/activity/configuration/configuration_sysinfo.c:369
 msgid "Screen resolution:"
 msgstr "Rozdzielczość ekranu :"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:370
+#: src/modules/activity/configuration/configuration_sysinfo.c:372
 msgid "at"
 msgstr "przy"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:372
+#: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "min:"
 msgstr "min:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:374
+#: src/modules/activity/configuration/configuration_sysinfo.c:376
 msgid "max:"
 msgstr "max:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:387
+#: src/modules/activity/configuration/configuration_sysinfo.c:389
 msgid "VDR:"
 msgstr "VDR:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:390
+#: src/modules/activity/configuration/configuration_sysinfo.c:392
 msgid "connected to VDR"
 msgstr "podłączony do VDR"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:393
+#: src/modules/activity/configuration/configuration_sysinfo.c:395
 msgid "on"
 msgstr "na"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:398
+#: src/modules/activity/configuration/configuration_sysinfo.c:400
 msgid "not connected"
 msgstr "nie podłączony"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:413
+#: src/modules/activity/configuration/configuration_sysinfo.c:415
 msgid "Available network interfaces:"
 msgstr "Dostępne interfejsy sieciowe :"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:440
+#: src/modules/activity/configuration/configuration_sysinfo.c:442
 msgid "IP:"
 msgstr "IP:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:447
+#: src/modules/activity/configuration/configuration_sysinfo.c:449
 msgid "Netmask:"
 msgstr "Maska podsieci:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:472
+#: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "Default gateway:"
 msgstr "Brama domyślna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:500
+#: src/modules/activity/configuration/configuration_sysinfo.c:502
 msgid "None"
 msgstr "Żaden"
 
-#: src/modules/activity/games/games.c:217
+#: src/modules/activity/games/games.c:216
 #, c-format
 msgid "no games found"
 msgstr "nie znaleziono gier"
 
-#: src/modules/activity/games/games.c:219
+#: src/modules/activity/games/games.c:218
 #, fuzzy, c-format
 msgid "one game"
 msgstr "jedna gra"
 
-#: src/modules/activity/games/games.c:221
+#: src/modules/activity/games/games.c:220
 #, c-format
 msgid "%d games"
 msgstr "%d gier"
 
-#: src/modules/activity/games/games.c:406
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:469
 msgid "Games"
 msgstr "Gry"
 
-#: src/modules/activity/games/games.c:472
+#: src/modules/activity/games/games.c:471
 msgid "Play all your games directly from Enna"
 msgstr "Graj w gry bezpośrednio z Enna"
 
@@ -344,8 +356,12 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c> MAME </c><br> Uruchamianie gry ..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
-msgstr "<c> Błąd Mame </c><br> <b>Nie znaleziono rom'ów w odpowiedniej ścieżce</b> <br> Rom'y muszą znajdować się w: ~ /.mame /roms <br>"
+msgid ""
+"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
+"at: ~/.mame/roms<br>"
+msgstr ""
+"<c> Błąd Mame </c><br> <b>Nie znaleziono rom'ów w odpowiedniej ścieżce</b> "
+"<br> Rom'y muszą znajdować się w: ~ /.mame /roms <br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
@@ -369,7 +385,7 @@ msgstr "Muzyka"
 msgid "Listen to your music"
 msgstr "Słuchaj muzyki"
 
-#: src/modules/activity/music/music_lyrics.c:91
+#: src/modules/activity/music/music_lyrics.c:92
 msgid "No lyrics found ..."
 msgstr "Nie znaleziono słów utworu ..."
 
@@ -439,12 +455,12 @@ msgstr "Nie można uzyskać dodatkowych informacji"
 msgid "%d Movies"
 msgstr "%d Filmów"
 
-#: src/modules/activity/video/video.c:916
-#: src/modules/activity/video/video.c:1007
+#: src/modules/activity/video/video.c:940
+#: src/modules/activity/video/video.c:1031
 msgid "Video"
 msgstr "Wideo"
 
-#: src/modules/activity/video/video.c:1009
+#: src/modules/activity/video/video.c:1033
 msgid "Play your videos"
 msgstr "Odtwarzaj pliki wideo"
 

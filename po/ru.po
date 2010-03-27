@@ -2,12 +2,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Kostyantyn Derets <ua.motofan@gmail.com>, 2010.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-14 15:00+0100\n"
+"POT-Creation-Date: 2010-03-27 15:47+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -26,71 +26,84 @@ msgstr "Источник не найден!"
 msgid "Main menu"
 msgstr "Главное меню"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедиаЦентр Enna\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:503
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Использование: %s [опции...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:504
 #, c-format
 msgid " Available options:\n"
 msgstr " Доступные опции:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Укажите конфигурационный файл.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Принудительный полноэкранный режим.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Выводит это сообщение.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
-msgstr "  -t, (--theme):   Укажите название темы, которая будет использована.\n"
+msgstr ""
+"  -t, (--theme):   Укажите название темы, которая будет использована.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Укажите размеры окна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:510
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (--profile): Укажите профиль дисплея\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:511
 #, c-format
 msgid "    Supported: "
 msgstr "Поддерживает:"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Выводит номер версии Enna.\n"
 
-#: src/bin/exit.c:93
+#: src/bin/exit.c:71
 msgid "Are you sure you want to quit Enna?"
 msgstr "Вы действительно хотите выйти из программы?"
 
-#: src/bin/exit.c:148
-msgid "Yes, quit Enna"
+#: src/bin/exit.c:120
+#, fuzzy
+msgid "Yes"
+msgstr "Годы"
+
+#: src/bin/exit.c:120
+#, fuzzy
+msgid "quit Enna"
 msgstr "Да, Выйти из Enna"
 
-#: src/bin/exit.c:151
-msgid "No, continue using Enna"
+#: src/bin/exit.c:121
+#, fuzzy
+msgid "No"
+msgstr "Нет<br>"
+
+#: src/bin/exit.c:121
+#, fuzzy
+msgid "continue using Enna"
 msgstr "Нет, продолжить работать в Enna"
 
 #: src/bin/module.c:233
@@ -101,7 +114,7 @@ msgstr "Модули"
 msgid "No information provided"
 msgstr "Необходимая информация не задана"
 
-#: src/bin/parser_cdda.c:461
+#: src/bin/parser_cdda.c:462
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Дорожка №%02d (%02d:%02d)"
@@ -342,12 +355,12 @@ msgstr "Системные игры"
 msgid "%d games"
 msgstr "%d Песня"
 
-#: src/modules/activity/games/games.c:404
-#: src/modules/activity/games/games.c:468
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:469
 msgid "Games"
 msgstr "Игры"
 
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:471
 #, fuzzy
 msgid "Play all your games directly from Enna"
 msgstr "С помощью этого модуля Вы можете играть в игры прямо из enna"
@@ -357,8 +370,12 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>Запуск игры..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
-msgstr "<c>Ошибка Mame</c><br><b>Нет roms в папке </b><br>Путь для Roms: ~/.mame/roms<br>"
+msgid ""
+"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
+"at: ~/.mame/roms<br>"
+msgstr ""
+"<c>Ошибка Mame</c><br><b>Нет roms в папке </b><br>Путь для Roms: ~/.mame/"
+"roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
@@ -384,7 +401,7 @@ msgstr "Музыка"
 msgid "Listen to your music"
 msgstr "Слушать подкасты"
 
-#: src/modules/activity/music/music_lyrics.c:91
+#: src/modules/activity/music/music_lyrics.c:92
 msgid "No lyrics found ..."
 msgstr "Музыки не найдено..."
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-14 15:00+0100\n"
+"POT-Creation-Date: 2010-03-27 15:47+0100\n"
 "PO-Revision-Date: 2010-02-02 17:30+01:00\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -25,72 +25,84 @@ msgstr "Intet medie fundet!"
 msgid "Main menu"
 msgstr "Hovedmenu"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna - mediecenter\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:503
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Brug: %s [tilvalg...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:504
 #, c-format
 msgid " Available options:\n"
 msgstr " Tilgængelige tilvalg:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angiv den konfigurationsfil der skal bruges.\n"
 
 # måske Start i fuldskærmtilstand
-#: src/bin/enna.c:497
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Fremtving fuldskærmtilstand.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Vis denne hjælpetekst.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angiv temanavn der skal bruges.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Angiv vinduesgeometri. (geometri=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:510
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Angiv skærmprofil\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:511
 #, c-format
 msgid "    Supported: "
 msgstr "    Understøttet: "
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Vis versionsnummeret for Enna.\n"
 
-#: src/bin/exit.c:93
+#: src/bin/exit.c:71
 msgid "Are you sure you want to quit Enna?"
 msgstr "Er du sikker på, at du ønsker at afslutte Enna?"
 
-#: src/bin/exit.c:148
-msgid "Yes, quit Enna"
+#: src/bin/exit.c:120
+#, fuzzy
+msgid "Yes"
+msgstr "År"
+
+#: src/bin/exit.c:120
+#, fuzzy
+msgid "quit Enna"
 msgstr "Ja, afslut Enna"
 
-#: src/bin/exit.c:151
-msgid "No, continue using Enna"
+#: src/bin/exit.c:121
+#, fuzzy
+msgid "No"
+msgstr "Ingen"
+
+#: src/bin/exit.c:121
+#, fuzzy
+msgid "continue using Enna"
 msgstr "Nej, fortsæt med at bruge Enna"
 
 #: src/bin/module.c:233
@@ -101,7 +113,7 @@ msgstr "Moduler"
 msgid "No information provided"
 msgstr "Ingen information angivet"
 
-#: src/bin/parser_cdda.c:461
+#: src/bin/parser_cdda.c:462
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Titel #%02d (%02d:%02d)"
@@ -334,12 +346,12 @@ msgstr "et spil"
 msgid "%d games"
 msgstr "%d spil"
 
-#: src/modules/activity/games/games.c:404
-#: src/modules/activity/games/games.c:468
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:469
 msgid "Games"
 msgstr "Spil"
 
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:471
 msgid "Play all your games directly from Enna"
 msgstr "Spil alle dine spil direkte fra Enna"
 
@@ -377,7 +389,7 @@ msgstr "Musik"
 msgid "Listen to your music"
 msgstr "Hør musik"
 
-#: src/modules/activity/music/music_lyrics.c:91
+#: src/modules/activity/music/music_lyrics.c:92
 msgid "No lyrics found ..."
 msgstr "Ingen tekster blev fundet..."
 

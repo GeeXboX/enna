@@ -62,7 +62,9 @@ msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 #: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr "  -g, (--geometry): specifica la geometria della finestra. (geometry=1280x720)\n"
+msgstr ""
+"  -g, (--geometry): specifica la geometria della finestra. "
+"(geometry=1280x720)\n"
 
 #: src/bin/enna.c:510
 #, c-format
@@ -112,8 +114,7 @@ msgstr "Nessuna informazione disponibile"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Traccia #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:405
-#: src/bin/weather_api.c:438
+#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
 msgid "City"
 msgstr "Città"
 
@@ -125,8 +126,7 @@ msgstr "Scegli la tua città"
 msgid "Enter your City here"
 msgstr "Inserisce la tua città qui"
 
-#: src/bin/weather_api.c:413
-#: src/bin/weather_api.c:446
+#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -178,8 +178,7 @@ msgstr "Nord"
 msgid "Southern"
 msgstr "Sud"
 
-#: src/bin/weather_api.c:705
-#: src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
 msgstr "Meteo"
 
@@ -355,8 +354,12 @@ msgid "<c>M.A.M.E.</c><br>Game running..."
 msgstr "<c>M.A.M.E.</c><br>Gioco in esecuzione..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
-msgstr "<c>Errore Mame</c><br><b>Impossibile trovare le rom</b><br>Le rom devono essere copiate in: ~/.mame/roms<br>"
+msgid ""
+"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
+"at: ~/.mame/roms<br>"
+msgstr ""
+"<c>Errore Mame</c><br><b>Impossibile trovare le rom</b><br>Le rom devono "
+"essere copiate in: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
@@ -409,8 +412,7 @@ msgstr "Sto registrando '%s'"
 msgid "Recording in progress"
 msgstr "Registrazione in corso"
 
-#: src/modules/activity/tv/tv.c:156
-#: src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Televisione"
 
@@ -551,8 +553,7 @@ msgstr "Browser SHOUTcast"
 msgid "Listen to SHOUTcast stream"
 msgstr "Ascolta flussi SHOUTcast"
 
-#: src/modules/browser/upnp/upnp.c:457
-#: src/modules/browser/upnp/upnp.c:475
+#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
 msgid "UPnP/DLNA media servers"
 msgstr "Media server UPnP/DLNA"
 
@@ -567,7 +568,9 @@ msgstr "Modulo UPnP/DLNA"
 
 #: src/modules/browser/upnp/upnp.c:617
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr "Questo modulo permette ad Enna di sfogliare contenuti da media server UPnP/DLNA"
+msgstr ""
+"Questo modulo permette ad Enna di sfogliare contenuti da media server UPnP/"
+"DLNA"
 
 #: src/modules/browser/valhalla/valhalla.c:136
 msgid "Authors"
@@ -727,4 +730,3 @@ msgstr "Volumi da udev"
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "Questo modulo fornisce supporto per i volumi rimovibili"
-
