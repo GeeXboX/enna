@@ -396,7 +396,7 @@ _thumb_hash_del(int objid)
     char buf[32];
 
     snprintf(buf, sizeof(buf), "%i", objid);
-    eina_hash_del(_thumbs, buf, NULL);
+    if (_thumbs) eina_hash_del(_thumbs, buf, NULL);
     if ((!_thumbs) && (!_thumbnailers)) _objid = 0;
 }
 
