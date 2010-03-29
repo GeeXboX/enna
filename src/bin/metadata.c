@@ -127,7 +127,7 @@ static const struct {
 };
 
 static void
-cfg_db_section_load (const char *section)
+cfg_db_section_load(const char *section)
 {
     const char *value;
     Eina_List *vl, *gl;
@@ -213,7 +213,7 @@ cfg_db_section_load (const char *section)
     enna_config_int_set(section, #field, db_cfg.field);
 
 static void
-cfg_db_section_save (const char *section)
+cfg_db_section_save(const char *section)
 {
     char *words;
     int i;
@@ -364,7 +364,7 @@ enna_metadata_db_init(void)
 
         EINA_LIST_FOREACH(glist, l, gl)
         {
-            if (!strcmp (g, gl))
+            if (!strcmp(g, gl))
             {
                 valhalla_config_set(vh, GRABBER_STATE, g, 1);
 
