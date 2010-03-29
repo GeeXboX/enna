@@ -275,9 +275,6 @@ cfg_db_section_set_default (void)
     db_cfg.decrapifier     = ENNA_METADATA_DEFAULT_DECRAPIFIER;
     db_cfg.verbosity       = VALHALLA_MSG_WARNING;
 
-    /* set a default dummy path */
-    db_cfg.path = eina_list_append(db_cfg.path, strdup("/dev/null"));
-
     /* set the blacklisted keywords list */
     db_cfg.bl_words = enna_util_tuple_get(ENNA_METADATA_DEFAULT_KEYWORDS, ",");
 
