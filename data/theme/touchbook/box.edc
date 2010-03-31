@@ -30,7 +30,78 @@ group {
 
 group {
    name: "enna/box/item/list";
-   alias: "enna/box/item/exit";
+   images {
+      image: "box_button.png" COMP;
+      image: "box_button_down.png" COMP;
+   }
+   min : 64 64;
+   parts {
+      part {
+         name: "base";
+         mouse_events: 1;
+         type: IMAGE;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            image {
+               normal: "box_button.png";
+               border: 4 4 4 4;
+            }
+         }
+         description {
+            state: "selected" 0.0;
+            color: 255 255 255 255;
+            image {
+               normal: "box_button_down.png";
+               border: 4 4 4 4;
+            }
+         }
+      }
+      part { name: "enna.swallow.icon";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+             //fixed: 1 1;
+            align: 0.5 0.5;
+            aspect: 1.0 1.0;
+            min: 64 64;
+            aspect_preference: BOTH;
+            rel1 {
+               to: "base";
+               relative: 0.0  0.0;
+               offset:   4    4;
+            }
+            rel2 {
+               to: "base";
+               relative: 1.0  1.0;
+               offset:   -5   -5;
+            }
+         }
+      }
+   }
+   programs {
+           program {
+         name:    "go_active";
+         signal:  "select";
+         source:  "enna";
+         action:  STATE_SET "selected" 0.0;
+         transition: LINEAR 0.1;
+         target:  "base";
+         target:  "enna.swallow.icon";
+      }
+      program {
+         name:    "go_passive";
+         signal:  "unselect";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: LINEAR 0.1;
+         target:  "base";
+         target:  "enna.swallow.icon";
+      }
+   }
+}
+
+group {
+   name: "enna/box/item/exit";
    images {
       image: "box_button.png" COMP;
       image: "box_button_down.png" COMP;

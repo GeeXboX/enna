@@ -25,6 +25,17 @@
 #include "view_list2.h"
 #include "enna_config.h"
 
+/* Elementary API used to be incomplete, so wrap this function */
+extern int elm_widget_can_focus_get(Evas_Object *obj);
+extern void elm_widget_focused_object_clear(Evas_Object *obj);
+
+static void
+_elm_object_unfocus (Evas_Object *obj)
+{
+    if (!elm_widget_can_focus_get(obj)) return;
+    elm_widget_focused_object_clear(obj);
+}
+
 typedef enum {
     ENNA_UNKNOW,
     ENNA_BUTTON,
@@ -483,7 +494,7 @@ _list_item_button_event_input_focus_set(Enna_View_List2_Widget *ib, Eina_Bool fo
         {
             enna_input_listener_del(ib->input_listener);
             ib->input_listener = NULL;
-            elm_object_unfocus(ib->obj);
+            _elm_object_unfocus(ib->obj);
             //evas_object_focus_set(enna->win, EINA_TRUE);
 
         }
