@@ -3,13 +3,13 @@
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
 #  <sword.huang@gmail.com>, 2010.
-#
+# 
 # msgfmt zh_TW.po -o zh_TW.gmo
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-27 15:47+0100\n"
+"POT-Creation-Date: 2010-04-01 08:53+0200\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -86,24 +86,20 @@ msgid "Are you sure you want to quit Enna?"
 msgstr "你確定要離開 Enna?"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "Yes"
-msgstr "年份"
+msgstr "是"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "quit Enna"
-msgstr "是! 我要離開 Enna。"
+msgstr "離開 Enna。"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "No"
-msgstr "None"
+msgstr "否"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "continue using Enna"
-msgstr "不! 我要繼續使用 Enna"
+msgstr "繼續使用 Enna"
 
 #: src/bin/module.c:233
 msgid "Modules"
