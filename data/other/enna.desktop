@@ -7,5 +7,5 @@ Icon=enna
 TryExec=enna
 Exec=enna
 Terminal=false
-Categories=ENLIGHTENMENT;Application;AudioVideo;Player;
+Categories=X-ENLIGHTENMENT;AudioVideo;Player;
 StartupWMClass=enna
