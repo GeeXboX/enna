@@ -3,13 +3,13 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # winn <mutoturk@gmail.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna.trunk\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-27 15:47+0100\n"
-"PO-Revision-Date: 2010-02-26 18:22+0200\n"
+"POT-Creation-Date: 2010-04-01 08:53+0200\n"
+"PO-Revision-Date: 2010-03-29 14:24+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <tr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: src/bin/browser.c:549
 msgid "No media found!"
-msgstr "Medya bulunamadı"
+msgstr "Medya bulunamadı!"
 
 #: src/bin/browser.c:706
 msgid "Main menu"
@@ -31,7 +31,7 @@ msgstr "Ana menü"
 #: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
-msgstr "Enna MediaMerkezi\n"
+msgstr "Enna MedyaMerkezi\n"
 
 #: src/bin/enna.c:503
 #, c-format
@@ -77,7 +77,7 @@ msgstr "  -p, (--profile): Profil görünümünü belirt\n"
 #: src/bin/enna.c:511
 #, c-format
 msgid "    Supported: "
-msgstr "Desteklenen: "
+msgstr "    Desteklenen: "
 
 #: src/bin/enna.c:515
 #, c-format
@@ -89,24 +89,20 @@ msgid "Are you sure you want to quit Enna?"
 msgstr "Enna'dan çıkmak istediğine emin misin?"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "Yes"
-msgstr "Yıllar"
+msgstr "Evet"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "quit Enna"
-msgstr "Evet, Enna'dan çık"
+msgstr "Enna'dan çık"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "No"
-msgstr "Yok"
+msgstr "Hayır"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "continue using Enna"
-msgstr "Hayır, Enna'yı kullanmaya devam et"
+msgstr "Enna'yı kullanmaya devam et"
 
 #: src/bin/module.c:233
 msgid "Modules"
@@ -475,7 +471,7 @@ msgstr "Hava tahminleri"
 
 #: src/modules/activity/weather/weather.c:350
 msgid "Show the weather at your location"
-msgstr "Konumunuzdaki havaya göster"
+msgstr "Konumunuzdaki havayı göster"
 
 #: src/modules/browser/cdda/cdda.c:95
 msgid "Play audio CD"
