@@ -796,7 +796,10 @@ browser_cb_hilight(void *data, Evas_Object *obj, void *event_info)
         return;
 
     if (!ev->file->is_directory && !ev->file->is_menu)
+    {
+        video_infos_del();
         video_infos_display(ev->file, 0);
+    }
 }
 
 static void
