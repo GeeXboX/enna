@@ -127,7 +127,7 @@ pipe_read(void *data, void *buf, unsigned int nbyte)
 
     /* Refresh metadata in video or music activity */
     if (vh_odcb)
-      vh_odcb (vh_file, od->ev);
+        vh_odcb (vh_file, od->ev);
 
 out:
     free(od->file);
