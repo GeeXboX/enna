@@ -1084,7 +1084,7 @@ enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
   list_item_t *item;
 
   item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
-  if (!item->uri)
+  if (!item || !item->uri)
     return NULL;
   return strdup(item->uri);
 }
