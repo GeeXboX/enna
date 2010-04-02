@@ -138,6 +138,26 @@ enna_vfs_create_inode(const char *uri, const char *label,
 }
 
 Enna_Vfs_File *
+enna_vfs_dup_file(const Enna_Vfs_File *file)
+{
+    Enna_Vfs_File *n;
+
+    n = calloc(1, sizeof(Enna_Vfs_File));
+    if (!n)
+        return NULL;
+
+    n->uri       = file->uri       ? strdup(file->uri)       : NULL;
+    n->label     = file->label     ? strdup(file->label)     : NULL;
+    n->icon      = file->icon      ? strdup(file->icon)      : NULL;
+    n->icon_file = file->icon_file ? strdup(file->icon_file) : NULL;
+
+    n->is_directory = file->is_directory;
+    n->is_menu = file->is_menu;
+
+    return n;
+}
+
+Enna_Vfs_File *
 enna_vfs_create_file(const char *uri, const char *label,
                      const char *icon, const char *icon_file)
 {
