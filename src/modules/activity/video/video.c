@@ -669,9 +669,59 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
     free(ev);
 }
 
+static void
+video_infos_display_title(const Enna_Vfs_File *file, const Enna_Metadata *m)
+{
+    char *title;
+    const char *label;
+
+    title = enna_metadata_meta_get(m, "title", 1);
+    label = title ? title : file->label;
+    edje_object_part_text_set(mod->o_edje, "title.label", label);
+
+    free(title);
+}
 
 static void
-video_infos_display(Enna_Vfs_File *file, int delay)
+video_infos_display_genre(const Enna_Vfs_File *file, const Enna_Metadata *m)
+{
+    char *categories;
+
+    categories = enna_metadata_meta_get(m, "category", 5);
+    edje_object_part_text_set(mod->o_edje, "genre.label",
+                              categories ? categories : "");
+
+    free(categories);
+}
+
+static void
+video_infos_display_length(const Enna_Vfs_File *file, const Enna_Metadata *m)
+{
+    char *length;
+
+    length = enna_metadata_meta_duration_get(m);
+    edje_object_part_text_set(mod->o_edje, "length.label",
+                              length ? length : "");
+
+    free(length);
+}
+
+static void
+video_infos_display_synopsis(const Enna_Vfs_File *file, const Enna_Metadata *m)
+{
+    char *synopsis;
+
+    synopsis = enna_metadata_meta_get(m, "synopsis", 1);
+    edje_object_part_text_set(mod->o_edje, "synopsis.textblock",
+                              synopsis ? synopsis : "");
+    edje_object_signal_emit(mod->o_edje, synopsis ?
+                            "separator,show" : "separator,hide", "enna");
+
+    free(synopsis);
+}
+
+static void
+video_infos_display(const Enna_Vfs_File *file, int delay)
 {
     Enna_Metadata *m;
 
@@ -684,35 +734,10 @@ video_infos_display(Enna_Vfs_File *file, int delay)
 
     if (!delay)
     {
-        char *title, *categories, *length, *synopsis;
-        const char *label;
-
-        /* title */
-        title = enna_metadata_meta_get(m, "title", 1);
-        label = title ? title : file->label;
-        edje_object_part_text_set(mod->o_edje, "title.label", label);
-
-        /* genre */
-        categories = enna_metadata_meta_get(m, "category", 5);
-        edje_object_part_text_set(mod->o_edje, "genre.label",
-                                  categories ? categories : "");
-
-        /* length */
-        length = enna_metadata_meta_duration_get(m);
-        edje_object_part_text_set(mod->o_edje, "length.label",
-                                  length ? length : "");
-
-        /* synopsis */
-        synopsis = enna_metadata_meta_get(m, "synopsis", 1);
-        edje_object_part_text_set(mod->o_edje, "synopsis.textblock",
-                                  synopsis ? synopsis : "");
-        edje_object_signal_emit(mod->o_edje, synopsis ?
-                                "separator,show" : "separator,hide", "enna");
-
-        ENNA_FREE(title);
-        ENNA_FREE(categories);
-        ENNA_FREE(length);
-        ENNA_FREE(synopsis);
+        video_infos_display_title(file, m);
+        video_infos_display_genre(file, m);
+        video_infos_display_length(file, m);
+        video_infos_display_synopsis(file, m);
     }
     else
     {
