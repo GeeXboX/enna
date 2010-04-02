@@ -22,7 +22,16 @@
 #ifndef METADATA_H
 #define METADATA_H
 
+#include "vfs.h"
+
 typedef struct _Enna_Metadata Enna_Metadata;
+
+typedef enum _Enna_Metadata_OnDemand
+{
+    ENNA_METADATA_OD_PARSED,
+    ENNA_METADATA_OD_GRABBED,
+    ENNA_METADATA_OD_ENDED,
+} Enna_Metadata_OnDemand;
 
 void enna_metadata_cfg_register(void);
 void enna_metadata_init(void);
@@ -35,7 +44,9 @@ char *enna_metadata_meta_get(const Enna_Metadata *meta,
 char *enna_metadata_meta_get_all(const Enna_Metadata *meta);
 void  enna_metadata_meta_free(Enna_Metadata *meta);
 void enna_metadata_set_position(Enna_Metadata *meta, double position);
-void enna_metadata_ondemand(const char *file);
+void enna_metadata_ondemand(const Enna_Vfs_File *file,
+                            void (*odcb)(const Enna_Vfs_File *file,
+                                         Enna_Metadata_OnDemand ev));
 char *enna_metadata_meta_duration_get(const Enna_Metadata *m);
 
 #endif /* METADATA_H */

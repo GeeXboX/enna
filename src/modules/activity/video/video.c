@@ -104,6 +104,7 @@ struct _Enna_Module_Video
     int infos_displayed;
     int resume_displayed;
     int controls_displayed;
+    char *uri_hilighted;
     Enna_Volumes_Listener *vl;
     Ecore_Timer *controls_timer;
     Ecore_Event_Handler *mouse_button_event_handler;
@@ -777,6 +778,50 @@ video_infos_panel_del(void)
 }
 
 static void
+_ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
+{
+    Enna_Metadata *m;
+
+    if (!file || !file->uri || !mod->uri_hilighted)
+        return;
+
+    if (file->is_directory || file->is_menu)
+        return;
+
+    if (strcmp(file->uri, mod->uri_hilighted))
+        return;
+
+    m = enna_metadata_meta_new(file->uri);
+    if (!m)
+        return;
+
+    switch (ev)
+    {
+    case ENNA_METADATA_OD_PARSED:
+    case ENNA_METADATA_OD_GRABBED:
+        video_infos_display_title(file, m);
+        video_infos_display_genre(file, m);
+        video_infos_display_length(file, m);
+        video_infos_display_synopsis(file, m);
+        enna_video_flags_update(mod->o_video_flags, m);
+        enna_panel_infos_set_text(mod->o_panel_infos, m);
+        enna_panel_infos_set_rating(mod->o_panel_infos, m);
+        if (ev == ENNA_METADATA_OD_PARSED)
+            break;
+    case ENNA_METADATA_OD_ENDED:
+        backdrop_show(m);
+        snapshot_show(m, file->is_directory);
+        enna_panel_infos_set_cover(mod->o_panel_infos, m);
+        break;
+
+    default:
+        break;
+    }
+
+    enna_metadata_meta_free(m);
+}
+
+static void
 browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
@@ -788,10 +833,13 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
     {
         /* ask for on-demand scan for local files */
         if (!strncmp(ev->file->uri, "file://", 7))
-            enna_metadata_ondemand(ev->file->uri + 7);
+            enna_metadata_ondemand(ev->file, _ondemand_cb_refresh);
 
         video_infos_display(ev->file, 1);
     }
+
+    ENNA_FREE(mod->uri_hilighted);
+    mod->uri_hilighted = strdup(ev->file->uri);
 }
 
 static void
@@ -808,6 +856,9 @@ browser_cb_hilight(void *data, Evas_Object *obj, void *event_info)
         video_infos_panel_del();
         video_infos_display(ev->file, 0);
     }
+
+    ENNA_FREE(mod->uri_hilighted);
+    mod->uri_hilighted = strdup(ev->file->uri);
 }
 
 static void
@@ -1032,6 +1083,7 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_resume);
     ENNA_OBJECT_DEL(mod->o_video_flags);
     ENNA_FREE(mod->o_current_uri);
+    ENNA_FREE(mod->uri_hilighted);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
 }
