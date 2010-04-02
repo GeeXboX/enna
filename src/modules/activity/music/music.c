@@ -282,7 +282,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 static void
 _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
 {
-    const char *uri;
+    char *uri;
     Enna_Metadata *m;
 
     if (!file || !file->uri || !mod->enna_playlist)
@@ -324,6 +324,7 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
     }
 
     enna_metadata_meta_free(m);
+    free(uri);
 }
 
 static void
