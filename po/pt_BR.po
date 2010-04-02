@@ -2,7 +2,7 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Benjamin Zores <ben@geexbox.org>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
@@ -87,22 +87,18 @@ msgid "Are you sure you want to quit Enna?"
 msgstr "Você tem certeza que quer sair do Enna?"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "Yes"
-msgstr "Anos"
+msgstr "Sim"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "quit Enna"
 msgstr "Sim, quero sair do Enna"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "No"
-msgstr "Nenhum"
+msgstr "Não"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "continue using Enna"
 msgstr "Não, quero continuar a usar o Enna."
 
