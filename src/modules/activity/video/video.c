@@ -769,6 +769,14 @@ video_infos_del (void)
 }
 
 static void
+video_infos_panel_del(void)
+{
+    enna_panel_infos_set_cover(mod->o_panel_infos, NULL);
+    enna_panel_infos_set_text(mod->o_panel_infos, NULL);
+    enna_panel_infos_set_rating(mod->o_panel_infos, NULL);
+}
+
+static void
 browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
@@ -797,6 +805,7 @@ browser_cb_hilight(void *data, Evas_Object *obj, void *event_info)
     if (!ev->file->is_directory && !ev->file->is_menu)
     {
         video_infos_del();
+        video_infos_panel_del();
         video_infos_display(ev->file, 0);
     }
 }
