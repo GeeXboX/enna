@@ -520,7 +520,7 @@ enna_metadata_meta_free(Enna_Metadata *meta)
 }
 
 char *
-enna_metadata_meta_get(Enna_Metadata *meta, const char *name, int max)
+enna_metadata_meta_get(const Enna_Metadata *meta, const char *name, int max)
 {
   int count = 0;
   buffer_t *b;
@@ -554,7 +554,7 @@ enna_metadata_meta_get(Enna_Metadata *meta, const char *name, int max)
 }
 
 char *
-enna_metadata_meta_get_all(Enna_Metadata *meta)
+enna_metadata_meta_get_all(const Enna_Metadata *meta)
 {
   buffer_t *b;
   char *str = NULL;
@@ -589,7 +589,7 @@ enna_metadata_ondemand(const char *file)
 }
 
 char *
-enna_metadata_meta_duration_get(Enna_Metadata *m)
+enna_metadata_meta_duration_get(const Enna_Metadata *m)
 {
     buffer_t *buf;
     char *runtime = NULL, *length;
