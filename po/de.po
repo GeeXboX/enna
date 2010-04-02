@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
 "POT-Creation-Date: 2010-04-01 08:53+0200\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Matthias Hölzer <n-billy@geexbox.org>\n"
+"Last-Translator: n-billy <n-billy@gmx.de>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,19 +64,17 @@ msgstr "  -t, (--theme):   Angegebenen Motiv-Namen benutzen.\n"
 #: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry):Angegebene Fenster Geometrie verwenden. "
-"(geometrie=1280x720)\n"
+msgstr "  -g, (--geometry):Angegebene Fenster Geometrie verwenden. (geometrie=1280x720)\n"
 
 #: src/bin/enna.c:510
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
+msgstr "  -p, (--profile): Angegebenes Profil benutzen\n"
 
 #: src/bin/enna.c:511
-#, fuzzy, c-format
+#, c-format
 msgid "    Supported: "
-msgstr "Unterstützt:"
+msgstr "    Unterstützt:"
 
 #: src/bin/enna.c:515
 #, c-format
@@ -88,24 +86,20 @@ msgid "Are you sure you want to quit Enna?"
 msgstr "Soll Enna wirklich beendet werden?"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "Yes"
-msgstr "Jahre"
+msgstr "Ja"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "quit Enna"
-msgstr "Ja, Enna beenden"
+msgstr "Enna beenden"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "No"
 msgstr "Keine"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "continue using Enna"
-msgstr "Nein, Enna weiter verwenden"
+msgstr "Enna weiter verwenden"
 
 #: src/bin/module.c:233
 msgid "Modules"
@@ -120,12 +114,12 @@ msgstr "Keine Informationen verfügbar."
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Titel #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
+#: src/bin/weather_api.c:405
+#: src/bin/weather_api.c:438
 msgid "City"
 msgstr "Stadt"
 
 #: src/bin/weather_api.c:406
-#, fuzzy
 msgid "Choose your City"
 msgstr "Stadt auswählen"
 
@@ -133,7 +127,8 @@ msgstr "Stadt auswählen"
 msgid "Enter your City here"
 msgstr "Stadt eintragen"
 
-#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
+#: src/bin/weather_api.c:413
+#: src/bin/weather_api.c:446
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -154,13 +149,12 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: src/bin/weather_api.c:461
-#, fuzzy
 msgid "Select unit"
 msgstr "Einheit auswählen"
 
 #: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr "Gerät zum Anzeigen der Temperatur auswählen"
+msgstr "Einheit zum Anzeigen der Temperatur auswählen"
 
 #: src/bin/weather_api.c:467
 msgid "°C"
@@ -168,31 +162,26 @@ msgstr "°C"
 
 #: src/bin/weather_api.c:467
 msgid "°F"
-msgstr ""
-" \t\r\n"
-"\r\n"
-"°F"
+msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
 msgstr "Hemisphäre auswählen"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Lokales Wetter anzeigen"
+msgstr "Auswahl der Hemisphäre"
 
 #: src/bin/weather_api.c:477
-#, fuzzy
 msgid "Northern"
-msgstr "Nord-"
+msgstr "Nordhalbkugel"
 
 #: src/bin/weather_api.c:477
-#, fuzzy
 msgid "Southern"
-msgstr "Süd-"
+msgstr "Südhalbkugel"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705
+#: src/modules/activity/weather/weather.c:291
 msgid "Weather"
 msgstr "Wetter"
 
@@ -340,19 +329,19 @@ msgid "None"
 msgstr "Keine"
 
 #: src/modules/activity/games/games.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "no games found"
-msgstr "Kein Medium gefunden!"
+msgstr "Keine Spiele gefunden"
 
 #: src/modules/activity/games/games.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "one game"
 msgstr "ein Spiel"
 
 #: src/modules/activity/games/games.c:220
-#, fuzzy, c-format
+#, c-format
 msgid "%d games"
-msgstr "%d Songs"
+msgstr "%d Spiele"
 
 #: src/modules/activity/games/games.c:405
 #: src/modules/activity/games/games.c:469
@@ -364,23 +353,16 @@ msgid "Play all your games directly from Enna"
 msgstr "Alle Spiele direkt aus Enna heraus spielen"
 
 #: src/modules/activity/games/games_mame.c:81
-#, fuzzy
 msgid "<c>M.A.M.E.</c><br>Game running..."
-msgstr "<c> MAME </c><br> Spiel läuft ..."
+msgstr "<c>M.A.M.E.</c><br> Spiel läuft ..."
 
 #: src/modules/activity/games/games_mame.c:318
-#, fuzzy
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
-"<c> Mame Fehler </c><br> <b>Nr. ROMs gefunden in Pfad</b> <br> ROMs müssen "
-"gefunden werden: ~ / .mame / roms <br>"
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c> Mame Fehler </c><br> <b>Keine ROMs gefunden in Pfad</b> <br> ROMs müssen sich unter ~/.mame/roms befinden <br>"
 
 #: src/modules/activity/games/games_sys.c:161
-#, fuzzy
 msgid "<c>System Games</c><br>Game running..."
-msgstr "<c> System Games </c><br> Spiel läuft ..."
+msgstr "<c>System Spiele</c><br>Spiel läuft ..."
 
 #: src/modules/activity/games/games_sys.c:257
 msgid "System Games"
@@ -429,7 +411,8 @@ msgstr "Nimmt gerade '%s' auf"
 msgid "Recording in progress"
 msgstr "Aufnahme läuft"
 
-#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:156
+#: src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Fernsehen"
 
@@ -570,7 +553,8 @@ msgstr "SHOUTcast-Browser"
 msgid "Listen to SHOUTcast stream"
 msgstr "SHOUTcast Stream anhören"
 
-#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
+#: src/modules/browser/upnp/upnp.c:457
+#: src/modules/browser/upnp/upnp.c:475
 msgid "UPnP/DLNA media servers"
 msgstr "UPnP/DLNA Medien-Server"
 
@@ -585,9 +569,7 @@ msgstr "UPnP/DLNA-Modul"
 
 #: src/modules/browser/upnp/upnp.c:617
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr ""
-"Dieses Modul ermöglicht Enna, Inhalte von UPnP/DLNA Medien-Servern zu "
-"durchsuchen"
+msgstr "Dieses Modul ermöglicht Enna, Inhalte von UPnP/DLNA Medien-Servern zu durchsuchen"
 
 #: src/modules/browser/valhalla/valhalla.c:136
 msgid "Authors"
@@ -794,11 +776,13 @@ msgstr "Dieses Modul bietet Unterstützung für Wechseldatenträger"
 #~ msgstr "Informationen"
 
 #~ msgid "%.2d hour "
+
 #~ msgid_plural "%.2d hours "
 #~ msgstr[0] "%.2d Stunde"
 #~ msgstr[1] "%.2d Stunden"
 
 #~ msgid "%.2d minute"
+
 #~ msgid_plural "%.2d minutes"
 #~ msgstr[0] "%.2d Minute"
 #~ msgstr[1] "%.2d Minuten"
