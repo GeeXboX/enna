@@ -386,7 +386,6 @@ snapshot_show(Enna_Metadata *m, int dir)
     int from_vfs = 1;
     char *snapshot;
 
-    enna_video_picture_unset(mod->o_snapshot);
     snapshot = enna_metadata_meta_get(m, "fanart", 1);
     if (snapshot)
     {
