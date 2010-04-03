@@ -731,19 +731,19 @@ video_infos_display(const Enna_Vfs_File *file)
     /* If m is NULL, the panels will be cleaned. */
     m = enna_metadata_meta_new(file->uri);
 
-        video_infos_display_title(file, m);
-        video_infos_display_genre(file, m);
-        video_infos_display_length(file, m);
-        video_infos_display_synopsis(file, m);
+    video_infos_display_title(file, m);
+    video_infos_display_genre(file, m);
+    video_infos_display_length(file, m);
+    video_infos_display_synopsis(file, m);
 
-        backdrop_show(m);
-        snapshot_show(m, file->is_directory);
+    backdrop_show(m);
+    snapshot_show(m, file->is_directory);
 
-        enna_video_flags_update(mod->o_video_flags, m);
+    enna_video_flags_update(mod->o_video_flags, m);
 
-        enna_panel_infos_set_cover(mod->o_panel_infos, m);
-        enna_panel_infos_set_text(mod->o_panel_infos, m);
-        enna_panel_infos_set_rating(mod->o_panel_infos, m);
+    enna_panel_infos_set_cover(mod->o_panel_infos, m);
+    enna_panel_infos_set_text(mod->o_panel_infos, m);
+    enna_panel_infos_set_rating(mod->o_panel_infos, m);
 
     enna_metadata_meta_free(m);
 }
