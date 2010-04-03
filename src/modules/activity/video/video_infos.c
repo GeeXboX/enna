@@ -239,7 +239,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
         snprintf(dst, sizeof(dst), "%s/covers/%s",
                  enna_data_home_get(), cv);
         if (ecore_file_exists(dst))
-        file = strdup(dst);
+            file = strdup(dst);
     }
 
     if (!file)
