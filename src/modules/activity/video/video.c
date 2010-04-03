@@ -728,9 +728,8 @@ video_infos_display(const Enna_Vfs_File *file)
     if (!file)
         return;
 
+    /* If m is NULL, the panels will be cleaned. */
     m = enna_metadata_meta_new(file->uri);
-    if (!m)
-        return;
 
         video_infos_display_title(file, m);
         video_infos_display_genre(file, m);
