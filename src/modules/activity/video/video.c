@@ -721,7 +721,7 @@ video_infos_display_synopsis(const Enna_Vfs_File *file, const Enna_Metadata *m)
 }
 
 static void
-video_infos_display(const Enna_Vfs_File *file, int delay)
+video_infos_display(const Enna_Vfs_File *file)
 {
     Enna_Metadata *m;
 
@@ -732,15 +732,11 @@ video_infos_display(const Enna_Vfs_File *file, int delay)
     if (!m)
         return;
 
-    if (!delay)
-    {
         video_infos_display_title(file, m);
         video_infos_display_genre(file, m);
         video_infos_display_length(file, m);
         video_infos_display_synopsis(file, m);
-    }
-    else
-    {
+
         backdrop_show(m);
         snapshot_show(m, file->is_directory);
 
@@ -749,7 +745,6 @@ video_infos_display(const Enna_Vfs_File *file, int delay)
         enna_panel_infos_set_cover(mod->o_panel_infos, m);
         enna_panel_infos_set_text(mod->o_panel_infos, m);
         enna_panel_infos_set_rating(mod->o_panel_infos, m);
-    }
 
     enna_metadata_meta_free(m);
 }
@@ -830,13 +825,9 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
         return;
 
     if (!ev->file->is_directory && !ev->file->is_menu)
-    {
         /* ask for on-demand scan for local files */
         if (!strncmp(ev->file->uri, "file://", 7))
             enna_metadata_ondemand(ev->file, _ondemand_cb_refresh);
-
-        video_infos_display(ev->file, 1);
-    }
 
     ENNA_FREE(mod->uri_hilighted);
     mod->uri_hilighted = strdup(ev->file->uri);
@@ -851,11 +842,7 @@ browser_cb_hilight(void *data, Evas_Object *obj, void *event_info)
         return;
 
     if (!ev->file->is_directory && !ev->file->is_menu)
-    {
-        video_infos_del();
-        video_infos_panel_del();
-        video_infos_display(ev->file, 0);
-    }
+        video_infos_display(ev->file);
 
     ENNA_FREE(mod->uri_hilighted);
     mod->uri_hilighted = strdup(ev->file->uri);
