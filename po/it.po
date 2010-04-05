@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-14 15:00+0100\n"
-"PO-Revision-Date: 2010-02-22 16:41+0100\n"
+"POT-Creation-Date: 2010-04-01 08:53+0200\n"
+"PO-Revision-Date: 2010-03-27 15:50+0100\n"
 "Last-Translator: Davide Cavalca <davide@geexbox.org>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -24,74 +24,82 @@ msgstr "Nessun media trovato!"
 msgid "Main menu"
 msgstr "Menu principale"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna Media Center\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:503
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Uso: %s [opzioni...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:504
 #, c-format
 msgid " Available options:\n"
 msgstr " Opzioni disponibili:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):   specifica il file di configurazione da usare.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):       forza modalità a pieno schermo.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     mostra questo messaggio d'aiuto.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    specifica il nome del tema da usare.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): specifica la geometria della finestra. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:510
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Specifica profilo schermo\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:511
 #, c-format
 msgid "    Supported: "
 msgstr "    Supportato: "
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  mostra il numero di versione di Enna.\n"
 
-#: src/bin/exit.c:93
+#: src/bin/exit.c:71
 msgid "Are you sure you want to quit Enna?"
 msgstr "Sei sicuro di voler uscire da Enna?"
 
-#: src/bin/exit.c:148
-msgid "Yes, quit Enna"
-msgstr "Sì, esci da Enna"
+#: src/bin/exit.c:120
+msgid "Yes"
+msgstr "Sì"
 
-#: src/bin/exit.c:151
-msgid "No, continue using Enna"
-msgstr "No, continua ad usare Enna"
+#: src/bin/exit.c:120
+msgid "quit Enna"
+msgstr "esci da Enna"
+
+#: src/bin/exit.c:121
+msgid "No"
+msgstr "No"
+
+#: src/bin/exit.c:121
+msgid "continue using Enna"
+msgstr "continua ad usare Enna"
 
 #: src/bin/module.c:233
 msgid "Modules"
@@ -101,7 +109,7 @@ msgstr "Moduli"
 msgid "No information provided"
 msgstr "Nessuna informazione disponibile"
 
-#: src/bin/parser_cdda.c:461
+#: src/bin/parser_cdda.c:462
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Traccia #%02d (%02d:%02d)"
@@ -332,12 +340,12 @@ msgstr "un gioco"
 msgid "%d games"
 msgstr "%d giochi"
 
-#: src/modules/activity/games/games.c:404
-#: src/modules/activity/games/games.c:468
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:469
 msgid "Games"
 msgstr "Giochi"
 
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:471
 msgid "Play all your games directly from Enna"
 msgstr "Usa tutti i tuoi giochi direttamente da Enna"
 
@@ -375,7 +383,7 @@ msgstr "Musica"
 msgid "Listen to your music"
 msgstr "Ascolta musica"
 
-#: src/modules/activity/music/music_lyrics.c:91
+#: src/modules/activity/music/music_lyrics.c:92
 msgid "No lyrics found ..."
 msgstr "Nessun testo trovato..."
 

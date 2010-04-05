@@ -690,6 +690,13 @@ enna_mediaplayer_obj_layout_set(Evas_Object *obj, const char *layout)
 }
 
 void
+enna_mediaplayer_obj_metadata_refresh(Evas_Object *obj)
+{
+    Smart_Data *sd = evas_object_data_get(obj, "sd");
+    METADATA_APPLY;
+}
+
+void
 enna_mediaplayer_position_update(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");

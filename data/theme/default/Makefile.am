@@ -45,6 +45,7 @@ images/icon_song.png \
 images/icon_upnp.png \
 images/icon_video.png \
 images/icon_weather.png \
+images/icon_wiimote.png \
 images/unknown_cover.png
 
 IMG_ACTIVITIES = \

@@ -79,8 +79,19 @@ struct _Enna_Metadata
     char *data;
 };
 
+typedef struct _Enna_Pipe_Data Enna_Pipe_Data;
+
+struct _Enna_Pipe_Data
+{
+    char *file;
+    Enna_Metadata_OnDemand ev;
+};
+
 static db_cfg_t db_cfg;
 static valhalla_t *vh = NULL;
+static void (*vh_odcb)(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev);
+static Enna_Vfs_File *vh_file;
+static Ecore_Pipe *vh_pipe;
 
 #define SUFFIX_ADD(type)                                       \
     for (l = enna_config->type; l; l = l->next)                \
@@ -90,8 +101,48 @@ static valhalla_t *vh = NULL;
     }                                                          \
 
 static void
+pipe_read(void *data, void *buf, unsigned int nbyte)
+{
+    Enna_Pipe_Data *od;
+    const char *uri;
+
+    if (!buf)
+        return;
+
+    memcpy(&od, buf, nbyte);
+
+    if (!vh_file || !vh_file->uri)
+        goto out;
+
+    uri = vh_file->uri;
+    if (!strncmp(uri, "file://", 7))
+        uri += 7;
+
+    /*
+     * If several ondemands are running, we must simply ignore all
+     * previous demands.
+     */
+    if (strcmp(od->file, uri))
+        goto out;
+
+    /* Refresh metadata in video or music activity */
+    if (vh_odcb)
+        vh_odcb (vh_file, od->ev);
+
+out:
+    free(od->file);
+    free(od);
+}
+
+static void
 ondemand_cb(const char *file, valhalla_event_od_t e, const char *id, void *data)
 {
+    Enna_Pipe_Data *od;
+    Enna_Metadata_OnDemand ev = ENNA_METADATA_OD_PARSED;
+
+    if (!file)
+        return;
+
     switch (e)
     {
     case VALHALLA_EVENTOD_PARSED:
@@ -99,14 +150,25 @@ ondemand_cb(const char *file, valhalla_event_od_t e, const char *id, void *data)
                  MODULE_NAME, _("[%s]: parsing done."), file);
         break;
     case VALHALLA_EVENTOD_GRABBED:
+        ev = ENNA_METADATA_OD_GRABBED;
         enna_log(ENNA_MSG_EVENT,
                  MODULE_NAME, _("[%s]: %s grabber has finished"), file, id);
         break;
     case VALHALLA_EVENTOD_ENDED:
+        ev = ENNA_METADATA_OD_ENDED;
         enna_log(ENNA_MSG_INFO,
                  MODULE_NAME, _("[%s]: all metadata have been fetched."), file);
         break;
     }
+
+    od = calloc(1, sizeof(Enna_Pipe_Data));
+    if (!od)
+        return;
+
+    od->file = strdup(file);
+    od->ev   = ev;
+
+    ecore_pipe_write(vh_pipe, &od, sizeof(od));
 }
 
 #define CFG_INT(field)                                                \
@@ -406,6 +468,8 @@ enna_metadata_db_init(void)
         goto err;
     }
 
+    vh_pipe = ecore_pipe_add(pipe_read, NULL);
+
     enna_log(ENNA_MSG_EVENT, MODULE_NAME, "Valkyries are running");
     return;
 
@@ -419,6 +483,15 @@ enna_metadata_db_uninit(void)
 {
     valhalla_uninit(vh);
     vh = NULL;
+
+    if (vh_pipe)
+    {
+        ecore_pipe_del(vh_pipe);
+        vh_pipe = NULL;
+    }
+
+    enna_vfs_remove(vh_file);
+    vh_file = NULL;
 }
 
 void
@@ -520,7 +593,7 @@ enna_metadata_meta_free(Enna_Metadata *meta)
 }
 
 char *
-enna_metadata_meta_get(Enna_Metadata *meta, const char *name, int max)
+enna_metadata_meta_get(const Enna_Metadata *meta, const char *name, int max)
 {
   int count = 0;
   buffer_t *b;
@@ -554,7 +627,7 @@ enna_metadata_meta_get(Enna_Metadata *meta, const char *name, int max)
 }
 
 char *
-enna_metadata_meta_get_all(Enna_Metadata *meta)
+enna_metadata_meta_get_all(const Enna_Metadata *meta)
 {
   buffer_t *b;
   char *str = NULL;
@@ -580,16 +653,27 @@ enna_metadata_set_position(Enna_Metadata *meta, double position)
 }
 
 void
-enna_metadata_ondemand(const char *file)
+enna_metadata_ondemand(const Enna_Vfs_File *file,
+                       void (*odcb)(const Enna_Vfs_File *file,
+                                    Enna_Metadata_OnDemand ev))
 {
-  if (!vh || !file)
+  const char *uri;
+
+  if (!vh || !file || !file->uri)
     return;
 
-  valhalla_ondemand(vh, file);
+  uri = file->uri;
+  if (!strncmp(uri, "file://", 7))
+      uri += 7;
+
+  enna_vfs_remove(vh_file);
+  vh_file = enna_vfs_dup_file(file);
+  vh_odcb = odcb;
+  valhalla_ondemand(vh, uri);
 }
 
 char *
-enna_metadata_meta_duration_get(Enna_Metadata *m)
+enna_metadata_meta_duration_get(const Enna_Metadata *m)
 {
     buffer_t *buf;
     char *runtime = NULL, *length;

@@ -2,12 +2,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Benjamin Zores <ben@geexbox.org>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-14 15:00+0100\n"
+"POT-Creation-Date: 2010-04-01 08:53+0200\n"
 "PO-Revision-Date: 2010-01-19 12:17-0300\n"
 "Last-Translator: André Luís de Andrade Mendes <andreluis.mendes+poedit@gmail."
 "com>\n"
@@ -25,73 +25,81 @@ msgstr "Nenhum arquivo multimídia encontrado!"
 msgid "Main menu"
 msgstr "Menu principal"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:503
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opções ...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:504
 #, c-format
 msgid " Available options:\n"
 msgstr "Opções disponíveis:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 "  -c, (--config):   Especifique o arquivo de configuração a ser utilizado.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):       Forçar modo de tela cheia.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     Mostra esta ajuda.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    Especifique o nome do tema a ser usado.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): Especifique a resolução da janela. (geometria=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:510
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (--perfil): Especifique um perfil para a tela\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:511
 #, c-format
 msgid "    Supported: "
 msgstr "Suportados:"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  Mostra o número da versão do Enna.\n"
 
-#: src/bin/exit.c:93
+#: src/bin/exit.c:71
 msgid "Are you sure you want to quit Enna?"
 msgstr "Você tem certeza que quer sair do Enna?"
 
-#: src/bin/exit.c:148
-msgid "Yes, quit Enna"
+#: src/bin/exit.c:120
+msgid "Yes"
+msgstr "Sim"
+
+#: src/bin/exit.c:120
+msgid "quit Enna"
 msgstr "Sim, quero sair do Enna"
 
-#: src/bin/exit.c:151
-msgid "No, continue using Enna"
+#: src/bin/exit.c:121
+msgid "No"
+msgstr "Não"
+
+#: src/bin/exit.c:121
+msgid "continue using Enna"
 msgstr "Não, quero continuar a usar o Enna."
 
 #: src/bin/module.c:233
@@ -102,7 +110,7 @@ msgstr "Módulos"
 msgid "No information provided"
 msgstr "Nenhuma informação EXIF encontrada."
 
-#: src/bin/parser_cdda.c:461
+#: src/bin/parser_cdda.c:462
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Faixa #%02d (%02d:%02d)"
@@ -333,12 +341,12 @@ msgstr "um jogo"
 msgid "%d games"
 msgstr "%d jogos"
 
-#: src/modules/activity/games/games.c:404
-#: src/modules/activity/games/games.c:468
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:469
 msgid "Games"
 msgstr "Jogos"
 
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:471
 msgid "Play all your games directly from Enna"
 msgstr "Jogar os seus jogos diretamente a partir do Enna"
 
@@ -376,7 +384,7 @@ msgstr "Música"
 msgid "Listen to your music"
 msgstr "Escutar suas músicas"
 
-#: src/modules/activity/music/music_lyrics.c:91
+#: src/modules/activity/music/music_lyrics.c:92
 msgid "No lyrics found ..."
 msgstr "Nenhuma letra encontrada ..."
 

@@ -395,6 +395,43 @@ if test "x$want_input_keyboard" = "xyes"; then
   AC_DEFINE(BUILD_INPUT_KBD, 1, [Keyboard Input])
 fi
 
+# Wiimote
+want_input_wiimote="auto"
+have_input_wiimote="no"
+AC_MSG_CHECKING(whether wiimote input module is to be built)
+AC_ARG_ENABLE(input-wiimote,
+  AS_HELP_STRING([--enable-input-wiimote], [Enable Wiimote input module]),
+  [ want_input_wiimote=$enableval ]
+)
+AC_MSG_RESULT($want_input_wiimote)
+if test "x$want_input_wiimote" = "xyes" -o "x$want_input_wiimote" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LIBBLUETOOTH],
+    [bluez],
+    [
+      AC_CHECK_HEADER(cwiid.h,
+        [
+          AC_DEFINE(BUILD_INPUT_WIIMOTE, 1, [Wiimote Input])
+          LIBCWIID_LIBS=-lcwiid
+          AC_SUBST(LIBCWIID_LIBS)
+          have_input_wiimote="yes"
+        ],
+        [
+          if test "x$want_input_wiimote" = "xyes" -a "x$use_strict" = "xyes" ; then
+            AC_MSG_ERROR([libcwiid not found (strict dependencies checking)])
+          fi
+        ]
+      )
+    ],
+    [
+      if test "x$want_input_wiimote" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libbluetooth not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_INPUT_WIIMOTE, test "x$have_input_wiimote" = "xyes")
+
 ##################
 # Volume Modules #
 ##################
@@ -632,6 +669,7 @@ src/modules/browser/valhalla/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/input/kbd/Makefile
+src/modules/input/wiimote/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
 src/modules/volume/mtab/Makefile
@@ -694,6 +732,7 @@ echo "Supported Input Modules:"
 echo
 echo "  Keyboard client.................. : $want_input_keyboard"
 echo "  LIRC client...................... : $have_input_lirc"
+echo "  Wiimote client................... : $have_input_wiimote"
 echo
 echo "Supported Volume Modules:"
 echo

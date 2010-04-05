@@ -280,6 +280,54 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
+_ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
+{
+    char *uri;
+    Enna_Metadata *m;
+
+    if (!file || !file->uri || !mod->enna_playlist)
+        return;
+
+    if (file->is_directory || file->is_menu)
+        return;
+
+    /*
+     * With the music activity, there is nothing to refresh if no file is
+     * set to the mediaplayer.
+     */
+    uri = enna_mediaplayer_get_current_uri(mod->enna_playlist);
+    if (!uri)
+        return;
+
+    if (strcmp(file->uri, uri))
+        return;
+
+    m = enna_metadata_meta_new(file->uri);
+    if (!m)
+        return;
+
+    switch (ev)
+    {
+    case ENNA_METADATA_OD_PARSED:
+    case ENNA_METADATA_OD_GRABBED:
+        enna_panel_lyrics_set_text(mod->o_panel_lyrics, m);
+    case ENNA_METADATA_OD_ENDED:
+        /*
+         * The texts and the cover are handled in mediaplayer_obj contrary
+         * to the video activity where all metadata are handled separately.
+         */
+        enna_mediaplayer_obj_metadata_refresh(mod->o_mediaplayer);
+        break;
+
+    default:
+        break;
+    }
+
+    enna_metadata_meta_free(m);
+    free(uri);
+}
+
+static void
 _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Browser_Selected_File_Data *ev = event_info;
@@ -290,7 +338,7 @@ _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
     if (!ev->file->is_directory && !ev->file->is_menu)
         /* ask for on-demand scan for local files */
         if (!strncmp(ev->file->uri, "file://", 7))
-            enna_metadata_ondemand(ev->file->uri + 7);
+            enna_metadata_ondemand(ev->file, _ondemand_cb_refresh);
 }
 
 static void

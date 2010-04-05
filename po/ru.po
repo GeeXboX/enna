@@ -2,12 +2,12 @@
 # Copyright (C) 2009 The Enna Project
 # This file is distributed under the same license as the enna package.
 # Kostyantyn Derets <ua.motofan@gmail.com>, 2010.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-14 15:00+0100\n"
+"POT-Creation-Date: 2010-04-01 08:53+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -19,96 +19,102 @@ msgstr ""
 "X-Poedit-Country: RUSSIA\n"
 
 #: src/bin/browser.c:549
-#, fuzzy
 msgid "No media found!"
 msgstr "Источник не найден!"
 
 #: src/bin/browser.c:706
-#, fuzzy
 msgid "Main menu"
 msgstr "Главное меню"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедиаЦентр Enna\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:503
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Использование: %s [опции...]\n"
 
-#: src/bin/enna.c:495
-#, fuzzy, c-format
+#: src/bin/enna.c:504
+#, c-format
 msgid " Available options:\n"
 msgstr " Доступные опции:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Укажите конфигурационный файл.\n"
 
-#: src/bin/enna.c:497
-#, fuzzy, c-format
+#: src/bin/enna.c:506
+#, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Принудительный полноэкранный режим.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Выводит это сообщение.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr ""
 "  -t, (--theme):   Укажите название темы, которая будет использована.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Укажите размеры окна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:510
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (--profile): Укажите профиль дисплея\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:511
 #, c-format
 msgid "    Supported: "
 msgstr "Поддерживает:"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Выводит номер версии Enna.\n"
 
-#: src/bin/exit.c:93
-#, fuzzy
+#: src/bin/exit.c:71
 msgid "Are you sure you want to quit Enna?"
 msgstr "Вы действительно хотите выйти из программы?"
 
-#: src/bin/exit.c:148
+#: src/bin/exit.c:120
 #, fuzzy
-msgid "Yes, quit Enna"
+msgid "Yes"
+msgstr "Годы"
+
+#: src/bin/exit.c:120
+#, fuzzy
+msgid "quit Enna"
 msgstr "Да, Выйти из Enna"
 
-#: src/bin/exit.c:151
+#: src/bin/exit.c:121
 #, fuzzy
-msgid "No, continue using Enna"
-msgstr "Нет, продолжить работать в enna"
+msgid "No"
+msgstr "Нет<br>"
+
+#: src/bin/exit.c:121
+#, fuzzy
+msgid "continue using Enna"
+msgstr "Нет, продолжить работать в Enna"
 
 #: src/bin/module.c:233
 msgid "Modules"
 msgstr "Модули"
 
 #: src/bin/module.c:402
-#, fuzzy
 msgid "No information provided"
 msgstr "Необходимая информация не задана"
 
-#: src/bin/parser_cdda.c:461
+#: src/bin/parser_cdda.c:462
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Дорожка №%02d (%02d:%02d)"
@@ -164,20 +170,19 @@ msgstr "градус Фаренгейта"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Выберите полушарие"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Показывать погоду в Вашем городе"
+msgstr "Выберите полушарие в котором Вы находитесь"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Северное"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Южное"
 
 #: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
@@ -185,9 +190,8 @@ msgstr "Погода"
 
 #: src/modules/activity/bookstore/bookstore.c:323
 #: src/modules/activity/bookstore/bookstore.c:375
-#, fuzzy
 msgid "Bookstore"
-msgstr "Книжная полка"
+msgstr "Книжный магазин"
 
 #: src/modules/activity/bookstore/bookstore.c:377
 msgid "Read your books"
@@ -200,9 +204,8 @@ msgstr "Настройка"
 
 #: src/modules/activity/configuration/configuration.c:246
 #: src/modules/activity/configuration/configuration_sysinfo.c:517
-#, fuzzy
 msgid "System information"
-msgstr "<c>Информация о системе</c><br><br>"
+msgstr "Информация о системе"
 
 #: src/modules/activity/configuration/configuration.c:249
 msgid "Credits"
@@ -214,7 +217,6 @@ msgid "This module creates the Enna configuration panel"
 msgstr "Этот модуль создает панель настроек enna (НЕ ВЫКЛЮЧАТЬ!)"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
-#, fuzzy
 msgid "Enna is a GeeXboX-team MediaCenter"
 msgstr "Enna это МедиаЦентр команды GeeXboX,"
 
@@ -223,18 +225,16 @@ msgid "based on Enlightenment Foundation Librairies (EFL)."
 msgstr "основаный на библиотеках Enlightenment Foundation Librairies (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
-#, fuzzy
 msgid "Credits go to:"
-msgstr "Благодарности"
+msgstr "Благодарности:"
 
 #: src/modules/activity/configuration/configuration_credits.c:53
 msgid "and"
 msgstr "И"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:99
-#, fuzzy
 msgid "Enna information"
-msgstr "<c>Информация о системе</c><br><br>"
+msgstr "Информация об Enna"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:101
 msgid "Enna:"
@@ -257,9 +257,8 @@ msgid "for"
 msgstr "для"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:223
-#, fuzzy
 msgid "Available CPUs:"
-msgstr " Доступные опции:\n"
+msgstr " Доступные процессоры:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:254
 #, fuzzy
@@ -356,12 +355,12 @@ msgstr "Системные игры"
 msgid "%d games"
 msgstr "%d Песня"
 
-#: src/modules/activity/games/games.c:404
-#: src/modules/activity/games/games.c:468
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:469
 msgid "Games"
 msgstr "Игры"
 
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:471
 #, fuzzy
 msgid "Play all your games directly from Enna"
 msgstr "С помощью этого модуля Вы можете играть в игры прямо из enna"
@@ -402,7 +401,7 @@ msgstr "Музыка"
 msgid "Listen to your music"
 msgstr "Слушать подкасты"
 
-#: src/modules/activity/music/music_lyrics.c:91
+#: src/modules/activity/music/music_lyrics.c:92
 msgid "No lyrics found ..."
 msgstr "Музыки не найдено..."
 

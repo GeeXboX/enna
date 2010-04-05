@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-14 15:00+0100\n"
+"POT-Creation-Date: 2010-04-01 08:53+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Ukraine\n"
@@ -28,74 +28,84 @@ msgstr "Не знайдено джерела!"
 msgid "Main menu"
 msgstr "Головне меню"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедіаЦентр Enna\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:503
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Використання: %s [опції...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:504
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Доступні опції:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Вкажіть конфігураційний файл.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:506
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Примусовий повноекраний режим.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Показує це повідомлення.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Вкажіть назву теми, що буде використовуватись.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Вкажіть розміри вікна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:510
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr ""
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:511
 #, c-format
 msgid "    Supported: "
 msgstr "\tПідтримується: "
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Відображує номер версії Enna.\n"
 
-#: src/bin/exit.c:93
+#: src/bin/exit.c:71
 #, fuzzy
 msgid "Are you sure you want to quit Enna?"
 msgstr "Ви дійсно бажаєте вийти з програми?"
 
-#: src/bin/exit.c:148
+#: src/bin/exit.c:120
 #, fuzzy
-msgid "Yes, quit Enna"
+msgid "Yes"
+msgstr "Роки"
+
+#: src/bin/exit.c:120
+#, fuzzy
+msgid "quit Enna"
 msgstr "Так, Вийти з Enna"
 
-#: src/bin/exit.c:151
+#: src/bin/exit.c:121
 #, fuzzy
-msgid "No, continue using Enna"
+msgid "No"
+msgstr "Немає<br>"
+
+#: src/bin/exit.c:121
+#, fuzzy
+msgid "continue using Enna"
 msgstr "Ні, продовжити користуватись enna"
 
 #: src/bin/module.c:233
@@ -107,7 +117,7 @@ msgstr "Модулі"
 msgid "No information provided"
 msgstr "Не надано необхідної інформації."
 
-#: src/bin/parser_cdda.c:461
+#: src/bin/parser_cdda.c:462
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Доріжка #%02d (%02d:%02d)"
@@ -355,12 +365,12 @@ msgstr "Системні ігри"
 msgid "%d games"
 msgstr "%d Пісня"
 
-#: src/modules/activity/games/games.c:404
-#: src/modules/activity/games/games.c:468
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:469
 msgid "Games"
 msgstr "Ігри"
 
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:471
 #, fuzzy
 msgid "Play all your games directly from Enna"
 msgstr ""
@@ -402,7 +412,7 @@ msgstr "Музика"
 msgid "Listen to your music"
 msgstr "Слухати подкасти"
 
-#: src/modules/activity/music/music_lyrics.c:91
+#: src/modules/activity/music/music_lyrics.c:92
 msgid "No lyrics found ..."
 msgstr "Не знайдено жодної пісні..."
 

@@ -88,6 +88,9 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     int len;
 
+    if (!sd)
+        return;
+
     if (!m)
     {
         edje_object_part_text_set(sd->o_edje, "panel.textblock",
@@ -225,6 +228,9 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     char *cv;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
+    if (!sd)
+        return;
+
     if (!m)
     {
         file = strdup(VIDEO_DEFAULT_COVER);
@@ -238,7 +244,8 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
 
         snprintf(dst, sizeof(dst), "%s/covers/%s",
                  enna_data_home_get(), cv);
-        file = strdup(dst);
+        if (ecore_file_exists(dst))
+            file = strdup(dst);
     }
 
     if (!file)
@@ -280,6 +287,9 @@ enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
     Evas_Object *rating = NULL;
     char *rt;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
+
+    if (!sd)
+        return;
 
     rt = enna_metadata_meta_get(m, "rating", 1);
     if (rt)

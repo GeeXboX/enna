@@ -78,7 +78,7 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
     char *b;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
-    if (!m)
+    if (!m || !sd)
       return;
 
     title = enna_metadata_meta_get(m, "title", 1);

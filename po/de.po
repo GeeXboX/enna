@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-03-14 15:00+0100\n"
+"POT-Creation-Date: 2010-04-01 08:53+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Matthias Hölzer <n-billy@geexbox.org>\n"
 "Language-Team: German\n"
@@ -26,74 +26,80 @@ msgstr "Kein Medium gefunden!"
 msgid "Main menu"
 msgstr "Hauptmenü"
 
-#: src/bin/enna.c:493
+#: src/bin/enna.c:502
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:494
+#: src/bin/enna.c:503
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Aufruf: %s [Optionen...]\n"
 
-#: src/bin/enna.c:495
+#: src/bin/enna.c:504
 #, c-format
 msgid " Available options:\n"
 msgstr " Verfügbare Optionen:\n"
 
-#: src/bin/enna.c:496
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angegebene Konfigurationsdatei benutzen.\n"
 
-#: src/bin/enna.c:497
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      im Vollbild Modus starten.\n"
 
-#: src/bin/enna.c:498
+#: src/bin/enna.c:507
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Hilfe anzeigen.\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:508
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angegebenen Motiv-Namen benutzen.\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:509
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
-msgstr ""
-"  -g, (--geometry):Angegebene Fenster Geometrie verwenden. "
-"(geometrie=1280x720)\n"
+msgstr "  -g, (--geometry):Angegebene Fenster Geometrie verwenden. (geometrie=1280x720)\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:510
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
+msgstr "  -p, (--profile): Angegebenes Profil benutzen\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:511
 #, c-format
 msgid "    Supported: "
-msgstr ""
+msgstr "    Unterstützt:"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna Version anzeiten version.\n"
 
-#: src/bin/exit.c:93
+#: src/bin/exit.c:71
 msgid "Are you sure you want to quit Enna?"
 msgstr "Soll Enna wirklich beendet werden?"
 
-#: src/bin/exit.c:148
-msgid "Yes, quit Enna"
-msgstr "Ja, Enna beenden"
+#: src/bin/exit.c:120
+msgid "Yes"
+msgstr "Ja"
 
-#: src/bin/exit.c:151
-msgid "No, continue using Enna"
-msgstr "Nein, Enna weiter verwenden"
+#: src/bin/exit.c:120
+msgid "quit Enna"
+msgstr "Enna beenden"
+
+#: src/bin/exit.c:121
+msgid "No"
+msgstr "Keine"
+
+#: src/bin/exit.c:121
+msgid "continue using Enna"
+msgstr "Enna weiter verwenden"
 
 #: src/bin/module.c:233
 msgid "Modules"
@@ -103,25 +109,26 @@ msgstr "Module"
 msgid "No information provided"
 msgstr "Keine Informationen verfügbar."
 
-#: src/bin/parser_cdda.c:461
+#: src/bin/parser_cdda.c:462
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Titel #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
+#: src/bin/weather_api.c:405
+#: src/bin/weather_api.c:438
 msgid "City"
 msgstr "Stadt"
 
 #: src/bin/weather_api.c:406
-#, fuzzy
 msgid "Choose your City"
 msgstr "Stadt auswählen"
 
 #: src/bin/weather_api.c:410
 msgid "Enter your City here"
-msgstr ""
+msgstr "Stadt eintragen"
 
-#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
+#: src/bin/weather_api.c:413
+#: src/bin/weather_api.c:446
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -143,38 +150,38 @@ msgstr "Hinzufügen"
 
 #: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr ""
+msgstr "Einheit auswählen"
 
 #: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr ""
+msgstr "Einheit zum Anzeigen der Temperatur auswählen"
 
 #: src/bin/weather_api.c:467
 msgid "°C"
-msgstr ""
+msgstr "°C"
 
 #: src/bin/weather_api.c:467
 msgid "°F"
-msgstr ""
+msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Hemisphäre auswählen"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Lokales Wetter anzeigen"
+msgstr "Auswahl der Hemisphäre"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Nordhalbkugel"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Südhalbkugel"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705
+#: src/modules/activity/weather/weather.c:291
 msgid "Weather"
 msgstr "Wetter"
 
@@ -322,46 +329,44 @@ msgid "None"
 msgstr "Keine"
 
 #: src/modules/activity/games/games.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "no games found"
-msgstr "Kein Medium gefunden!"
+msgstr "Keine Spiele gefunden"
 
 #: src/modules/activity/games/games.c:218
 #, c-format
 msgid "one game"
-msgstr ""
+msgstr "ein Spiel"
 
 #: src/modules/activity/games/games.c:220
-#, fuzzy, c-format
+#, c-format
 msgid "%d games"
-msgstr "%d Songs"
+msgstr "%d Spiele"
 
-#: src/modules/activity/games/games.c:404
-#: src/modules/activity/games/games.c:468
+#: src/modules/activity/games/games.c:405
+#: src/modules/activity/games/games.c:469
 msgid "Games"
 msgstr "Spiele"
 
-#: src/modules/activity/games/games.c:470
+#: src/modules/activity/games/games.c:471
 msgid "Play all your games directly from Enna"
 msgstr "Alle Spiele direkt aus Enna heraus spielen"
 
 #: src/modules/activity/games/games_mame.c:81
 msgid "<c>M.A.M.E.</c><br>Game running..."
-msgstr ""
+msgstr "<c>M.A.M.E.</c><br> Spiel läuft ..."
 
 #: src/modules/activity/games/games_mame.c:318
-msgid ""
-"<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
-"at: ~/.mame/roms<br>"
-msgstr ""
+msgid "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located at: ~/.mame/roms<br>"
+msgstr "<c> Mame Fehler </c><br> <b>Keine ROMs gefunden in Pfad</b> <br> ROMs müssen sich unter ~/.mame/roms befinden <br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
-msgstr ""
+msgstr "<c>System Spiele</c><br>Spiel läuft ..."
 
 #: src/modules/activity/games/games_sys.c:257
 msgid "System Games"
-msgstr ""
+msgstr "Systemspiele"
 
 #: src/modules/activity/music/music.c:108
 #, c-format
@@ -377,7 +382,7 @@ msgstr "Musik"
 msgid "Listen to your music"
 msgstr "Musik hören"
 
-#: src/modules/activity/music/music_lyrics.c:91
+#: src/modules/activity/music/music_lyrics.c:92
 msgid "No lyrics found ..."
 msgstr "Keine Song-Texte gefunden!"
 
@@ -406,7 +411,8 @@ msgstr "Nimmt gerade '%s' auf"
 msgid "Recording in progress"
 msgstr "Aufnahme läuft"
 
-#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:156
+#: src/modules/activity/tv/tv.c:369
 msgid "Television"
 msgstr "Fernsehen"
 
@@ -547,7 +553,8 @@ msgstr "SHOUTcast-Browser"
 msgid "Listen to SHOUTcast stream"
 msgstr "SHOUTcast Stream anhören"
 
-#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
+#: src/modules/browser/upnp/upnp.c:457
+#: src/modules/browser/upnp/upnp.c:475
 msgid "UPnP/DLNA media servers"
 msgstr "UPnP/DLNA Medien-Server"
 
@@ -562,9 +569,7 @@ msgstr "UPnP/DLNA-Modul"
 
 #: src/modules/browser/upnp/upnp.c:617
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
-msgstr ""
-"Dieses Modul ermöglicht Enna, Inhalte von UPnP/DLNA Medien-Servern zu "
-"durchsuchen"
+msgstr "Dieses Modul ermöglicht Enna, Inhalte von UPnP/DLNA Medien-Servern zu durchsuchen"
 
 #: src/modules/browser/valhalla/valhalla.c:136
 msgid "Authors"
@@ -725,26 +730,21 @@ msgstr "Datenträger aus udev"
 msgid "This module provide support for removable volumes"
 msgstr "Dieses Modul bietet Unterstützung für Wechseldatenträger"
 
-#, fuzzy
 #~ msgid "Music core"
 #~ msgstr "Musik"
 
 #~ msgid "<c>Enna Information</c><br><br>"
 #~ msgstr "<c>Enna Informationen</c><br><br>"
 
-#, fuzzy
 #~ msgid "<hilight>Video Renderer:</hilight> %s"
 #~ msgstr "<hilight>Standard Gateway: </hilight>"
 
-#, fuzzy
 #~ msgid "<hilight>Available CPUs: </hilight>"
 #~ msgstr "<hilight>Verfügbare Netzwerkadapter:</hilight><br>"
 
-#, fuzzy
 #~ msgid "<hilight>CPU Load: </hilight>"
 #~ msgstr "<hilight>Standard Gateway: </hilight>"
 
-#, fuzzy
 #~ msgid "<hilight>Memory: </hilight>"
 #~ msgstr "<hilight>Standard Gateway: </hilight>"
 
@@ -763,11 +763,9 @@ msgstr "Dieses Modul bietet Unterstützung für Wechseldatenträger"
 #~ msgid "<ul>Cast:</ul> %s<br>"
 #~ msgstr "<ul>Schauspieler:</ul> %s<br>"
 
-#, fuzzy
 #~ msgid "<hl>Video: </hl> %s"
 #~ msgstr "<hl>Größe: </hl> %.2f MB<br>"
 
-#, fuzzy
 #~ msgid "<hl>Audio: </hl> %s"
 #~ msgstr "<hl>Größe: </hl> %.2f MB<br>"
 
@@ -778,11 +776,13 @@ msgstr "Dieses Modul bietet Unterstützung für Wechseldatenträger"
 #~ msgstr "Informationen"
 
 #~ msgid "%.2d hour "
+
 #~ msgid_plural "%.2d hours "
 #~ msgstr[0] "%.2d Stunde"
 #~ msgstr[1] "%.2d Stunden"
 
 #~ msgid "%.2d minute"
+
 #~ msgid_plural "%.2d minutes"
 #~ msgstr[0] "%.2d Minute"
 #~ msgstr[1] "%.2d Minuten"

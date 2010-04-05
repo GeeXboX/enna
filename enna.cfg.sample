@@ -23,7 +23,7 @@ photo_ext=jpg,jpeg,png,gif,tif,tiff,xpm
 [mediaplayer]
 # Values by default are 'auto' video_out, 'auto' audio_out and 'warning'
 # verbosity.
-# MPlayer is used for all streams excepted for DVD/DVDNAV and DVB where
+# MPlayer is used for all streams except for DVD/DVDNAV and DVB where
 # xine is used if available. The parameters type, dvd_type and tv_type
 # can be used to overwrite this behaviour.
 
