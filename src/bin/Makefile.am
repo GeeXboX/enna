@@ -113,6 +113,7 @@ include ../modules/browser/upnp/config.mak
 include ../modules/browser/valhalla/config.mak
 include ../modules/input/kbd/config.mak
 include ../modules/input/lirc/config.mak
+include ../modules/input/wiimote/config.mak
 include ../modules/volume/hal/config.mak
 include ../modules/volume/mtab/config.mak
 include ../modules/volume/udev/config.mak
@@ -190,6 +191,12 @@ endif
 if BUILD_INPUT_LIRC
 enna_SOURCES += $(SRCS_INPUT_LIRC)
 enna_LDADD += @LIRC_LIBS@
+endif
+
+if BUILD_INPUT_WIIMOTE
+enna_SOURCES += $(SRCS_INPUT_WIIMOTE)
+AM_CFLAGS += @LIBBLUETOOTH_CFLAGS@
+enna_LDADD += @LIBBLUETOOTH_LIBS@ @LIBCWIID_LIBS@
 endif
 
 if BUILD_VOLUME_HAL

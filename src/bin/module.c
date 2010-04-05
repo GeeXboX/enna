@@ -96,6 +96,9 @@ extern Enna_Module_Api enna_mod_input_kbd_api;
 #ifdef BUILD_INPUT_LIRC
 extern Enna_Module_Api enna_mod_input_lirc_api;
 #endif
+#ifdef BUILD_INPUT_WIIMOTE
+extern Enna_Module_Api enna_mod_input_wiimote_api;
+#endif
 #ifdef BUILD_VOLUME_HAL
 extern Enna_Module_Api enna_mod_volume_hal_api;
 #endif
@@ -197,6 +200,9 @@ enna_module_init(void)
     #endif
     #ifdef BUILD_INPUT_LIRC
         eina_array_push(_plugins_array, &enna_mod_input_lirc_api);
+    #endif
+    #ifdef BUILD_INPUT_WIIMOTE
+        eina_array_push(_plugins_array, &enna_mod_input_wiimote_api);
     #endif
     #ifdef BUILD_VOLUME_HAL
         eina_array_push(_plugins_array, &enna_mod_volume_hal_api);
