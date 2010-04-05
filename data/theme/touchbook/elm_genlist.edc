@@ -38,7 +38,7 @@ group { name: "elm/scroller/base/enna";
          description { state: "default" 0.0;
             rel1.offset: 4 4;
             rel2.offset: -5 -5;
-            color: 255 255 255 0;
+            color: 255 255 255 255;
          }
       }
       part { name: "clipper";
@@ -53,12 +53,12 @@ group { name: "elm/scroller/base/enna";
          clip_to: "clipper";
          type: SWALLOW;
          description { state: "default" 0.0;
-            rel1.offset: 4 4;
+            //rel1.offset: 4 4;
 
-            rel2.offset: -5 -5;
-            rel2.to_x: "sb_vbar";
-            rel2.to_y: "sb_hbar";
-            rel2.relative: 0 0;
+            //rel2.offset: -5 -5;
+            //rel2.to_x: "sb_vbar";
+            //rel2.to_y: "sb_hbar";
+            //rel2.relative: 0 0;
 
          }
       }
