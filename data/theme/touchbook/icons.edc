@@ -1,0 +1,45 @@
+
+#define STOCK_ICON(icon_file, icon_name)            \
+images {                                            \
+   image: icon_file COMP;                           \
+}                                                   \
+group {                                             \
+   name: icon_name;                                 \
+    parts {                                         \
+        part { name: "icon";                        \
+            description { state: "default" 0.0;     \
+            image.normal: icon_file;                \
+            }                                       \
+        }                                           \
+    }                                               \
+}                                                   \
+
+
+/* Icons */
+STOCK_ICON("icon_config.png",                   "icon/config");
+STOCK_ICON("icon_bookstore.png",                "icon/bookstore");
+STOCK_ICON("icon_music.png",                    "icon/music");
+STOCK_ICON("icon_photo.png",                    "icon/photo");
+STOCK_ICON("icon_video.png",                    "icon/video");
+STOCK_ICON("icon_weather.png",                  "icon/weather");
+
+
+#define STOCK_ICON_FIXED(icon_file, icon_name, w, h) \
+images {                                            \
+   image: icon_file COMP;                           \
+}                                                   \
+group {                                             \
+   name: icon_name;                                 \
+    parts {                                         \
+        part { name: "icon";                        \
+            description { state: "default" 0.0;     \
+            min: w h;                               \
+            max: w h;                               \
+            image.normal: icon_file;                \
+            }                                       \
+        }                                           \
+    }                                               \
+}                                                   \
+
+STOCK_ICON_FIXED("arrow_right.png", "icon/arrow_right", 12, 17);
+
