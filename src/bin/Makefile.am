@@ -54,7 +54,8 @@ weather_notification.c\
 volume_notification.c\
 ini_parser.c\
 input.c\
-geoip.c
+geoip.c\
+gadgets.c
 
 if BUILD_BACKEND_EMOTION
 enna_SOURCES += mediaplayer_emotion.c
@@ -275,4 +276,5 @@ volume_notification.h\
 ini_parser.h\
 input.h\
 geoip.h\
-xdg.h
+xdg.h\
+gadgets.h
