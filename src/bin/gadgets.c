@@ -129,7 +129,7 @@ _layout_resize(void *data, Evas *e, Evas_Object *o, void *event_info)
     Eina_List *l;
     Evas_Coord w, h;
     Evas_Coord ow, oh;
-
+ 
     elm_scroller_region_get(sd->o_scroll, NULL, NULL, &w, &h);
     ow = w / sd->nb_columns;
     oh = h / sd->nb_rows;
@@ -178,7 +178,7 @@ enna_gadgets_show()
     ENNA_OBJECT_DEL(sd->o_scroll);
 
     sd->o_layout = elm_layout_add(enna->win);
-    elm_layout_file_set(sd->o_layout, enna_config_theme_get(), "enna/gadgetss");
+    elm_layout_file_set(sd->o_layout, enna_config_theme_get(), "enna/gadgets");
     o_edje = elm_layout_edje_get(sd->o_layout);
     evas_object_show(sd->o_layout);
 
@@ -193,6 +193,7 @@ enna_gadgets_show()
         sd->nb_columns = atoi(s);
     else
         sd->nb_columns = DEFAULT_NB_COLUMNS;
+
 
     sd->o_scroll = elm_scroller_add(enna->win);
     elm_object_style_set(sd->o_scroll, "enna");
@@ -213,7 +214,7 @@ enna_gadgets_show()
                            "enna.swallow.content", sd->o_scroll);
 
     elm_layout_content_set(enna->layout,
-                           "enna.gadgetss.swallow", sd->o_layout);
+                           "enna.gadgets.swallow", sd->o_layout);
 
     evas_object_event_callback_add
         (sd->o_layout, EVAS_CALLBACK_RESIZE, _layout_resize, sd);
