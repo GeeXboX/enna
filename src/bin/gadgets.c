@@ -80,9 +80,6 @@ _add_gadgets(Evas_Object *o_gad)
 //        elm_table_pack(sd->o_table, pad, 0, 0, sd->nb_columns + 2, 1);
         elm_table_pack(sd->o_table, pad, 0, 0, sd->nb_columns, sd->nb_rows);
         sd->pad_top = eina_list_append(sd->pad_top, pad);
-        evas_object_color_set(pad, 128, 0, 255, 128);
-        evas_object_show(pad);
-
 
 /*         pad = evas_object_rectangle_add(enna->evas); */
 /*         evas_object_size_hint_align_set(pad, EVAS_HINT_FILL, EVAS_HINT_FILL); */
