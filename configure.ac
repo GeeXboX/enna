@@ -367,6 +367,23 @@ if test "x$want_browser_valhalla" = "xyes"; then
   AC_DEFINE(BUILD_BROWSER_VALHALLA, 1, [Valhalla Browser Module])
 fi
 
+###################
+# Gadgets Modules #
+###################
+
+# Weather gadget
+want_gadget_weather="yes"
+AC_MSG_CHECKING(whether Weather gadget is to be built)
+AC_ARG_ENABLE(gadget_weather,
+  AS_HELP_STRING([--enable-gadget-weather],[Enable Weather Gadget Module]),
+  [ want_gadget_weather=$enableval ]
+)
+AC_MSG_RESULT($want_gadget_weather)
+AM_CONDITIONAL(BUILD_GADGET_WEATHER, test "x$want_gadget_weather" = "xyes")
+if test "x$want_gadget_weather" = "xyes"; then
+  AC_DEFINE(BUILD_GADGET_WEATHER, 1, [Gadget weather Module])
+fi
+
 #################
 # Input Modules #
 #################
@@ -666,6 +683,8 @@ src/modules/browser/podcasts/Makefile
 src/modules/browser/shoutcast/Makefile
 src/modules/browser/upnp/Makefile
 src/modules/browser/valhalla/Makefile
+src/modules/gadgets/Makefile
+src/modules/gadgets/weather/Makefile
 src/modules/input/Makefile
 src/modules/input/lirc/Makefile
 src/modules/input/kbd/Makefile
@@ -727,6 +746,10 @@ echo "  Podcasts......................... : $want_browser_podcasts"
 echo "  SHOUTcast........................ : $want_browser_shoutcast"
 echo "  UPnP/DLNA........................ : $have_browser_upnp"
 echo "  Valhalla Scanner................. : $want_browser_valhalla"
+echo
+echo "Supported Gadget Modules:"
+echo
+echo "  Weather.......................... : $want_gadget_weather"
 echo
 echo "Supported Input Modules:"
 echo

@@ -90,6 +90,9 @@ extern Enna_Module_Api enna_mod_browser_upnp_api;
 #ifdef BUILD_BROWSER_VALHALLA
 extern Enna_Module_Api enna_mod_browser_valhalla_api;
 #endif
+#ifdef BUILD_GADGET_WEATHER
+extern Enna_Module_Api enna_mod_gadget_weather_api;
+#endif
 #ifdef BUILD_INPUT_KBD
 extern Enna_Module_Api enna_mod_input_kbd_api;
 #endif
@@ -194,6 +197,9 @@ enna_module_init(void)
     #endif
     #ifdef BUILD_BROWSER_VALHALLA
         eina_array_push(_plugins_array, &enna_mod_browser_valhalla_api);
+    #endif
+    #ifdef BUILD_GADGET_WEATHER
+        eina_array_push(_plugins_array, &enna_mod_gadget_weather_api);
     #endif
     #ifdef BUILD_INPUT_KBD
         eina_array_push(_plugins_array, &enna_mod_input_kbd_api);

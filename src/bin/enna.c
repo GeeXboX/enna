@@ -53,7 +53,6 @@
 #include "xdg.h"
 #include "geoip.h"
 #include "gadgets.h"
-#include "weather_notification.h"
 
 /* seconds after which the mouse pointer disappears*/
 #define ENNA_MOUSE_IDLE_TIMEOUT 10
@@ -292,6 +291,9 @@ static int _enna_init(int argc, char **argv)
     if (!enna_mediaplayer_init())
         return 0;
 
+    /* Init Gadgets */
+    enna_gadgets_init();
+
     /* Load available modules */
     enna_module_load_all();
     enna_config_load();
@@ -299,10 +301,6 @@ static int _enna_init(int argc, char **argv)
     /* Dinamically init activities */
     EINA_LIST_FOREACH(enna_activities_get(), l, a)
         enna_activity_init(a->name);
-
-    enna_gadgets_init();
-
-    enna_weather_notification_init();
 
     /* Show mainmenu */
     //~ enna_mainmenu_select_nth(0);

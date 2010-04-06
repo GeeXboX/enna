@@ -50,7 +50,6 @@ exit.c\
 thumb.c\
 ipc.c\
 weather_api.c\
-weather_notification.c\
 volume_notification.c\
 ini_parser.c\
 input.c\
@@ -112,6 +111,7 @@ include ../modules/browser/podcasts/config.mak
 include ../modules/browser/shoutcast/config.mak
 include ../modules/browser/upnp/config.mak
 include ../modules/browser/valhalla/config.mak
+include ../modules/gadgets/weather/config.mak
 include ../modules/input/kbd/config.mak
 include ../modules/input/lirc/config.mak
 include ../modules/input/wiimote/config.mak
@@ -183,6 +183,10 @@ endif
 
 if BUILD_BROWSER_VALHALLA
 enna_SOURCES += $(SRCS_BROWSER_VALHALLA)
+endif
+
+if BUILD_GADGET_WEATHER
+enna_SOURCES += $(SRCS_GADGET_WEATHER)
 endif
 
 if BUILD_INPUT_KBD
@@ -271,7 +275,6 @@ gettext.h\
 thumb.h\
 ipc.h\
 weather_api.h\
-weather_notification.h\
 volume_notification.h\
 ini_parser.h\
 input.h\

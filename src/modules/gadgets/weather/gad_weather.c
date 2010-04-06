@@ -26,8 +26,10 @@
 #include "enna_config.h"
 #include "utils.h"
 #include "weather_api.h"
-#include "weather_notification.h"
 #include "gadgets.h"
+#include "module.h"
+
+#define ENNA_MODULE_NAME "gadget_weather"
 
 
 typedef struct weather_notifier_sd_s {
@@ -46,7 +48,7 @@ cb_del (void *data, Evas *a, Evas_Object *obj, void *event_info)
     ENNA_OBJECT_DEL(sd->icon);
 }
 
-void
+static void
 enna_weather_notification_update (Evas_Object *obj)
 {
   weather_notifier_smart_data_t *sd;
@@ -79,13 +81,9 @@ enna_weather_notification_update (Evas_Object *obj)
                           "weather,show" : "weather,hide", "enna");
 }
 
-Evas_Object *
+static Evas_Object *
 enna_weather_notification_smart_add()
 {
-  
-
-  printf("weather ADD\n");
-
   ENNA_OBJECT_DEL(sd->edje);
 
   sd->edje = edje_object_add(enna->evas);
@@ -99,22 +97,29 @@ enna_weather_notification_smart_add()
   return sd->edje;
 }
 
-void
+static void
 enna_weather_notification_smart_del()
 {
-    printf("DELLLLL\n");
     ENNA_OBJECT_DEL(sd->edje);
 }
 
-static Enna_Gadget gadget = 
+static Enna_Gadget gadget =
 {
     enna_weather_notification_smart_add,
     enna_weather_notification_smart_del,
-    
+
 };
 
-void 
-enna_weather_notification_init()
+
+/* Module interface */
+
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_gadget_weather
+#endif /* USE_STATIC_MODULES */
+
+static void
+module_init(Enna_Module *em)
 {
     Eina_List *cities;
 
@@ -125,10 +130,24 @@ enna_weather_notification_init()
     enna_gadgets_register(&gadget);
 }
 
-void
-enna_weather_notification_shutdown()
+static void
+module_shutdown(Enna_Module *em)
 {
     ENNA_OBJECT_DEL(sd->edje);
     enna_weather_free(sd->w);
     ENNA_FREE(sd);
 }
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    ENNA_MODULE_NAME,
+    N_("Weather Gadget"),
+    NULL,
+    N_("Module to show weather on the desktop"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};
