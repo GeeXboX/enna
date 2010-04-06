@@ -34,9 +34,9 @@
 #include "box.h"
 #include "image.h"
 #include "exit.h"
-#include "weather_notification.h"
 #include "volume_notification.h"
 #include "mediaplayer.h"
+#include "gadgets.h"
 
 typedef struct _Background_Item Background_Item;
 
@@ -196,12 +196,6 @@ enna_mainmenu_init(void)
     sd->o_background = NULL;
     sd->backgrounds = NULL;
 
-    /* Weather widget */
-    sd->o_weather =
-        enna_weather_notification_smart_add(evas_object_evas_get(enna->layout));
-    elm_layout_content_set(enna->layout,
-                           "enna.weather.swallow", sd->o_weather);
-
     /* Volume widget */
     sd->o_volume =
         enna_volume_notification_smart_add(evas_object_evas_get(enna->layout));
@@ -279,12 +273,12 @@ enna_mainmenu_show(void)
 
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,show", "enna");
-
+    edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+                            "gadgets,show", "enna");
     ic = elm_icon_add(enna->layout);
     elm_icon_file_set(ic, enna_config_theme_get(), "ctrl/shutdown");
     elm_button_icon_set(enna->o_button_back, ic);
-    enna_weather_notification_update(sd->o_weather);
-
+    enna_gadgets_show();
 }
 
 void
@@ -297,11 +291,12 @@ enna_mainmenu_hide(void)
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,hide", "enna");
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
-                            "weather,hide", "enna");
+                            "gadgets,hide", "enna");
 
     ic = elm_icon_add(enna->layout);
     elm_icon_file_set(ic, enna_config_theme_get(), "icon/arrow_left");
     elm_button_icon_set(enna->o_button_back, ic);
+    enna_gadgets_hide();
 }
 
 void

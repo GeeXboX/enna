@@ -27,6 +27,8 @@
 #include "utils.h"
 #include "weather_api.h"
 #include "weather_notification.h"
+#include "gadgets.h"
+
 
 typedef struct weather_notifier_sd_s {
     weather_t *w;
@@ -34,14 +36,14 @@ typedef struct weather_notifier_sd_s {
     Evas_Object *icon;
 } weather_notifier_smart_data_t;
 
+static weather_notifier_smart_data_t *sd = NULL;
+
 static void
 cb_del (void *data, Evas *a, Evas_Object *obj, void *event_info)
 {
     weather_notifier_smart_data_t *sd = data;
 
     ENNA_OBJECT_DEL(sd->icon);
-    enna_weather_free(sd->w);
-    ENNA_FREE(sd);
 }
 
 void
@@ -78,17 +80,15 @@ enna_weather_notification_update (Evas_Object *obj)
 }
 
 Evas_Object *
-enna_weather_notification_smart_add (Evas *evas)
+enna_weather_notification_smart_add()
 {
-  weather_notifier_smart_data_t *sd;
-  Eina_List *cities;
+  
 
-  sd = ENNA_NEW(weather_notifier_smart_data_t, 1);
+  printf("weather ADD\n");
 
-  cities = enna_weather_cities_get();
-  sd->w = enna_weather_new(cities->data);
+  ENNA_OBJECT_DEL(sd->edje);
 
-  sd->edje = edje_object_add(evas);
+  sd->edje = edje_object_add(enna->evas);
   evas_object_event_callback_add(sd->edje, EVAS_CALLBACK_DEL, cb_del, sd);
 
   evas_object_data_set(sd->edje, "sd", sd);
@@ -97,4 +97,38 @@ enna_weather_notification_smart_add (Evas *evas)
   enna_weather_notification_update(sd->edje);
 
   return sd->edje;
+}
+
+void
+enna_weather_notification_smart_del()
+{
+    printf("DELLLLL\n");
+    ENNA_OBJECT_DEL(sd->edje);
+}
+
+static Enna_Gadget gadget = 
+{
+    enna_weather_notification_smart_add,
+    enna_weather_notification_smart_del,
+    
+};
+
+void 
+enna_weather_notification_init()
+{
+    Eina_List *cities;
+
+    sd = ENNA_NEW(weather_notifier_smart_data_t, 1);
+    cities = enna_weather_cities_get();
+    sd->w = enna_weather_new(cities->data);
+
+    enna_gadgets_register(&gadget);
+}
+
+void
+enna_weather_notification_shutdown()
+{
+    ENNA_OBJECT_DEL(sd->edje);
+    enna_weather_free(sd->w);
+    ENNA_FREE(sd);
 }
