@@ -42,6 +42,7 @@ collections
 #include "popup.edc"
 #include "exit.edc"
 #include "mediaplayer.edc"
+#include "gadgets.edc"
 
    group { name: "enna/main/layout";
       parts {
@@ -59,7 +60,7 @@ collections
          }
 
          /* weather notification */
-         part { name: "enna.weather.clip";
+         part { name: "enna.gadgets.clip";
             type: RECT;
             description { state: "default" 0.0;
                color: 255 255 255 0;
@@ -72,13 +73,13 @@ collections
          }
 
          part {
-            name: "enna.weather.swallow";
+            name: "enna.gadgets.swallow";
             type: SWALLOW;
-            clip_to: "enna.weather.clip";
+            clip_to: "enna.gadgets.clip";
             description {
                state: "default" 0.0;
-               rel1.relative: 0.75 0.80;
-               rel2.offset: -20 -20;
+               rel1.relative: 0.35 0.0;
+               rel1.offset: -48 0;
             }
          }
 
@@ -263,20 +264,20 @@ collections
          }
 
          program {
-            name: "weather,show";
-            signal: "weather,show";
+            name: "gadgets,show";
+            signal: "gadgets,show";
             source: "enna";
             action: STATE_SET "visible" 0.0;
             transition: ACCELERATE 0.5;
-            target: "enna.weather.clip";
+            target: "enna.gadgets.clip";
          }
          program {
-            name: "weather,hide";
-            signal: "weather,hide";
+            name: "gadgets,hide";
+            signal: "gadgets,hide";
             source: "enna";
             action: STATE_SET "default" 0.0;
             transition: DECELERATE 0.5;
-            target: "enna.weather.clip";
+            target: "enna.gadgets.clip";
          }
 
          program {

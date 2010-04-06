@@ -332,7 +332,8 @@ notification_volume.edc \
 notification_weather.edc \
 picture.edc \
 popup.edc \
-slideshow.edc
+slideshow.edc \
+gadgets.edc
 
 EXTRA_DIST = \
   $(IMG_ICONS) \
