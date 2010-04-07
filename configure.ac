@@ -371,6 +371,32 @@ fi
 # Gadgets Modules #
 ###################
 
+# Date gadget
+want_gadget_date="yes"
+AC_MSG_CHECKING(whether Date gadget is to be built)
+AC_ARG_ENABLE(gadget_date,
+  AS_HELP_STRING([--enable-gadget-date],[Enable Date Gadget Module]),
+  [ want_gadget_date=$enableval ]
+)
+AC_MSG_RESULT($want_gadget_date)
+AM_CONDITIONAL(BUILD_GADGET_DATE, test "x$want_gadget_date" = "xyes")
+if test "x$want_gadget_date" = "xyes"; then
+  AC_DEFINE(BUILD_GADGET_DATE, 1, [Gadget date Module])
+fi
+
+# Dummy gadget
+want_gadget_dummy="no"
+AC_MSG_CHECKING(whether Dummy gadget is to be built)
+AC_ARG_ENABLE(gadget_dummy,
+  AS_HELP_STRING([--enable-gadget-dummy],[Enable Dummy Gadget Module]),
+  [ want_gadget_dummy=$enableval ]
+)
+AC_MSG_RESULT($want_gadget_dummy)
+AM_CONDITIONAL(BUILD_GADGET_DUMMY, test "x$want_gadget_dummy" = "xyes")
+if test "x$want_gadget_dummy" = "xyes"; then
+  AC_DEFINE(BUILD_GADGET_DUMMY, 1, [Gadget dummy Module])
+fi
+
 # Weather gadget
 want_gadget_weather="yes"
 AC_MSG_CHECKING(whether Weather gadget is to be built)
@@ -749,6 +775,8 @@ echo "  Valhalla Scanner................. : $want_browser_valhalla"
 echo
 echo "Supported Gadget Modules:"
 echo
+echo "  Date............................. : $want_gadget_date"
+echo "  Dummy............................ : $want_gadget_dummy"
 echo "  Weather.......................... : $want_gadget_weather"
 echo
 echo "Supported Input Modules:"

@@ -111,6 +111,8 @@ include ../modules/browser/podcasts/config.mak
 include ../modules/browser/shoutcast/config.mak
 include ../modules/browser/upnp/config.mak
 include ../modules/browser/valhalla/config.mak
+include ../modules/gadgets/date/config.mak
+include ../modules/gadgets/dummy/config.mak
 include ../modules/gadgets/weather/config.mak
 include ../modules/input/kbd/config.mak
 include ../modules/input/lirc/config.mak
@@ -183,6 +185,14 @@ endif
 
 if BUILD_BROWSER_VALHALLA
 enna_SOURCES += $(SRCS_BROWSER_VALHALLA)
+endif
+
+if BUILD_GADGET_DATE
+enna_SOURCES += $(SRCS_GADGET_DATE)
+endif
+
+if BUILD_GADGET_DUMMY
+enna_SOURCES += $(SRCS_GADGET_DUMMY)
 endif
 
 if BUILD_GADGET_WEATHER
