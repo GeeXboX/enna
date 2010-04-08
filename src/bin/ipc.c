@@ -51,7 +51,7 @@ static Ecore_Ipc_Server *_ipc_server = NULL;
 
 
 /* externally accessible functions */
-EAPI int
+int
 enna_ipc_init(void)
 {
 
@@ -116,7 +116,7 @@ enna_ipc_init(void)
    return 1;
 }
 
-EAPI int
+int
 enna_ipc_shutdown(void)
 {
 
