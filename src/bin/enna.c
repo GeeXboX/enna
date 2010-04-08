@@ -279,7 +279,11 @@ static int _enna_init(int argc, char **argv)
                  "Requested engine '%s' has failed to register, " \
                  "using software_x11 as a default.", enna_config->engine);
         ENNA_FREE(enna_config->engine);
+#ifndef WIN32
         enna_config->engine = strdup("software_x11");
+#else
+        enna_config->engine = strdup("software_gdi");
+#endif
         _elm_init(argc, argv);
         if (!_create_gui())
             return 0;
