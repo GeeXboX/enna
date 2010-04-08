@@ -24,7 +24,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+
+#ifndef WIN32
 #include <sys/ioctl.h>
+#endif
 
 #if defined(__linux__)
 #include <linux/cdrom.h>
