@@ -43,9 +43,8 @@ static Smart_Data *sd = NULL;
 static Evas_Object *
 _date_add()
 {
-    sd->obj = evas_object_rectangle_add(enna->evas);
-    evas_object_color_set(sd->obj, 128, 128, 255, 128);
-
+    sd->obj =  elm_clock_add(enna->win);
+ 
     return sd->obj;
 }
 

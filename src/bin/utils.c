@@ -31,6 +31,11 @@
 #include <Edje.h>
 
 #include "enna.h"
+
+#ifdef HAVE_EVIL
+# include <Evil.h>
+#endif
+
 #include "enna_config.h"
 #include "utils.h"
 #include "vfs.h"
