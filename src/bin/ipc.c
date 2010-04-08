@@ -29,6 +29,13 @@
 
 #include <Ecore_Ipc.h>
 #include <Ecore_File.h>
+#include "config.h"
+
+#include "enna.h"
+
+#ifdef HAVE_EVIL
+# include <Evil.h>
+#endif
 
 #include "gettext.h"
 #include "utils.h"
