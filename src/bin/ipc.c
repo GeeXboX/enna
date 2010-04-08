@@ -94,6 +94,7 @@ enna_ipc_init(void)
                          "%s/enlightenment-%s\n"), tmp, user);
                 return 0;
             }
+#endif
         }
         else
         {
@@ -104,7 +105,7 @@ enna_ipc_init(void)
                    tmp, user);
             return 0;
         }
-#endif
+
     }
     snprintf(buf, sizeof(buf), "%s/enna-%s/disp-%s-%i", tmp, user, disp, pid);
     _ipc_server = ecore_ipc_server_add(ECORE_IPC_LOCAL_SYSTEM, buf, 0, NULL);
