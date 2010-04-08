@@ -78,6 +78,7 @@ enna_ipc_init(void)
 
         if (stat(buf, &st) == 0)
         {
+#ifndef WIN32
             if ((st.st_uid ==
                  getuid()) &&
                 ((st.st_mode & (S_IFDIR|S_IRWXU|S_IRWXG|S_IRWXO)) ==
@@ -103,6 +104,7 @@ enna_ipc_init(void)
                    tmp, user);
             return 0;
         }
+#endif
     }
     snprintf(buf, sizeof(buf), "%s/enna-%s/disp-%s-%i", tmp, user, disp, pid);
     _ipc_server = ecore_ipc_server_add(ECORE_IPC_LOCAL_SYSTEM, buf, 0, NULL);
