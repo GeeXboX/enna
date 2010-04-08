@@ -297,8 +297,8 @@ enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
         char rate[16];
         int r;
 
-        r = MAX(atoi(rt), 0);
-        r = MIN(r, 5);
+        r = MMAX(atoi(rt), 0);
+        r = MMIN(r, 5);
         memset(rate, '\0', sizeof(rate));
         snprintf(rate, sizeof(rate), "rating/%d", r);
         rating = edje_object_add(evas_object_evas_get(sd->o_edje));
