@@ -62,6 +62,7 @@ STOCK_ICON("icon_song.png",                     "icon/song");
 STOCK_ICON("icon_upnp.png",                     "icon/upnp");
 STOCK_ICON("icon_video.png",                    "icon/video");
 STOCK_ICON("icon_weather.png",                  "icon/weather");
+STOCK_ICON("icon_wiimote.png",                  "icon/wiimote");
 STOCK_ICON("unknown_cover.png",                 "icon/unknown_cover");
 
 /* Activities Backgrounds */

@@ -50,6 +50,7 @@ Modules
   Input:
     Keyboard:                             Nicolas Aguirre
     LIRC:                                 Nicolas Aguirre
+    Wiimote:                              Oliver Schinagl
 
   Volume:
     HAL:                                  Benjamin Zores
