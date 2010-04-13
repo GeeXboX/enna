@@ -31,6 +31,7 @@
 #include <Edje.h>
 
 #include "enna.h"
+#include "logs.h"
 #include "enna_config.h"
 #include "utils.h"
 #include "vfs.h"
@@ -54,6 +55,13 @@ enna_util_user_home_get()
     home = getenv("HOME")?strdup(getenv("HOME")):NULL;
     if (!home)
         return getenv("CWD")?strdup(getenv("CWD")):NULL;
+    if (!home)
+    {
+        enna_log(ENNA_MSG_WARNING, NULL,
+                 "Neither HOME/CWD has been set, using / instead");
+
+        return strdup("/");
+    }
     return home;
 }
 

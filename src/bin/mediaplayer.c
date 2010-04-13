@@ -705,6 +705,7 @@ static const struct {
 } map_player_vo[] = {
     { "auto",       PLAYER_VO_AUTO           },
     { "vdpau",      PLAYER_VO_VDPAU          },
+    { "omap",       PLAYER_VO_OMAP           },
     { "x11",        PLAYER_VO_X11            },
     { "xv",         PLAYER_VO_XV             },
     { "gl",         PLAYER_VO_GL             },
