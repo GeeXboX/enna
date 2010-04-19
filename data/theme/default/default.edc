@@ -43,6 +43,7 @@ collections
 #include "exit.edc"
 #include "mediaplayer.edc"
 #include "gadgets.edc"
+#include "gadgets/date/date.edc"
 
    group { name: "enna/main/layout";
       parts {
