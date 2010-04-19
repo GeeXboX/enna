@@ -1,2 +1,2 @@
 MAINTAINERCLEANFILES = Makefile.in
-SUBDIRS = lirc kbd wiimote
+SUBDIRS = kbd lirc wiimote
