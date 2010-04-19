@@ -270,15 +270,16 @@ enna_mainmenu_show(void)
     if (!sd) return;
     sd->visible = 1;
     sd->selected = NULL;
-
+    enna_gadgets_show();
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,show", "enna");
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "gadgets,show", "enna");
+
     ic = elm_icon_add(enna->layout);
     elm_icon_file_set(ic, enna_config_theme_get(), "ctrl/shutdown");
     elm_button_icon_set(enna->o_button_back, ic);
-    enna_gadgets_show();
+
 }
 
 void
