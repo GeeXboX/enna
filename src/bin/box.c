@@ -58,6 +58,7 @@ struct _Smart_Data
     Eina_List *items;
     int horizontal;
     const char *style;
+    Evas_Coord h;
 };
 
 /* local subsystem functions */
@@ -116,7 +117,6 @@ _append_helper(Evas_Object *obj, const char *label,
 
     edje_object_size_min_calc(si->o_edje, &w, &h);
     evas_object_size_hint_min_set(o_edje, w, h);
-    evas_object_resize(si->o_edje, w, h);
 
     si->sd = sd;
     si->selected = 0;
@@ -440,8 +440,12 @@ _box_resize(void *data, Evas *e, Evas_Object *o, void *event_info)
 
     elm_scroller_region_get(sd->o_scroll, NULL, NULL, &w, &h);
     evas_object_size_hint_min_get(sd->o_box, NULL, &h);
-    evas_object_size_hint_min_set(sd->o_box, w, h);
-    evas_object_resize(sd->o_box, w, h);
+
+    if (h)
+        sd->h = h;
+
+    evas_object_size_hint_min_set(sd->o_box, w, sd->h);
+    evas_object_resize(sd->o_box, w, sd->h);
 
     EINA_LIST_FOREACH(sd->items, l, si)
     {
