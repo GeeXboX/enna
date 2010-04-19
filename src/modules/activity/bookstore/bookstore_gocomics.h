@@ -22,6 +22,6 @@
 #ifndef BOOKSTORE_GOCOMICS_H
 #define BOOKSTORE_GOCOMICS_H
 
-BookStore_Service bs_gocomics;
+Bookstore_Service bs_gocomics;
 
 #endif /* BOOKSTORE_GOCOMICS_H */

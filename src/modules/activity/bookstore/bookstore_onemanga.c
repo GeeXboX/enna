@@ -61,7 +61,7 @@ typedef struct manga_s {
     int chapters;
 } manga_t;
 
-typedef struct _BookStore_Service_OneManga {
+typedef struct _Bookstore_Service_OneManga {
     url_t url;
     Eina_List *manga_list;
     int main_menu;
@@ -72,9 +72,9 @@ typedef struct _BookStore_Service_OneManga {
     char *path;
     Evas_Object *edje;
     Evas_Object *list;
-} BookStore_Service_OneManga;
+} Bookstore_Service_OneManga;
 
-static BookStore_Service_OneManga *mod;
+static Bookstore_Service_OneManga *mod;
 
 /****************************************************************************/
 /*                         OneManga.com Module API                          */
@@ -618,7 +618,7 @@ bs_onemanga_show (Evas_Object *edje)
 {
    char dst[1024] = { 0 };
 
-    mod = calloc (1, sizeof(BookStore_Service_OneManga));
+    mod = calloc (1, sizeof(Bookstore_Service_OneManga));
 
     /* create manga pages download destination path */
     snprintf(dst, sizeof(dst), "%s/%s",
@@ -661,7 +661,7 @@ bs_onemanga_hide (Evas_Object *edje)
 /*                         Public Service API                               */
 /****************************************************************************/
 
-BookStore_Service bs_onemanga = {
+Bookstore_Service bs_onemanga = {
     "OneManga",
     "background/onemanga",
     "icon/onemanga",

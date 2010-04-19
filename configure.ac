@@ -142,7 +142,7 @@ fi
 # Activity Modules #
 ####################
 
-# BookStore
+# Bookstore
 want_activity_bookstore="yes"
 AC_MSG_CHECKING(whether bookstore activity module is to be built)
 AC_ARG_ENABLE(activity-bookstore,
@@ -702,7 +702,7 @@ echo "NLS................................ : $USE_NLS"
 echo
 echo "Supported Activity Modules:"
 echo
-echo "  BookStore........................ : $want_activity_bookstore"
+echo "  Bookstore........................ : $want_activity_bookstore"
 echo "  Configuration.................... : $want_activity_configuration"
 echo "  Games............................ : $want_activity_games"
 echo "  Music............................ : $want_activity_music"
