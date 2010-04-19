@@ -4,7 +4,8 @@ images {
 
 group {
    name: "enna/notification/weather";
-
+   min: 320 180;
+   max: 320 180;
    parts {
 
       part {
