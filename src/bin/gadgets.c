@@ -102,8 +102,8 @@ _add_gadgets(Evas_Object *o_gad)
         evas_object_show(sd->o_table);
     }
 
-    evas_object_size_hint_weight_set(o_gad, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(o_gad, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    //evas_object_size_hint_weight_set(o_gad, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    //evas_object_size_hint_align_set(o_gad, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_table_pack(sd->o_table, o_gad, sd->column, sd->row, 1, 1);
     evas_object_show(o_gad);
 
@@ -157,9 +157,9 @@ _layout_resize(void *data, Evas *e, Evas_Object *o, void *event_info)
 
     EINA_LIST_FOREACH(sd->items, l, o_gad)
     {
-        evas_object_size_hint_min_set(o_gad, ow, oh);
-        evas_object_size_hint_weight_set(o_gad, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-        evas_object_size_hint_align_set(o_gad, EVAS_HINT_FILL, EVAS_HINT_FILL);
+        //evas_object_size_hint_min_set(o_gad, ow, oh);
+        //evas_object_size_hint_weight_set(o_gad, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+        //evas_object_size_hint_align_set(o_gad, EVAS_HINT_FILL, EVAS_HINT_FILL);
     }
 
 }
