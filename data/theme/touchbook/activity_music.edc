@@ -5,24 +5,7 @@ group {
       images {
          image: "activity_bg.png" COMP;
       }
-      part { name: "bg";
-         clip_to: "module.clip";
-         mouse_events: 0;
-         description { state: "default" 0.0;
-            visible: 1;
-            color: 255 255 255 255;
-            rel1 {
-               relative: 0.0 0.0;
-            }
-            rel2 {
-               relative: 1.0 1.0;
-            }
-            image {
-               normal: "activity_bg.png";
-               border: 0 0 90 0;
-            }
-         }
-      }
+
       part {
          name: "module.clip";
          type: RECT;
@@ -30,41 +13,22 @@ group {
             state: "default" 0.0;
             color: 255 255 255 0;
             rel1.relative: 0 0;
+            rel1.offset: 0 24;
             rel2.relative: 1 1;
             visible: 0;
          }
          description {
             state: "show" 0.0;
+            inherit: "default" 0.0;
             color : 255 255 255 255;
             visible: 1;
          }
       }
 
-      part {
-         name: "content.clip";
-         type: RECT;
-         clip_to: "module.clip";
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 0;
-            rel1.to: module.clip;
-            rel2.to: module.clip;
-            visible: 0;
-         }
-         description {
-            state: "show" 0.0;
-            inherit: "default" 0.0;
-            color: 255 255 255 255;
-            visible: 1;
-         }
-      }
-
-
-
       /* file browser */
       part {
          name: "browser.clip";
-         clip_to: "content.clip";
+         clip_to: "module.clip";
          type: RECT;
          mouse_events: 0;
          description {
@@ -74,11 +38,11 @@ group {
 
             rel1.relative: 0.67 0.0;
              //rel1.offset: 8 8;
-            rel1.to: "content.clip";
+            rel1.to: "module.clip";
 
             rel2.relative: 1.0 1.0;
              //rel2.offset: 0 -50;
-            rel2.to: "content.clip";
+            rel2.to: "module.clip";
          }
       }
 
@@ -97,7 +61,7 @@ group {
       /* songs counter */
       part {
          name: "songs.counter.label";
-         clip_to: "content.clip";
+         clip_to: "module.clip";
          type: TEXT;
          effect: SOFT_SHADOW;
          mouse_events: 0;
@@ -109,11 +73,11 @@ group {
             visible: 1;
 
             rel1.relative: 0.75 1.00;
-            rel1.to: "content.clip";
+            rel1.to: "module.clip";
 
             rel2.relative: 0.99 1.00;
             rel2.offset: 0 -50;
-            rel2.to: "content.clip";
+            rel2.to: "module.clip";
 
             color3: 0 0 0 64;
             text {
@@ -128,7 +92,7 @@ group {
       /* Mediaplayer */
       part {
          name: "mediaplayer.clip";
-         clip_to: "content.clip";
+         clip_to: "module.clip";
          type: RECT;
          mouse_events: 0;
          description {
@@ -138,11 +102,11 @@ group {
 
             rel1.relative: 0.0 0.0;
             rel1.offset: -8 -8;
-            rel1.to: "content.clip";
+            rel1.to: "module.clip";
 
             rel2.relative: 0.50 1.0;
             rel2.offset: +8 +8;
-            rel2.to: "content.clip";
+            rel2.to: "module.clip";
          }
       }
 
@@ -219,22 +183,22 @@ group {
          target: "module.clip";
           //target: "background";
       }
-      program {
-         name: "content,show";
-         signal: "content,show";
-         source:  "enna";
-         action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "content.clip";
-      }
-      program {
-         name: "content,hide";
-         signal: "content,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "content.clip";
-      }
+/*       program { */
+/*          name: "content,show"; */
+/*          signal: "content,show"; */
+/*          source:  "enna"; */
+/*          action:  STATE_SET "show" 0.0; */
+/*          transition: SINUSOIDAL 0.5; */
+/*          target: "content.clip"; */
+/*       } */
+/*       program { */
+/*          name: "content,hide"; */
+/*          signal: "content,hide"; */
+/*          source:  "enna"; */
+/*          action:  STATE_SET "default" 0.0; */
+/*          transition: SINUSOIDAL 0.5; */
+/*          target: "content.clip"; */
+/*       } */
       program {
          name: "mediaplayer,show";
          signal: "mediaplayer,show";
