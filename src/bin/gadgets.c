@@ -238,6 +238,7 @@ enna_gadgets_hide()
         if (gad->del)
             gad->del();
     }
+    ENNA_OBJECT_DEL(sd->o_scroll);
 }
 
 int
