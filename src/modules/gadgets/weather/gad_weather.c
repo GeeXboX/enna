@@ -84,17 +84,20 @@ enna_weather_notification_update (Evas_Object *obj)
 static Evas_Object *
 enna_weather_notification_smart_add()
 {
-  ENNA_OBJECT_DEL(sd->edje);
+    Evas_Coord w, h;
+    ENNA_OBJECT_DEL(sd->edje);
 
-  sd->edje = edje_object_add(enna->evas);
-  evas_object_event_callback_add(sd->edje, EVAS_CALLBACK_DEL, cb_del, sd);
+    sd->edje = edje_object_add(enna->evas);
+    evas_object_event_callback_add(sd->edje, EVAS_CALLBACK_DEL, cb_del, sd);
 
-  evas_object_data_set(sd->edje, "sd", sd);
-  edje_object_file_set(sd->edje, enna_config_theme_get(),
-                       "enna/notification/weather");
-  enna_weather_notification_update(sd->edje);
+    evas_object_data_set(sd->edje, "sd", sd);
+    edje_object_file_set(sd->edje, enna_config_theme_get(),
+                         "enna/notification/weather");
+    edje_object_size_min_get(sd->edje, &w, &h);
+    evas_object_size_hint_min_set(sd->edje, w, h);
+    enna_weather_notification_update(sd->edje);
 
-  return sd->edje;
+    return sd->edje;
 }
 
 static void
