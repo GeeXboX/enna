@@ -48,7 +48,7 @@
 #define GOCOMICS_NEEDLE_END      "\""
 #define GOCOMICS_PATH            "gocomics"
 
-typedef struct _BookStore_Service_GoComics {
+typedef struct _Bookstore_Service_GoComics {
     char *path;
     url_t url;
     char *comic_name;
@@ -59,7 +59,7 @@ typedef struct _BookStore_Service_GoComics {
     struct tm *t;
     Evas_Object *edje;
     Evas_Object *list;
-} BookStore_Service_GoComics;
+} Bookstore_Service_GoComics;
 
 static const struct {
   const char *name;
@@ -77,7 +77,7 @@ static const struct {
     { NULL,                          NULL                      }
 };
 
-static BookStore_Service_GoComics *mod;
+static Bookstore_Service_GoComics *mod;
 
 /****************************************************************************/
 /*                         GoComics.com Module API                          */
@@ -309,7 +309,7 @@ bs_gocomics_show (Evas_Object *edje)
 {
     char dst[1024] = { 0 };
 
-    mod = calloc (1, sizeof(BookStore_Service_GoComics));
+    mod = calloc (1, sizeof(Bookstore_Service_GoComics));
 
     /* create comic strips download destination path */
     snprintf(dst, sizeof(dst), "%s/%s",
@@ -340,7 +340,7 @@ bs_gocomics_hide (Evas_Object *edje)
 /*                         Public Service API                               */
 /****************************************************************************/
 
-BookStore_Service bs_gocomics = {
+Bookstore_Service bs_gocomics = {
     "GoComics",
     "background/gocomics",
     "icon/gocomics",

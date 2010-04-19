@@ -22,7 +22,7 @@
 #ifndef BOOKSTORE_H
 #define BOOKSTORE_H
 
-typedef struct _BookStore_Service {
+typedef struct _Bookstore_Service {
     const char *label;
     const char *bg;
     const char *icon;
@@ -31,7 +31,7 @@ typedef struct _BookStore_Service {
     Eina_Bool (*event) (Evas_Object *edje, enna_input event);
     void (*prev)(void *data, Evas_Object *obj, void *ev);
     void (*next)(void *data, Evas_Object *obj, void *ev);
-} BookStore_Service;
+} Bookstore_Service;
 
 void bs_service_page_show (const char *file);
 

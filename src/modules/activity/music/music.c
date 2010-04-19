@@ -379,15 +379,13 @@ _create_mediaplayer_gui()
 {
     Evas_Object *o;
 
-    if (!mod->o_mediaplayer)
-    {
-        o = enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
-        edje_object_part_swallow(mod->o_edje, "mediaplayer.swallow", o);
-        evas_object_show(o);
-        mod->o_mediaplayer = o;
-        evas_object_smart_callback_add(mod->o_mediaplayer, "info,clicked",
-                                       _mediaplayer_info_clicked_cb, NULL);
-    }
+    o = enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
+    edje_object_part_swallow(mod->o_edje, "mediaplayer.swallow", o);
+    evas_object_show(o);
+    mod->o_mediaplayer = o;
+    evas_object_smart_callback_add(mod->o_mediaplayer, "info,clicked",
+                                   _mediaplayer_info_clicked_cb, NULL);
+
     edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
     edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
 }
@@ -444,6 +442,7 @@ _create_gui()
     mod->o_edje = o;
 
     _create_menu();
+    _create_mediaplayer_gui();
 
     mod->vl = enna_volumes_listener_add("activity_music",
                                         _refresh_list, _refresh_list, NULL);

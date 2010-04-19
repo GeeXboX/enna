@@ -152,7 +152,7 @@ fi
 # Activity Modules #
 ####################
 
-# BookStore
+# Bookstore
 want_activity_bookstore="yes"
 AC_MSG_CHECKING(whether bookstore activity module is to be built)
 AC_ARG_ENABLE(activity-bookstore,
@@ -424,17 +424,6 @@ fi
 # Input Modules #
 #################
 
-# LIRC
-have_input_lirc=no
-AC_CHECK_HEADER(lirc/lirc_client.h, have_input_lirc=yes)
-if test "x$have_input_lirc" = "xyes"; then
-  AC_DEFINE([BUILD_INPUT_LIRC], [1], [Define if LIRC client lib is present])
-  have_input_lirc="yes"
-  LIRC_LIBS=-llirc_client
-  AC_SUBST(LIRC_LIBS)
-fi
-AM_CONDITIONAL(BUILD_INPUT_LIRC, test "x$have_input_lirc" = "xyes")
-
 # Keyboard
 want_input_keyboard="yes"
 AC_MSG_CHECKING(whether keyboard input module is to be built)
@@ -447,6 +436,17 @@ AM_CONDITIONAL(BUILD_INPUT_KBD, test "x$want_input_keyboard" = "xyes")
 if test "x$want_input_keyboard" = "xyes"; then
   AC_DEFINE(BUILD_INPUT_KBD, 1, [Keyboard Input])
 fi
+
+# LIRC
+have_input_lirc=no
+AC_CHECK_HEADER(lirc/lirc_client.h, have_input_lirc=yes)
+if test "x$have_input_lirc" = "xyes"; then
+  AC_DEFINE([BUILD_INPUT_LIRC], [1], [Define if LIRC client lib is present])
+  have_input_lirc="yes"
+  LIRC_LIBS=-llirc_client
+  AC_SUBST(LIRC_LIBS)
+fi
+AM_CONDITIONAL(BUILD_INPUT_LIRC, test "x$have_input_lirc" = "xyes")
 
 # Wiimote
 want_input_wiimote="auto"
@@ -722,8 +722,8 @@ src/modules/browser/valhalla/Makefile
 src/modules/gadgets/Makefile
 src/modules/gadgets/weather/Makefile
 src/modules/input/Makefile
-src/modules/input/lirc/Makefile
 src/modules/input/kbd/Makefile
+src/modules/input/lirc/Makefile
 src/modules/input/wiimote/Makefile
 src/modules/volume/Makefile
 src/modules/volume/hal/Makefile
@@ -757,7 +757,7 @@ echo "NLS................................ : $USE_NLS"
 echo
 echo "Supported Activity Modules:"
 echo
-echo "  BookStore........................ : $want_activity_bookstore"
+echo "  Bookstore........................ : $want_activity_bookstore"
 echo "  Configuration.................... : $want_activity_configuration"
 echo "  Games............................ : $want_activity_games"
 echo "  Music............................ : $want_activity_music"

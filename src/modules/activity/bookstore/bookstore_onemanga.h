@@ -22,6 +22,6 @@
 #ifndef BOOKSTORE_ONEMANGA_H
 #define BOOKSTORE_ONEMANGA_H
 
-BookStore_Service bs_onemanga;
+Bookstore_Service bs_onemanga;
 
 #endif /* BOOKSTORE_ONEMANGA_H */

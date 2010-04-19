@@ -40,29 +40,29 @@
 
 #define ENNA_MODULE_NAME                 "bookstore"
 
-typedef enum _BookStore_State
+typedef enum _Bookstore_State
 {
     BS_MENU_VIEW,
     BS_SERVICE_VIEW,
-} BookStore_State;
+} Bookstore_State;
 
-typedef struct _Enna_Module_BookStore {
+typedef struct _Enna_Module_Bookstore {
     Evas *e;
     Evas_Object *edje;
     Evas_Object *menu;
     Evas_Object *service_bg;
     Evas_Object *page;
     Eina_List *menu_items;
-    BookStore_State state;
-    BookStore_Service *current;
-    BookStore_Service *gocomics;
-    BookStore_Service *onemanga;
-} Enna_Module_BookStore;
+    Bookstore_State state;
+    Bookstore_Service *current;
+    Bookstore_Service *gocomics;
+    Bookstore_Service *onemanga;
+} Enna_Module_Bookstore;
 
-static Enna_Module_BookStore *mod;
+static Enna_Module_Bookstore *mod;
 
 /****************************************************************************/
-/*                      BookStore Service API                               */
+/*                      Bookstore Service API                               */
 /****************************************************************************/
 
 void
@@ -152,7 +152,7 @@ bs_service_set_bg (const char *bg)
 }
 
 static void
-bs_service_show (BookStore_Service *s)
+bs_service_show (Bookstore_Service *s)
 {
     if (!s)
         return;
@@ -174,7 +174,7 @@ bs_service_show (BookStore_Service *s)
 }
 
 static void
-bs_service_hide (BookStore_Service *s)
+bs_service_hide (Bookstore_Service *s)
 {
     if (!s)
         return;
@@ -192,18 +192,18 @@ bs_service_hide (BookStore_Service *s)
 }
 
 /****************************************************************************/
-/*                         BookStore Menu API                               */
+/*                         Bookstore Menu API                               */
 /****************************************************************************/
 
 static void
 bs_menu_item_cb_selected (void *data)
 {
-    BookStore_Service *s = data;
+    Bookstore_Service *s = data;
     bs_service_show(s);
 }
 
 static void
-bs_menu_add (BookStore_Service *s)
+bs_menu_add (Bookstore_Service *s)
 {
     Enna_Vfs_File *f;
 
@@ -285,7 +285,7 @@ static void
 _class_event (enna_input event)
 {
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-             "Key pressed BookStore : %d", event);
+             "Key pressed Bookstore : %d", event);
 
     switch (mod->state)
     {
@@ -347,7 +347,7 @@ static Enna_Class_Activity class = {
 static void
 module_init(Enna_Module *em)
 {
-    mod = calloc (1, sizeof(Enna_Module_BookStore));
+    mod = calloc (1, sizeof(Enna_Module_Bookstore));
     em->mod = mod;
 
     enna_activity_add(&class);
