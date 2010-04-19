@@ -43,8 +43,13 @@ static Smart_Data *sd = NULL;
 static Evas_Object *
 _date_add()
 {
-    sd->obj =  elm_clock_add(enna->win);
- 
+    Evas_Coord w, h;
+    sd->obj = edje_object_add(enna->evas);
+    edje_object_file_set(sd->obj, enna_config_theme_get(), "gadget/date");
+    edje_object_size_min_get(sd->obj, &w, &h);
+    evas_object_size_hint_min_set(sd->obj, w, h);
+    printf("Edje siez : %d %d\n", w, h);
+
     return sd->obj;
 }
 
