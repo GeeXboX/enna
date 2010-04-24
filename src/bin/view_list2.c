@@ -648,6 +648,8 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
                     elm_check_state_set(id->focused->obj, !elm_check_state_get(id->focused->obj));
                     _list_button_activate(id->focused);
                     break;
+                case ENNA_TOGGLE:
+                     elm_toggle_state_set(id->focused->obj, !elm_toggle_state_get(id->focused->obj));
                 default:
                     _list_button_activate(id->focused);
                     break;
