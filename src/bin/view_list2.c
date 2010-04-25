@@ -655,6 +655,13 @@ enna_list2_input_feed(Evas_Object *obj, enna_input event)
                     break;
                 }
             }
+            else if (eina_list_count(id->buttons) == 1)
+            {
+                Enna_View_List2_Widget *wid;
+                wid = eina_list_nth(id->buttons, 0);
+                id->focused = wid;
+                enna_list2_input_feed(obj, ENNA_INPUT_OK);
+            }
             else
             {
                 _list_item_activate((Item_Data*)elm_genlist_item_data_get(item));
