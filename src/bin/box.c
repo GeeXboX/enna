@@ -416,18 +416,12 @@ _smart_event_mouse_down(void *data, Evas *evas,
     {
         _smart_item_unselect(si->sd, _smart_selected_item_get(si->sd, NULL));
     }
-    else if (ev->flags & EVAS_BUTTON_DOUBLE_CLICK)
+    else if (spi == si)
     {
         if (si->func_activated)
             si->func_activated(si->data);
-            return;
-    }
-    else if (spi == si)
-    {
         return;
     }
-
-    _smart_item_select(si->sd, si);
 }
 
 static void
