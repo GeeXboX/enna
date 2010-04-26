@@ -976,6 +976,7 @@ _class_show(int dummy)
 static void
 _class_hide(int dummy)
 {
+    _return_to_video_info_gui();
     edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
 }
 
