@@ -218,7 +218,7 @@ msgstr "Enna ist ein MediaCenter des GeeXboX-Teams"
 
 #: src/modules/activity/configuration/configuration_credits.c:47
 msgid "based on Enlightenment Foundation Librairies (EFL)."
-msgstr "basiert auf Enlightenment Foundation Libraries (EFL)."
+msgstr "basierend auf Enlightenment Foundation Libraries (EFL)."
 
 #: src/modules/activity/configuration/configuration_credits.c:49
 msgid "Credits go to:"
