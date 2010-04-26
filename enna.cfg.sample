@@ -69,8 +69,8 @@ path_photo=file:///path/to/server/Medias/Photos,Server,icon/dev/nfs
 stream_video=http://mafreebox.freebox.fr/freeboxtv/playlist.m3u,FreeboxTV,icon/freeboxtv
 
 [tv]
-# Default: 'vdr:/' (autodetect local VDR)
-# Local VDR: 'vdr://tmp/vdr-xine/stream#demux:mpeg_pes
+# Default: 'vdr_uri:/' (autodetect local VDR)
+# Local VDR: 'vdr_uri://tmp/vdr-xine/stream#demux:mpeg_pes
 # Remote VDR: 'netvdr://192.168.1.1:18701
 #vdr_uri=
 
