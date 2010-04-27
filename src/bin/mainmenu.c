@@ -345,10 +345,3 @@ enna_mainmenu_visible(void)
     if (!sd) return EINA_FALSE;
     return sd->visible;
 }
-
-Eina_Bool
-enna_mainmenu_exit_visible(void)
-{
-    if (!sd) return 0;
-    return sd->exit_visible;
-}

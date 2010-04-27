@@ -72,38 +72,34 @@ static int _create_gui(void);
 /* Callbacks */
 static int _idle_timer_cb(void *data)
 {
-    if (enna_mediaplayer_state_get() == PLAYING)
-    {
-        enna_log(ENNA_MSG_INFO, NULL, "still playing, renewing idle timer");
-        return ECORE_CALLBACK_RENEW;
-    }
-    else if (enna_activity_request_quit_all())
-    {
-        enna_log(ENNA_MSG_INFO, NULL,
-                 "at least one activity's busy, renewing idle timer");
-        return ECORE_CALLBACK_RENEW;
-    }
 
-    if (enna_mainmenu_exit_visible())
+    if (enna_exit_visible())
     {
         enna_log(ENNA_MSG_INFO, NULL, "gracetime is over, quitting enna.");
         ecore_main_loop_quit();
     }
     else
     {
+      if (enna_mediaplayer_state_get() == PLAYING)
+      {
+          enna_log(ENNA_MSG_INFO, NULL, "still playing, renewing idle timer");
+          return ECORE_CALLBACK_RENEW;
+      }
+      else if (enna_activity_request_quit_all())
+      {
+          enna_log(ENNA_MSG_INFO, NULL,
+                   "at least one activity's busy, renewing idle timer");
+          return ECORE_CALLBACK_RENEW;
+      }
+      else
+      {
         enna_log(ENNA_MSG_INFO, NULL,
                  "enna seems to be idle, sending quit msg and waiting 20s");
-        evas_event_feed_key_down(enna->evas,
-                                 "Escape",
-                                 "Escape",
-                                 "Escape",
-                                 NULL,
-                                 ecore_time_get(),
-                                 NULL);
-        ecore_timer_interval_set(enna->idle_timer, 20);
+        enna_input_event_emit(ENNA_INPUT_QUIT);
+        enna->idle_timer = ecore_timer_add(20, _idle_timer_cb, NULL);
+        return ECORE_CALLBACK_CANCEL;
+      }
     }
-
-    return ECORE_CALLBACK_RENEW;
 }
 
 #ifdef BUILD_ECORE_X
