@@ -405,8 +405,7 @@ _smart_event_mouse_down(void *data, Evas *evas,
 {
     Smart_Item *si = data;
     Smart_Item *spi;
-    Evas_Event_Mouse_Down *ev = event_info;
-
+ 
     if (!si) return;
     _smart_item_unselect(si->sd, _smart_selected_item_get(si->sd, NULL));
     _smart_item_select(si->sd, si);
