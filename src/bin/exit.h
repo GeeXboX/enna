@@ -22,6 +22,7 @@
 #ifndef EXIT_H
 #define EXIT_H
 
+int enna_exit_visible();
 int enna_exit_init();
 int enna_exit_shutdown();
 
