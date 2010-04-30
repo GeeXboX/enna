@@ -117,7 +117,7 @@ decrapifier=1
 # With SE and EP, the values are saved in the database.
 # Examples: sSEeEP, NUMxNUM
 #
-# If decrypifier=0, the keywords are ignored and the filenames are not
+# If decrapifier=0, the keywords are ignored and the filenames are not
 # considered for the titles.
 #
 # Only alphabetical and numerical letters can be used in the keywords.
