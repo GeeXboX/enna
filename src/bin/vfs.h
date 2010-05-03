@@ -37,6 +37,7 @@ enum _ENNA_VFS_CAPS
 
 struct _Enna_Vfs_File
 {
+    char *name;
     char *uri;
     char *label;
     char *icon;
