@@ -416,9 +416,11 @@ enna_util_tuple_get (const char *str, const char *delimiter)
 
     l = strdup(str);
     s = strtok(l, delimiter);
-    do {
-      tuple = eina_list_append(tuple, strdup(s));
-      s = strtok(NULL, delimiter);
+    do
+    {
+        if (s)
+            tuple = eina_list_append(tuple, strdup(s));
+        s = strtok(NULL, delimiter);
     } while (s);
 
     ENNA_FREE(l);
