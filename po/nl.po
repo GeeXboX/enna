@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-04-01 08:53+0200\n"
+"POT-Creation-Date: 2010-05-03 09:53+0200\n"
 "PO-Revision-Date: 2010-01-07 00:14+0100\n"
 "Last-Translator: Geert Deboutte deg@mail.be\n"
 "Language-Team: Dutch\n"
@@ -26,57 +26,57 @@ msgstr "Geen media aanwezig!"
 msgid "Main menu"
 msgstr "Hoofdmenu"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:498
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:499
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Gebruik: %s [opties ...]\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:500
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr "Beschikbare opties:\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Geef te gebruiken configuratiebestand op.\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:502
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Dwing fullscreen modus.\n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:503
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Deze hulptekst tonen.\n"
 
-#: src/bin/enna.c:508
+#: src/bin/enna.c:504
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Geef te gebruiken themanaam op.\n"
 
-#: src/bin/enna.c:509
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Geef venstergeometrie op. (geometrie=1280x720)\n"
 
-#: src/bin/enna.c:510
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Geef schermprofiel op\n"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:507
 #, c-format
 msgid "    Supported: "
 msgstr "    Ondersteund: "
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:511
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna programmaversie tonen.\n"
@@ -106,11 +106,11 @@ msgstr "Geen<br>"
 msgid "continue using Enna"
 msgstr "Nee, Enna verder blijven gebruiken"
 
-#: src/bin/module.c:233
+#: src/bin/module.c:239
 msgid "Modules"
 msgstr "Modules"
 
-#: src/bin/module.c:402
+#: src/bin/module.c:408
 msgid "No information provided"
 msgstr "Geen beschikbare informatie"
 
@@ -387,12 +387,12 @@ msgstr "Systeemspellen"
 msgid "%d Songs"
 msgstr "%d Liedjes"
 
-#: src/modules/activity/music/music.c:463
-#: src/modules/activity/music/music.c:525
+#: src/modules/activity/music/music.c:511
+#: src/modules/activity/music/music.c:573
 msgid "Music"
 msgstr "Muziek"
 
-#: src/modules/activity/music/music.c:527
+#: src/modules/activity/music/music.c:575
 msgid "Listen to your music"
 msgstr "Luister naar je muziek"
 
@@ -434,45 +434,45 @@ msgstr "Televisie"
 msgid "View TV channels"
 msgstr "Bekijk tv-kanalen"
 
-#: src/modules/activity/video/video_infos.c:94
+#: src/modules/activity/video/video_infos.c:97
 msgid "No such information ..."
 msgstr "Informatie niet beschikbaar ..."
 
-#: src/modules/activity/video/video_infos.c:129
+#: src/modules/activity/video/video_infos.c:132
 msgid "Director:"
 msgstr "Regisseur:"
 
-#: src/modules/activity/video/video_infos.c:136
+#: src/modules/activity/video/video_infos.c:139
 msgid "Cast:"
 msgstr "Rolverdeling:"
 
-#: src/modules/activity/video/video_infos.c:158
+#: src/modules/activity/video/video_infos.c:161
 msgid "Video:"
 msgstr "Video:"
 
-#: src/modules/activity/video/video_infos.c:181
+#: src/modules/activity/video/video_infos.c:184
 msgid "Audio:"
 msgstr "Audio:"
 
-#: src/modules/activity/video/video_infos.c:196
+#: src/modules/activity/video/video_infos.c:199
 msgid "Size:"
 msgstr "Grootte:"
 
-#: src/modules/activity/video/video_infos.c:204
+#: src/modules/activity/video/video_infos.c:207
 msgid "No further information can be retrieved"
 msgstr "Er kan geen additionele informatie worden opgehaald"
 
-#: src/modules/activity/video/video.c:132
+#: src/modules/activity/video/video.c:133
 #, c-format
 msgid "%d Movies"
 msgstr "%d Films"
 
-#: src/modules/activity/video/video.c:940
-#: src/modules/activity/video/video.c:1031
+#: src/modules/activity/video/video.c:1006
+#: src/modules/activity/video/video.c:1098
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/video/video.c:1033
+#: src/modules/activity/video/video.c:1100
 msgid "Play your videos"
 msgstr "Vertoon je video's"
 
