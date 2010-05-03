@@ -327,13 +327,13 @@ module_init(Enna_Module *em)
     mod->w = enna_weather_new(cities->data);
     em->mod = mod;
 
-    enna_activity_add (&class);
+    enna_activity_register(&class);
 }
 
 static void
 module_shutdown(Enna_Module *em)
 {
-    enna_activity_del(ENNA_MODULE_NAME);
+    enna_activity_unregister(&class);
 
     enna_weather_free(mod->w);
     ENNA_TIMER_DEL (mod->timer);

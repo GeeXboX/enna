@@ -241,7 +241,7 @@ module_init(Enna_Module *em)
     mod = calloc (1, sizeof (Enna_Module_Configuration));
     em->mod = mod;
 
-    enna_activity_add (&class);
+    enna_activity_register(&class);
 
     info1 = enna_config_panel_register(_("System information"), "icon/infos",
                                     info_panel_show, info_panel_hide, NULL);
@@ -256,7 +256,7 @@ module_shutdown(Enna_Module *em)
 {
     enna_config_panel_unregister(info1);
     enna_config_panel_unregister(credits);
-    enna_activity_del(ENNA_MODULE_NAME);
+    enna_activity_unregister(&class);
 
     ENNA_OBJECT_DEL (mod->o_edje);
     _delete_menu ();

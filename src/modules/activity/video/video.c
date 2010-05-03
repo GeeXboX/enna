@@ -1033,14 +1033,14 @@ em_init(Enna_Module *em)
     mod->o_snapshot = enna_video_picture_add(enna->evas);
     mod->eos_event_handler =
         ecore_event_handler_add(ENNA_EVENT_MEDIAPLAYER_EOS, _eos_cb, NULL);
-    enna_activity_add(&class);
+    enna_activity_register(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
 }
 
 static void
 em_shutdown(Enna_Module *em)
 {
-    enna_activity_del(ENNA_MODULE_NAME);
+    enna_activity_unregister(&class);
     ENNA_EVENT_HANDLER_DEL(mod->eos_event_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);

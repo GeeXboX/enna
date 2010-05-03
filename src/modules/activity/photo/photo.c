@@ -398,13 +398,13 @@ module_init(Enna_Module *em)
     mod->em = em;
     em->mod = mod;
 
-    enna_activity_add(&class);
+    enna_activity_register(&class);
 }
 
 static void
 module_shutdown(Enna_Module *em)
 {
-    enna_activity_del(ENNA_MODULE_NAME);
+    enna_activity_unregister(&class);
     ENNA_OBJECT_DEL(mod->o_infos);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_menu);

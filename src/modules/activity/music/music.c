@@ -543,7 +543,7 @@ module_init(Enna_Module *em)
     em->mod = mod;
     mod->vl = NULL;
 
-    enna_activity_add(&class);
+    enna_activity_register(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
 }
 
@@ -551,7 +551,7 @@ static void
 module_shutdown(Enna_Module *em)
 {
     enna_volumes_listener_del(mod->vl);
-    enna_activity_del(ENNA_MODULE_NAME);
+    enna_activity_unregister(&class);
     ENNA_OBJECT_DEL(mod->o_edje);
     ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", _browser_root_cb);

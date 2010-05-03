@@ -350,7 +350,7 @@ module_init(Enna_Module *em)
     mod = calloc (1, sizeof(Enna_Module_Bookstore));
     em->mod = mod;
 
-    enna_activity_add(&class);
+    enna_activity_register(&class);
 
     mod->gocomics = &bs_gocomics;
     mod->onemanga = &bs_onemanga;
@@ -359,7 +359,7 @@ module_init(Enna_Module *em)
 static void
 module_shutdown(Enna_Module *em)
 {
-    enna_activity_del(ENNA_MODULE_NAME);
+    enna_activity_unregister(&class);
 
     ENNA_OBJECT_DEL(mod->edje);
     ENNA_OBJECT_DEL(mod->page);
