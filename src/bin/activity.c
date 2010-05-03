@@ -25,6 +25,7 @@
 #include "activity.h"
 #include "buffer.h"
 #include "logs.h"
+#include "vfs.h"
 
 static Eina_List *_enna_activities = NULL;
 
@@ -42,31 +43,8 @@ _sort_cb(const void *d1, const void *d2)
     return strcasecmp(act1->name, act2->name);
 }
 
-/**
- * @brief Register new activity
- * @param em enna module
- * @return -1 if error occurs, 0 otherwise
- */
-int
-enna_activity_add(Enna_Class_Activity *class)
-{
-    if (!class)
-        return -1;
-
-    _enna_activities = eina_list_append(_enna_activities, class);
-    _enna_activities = eina_list_sort(_enna_activities,
-        eina_list_count(_enna_activities),
-        _sort_cb);
-
-    // send the ENNA_EVENT_ACTIVITIES_CHANGED event
-    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITIES_CHANGED Sent");
-    ecore_event_add(ENNA_EVENT_ACTIVITIES_CHANGED, NULL, NULL, NULL);
-
-    return 0;
-}
-
-static Enna_Class_Activity *
-enna_get_activity(const char *name)
+Enna_Class_Activity *
+enna_activity_get(const char *name)
 {
     Eina_List *l;
     Enna_Class_Activity *act;
@@ -85,29 +63,6 @@ enna_get_activity(const char *name)
     }
 
     return NULL;
-}
-
-/**
- * @brief Unregister an existing activity
- * @param em enna module
- * @return -1 if error occurs, 0 otherwise
- */
-int
-enna_activity_del(const char *name)
-{
-    Enna_Class_Activity *act;
-
-    act = enna_get_activity (name);
-    if (!act)
-        return -1;
-
-    _enna_activities = eina_list_remove(_enna_activities, act);
-
-    // send the ENNA_EVENT_ACTIVITIES_CHANGED event
-    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITIES_CHANGED Sent");
-    ecore_event_add(ENNA_EVENT_ACTIVITIES_CHANGED, NULL, NULL, NULL);
-
-    return 0;
 }
 
 /**
@@ -142,7 +97,7 @@ enna_activity_##func(const char *name) \
 { \
     Enna_Class_Activity *act; \
     \
-    act = enna_get_activity(name); \
+    act = enna_activity_get(name); \
     if (!act) \
        return -1; \
     \
@@ -161,7 +116,6 @@ enna_activity_event(Enna_Class_Activity *act, enna_input event)
 {
     if (!act)
         return -1;
-
     ACTIVITY_CLASS(event, event);
     return 0;
 }
@@ -187,4 +141,59 @@ enna_activity_request_quit_all(void)
         tmp = strdup(msg->buf);
     buffer_free(msg);
     return tmp;
+}
+
+/**
+ * @brief Register new activity
+ * @param class activity class to register */
+
+void enna_activity_register(Enna_Class_Activity *act)
+{
+    Enna_Vfs_File *file;
+    
+    if (!act)
+        return;
+
+    file = calloc(1, sizeof(Enna_Vfs_File));
+    file->name = act->name;
+    file->label = act->label;
+    file->icon = act->icon;
+    file->is_directory = EINA_TRUE;
+    file->icon_file = act->bg;
+    file->uri = act->label;
+    _enna_activities = eina_list_append(_enna_activities, act);
+    _enna_activities = eina_list_sort(_enna_activities,
+                                      eina_list_count(_enna_activities),
+                                      _sort_cb);
+
+    // send the ENNA_EVENT_ACTIVITIES_CHANGED event
+    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITIES_CHANGED Sent");
+    ecore_event_add(ENNA_EVENT_ACTIVITIES_CHANGED, file, NULL, NULL);
+
+    return;
+}
+
+/**
+ * @brief Unregister an existing activity
+ * @param act the activity class to unregister
+ */
+void enna_activity_unregister(Enna_Class_Activity *act)
+{
+    Eina_List *l;
+
+    if (!act)
+        return -1;
+
+    for (l = _enna_activities; l; l = l->next)
+    {
+        Enna_Class_Activity *a = l->data;
+        if (a == act)
+        {
+            _enna_activities = eina_list_remove(_enna_activities, act);
+            // send the ENNA_EVENT_ACTIVITIES_CHANGED event
+            enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITIES_CHANGED Sent");
+            ecore_event_add(ENNA_EVENT_ACTIVITIES_CHANGED, act, NULL, NULL);
+            return;
+        }
+    }
 }

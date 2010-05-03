@@ -52,9 +52,8 @@ struct _Enna_Class_Activity
     } func;
     Eina_List *categories;
 };
-
-int enna_activity_add(Enna_Class_Activity *class);
-int enna_activity_del(const char *name);
+void enna_activity_register(Enna_Class_Activity *act);
+void enna_activity_unregister(Enna_Class_Activity *act);
 void enna_activity_del_all (void);
 Eina_List *enna_activities_get(void);
 int enna_activity_init(const char *name);
@@ -64,5 +63,5 @@ int enna_activity_shutdown(const char *name);
 int enna_activity_hide(const char *name);
 int enna_activity_event(Enna_Class_Activity *act, enna_input event);
 const char *enna_activity_request_quit_all(void);
-
+Enna_Class_Activity *enna_activity_get(const char *name);
 #endif /* ACTIVITY_H */
