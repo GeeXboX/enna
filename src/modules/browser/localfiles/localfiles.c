@@ -31,6 +31,7 @@
 #include "volumes.h"
 #include "logs.h"
 #include "utils.h"
+#include "buffer.h"
 
 #define ENNA_MODULE_NAME "localfiles"
 
@@ -539,6 +540,137 @@ static Enna_Class_Vfs class_photo = {
 #endif
 
 static Eina_List *
+_children_get(Eina_List *tokens)
+{
+    Eina_List *l;
+    Eina_List *files = NULL;
+    buffer_t *buf;
+    if (!tokens || !eina_list_count(tokens) )
+    {
+	DBG("Browse Root\n");
+	for (l = mod->music->config->root_directories; l; l = l->next)
+	{
+	    Enna_Vfs_File *f;
+	    Root_Directories *root;
+	    
+	    root = l->data;
+	    
+	    f = calloc(1, sizeof(Enna_Vfs_File));
+
+	    buf = buffer_new();
+	    buffer_appendf(buf, "/music/localfiles_music/%s", root->label);
+	    f->name = eina_stringshare_add(root->label);
+	    f->uri = eina_stringshare_add(buf->buf);
+	    buffer_free(buf);
+	    f->label = eina_stringshare_add(root->label);
+	    f->icon = eina_stringshare_add("icon/hd");
+	    f->is_menu = 1;
+	    
+	    files = eina_list_append(files, f);
+	}
+        return files;
+    }
+    else
+    {
+	const char *root_name = eina_list_nth(tokens, 0);
+	Root_Directories *root = NULL;
+	
+	
+	
+	EINA_LIST_FOREACH(mod->music->config->root_directories, l, root)
+	{
+	    if (!strcmp(root->label, root_name))
+	    {
+		Eina_List *files = NULL;
+		Eina_List *l;
+		char *filename = NULL;
+		Eina_List *files_list = NULL;
+		Eina_List *dirs_list = NULL;
+		buffer_t *path;
+		char *tmp;
+		char dir[PATH_MAX];
+
+		path = buffer_new();
+		buffer_appendf(path, "%s", root->uri + 7);
+		EINA_LIST_FOREACH(eina_list_nth_list(tokens, 2), l, tmp)
+		{
+		    buffer_appendf(path, "/%s", tmp);
+		}
+		files = ecore_file_ls(path->buf);
+
+		/* If no file found return immediatly*/
+		if (!files)
+		{
+		    buffer_free(path);		    
+		    return NULL;
+		}
+		files = eina_list_sort(files, eina_list_count(files),
+				      EINA_COMPARE_CB(strcasecmp));
+		EINA_LIST_FREE(files, filename)
+		{
+		    sprintf(dir, "%s/%s", path->buf, filename);
+		    if (filename[0] == '.')
+			continue;
+		    else if (ecore_file_is_dir(dir))
+		    {
+			Enna_Vfs_File *f;
+			buffer_t *buf;
+			f = calloc(1, sizeof(Enna_Vfs_File));
+
+			buf = buffer_new();
+			buffer_appendf(buf, "/music/localfiles_music/%s/%s", root->label, filename);
+			f->name = eina_stringshare_add(filename);
+			f->uri = eina_stringshare_add(buf->buf);
+			buffer_free(buf);
+			f->label = eina_stringshare_add(filename);
+			f->icon = eina_stringshare_add("icon/directory");
+			f->is_directory = 1;
+
+			dirs_list = eina_list_append(dirs_list, f);
+		    }
+		    else if (enna_util_uri_has_extension(dir, ENNA_CAPS_MUSIC))
+		    {
+			Enna_Vfs_File *f;
+			f = calloc(1, sizeof(Enna_Vfs_File));
+
+			buf = buffer_new();
+			buffer_appendf(buf, "/music/localfiles_music/%s/%s", root->label, filename);
+			f->name = eina_stringshare_add(filename);
+			f->uri = eina_stringshare_add(buf->buf);
+			buffer_free(buf);
+			f->label = eina_stringshare_add(filename);
+			f->icon = eina_stringshare_add( "icon/music");
+			
+			files_list = eina_list_append(files_list, f);
+		    }
+		}
+		/* File after dir */
+		for (l = files_list; l; l = l->next)
+		{
+		    dirs_list = eina_list_append(dirs_list, l->data);
+		}
+		//eina_stringshare_del(data->prev_uri);
+		buffer_free(path);
+		return dirs_list;
+		}
+	    }
+	}
+    return NULL;
+}
+
+static Enna_Class2_Vfs class2 = {
+    "localfiles_music",
+    1,
+    N_("Browse local devices"),
+    NULL,
+    "icon/hd",
+    {
+	_children_get
+    },
+    NULL
+};
+
+static Eina_List *
 cfg_localfiles_section_list_get(const char *section, const char *key)
 {
     Eina_List *vl;
@@ -699,6 +831,7 @@ module_init(Enna_Module *em)
 #ifdef BUILD_ACTIVITY_PHOTO
     __class_init("localfiles_photo", &mod->photo, ENNA_CAPS_PHOTO,
                  &class_photo, "path_photo");
+    enna_vfs_register(&class2);
 #endif
 }
 
