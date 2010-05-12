@@ -6,7 +6,7 @@ EDJE_CC = edje_cc
 
 EDJE_FLAGS = \
 -id $(top_srcdir)/data/theme/n900/images \
--fd $(top_srcdir)/data/theme/n900/fonts
+-fd $(top_srcdir)/data/theme/default/fonts
 
 EDJE_VERB = $(EDJE_VERB_$(V))
 EDJE_VERB_ = $(EDJE_VERB_$(AM_DEFAULT_VERBOSITY))
@@ -299,39 +299,39 @@ images/volume_level.png \
 images/volume_level_shadow.png
 
 FONTS = \
-fonts/content.ttf \
-fonts/content_bold.ttf
+../default/fonts/content.ttf \
+../default/fonts/content_bold.ttf
 
 EDC = \
-activity_bookstore.edc \
-activity_configuration_credits.edc \
-activity_configuration.edc \
-activity_configuration_sysinfo.edc \
-activity_games.edc \
-activity_music.edc \
-activity_photo.edc \
-activity_tv.edc \
-activity_video.edc \
-activity_video_controls.edc \
-activity_video_flags.edc \
-activity_video_infos.edc \
-activity_weather.edc \
-browser.edc \
-cover_video.edc \
-n900.edc \
-elm.edc \
-exit.edc \
-icons.edc \
-list.edc \
-mainmenu.edc \
-box.edc \
-mediacontrol.edc \
-mediaplayer.edc \
-notification_volume.edc \
-notification_weather.edc \
-picture.edc \
-popup.edc \
-slideshow.edc
+../default/activity_bookstore.edc \
+../default/activity_configuration_credits.edc \
+../default/activity_configuration.edc \
+../default/activity_configuration_sysinfo.edc \
+../default/activity_games.edc \
+../default/activity_music.edc \
+../default/activity_photo.edc \
+../default/activity_tv.edc \
+../default/activity_video.edc \
+../default/activity_video_controls.edc \
+../default/activity_video_flags.edc \
+../default/activity_video_infos.edc \
+../default/activity_weather.edc \
+../default/browser.edc \
+../default/cover_video.edc \
+../default/default.edc \
+../default/elm.edc \
+../default/exit.edc \
+../default/icons.edc \
+../default/list.edc \
+../default/mainmenu.edc \
+../default/box.edc \
+../default/mediacontrol.edc \
+../default/mediaplayer.edc \
+../default/notification_volume.edc \
+../default/notification_weather.edc \
+../default/picture.edc \
+../default/popup.edc \
+../default/slideshow.edc
 
 EXTRA_DIST = \
   $(IMG_ICONS) \
@@ -351,7 +351,7 @@ EXTRA_DIST = \
 
 n900.edj: Makefile $(EXTRA_DIST)
 	$(AM_V_GEN)$(EDJE_CC) $(EDJE_VERB) $(EDJE_FLAGS) \
-	$(top_srcdir)/data/theme/n900/n900.edc \
+	$(top_srcdir)/data/theme/default/default.edc \
 	$(top_builddir)/data/theme/n900/n900.edj
 
 clean-local:
