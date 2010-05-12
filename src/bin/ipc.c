@@ -29,6 +29,13 @@
 
 #include <Ecore_Ipc.h>
 #include <Ecore_File.h>
+#include "config.h"
+
+#include "enna.h"
+
+#ifdef HAVE_EVIL
+# include <Evil.h>
+#endif
 
 #include "gettext.h"
 #include "utils.h"
@@ -44,7 +51,7 @@ static Ecore_Ipc_Server *_ipc_server = NULL;
 
 
 /* externally accessible functions */
-EAPI int
+int
 enna_ipc_init(void)
 {
 
@@ -70,23 +77,25 @@ enna_ipc_init(void)
         struct stat st;
 
         if (stat(buf, &st) == 0)
-          {
-             if ((st.st_uid ==
-                  getuid()) &&
-                 ((st.st_mode & (S_IFDIR|S_IRWXU|S_IRWXG|S_IRWXO)) ==
-                  (S_IRWXU|S_IFDIR)))
-               {
-               }
-             else
-               {
-                  printf(_("Possible IPC Hack Attempt. The IPC socket\n"
-                                         "directory already exists BUT has permissions\n"
-                                         "that are too leanient (must only be readable\n" "and writable by the owner, and nobody else)\n"
-                                         "or is not owned by you. Please check:\n"
-                                         "%s/enlightenment-%s\n"), tmp, user);
-                  return 0;
-               }
-          }
+        {
+#ifndef WIN32
+            if ((st.st_uid ==
+                 getuid()) &&
+                ((st.st_mode & (S_IFDIR|S_IRWXU|S_IRWXG|S_IRWXO)) ==
+                 (S_IRWXU|S_IFDIR)))
+            {
+            }
+            else
+            {
+                printf(_("Possible IPC Hack Attempt. The IPC socket\n"
+                         "directory already exists BUT has permissions\n"
+                         "that are too leanient (must only be readable\n" "and writable by the owner, and nobody else)\n"
+                         "or is not owned by you. Please check:\n"
+                         "%s/enlightenment-%s\n"), tmp, user);
+                return 0;
+            }
+#endif
+        }
         else
           {
              printf(_("The IPC socket directory cannot be created or\n"
@@ -109,7 +118,7 @@ enna_ipc_init(void)
    return 1;
 }
 
-EAPI int
+int
 enna_ipc_shutdown(void)
 {
 
