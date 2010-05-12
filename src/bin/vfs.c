@@ -27,7 +27,7 @@
 static Eina_List *_enna_vfs_music = NULL;
 static Eina_List *_enna_vfs_video = NULL;
 static Eina_List *_enna_vfs_photo = NULL;
-
+static Eina_List *_enna_vfs = NULL;
 /* local subsystem functions */
 
 static int
@@ -49,6 +49,12 @@ int
 enna_vfs_init(Evas *evas)
 {
     return 0;
+}
+
+void
+enna_vfs_register(Enna_Class2_Vfs *vfs)
+{
+    _enna_vfs = eina_list_append(_enna_vfs, vfs);
 }
 
 int
@@ -107,14 +113,14 @@ enna_vfs_class_remove(const char *name, unsigned char type)
 Eina_List *
 enna_vfs_get(ENNA_VFS_CAPS type)
 {
-    if (type == ENNA_CAPS_MUSIC)
-        return _enna_vfs_music;
-    else if (type == ENNA_CAPS_VIDEO)
-        return _enna_vfs_video;
-    else if (type == ENNA_CAPS_PHOTO)
-        return _enna_vfs_photo;
+//     if (type == ENNA_CAPS_MUSIC)
+//         return _enna_vfs_music;
+//     else if (type == ENNA_CAPS_VIDEO)
+//         return _enna_vfs_video;
+//     else if (type == ENNA_CAPS_PHOTO)
+//         return _enna_vfs_photo;
 
-    return NULL;
+    return _enna_vfs;
 }
 
 static Enna_Vfs_File *
