@@ -23,17 +23,17 @@
 #define MAINMENU_H
 
 #include "activity.h"
-
+#include "vfs.h"
 
 Evas_Object *enna_mainmenu_init(void);
 void enna_mainmenu_shutdown(void);
-void enna_mainmenu_append(Enna_Class_Activity *act);
+void enna_mainmenu_append(Enna_Vfs_File *f);
 void enna_mainmenu_show(void);
 void enna_mainmenu_hide(void);
 Eina_Bool enna_mainmenu_visible(void);
 Eina_Bool enna_mainmenu_exit_visible(void);
-Enna_Class_Activity *enna_mainmenu_selected_activity_get(void);
-void enna_mainmenu_background_add(const char *name, const char *filename, const char *key);
+Enna_Vfs_File *enna_mainmenu_selected_activity_get(void);
+void enna_mainmenu_background_add(const char *name);
 void enna_mainmenu_background_select(const char *name);
 
 #endif /* MAINMENU_H */

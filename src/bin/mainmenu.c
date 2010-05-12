@@ -25,6 +25,7 @@
 #include <Edje.h>
 #include <Elementary.h>
 
+#include "browser2.h"
 #include "enna.h"
 #include "enna_config.h"
 #include "mainmenu.h"
@@ -38,14 +39,7 @@
 #include "volume_notification.h"
 #include "mediaplayer.h"
 
-typedef struct _Background_Item Background_Item;
 
-struct _Background_Item
-{
-    const char *name;
-    const char *filename;
-    const char *key;
-};
 
 typedef struct _Menu_Data Menu_Data;
 
@@ -55,63 +49,57 @@ struct _Menu_Data
     Evas_Object *o_background;
     Evas_Object *o_weather;
     Evas_Object *o_volume;
-    Enna_Class_Activity *selected;
+    Enna_Vfs_File *selected;
     Input_Listener *listener;
     Ecore_Event_Handler *act_handler;
     Eina_Bool visible;
     Eina_Bool exit_visible;
     Eina_List *backgrounds;
+    Enna_Browser *browser;
 };
 
 static Menu_Data *sd = NULL;
 
 
 /* Local subsystem functions */
+
+static void
+_add_cb(Enna_Vfs_File *file, void *data)
+{
+    enna_mainmenu_append(file);
+}
+
 static void
 _enna_mainmenu_load_from_activities(void)
 {
-    Enna_Class_Activity *act;
-    Eina_List *l;
-
     enna_box_clear(sd->o_menu);
-    EINA_LIST_FOREACH(enna_activities_get(), l, act)
-    {
-        enna_mainmenu_append(act);
-    }
-    enna_box_select_nth(sd->o_menu, 0);
+    sd->browser = enna_browser2_add(_add_cb, NULL, NULL, NULL, "/");
 }
 
 static void
 _enna_mainmenu_item_focus(void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_Class_Activity *act = event_info;
-    if (!act)
+    Enna_Vfs_File *f = event_info;
+    if (!f)
         return;
 
-    enna_mainmenu_background_select(act->name);
+    enna_mainmenu_background_select(f->icon_file);
 }
 
 static void
 _enna_mainmenu_item_activate(void *data)
 {
-    Enna_Class_Activity *act = data;
-
+    Enna_Vfs_File *file = data;
     enna_mainmenu_hide();
 
     // run the activity_show cb. that is responsable of showing the
     // content using enna_content_select("name")
-    enna_activity_show(act->name);
-    sd->selected = act;
+    enna_activity_show(file->name);
+    sd->selected = file;
 }
 
 /* Local subsystem callbacks */
-static int
-_activities_changed_cb(void *data, int type, void *event)
-{
-    _enna_mainmenu_load_from_activities();
-    // TODO reselect selected activities
-    return ECORE_CALLBACK_RENEW;
-}
+
 
 static Eina_Bool
 _input_events_cb(void *data, enna_input event)
@@ -171,7 +159,8 @@ _input_events_cb(void *data, enna_input event)
     }
     if (!sd->visible)
     {
-        enna_activity_event(enna_mainmenu_selected_activity_get(), event);
+        Enna_Vfs_File *f = enna_mainmenu_selected_activity_get();
+        enna_activity_event(enna_activity_get(f->name), event);
     }
 
     return ENNA_EVENT_CONTINUE;
@@ -210,9 +199,7 @@ enna_mainmenu_init(void)
 
     /* connect to the input signal */
     sd->listener = enna_input_listener_add("mainmenu", _input_events_cb, NULL);
-
-    sd->act_handler = ecore_event_handler_add(ENNA_EVENT_ACTIVITIES_CHANGED,
-                                          _activities_changed_cb, NULL);
+    _enna_mainmenu_load_from_activities();
 
     return sd->o_menu;
 }
@@ -221,8 +208,7 @@ void
 enna_mainmenu_shutdown(void)
 {
     Eina_List *l;
-    Background_Item *it;
-
+    const char *name;
     ENNA_EVENT_HANDLER_DEL(sd->act_handler);
 
     enna_input_listener_del(sd->listener);
@@ -231,37 +217,30 @@ enna_mainmenu_shutdown(void)
     ENNA_OBJECT_DEL(sd->o_background);
     ENNA_OBJECT_DEL(sd->o_weather);
     ENNA_OBJECT_DEL(sd->o_volume);
-    EINA_LIST_FOREACH(sd->backgrounds, l, it)
+    EINA_LIST_FOREACH(sd->backgrounds, l, name)
     {
-        sd->backgrounds = eina_list_remove(sd->backgrounds, it);
-        if (it->name) eina_stringshare_del(it->name);
-        if (it->filename) eina_stringshare_del(it->filename);
-        if (it->key) eina_stringshare_del(it->key);
-        ENNA_FREE(it);
+        sd->backgrounds = eina_list_remove(sd->backgrounds, name);
+        if (name) eina_stringshare_del(name);
     }
+    enna_browser2_del(sd->browser);
     ENNA_FREE(sd);
 }
 
 void
-enna_mainmenu_append(Enna_Class_Activity *act)
+enna_mainmenu_append(Enna_Vfs_File *f)
 {
-    Enna_Vfs_File *f;
-
-    if (!act) return;
-
-    f = calloc(1, sizeof(Enna_Vfs_File));
-    f->label = _((char*)eina_stringshare_add(act->label));
-    f->icon = (char*)eina_stringshare_add(act->icon);
-    f->is_menu = 1;
-    enna_box_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, act);
-    evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, act);
-    if (act->bg && act->bg[0] == '/')
-        enna_mainmenu_background_add(act->name, act->bg, NULL);
-    else
-        enna_mainmenu_background_add(act->name, enna_config_theme_get(), act->bg);
+    if (!f) return;
+    
+    enna_box_file_append(sd->o_menu, f, _enna_mainmenu_item_activate, f);
+    evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, f);
+    enna_mainmenu_background_add(f->icon_file);
+    if (!enna_box_selected_data_get(sd->o_menu))
+    {
+        enna_box_select_nth(sd->o_menu, 0);
+    }
 }
 
-Enna_Class_Activity *
+Enna_Vfs_File *
 enna_mainmenu_selected_activity_get(void)
 {
     if (!sd) return 0;
@@ -305,34 +284,26 @@ enna_mainmenu_hide(void)
 }
 
 void
-enna_mainmenu_background_add(const char *name, const char *filename, const char *key)
+enna_mainmenu_background_add(const char *name)
 {
-    Background_Item *item;
-
     if (!name)
         return;
-
-    item = ENNA_NEW(Background_Item, 1);
-    item->name = name ? eina_stringshare_add(name) : NULL;
-    item->filename = filename ? eina_stringshare_add(filename) : NULL;
-    item->key = key ? eina_stringshare_add(key) : NULL;
-
-    sd->backgrounds = eina_list_append(sd->backgrounds, item);
+    sd->backgrounds = eina_list_append(sd->backgrounds, name);
 }
 
 void
 enna_mainmenu_background_select(const char *name)
 {
-    Background_Item *it;
+    const char *n;
     Eina_List *l;
-
-    EINA_LIST_FOREACH(sd->backgrounds, l, it)
+ 
+    EINA_LIST_FOREACH(sd->backgrounds, l, n)
     {
-        if (!strcmp(name, it->name))
+        if (!strcmp(name, n))
         {
             ENNA_OBJECT_DEL(sd->o_background);
             sd->o_background = elm_image_add(enna->layout);
-            elm_image_file_set(sd->o_background, it->filename, it->key);
+            elm_image_file_set(sd->o_background, enna_config_theme_get(), name);
             elm_layout_content_set(enna->layout, "enna.background.swallow", sd->o_background);
             break;
         }
