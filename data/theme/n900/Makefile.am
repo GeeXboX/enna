@@ -287,6 +287,8 @@ images/sl_bt2_2.png \
 images/sl_bt_2.png \
 images/sl_units.png \
 images/text_border.png \
+images/toggle_bg.png \
+images/toggle_button.png \
 images/transition_vswipe_gap.png \
 images/vertical_gradient.png \
 images/video_info_panel.png \
