@@ -66,11 +66,11 @@ int _add_idler(void *data)
         enna_browser2_browse_root(b);
         break;
     case BROWSER_ACTIVITY:
-	enna_browser2_browse_activity(b, "music");
-	break;
+        enna_browser2_browse_activity(b, "music");
+        break;
     case BROWSER_MODULE:
-	enna_browser2_browse_module(b);
-	break;
+        enna_browser2_browse_module(b);
+        break;
     default:
         break;
 
@@ -103,7 +103,7 @@ enna_browser2_add( void (*add)(Enna_Vfs_File *file, void *data), void *add_data,
 {
     Enna_Browser *b;
 
-    b = malloc(sizeof(Enna_Browser));
+    b = calloc(1, sizeof(Enna_Browser));
     b->add = add;
     b->del = del;
     b->add_data = add_data;
@@ -117,7 +117,7 @@ enna_browser2_add( void (*add)(Enna_Vfs_File *file, void *data), void *add_data,
     {
         b->type = BROWSER_ROOT;
         b->ev_handler = ecore_event_handler_add(ENNA_EVENT_BROWSER_CHANGED,
-                                                  _activities_changed_cb, b);
+                                                _activities_changed_cb, b);
         printf("0 token, %s\n", eina_list_nth(b->tokens, 0));
     }
     else if (eina_list_count(b->tokens) == 1)
@@ -141,11 +141,11 @@ enna_browser2_del(Enna_Browser *b)
     if (!b)
         return;
     if (b->queue_idler)
-    ecore_idler_del(b->queue_idler);
-      b->queue_idler = NULL;
+        ecore_idler_del(b->queue_idler);
+    b->queue_idler = NULL;
     eina_stringshare_del(b->uri);
-//     if (b->ev_handler)
-// 	ecore_event_handler_del(b->ev_handler);
+    if (b->ev_handler)
+        ecore_event_handler_del(b->ev_handler);
     free(b);
 }
 
@@ -173,7 +173,7 @@ enna_browser2_browse_root(Enna_Browser *browser)
 
         buf = buffer_new();
         buffer_appendf(buf, "/%s", act->name);
-	f->name = act->name;
+        f->name = act->name;
         f->uri = eina_stringshare_add(buf->buf);
         buffer_free(buf);
         f->label = eina_stringshare_add(act->label);
@@ -189,30 +189,30 @@ enna_browser2_browse_root(Enna_Browser *browser)
 Eina_List *
 enna_browser2_browse_activity(Enna_Browser *browser, const char *act_name)
 {
-    
+
     if (!strcmp(act_name, "music"))
     {
-	Enna_Class_Vfs *vfs;
-	Eina_List *l;
-	Enna_Vfs_File *f;
-	buffer_t *buf;
-	EINA_LIST_FOREACH(enna_vfs_get(ENNA_CAPS_MUSIC), l, vfs)
-	{
-	    f = calloc(1, sizeof(Enna_Vfs_File));
+        Enna_Class_Vfs *vfs;
+        Eina_List *l;
+        Enna_Vfs_File *f;
+        buffer_t *buf;
+        EINA_LIST_FOREACH(enna_vfs_get(ENNA_CAPS_MUSIC), l, vfs)
+        {
+            f = calloc(1, sizeof(Enna_Vfs_File));
 
-	    buf = buffer_new();
-	    buffer_appendf(buf, "/music/%s", vfs->name);
-	    f->name = vfs->name;
-	    f->uri = eina_stringshare_add(buf->buf);
-	    buffer_free(buf);
-	    f->label = eina_stringshare_add(vfs->label);
-	    f->icon = eina_stringshare_add(vfs->icon);
-	    f->is_menu = 1;
-	    if (browser->add)
-		browser->add(f, browser->add_data);
-	}
+            buf = buffer_new();
+            buffer_appendf(buf, "/music/%s", vfs->name);
+            f->name = vfs->name;
+            f->uri = eina_stringshare_add(buf->buf);
+            buffer_free(buf);
+            f->label = eina_stringshare_add(vfs->label);
+            f->icon = eina_stringshare_add(vfs->icon);
+            f->is_menu = 1;
+            if (browser->add)
+                browser->add(f, browser->add_data);
+        }
     }
-    
+
     return NULL;
 
 }
@@ -223,34 +223,34 @@ enna_browser2_browse_module(Enna_Browser *browser)
     Enna_Class2_Vfs *vfs = NULL, *tmp = NULL;
     Eina_List *l;
     const char *name=  (const char*)eina_list_nth(browser->tokens, 1) ;
-    
+
     EINA_LIST_FOREACH(enna_vfs_get(ENNA_CAPS_MUSIC), l, tmp)
     {
 
-	if (!strcmp(tmp->name, name))
-	{
-	    vfs = tmp;
-	    break;
-	}
+        if (!strcmp(tmp->name, name))
+        {
+            vfs = tmp;
+            break;
+        }
     }
     if (!vfs)
-	return NULL;
-    
+        return NULL;
+
     Eina_List *children;
     Enna_Vfs_File *child;
     children = vfs->func.get_children(eina_list_nth_list(browser->tokens, 2));
     EINA_LIST_FOREACH(children , l, child)
     {
-	 if (browser->add)
-		browser->add(child, browser->add_data);
+        if (browser->add)
+            browser->add(child, browser->add_data);
     }
-    
+
 }
 
 const char *
 enna_browser2_uri_get(Enna_Browser *b)
 {
-    if(!b)
-	return NULL;
+    if (!b)
+        return NULL;
     return b->uri;
 }
