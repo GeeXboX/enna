@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-04-01 08:53+0200\n"
+"POT-Creation-Date: 2010-05-03 09:53+0200\n"
 "PO-Revision-Date: 2010-02-17 15:11+0800\n"
 "Last-Translator: swinkworld <swinkworld@163.com>\n"
 "Language-Team: Chinese (Simplified)\n"
@@ -26,57 +26,57 @@ msgstr "没有发现任何媒体!"
 msgid "Main menu"
 msgstr "主菜单"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:498
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna媒体中心\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:499
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "用法：%s [选项...]\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:500
 #, c-format
 msgid " Available options:\n"
 msgstr "可选项:\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置文件。\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:502
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "-f, (--fs): 强制全屏幕显示。\n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:503
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "-h, (--help): 显示这个说明。\n"
 
-#: src/bin/enna.c:508
+#: src/bin/enna.c:504
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "-t, (--theme): 指定要使用的主题。\n"
 
-#: src/bin/enna.c:509
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定窗口大小。(geometry=1280x720)\n"
 
-#: src/bin/enna.c:510
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): 指定显示文件\n"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:507
 #, fuzzy, c-format
 msgid "    Supported: "
 msgstr "已支持: "
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:511
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "-V, (--version): 显示Enna的版本。\n"
@@ -105,11 +105,11 @@ msgstr "无"
 msgid "continue using Enna"
 msgstr "不! 我要继续使用Enna。"
 
-#: src/bin/module.c:233
+#: src/bin/module.c:239
 msgid "Modules"
 msgstr "模块"
 
-#: src/bin/module.c:402
+#: src/bin/module.c:408
 msgid "No information provided"
 msgstr "没有提供任何信息"
 
@@ -385,12 +385,12 @@ msgstr "系统游戏"
 msgid "%d Songs"
 msgstr "%d 歌曲"
 
-#: src/modules/activity/music/music.c:463
-#: src/modules/activity/music/music.c:525
+#: src/modules/activity/music/music.c:511
+#: src/modules/activity/music/music.c:573
 msgid "Music"
 msgstr "音乐"
 
-#: src/modules/activity/music/music.c:527
+#: src/modules/activity/music/music.c:575
 msgid "Listen to your music"
 msgstr "聆听你的音乐"
 
@@ -431,45 +431,45 @@ msgstr "电视"
 msgid "View TV channels"
 msgstr "观看电视频道"
 
-#: src/modules/activity/video/video_infos.c:94
+#: src/modules/activity/video/video_infos.c:97
 msgid "No such information ..."
 msgstr "没有这些信息..."
 
-#: src/modules/activity/video/video_infos.c:129
+#: src/modules/activity/video/video_infos.c:132
 msgid "Director:"
 msgstr "导演:"
 
-#: src/modules/activity/video/video_infos.c:136
+#: src/modules/activity/video/video_infos.c:139
 msgid "Cast:"
 msgstr "演员表:"
 
-#: src/modules/activity/video/video_infos.c:158
+#: src/modules/activity/video/video_infos.c:161
 msgid "Video:"
 msgstr "视频:"
 
-#: src/modules/activity/video/video_infos.c:181
+#: src/modules/activity/video/video_infos.c:184
 msgid "Audio:"
 msgstr "声音:"
 
-#: src/modules/activity/video/video_infos.c:196
+#: src/modules/activity/video/video_infos.c:199
 msgid "Size:"
 msgstr "尺寸:"
 
-#: src/modules/activity/video/video_infos.c:204
+#: src/modules/activity/video/video_infos.c:207
 msgid "No further information can be retrieved"
 msgstr "不能获取更多的信息"
 
-#: src/modules/activity/video/video.c:132
+#: src/modules/activity/video/video.c:133
 #, c-format
 msgid "%d Movies"
 msgstr "%d 电影"
 
-#: src/modules/activity/video/video.c:940
-#: src/modules/activity/video/video.c:1031
+#: src/modules/activity/video/video.c:1006
+#: src/modules/activity/video/video.c:1098
 msgid "Video"
 msgstr "影片"
 
-#: src/modules/activity/video/video.c:1033
+#: src/modules/activity/video/video.c:1100
 msgid "Play your videos"
 msgstr "播放你的影片"
 

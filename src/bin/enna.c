@@ -97,9 +97,9 @@ static int _idle_timer_cb(void *data)
                  "enna seems to be idle, sending quit msg and waiting 20s");
         enna_input_event_emit(ENNA_INPUT_QUIT);
         enna->idle_timer = ecore_timer_add(20, _idle_timer_cb, NULL);
-        return ECORE_CALLBACK_CANCEL;
       }
     }
+    return ECORE_CALLBACK_CANCEL;
 }
 
 #ifdef BUILD_ECORE_X

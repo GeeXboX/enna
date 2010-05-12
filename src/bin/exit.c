@@ -172,6 +172,7 @@ _input_events_cb(void *data, enna_input event)
 
 /* externally accessible functions */
 
+int 
 enna_exit_visible()
 {
   return sd->visible;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-04-01 08:53+0200\n"
+"POT-Creation-Date: 2010-05-03 09:53+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Ukraine\n"
@@ -28,57 +28,57 @@ msgstr "Не знайдено джерела!"
 msgid "Main menu"
 msgstr "Головне меню"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:498
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедіаЦентр Enna\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:499
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Використання: %s [опції...]\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:500
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Доступні опції:\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:501
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Вкажіть конфігураційний файл.\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:502
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Примусовий повноекраний режим.\n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:503
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Показує це повідомлення.\n"
 
-#: src/bin/enna.c:508
+#: src/bin/enna.c:504
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Вкажіть назву теми, що буде використовуватись.\n"
 
-#: src/bin/enna.c:509
+#: src/bin/enna.c:505
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Вкажіть розміри вікна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:510
+#: src/bin/enna.c:506
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
+msgstr "-p (--profile): вкажіть профіль дісплею \n"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:507
 #, c-format
 msgid "    Supported: "
 msgstr "\tПідтримується: "
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:511
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Відображує номер версії Enna.\n"
@@ -108,11 +108,11 @@ msgstr "Немає<br>"
 msgid "continue using Enna"
 msgstr "Ні, продовжити користуватись enna"
 
-#: src/bin/module.c:233
+#: src/bin/module.c:239
 msgid "Modules"
 msgstr "Модулі"
 
-#: src/bin/module.c:402
+#: src/bin/module.c:408
 #, fuzzy
 msgid "No information provided"
 msgstr "Не надано необхідної інформації."
@@ -173,7 +173,7 @@ msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Виберіть півкулю"
 
 #: src/bin/weather_api.c:472
 #, fuzzy
@@ -182,11 +182,11 @@ msgstr "Показувати погоду у вашому місті"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Північна"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Південна"
 
 #: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
 msgid "Weather"
@@ -402,12 +402,12 @@ msgstr "Системні ігри"
 msgid "%d Songs"
 msgstr "%d Пісня"
 
-#: src/modules/activity/music/music.c:463
-#: src/modules/activity/music/music.c:525
+#: src/modules/activity/music/music.c:511
+#: src/modules/activity/music/music.c:573
 msgid "Music"
 msgstr "Музика"
 
-#: src/modules/activity/music/music.c:527
+#: src/modules/activity/music/music.c:575
 #, fuzzy
 msgid "Listen to your music"
 msgstr "Слухати подкасти"
@@ -451,47 +451,47 @@ msgstr "Телебачення"
 msgid "View TV channels"
 msgstr "Дивитись телебачення"
 
-#: src/modules/activity/video/video_infos.c:94
+#: src/modules/activity/video/video_infos.c:97
 msgid "No such information ..."
 msgstr "Немає необхідної інформації ..."
 
-#: src/modules/activity/video/video_infos.c:129
+#: src/modules/activity/video/video_infos.c:132
 msgid "Director:"
 msgstr "Режисер:"
 
-#: src/modules/activity/video/video_infos.c:136
+#: src/modules/activity/video/video_infos.c:139
 msgid "Cast:"
 msgstr "В ролях:"
 
-#: src/modules/activity/video/video_infos.c:158
+#: src/modules/activity/video/video_infos.c:161
 #, fuzzy
 msgid "Video:"
 msgstr "Відео:"
 
-#: src/modules/activity/video/video_infos.c:181
+#: src/modules/activity/video/video_infos.c:184
 msgid "Audio:"
 msgstr "Звук:"
 
-#: src/modules/activity/video/video_infos.c:196
+#: src/modules/activity/video/video_infos.c:199
 msgid "Size:"
 msgstr "Розмір:"
 
-#: src/modules/activity/video/video_infos.c:204
+#: src/modules/activity/video/video_infos.c:207
 #, fuzzy
 msgid "No further information can be retrieved"
 msgstr "Не можна отримати більше інформації."
 
-#: src/modules/activity/video/video.c:132
+#: src/modules/activity/video/video.c:133
 #, c-format
 msgid "%d Movies"
 msgstr "%d Фільмів"
 
-#: src/modules/activity/video/video.c:940
-#: src/modules/activity/video/video.c:1031
+#: src/modules/activity/video/video.c:1006
+#: src/modules/activity/video/video.c:1098
 msgid "Video"
 msgstr "Відео"
 
-#: src/modules/activity/video/video.c:1033
+#: src/modules/activity/video/video.c:1100
 msgid "Play your videos"
 msgstr "Програти ваше відео"
 
@@ -664,7 +664,7 @@ msgstr "Модуль Valhalla"
 
 #: src/modules/browser/valhalla/valhalla.c:705
 msgid "Build a browseable catalog of your media files"
-msgstr ""
+msgstr "Створити оглядовий каталог для ваших медіа файлів."
 
 #: src/modules/volume/hal/hal_volume.c:39
 msgid "CD-ROM"
