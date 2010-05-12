@@ -264,7 +264,7 @@ static int _enna_init(int argc, char **argv)
 
     /* Create ecore events (we should put here ALL the event_type_new) */
     ENNA_EVENT_ACTIVITIES_CHANGED = ecore_event_type_new();
-
+    ENNA_EVENT_BROWSER_CHANGED = ecore_event_type_new();
     /* try to init the requested video engine */
     _elm_init(argc, argv);
     if (!_create_gui())

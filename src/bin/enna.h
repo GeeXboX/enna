@@ -155,6 +155,7 @@ extern Enna *enna;
 
 /* Events */
 int ENNA_EVENT_ACTIVITIES_CHANGED; /**< ev = NULL */
+int ENNA_EVENT_BROWSER_CHANGED; /** ev = const char * */
 
 void enna_idle_timer_renew(void);
 
