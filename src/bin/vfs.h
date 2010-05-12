@@ -26,6 +26,7 @@
 
 typedef enum _ENNA_VFS_CAPS ENNA_VFS_CAPS;
 typedef struct _Enna_Class_Vfs Enna_Class_Vfs;
+typedef struct _Enna_Class2_Vfs Enna_Class2_Vfs;
 typedef struct _Enna_Vfs_File Enna_Vfs_File;
 
 enum _ENNA_VFS_CAPS
@@ -64,6 +65,22 @@ struct _Enna_Class_Vfs
     void *cookie;
 
 };
+
+struct _Enna_Class2_Vfs
+{
+    const char *name;
+    int pri;
+    const char *label;
+    const char *icon_file;
+    const char *icon;
+    struct
+    {
+	Eina_List *(*get_children)(Eina_List *tokens);
+    } func;
+    void *cookie;
+
+};
+
 int enna_vfs_init(Evas *evas);
 int enna_vfs_append(const char *name, unsigned char type,
         Enna_Class_Vfs *vfs);
