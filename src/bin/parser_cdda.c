@@ -24,7 +24,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+
+#ifndef WIN32
 #include <sys/ioctl.h>
+#endif
 
 #if defined(__linux__)
 #include <linux/cdrom.h>
@@ -124,7 +127,7 @@ cd_read_toc (cdda_t *cd, const char *dev)
 
     if(!DeviceIoControl(drive, IOCTL_CDROM_READ_TOC, NULL, 0, &toc, sizeof(CDROM_TOC), &r, 0))
     {  
-        enna_log(ENNA_MSG_ERR, "parser_cdda",
+        enna_log(ENNA_MSG_ERROR, "parser_cdda",
                  "Device IO Control Failed");
         return 1;
     }
