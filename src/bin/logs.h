@@ -32,4 +32,19 @@ void enna_log_shutdown(void);
 #define enna_log(level,module,fmt,arg...) \
         enna_log_print(level,module,__FILE__,__LINE__,fmt,##arg)
 
+#define WRN(fmt,arg...) \
+	enna_log_print(ENNA_MSG_WARNING,"", __FILE__,__LINE__,fmt,##arg)
+
+#define ERR(fmt,arg...) \
+	enna_log_print(ENNA_MSG_ERROR,"", __FILE__,__LINE__,fmt,##arg)
+
+#define CRIT(fmt,arg...) \
+	enna_log_print(ENNA_MSG_CRITICAL,"", __FILE__,__LINE__,fmt,##arg)
+
+#define DBG(fmt,arg...) \
+	enna_log(ENNA_MSG_INFO,"",fmt,##arg)
+	
+#define EVT(fmt,arg...) \
+	enna_log_print(ENNA_MSG_EVENT,"", __FILE__,__LINE__,fmt,##arg)
+
 #endif /* LOGS_H */
