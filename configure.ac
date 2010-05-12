@@ -53,6 +53,16 @@ PKG_CHECK_MODULES([ENNA],
   ]
 )
 
+# Evil library for compilation on Windows
+
+case "$host_os" in
+   mingw*)
+      PKG_CHECK_MODULES([EVIL], [evil])
+      AC_DEFINE(HAVE_EVIL, 1, [Set to 1 if evil package is installed])
+   ;;
+esac
+AC_SUBST(EFL_EINA_BUILD)
+
 ##################
 # Static Modules #
 ##################
