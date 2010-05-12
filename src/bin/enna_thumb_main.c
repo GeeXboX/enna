@@ -76,6 +76,7 @@ main(int argc, char **argv)
                 );
             exit(0);
         }
+#ifndef WIN32
         else if (!strncmp(argv[i], "--nice=", 7))
         {
             const char *val;
@@ -87,6 +88,7 @@ main(int argc, char **argv)
                 n = nice(atoi(val));
             }
         }
+#endif
     }
 
     ecore_init();
