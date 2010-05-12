@@ -31,7 +31,11 @@
 #include <Edje.h>
 
 #include "enna.h"
-#include "logs.h"
+
+#ifdef HAVE_EVIL
+# include <Evil.h>
+#endif
+
 #include "enna_config.h"
 #include "utils.h"
 #include "vfs.h"
@@ -57,8 +61,8 @@ enna_util_user_home_get()
         return getenv("CWD")?strdup(getenv("CWD")):NULL;
     if (!home)
     {
-        enna_log(ENNA_MSG_WARNING, NULL,
-                 "Neither HOME/CWD has been set, using / instead");
+//        enna_log(ENNA_MSG_WARNING, NULL,
+//                 "Neither HOME/CWD has been set, using / instead");
 
         return strdup("/");
     }
@@ -480,7 +484,7 @@ enna_util_str_has_suffix_helper(const char *str,
  * @p prefix, #EINA_FALSE otherwise. If the length of @p prefix is
  * greater than @p str, #EINA_FALSE is returned.
  */
-EAPI Eina_Bool
+Eina_Bool
 enna_util_str_has_prefix(const char *str, const char *prefix)
 {
    size_t str_len;
@@ -511,7 +515,7 @@ enna_util_str_has_prefix(const char *str, const char *prefix)
  * @return true if str has the given suffix
  * @brief checks if the string has the given suffix
  */
-EAPI Eina_Bool
+Eina_Bool
 enna_util_str_has_suffix(const char *str, const char *suffix)
 {
    return enna_util_str_has_suffix_helper(str, suffix, strcmp);
@@ -527,7 +531,7 @@ enna_util_str_has_suffix(const char *str, const char *suffix)
  * This function does the same like enna_util_str_has_suffix(), but with a
  * case insensitive compare.
  */
-EAPI Eina_Bool
+Eina_Bool
 enna_util_str_has_extension(const char *str, const char *ext)
 {
    return enna_util_str_has_suffix_helper(str, ext, strcasecmp);
