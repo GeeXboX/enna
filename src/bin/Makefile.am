@@ -35,6 +35,8 @@ vfs.c\
 volumes.c\
 image.c\
 browser.c\
+browser2.c\
+browser_obj.c\
 content.c\
 view_list.c\
 view_list2.c\
