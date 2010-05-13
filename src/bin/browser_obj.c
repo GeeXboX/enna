@@ -206,7 +206,12 @@ _add_cb(Enna_Vfs_File *file, void *data)
 static void
 _browse(Smart_Data *sd, Enna_Vfs_File *file)
 {
-    const char *uri = eina_stringshare_add(file->uri);
+    const char *uri;
+
+    if (!sd || !file)
+        return;
+
+    uri = eina_stringshare_add(file->uri);
     
     ENNA_OBJECT_DEL(sd->o_view);
     enna_browser2_del(sd->browser);
