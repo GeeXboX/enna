@@ -637,8 +637,7 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
             {
                 enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                          "Append : %s %s to playlist", f->label, f->uri);
-                enna_mediaplayer_uri_append(mod->enna_playlist,
-                                            f->uri, f->label);
+                enna_mediaplayer_file_append(mod->enna_playlist, f);
 
                 if (!strcmp(f->uri, ev->file->uri))
                 {
