@@ -238,7 +238,8 @@ _browse_back(Smart_Data *sd)
     eina_stringshare_del(uri);
 }
 
-Eina_List *enna_browser_obj_files_get(Evas_Object *obj)
+Eina_List *
+enna_browser_obj_files_get(Evas_Object *obj)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 

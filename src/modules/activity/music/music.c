@@ -31,6 +31,7 @@
 #include "content.h"
 #include "view_list.h"
 #include "browser.h"
+#include "browser_obj.h"
 #include "logs.h"
 #include "mediaplayer_obj.h"
 #include "volumes.h"
