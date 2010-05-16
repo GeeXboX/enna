@@ -23,6 +23,15 @@
 #ifndef BROWSER_OBJ_H
 #define BROWSER_OBJ_H
 
+#include <Elementary.h>
+
+typedef enum _Enna_Browser_View_Type
+{
+    ENNA_BROWSER_VIEW_LIST,
+    ENNA_BROWSER_BOX,
+    ENNA_BROWSER_VIEW_WALL
+}Enna_Browser_View_Type;
+
 Evas_Object *enna_browser_obj_add(Evas_Object *parent);
 void enna_browser_obj_root_set(Evas_Object *obj, const char *uri);
 void enna_browser_obj_view_type_set(Evas_Object *obj, Enna_Browser_View_Type view_type);

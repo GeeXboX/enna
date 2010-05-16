@@ -34,6 +34,7 @@
 #include "logs.h"
 #include "input.h"
 #include "utils.h"
+#include "browser.h"
 
 #define URI_TYPE_CDDA     "cdda://"
 #define URI_TYPE_DVD      "dvd://"
@@ -1097,7 +1098,7 @@ void
 enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_Vfs_File *file)
 {
     Enna_Vfs_File *f;
-    f = enna_browser2_file_dup(file);
+    f = enna_browser_file_dup(file);
     enna_playlist->playlist = eina_list_append(enna_playlist->playlist, f);
 }
 

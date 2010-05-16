@@ -123,17 +123,17 @@ enna_vfs_get(ENNA_VFS_CAPS type)
     return _enna_vfs;
 }
 
-static Enna_Vfs_File *
+static Enna_File *
 enna_vfs_create_inode(const char *uri, const char *label,
                       const char *icon, const char *icon_file, int dir)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
 
-    f = calloc(1, sizeof(Enna_Vfs_File));
-    f->uri = uri ? strdup(uri) : NULL;
-    f->label = label ? strdup(label) : NULL;
-    f->icon = icon ? strdup(icon) : NULL;
-    f->icon_file = icon_file ? strdup(icon_file) : NULL;
+    f = calloc(1, sizeof(Enna_File));
+    f->uri = uri ? eina_stringshare_add(uri) : NULL;
+    f->label = label ? eina_stringshare_add(label) : NULL;
+    f->icon = icon ? eina_stringshare_add(icon) : NULL;
+    f->icon_file = icon_file ? eina_stringshare_add(icon_file) : NULL;
 
     if (dir == 1)
         f->is_directory = 1;
@@ -143,20 +143,20 @@ enna_vfs_create_inode(const char *uri, const char *label,
     return f;
 }
 
-Enna_Vfs_File *
-enna_vfs_dup_file(const Enna_Vfs_File *file)
+Enna_File *
+enna_vfs_dup_file(const Enna_File *file)
 {
-    Enna_Vfs_File *n;
+    Enna_File *n;
 
-    n = calloc(1, sizeof(Enna_Vfs_File));
+    n = calloc(1, sizeof(Enna_File));
     if (!n)
         return NULL;
 
     n->uri       = file->uri       ? eina_stringshare_add(file->uri)       : NULL;
     n->label     = file->label     ? eina_stringshare_add(file->label)     : NULL;
     n->icon      = file->icon      ? eina_stringshare_add(file->icon)      : NULL;
-    n->icon_file = file->icon_file ? eina_strinshare_add(file->icon_file)  : NULL;
-    n->mrl       = file->mrl       ? eina_strinshare_add(file->mrl)        : NULL;
+    n->icon_file = file->icon_file ? eina_stringshare_add(file->icon_file) : NULL;
+    n->mrl       = file->mrl       ? eina_stringshare_add(file->mrl)       : NULL;
     
     n->is_directory = file->is_directory;
     n->is_menu = file->is_menu;
@@ -164,21 +164,21 @@ enna_vfs_dup_file(const Enna_Vfs_File *file)
     return n;
 }
 
-Enna_Vfs_File *
+Enna_File *
 enna_vfs_create_file(const char *uri, const char *label,
                      const char *icon, const char *icon_file)
 {
     return enna_vfs_create_inode(uri, label, NULL, NULL, 0);
 }
 
-Enna_Vfs_File *
+Enna_File *
 enna_vfs_create_directory(const char *uri, const char *label,
                           const char *icon, const char *icon_file)
 {
     return enna_vfs_create_inode(uri, label, icon, icon_file, 1);
 }
 
-Enna_Vfs_File *
+Enna_File *
 enna_vfs_create_menu(const char *uri, const char *label,
                      const char *icon, const char *icon_file)
 {
@@ -186,7 +186,7 @@ enna_vfs_create_menu(const char *uri, const char *label,
 }
 
 void
-enna_vfs_remove(Enna_Vfs_File *f)
+enna_vfs_remove(Enna_File *f)
 {
     if (!f)
         return;

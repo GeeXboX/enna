@@ -28,13 +28,7 @@
 #include "box.h"
 #include "enna_config.h"
 #include "browser.h"
-
-typedef enum _Enna_Browser_View_Type
-{
-    ENNA_BROWSER_VIEW_LIST,
-    ENNA_BROWSER_BOX,
-    ENNA_BROWSER_VIEW_WALL
-}Enna_Browser_View_Type;
+#include "browser_obj.h"
 
 typedef struct _Smart_Data Smart_Data;
 
@@ -215,26 +209,26 @@ _browse(Smart_Data *sd, Enna_Vfs_File *file)
     uri = eina_stringshare_add(file->uri);
     
     ENNA_OBJECT_DEL(sd->o_view);
-    enna_browser2_del(sd->browser);
+    enna_browser_del(sd->browser);
     ecore_timer_del(sd->hilight_timer);
     sd->hilight_timer = NULL;
     sd->o_view = NULL;
     DBG("browse uri : %s\n", uri);
-    sd->browser = enna_browser2_add(_add_cb, sd, NULL, NULL, uri);
+    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
     eina_stringshare_del(uri);
 }
 
 static void
 _browse_back(Smart_Data *sd)
 {
-    const char *uri = enna_browser2_uri_get(sd->browser);
+    const char *uri = enna_browser_uri_get(sd->browser);
     
     ENNA_OBJECT_DEL(sd->o_view);
-    enna_browser2_del(sd->browser);
+    enna_browser_del(sd->browser);
     
     sd->o_view = NULL;
     DBG("browse uri : %s\n", uri);
-    sd->browser = enna_browser2_add(_add_cb, sd, NULL, NULL, ecore_file_dir_get(uri));
+    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, ecore_file_dir_get(uri));
     eina_stringshare_del(uri);
 }
 
@@ -246,7 +240,7 @@ enna_browser_obj_files_get(Evas_Object *obj)
     if (!sd->browser)
         return NULL;
     else return
-        enna_browser2_files_get(sd->browser);
+        enna_browser_files_get(sd->browser);
 }
 
 void
@@ -346,7 +340,7 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
     printf("Create Root : %s\n", uri);
-    sd->browser = enna_browser2_add(_add_cb, sd, NULL, NULL, uri);
+    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
     
 }
 

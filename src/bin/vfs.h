@@ -63,7 +63,7 @@ struct _Enna_Class_Vfs
         void (*class_shutdown)(int dummy, void *cookie);
         Eina_List *(*class_browse_up)(const char *path, void *cookie);
         Eina_List *(*class_browse_down)(void *cookie);
-        Enna_Vfs_File *(*class_vfs_get)(void *cookie);
+        Enna_File *(*class_vfs_get)(void *cookie);
     } func;
     void *cookie;
 
@@ -78,7 +78,7 @@ struct _Enna_Class2_Vfs
     const char *icon;
     struct
     {
-        void *(* add)(Eina_List *tokens, ENNA_VFS_CAPS caps, void (*add_file)(void *data, Enna_Vfs_File *file), void *data);
+        void *(* add)(Eina_List *tokens, ENNA_VFS_CAPS caps, void (*add_file)(void *data, Enna_File *file), void *data);
         void  (* get_children)(void *priv);
         void  (* del)(void *priv);
     } func;
@@ -91,9 +91,9 @@ int enna_vfs_append(const char *name, unsigned char type,
         Enna_Class_Vfs *vfs);
 void enna_vfs_class_remove(const char *name, unsigned char type);
 Eina_List *enna_vfs_get(ENNA_VFS_CAPS type);
-Enna_Vfs_File *enna_vfs_dup_file(const Enna_Vfs_File *file);
-Enna_Vfs_File *enna_vfs_create_file (const char *uri, const char *label, const char *icon, const char *icon_file);
-Enna_Vfs_File *enna_vfs_create_directory (const char *uri, const char *label, const char *icon, const char *icon_file);
-Enna_Vfs_File * enna_vfs_create_menu(const char *uri, const char *label, const char *icon, const char *icon_file);
-void enna_vfs_remove(Enna_Vfs_File *f);
+Enna_File *enna_vfs_dup_file(const Enna_File* file);
+Enna_File *enna_vfs_create_file (const char *uri, const char *label, const char *icon, const char *icon_file);
+Enna_File *enna_vfs_create_directory (const char *uri, const char *label, const char *icon, const char *icon_file);
+Enna_File * enna_vfs_create_menu(const char *uri, const char *label, const char *icon, const char *icon_file);
+void enna_vfs_remove(Enna_File *f);
 #endif /* VFS_H */
