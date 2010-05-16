@@ -262,13 +262,13 @@ __class_init(const char *name, Class_Private_Data **priv,
 typedef struct _Enna_Localfiles_Priv
 {
     Eina_List *tokens;
-    void *(*add_file)(void *data, Enna_Vfs_File *file);
+    void *(*add_file)(void *data, Enna_File *file);
     void *data;
     ENNA_VFS_CAPS caps;
 }Enna_Localfiles_Priv;
 
 static void *
-_add(Eina_List *tokens, ENNA_VFS_CAPS caps,void *(*add_file)(void *data, Enna_Vfs_File *file), void *data)
+_add(Eina_List *tokens, ENNA_VFS_CAPS caps,void *(*add_file)(void *data, Enna_File *file), void *data)
 {
     Enna_Localfiles_Priv *p = calloc(1, sizeof(Enna_Localfiles_Priv));
 
@@ -318,12 +318,12 @@ _get_children(void *priv)
         DBG("Browse Root\n");
         for (l = pmod->config->root_directories; l; l = l->next)
         {
-            Enna_Vfs_File *f;
+            Enna_File *f;
             Root_Directories *root;
             
             root = l->data;
             
-            f = calloc(1, sizeof(Enna_Vfs_File));
+            f = calloc(1, sizeof(Enna_File));
             
             buf = buffer_new();
             buffer_appendf(buf, "/music/%s/%s", pmod->name, root->name);
@@ -342,7 +342,7 @@ _get_children(void *priv)
     {
         const char *root_name = eina_list_nth(p->tokens, 2);
         Root_Directories *root = NULL;
-        Enna_Vfs_File *f;
+        Enna_File *f;
         
         EINA_LIST_FOREACH(pmod->config->root_directories, l, root)
         {
@@ -392,9 +392,9 @@ _get_children(void *priv)
                         continue;
                     else if (ecore_file_is_dir(dir))
                     {
-                        Enna_Vfs_File *f;
+                        Enna_File *f;
                         buffer_t *buf;
-                        f = calloc(1, sizeof(Enna_Vfs_File));
+                        f = calloc(1, sizeof(Enna_File));
 
                         buf = buffer_new();
                         relative_path->buf ?
@@ -413,8 +413,8 @@ _get_children(void *priv)
                     else if (enna_util_uri_has_extension(dir, p->caps))
                     {
                         buffer_t *mrl;
-                        Enna_Vfs_File *f;
-                        f = calloc(1, sizeof(Enna_Vfs_File));
+                        Enna_File *f;
+                        f = calloc(1, sizeof(Enna_File));
                        
                         buf = buffer_new();
                         buffer_appendf(buf, "/music/%s/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename);
