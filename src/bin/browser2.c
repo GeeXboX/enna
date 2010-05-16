@@ -266,6 +266,23 @@ enna_browser2_browse_module(Enna_Browser *browser)
 
 }
 
+Enna_Vfs_File *
+enna_browser2_file_dup(Enna_Vfs_File *file)
+{
+    Enna_Vfs_File *f;
+
+    f = calloc(1, sizeof(Enna_Vfs_File));
+    f->icon = eina_stringshare_add(file->icon);
+    f->icon_file = eina_stringshare_add(file->icon_file);
+    f->is_directory = file->is_directory;
+    f->is_menu = file->is_menu;
+    f->label = eina_stringshare_add(file->label);
+    f->name = eina_stringshare_add(file->name);
+    f->uri = eina_stringshare_add(file->uri);
+    f->mrl = eina_stringshare_add(file->mrl);
+    return f;
+}
+
 Eina_List *
 enna_browser2_files_get(Enna_Browser *b)
 {
