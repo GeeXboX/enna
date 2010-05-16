@@ -101,7 +101,7 @@ static void _create_slideshow_gui(void)
 
 
 static int
-_slideshow_add_files(char *file_selected)
+_slideshow_add_files(const char *file_selected)
 {
     Eina_List *files = NULL;
     Eina_List *l;
