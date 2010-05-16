@@ -39,11 +39,12 @@ enum _ENNA_VFS_CAPS
 
 struct _Enna_Vfs_File
 {
-    char *name;
-    char *uri;
-    char *label;
-    char *icon;
-    char *icon_file;
+    const char *name;
+    const char *uri;
+    const char *label;
+    const char *icon;
+    const char *icon_file;
+    const char *mrl;
     unsigned char is_directory : 1;
     unsigned char is_menu : 1;
 };
