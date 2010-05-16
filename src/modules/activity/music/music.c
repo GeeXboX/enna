@@ -223,8 +223,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
          {
              if (!f->is_directory)
              {
-                 enna_mediaplayer_uri_append(mod->enna_playlist,
-                                             f->uri, f->label);
+                 enna_mediaplayer_file_append(mod->enna_playlist, f);
                  if (!strcmp(f->uri, file->uri))
                  {
                      enna_mediaplayer_select_nth(mod->enna_playlist,i);
@@ -260,7 +259,7 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
     if (strcmp(file->uri, uri))
         return;
 
-    m = enna_metadata_meta_new(file->uri);
+    m = enna_metadata_meta_new(file->mrl);
     if (!m)
         return;
 
@@ -288,15 +287,16 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
 static void
 _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    Browser_Selected_File_Data *ev = event_info;
+    Enna_Vfs_File *file = event_info;
     DBG(__FUNCTION__);
-    if (!ev || !ev->file)
+    if (!file)
         return;
 
-    if (!ev->file->is_directory && !ev->file->is_menu)
+
+    if (!file->is_directory && !file->is_menu)
         /* ask for on-demand scan for local files */
-        if (!strncmp(ev->file->uri, "file://", 7))
-            enna_metadata_ondemand(ev->file, _ondemand_cb_refresh);
+        if (!strncmp(file->mrl, "file://", 7))
+            enna_metadata_ondemand(file, _ondemand_cb_refresh);
 }
 
 static void
