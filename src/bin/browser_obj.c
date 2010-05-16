@@ -43,7 +43,7 @@ struct _Smart_Data
     {
         Evas_Object *(*view_add)(Smart_Data *sd);
         void (*view_append)(Evas_Object *view,
-                            Enna_Vfs_File *file,
+                            Enna_File *file,
                             void (*func_activated)(void *data),
                             void *data);
         void *(*view_selected_data_get)(Evas_Object *view);
@@ -59,7 +59,7 @@ static int
 _view_delay_hilight_cb(void *data)
 {
     Smart_Data *sd = data;
-    Enna_Vfs_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
+    Enna_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
     DBG(__FUNCTION__);
     sd->hilight_timer = NULL;
     evas_object_smart_callback_call (sd->o_layout, "delay,hilight", file);
@@ -171,7 +171,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     }
 }
 static void
-_add_cb(void *data, Enna_Vfs_File *file)
+_add_cb(void *data, Enna_File *file)
 {
     Smart_Data *sd = data;
     Evas_Object *icon = NULL;
@@ -194,7 +194,7 @@ _add_cb(void *data, Enna_Vfs_File *file)
 }
 
 static void
-_browse(Smart_Data *sd, Enna_Vfs_File *file)
+_browse(Smart_Data *sd, Enna_File *file)
 {
     const char *uri;
 
@@ -251,7 +251,7 @@ enna_browser_obj_input_feed(Evas_Object *obj, enna_input event)
         break;
     case ENNA_INPUT_OK:
     {
-        Enna_Vfs_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
+        Enna_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
         if (!file)
             break;
         if (file->is_directory || file->is_menu)
