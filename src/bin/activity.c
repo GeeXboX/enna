@@ -182,7 +182,7 @@ void enna_activity_unregister(Enna_Class_Activity *act)
     Eina_List *l;
 
     if (!act)
-        return -1;
+        return;
 
     for (l = _enna_activities; l; l = l->next)
     {
