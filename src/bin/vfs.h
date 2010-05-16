@@ -27,7 +27,7 @@
 typedef enum _ENNA_VFS_CAPS ENNA_VFS_CAPS;
 typedef struct _Enna_Class_Vfs Enna_Class_Vfs;
 typedef struct _Enna_Class2_Vfs Enna_Class2_Vfs;
-typedef struct _Enna_Vfs_File Enna_Vfs_File;
+typedef struct _Enna_File Enna_File;
 
 enum _ENNA_VFS_CAPS
 {
@@ -37,7 +37,7 @@ enum _ENNA_VFS_CAPS
     ENNA_CAPS_PHOTO = 0x04
 };
 
-struct _Enna_Vfs_File
+struct _Enna_File
 {
     const char *name;
     const char *uri;
