@@ -401,7 +401,7 @@ _get_children(void *priv)
                         f = calloc(1, sizeof(Enna_Vfs_File));
 
                         buf = buffer_new();
-                        buffer_appendf(buf, "/music/%s/%s/%s", pmod->name, root->name, relative_path->buf);
+                        buffer_appendf(buf, "/music/%s/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename);
                         f->name = eina_stringshare_add(filename);
                         f->uri = eina_stringshare_add(buf->buf);
                         buffer_free(buf);
