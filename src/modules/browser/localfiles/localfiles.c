@@ -37,7 +37,7 @@
 
 typedef struct _Root_Directories
 {
-    char *name;
+    const char *name;
     char *uri;
     char *label;
     char *icon;
@@ -460,6 +460,7 @@ __class_init(const char *name, Class_Private_Data **priv,
     {
         root = calloc(1, sizeof(Root_Directories));
         snprintf(buf, sizeof(buf), "file://%s", v->mount_point);
+        root->name = eina_stringshare_add(v->device_name);
         root->uri = strdup(buf);
         root->label = strdup(v->label);
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
@@ -474,6 +475,7 @@ __class_init(const char *name, Class_Private_Data **priv,
         // add home directory entry
         root = ENNA_NEW(Root_Directories, 1);
         snprintf(buf, sizeof(buf), "file://%s", enna_util_user_home_get());
+        root->name = eina_stringshare_add("Home");
         root->uri = strdup(buf);
         root->label = strdup("Home");
         root->icon = strdup("icon/favorite");
@@ -593,8 +595,8 @@ _get_children(void *priv)
             f = calloc(1, sizeof(Enna_Vfs_File));
             
             buf = buffer_new();
-            buffer_appendf(buf, "/music/%s/%s", pmod->name, root->label);
-            f->name = eina_stringshare_add(root->label);
+            buffer_appendf(buf, "/music/%s/%s", pmod->name, root->name);
+            f->name = eina_stringshare_add(root->name);
             f->uri = eina_stringshare_add(buf->buf);
             buffer_free(buf);
             f->label = eina_stringshare_add(root->label);
@@ -613,7 +615,7 @@ _get_children(void *priv)
         
         EINA_LIST_FOREACH(pmod->config->root_directories, l, root)
         {
-            if (!strcmp(root->label, root_name))
+            if (!strcmp(root->name, root_name))
             {
                 Eina_List *files = NULL;
                 Eina_List *l;
@@ -665,8 +667,8 @@ _get_children(void *priv)
 
                         buf = buffer_new();
                         relative_path->buf ?
-                            buffer_appendf(buf, "/music/%s/%s/%s/%s", pmod->name, root->label, relative_path->buf, filename) :
-                            buffer_appendf(buf, "/music/%s/%s/%s", pmod->name, root->label, filename);
+                            buffer_appendf(buf, "/music/%s/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename) :
+                            buffer_appendf(buf, "/music/%s/%s/%s", pmod->name, root->name, filename);
                             
                         f->name = eina_stringshare_add(filename);
                         f->uri = eina_stringshare_add(buf->buf);
@@ -683,7 +685,7 @@ _get_children(void *priv)
                         f = calloc(1, sizeof(Enna_Vfs_File));
 
                         buf = buffer_new();
-                        buffer_appendf(buf, "/music/%s/%s/%s", pmod->name, root->label, relative_path->buf);
+                        buffer_appendf(buf, "/music/%s/%s/%s", pmod->name, root->name, relative_path->buf);
                         f->name = eina_stringshare_add(filename);
                         f->uri = eina_stringshare_add(buf->buf);
                         buffer_free(buf);
