@@ -34,7 +34,7 @@ activity.c\
 vfs.c\
 volumes.c\
 image.c\
-browser2.c\
+browser.c\
 browser_obj.c\
 content.c\
 view_list.c\

@@ -27,6 +27,7 @@
 typedef enum _ENNA_VFS_CAPS ENNA_VFS_CAPS;
 typedef struct _Enna_Class_Vfs Enna_Class_Vfs;
 typedef struct _Enna_Class2_Vfs Enna_Class2_Vfs;
+typedef struct _Enna_File Enna_Vfs_File;
 typedef struct _Enna_File Enna_File;
 
 enum _ENNA_VFS_CAPS
