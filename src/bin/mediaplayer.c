@@ -1263,6 +1263,8 @@ enna_mediaplayer_seek(int value, SEEK_TYPE type)
         ev->seek_value = value;
         ev->type       = type;
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
+        if (type != SEEK_ABS_PERCENT)
+          value *= 1000;
         player_playback_seek(mp->player, value, pl_seek[type]);
     }
 }
