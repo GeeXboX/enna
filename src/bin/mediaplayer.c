@@ -63,12 +63,6 @@
 #define SUB_DELAY_DEFAULT         0
 #define FRAMEDROP_DEFAULT         PLAYER_FRAMEDROP_DISABLE
 
-typedef struct list_item_s
-{
-    const char *uri;
-    const char *label;
-} list_item_t;
-
 typedef struct mediaplayer_cfg_s {
     player_type_t type;
     player_type_t dvd_type;
@@ -1091,23 +1085,20 @@ enna_mediaplayer_shutdown(void)
 char *
 enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
 {
-  list_item_t *item;
+  Enna_Vfs_File *item;
 
   item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
-  if (!item || !item->uri)
+  if (!item || !item->mrl)
     return NULL;
-  return strdup(item->uri);
+  return strdup(item->mrl);
 }
 
 void
-enna_mediaplayer_uri_append(Enna_Playlist *enna_playlist,
-                            const char *uri, const char *label)
+enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_Vfs_File *file)
 {
-    list_item_t *item = calloc(1, sizeof(list_item_t));
-    item->uri = uri ? strdup(uri) : NULL;
-    item->label = label ? strdup(label) : NULL;
-    enna_playlist->playlist =
-        eina_list_append(enna_playlist->playlist, item);
+    Enna_Vfs_File *f;
+    f = enna_browser2_file_dup(file);
+    enna_playlist->playlist = eina_list_append(enna_playlist->playlist, f);
 }
 
 int
@@ -1117,12 +1108,12 @@ enna_mediaplayer_play(Enna_Playlist *enna_playlist)
     {
     case STOPPED:
     {
-        list_item_t *item;
+        Enna_Vfs_File *item;
         item = eina_list_nth(enna_playlist->playlist,
                              enna_playlist->selected);
         mp_stop();
-        if (item && item->uri)
-            mp_file_set(item->uri, item->label);
+        if (item && item->mrl)
+            mp_file_set(item->mrl, item->label);
         mp_play();
         mp->play_state = PLAYING;
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_START, NULL, NULL, NULL);
@@ -1185,7 +1176,7 @@ enna_mediaplayer_pause(void)
 static void
 enna_mediaplayer_change(Enna_Playlist *enna_playlist, int type)
 {
-    list_item_t *item;
+    Enna_Vfs_File *item;
 
     item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
     enna_log(ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
@@ -1338,14 +1329,14 @@ enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
 Enna_Metadata *
 enna_mediaplayer_metadata_get(Enna_Playlist *enna_playlist)
 {
-    list_item_t *item;
+    Enna_Vfs_File *item;
 
     item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
     if (!item)
         return NULL;
 
-    if (item->uri)
-        return enna_metadata_meta_new((char *) item->uri);
+    if (item->mrl)
+        return enna_metadata_meta_new((char *) item->mrl);
 
     return NULL;
 }
