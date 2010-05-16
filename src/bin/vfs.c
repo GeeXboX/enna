@@ -152,11 +152,12 @@ enna_vfs_dup_file(const Enna_Vfs_File *file)
     if (!n)
         return NULL;
 
-    n->uri       = file->uri       ? strdup(file->uri)       : NULL;
-    n->label     = file->label     ? strdup(file->label)     : NULL;
-    n->icon      = file->icon      ? strdup(file->icon)      : NULL;
-    n->icon_file = file->icon_file ? strdup(file->icon_file) : NULL;
-
+    n->uri       = file->uri       ? eina_stringshare_add(file->uri)       : NULL;
+    n->label     = file->label     ? eina_stringshare_add(file->label)     : NULL;
+    n->icon      = file->icon      ? eina_stringshare_add(file->icon)      : NULL;
+    n->icon_file = file->icon_file ? eina_strinshare_add(file->icon_file)  : NULL;
+    n->mrl       = file->mrl       ? eina_strinshare_add(file->mrl)        : NULL;
+    
     n->is_directory = file->is_directory;
     n->is_menu = file->is_menu;
 
