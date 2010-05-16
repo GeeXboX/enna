@@ -131,239 +131,6 @@ _uri_is_root(Class_Private_Data *data, const char *uri)
     return 0;
 }
 
-static Eina_List *
-_class_browse_up(const char *path, ENNA_VFS_CAPS caps,
-                 Class_Private_Data *data, char *icon)
-{
-    /* Browse Root */
-    if (!path)
-    {
-        Eina_List *files = NULL;
-        Eina_List *l;
-        /* FIXME: this list should come from config ! */
-        for (l = data->config->root_directories; l; l = l->next)
-        {
-            Enna_Vfs_File *file;
-            Root_Directories *root;
-
-            root = l->data;
-            file = enna_vfs_create_menu(root->uri, root->label,
-                                        root->icon ? root->icon : "icon/hd",
-                                        NULL);
-            files = eina_list_append(files, file);
-        }
-        //eina_stringshare_del(data->prev_uri);
-        //eina_stringshare_del(data->uri);
-        data->prev_uri = NULL;
-        data->uri = NULL;
-        return files;
-    }
-    else if (strstr(path, "file://"))
-    {
-        Eina_List *files = NULL;
-        Eina_List *l;
-        char *filename = NULL;
-        Eina_List *files_list = NULL;
-        Eina_List *dirs_list = NULL;
-
-        char dir[PATH_MAX];
-
-        files = ecore_file_ls(path+7);
-
-        /* If no file found return immediatly*/
-        if (!files)
-            return NULL;
-
-        files = eina_list_sort(files, eina_list_count(files),
-                               EINA_COMPARE_CB(strcasecmp));
-        EINA_LIST_FOREACH(files, l, filename)
-        {
-            sprintf(dir, "%s/%s", path, filename);
-            if (filename[0] == '.')
-                continue;
-            else if (ecore_file_is_dir(dir+7))
-            {
-                Enna_Vfs_File *f;
-
-                f = enna_vfs_create_directory(dir, filename,
-                                              "icon/directory", NULL);
-                dirs_list = eina_list_append(dirs_list, f);
-            }
-            else if (enna_util_uri_has_extension(dir, caps))
-            {
-                Enna_Vfs_File *f;
-                f = enna_vfs_create_file(dir, filename, icon, NULL);
-                files_list = eina_list_append(files_list, f);
-            }
-        }
-        /* File after dir */
-        for (l = files_list; l; l = l->next)
-        {
-            dirs_list = eina_list_append(dirs_list, l->data);
-        }
-        //eina_stringshare_del(data->prev_uri);
-        data->prev_uri = data->uri;
-        data->uri = eina_stringshare_add(path);
-        return dirs_list;
-    }
-
-    return NULL;
-}
-
-#ifdef BUILD_ACTIVITY_MUSIC
-static Eina_List *
-_class_browse_up_music(const char *path, void *cookie)
-{
-    return _class_browse_up(path, ENNA_CAPS_MUSIC,
-                            mod->music, "icon/file/music");
-}
-#endif
-
-#ifdef BUILD_ACTIVITY_VIDEO
-static Eina_List *
-_class_browse_up_video(const char *path, void *cookie)
-{
-    return _class_browse_up(path, ENNA_CAPS_VIDEO,
-                            mod->video, "icon/file/video");
-}
-#endif
-
-#ifdef BUILD_ACTIVITY_PHOTO
-static Eina_List *
-_class_browse_up_photo(const char *path, void *cookie)
-{
-    return _class_browse_up(path, ENNA_CAPS_PHOTO,
-                            mod->photo, "icon/file/photo");
-}
-#endif
-
-static Eina_List *
-_class_browse_down(Class_Private_Data *data, ENNA_VFS_CAPS caps)
-{
-    /* Browse Root */
-    if (data->uri && strstr(data->uri, "file://"))
-    {
-        char *path_tmp = NULL;
-        char *p;
-        Eina_List *files = NULL;
-
-        if (_uri_is_root(data, data->uri))
-        {
-            Eina_List *files = NULL;
-            Eina_List *l;
-            for (l = data->config->root_directories; l; l = l->next)
-            {
-                Enna_Vfs_File *file;
-                Root_Directories *root;
-
-                root = l->data;
-                file = enna_vfs_create_menu(root->uri, root->label,
-                                            root->icon ? root->icon : "icon/hd", NULL);
-                files = eina_list_append(files, file);
-            }
-            data->prev_uri = NULL;
-            data->uri = NULL;
-            return files;
-        }
-
-        path_tmp = strdup(data->uri);
-        if (path_tmp[strlen(data->uri) - 1] == '/')
-            path_tmp[strlen(data->uri) - 1] = 0;
-        p = strrchr(path_tmp, '/');
-        if (p && *(p - 1) == '/')
-            *(p) = 0;
-        else if (p)
-            *(p) = 0;
-
-        files = _class_browse_up(path_tmp, caps, data, NULL);
-        data->uri = eina_stringshare_add(path_tmp);
-        return files;
-    }
-
-    return NULL;
-}
-
-#ifdef BUILD_ACTIVITY_MUSIC
-static Eina_List *
-_class_browse_down_music(void *cookie)
-{
-    return _class_browse_down(mod->music, ENNA_CAPS_MUSIC);
-}
-#endif
-
-#ifdef BUILD_ACTIVITY_VIDEO
-static Eina_List *
-_class_browse_down_video(void *cookie)
-{
-    return _class_browse_down(mod->video, ENNA_CAPS_VIDEO);
-}
-#endif
-
-#ifdef BUILD_ACTIVITY_PHOTO
-static Eina_List *
-_class_browse_down_photo(void *cookie)
-{
-    return _class_browse_down(mod->photo, ENNA_CAPS_PHOTO);
-}
-#endif
-
-static Enna_Vfs_File *
-_class_vfs_get(int type)
-{
-    switch (type)
-    {
-#ifdef BUILD_ACTIVITY_MUSIC
-    case ENNA_CAPS_MUSIC:
-        return enna_vfs_create_directory(mod->music->uri,
-                                         ecore_file_file_get(mod->music->uri),
-                                         eina_stringshare_add("icon/music"),
-                                         NULL);
-#endif
-#ifdef BUILD_ACTIVITY_VIDEO
-    case ENNA_CAPS_VIDEO:
-        return enna_vfs_create_directory(mod->video->uri,
-                                         ecore_file_file_get(mod->video->uri),
-                                         eina_stringshare_add("icon/video"),
-                                         NULL);
-#endif
-#ifdef BUILD_ACTIVITY_PHOTO
-    case ENNA_CAPS_PHOTO:
-        return enna_vfs_create_directory(mod->photo->uri,
-                                         ecore_file_file_get(mod->photo->uri),
-                                         eina_stringshare_add("icon/photo"),
-                                         NULL);
-#endif
-    default:
-        break;
-    }
-
-    return NULL;
-}
-
-#ifdef BUILD_ACTIVITY_MUSIC
-static Enna_Vfs_File *
-_class_vfs_get_music(void *cookie)
-{
-    return _class_vfs_get(ENNA_CAPS_MUSIC);
-}
-#endif
-
-#ifdef BUILD_ACTIVITY_VIDEO
-static Enna_Vfs_File *
-_class_vfs_get_video(void *cookie)
-{
-    return _class_vfs_get(ENNA_CAPS_VIDEO);
-}
-#endif
-
-#ifdef BUILD_ACTIVITY_PHOTO
-static Enna_Vfs_File *
-_class_vfs_get_photo(void *cookie)
-{
-    return _class_vfs_get(ENNA_CAPS_PHOTO);
-}
-#endif
-
 static void
 _add_volumes_cb(void *data, Enna_Volume *v)
 {
@@ -374,6 +141,7 @@ _add_volumes_cb(void *data, Enna_Volume *v)
         return;
 
     root = calloc(1, sizeof(Root_Directories));
+    root->name = eina_stringshare_add(v->device_name);
     root->uri = strdup( v->mount_point);
     root->label = strdup(v->label);
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
@@ -406,7 +174,7 @@ _remove_volumes_cb(void *data, Enna_Volume *v)
 
 static void
 __class_init(const char *name, Class_Private_Data **priv,
-             ENNA_VFS_CAPS caps, Enna_Class_Vfs *class, char *key)
+             ENNA_VFS_CAPS caps, char *key)
 {
     Class_Private_Data *data;
     Root_Directories *root;
@@ -418,7 +186,6 @@ __class_init(const char *name, Class_Private_Data **priv,
     data = calloc(1, sizeof(Class_Private_Data));
     *priv = data;
 
-    enna_vfs_append(name, caps, class);
     data->prev_uri = NULL;
     data->name = eina_stringshare_add(name);
     data->config = calloc(1, sizeof(Module_Config));
@@ -446,6 +213,7 @@ __class_init(const char *name, Class_Private_Data **priv,
         p = l->data;
 
         root        = calloc(1, sizeof(Root_Directories));
+        root->name  = eina_stringshare_add(p->label);
         root->uri   = strdup(p->uri);
         root->label = strdup(p->label);
         root->icon  = strdup(p->icon);
@@ -489,59 +257,7 @@ __class_init(const char *name, Class_Private_Data **priv,
                                          _remove_volumes_cb, data);
 }
 
-#ifdef BUILD_ACTIVITY_MUSIC
-static Enna_Class_Vfs class_music = {
-    "localfiles_music",
-    1,
-    N_("Browse local devices"),
-    NULL,
-    "icon/hd",
-    {
-        NULL,
-        NULL,
-        _class_browse_up_music,
-        _class_browse_down_music,
-        _class_vfs_get_music,
-    },
-    NULL
-};
-#endif
 
-#ifdef BUILD_ACTIVITY_VIDEO
-static Enna_Class_Vfs class_video = {
-    "localfiles_video",
-    1,
-    N_("Browse local devices"),
-    NULL,
-    "icon/hd",
-    {
-        NULL,
-        NULL,
-        _class_browse_up_video,
-        _class_browse_down_video,
-        _class_vfs_get_video,
-    },
-    NULL
-};
-#endif
-
-#ifdef BUILD_ACTIVITY_PHOTO
-static Enna_Class_Vfs class_photo = {
-    "localfiles_photo",
-    1,
-    N_("Browse local devices"),
-    NULL,
-    "icon/hd",
-    {
-        NULL,
-        NULL,
-        _class_browse_up_photo,
-        _class_browse_down_photo,
-        _class_vfs_get_photo,
-    },
-    NULL
-};
-#endif
 
 typedef struct _Enna_Localfiles_Priv
 {
@@ -884,18 +600,15 @@ module_init(Enna_Module *em)
     cfg_localfiles_section_load(cfg_localfiles.section);
 
 #ifdef BUILD_ACTIVITY_MUSIC
-    __class_init("localfiles_music", &mod->music, ENNA_CAPS_MUSIC,
-                 &class_music, "path_music");
+    __class_init("localfiles_music", &mod->music, ENNA_CAPS_MUSIC, "path_music");
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
-    __class_init("localfiles_video", &mod->video, ENNA_CAPS_VIDEO,
-                 &class_video, "path_video");
+    __class_init("localfiles_video", &mod->video, ENNA_CAPS_VIDEO, "path_video");
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
-    __class_init("localfiles_photo", &mod->photo, ENNA_CAPS_PHOTO,
-                 &class_photo, "path_photo");
-    enna_vfs_register(&class2);
+    __class_init("localfiles_photo", &mod->photo, ENNA_CAPS_PHOTO, "path_photo");
 #endif
+    enna_vfs_register(&class2);
 }
 
 static void
