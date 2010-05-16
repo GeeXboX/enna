@@ -476,7 +476,7 @@ mp_file_set(const char *uri, const char *label)
         it = strrchr(uri, '.');
         if (it && !strcmp(it, ".iso")) /* consider ISO file as DVD */
         {
-            mrl = set_dvd_stream(uri, MRL_RESOURCE_DVD);
+            mrl = set_dvd_stream(uri, MRL_RESOURCE_DVDNAV);
             player_type = mp->dvd_type;
         }
         else
