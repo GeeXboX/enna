@@ -198,42 +198,43 @@ static void
 _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 {
     int i = 0;
-    Enna_Vfs_File *f;
-    Eina_List *l;
-    Browser_Selected_File_Data *ev = event_info;
+    Enna_Vfs_File *file = event_info;
+    Eina_List *files = enna_browser_obj_files_get(mod->o_browser);
+
     DBG(__FUNCTION__);
-    if (!ev || !ev->file)
+    if (!file)
         return;
 
-    if (ev->file->is_directory || ev->file->is_menu)
+    if (file->is_directory || file->is_menu)
     {
         enna_log(ENNA_MSG_EVENT,
-                 ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
-        update_songs_counter(ev->files);
+                 ENNA_MODULE_NAME, "Directory Selected %s", file->uri);
+        update_songs_counter(files);
     }
     else
     {
+        Enna_Vfs_File *f;
+        Eina_List *l;
         enna_log(ENNA_MSG_EVENT,
-                 ENNA_MODULE_NAME , "File Selected %s", ev->file->uri);
+                 ENNA_MODULE_NAME , "File Selected %s", file->uri);
         enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
         /* File selected, create mediaplayer */
-        EINA_LIST_FOREACH(ev->files, l, f)
-        {
-            if (!f->is_directory)
-            {
-                enna_mediaplayer_uri_append(mod->enna_playlist,
-                                            f->uri, f->label);
-                if (!strcmp(f->uri, ev->file->uri))
-                {
-                    enna_mediaplayer_select_nth(mod->enna_playlist,i);
-                    enna_mediaplayer_obj_event_catch(mod->o_mediaplayer);
-                    enna_mediaplayer_play(mod->enna_playlist);
-                }
-                i++;
-            }
-        }
+         EINA_LIST_FOREACH(files, l, f)
+         {
+             if (!f->is_directory)
+             {
+                 enna_mediaplayer_uri_append(mod->enna_playlist,
+                                             f->uri, f->label);
+                 if (!strcmp(f->uri, file->uri))
+                 {
+                     enna_mediaplayer_select_nth(mod->enna_playlist,i);
+                     enna_mediaplayer_obj_event_catch(mod->o_mediaplayer);
+                     enna_mediaplayer_play(mod->enna_playlist);
+                 }
+                 i++;
+             }
+         }
     }
-    free(ev);
 }
 
 static void

@@ -50,6 +50,7 @@ struct _Enna_Browser
     Enna_Browser_Type type;
     Ecore_Event_Handler *ev_handler;
     Eina_List *tokens;
+    Eina_List* files;
 
 };
 
@@ -179,6 +180,8 @@ enna_browser2_browse_root(Enna_Browser *browser)
         f->icon = eina_stringshare_add(act->icon);
         f->icon_file = eina_stringshare_add(act->bg);
         f->is_menu = 1;
+
+        browser->files = eina_list_append(browser->files, f);
         if (browser->add)
             browser->add(browser->add_data, f);
 
@@ -210,6 +213,7 @@ enna_browser2_browse_activity(Enna_Browser *browser)
             f->label = eina_stringshare_add(vfs->label);
             f->icon = eina_stringshare_add(vfs->icon);
             f->is_menu = 1;
+            browser->files = eina_list_append(browser->files, f);
             if (browser->add)
                 browser->add(browser->add_data, f);
         }
@@ -217,6 +221,20 @@ enna_browser2_browse_activity(Enna_Browser *browser)
 
     return NULL;
 
+}
+
+void _add(void *data, Enna_Vfs_File *file)
+{
+    Enna_Browser *b = data;
+    b->files = eina_list_append(b->files, file);
+    b->add(b->add_data, file);
+}
+
+void _del(void *data, Enna_Vfs_File *file)
+{
+    Enna_Browser *b = data;
+    b->files = eina_list_remove(b->files, file);
+    b->del(b->del_data, file);
 }
 
 Eina_List *
@@ -242,10 +260,18 @@ enna_browser2_browse_module(Enna_Browser *browser)
     if (!vfs)
         return NULL;
 
-    browser->priv_module = vfs->func.add(browser->tokens, act->caps, browser->add, browser->add_data);
+    browser->priv_module = vfs->func.add(browser->tokens, act->caps, _add, browser);
     vfs->func.get_children(browser->priv_module);
 
 
+}
+
+Eina_List *
+enna_browser2_files_get(Enna_Browser *b)
+{
+    if (!b)
+        return NULL;
+    return b->files;
 }
 
 const char *

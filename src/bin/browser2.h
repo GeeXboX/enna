@@ -34,4 +34,5 @@ void enna_browser2_del(Enna_Browser *b);
 Enna_Vfs_File *enna_browser2_get_file(const char *uri);
 const char *enna_browser2_uri_get(Enna_Browser *b);
 void enna_browser2_browse_root(Enna_Browser *browser);
+Eina_List *enna_browser2_files_get(Enna_Browser *b);
 #endif /* BROWSER2_H */
