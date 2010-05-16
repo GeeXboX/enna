@@ -27,7 +27,7 @@
 #include "view_list.h"
 #include "box.h"
 #include "enna_config.h"
-#include "browser2.h"
+#include "browser.h"
 
 typedef enum _Enna_Browser_View_Type
 {

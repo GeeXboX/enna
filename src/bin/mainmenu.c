@@ -25,7 +25,7 @@
 #include <Edje.h>
 #include <Elementary.h>
 
-#include "browser2.h"
+#include "browser.h"
 #include "enna.h"
 #include "enna_config.h"
 #include "mainmenu.h"
@@ -73,7 +73,7 @@ static void
 _enna_mainmenu_load_from_activities(void)
 {
     enna_box_clear(sd->o_menu);
-    sd->browser = enna_browser2_add(_add_cb, NULL, NULL, NULL, "/");
+    sd->browser = enna_browser_add(_add_cb, NULL, NULL, NULL, "/");
 }
 
 static void
@@ -222,7 +222,7 @@ enna_mainmenu_shutdown(void)
         sd->backgrounds = eina_list_remove(sd->backgrounds, name);
         if (name) eina_stringshare_del(name);
     }
-    enna_browser2_del(sd->browser);
+    enna_browser_del(sd->browser);
     ENNA_FREE(sd);
 }
 
