@@ -448,7 +448,7 @@ mp_file_set(const char *uri, const char *label)
     else if (!strncmp(uri, URI_TYPE_VDR, strlen(URI_TYPE_VDR)))
     {
         char *device = NULL;
-        char *driver = strstr (uri, "#");
+        char *driver = strstr(uri, "#");
         size_t device_len = strlen(uri) - strlen(URI_TYPE_VDR);
 
         if (driver)
@@ -471,7 +471,17 @@ mp_file_set(const char *uri, const char *label)
     }
     /* default is local files */
     if (!mrl)
-        mrl = set_local_stream(uri);
+    {
+        const char *it;
+        it = strrchr(uri, '.');
+        if (it && !strcmp(it, ".iso")) /* consider ISO file as DVD */
+        {
+            mrl = set_dvd_stream(uri, MRL_RESOURCE_DVDNAV);
+            player_type = mp->dvd_type;
+        }
+        else
+            mrl = set_local_stream(uri);
+    }
 
     if (!mrl)
         return 1;
@@ -1263,6 +1273,8 @@ enna_mediaplayer_seek(int value, SEEK_TYPE type)
         ev->seek_value = value;
         ev->type       = type;
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_SEEK, ev, NULL, NULL);
+        if (type != SEEK_ABS_PERCENT)
+          value *= 1000;
         player_playback_seek(mp->player, value, pl_seek[type]);
     }
 }
