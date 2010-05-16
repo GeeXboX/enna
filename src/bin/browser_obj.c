@@ -133,8 +133,6 @@ _browser_view_wall_select_nth(Evas_Object *view, int nth)
 void
 _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
 {
-    //if (view_type == sd->view_type)
-	//return;
     DBG(__FUNCTION__);
     sd->view_type = view_type;
     switch(sd->view_type)
@@ -180,9 +178,6 @@ _add_cb(void *data, Enna_Vfs_File *file)
     DBG(__FUNCTION__);
     if (!sd->o_view)
 	sd->o_view = sd->view_funcs.view_add(sd);
-
-    //if ((!file->is_directory || !file->is_menu) /*&& !sd->show_file*/)
-//	return;
 
     if (file->icon_file && file->icon_file[0] == '/')
     {
@@ -247,14 +242,7 @@ void
 enna_browser_obj_input_feed(Evas_Object *obj, enna_input event)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
-//    if (!sd->accept_ev) return;
 
-//     edje_object_signal_callback_del(elm_layout_edje_get(sd->o_layout),
-//                                     "list,transition,end", "edje",
-//                                     _list_transition_left_end_cb);
-//     edje_object_signal_callback_del(elm_layout_edje_get(sd->layout),
-//                                     "list,transition,end", "edje",
-//                                     _list_transition_right_end_cb);
     DBG(__FUNCTION__);
     switch (event)
     {
@@ -264,7 +252,6 @@ enna_browser_obj_input_feed(Evas_Object *obj, enna_input event)
     case ENNA_INPUT_OK:
     {
         Enna_Vfs_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
-        /* FIXME */
         if (!file)
             break;
         if (file->is_directory || file->is_menu)
