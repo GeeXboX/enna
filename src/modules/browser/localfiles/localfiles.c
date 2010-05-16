@@ -116,21 +116,6 @@ localfiles_path_free (localfiles_path_t *p)
     ENNA_FREE(p);
 }
 
-static unsigned char
-_uri_is_root(Class_Private_Data *data, const char *uri)
-{
-    Eina_List *l;
-
-    for (l = data->config->root_directories; l; l = l->next)
-    {
-        Root_Directories *root = l->data;
-        if (!strcmp(root->uri, uri))
-            return 1;
-    }
-
-    return 0;
-}
-
 static void
 _add_volumes_cb(void *data, Enna_Volume *v)
 {
@@ -381,7 +366,7 @@ _get_children(void *priv)
                 if (!files)
                 {
                     buffer_free(path);
-                    return NULL;
+                    return;
                 }
                 files = eina_list_sort(files, eina_list_count(files),
                                        EINA_COMPARE_CB(strcasecmp));
@@ -458,8 +443,8 @@ _del(void *priv)
         return;
 }
 
-static Enna_Class2_Vfs class2 = {
-    "localfiles_music",
+static Enna_Vfs_Class class = {
+    "localfiles",
     1,
     N_("Browse local devices"),
     NULL,
@@ -623,15 +608,15 @@ module_init(Enna_Module *em)
     cfg_localfiles_section_load(cfg_localfiles.section);
 
 #ifdef BUILD_ACTIVITY_MUSIC
-    __class_init("localfiles_music", &mod->music, ENNA_CAPS_MUSIC, "path_music");
+    __class_init("localfiles", &mod->music, ENNA_CAPS_MUSIC, "path_music");
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
-    __class_init("localfiles_video", &mod->video, ENNA_CAPS_VIDEO, "path_video");
+    __class_init("localfiles", &mod->video, ENNA_CAPS_VIDEO, "path_video");
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
-    __class_init("localfiles_photo", &mod->photo, ENNA_CAPS_PHOTO, "path_photo");
+    __class_init("localfiles", &mod->photo, ENNA_CAPS_PHOTO, "path_photo");
 #endif
-    enna_vfs_register(&class2);
+    enna_vfs_register(&class);
 }
 
 static void

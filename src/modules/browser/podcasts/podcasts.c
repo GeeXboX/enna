@@ -210,7 +210,7 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
     return enna_vfs_create_directory(NULL, NULL, NULL, NULL);
 }
 
-static Enna_Class_Vfs class_podcast = {
+static Enna_Vfs_Class class_podcast = {
     "podcast_podcast",
     1,
     N_("Listen to podcasts"),

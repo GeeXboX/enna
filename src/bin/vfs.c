@@ -33,8 +33,8 @@ static Eina_List *_enna_vfs = NULL;
 static int
 _sort_cb(const void *d1, const void *d2)
 {
-    const Enna_Class_Vfs *vfs1 = d1;
-    const Enna_Class_Vfs *vfs2 = d2;
+    const Enna_Vfs_Class *vfs1 = d1;
+    const Enna_Vfs_Class *vfs2 = d2;
 
     if (vfs1->pri > vfs2->pri)
         return 1;
@@ -52,13 +52,13 @@ enna_vfs_init(Evas *evas)
 }
 
 void
-enna_vfs_register(Enna_Class2_Vfs *vfs)
+enna_vfs_register(Enna_Vfs_Class *vfs)
 {
     _enna_vfs = eina_list_append(_enna_vfs, vfs);
 }
 
 int
-enna_vfs_append(const char *name, unsigned char type, Enna_Class_Vfs *vfs)
+enna_vfs_append(const char *name, unsigned char type, Enna_Vfs_Class *vfs)
 {
     if (!vfs)
         return -1;
@@ -104,7 +104,7 @@ enna_vfs_class_remove(const char *name, unsigned char type)
     tmp = enna_vfs_get (type);
     tmp = eina_list_nth_list (tmp, 0);
     do {
-        Enna_Class_Vfs *class = (Enna_Class_Vfs *) tmp->data;
+        Enna_Vfs_Class *class = (Enna_Vfs_Class *) tmp->data;
         if (class && !strcmp (class->name, name))
             tmp = eina_list_remove (tmp, class);
     } while ((tmp = eina_list_next (tmp)));

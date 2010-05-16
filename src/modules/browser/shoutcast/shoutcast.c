@@ -328,7 +328,7 @@ static Enna_Vfs_File * _class_vfs_get(void *cookie)
             eina_stringshare_add("icon/music"), NULL);
 }
 
-static Enna_Class_Vfs class_shoutcast =
+static Enna_Vfs_Class class_shoutcast =
 {
     "shoutcast",
     10,

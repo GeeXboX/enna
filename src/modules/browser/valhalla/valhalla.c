@@ -634,7 +634,7 @@ _class_vfs_get(void *cookie)
 #define MOD_PREFIX enna_mod_browser_valhalla
 #endif /* USE_STATIC_MODULES */
 
-static Enna_Class_Vfs class_music =
+static Enna_Vfs_Class class_music =
 {
     "valhalla_music",
     2,
@@ -651,7 +651,7 @@ static Enna_Class_Vfs class_music =
     NULL,
 };
 
-static Enna_Class_Vfs class_video =
+static Enna_Vfs_Class class_video =
 {
     "valhalla_video",
     2,

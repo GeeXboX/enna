@@ -199,7 +199,7 @@ _browser_browse_activity(Enna_Browser *browser)
     
     //if (!strcmp(act_name, "music"))
     {
-        Enna_Class_Vfs *vfs;
+        Enna_Vfs_Class *vfs;
         Eina_List *l;
         Enna_Vfs_File *f;
         buffer_t *buf;
@@ -242,7 +242,7 @@ void _del(void *data, Enna_Vfs_File *file)
 static void
 _browser_browse_module(Enna_Browser *browser)
 {
-    Enna_Class2_Vfs *vfs = NULL, *tmp = NULL;
+    Enna_Vfs_Class *vfs = NULL, *tmp = NULL;
     Eina_List *l;
     Enna_Class_Activity *act;
     const char *act_name = (const char*)eina_list_nth(browser->tokens, 0);
