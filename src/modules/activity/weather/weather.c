@@ -292,6 +292,7 @@ static Enna_Class_Activity class = {
     NULL,
     "icon/weather",
     "background/weather",
+    ENNA_CAPS_NONE,
     {
         _class_init,
         NULL,

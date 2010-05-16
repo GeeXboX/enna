@@ -368,6 +368,7 @@ static Enna_Class_Activity class =
     NULL,
     "icon/photo",
     "background/photo",
+    ENNA_CAPS_PHOTO,
     {
         _class_init,
         NULL,

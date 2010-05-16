@@ -324,6 +324,7 @@ static Enna_Class_Activity class = {
     NULL,
     "icon/bookstore",
     "background/bookstore",
+    ENNA_CAPS_NONE,
     {
         NULL,
         NULL,

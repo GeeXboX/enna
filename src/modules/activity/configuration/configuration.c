@@ -212,6 +212,7 @@ static Enna_Class_Activity class = {
     NULL,
     "icon/config",
     "background/configuration",
+    ENNA_CAPS_NONE,
     {
         NULL,
         NULL,

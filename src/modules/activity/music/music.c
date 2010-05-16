@@ -513,6 +513,7 @@ static Enna_Class_Activity class =
     NULL,
     "icon/music",
     "background/music",
+    ENNA_CAPS_MUSIC,
     {
         _class_init,
         NULL,

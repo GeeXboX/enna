@@ -1007,6 +1007,7 @@ static Enna_Class_Activity class =
     NULL,
     "icon/video",
     "background/video",
+    ENNA_CAPS_VIDEO,
     {
         _class_init,
         NULL,
