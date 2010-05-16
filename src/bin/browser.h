@@ -20,19 +20,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef BROWSER2_H
-#define BROWSER2_H
+#ifndef BROWSER_H
+#define BROWSER_H
 
 #include "vfs.h"
 
 typedef struct _Enna_Browser Enna_Browser;
 
-Enna_Browser *enna_browser2_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
+Enna_Browser *enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
                                  void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
                                  const char *uri);
-void enna_browser2_del(Enna_Browser *b);
-Enna_Vfs_File *enna_browser2_get_file(const char *uri);
-const char *enna_browser2_uri_get(Enna_Browser *b);
-void enna_browser2_browse_root(Enna_Browser *browser);
-Eina_List *enna_browser2_files_get(Enna_Browser *b);
-#endif /* BROWSER2_H */
+void enna_browser_del(Enna_Browser *b);
+Enna_Vfs_File *enna_browser_get_file(const char *uri);
+const char *enna_browser_uri_get(Enna_Browser *b);
+Eina_List *enna_browser_files_get(Enna_Browser *b);
+#endif /* BROWSER_H */

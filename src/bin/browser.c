@@ -22,7 +22,7 @@
 
 #include <Ecore.h>
 
-#include "browser2.h"
+#include "browser.h"
 #include "enna.h"
 #include "activity.h"
 #include "buffer.h"
@@ -54,8 +54,9 @@ struct _Enna_Browser
 
 };
 
-Eina_List *enna_browser2_browse_activity(Enna_Browser* browser);
-Eina_List *enna_browser2_browse_module(Enna_Browser* browser);
+static void _browser_browse_root(Enna_Browser *browser);
+static void _browser_browse_activity(Enna_Browser* browser);
+static void _browser_browse_module(Enna_Browser* browser);
 
 int _add_idler(void *data)
 {
@@ -64,13 +65,13 @@ int _add_idler(void *data)
     switch (b->type)
     {
     case BROWSER_ROOT:
-        enna_browser2_browse_root(b);
+        _browser_browse_root(b);
         break;
     case BROWSER_ACTIVITY:
-        enna_browser2_browse_activity(b);
+        _browser_browse_activity(b);
         break;
     case BROWSER_MODULE:
-        enna_browser2_browse_module(b);
+        _browser_browse_module(b);
         break;
     default:
         break;
@@ -98,7 +99,7 @@ _activities_changed_cb(void *data, int type, void *event)
 }
 
 Enna_Browser *
-enna_browser2_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
+enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
                    void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
                    const char *uri)
 {
@@ -136,7 +137,7 @@ enna_browser2_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
 }
 
 void
-enna_browser2_del(Enna_Browser *b)
+enna_browser_del(Enna_Browser *b)
 {
     if (!b)
         return;
@@ -150,18 +151,19 @@ enna_browser2_del(Enna_Browser *b)
 }
 
 Enna_Vfs_File *
-enna_browser2_get_file(const char *uri)
+enna_browser_get_file(const char *uri)
 {
     return NULL;
 }
 
-Eina_List *enna_browser2_browse(Enna_Browser *browser, const char *uri)
+Eina_List *
+enna_browser_browse(Enna_Browser *browser, const char *uri)
 {
     return NULL;
 }
 
-void
-enna_browser2_browse_root(Enna_Browser *browser)
+static void
+_browser_browse_root(Enna_Browser *browser)
 {
     Eina_List *l;
     Enna_Class_Activity *act;
@@ -188,8 +190,8 @@ enna_browser2_browse_root(Enna_Browser *browser)
     }
 }
 
-Eina_List *
-enna_browser2_browse_activity(Enna_Browser *browser)
+static void
+_browser_browse_activity(Enna_Browser *browser)
 {
 
     const char *act_name = eina_list_nth(browser->tokens, 0);
@@ -219,7 +221,7 @@ enna_browser2_browse_activity(Enna_Browser *browser)
         }
     }
 
-    return NULL;
+    return;
 
 }
 
@@ -237,8 +239,8 @@ void _del(void *data, Enna_Vfs_File *file)
     b->del(b->del_data, file);
 }
 
-Eina_List *
-enna_browser2_browse_module(Enna_Browser *browser)
+static void
+_browser_browse_module(Enna_Browser *browser)
 {
     Enna_Class2_Vfs *vfs = NULL, *tmp = NULL;
     Eina_List *l;
@@ -258,7 +260,7 @@ enna_browser2_browse_module(Enna_Browser *browser)
         }
     }
     if (!vfs)
-        return NULL;
+        return;
 
     browser->priv_module = vfs->func.add(browser->tokens, act->caps, _add, browser);
     vfs->func.get_children(browser->priv_module);
@@ -267,7 +269,7 @@ enna_browser2_browse_module(Enna_Browser *browser)
 }
 
 Enna_Vfs_File *
-enna_browser2_file_dup(Enna_Vfs_File *file)
+enna_browser_file_dup(Enna_Vfs_File *file)
 {
     Enna_Vfs_File *f;
 
@@ -284,7 +286,7 @@ enna_browser2_file_dup(Enna_Vfs_File *file)
 }
 
 Eina_List *
-enna_browser2_files_get(Enna_Browser *b)
+enna_browser_files_get(Enna_Browser *b)
 {
     if (!b)
         return NULL;
@@ -292,7 +294,7 @@ enna_browser2_files_get(Enna_Browser *b)
 }
 
 const char *
-enna_browser2_uri_get(Enna_Browser *b)
+enna_browser_uri_get(Enna_Browser *b)
 {
     if (!b)
         return NULL;
