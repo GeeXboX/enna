@@ -176,9 +176,16 @@ _add_cb(void *data, Enna_File *file)
     Smart_Data *sd = data;
     Evas_Object *icon = NULL;
     DBG(__FUNCTION__);
+    
     if (!sd->o_view)
 	sd->o_view = sd->view_funcs.view_add(sd);
 
+    if (!file)
+    {
+        /* No File detected */
+
+    }
+    
     if (file->icon_file && file->icon_file[0] == '/')
     {
 	icon = elm_icon_add(sd->o_view);

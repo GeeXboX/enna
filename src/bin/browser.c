@@ -21,6 +21,7 @@
 #include <string.h>
 
 #include <Ecore.h>
+#include <Ecore_File.h>
 
 #include "browser.h"
 #include "enna.h"
@@ -228,6 +229,20 @@ _browser_browse_activity(Enna_Browser *browser)
 void _add(void *data, Enna_Vfs_File *file)
 {
     Enna_Browser *b = data;
+
+    if (!file)
+    {
+        Enna_File *nofile;
+        nofile = calloc(1, sizeof(Enna_File));
+        nofile->icon =  eina_stringshare_add("icon/nofile");
+        nofile->label = eina_stringshare_add( _("No media found!"));
+        nofile->is_menu = EINA_TRUE;
+        nofile->uri = eina_stringshare_add(ecore_file_dir_get(b->uri));
+        b->files = eina_list_append(b->files, nofile);
+        b->add(b->add_data, nofile);
+        return;
+    }
+    
     b->files = eina_list_append(b->files, file);
     b->add(b->add_data, file);
 }

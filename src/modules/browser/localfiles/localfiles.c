@@ -247,13 +247,13 @@ __class_init(const char *name, Class_Private_Data **priv,
 typedef struct _Enna_Localfiles_Priv
 {
     Eina_List *tokens;
-    void *(*add_file)(void *data, Enna_File *file);
+    void (*add_file)(void *data, Enna_File *file);
     void *data;
     ENNA_VFS_CAPS caps;
 }Enna_Localfiles_Priv;
 
 static void *
-_add(Eina_List *tokens, ENNA_VFS_CAPS caps,void *(*add_file)(void *data, Enna_File *file), void *data)
+_add(Eina_List *tokens, ENNA_VFS_CAPS caps,void (*add_file)(void *data, Enna_File *file), void *data)
 {
     Enna_Localfiles_Priv *p = calloc(1, sizeof(Enna_Localfiles_Priv));
 
@@ -424,9 +424,15 @@ _get_children(void *priv)
                 {
                     dirs_list = eina_list_append(dirs_list, l->data);
                 }
-
-                EINA_LIST_FOREACH(dirs_list, l, f)
-                    p->add_file(p->data, f);
+                if (!eina_list_count(dirs_list))
+                {
+                    p->add_file(p->data, NULL);
+                }
+                else
+                {
+                    EINA_LIST_FOREACH(dirs_list, l, f)
+                        p->add_file(p->data, f);
+                }
                 buffer_free(path);
                 buffer_free(relative_path);
                 return;
