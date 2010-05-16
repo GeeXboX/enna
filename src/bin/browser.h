@@ -24,7 +24,7 @@
 
 #include "vfs.h"
 #include "input.h"
-
+/* TODO Remove it */
 typedef struct _Browser_Selected_File_Data Browser_Selected_File_Data;
 
 struct _Browser_Selected_File_Data
