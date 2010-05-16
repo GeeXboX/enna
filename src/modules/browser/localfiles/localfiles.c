@@ -397,11 +397,19 @@ _get_children(void *priv)
                     }
                     else if (enna_util_uri_has_extension(dir, p->caps))
                     {
+                        buffer_t *mrl;
                         Enna_Vfs_File *f;
                         f = calloc(1, sizeof(Enna_Vfs_File));
-
+                       
                         buf = buffer_new();
                         buffer_appendf(buf, "/music/%s/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename);
+
+                        mrl = buffer_new();
+                        /* TODO : remove file:// on top of root->uri */
+                        buffer_appendf(mrl, "%s/%s/%s", root->uri, relative_path->buf, filename);
+                        f->mrl = eina_stringshare_add(mrl->buf);
+                        buffer_free(mrl);
+
                         f->name = eina_stringshare_add(filename);
                         f->uri = eina_stringshare_add(buf->buf);
                         buffer_free(buf);
