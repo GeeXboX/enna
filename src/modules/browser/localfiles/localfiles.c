@@ -285,17 +285,32 @@ _get_children(void *priv)
     Eina_List *l;
     buffer_t *buf;
     Enna_Localfiles_Priv *p = priv;
-    Class_Private_Data *pmod;
+    Class_Private_Data *pmod = NULL;
     if (!p)
         return;
 
-    if (p->caps == ENNA_CAPS_MUSIC)
-        pmod = mod->music;
-    else if (p->caps == ENNA_CAPS_VIDEO)
-        pmod = mod->video;
-    else if (p->caps == ENNA_CAPS_PHOTO)
-        pmod = mod->photo;
-    else
+    switch(p->caps)
+    {
+        case  ENNA_CAPS_MUSIC:
+        #ifdef BUILD_ACTIVITY_MUSIC
+            pmod = mod->music;
+        #endif
+            break;
+        case ENNA_CAPS_VIDEO:
+        #ifdef BUILD_ACTIVITY_VIDEO
+            pmod = mod->video;
+        #endif
+            break;
+        case ENNA_CAPS_PHOTO:
+        #ifdef BUILD_ACTIVITY_PHOTO
+            pmod = mod->photo;
+        #endif
+            break;
+        default:
+            break;
+    }
+    
+    if (!pmod)
         return;
 
     if (eina_list_count(p->tokens) == 2 )
