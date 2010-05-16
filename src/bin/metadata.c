@@ -111,10 +111,10 @@ pipe_read(void *data, void *buf, unsigned int nbyte)
 
     memcpy(&od, buf, nbyte);
 
-    if (!vh_file || !vh_file->uri)
+    if (!vh_file || !vh_file->mrl)
         goto out;
 
-    uri = vh_file->uri;
+    uri = vh_file->mrl;
     if (!strncmp(uri, "file://", 7))
         uri += 7;
 
@@ -662,7 +662,7 @@ enna_metadata_ondemand(const Enna_Vfs_File *file,
   if (!vh || !file || !file->uri)
     return;
 
-  uri = file->uri;
+  uri = file->mrl;
   if (!strncmp(uri, "file://", 7))
       uri += 7;
 
