@@ -471,7 +471,14 @@ mp_file_set(const char *uri, const char *label)
     }
     /* default is local files */
     if (!mrl)
+    {
+        const char *it;
+        it = strrchr(uri, '.');
+        if (it && !strcmp(it, ".iso")) /* consider ISO file as DVD */
+            mrl = set_dvd_stream(uri, MRL_RESOURCE_DVD);
+        else
         mrl = set_local_stream(uri);
+    }
 
     if (!mrl)
         return 1;
