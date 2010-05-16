@@ -256,8 +256,14 @@ enna_browser_obj_input_feed(Evas_Object *obj, enna_input event)
         break;
     case ENNA_INPUT_OK:
     {
+        Enna_Vfs_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
         /* FIXME */
-        _browse(sd, sd->view_funcs.view_selected_data_get(sd->o_view));
+        if (!file)
+            break;
+        if (file->is_directory || file->is_menu)
+            _browse(sd, file);
+        else
+            evas_object_smart_callback_call (sd->o_layout, "selected", file);
         break;
     }
     case ENNA_INPUT_UP:
