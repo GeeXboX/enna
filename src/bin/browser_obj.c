@@ -65,9 +65,10 @@ static int
 _view_delay_hilight_cb(void *data)
 {
     Smart_Data *sd = data;
+    Enna_Vfs_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
     DBG(__FUNCTION__);
     sd->hilight_timer = NULL;
-    evas_object_smart_callback_call (sd->o_layout, "delay,hilight", NULL);
+    evas_object_smart_callback_call (sd->o_layout, "delay,hilight", file);
     return 0;
 }
 
@@ -215,7 +216,8 @@ _browse(Smart_Data *sd, Enna_Vfs_File *file)
     
     ENNA_OBJECT_DEL(sd->o_view);
     enna_browser2_del(sd->browser);
-    
+    ecore_timer_del(sd->hilight_timer);
+    sd->hilight_timer = NULL;
     sd->o_view = NULL;
     DBG("browse uri : %s\n", uri);
     sd->browser = enna_browser2_add(_add_cb, sd, NULL, NULL, uri);
