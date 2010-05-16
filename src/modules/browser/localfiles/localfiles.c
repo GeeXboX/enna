@@ -37,6 +37,7 @@
 
 typedef struct _Root_Directories
 {
+    char *name;
     char *uri;
     char *label;
     char *icon;
@@ -49,6 +50,7 @@ typedef struct _Module_Config
 
 typedef struct _Class_Private_Data
 {
+    const char *name;
     const char *uri;
     const char *prev_uri;
     Module_Config *config;
@@ -418,7 +420,7 @@ __class_init(const char *name, Class_Private_Data **priv,
 
     enna_vfs_append(name, caps, class);
     data->prev_uri = NULL;
-
+    data->name = eina_stringshare_add(name);
     data->config = calloc(1, sizeof(Module_Config));
     data->config->root_directories = NULL;
 
@@ -539,26 +541,59 @@ static Enna_Class_Vfs class_photo = {
 };
 #endif
 
-static Eina_List *
-_children_get(Eina_List *tokens)
+typedef struct _Enna_Localfiles_Priv
+{
+    Eina_List *tokens;
+    void *(*add_file)(void *data, Enna_Vfs_File *file);
+    void *data;
+    ENNA_VFS_CAPS caps;
+}Enna_Localfiles_Priv;
+
+static void *
+_add(Eina_List *tokens, ENNA_VFS_CAPS caps,void *(*add_file)(void *data, Enna_Vfs_File *file), void *data)
+{
+    Enna_Localfiles_Priv *p = calloc(1, sizeof(Enna_Localfiles_Priv));
+
+    p->tokens = tokens;
+    p->add_file = add_file;
+    p->data = data;
+    p->caps = caps;
+    return p;
+}
+
+static void
+_get_children(void *priv)
 {
     Eina_List *l;
-    Eina_List *files = NULL;
     buffer_t *buf;
-    if (!tokens || !eina_list_count(tokens) )
+    Enna_Localfiles_Priv *p = priv;
+    Class_Private_Data *pmod;
+    if (!p)
+        return;
+
+    if (p->caps == ENNA_CAPS_MUSIC)
+        pmod = mod->music;
+    else if (p->caps == ENNA_CAPS_VIDEO)
+        pmod = mod->video;
+    else if (p->caps == ENNA_CAPS_PHOTO)
+        pmod = mod->photo;
+    else
+        return;
+
+    if (eina_list_count(p->tokens) == 2 )
     {
         DBG("Browse Root\n");
-        for (l = mod->music->config->root_directories; l; l = l->next)
+        for (l = pmod->config->root_directories; l; l = l->next)
         {
             Enna_Vfs_File *f;
             Root_Directories *root;
-
+            
             root = l->data;
-
+            
             f = calloc(1, sizeof(Enna_Vfs_File));
-
+            
             buf = buffer_new();
-            buffer_appendf(buf, "/music/localfiles_music/%s", root->label);
+            buffer_appendf(buf, "/music/%s/%s", pmod->name, root->label);
             f->name = eina_stringshare_add(root->label);
             f->uri = eina_stringshare_add(buf->buf);
             buffer_free(buf);
@@ -566,18 +601,17 @@ _children_get(Eina_List *tokens)
             f->icon = eina_stringshare_add("icon/hd");
             f->is_menu = 1;
 
-            files = eina_list_append(files, f);
+            p->add_file(p->data, f);
         }
-        return files;
+
     }
     else
     {
-        const char *root_name = eina_list_nth(tokens, 0);
+        const char *root_name = eina_list_nth(p->tokens, 2);
         Root_Directories *root = NULL;
-
-
-
-        EINA_LIST_FOREACH(mod->music->config->root_directories, l, root)
+        Enna_Vfs_File *f;
+        
+        EINA_LIST_FOREACH(pmod->config->root_directories, l, root)
         {
             if (!strcmp(root->label, root_name))
             {
@@ -587,25 +621,29 @@ _children_get(Eina_List *tokens)
                 Eina_List *files_list = NULL;
                 Eina_List *dirs_list = NULL;
                 buffer_t *path;
+                buffer_t *relative_path;
                 char *tmp;
                 char dir[PATH_MAX];
                 Eina_List *l_tmp;
 
+                
                 path = buffer_new();
+                relative_path = buffer_new();
                 buffer_appendf(path, "%s", root->uri + 7);
                 /* Remove the Root Name (1st Item) from the list received */
-                DBG("Tokens : %d\n", eina_list_count(tokens));
-                EINA_LIST_FOREACH(tokens, l, tmp)
+                DBG("Tokens : %d\n", eina_list_count(p->tokens));
+                EINA_LIST_FOREACH(p->tokens, l, tmp)
                     DBG(tmp);
-
-                l_tmp = eina_list_nth_list(tokens, 3);
+                
+                l_tmp = eina_list_nth_list(p->tokens, 3);
                 EINA_LIST_FOREACH(l_tmp, l, tmp)
                 {
-                    DBG("Append : /%s to %s\n", tmp, path->buf); 
+                    DBG("Append : /%s to %s\n", tmp, path->buf);
                     buffer_appendf(path, "/%s", tmp);
+                    buffer_appendf(relative_path, "%s/", tmp);
                 }
                 files = ecore_file_ls(path->buf);
-
+                
                 /* If no file found return immediatly*/
                 if (!files)
                 {
@@ -626,7 +664,10 @@ _children_get(Eina_List *tokens)
                         f = calloc(1, sizeof(Enna_Vfs_File));
 
                         buf = buffer_new();
-                        buffer_appendf(buf, "/music/localfiles_music/%s/%s", root->label, filename);
+                        relative_path->buf ?
+                            buffer_appendf(buf, "/music/%s/%s/%s/%s", pmod->name, root->label, relative_path->buf, filename) :
+                            buffer_appendf(buf, "/music/%s/%s/%s", pmod->name, root->label, filename);
+                            
                         f->name = eina_stringshare_add(filename);
                         f->uri = eina_stringshare_add(buf->buf);
                         buffer_free(buf);
@@ -636,13 +677,13 @@ _children_get(Eina_List *tokens)
 
                         dirs_list = eina_list_append(dirs_list, f);
                     }
-                    else if (enna_util_uri_has_extension(dir, ENNA_CAPS_MUSIC))
+                    else if (enna_util_uri_has_extension(dir, p->caps))
                     {
                         Enna_Vfs_File *f;
                         f = calloc(1, sizeof(Enna_Vfs_File));
 
                         buf = buffer_new();
-                        buffer_appendf(buf, "/music/localfiles_music/%s/%s", root->label, filename);
+                        buffer_appendf(buf, "/music/%s/%s/%s", pmod->name, root->label, relative_path->buf);
                         f->name = eina_stringshare_add(filename);
                         f->uri = eina_stringshare_add(buf->buf);
                         buffer_free(buf);
@@ -657,13 +698,23 @@ _children_get(Eina_List *tokens)
                 {
                     dirs_list = eina_list_append(dirs_list, l->data);
                 }
-                //eina_stringshare_del(data->prev_uri);
+
+                EINA_LIST_FOREACH(dirs_list, l, f)
+                    p->add_file(p->data, f);
                 buffer_free(path);
-                return dirs_list;
+                buffer_free(relative_path);
+                return;
             }
-	    }
-	}
-    return NULL;
+        }
+    }
+    return;
+}
+
+static void
+_del(void *priv)
+{
+    if (!priv)
+        return;
 }
 
 static Enna_Class2_Vfs class2 = {
@@ -673,7 +724,9 @@ static Enna_Class2_Vfs class2 = {
     NULL,
     "icon/hd",
     {
-        _children_get
+        _add,
+        _get_children,
+        _del
     },
     NULL
 };

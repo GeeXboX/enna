@@ -31,6 +31,7 @@ typedef struct _Enna_Vfs_File Enna_Vfs_File;
 
 enum _ENNA_VFS_CAPS
 {
+    ENNA_CAPS_NONE = 0x00,
     ENNA_CAPS_MUSIC = 0x01,
     ENNA_CAPS_VIDEO = 0x02,
     ENNA_CAPS_PHOTO = 0x04
@@ -75,7 +76,9 @@ struct _Enna_Class2_Vfs
     const char *icon;
     struct
     {
-	Eina_List *(*get_children)(Eina_List *tokens);
+        void *(* add)(Eina_List *tokens, ENNA_VFS_CAPS caps, void (*add_file)(void *data, Enna_Vfs_File *file), void *data);
+        void  (* get_children)(void *priv);
+        void  (* del)(void *priv);
     } func;
     void *cookie;
 

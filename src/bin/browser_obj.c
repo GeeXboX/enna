@@ -178,7 +178,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     }
 }
 static void
-_add_cb(Enna_Vfs_File *file, void *data)
+_add_cb(void *data, Enna_Vfs_File *file)
 {
     Smart_Data *sd = data;
     Evas_Object *icon = NULL;

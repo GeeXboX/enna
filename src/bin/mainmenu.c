@@ -64,7 +64,7 @@ static Menu_Data *sd = NULL;
 /* Local subsystem functions */
 
 static void
-_add_cb(Enna_Vfs_File *file, void *data)
+_add_cb(void *data, Enna_Vfs_File *file)
 {
     enna_mainmenu_append(file);
 }

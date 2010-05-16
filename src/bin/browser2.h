@@ -27,8 +27,8 @@
 
 typedef struct _Enna_Browser Enna_Browser;
 
-Enna_Browser *enna_browser2_add( void (*add)(Enna_Vfs_File *file, void *data), void *add_data,
-                                 void (*del)(Enna_Vfs_File *file, void *data), void *del_data,
+Enna_Browser *enna_browser2_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
+                                 void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
                                  const char *uri);
 void enna_browser2_del(Enna_Browser *b);
 Enna_Vfs_File *enna_browser2_get_file(const char *uri);
