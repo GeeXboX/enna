@@ -23,7 +23,7 @@
 #define ACTIVITY_H
 
 #include "input.h"
-
+#include "vfs.h"
 typedef enum _ENNA_CLASS_TYPE ENNA_CLASS_TYPE;
 
 typedef struct _Enna_Class_Activity Enna_Class_Activity;
@@ -40,6 +40,7 @@ struct _Enna_Class_Activity
     const char *icon_file;
     const char *icon;
     const char *bg;
+    ENNA_VFS_CAPS caps;
     struct
     {
         void (*class_init)(int dummy);
