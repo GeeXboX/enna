@@ -190,9 +190,10 @@ enna_vfs_remove(Enna_Vfs_File *f)
     if (!f)
         return;
 
-    ENNA_FREE(f->uri);
-    ENNA_FREE(f->label);
-    ENNA_FREE(f->icon);
-    ENNA_FREE(f->icon_file);
+    eina_stringshare_del(f->uri);
+    eina_stringshare_del(f->label);
+    eina_stringshare_del(f->icon);
+    eina_stringshare_del(f->icon_file);
+    eina_stringshare_del(f->mrl);
     ENNA_FREE(f);
 }
