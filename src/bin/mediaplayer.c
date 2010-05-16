@@ -448,7 +448,7 @@ mp_file_set(const char *uri, const char *label)
     else if (!strncmp(uri, URI_TYPE_VDR, strlen(URI_TYPE_VDR)))
     {
         char *device = NULL;
-        char *driver = strstr (uri, "#");
+        char *driver = strstr(uri, "#");
         size_t device_len = strlen(uri) - strlen(URI_TYPE_VDR);
 
         if (driver)
@@ -477,7 +477,7 @@ mp_file_set(const char *uri, const char *label)
         if (it && !strcmp(it, ".iso")) /* consider ISO file as DVD */
             mrl = set_dvd_stream(uri, MRL_RESOURCE_DVD);
         else
-        mrl = set_local_stream(uri);
+            mrl = set_local_stream(uri);
     }
 
     if (!mrl)
