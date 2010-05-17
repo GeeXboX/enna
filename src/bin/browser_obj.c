@@ -212,7 +212,8 @@ _browse(Smart_Data *sd, Enna_File *file)
     
     ENNA_OBJECT_DEL(sd->o_view);
     enna_browser_del(sd->browser);
-    ecore_timer_del(sd->hilight_timer);
+    if (sd->hilight_timer)
+        ecore_timer_del(sd->hilight_timer);
     sd->hilight_timer = NULL;
     sd->o_view = NULL;
     DBG("browse uri : %s\n", uri);
