@@ -52,7 +52,7 @@ struct _Enna_Browser
     Ecore_Event_Handler *ev_handler;
     Eina_List *tokens;
     Eina_List* files;
-
+    Enna_Vfs_Class *vfs;
 };
 
 static void _browser_browse_root(Enna_Browser *browser);
@@ -140,6 +140,8 @@ enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
 void
 enna_browser_del(Enna_Browser *b)
 {
+    Enna_Vfs_File *file;
+    char *token;
     if (!b)
         return;
     if (b->queue_idler)
@@ -148,6 +150,12 @@ enna_browser_del(Enna_Browser *b)
     eina_stringshare_del(b->uri);
     if (b->ev_handler)
         ecore_event_handler_del(b->ev_handler);
+    EINA_LIST_FREE(b->files, file)
+        enna_browser_file_del(file);
+    EINA_LIST_FREE(b->tokens, token)
+        free(token);
+    if (b->priv_module && b->vfs)
+        b->vfs->func.del(b->priv_module);
     free(b);
 }
 
@@ -210,7 +218,7 @@ _browser_browse_activity(Enna_Browser *browser)
 
             buf = buffer_new();
             buffer_appendf(buf, "/%s/%s", act_name, vfs->name);
-            f->name = vfs->name;
+            f->name = eina_stringshare_add(vfs->name);
             f->uri = eina_stringshare_add(buf->buf);
             buffer_free(buf);
             f->label = eina_stringshare_add(vfs->label);
@@ -276,9 +284,10 @@ _browser_browse_module(Enna_Browser *browser)
     }
     if (!vfs)
         return;
-
-    browser->priv_module = vfs->func.add(browser->tokens, act->caps, _add, browser);
-    vfs->func.get_children(browser->priv_module);
+    
+    browser->vfs = vfs;
+    browser->priv_module = browser->vfs->func.add(browser->tokens, act->caps, _add, browser);
+    browser->vfs->func.get_children(browser->priv_module);
 
 
 }
@@ -298,6 +307,20 @@ enna_browser_file_dup(Enna_Vfs_File *file)
     f->uri = eina_stringshare_add(file->uri);
     f->mrl = eina_stringshare_add(file->mrl);
     return f;
+}
+
+void
+enna_browser_file_del(Enna_File *f)
+{
+    if (!f)
+        return;
+    if (f->name) eina_stringshare_del(f->name);
+    if (f->uri) eina_stringshare_del(f->uri);
+    if (f->label) eina_stringshare_del(f->label);
+    if (f->icon) eina_stringshare_del(f->icon);
+    if (f->icon_file) eina_stringshare_del(f->icon_file);
+    if (f->mrl) eina_stringshare_del(f->mrl);
+    free(f);
 }
 
 Eina_List *

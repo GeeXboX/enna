@@ -35,4 +35,5 @@ Enna_Vfs_File *enna_browser_get_file(const char *uri);
 const char *enna_browser_uri_get(Enna_Browser *b);
 Eina_List *enna_browser_files_get(Enna_Browser *b);
 Enna_Vfs_File *enna_browser_file_dup(Enna_Vfs_File *file);
+void enna_browser_file_del(Enna_File *f);
 #endif /* BROWSER_H */
