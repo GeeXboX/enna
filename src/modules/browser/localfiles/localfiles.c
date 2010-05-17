@@ -420,17 +420,15 @@ _get_children(void *priv)
                     }
                 }
                 /* File after dir */
-                for (l = files_list; l; l = l->next)
-                {
-                    dirs_list = eina_list_append(dirs_list, l->data);
-                }
+                dirs_list = eina_list_merge(dirs_list, files_list);
+
                 if (!eina_list_count(dirs_list))
                 {
                     p->add_file(p->data, NULL);
                 }
                 else
                 {
-                    EINA_LIST_FOREACH(dirs_list, l, f)
+                    EINA_LIST_FREE(dirs_list, f)
                         p->add_file(p->data, f);
                 }
                 buffer_free(path);
