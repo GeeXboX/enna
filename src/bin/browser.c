@@ -184,7 +184,7 @@ _browser_browse_root(Enna_Browser *browser)
 
         buf = buffer_new();
         buffer_appendf(buf, "/%s", act->name);
-        f->name = act->name;
+        f->name = eina_stringshare_add(act->name);
         f->uri = eina_stringshare_add(buf->buf);
         buffer_free(buf);
         f->label = eina_stringshare_add(act->label);
