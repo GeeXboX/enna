@@ -26,6 +26,7 @@
 #include "buffer.h"
 #include "logs.h"
 #include "vfs.h"
+#include "browser.h"
 
 static Eina_List *_enna_activities = NULL;
 
@@ -155,20 +156,16 @@ void enna_activity_register(Enna_Class_Activity *act)
         return;
 
     file = calloc(1, sizeof(Enna_Vfs_File));
-    file->name = act->name;
-    file->label = act->label;
-    file->icon = act->icon;
+    file->name = eina_stringshare_add(act->name);
+    file->label = eina_stringshare_add(act->label);
+    file->icon = eina_stringshare_add(act->icon);
     file->is_directory = EINA_TRUE;
-    file->icon_file = act->bg;
-    file->uri = act->label;
+    file->icon_file = eina_stringshare_add(act->bg);
+    file->uri = eina_stringshare_add(act->label);
     _enna_activities = eina_list_append(_enna_activities, act);
     _enna_activities = eina_list_sort(_enna_activities,
                                       eina_list_count(_enna_activities),
                                       _sort_cb);
-
-    // send the ENNA_EVENT_ACTIVITIES_CHANGED event
-    enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITIES_CHANGED Sent");
-    ecore_event_add(ENNA_EVENT_ACTIVITIES_CHANGED, file, NULL, NULL);
 
     return;
 }
@@ -190,9 +187,6 @@ void enna_activity_unregister(Enna_Class_Activity *act)
         if (a == act)
         {
             _enna_activities = eina_list_remove(_enna_activities, act);
-            // send the ENNA_EVENT_ACTIVITIES_CHANGED event
-            enna_log(ENNA_MSG_EVENT, NULL, "ENNA_EVENT_ACTIVITIES_CHANGED Sent");
-            ecore_event_add(ENNA_EVENT_ACTIVITIES_CHANGED, act, NULL, NULL);
             return;
         }
     }
