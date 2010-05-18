@@ -311,7 +311,7 @@ _get_children(void *priv)
             f = calloc(1, sizeof(Enna_File));
             
             buf = buffer_new();
-            buffer_appendf(buf, "/music/%s/%s", pmod->name, root->name);
+            buffer_appendf(buf, "/%s/localfiles/%s", pmod->name, root->name);
             f->name = eina_stringshare_add(root->name);
             f->uri = eina_stringshare_add(buf->buf);
             buffer_free(buf);
@@ -383,8 +383,8 @@ _get_children(void *priv)
 
                         buf = buffer_new();
                         relative_path->buf ?
-                            buffer_appendf(buf, "/music/%s/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename) :
-                            buffer_appendf(buf, "/music/%s/%s/%s", pmod->name, root->name, filename);
+                            buffer_appendf(buf, "/%s/localfiles/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename) :
+                            buffer_appendf(buf, "/%s/localfiles/%s/%s", pmod->name, root->name, filename);
                             
                         f->name = eina_stringshare_add(filename);
                         f->uri = eina_stringshare_add(buf->buf);
@@ -402,7 +402,7 @@ _get_children(void *priv)
                         f = calloc(1, sizeof(Enna_File));
                        
                         buf = buffer_new();
-                        buffer_appendf(buf, "/music/%s/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename);
+                        buffer_appendf(buf, "/%s/localfiles/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename);
 
                         mrl = buffer_new();
                         /* TODO : remove file:// on top of root->uri */
@@ -612,13 +612,13 @@ module_init(Enna_Module *em)
     cfg_localfiles_section_load(cfg_localfiles.section);
 
 #ifdef BUILD_ACTIVITY_MUSIC
-    __class_init("localfiles", &mod->music, ENNA_CAPS_MUSIC, "path_music");
+    __class_init("music", &mod->music, ENNA_CAPS_MUSIC, "path_music");
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
-    __class_init("localfiles", &mod->video, ENNA_CAPS_VIDEO, "path_video");
+    __class_init("video", &mod->video, ENNA_CAPS_VIDEO, "path_video");
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
-    __class_init("localfiles", &mod->photo, ENNA_CAPS_PHOTO, "path_photo");
+    __class_init("photo", &mod->photo, ENNA_CAPS_PHOTO, "path_photo");
 #endif
     enna_vfs_register(&class);
 }
