@@ -19,14 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-/*
- * FIXME : Remove unused object and fix navigation : it's actually not possible
- * to return from video playback !
- * Fix state machine
- * Enable Position set
- * EOS is not used !!!!
- */
-
 #include <Edje.h>
 #include <Elementary.h>
 #include <Ecore_Input.h>
@@ -41,7 +33,7 @@
 #include "logs.h"
 #include "vfs.h"
 #include "view_list.h"
-#include "browser.h"
+#include "browser_obj.h"
 #include "mediaplayer.h"
 #include "volumes.h"
 #include "buffer.h"
@@ -65,8 +57,6 @@ static void browser_cb_select(void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_hilight(void *data, Evas_Object *obj, void *event_info);
 static void browser_cb_delay_hilight(void *data,
                                      Evas_Object *obj, void *event_info);
-static void browse(void *data);
-
 static void _create_menu(void);
 static void _return_to_video_info_gui();
 
@@ -78,16 +68,13 @@ typedef enum _VIDEO_STATE VIDEO_STATE;
 
 enum _VIDEO_STATE
 {
-    MENU_VIEW,
     BROWSER_VIEW,
     VIDEOPLAYER_VIEW
 };
 
 struct _Enna_Module_Video
 {
-    Evas *e;
     Evas_Object *o_edje;
-    Evas_Object *o_list;
     Evas_Object *o_browser;
     Evas_Object *o_backdrop;
     Evas_Object *o_snapshot;
@@ -175,24 +162,6 @@ media_controls_display(int show)
     show ? evas_object_show(mod->o_mediacontrols) : evas_object_hide(mod->o_mediacontrols);
 
     video_resize();
-}
-
-static void
-menu_view_event(enna_input event)
-{
-    switch (event)
-    {
-    case ENNA_INPUT_BACK:
-        enna_content_hide();
-        enna_mainmenu_show();
-        break;
-    case ENNA_INPUT_OK:
-        browse (enna_list_selected_data_get(mod->o_list));
-        break;
-    default:
-        enna_list_input_feed(mod->o_list, event);
-        break;
-    }
 }
 
 static void
@@ -457,26 +426,13 @@ browser_view_event(enna_input event)
         video_infos_del();
         update_movies_counter(NULL);
     }
-    enna_browser_input_feed(mod->o_browser, event);
+    enna_browser_obj_input_feed(mod->o_browser, event);
 }
 
 static void
 browser_cb_root(void *data, Evas_Object *obj, void *event_info)
 {
-    mod->state = MENU_VIEW;
-    evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
-    evas_object_smart_callback_del(mod->o_browser,
-                                   "selected", browser_cb_select);
-    evas_object_smart_callback_del(mod->o_browser,
-                                   "hilight", browser_cb_hilight);
-    evas_object_smart_callback_del(mod->o_browser,
-                                   "delay,hilight", browser_cb_delay_hilight);
 
-    ENNA_OBJECT_DEL(mod->o_browser);
-    ENNA_OBJECT_DEL(mod->o_panel_infos);
-    ENNA_OBJECT_DEL(mod->o_resume);
-
-    _create_menu();
 }
 
 static void
@@ -610,28 +566,28 @@ static void
 browser_cb_select(void *data, Evas_Object *obj, void *event_info)
 {
     int i = 0;
-    Enna_Vfs_File *f;
+    Enna_Vfs_File *file = event_info;
     Eina_List *l;
-    Browser_Selected_File_Data *ev = event_info;
 
-    if (!ev || !ev->file) return;
+    if (!file)
+        return;
 
-    if (ev->file->is_directory || ev->file->is_menu)
+    if (file->is_directory || file->is_menu)
     {
         enna_log (ENNA_MSG_EVENT,
-                  ENNA_MODULE_NAME, "Directory Selected %s", ev->file->uri);
-        update_movies_counter(ev->files);
+                  ENNA_MODULE_NAME, "Directory Selected %s", file->uri);
+        update_movies_counter(enna_browser_obj_files_get(mod->o_browser));
     }
     else
     {
         Enna_Metadata *m;
-
+        Enna_File *f;
         enna_log(ENNA_MSG_EVENT,
-                 ENNA_MODULE_NAME, "File Selected %s", ev->file->uri);
+                 ENNA_MODULE_NAME, "File Selected %s", file->uri);
         enna_mediaplayer_playlist_clear(mod->enna_playlist);
 
         /* File selected, create mediaplayer */
-        EINA_LIST_FOREACH(ev->files, l, f)
+        EINA_LIST_FOREACH(enna_browser_obj_files_get(mod->o_browser), l, f)
         {
             if (!f->is_directory && !f->is_menu)
             {
@@ -639,7 +595,7 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
                          "Append : %s %s to playlist", f->label, f->uri);
                 enna_mediaplayer_file_append(mod->enna_playlist, f);
 
-                if (!strcmp(f->uri, ev->file->uri))
+                if (!strcmp(f->uri, file->uri))
                 {
                     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                               "Select : %s %d in playlist", f->uri, i);
@@ -665,7 +621,6 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
 #endif
             movie_start_playback(0);
     }
-    free(ev);
 }
 
 static void
@@ -776,7 +731,7 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
     if (strcmp(file->uri, mod->uri_hilighted))
         return;
 
-    m = enna_metadata_meta_new(file->uri);
+    m = enna_metadata_meta_new(file->mrl);
     if (!m)
         return;
 
@@ -809,46 +764,42 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
 static void
 browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
 {
-    Browser_Selected_File_Data *ev = event_info;
+    Enna_File *file = event_info;
 
-    if (!ev || !ev->file)
+    if (!file)
         return;
 
-    if (!ev->file->is_directory && !ev->file->is_menu)
+    if (!file->is_directory && !file->is_menu)
         /* ask for on-demand scan for local files */
-        if (!strncmp(ev->file->uri, "file://", 7))
-            enna_metadata_ondemand(ev->file, _ondemand_cb_refresh);
+        if (!strncmp(file->mrl, "file://", 7))
+            enna_metadata_ondemand(file, _ondemand_cb_refresh);
 
     ENNA_FREE(mod->uri_hilighted);
-    mod->uri_hilighted = strdup(ev->file->uri);
+    mod->uri_hilighted = strdup(file->uri);
 }
 
 static void
 browser_cb_hilight(void *data, Evas_Object *obj, void *event_info)
 {
-    Browser_Selected_File_Data *ev = event_info;
+    Enna_File *file = event_info;
 
-    if (!ev || !ev->file)
+    if (!file)
         return;
 
-    if (!ev->file->is_directory && !ev->file->is_menu)
-        video_infos_display(ev->file);
+    if (!file->is_directory && !file->is_menu)
+        video_infos_display(file);
 
     ENNA_FREE(mod->uri_hilighted);
-    mod->uri_hilighted = strdup(ev->file->uri);
+    mod->uri_hilighted = strdup(file->uri);
 }
 
 static void
-browse(void *data)
+_create_menu()
 {
-    Enna_Class_Vfs *vfs = data;
 
-    if (!vfs)
-        return;
+    mod->o_browser = enna_browser_obj_add(mod->o_edje);
 
-    mod->o_browser = enna_browser_add(enna->evas);
-
-    enna_browser_view_add(mod->o_browser, ENNA_BROWSER_VIEW_LIST);
+    enna_browser_obj_view_type_set(mod->o_browser, ENNA_BROWSER_VIEW_LIST);
     evas_object_smart_callback_add(mod->o_browser,
                                    "root", browser_cb_root, NULL);
     evas_object_smart_callback_add(mod->o_browser,
@@ -860,11 +811,7 @@ browse(void *data)
 
     edje_object_part_swallow(mod->o_edje,
                              "browser.swallow", mod->o_browser);
-    enna_browser_root_set(mod->o_browser, vfs);
-    if (mod->vl)
-        enna_volumes_listener_del(mod->vl);
-    mod->vl = NULL;
-    ENNA_OBJECT_DEL(mod->o_list);
+    enna_browser_obj_root_set(mod->o_browser, "/video");
 
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     mod->o_panel_infos = enna_panel_infos_add(enna->evas);
@@ -884,56 +831,17 @@ browse(void *data)
     mod->state = BROWSER_VIEW;
 }
 
-static void
-_refresh_menu(void *data, Enna_Volume *volume)
-{
-    if (volume->type == VOLUME_TYPE_DVD_VIDEO)
-        _create_menu();
-}
-
 /****************************************************************************/
 /*                                  GUI                                     */
 /****************************************************************************/
 
-static void
-_create_menu(void)
-{
-    Evas_Object *o;
-    Eina_List *l, *categories;
-    Enna_Class_Vfs *cat;
-
-    ENNA_OBJECT_DEL(mod->o_list);
-    if (mod->vl)
-        enna_volumes_listener_del(mod->vl);
-    mod->vl = NULL;
-    /* Create List */
-    o = enna_list_add(enna->evas);
-
-    categories = enna_vfs_get(ENNA_CAPS_VIDEO);
-    EINA_LIST_FOREACH(categories, l, cat)
-    {
-        Enna_Vfs_File *item;
-        item = calloc(1, sizeof(Enna_Vfs_File));
-        item->icon = (char*)eina_stringshare_add(cat->icon);
-        item->label = (char*)eina_stringshare_add(gettext(cat->label));
-        item->is_menu = 1;
-        enna_list_file_append(o, item, browse, cat);
-    }
-
-    enna_list_select_nth(o, 0);
-    mod->o_list = o;
-    edje_object_part_swallow(mod->o_edje, "browser.swallow", o);
-    video_infos_del();
-    mod->vl =
-        enna_volumes_listener_add("video", _refresh_menu, _refresh_menu, NULL);
-}
 
 static void
 _create_gui(void)
 {
     Evas_Object *o;
 
-    mod->state = MENU_VIEW;
+    mod->state = BROWSER_VIEW;
     o = edje_object_add(enna->evas);
     edje_object_file_set(o, enna_config_theme_get(), "activity/video");
     mod->o_edje = o;
@@ -960,7 +868,6 @@ _class_show(int dummy)
     switch (mod->state)
     {
     case BROWSER_VIEW:
-    case MENU_VIEW:
         edje_object_signal_emit(mod->o_edje, "content,show", "enna");
         break;
 
@@ -984,9 +891,6 @@ _class_event(enna_input event)
 {
     switch (mod->state)
     {
-    case MENU_VIEW:
-        menu_view_event(event);
-        break;
     case BROWSER_VIEW:
         browser_view_event(event);
         break;
@@ -1043,7 +947,6 @@ em_shutdown(Enna_Module *em)
     enna_activity_unregister(&class);
     ENNA_EVENT_HANDLER_DEL(mod->eos_event_handler);
     ENNA_OBJECT_DEL(mod->o_edje);
-    ENNA_OBJECT_DEL(mod->o_list);
     evas_object_smart_callback_del(mod->o_browser, "root", browser_cb_root);
     evas_object_smart_callback_del(mod->o_browser,
                                    "selected", browser_cb_select);
