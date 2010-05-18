@@ -74,6 +74,7 @@ _enna_mainmenu_load_from_activities(void)
 {
     enna_box_clear(sd->o_menu);
     sd->browser = enna_browser_add(_add_cb, NULL, NULL, NULL, "/");
+    enna_browser_browse(sd->browser);
 }
 
 static void
