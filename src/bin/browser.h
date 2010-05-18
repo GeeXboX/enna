@@ -30,10 +30,13 @@ typedef struct _Enna_Browser Enna_Browser;
 Enna_Browser *enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
                                  void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
                                  const char *uri);
+void enna_browser_browse(Enna_Browser *b);
 void enna_browser_del(Enna_Browser *b);
 Enna_Vfs_File *enna_browser_get_file(const char *uri);
 const char *enna_browser_uri_get(Enna_Browser *b);
 Eina_List *enna_browser_files_get(Enna_Browser *b);
+int enna_browser_level_get(Enna_Browser *b);
 Enna_Vfs_File *enna_browser_file_dup(Enna_Vfs_File *file);
 void enna_browser_file_del(Enna_File *f);
+
 #endif /* BROWSER_H */

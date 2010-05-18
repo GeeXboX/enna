@@ -119,8 +119,6 @@ enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
     if (!b->tokens || eina_list_count(b->tokens) == 0)
     {
         b->type = BROWSER_ROOT;
-        b->ev_handler = ecore_event_handler_add(ENNA_EVENT_BROWSER_CHANGED,
-                                                _activities_changed_cb, b);
     }
     else if (eina_list_count(b->tokens) == 1)
     {
@@ -133,7 +131,7 @@ enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
     else
         return NULL;
 
-    b->queue_idler = ecore_idler_add(_add_idler, b);
+
     return b;
 }
 
@@ -159,16 +157,23 @@ enna_browser_del(Enna_Browser *b)
     free(b);
 }
 
-Enna_Vfs_File *
-enna_browser_get_file(const char *uri)
+void
+enna_browser_browse(Enna_Browser *b)
 {
-    return NULL;
+    if (!b)
+        return;
+    if (!b->queue_idler)
+        b->queue_idler = ecore_idler_add(_add_idler, b);
+    if (b->type == BROWSER_ROOT && !b->ev_handler)
+        b->ev_handler = ecore_event_handler_add(ENNA_EVENT_BROWSER_CHANGED,
+                                                _activities_changed_cb, b);
 }
 
-Eina_List *
-enna_browser_browse(Enna_Browser *browser, const char *uri)
+int enna_browser_level_get(Enna_Browser *b)
 {
-    return NULL;
+    if (b && b->tokens)
+        return eina_list_count(b->tokens);
+    return -1; 
 }
 
 static void
