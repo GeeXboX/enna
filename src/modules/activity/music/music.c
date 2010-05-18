@@ -194,7 +194,12 @@ _mediaplayer_info_clicked_cb(void *data, Evas_Object *obj, void *event_info)
     panel_lyrics_display(!mod->lyrics_displayed);
 }
 
-
+static void
+_browser_root_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    enna_content_hide();
+    enna_mainmenu_show();
+}
 static void
 _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -328,13 +333,14 @@ _create_menu()
     
     mod->o_browser = enna_browser_obj_add(mod->o_edje);
     enna_browser_obj_view_type_set(mod->o_browser, ENNA_BROWSER_VIEW_LIST);
-    enna_browser_obj_root_set(mod->o_browser, "/music/");
+    enna_browser_obj_root_set(mod->o_browser, "/music");
 
     evas_object_smart_callback_add(mod->o_browser, "selected",
                                    _browser_selected_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "delay,hilight",
                                    _browser_delay_hilight_cb, NULL);
-    
+    evas_object_smart_callback_add(mod->o_browser, "root",
+                                   _browser_root_cb, NULL);
     edje_object_part_swallow(mod->o_edje, "browser.swallow", mod->o_browser);
 
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
@@ -472,6 +478,8 @@ module_shutdown(Enna_Module *em)
                                    "selected", _browser_selected_cb);
     evas_object_smart_callback_del(mod->o_browser,
                                    "delay,hilight", _browser_delay_hilight_cb);
+    evas_object_smart_callback_del(mod->o_browser,
+                                   "root", _browser_root_cb);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
