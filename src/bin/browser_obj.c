@@ -352,7 +352,6 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
     if (sd->root)
         eina_stringshare_del(sd->root);
     sd->root = eina_stringshare_add(uri);
-    printf("Create Root : %s\n", uri);
     sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
     enna_browser_browse(sd->browser);
 }
