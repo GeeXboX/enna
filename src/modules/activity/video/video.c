@@ -683,7 +683,7 @@ video_infos_display(const Enna_Vfs_File *file)
         return;
 
     /* If m is NULL, the panels will be cleaned. */
-    m = enna_metadata_meta_new(file->uri);
+    m = enna_metadata_meta_new(file->mrl);
 
     video_infos_display_title(file, m);
     video_infos_display_genre(file, m);
@@ -722,13 +722,13 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
 {
     Enna_Metadata *m;
 
-    if (!file || !file->uri || !mod->uri_hilighted)
+    if (!file || !file->mrl || !mod->uri_hilighted)
         return;
 
     if (file->is_directory || file->is_menu)
         return;
 
-    if (strcmp(file->uri, mod->uri_hilighted))
+    if (strcmp(file->mrl, mod->uri_hilighted))
         return;
 
     m = enna_metadata_meta_new(file->mrl);
@@ -766,7 +766,7 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
 {
     Enna_File *file = event_info;
 
-    if (!file)
+    if (!file || !file->mrl)
         return;
 
     if (!file->is_directory && !file->is_menu)
@@ -774,8 +774,9 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
         if (!strncmp(file->mrl, "file://", 7))
             enna_metadata_ondemand(file, _ondemand_cb_refresh);
 
+
     ENNA_FREE(mod->uri_hilighted);
-    mod->uri_hilighted = strdup(file->uri);
+    mod->uri_hilighted = strdup(file->mrl);
 }
 
 static void
@@ -790,7 +791,7 @@ browser_cb_hilight(void *data, Evas_Object *obj, void *event_info)
         video_infos_display(file);
 
     ENNA_FREE(mod->uri_hilighted);
-    mod->uri_hilighted = strdup(file->uri);
+    mod->uri_hilighted = strdup(file->mrl);
 }
 
 static void
@@ -900,6 +901,7 @@ _class_event(enna_input event)
     default:
         break;
     }
+
 }
 
 static Enna_Class_Activity class =
