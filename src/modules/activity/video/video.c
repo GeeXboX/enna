@@ -854,14 +854,14 @@ _create_gui(void)
 /****************************************************************************/
 
 static void
-_class_init(int dummy)
+_class_init(void)
 {
     _create_gui();
     enna_content_append(ENNA_MODULE_NAME, mod->o_edje);
 }
 
 static void
-_class_show(int dummy)
+_class_show(void)
 {
     enna_content_select(ENNA_MODULE_NAME);
     edje_object_signal_emit(mod->o_edje, "module,show", "enna");
@@ -881,7 +881,7 @@ _class_show(int dummy)
 }
 
 static void
-_class_hide(int dummy)
+_class_hide(void)
 {
     _return_to_video_info_gui();
     edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
@@ -919,10 +919,8 @@ static Enna_Class_Activity class =
         NULL,
         _class_show,
         _class_hide,
-        _class_event,
-        NULL
-    },
-    NULL
+        _class_event
+    }
 };
 
 static void

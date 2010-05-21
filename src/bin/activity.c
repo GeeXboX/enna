@@ -106,11 +106,11 @@ enna_activity_##func(const char *name) \
     return 0; \
 }
 
-ACTIVITY_FUNC(init, 0);
-ACTIVITY_FUNC(quit_request, 0);
-ACTIVITY_FUNC(shutdown, 0);
-ACTIVITY_FUNC(show, 0);
-ACTIVITY_FUNC(hide, 0);
+ACTIVITY_FUNC(init);
+ACTIVITY_FUNC(quit_request);
+ACTIVITY_FUNC(shutdown);
+ACTIVITY_FUNC(show);
+ACTIVITY_FUNC(hide);
 
 int
 enna_activity_event(Enna_Class_Activity *act, enna_input event)
@@ -133,7 +133,7 @@ enna_activity_request_quit_all(void)
     {
         if (act->func.class_quit_request)
         {
-          tmp = act->func.class_quit_request (0);
+          tmp = act->func.class_quit_request();
           if (tmp)
             buffer_appendf(msg, "%s<t> : <hilight>%s</hilight><br>", act->label, tmp);
         }

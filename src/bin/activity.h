@@ -43,15 +43,13 @@ struct _Enna_Class_Activity
     ENNA_VFS_CAPS caps;
     struct
     {
-        void (*class_init)(int dummy);
-        const char*  (*class_quit_request)(int dummy);
-        void (*class_shutdown)(int dummy);
-        void (*class_show)(int dummy);
-        void (*class_hide)(int dummy);
+        void (*class_init)(void);
+        const char*  (*class_quit_request)(void);
+        void (*class_shutdown)(void);
+        void (*class_show)(void);
+        void (*class_hide)(void);
         void (*class_event)(enna_input event);
-        void (*class_grabbing_finished)(void *metadata);
     } func;
-    Eina_List *categories;
 };
 void enna_activity_register(Enna_Class_Activity *act);
 void enna_activity_unregister(Enna_Class_Activity *act);

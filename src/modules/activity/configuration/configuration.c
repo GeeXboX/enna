@@ -60,7 +60,7 @@ static void _create_menu(void);
 static void _delete_menu(void);
 static void _show_subpanel(Enna_Config_Panel *p);
 static void _hide_subpanel(Enna_Config_Panel *p);
-static void _activity_hide (int dummy);
+static void _activity_hide();
 
 
 
@@ -155,7 +155,7 @@ _hide_subpanel(Enna_Config_Panel *p)
 /*                        Activity Class API                                */
 /****************************************************************************/
 static void
-_activity_show (int dummy)
+_activity_show()
 {
     // create the enna_content if not created yet
     if (!mod->o_edje)
@@ -176,7 +176,7 @@ _activity_show (int dummy)
 }
 
 static void
-_activity_hide (int dummy)
+_activity_hide()
 {
     edje_object_signal_emit (mod->o_edje, "menu,hide", "enna");
     edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
@@ -220,8 +220,7 @@ static Enna_Class_Activity class = {
         _activity_show,
         _activity_hide,
         _activity_event
-    },
-    NULL
+    }
 };
 
 /****************************************************************************/

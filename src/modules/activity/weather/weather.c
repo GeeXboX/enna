@@ -238,7 +238,7 @@ set_default_background (void)
 }
 
 static void
-_class_init (int dummy)
+_class_init(void)
 {
     create_gui ();
     set_default_background ();
@@ -246,7 +246,7 @@ _class_init (int dummy)
 }
 
 static void
-_class_shutdown (int dummy)
+_class_shutdown(void)
 {
     ENNA_TIMER_DEL (mod->timer);
     ENNA_OBJECT_DEL (mod->bg);
@@ -259,7 +259,7 @@ _class_shutdown (int dummy)
 }
 
 static void
-_class_show (int dummy)
+_class_show(void)
 {
     enna_content_select(ENNA_MODULE_NAME);
     enna_weather_update(mod->w);
@@ -270,7 +270,7 @@ _class_show (int dummy)
 }
 
 static void
-_class_hide (int dummy)
+_class_hide(void)
 {
     edje_object_signal_emit (mod->edje, "weather,hide", "enna");
 }
@@ -300,8 +300,7 @@ static Enna_Class_Activity class = {
         _class_show,
         _class_hide,
         _class_event
-    },
-    NULL
+    }
 };
 
 /****************************************************************************/

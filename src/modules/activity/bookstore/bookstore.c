@@ -251,7 +251,7 @@ bs_menu_delete (void)
 /****************************************************************************/
 
 static void
-_class_show (int dummy)
+_class_show(void)
 {
     /* create the activity content once for all */
     if (!mod->edje)
@@ -273,7 +273,7 @@ _class_show (int dummy)
 }
 
 static void
-_class_hide (int dummy)
+_class_hide(void)
 {
     edje_object_signal_emit(mod->edje, "service,hide", "enna");
     edje_object_signal_emit(mod->edje, "menu,hide", "enna");
@@ -332,8 +332,7 @@ static Enna_Class_Activity class = {
         _class_show,
         _class_hide,
         _class_event
-    },
-    NULL
+    }
 };
 
 /****************************************************************************/
