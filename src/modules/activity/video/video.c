@@ -432,7 +432,8 @@ browser_view_event(enna_input event)
 static void
 browser_cb_root(void *data, Evas_Object *obj, void *event_info)
 {
-
+    enna_content_hide();
+    enna_mainmenu_show();
 }
 
 static void
