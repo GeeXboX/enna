@@ -139,34 +139,34 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     switch(sd->view_type)
     {
     case ENNA_BROWSER_VIEW_LIST:
-        sd->view_funcs.view_add = _browser_view_list_add;
-        sd->view_funcs.view_append = enna_list_file_append;
-        sd->view_funcs.view_selected_data_get = enna_list_selected_data_get;
-        sd->view_funcs.view_jump_label = enna_list_jump_label;
-        sd->view_funcs.view_key_down = enna_list_input_feed;
-        sd->view_funcs.view_select_nth = enna_list_select_nth;
-        sd->view_funcs.view_files_get = enna_list_files_get;
-        sd->view_funcs.view_jump_ascii = enna_list_jump_ascii;
+        sd->view_funcs.view_add                 = _browser_view_list_add;
+        sd->view_funcs.view_append              = enna_list_file_append;
+        sd->view_funcs.view_selected_data_get   = enna_list_selected_data_get;
+        sd->view_funcs.view_jump_label          = enna_list_jump_label;
+        sd->view_funcs.view_key_down            = enna_list_input_feed;
+        sd->view_funcs.view_select_nth          = enna_list_select_nth;
+        sd->view_funcs.view_files_get           = enna_list_files_get;
+        sd->view_funcs.view_jump_ascii          = enna_list_jump_ascii;
         break;
     case ENNA_BROWSER_BOX:
-        sd->view_funcs.view_add = _browser_box_add;
-        sd->view_funcs.view_append = enna_box_file_append;
-        sd->view_funcs.view_selected_data_get = enna_box_selected_data_get;
-        sd->view_funcs.view_jump_label = enna_box_jump_label;
-        sd->view_funcs.view_key_down = enna_box_input_feed;
-        sd->view_funcs.view_select_nth = enna_box_select_nth;
-        sd->view_funcs.view_files_get = enna_box_files_get;
-        sd->view_funcs.view_jump_ascii = enna_box_jump_ascii;
+        sd->view_funcs.view_add                 = _browser_box_add;
+        sd->view_funcs.view_append              = enna_box_file_append;
+        sd->view_funcs.view_selected_data_get   = enna_box_selected_data_get;
+        sd->view_funcs.view_jump_label          = enna_box_jump_label;
+        sd->view_funcs.view_key_down            = enna_box_input_feed;
+        sd->view_funcs.view_select_nth          = enna_box_select_nth;
+        sd->view_funcs.view_files_get           = enna_box_files_get;
+        sd->view_funcs.view_jump_ascii          = enna_box_jump_ascii;
         break;
     case ENNA_BROWSER_VIEW_WALL:
-        sd->view_funcs.view_add = _browser_view_wall_add;
-        sd->view_funcs.view_append = enna_wall_file_append;
-        sd->view_funcs.view_selected_data_get = enna_wall_selected_data_get;
-        sd->view_funcs.view_jump_label = enna_wall_jump_label;
-        sd->view_funcs.view_key_down = enna_wall_input_feed;
-        sd->view_funcs.view_select_nth = _browser_view_wall_select_nth;
-        sd->view_funcs.view_files_get = enna_wall_files_get;
-        sd->view_funcs.view_jump_ascii = enna_wall_jump_ascii;
+        sd->view_funcs.view_add                 = _browser_view_wall_add;
+        sd->view_funcs.view_append              = enna_wall_file_append;
+        sd->view_funcs.view_selected_data_get   = enna_wall_selected_data_get;
+        sd->view_funcs.view_jump_label          = enna_wall_jump_label;
+        sd->view_funcs.view_key_down            = enna_wall_input_feed;
+        sd->view_funcs.view_select_nth          = _browser_view_wall_select_nth;
+        sd->view_funcs.view_files_get           = enna_wall_files_get;
+        sd->view_funcs.view_jump_ascii          = enna_wall_jump_ascii;
     default:
         break;
     }
