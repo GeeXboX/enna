@@ -43,7 +43,7 @@
 #define ITEM_CLASS_VIDEO    "object.item.videoItem"
 #define ITEM_CLASS_TEXT     "object.item.textItem"
 
-typedef struct Enna_Module_UPnP_s
+typedef struct _Enna_Module_UPnP
 {
     Evas *e;
     Enna_Module *em;

@@ -47,7 +47,7 @@ typedef struct shoutcast_genre_s {
     Eina_List *ssl;
 } shoutcast_genre_t;
 
-typedef struct Enna_Module_Shoutcast_s
+typedef struct _Enna_Module_Shoutcast
 {
     Evas *e;
     Eina_Bool root_menu;

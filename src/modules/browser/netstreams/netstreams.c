@@ -53,7 +53,7 @@ typedef struct netstreams_priv_s
     Eina_List *config_netstreams;
 } netstreams_priv_t;
 
-typedef struct Enna_Module_Netstreams_s
+typedef struct _Enna_Module_Netstreams
 {
     Evas *e;
     Enna_Module *em;
