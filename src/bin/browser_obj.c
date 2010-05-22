@@ -177,25 +177,25 @@ _add_cb(void *data, Enna_File *file)
     Smart_Data *sd = data;
     Evas_Object *icon = NULL;
     DBG(__FUNCTION__);
-    
+
     if (!sd->o_view)
-	sd->o_view = sd->view_funcs.view_add(sd);
+        sd->o_view = sd->view_funcs.view_add(sd);
 
     if (!file)
     {
         /* No File detected */
 
     }
-    
+
     if (file->icon_file && file->icon_file[0] == '/')
     {
-	icon = elm_icon_add(sd->o_view);
-	elm_icon_file_set(icon, file->icon_file, NULL);
+        icon = elm_icon_add(sd->o_view);
+        elm_icon_file_set(icon, file->icon_file, NULL);
     }
     else
     {
-	icon = elm_icon_add(sd->o_view);
-	edje_object_file_set(icon, enna_config_theme_get(), file->icon);
+        icon = elm_icon_add(sd->o_view);
+        edje_object_file_set(icon, enna_config_theme_get(), file->icon);
     }
 
     sd->view_funcs.view_append(sd->o_view, file, NULL/*_browse*/, file);
@@ -210,7 +210,7 @@ _browse(Smart_Data *sd, Enna_File *file)
         return;
 
     uri = eina_stringshare_add(file->uri);
-    
+
     ENNA_OBJECT_DEL(sd->o_view);
     enna_browser_del(sd->browser);
     if (sd->hilight_timer)
@@ -227,13 +227,13 @@ static void
 _browse_back(Smart_Data *sd)
 {
     const char *uri = eina_stringshare_add(enna_browser_uri_get(sd->browser));
-    
+
     ENNA_OBJECT_DEL(sd->o_view);
     enna_browser_del(sd->browser);
-    
+
     sd->o_view = NULL;
     DBG("browse uri : %s\n", uri);
-    
+
     if ( uri == sd->root)
     {
         sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
@@ -338,7 +338,8 @@ enna_browser_obj_input_feed(Evas_Object *obj, enna_input event)
 }
 
 void
-enna_browser_obj_view_type_set(Evas_Object *obj, Enna_Browser_View_Type view_type)
+enna_browser_obj_view_type_set(Evas_Object *obj,
+                               Enna_Browser_View_Type view_type)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     DBG(__FUNCTION__);
@@ -362,15 +363,15 @@ enna_browser_obj_add(Evas_Object *parent)
     Smart_Data *sd;
     DBG(__FUNCTION__);
     sd = calloc(1, sizeof(Smart_Data));
-    
+
     sd->o_layout = elm_layout_add(parent);
     evas_object_size_hint_weight_set(sd->o_layout, -1.0, -1.0);
     evas_object_size_hint_align_set(sd->o_layout, 1.0, 1.0);
     elm_layout_file_set(sd->o_layout, enna_config_theme_get(), "enna/browser");
-    
+
     evas_object_data_set(sd->o_layout, "sd", sd);
-    
+
     enna_browser_obj_view_type_set(sd->o_layout, ENNA_BROWSER_VIEW_LIST);
-    
+
     return sd->o_layout;
 }
