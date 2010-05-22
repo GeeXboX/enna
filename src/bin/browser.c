@@ -210,7 +210,7 @@ _browser_browse_activity(Enna_Browser *browser)
 
     const char *act_name = eina_list_nth(browser->tokens, 0);
     Enna_Class_Activity *act = enna_activity_get(act_name);
-    
+
     //if (!strcmp(act_name, "music"))
     {
         Enna_Vfs_Class *vfs;
@@ -255,7 +255,7 @@ void _add(void *data, Enna_Vfs_File *file)
         b->add(b->add_data, nofile);
         return;
     }
-    
+
     b->files = eina_list_append(b->files, file);
     b->add(b->add_data, file);
 }
@@ -277,7 +277,7 @@ _browser_browse_module(Enna_Browser *browser)
     const char *name=  (const char*)eina_list_nth(browser->tokens, 1) ;
     act = enna_activity_get(act_name);
 
-    
+
     EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, tmp)
     {
 
@@ -289,9 +289,10 @@ _browser_browse_module(Enna_Browser *browser)
     }
     if (!vfs)
         return;
-    
+
     browser->vfs = vfs;
-    browser->priv_module = browser->vfs->func.add(browser->tokens, act->caps, _add, browser);
+    browser->priv_module =
+        browser->vfs->func.add(browser->tokens, act->caps, _add, browser);
     browser->vfs->func.get_children(browser->priv_module);
 
 
