@@ -358,7 +358,7 @@ _get_children(void *priv)
                 {
                     DBG("Append : /%s to %s\n", tmp, path->buf);
                     buffer_appendf(path, "/%s", tmp);
-                    buffer_appendf(relative_path, "%s/", tmp);
+                    buffer_appendf(relative_path, "%s", tmp);
                 }
                 files = ecore_file_ls(path->buf);
                 
