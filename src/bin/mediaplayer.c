@@ -176,12 +176,16 @@ event_key_down(void *data, int type, void *event)
 static int
 event_mouse_button(void *data, int type, void *event)
 {
+    mrl_resource_t res;
     Ecore_Event_Mouse_Button *e = event;
 
     /* Broadcast mouse position only for dvd player and only
        if libplayer window is on screen */
-    if ((e->window == enna->ee_winid) || !mp->uri ||
-        strncmp(mp->uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
+    if ((e->window == enna->ee_winid) || !mp->uri)
+        return 1;
+
+    res = mrl_get_resource(mp->player, NULL);
+    if (res != MRL_RESOURCE_DVDNAV)
         return 1;
 
     /* Set mouse position and send mouseclick event */
@@ -195,12 +199,16 @@ event_mouse_button(void *data, int type, void *event)
 static int
 event_mouse_move(void *data, int type, void *event)
 {
+    mrl_resource_t res;
     Ecore_Event_Mouse_Move *e = event;
 
     /* Broadcast mouse position only for dvd player and only
        if libplayer window is on screen */
-    if ((e->window == enna->ee_winid) || !mp->uri ||
-        strncmp(mp->uri, URI_TYPE_DVDNAV, strlen(URI_TYPE_DVDNAV)))
+    if ((e->window == enna->ee_winid) || !mp->uri)
+        return 1;
+
+    res = mrl_get_resource(mp->player, NULL);
+    if (res != MRL_RESOURCE_DVDNAV)
         return 1;
 
     /* Send mouse position to libplayer */
