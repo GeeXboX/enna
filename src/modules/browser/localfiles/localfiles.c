@@ -268,7 +268,6 @@ static void
 _get_children(void *priv)
 {
     Eina_List *l;
-    buffer_t *buf;
     Enna_Localfiles_Priv *p = priv;
     Class_Private_Data *pmod = NULL;
     if (!p)
@@ -300,11 +299,12 @@ _get_children(void *priv)
 
     if (eina_list_count(p->tokens) == 2 )
     {
-        DBG("Browse Root\n");
+        //DBG("Browse Root\n");
         for (l = pmod->config->root_directories; l; l = l->next)
         {
             Enna_File *f;
             Root_Directories *root;
+            buffer_t *buf;
             
             root = l->data;
             
@@ -349,14 +349,14 @@ _get_children(void *priv)
                 relative_path = buffer_new();
                 buffer_appendf(path, "%s", root->uri + 7);
                 /* Remove the Root Name (1st Item) from the list received */
-                DBG("Tokens : %d\n", eina_list_count(p->tokens));
-                EINA_LIST_FOREACH(p->tokens, l, tmp)
-                    DBG(tmp);
+               // DBG("Tokens : %d\n", eina_list_count(p->tokens));
+               // EINA_LIST_FOREACH(p->tokens, l, tmp)
+               //     DBG(tmp);
                 
                 l_tmp = eina_list_nth_list(p->tokens, 3);
                 EINA_LIST_FOREACH(l_tmp, l, tmp)
                 {
-                    DBG("Append : /%s to %s\n", tmp, path->buf);
+                    //DBG("Append : /%s to %s\n", tmp, path->buf);
                     buffer_appendf(path, "/%s", tmp);
                     buffer_appendf(relative_path, "%s/", tmp);
                 }
@@ -383,7 +383,7 @@ _get_children(void *priv)
 
                         buf = buffer_new();
                         relative_path->buf ?
-                            buffer_appendf(buf, "/%s/localfiles/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename) :
+                            buffer_appendf(buf, "/%s/localfiles/%s/%s%s", pmod->name, root->name, relative_path->buf, filename) :
                             buffer_appendf(buf, "/%s/localfiles/%s/%s", pmod->name, root->name, filename);
                             
                         f->name = eina_stringshare_add(filename);
@@ -397,16 +397,20 @@ _get_children(void *priv)
                     }
                     else if (enna_util_uri_has_extension(dir, p->caps))
                     {
+                        buffer_t *buf;
                         buffer_t *mrl;
                         Enna_File *f;
                         f = calloc(1, sizeof(Enna_File));
                        
                         buf = buffer_new();
-                        buffer_appendf(buf, "/%s/localfiles/%s/%s/%s", pmod->name, root->name, relative_path->buf, filename);
-
+                        relative_path->buf ?
+                            buffer_appendf(buf, "/%s/localfiles/%s/%s%s", pmod->name, root->name, relative_path->buf, filename) :
+                            buffer_appendf(buf, "/%s/localfiles/%s/%s", pmod->name, root->name, filename);
+                        
                         mrl = buffer_new();
                         /* TODO : remove file:// on top of root->uri */
-                        buffer_appendf(mrl, "%s/%s/%s", root->uri, relative_path->buf, filename);
+                        buffer_appendf(mrl, "%s/%s%s", root->uri, relative_path->buf, filename);
+                        
                         f->mrl = eina_stringshare_add(mrl->buf);
                         buffer_free(mrl);
 
