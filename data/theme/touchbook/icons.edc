@@ -1,0 +1,70 @@
+
+#define STOCK_ICON(icon_file, icon_name)            \
+images {                                            \
+   image: icon_file COMP;                           \
+}                                                   \
+group {                                             \
+   name: icon_name;                                 \
+    parts {                                         \
+        part { name: "icon";                        \
+            description { state: "default" 0.0;     \
+            image.normal: icon_file;                \
+            }                                       \
+        }                                           \
+    }                                               \
+}                                                   \
+
+
+/* Icons */
+STOCK_ICON("icon_config.png",                   "icon/config");
+STOCK_ICON("icon_bookstore.png",                "icon/bookstore");
+STOCK_ICON("icon_music.png",                    "icon/music");
+STOCK_ICON("icon_photo.png",                    "icon/photo");
+STOCK_ICON("icon_video.png",                    "icon/video");
+STOCK_ICON("icon_weather.png",                  "icon/weather");
+
+/* Weather */
+STOCK_ICON("weather/weather_fall.png",          "weather/fall");
+STOCK_ICON("weather/weather_spring.png",        "weather/spring");
+STOCK_ICON("weather/weather_summer.png",        "weather/summer");
+STOCK_ICON("weather/weather_unknown.png",       "weather/unknown");
+STOCK_ICON("weather/weather_winter.png",        "weather/winter");
+
+/* Weather Daily */
+STOCK_ICON("weather/weather_cloudy.png",        "weather/cloudy");
+STOCK_ICON("weather/weather_foggy.png",         "weather/foggy");
+STOCK_ICON("weather/weather_heavy_rain.png",    "weather/heavy_rain");
+STOCK_ICON("weather/weather_ice.png",           "weather/ice");
+STOCK_ICON("weather/weather_light_snow.png",    "weather/light_snow");
+STOCK_ICON("weather/weather_rain.png",          "weather/rain");
+STOCK_ICON("weather/weather_rain_storm.png",    "weather/rain_storm");
+STOCK_ICON("weather/weather_showers.png",       "weather/showers");
+STOCK_ICON("weather/weather_snow.png",          "weather/snow");
+STOCK_ICON("weather/weather_sun_clouds.png",    "weather/clouds");
+STOCK_ICON("weather/weather_sun_light_clouds.png",  "weather/light_clouds");
+STOCK_ICON("weather/weather_sun_mostly_cloudy.png", "weather/mostly_cloudy");
+STOCK_ICON("weather/weather_sunny.png",         "weather/sunny");
+STOCK_ICON("weather/weather_sun_rain.png",      "weather/sun_rain");
+STOCK_ICON("weather/weather_sun_snow.png",      "weather/sun_snow");
+STOCK_ICON("weather/weather_sun_storm.png",     "weather/sun_storm");
+STOCK_ICON("weather/weather_windy.png",         "weather/windy");
+
+#define STOCK_ICON_FIXED(icon_file, icon_name, w, h) \
+images {                                            \
+   image: icon_file COMP;                           \
+}                                                   \
+group {                                             \
+   name: icon_name;                                 \
+    parts {                                         \
+        part { name: "icon";                        \
+            description { state: "default" 0.0;     \
+            min: w h;                               \
+            max: w h;                               \
+            image.normal: icon_file;                \
+            }                                       \
+        }                                           \
+    }                                               \
+}                                                   \
+
+STOCK_ICON_FIXED("arrow_right.png", "icon/arrow_right", 12, 17);
+

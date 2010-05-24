@@ -33,7 +33,7 @@ group { name: "elm/win/inwin/enna";
          clip_to: "clip";
          description {
             state: "default" 0.0;
-            color: 255 255 255 200;
+            color: 255 255 255 255;
             rel1.to: "clip";
 //         rel1.offset: -20 -20;
             rel2.to: "clip";

@@ -5,7 +5,7 @@ MAINTAINERCLEANFILES = Makefile.in
 EDJE_CC = edje_cc
 
 EDJE_FLAGS = \
--id $(top_srcdir)/data/theme/touchbook/images
+-id $(top_srcdir)/data/theme/touchbook/images  -id $(top_srcdir)/data/theme/touchbook/gadgets/date/images
 
 EDJE_VERB = $(EDJE_VERB_$(V))
 EDJE_VERB_ = $(EDJE_VERB_$(AM_DEFAULT_VERBOSITY))

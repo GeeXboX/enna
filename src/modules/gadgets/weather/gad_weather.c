@@ -26,7 +26,11 @@
 #include "enna_config.h"
 #include "utils.h"
 #include "weather_api.h"
-#include "weather_notification.h"
+#include "gadgets.h"
+#include "module.h"
+
+#define ENNA_MODULE_NAME "gadget_weather"
+
 
 typedef struct weather_notifier_sd_s {
     weather_t *w;
@@ -34,17 +38,17 @@ typedef struct weather_notifier_sd_s {
     Evas_Object *icon;
 } weather_notifier_smart_data_t;
 
+static weather_notifier_smart_data_t *sd = NULL;
+
 static void
 cb_del (void *data, Evas *a, Evas_Object *obj, void *event_info)
 {
     weather_notifier_smart_data_t *sd = data;
 
     ENNA_OBJECT_DEL(sd->icon);
-    enna_weather_free(sd->w);
-    ENNA_FREE(sd);
 }
 
-void
+static void
 enna_weather_notification_update (Evas_Object *obj)
 {
   weather_notifier_smart_data_t *sd;
@@ -77,24 +81,76 @@ enna_weather_notification_update (Evas_Object *obj)
                           "weather,show" : "weather,hide", "enna");
 }
 
-Evas_Object *
-enna_weather_notification_smart_add (Evas *evas)
+static Evas_Object *
+enna_weather_notification_smart_add()
 {
-  weather_notifier_smart_data_t *sd;
-  Eina_List *cities;
+    Evas_Coord w, h;
+    ENNA_OBJECT_DEL(sd->edje);
 
-  sd = ENNA_NEW(weather_notifier_smart_data_t, 1);
+    sd->edje = edje_object_add(enna->evas);
+    evas_object_event_callback_add(sd->edje, EVAS_CALLBACK_DEL, cb_del, sd);
 
-  cities = enna_weather_cities_get();
-  sd->w = enna_weather_new(cities->data);
+    evas_object_data_set(sd->edje, "sd", sd);
+    edje_object_file_set(sd->edje, enna_config_theme_get(),
+                         "enna/notification/weather");
+    edje_object_size_min_get(sd->edje, &w, &h);
+    evas_object_size_hint_min_set(sd->edje, w, h);
+    enna_weather_notification_update(sd->edje);
 
-  sd->edje = edje_object_add(evas);
-  evas_object_event_callback_add(sd->edje, EVAS_CALLBACK_DEL, cb_del, sd);
-
-  evas_object_data_set(sd->edje, "sd", sd);
-  edje_object_file_set(sd->edje, enna_config_theme_get(),
-                       "enna/notification/weather");
-  enna_weather_notification_update(sd->edje);
-
-  return sd->edje;
+    return sd->edje;
 }
+
+static void
+enna_weather_notification_smart_del()
+{
+    ENNA_OBJECT_DEL(sd->edje);
+}
+
+static Enna_Gadget gadget =
+{
+    enna_weather_notification_smart_add,
+    enna_weather_notification_smart_del,
+
+};
+
+
+/* Module interface */
+
+#ifdef USE_STATIC_MODULES
+#undef MOD_PREFIX
+#define MOD_PREFIX enna_mod_gadget_weather
+#endif /* USE_STATIC_MODULES */
+
+static void
+module_init(Enna_Module *em)
+{
+    Eina_List *cities;
+
+    sd = ENNA_NEW(weather_notifier_smart_data_t, 1);
+    cities = enna_weather_cities_get();
+    sd->w = enna_weather_new(cities->data);
+
+    enna_gadgets_register(&gadget);
+}
+
+static void
+module_shutdown(Enna_Module *em)
+{
+    ENNA_OBJECT_DEL(sd->edje);
+    enna_weather_free(sd->w);
+    ENNA_FREE(sd);
+}
+
+Enna_Module_Api ENNA_MODULE_API =
+{
+    ENNA_MODULE_VERSION,
+    ENNA_MODULE_NAME,
+    N_("Weather Gadget"),
+    NULL,
+    N_("Module to show weather on the desktop"),
+    "bla bla bla<br><b>bla bla bla</b><br><br>bla.",
+    {
+        module_init,
+        module_shutdown
+    }
+};

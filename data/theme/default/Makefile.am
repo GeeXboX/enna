@@ -5,7 +5,7 @@ MAINTAINERCLEANFILES = Makefile.in
 EDJE_CC = edje_cc
 
 EDJE_FLAGS = \
--id $(top_srcdir)/data/theme/default/images \
+-id $(top_srcdir)/data/theme/default/images -id $(top_srcdir)/data/theme/default/gadgets/date/images\
 -fd $(top_srcdir)/data/theme/default/fonts
 
 EDJE_VERB = $(EDJE_VERB_$(V))
@@ -335,7 +335,8 @@ notification_volume.edc \
 notification_weather.edc \
 picture.edc \
 popup.edc \
-slideshow.edc
+slideshow.edc \
+gadgets.edc
 
 EXTRA_DIST = \
   $(IMG_ICONS) \

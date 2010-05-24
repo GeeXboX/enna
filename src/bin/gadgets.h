@@ -19,10 +19,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef WEATHER_NOTIFICATION_H
-#define WEATHER_NOTIFICATION_H
+#include <Edje.h>
+#include <Elementary.h>
 
-Evas_Object *enna_weather_notification_smart_add (Evas *evas);
-void enna_weather_notification_update (Evas_Object *obj);
+typedef struct _Enna_Gadget Enna_Gadget;
 
-#endif /* WEATHER_NOTIFICATION_H */
+struct _Enna_Gadget
+{
+    Evas_Object *(*add)(void);
+    void (*del)(void);
+};
+
+void enna_gadgets_register(Enna_Gadget *gad);
+void enna_gadgets_show();
+void enna_gadgets_hide();
+int  enna_gadgets_init();
+int  enna_gadgets_shutdown();

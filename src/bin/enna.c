@@ -52,6 +52,7 @@
 #include "url_utils.h"
 #include "xdg.h"
 #include "geoip.h"
+#include "gadgets.h"
 
 /* seconds after which the mouse pointer disappears*/
 #define ENNA_MOUSE_IDLE_TIMEOUT 10
@@ -288,6 +289,9 @@ static int _enna_init(int argc, char **argv)
 
     if (!enna_mediaplayer_init())
         return 0;
+
+    /* Init Gadgets */
+    enna_gadgets_init();
 
     /* Load available modules */
     enna_module_load_all();

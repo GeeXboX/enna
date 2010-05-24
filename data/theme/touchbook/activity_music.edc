@@ -1,0 +1,235 @@
+
+group {
+   name: "activity/music";
+   parts {
+      images {
+         image: "activity_bg.png" COMP;
+      }
+
+      part {
+         name: "module.clip";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+            rel1.relative: 0 0;
+            rel1.offset: 0 24;
+            rel2.relative: 1 1;
+            visible: 0;
+         }
+         description {
+            state: "show" 0.0;
+            inherit: "default" 0.0;
+            color : 255 255 255 255;
+            visible: 1;
+         }
+      }
+
+      /* file browser */
+      part {
+         name: "browser.clip";
+         clip_to: "module.clip";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+
+            rel1.relative: 0.67 0.0;
+             //rel1.offset: 8 8;
+            rel1.to: "module.clip";
+
+            rel2.relative: 1.0 1.0;
+             //rel2.offset: 0 -50;
+            rel2.to: "module.clip";
+         }
+      }
+
+      part {
+         name: "browser.swallow";
+         type: SWALLOW;
+         mouse_events : 1;
+         clip_to: "browser.clip";
+         description {
+            state: "default" 0.0;
+            rel1.to: "browser.clip";
+            rel2.to: "browser.clip";
+         }
+      }
+
+      /* songs counter */
+      part {
+         name: "songs.counter.label";
+         clip_to: "module.clip";
+         type: TEXT;
+         effect: SOFT_SHADOW;
+         mouse_events: 0;
+         scale: 1;
+
+         description {
+            state: "default" 0.0;
+            color: 224 224 224 200;
+            visible: 1;
+
+            rel1.relative: 0.75 1.00;
+            rel1.to: "module.clip";
+
+            rel2.relative: 0.99 1.00;
+            rel2.offset: 0 -50;
+            rel2.to: "module.clip";
+
+            color3: 0 0 0 64;
+            text {
+                font: "content";
+                size: 16;
+                min: 1 1;
+                align: 1 1;
+             }
+          }
+       }
+
+      /* Mediaplayer */
+      part {
+         name: "mediaplayer.clip";
+         clip_to: "module.clip";
+         type: RECT;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+
+            rel1.relative: 0.0 0.0;
+            rel1.offset: -8 -8;
+            rel1.to: "module.clip";
+
+            rel2.relative: 0.50 1.0;
+            rel2.offset: +8 +8;
+            rel2.to: "module.clip";
+         }
+      }
+
+      part {
+         name: "mediaplayer.swallow";
+         type: SWALLOW;
+         mouse_events : 1;
+         clip_to: "mediaplayer.clip";
+         description {
+            state: "default" 0.0;
+
+            rel1.to: "mediaplayer.clip";
+            rel2.to: "mediaplayer.clip";
+         }
+      }
+
+      part {
+         name: "event";
+         mouse_events : 1;
+         repeat_events: 1;
+         description {state: "default" 0.0;}
+      }
+
+      part {
+         name: "infos.panel.clip";
+         mouse_events: 0;
+         clip_to: module.clip;
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+         }
+         description {
+            state: "show" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+
+             rel1.relative: 0 0;
+             rel2.relative: 1 1;
+             rel2.offset: 0 -45;
+         }
+      }
+
+      part {
+         name: "lyrics.panel.swallow";
+         mouse_events: 1;
+         repeat_events: 1;
+         clip_to: infos.panel.clip;
+         type: SWALLOW;
+         description {
+            state: "default" 0.0;
+            rel1.to: "infos.panel.clip";
+            rel2.to: "infos.panel.clip";
+         }
+      }
+   }
+   programs {
+      program {
+         name: "module,show";
+         signal: "module,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "module.clip";
+          //target: "background";
+      }
+      program {
+         name: "module,hide";
+         signal: "module,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "module.clip";
+          //target: "background";
+      }
+/*       program { */
+/*          name: "content,show"; */
+/*          signal: "content,show"; */
+/*          source:  "enna"; */
+/*          action:  STATE_SET "show" 0.0; */
+/*          transition: SINUSOIDAL 0.5; */
+/*          target: "content.clip"; */
+/*       } */
+/*       program { */
+/*          name: "content,hide"; */
+/*          signal: "content,hide"; */
+/*          source:  "enna"; */
+/*          action:  STATE_SET "default" 0.0; */
+/*          transition: SINUSOIDAL 0.5; */
+/*          target: "content.clip"; */
+/*       } */
+      program {
+         name: "mediaplayer,show";
+         signal: "mediaplayer,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "mediaplayer.clip";
+      }
+      program {
+         name: "mediaplayer,hide";
+         signal: "mediaplayer,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: SINUSOIDAL 0.5;
+         target: "mediaplayer.clip";
+      }
+      program {
+         name: "lyrics,show";
+         signal: "lyrics,show";
+         source:  "enna";
+         action:  STATE_SET "show" 0.0;
+         transition: "SINUSOIDAL" 0.3;
+         target: "infos.panel.clip";
+      }
+      program {
+         name: "lyrics,hide";
+         signal: "lyrics,hide";
+         source:  "enna";
+         action:  STATE_SET "default" 0.0;
+         transition: "SINUSOIDAL" 0.3;
+         target: "infos.panel.clip";
+      }
+   }
+}
