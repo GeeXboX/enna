@@ -26,7 +26,7 @@
 #include "vfs.h"
 #include "input.h"
 
-Evas_Object *enna_list_add (Evas *evas);
+Evas_Object *enna_list_add (Evas_Object *parent);
 void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     void (*func_activated) (void *data), void *data);
 Eina_List* enna_list_files_get(Evas_Object* obj);

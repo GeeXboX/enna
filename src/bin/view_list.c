@@ -216,14 +216,14 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 }
 
 Evas_Object *
-enna_list_add(Evas *evas)
+enna_list_add(Evas_Object *parent)
 {
     Evas_Object *obj;
     Smart_Data *sd;
 
     sd = calloc(1, sizeof(Smart_Data));
 
-    obj = elm_genlist_add(enna->layout);
+    obj = elm_genlist_add(parent);
     elm_object_style_set(obj, "enna");
 
     evas_object_size_hint_weight_set(obj, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
