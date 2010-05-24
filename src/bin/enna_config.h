@@ -22,11 +22,14 @@
 #ifndef ENNA_CONFIG_H
 #define ENNA_CONFIG_H
 
+#include <Elementary.h>
+
 typedef struct _Enna_Config Enna_Config;
 
 struct _Enna_Config
 {
     char *cfg_file;
+    Elm_Theme *eth;
     char *theme;
     char *theme_file;
     int idle_timeout;

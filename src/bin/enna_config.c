@@ -69,7 +69,7 @@ config_load_theme (void)
     if (!enna_config->theme_file)
         goto err_theme;
 
-    elm_theme_overlay_add(enna_config->theme_file);
+    elm_theme_overlay_add(enna_config->eth, enna_config->theme_file);
     return;
 
 err_theme:
@@ -236,6 +236,7 @@ enna_config_init (const char *file)
         snprintf(filename, sizeof(filename), "%s/enna.cfg",
                  enna_config_home_get());
 
+    enna_config->eth = elm_theme_new();
     enna_config->cfg_file = strdup(filename);
     enna_log(ENNA_MSG_INFO, NULL, "using config file: %s", filename);
 
@@ -259,6 +260,8 @@ enna_config_shutdown (void)
             p->free();
         enna_config_section_parser_unregister(p);
     }
+
+    elm_theme_free(enna_config->eth);
 
     if (cfg_ini)
         ini_free(cfg_ini);

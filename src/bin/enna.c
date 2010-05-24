@@ -314,7 +314,7 @@ static int _create_gui(void)
     Evas_Object *ic;
 
     // set custom elementary theme
-    elm_theme_extension_add(enna_config_theme_get());
+    elm_theme_extension_add(enna_config->eth, enna_config_theme_get());
 
     // show supported engines
     _list_engines();
