@@ -771,9 +771,13 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
         return;
 
     if (!file->is_directory && !file->is_menu)
+    {
+        video_infos_display(file);
+
         /* ask for on-demand scan for local files */
         if (!strncmp(file->mrl, "file://", 7))
             enna_metadata_ondemand(file, _ondemand_cb_refresh);
+    }
 
 
     ENNA_FREE(mod->uri_hilighted);
@@ -783,16 +787,7 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
 static void
 browser_cb_hilight(void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_File *file = event_info;
 
-    if (!file)
-        return;
-
-    if (!file->is_directory && !file->is_menu)
-        video_infos_display(file);
-
-    ENNA_FREE(mod->uri_hilighted);
-    mod->uri_hilighted = strdup(file->mrl);
 }
 
 static void
