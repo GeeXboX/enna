@@ -100,7 +100,7 @@ _smart_add (Evas_Object * obj)
 
     sd->o_edje = edje_object_add (evas_object_evas_get (obj));
     edje_object_file_set (sd->o_edje, enna_config_theme_get (), "enna/exit");
-    sd->list = enna_list_add (evas_object_evas_get (sd->popup));
+    sd->list = enna_list_add (sd->popup);
 
     label = buffer_new ();
     buffer_append (label, "<h3><c>");

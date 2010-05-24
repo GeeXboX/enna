@@ -316,7 +316,7 @@ om_create_menu_manga_chapters_list (manga_t *m)
 
     mod->main_menu = 0;
     ENNA_OBJECT_DEL(mod->list);
-    o = enna_list_add(enna->evas);
+    o = enna_list_add(enna->layout);
 
     for (i = m->chapters; i; i--)
     {
@@ -541,7 +541,7 @@ om_create_menu_list (void)
     om_reset_current_settings();
 
     ENNA_OBJECT_DEL(mod->list);
-    o = enna_list_add(enna->evas);
+    o = enna_list_add(enna->layout);
 
     EINA_LIST_FOREACH(mod->manga_list, l, m)
     {

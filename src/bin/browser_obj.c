@@ -85,7 +85,7 @@ _browser_view_list_add(Smart_Data *sd)
     DBG(__FUNCTION__);
     if (!sd) return NULL;
 
-    view = enna_list_add(enna->evas);
+    view = enna_list_add(sd->o_layout);
 
     elm_layout_content_set(sd->o_layout, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
