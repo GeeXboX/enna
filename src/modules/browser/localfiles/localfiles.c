@@ -242,13 +242,6 @@ __class_init(const char *name, Class_Private_Data **priv,
                                          _remove_volumes_cb, data);
 }
 
-
-
-typedef struct _Enna_Localfiles_Priv
-{
-    Enna_Browser *browser;
-}Enna_Localfiles_Priv;
-
 static void *
 _add(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
