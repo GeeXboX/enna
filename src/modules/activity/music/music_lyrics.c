@@ -73,7 +73,7 @@ enna_panel_lyrics_add (Evas *evas)
 void
 enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
 {
-    buffer_t *buf;
+    Enna_Buffer *buf;
     char *lyrics, *title;
     char *b;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
@@ -93,23 +93,23 @@ enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
         return;
     }
 
-    buf = buffer_new ();
+    buf = enna_buffer_new ();
 
     /* display song name */
-    buffer_append  (buf, "<h4><hl><sd><b>");
-    buffer_appendf (buf, "%s", title);
-    buffer_append  (buf, "</b></sd></hl></h4><br>");
+    enna_buffer_append  (buf, "<h4><hl><sd><b>");
+    enna_buffer_appendf (buf, "%s", title);
+    enna_buffer_append  (buf, "</b></sd></hl></h4><br>");
     free (title);
 
     /* display song associated lyrics */
-    buffer_append  (buf, "<br/>");
+    enna_buffer_append  (buf, "<br/>");
     b = lyrics;
     while (*b)
     {
         if (*b == '\n')
-            buffer_append (buf, "<br>");
+            enna_buffer_append (buf, "<br>");
         else
-            buffer_appendf (buf, "%c", *b);
+            enna_buffer_appendf (buf, "%c", *b);
         (void) *b++;
     }
     free (lyrics);

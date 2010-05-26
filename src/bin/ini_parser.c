@@ -133,20 +133,20 @@ ini_dump_section (int fd, ini_section_t *s)
 {
     Eina_List *l;
     ini_field_t *f;
-    buffer_t *b;
+    Enna_Buffer *b;
     ssize_t n;
 
     if (!s)
         return;
 
-    b = buffer_new();
-    buffer_appendf(b, "[%s]\n", s->name);
+    b = enna_buffer_new();
+    enna_buffer_appendf(b, "[%s]\n", s->name);
     EINA_LIST_FOREACH(s->fields, l, f)
-        buffer_appendf(b, "%s=%s\n", f->key, f->value);
-    buffer_append(b, "\n");
+        enna_buffer_appendf(b, "%s=%s\n", f->key, f->value);
+    enna_buffer_append(b, "\n");
 
     n = write(fd, b->buf, b->len);
-    buffer_free(b);
+    enna_buffer_free(b);
 }
 
 static ini_field_t *

@@ -88,32 +88,32 @@ static Ecore_Timer *update_timer = NULL;
 /****************************************************************************/
 
 static void
-set_enna_information(buffer_t *b)
+set_enna_information(Enna_Buffer *b)
 {
     unsigned int ver;
 
     if (!b)
         return;
 
-    buffer_append(b, "<c>");
-    buffer_append(b, _("Enna information"));
-    buffer_append(b, "</c><br><br><hilight>");
-    buffer_append(b, _("Enna:"));
+    enna_buffer_append(b, "<c>");
+    enna_buffer_append(b, _("Enna information"));
+    enna_buffer_append(b, "</c><br><br><hilight>");
+    enna_buffer_append(b, _("Enna:"));
 #ifndef BUILD_BACKEND_EMOTION
     ver = libplayer_version();
-    buffer_appendf(b, "</hilight> %s<br>"
+    enna_buffer_appendf(b, "</hilight> %s<br>"
                       "<hilight>libplayer:</hilight> %u.%u.%u<br>",
                    VERSION, ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
 #endif
     ver = libvalhalla_version();
-    buffer_appendf(b, "<hilight>libvalhalla:</hilight> %u.%u.%u<br>",
+    enna_buffer_appendf(b, "<hilight>libvalhalla:</hilight> %u.%u.%u<br>",
                    ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
 #ifdef BUILD_LIBSVDRP
-    buffer_appendf(b, "<hilight>libsvdrp:</hilight> %s<br>", LIBSVDRP_VERSION);
+    enna_buffer_appendf(b, "<hilight>libsvdrp:</hilight> %s<br>", LIBSVDRP_VERSION);
 #endif
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("Video renderer:"));
-    buffer_appendf(b, "</hilight> %s<br>", enna_config->engine);
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("Video renderer:"));
+    enna_buffer_appendf(b, "</hilight> %s<br>", enna_config->engine);
 }
 
 /****************************************************************************/
@@ -121,7 +121,7 @@ set_enna_information(buffer_t *b)
 /****************************************************************************/
 
 static void
-get_distribution(buffer_t *b)
+get_distribution(Enna_Buffer *b)
 {
     FILE *f;
     char buffer[BUF_LEN];
@@ -172,16 +172,16 @@ get_distribution(buffer_t *b)
         }
     }
 
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("Distribution:"));
-    buffer_append(b, "</hilight> ");
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("Distribution:"));
+    enna_buffer_append(b, "</hilight> ");
     if (lsb_distrib_id && lsb_release)
-        buffer_appendf(b, "%s %s", lsb_distrib_id, lsb_release);
+        enna_buffer_appendf(b, "%s %s", lsb_distrib_id, lsb_release);
     else if (id && release)
-        buffer_appendf(b, "%s %s", id, release);
+        enna_buffer_appendf(b, "%s %s", id, release);
     else
-        buffer_append(b, BUF_DEFAULT);
-    buffer_append(b, "<br>");
+        enna_buffer_append(b, BUF_DEFAULT);
+    enna_buffer_append(b, "<br>");
 
     if (id)
         free(id);
@@ -190,27 +190,27 @@ get_distribution(buffer_t *b)
 }
 
 static void
-get_uname(buffer_t *b)
+get_uname(Enna_Buffer *b)
 {
     struct utsname name;
 
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("OS:"));
-    buffer_append(b, "</hilight> ");
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("OS:"));
+    enna_buffer_append(b, "</hilight> ");
     if (uname(&name) == -1) {
-        buffer_append(b, BUF_DEFAULT);
+        enna_buffer_append(b, BUF_DEFAULT);
     }
     else
     {
-        buffer_appendf(b, "%s %s ", name.sysname, name.release);
-        buffer_append(b, _("for"));
-        buffer_appendf(b, " %s", name.machine);
+        enna_buffer_appendf(b, "%s %s ", name.sysname, name.release);
+        enna_buffer_append(b, _("for"));
+        enna_buffer_appendf(b, " %s", name.machine);
     }
-    buffer_append(b, "<br>");
+    enna_buffer_append(b, "<br>");
 }
 
 static void
-get_cpuinfos(buffer_t *b)
+get_cpuinfos(Enna_Buffer *b)
 {
     FILE *f;
     char buf[256] = { 0 };
@@ -219,9 +219,9 @@ get_cpuinfos(buffer_t *b)
     if (!f)
         return;
 
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("Available CPUs:"));
-    buffer_append(b, "</hilight><br>");
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("Available CPUs:"));
+    enna_buffer_append(b, "</hilight><br>");
     while (fgets(buf, sizeof(buf), f))
     {
         char *x;
@@ -229,7 +229,7 @@ get_cpuinfos(buffer_t *b)
         if (!strncmp(buf, STR_CPU, strlen(STR_CPU)))
         {
             x = strchr(buf, ':');
-            buffer_appendf(b, " * CPU #%s: ", x + 2);
+            enna_buffer_appendf(b, " * CPU #%s: ", x + 2);
         }
         else if (!strncmp(buf, STR_MODEL, strlen(STR_MODEL)))
         {
@@ -239,11 +239,11 @@ get_cpuinfos(buffer_t *b)
             while (*y)
             {
                 if (*y != ' ')
-                    buffer_appendf(b, "%c", *y);
+                    enna_buffer_appendf(b, "%c", *y);
                 else
                 {
                     if (*(y + 1) != ' ')
-                    buffer_appendf(b, " ");
+                    enna_buffer_appendf(b, " ");
                 }
                 (void) *y++;
             }
@@ -251,8 +251,8 @@ get_cpuinfos(buffer_t *b)
         else if (!strncmp(buf, STR_MHZ, strlen(STR_MHZ)))
         {
             x = strchr(buf, ':');
-            buffer_append(b, _(", running at"));
-            buffer_appendf(b, " %d MHz<br>", (int) enna_util_atof(x + 2));
+            enna_buffer_append(b, _(", running at"));
+            enna_buffer_appendf(b, " %d MHz<br>", (int) enna_util_atof(x + 2));
         }
     }
 
@@ -260,7 +260,7 @@ get_cpuinfos(buffer_t *b)
 }
 
 static void
-get_loadavg(buffer_t *b)
+get_loadavg(Enna_Buffer *b)
 {
     FILE *f;
     char buf[256] = { 0 };
@@ -279,9 +279,9 @@ get_loadavg(buffer_t *b)
     ld = strndup(buf, sizeof(x));
     load = enna_util_atof(ld) * 100.0;
 
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("CPU Load:"));
-    buffer_appendf(b, "</hilight> %d%%<br>", (int) load);
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("CPU Load:"));
+    enna_buffer_appendf(b, "</hilight> %d%%<br>", (int) load);
 
  err_loadavg:
     if (ld)
@@ -291,7 +291,7 @@ get_loadavg(buffer_t *b)
 }
 
 static void
-get_ram_usage(buffer_t *b)
+get_ram_usage(Enna_Buffer *b)
 {
     FILE *f;
     char buf[256] = { 0 };
@@ -323,20 +323,20 @@ get_ram_usage(buffer_t *b)
         }
     }
 
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("Memory:"));
-    buffer_appendf(b, "</hilight> %d MB ", mem_active);
-    buffer_append(b, _("used on"));
-    buffer_appendf(b, " %d MB ", mem_total);
-    buffer_append(b, _("total"));
-    buffer_appendf(b, " (%d%%)</hilight><br>",
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("Memory:"));
+    enna_buffer_appendf(b, "</hilight> %d MB ", mem_active);
+    enna_buffer_append(b, _("used on"));
+    enna_buffer_appendf(b, " %d MB ", mem_total);
+    enna_buffer_append(b, _("total"));
+    enna_buffer_appendf(b, " (%d%%)</hilight><br>",
                    (int) (mem_active * 100 / mem_total));
     fclose(f);
 }
 
 #ifdef BUILD_LIBXRANDR
 static void
-get_resolution(buffer_t *b)
+get_resolution(Enna_Buffer *b)
 {
     XRRScreenConfiguration *sc;
     Window root;
@@ -365,55 +365,55 @@ get_resolution(buffer_t *b)
     XRRGetScreenSizeRange(dpy, root,
                           &minWidth, &minHeight, &maxWidth, &maxHeight);
 
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("Screen resolution:"));
-    buffer_appendf(b, "</hilight> %dx%d ",
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("Screen resolution:"));
+    enna_buffer_appendf(b, "</hilight> %dx%d ",
                    DisplayWidth(dpy, screen), DisplayHeight(dpy, screen));
-    buffer_append(b, _("at"));
-    buffer_appendf(b, " %d Hz (", rate);
-    buffer_append(b, _("min:"));
-    buffer_appendf(b, " %dx%d, ", minWidth, minHeight);
-    buffer_append(b, _("max:"));
-    buffer_appendf(b, " %dx%d)<br>", maxWidth, maxHeight);
+    enna_buffer_append(b, _("at"));
+    enna_buffer_appendf(b, " %d Hz (", rate);
+    enna_buffer_append(b, _("min:"));
+    enna_buffer_appendf(b, " %dx%d, ", minWidth, minHeight);
+    enna_buffer_append(b, _("max:"));
+    enna_buffer_appendf(b, " %dx%d)<br>", maxWidth, maxHeight);
     XCloseDisplay(dpy);
 }
 #endif
 
 #ifdef BUILD_LIBSVDRP
 static void
-get_vdr(buffer_t *b)
+get_vdr(Enna_Buffer *b)
 {
     svdrp_t *svdrp = enna_svdrp_get();
 
-    buffer_append(b, "<hilight> ");
-    buffer_append(b, _("VDR:"));
-    buffer_append(b, "</hilight> ");
+    enna_buffer_append(b, "<hilight> ");
+    enna_buffer_append(b, _("VDR:"));
+    enna_buffer_append(b, "</hilight> ");
     if (svdrp && svdrp_try_connect(svdrp)) {
-        buffer_appendf(b, _("connected to VDR"));
-        buffer_appendf(b, " %s )",
+        enna_buffer_appendf(b, _("connected to VDR"));
+        enna_buffer_appendf(b, " %s )",
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_VERSION));
-        buffer_append(b, _("on"));
-        buffer_appendf(b, " %s on %s (%s)",
+        enna_buffer_append(b, _("on"));
+        enna_buffer_appendf(b, " %s on %s (%s)",
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_NAME),
                        svdrp_get_property(svdrp, SVDRP_PROPERTY_HOSTNAME));
     } else {
-        buffer_append(b, _("not connected"));
+        enna_buffer_append(b, _("not connected"));
     }
-    buffer_append(b, "<br>");
+    enna_buffer_append(b, "<br>");
 }
 #endif
 
 static void
-get_network(buffer_t *b)
+get_network(Enna_Buffer *b)
 {
     int s, n, i;
     struct ifreq *ifr;
     struct ifconf ifc;
     char buf[1024];
 
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("Available network interfaces:"));
-    buffer_append(b, "</hilight><br>");
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("Available network interfaces:"));
+    enna_buffer_append(b, "</hilight><br>");
 
     /* get a socket handle. */
     s = socket(AF_INET, SOCK_STREAM, 0);
@@ -438,16 +438,16 @@ get_network(buffer_t *b)
             continue;
 
         /* show the device name and IP address */
-        buffer_appendf(b, "  * %s (", item->ifr_name);
-        buffer_append(b, _("IP:"));
-        buffer_appendf(b, " %s, ",
+        enna_buffer_appendf(b, "  * %s (", item->ifr_name);
+        enna_buffer_append(b, _("IP:"));
+        enna_buffer_appendf(b, " %s, ",
                  inet_ntoa(((struct sockaddr_in *) &item->ifr_addr)->sin_addr));
 
         if (ioctl(s, SIOCGIFNETMASK, item) < 0)
             continue;
 
-        buffer_append(b, _("Netmask:"));
-        buffer_appendf(b, " %s)<br>",
+        enna_buffer_append(b, _("Netmask:"));
+        enna_buffer_appendf(b, " %s)<br>",
               inet_ntoa(((struct sockaddr_in *) &item->ifr_netmask)->sin_addr));
     }
 
@@ -456,7 +456,7 @@ get_network(buffer_t *b)
 }
 
 static void
-get_default_gw(buffer_t *b)
+get_default_gw(Enna_Buffer *b)
 {
     char devname[64];
     unsigned long d, g, m;
@@ -470,9 +470,9 @@ get_default_gw(buffer_t *b)
     if (fscanf(fp, "%*[^\n]\n") < 0) /* Skip the first line. */
         return;
 
-    buffer_append(b, "<hilight>");
-    buffer_append(b, _("Default gateway:"));
-    buffer_append(b, "</hilight> ");
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("Default gateway:"));
+    enna_buffer_append(b, "</hilight> ");
     res = 0;
 
     while (1)
@@ -493,14 +493,14 @@ get_default_gw(buffer_t *b)
             continue;
 
         gw.s_addr = g;
-        buffer_appendf(b, "%s<br>", inet_ntoa (gw));
+        enna_buffer_appendf(b, "%s<br>", inet_ntoa (gw));
         res = 1;
         break;
     }
 
     if (!res) {
-        buffer_append(b, _("None"));
-        buffer_append(b, "<br>");
+        enna_buffer_append(b, _("None"));
+        enna_buffer_append(b, "<br>");
     }
 
 
@@ -508,14 +508,14 @@ get_default_gw(buffer_t *b)
 }
 
 static void
-set_system_information(buffer_t *b)
+set_system_information(Enna_Buffer *b)
 {
     if (!b)
         return;
 
-    buffer_append(b, "<c>");
-    buffer_append(b, _("System information"));
-    buffer_append(b, "</c><br><br>");
+    enna_buffer_append(b, "<c>");
+    enna_buffer_append(b, _("System information"));
+    enna_buffer_append(b, "</c><br><br>");
     get_distribution(b);
     get_uname(b);
     get_cpuinfos(b);
@@ -535,15 +535,15 @@ set_system_information(buffer_t *b)
 static int
 _update_infos_cb(void *data)
 {
-    buffer_t *b;
+    Enna_Buffer *b;
     Evas_Object *obj;
     obj = data;
-    b = buffer_new();
+    b = enna_buffer_new();
     set_enna_information(b);
     set_system_information(b);
     edje_object_part_text_set(obj, "sysinfo.text", b->buf);
     edje_object_signal_emit(obj, "sysinfo,show", "enna");
-    buffer_free(b);
+    enna_buffer_free(b);
 
     return ECORE_CALLBACK_RENEW;
 }

@@ -596,21 +596,21 @@ char *
 enna_metadata_meta_get(const Enna_Metadata *meta, const char *name, int max)
 {
   int count = 0;
-  buffer_t *b;
+  Enna_Buffer *b;
   char *str = NULL;
 
   if (!meta || !name)
       return NULL;
 
-  b = buffer_new();
+  b = enna_buffer_new();
 
   for (; meta; meta = meta->next)
       if (meta->meta && !strcmp(meta->meta, name))
       {
           if (count == 0)
-              buffer_append(b, meta->data);
+              enna_buffer_append(b, meta->data);
           else
-              buffer_appendf(b, ", %s", meta->data);
+              enna_buffer_appendf(b, ", %s", meta->data);
           count++;
           if (count >= max)
               break;
@@ -621,7 +621,7 @@ enna_metadata_meta_get(const Enna_Metadata *meta, const char *name, int max)
       enna_log(ENNA_MSG_EVENT, MODULE_NAME,
                "Requested metadata '%s' is associated to value '%s'",
                name, str);
-  buffer_free(b);
+  enna_buffer_free(b);
 
   return str;
 }
@@ -629,19 +629,19 @@ enna_metadata_meta_get(const Enna_Metadata *meta, const char *name, int max)
 char *
 enna_metadata_meta_get_all(const Enna_Metadata *meta)
 {
-  buffer_t *b;
+  Enna_Buffer *b;
   char *str = NULL;
 
   if (!meta)
       return NULL;
 
-  b = buffer_new();
+  b = enna_buffer_new();
 
   for (; meta; meta = meta->next)
-      buffer_appendf(b, "%s: %s\n", meta->meta, meta->data);
+      enna_buffer_appendf(b, "%s: %s\n", meta->meta, meta->data);
 
   str = b->buf ? strdup(b->buf) : NULL;
-  buffer_free(b);
+  enna_buffer_free(b);
 
   return str;
 }
@@ -675,14 +675,14 @@ enna_metadata_ondemand(const Enna_Vfs_File *file,
 char *
 enna_metadata_meta_duration_get(const Enna_Metadata *m)
 {
-    buffer_t *buf;
+    Enna_Buffer *buf;
     char *runtime = NULL, *length;
     char *duration = NULL;
 
     if (!m)
         return NULL;
 
-    buf = buffer_new();
+    buf = enna_buffer_new();
 
     length = enna_metadata_meta_get(m, "duration", 1);
     if (!length)
@@ -714,11 +714,11 @@ enna_metadata_meta_duration_get(const Enna_Metadata *m)
         }
 
         if (hh)
-            buffer_appendf(buf, ngettext("%.2d hour ", "%.2d hours ", hh), hh);
+            enna_buffer_appendf(buf, ngettext("%.2d hour ", "%.2d hours ", hh), hh);
         if (hh && mm)
-            buffer_append(buf, " ");
+            enna_buffer_append(buf, " ");
         if (mm)
-            buffer_appendf(buf,
+            enna_buffer_appendf(buf,
                            ngettext("%.2d minute", "%.2d minutes", mm), mm);
 
         duration = buf->buf ? strdup(buf->buf) : NULL;
@@ -729,7 +729,7 @@ enna_metadata_meta_duration_get(const Enna_Metadata *m)
 end:
     ENNA_FREE(runtime);
     ENNA_FREE(length);
-    buffer_free(buf);
+    enna_buffer_free(buf);
 
     return duration;
 }

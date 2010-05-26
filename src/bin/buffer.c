@@ -33,14 +33,14 @@
 
 #define BUFFER_DEFAULT_CAPACITY 32768
 
-buffer_t *
-buffer_new(void)
+Enna_Buffer *
+enna_buffer_new(void)
 {
-    return calloc(1, sizeof (buffer_t));
+    return calloc(1, sizeof (Enna_Buffer));
 }
 
 void
-buffer_append(buffer_t *buffer, const char *str)
+enna_buffer_append(Enna_Buffer *buffer, const char *str)
 {
     size_t len;
 
@@ -65,7 +65,7 @@ buffer_append(buffer_t *buffer, const char *str)
 }
 
 void
-buffer_appendf(buffer_t *buffer, const char *format, ...)
+enna_buffer_appendf(Enna_Buffer *buffer, const char *format, ...)
 {
     char str[BUFFER_DEFAULT_CAPACITY];
     int size;
@@ -80,16 +80,16 @@ buffer_appendf(buffer_t *buffer, const char *format, ...)
     {
         char *dynstr = malloc(size + 1);
         vsnprintf(dynstr, size + 1, format, va);
-        buffer_append(buffer, dynstr);
+        enna_buffer_append(buffer, dynstr);
         free(dynstr);
     }
     else
-        buffer_append(buffer, str);
+        enna_buffer_append(buffer, str);
     va_end(va);
 }
 
 void
-buffer_free(buffer_t *buffer)
+enna_buffer_free(Enna_Buffer *buffer)
 {
     if (!buffer)
         return;

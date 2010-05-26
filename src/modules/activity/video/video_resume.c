@@ -88,7 +88,7 @@ _smart_add (Evas_Object * obj)
 {
     Smart_Data *sd;
     Enna_Vfs_File *it1, *it2;
-    buffer_t *label;
+    Enna_Buffer *label;
 
     sd = calloc (1, sizeof (Smart_Data));
     if (!sd)
@@ -102,13 +102,13 @@ _smart_add (Evas_Object * obj)
     edje_object_file_set (sd->o_edje, enna_config_theme_get (), "enna/exit");
     sd->list = enna_list_add (sd->popup);
 
-    label = buffer_new ();
-    buffer_append (label, "<h3><c>");
-    buffer_append (label, _("Seems you already watched this movie once ..."));
-    buffer_append (label, "</c></h3><br>");
+    label = enna_buffer_new ();
+    enna_buffer_append (label, "<h3><c>");
+    enna_buffer_append (label, _("Seems you already watched this movie once ..."));
+    enna_buffer_append (label, "</c></h3><br>");
 
     edje_object_part_text_set (sd->o_edje, "text.label", label->buf);
-    buffer_free (label);
+    enna_buffer_free (label);
 
     it1 = _create_list_item (_("Resume movie playback"), "ctrl/ok");
     enna_list_file_append (sd->list, it1, cb_playback_resume, NULL);

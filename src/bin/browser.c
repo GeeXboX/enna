@@ -181,17 +181,17 @@ _browser_browse_root(Enna_Browser *browser)
 {
     Eina_List *l;
     Enna_Class_Activity *act;
-    buffer_t *buf;
+    Enna_Buffer *buf;
     Enna_Vfs_File *f;
     EINA_LIST_FOREACH(enna_activities_get(), l, act)
     {
         f = calloc(1, sizeof(Enna_Vfs_File));
 
-        buf = buffer_new();
-        buffer_appendf(buf, "/%s", act->name);
+        buf = enna_buffer_new();
+        enna_buffer_appendf(buf, "/%s", act->name);
         f->name = eina_stringshare_add(act->name);
         f->uri = eina_stringshare_add(buf->buf);
-        buffer_free(buf);
+        enna_buffer_free(buf);
         f->label = eina_stringshare_add(act->label);
         f->icon = eina_stringshare_add(act->icon);
         f->icon_file = eina_stringshare_add(act->bg);
@@ -216,16 +216,16 @@ _browser_browse_activity(Enna_Browser *browser)
         Enna_Vfs_Class *vfs;
         Eina_List *l;
         Enna_Vfs_File *f;
-        buffer_t *buf;
+        Enna_Buffer *buf;
         EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, vfs)
         {
             f = calloc(1, sizeof(Enna_Vfs_File));
 
-            buf = buffer_new();
-            buffer_appendf(buf, "/%s/%s", act_name, vfs->name);
+            buf = enna_buffer_new();
+            enna_buffer_appendf(buf, "/%s/%s", act_name, vfs->name);
             f->name = eina_stringshare_add(vfs->name);
             f->uri = eina_stringshare_add(buf->buf);
-            buffer_free(buf);
+            enna_buffer_free(buf);
             f->label = eina_stringshare_add(vfs->label);
             f->icon = eina_stringshare_add(vfs->icon);
             f->is_menu = 1;

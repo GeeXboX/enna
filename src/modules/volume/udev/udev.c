@@ -292,7 +292,7 @@ handle_disc(struct udev_device *dev)
     const char *bus, *fs, *label, *vendor, *model, *device;
     char dsk[8] = { 0 }, part[8] = { 0 };
     const char *bus_type = NULL;
-    buffer_t *b;
+    Enna_Buffer *b;
     int i;
 
     id_type = udev_device_get_property_value(dev, "ID_TYPE");
@@ -358,21 +358,21 @@ handle_disc(struct udev_device *dev)
     if (!bus_type)
         bus_type = "Unknown";
 
-    b = buffer_new();
-    buffer_appendf(b, "%s %s %s", bus_type, v->type, dsk);
+    b = enna_buffer_new();
+    enna_buffer_appendf(b, "%s %s %s", bus_type, v->type, dsk);
 
     if (label)
-        buffer_appendf(b, " %s", label);
+        enna_buffer_appendf(b, " %s", label);
     else
     {
         if (vendor)
-            buffer_appendf(b, " %s", vendor);
+            enna_buffer_appendf(b, " %s", vendor);
         if (model)
-            buffer_appendf(b, " %s", model);
+            enna_buffer_appendf(b, " %s", model);
     }
-    buffer_appendf(b, " %s", part);
+    enna_buffer_appendf(b, " %s", part);
     v->name = strdup(b->buf);
-    buffer_free(b);
+    enna_buffer_free(b);
 
     return v;
 }
@@ -386,7 +386,7 @@ handle_partition(struct udev_device *dev)
     volume_t *v;
     char dsk[8] = { 0 }, part[8] = { 0 };
     const char *bus_type = NULL, *drive_type = NULL;
-    buffer_t *b;
+    Enna_Buffer *b;
     int i;
 
     /* ensure we're dealing with a proper filesystem on partition */
@@ -444,20 +444,20 @@ handle_partition(struct udev_device *dev)
     if (!drive_type)
         drive_type = "Unknown";
 
-    b = buffer_new();
-    buffer_appendf(b, "%s %s %s", bus_type, drive_type, dsk);
+    b = enna_buffer_new();
+    enna_buffer_appendf(b, "%s %s %s", bus_type, drive_type, dsk);
     if (label)
-        buffer_appendf(b, " %s", label);
+        enna_buffer_appendf(b, " %s", label);
     else
     {
         if (vendor)
-            buffer_appendf(b, " %s", vendor);
+            enna_buffer_appendf(b, " %s", vendor);
         if (model)
-            buffer_appendf(b, " %s", model);
+            enna_buffer_appendf(b, " %s", model);
     }
-    buffer_appendf(b, " %s", part);
+    enna_buffer_appendf(b, " %s", part);
     v->name = strdup(b->buf);
-    buffer_free(b);
+    enna_buffer_free(b);
 
     return v;
 }
