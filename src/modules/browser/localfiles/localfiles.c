@@ -246,34 +246,22 @@ __class_init(const char *name, Class_Private_Data **priv,
 
 typedef struct _Enna_Localfiles_Priv
 {
-    Eina_List *tokens;
-    void (*add_file)(void *data, Enna_File *file);
-    void *data;
-    ENNA_VFS_CAPS caps;
+    Enna_Browser *browser;
 }Enna_Localfiles_Priv;
 
 static void *
-_add(Eina_List *tokens, ENNA_VFS_CAPS caps,void (*add_file)(void *data, Enna_File *file), void *data)
+_add(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
-    Enna_Localfiles_Priv *p = calloc(1, sizeof(Enna_Localfiles_Priv));
-
-    p->tokens = tokens;
-    p->add_file = add_file;
-    p->data = data;
-    p->caps = caps;
-    return p;
+    return NULL;
 }
 
 static void
-_get_children(void *priv)
+_get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
     Eina_List *l;
-    Enna_Localfiles_Priv *p = priv;
     Class_Private_Data *pmod = NULL;
-    if (!p)
-        return;
 
-    switch(p->caps)
+    switch(caps)
     {
         case  ENNA_CAPS_MUSIC:
         #ifdef BUILD_ACTIVITY_MUSIC
@@ -297,7 +285,7 @@ _get_children(void *priv)
     if (!pmod)
         return;
 
-    if (eina_list_count(p->tokens) == 2 )
+    if (eina_list_count(tokens) == 2 )
     {
         //DBG("Browse Root\n");
         for (l = pmod->config->root_directories; l; l = l->next)
@@ -318,14 +306,14 @@ _get_children(void *priv)
             f->label = eina_stringshare_add(root->label);
             f->icon = eina_stringshare_add("icon/hd");
             f->is_menu = 1;
-
-            p->add_file(p->data, f);
+            
+            enna_browser_file_add(browser, f);
         }
 
     }
     else
     {
-        const char *root_name = eina_list_nth(p->tokens, 2);
+        const char *root_name = eina_list_nth(tokens, 2);
         Root_Directories *root = NULL;
         Enna_File *f;
         
@@ -353,7 +341,7 @@ _get_children(void *priv)
                // EINA_LIST_FOREACH(p->tokens, l, tmp)
                //     DBG(tmp);
                 
-                l_tmp = eina_list_nth_list(p->tokens, 3);
+                l_tmp = eina_list_nth_list(tokens, 3);
                 EINA_LIST_FOREACH(l_tmp, l, tmp)
                 {
                     //DBG("Append : /%s to %s\n", tmp, path->buf);
@@ -395,7 +383,7 @@ _get_children(void *priv)
 
                         dirs_list = eina_list_append(dirs_list, f);
                     }
-                    else if (enna_util_uri_has_extension(dir, p->caps))
+                    else if (enna_util_uri_has_extension(dir, caps))
                     {
                         buffer_t *buf;
                         buffer_t *mrl;
@@ -428,12 +416,12 @@ _get_children(void *priv)
 
                 if (!eina_list_count(dirs_list))
                 {
-                    p->add_file(p->data, NULL);
+                    enna_browser_file_add(browser, NULL);
                 }
                 else
                 {
                     EINA_LIST_FREE(dirs_list, f)
-                        p->add_file(p->data, f);
+                        enna_browser_file_add(browser, f);
                 }
                 buffer_free(path);
                 buffer_free(relative_path);
@@ -447,8 +435,7 @@ _get_children(void *priv)
 static void
 _del(void *priv)
 {
-    if (!priv)
-        return;
+
 }
 
 static Enna_Vfs_Class class = {
