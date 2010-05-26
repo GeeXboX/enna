@@ -372,7 +372,7 @@ _create_inode(const char *name, const char *uri, const char *label,
 Enna_File *
 enna_browser_create_file(const char *name, const char *uri, const char *mrl, const char *label, const char *icon)
 {
-    return _create_inode(name, uri, label, icon, mrl, 1);
+    return _create_inode(name, uri, label, icon, mrl, 0);
 }
 
 Enna_File *
