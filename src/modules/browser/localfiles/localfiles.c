@@ -288,18 +288,12 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
             buffer_t *buf;
             
             root = l->data;
-            
-            f = calloc(1, sizeof(Enna_File));
-            
+
             buf = buffer_new();
             buffer_appendf(buf, "/%s/localfiles/%s", pmod->name, root->name);
-            f->name = eina_stringshare_add(root->name);
-            f->uri = eina_stringshare_add(buf->buf);
+            f = enna_browser_create_directory(root->name, buf->buf,
+                                              root->label, "icon/hd");
             buffer_free(buf);
-            f->label = eina_stringshare_add(root->label);
-            f->icon = eina_stringshare_add("icon/hd");
-            f->is_menu = 1;
-            
             enna_browser_file_add(browser, f);
         }
 
@@ -360,20 +354,14 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
                     {
                         Enna_File *f;
                         buffer_t *buf;
-                        f = calloc(1, sizeof(Enna_File));
 
                         buf = buffer_new();
                         relative_path->buf ?
                             buffer_appendf(buf, "/%s/localfiles/%s/%s%s", pmod->name, root->name, relative_path->buf, filename) :
                             buffer_appendf(buf, "/%s/localfiles/%s/%s", pmod->name, root->name, filename);
-                            
-                        f->name = eina_stringshare_add(filename);
-                        f->uri = eina_stringshare_add(buf->buf);
-                        buffer_free(buf);
-                        f->label = eina_stringshare_add(filename);
-                        f->icon = eina_stringshare_add("icon/directory");
-                        f->is_directory = 1;
 
+                        f = enna_browser_create_directory(filename, buf->buf, filename, "icon/direcory");
+                        buffer_free(buf);
                         dirs_list = eina_list_append(dirs_list, f);
                     }
                     else if (enna_util_uri_has_extension(dir, caps))
@@ -381,8 +369,7 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
                         buffer_t *buf;
                         buffer_t *mrl;
                         Enna_File *f;
-                        f = calloc(1, sizeof(Enna_File));
-                       
+
                         buf = buffer_new();
                         relative_path->buf ?
                             buffer_appendf(buf, "/%s/localfiles/%s/%s%s", pmod->name, root->name, relative_path->buf, filename) :
@@ -391,16 +378,12 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
                         mrl = buffer_new();
                         /* TODO : remove file:// on top of root->uri */
                         buffer_appendf(mrl, "%s/%s%s", root->uri, relative_path->buf, filename);
-                        
-                        f->mrl = eina_stringshare_add(mrl->buf);
+                        f = enna_browser_create_file(filename, buf->buf,
+                                                     mrl->buf, filename,
+                                                     "icon/music");
                         buffer_free(mrl);
-
-                        f->name = eina_stringshare_add(filename);
-                        f->uri = eina_stringshare_add(buf->buf);
                         buffer_free(buf);
-                        f->label = eina_stringshare_add(filename);
-                        f->icon = eina_stringshare_add( "icon/music");
-
+                       
                         files_list = eina_list_append(files_list, f);
                     }
                 }
