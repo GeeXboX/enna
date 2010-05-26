@@ -624,7 +624,7 @@ module_init(Enna_Module *em)
 #ifdef BUILD_ACTIVITY_PHOTO
     __class_init("photo", &mod->photo, ENNA_CAPS_PHOTO, "path_photo");
 #endif
-    enna_vfs_register(&class);
+    enna_vfs_register(&class, ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO);
 }
 
 static void

@@ -27,7 +27,7 @@
 static Eina_List *_enna_vfs_music = NULL;
 static Eina_List *_enna_vfs_video = NULL;
 static Eina_List *_enna_vfs_photo = NULL;
-static Eina_List *_enna_vfs = NULL;
+
 /* local subsystem functions */
 
 static int
@@ -52,14 +52,45 @@ enna_vfs_init(Evas *evas)
 }
 
 void
-enna_vfs_register(Enna_Vfs_Class *vfs)
+enna_vfs_register(Enna_Vfs_Class *vfs, ENNA_VFS_CAPS type)
 {
-    _enna_vfs = eina_list_append(_enna_vfs, vfs);
+    if (!vfs)
+        return;
+
+    if (type & ENNA_CAPS_MUSIC)
+    {
+        _enna_vfs_music = eina_list_append(_enna_vfs_music, vfs);
+        _enna_vfs_music = eina_list_sort(
+            _enna_vfs_music,
+            eina_list_count(_enna_vfs_music),
+            _sort_cb);
+    }
+
+    if (type & ENNA_CAPS_VIDEO)
+    {
+        _enna_vfs_video = eina_list_append(_enna_vfs_video, vfs);
+        _enna_vfs_video = eina_list_sort(
+            _enna_vfs_video,
+            eina_list_count(_enna_vfs_video),
+            _sort_cb);
+    }
+
+    if (type & ENNA_CAPS_PHOTO)
+    {
+        _enna_vfs_photo = eina_list_append(_enna_vfs_photo, vfs);
+        _enna_vfs_photo = eina_list_sort(
+            _enna_vfs_photo,
+            eina_list_count(_enna_vfs_photo),
+            _sort_cb);
+    }
+
+    //_enna_vfs = eina_list_append(_enna_vfs, vfs);
 }
 
 int
 enna_vfs_append(const char *name, unsigned char type, Enna_Vfs_Class *vfs)
 {
+#if 0
     if (!vfs)
         return -1;
 
@@ -89,7 +120,7 @@ enna_vfs_append(const char *name, unsigned char type, Enna_Vfs_Class *vfs)
             eina_list_count(_enna_vfs_photo),
             _sort_cb);
     }
-
+#endif
     return 0;
 }
 
@@ -113,14 +144,18 @@ enna_vfs_class_remove(const char *name, unsigned char type)
 Eina_List *
 enna_vfs_get(ENNA_VFS_CAPS type)
 {
-//     if (type == ENNA_CAPS_MUSIC)
-//         return _enna_vfs_music;
-//     else if (type == ENNA_CAPS_VIDEO)
-//         return _enna_vfs_video;
-//     else if (type == ENNA_CAPS_PHOTO)
-//         return _enna_vfs_photo;
+    Eina_List *vfs = NULL;
 
-    return _enna_vfs;
+     if (type & ENNA_CAPS_MUSIC)
+         vfs = eina_list_merge(vfs, _enna_vfs_music);
+
+     if (type & ENNA_CAPS_VIDEO)
+         vfs = eina_list_merge(vfs, _enna_vfs_video);
+
+     if (type & ENNA_CAPS_PHOTO)
+         vfs = eina_list_merge(vfs, _enna_vfs_photo);
+
+    return vfs;
 }
 
 static Enna_File *
@@ -157,7 +192,7 @@ enna_vfs_dup_file(const Enna_File *file)
     n->icon      = file->icon      ? eina_stringshare_add(file->icon)      : NULL;
     n->icon_file = file->icon_file ? eina_stringshare_add(file->icon_file) : NULL;
     n->mrl       = file->mrl       ? eina_stringshare_add(file->mrl)       : NULL;
-    
+
     n->is_directory = file->is_directory;
     n->is_menu = file->is_menu;
 
