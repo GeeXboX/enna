@@ -72,9 +72,6 @@ extern Enna_Module_Api enna_mod_browser_cdda_api;
 #ifdef BUILD_BROWSER_DVD
 extern Enna_Module_Api enna_mod_browser_dvd_api;
 #endif
-#ifdef BUILD_BROWSER_JAMENDO
-extern Enna_Module_Api enna_mod_browser_jamendo_api;
-#endif
 #ifdef BUILD_BROWSER_LOCALFILES
 extern Enna_Module_Api enna_mod_browser_localfiles_api;
 #endif
@@ -179,9 +176,6 @@ enna_module_init(void)
     #endif
     #ifdef BUILD_BROWSER_DVD
         eina_array_push(_plugins_array, &enna_mod_browser_dvd_api);
-    #endif
-    #ifdef BUILD_BROWSER_JAMENDO
-        eina_array_push(_plugins_array, &enna_mod_browser_jamendo_api);
     #endif
     #ifdef BUILD_BROWSER_LOCALFILES
         eina_array_push(_plugins_array, &enna_mod_browser_localfiles_api);

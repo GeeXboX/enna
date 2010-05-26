@@ -106,7 +106,6 @@ include ../modules/activity/video/config.mak
 include ../modules/activity/weather/config.mak
 include ../modules/browser/cdda/config.mak
 include ../modules/browser/dvd/config.mak
-include ../modules/browser/jamendo/config.mak
 include ../modules/browser/localfiles/config.mak
 include ../modules/browser/netstreams/config.mak
 include ../modules/browser/podcasts/config.mak
@@ -158,10 +157,6 @@ endif
 
 if BUILD_BROWSER_DVD
 enna_SOURCES += $(SRCS_BROWSER_DVD)
-endif
-
-if BUILD_BROWSER_JAMENDO
-enna_SOURCES += $(SRCS_BROWSER_JAMENDO)
 endif
 
 if BUILD_BROWSER_LOCALFILES
