@@ -23,11 +23,10 @@
 #define VFS_H
 
 #include "enna.h"
+#include "browser.h"
 
 typedef enum _ENNA_VFS_CAPS ENNA_VFS_CAPS;
 typedef struct _Enna_Vfs_Class Enna_Vfs_Class;
-typedef struct _Enna_File Enna_Vfs_File;
-typedef struct _Enna_File Enna_File;
 
 enum _ENNA_VFS_CAPS
 {
@@ -35,18 +34,6 @@ enum _ENNA_VFS_CAPS
     ENNA_CAPS_MUSIC = 0x01,
     ENNA_CAPS_VIDEO = 0x02,
     ENNA_CAPS_PHOTO = 0x04
-};
-
-struct _Enna_File
-{
-    const char *name;
-    const char *uri;
-    const char *label;
-    const char *icon;
-    const char *icon_file;
-    const char *mrl;
-    unsigned char is_directory : 1;
-    unsigned char is_menu : 1;
 };
 
 struct _Enna_Vfs_Class
@@ -58,8 +45,8 @@ struct _Enna_Vfs_Class
     const char *icon;
     struct
     {
-        void *(* add)(Eina_List *tokens, ENNA_VFS_CAPS caps, void (*add_file)(void *data, Enna_File *file), void *data);
-        void  (* get_children)(void *priv);
+        void *(* add)(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps);
+        void  (* get_children)(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps);
         void  (* del)(void *priv);
     } func;
     void *cookie;
