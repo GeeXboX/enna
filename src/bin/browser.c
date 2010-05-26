@@ -346,3 +346,43 @@ enna_browser_uri_get(Enna_Browser *b)
         return NULL;
     return b->uri;
 }
+
+static Enna_File *
+_create_inode(const char *name, const char *uri, const char *label,
+              const char *icon, const char *mrl, int dir)
+{
+    Enna_File *f;
+
+    f = calloc(1, sizeof(Enna_File));
+    f->name = name ? eina_stringshare_add(name) : NULL;
+    f->uri = uri ? eina_stringshare_add(uri) : NULL;
+    f->label = label ? eina_stringshare_add(label) : NULL;
+    f->icon = icon ? eina_stringshare_add(icon) : NULL;
+    f->mrl = mrl ? eina_stringshare_add(mrl) : NULL;
+
+    if (dir == 1)
+        f->is_directory = 1;
+    else if (dir == 2)
+        f->is_menu = 1;
+
+    return f;
+}
+
+
+Enna_File *
+enna_browser_create_file(const char *name, const char *uri, const char *mrl, const char *label, const char *icon)
+{
+    return _create_inode(name, uri, label, icon, mrl, 1);
+}
+
+Enna_File *
+enna_browser_create_directory(const char *name, const char *uri, const char *label, const char *icon)
+{
+    return _create_inode(name, uri, label, icon, NULL, 1);
+}
+
+Enna_File *
+enna_browser_create_menu(const char *name, const char *uri, const char *label, const char *icon)
+{
+    return _create_inode(name, uri, label, icon, NULL, 2);
+}

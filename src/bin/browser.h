@@ -54,4 +54,8 @@ int enna_browser_level_get(Enna_Browser *b);
 Enna_Vfs_File *enna_browser_file_dup(Enna_Vfs_File *file);
 void enna_browser_file_free(Enna_File *f);
 
+Enna_File *enna_browser_create_file(const char *name, const char *uri, const char *mrl, const char *label, const char *icon);
+Enna_File *enna_browser_create_directory(const char *name, const char *uri, const char *label, const char *icon);
+Enna_File *enna_browser_create_menu(const char *name, const char *uri, const char *label, const char *icon);
+
 #endif /* BROWSER_H */
