@@ -149,7 +149,7 @@ enna_browser_del(Enna_Browser *b)
     if (b->ev_handler)
         ecore_event_handler_del(b->ev_handler);
     EINA_LIST_FREE(b->files, file)
-        enna_browser_file_del(file);
+        enna_browser_file_free(file);
     EINA_LIST_FREE(b->tokens, token)
         free(token);
     if (b->priv_module && b->vfs)
@@ -239,9 +239,10 @@ _browser_browse_activity(Enna_Browser *browser)
 
 }
 
-void _add(void *data, Enna_Vfs_File *file)
+void enna_browser_file_add(Enna_Browser *b, Enna_Vfs_File *file)
 {
-    Enna_Browser *b = data;
+    if (!b)
+        return;
 
     if (!file)
     {
@@ -260,9 +261,10 @@ void _add(void *data, Enna_Vfs_File *file)
     b->add(b->add_data, file);
 }
 
-void _del(void *data, Enna_Vfs_File *file)
+void enna_browser_file_del(Enna_Browser *b, Enna_Vfs_File *file)
 {
-    Enna_Browser *b = data;
+    if (!b || !file)
+        return;
     b->files = eina_list_remove(b->files, file);
     b->del(b->del_data, file);
 }
@@ -292,8 +294,8 @@ _browser_browse_module(Enna_Browser *browser)
 
     browser->vfs = vfs;
     browser->priv_module =
-        browser->vfs->func.add(browser->tokens, act->caps, _add, browser);
-    browser->vfs->func.get_children(browser->priv_module);
+        browser->vfs->func.add(browser->tokens, browser, act->caps);
+    browser->vfs->func.get_children(browser->priv_module, browser->tokens, browser, act->caps);
 
 
 }
@@ -316,7 +318,7 @@ enna_browser_file_dup(Enna_Vfs_File *file)
 }
 
 void
-enna_browser_file_del(Enna_File *f)
+enna_browser_file_free(Enna_File *f)
 {
     if (!f)
         return;
