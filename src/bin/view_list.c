@@ -398,6 +398,9 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
     int total;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
+    if (!sd)
+        return ENNA_EVENT_CONTINUE;
+
     total = eina_list_count(sd->items);
 
     switch (event)
