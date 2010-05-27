@@ -152,7 +152,7 @@ enna_browser_del(Enna_Browser *b)
         enna_browser_file_free(file);
     EINA_LIST_FREE(b->tokens, token)
         free(token);
-    if (b->priv_module && b->vfs)
+    if (b->vfs)
         b->vfs->func.del(b->priv_module);
     free(b);
 }
