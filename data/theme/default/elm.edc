@@ -3666,7 +3666,7 @@ group { name: "elm/photocam/base/default";
       styles
 	{
 	   style { name: "entry_textblock_style";
- 	      base: "font=content font_size=20 align=left color=#fff wrap=word";
+ 	      base: "font=content font_size=14 align=left color=#fff wrap=word";
 	      tag:  "br" "\n";
 	      tag:  "tab" "\t";
 	      tag:  "em" "+ font=content:style=Oblique";
@@ -3675,7 +3675,7 @@ group { name: "elm/photocam/base/default";
 	      tag:  "hilight" "+ font=content_bd";
 	   }
 	   style { name: "entry_textblock_disabled_style";
- 	      base: "font=content font_size=20 align=left color=#fff wrap=word";
+ 	      base: "font=content font_size=14 align=left color=#fff wrap=word";
 	      tag:  "br" "\n";
 	      tag:  "tab" "\t";
 	      tag:  "em" "+ font=content:style=Oblique";
@@ -3740,7 +3740,7 @@ group { name: "elm/photocam/base/default";
       styles
 	{
 	   style { name: "entry_textblock_style_charwrap";
- 	      base: "font=content font_size=20 align=left color=#fff wrap=char";
+ 	      base: "font=content font_size=14 align=left color=#fff wrap=char";
 	      tag:  "br" "\n";
 	      tag:  "tab" "\t";
 	      tag:  "em" "+ font=content:style=Oblique";
@@ -3749,7 +3749,7 @@ group { name: "elm/photocam/base/default";
 	      tag:  "hilight" "+ font=content_bd";
 	   }
 	   style { name: "entry_textblock_disabled_style_charwrap";
- 	      base: "font=content font_size=20 align=left color=#fff wrap=char";
+ 	      base: "font=content font_size=14 align=left color=#fff wrap=char";
 	      tag:  "br" "\n";
 	      tag:  "tab" "\t";
 	      tag:  "em" "+ font=content:style=Oblique";
@@ -3894,7 +3894,7 @@ group { name: "elm/photocam/base/default";
       styles
 	{
 	   style { name: "entry_single_textblock_style";
-	      base: "font=content font_size=20 align=left color=#fff wrap=none";
+	      base: "font=content font_size=14 align=left color=#fff wrap=none";
 	      tag:  "br" "\n";
 	      tag:  "tab" "\t";
 	      tag:  "em" "+ font=content:style=Oblique";
@@ -3903,7 +3903,7 @@ group { name: "elm/photocam/base/default";
 	      tag:  "hilight" "+ font=content_bd";
 	   }
 	   style { name: "entry_single_textblock_disabled_style";
- 	      base: "font=content font_size=20 align=left color=#fff wrap=none";
+ 	      base: "font=content font_size=14 align=left color=#fff wrap=none";
 	      tag:  "br" "\n";
 	      tag:  "tab" "\t";
 	      tag:  "em" "+ font=content:style=Oblique";
