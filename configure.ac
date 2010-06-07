@@ -286,6 +286,19 @@ if test "x$want_browser_dvd" = "xyes"; then
   AC_DEFINE(BUILD_BROWSER_DVD, 1, [Dvd Video Browser])
 fi
 
+# Jamendo
+want_browser_jamendo="yes"
+AC_MSG_CHECKING(whether jamendo browser module is to be built)
+AC_ARG_ENABLE(browser-jamendo,
+  AS_HELP_STRING([--enable-browser-jamendo],[Enable Jamendo Browser Module]),
+  [ want_browser_jamendo=$enableval ]
+)
+AC_MSG_RESULT($want_browser_jamendo)
+AM_CONDITIONAL(BUILD_BROWSER_JAMENDO, test "x$want_browser_jamendo" = "xyes")
+if test "x$want_browser_jamendo" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_JAMENDO, 1, [Jamendo Browser])
+fi
+
 # Local Files
 want_browser_localfiles="yes"
 AC_MSG_CHECKING(whether localfiles browser module is to be built)
@@ -670,6 +683,7 @@ src/modules/activity/weather/Makefile
 src/modules/browser/Makefile
 src/modules/browser/cdda/Makefile
 src/modules/browser/dvd/Makefile
+src/modules/browser/jamendo/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
 src/modules/browser/podcasts/Makefile
@@ -731,6 +745,7 @@ echo "Supported Browser Modules:"
 echo
 echo "  Audio CD......................... : $want_browser_cdda"
 echo "  DVD Video........................ : $want_browser_dvd"
+echo "  Jamendo...........................: $want_browser_jamendo"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  Podcasts......................... : $want_browser_podcasts"

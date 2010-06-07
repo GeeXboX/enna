@@ -39,6 +39,7 @@ struct _Smart_Data
     Enna_Browser_View_Type view_type;
     Ecore_Timer *hilight_timer;
     Enna_Browser *browser;
+    Evas_Object *o_header;
     const char *root;
     struct
     {
@@ -201,14 +202,47 @@ _add_cb(void *data, Enna_File *file)
 }
 
 static void
+_add_header(Smart_Data *sd, const char *uri)
+{
+    Evas_Object *o_layout;
+    Evas_Object *o_edje;
+    Evas_Object *o_search_bar;
+    Evas_Object *o_back_btn;
+    Evas_Object *o_ic;
+
+    ENNA_OBJECT_DEL(sd->o_header);
+    
+    o_layout = elm_layout_add(sd->o_layout);
+    elm_layout_file_set(o_layout, enna_config_theme_get(), "browser/header");
+
+    o_back_btn = elm_button_add(sd->o_layout);
+    o_ic = elm_icon_add(o_back_btn);
+    elm_icon_file_set(o_ic, enna_config_theme_get(), "icon/back");
+    elm_button_icon_set(o_back_btn, o_ic);
+    elm_object_style_set(o_back_btn, "mediaplayer");
+    
+    elm_layout_content_set(o_layout, "enna.swallow.back", o_back_btn);
+    o_edje = elm_layout_edje_get(o_layout);
+    edje_object_part_text_set(o_layout, "enna.text.current", ecore_file_file_get(uri));
+
+    o_search_bar = enna_search_add(o_layout);
+    elm_layout_content_set(o_layout, "enna.swallow.search", o_search_bar);
+
+    sd->o_header = o_layout;
+}
+
+static void
 _browse(Smart_Data *sd, Enna_File *file)
 {
     const char *uri;
 
-    if (!sd || !file)
+    if (!sd)
         return;
 
-    uri = eina_stringshare_add(file->uri);
+    if (file)
+        uri = eina_stringshare_add(file->uri);
+    else
+        uri = sd->root;
 
     ENNA_OBJECT_DEL(sd->o_view);
     enna_browser_del(sd->browser);
@@ -218,6 +252,9 @@ _browse(Smart_Data *sd, Enna_File *file)
     sd->o_view = NULL;
     DBG("browse uri : %s\n", uri);
     sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
+
+    _add_header(sd, uri);
+    
     enna_browser_browse(sd->browser);
     eina_stringshare_del(uri);
 }
@@ -352,8 +389,7 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
     if (sd->root)
         eina_stringshare_del(sd->root);
     sd->root = eina_stringshare_add(uri);
-    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
-    enna_browser_browse(sd->browser);
+    _browse(sd, NULL);
 }
 
 Evas_Object *

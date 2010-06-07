@@ -337,7 +337,11 @@ static int _create_gui(void)
     //~ ecore_evas_shaped_set(enna->ee, 1);  //TODO why this ???
     enna->ee_winid = elm_win_xwindow_get(enna->win);
     enna->evas = evas_object_evas_get(enna->win);
-
+    
+    /* Enable evas cache (~4 backgrounds in the cache at a time) : 1 background =  1280x720*4 = 3,7MB */
+    /* ==> Set cache to 16MB */
+    evas_image_cache_set(enna->evas, 4 * 4 * 1024 * 1024);
+    
     // main layout widget
     enna->layout = elm_layout_add(enna->win);
     elm_layout_file_set(enna->layout, enna_config_theme_get(), "enna/main/layout");
