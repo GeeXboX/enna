@@ -46,6 +46,7 @@
 #define ENNA_METADATA_DEFAULT_COMMIT_INTERVAL         128
 #define ENNA_METADATA_DEFAULT_SCAN_LOOP              -1
 #define ENNA_METADATA_DEFAULT_SCAN_SLEEP              900
+#define ENNA_METADATA_DEFAULT_SCAN_DELAY              4
 #define ENNA_METADATA_DEFAULT_SCAN_PRIORITY           19
 #define ENNA_METADATA_DEFAULT_DECRAPIFIER             1
 
@@ -67,6 +68,7 @@ typedef struct db_cfg_s {
     int commit_interval;
     int scan_loop;
     int scan_sleep;
+    int scan_delay;
     int scan_priority;
     int decrapifier;
     valhalla_verb_t verbosity;
@@ -237,6 +239,7 @@ cfg_db_section_load(const char *section)
     CFG_INT(commit_interval);
     CFG_INT(scan_loop);
     CFG_INT(scan_sleep);
+    CFG_INT(scan_delay);
     CFG_INT(scan_priority);
     CFG_INT(decrapifier);
 
@@ -263,6 +266,8 @@ cfg_db_section_load(const char *section)
              MODULE_NAME, "* scan loop      : %i", db_cfg.scan_loop);
     enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* scan sleep     : %i", db_cfg.scan_sleep);
+    enna_log(ENNA_MSG_EVENT,
+             MODULE_NAME, "* scan delay     : %i", db_cfg.scan_delay);
     enna_log(ENNA_MSG_EVENT,
              MODULE_NAME, "* scan priority  : %i", db_cfg.scan_priority);
     enna_log(ENNA_MSG_EVENT,
@@ -293,6 +298,7 @@ cfg_db_section_save(const char *section)
     CFG_INT_SET(commit_interval);
     CFG_INT_SET(scan_loop);
     CFG_INT_SET(scan_sleep);
+    CFG_INT_SET(scan_delay);
     CFG_INT_SET(scan_priority);
     CFG_INT_SET(decrapifier);
 
@@ -333,6 +339,7 @@ cfg_db_section_set_default (void)
     db_cfg.commit_interval = ENNA_METADATA_DEFAULT_COMMIT_INTERVAL;
     db_cfg.scan_loop       = ENNA_METADATA_DEFAULT_SCAN_LOOP;
     db_cfg.scan_sleep      = ENNA_METADATA_DEFAULT_SCAN_SLEEP;
+    db_cfg.scan_delay      = ENNA_METADATA_DEFAULT_SCAN_DELAY;
     db_cfg.scan_priority   = ENNA_METADATA_DEFAULT_SCAN_PRIORITY;
     db_cfg.decrapifier     = ENNA_METADATA_DEFAULT_DECRAPIFIER;
     db_cfg.verbosity       = VALHALLA_MSG_WARNING;
@@ -457,8 +464,8 @@ enna_metadata_db_init(void)
         free(value);
     }
 
-    rc = valhalla_run(vh, db_cfg.scan_loop,
-                      db_cfg.scan_sleep, db_cfg.scan_priority);
+    rc = valhalla_run(vh, db_cfg.scan_loop, db_cfg.scan_sleep,
+                      db_cfg.scan_delay, db_cfg.scan_priority);
     if (rc)
     {
         enna_log(ENNA_MSG_ERROR,

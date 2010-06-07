@@ -103,6 +103,8 @@ commit_interval=128
 scan_loop=-1
 # time [sec] for sleeping between loops
 scan_sleep=900
+# delay [sec] before the scanning begins
+scan_delay=4
 # 0: normal, -20: higher, 19 lower
 scan_priority=19
 decrapifier=1
