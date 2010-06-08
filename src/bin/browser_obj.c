@@ -213,7 +213,7 @@ _add_header(Smart_Data *sd, const char *uri)
     ENNA_OBJECT_DEL(sd->o_header);
     
     o_layout = elm_layout_add(sd->o_layout);
-    elm_layout_file_set(o_layout, enna_config_theme_get(), "browser/header");
+    elm_layout_file_set(o_layout, enna_config_theme_get(), "enna/browser/header");
 
     o_back_btn = elm_button_add(sd->o_layout);
     o_ic = elm_icon_add(o_back_btn);
