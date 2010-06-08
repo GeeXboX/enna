@@ -228,6 +228,8 @@ _add_header(Smart_Data *sd, const char *uri)
     o_search_bar = enna_search_add(o_layout);
     elm_layout_content_set(o_layout, "enna.swallow.search", o_search_bar);
 
+    elm_layout_content_set(sd->o_layout, "enna.swallow.header", o_layout);
+    
     sd->o_header = o_layout;
 }
 
