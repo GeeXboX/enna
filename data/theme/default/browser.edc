@@ -1,11 +1,6 @@
 group
 {
    name: "enna/browser";
-   images
-   {
-       image: "icon_search.png" COMP;
-       image: "search_bg.png" COMP;
-   }
    parts
    {
       part {
@@ -33,63 +28,16 @@ group
          }
       }
       part {
-          name: "enna.bg.search";
-          type: IMAGE ;
-          clip_to: "clip";
-          description {
-              state: "default" 0.0;
-              rel1.to: "clip";
-              rel1.relative: 0 0;
-              rel1.offset: 5 32;
-              rel2.to: "clip";
-              rel2.relative: 1 0;
-              rel2.offset: -20 64;
-              color: 255 255 255 128;
-              image.normal : "search_bg.png";
-              image.border : 17 17 15 15;
-          }
-      }
-      part {
-          name: "enna.swallow.search";
-          type: SWALLOW ;
-          clip_to: "clip";
-          description {
-              state: "default" 0.0;
-              rel1.to: "clip";
-              rel1.relative: 0 0;
-              rel1.offset: 22 32;
-              rel2.to: "clip";
-              rel2.relative: 1 0;
-              rel2.offset: -54 64;
-          }
-      }
-          part {
-              name: "enna.icon.search";
-              type: IMAGE ;
-              clip_to: "clip";
-              description {
-                  state: "default" 0.0;
-                  rel1.to: "clip";
-                  rel1.relative: 1 0;
-                  rel1.offset: -32-20 40;
-                  rel2.to: "clip";
-                  rel2.relative: 1 0;
-                  rel2.offset: -16-20 56;
-                  image.normal : "icon_search.png";
-              }
-          }
-
-      part {
-         name: "enna.swallow.parent";
+         name: "enna.swallow.header";
          type: SWALLOW ;
          clip_to: "clip";
          description {
             state: "default" 0.0;
             rel1.to: "clip";
-            rel1.offset: 64 0;
+            rel1.offset: 10 0;
             rel2.to: "clip";
             rel2.relative: 1 0;
-            rel2.offset: -64 64;
+            rel2.offset: -10 64;
          }
       }
       /* Separator beetween list and parent */
@@ -102,10 +50,10 @@ group
             color: 255 255 255 200;
             rel1.relative: 0.0 1.0;
             rel1.offset: 0 2;
-            rel1.to_y: "enna.swallow.parent";
+            rel1.to_y: "enna.swallow.header";
             rel2.relative: 1.0 1.0;
             rel2.offset: 0 2    ;
-            rel2.to_y: "enna.swallow.parent";
+            rel2.to_y: "enna.swallow.header";
             image {
                normal: "separator_h.png";
             }
@@ -230,4 +178,54 @@ group
       }
 
    }
+}
+
+group
+{
+    name: "enna/browser/header";
+    images
+    {
+        image: "icon_search.png" COMP;
+        image: "search_bg.png" COMP;
+    }
+    parts
+    {
+        part {
+            name: "enna.bg.search";
+            type: IMAGE ;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 0 0;
+                rel1.offset: 5 32;
+                rel2.relative: 1 0;
+                rel2.offset: -20 64;
+                color: 255 255 255 128;
+                image.normal : "search_bg.png";
+                image.border : 17 17 15 15;
+            }
+        }
+        part {
+            name: "enna.swallow.search";
+            type: SWALLOW ;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 0 0;
+                rel1.offset: 22 32;
+                rel2.relative: 1 0;
+                rel2.offset: -54 64;
+            }
+        }
+        part {
+            name: "enna.icon.search";
+            type: IMAGE ;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 1 0;
+                rel1.offset: -32-20 40;
+                rel2.relative: 1 0;
+                rel2.offset: -16-20 56;
+                image.normal : "icon_search.png";
+            }
+        }
+    }
 }
