@@ -86,11 +86,6 @@ typedef struct _Enna_Module_Valhalla
 {
     Enna_Module   *em;
     valhalla_t    *valhalla;
-    Enna_Vfs_File *vfs;
-    unsigned int   it;
-
-    int64_t prev_id_m1, prev_id_d1;
-    int64_t prev_id_m2, prev_id_d2;
 } Enna_Module_Valhalla;
 
 #define VMD(m) VALHALLA_METADATA_##m
@@ -674,7 +669,6 @@ module_init(Enna_Module *em)
         return;
 
     mod->em = em;
-    mod->it = 0;
     mod->valhalla = enna_metadata_get_db();
 
     if (!mod->valhalla)
