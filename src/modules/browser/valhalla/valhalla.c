@@ -82,6 +82,13 @@ typedef enum _Meta_Name
     META_TRACK,
 } Meta_Name;
 
+typedef struct _Item_Id
+{
+    unsigned int it;
+    const char *meta;
+    const char *data;
+} Item_Id;
+
 typedef struct _Enna_Module_Valhalla
 {
     Enna_Module   *em;
@@ -313,19 +320,18 @@ _result_file(Enna_Browser *browser,
 }
 
 static void
-_browse_list_data(Enna_Browser *browser,
-                  const Browser_Item *item, valhalla_file_type_t ftype,
-                  unsigned int it, const char *meta, const char *data)
+_browse_list_data(Enna_Browser *browser, const Browser_Item *item,
+                  valhalla_file_type_t ftype, const Item_Id *id)
 {
     valhalla_db_stmt_t *stmt;
     const valhalla_db_metares_t *metares;
     valhalla_db_item_t search =
         VALHALLA_DB_SEARCH_TEXT(item->meta, NIL, item->priority);
     valhalla_db_restrict_t r1 =
-        VALHALLA_DB_RESTRICT_STR(IN, meta, data, item->priority);
+        VALHALLA_DB_RESTRICT_STR(IN, id->meta, id->data, item->priority);
     valhalla_db_restrict_t *r = NULL;
 
-    if (tree_meta[it].level > LEVEL_ONE)
+    if (tree_meta[id->it].level > LEVEL_ONE)
         r = &r1;
 
     stmt = valhalla_db_metalist_get(mod->valhalla, &search, ftype, r);
@@ -333,21 +339,20 @@ _browse_list_data(Enna_Browser *browser,
         return;
 
     while ((metares = valhalla_db_metalist_read(mod->valhalla, stmt)))
-        _vfs_add_dir(browser, it, metares, NULL);
+        _vfs_add_dir(browser, id->it, metares, NULL);
 }
 
 static void
 _browse_list_file(Enna_Browser *browser,
                   valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
-                  unsigned int it, const char *meta, const char *data,
-                  valhalla_metadata_pl_t priority)
+                  const Item_Id *id, valhalla_metadata_pl_t priority)
 {
     valhalla_db_stmt_t *stmt;
     const valhalla_db_fileres_t *fileres;
     valhalla_db_restrict_t r =
-        VALHALLA_DB_RESTRICT_STR(IN, meta, data, priority);
+        VALHALLA_DB_RESTRICT_STR(IN, id->meta, id->data, priority);
 
-    if (meta && data)
+    if (id->meta && id->data)
     {
         if (rp)
             VALHALLA_DB_RESTRICT_LINK(*rp, r);
@@ -401,9 +406,8 @@ _restr_free(valhalla_db_restrict_t *r)
 }
 
 static void
-_browse_list(Enna_Browser *browser,
-             const Browser_Item *item, valhalla_file_type_t ftype,
-             unsigned int it, const char *meta, const char *data)
+_browse_list(Enna_Browser *browser, const Browser_Item *item,
+             valhalla_file_type_t ftype, const Item_Id *id)
 {
     if (!item)
         return;
@@ -429,14 +433,14 @@ _browse_list(Enna_Browser *browser,
     }
 
     case DATALIST:
-        _browse_list_data(browser, item, ftype, it, meta, data);
+        _browse_list_data(browser, item, ftype, id);
         break;
 
     case FILELIST:
     {
         valhalla_db_restrict_t *r = NULL;
-        unsigned int i, j = it;
-        unsigned int last = it + 1;
+        unsigned int i, j = id->it;
+        unsigned int last = id->it + 1;
 
         /* special FILELIST */
         if (!item->meta)
@@ -447,7 +451,7 @@ _browse_list(Enna_Browser *browser,
 
         for (; j < last; j++)
         {
-            if (tree_meta[j].level != tree_meta[it].level)
+            if (tree_meta[j].level != tree_meta[id->it].level)
                 continue;
 
             if (!CHECK_FLAGS(tree_meta[j].flags, ftype))
@@ -464,7 +468,7 @@ _browse_list(Enna_Browser *browser,
             }
         }
 
-        _browse_list_file(browser, r, ftype, it, meta, data, item->priority);
+        _browse_list_file(browser, r, ftype, id, item->priority);
         _restr_free(r);
         break;
     }
@@ -472,23 +476,22 @@ _browse_list(Enna_Browser *browser,
 }
 
 static void
-_browse(Enna_Browser *browser, valhalla_file_type_t ftype,
-        unsigned int it, const char *meta, const char *data)
+_browse(Enna_Browser *browser, valhalla_file_type_t ftype, const Item_Id *id)
 {
     unsigned int i;
     const Browser_Item *item;
 
-    if (it >= ARRAY_NB_ELEMENTS(tree_meta))
+    if (id->it >= ARRAY_NB_ELEMENTS(tree_meta))
         return;
 
-    item = tree_meta[it].items;
+    item = tree_meta[id->it].items;
 
     for (i = 0; item[i].meta || (!item[i].meta && !i); i++)
     {
-        if (!CHECK_FLAGS(tree_meta[it].flags, ftype))
+        if (!CHECK_FLAGS(tree_meta[id->it].flags, ftype))
             continue;
 
-        _browse_list(browser, &item[i], ftype, it, meta, data);
+        _browse_list(browser, &item[i], ftype, id);
 
         if (!item[i].meta)
             break;
@@ -499,6 +502,11 @@ static void
 _browse_root(Enna_Browser *browser, valhalla_file_type_t ftype)
 {
     unsigned int i;
+    Item_Id id = {
+        .it   = 0,
+        .meta = NULL,
+        .data = NULL,
+    };
 
     for (i = 0; i < ARRAY_NB_ELEMENTS(tree_meta); i++)
     {
@@ -508,7 +516,8 @@ _browse_root(Enna_Browser *browser, valhalla_file_type_t ftype)
         if (!CHECK_FLAGS(tree_meta[i].flags, ftype))
             continue;
 
-        _browse_list(browser, &tree_meta[i].items[0], ftype, i, NULL, NULL);
+        id.it = i;
+        _browse_list(browser, &tree_meta[i].items[0], ftype, &id);
     }
 }
 
@@ -523,11 +532,16 @@ static void
 _class_browse_get_children(void *priv, Eina_List *tokens,
                            Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
-    int level, it = 0, i = 0;
+    int level, i = 0;
     valhalla_file_type_t ftype;
     Eina_List *l;
-    const char *p, *meta = NULL, *data = NULL;
+    const char *p;
     char buf[256];
+    Item_Id id = {
+        .it   = 0,
+        .meta = NULL,
+        .data = NULL,
+    };
 
     switch (caps)
     {
@@ -576,7 +590,7 @@ _class_browse_get_children(void *priv, Eina_List *tokens,
                 if (strcmp(tree_meta[j].items[0].meta, p))
                     continue;
 
-                it = j + 1; /* set iterator for LEVEL_ROOT */
+                id.it = j + 1; /* set iterator for LEVEL_ROOT */
                 break;
             }
             break;
@@ -611,20 +625,20 @@ _class_browse_get_children(void *priv, Eina_List *tokens,
 
                     if (!strcmp(tree_meta[j].items[k].meta, buf)) /* found */
                     {
-                        meta = buf;
-                        data = chr + 1;
+                        id.meta = buf;
+                        id.data = chr + 1;
                         break;
                     }
                 }
             }
-            it++;
+            id.it++;
             break;
         }
         }
 
-    enna_log(ENNA_MSG_EVENT, "valhalla", "%u %s %s", it, meta, data);
+    enna_log(ENNA_MSG_EVENT, "valhalla", "%u %s %s", id.it, id.meta, id.data);
 
-    _browse(browser, ftype, it, meta, data);
+    _browse(browser, ftype, &id);
 }
 
 static void
