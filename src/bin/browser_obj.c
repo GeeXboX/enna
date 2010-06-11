@@ -27,6 +27,7 @@
 #include "view_list.h"
 #include "box.h"
 #include "enna_config.h"
+#include "search.h"
 #include "browser.h"
 #include "browser_obj.h"
 
