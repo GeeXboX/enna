@@ -334,17 +334,13 @@ enna_browser_file_free(Enna_File *f)
 Eina_List *
 enna_browser_files_get(Enna_Browser *b)
 {
-    if (!b)
-        return NULL;
-    return b->files;
+    return b ? b->files : NULL;
 }
 
 const char *
 enna_browser_uri_get(Enna_Browser *b)
 {
-    if (!b)
-        return NULL;
-    return b->uri;
+    return b ? b->uri : NULL;
 }
 
 static Enna_File *
