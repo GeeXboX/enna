@@ -40,9 +40,9 @@ struct _Enna_File
     unsigned char is_menu : 1;
 };
 
-Enna_Browser *enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
-                                 void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
-                                 const char *uri);
+Enna_Browser *enna_browser_add(void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
+                               void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
+                               const char *uri);
 void enna_browser_browse(Enna_Browser *b);
 void enna_browser_del(Enna_Browser *b);
 void enna_browser_file_add(Enna_Browser *b, Enna_File *file);
@@ -54,8 +54,12 @@ int enna_browser_level_get(Enna_Browser *b);
 Enna_Vfs_File *enna_browser_file_dup(Enna_Vfs_File *file);
 void enna_browser_file_free(Enna_File *f);
 
-Enna_File *enna_browser_create_file(const char *name, const char *uri, const char *mrl, const char *label, const char *icon);
-Enna_File *enna_browser_create_directory(const char *name, const char *uri, const char *label, const char *icon);
-Enna_File *enna_browser_create_menu(const char *name, const char *uri, const char *label, const char *icon);
+Enna_File *enna_browser_create_file(const char *name, const char *uri,
+                                    const char *mrl, const char *label,
+                                    const char *icon);
+Enna_File *enna_browser_create_directory(const char *name, const char *uri,
+                                         const char *label, const char *icon);
+Enna_File *enna_browser_create_menu(const char *name, const char *uri,
+                                    const char *label, const char *icon);
 
 #endif /* BROWSER_H */

@@ -59,7 +59,8 @@ static void _browser_browse_root(Enna_Browser *browser);
 static void _browser_browse_activity(Enna_Browser* browser);
 static void _browser_browse_module(Enna_Browser* browser);
 
-static int _add_idler(void *data)
+static int
+_add_idler(void *data)
 {
     Enna_Browser* b = data;
     DBG("uri : %s\n", b->uri);
@@ -100,9 +101,9 @@ _activities_changed_cb(void *data, int type, void *event)
 }
 
 Enna_Browser *
-enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
-                   void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
-                   const char *uri)
+enna_browser_add(void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
+                 void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
+                 const char *uri)
 {
     Enna_Browser *b;
 
@@ -117,20 +118,13 @@ enna_browser_add( void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
     b->tokens = enna_util_tuple_get(uri, "/");
 
     if (!b->tokens || eina_list_count(b->tokens) == 0)
-    {
         b->type = BROWSER_ROOT;
-    }
     else if (eina_list_count(b->tokens) == 1)
-    {
         b->type = BROWSER_ACTIVITY;
-    }
     else if (eina_list_count(b->tokens) >= 2)
-    {
         b->type = BROWSER_MODULE;
-    }
     else
         return NULL;
-
 
     return b;
 }
@@ -140,8 +134,10 @@ enna_browser_del(Enna_Browser *b)
 {
     Enna_Vfs_File *file;
     char *token;
+
     if (!b)
         return;
+
     if (b->queue_idler)
         ecore_idler_del(b->queue_idler);
     b->queue_idler = NULL;
@@ -162,6 +158,7 @@ enna_browser_browse(Enna_Browser *b)
 {
     if (!b)
         return;
+
     if (!b->queue_idler)
         b->queue_idler = ecore_idler_add(_add_idler, b);
     if (b->type == BROWSER_ROOT && !b->ev_handler)
@@ -173,7 +170,8 @@ int enna_browser_level_get(Enna_Browser *b)
 {
     if (b && b->tokens)
         return eina_list_count(b->tokens);
-    return -1; 
+
+    return -1;
 }
 
 static void
@@ -183,6 +181,7 @@ _browser_browse_root(Enna_Browser *browser)
     Enna_Class_Activity *act;
     Enna_Buffer *buf;
     Enna_Vfs_File *f;
+
     EINA_LIST_FOREACH(enna_activities_get(), l, act)
     {
         f = calloc(1, sizeof(Enna_Vfs_File));
@@ -211,35 +210,31 @@ _browser_browse_activity(Enna_Browser *browser)
     const char *act_name = eina_list_nth(browser->tokens, 0);
     Enna_Class_Activity *act = enna_activity_get(act_name);
 
-    //if (!strcmp(act_name, "music"))
+    Enna_Vfs_Class *vfs;
+    Eina_List *l;
+    Enna_Vfs_File *f;
+    Enna_Buffer *buf;
+
+    EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, vfs)
     {
-        Enna_Vfs_Class *vfs;
-        Eina_List *l;
-        Enna_Vfs_File *f;
-        Enna_Buffer *buf;
-        EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, vfs)
-        {
-            f = calloc(1, sizeof(Enna_Vfs_File));
+        f = calloc(1, sizeof(Enna_Vfs_File));
 
-            buf = enna_buffer_new();
-            enna_buffer_appendf(buf, "/%s/%s", act_name, vfs->name);
-            f->name = eina_stringshare_add(vfs->name);
-            f->uri = eina_stringshare_add(buf->buf);
-            enna_buffer_free(buf);
-            f->label = eina_stringshare_add(vfs->label);
-            f->icon = eina_stringshare_add(vfs->icon);
-            f->is_menu = 1;
-            browser->files = eina_list_append(browser->files, f);
-            if (browser->add)
-                browser->add(browser->add_data, f);
-        }
+        buf = enna_buffer_new();
+        enna_buffer_appendf(buf, "/%s/%s", act_name, vfs->name);
+        f->name = eina_stringshare_add(vfs->name);
+        f->uri = eina_stringshare_add(buf->buf);
+        enna_buffer_free(buf);
+        f->label = eina_stringshare_add(vfs->label);
+        f->icon = eina_stringshare_add(vfs->icon);
+        f->is_menu = 1;
+        browser->files = eina_list_append(browser->files, f);
+        if (browser->add)
+            browser->add(browser->add_data, f);
     }
-
-    return;
-
 }
 
-void enna_browser_file_add(Enna_Browser *b, Enna_Vfs_File *file)
+void
+enna_browser_file_add(Enna_Browser *b, Enna_Vfs_File *file)
 {
     if (!b)
         return;
@@ -261,10 +256,12 @@ void enna_browser_file_add(Enna_Browser *b, Enna_Vfs_File *file)
     b->add(b->add_data, file);
 }
 
-void enna_browser_file_del(Enna_Browser *b, Enna_Vfs_File *file)
+void
+enna_browser_file_del(Enna_Browser *b, Enna_Vfs_File *file)
 {
     if (!b || !file)
         return;
+
     b->files = eina_list_remove(b->files, file);
     b->del(b->del_data, file);
 }
@@ -277,25 +274,24 @@ _browser_browse_module(Enna_Browser *browser)
     Enna_Class_Activity *act;
     const char *act_name = (const char*)eina_list_nth(browser->tokens, 0);
     const char *name=  (const char*)eina_list_nth(browser->tokens, 1) ;
+
     act = enna_activity_get(act_name);
 
-
     EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, tmp)
-    {
-
         if (!strcmp(tmp->name, name))
         {
             vfs = tmp;
             break;
         }
-    }
+
     if (!vfs)
         return;
 
     browser->vfs = vfs;
     browser->priv_module =
         browser->vfs->func.add(browser->tokens, browser, act->caps);
-    browser->vfs->func.get_children(browser->priv_module, browser->tokens, browser, act->caps);
+    browser->vfs->func.get_children(browser->priv_module,
+                                    browser->tokens, browser, act->caps);
 
 
 }
@@ -322,6 +318,7 @@ enna_browser_file_free(Enna_File *f)
 {
     if (!f)
         return;
+
     if (f->name) eina_stringshare_del(f->name);
     if (f->uri) eina_stringshare_del(f->uri);
     if (f->label) eina_stringshare_del(f->label);
@@ -350,11 +347,11 @@ _create_inode(const char *name, const char *uri, const char *label,
     Enna_File *f;
 
     f = calloc(1, sizeof(Enna_File));
-    f->name = name ? eina_stringshare_add(name) : NULL;
-    f->uri = uri ? eina_stringshare_add(uri) : NULL;
+    f->name  = name  ? eina_stringshare_add(name)  : NULL;
+    f->uri   = uri   ? eina_stringshare_add(uri)   : NULL;
     f->label = label ? eina_stringshare_add(label) : NULL;
-    f->icon = icon ? eina_stringshare_add(icon) : NULL;
-    f->mrl = mrl ? eina_stringshare_add(mrl) : NULL;
+    f->icon  = icon  ? eina_stringshare_add(icon)  : NULL;
+    f->mrl   = mrl   ? eina_stringshare_add(mrl)   : NULL;
 
     if (dir == 1)
         f->is_directory = 1;
@@ -364,21 +361,23 @@ _create_inode(const char *name, const char *uri, const char *label,
     return f;
 }
 
-
 Enna_File *
-enna_browser_create_file(const char *name, const char *uri, const char *mrl, const char *label, const char *icon)
+enna_browser_create_file(const char *name, const char *uri,
+                         const char *mrl, const char *label, const char *icon)
 {
     return _create_inode(name, uri, label, icon, mrl, 0);
 }
 
 Enna_File *
-enna_browser_create_directory(const char *name, const char *uri, const char *label, const char *icon)
+enna_browser_create_directory(const char *name, const char *uri,
+                              const char *label, const char *icon)
 {
     return _create_inode(name, uri, label, icon, NULL, 1);
 }
 
 Enna_File *
-enna_browser_create_menu(const char *name, const char *uri, const char *label, const char *icon)
+enna_browser_create_menu(const char *name, const char *uri,
+                         const char *label, const char *icon)
 {
     return _create_inode(name, uri, label, icon, NULL, 2);
 }
