@@ -59,7 +59,7 @@ static void _browser_browse_root(Enna_Browser *browser);
 static void _browser_browse_activity(Enna_Browser* browser);
 static void _browser_browse_module(Enna_Browser* browser);
 
-int _add_idler(void *data)
+static int _add_idler(void *data)
 {
     Enna_Browser* b = data;
     DBG("uri : %s\n", b->uri);
