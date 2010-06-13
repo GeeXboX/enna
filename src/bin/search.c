@@ -40,7 +40,7 @@ enna_search_add(Evas_Object *parent)
     elm_scrolled_entry_entry_set(o_edit, _("Search..."));
 
     elm_layout_content_set(o_layout, "enna.swallow.edit", o_edit);
-
+    elm_object_style_set(o_edit, "enna");
     evas_object_data_set(o_layout, "edit", o_edit);
     return o_layout;
 }
