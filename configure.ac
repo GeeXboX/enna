@@ -286,6 +286,33 @@ if test "x$want_browser_dvd" = "xyes"; then
   AC_DEFINE(BUILD_BROWSER_DVD, 1, [Dvd Video Browser])
 fi
 
+# iPod/iPhone support
+want_browser_ipod="auto"
+have_browser_ipod="no"
+AC_MSG_CHECKING(whether iPod browser is to be built)
+AC_ARG_ENABLE(browser-ipod,
+  AS_HELP_STRING([--enable-browser-ipod],[Enable iPod Browser Module]),
+  [ want_browser_ipod=$enableval ]
+)
+AC_MSG_RESULT($want_browser_ipod)
+if test "x$want_browser_ipod" = "xyes" -o "x$want_browser_ipod" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LIBGPOD],
+    [libgpod-1.0 >= 0.7.93],
+    [
+      AC_DEFINE(BUILD_BROWSER_IPOD, 1, [iPod Browser Module])
+      have_browser_ipod="yes"
+    ],
+    [
+      if test "x$want_browser_ipod" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libgpod not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_BROWSER_IPOD, test "x$have_browser_ipod" = "xyes")
+
+
 # Jamendo
 want_browser_jamendo="yes"
 AC_MSG_CHECKING(whether jamendo browser module is to be built)
@@ -683,6 +710,7 @@ src/modules/activity/weather/Makefile
 src/modules/browser/Makefile
 src/modules/browser/cdda/Makefile
 src/modules/browser/dvd/Makefile
+src/modules/browser/ipod/Makefile
 src/modules/browser/jamendo/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
@@ -745,7 +773,8 @@ echo "Supported Browser Modules:"
 echo
 echo "  Audio CD......................... : $want_browser_cdda"
 echo "  DVD Video........................ : $want_browser_dvd"
-echo "  Jamendo...........................: $want_browser_jamendo"
+echo "  iPod/iPhone/iPad................. : $have_browser_ipod"
+echo "  Jamendo.......................... : $want_browser_jamendo"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  Podcasts......................... : $want_browser_podcasts"

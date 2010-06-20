@@ -158,7 +158,7 @@ images {
             state: "default" 0.0;
             color: 224 224 224 200;
             visible: 1;
-
+            fixed: 1 1;
             rel1.relative: 0.75 1.00;
             rel1.to: "content.clip";
 
