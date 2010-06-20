@@ -23,25 +23,90 @@
 
 #include "enna.h"
 #include "enna_config.h"
+#include "input.h"
+
+typedef struct _Smart_Data Smart_Data;
+
+struct _Smart_Data {
+    Input_Listener *il;
+};
+
+static Eina_Bool
+_entry_input_listener_cb(void *data, enna_input event)
+{
+    /* Block Enna events here, to be able to enter characters in entry */
+    return EINA_FALSE;
+}
+
+static void
+_entry_focused_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    if (!sd)
+        return;
+    /* Add an input lister when entry received focus, that blocks all Enna events */
+    sd->il = enna_input_listener_add("search/entry",
+                                     _entry_input_listener_cb, sd);
+    /* Promote input lister to intercept ALL events */
+    enna_input_listener_promote(sd->il);
+    
+}
+
+static void
+_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    
+    if (!sd)
+        return;
+    /* Remove input listener when entry loose focus */
+    if (sd->il)
+    {
+        enna_input_listener_del(sd->il);
+        sd->il = NULL;
+    }
+}
+
+static void
+_entry_activated_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    
+    if (!sd)
+        return;
+    /* Remove input listner when user press Enter */
+    if (sd->il)
+    {
+        enna_input_listener_del(sd->il);
+        sd->il = NULL;
+    }
+}
 
 Evas_Object *
 enna_search_add(Evas_Object *parent)
 {
     Evas_Object *o_layout;
     Evas_Object *o_edit;
+    Smart_Data *sd;
+
+    sd = calloc(1, sizeof(Smart_Data));
     
     o_layout = elm_layout_add(parent);
     elm_layout_file_set(o_layout, enna_config_theme_get(), "enna/search");
 
-    o_edit = elm_scrolled_entry_add(o_layout);
-    elm_scrolled_entry_bounce_set(o_edit, EINA_FALSE, EINA_FALSE);
-    elm_scrolled_entry_line_char_wrap_set(o_edit, EINA_FALSE);
-    elm_scrolled_entry_line_wrap_set(o_edit, EINA_FALSE);
-    elm_scrolled_entry_entry_set(o_edit, _("Search..."));
+    o_edit = elm_entry_add(o_layout);
+    elm_entry_single_line_set(o_edit, EINA_TRUE);
+    elm_entry_entry_set(o_edit, _("Search..."));
 
     elm_layout_content_set(o_layout, "enna.swallow.edit", o_edit);
     elm_object_style_set(o_edit, "enna");
     evas_object_data_set(o_layout, "edit", o_edit);
+
+    evas_object_smart_callback_add(o_edit, "focused", _entry_focused_cb, sd);
+    evas_object_smart_callback_add(o_edit, "unfocused", _entry_unfocused_cb, sd);
+    evas_object_smart_callback_add(o_edit, "activated", _entry_activated_cb, sd);
+
     return o_layout;
 }
 
