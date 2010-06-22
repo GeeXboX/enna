@@ -366,7 +366,6 @@ _create_menu()
 static void
 _create_gui()
 {
-    Evas_Object *o;
     DBG(__FUNCTION__);
     /* Set default state */
     mod->state = BROWSER_VIEW;
