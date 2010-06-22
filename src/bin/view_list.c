@@ -260,6 +260,27 @@ enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 }
 
 void
+enna_list_file_remove(Evas_Object *obj, Enna_File *file)
+{
+    Smart_Data *sd;
+    List_Item *it;
+    Eina_List *l;
+    
+    sd = evas_object_data_get(obj, "sd");
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+        if (it->file == file)
+        {
+            elm_genlist_item_del(it->item);
+            free(it);
+            sd->items = eina_list_remove(sd->items, it);
+            break;
+        }
+    }
+}
+
+void
 enna_list_select_nth(Evas_Object *obj, int nth)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
