@@ -381,3 +381,30 @@ enna_browser_create_menu(const char *name, const char *uri,
 {
     return _create_inode(name, uri, label, icon, NULL, 2);
 }
+
+void
+enna_browser_filter(Enna_Browser *b, const char *filter)
+{
+    Eina_List *l;
+    Enna_File *f;
+    
+    if (!b || !filter)
+        return;
+
+    /* First remove all files from view */
+    EINA_LIST_FOREACH(b->files, l, f)
+    {
+        if (b->del)
+            b->del(b->del_data, f);
+    }
+    /* Then add files that contain filter string */
+    EINA_LIST_FOREACH(b->files, l, f)
+    {
+        if (strstr(f->label, filter))
+        {
+            if(b->add)
+                b->add(b->add_data, f);
+        }
+        
+    }
+}
