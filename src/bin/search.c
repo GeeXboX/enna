@@ -68,6 +68,9 @@ _entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info)
         enna_input_listener_del(sd->il);
         sd->il = NULL;
     }
+
+    if (!strcmp(elm_entry_entry_get(sd->o_edit), ""))
+        elm_entry_entry_set(sd->o_edit, _("Search..."));
 }
 
 static void
