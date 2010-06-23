@@ -41,6 +41,7 @@ struct _Smart_Data
     Ecore_Timer *hilight_timer;
     Enna_Browser *browser;
     Evas_Object *o_header;
+    Evas_Object *o_search;
     const char *root;
     struct
     {
@@ -217,6 +218,7 @@ _add_header(Smart_Data *sd, const char *uri)
     Evas_Object *o_ic;
 
     ENNA_OBJECT_DEL(sd->o_header);
+    ENNA_OBJECT_DEL(sd->o_search);
     
     o_layout = elm_layout_add(sd->o_layout);
     elm_layout_file_set(o_layout, enna_config_theme_get(), "enna/browser/header");
@@ -237,6 +239,7 @@ _add_header(Smart_Data *sd, const char *uri)
     elm_layout_content_set(sd->o_layout, "enna.swallow.header", o_layout);
     
     sd->o_header = o_layout;
+    sd->o_search = o_search_bar;
 }
 
 static void
