@@ -209,6 +209,29 @@ _add_cb(void *data, Enna_File *file)
 }
 
 static void
+_del_cb(void *data, Enna_File *file)
+{
+    Smart_Data *sd = data;
+
+    if (file && sd && sd->o_view && sd->view_funcs.view_remove)
+        sd->view_funcs.view_remove(sd->o_view, file);
+}
+
+static void
+_search_activated_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    const char *search_text;
+    if (!sd)
+        return;
+
+    /* Retrieve search text */
+    search_text = enna_search_text_get(sd->o_search);
+    printf("Search : %s\n", search_text);
+    enna_browser_filter(sd->browser, search_text);
+}
+
+static void
 _add_header(Smart_Data *sd, const char *uri)
 {
     Evas_Object *o_layout;
@@ -235,7 +258,7 @@ _add_header(Smart_Data *sd, const char *uri)
 
     o_search_bar = enna_search_add(o_layout);
     elm_layout_content_set(o_layout, "enna.swallow.search", o_search_bar);
-
+    evas_object_smart_callback_add(o_search_bar, "activated", _search_activated_cb, sd);
     elm_layout_content_set(sd->o_layout, "enna.swallow.header", o_layout);
     
     sd->o_header = o_layout;
@@ -262,7 +285,7 @@ _browse(Smart_Data *sd, Enna_File *file)
     sd->hilight_timer = NULL;
     sd->o_view = NULL;
     DBG("browse uri : %s\n", uri);
-    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
+    sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, uri);
 
     _add_header(sd, uri);
     
