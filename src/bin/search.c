@@ -28,6 +28,8 @@
 typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data {
+    Evas_Object *o_layout;
+    Evas_Object *o_edit;
     Input_Listener *il;
 };
 
@@ -107,8 +109,33 @@ enna_search_add(Evas_Object *parent)
     evas_object_smart_callback_add(o_edit, "unfocused", _entry_unfocused_cb, sd);
     evas_object_smart_callback_add(o_edit, "activated", _entry_activated_cb, sd);
 
+    evas_object_data_set(o_layout, "sd", sd);
+    
+    sd->o_edit = o_edit;
+    sd->o_layout = o_layout;
     return o_layout;
 }
 
+const char *
+enna_search_text_get(Evas_Object *obj)
+{
+    Smart_Data *sd;
 
+    if (!obj)
+        return NULL;
+    
+    sd = evas_object_data_get(obj, "sd");
+    return elm_entry_entry_get(sd->o_edit);
+}
 
+void
+enna_search_text_set(Evas_Object *obj, const char *text)
+{
+    Smart_Data *sd;
+    
+    if (!obj)
+        return;
+    
+    sd = evas_object_data_get(obj, "sd");
+    elm_entry_entry_set(sd->o_edit, text);
+}
