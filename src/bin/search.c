@@ -80,12 +80,8 @@ _entry_activated_cb(void *data, Evas_Object *obj, void *event_info)
     
     if (!sd)
         return;
-    /* Remove input listner when user press Enter */
-    if (sd->il)
-    {
-        enna_input_listener_del(sd->il);
-        sd->il = NULL;
-    }
+
+    evas_object_smart_callback_call(sd->o_layout, "activated", NULL);
 }
 
 Evas_Object *
