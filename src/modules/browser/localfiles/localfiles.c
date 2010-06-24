@@ -126,7 +126,8 @@ _add_volumes_cb(void *data, Enna_Volume *v)
         return;
 
     root = calloc(1, sizeof(Root_Directories));
-    root->name = eina_stringshare_add(v->device_name);
+    root->name = eina_stringshare_add(v->label);
+    printf("device_name : %s\n", v->device_name);
     root->uri = strdup( v->mount_point);
     root->label = strdup(v->label);
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME,
