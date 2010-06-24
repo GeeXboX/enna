@@ -291,8 +291,8 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
 
             buf = enna_buffer_new();
             enna_buffer_appendf(buf, "/%s/localfiles/%s", pmod->name, root->name);
-            f = enna_browser_create_directory(root->name, buf->buf,
-                                              root->label, "icon/hd");
+            f = enna_browser_create_menu(root->name, buf->buf,
+                                              root->label, root->icon);
             enna_buffer_free(buf);
             enna_browser_file_add(browser, f);
         }
