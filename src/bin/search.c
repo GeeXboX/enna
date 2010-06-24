@@ -144,3 +144,18 @@ enna_search_text_set(Evas_Object *obj, const char *text)
     sd = evas_object_data_get(obj, "sd");
     elm_entry_entry_set(sd->o_edit, text);
 }
+
+void
+enna_search_focus_set(Evas_Object *obj, Eina_Bool focus)
+{
+    Smart_Data *sd;
+    
+    if (!obj)
+        return;
+    
+    sd = evas_object_data_get(obj, "sd");
+    
+    focus ?
+        elm_object_focus(sd->o_edit) :
+        elm_object_unfocus(sd->o_edit);
+}
