@@ -239,6 +239,28 @@ _search_activated_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
+_search_focus_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    if (!sd)
+        return;
+
+    sd->focus = SEARCH_FOCUSED;
+}
+
+static void
+_search_unfocus_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    
+    if (!sd)
+        return;
+
+    sd->focus = VIEW_FOCUSED;
+}
+
+static void
 _add_header(Smart_Data *sd, const char *uri)
 {
     Evas_Object *o_layout;
@@ -273,6 +295,8 @@ _add_header(Smart_Data *sd, const char *uri)
     
     elm_layout_content_set(o_layout, "enna.swallow.search", o_search_bar);
     evas_object_smart_callback_add(o_search_bar, "activated", _search_activated_cb, sd);
+    evas_object_smart_callback_add(o_search_bar, "focus", _search_focus_cb, sd);
+    evas_object_smart_callback_add(o_search_bar, "unfocus", _search_unfocus_cb, sd);
 
     evas_object_size_hint_align_set(o_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_size_hint_weight_set(o_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
