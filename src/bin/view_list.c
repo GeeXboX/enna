@@ -408,7 +408,10 @@ view_list_item_select (Evas_Object *obj, int down, int cycle, int range)
     end   = down ? 0 : total - 1;
 
     if (ns == start)
-        _smart_select_item(sd, end);
+    {
+        _smart_unselect_item(sd, start);
+        return ENNA_EVENT_CONTINUE;
+    }
     else if (cycle)
     {
         if (!down && (ns - range < 0))
@@ -419,7 +422,12 @@ view_list_item_select (Evas_Object *obj, int down, int cycle, int range)
             list_set_item(sd, ns, down, range);
     }
     else
-        list_set_item(sd, ns, down, range);
+    {
+        if (ns == -1 && !down)
+            list_set_item(sd, end + 1, down, range);
+        else
+            list_set_item(sd, ns, down, range);
+    }
 
     return ENNA_EVENT_BLOCK;
 }
