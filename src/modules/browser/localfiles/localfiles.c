@@ -243,10 +243,49 @@ __class_init(const char *name, Class_Private_Data **priv,
                                          _remove_volumes_cb, data);
 }
 
+static void
+_add_child_volume_cb(void *data, Enna_Volume *v)
+{
+    Enna_Browser *b = data;
+    Enna_File *f;
+   
+    Enna_Buffer *buf;
+    
+    buf = enna_buffer_new();
+    enna_buffer_appendf(buf, "/%s/localfiles/%s", "music", v->label);
+    f = enna_browser_create_menu(v->label, buf->buf,
+                                 v->label, "icon/hd");
+    enna_buffer_free(buf);
+    enna_browser_file_add(b, f);
+}
+
+static void
+_remove_child_volume_cb(void *data, Enna_Volume *v)
+{
+    Enna_Browser *b = data;
+    Eina_List *files, *l;
+    Enna_File *file;
+    
+    files = enna_browser_files_get(b);
+    EINA_LIST_FOREACH(files, l, file)
+    {
+        if (file->name == v->label)
+        {
+            enna_browser_file_del(b, file);
+        }
+    }
+}
+
 static void *
 _add(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
-    return NULL;
+    Enna_Volumes_Listener *vl = NULL;
+    if (eina_list_count(tokens) == 2 )
+    {
+        vl = enna_volumes_listener_add("localfiles_refresh", _add_child_volume_cb,
+                                       _remove_child_volume_cb, browser);
+    }
+    return vl;
 }
 
 static void
@@ -296,7 +335,9 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
                                               root->label, root->icon);
             enna_buffer_free(buf);
             enna_browser_file_add(browser, f);
+            /* add localfiles to the list of volumes listener */
         }
+
 
     }
     else
@@ -412,7 +453,9 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
 static void
 _del(void *priv)
 {
-
+    Enna_Volumes_Listener *vl = priv;
+    if (vl)
+        enna_volumes_listener_del(vl);
 }
 
 static Enna_Vfs_Class class = {

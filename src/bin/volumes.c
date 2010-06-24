@@ -169,5 +169,6 @@ enna_volume_free (Enna_Volume *v)
   eina_stringshare_del (v->device_name);
   eina_stringshare_del (v->mount_point);
   eina_stringshare_del (v->label);
+  eina_stringshare_del(v->udi);
   ENNA_FREE (v);
 }
