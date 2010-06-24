@@ -25,5 +25,9 @@
 #include <Evas.h>
 
 Evas_Object *enna_search_add(Evas_Object *parent);
+const char *enna_search_text_get(Evas_Object *obj);
+void enna_search_text_set(Evas_Object *obj, const char *text);
+void enna_search_focus_set(Evas_Object *obj, Eina_Bool focus);
+
 
 #endif /*SEARCH_H */
