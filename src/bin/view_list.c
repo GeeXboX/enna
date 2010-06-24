@@ -260,12 +260,13 @@ enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     sd = evas_object_data_get(obj, "sd");
 
     it = ENNA_NEW(List_Item, 1);
-    it->item = elm_genlist_item_append (obj, &itc_list, it,
-        NULL, ELM_GENLIST_ITEM_NONE, _item_selected, it);
 
     it->func_activated = func_activated;
     it->data = data;
     it->file = file;
+
+    it->item = elm_genlist_item_append (obj, &itc_list, it,
+                                        NULL, ELM_GENLIST_ITEM_NONE, _item_selected, it);
 
     sd->items = eina_list_append(sd->items, it);
 }
