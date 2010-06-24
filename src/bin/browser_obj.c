@@ -251,14 +251,25 @@ _add_header(Smart_Data *sd, const char *uri)
     elm_icon_file_set(o_ic, enna_config_theme_get(), "icon/back");
     elm_button_icon_set(o_back_btn, o_ic);
     elm_object_style_set(o_back_btn, "mediaplayer");
+
+    evas_object_size_hint_align_set(o_back_btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(o_back_btn, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     
     elm_layout_content_set(o_layout, "enna.swallow.back", o_back_btn);
     o_edje = elm_layout_edje_get(o_layout);
     edje_object_part_text_set(o_layout, "enna.text.current", ecore_file_file_get(uri));
 
     o_search_bar = enna_search_add(o_layout);
+
+    evas_object_size_hint_align_set(o_search_bar, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(o_search_bar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    
     elm_layout_content_set(o_layout, "enna.swallow.search", o_search_bar);
     evas_object_smart_callback_add(o_search_bar, "activated", _search_activated_cb, sd);
+
+    evas_object_size_hint_align_set(o_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(o_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
     elm_layout_content_set(sd->o_layout, "enna.swallow.header", o_layout);
     
     sd->o_header = o_layout;
