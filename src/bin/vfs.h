@@ -57,6 +57,7 @@ int enna_vfs_init(Evas *evas);
 int enna_vfs_append(const char *name, unsigned char type,
         Enna_Vfs_Class *vfs);
 void enna_vfs_register(Enna_Vfs_Class *class, ENNA_VFS_CAPS type);
+void enna_vfs_unregister(Enna_Vfs_Class *vfs, ENNA_VFS_CAPS type);
 void enna_vfs_class_remove(const char *name, unsigned char type);
 Eina_List *enna_vfs_get(ENNA_VFS_CAPS type);
 Enna_File *enna_vfs_dup_file(const Enna_File* file);

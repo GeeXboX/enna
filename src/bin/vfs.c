@@ -87,6 +87,29 @@ enna_vfs_register(Enna_Vfs_Class *vfs, ENNA_VFS_CAPS type)
     //_enna_vfs = eina_list_append(_enna_vfs, vfs);
 }
 
+void
+enna_vfs_unregister(Enna_Vfs_Class *vfs, ENNA_VFS_CAPS type)
+{
+    if (!vfs)
+        return;
+
+    if (type & ENNA_CAPS_MUSIC)
+    {
+        _enna_vfs_music = eina_list_remove(_enna_vfs_music, vfs);
+    }
+    
+    if (type & ENNA_CAPS_VIDEO)
+    {
+        _enna_vfs_video = eina_list_remove(_enna_vfs_video, vfs);
+    }
+    
+    if (type & ENNA_CAPS_PHOTO)
+    {
+        _enna_vfs_photo = eina_list_remove(_enna_vfs_photo, vfs);
+    }
+    
+}
+
 int
 enna_vfs_append(const char *name, unsigned char type, Enna_Vfs_Class *vfs)
 {
