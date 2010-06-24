@@ -451,6 +451,7 @@ static Eina_Bool
 _search_event(Smart_Data *sd, enna_input event)
 {
     enna_search_focus_set(sd->o_search, EINA_TRUE);
+    return ENNA_EVENT_BLOCK;
 }
 
 void
