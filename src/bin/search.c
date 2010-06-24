@@ -36,8 +36,20 @@ struct _Smart_Data {
 static Eina_Bool
 _entry_input_listener_cb(void *data, enna_input event)
 {
+    Smart_Data *sd = data;
     /* Block Enna events here, to be able to enter characters in entry */
-    return EINA_FALSE;
+    switch (event)
+    {
+        case ENNA_INPUT_UP:
+        case ENNA_INPUT_DOWN:
+        case ENNA_INPUT_QUIT:
+            elm_object_unfocus(sd->o_edit);
+            //evas_object_smart_callback_call(sd->o_layout, "unfocus", NULL);
+            return ENNA_EVENT_CONTINUE;
+        default:
+            break;
+    }
+    return ENNA_EVENT_BLOCK;
 }
 
 static void
