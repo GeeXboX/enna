@@ -400,7 +400,7 @@ enna_browser_filter(Enna_Browser *b, const char *filter)
     /* Then add files that contain filter string */
     EINA_LIST_FOREACH(b->files, l, f)
     {
-        if (strstr(f->label, filter))
+        if (strcasestr(f->label, filter))
         {
             if(b->add)
                 b->add(b->add_data, f);
