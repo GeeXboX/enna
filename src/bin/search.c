@@ -64,6 +64,7 @@ _entry_focused_cb(void *data, Evas_Object *obj, void *event_info)
                                      _entry_input_listener_cb, sd);
     /* Promote input lister to intercept ALL events */
     enna_input_listener_promote(sd->il);
+    evas_object_smart_callback_call(sd->o_layout, "focus", NULL);
     
 }
 
