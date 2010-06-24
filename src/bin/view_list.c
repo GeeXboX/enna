@@ -184,6 +184,17 @@ _smart_select_item(Smart_Data *sd, int n)
 }
 
 static void
+_smart_unselect_item(Smart_Data *sd, int n)
+{
+    List_Item *it;
+    
+    it = eina_list_nth(sd->items, n);
+    if (!it) return;
+
+    elm_genlist_item_selected_set(it->item, 0);
+}
+
+static void
 list_set_item(Smart_Data *sd, int start, int up, int step)
 {
     int n, ns;
