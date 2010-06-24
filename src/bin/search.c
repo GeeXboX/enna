@@ -107,7 +107,13 @@ enna_search_add(Evas_Object *parent)
     evas_object_smart_callback_add(o_edit, "focused", _entry_focused_cb, sd);
     evas_object_smart_callback_add(o_edit, "unfocused", _entry_unfocused_cb, sd);
     evas_object_smart_callback_add(o_edit, "activated", _entry_activated_cb, sd);
+    
+    evas_object_size_hint_align_set(o_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(o_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
+    evas_object_size_hint_align_set(o_edit, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(o_edit, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    
     evas_object_data_set(o_layout, "sd", sd);
     
     sd->o_edit = o_edit;
