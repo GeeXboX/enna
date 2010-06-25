@@ -62,4 +62,5 @@ Enna_File *enna_browser_create_directory(const char *name, const char *uri,
 Enna_File *enna_browser_create_menu(const char *name, const char *uri,
                                     const char *label, const char *icon);
 void enna_browser_filter(Enna_Browser *b, const char *filter);
+Enna_File *enna_browser_parent_get(Enna_Browser *b);
 #endif /* BROWSER_H */

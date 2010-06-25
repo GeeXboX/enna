@@ -425,3 +425,11 @@ enna_browser_filter(Enna_Browser *b, const char *filter)
         
     }
 }
+
+Enna_File *
+enna_browser_parent_get(Enna_Browser *b)
+{
+    if (!b)
+        return NULL;
+    return b->parent;
+}
