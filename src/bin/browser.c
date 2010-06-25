@@ -59,7 +59,7 @@ static void _browser_browse_root(Enna_Browser *browser);
 static void _browser_browse_activity(Enna_Browser* browser);
 static void _browser_browse_module(Enna_Browser* browser);
 
-static int
+static Eina_Bool
 _add_idler(void *data)
 {
     Enna_Browser* b = data;
@@ -84,7 +84,7 @@ _add_idler(void *data)
 
 }
 
-static int
+static Eina_Bool
 _activities_changed_cb(void *data, int type, void *event)
 {
     Enna_Browser *browser = data;

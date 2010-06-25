@@ -68,7 +68,7 @@ struct _Smart_Data
     } view_funcs;
 };
 
-static int
+static Eina_Bool
 _view_delay_hilight_cb(void *data)
 {
     Smart_Data *sd = data;

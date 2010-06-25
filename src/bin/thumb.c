@@ -47,8 +47,8 @@ static void _thumb_hash_del(int objid);
 static Evas_Object *_thumb_hash_find(int objid);
 static void _thumb_thumbnailers_kill(void);
 static void _thumb_thumbnailers_kill_cancel(void);
-static int _thumb_cb_kill(void *data);
-static int _thumb_cb_exe_event_del(void *data, int type, void *event);
+static Eina_Bool _thumb_cb_kill(void *data);
+static Eina_Bool _thumb_cb_exe_event_del(void *data, int type, void *event);
 
 /* local subsystem globals */
 static Eina_List *_thumbnailers = NULL;
@@ -423,7 +423,7 @@ _thumb_thumbnailers_kill_cancel(void)
     _kill_timer = NULL;
 }
 
-static int
+static Eina_Bool
 _thumb_cb_kill(void *data)
 {
     Eina_List *l;
@@ -434,7 +434,7 @@ _thumb_cb_kill(void *data)
     return 0;
 }
 
-static int
+static Eina_Bool
 _thumb_cb_exe_event_del(void *data, int type, void *event)
 {
     Ecore_Exe_Event_Del *ev;

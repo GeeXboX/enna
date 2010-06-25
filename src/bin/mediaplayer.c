@@ -150,7 +150,7 @@ event_cb(player_event_t e, void *data)
     return 0;
 }
 
-static int
+static Eina_Bool
 event_key_down(void *data, int type, void *event)
 {
     Ecore_Event_Key *e;
@@ -173,7 +173,7 @@ event_key_down(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 event_mouse_button(void *data, int type, void *event)
 {
     mrl_resource_t res;
@@ -196,7 +196,7 @@ event_mouse_button(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 event_mouse_move(void *data, int type, void *event)
 {
     mrl_resource_t res;

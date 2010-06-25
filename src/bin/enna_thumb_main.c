@@ -47,10 +47,10 @@ struct _E_Thumb
 
 /* local subsystem functions */
 static int _ipc_init(void);
-static int _ipc_cb_server_add(void *data, int type, void *event);
-static int _ipc_cb_server_del(void *data, int type, void *event);
-static int _ipc_cb_server_data(void *data, int type, void *event);
-static int _cb_timer(void *data);
+static Eina_Bool _ipc_cb_server_add(void *data, int type, void *event);
+static Eina_Bool _ipc_cb_server_del(void *data, int type, void *event);
+static Eina_Bool _ipc_cb_server_data(void *data, int type, void *event);
+static Eina_Bool _cb_timer(void *data);
 static void _thumb_generate(E_Thumb *eth);
 
 /* local subsystem globals */
@@ -154,7 +154,7 @@ _ipc_init(void)
     return 1;
 }
 
-static int
+static Eina_Bool
 _ipc_cb_server_add(void *data, int type, void *event)
 {
     Ecore_Ipc_Event_Server_Add *e;
@@ -164,7 +164,7 @@ _ipc_cb_server_add(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _ipc_cb_server_del(void *data, int type, void *event)
 {
     Ecore_Ipc_Event_Server_Del *e;
@@ -175,7 +175,7 @@ _ipc_cb_server_del(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _ipc_cb_server_data(void *data, int type, void *event)
 {
     Ecore_Ipc_Event_Server_Data *e;
@@ -235,7 +235,7 @@ _ipc_cb_server_data(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _cb_timer(void *data)
 {
     E_Thumb *eth;

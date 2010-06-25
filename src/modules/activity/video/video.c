@@ -59,7 +59,7 @@ static void browser_cb_delay_hilight(void *data,
 static void _create_menu(void);
 static void _return_to_video_info_gui();
 
-static int _eos_cb(void *data, int type, void *event);
+static Eina_Bool _eos_cb(void *data, int type, void *event);
 static void video_infos_del(void);
 
 typedef struct _Enna_Module_Video Enna_Module_Video;
@@ -123,7 +123,7 @@ end:
     edje_object_part_text_set(o_edje, "movies.counter.label", label);
 }
 
-static int
+static Eina_Bool
 _controls_timer_cb(void *data)
 {
     media_controls_display(0);
@@ -308,7 +308,7 @@ _return_to_video_info_gui()
     mod->state = BROWSER_VIEW;
 }
 
-static int
+static Eina_Bool
 _eos_cb(void *data, int type, void *event)
 {
     _return_to_video_info_gui();
@@ -463,7 +463,7 @@ _mediaplayer_mouse_up_cb(void *data,
     media_controls_display(1);
 }
 
-static int
+static Eina_Bool
 _mediaplayer_mouse_move_libplayer_cb(void *data, int type, void *event)
 {
     Ecore_Event_Mouse_Move *e = event;
@@ -479,7 +479,7 @@ _mediaplayer_mouse_move_libplayer_cb(void *data, int type, void *event)
     return 0;
 }
 
-static int
+static Eina_Bool
 _mediaplayer_mouse_down_libplayer_cb(void *data, int type, void *event)
 {
     Ecore_Event_Mouse_Button *e = event;

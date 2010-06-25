@@ -70,7 +70,8 @@ static int run_fullscreen = 0;
 static int _create_gui(void);
 
 /* Callbacks */
-static int _idle_timer_cb(void *data)
+static Eina_Bool
+_idle_timer_cb(void *data)
 {
 
     if (enna_exit_visible())
@@ -110,14 +111,16 @@ static void _mouse_display(int show)
     enna->cursor_is_shown = show;
 }
 
-static int _mouse_idle_timer_cb(void *data)
+static Eina_Bool
+_mouse_idle_timer_cb(void *data)
 {
     _mouse_display(0);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     return ECORE_CALLBACK_CANCEL;
 }
 
-static int _mousemove_cb(void *data, int type, void *event)
+static Eina_Bool
+_mousemove_cb(void *data, int type, void *event)
 {
     if (!enna->cursor_is_shown)
     {
@@ -486,7 +489,8 @@ void enna_idle_timer_renew(void)
     }
 }
 
-static int exit_signal(void *data, int type, void *e)
+static Eina_Bool
+exit_signal(void *data, int type, void *e)
 {
     Ecore_Event_Signal_Exit *event = e;
 

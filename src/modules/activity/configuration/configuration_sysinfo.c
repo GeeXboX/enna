@@ -532,7 +532,7 @@ set_system_information(Enna_Buffer *b)
 }
 
 /* ecore timer callback */
-static int
+static Eina_Bool
 _update_infos_cb(void *data)
 {
     Enna_Buffer *b;

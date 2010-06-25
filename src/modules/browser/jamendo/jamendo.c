@@ -31,7 +31,7 @@
 static Ecore_Timer *timer = NULL;
 static int count = 0;
 
-static int
+static Eina_Bool
 _timeout_cb(void *data)
 {
     Enna_File *f3;

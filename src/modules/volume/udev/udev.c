@@ -650,7 +650,7 @@ scan_block_devices(void)
     udev_enumerate_unref(en);
 }
 
-static int
+static Eina_Bool
 scan_timer_cb(void *data)
 {
     scan_block_devices();
