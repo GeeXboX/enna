@@ -310,9 +310,9 @@ _add_header(Smart_Data *sd, Enna_File *file)
     
     o_edje = elm_layout_edje_get(o_layout);
     if (file)
-        edje_object_part_text_set(o_layout, "enna.text.current", file->label);
+        edje_object_part_text_set(o_edje, "enna.text.current", file->label);
     else
-        edje_object_part_text_set(o_layout, "enna.text.current", _("Main Menu"));
+        edje_object_part_text_set(o_edje, "enna.text.current", _("Main Menu"));
 
     o_search_bar = enna_search_add(o_layout);
 
