@@ -288,10 +288,11 @@ _add_header(Smart_Data *sd, const char *uri)
     o_layout = elm_layout_add(sd->o_layout);
     elm_layout_file_set(o_layout, enna_config_theme_get(), "enna/browser/header");
 
-    o_back_btn = elm_button_add(sd->o_layout);
-    o_ic = elm_icon_add(o_back_btn);
-    elm_icon_file_set(o_ic, enna_config_theme_get(), "icon/back");
+    o_back_btn = elm_button_add(o_layout);
+    o_ic = elm_icon_add(sd->o_layout);
+    elm_icon_file_set(o_ic, enna_config_theme_get(), "icon/arrow_left");
     elm_button_icon_set(o_back_btn, o_ic);
+    evas_object_show(o_ic);
     elm_object_style_set(o_back_btn, "mediaplayer");
     evas_object_smart_callback_add(o_back_btn, "clicked", _back_btn_clicked_cb, sd);
     
