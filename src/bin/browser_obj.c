@@ -300,8 +300,19 @@ _add_header(Smart_Data *sd, Enna_File *file)
     evas_object_size_hint_weight_set(o_back_btn, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     
     elm_layout_content_set(o_layout, "enna.swallow.back", o_back_btn);
+    
+    o_ic = elm_icon_add(o_layout);
+    if (!file)
+        elm_icon_file_set(o_ic, enna_config_theme_get(), "icon/home");
+    else
+        elm_icon_file_set(o_ic, enna_config_theme_get(), file->icon);
+    elm_layout_content_set(o_layout, "enna.swallow.icon", o_ic);
+    
     o_edje = elm_layout_edje_get(o_layout);
-    edje_object_part_text_set(o_layout, "enna.text.current", ecore_file_file_get(uri));
+    if (file)
+        edje_object_part_text_set(o_layout, "enna.text.current", file->label);
+    else
+        edje_object_part_text_set(o_layout, "enna.text.current", _("Main Menu"));
 
     o_search_bar = enna_search_add(o_layout);
 
