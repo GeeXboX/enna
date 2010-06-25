@@ -149,6 +149,42 @@ group
             }
         }
         part {
+            name: "enna.swallow.icon";
+            type: SWALLOW;
+            description {
+                min: 24 24;
+                max: 24 24;
+                state: "default" 0.0;
+                rel1.relative: 1 0;
+                rel1.offset: 8 0;
+                rel1.to: "enna.swallow.back";
+                rel2.relative: 1 1;
+                rel2.offset: 48 0;
+                rel2.to: "enna.swallow.back";
+            }
+        }
+        part {
+            name: "enna.text.current";
+            type: TEXT ;
+            effect:        SOFT_SHADOW;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 1 0;
+                rel1.offset: 8 0;
+                rel1.to: "enna.swallow.icon";
+                rel2.relative: 1 0.5;
+                rel2.offset: -20 -2;
+                color: 224 224 224 255;
+                color3: 0 0 0 64;
+                text {
+                    font:     "content";
+                    size:     14;
+                    min:      0 0;
+                    align:    0 0.5;
+                }
+            }
+        }
+        part {
             name: "enna.swallow.search";
             type: SWALLOW ;
             description {
