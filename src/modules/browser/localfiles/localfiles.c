@@ -459,6 +459,69 @@ _del(void *priv)
         enna_volumes_listener_del(vl);
 }
 
+static Enna_File *
+_get_parent(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
+{
+    Class_Private_Data *pmod = NULL;
+    
+    switch(caps)
+    {
+        case  ENNA_CAPS_MUSIC:
+            #ifdef BUILD_ACTIVITY_MUSIC
+            pmod = mod->music;
+            #endif
+            break;
+        case ENNA_CAPS_VIDEO:
+            #ifdef BUILD_ACTIVITY_VIDEO
+            pmod = mod->video;
+            #endif
+            break;
+        case ENNA_CAPS_PHOTO:
+            #ifdef BUILD_ACTIVITY_PHOTO
+            pmod = mod->photo;
+            #endif
+            break;
+        default:
+            break;
+    }
+    
+    if (!pmod)
+        return NULL;
+    
+    if (eina_list_count(tokens) == 2 )
+        return NULL;
+    else if (eina_list_count(tokens) == 3)
+    {
+        Eina_List *l;
+        
+        for (l = pmod->config->root_directories; l; l = l->next)
+        {
+            Enna_File *f;
+            Root_Directories *root;
+            Enna_Buffer *buf;
+            
+            root = l->data;
+            if (!strcmp(root->name, (const char*)eina_list_nth(tokens, 2)))
+            {
+            
+                buf = enna_buffer_new();
+            
+                enna_buffer_appendf(buf, "/%s/localfiles/%s", pmod->name, root->name);
+                f = enna_browser_create_menu(root->name, buf->buf,
+                                         root->label, root->icon);
+                enna_buffer_free(buf);
+                return f;
+            }
+        }
+    }
+    else
+    {
+        return NULL;
+    }
+    
+    return NULL;
+}
+
 static Enna_Vfs_Class class = {
     "localfiles",
     1,
@@ -468,7 +531,8 @@ static Enna_Vfs_Class class = {
     {
         _add,
         _get_children,
-        _del
+        _del,
+        _get_parent
     },
     NULL
 };
