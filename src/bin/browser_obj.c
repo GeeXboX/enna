@@ -274,7 +274,7 @@ _back_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_add_header(Smart_Data *sd, const char *uri)
+_add_header(Smart_Data *sd, Enna_File *file)
 {
     Evas_Object *o_layout;
     Evas_Object *o_edje;
@@ -335,6 +335,8 @@ _browse(Smart_Data *sd, Enna_File *file)
     else
         uri = sd->root;
 
+    _add_header(sd, file);
+    
     ENNA_OBJECT_DEL(sd->o_view);
     enna_browser_del(sd->browser);
     if (sd->hilight_timer)
@@ -344,7 +346,6 @@ _browse(Smart_Data *sd, Enna_File *file)
     DBG("browse uri : %s\n", uri);
     sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, uri);
 
-    _add_header(sd, uri);
     
     enna_browser_browse(sd->browser);
     eina_stringshare_del(uri);
