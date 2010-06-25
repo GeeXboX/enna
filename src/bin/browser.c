@@ -47,6 +47,7 @@ struct _Enna_Browser
     void *add_data;
     void *del_data;
     void *priv_module;
+    Enna_File *parent;
     const char *uri;
     Enna_Browser_Type type;
     Ecore_Event_Handler *ev_handler;
@@ -150,6 +151,7 @@ enna_browser_del(Enna_Browser *b)
         free(token);
     if (b->vfs)
         b->vfs->func.del(b->priv_module);
+    enna_browser_file_free(b->parent);
     free(b);
 }
 
@@ -182,6 +184,8 @@ _browser_browse_root(Enna_Browser *browser)
     Enna_Buffer *buf;
     Enna_Vfs_File *f;
 
+    browser->parent = NULL;
+    
     EINA_LIST_FOREACH(enna_activities_get(), l, act)
     {
         f = calloc(1, sizeof(Enna_Vfs_File));
@@ -215,6 +219,18 @@ _browser_browse_activity(Enna_Browser *browser)
     Enna_Vfs_File *f;
     Enna_Buffer *buf;
 
+    f = calloc(1, sizeof(Enna_Vfs_File));
+    buf = enna_buffer_new();
+    enna_buffer_appendf(buf, "/%s", act->name);
+    f->name = eina_stringshare_add(act->name);
+    f->uri = eina_stringshare_add(buf->buf);
+    enna_buffer_free(buf);
+    f->label = eina_stringshare_add(act->label);
+    f->icon = eina_stringshare_add(act->icon);
+    f->icon_file = eina_stringshare_add(act->bg);
+    f->is_menu = 1;
+    browser->parent = f;
+    
     EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, vfs)
     {
         f = calloc(1, sizeof(Enna_Vfs_File));
@@ -290,10 +306,11 @@ _browser_browse_module(Enna_Browser *browser)
     browser->vfs = vfs;
     browser->priv_module =
         browser->vfs->func.add(browser->tokens, browser, act->caps);
+    browser->parent =
+        browser->vfs->func.get_parent(browser->priv_module,
+                                      browser->tokens, browser, act->caps);
     browser->vfs->func.get_children(browser->priv_module,
                                     browser->tokens, browser, act->caps);
-
-
 }
 
 Enna_Vfs_File *
@@ -407,4 +424,12 @@ enna_browser_filter(Enna_Browser *b, const char *filter)
         }
         
     }
+}
+
+Enna_File *
+enna_browser_parent_get(Enna_Browser *b)
+{
+    if (!b)
+        return NULL;
+    return b->parent;
 }
