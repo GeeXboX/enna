@@ -1,4 +1,5 @@
 if ENNA_BUILD_THEME
+if BUILD_THEME_N900
 
 MAINTAINERCLEANFILES = Makefile.in
 
@@ -359,4 +360,5 @@ n900.edj: Makefile $(EXTRA_DIST)
 clean-local:
 	rm -f *.edj
 
+endif
 endif

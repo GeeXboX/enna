@@ -728,6 +728,49 @@ if test "x$want_libxrandr" = "xyes" -o "x$want_libxrandr" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LIBXRANDR, test "x$have_libxrandr" = "xyes")
 
+##########
+# THEMES #
+##########
+
+# Default theme
+want_theme_default="yes"
+AC_MSG_CHECKING(whether Default Theme is to be built)
+AC_ARG_ENABLE(theme_default,
+  AS_HELP_STRING([--enable-theme-default],[Enable Default Theme]),
+  [ want_theme_default=$enableval ]
+)
+AC_MSG_RESULT($want_theme_default)
+AM_CONDITIONAL(BUILD_THEME_DEFAULT, test "x$want_theme_default" = "xyes")
+if test "x$want_theme_default" = "xyes"; then
+  AC_DEFINE(BUILD_THEME_DEFAULT, 1, [Default Theme])
+fi
+
+# N900 Theme
+want_theme_n900="no"
+AC_MSG_CHECKING(whether n900 Theme is to be built)
+AC_ARG_ENABLE(theme_n900,
+  AS_HELP_STRING([--enable-theme-n900],[Enable n900 Theme]),
+  [ want_theme_n900=$enableval ]
+)
+AC_MSG_RESULT($want_theme_n900)
+AM_CONDITIONAL(BUILD_THEME_N900, test "x$want_theme_n900" = "xyes")
+if test "x$want_theme_N900" = "xyes"; then
+  AC_DEFINE(BUILD_THEME_N900, 1, [n900 Theme])
+fi
+
+# Touchbook Theme
+want_theme_touchbook="no"
+AC_MSG_CHECKING(whether touchbook Theme is to be built)
+AC_ARG_ENABLE(theme_touchbook,
+  AS_HELP_STRING([--enable-theme-touchbook],[Enable touchbook Theme]),
+  [ want_theme_touchbook=$enableval ]
+)
+AC_MSG_RESULT($want_theme_touchbook)
+AM_CONDITIONAL(BUILD_THEME_TOUCHBOOK, test "x$want_theme_touchbook" = "xyes")
+if test "x$want_theme_touchbook" = "xyes"; then
+  AC_DEFINE(BUILD_THEME_TOUCHBOOK, 1, [touchbook Theme])
+fi
+
 if test "x$GCC" = "xyes"; then
   CFLAGS="$CFLAGS -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_REENTRANT"
 fi
@@ -852,6 +895,12 @@ echo "  libcddb.......................... : $have_libcddb"
 echo "  libsvdrp......................... : $have_libsvdrp"
 echo "  libxdg-basedir................... : $have_libxdg_basedir"
 echo "  libxrandr........................ : $have_libxrandr"
+echo
+echo "Suppported Themes:"
+echo
+echo "  default.......................... : $want_theme_default"
+echo "  n900............................. : $want_theme_n900"
+echo "  touchbook........................ : $want_theme_touchbook"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo

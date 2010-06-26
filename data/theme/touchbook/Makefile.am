@@ -1,4 +1,5 @@
 if ENNA_BUILD_THEME
+if BUILD_THEME_TOUCHBOOK
 
 MAINTAINERCLEANFILES = Makefile.in
 
@@ -37,4 +38,5 @@ touchbook.edj: Makefile $(EXTRA_DIST)
 clean-local:
 	rm -f *.edj
 
+endif
 endif
