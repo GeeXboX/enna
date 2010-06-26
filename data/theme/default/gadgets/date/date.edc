@@ -1,0 +1,131 @@
+
+  group {
+    name: "gadget/date";
+    styles {
+       style {
+          name: "style.date";
+          base: "font=content font_size=10 align=center color=#FFFFFF32 style=far_shadow shadow_color=#00000020 wrap=none";
+          tag:  "b"   "+ font=content_bd";
+          tag:  "c"   "+ align=center";
+          tag:  "h1"  "+ font_size=16";
+          tag:  "h2"  "+ font_size=20";
+          tag:  "h3"  "+ font_size=24";
+          tag:  "h4"  "+ font_size=30";
+          tag:  "br"  "\n";
+          tag:  "tab" "\t";
+       }
+    }
+
+      images {
+         image: "widget_clock_back.png" COMP;
+         image: "hour.png" COMP;
+         image: "minute.png" COMP;
+      }
+    min: 256 256;
+    max: 256 256;
+      script {
+	      public clock_cb(val) {
+            new year, month, day, yearday, weekday, hour, minute;
+	        new Float:second;
+            new x, y, w, h;
+
+	        date(year, month, day, yearday, weekday, hour, minute, second);
+            get_geometry(PART:"hour", x, y, w, h);
+
+            custom_state(PART:"minutes", "default", 0.0);
+            set_state_val(PART:"minutes", STATE_MAP_ROT_Z, (float(minute) * 360.0) / 60.0);
+            set_state_val(PART:"minutes", STATE_IMAGE, IMAGE:"minute.png");
+            set_state(PART:"minutes", "custom", 0.0);
+                        
+            custom_state(PART:"hour", "default", 0.0);
+            set_state_val(PART:"hour", STATE_MAP_ROT_Z, ((float(hour) + (float(minute) / 60.0)) * 360.0) / 12.0);
+            set_state_val(PART:"hour", STATE_IMAGE, IMAGE:"hour.png");
+            set_state(PART:"hour", "custom", 0.0);
+            
+            timer(60.0 - (second), "clock_cb", 1);
+           
+         }
+      }
+      parts {
+         part {
+            name: "base";
+            description {
+               state: "default" 0.0;
+               aspect: 1.0 1.0;
+               aspect_preference: BOTH;
+               image.normal: "widget_clock_back.png";
+            }
+         }
+       part {
+          name: "enna.text.data";
+	  	  type: TEXTBLOCK;
+          description {
+             state: "default" 0.0;
+             rel1.relative: 0.56 0.5;
+             rel1.offset: 0 -16;
+             rel2.relative: 0.85 0.5;
+             rel2.offset: 0 16;
+             text.style: "style.date";
+	     	 text.min: 0 0;
+	     	 text.text: "Sam. 25 Juin";
+          }
+       }
+
+         part {
+            name: "minutes";
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 {
+                  to: "base";
+                  relative: 0.3125 0.0;
+               }
+               rel2 {
+                  to: "base";
+                  relative: 0.6875 0.6875;
+               }
+               image.normal: "minute.png";
+               map {
+                  on: 1;
+                  rotation {
+                     center: "base";
+                  }
+               }
+            }
+         }
+         part {
+            name: "hour";
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 {
+                  to: "base";
+                  relative: 0.3125 0.0;
+               }
+               rel2 {
+                  to: "base";
+                  relative: 0.6875 0.6875;
+               }
+               image.normal: "hour.png";
+               map {
+                  on: 1;
+                  rotation {
+                     center: "base";
+                  }
+               }
+            }
+         }
+      }
+      programs {
+         program {
+            name: "init";
+            signal: "load";
+            source: "";
+            script {
+               clock_cb(0);
+            }
+         }
+      }
+   }
+
+
