@@ -301,6 +301,9 @@ enna_browser_file_dup(Enna_Vfs_File *file)
 {
     Enna_Vfs_File *f;
 
+    if (!file)
+        return NULL;
+    
     f = calloc(1, sizeof(Enna_Vfs_File));
     f->icon = eina_stringshare_add(file->icon);
     f->icon_file = eina_stringshare_add(file->icon_file);
