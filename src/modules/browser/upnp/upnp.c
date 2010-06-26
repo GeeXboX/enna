@@ -451,7 +451,7 @@ _class_vfs_get(void *cookie)
 }
 
 #ifdef BUILD_ACTIVITY_MUSIC
-static Enna_Class_Vfs class_upnp_music = {
+static Enna_Vfs_Class class_upnp_music = {
     ENNA_MODULE_NAME,
     10,
     N_("UPnP/DLNA media servers"),
@@ -469,7 +469,7 @@ static Enna_Class_Vfs class_upnp_music = {
 #endif
 
 #ifdef BUILD_ACTIVITY_VIDEO
-static Enna_Class_Vfs class_upnp_video = {
+static Enna_Vfs_Class class_upnp_video = {
     ENNA_MODULE_NAME,
     10,
     N_("UPnP/DLNA media servers"),
