@@ -22,16 +22,16 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-typedef struct buffer_s {
+typedef struct _Enna_Buffer {
     char *buf;
     size_t len;
     size_t capacity;
-} buffer_t;
+} Enna_Buffer;
 
-buffer_t *buffer_new(void);
-void buffer_free(buffer_t *buffer);
+Enna_Buffer *enna_buffer_new(void);
+void enna_buffer_free(Enna_Buffer *buffer);
 
-void buffer_append(buffer_t *buffer, const char *str);
-void buffer_appendf(buffer_t *buffer, const char *format, ...);
+void enna_buffer_append(Enna_Buffer *buffer, const char *str);
+void enna_buffer_appendf(Enna_Buffer *buffer, const char *format, ...);
 
 #endif /* BUFFER_H */

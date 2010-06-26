@@ -184,6 +184,17 @@ _smart_select_item(Smart_Data *sd, int n)
 }
 
 static void
+_smart_unselect_item(Smart_Data *sd, int n)
+{
+    List_Item *it;
+    
+    it = eina_list_nth(sd->items, n);
+    if (!it) return;
+
+    elm_genlist_item_selected_set(it->item, 0);
+}
+
+static void
 list_set_item(Smart_Data *sd, int start, int up, int step)
 {
     int n, ns;
@@ -216,14 +227,14 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 }
 
 Evas_Object *
-enna_list_add(Evas *evas)
+enna_list_add(Evas_Object *parent)
 {
     Evas_Object *obj;
     Smart_Data *sd;
 
     sd = calloc(1, sizeof(Smart_Data));
 
-    obj = elm_genlist_add(enna->layout);
+    obj = elm_genlist_add(parent);
     elm_object_style_set(obj, "enna");
 
     evas_object_size_hint_weight_set(obj, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -249,14 +260,36 @@ enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
     sd = evas_object_data_get(obj, "sd");
 
     it = ENNA_NEW(List_Item, 1);
-    it->item = elm_genlist_item_append (obj, &itc_list, it,
-        NULL, ELM_GENLIST_ITEM_NONE, _item_selected, it);
 
     it->func_activated = func_activated;
     it->data = data;
     it->file = file;
 
+    it->item = elm_genlist_item_append (obj, &itc_list, it,
+                                        NULL, ELM_GENLIST_ITEM_NONE, _item_selected, it);
+
     sd->items = eina_list_append(sd->items, it);
+}
+
+void
+enna_list_file_remove(Evas_Object *obj, Enna_File *file)
+{
+    Smart_Data *sd;
+    List_Item *it;
+    Eina_List *l;
+    
+    sd = evas_object_data_get(obj, "sd");
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+        if (it->file == file)
+        {
+            elm_genlist_item_del(it->item);
+            free(it);
+            sd->items = eina_list_remove(sd->items, it);
+            break;
+        }
+    }
 }
 
 void
@@ -376,7 +409,10 @@ view_list_item_select (Evas_Object *obj, int down, int cycle, int range)
     end   = down ? 0 : total - 1;
 
     if (ns == start)
-        _smart_select_item(sd, end);
+    {
+        _smart_unselect_item(sd, start);
+        return ENNA_EVENT_CONTINUE;
+    }
     else if (cycle)
     {
         if (!down && (ns - range < 0))
@@ -387,7 +423,12 @@ view_list_item_select (Evas_Object *obj, int down, int cycle, int range)
             list_set_item(sd, ns, down, range);
     }
     else
-        list_set_item(sd, ns, down, range);
+    {
+        if (ns == -1 && !down)
+            list_set_item(sd, end + 1, down, range);
+        else
+            list_set_item(sd, ns, down, range);
+    }
 
     return ENNA_EVENT_BLOCK;
 }
@@ -397,6 +438,9 @@ enna_list_input_feed(Evas_Object *obj, enna_input event)
 {
     int total;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
+
+    if (!sd)
+        return ENNA_EVENT_CONTINUE;
 
     total = eina_list_count(sd->items);
 

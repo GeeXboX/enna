@@ -27,10 +27,17 @@
 #include "view_list.h"
 #include "box.h"
 #include "enna_config.h"
+#include "search.h"
 #include "browser.h"
 #include "browser_obj.h"
 
 typedef struct _Smart_Data Smart_Data;
+
+typedef enum _Focused_Part
+{
+    SEARCH_FOCUSED,
+    VIEW_FOCUSED
+}Focused_Part;
 
 struct _Smart_Data
 {
@@ -39,7 +46,11 @@ struct _Smart_Data
     Enna_Browser_View_Type view_type;
     Ecore_Timer *hilight_timer;
     Enna_Browser *browser;
+    Evas_Object *o_header;
+    Evas_Object *o_search;
     const char *root;
+    Focused_Part focus;
+    Eina_List *visited;
     struct
     {
         Evas_Object *(*view_add)(Smart_Data *sd);
@@ -47,6 +58,8 @@ struct _Smart_Data
                             Enna_File *file,
                             void (*func_activated)(void *data),
                             void *data);
+        void (*view_remove)(Evas_Object *view,
+                            Enna_File *file);
         void *(*view_selected_data_get)(Evas_Object *view);
         int (*view_jump_label)(Evas_Object *view, const char *label);
         Eina_Bool (*view_key_down)(Evas_Object *view, enna_input event);
@@ -56,7 +69,9 @@ struct _Smart_Data
     } view_funcs;
 };
 
-static int
+static void _browse_back(Smart_Data *sd);
+
+static Eina_Bool
 _view_delay_hilight_cb(void *data)
 {
     Smart_Data *sd = data;
@@ -85,7 +100,7 @@ _browser_view_list_add(Smart_Data *sd)
     DBG(__FUNCTION__);
     if (!sd) return NULL;
 
-    view = enna_list_add(enna->evas);
+    view = enna_list_add(sd->o_layout);
 
     elm_layout_content_set(sd->o_layout, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
@@ -140,6 +155,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     case ENNA_BROWSER_VIEW_LIST:
         sd->view_funcs.view_add                 = _browser_view_list_add;
         sd->view_funcs.view_append              = enna_list_file_append;
+        sd->view_funcs.view_remove              = enna_list_file_remove;
         sd->view_funcs.view_selected_data_get   = enna_list_selected_data_get;
         sd->view_funcs.view_jump_label          = enna_list_jump_label;
         sd->view_funcs.view_key_down            = enna_list_input_feed;
@@ -150,6 +166,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     case ENNA_BROWSER_BOX:
         sd->view_funcs.view_add                 = _browser_box_add;
         sd->view_funcs.view_append              = enna_box_file_append;
+//        sd->view_funcs.view_remove              = enna_box_file_remove;
         sd->view_funcs.view_selected_data_get   = enna_box_selected_data_get;
         sd->view_funcs.view_jump_label          = enna_box_jump_label;
         sd->view_funcs.view_key_down            = enna_box_input_feed;
@@ -160,6 +177,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     case ENNA_BROWSER_VIEW_WALL:
         sd->view_funcs.view_add                 = _browser_view_wall_add;
         sd->view_funcs.view_append              = enna_wall_file_append;
+//        sd->view_funcs.view_remove              = enna_wall_file_remove;
         sd->view_funcs.view_selected_data_get   = enna_wall_selected_data_get;
         sd->view_funcs.view_jump_label          = enna_wall_jump_label;
         sd->view_funcs.view_key_down            = enna_wall_input_feed;
@@ -201,53 +219,171 @@ _add_cb(void *data, Enna_File *file)
 }
 
 static void
-_browse(Smart_Data *sd, Enna_File *file)
+_del_cb(void *data, Enna_File *file)
 {
-    const char *uri;
+    Smart_Data *sd = data;
 
-    if (!sd || !file)
+    if (file && sd && sd->o_view && sd->view_funcs.view_remove)
+        sd->view_funcs.view_remove(sd->o_view, file);
+}
+
+static void
+_search_activated_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+    const char *search_text;
+    if (!sd)
         return;
 
-    uri = eina_stringshare_add(file->uri);
+    /* Retrieve search text */
+    search_text = enna_search_text_get(sd->o_search);
+    printf("Search : %s\n", search_text);
+    enna_browser_filter(sd->browser, search_text);
+}
+
+static void
+_search_focus_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    if (!sd)
+        return;
+
+    sd->focus = SEARCH_FOCUSED;
+}
+
+static void
+_search_unfocus_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    if (!sd)
+        return;
+
+    sd->focus = VIEW_FOCUSED;
+}
+
+static void
+_back_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+    Smart_Data *sd = data;
+
+    if (!sd)
+        return;
+
+    _browse_back(sd);
+}
+
+static void
+_add_header(Smart_Data *sd, Enna_File *file)
+{
+    Evas_Object *o_layout;
+    Evas_Object *o_edje;
+    Evas_Object *o_search_bar;
+    Evas_Object *o_back_btn;
+    Evas_Object *o_ic;
+
+    ENNA_OBJECT_DEL(sd->o_header);
+    ENNA_OBJECT_DEL(sd->o_search);
+
+    o_layout = elm_layout_add(sd->o_layout);
+    elm_layout_file_set(o_layout, enna_config_theme_get(), "enna/browser/header");
+
+    o_back_btn = elm_button_add(o_layout);
+    o_ic = elm_icon_add(sd->o_layout);
+    elm_icon_file_set(o_ic, enna_config_theme_get(), "icon/arrow_left");
+    elm_button_icon_set(o_back_btn, o_ic);
+    evas_object_show(o_ic);
+    elm_object_style_set(o_back_btn, "mediaplayer");
+    evas_object_smart_callback_add(o_back_btn, "clicked", _back_btn_clicked_cb, sd);
+
+    evas_object_size_hint_align_set(o_back_btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(o_back_btn, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+    elm_layout_content_set(o_layout, "enna.swallow.back", o_back_btn);
+
+    o_ic = elm_icon_add(o_layout);
+    if (!file)
+        elm_icon_file_set(o_ic, enna_config_theme_get(), "icon/home");
+    else
+        elm_icon_file_set(o_ic, enna_config_theme_get(), file->icon);
+    elm_layout_content_set(o_layout, "enna.swallow.icon", o_ic);
+
+    o_edje = elm_layout_edje_get(o_layout);
+    if (file)
+        edje_object_part_text_set(o_edje, "enna.text.current", file->label);
+    else
+        edje_object_part_text_set(o_edje, "enna.text.current", _("Main Menu"));
+
+    o_search_bar = enna_search_add(o_layout);
+
+    evas_object_size_hint_align_set(o_search_bar, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(o_search_bar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+    elm_layout_content_set(o_layout, "enna.swallow.search", o_search_bar);
+    evas_object_smart_callback_add(o_search_bar, "activated", _search_activated_cb, sd);
+    evas_object_smart_callback_add(o_search_bar, "focus", _search_focus_cb, sd);
+    evas_object_smart_callback_add(o_search_bar, "unfocus", _search_unfocus_cb, sd);
+
+    evas_object_size_hint_align_set(o_layout, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    evas_object_size_hint_weight_set(o_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+
+    elm_layout_content_set(sd->o_layout, "enna.swallow.header", o_layout);
+
+    sd->o_header = o_layout;
+    sd->o_search = o_search_bar;
+}
+
+static void
+_browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
+{
+    const char *uri;
+    Enna_File *f;
+    if (!sd)
+        return;
+
+    if (file)
+        uri = eina_stringshare_add(file->uri);
+    else
+        uri = eina_stringshare_add(sd->root);
+
+    _add_header(sd, file);
+
+    if (file && !back)
+        sd->visited = eina_list_append(sd->visited, enna_browser_file_dup(file));
+    enna_browser_del(sd->browser);
+    sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, uri);
 
     ENNA_OBJECT_DEL(sd->o_view);
-    enna_browser_del(sd->browser);
+
     if (sd->hilight_timer)
         ecore_timer_del(sd->hilight_timer);
     sd->hilight_timer = NULL;
     sd->o_view = NULL;
     DBG("browse uri : %s\n", uri);
-    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
+
     enna_browser_browse(sd->browser);
-    eina_stringshare_del(uri);
+    //eina_stringshare_del(uri);
 }
 
 static void
 _browse_back(Smart_Data *sd)
 {
-    const char *uri = eina_stringshare_add(enna_browser_uri_get(sd->browser));
+    Enna_File *file;
 
-    ENNA_OBJECT_DEL(sd->o_view);
-    enna_browser_del(sd->browser);
-
-    sd->o_view = NULL;
-    DBG("browse uri : %s\n", uri);
-
-    if ( uri == sd->root)
+    file = (Enna_File*)eina_list_nth(sd->visited,
+                                     eina_list_count(sd->visited) - 1);
+    if (file)
     {
-        sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
-        enna_browser_browse(sd->browser);
-        evas_object_smart_callback_call (sd->o_layout, "root", NULL);
+        sd->visited = eina_list_remove(sd->visited, file);
     }
     else
     {
-        char *parent_uri = ecore_file_dir_get(uri);
-        sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, parent_uri);
-        if (parent_uri)
-            free(parent_uri);
-        enna_browser_browse(sd->browser);
+        evas_object_smart_callback_call (sd->o_layout, "root", NULL);
     }
-    eina_stringshare_del(uri);
+
+    _browse(sd, file, EINA_TRUE);
+    enna_browser_file_free(file);
 }
 
 Eina_List *
@@ -261,79 +397,115 @@ enna_browser_obj_files_get(Evas_Object *obj)
         enna_browser_files_get(sd->browser);
 }
 
+static Eina_Bool
+_view_event(Smart_Data *sd, enna_input event)
+{
+    switch (event)
+    {
+        case ENNA_INPUT_BACK:
+            _browse_back(sd);
+            break;
+        case ENNA_INPUT_OK:
+        {
+            Enna_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
+            if (!file)
+                break;
+            if (file->is_directory || file->is_menu)
+                _browse(sd, file, EINA_FALSE);
+            else
+                evas_object_smart_callback_call (sd->o_layout, "selected", file);
+            break;
+        }
+        case ENNA_INPUT_UP:
+        case ENNA_INPUT_DOWN:
+        case ENNA_INPUT_RIGHT:
+        case ENNA_INPUT_LEFT:
+        case ENNA_INPUT_NEXT:
+        case ENNA_INPUT_PREV:
+        case ENNA_INPUT_FIRST:
+        case ENNA_INPUT_LAST:
+            if (sd->view_funcs.view_key_down)
+                return sd->view_funcs.view_key_down(sd->o_view, event);
+            break;
+
+            //     case ENNA_INPUT_KEY_0: _browser_letter_show(sd, "0"); break;
+            //     case ENNA_INPUT_KEY_1: _browser_letter_show(sd, "1"); break;
+            //     case ENNA_INPUT_KEY_2: _browser_letter_show(sd, "2"); break;
+            //     case ENNA_INPUT_KEY_3: _browser_letter_show(sd, "3"); break;
+            //     case ENNA_INPUT_KEY_4: _browser_letter_show(sd, "4"); break;
+            //     case ENNA_INPUT_KEY_5: _browser_letter_show(sd, "5"); break;
+            //     case ENNA_INPUT_KEY_6: _browser_letter_show(sd, "6"); break;
+            //     case ENNA_INPUT_KEY_7: _browser_letter_show(sd, "7"); break;
+            //     case ENNA_INPUT_KEY_8: _browser_letter_show(sd, "8"); break;
+            //     case ENNA_INPUT_KEY_9: _browser_letter_show(sd, "9"); break;
+            //
+            //     case ENNA_INPUT_KEY_A: _browser_letter_show(sd, "a"); break;
+            //     case ENNA_INPUT_KEY_B: _browser_letter_show(sd, "b"); break;
+            //     case ENNA_INPUT_KEY_C: _browser_letter_show(sd, "c"); break;
+            //     case ENNA_INPUT_KEY_D: _browser_letter_show(sd, "d"); break;
+            //     case ENNA_INPUT_KEY_E: _browser_letter_show(sd, "e"); break;
+            //     case ENNA_INPUT_KEY_F: _browser_letter_show(sd, "f"); break;
+            //     case ENNA_INPUT_KEY_G: _browser_letter_show(sd, "g"); break;
+            //     case ENNA_INPUT_KEY_H: _browser_letter_show(sd, "h"); break;
+            //     case ENNA_INPUT_KEY_I: _browser_letter_show(sd, "i"); break;
+            //     case ENNA_INPUT_KEY_J: _browser_letter_show(sd, "j"); break;
+            //     case ENNA_INPUT_KEY_K: _browser_letter_show(sd, "k"); break;
+            //     case ENNA_INPUT_KEY_L: _browser_letter_show(sd, "l"); break;
+            //     case ENNA_INPUT_KEY_M: _browser_letter_show(sd, "m"); break;
+            //     case ENNA_INPUT_KEY_N: _browser_letter_show(sd, "n"); break;
+            //     case ENNA_INPUT_KEY_O: _browser_letter_show(sd, "o"); break;
+            //     case ENNA_INPUT_KEY_P: _browser_letter_show(sd, "p"); break;
+            //     case ENNA_INPUT_KEY_Q: _browser_letter_show(sd, "q"); break;
+            //     case ENNA_INPUT_KEY_R: _browser_letter_show(sd, "r"); break;
+            //     case ENNA_INPUT_KEY_S: _browser_letter_show(sd, "s"); break;
+            //     case ENNA_INPUT_KEY_T: _browser_letter_show(sd, "t"); break;
+            //     case ENNA_INPUT_KEY_U: _browser_letter_show(sd, "u"); break;
+            //     case ENNA_INPUT_KEY_V: _browser_letter_show(sd, "v"); break;
+            //     case ENNA_INPUT_KEY_W: _browser_letter_show(sd, "w"); break;
+            //     case ENNA_INPUT_KEY_Z: _browser_letter_show(sd, "z"); break;
+
+        default:
+            break;
+    }
+    return ENNA_EVENT_BLOCK;
+}
+
+static Eina_Bool
+_search_event(Smart_Data *sd, enna_input event)
+{
+    enna_search_focus_set(sd->o_search, EINA_TRUE);
+    return ENNA_EVENT_BLOCK;
+}
+
 void
 enna_browser_obj_input_feed(Evas_Object *obj, enna_input event)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
+    if (!sd)
+        return;
+
     DBG(__FUNCTION__);
-    switch (event)
+    switch(sd->focus)
     {
-    case ENNA_INPUT_BACK:
-        _browse_back(sd);
-        break;
-    case ENNA_INPUT_OK:
-    {
-        Enna_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
-        if (!file)
+        case VIEW_FOCUSED:
+            if (_view_event(sd, event) == ENNA_EVENT_CONTINUE)
+            {
+                sd->focus = SEARCH_FOCUSED;
+                _search_event(sd, event);
+            }
             break;
-        if (file->is_directory || file->is_menu)
-            _browse(sd, file);
-        else
-            evas_object_smart_callback_call (sd->o_layout, "selected", file);
-        break;
+        case SEARCH_FOCUSED:
+            if (_search_event(sd, event) == ENNA_EVENT_CONTINUE)
+            {
+                sd->focus = VIEW_FOCUSED;
+                _view_event(sd, event);
+            }
+            break;
+        default:
+            break;
     }
-    case ENNA_INPUT_UP:
-    case ENNA_INPUT_DOWN:
-    case ENNA_INPUT_RIGHT:
-    case ENNA_INPUT_LEFT:
-    case ENNA_INPUT_NEXT:
-    case ENNA_INPUT_PREV:
-    case ENNA_INPUT_FIRST:
-    case ENNA_INPUT_LAST:
-        if (sd->view_funcs.view_key_down)
-            sd->view_funcs.view_key_down(sd->o_view, event);
-        break;
 
-//     case ENNA_INPUT_KEY_0: _browser_letter_show(sd, "0"); break;
-//     case ENNA_INPUT_KEY_1: _browser_letter_show(sd, "1"); break;
-//     case ENNA_INPUT_KEY_2: _browser_letter_show(sd, "2"); break;
-//     case ENNA_INPUT_KEY_3: _browser_letter_show(sd, "3"); break;
-//     case ENNA_INPUT_KEY_4: _browser_letter_show(sd, "4"); break;
-//     case ENNA_INPUT_KEY_5: _browser_letter_show(sd, "5"); break;
-//     case ENNA_INPUT_KEY_6: _browser_letter_show(sd, "6"); break;
-//     case ENNA_INPUT_KEY_7: _browser_letter_show(sd, "7"); break;
-//     case ENNA_INPUT_KEY_8: _browser_letter_show(sd, "8"); break;
-//     case ENNA_INPUT_KEY_9: _browser_letter_show(sd, "9"); break;
-// 
-//     case ENNA_INPUT_KEY_A: _browser_letter_show(sd, "a"); break;
-//     case ENNA_INPUT_KEY_B: _browser_letter_show(sd, "b"); break;
-//     case ENNA_INPUT_KEY_C: _browser_letter_show(sd, "c"); break;
-//     case ENNA_INPUT_KEY_D: _browser_letter_show(sd, "d"); break;
-//     case ENNA_INPUT_KEY_E: _browser_letter_show(sd, "e"); break;
-//     case ENNA_INPUT_KEY_F: _browser_letter_show(sd, "f"); break;
-//     case ENNA_INPUT_KEY_G: _browser_letter_show(sd, "g"); break;
-//     case ENNA_INPUT_KEY_H: _browser_letter_show(sd, "h"); break;
-//     case ENNA_INPUT_KEY_I: _browser_letter_show(sd, "i"); break;
-//     case ENNA_INPUT_KEY_J: _browser_letter_show(sd, "j"); break;
-//     case ENNA_INPUT_KEY_K: _browser_letter_show(sd, "k"); break;
-//     case ENNA_INPUT_KEY_L: _browser_letter_show(sd, "l"); break;
-//     case ENNA_INPUT_KEY_M: _browser_letter_show(sd, "m"); break;
-//     case ENNA_INPUT_KEY_N: _browser_letter_show(sd, "n"); break;
-//     case ENNA_INPUT_KEY_O: _browser_letter_show(sd, "o"); break;
-//     case ENNA_INPUT_KEY_P: _browser_letter_show(sd, "p"); break;
-//     case ENNA_INPUT_KEY_Q: _browser_letter_show(sd, "q"); break;
-//     case ENNA_INPUT_KEY_R: _browser_letter_show(sd, "r"); break;
-//     case ENNA_INPUT_KEY_S: _browser_letter_show(sd, "s"); break;
-//     case ENNA_INPUT_KEY_T: _browser_letter_show(sd, "t"); break;
-//     case ENNA_INPUT_KEY_U: _browser_letter_show(sd, "u"); break;
-//     case ENNA_INPUT_KEY_V: _browser_letter_show(sd, "v"); break;
-//     case ENNA_INPUT_KEY_W: _browser_letter_show(sd, "w"); break;
-//     case ENNA_INPUT_KEY_Z: _browser_letter_show(sd, "z"); break;
-
-    default:
-        break;
-    }
 }
 
 void
@@ -352,8 +524,7 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
     if (sd->root)
         eina_stringshare_del(sd->root);
     sd->root = eina_stringshare_add(uri);
-    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, uri);
-    enna_browser_browse(sd->browser);
+    _browse(sd, NULL, EINA_FALSE);
 }
 
 Evas_Object *
@@ -371,6 +542,7 @@ enna_browser_obj_add(Evas_Object *parent)
     evas_object_data_set(sd->o_layout, "sd", sd);
 
     enna_browser_obj_view_type_set(sd->o_layout, ENNA_BROWSER_VIEW_LIST);
+    sd->focus = VIEW_FOCUSED;
 
     return sd->o_layout;
 }

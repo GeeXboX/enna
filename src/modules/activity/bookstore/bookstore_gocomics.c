@@ -257,7 +257,7 @@ gocomics_create_menu (void)
 
     /* Create List */
     ENNA_OBJECT_DEL(mod->list);
-    o = enna_list_add(enna->evas);
+    o = enna_list_add(enna->layout);
 
     for (i = 0; gocomics_list_map[i].name; i++)
     {

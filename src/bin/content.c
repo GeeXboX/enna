@@ -99,6 +99,7 @@ enna_content_select(const char *name)
     if (prev)
     {
         enna_activity_hide(prev->name);
+        elm_layout_content_unset(enna->layout, "enna.content.swallow");
     }
     if (new)
     {

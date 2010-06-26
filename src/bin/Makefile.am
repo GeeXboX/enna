@@ -6,7 +6,7 @@ INCLUDES = \
 -DPACKAGE_DATA_DIR=\"$(datadir)\"
 
 
-AM_CFLAGS = @ENNA_CFLAGS@ @LIBCDDB_CFLAGS@ @EVIL_CFLAGS@
+AM_CFLAGS = @ENNA_CFLAGS@ @LIBCDDB_CFLAGS@
 
 if BUILD_LIBSVDRP
 AM_CFLAGS += @LIBSVDRP_CFLAGS@
@@ -51,11 +51,12 @@ exit.c\
 thumb.c\
 ipc.c\
 weather_api.c\
+weather_notification.c\
 volume_notification.c\
 ini_parser.c\
 input.c\
 geoip.c\
-gadgets.c
+search.c
 
 if BUILD_BACKEND_EMOTION
 enna_SOURCES += mediaplayer_emotion.c
@@ -63,7 +64,7 @@ else
 enna_SOURCES += mediaplayer.c
 endif
 
-enna_LDADD = @ENNA_LIBS@ @LIBCDDB_LIBS@ @LIBPLAYER_LIBS@ @EVIL_LIBS@
+enna_LDADD = @ENNA_LIBS@ @LIBCDDB_LIBS@ @LIBPLAYER_LIBS@
 enna_LDFLAGS = -rdynamic
 
 if BUILD_BACKEND_LIBPLAYER
@@ -106,15 +107,14 @@ include ../modules/activity/video/config.mak
 include ../modules/activity/weather/config.mak
 include ../modules/browser/cdda/config.mak
 include ../modules/browser/dvd/config.mak
+include ../modules/browser/ipod/config.mak
+include ../modules/browser/jamendo/config.mak
 include ../modules/browser/localfiles/config.mak
 include ../modules/browser/netstreams/config.mak
 include ../modules/browser/podcasts/config.mak
 include ../modules/browser/shoutcast/config.mak
 include ../modules/browser/upnp/config.mak
 include ../modules/browser/valhalla/config.mak
-include ../modules/gadgets/date/config.mak
-include ../modules/gadgets/dummy/config.mak
-include ../modules/gadgets/weather/config.mak
 include ../modules/input/kbd/config.mak
 include ../modules/input/lirc/config.mak
 include ../modules/input/wiimote/config.mak
@@ -162,6 +162,14 @@ if BUILD_BROWSER_DVD
 enna_SOURCES += $(SRCS_BROWSER_DVD)
 endif
 
+if BUILD_BROWSER_IPOD
+enna_SOURCES += $(SRCS_BROWSER_IPOD)
+endif
+
+if BUILD_BROWSER_JAMENDO
+enna_SOURCES += $(SRCS_BROWSER_JAMENDO)
+endif
+
 if BUILD_BROWSER_LOCALFILES
 enna_SOURCES += $(SRCS_BROWSER_LOCALFILES)
 endif
@@ -186,18 +194,6 @@ endif
 
 if BUILD_BROWSER_VALHALLA
 enna_SOURCES += $(SRCS_BROWSER_VALHALLA)
-endif
-
-if BUILD_GADGET_DATE
-enna_SOURCES += $(SRCS_GADGET_DATE)
-endif
-
-if BUILD_GADGET_DUMMY
-enna_SOURCES += $(SRCS_GADGET_DUMMY)
-endif
-
-if BUILD_GADGET_WEATHER
-enna_SOURCES += $(SRCS_GADGET_WEATHER)
 endif
 
 if BUILD_INPUT_KBD
@@ -243,7 +239,7 @@ utils.c\
 buffer.c\
 image.c
 
-enna_thumb_LDADD = @ENNA_LIBS@ @EVIL_LIBS@
+enna_thumb_LDADD = @ENNA_LIBS@
 
 if BUILD_LIBSVDRP
 enna_thumb_LDADD += @LIBSVDRP_LIBS@
@@ -286,9 +282,9 @@ gettext.h\
 thumb.h\
 ipc.h\
 weather_api.h\
+weather_notification.h\
 volume_notification.h\
 ini_parser.h\
 input.h\
 geoip.h\
-xdg.h\
-gadgets.h
+xdg.h

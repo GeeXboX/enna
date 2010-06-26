@@ -3,7 +3,8 @@ group
    name: "enna/browser";
    parts
    {
-      part {
+
+       part {
          name: "clip";
          type: RECT;
          mouse_events: 0;
@@ -11,33 +12,26 @@ group
             state: "default" 0.0;
             visible: 1;
             color: 255 255 255 255;
-         }
-         description {
-            state: "left" 0.0;
-            color: 255 255 255 255;
-            visible: 0;
-            rel1 {relative: -1 0;}
-            rel2 {relative:  0  1;};
-         }
-         description {
-            state: "right" 0.0;
-            color: 255 255 255 255;
-            visible: 0;
-            rel1{relative: 1 0;}
-            rel2 {relative: 2 1;};
+            rel1.relative : 0 0;
+            rel2.relative : 1 1;
          }
       }
+
       part {
-         name: "enna.swallow.parent";
-         type: SWALLOW ;
+         name: "enna.swallow.header";
+         type: SWALLOW;
          clip_to: "clip";
          description {
+            min: 0 64;
+            max: 10000 64;
+            
             state: "default" 0.0;
-            rel1.to: "clip";
-            rel1.offset: 64 0;
-            rel2.to: "clip";
-            rel2.relative: 1 0;
-            rel2.offset: -64 64;
+            align: 0 0;
+            rel1.offset: 10 0;
+            rel1.relative: 0 0;
+
+            rel2.relative: 1 1;
+            rel2.offset: -10 0;
          }
       }
       /* Separator beetween list and parent */
@@ -47,12 +41,14 @@ group
          clip_to: "clip";
          description {
             state: "default" 0.0;
+            min: 0 1;
+            max: 10000 1;
             color: 255 255 255 200;
             rel1.relative: 0.0 1.0;
-            rel1.offset: 0 -1;
-            rel1.to_y: "enna.swallow.parent";
+            rel1.to: "enna.swallow.header";
             rel2.relative: 1.0 1.0;
-            rel2.to_y: "enna.swallow.parent";
+            rel2.offset: 0 0;
+            rel2.to: "enna.swallow.header";
             image {
                normal: "separator_h.png";
             }
@@ -64,9 +60,10 @@ group
          clip_to: "clip";
          description {
             state: "default" 0.0;
-            rel1.to: "clip";
-            rel1.offset: 0 64;
-            rel2.to: "clip";
+            rel1.to: "enna.swallow.header";
+            rel1.relative: 0 1;
+            rel1.offset: 0 2;
+            rel2.relative: 1 1;
          }
       }
       part {
@@ -110,55 +107,6 @@ group
    }
    programs
    {
-     program {
-         name: "list,left,now";
-         signal: "list,left,now";
-         source:  "enna";
-         action:  STATE_SET "left" 0.0;
-         target: "clip";
-      }
-      program {
-         name: "list,right,now";
-         signal: "list,right,now";
-         source:  "enna";
-         action:  STATE_SET "right" 0.0;
-         target: "clip";
-      }
-      program {
-         name: "list,right";
-         signal: "list,right";
-         source:  "enna";
-         action:  STATE_SET "right" 0.0;
-         transition: "ACCELERATE" 0.3;
-         target: "clip";
-         after: "transition,end";
-      }
-      program {
-         name: "list,left";
-         signal: "list,left";
-         source:  "enna";
-         action:  STATE_SET "left" 0.0;
-         transition: "ACCELERATE" 0.3;
-         target: "clip";
-         after: "transition,end";
-      }
-      program {
-         name: "list,default";
-         signal: "list,default";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: "ACCELERATE" 0.3;
-         target: "clip";
-         after: "transition,default";
-      }
-      program {
-         name: "transition,end";
-         action: SIGNAL_EMIT "list,transition,end" "edje";
-      }
-      program {
-         name: "transition,default";
-         action: SIGNAL_EMIT "list,transition,default,end" "edje";
-      }
        program {
          name: "letter,show";
          signal: "letter,show";
@@ -177,4 +125,124 @@ group
       }
 
    }
+}
+
+group
+{
+    name: "enna/browser/header";
+    images
+    {
+        image: "icon_search.png" COMP;
+        image: "search_bg.png" COMP;
+    }
+    parts
+    {
+        part {
+            name: "enna.swallow.back";
+            type: SWALLOW ;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 0 0;
+                rel1.offset: 2 0;
+                rel2.relative: 0 0.5;
+                rel2.offset: 82 -2;
+            }
+        }
+        part {
+            name: "enna.swallow.icon";
+            type: SWALLOW;
+            description {
+                min: 24 24;
+                max: 24 24;
+                state: "default" 0.0;
+                rel1.relative: 1 0;
+                rel1.offset: 8 0;
+                rel1.to: "enna.swallow.back";
+                rel2.relative: 1 1;
+                rel2.offset: 48 0;
+                rel2.to: "enna.swallow.back";
+            }
+        }
+        part {
+            name: "enna.text.current";
+            type: TEXT ;
+            effect:        SOFT_SHADOW;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 1 0;
+                rel1.offset: 8 0;
+                rel1.to: "enna.swallow.icon";
+                rel2.relative: 1 0.5;
+                rel2.offset: -20 -2;
+                color: 224 224 224 255;
+                color3: 0 0 0 64;
+                text {
+                    font:     "content";
+                    size:     14;
+                    min:      0 0;
+                    align:    0 0.5;
+                }
+            }
+        }
+        part {
+            name: "enna.swallow.search";
+            type: SWALLOW ;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 0 0.5;
+                rel2.relative: 1 1;
+            }
+        }
+    }
+}
+
+group
+{
+    name: "enna/search";
+    images
+    {
+        image: "icon_search.png" COMP;
+        image: "search_bg.png" COMP;
+    }
+    parts
+    {
+        part {
+            name: "enna.bg.search";
+            type: IMAGE ;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 0 0;
+                rel1.offset: 5 0;
+                rel2.relative: 1 0;
+                rel2.offset: -20 32;
+                color: 255 255 255 128;
+                image.normal : "search_bg.png";
+                image.border : 17 17 15 15;
+            }
+        }
+        part {
+            name: "enna.swallow.edit";
+            type: SWALLOW ;
+            description {
+                fixed: 1 1;
+                state: "default" 0.0;
+                rel1.relative: 0 0;
+                rel1.offset: 22 0;
+                rel2.relative: 1 0;
+                rel2.offset: -54 32;
+            }
+        }
+        part {
+            name: "enna.icon.search";
+            type: IMAGE ;
+            description {
+                state: "default" 0.0;
+                rel1.relative: 1 0;
+                rel1.offset: -32-20 8;
+                rel2.relative: 1 0;
+                rel2.offset: -16-20 24;
+                image.normal : "icon_search.png";
+            }
+        }
+    }
 }

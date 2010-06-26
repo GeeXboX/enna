@@ -69,7 +69,7 @@ volume_notification_update (Evas_Object *obj)
     edje_object_part_text_set(sd->edje, "volume.text.str", txt);
 }
 
-static int
+static Eina_Bool
 volume_notification_hide_cb (void *data)
 {
     volume_notifier_smart_data_t *sd = data;

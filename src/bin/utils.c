@@ -436,23 +436,23 @@ char *
 enna_util_tuple_set (Eina_List *tuple, const char *delimiter)
 {
     char *buf;
-    buffer_t *b;
+    Enna_Buffer *b;
     char *c;
     Eina_List *l;
 
     if (!tuple || !delimiter)
         return NULL;
 
-    b = buffer_new();
+    b =  enna_buffer_new();
     EINA_LIST_FOREACH(tuple, l, c)
     {
         if (b->len > 0)
-            buffer_append(b, delimiter);
-        buffer_append(b, c);
+            enna_buffer_append(b, delimiter);
+        enna_buffer_append(b, c);
     }
 
     buf = strdup(b->buf);
-    buffer_free(b);
+    enna_buffer_free(b);
 
     return buf;
 }

@@ -42,9 +42,9 @@
 #include "thumb.h"
 
 /* local subsystem functions */
-static int _ipc_cb_client_add(void *data, int type, void *event);
-static int _ipc_cb_client_del(void *data, int type, void *event);
-static int _ipc_cb_client_data(void *data, int type, void *event);
+static Eina_Bool _ipc_cb_client_add(void *data, int type, void *event);
+static Eina_Bool _ipc_cb_client_del(void *data, int type, void *event);
+static Eina_Bool _ipc_cb_client_data(void *data, int type, void *event);
 
 /* local subsystem globals */
 static Ecore_Ipc_Server *_ipc_server = NULL;
@@ -136,7 +136,7 @@ enna_ipc_shutdown(void)
 
 
 /* local subsystem globals */
-static int
+static Eina_Bool
 _ipc_cb_client_add(void *data, int type, void *event)
 {
     Ecore_Ipc_Event_Client_Add *e;
@@ -145,7 +145,7 @@ _ipc_cb_client_add(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _ipc_cb_client_del(void *data, int type, void *event)
 {
     Ecore_Ipc_Event_Client_Del *e;
@@ -156,7 +156,7 @@ _ipc_cb_client_del(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _ipc_cb_client_data(void *data, int type, void *event)
 {
     Ecore_Ipc_Event_Client_Data *e;

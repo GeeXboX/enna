@@ -71,7 +71,8 @@ static int run_fullscreen = 0;
 static int _create_gui(void);
 
 /* Callbacks */
-static int _idle_timer_cb(void *data)
+static Eina_Bool
+_idle_timer_cb(void *data)
 {
 
     if (enna_exit_visible())
@@ -111,14 +112,16 @@ static void _mouse_display(int show)
     enna->cursor_is_shown = show;
 }
 
-static int _mouse_idle_timer_cb(void *data)
+static Eina_Bool
+_mouse_idle_timer_cb(void *data)
 {
     _mouse_display(0);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
     return ECORE_CALLBACK_CANCEL;
 }
 
-static int _mousemove_cb(void *data, int type, void *event)
+static Eina_Bool
+_mousemove_cb(void *data, int type, void *event)
 {
     if (!enna->cursor_is_shown)
     {
@@ -330,6 +333,7 @@ static int _create_gui(void)
     enna->win = elm_win_add(NULL, "enna", ELM_WIN_BASIC);
     if (!enna->win)
       return 0;
+    elm_object_theme_set(enna->win, enna_config->eth);
     elm_win_title_set(enna->win, "Enna MediaCenter");
     enna->run_fullscreen = enna_config->fullscreen | run_fullscreen;
     elm_win_fullscreen_set(enna->win, enna->run_fullscreen);
@@ -340,7 +344,11 @@ static int _create_gui(void)
     //~ ecore_evas_shaped_set(enna->ee, 1);  //TODO why this ???
     enna->ee_winid = elm_win_xwindow_get(enna->win);
     enna->evas = evas_object_evas_get(enna->win);
-
+    
+    /* Enable evas cache (~4 backgrounds in the cache at a time) : 1 background =  1280x720*4 = 3,7MB */
+    /* ==> Set cache to 16MB */
+    evas_image_cache_set(enna->evas, 4 * 4 * 1024 * 1024);
+    
     // main layout widget
     enna->layout = elm_layout_add(enna->win);
     elm_layout_file_set(enna->layout, enna_config_theme_get(), "enna/main/layout");
@@ -485,7 +493,8 @@ void enna_idle_timer_renew(void)
     }
 }
 
-static int exit_signal(void *data, int type, void *e)
+static Eina_Bool
+exit_signal(void *data, int type, void *e)
 {
     Ecore_Event_Signal_Exit *event = e;
 

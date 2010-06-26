@@ -71,7 +71,7 @@ enum _MUSIC_STATE
 
 struct _Enna_Module_Music
 {
-    Evas_Object *o_edje;
+    Evas_Object *o_layout;
     Evas_Object *o_browser;
     Evas_Object *o_mediaplayer;
     Evas_Object *o_panel_lyrics;
@@ -90,6 +90,8 @@ update_songs_counter(Eina_List *list)
     Eina_List *l;
     int children = 0;
     char label[128] = { 0 };
+    Evas_Object *o_edje;
+
     DBG(__FUNCTION__);
     if (!list)
         goto end;
@@ -102,7 +104,8 @@ update_songs_counter(Eina_List *list)
     if (children)
         snprintf(label, sizeof(label), _("%d Songs"), children);
 end:
-    edje_object_part_text_set(mod->o_edje, "songs.counter.label", label);
+    o_edje = elm_layout_edje_get(mod->o_layout);
+    edje_object_part_text_set(o_edje, "songs.counter.label", label);
 }
 
 static void
@@ -169,20 +172,24 @@ _class_event_mediaplayer_view(enna_input event)
 static void
 panel_lyrics_display(int show)
 {
+    Evas_Object *o_edje;
+
     DBG(__FUNCTION__);
+    o_edje = elm_layout_edje_get(mod->o_layout);
+
     if (show)
     {
         Enna_Metadata *m;
 
         m = enna_mediaplayer_metadata_get(mod->enna_playlist);
         enna_panel_lyrics_set_text(mod->o_panel_lyrics, m);
-        edje_object_signal_emit(mod->o_edje, "lyrics,show", "enna");
+        edje_object_signal_emit(o_edje, "lyrics,show", "enna");
         mod->lyrics_displayed = 1;
     }
     else
     {
         enna_panel_lyrics_set_text(mod->o_panel_lyrics, NULL);
-        edje_object_signal_emit(mod->o_edje, "lyrics,hide", "enna");
+        edje_object_signal_emit(o_edje, "lyrics,hide", "enna");
         mod->lyrics_displayed = 0;
     }
 }
@@ -309,21 +316,25 @@ static void
 _create_mediaplayer_gui()
 {
     Evas_Object *o;
+    Evas_Object *o_edje;
+
     DBG(__FUNCTION__);
+    o_edje = elm_layout_edje_get(mod->o_layout);
     o = enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
-    edje_object_part_swallow(mod->o_edje, "mediaplayer.swallow", o);
+    elm_layout_content_set(mod->o_layout, "mediaplayer.swallow", o);
     evas_object_show(o);
     mod->o_mediaplayer = o;
     evas_object_smart_callback_add(mod->o_mediaplayer, "info,clicked",
                                    _mediaplayer_info_clicked_cb, NULL);
-
-    edje_object_signal_emit(mod->o_edje, "mediaplayer,show", "enna");
-    edje_object_signal_emit(mod->o_edje, "content,hide", "enna");
+    edje_object_signal_emit(o_edje, "mediaplayer,show", "enna");
+    edje_object_signal_emit(o_edje, "content,hide", "enna");
 }
 
 static void
 _create_menu()
 {
+    Evas_Object *o_edje;
+
     DBG(__FUNCTION__);
     /* Set default state */
     mod->state = BROWSER_VIEW;
@@ -332,7 +343,7 @@ _create_menu()
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     
-    mod->o_browser = enna_browser_obj_add(mod->o_edje);
+    mod->o_browser = enna_browser_obj_add(mod->o_layout);
     enna_browser_obj_view_type_set(mod->o_browser, ENNA_BROWSER_VIEW_LIST);
     enna_browser_obj_root_set(mod->o_browser, "/music");
 
@@ -342,26 +353,26 @@ _create_menu()
                                    _browser_delay_hilight_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "root",
                                    _browser_root_cb, NULL);
-    edje_object_part_swallow(mod->o_edje, "browser.swallow", mod->o_browser);
+    elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
 
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
-    edje_object_part_swallow (mod->o_edje,
-                              "lyrics.panel.swallow", mod->o_panel_lyrics);
+
+    o_edje = elm_layout_edje_get(mod->o_layout);
+    elm_layout_content_set(mod->o_layout,
+                           "lyrics.panel.swallow", mod->o_panel_lyrics);
 }
 
 static void
 _create_gui()
 {
-    Evas_Object *o;
     DBG(__FUNCTION__);
     /* Set default state */
     mod->state = BROWSER_VIEW;
 
     /* Create main edje object */
-    o = edje_object_add(enna->evas);
-    edje_object_file_set(o, enna_config_theme_get(), "activity/music");
-    mod->o_edje = o;
+    mod->o_layout = elm_layout_add(enna->layout);
+    elm_layout_file_set(mod->o_layout, enna_config_theme_get(), "activity/music");
 
     _create_menu();
     _create_mediaplayer_gui();
@@ -378,20 +389,24 @@ _class_init(void)
 {
     DBG(__FUNCTION__);
     _create_gui();
-    enna_content_append("music", mod->o_edje);
+    enna_content_append("music", mod->o_layout);
 }
 
 static void
 _class_show(void)
 {
+    Evas_Object *o_edje;
+
     DBG(__FUNCTION__);
+    o_edje = elm_layout_edje_get(mod->o_layout);
+
     enna_content_select(ENNA_MODULE_NAME);
-    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
+    edje_object_signal_emit(o_edje, "module,show", "enna");
     switch (mod->state)
     {
     case BROWSER_VIEW:
-        edje_object_signal_emit(mod->o_edje, "content,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "mediaplayer,hide", "enna");
+        edje_object_signal_emit(o_edje, "content,show", "enna");
+        edje_object_signal_emit(o_edje, "mediaplayer,hide", "enna");
         break;
     default:
         enna_log(ENNA_MSG_ERROR,
@@ -402,8 +417,11 @@ _class_show(void)
 static void
 _class_hide(void)
 {
+    Evas_Object *o_edje;
+
     DBG(__FUNCTION__);
-    edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
+    o_edje = elm_layout_edje_get(mod->o_layout);
+    edje_object_signal_emit(o_edje, "module,hide", "enna");
 }
 
 static void
@@ -472,7 +490,7 @@ module_shutdown(Enna_Module *em)
 {
     DBG(__FUNCTION__);
     enna_activity_unregister(&class);
-    ENNA_OBJECT_DEL(mod->o_edje);
+    ENNA_OBJECT_DEL(mod->o_layout);
 
     evas_object_smart_callback_del(mod->o_browser,
                                    "selected", _browser_selected_cb);

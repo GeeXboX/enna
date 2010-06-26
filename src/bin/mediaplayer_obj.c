@@ -77,18 +77,18 @@ typedef struct _Button_Item
     void *data;
 }Button_Item;
 
-static int _start_cb(void *data, int type, void *event);
-static int _pause_cb(void *data, int type, void *event);
-static int _next_cb(void *data, int type, void *event);
-static int _prev_cb(void *data, int type, void *event);
-static int _unpause_cb(void *data, int type, void *event);
-static int _seek_cb(void *data, int type, void *event);
-static int _eos_cb(void *data, int type, void *event);
+static Eina_Bool _start_cb(void *data, int type, void *event);
+static Eina_Bool _pause_cb(void *data, int type, void *event);
+static Eina_Bool _next_cb(void *data, int type, void *event);
+static Eina_Bool _prev_cb(void *data, int type, void *event);
+static Eina_Bool _unpause_cb(void *data, int type, void *event);
+static Eina_Bool _seek_cb(void *data, int type, void *event);
+static Eina_Bool _eos_cb(void *data, int type, void *event);
 
 static void show_play_button(Smart_Data * sd);
 static void show_pause_button(Smart_Data * sd);
 
-static int _timer_cb(void *data);
+static Eina_Bool _timer_cb(void *data);
 
 #define METADATA_APPLY                                              \
     do                                                              \
@@ -185,7 +185,7 @@ media_cover_hide (Smart_Data *sd)
 }
 
 /* Event from mediaplayer*/
-static int
+static Eina_Bool
 _start_cb(void *data, int type, void *event)
 {
     Smart_Data *sd = data;
@@ -202,7 +202,7 @@ _start_cb(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _stop_cb(void *data, int type, void *event)
 {
     Smart_Data *sd = data;
@@ -216,7 +216,7 @@ _stop_cb(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _prev_cb(void *data, int type, void *event)
 {
     Smart_Data *sd = data;
@@ -226,7 +226,7 @@ _prev_cb(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _next_cb(void *data, int type, void *event)
 {
     Smart_Data *sd = data;
@@ -236,7 +236,7 @@ _next_cb(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _unpause_cb(void *data, int type, void *event)
 {
     show_play_button(data);
@@ -244,7 +244,7 @@ _unpause_cb(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _pause_cb(void *data, int type, void *event)
 {
     show_pause_button(data);
@@ -252,7 +252,7 @@ _pause_cb(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _seek_cb(void *data, int type, void *event)
 {
     Enna_Event_Mediaplayer_Seek_Data *ev;
@@ -262,7 +262,7 @@ _seek_cb(void *data, int type, void *event)
     return 1;
 }
 
-static int
+static Eina_Bool
 _eos_cb(void *data, int type, void *event)
 {
     Smart_Data *sd = data;
@@ -301,7 +301,7 @@ slider_position_update(Smart_Data *sd)
 }
 
 /* Update position Timer callback */
-static int
+static Eina_Bool
 _timer_cb(void *data)
 {
     Smart_Data *sd = data;

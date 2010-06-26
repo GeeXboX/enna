@@ -38,15 +38,15 @@ CFLAGS="$CFLAGS -DLOCALEDIR=\"\\\"$datadir/locale\\\"\""
 
 PKG_CHECK_MODULES([ENNA],
   [
-   eina-0 >= 0.9.9.063
-   eet >= 1.2.2
-   evas >= 0.9.9.063
-   ecore >= 0.9.9.063
-   ecore-evas >= 0.9.9.063
-   ecore-file >= 0.9.9.063
-   ecore-ipc >= 0.9.9.063
-   edje >= 0.9.93.063
-   elementary >= 0.6.0.063
+   eina-0 >= 0.9.9.49539
+   eet >= 1.3.0
+   evas >= 0.9.9.49539
+   ecore >= 0.9.9.49539
+   ecore-evas >= 0.9.9.49539
+   ecore-file >= 0.9.9.49539
+   ecore-ipc >= 0.9.9.49549
+   edje >= 0.9.9.49539
+   elementary >= 0.6.0.49539
    libvalhalla >= 2.0.0 libvalhalla < 3.0.0
    libxml-2.0
    libcurl
@@ -284,6 +284,46 @@ AC_MSG_RESULT($want_browser_dvd)
 AM_CONDITIONAL(BUILD_BROWSER_DVD, test "x$want_browser_dvd" = "xyes")
 if test "x$want_browser_dvd" = "xyes"; then
   AC_DEFINE(BUILD_BROWSER_DVD, 1, [Dvd Video Browser])
+fi
+
+# iPod/iPhone support
+want_browser_ipod="auto"
+have_browser_ipod="no"
+AC_MSG_CHECKING(whether iPod browser is to be built)
+AC_ARG_ENABLE(browser-ipod,
+  AS_HELP_STRING([--enable-browser-ipod],[Enable iPod Browser Module]),
+  [ want_browser_ipod=$enableval ]
+)
+AC_MSG_RESULT($want_browser_ipod)
+if test "x$want_browser_ipod" = "xyes" -o "x$want_browser_ipod" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [LIBGPOD],
+    [libgpod-1.0 >= 0.7.93],
+    [
+      AC_DEFINE(BUILD_BROWSER_IPOD, 1, [iPod Browser Module])
+      have_browser_ipod="yes"
+    ],
+    [
+      if test "x$want_browser_ipod" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libgpod not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_BROWSER_IPOD, test "x$have_browser_ipod" = "xyes")
+
+
+# Jamendo
+want_browser_jamendo="yes"
+AC_MSG_CHECKING(whether jamendo browser module is to be built)
+AC_ARG_ENABLE(browser-jamendo,
+  AS_HELP_STRING([--enable-browser-jamendo],[Enable Jamendo Browser Module]),
+  [ want_browser_jamendo=$enableval ]
+)
+AC_MSG_RESULT($want_browser_jamendo)
+AM_CONDITIONAL(BUILD_BROWSER_JAMENDO, test "x$want_browser_jamendo" = "xyes")
+if test "x$want_browser_jamendo" = "xyes"; then
+  AC_DEFINE(BUILD_BROWSER_JAMENDO, 1, [Jamendo Browser])
 fi
 
 # Local Files
@@ -713,6 +753,8 @@ src/modules/activity/weather/Makefile
 src/modules/browser/Makefile
 src/modules/browser/cdda/Makefile
 src/modules/browser/dvd/Makefile
+src/modules/browser/ipod/Makefile
+src/modules/browser/jamendo/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
 src/modules/browser/podcasts/Makefile
@@ -776,6 +818,8 @@ echo "Supported Browser Modules:"
 echo
 echo "  Audio CD......................... : $want_browser_cdda"
 echo "  DVD Video........................ : $want_browser_dvd"
+echo "  iPod/iPhone/iPad................. : $have_browser_ipod"
+echo "  Jamendo.......................... : $want_browser_jamendo"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  Podcasts......................... : $want_browser_podcasts"

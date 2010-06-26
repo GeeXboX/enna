@@ -91,7 +91,7 @@ group {
             color: 255 255 255 255;
 
             rel1.relative: 0.5 0.0;
-            rel1.offset: 8 8;
+            rel1.offset: 0 8;
             rel1.to: "content.clip";
 
             rel2.relative: 1.0 1.0;
@@ -125,20 +125,23 @@ group {
             state: "default" 0.0;
             color: 224 224 224 200;
             visible: 1;
-
+            //fixed: 1 1;
             rel1.relative: 0.75 1.00;
+            rel1.offset: 0 -24;
             rel1.to: "content.clip";
 
-            rel2.relative: 0.99 1.00;
-            rel2.offset: 0 -50;
+            rel2.relative: 1.00 1.00;
+            rel2.offset: -10 0;
             rel2.to: "content.clip";
 
+            align: 1 0.5;
+            
             color3: 0 0 0 64;
             text {
                 font: "content";
                 size: 16;
-                min: 1 1;
-                align: 1 1;
+                //min: 1 1;
+                align: 1 0.5;
              }
           }
        }

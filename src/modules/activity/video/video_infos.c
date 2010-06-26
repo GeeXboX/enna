@@ -81,7 +81,7 @@ enna_panel_infos_add(Evas * evas)
 void
 enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
 {
-    buffer_t *buf;
+    Enna_Buffer *buf;
     char *codec, *value;
     char *alternative_title, *title, *categories, *year;
     char *length, *director, *actors, *overview;
@@ -98,56 +98,56 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         return;
     }
 
-    buf = buffer_new();
+    buf = enna_buffer_new();
 
-    buffer_append(buf, "<h4><hl><sd><b>");
+    enna_buffer_append(buf, "<h4><hl><sd><b>");
     alternative_title = enna_metadata_meta_get(m, "alternative_title", 1);
     title = enna_metadata_meta_get(m, "title", 1);
-    buffer_append(buf, alternative_title ? alternative_title : title);
-    buffer_append(buf, "</b></sd></hl></h4><br>");
+    enna_buffer_append(buf, alternative_title ? alternative_title : title);
+    enna_buffer_append(buf, "</b></sd></hl></h4><br>");
     len = buf->len;
 
     categories = enna_metadata_meta_get(m, "category", 5);
     if (categories)
-        buffer_appendf(buf, "<h2>%s</h2><br>", categories);
+        enna_buffer_appendf(buf, "<h2>%s</h2><br>", categories);
 
     year = enna_metadata_meta_get(m, "year", 1);
     if (year)
-        buffer_append(buf, year);
+        enna_buffer_append(buf, year);
 
     length = enna_metadata_meta_duration_get(m);
     if (length)
     {
         if (year)
-            buffer_append(buf, " - ");
-        buffer_appendf(buf, "%s", length);
+            enna_buffer_append(buf, " - ");
+        enna_buffer_appendf(buf, "%s", length);
     }
 
-    buffer_append(buf, "<br><br>");
+    enna_buffer_append(buf, "<br><br>");
     len += 8;
 
     director = enna_metadata_meta_get(m, "director", 1);
     if (director) {
-        buffer_append(buf, "<ul>");
-        buffer_append(buf, _("Director:"));    
-        buffer_appendf(buf, " </ul> %s<br>", director);
+        enna_buffer_append(buf, "<ul>");
+        enna_buffer_append(buf, _("Director:"));    
+        enna_buffer_appendf(buf, " </ul> %s<br>", director);
     }
 
     actors = enna_metadata_meta_get(m, "actor", 5);
     if (actors) {
-        buffer_append(buf, "<ul>");
-        buffer_append(buf, _("Cast:"));
-        buffer_appendf(buf, " </ul> %s<br>", actors);
+        enna_buffer_append(buf, "<ul>");
+        enna_buffer_append(buf, _("Cast:"));
+        enna_buffer_appendf(buf, " </ul> %s<br>", actors);
     }
 
     if (director || actors)
-        buffer_append(buf, "<br>");
+        enna_buffer_append(buf, "<br>");
 
     overview = enna_metadata_meta_get(m, "synopsis", 1);
     if (overview)
-        buffer_appendf(buf, "%s", overview);
+        enna_buffer_appendf(buf, "%s", overview);
 
-    buffer_append(buf, "<br><br>");
+    enna_buffer_append(buf, "<br><br>");
     len += 8;
 
     codec = enna_metadata_meta_get(m, "video_codec", 1);
@@ -157,18 +157,18 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         width  = enna_metadata_meta_get(m, "width", 1);
         height = enna_metadata_meta_get(m, "height", 1);
         aspect = enna_metadata_meta_get(m, "video_aspect", 1);
-        buffer_append(buf, "<hl>");
-        buffer_append(buf, _("Video:"));
-        buffer_appendf(buf, " </hl> %s", codec);
+        enna_buffer_append(buf, "<hl>");
+        enna_buffer_append(buf, _("Video:"));
+        enna_buffer_appendf(buf, " </hl> %s", codec);
         if (width && height)
-            buffer_appendf(buf, ", %sx%s", width, height);
+            enna_buffer_appendf(buf, ", %sx%s", width, height);
         if (aspect)
         {
             float ratio = enna_util_atof(aspect) / 10000;
             if (ratio)
-                buffer_appendf(buf, ", %.2f", ratio);
+                enna_buffer_appendf(buf, ", %.2f", ratio);
         }
-        buffer_appendf(buf, "<br>");
+        enna_buffer_appendf(buf, "<br>");
         ENNA_FREE(width);
         ENNA_FREE(height);
         ENNA_FREE(aspect);
@@ -180,14 +180,14 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         char *channels, *bitrate;
         channels = enna_metadata_meta_get(m, "audio_channels", 1);
         bitrate  = enna_metadata_meta_get(m, "audio_bitrate", 1);
-        buffer_append(buf, "<hl>");
-        buffer_append(buf, _("Audio:"));
-        buffer_appendf(buf, " </hl> %s", codec);
+        enna_buffer_append(buf, "<hl>");
+        enna_buffer_append(buf, _("Audio:"));
+        enna_buffer_appendf(buf, " </hl> %s", codec);
         if (channels)
-            buffer_appendf(buf, ", %s ch.", channels);
+            enna_buffer_appendf(buf, ", %s ch.", channels);
         if (bitrate)
-            buffer_appendf(buf, ", %i kbps", atoi(bitrate) / 1000);
-        buffer_appendf(buf, "<br>");
+            enna_buffer_appendf(buf, ", %i kbps", atoi(bitrate) / 1000);
+        enna_buffer_appendf(buf, "<br>");
         ENNA_FREE(channels);
         ENNA_FREE(bitrate);
         ENNA_FREE(codec);
@@ -195,20 +195,20 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
 
     value = enna_metadata_meta_get(m, "filesize", 1);
     if (value) {
-        buffer_append(buf, "<hl>");
-        buffer_append(buf, _("Size:"));
-        buffer_appendf(buf, " </hl> %.2f MB<br>",
+        enna_buffer_append(buf, "<hl>");
+        enna_buffer_append(buf, _("Size:"));
+        enna_buffer_appendf(buf, " </hl> %.2f MB<br>",
                 atol(value) / 1024.0 / 1024.0);
     }
     ENNA_FREE(value);
 
     /* tell if no more infos are available */
     if (buf->len == len)
-      buffer_append(buf, _("No further information can be retrieved"));
+      enna_buffer_append(buf, _("No further information can be retrieved"));
 
     edje_object_part_text_set(sd->o_edje, "panel.textblock", buf->buf);
 
-    buffer_free(buf);
+    enna_buffer_free(buf);
     ENNA_FREE(alternative_title);
     ENNA_FREE(title);
     ENNA_FREE(categories);

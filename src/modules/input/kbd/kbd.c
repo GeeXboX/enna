@@ -262,7 +262,7 @@ _get_input_from_event(Ecore_Event_Key *ev)
       _input_event_modifier(ev) : _input_event(ev);
 }
 
-static int
+static Eina_Bool
 _ecore_event_key_down_cb(void *data, int type, void *event)
 {
     Ecore_Event_Key *e = event;

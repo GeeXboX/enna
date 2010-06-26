@@ -35,25 +35,25 @@ static Evas_Object *o_edje = NULL;
 
 Evas_Object *credits_panel_show(void *data)
 {
-    buffer_t *b;
+    Enna_Buffer *b;
 
     o_edje = edje_object_add(enna->evas);
     edje_object_file_set(o_edje, enna_config_theme_get (),
                          "activity/configuration/credits");
 
-    b = buffer_new();
-    buffer_append(b, _("Enna is a GeeXboX-team MediaCenter"));
-    buffer_append(b, ", ");
-    buffer_append(b, _("based on Enlightenment Foundation Librairies (EFL)."));
-    buffer_append(b, "<br><br>");
-    buffer_append(b, _("Credits go to:"));
-    buffer_append(b, "<br>");
-    buffer_append(b, "Nicolas Aguirre, Fabien Brisset, Davide Cavalca, ");
-    buffer_append(b, "Matthias Hölzer, Guillaume Lecerf, Mathieu Schroeter ");
-    buffer_append(b, _("and"));
-    buffer_append(b, " Benjamin Zores.");
+    b = enna_buffer_new();
+    enna_buffer_append(b, _("Enna is a GeeXboX-team MediaCenter"));
+    enna_buffer_append(b, ", ");
+    enna_buffer_append(b, _("based on Enlightenment Foundation Librairies (EFL)."));
+    enna_buffer_append(b, "<br><br>");
+    enna_buffer_append(b, _("Credits go to:"));
+    enna_buffer_append(b, "<br>");
+    enna_buffer_append(b, "Nicolas Aguirre, Fabien Brisset, Davide Cavalca, ");
+    enna_buffer_append(b, "Matthias Hölzer, Guillaume Lecerf, Mathieu Schroeter ");
+    enna_buffer_append(b, _("and"));
+    enna_buffer_append(b, " Benjamin Zores.");
     edje_object_part_text_set(o_edje, "credits.text", b->buf);
-    buffer_free(b);
+    enna_buffer_free(b);
 
     edje_object_signal_emit(o_edje, "credits,show", "enna");
 

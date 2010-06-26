@@ -63,19 +63,19 @@ _inwin_del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 static void
 _update_text(Evas_Object *lb)
 {
-    buffer_t *label;
+    Enna_Buffer *label;
     const char *tmp;
 
-    label = buffer_new();
-    buffer_append(label, "<h3><c>");
-    buffer_append(label, _("Are you sure you want to quit Enna?"));
-    buffer_append(label, "</c></h3><br>");
+    label = enna_buffer_new();
+    enna_buffer_append(label, "<h3><c>");
+    enna_buffer_append(label, _("Are you sure you want to quit Enna?"));
+    enna_buffer_append(label, "</c></h3><br>");
     tmp =  enna_activity_request_quit_all();
 
-    if (tmp) buffer_appendf(label, "<h2>%s<h2>", tmp);
+    if (tmp) enna_buffer_appendf(label, "<h2>%s<h2>", tmp);
 
     elm_label_label_set(lb, label->buf);
-    buffer_free(label);
+    enna_buffer_free(label);
 }
 
 static void

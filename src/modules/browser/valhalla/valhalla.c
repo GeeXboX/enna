@@ -19,6 +19,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+/*
+ * The URIs for accessing to this browser must use the following syntax :
+ *
+ *  /$activity/valhalla/$root/$meta_name:$data_value/...
+ *
+ *  where $activity must be "music" or "video",
+ *        $root is an entry for the LEVEL_ROOT
+ *        $meta_name:$data_value for levels greater than LEVEL_ROOT
+ *          see the tree_meta array.
+ *
+ * for example :
+ *
+ *  /music/valhalla/Artists
+ *  /music/valhalla/Artists/artist:Dido
+ *  /music/valhalla/Artists/artist:Dido/album:Life for Rent
+ *  /video/valhalla/Years/year:2010
+ *  /video/valhalla/Directors/director:James Cameron
+ *  /video/valhalla/Unclassified
+ *
+ *
+ * Note that you can not pass a $meta_name which is not referenced in the
+ * tree_meta array. Maybe it will be a future feature, which can be easily
+ * implemented.
+ *
+ * FIXME: $meta_name with a slash '/' and/or ':' are not handled correctly.
+ *        The content in the browser is not sorted.
+ */
+
 #include <string.h>
 
 #include <valhalla.h>
@@ -29,6 +57,7 @@
 #include "logs.h"
 #include "utils.h"
 #include "metadata.h"
+#include "buffer.h"
 
 #define PATH_BUFFER 4096
 
@@ -53,15 +82,17 @@ typedef enum _Meta_Name
     META_TRACK,
 } Meta_Name;
 
+typedef struct _Item_Id
+{
+    unsigned int it;
+    const char *meta;
+    const char *data;
+} Item_Id;
+
 typedef struct _Enna_Module_Valhalla
 {
     Enna_Module   *em;
     valhalla_t    *valhalla;
-    Enna_Vfs_File *vfs;
-    unsigned int   it;
-
-    int64_t prev_id_m1, prev_id_d1;
-    int64_t prev_id_m2, prev_id_d2;
 } Enna_Module_Valhalla;
 
 #define VMD(m) VALHALLA_METADATA_##m
@@ -133,26 +164,26 @@ static const struct
     /*************************************************************************/
 
     /* Authors */
-    { LEVEL_ROOT,  A_FLAG,  {{ META,     N_("Authors"),      0            }, }},
+    { LEVEL_ROOT,  A_FLAG,  {{ META,     "Authors",          0            }, }},
     { LEVEL_ONE,   A_FLAG,  {{ DATALIST, VMD(AUTHOR),        VPL(HIGH)    }, }},
     { LEVEL_TWO,   A_FLAG,  {{ DATALIST, VMD(ALBUM),         VPL(HIGH)    },
                              { FILELIST, VMD(AUTHOR),        VPL(HIGH)    }, }},
     { LEVEL_THREE, A_FLAG,  {{ FILELIST, VMD(ALBUM),         VPL(HIGH)    }, }},
 
     /* Artists */
-    { LEVEL_ROOT,  A_FLAG,  {{ META,     N_("Artists"),      0            }, }},
+    { LEVEL_ROOT,  A_FLAG,  {{ META,     "Artists",          0            }, }},
     { LEVEL_ONE,   A_FLAG,  {{ DATALIST, VMD(ARTIST),        VPL(HIGH)    }, }},
     { LEVEL_TWO,   A_FLAG,  {{ DATALIST, VMD(ALBUM),         VPL(HIGH)    },
                              { FILELIST, VMD(ARTIST),        VPL(HIGH)    }, }},
     { LEVEL_THREE, A_FLAG,  {{ FILELIST, VMD(ALBUM),         VPL(HIGH)    }, }},
 
     /* Albums */
-    { LEVEL_ROOT,  A_FLAG,  {{ META,     N_("Albums"),       0            }, }},
+    { LEVEL_ROOT,  A_FLAG,  {{ META,     "Albums",           0            }, }},
     { LEVEL_ONE,   A_FLAG,  {{ DATALIST, VMD(ALBUM),         VPL(HIGH)    }, }},
     { LEVEL_TWO,   A_FLAG,  {{ FILELIST, VMD(ALBUM),         VPL(HIGH)    }, }},
 
     /* Genres */
-    { LEVEL_ROOT,  A_FLAG,  {{ META,     N_("Genres"),       0            }, }},
+    { LEVEL_ROOT,  A_FLAG,  {{ META,     "Genres",           0            }, }},
     { LEVEL_ONE,   A_FLAG,  {{ DATALIST, VMD(GENRE),         VPL(HIGH)    }, }},
     { LEVEL_TWO,   A_FLAG,  {{ DATALIST, VMD(ALBUM),         VPL(HIGH)    },
                              { FILELIST, VMD(GENRE),         VPL(HIGH)    }, }},
@@ -164,17 +195,17 @@ static const struct
     /*************************************************************************/
 
     /* Categories */
-    { LEVEL_ROOT,  V_FLAG,  {{ META,     N_("Categories"),   0            }, }},
+    { LEVEL_ROOT,  V_FLAG,  {{ META,     "Categories",       0            }, }},
     { LEVEL_ONE,   V_FLAG,  {{ DATALIST, VMD(CATEGORY),      VPL(HIGH)    }, }},
     { LEVEL_TWO,   V_FLAG,  {{ FILELIST, VMD(CATEGORY),      VPL(HIGH)    }, }},
 
     /* Directors */
-    { LEVEL_ROOT,  V_FLAG,  {{ META,     N_("Directors"),    0            }, }},
+    { LEVEL_ROOT,  V_FLAG,  {{ META,     "Directors",        0            }, }},
     { LEVEL_ONE,   V_FLAG,  {{ DATALIST, VMD(DIRECTOR),      VPL(HIGH)    }, }},
     { LEVEL_TWO,   V_FLAG,  {{ FILELIST, VMD(DIRECTOR),      VPL(HIGH)    }, }},
 
     /* Years */
-    { LEVEL_ROOT,  V_FLAG,  {{ META,     N_("Years"),        0            }, }},
+    { LEVEL_ROOT,  V_FLAG,  {{ META,     "Years",            0            }, }},
     { LEVEL_ONE,   V_FLAG,  {{ DATALIST, VMD(YEAR),          VPL(HIGH)    }, }},
     { LEVEL_TWO,   V_FLAG,  {{ FILELIST, VMD(YEAR),          VPL(HIGH)    }, }},
 
@@ -184,7 +215,7 @@ static const struct
     /*************************************************************************/
 
     /* Unclassified */
-    { LEVEL_ROOT,  AV_FLAG, {{ META,     N_("Unclassified"), 0            }, }},
+    { LEVEL_ROOT,  AV_FLAG, {{ META,     "Unclassified",     0            }, }},
     { LEVEL_ONE,   AV_FLAG, {{ FILELIST, NULL,               VPL(HIGH)    }, }},
 };
 
@@ -195,27 +226,37 @@ static Enna_Module_Valhalla *mod;
 /*****************************************************************************/
 
 static void
-_vfs_add_dir(Eina_List **list, unsigned int it,
+_vfs_add_dir(Enna_Browser *browser, unsigned int it,
              const valhalla_db_metares_t *res, const char *icon)
 {
-    Enna_Vfs_File *file;
-    char str[128];
+    Enna_Buffer *uri;
+    Enna_File *entry;
 
-    snprintf(str, sizeof(str),
-             "%u/%"PRIi64":%"PRIi64, it + 1, res->meta_id, res->data_id);
-    file = enna_vfs_create_directory(str, res->data_value, icon, NULL);
-    *list = eina_list_append(*list, file);
+    uri = enna_buffer_new();
+    if (!uri)
+        return;
+
+    enna_buffer_appendf(uri, enna_browser_uri_get(browser));
+    enna_buffer_appendf(uri, "/%s:%s", res->meta_name, res->data_value);
+    entry = enna_browser_create_directory(res->data_value,
+                                          uri->buf, res->data_value, icon);
+    enna_buffer_free(uri);
+    enna_browser_file_add(browser, entry);
 }
 
 static void
-_vfs_add_file(Eina_List **list,
-              const valhalla_db_fileres_t *file,
+_vfs_add_file(Enna_Browser *browser, const valhalla_db_fileres_t *file,
               const char *title, const char *track, const char *icon)
 {
-    Enna_Vfs_File *f;
+    Enna_Buffer *uri;
+    Enna_File *entry;
     char buf[PATH_BUFFER];
     char name[256];
     char *it;
+
+    uri = enna_buffer_new();
+    if (!uri)
+        return;
 
     snprintf(buf, sizeof(buf), "file://%s", file->path);
     it = strrchr(buf, '/');
@@ -226,13 +267,16 @@ _vfs_add_file(Eina_List **list,
     else
         snprintf(name, sizeof(name), "%s", title ? title : it + 1);
 
-    f = enna_vfs_create_file(buf, name, icon, NULL);
-    *list = eina_list_append(*list, f);
+    enna_buffer_appendf(uri, enna_browser_uri_get(browser));
+    enna_buffer_appendf(uri, "/%s", name);
+    entry = enna_browser_create_file(name, uri->buf, buf, name, icon);
+    enna_buffer_free(uri);
+    enna_browser_file_add(browser, entry);
 }
 
 static void
-_result_file(const valhalla_db_fileres_t *res,
-             valhalla_file_type_t ftype, Eina_List **list)
+_result_file(Enna_Browser *browser,
+             const valhalla_db_fileres_t *res, valhalla_file_type_t ftype)
 {
     const valhalla_metadata_pl_t priority = VALHALLA_METADATA_PL_NORMAL;
     valhalla_db_stmt_t *stmt;
@@ -267,68 +311,48 @@ _result_file(const valhalla_db_fileres_t *res,
             if (!map[i].v && !strcmp(metares->meta_name, map[i].n))
                 map[i].v = strdup(metares->data_value);
 
-    _vfs_add_file(list, res,
-                  map[META_TITLE].v, map[META_TRACK].v, "icon/file/music");
+    _vfs_add_file
+        (browser, res, map[META_TITLE].v, map[META_TRACK].v, "icon/file/music");
 
     for (i = 0; i < ARRAY_NB_ELEMENTS(map); i++)
         if (map[i].v)
             free(map[i].v);
 }
 
-static int
-_sort_cb(const void *d1, const void *d2)
+static void
+_browse_list_data(Enna_Browser *browser, const Browser_Item *item,
+                  valhalla_file_type_t ftype, const Item_Id *id)
 {
-    const Enna_Vfs_File *f1 = d1;
-    const Enna_Vfs_File *f2 = d2;
-
-    if (!f1->label)
-        return 1;
-
-    if (!f2->label)
-        return -1;
-
-    return strcasecmp(f1->label, f2->label);
-}
-
-static Eina_List *
-_browse_list_data(const Browser_Item *item, valhalla_file_type_t ftype,
-                  unsigned int it, int64_t id_m, int64_t id_d)
-{
-    Eina_List *l = NULL;
     valhalla_db_stmt_t *stmt;
     const valhalla_db_metares_t *metares;
     valhalla_db_item_t search =
         VALHALLA_DB_SEARCH_TEXT(item->meta, NIL, item->priority);
     valhalla_db_restrict_t r1 =
-        VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d, item->priority);
+        VALHALLA_DB_RESTRICT_STR(IN, id->meta, id->data, item->priority);
     valhalla_db_restrict_t *r = NULL;
 
-    if (tree_meta[it].level > LEVEL_ONE)
+    if (tree_meta[id->it].level > LEVEL_ONE)
         r = &r1;
 
     stmt = valhalla_db_metalist_get(mod->valhalla, &search, ftype, r);
     if (!stmt)
-        return NULL;
+        return;
 
     while ((metares = valhalla_db_metalist_read(mod->valhalla, stmt)))
-        _vfs_add_dir(&l, it, metares, NULL);
-
-    l = eina_list_sort(l, eina_list_count(l), _sort_cb);
-    return l;
+        _vfs_add_dir(browser, id->it, metares, NULL);
 }
 
-static Eina_List *
-_browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
-                  unsigned int it, int64_t id_m, int64_t id_d,
-                  valhalla_metadata_pl_t priority)
+static void
+_browse_list_file(Enna_Browser *browser,
+                  valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
+                  const Item_Id *id, valhalla_metadata_pl_t priority)
 {
-    Eina_List *l = NULL;
     valhalla_db_stmt_t *stmt;
     const valhalla_db_fileres_t *fileres;
     valhalla_db_restrict_t r =
-        VALHALLA_DB_RESTRICT_INT(IN, id_m, id_d, priority);
+        VALHALLA_DB_RESTRICT_STR(IN, id->meta, id->data, priority);
 
-    if (id_m && id_d)
+    if (id->meta && id->data)
     {
         if (rp)
             VALHALLA_DB_RESTRICT_LINK(*rp, r);
@@ -337,13 +361,10 @@ _browse_list_file(valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
 
     stmt = valhalla_db_filelist_get(mod->valhalla, ftype, rp);
     if (!stmt)
-        return NULL;
+        return;
 
     while ((fileres = valhalla_db_filelist_read(mod->valhalla, stmt)))
-        _result_file(fileres, ftype, &l);
-
-    l = eina_list_sort(l, eina_list_count(l), _sort_cb);
-    return l;
+        _result_file(browser, fileres, ftype);
 }
 
 static void
@@ -384,37 +405,42 @@ _restr_free(valhalla_db_restrict_t *r)
     }
 }
 
-static Eina_List *
-_browse_list(const Browser_Item *item, valhalla_file_type_t ftype,
-             unsigned int it, int64_t id_m, int64_t id_d)
+static void
+_browse_list(Enna_Browser *browser, const Browser_Item *item,
+             valhalla_file_type_t ftype, const Item_Id *id)
 {
-    Eina_List *l = NULL;
-
     if (!item)
-        return NULL;
+        return;
 
     switch (item->type)
     {
     case META:
     {
-        char str[64];
-        Enna_Vfs_File *entry;
+        Enna_Buffer *uri;
+        Enna_File *entry;
 
-        snprintf(str, sizeof(str), "%u/0:0", it + 1);
-        entry = enna_vfs_create_directory(str, item->meta, NULL, NULL);
-        l = eina_list_append(l, entry);
+        uri = enna_buffer_new();
+        if (!uri)
+            break;
+
+        enna_buffer_appendf(uri, enna_browser_uri_get(browser));
+        enna_buffer_appendf(uri, "/%s", item->meta);
+        entry = enna_browser_create_menu(item->meta,
+                                         uri->buf, _(item->meta), NULL);
+        enna_buffer_free(uri);
+        enna_browser_file_add(browser, entry);
         break;
     }
 
     case DATALIST:
-        l = _browse_list_data(item, ftype, it, id_m, id_d);
+        _browse_list_data(browser, item, ftype, id);
         break;
 
     case FILELIST:
     {
         valhalla_db_restrict_t *r = NULL;
-        unsigned int i, j = it;
-        unsigned int last = it + 1;
+        unsigned int i, j = id->it;
+        unsigned int last = id->it + 1;
 
         /* special FILELIST */
         if (!item->meta)
@@ -425,7 +451,7 @@ _browse_list(const Browser_Item *item, valhalla_file_type_t ftype,
 
         for (; j < last; j++)
         {
-            if (tree_meta[j].level != tree_meta[it].level)
+            if (tree_meta[j].level != tree_meta[id->it].level)
                 continue;
 
             if (!CHECK_FLAGS(tree_meta[j].flags, ftype))
@@ -442,188 +468,185 @@ _browse_list(const Browser_Item *item, valhalla_file_type_t ftype,
             }
         }
 
-        l = _browse_list_file(r, ftype, it, id_m, id_d, item->priority);
+        _browse_list_file(browser, r, ftype, id, item->priority);
         _restr_free(r);
         break;
     }
     }
-
-    return l;
 }
 
-static Eina_List *
-_browse(valhalla_file_type_t ftype, unsigned int it, int64_t id_m, int64_t id_d)
+static void
+_browse(Enna_Browser *browser, valhalla_file_type_t ftype, const Item_Id *id)
 {
     unsigned int i;
-    Eina_List *l = NULL;
     const Browser_Item *item;
 
-    if (it >= ARRAY_NB_ELEMENTS(tree_meta))
-        return NULL;
+    if (id->it >= ARRAY_NB_ELEMENTS(tree_meta))
+        return;
 
-    item = tree_meta[it].items;
+    item = tree_meta[id->it].items;
 
     for (i = 0; item[i].meta || (!item[i].meta && !i); i++)
     {
-        Eina_List *tmp;
-
-        if (!CHECK_FLAGS(tree_meta[it].flags, ftype))
+        if (!CHECK_FLAGS(tree_meta[id->it].flags, ftype))
             continue;
 
-        tmp = _browse_list(&item[i], ftype, it, id_m, id_d);
-        l = l ? eina_list_merge(l, tmp) : tmp;
+        _browse_list(browser, &item[i], ftype, id);
 
         if (!item[i].meta)
             break;
     }
-
-    return l;
 }
 
-static Eina_List *
-_browse_root(valhalla_file_type_t ftype)
+static void
+_browse_root(Enna_Browser *browser, valhalla_file_type_t ftype)
 {
     unsigned int i;
-    Eina_List *l = NULL;
+    Item_Id id = {
+        .it   = 0,
+        .meta = NULL,
+        .data = NULL,
+    };
 
     for (i = 0; i < ARRAY_NB_ELEMENTS(tree_meta); i++)
     {
-        Eina_List *tmp;
-
         if (tree_meta[i].level != LEVEL_ROOT)
             continue;
 
         if (!CHECK_FLAGS(tree_meta[i].flags, ftype))
             continue;
 
-        tmp = _browse_list(&tree_meta[i].items[0], ftype, i, 0, 0);
-        l = l ? eina_list_merge(l, tmp) : tmp;
+        id.it = i;
+        _browse_list(browser, &tree_meta[i].items[0], ftype, &id);
     }
-
-    return l;
 }
 
-static Eina_List *
-_class_browse_up(const char *path, valhalla_file_type_t ftype)
+static void *
+_class_browse_add(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
-    int64_t id_m, id_d;
-    int rc;
+    /* TODO use it */
+    return NULL;
+}
 
-    mod->it = 0;
+static void
+_class_browse_get_children(void *priv, Eina_List *tokens,
+                           Enna_Browser *browser, ENNA_VFS_CAPS caps)
+{
+    int level, i = 0;
+    valhalla_file_type_t ftype;
+    Eina_List *l;
+    const char *p;
+    char buf[256];
+    Item_Id id = {
+        .it   = 0,
+        .meta = NULL,
+        .data = NULL,
+    };
 
-    if (!path)
-        return _browse_root(ftype);
-
-    rc = sscanf(path, "%u/%"PRIi64":%"PRIi64, &mod->it, &id_m, &id_d);
-    if (rc != 3)
-        return NULL;
-
-    if (mod->vfs)
+    switch (caps)
     {
-        enna_vfs_remove(mod->vfs);
-        mod->vfs = NULL;
-    }
-
-    switch (tree_meta[mod->it].level)
-    {
-    case LEVEL_TWO:
-        mod->prev_id_m1 = id_m;
-        mod->prev_id_d1 = id_d;
+    case ENNA_CAPS_MUSIC:
+        ftype = VALHALLA_FILE_TYPE_AUDIO;
         break;
 
-    case LEVEL_THREE:
-        mod->prev_id_m2 = id_m;
-        mod->prev_id_d2 = id_d;
+    case ENNA_CAPS_VIDEO:
+        ftype = VALHALLA_FILE_TYPE_VIDEO;
         break;
 
     default:
-        break;
+        return;
     }
 
-    return _browse(ftype, mod->it, id_m, id_d);
-}
+    level = enna_browser_level_get(browser);
 
-static Eina_List *
-_class_browse_up_music(const char *path, void *cookie)
-{
-    return _class_browse_up(path, VALHALLA_FILE_TYPE_AUDIO);
-}
-
-static Eina_List *
-_class_browse_up_video(const char *path, void *cookie)
-{
-    return _class_browse_up(path, VALHALLA_FILE_TYPE_VIDEO);
-}
-
-static Eina_List *
-_class_browse_down(valhalla_file_type_t ftype)
-{
-    unsigned int it;
-    int64_t id_m = 0, id_d = 0;
-
-    it = mod->it;
-
-    if (mod->it)
-      mod->it--;
-
-    switch (tree_meta[it].level)
+    if (level == 2)
     {
-    case LEVEL_THREE:
-        id_m = mod->prev_id_m1;
-        id_d = mod->prev_id_d1;
-        break;
-
-    case LEVEL_ONE:
-        return _browse_root(ftype);
-
-    case LEVEL_ROOT:
-        return NULL;
-
-    default:
-        break;
+        _browse_root(browser, ftype);
+        return;
     }
 
-    return _browse(ftype, mod->it, id_m, id_d);
+    if (level < 2) /* should never happen ? */
+      return;
+
+    /* Retrieve the Iterator, the meta and the data */
+    EINA_LIST_FOREACH(tokens, l, p)
+        switch (++i)
+        {
+        case 1:
+        case 2:
+            continue;
+
+        case 3: /* Root entity */
+        {
+            unsigned int j;
+            for (j = 0; j < ARRAY_NB_ELEMENTS(tree_meta); j++)
+            {
+                if (tree_meta[j].level != LEVEL_ROOT)
+                    continue;
+
+                if (!CHECK_FLAGS(tree_meta[j].flags, ftype))
+                    continue;
+
+                if (strcmp(tree_meta[j].items[0].meta, p))
+                    continue;
+
+                id.it = j + 1; /* set iterator for LEVEL_ROOT */
+                break;
+            }
+            break;
+        }
+
+        default: /* Level one and more with the meta prepended */
+        {
+            unsigned int j;
+            for (j = 0; j < ARRAY_NB_ELEMENTS(tree_meta); j++)
+            {
+                unsigned int k = 0;
+
+                if (tree_meta[j].level != i - 3)
+                    continue;
+
+                if (!CHECK_FLAGS(tree_meta[j].flags, ftype))
+                    continue;
+
+                for (k = 0; tree_meta[j].items[k].meta; k++)
+                {
+                    const char *chr;
+
+                    chr = strchr(p, ':');
+                    if (!chr)
+                        continue;
+
+                    if (chr - p >= sizeof(buf)) /* stupid length */
+                        break;
+
+                    strncpy(buf, p, chr - p);
+                    buf[chr - p] = '\0';
+
+                    if (!strcmp(tree_meta[j].items[k].meta, buf)) /* found */
+                    {
+                        id.meta = buf;
+                        id.data = chr + 1;
+                        break;
+                    }
+                }
+            }
+            id.it++;
+            break;
+        }
+        }
+
+    enna_log(ENNA_MSG_EVENT, "valhalla", "%u %s %s", id.it, id.meta, id.data);
+
+    _browse(browser, ftype, &id);
 }
 
-static Eina_List *
-_class_browse_down_music(void *cookie)
+static void
+_class_browse_del(void *priv)
 {
-    return _class_browse_down(VALHALLA_FILE_TYPE_AUDIO);
+
 }
 
-static Eina_List *
-_class_browse_down_video(void *cookie)
-{
-    return _class_browse_down(VALHALLA_FILE_TYPE_VIDEO);
-}
-
-static Enna_Vfs_File *
-_class_vfs_get(void *cookie)
-{
-    char str[128];
-    int64_t id_m = 0, id_d = 0;
-
-    switch (tree_meta[mod->it].level)
-    {
-    case LEVEL_THREE:
-        id_m = mod->prev_id_m2;
-        id_d = mod->prev_id_d2;
-        break;
-
-    case LEVEL_TWO:
-        id_m = mod->prev_id_m1;
-        id_d = mod->prev_id_d1;
-        break;
-
-    default:
-        break;
-    }
-
-    snprintf(str, sizeof(str), "%u/%"PRIi64":%"PRIi64, mod->it, id_m, id_d);
-    mod->vfs = enna_vfs_create_directory(str, NULL, NULL, NULL);
-    return mod->vfs;
-}
 
 /*****************************************************************************/
 /*                          Public Module API                                */
@@ -634,36 +657,17 @@ _class_vfs_get(void *cookie)
 #define MOD_PREFIX enna_mod_browser_valhalla
 #endif /* USE_STATIC_MODULES */
 
-static Enna_Vfs_Class class_music =
+static Enna_Vfs_Class class =
 {
-    "valhalla_music",
+    "valhalla",
     2,
     N_("Media library"),
     NULL,
     "icon/library",
     {
-        NULL,
-        NULL,
-        _class_browse_up_music,
-        _class_browse_down_music,
-        _class_vfs_get,
-    },
-    NULL,
-};
-
-static Enna_Vfs_Class class_video =
-{
-    "valhalla_video",
-    2,
-    N_("Media library"),
-    NULL,
-    "icon/library",
-    {
-        NULL,
-        NULL,
-        _class_browse_up_video,
-        _class_browse_down_video,
-        _class_vfs_get,
+        _class_browse_add,
+        _class_browse_get_children,
+        _class_browse_del,
     },
     NULL,
 };
@@ -679,14 +683,12 @@ module_init(Enna_Module *em)
         return;
 
     mod->em = em;
-    mod->it = 0;
     mod->valhalla = enna_metadata_get_db();
 
     if (!mod->valhalla)
         return;
 
-    enna_vfs_append("valhalla_music", ENNA_CAPS_MUSIC, &class_music);
-    enna_vfs_append("valhalla_video", ENNA_CAPS_VIDEO, &class_video);
+    enna_vfs_register(&class, ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO);
 }
 
 static void

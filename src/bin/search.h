@@ -19,24 +19,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef LIST_H
-#define LIST_H
+#ifndef SEARCH_H
+#define SEARCH_H
 
-#include "enna.h"
-#include "vfs.h"
-#include "input.h"
+#include <Evas.h>
 
-Evas_Object *enna_list_add (Evas_Object *parent);
-void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
-    void (*func_activated) (void *data), void *data);
-void enna_list_file_remove(Evas_Object *obj, Enna_File *file);
-Eina_List* enna_list_files_get(Evas_Object* obj);
-void enna_list_select_nth(Evas_Object *obj, int nth);
-Eina_Bool enna_list_input_feed(Evas_Object *obj, enna_input event);
-void * enna_list_selected_data_get(Evas_Object *obj);
-int enna_list_jump_label(Evas_Object *obj, const char *label);
-void enna_list_jump_ascii(Evas_Object *obj, char k);
-void enna_list_clear(Evas_Object *obj);
+Evas_Object *enna_search_add(Evas_Object *parent);
+const char *enna_search_text_get(Evas_Object *obj);
+void enna_search_text_set(Evas_Object *obj, const char *text);
+void enna_search_focus_set(Evas_Object *obj, Eina_Bool focus);
 
-#endif /* LIST_H */
 
+#endif /*SEARCH_H */

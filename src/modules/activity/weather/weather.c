@@ -172,7 +172,7 @@ set_background (int id)
     set_picture (&mod->bg, array[id], "weather.bg", "bg,show");
 }
 
-static int
+static Eina_Bool
 background_cb (void *data)
 {
     mod->counter++;
