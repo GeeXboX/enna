@@ -217,7 +217,8 @@ _browser_browse_activity(Enna_Browser *browser)
 
     EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, vfs)
     {
-        f = calloc(1, sizeof(Enna_Vfs_File));
+
+      f = calloc(1, sizeof(Enna_Vfs_File));
 
         buf = enna_buffer_new();
         enna_buffer_appendf(buf, "/%s/%s", act_name, vfs->name);
@@ -303,7 +304,7 @@ enna_browser_file_dup(Enna_Vfs_File *file)
 
     if (!file)
         return NULL;
-    
+
     f = calloc(1, sizeof(Enna_Vfs_File));
     f->icon = eina_stringshare_add(file->icon);
     f->icon_file = eina_stringshare_add(file->icon_file);
@@ -390,7 +391,7 @@ enna_browser_filter(Enna_Browser *b, const char *filter)
 {
     Eina_List *l;
     Enna_File *f;
-    
+
     if (!b || !filter)
         return;
 
@@ -408,6 +409,6 @@ enna_browser_filter(Enna_Browser *b, const char *filter)
             if(b->add)
                 b->add(b->add_data, f);
         }
-        
+
     }
 }
