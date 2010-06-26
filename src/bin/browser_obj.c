@@ -255,7 +255,7 @@ static void
 _search_unfocus_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
-    
+
     if (!sd)
         return;
 
@@ -266,10 +266,10 @@ static void
 _back_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
-    
+
     if (!sd)
         return;
-    
+
     _browse_back(sd);
 }
 
@@ -284,7 +284,7 @@ _add_header(Smart_Data *sd, Enna_File *file)
 
     ENNA_OBJECT_DEL(sd->o_header);
     ENNA_OBJECT_DEL(sd->o_search);
-    
+
     o_layout = elm_layout_add(sd->o_layout);
     elm_layout_file_set(o_layout, enna_config_theme_get(), "enna/browser/header");
 
@@ -295,19 +295,19 @@ _add_header(Smart_Data *sd, Enna_File *file)
     evas_object_show(o_ic);
     elm_object_style_set(o_back_btn, "mediaplayer");
     evas_object_smart_callback_add(o_back_btn, "clicked", _back_btn_clicked_cb, sd);
-    
+
     evas_object_size_hint_align_set(o_back_btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_size_hint_weight_set(o_back_btn, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    
+
     elm_layout_content_set(o_layout, "enna.swallow.back", o_back_btn);
-    
+
     o_ic = elm_icon_add(o_layout);
     if (!file)
         elm_icon_file_set(o_ic, enna_config_theme_get(), "icon/home");
     else
         elm_icon_file_set(o_ic, enna_config_theme_get(), file->icon);
     elm_layout_content_set(o_layout, "enna.swallow.icon", o_ic);
-    
+
     o_edje = elm_layout_edje_get(o_layout);
     if (file)
         edje_object_part_text_set(o_edje, "enna.text.current", file->label);
@@ -318,7 +318,7 @@ _add_header(Smart_Data *sd, Enna_File *file)
 
     evas_object_size_hint_align_set(o_search_bar, EVAS_HINT_FILL, EVAS_HINT_FILL);
     evas_object_size_hint_weight_set(o_search_bar, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    
+
     elm_layout_content_set(o_layout, "enna.swallow.search", o_search_bar);
     evas_object_smart_callback_add(o_search_bar, "activated", _search_activated_cb, sd);
     evas_object_smart_callback_add(o_search_bar, "focus", _search_focus_cb, sd);
@@ -328,7 +328,7 @@ _add_header(Smart_Data *sd, Enna_File *file)
     evas_object_size_hint_weight_set(o_layout, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
     elm_layout_content_set(sd->o_layout, "enna.swallow.header", o_layout);
-    
+
     sd->o_header = o_layout;
     sd->o_search = o_search_bar;
 }
@@ -348,13 +348,13 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
         uri = eina_stringshare_add(sd->root);
 
     _add_header(sd, file);
-    
+
     if (file && !back)
         sd->visited = eina_list_append(sd->visited, enna_browser_file_dup(file));
 
     enna_browser_del(sd->browser);
     sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, uri);
-    
+
     ENNA_OBJECT_DEL(sd->o_view);
 
     if (sd->hilight_timer)
@@ -430,7 +430,7 @@ _view_event(Smart_Data *sd, enna_input event)
             if (sd->view_funcs.view_key_down)
                 return sd->view_funcs.view_key_down(sd->o_view, event);
             break;
-            
+
             //     case ENNA_INPUT_KEY_0: _browser_letter_show(sd, "0"); break;
             //     case ENNA_INPUT_KEY_1: _browser_letter_show(sd, "1"); break;
             //     case ENNA_INPUT_KEY_2: _browser_letter_show(sd, "2"); break;
@@ -466,7 +466,7 @@ _view_event(Smart_Data *sd, enna_input event)
             //     case ENNA_INPUT_KEY_V: _browser_letter_show(sd, "v"); break;
             //     case ENNA_INPUT_KEY_W: _browser_letter_show(sd, "w"); break;
             //     case ENNA_INPUT_KEY_Z: _browser_letter_show(sd, "z"); break;
-            
+
         default:
             break;
     }
@@ -487,7 +487,7 @@ enna_browser_obj_input_feed(Evas_Object *obj, enna_input event)
 
     if (!sd)
         return;
-    
+
     DBG(__FUNCTION__);
     switch(sd->focus)
     {
@@ -546,6 +546,6 @@ enna_browser_obj_add(Evas_Object *parent)
 
     enna_browser_obj_view_type_set(sd->o_layout, ENNA_BROWSER_VIEW_LIST);
     sd->focus = VIEW_FOCUSED;
-    
+
     return sd->o_layout;
 }
