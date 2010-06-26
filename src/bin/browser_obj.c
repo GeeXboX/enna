@@ -237,6 +237,7 @@ _search_activated_cb(void *data, Evas_Object *obj, void *event_info)
 
     /* Retrieve search text */
     search_text = enna_search_text_get(sd->o_search);
+    printf("Search : %s\n", search_text);
     enna_browser_filter(sd->browser, search_text);
 }
 
@@ -337,7 +338,6 @@ static void
 _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
 {
     const char *uri;
-    Eina_List *l;
     Enna_File *f;
     if (!sd)
         return;
@@ -351,7 +351,6 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
 
     if (file && !back)
         sd->visited = eina_list_append(sd->visited, enna_browser_file_dup(file));
-
     enna_browser_del(sd->browser);
     sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, uri);
 
@@ -371,22 +370,20 @@ static void
 _browse_back(Smart_Data *sd)
 {
     Enna_File *file;
-    Eina_List *l;
 
-    file = (Enna_File*)eina_list_nth(sd->visited, eina_list_count(sd->visited) - 1);
+    file = (Enna_File*)eina_list_nth(sd->visited,
+                                     eina_list_count(sd->visited) - 1);
     if (file)
     {
         sd->visited = eina_list_remove(sd->visited, file);
-        enna_browser_file_free(file);
     }
-
-    file = (Enna_File*)eina_list_nth(sd->visited, eina_list_count(sd->visited) - 1);
-    if ( !file || file->uri == sd->root)
+    else
     {
         evas_object_smart_callback_call (sd->o_layout, "root", NULL);
     }
-    _browse(sd, file, EINA_TRUE);
 
+    _browse(sd, file, EINA_TRUE);
+    enna_browser_file_free(file);
 }
 
 Eina_List *
