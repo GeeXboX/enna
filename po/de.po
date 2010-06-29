@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-05-03 09:53+0200\n"
+"POT-Creation-Date: 2010-06-29 19:51+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Matthias Hölzer <n-billy@geexbox.org>\n"
 "Language-Team: German\n"
@@ -18,67 +18,63 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 
-#: src/bin/browser.c:549
+#: src/bin/browser.c:248
 msgid "No media found!"
 msgstr "Kein Medium gefunden!"
 
-#: src/bin/browser.c:706
-msgid "Main menu"
-msgstr "Hauptmenü"
-
-#: src/bin/enna.c:498
+#: src/bin/enna.c:514
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:515
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Aufruf: %s [Optionen...]\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:516
 #, c-format
 msgid " Available options:\n"
 msgstr " Verfügbare Optionen:\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:517
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angegebene Konfigurationsdatei benutzen.\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:518
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      im Vollbild Modus starten.\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:519
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Hilfe anzeigen.\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:520
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angegebenen Motiv-Namen benutzen.\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:521
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):Angegebene Fenster Geometrie verwenden. "
 "(geometrie=1280x720)\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:522
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Angegebenes Profil benutzen\n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:523
 #, c-format
 msgid "    Supported: "
 msgstr "    Unterstützt:"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:527
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna Version anzeiten version.\n"
@@ -103,15 +99,15 @@ msgstr "Keine"
 msgid "continue using Enna"
 msgstr "Enna weiter verwenden"
 
-#: src/bin/module.c:239
+#: src/bin/module.c:269
 msgid "Modules"
 msgstr "Module"
 
-#: src/bin/module.c:408
+#: src/bin/module.c:438
 msgid "No information provided"
 msgstr "Keine Informationen verfügbar."
 
-#: src/bin/parser_cdda.c:462
+#: src/bin/parser_cdda.c:465
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Titel #%02d (%02d:%02d)"
@@ -371,17 +367,17 @@ msgstr "<c>System Spiele</c><br>Spiel läuft ..."
 msgid "System Games"
 msgstr "Systemspiele"
 
-#: src/modules/activity/music/music.c:108
+#: src/modules/activity/music/music.c:105
 #, c-format
 msgid "%d Songs"
 msgstr "%d Songs"
 
-#: src/modules/activity/music/music.c:511
-#: src/modules/activity/music/music.c:573
+#: src/modules/activity/music/music.c:449
+#: src/modules/activity/music/music.c:512
 msgid "Music"
 msgstr "Musik"
 
-#: src/modules/activity/music/music.c:575
+#: src/modules/activity/music/music.c:514
 msgid "Listen to your music"
 msgstr "Musik hören"
 
@@ -389,12 +385,12 @@ msgstr "Musik hören"
 msgid "No lyrics found ..."
 msgstr "Keine Song-Texte gefunden!"
 
-#: src/modules/activity/photo/photo.c:367
-#: src/modules/activity/photo/photo.c:419
+#: src/modules/activity/photo/photo.c:300
+#: src/modules/activity/photo/photo.c:360
 msgid "Photo"
 msgstr "Foto"
 
-#: src/modules/activity/photo/photo.c:421
+#: src/modules/activity/photo/photo.c:362
 msgid "Browse your photos and create slideshows"
 msgstr "Fotos durchsuchen und Diashows anzeigen"
 
@@ -450,17 +446,17 @@ msgstr "Grösse:"
 msgid "No further information can be retrieved"
 msgstr "Keine weiteren Informationen verfügbar."
 
-#: src/modules/activity/video/video.c:133
+#: src/modules/activity/video/video.c:120
 #, c-format
 msgid "%d Movies"
 msgstr "%d Filme"
 
-#: src/modules/activity/video/video.c:1006
-#: src/modules/activity/video/video.c:1098
+#: src/modules/activity/video/video.c:924
+#: src/modules/activity/video/video.c:1012
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/video/video.c:1100
+#: src/modules/activity/video/video.c:1014
 msgid "Play your videos"
 msgstr "Videos abspielen"
 
@@ -484,37 +480,35 @@ msgstr "CDDA-Modul"
 msgid "Listen your favorite CDs"
 msgstr "Lieblingsmusik anhören"
 
-#: src/modules/browser/dvd/dvd.c:62
+#: src/modules/browser/dvd/dvd.c:61
 msgid "Play"
 msgstr "Spiele ab"
 
-#: src/modules/browser/dvd/dvd.c:65
+#: src/modules/browser/dvd/dvd.c:64
 msgid "Play (with menus)"
 msgstr "Abspielen (mit Menüs)"
 
-#: src/modules/browser/dvd/dvd.c:91
+#: src/modules/browser/dvd/dvd.c:71
 msgid "Watch DVD video"
 msgstr "DVD Video abspielen"
 
-#: src/modules/browser/dvd/dvd.c:162
+#: src/modules/browser/dvd/dvd.c:141
 msgid "DVD module"
 msgstr "DVD-Modul"
 
-#: src/modules/browser/dvd/dvd.c:164
+#: src/modules/browser/dvd/dvd.c:143
 msgid "Watch movies from DVD"
 msgstr "Filme von DVD anschauen"
 
-#: src/modules/browser/localfiles/localfiles.c:491
-#: src/modules/browser/localfiles/localfiles.c:509
-#: src/modules/browser/localfiles/localfiles.c:527
+#: src/modules/browser/localfiles/localfiles.c:465
 msgid "Browse local devices"
 msgstr "Lokale Geräte durchsuchen"
 
-#: src/modules/browser/localfiles/localfiles.c:730
+#: src/modules/browser/localfiles/localfiles.c:663
 msgid "Browse local files"
 msgstr "Lokale Dateien durchsuchen"
 
-#: src/modules/browser/localfiles/localfiles.c:732
+#: src/modules/browser/localfiles/localfiles.c:665
 msgid "Browse files in your local file systems"
 msgstr "Lokale Geräte durchsuchen"
 
@@ -574,48 +568,15 @@ msgstr ""
 "Dieses Modul ermöglicht Enna, Inhalte von UPnP/DLNA Medien-Servern zu "
 "durchsuchen"
 
-#: src/modules/browser/valhalla/valhalla.c:136
-msgid "Authors"
-msgstr "Authoren"
-
-#: src/modules/browser/valhalla/valhalla.c:143
-msgid "Artists"
-msgstr "Künstler"
-
-#: src/modules/browser/valhalla/valhalla.c:150
-msgid "Albums"
-msgstr "Alben"
-
-#: src/modules/browser/valhalla/valhalla.c:155
-msgid "Genres"
-msgstr "Genres"
-
-#: src/modules/browser/valhalla/valhalla.c:167
-msgid "Categories"
-msgstr "Kategorien"
-
-#: src/modules/browser/valhalla/valhalla.c:172
-msgid "Directors"
-msgstr "Regisseure"
-
-#: src/modules/browser/valhalla/valhalla.c:177
-msgid "Years"
-msgstr "Jahre"
-
-#: src/modules/browser/valhalla/valhalla.c:187
-msgid "Unclassified"
-msgstr "Unklassifiziert"
-
-#: src/modules/browser/valhalla/valhalla.c:641
-#: src/modules/browser/valhalla/valhalla.c:658
+#: src/modules/browser/valhalla/valhalla.c:664
 msgid "Media library"
 msgstr "Medien-Bibliothek"
 
-#: src/modules/browser/valhalla/valhalla.c:703
+#: src/modules/browser/valhalla/valhalla.c:705
 msgid "Valhalla module"
 msgstr "Valhalla-Modul"
 
-#: src/modules/browser/valhalla/valhalla.c:705
+#: src/modules/browser/valhalla/valhalla.c:707
 msgid "Build a browseable catalog of your media files"
 msgstr "Erstelle einen durchsuchbaren Katalog der Medien-Dateien"
 
@@ -732,6 +693,33 @@ msgstr "Datenträger aus udev"
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "Dieses Modul bietet Unterstützung für Wechseldatenträger"
+
+#~ msgid "Main menu"
+#~ msgstr "Hauptmenü"
+
+#~ msgid "Authors"
+#~ msgstr "Authoren"
+
+#~ msgid "Artists"
+#~ msgstr "Künstler"
+
+#~ msgid "Albums"
+#~ msgstr "Alben"
+
+#~ msgid "Genres"
+#~ msgstr "Genres"
+
+#~ msgid "Categories"
+#~ msgstr "Kategorien"
+
+#~ msgid "Directors"
+#~ msgstr "Regisseure"
+
+#~ msgid "Years"
+#~ msgstr "Jahre"
+
+#~ msgid "Unclassified"
+#~ msgstr "Unklassifiziert"
 
 #~ msgid "Music core"
 #~ msgstr "Musik"

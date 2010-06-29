@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-05-03 09:53+0200\n"
+"POT-Creation-Date: 2010-06-29 19:51+0200\n"
 "PO-Revision-Date: 2010-01-22 13:37+0100\n"
 "Last-Translator: Guillaume LECERF <fox@geexbox.org>\n"
 "Language-Team: French\n"
@@ -16,68 +16,64 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/bin/browser.c:549
+#: src/bin/browser.c:248
 msgid "No media found!"
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/bin/browser.c:706
-msgid "Main menu"
-msgstr "Menu Principal"
-
-#: src/bin/enna.c:498
+#: src/bin/enna.c:514
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:515
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Usage : %s [options ...]\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:516
 #, c-format
 msgid " Available options:\n"
 msgstr " Options disponibles :\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:517
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 "  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:518
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs) :       Force le mode plein écran.\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:519
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help) :     Affiche cette aide.\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:520
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme) :    Spécifie le nom du thème à utiliser.\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:521
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry) : Spécifie la résolution de la fenêtre. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:522
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr " -p, (--profile) :  Spécifie le type d'affichage\n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:523
 #, c-format
 msgid "    Supported: "
 msgstr "Valeurs supportées :"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:527
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version) :  Affiche le numéro de version d'Enna.\n"
@@ -106,15 +102,15 @@ msgstr "Aucun"
 msgid "continue using Enna"
 msgstr "Non, continuer d'utiliser Enna"
 
-#: src/bin/module.c:239
+#: src/bin/module.c:269
 msgid "Modules"
 msgstr "Modules"
 
-#: src/bin/module.c:408
+#: src/bin/module.c:438
 msgid "No information provided"
 msgstr "Aucune information EXIF trouvée."
 
-#: src/bin/parser_cdda.c:462
+#: src/bin/parser_cdda.c:465
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Piste #%02d (%02d:%02d)"
@@ -378,17 +374,17 @@ msgstr "<c>Jeux Système</c><br>Lancement du jeu..."
 msgid "System Games"
 msgstr "Jeux Système"
 
-#: src/modules/activity/music/music.c:108
+#: src/modules/activity/music/music.c:105
 #, c-format
 msgid "%d Songs"
 msgstr "%d Chansons"
 
-#: src/modules/activity/music/music.c:511
-#: src/modules/activity/music/music.c:573
+#: src/modules/activity/music/music.c:449
+#: src/modules/activity/music/music.c:512
 msgid "Music"
 msgstr "Musique"
 
-#: src/modules/activity/music/music.c:575
+#: src/modules/activity/music/music.c:514
 msgid "Listen to your music"
 msgstr "Ecoutez votre musique"
 
@@ -396,12 +392,12 @@ msgstr "Ecoutez votre musique"
 msgid "No lyrics found ..."
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/modules/activity/photo/photo.c:367
-#: src/modules/activity/photo/photo.c:419
+#: src/modules/activity/photo/photo.c:300
+#: src/modules/activity/photo/photo.c:360
 msgid "Photo"
 msgstr "Photo"
 
-#: src/modules/activity/photo/photo.c:421
+#: src/modules/activity/photo/photo.c:362
 msgid "Browse your photos and create slideshows"
 msgstr "Visualisez vos photos au travers d'un mur d'images ou un diaporama"
 
@@ -457,17 +453,17 @@ msgstr "Taille :"
 msgid "No further information can be retrieved"
 msgstr "Aucune information EXIF trouvée."
 
-#: src/modules/activity/video/video.c:133
+#: src/modules/activity/video/video.c:120
 #, c-format
 msgid "%d Movies"
 msgstr "%d Films"
 
-#: src/modules/activity/video/video.c:1006
-#: src/modules/activity/video/video.c:1098
+#: src/modules/activity/video/video.c:924
+#: src/modules/activity/video/video.c:1012
 msgid "Video"
 msgstr "Vidéo"
 
-#: src/modules/activity/video/video.c:1100
+#: src/modules/activity/video/video.c:1014
 msgid "Play your videos"
 msgstr "Lisez vos vidéos"
 
@@ -491,37 +487,35 @@ msgstr "Module CDDA"
 msgid "Listen your favorite CDs"
 msgstr "Ecoutez vos CD préférés"
 
-#: src/modules/browser/dvd/dvd.c:62
+#: src/modules/browser/dvd/dvd.c:61
 msgid "Play"
 msgstr "Lecture"
 
-#: src/modules/browser/dvd/dvd.c:65
+#: src/modules/browser/dvd/dvd.c:64
 msgid "Play (with menus)"
 msgstr "Lecture (avec menus interactifs)"
 
-#: src/modules/browser/dvd/dvd.c:91
+#: src/modules/browser/dvd/dvd.c:71
 msgid "Watch DVD video"
 msgstr "Regardez un DVD Vidéo"
 
-#: src/modules/browser/dvd/dvd.c:162
+#: src/modules/browser/dvd/dvd.c:141
 msgid "DVD module"
 msgstr "Module DVD"
 
-#: src/modules/browser/dvd/dvd.c:164
+#: src/modules/browser/dvd/dvd.c:143
 msgid "Watch movies from DVD"
 msgstr "Regardez vos DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:491
-#: src/modules/browser/localfiles/localfiles.c:509
-#: src/modules/browser/localfiles/localfiles.c:527
+#: src/modules/browser/localfiles/localfiles.c:465
 msgid "Browse local devices"
 msgstr "Parcourez les disques locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:730
+#: src/modules/browser/localfiles/localfiles.c:663
 msgid "Browse local files"
 msgstr "Parcourez les fichiers locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:732
+#: src/modules/browser/localfiles/localfiles.c:665
 msgid "Browse files in your local file systems"
 msgstr "Parcourez les fichiers de votre disque dur"
 
@@ -581,48 +575,15 @@ msgstr ""
 "Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
 "compatibles UPNP / DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:136
-msgid "Authors"
-msgstr "Auteurs"
-
-#: src/modules/browser/valhalla/valhalla.c:143
-msgid "Artists"
-msgstr "Artistes"
-
-#: src/modules/browser/valhalla/valhalla.c:150
-msgid "Albums"
-msgstr "Albums"
-
-#: src/modules/browser/valhalla/valhalla.c:155
-msgid "Genres"
-msgstr "Genres"
-
-#: src/modules/browser/valhalla/valhalla.c:167
-msgid "Categories"
-msgstr "Catégories"
-
-#: src/modules/browser/valhalla/valhalla.c:172
-msgid "Directors"
-msgstr "Réalisateurs"
-
-#: src/modules/browser/valhalla/valhalla.c:177
-msgid "Years"
-msgstr "Années"
-
-#: src/modules/browser/valhalla/valhalla.c:187
-msgid "Unclassified"
-msgstr "Non Classé"
-
-#: src/modules/browser/valhalla/valhalla.c:641
-#: src/modules/browser/valhalla/valhalla.c:658
+#: src/modules/browser/valhalla/valhalla.c:664
 msgid "Media library"
 msgstr "Bibliothèque Multimédia"
 
-#: src/modules/browser/valhalla/valhalla.c:703
+#: src/modules/browser/valhalla/valhalla.c:705
 msgid "Valhalla module"
 msgstr "Module Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:705
+#: src/modules/browser/valhalla/valhalla.c:707
 msgid "Build a browseable catalog of your media files"
 msgstr "Construisez un catalogue navigable de vos fichiers multimédia"
 
@@ -739,6 +700,33 @@ msgstr "Volumes via udev"
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "Ce module prends en charge les volumes amovibles"
+
+#~ msgid "Main menu"
+#~ msgstr "Menu Principal"
+
+#~ msgid "Authors"
+#~ msgstr "Auteurs"
+
+#~ msgid "Artists"
+#~ msgstr "Artistes"
+
+#~ msgid "Albums"
+#~ msgstr "Albums"
+
+#~ msgid "Genres"
+#~ msgstr "Genres"
+
+#~ msgid "Categories"
+#~ msgstr "Catégories"
+
+#~ msgid "Directors"
+#~ msgstr "Réalisateurs"
+
+#~ msgid "Years"
+#~ msgstr "Années"
+
+#~ msgid "Unclassified"
+#~ msgstr "Non Classé"
 
 #~ msgid "This module gets volumes from the mtab file"
 #~ msgstr "Ce module récupère la liste des volumes depuis le fichier mtab"

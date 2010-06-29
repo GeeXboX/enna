@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-05-03 09:53+0200\n"
+"POT-Creation-Date: 2010-06-29 19:51+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Ukraine\n"
@@ -18,67 +18,62 @@ msgstr ""
 "X-Poedit-Language: Ukrainian\n"
 "X-Poedit-Country: UKRAINE\n"
 
-#: src/bin/browser.c:549
+#: src/bin/browser.c:248
 #, fuzzy
 msgid "No media found!"
 msgstr "Не знайдено джерела!"
 
-#: src/bin/browser.c:706
-#, fuzzy
-msgid "Main menu"
-msgstr "Головне меню"
-
-#: src/bin/enna.c:498
+#: src/bin/enna.c:514
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедіаЦентр Enna\n"
 
-#: src/bin/enna.c:499
+#: src/bin/enna.c:515
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Використання: %s [опції...]\n"
 
-#: src/bin/enna.c:500
+#: src/bin/enna.c:516
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Доступні опції:\n"
 
-#: src/bin/enna.c:501
+#: src/bin/enna.c:517
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Вкажіть конфігураційний файл.\n"
 
-#: src/bin/enna.c:502
+#: src/bin/enna.c:518
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Примусовий повноекраний режим.\n"
 
-#: src/bin/enna.c:503
+#: src/bin/enna.c:519
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Показує це повідомлення.\n"
 
-#: src/bin/enna.c:504
+#: src/bin/enna.c:520
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Вкажіть назву теми, що буде використовуватись.\n"
 
-#: src/bin/enna.c:505
+#: src/bin/enna.c:521
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Вкажіть розміри вікна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:506
+#: src/bin/enna.c:522
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p (--profile): вкажіть профіль дісплею \n"
 
-#: src/bin/enna.c:507
+#: src/bin/enna.c:523
 #, c-format
 msgid "    Supported: "
 msgstr "\tПідтримується: "
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:527
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Відображує номер версії Enna.\n"
@@ -108,16 +103,16 @@ msgstr "Немає<br>"
 msgid "continue using Enna"
 msgstr "Ні, продовжити користуватись enna"
 
-#: src/bin/module.c:239
+#: src/bin/module.c:269
 msgid "Modules"
 msgstr "Модулі"
 
-#: src/bin/module.c:408
+#: src/bin/module.c:438
 #, fuzzy
 msgid "No information provided"
 msgstr "Не надано необхідної інформації."
 
-#: src/bin/parser_cdda.c:462
+#: src/bin/parser_cdda.c:465
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Доріжка #%02d (%02d:%02d)"
@@ -397,17 +392,17 @@ msgstr "<c>System Games</c><br>Гра завантажеється..."
 msgid "System Games"
 msgstr "Системні ігри"
 
-#: src/modules/activity/music/music.c:108
+#: src/modules/activity/music/music.c:105
 #, c-format
 msgid "%d Songs"
 msgstr "%d Пісня"
 
-#: src/modules/activity/music/music.c:511
-#: src/modules/activity/music/music.c:573
+#: src/modules/activity/music/music.c:449
+#: src/modules/activity/music/music.c:512
 msgid "Music"
 msgstr "Музика"
 
-#: src/modules/activity/music/music.c:575
+#: src/modules/activity/music/music.c:514
 #, fuzzy
 msgid "Listen to your music"
 msgstr "Слухати подкасти"
@@ -416,12 +411,12 @@ msgstr "Слухати подкасти"
 msgid "No lyrics found ..."
 msgstr "Не знайдено жодної пісні..."
 
-#: src/modules/activity/photo/photo.c:367
-#: src/modules/activity/photo/photo.c:419
+#: src/modules/activity/photo/photo.c:300
+#: src/modules/activity/photo/photo.c:360
 msgid "Photo"
 msgstr "Фото"
 
-#: src/modules/activity/photo/photo.c:421
+#: src/modules/activity/photo/photo.c:362
 #, fuzzy
 msgid "Browse your photos and create slideshows"
 msgstr "Переглянути всі Ваші фото 'на стіні' або як слайдшоу"
@@ -481,17 +476,17 @@ msgstr "Розмір:"
 msgid "No further information can be retrieved"
 msgstr "Не можна отримати більше інформації."
 
-#: src/modules/activity/video/video.c:133
+#: src/modules/activity/video/video.c:120
 #, c-format
 msgid "%d Movies"
 msgstr "%d Фільмів"
 
-#: src/modules/activity/video/video.c:1006
-#: src/modules/activity/video/video.c:1098
+#: src/modules/activity/video/video.c:924
+#: src/modules/activity/video/video.c:1012
 msgid "Video"
 msgstr "Відео"
 
-#: src/modules/activity/video/video.c:1100
+#: src/modules/activity/video/video.c:1014
 msgid "Play your videos"
 msgstr "Програти ваше відео"
 
@@ -518,41 +513,39 @@ msgstr "модуль CDDA"
 msgid "Listen your favorite CDs"
 msgstr "Слухати Ваші улюбленіші диски"
 
-#: src/modules/browser/dvd/dvd.c:62
+#: src/modules/browser/dvd/dvd.c:61
 msgid "Play"
 msgstr "Грати"
 
-#: src/modules/browser/dvd/dvd.c:65
+#: src/modules/browser/dvd/dvd.c:64
 #, fuzzy
 msgid "Play (with menus)"
 msgstr "Грати (з меню)"
 
-#: src/modules/browser/dvd/dvd.c:91
+#: src/modules/browser/dvd/dvd.c:71
 #, fuzzy
 msgid "Watch DVD video"
 msgstr "Дивитись DVD відео"
 
-#: src/modules/browser/dvd/dvd.c:162
+#: src/modules/browser/dvd/dvd.c:141
 msgid "DVD module"
 msgstr "модуль DVD"
 
-#: src/modules/browser/dvd/dvd.c:164
+#: src/modules/browser/dvd/dvd.c:143
 msgid "Watch movies from DVD"
 msgstr "Дивитись фільмі з DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:491
-#: src/modules/browser/localfiles/localfiles.c:509
-#: src/modules/browser/localfiles/localfiles.c:527
+#: src/modules/browser/localfiles/localfiles.c:465
 #, fuzzy
 msgid "Browse local devices"
 msgstr "Оглянути локальні пристрої"
 
-#: src/modules/browser/localfiles/localfiles.c:730
+#: src/modules/browser/localfiles/localfiles.c:663
 #, fuzzy
 msgid "Browse local files"
 msgstr "Переглянути локальні файли"
 
-#: src/modules/browser/localfiles/localfiles.c:732
+#: src/modules/browser/localfiles/localfiles.c:665
 #, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "Переглянути файли на Вашому локальному жорсткому диску"
@@ -620,49 +613,16 @@ msgstr "Модуль UPnP / DLNA"
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "Цей модуль дозволяє Enna переглядати файли з UPnP/DLNA медіа серверів"
 
-#: src/modules/browser/valhalla/valhalla.c:136
-msgid "Authors"
-msgstr "Автори"
-
-#: src/modules/browser/valhalla/valhalla.c:143
-msgid "Artists"
-msgstr "Виконавець"
-
-#: src/modules/browser/valhalla/valhalla.c:150
-msgid "Albums"
-msgstr "Платівка"
-
-#: src/modules/browser/valhalla/valhalla.c:155
-msgid "Genres"
-msgstr "Жанр"
-
-#: src/modules/browser/valhalla/valhalla.c:167
-msgid "Categories"
-msgstr "Категорії"
-
-#: src/modules/browser/valhalla/valhalla.c:172
-msgid "Directors"
-msgstr ""
-
-#: src/modules/browser/valhalla/valhalla.c:177
-msgid "Years"
-msgstr "Роки"
-
-#: src/modules/browser/valhalla/valhalla.c:187
-msgid "Unclassified"
-msgstr "Невизначений"
-
-#: src/modules/browser/valhalla/valhalla.c:641
-#: src/modules/browser/valhalla/valhalla.c:658
+#: src/modules/browser/valhalla/valhalla.c:664
 #, fuzzy
 msgid "Media library"
 msgstr "Медіа бібліотека"
 
-#: src/modules/browser/valhalla/valhalla.c:703
+#: src/modules/browser/valhalla/valhalla.c:705
 msgid "Valhalla module"
 msgstr "Модуль Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:705
+#: src/modules/browser/valhalla/valhalla.c:707
 msgid "Build a browseable catalog of your media files"
 msgstr "Створити оглядовий каталог для ваших медіа файлів."
 
@@ -780,6 +740,31 @@ msgstr "Розділ з mtab"
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "Цей модуль дозволяє працювати зі змінними носіями"
+
+#, fuzzy
+#~ msgid "Main menu"
+#~ msgstr "Головне меню"
+
+#~ msgid "Authors"
+#~ msgstr "Автори"
+
+#~ msgid "Artists"
+#~ msgstr "Виконавець"
+
+#~ msgid "Albums"
+#~ msgstr "Платівка"
+
+#~ msgid "Genres"
+#~ msgstr "Жанр"
+
+#~ msgid "Categories"
+#~ msgstr "Категорії"
+
+#~ msgid "Years"
+#~ msgstr "Роки"
+
+#~ msgid "Unclassified"
+#~ msgstr "Невизначений"
 
 #~ msgid "This module gets volumes from the mtab file"
 #~ msgstr "Цей модуль отримує розділи з файлу mtab"
