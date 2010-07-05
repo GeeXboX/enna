@@ -45,8 +45,7 @@ static void _create_menu(void);
 
 typedef struct _Enna_Module_Photo
 {
-    Evas_Object *o_edje;
-    Evas_Object *o_menu;
+    Evas_Object *o_layout;
     Evas_Object *o_browser;
     Evas_Object *o_infos;
     Evas_Object *o_slideshow;
@@ -63,16 +62,20 @@ static Enna_Module_Photo *mod;
 
 static void _create_infos(void)
 {
-    mod->o_infos = photo_panel_infos_add (evas_object_evas_get(mod->o_edje));
-    edje_object_part_swallow (mod->o_edje,
+	Evas_Object *o_edje;
+    mod->o_infos = photo_panel_infos_add (evas_object_evas_get(mod->o_layout));
+    edje_object_part_swallow (mod->o_layout,
                               "infos.panel.swallow", mod->o_infos);
-    edje_object_signal_emit (mod->o_edje, "infos,hide", "enna");
+    o_edje = elm_layout_edje_get(mod->o_layout);
+    edje_object_signal_emit (o_edje, "infos,hide", "enna");
 }
 
 static void
 panel_infos_display (int show)
 {
-    edje_object_signal_emit (mod->o_edje,
+	Evas_Object *o_edje;
+	o_edje = elm_layout_edje_get(mod->o_layout);
+    edje_object_signal_emit (o_edje,
                              show ? "infos,show": "infos,hide", "enna");
     mod->infos_displayed = show ? 1 : 0;
     mod->state = show ? INFOS_VIEW : BROWSER_VIEW;
@@ -84,16 +87,18 @@ panel_infos_display (int show)
 
 static void _create_slideshow_gui(void)
 {
+	Evas_Object *o_edje;
     mod->state = SLIDESHOW_VIEW;
 
     ENNA_OBJECT_DEL (mod->o_slideshow);
 
     mod->o_slideshow = enna_photo_slideshow_add(enna->evas);
-    edje_object_part_swallow(mod->o_edje,
+    elm_layout_content_set(mod->o_layout,
                              "fullscreen.swallow", mod->o_slideshow);
 
-    edje_object_signal_emit(mod->o_edje, "list,hide", "enna");
-    edje_object_signal_emit(mod->o_edje, "wall,hide", "enna");
+    o_edje = elm_layout_edje_get(mod->o_layout);
+    edje_object_signal_emit(o_edje, "list,hide", "enna");
+    edje_object_signal_emit(o_edje, "wall,hide", "enna");
 }
 
 
@@ -146,11 +151,13 @@ static void
 _browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 {
     Enna_Vfs_File *file = event_info;
+    Evas_Object *o_edje;
 
     if (!file || !file->uri)
         return;
 
-    edje_object_part_text_set(mod->o_edje, "filename.text", file->label);
+    o_edje = elm_layout_edje_get(mod->o_layout);
+    edje_object_part_text_set(o_edje, "filename.text", file->label);
 
     if (!file->is_directory || !file->is_menu)
         photo_panel_infos_set_cover(mod->o_infos, file->uri + 7);
@@ -166,7 +173,7 @@ _create_menu(void)
     /* Create List */
     ENNA_OBJECT_DEL(mod->o_browser);
 
-    mod->o_browser = enna_browser_obj_add(mod->o_edje);
+    mod->o_browser = enna_browser_obj_add(mod->o_layout);
     enna_browser_obj_view_type_set(mod->o_browser, ENNA_BROWSER_VIEW_WALL);
 
     evas_object_smart_callback_add(mod->o_browser, "root",
@@ -176,18 +183,18 @@ _create_menu(void)
     evas_object_smart_callback_add(mod->o_browser,
                                    "hilight", _browser_cb_hilight, NULL);
 
-    edje_object_part_swallow(mod->o_edje, "browser.swallow", mod->o_browser);
+    elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
     enna_browser_obj_root_set(mod->o_browser, "/photo");
 }
 
 static void _create_gui(void)
 {
     /* Set default state */
-    mod->state = MENU_VIEW;
+    mod->state = BROWSER_VIEW;
 
     /* Create main edje object */
-    mod->o_edje = edje_object_add(enna->evas);
-    edje_object_file_set(mod->o_edje,
+    mod->o_layout = elm_layout_add(enna->layout);
+    elm_layout_file_set(mod->o_layout,
                          enna_config_theme_get(), "activity/photo");
 
     _create_menu();
@@ -197,11 +204,6 @@ static void _create_gui(void)
 /****************************************************************************/
 /*                             Event Handlers                               */
 /****************************************************************************/
-
-static void photo_event_menu (enna_input event)
-{
-    enna_browser_obj_input_feed(mod->o_browser, event);
-}
 
 static void photo_event_browser (enna_input event)
 {
@@ -235,13 +237,16 @@ static void photo_event_info (enna_input event)
 
 static void photo_event_slideshow (enna_input event)
 {
+	Evas_Object *o_edje;
+
+	o_edje = elm_layout_edje_get(mod->o_layout);
     switch (event)
     {
     case ENNA_INPUT_BACK:
         ENNA_OBJECT_DEL (mod->o_slideshow);
         mod->state = BROWSER_VIEW;
-        edje_object_signal_emit(mod->o_edje, "wall,show", "enna");
-        edje_object_signal_emit(mod->o_edje, "list,show", "enna");
+        edje_object_signal_emit(o_edje, "wall,show", "enna");
+        edje_object_signal_emit(o_edje, "list,show", "enna");
         break;
     default:
         break;
@@ -255,19 +260,25 @@ static void photo_event_slideshow (enna_input event)
 static void _class_init(void)
 {
     _create_gui();
-    enna_content_append(ENNA_MODULE_NAME, mod->o_edje);
+    enna_content_append(ENNA_MODULE_NAME, mod->o_layout);
 }
 
 static void _class_show(void)
 {
+	Evas_Object *o_edje;
+
+	o_edje = elm_layout_edje_get(mod->o_layout);
     enna_content_select(ENNA_MODULE_NAME);
-    edje_object_signal_emit(mod->o_edje, "module,show", "enna");
-    edje_object_signal_emit(mod->o_edje, "content,show", "enna");
+    edje_object_signal_emit(o_edje, "module,show", "enna");
+    edje_object_signal_emit(o_edje, "content,show", "enna");
 }
 
 static void _class_hide(void)
 {
-    edje_object_signal_emit(mod->o_edje, "module,hide", "enna");
+	Evas_Object *o_edje;
+
+	o_edje = elm_layout_edje_get(mod->o_layout);
+    edje_object_signal_emit(o_edje, "module,hide", "enna");
 }
 
 static void _class_event(enna_input event)
@@ -278,7 +289,6 @@ static void _class_event(enna_input event)
         PHOTO_STATE state;
         void (*event_handler) (enna_input event);
     } evh [] = {
-        { MENU_VIEW,         &photo_event_menu        },
         { BROWSER_VIEW,      &photo_event_browser     },
         { INFOS_VIEW,        &photo_event_info        },
         { SLIDESHOW_VIEW,    &photo_event_slideshow   },
@@ -338,7 +348,7 @@ static void
 module_shutdown(Enna_Module *em)
 {
     enna_activity_unregister(&class);
-    ENNA_OBJECT_DEL(mod->o_edje);
+    ENNA_OBJECT_DEL(mod->o_layout);
 
     evas_object_smart_callback_del(mod->o_browser,
                                    "root", _browser_cb_root);
@@ -348,7 +358,6 @@ module_shutdown(Enna_Module *em)
                                    "hilight", _browser_cb_hilight);
 
     ENNA_OBJECT_DEL(mod->o_infos);
-    ENNA_OBJECT_DEL(mod->o_menu);
     ENNA_OBJECT_DEL(mod->o_browser);
     free(mod);
 }
