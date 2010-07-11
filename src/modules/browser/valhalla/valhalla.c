@@ -279,12 +279,13 @@ _result_file(Enna_Browser *browser,
              const valhalla_db_fileres_t *res, valhalla_file_type_t ftype)
 {
     const valhalla_metadata_pl_t priority = VALHALLA_METADATA_PL_NORMAL;
+    const valhalla_lang_t lang = VALHALLA_LANG_ALL;
     valhalla_db_stmt_t *stmt;
     const valhalla_db_metares_t *metares;
     valhalla_db_restrict_t r1 =
-        VALHALLA_DB_RESTRICT_STR(EQUAL, "title", NULL, priority);
+        VALHALLA_DB_RESTRICT_STR(EQUAL, "title", NULL, lang, priority);
     valhalla_db_restrict_t r2 =
-        VALHALLA_DB_RESTRICT_STR(EQUAL, "track", NULL, priority);
+        VALHALLA_DB_RESTRICT_STR(EQUAL, "track", NULL, lang, priority);
     unsigned int i;
 
     struct {
@@ -323,12 +324,13 @@ static void
 _browse_list_data(Enna_Browser *browser, const Browser_Item *item,
                   valhalla_file_type_t ftype, const Item_Id *id)
 {
+    const valhalla_lang_t lang = VALHALLA_LANG_ALL;
     valhalla_db_stmt_t *stmt;
     const valhalla_db_metares_t *metares;
     valhalla_db_item_t search =
-        VALHALLA_DB_SEARCH_TEXT(item->meta, NIL, item->priority);
+        VALHALLA_DB_SEARCH_TEXT(item->meta, NIL, lang, item->priority);
     valhalla_db_restrict_t r1 =
-        VALHALLA_DB_RESTRICT_STR(IN, id->meta, id->data, item->priority);
+        VALHALLA_DB_RESTRICT_STR(IN, id->meta, id->data, lang, item->priority);
     valhalla_db_restrict_t *r = NULL;
 
     if (tree_meta[id->it].level > LEVEL_ONE)
@@ -347,10 +349,11 @@ _browse_list_file(Enna_Browser *browser,
                   valhalla_db_restrict_t *rp, valhalla_file_type_t ftype,
                   const Item_Id *id, valhalla_metadata_pl_t priority)
 {
+    const valhalla_lang_t lang = VALHALLA_LANG_ALL;
     valhalla_db_stmt_t *stmt;
     const valhalla_db_fileres_t *fileres;
     valhalla_db_restrict_t r =
-        VALHALLA_DB_RESTRICT_STR(IN, id->meta, id->data, priority);
+        VALHALLA_DB_RESTRICT_STR(IN, id->meta, id->data, lang, priority);
 
     if (id->meta && id->data)
     {
@@ -369,7 +372,7 @@ _browse_list_file(Enna_Browser *browser,
 
 static void
 _restr_add(valhalla_db_restrict_t **r, valhalla_db_operator_t op,
-           const char *meta, valhalla_metadata_pl_t p)
+           const char *meta, valhalla_lang_t l, valhalla_metadata_pl_t p)
 {
     valhalla_db_restrict_t *n, *it;
 
@@ -381,6 +384,7 @@ _restr_add(valhalla_db_restrict_t **r, valhalla_db_operator_t op,
     n->meta.text     = meta;
     n->meta.type     = VALHALLA_DB_TYPE_TEXT;
     n->meta.priority = p;
+    n->data.lang     = l;
 
     if (*r)
     {
@@ -464,6 +468,7 @@ _browse_list(Enna_Browser *browser, const Browser_Item *item,
 
                 _restr_add(&r, VALHALLA_DB_OPERATOR_NOTIN,
                            tree_meta[j].items[i].meta,
+                           VALHALLA_LANG_ALL,
                            tree_meta[j].items[i].priority);
             }
         }
