@@ -420,7 +420,10 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
 
                         mrl = enna_buffer_new();
                         /* TODO : remove file:// on top of root->uri */
-                        enna_buffer_appendf(mrl, "%s/%s%s", root->uri, relative_path->buf, filename);
+                        relative_path->buf ?
+                            enna_buffer_appendf(mrl, "%s/%s%s", root->uri, relative_path->buf, filename):
+                            enna_buffer_appendf(mrl, "%s/%s", root->uri, filename);
+
                         f = enna_browser_create_file(filename, buf->buf,
                                                      mrl->buf, filename,
                                                      "icon/music");
