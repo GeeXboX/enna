@@ -248,9 +248,9 @@ _add_child_volume_cb(void *data, Enna_Volume *v)
 {
     Enna_Browser *b = data;
     Enna_File *f;
-   
+
     Enna_Buffer *buf;
-    
+
     buf = enna_buffer_new();
     enna_buffer_appendf(buf, "/%s/localfiles/%s", "music", v->label);
     f = enna_browser_create_menu(v->label, buf->buf,
@@ -265,7 +265,7 @@ _remove_child_volume_cb(void *data, Enna_Volume *v)
     Enna_Browser *b = data;
     Eina_List *files, *l;
     Enna_File *file;
-    
+
     files = enna_browser_files_get(b);
     EINA_LIST_FOREACH(files, l, file)
     {
