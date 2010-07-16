@@ -32,12 +32,19 @@
 #include "browser_obj.h"
 
 typedef struct _Smart_Data Smart_Data;
+typedef struct _Activated_Cb_Data Activated_Cb_Data;
 
 typedef enum _Focused_Part
 {
     SEARCH_FOCUSED,
     VIEW_FOCUSED
 }Focused_Part;
+
+struct _Activated_Cb_Data
+{
+	Smart_Data *sd;
+	Enna_File *file;
+};
 
 struct _Smart_Data
 {
@@ -70,6 +77,7 @@ struct _Smart_Data
 };
 
 static void _browse_back(Smart_Data *sd);
+static void _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back);
 
 static Eina_Bool
 _view_delay_hilight_cb(void *data)
@@ -188,11 +196,24 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
         break;
     }
 }
+
+void
+_activated_cb(void *data)
+{
+	Activated_Cb_Data *cb_data = data;
+
+	_browse(cb_data->sd, cb_data->file, EINA_FALSE);
+        enna_browser_file_free(cb_data->file);
+	free(cb_data);
+}
+
 static void
 _add_cb(void *data, Enna_File *file)
 {
     Smart_Data *sd = data;
     Evas_Object *icon = NULL;
+    Activated_Cb_Data *cb_data;
+
     DBG(__FUNCTION__);
 
     if (!sd->o_view)
@@ -215,7 +236,10 @@ _add_cb(void *data, Enna_File *file)
         edje_object_file_set(icon, enna_config_theme_get(), file->icon);
     }
 
-    sd->view_funcs.view_append(sd->o_view, file, NULL/*_browse*/, file);
+    cb_data = malloc(sizeof(Activated_Cb_Data));
+    cb_data->sd = sd;
+    cb_data->file = enna_browser_file_dup(file);
+    sd->view_funcs.view_append(sd->o_view, file, _activated_cb, cb_data);
 }
 
 static void
