@@ -2,6 +2,7 @@
 group { name: "elm/scroller/base/enna";
       alias: "elm/list/base/enna";
       alias: "elm/genlist/base/enna";
+      alias: "elm/gengrid/base/enna";
    script {
       public sbvis_v, sbvis_h, sbalways_v, sbalways_h, sbvis_timer;
       public timer0(val) {
@@ -4572,5 +4573,168 @@ group { name: "elm/photocam/base/default";
 	    }
 	 }
 	
+      }
+   }
+///////////////////////////////////////////////////////////////////////////////
+   group { name: "elm/thumb/base/enna";
+      images {
+      }
+      parts {
+
+	 part { name: "clip";
+	    mouse_events:  0;
+	    type: RECT;
+	    description { state:	"default" 0.0;
+	       rel1.offset: 4 4;
+	       rel2.offset: -5 -5;
+	       color: 255 255 255 255;
+	    }
+	 }
+	 part { name: "elm.swallow.content";
+	    type: SWALLOW;
+	    clip_to: "clip";
+	    description { state:	"default" 0.0;
+	       rel1.offset: 4 4;
+	       rel2.offset: -5 -5;
+	    }
+	 }
+
+	 programs {
+
+	 }
+      }
+   }
+   ///////////////////////////////////////////////////////////////////////////////
+   group { name: "elm/gengrid/item/enna/default";
+      data.item: "labels" "elm.text";
+      data.item: "icons" "elm.swallow.icon elm.swallow.end";
+      images {
+
+      }
+      parts {
+         part {
+            name: "event";
+            type: RECT;
+            repeat_events: 1;
+            description {
+               state: "default" 0.0;
+               color: 0 0 0 0;
+            }
+         }
+       
+         part { name: "elm.swallow.pad";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+               fixed: 1 0;
+               align: 0.0 0.5;
+               rel1 {
+                  relative: 0.0  1.0;
+                  offset:   0    -10;
+               }
+               rel2 {
+		  to_y: "elm.text";
+                  relative: 0.0  0.0;
+                  offset:   -1   -1;
+               }
+            }
+         }
+         part { name: "elm.swallow.icon";
+            clip_to: "disclip";
+            type: SWALLOW;
+            description { state: "default" 0.0;
+               fixed: 1 0;
+               align: 0.5 0.5;
+               rel1 {
+                  relative: 0.0  0.0;
+                  offset:   -1    4;
+               }
+               rel2 {
+                  to_y: "elm.swallow.pad";
+                  relative: 1.0  0.0;
+                  offset:   -1   -5;
+               }
+            }
+         }
+	 part { name: "elm.swallow.end";
+	    clip_to: "disclip";
+	    type: SWALLOW;
+	    description { state: "default" 0.0;
+	       fixed: 1 0;
+	       align: 1.0 0.0;
+	       aspect: 1.0 1.0;
+	       aspect_preference: HORIZONTAL;
+	       rel1 {
+		  relative: 1.0 0.0;
+		  offset: -5 -5;
+	       }
+	       rel2 {
+		  relative: 1.0 1.0;
+		  offset: 5 5;
+	       }
+	    }
+	 }
+         part { name: "elm.text";
+            clip_to: "disclip";
+            type: TEXT;
+            effect: SOFT_SHADOW;
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               rel1 {
+                  relative: 0.0  1.0;
+                  offset: 0 0;
+               }
+               rel2 {
+                  relative: 1.0  1.0;
+                  offset: -5 -5;
+               }
+               color: 0 0 0 255;
+               color3: 0 0 0 0;
+               text {
+                  font: "Sans";
+                  size: 10;
+                  min: 0 1;
+                  align: 0.5 0.0;
+               }
+            }
+            description { state: "selected" 0.0;
+               inherit: "default" 0.0;
+               color: 224 224 224 255;
+               color3: 0 0 0 64;
+            }
+         }
+       
+         part { name: "disclip";
+            type: RECT;
+            description { state: "default" 0.0;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 255 255 255 64;
+            }
+         }
+      }
+      programs {
+         // signal: elm,state,%s,active
+         //   a "check" item named %s went active
+         // signal: elm,state,%s,passive
+         //   a "check" item named %s went passive
+         // default is passive
+       
+         program {
+            name:    "go_disabled";
+            signal:  "elm,state,disabled";
+            source:  "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target:  "disclip";
+         }
+         program {
+            name:    "go_enabled";
+            signal:  "elm,state,enabled";
+            source:  "elm";
+            action:  STATE_SET "default" 0.0;
+            target:  "disclip";
+         }
       }
    }
