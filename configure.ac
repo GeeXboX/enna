@@ -50,6 +50,7 @@ PKG_CHECK_MODULES([ENNA],
    libvalhalla >= 2.0.0 libvalhalla < 3.0.0
    libxml-2.0
    libcurl
+   edbus
   ]
 )
 
