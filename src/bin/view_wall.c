@@ -101,10 +101,6 @@ _grid_item_icon_get(const void *data, Evas_Object *obj, const char *part)
                     printf("file set : %s\n", pi->file->mrl + 7);
 
                     elm_object_style_set(ic, "enna");
-                    evas_object_size_hint_weight_set(ic, EVAS_HINT_EXPAND,
-                                                      EVAS_HINT_EXPAND);
-                    evas_object_size_hint_align_set(ic, EVAS_HINT_FILL,
-                                                     EVAS_HINT_FILL);
                     elm_thumb_align_set(ic, 0.5, 0.5);
                     elm_thumb_keep_aspect_set(ic, EINA_TRUE);
 
@@ -226,6 +222,7 @@ Evas_Object *
 enna_wall_add(Evas_Object * parent)
 {
     Smart_Data *sd;
+    Ethumb_Client *client;
 
     elm_need_ethumb();
 
@@ -239,6 +236,10 @@ enna_wall_add(Evas_Object * parent)
     elm_object_style_set(sd->o_grid, "enna");
     evas_object_smart_callback_add(sd->o_grid, "realized", _item_realized_cb, sd);
     evas_object_event_callback_add(sd->o_grid, EVAS_CALLBACK_DEL, _del_cb, sd);
+    evas_object_event_callback_add(sd->o_grid, EVAS_CALLBACK_RESIZE, _resize_cb, sd);
+    client = elm_thumb_ethumb_client_get();
+    ethumb_client_aspect_set(client, ETHUMB_THUMB_CROP);
+    ethumb_client_crop_align_set(client, 0.5, 0.5);
 
     return sd->o_grid;
 }
