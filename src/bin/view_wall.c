@@ -169,6 +169,18 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
     free(sd);
 }
 
+
+
+static void
+_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+    Evas_Coord h;
+    Smart_Data *sd = data;
+
+    evas_object_geometry_get(sd->o_grid, NULL, NULL, NULL, &h);
+    elm_gengrid_item_size_set(sd->o_grid, h / 4, h / 4);
+}
+
 static void
 _item_activate(Elm_Gengrid_Item *item)
 {
@@ -221,7 +233,6 @@ enna_wall_add(Evas_Object * parent)
 
     sd->o_grid = elm_gengrid_add(parent);
     elm_gengrid_horizontal_set(sd->o_grid, EINA_TRUE);
-    elm_gengrid_item_size_set(sd->o_grid, 150, 150);
     elm_gengrid_multi_select_set(sd->o_grid, EINA_FALSE);
 
     evas_object_data_set(sd->o_grid, "sd", sd);
