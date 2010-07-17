@@ -139,7 +139,7 @@ _browser_view_wall_add(Smart_Data *sd)
     DBG(__FUNCTION__);
     if (!sd) return NULL;
 
-    view = enna_wall_add(enna->evas);
+    view = enna_wall_add(sd->o_layout);
 
     elm_layout_content_set(sd->o_layout, "enna.swallow.content", view);
     evas_object_smart_callback_add(view, "hilight", _view_hilight_cb, sd);
