@@ -89,7 +89,9 @@ _grid_item_icon_get(const void *data, Evas_Object *obj, const char *part)
 				elm_icon_file_set(ic, enna_config_theme_get(), pi->file->icon);
 			else
 				return NULL;
-			evas_object_size_hint_min_set(ic, 32, 32);
+
+                        evas_object_size_hint_max_set(ic, 92, 92);
+                        evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 			evas_object_show(ic);
 			return ic;
 		}
