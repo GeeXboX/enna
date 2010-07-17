@@ -138,8 +138,8 @@ bs_service_set_bg (const char *bg)
         Evas_Object *old;
 
         old = mod->service_bg;
-        mod->service_bg = edje_object_add(evas_object_evas_get(mod->edje));
-        edje_object_file_set(mod->service_bg, enna_config_theme_get(), bg);
+        mod->service_bg = elm_layout_add(mod->o_layout);
+        elm_layout_file_set(mod->service_bg, enna_config_theme_get(), bg);
         elm_layout_content_set(mod->o_layout,
                             "service.bg.swallow", mod->service_bg);
         evas_object_show(mod->service_bg);
