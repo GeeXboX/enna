@@ -231,6 +231,8 @@ enna_wall_add(Evas_Object * parent)
     sd->o_grid = elm_gengrid_add(parent);
     elm_gengrid_horizontal_set(sd->o_grid, EINA_TRUE);
     elm_gengrid_multi_select_set(sd->o_grid, EINA_FALSE);
+    elm_gengrid_align_set(sd->o_grid, 0, 0.5);
+    elm_gengrid_bounce_set(sd->o_grid, EINA_TRUE, EINA_FALSE);
 
     evas_object_data_set(sd->o_grid, "sd", sd);
     elm_object_style_set(sd->o_grid, "enna");
