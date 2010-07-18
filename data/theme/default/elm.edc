@@ -4648,7 +4648,53 @@ group { name: "elm/photocam/base/default";
                color: 0 0 0 0;
             }
          }
-       
+         part {
+         name: "base";
+         mouse_events: 0;
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+         }
+      }
+      part{ name: "shadow";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description{ state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "sel_shad.png";
+            image.border: 6 6 6 6;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "bg";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.offset: 0 2;
+            rel2.offset: 0 -1;
+            image {
+               normal: "sel_bg.png";
+               border: 6 6 6 6;
+            }
+            image.middle: SOLID;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 200;
+         }
+      }
+
          part { name: "elm.swallow.pad";
             type: SWALLOW;
             description { state: "default" 0.0;
@@ -4673,12 +4719,12 @@ group { name: "elm/photocam/base/default";
                align: 0.5 0.5;
                rel1 {
                   relative: 0.0  0.0;
-                  offset:   -1    4;
+                  offset:   4    6;
                }
                rel2 {
                   to_y: "elm.swallow.pad";
                   relative: 1.0  0.0;
-                  offset:   -1   -5;
+                  offset:   -5   -5;
                }
             }
          }
@@ -4712,11 +4758,11 @@ group { name: "elm/photocam/base/default";
             fixed: 1 1;
             rel1 {
                relative: 0.0  1.0;
-               offset:   4 -16;
+               offset:   4 -18;
             }
             rel2 {
                relative: 1.0  1.0;
-               offset:   -5 0;
+               offset:   -5 -8;
             }
             color: 200 200 200 255;
             color3: 0 0 0 32;
@@ -4732,6 +4778,63 @@ group { name: "elm/photocam/base/default";
             inherit: "default" 0.0;
             color: 232 232 232 255;
             color3: 0 0 0 64;
+         }
+      }
+  part { name: "shine_white";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_shine_white.png";
+               border: 12 12 6 6;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 200;
+         }
+      }
+      part { name: "shine_black";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_shine_black.png";
+               border: 12 12 6 6;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 200;
+         }
+      }
+      part { name: "hilight";
+         clip_to: "disclip";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_hilight.png";
+               border: 12 12 6 6;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 80;
          }
       }
        
@@ -4766,5 +4869,30 @@ group { name: "elm/photocam/base/default";
             action:  STATE_SET "default" 0.0;
             target:  "disclip";
          }
+ program {
+         name:    "go_active";
+         signal:  "elm,state,selected";
+         source:  "elm";
+         action:  STATE_SET "selected" 0.0;
+         target:  "bg";
+         target:  "shadow";
+         target:  "shine_white";
+         target:  "shine_black";
+         target:  "hilight";
+         target:  "elm.text";
+      }
+      program {
+         name:    "go_passive";
+         signal:  "elm,state,unselected";
+         source:  "elm";
+         action:  STATE_SET "default" 0.0;
+         target:  "bg";
+         target:  "shadow";
+         target:  "shine_white";
+         target:  "shine_black";
+         target:  "hilight";
+         target:  "elm.text";
+         transition: LINEAR 0.1;
+      }
       }
    }
