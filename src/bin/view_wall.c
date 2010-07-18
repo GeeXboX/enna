@@ -281,7 +281,20 @@ enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 void
 enna_wall_file_remove(Evas_Object *obj, Enna_File *file)
 {
+    Eina_List *l;
+    Picture_Item *pi;
+    Smart_Data *sd;
 
+    sd = evas_object_data_get(obj, "sd");
+
+    EINA_LIST_FOREACH(sd->items, l, pi)
+    {
+        if (file == pi->file)
+        {
+            _item_remove(obj, pi);
+            break;
+        }
+    }
 }
 
 Eina_Bool
