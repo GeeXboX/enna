@@ -306,7 +306,7 @@ _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
         return;
 
 
-    if (!file->is_directory && !file->is_menu)
+    if (!file->is_directory && !file->is_menu && file->mrl)
         /* ask for on-demand scan for local files */
         if (!strncmp(file->mrl, "file://", 7))
             enna_metadata_ondemand(file, _ondemand_cb_refresh);

@@ -248,9 +248,9 @@ _add_child_volume_cb(void *data, Enna_Volume *v)
 {
     Enna_Browser *b = data;
     Enna_File *f;
-   
+
     Enna_Buffer *buf;
-    
+
     buf = enna_buffer_new();
     enna_buffer_appendf(buf, "/%s/localfiles/%s", "music", v->label);
     f = enna_browser_create_menu(v->label, buf->buf,
@@ -265,7 +265,7 @@ _remove_child_volume_cb(void *data, Enna_Volume *v)
     Enna_Browser *b = data;
     Eina_List *files, *l;
     Enna_File *file;
-    
+
     files = enna_browser_files_get(b);
     EINA_LIST_FOREACH(files, l, file)
     {
@@ -403,7 +403,7 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
                             enna_buffer_appendf(buf, "/%s/localfiles/%s/%s%s", pmod->name, root->name, relative_path->buf, filename) :
                             enna_buffer_appendf(buf, "/%s/localfiles/%s/%s", pmod->name, root->name, filename);
 
-                        f = enna_browser_create_directory(filename, buf->buf, filename, "icon/direcory");
+                        f = enna_browser_create_directory(filename, buf->buf, filename, "icon/directory");
                         enna_buffer_free(buf);
                         dirs_list = eina_list_append(dirs_list, f);
                     }
@@ -420,7 +420,10 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
 
                         mrl = enna_buffer_new();
                         /* TODO : remove file:// on top of root->uri */
-                        enna_buffer_appendf(mrl, "%s/%s%s", root->uri, relative_path->buf, filename);
+                        relative_path->buf ?
+                            enna_buffer_appendf(mrl, "%s/%s%s", root->uri, relative_path->buf, filename):
+                            enna_buffer_appendf(mrl, "%s/%s", root->uri, filename);
+
                         f = enna_browser_create_file(filename, buf->buf,
                                                      mrl->buf, filename,
                                                      "icon/music");

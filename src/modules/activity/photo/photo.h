@@ -35,7 +35,6 @@ typedef enum _PHOTO_STATE PHOTO_STATE;
 enum _PHOTO_STATE
 {
     SLIDESHOW_VIEW,
-    MENU_VIEW,
     BROWSER_VIEW,
     INFOS_VIEW
 };

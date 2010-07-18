@@ -48,6 +48,7 @@ typedef enum _Bookstore_State
 
 typedef struct _Enna_Module_Bookstore {
     Evas *e;
+    Evas_Object *o_layout;
     Evas_Object *edje;
     Evas_Object *menu;
     Evas_Object *service_bg;
@@ -84,8 +85,8 @@ bs_service_page_show (const char *file)
     enna_image_fill_inside_set(mod->page, 1);
     enna_image_file_set(mod->page, file, NULL);
 
-    edje_object_part_swallow(mod->edje,
-                             "service.book.page.swallow", mod->page);
+    elm_layout_content_set(mod->o_layout,
+                        "service.book.page.swallow", mod->page);
     edje_object_signal_emit(mod->edje, "page,show", "enna");
     evas_object_del(old);
     evas_object_show(mod->page);
@@ -126,7 +127,7 @@ bs_service_ctrl_btn_add (const char *icon, const char *part,
     evas_object_size_hint_align_set(bt, 0.5, 0.5);
     evas_object_show(bt);
 
-    edje_object_part_swallow(mod->edje, part, bt);
+    elm_layout_content_set(mod->o_layout, part, bt);
 }
 
 static void
@@ -137,17 +138,17 @@ bs_service_set_bg (const char *bg)
         Evas_Object *old;
 
         old = mod->service_bg;
-        mod->service_bg = edje_object_add(evas_object_evas_get(mod->edje));
-        edje_object_file_set(mod->service_bg, enna_config_theme_get(), bg);
-        edje_object_part_swallow(mod->edje,
-                                 "service.bg.swallow", mod->service_bg);
+        mod->service_bg = elm_layout_add(mod->o_layout);
+        elm_layout_file_set(mod->service_bg, enna_config_theme_get(), bg);
+        elm_layout_content_set(mod->o_layout,
+                            "service.bg.swallow", mod->service_bg);
         evas_object_show(mod->service_bg);
         evas_object_del(old);
     }
     else
     {
         evas_object_hide(mod->service_bg);
-        edje_object_part_swallow(mod->edje, "service.bg.swallow", NULL);
+        elm_layout_file_set(mod->o_layout, "service.bg.swallow", NULL);
     }
 }
 
@@ -158,7 +159,7 @@ bs_service_show (Bookstore_Service *s)
         return;
 
     if (s->show)
-        (s->show)(mod->edje);
+        (s->show)(mod->o_layout);
 
     bs_service_set_bg(s->bg);
     bs_service_ctrl_btn_add ("icon/mp_rewind",  "service.btn.prev.swallow",
@@ -180,7 +181,7 @@ bs_service_hide (Bookstore_Service *s)
         return;
 
     if (s && s->hide)
-        (s->hide)(mod->edje);
+        (s->hide)(mod->o_layout);
 
     mod->current = NULL;
     mod->state = BS_MENU_VIEW;
@@ -222,13 +223,13 @@ bs_menu_add (Bookstore_Service *s)
 static void
 bs_menu_create (void)
 {
-    mod->menu = enna_wall_add(enna->evas);
+    mod->menu = enna_wall_add(mod->o_layout);
 
     bs_menu_add(mod->gocomics);
     bs_menu_add(mod->onemanga);
 
     enna_wall_select_nth(mod->menu, 0, 0);
-    edje_object_part_swallow(mod->edje, "menu.swallow", mod->menu);
+    elm_layout_content_set(mod->o_layout, "menu.swallow", mod->menu);
     mod->state = BS_MENU_VIEW;
 }
 
@@ -254,12 +255,13 @@ static void
 _class_show(void)
 {
     /* create the activity content once for all */
-    if (!mod->edje)
+    if (!mod->o_layout)
     {
-        mod->edje = edje_object_add(enna->evas);
-        edje_object_file_set(mod->edje, enna_config_theme_get(),
+        mod->o_layout = elm_layout_add(enna->layout);
+        elm_layout_file_set(mod->o_layout, enna_config_theme_get(),
                              "activity/bookstore");
-        enna_content_append(ENNA_MODULE_NAME, mod->edje);
+        mod->edje = elm_layout_edje_get(mod->o_layout);
+        enna_content_append(ENNA_MODULE_NAME, mod->o_layout);
     }
 
     /* create the menu, once for all */
@@ -306,7 +308,7 @@ _class_event (enna_input event)
     {
         Eina_Bool b = ENNA_EVENT_BLOCK;
         if (mod->current && mod->current->event)
-            b = (mod->current->event)(mod->edje, event);
+            b = (mod->current->event)(mod->o_layout, event);
 
         if ((b == ENNA_EVENT_CONTINUE) && (event == ENNA_INPUT_BACK))
             bs_service_hide(mod->current);
@@ -361,7 +363,7 @@ module_shutdown(Enna_Module *em)
 {
     enna_activity_unregister(&class);
 
-    ENNA_OBJECT_DEL(mod->edje);
+    ENNA_OBJECT_DEL(mod->o_layout);
     ENNA_OBJECT_DEL(mod->page);
     ENNA_OBJECT_DEL(mod->service_bg);
     bs_menu_delete();
