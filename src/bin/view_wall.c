@@ -34,6 +34,7 @@
 #include "vfs.h"
 #include "input.h"
 #include "metadata.h"
+#include "kbdnav.h"
 
 #define SMART_NAME "enna_wall"
 
@@ -53,6 +54,14 @@ struct _Smart_Data
 {
     Evas_Object *o_grid;
     Eina_List *items;
+    Kbdnav_Pool *pool;
+};
+
+static Kbdnav_Pool_Class class = {
+    NULL,
+    NULL,
+    NULL,
+    NULL,
 };
 
 char *
@@ -162,6 +171,7 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
     EINA_LIST_FREE(sd->items, pi)
         free(pi);
 
+    kbdnav_pool_free(sd->pool);
     free(sd);
 }
 
@@ -243,6 +253,9 @@ enna_wall_add(Evas_Object * parent)
     ethumb_client_aspect_set(client, ETHUMB_THUMB_CROP);
     ethumb_client_crop_align_set(client, 0.5, 0.5);
 
+    sd->pool = kbdnav_pool_new(&class, sd);
+
+
     return sd->o_grid;
 }
 
@@ -275,7 +288,7 @@ enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     pi->item = elm_gengrid_item_append (obj, &gic, pi, _item_selected, pi);
     sd->items = eina_list_append(sd->items, pi);
-
+    kbdnav_pool_item_add(sd->pool, pi);
 }
 
 void
@@ -300,6 +313,7 @@ enna_wall_file_remove(Evas_Object *obj, Enna_File *file)
 Eina_Bool
 enna_wall_input_feed(Evas_Object *obj, enna_input ev)
 {
+
     return ENNA_EVENT_CONTINUE;
 }
 
