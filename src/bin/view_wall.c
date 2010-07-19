@@ -142,6 +142,7 @@ _item_remove(Evas_Object *obj, Picture_Item *item)
 
     if (!sd || !item) return;
 
+    elm_gengrid_item_del(item->item);
     sd->items = eina_list_remove(sd->items, item);
     ENNA_FREE(item);
 
