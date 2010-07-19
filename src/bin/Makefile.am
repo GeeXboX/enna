@@ -20,7 +20,7 @@ if BUILD_BACKEND_EMOTION
 AM_CFLAGS += @EMOTION_CFLAGS@
 endif
 
-bin_PROGRAMS = enna enna_thumb
+bin_PROGRAMS = enna
 
 enna_SOURCES = \
 enna.c\
@@ -48,8 +48,6 @@ parser_cdda.c\
 reflection.c\
 box.c\
 exit.c\
-thumb.c\
-ipc.c\
 weather_api.c\
 volume_notification.c\
 ini_parser.c\
@@ -249,25 +247,6 @@ endif
 # For Modules Static linking : END
 ##########################################################################
 
-enna_thumb_SOURCES = \
-enna_thumb_main.c\
-utils.c\
-buffer.c\
-image.c
-
-enna_thumb_LDADD = @ENNA_LIBS@ @EVIL_LIBS@
-
-if BUILD_LIBSVDRP
-enna_thumb_LDADD += @LIBSVDRP_LIBS@
-endif
-
-if BUILD_LIBXDG_BASEDIR
-enna_thumb_SOURCES += xdg.c
-enna_thumb_LDADD += @LIBXDG_BASEDIR_LIBS@
-else
-enna_thumb_SOURCES += xdg-dummy.c
-endif
-
 EXTRA_DIST= \
 enna.h\
 enna_config.h\
@@ -295,8 +274,6 @@ reflection.h\
 box.h\
 exit.h\
 gettext.h\
-thumb.h\
-ipc.h\
 weather_api.h\
 volume_notification.h\
 ini_parser.h\
