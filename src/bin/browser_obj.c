@@ -185,7 +185,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     case ENNA_BROWSER_VIEW_WALL:
         sd->view_funcs.view_add                 = _browser_view_wall_add;
         sd->view_funcs.view_append              = enna_wall_file_append;
-//        sd->view_funcs.view_remove              = enna_wall_file_remove;
+        sd->view_funcs.view_remove              = enna_wall_file_remove;
         sd->view_funcs.view_selected_data_get   = enna_wall_selected_data_get;
         sd->view_funcs.view_jump_label          = enna_wall_jump_label;
         sd->view_funcs.view_key_down            = enna_wall_input_feed;
