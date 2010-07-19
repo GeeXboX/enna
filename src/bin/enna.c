@@ -47,7 +47,6 @@
 #include "metadata.h"
 #include "mediaplayer.h"
 #include "weather_api.h"
-#include "ipc.h"
 #include "input.h"
 #include "url_utils.h"
 #include "xdg.h"
@@ -311,8 +310,6 @@ static int _enna_init(int argc, char **argv)
     enna->idle_timer = NULL;
     enna_idle_timer_renew();
 
-    enna_ipc_init();
-
     return 1;
 }
 
@@ -410,7 +407,6 @@ static void _enna_shutdown(void)
     evas_object_del(enna->o_content);
 
     enna_exit_shutdown();
-    enna_ipc_shutdown();
     elm_shutdown();
     enna_xdg_shutdown();
     enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !");
