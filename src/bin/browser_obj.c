@@ -55,7 +55,7 @@ struct _Smart_Data
     Enna_Browser *browser;
     Evas_Object *o_header;
     Evas_Object *o_search;
-    const char *root;
+    Enna_File *root;
     Focused_Part focus;
     Eina_List *visited;
     struct
@@ -361,22 +361,16 @@ _add_header(Smart_Data *sd, Enna_File *file)
 static void
 _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
 {
-    const char *uri;
-    Enna_File *f;
     if (!sd)
         return;
-
-    if (file)
-        uri = eina_stringshare_add(file->uri);
-    else
-        uri = eina_stringshare_add(sd->root);
 
     _add_header(sd, file);
 
     if (file && !back)
         sd->visited = eina_list_append(sd->visited, enna_browser_file_dup(file));
     enna_browser_del(sd->browser);
-    sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, uri);
+  
+    sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, file->uri);
 
     ENNA_OBJECT_DEL(sd->o_view);
 
@@ -384,10 +378,9 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
         ecore_timer_del(sd->hilight_timer);
     sd->hilight_timer = NULL;
     sd->o_view = NULL;
-    DBG("browse uri : %s\n", uri);
+    DBG("browse uri : %s\n", file->uri);
 
     enna_browser_browse(sd->browser);
-    //eina_stringshare_del(uri);
 }
 
 static void
@@ -397,17 +390,20 @@ _browse_back(Smart_Data *sd)
 
     file = (Enna_File*)eina_list_nth(sd->visited,
                                      eina_list_count(sd->visited) - 1);
-    if (file)
+    if (file->uri != sd->root->uri)
     {
         sd->visited = eina_list_remove(sd->visited, file);
+        _browse(sd, file, EINA_TRUE);
+        enna_browser_file_free(file);
     }
     else
     {
         evas_object_smart_callback_call (sd->o_layout, "root", NULL);
+        _browse(sd, file, EINA_TRUE);
     }
 
-    _browse(sd, file, EINA_TRUE);
-    enna_browser_file_free(file);
+
+
 }
 
 Eina_List *
@@ -550,9 +546,10 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     if (sd->root)
-        eina_stringshare_del(sd->root);
-    sd->root = eina_stringshare_add(uri);
-    _browse(sd, NULL, EINA_FALSE);
+        enna_browser_file_free(sd->root);
+
+    sd->root = enna_browser_create_menu("main_menu", uri, "Main Menu", "icon/home");
+    _browse(sd, sd->root, EINA_FALSE);
 }
 
 Evas_Object *
