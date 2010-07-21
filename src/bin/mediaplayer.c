@@ -1330,7 +1330,10 @@ enna_mediaplayer_playlist_save(const char *filename)
 void
 enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
 {
-    eina_list_free(enna_playlist->playlist);
+    Enna_File *f;
+
+    EINA_LIST_FREE(enna_playlist->playlist, f)
+        enna_browser_file_free(f);
     enna_playlist->playlist = NULL;
     enna_playlist->selected = 0;
 }
