@@ -56,6 +56,7 @@ struct _Smart_Data
     Evas_Object *o_header;
     Evas_Object *o_search;
     Enna_File *root;
+    const char *root_uri;
     Focused_Part focus;
     Eina_List *visited;
     struct
@@ -85,8 +86,11 @@ _view_delay_hilight_cb(void *data)
     Smart_Data *sd = data;
     Activated_Cb_Data *cb_data = sd->view_funcs.view_selected_data_get(sd->o_view);
     DBG(__FUNCTION__);
+
+    if (cb_data)
+        evas_object_smart_callback_call (sd->o_layout, "delay,hilight", cb_data->file);
+
     sd->hilight_timer = NULL;
-    evas_object_smart_callback_call (sd->o_layout, "delay,hilight", cb_data->file);
     return 0;
 }
 
@@ -364,12 +368,18 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
     if (!sd)
         return;
 
+    if (!file->is_directory && !file->is_menu)
+    {
+        evas_object_smart_callback_call (sd->o_layout, "selected", file);
+        return;
+    }
+
     _add_header(sd, file);
 
     if (file && !back)
         sd->visited = eina_list_append(sd->visited, enna_browser_file_dup(file));
     enna_browser_del(sd->browser);
-  
+
     sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, file->uri);
 
     ENNA_OBJECT_DEL(sd->o_view);
@@ -378,7 +388,7 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
         ecore_timer_del(sd->hilight_timer);
     sd->hilight_timer = NULL;
     sd->o_view = NULL;
-    DBG("browse uri : %s\n", file->uri);
+    DBG("browse uri : %s", file->uri);
 
     enna_browser_browse(sd->browser);
 }
@@ -386,22 +396,25 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
 static void
 _browse_back(Smart_Data *sd)
 {
-    Enna_File *file;
+    Enna_File *cur;
+    Enna_File *prev;
 
-    file = (Enna_File*)eina_list_nth(sd->visited,
+    cur = (Enna_File*)eina_list_nth(sd->visited,
                                      eina_list_count(sd->visited) - 1);
-    if (file->uri != sd->root->uri)
-    {
-        sd->visited = eina_list_remove(sd->visited, file);
-        _browse(sd, file, EINA_TRUE);
-        enna_browser_file_free(file);
-    }
-    else
-    {
+    if (!cur || cur->uri == sd->root_uri)
         evas_object_smart_callback_call (sd->o_layout, "root", NULL);
-        _browse(sd, file, EINA_TRUE);
+
+    sd->visited = eina_list_remove(sd->visited, cur);
+    prev = (Enna_File*)eina_list_nth(sd->visited,
+                                     eina_list_count(sd->visited) - 1);
+    if (!prev)
+    {
+         prev = enna_browser_create_menu("main_menu", sd->root_uri, "Main Menu", "icon/home");
     }
 
+    _browse(sd, prev, EINA_TRUE);
+
+    DBG("Browse Back %s| root is %s", prev->uri, sd->root->uri);
 
 
 }
@@ -428,16 +441,10 @@ _view_event(Smart_Data *sd, enna_input event)
         case ENNA_INPUT_OK:
         {
             Activated_Cb_Data *cb_data = sd->view_funcs.view_selected_data_get(sd->o_view);
-            //printf("file : %s\n", file->uri);
-            if (!cb_data->file)
-            {
-                printf(" file is null\n");
+
+            if (!cb_data)
                 break;
-            }
-            if (cb_data->file->is_directory || cb_data->file->is_menu)
-                _browse(sd, cb_data->file, EINA_FALSE);
-            else
-                evas_object_smart_callback_call (sd->o_layout, "selected", cb_data->file);
+            _browse(sd, cb_data->file, EINA_FALSE);
             break;
         }
         case ENNA_INPUT_UP:
@@ -547,7 +554,7 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     if (sd->root)
         enna_browser_file_free(sd->root);
-
+    sd->root_uri = eina_stringshare_add(uri);
     sd->root = enna_browser_create_menu("main_menu", uri, "Main Menu", "icon/home");
     _browse(sd, sd->root, EINA_FALSE);
 }
