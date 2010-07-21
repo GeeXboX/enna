@@ -18,34 +18,89 @@ defaultdir = $(pkgdatadir)/theme
 default_DATA = default.edj
 
 IMG_ICONS = \
+images/icon_album-16.png \
+images/icon_album-32.png \
+images/icon_album-64.png \
+images/icon_album-128.png \
+images/icon_album-256.png \
+images/icon_album-512.png \
+images/icon_config-16.png \
+images/icon_config-32.png \
+images/icon_config-64.png \
+images/icon_config-128.png \
+images/icon_config-256.png \
+images/icon_config-512.png \
+images/icon_games-16.png \
+images/icon_games-32.png \
+images/icon_games-64.png \
+images/icon_games-128.png \
+images/icon_games-256.png \
+images/icon_games-512.png \
+images/icon_infos-16.png \
+images/icon_infos-32.png \
+images/icon_infos-64.png \
+images/icon_infos-128.png \
+images/icon_infos-256.png \
+images/icon_infos-512.png \
+images/icon_library-16.png \
+images/icon_library-32.png \
+images/icon_library-64.png \
+images/icon_library-128.png \
+images/icon_library-256.png \
+images/icon_library-512.png \
+images/icon_mame-16.png \
+images/icon_mame-32.png \
+images/icon_mame-64.png \
+images/icon_mame-128.png \
+images/icon_mame-256.png \
+images/icon_mame-512.png \
+images/icon_music-16.png \
+images/icon_music-32.png \
+images/icon_music-64.png \
+images/icon_music-128.png \
+images/icon_music-256.png \
+images/icon_music-512.png \
+images/icon_photo-16.png \
+images/icon_photo-32.png \
+images/icon_photo-64.png \
+images/icon_photo-128.png \
+images/icon_photo-256.png \
+images/icon_photo-512.png \
+images/icon_shoutcast-16.png \
+images/icon_shoutcast-32.png \
+images/icon_shoutcast-64.png \
+images/icon_shoutcast-128.png \
+images/icon_shoutcast-256.png \
+images/icon_shoutcast-512.png \
+images/icon_video-16.png \
+images/icon_video-32.png \
+images/icon_video-64.png \
+images/icon_video-128.png \
+images/icon_video-256.png \
+images/icon_video-512.png \
+images/icon_weather-16.png \
+images/icon_weather-32.png \
+images/icon_weather-64.png \
+images/icon_weather-128.png \
+images/icon_weather-256.png \
+images/icon_weather-512.png \
 images/arrow_left.png \
 images/arrow_right.png \
-images/icon_album.png \
 images/icon_artist.png \
 images/icon_bookstore.png \
-images/icon_config.png \
 images/icon_directory.png \
-images/icon_enna.png \
 images/icon_freeboxtv.png \
-images/icon_games.png \
 images/icon_genre.png \
 images/icon_gocomics.png \
 images/icon_hd.png \
 images/icon_home_mini.png \
-images/icon_infos.png \
-images/icon_library.png \
 images/icon_module.png \
-images/icon_music.png \
 images/icon_music_mini.png \
 images/icon_nofile.png \
 images/icon_onemanga.png \
-images/icon_photo.png \
 images/icon_rss.png \
-images/icon_shoutcast.png \
 images/icon_song.png \
 images/icon_upnp.png \
-images/icon_video.png \
-images/icon_weather.png \
 images/icon_wiimote.png \
 images/unknown_cover.png
 
@@ -87,10 +142,7 @@ images/ctrl_shutdown.png \
 images/ctrl_warning.png
 
 IMG_FILETYPES = \
-images/folder_favorites.png \
-images/icon_music.png \
-images/icon_photo.png \
-images/icon_video.png
+images/folder_favorites.png
 
 IMG_MEDIACONTROLS = \
 images/go-first.png \
