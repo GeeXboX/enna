@@ -27,6 +27,7 @@
 #include "activity.h"
 #include "enna_config.h"
 #include "content.h"
+#include "mainmenu.h"
 
 typedef struct _Enna_Content_Element Enna_Content_Element;
 
