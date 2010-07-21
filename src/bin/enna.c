@@ -305,7 +305,6 @@ static int _enna_init(int argc, char **argv)
 
     /* Show mainmenu */
     //~ enna_mainmenu_select_nth(0);
-    enna_mainmenu_show();
 
     enna->idle_timer = NULL;
     enna_idle_timer_renew();
@@ -354,7 +353,9 @@ static int _create_gui(void)
     evas_object_show(enna->layout);
 
     // mainmenu
-    enna_mainmenu_init();
+    enna->o_menu = enna_mainmenu_add(enna->win);
+    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", enna->o_menu);
+    enna_mainmenu_show(enna->o_menu);
 
     // exit dialog
     enna_exit_init();
@@ -403,7 +404,7 @@ static void _enna_shutdown(void)
     enna_weather_shutdown();
 
     evas_object_del(enna->o_background);
-    enna_mainmenu_shutdown();
+    evas_object_del(enna->o_menu);
     evas_object_del(enna->o_content);
 
     enna_exit_shutdown();

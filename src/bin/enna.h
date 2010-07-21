@@ -138,6 +138,7 @@ struct _Enna
     Evas *evas; /**< Main enna evas.  */
     Evas_Object *win; /** Main elementary window. */
     Evas_Object *o_background;/**< Background object, it handles key down. */
+    Evas_Object *o_menu;
     Evas_Object *layout; /**< Main elementary layout widget. */
     Evas_Object *o_content; /** Edje Object to swallow content */
     Evas_Object *o_button_back; /** Back button */
