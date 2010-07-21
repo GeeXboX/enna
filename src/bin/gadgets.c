@@ -172,6 +172,9 @@ enna_gadgets_show()
     Enna_Gadget *gad;
     const char *s;
 
+    if (!sd)
+        return;
+
     ENNA_OBJECT_DEL(sd->o_scroll);
 
     sd->o_layout = elm_layout_add(enna->win);
