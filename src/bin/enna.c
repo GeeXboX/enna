@@ -171,7 +171,7 @@ _window_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 static void
 _button_back_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    if (enna_mainmenu_visible())
+    if (enna_mainmenu_visible(enna->o_menu))
         enna_input_event_emit(ENNA_INPUT_QUIT);
     else
         enna_input_event_emit(ENNA_INPUT_BACK);
