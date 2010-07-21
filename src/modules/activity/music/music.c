@@ -205,7 +205,6 @@ static void
 _browser_root_cb(void *data, Evas_Object *obj, void *event_info)
 {
     enna_content_hide();
-    enna_mainmenu_show();
 }
 static void
 _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)

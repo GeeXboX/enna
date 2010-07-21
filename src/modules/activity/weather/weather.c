@@ -282,7 +282,6 @@ _class_event (enna_input event)
         return;
 
     enna_content_hide();
-    enna_mainmenu_show();
 }
 
 static Enna_Class_Activity class = {

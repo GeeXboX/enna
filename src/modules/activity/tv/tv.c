@@ -141,7 +141,6 @@ static void _class_event(enna_input event)
         case ENNA_INPUT_HOME:
         case ENNA_INPUT_QUIT:
             enna_content_hide();
-            enna_mainmenu_show();
             break;
         default:
             enna_mediaplayer_send_input(event);

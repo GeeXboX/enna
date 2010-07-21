@@ -375,7 +375,6 @@ _class_event(enna_input event)
         if (event == ENNA_INPUT_BACK)
         {
             enna_content_hide();
-            enna_mainmenu_show();
         }
         else
             enna_wall_input_feed(mod->o_menu, event);
