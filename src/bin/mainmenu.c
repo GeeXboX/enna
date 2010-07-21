@@ -328,10 +328,7 @@ static Evas_Object *
 _background_get(void *data, Evas_Object *obj)
 {
     Evas_Object *o_bg = elm_icon_add(obj);
-    printf("%s\n", data);
     elm_icon_file_set(o_bg, enna_config_theme_get(), data);
-//    elm_photo_fill_inside_set(o_bg, EINA_TRUE);
-    
     return o_bg;
 }
 
