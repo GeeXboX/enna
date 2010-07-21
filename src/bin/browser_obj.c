@@ -83,10 +83,10 @@ static Eina_Bool
 _view_delay_hilight_cb(void *data)
 {
     Smart_Data *sd = data;
-    Enna_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
+    Activated_Cb_Data *cb_data = sd->view_funcs.view_selected_data_get(sd->o_view);
     DBG(__FUNCTION__);
     sd->hilight_timer = NULL;
-    evas_object_smart_callback_call (sd->o_layout, "delay,hilight", file);
+    evas_object_smart_callback_call (sd->o_layout, "delay,hilight", cb_data->file);
     return 0;
 }
 
@@ -431,13 +431,17 @@ _view_event(Smart_Data *sd, enna_input event)
             break;
         case ENNA_INPUT_OK:
         {
-            Enna_File *file = sd->view_funcs.view_selected_data_get(sd->o_view);
-            if (!file)
+            Activated_Cb_Data *cb_data = sd->view_funcs.view_selected_data_get(sd->o_view);
+            //printf("file : %s\n", file->uri);
+            if (!cb_data->file)
+            {
+                printf(" file is null\n");
                 break;
-            if (file->is_directory || file->is_menu)
-                _browse(sd, file, EINA_FALSE);
+            }
+            if (cb_data->file->is_directory || cb_data->file->is_menu)
+                _browse(sd, cb_data->file, EINA_FALSE);
             else
-                evas_object_smart_callback_call (sd->o_layout, "selected", file);
+                evas_object_smart_callback_call (sd->o_layout, "selected", cb_data->file);
             break;
         }
         case ENNA_INPUT_UP:
