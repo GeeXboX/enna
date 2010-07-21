@@ -126,9 +126,15 @@ enna_content_update(int show)
         if (e->selected)
         {
             if (show)
-               enna_activity_show(e->name);
+            {
+                enna_mainmenu_hide(enna->o_menu);
+                enna_activity_show(e->name);
+            }
             else
-               enna_activity_hide(e->name);
+            {
+                enna_activity_hide(e->name);
+                enna_mainmenu_show(enna->o_menu);
+            }
             return;
         }
     }
