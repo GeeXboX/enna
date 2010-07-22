@@ -125,9 +125,9 @@ static void
 _show_subpanel(Enna_Config_Panel *p)
 {
     Evas_Object *new = NULL;
-    
+
     if (!p) return;
-    
+
     // run the create_cb from the Config_Panel
     if (p->create_cb) new = (p->create_cb)(p->data);
     if (!new) return;
@@ -170,7 +170,7 @@ _activity_show()
     if (!mod->o_menu) _create_menu();
 
     // show the module
-    enna_content_select(ENNA_MODULE_NAME);    
+    enna_content_select(ENNA_MODULE_NAME);
     edje_object_signal_emit (mod->o_edje, "menu,show", "enna");
     edje_object_signal_emit (mod->o_edje, "module,show", "enna");
 }
