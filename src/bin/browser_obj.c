@@ -207,8 +207,6 @@ _activated_cb(void *data)
 	Activated_Cb_Data *cb_data = data;
 
 	_browse(cb_data->sd, cb_data->file, EINA_FALSE);
-        enna_browser_file_free(cb_data->file);
-	free(cb_data);
 }
 
 static void
