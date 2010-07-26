@@ -110,8 +110,6 @@ _grid_item_icon_get(const void *data, Evas_Object *obj, const char *part)
                     printf("file set : %s\n", pi->file->mrl + 7);
 
                     elm_object_style_set(ic, "enna");
-                    elm_thumb_align_set(ic, 0.5, 0.5);
-                    elm_thumb_keep_aspect_set(ic, EINA_TRUE);
 
                     elm_thumb_file_set(ic, pi->file->mrl + 7, NULL);
                     evas_object_show(ic);
