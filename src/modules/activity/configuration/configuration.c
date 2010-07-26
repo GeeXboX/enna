@@ -88,7 +88,7 @@ _create_menu (void)
     Eina_List *panels, *l;
     Enna_Config_Panel *p;
 
-    mod->o_menu = enna_wall_add (enna->evas);
+    mod->o_menu = enna_wall_add(mod->o_layout);
 
     // populate menu from config_panel
     panels = enna_config_panel_list_get();
