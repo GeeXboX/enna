@@ -104,7 +104,7 @@ _create_menu (void)
     }
 
     enna_wall_select_nth(mod->o_menu, 0, 0);
-    edje_object_part_swallow (mod->o_edje, "menu.swallow", mod->o_menu);
+    elm_layout_content_set(mod->o_edje, "menu.swallow", mod->o_menu);
     mod->state = MENU_VIEW;
 }
 
@@ -132,9 +132,9 @@ _show_subpanel(Enna_Config_Panel *p)
     if (p->create_cb) new = (p->create_cb)(p->data);
     if (!new) return;
 
-    edje_object_part_swallow (mod->o_edje, "content.swallow", new);
-    edje_object_signal_emit(mod->o_edje, "menu,hide", "enna");
-    edje_object_signal_emit(mod->o_edje, "content,show", "enna");
+    elm_layout_content_set(mod->o_edje, "content.swallow", new);
+    edje_object_signal_emit(elm_layout_edje_get(mod->o_edje), "menu,hide", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(mod->o_edje), "content,show", "enna");
 
     mod->state = CONTENT_VIEW;
     mod->selected = p;
@@ -160,8 +160,8 @@ _activity_show()
     // create the enna_content if not created yet
     if (!mod->o_edje)
     {
-        mod->o_edje = edje_object_add (enna->evas);
-        edje_object_file_set (mod->o_edje, enna_config_theme_get (),
+        mod->o_edje = elm_layout_add(enna->layout);
+        elm_layout_file_set(mod->o_edje, enna_config_theme_get (),
                               "activity/configuration");
         enna_content_append (ENNA_MODULE_NAME, mod->o_edje);
     }
@@ -171,15 +171,15 @@ _activity_show()
 
     // show the module
     enna_content_select(ENNA_MODULE_NAME);
-    edje_object_signal_emit (mod->o_edje, "menu,show", "enna");
-    edje_object_signal_emit (mod->o_edje, "module,show", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(mod->o_edje), "menu,show", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(mod->o_edje), "module,show", "enna");
 }
 
 static void
 _activity_hide()
 {
-    edje_object_signal_emit (mod->o_edje, "menu,hide", "enna");
-    edje_object_signal_emit (mod->o_edje, "module,hide", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(mod->o_edje), "menu,hide", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(mod->o_edje), "module,hide", "enna");
     _hide_subpanel(mod->selected);
 }
 
@@ -200,7 +200,7 @@ _activity_event (enna_input event)
     else if (event == ENNA_INPUT_BACK)
     {
         _hide_subpanel(mod->selected);
-        edje_object_signal_emit(mod->o_edje, "menu,show", "enna");
+        edje_object_signal_emit(elm_layout_edje_get(mod->o_edje), "menu,show", "enna");
     }
 }
 
