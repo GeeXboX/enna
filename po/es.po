@@ -1,81 +1,84 @@
 # Spanish translations for enna package.
 # Copyright (C) 2010 The Enna Project
 # This file is distributed under the same license as the enna package.
+#
 #  Alex Osorio <maosorionet@hotmail.com>, 2010.
-# 
+# Gabriel Fernández <gaval.uy@gmail.com>, 2010.
+# Gabriel Fernández <unit-iso@unit.org.uy>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-06-29 19:51+0200\n"
-"PO-Revision-Date: 2010-01-16 18:44-0500\n"
-"Last-Translator: Alexander Osorio <maosorionet@hotmail.com>\n"
-"Language-Team: Spanish\n"
+"POT-Creation-Date: 2010-08-07 18:36+0200\n"
+"PO-Revision-Date: 2010-08-05 13:18-0300\n"
+"Last-Translator: Gabriel Fernández <unit-iso@unit.org.uy>\n"
+"Language-Team: Español <kde-i18n-doc@kde.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-Country: COLOMBIA\n"
+"X-Generator: Lokalize 1.0\n"
 
 #: src/bin/browser.c:248
-#, fuzzy
 msgid "No media found!"
 msgstr "¡No se encuentran medios!"
 
-#: src/bin/enna.c:514
+#: src/bin/enna.c:511
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:512
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opciones ...]\n"
 
-#: src/bin/enna.c:516
+#: src/bin/enna.c:513
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Opciones Disponibles:\n"
 
-#: src/bin/enna.c:517
+#: src/bin/enna.c:514
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Especifica el archivo de configuración a usar.\n"
 
-#: src/bin/enna.c:518
+#: src/bin/enna.c:515
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Obliga a modo de Pantalla Completa.\n"
 
-#: src/bin/enna.c:519
+#: src/bin/enna.c:516
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Muestra esta pantalla de ayuda.\n"
 
-#: src/bin/enna.c:520
+#: src/bin/enna.c:517
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Especifica el nombre del tema a usar.\n"
 
-#: src/bin/enna.c:521
+#: src/bin/enna.c:518
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):   Especifica la geometría de la pantalla. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:522
+#: src/bin/enna.c:519
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
-msgstr ""
+msgstr "  -p, (--profile): Especifica el perfil a visualizar\n"
 
-#: src/bin/enna.c:523
+#: src/bin/enna.c:520
 #, c-format
 msgid "    Supported: "
-msgstr ""
+msgstr "    Soportado: "
 
-#: src/bin/enna.c:527
+#: src/bin/enna.c:524
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Muestra la versión de Enna.\n"
@@ -86,24 +89,20 @@ msgid "Are you sure you want to quit Enna?"
 msgstr "¿Está seguro de que desea salir de Enna?"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "Yes"
-msgstr "Años"
+msgstr "Sí"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "quit Enna"
-msgstr "Si, Salir de Enna"
+msgstr "Salir de Enna"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "No"
-msgstr "Nada<br>"
+msgstr "No"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "continue using Enna"
-msgstr "No, Continuar Utilizando Enna"
+msgstr "Continuar Utilizando Enna"
 
 #: src/bin/module.c:269
 msgid "Modules"
@@ -120,55 +119,55 @@ msgstr "Pista #%02d (%02d:%02d)"
 
 #: src/bin/weather_api.c:405 src/bin/weather_api.c:438
 msgid "City"
-msgstr ""
+msgstr "Ciudad"
 
 #: src/bin/weather_api.c:406
 msgid "Choose your City"
-msgstr ""
+msgstr "Elija su Ciudad"
 
 #: src/bin/weather_api.c:410
 msgid "Enter your City here"
-msgstr ""
+msgstr "Ingrese su Ciudad aquí"
 
 #: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: src/bin/weather_api.c:439
 msgid "Choose your city"
-msgstr ""
+msgstr "Elija su ciudad"
 
 #: src/bin/weather_api.c:451
 msgid "Add new city"
-msgstr ""
+msgstr "Añadir una nueva ciudad"
 
 #: src/bin/weather_api.c:452
 msgid "Add more cities to the list"
-msgstr ""
+msgstr "Añadir más ciudades a la lista"
 
 #: src/bin/weather_api.c:457
 msgid "Add"
-msgstr ""
+msgstr "Añadir"
 
 #: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr ""
+msgstr "Seleccione unidad"
 
 #: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr ""
+msgstr "Seleccione la unidad para desplegar la temperatura"
 
 #: src/bin/weather_api.c:467
 msgid "°C"
-msgstr ""
+msgstr "°C"
 
 #: src/bin/weather_api.c:467
 msgid "°F"
-msgstr ""
+msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Seleccione hemisferio"
 
 #: src/bin/weather_api.c:472
 #, fuzzy
@@ -177,48 +176,45 @@ msgstr "Muestra el clima en su ubicación actual"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Noreste"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Sureste"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:290
 msgid "Weather"
 msgstr "Clima"
 
-#: src/modules/activity/bookstore/bookstore.c:323
-#: src/modules/activity/bookstore/bookstore.c:375
+#: src/modules/activity/bookstore/bookstore.c:324
+#: src/modules/activity/bookstore/bookstore.c:376
 #, fuzzy
 msgid "Bookstore"
 msgstr "Librería"
 
-#: src/modules/activity/bookstore/bookstore.c:377
+#: src/modules/activity/bookstore/bookstore.c:378
 msgid "Read your books"
 msgstr "Lea sus libros"
 
-#: src/modules/activity/configuration/configuration.c:211
-#: src/modules/activity/configuration/configuration.c:270
+#: src/modules/activity/configuration/configuration.c:210
+#: src/modules/activity/configuration/configuration.c:269
 msgid "Configuration"
 msgstr "Configuración"
 
-#: src/modules/activity/configuration/configuration.c:246
+#: src/modules/activity/configuration/configuration.c:245
 #: src/modules/activity/configuration/configuration_sysinfo.c:517
-#, fuzzy
 msgid "System information"
 msgstr "Información del Sistema"
 
-#: src/modules/activity/configuration/configuration.c:249
+#: src/modules/activity/configuration/configuration.c:248
 msgid "Credits"
 msgstr "Créditos"
 
-#: src/modules/activity/configuration/configuration.c:272
-#, fuzzy
+#: src/modules/activity/configuration/configuration.c:271
 msgid "This module creates the Enna configuration panel"
-msgstr "Este modulo crea el panel del configuración de Enna (NO DESCARGAR)"
+msgstr "Este modulo crea el panel del configuración de Enna"
 
 #: src/modules/activity/configuration/configuration_credits.c:45
-#, fuzzy
 msgid "Enna is a GeeXboX-team MediaCenter"
 msgstr "Enna es el MediaCenter del equipo GeeXboX,"
 
@@ -236,60 +232,56 @@ msgid "and"
 msgstr "y"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:99
-#, fuzzy
 msgid "Enna information"
-msgstr "Información del Sistema"
+msgstr "Información de Enna"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:101
 msgid "Enna:"
-msgstr ""
+msgstr "Enna:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:115
 msgid "Video renderer:"
-msgstr ""
+msgstr "Video render:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:176
 msgid "Distribution:"
-msgstr ""
+msgstr "Distribución:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:198
 msgid "OS:"
-msgstr ""
+msgstr "SO:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:206
 msgid "for"
-msgstr ""
+msgstr "para"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:223
-#, fuzzy
 msgid "Available CPUs:"
-msgstr " Opciones Disponibles:\n"
+msgstr "CPU Disponible:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:254
-#, fuzzy
 msgid ", running at"
-msgstr ", corriendo a %d MHz"
+msgstr ", corriendo a"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:283
 msgid "CPU Load:"
-msgstr ""
+msgstr "Carga de la CPU:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:327
 msgid "Memory:"
-msgstr ""
+msgstr "Memoria:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:329
 msgid "used on"
-msgstr ""
+msgstr "usada en"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:331
 msgid "total"
-msgstr ""
+msgstr "total"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:369
-#, fuzzy
 msgid "Screen resolution:"
-msgstr "<hilight>Resoluciones de Pantalla: </hilight>"
+msgstr "Resoluciones de Pantalla:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:372
 #, fuzzy
@@ -298,16 +290,15 @@ msgstr "Datos"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:374
 msgid "min:"
-msgstr ""
+msgstr "min:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:376
 msgid "max:"
-msgstr ""
+msgstr "máx:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:389
-#, fuzzy
 msgid "VDR:"
-msgstr "DVD-R"
+msgstr "VDR:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:392
 #, fuzzy
@@ -316,7 +307,7 @@ msgstr "conectado a VDR %s en %s (%s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:395
 msgid "on"
-msgstr ""
+msgstr "en"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:400
 #, fuzzy
@@ -330,7 +321,7 @@ msgstr "<hilight>Interfaces de red disponibles:</hilight><br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:442
 msgid "IP:"
-msgstr ""
+msgstr "IP:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:449
 #, fuzzy
@@ -339,7 +330,7 @@ msgstr "Mascara de red: %s)<br>"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:474
 msgid "Default gateway:"
-msgstr ""
+msgstr "Default gateway:"
 
 #: src/modules/activity/configuration/configuration_sysinfo.c:502
 #, fuzzy
@@ -347,46 +338,46 @@ msgid "None"
 msgstr "Nada<br>"
 
 #: src/modules/activity/games/games.c:216
-#, fuzzy, c-format
+#, c-format
 msgid "no games found"
-msgstr "¡No se encuentran medios!"
+msgstr "¡No se han encontrado juegos!"
 
 #: src/modules/activity/games/games.c:218
-#, fuzzy, c-format
+#, c-format
 msgid "one game"
-msgstr "Sistema de Juegos"
+msgstr "Juegos"
 
 #: src/modules/activity/games/games.c:220
-#, fuzzy, c-format
+#, c-format
 msgid "%d games"
-msgstr "%d Canciones"
+msgstr "%d juegos"
 
-#: src/modules/activity/games/games.c:405
-#: src/modules/activity/games/games.c:469
+#: src/modules/activity/games/games.c:404
+#: src/modules/activity/games/games.c:468
 msgid "Games"
 msgstr "Juegos"
 
-#: src/modules/activity/games/games.c:471
-#, fuzzy
+#: src/modules/activity/games/games.c:470
 msgid "Play all your games directly from Enna"
 msgstr "Con este modulo puedes utilizar tus juegos directamente desde Enna"
 
 #: src/modules/activity/games/games_mame.c:81
 msgid "<c>M.A.M.E.</c><br>Game running..."
-msgstr ""
+msgstr "<c>M.A.M.E.</c><br>Juego corriendo..."
 
 #: src/modules/activity/games/games_mame.c:318
 msgid ""
 "<c>Mame Error</c><br><b>No roms found in path</b><br>Roms must be located "
 "at: ~/.mame/roms<br>"
 msgstr ""
+"<c>Error en Mame</c><br><b>No se encontraron <i>roms</i> en la ruta</"
+"b><br>Los <i>roms</i> deben estar ubicados en: ~/.mame/roms<br>"
 
 #: src/modules/activity/games/games_sys.c:161
 msgid "<c>System Games</c><br>Game running..."
-msgstr ""
+msgstr "<c>Sistema de Juegos</c><br>Juego corriendo..."
 
 #: src/modules/activity/games/games_sys.c:257
-#, fuzzy
 msgid "System Games"
 msgstr "Sistema de Juegos"
 
@@ -395,12 +386,12 @@ msgstr "Sistema de Juegos"
 msgid "%d Songs"
 msgstr "%d Canciones"
 
-#: src/modules/activity/music/music.c:449
-#: src/modules/activity/music/music.c:512
+#: src/modules/activity/music/music.c:448
+#: src/modules/activity/music/music.c:511
 msgid "Music"
 msgstr "Música"
 
-#: src/modules/activity/music/music.c:514
+#: src/modules/activity/music/music.c:513
 #, fuzzy
 msgid "Listen to your music"
 msgstr "Escuchar Podcasts"
@@ -409,15 +400,14 @@ msgstr "Escuchar Podcasts"
 msgid "No lyrics found ..."
 msgstr "No se encontraron letras..."
 
-#: src/modules/activity/photo/photo.c:300
-#: src/modules/activity/photo/photo.c:360
+#: src/modules/activity/photo/photo.c:309
+#: src/modules/activity/photo/photo.c:368
 msgid "Photo"
 msgstr "Fotos"
 
-#: src/modules/activity/photo/photo.c:362
-#, fuzzy
+#: src/modules/activity/photo/photo.c:370
 msgid "Browse your photos and create slideshows"
-msgstr "Vea todas sus fotos en un muro o como presentación"
+msgstr "Vea todas sus fotos o cree una presentación"
 
 #: src/modules/activity/tv/tv.c:104
 #, c-format
@@ -435,14 +425,13 @@ msgstr "Grabando '%s'"
 msgid "Recording in progress"
 msgstr "Grabación en proceso"
 
-#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:155 src/modules/activity/tv/tv.c:368
 msgid "Television"
 msgstr "Televisión"
 
-#: src/modules/activity/tv/tv.c:371
-#, fuzzy
+#: src/modules/activity/tv/tv.c:370
 msgid "View TV channels"
-msgstr "Ver canales de tv"
+msgstr "Ver canales de TV"
 
 #: src/modules/activity/video/video_infos.c:97
 msgid "No such information ..."
@@ -450,24 +439,23 @@ msgstr "No se encuentra información"
 
 #: src/modules/activity/video/video_infos.c:132
 msgid "Director:"
-msgstr ""
+msgstr "Director:"
 
 #: src/modules/activity/video/video_infos.c:139
 msgid "Cast:"
-msgstr ""
+msgstr "Elenco:"
 
 #: src/modules/activity/video/video_infos.c:161
-#, fuzzy
 msgid "Video:"
-msgstr "Vídeo"
+msgstr "Vídeo:"
 
 #: src/modules/activity/video/video_infos.c:184
 msgid "Audio:"
-msgstr ""
+msgstr "Audio:"
 
 #: src/modules/activity/video/video_infos.c:199
 msgid "Size:"
-msgstr ""
+msgstr "Tamaño:"
 
 #: src/modules/activity/video/video_infos.c:207
 msgid "No further information can be retrieved"
@@ -478,21 +466,21 @@ msgstr "No se encuentra mas información"
 msgid "%d Movies"
 msgstr "%d Películas"
 
-#: src/modules/activity/video/video.c:924
-#: src/modules/activity/video/video.c:1012
+#: src/modules/activity/video/video.c:923
+#: src/modules/activity/video/video.c:1011
 msgid "Video"
 msgstr "Vídeo"
 
-#: src/modules/activity/video/video.c:1014
+#: src/modules/activity/video/video.c:1013
 msgid "Play your videos"
-msgstr ""
+msgstr "Reproduzca sus vídeos"
 
-#: src/modules/activity/weather/weather.c:348
+#: src/modules/activity/weather/weather.c:347
 #, fuzzy
 msgid "Weather forecasts"
 msgstr "Pronóstico del clima"
 
-#: src/modules/activity/weather/weather.c:350
+#: src/modules/activity/weather/weather.c:349
 msgid "Show the weather at your location"
 msgstr "Muestra el clima en su ubicación actual"
 
@@ -532,16 +520,16 @@ msgstr "Modulo DVD"
 msgid "Watch movies from DVD"
 msgstr "Ver películas de DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:465
+#: src/modules/browser/localfiles/localfiles.c:468
 #, fuzzy
 msgid "Browse local devices"
 msgstr "Explorar Dispositivos Locales"
 
-#: src/modules/browser/localfiles/localfiles.c:663
+#: src/modules/browser/localfiles/localfiles.c:666
 msgid "Browse local files"
 msgstr "Explorar archivos locales"
 
-#: src/modules/browser/localfiles/localfiles.c:665
+#: src/modules/browser/localfiles/localfiles.c:668
 msgid "Browse files in your local file systems"
 msgstr "Explorar archivos en el sistema de archivos local"
 
@@ -610,16 +598,16 @@ msgstr ""
 "Este modulo le permite a Enna explorar contenidos en Servidores de Medios "
 "UPnP/DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:664
+#: src/modules/browser/valhalla/valhalla.c:669
 #, fuzzy
 msgid "Media library"
 msgstr "Biblioteca de Medios"
 
-#: src/modules/browser/valhalla/valhalla.c:705
+#: src/modules/browser/valhalla/valhalla.c:710
 msgid "Valhalla module"
 msgstr "Modulo Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:707
+#: src/modules/browser/valhalla/valhalla.c:712
 msgid "Build a browseable catalog of your media files"
 msgstr "Hacer un catálogo navegable de tus archivos multimedia"
 
@@ -735,11 +723,14 @@ msgstr "Volúmenes de udev"
 
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
-msgstr "Este módulo ofrece soporte para unidades extraibles"
+msgstr "Este módulo ofrece soporte para unidades extraíbles"
 
 #, fuzzy
 #~ msgid "Main menu"
 #~ msgstr "Menú Principal"
+
+#~ msgid "Authors"
+#~ msgstr "Autores"
 
 #~ msgid "Artists"
 #~ msgstr "Artistas"
