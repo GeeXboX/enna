@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-06-29 19:51+0200\n"
+"POT-Creation-Date: 2010-08-07 18:36+0200\n"
 "PO-Revision-Date: 2010-01-22 13:37+0100\n"
 "Last-Translator: Guillaume LECERF <fox@geexbox.org>\n"
 "Language-Team: French\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,60 +21,60 @@ msgstr ""
 msgid "No media found!"
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/bin/enna.c:514
+#: src/bin/enna.c:511
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:512
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Usage : %s [options ...]\n"
 
-#: src/bin/enna.c:516
+#: src/bin/enna.c:513
 #, c-format
 msgid " Available options:\n"
 msgstr " Options disponibles :\n"
 
-#: src/bin/enna.c:517
+#: src/bin/enna.c:514
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 "  -c, (--config) :   Spécifie le fichier de configuration à utiliser.\n"
 
-#: src/bin/enna.c:518
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs) :       Force le mode plein écran.\n"
 
-#: src/bin/enna.c:519
+#: src/bin/enna.c:516
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help) :     Affiche cette aide.\n"
 
-#: src/bin/enna.c:520
+#: src/bin/enna.c:517
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme) :    Spécifie le nom du thème à utiliser.\n"
 
-#: src/bin/enna.c:521
+#: src/bin/enna.c:518
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry) : Spécifie la résolution de la fenêtre. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:522
+#: src/bin/enna.c:519
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr " -p, (--profile) :  Spécifie le type d'affichage\n"
 
-#: src/bin/enna.c:523
+#: src/bin/enna.c:520
 #, c-format
 msgid "    Supported: "
 msgstr "Valeurs supportées :"
 
-#: src/bin/enna.c:527
+#: src/bin/enna.c:524
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version) :  Affiche le numéro de version d'Enna.\n"
@@ -83,24 +84,20 @@ msgid "Are you sure you want to quit Enna?"
 msgstr "Souhaitez-vous réellement quitter Enna ?"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "Yes"
-msgstr "Années"
+msgstr "Oui"
 
 #: src/bin/exit.c:120
-#, fuzzy
 msgid "quit Enna"
-msgstr "Oui, quitter Enna"
+msgstr "quitter Enna"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "No"
-msgstr "Aucun"
+msgstr "Non"
 
 #: src/bin/exit.c:121
-#, fuzzy
 msgid "continue using Enna"
-msgstr "Non, continuer d'utiliser Enna"
+msgstr "continuer d'utiliser Enna"
 
 #: src/bin/module.c:269
 msgid "Modules"
@@ -120,13 +117,12 @@ msgid "City"
 msgstr "Ville"
 
 #: src/bin/weather_api.c:406
-#, fuzzy
 msgid "Choose your City"
-msgstr "Choisissez votre ville"
+msgstr "Choisir votre ville"
 
 #: src/bin/weather_api.c:410
 msgid "Enter your City here"
-msgstr ""
+msgstr "Saisissez le nom de votre ville"
 
 #: src/bin/weather_api.c:413 src/bin/weather_api.c:446
 msgid "Remove"
@@ -150,65 +146,64 @@ msgstr "Ajouter"
 
 #: src/bin/weather_api.c:461
 msgid "Select unit"
-msgstr ""
+msgstr "Sélection des unités"
 
 #: src/bin/weather_api.c:462
 msgid "Select the unit to display temperature"
-msgstr ""
+msgstr "Sélectionnez l'unité de température à afficher"
 
 #: src/bin/weather_api.c:467
 msgid "°C"
-msgstr ""
+msgstr "°C"
 
 #: src/bin/weather_api.c:467
 msgid "°F"
-msgstr ""
+msgstr "°F"
 
 #: src/bin/weather_api.c:471
 msgid "Select hemisphere"
-msgstr ""
+msgstr "Sélection de l'hémisphère"
 
 #: src/bin/weather_api.c:472
-#, fuzzy
 msgid "Select the hemisphere you are located in"
-msgstr "Affichez la météo depuis votre emplacement"
+msgstr "Sélectionnez l'hémisphère dans lequel vous vous situez"
 
 #: src/bin/weather_api.c:477
 msgid "Northern"
-msgstr ""
+msgstr "Hémisphère Nord"
 
 #: src/bin/weather_api.c:477
 msgid "Southern"
-msgstr ""
+msgstr "Hémisphère Sud"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:290
 msgid "Weather"
 msgstr "Météo"
 
-#: src/modules/activity/bookstore/bookstore.c:323
-#: src/modules/activity/bookstore/bookstore.c:375
+#: src/modules/activity/bookstore/bookstore.c:324
+#: src/modules/activity/bookstore/bookstore.c:376
 msgid "Bookstore"
 msgstr "Bibliothèque"
 
-#: src/modules/activity/bookstore/bookstore.c:377
+#: src/modules/activity/bookstore/bookstore.c:378
 msgid "Read your books"
 msgstr "Lisez vos livres"
 
-#: src/modules/activity/configuration/configuration.c:211
-#: src/modules/activity/configuration/configuration.c:270
+#: src/modules/activity/configuration/configuration.c:210
+#: src/modules/activity/configuration/configuration.c:269
 msgid "Configuration"
 msgstr "Configuration"
 
-#: src/modules/activity/configuration/configuration.c:246
+#: src/modules/activity/configuration/configuration.c:245
 #: src/modules/activity/configuration/configuration_sysinfo.c:517
 msgid "System information"
 msgstr "Informations Systèmes"
 
-#: src/modules/activity/configuration/configuration.c:249
+#: src/modules/activity/configuration/configuration.c:248
 msgid "Credits"
 msgstr "Crédits"
 
-#: src/modules/activity/configuration/configuration.c:272
+#: src/modules/activity/configuration/configuration.c:271
 msgid "This module creates the Enna configuration panel"
 msgstr "Ce module crée le panneau de contrôle d'Enna"
 
@@ -343,12 +338,12 @@ msgstr "un jeu"
 msgid "%d games"
 msgstr "%d jeux"
 
-#: src/modules/activity/games/games.c:405
-#: src/modules/activity/games/games.c:469
+#: src/modules/activity/games/games.c:404
+#: src/modules/activity/games/games.c:468
 msgid "Games"
 msgstr "Jeux"
 
-#: src/modules/activity/games/games.c:471
+#: src/modules/activity/games/games.c:470
 msgid "Play all your games directly from Enna"
 msgstr ""
 "Au travers de ce module, vous pouvez démarrer vos jeux directement depuis "
@@ -379,12 +374,12 @@ msgstr "Jeux Système"
 msgid "%d Songs"
 msgstr "%d Chansons"
 
-#: src/modules/activity/music/music.c:449
-#: src/modules/activity/music/music.c:512
+#: src/modules/activity/music/music.c:448
+#: src/modules/activity/music/music.c:511
 msgid "Music"
 msgstr "Musique"
 
-#: src/modules/activity/music/music.c:514
+#: src/modules/activity/music/music.c:513
 msgid "Listen to your music"
 msgstr "Ecoutez votre musique"
 
@@ -392,12 +387,12 @@ msgstr "Ecoutez votre musique"
 msgid "No lyrics found ..."
 msgstr "Aucun contenu multimédia ne semble disponible !"
 
-#: src/modules/activity/photo/photo.c:300
-#: src/modules/activity/photo/photo.c:360
+#: src/modules/activity/photo/photo.c:309
+#: src/modules/activity/photo/photo.c:368
 msgid "Photo"
 msgstr "Photo"
 
-#: src/modules/activity/photo/photo.c:362
+#: src/modules/activity/photo/photo.c:370
 msgid "Browse your photos and create slideshows"
 msgstr "Visualisez vos photos au travers d'un mur d'images ou un diaporama"
 
@@ -417,11 +412,11 @@ msgstr "Enregistrement de '%s'"
 msgid "Recording in progress"
 msgstr "Enregistrement en cours"
 
-#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:155 src/modules/activity/tv/tv.c:368
 msgid "Television"
 msgstr "Télévision"
 
-#: src/modules/activity/tv/tv.c:371
+#: src/modules/activity/tv/tv.c:370
 msgid "View TV channels"
 msgstr "Regardez les chaînes TV"
 
@@ -458,20 +453,20 @@ msgstr "Aucune information EXIF trouvée."
 msgid "%d Movies"
 msgstr "%d Films"
 
-#: src/modules/activity/video/video.c:924
-#: src/modules/activity/video/video.c:1012
+#: src/modules/activity/video/video.c:923
+#: src/modules/activity/video/video.c:1011
 msgid "Video"
 msgstr "Vidéo"
 
-#: src/modules/activity/video/video.c:1014
+#: src/modules/activity/video/video.c:1013
 msgid "Play your videos"
 msgstr "Lisez vos vidéos"
 
-#: src/modules/activity/weather/weather.c:348
+#: src/modules/activity/weather/weather.c:347
 msgid "Weather forecasts"
 msgstr "Météo"
 
-#: src/modules/activity/weather/weather.c:350
+#: src/modules/activity/weather/weather.c:349
 msgid "Show the weather at your location"
 msgstr "Affichez la météo depuis votre emplacement"
 
@@ -507,15 +502,15 @@ msgstr "Module DVD"
 msgid "Watch movies from DVD"
 msgstr "Regardez vos DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:465
+#: src/modules/browser/localfiles/localfiles.c:468
 msgid "Browse local devices"
 msgstr "Parcourez les disques locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:663
+#: src/modules/browser/localfiles/localfiles.c:666
 msgid "Browse local files"
 msgstr "Parcourez les fichiers locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:665
+#: src/modules/browser/localfiles/localfiles.c:668
 msgid "Browse files in your local file systems"
 msgstr "Parcourez les fichiers de votre disque dur"
 
@@ -575,15 +570,15 @@ msgstr ""
 "Ce module permet à Enna de parcourir le contenu des serveurs multimédias "
 "compatibles UPNP / DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:664
+#: src/modules/browser/valhalla/valhalla.c:669
 msgid "Media library"
 msgstr "Bibliothèque Multimédia"
 
-#: src/modules/browser/valhalla/valhalla.c:705
+#: src/modules/browser/valhalla/valhalla.c:710
 msgid "Valhalla module"
 msgstr "Module Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:707
+#: src/modules/browser/valhalla/valhalla.c:712
 msgid "Build a browseable catalog of your media files"
 msgstr "Construisez un catalogue navigable de vos fichiers multimédia"
 
