@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-06-29 19:51+0200\n"
+"POT-Creation-Date: 2010-08-07 18:36+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: George Koutsikos <ragecryx@yahoo.gr>\n"
 "Language-Team: Greece\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,57 +23,57 @@ msgstr ""
 msgid "No media found!"
 msgstr "Δεν βρέθηκαν αρχεία πολυμέσων!"
 
-#: src/bin/enna.c:514
+#: src/bin/enna.c:511
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:512
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Χρήση: %s [επιλογές ...]\n"
 
-#: src/bin/enna.c:516
+#: src/bin/enna.c:513
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr "Διαθέσιμες επιλογές:\n"
 
-#: src/bin/enna.c:517
+#: src/bin/enna.c:514
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:518
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr ""
 
-#: src/bin/enna.c:519
+#: src/bin/enna.c:516
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr ""
 
-#: src/bin/enna.c:520
+#: src/bin/enna.c:517
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:521
+#: src/bin/enna.c:518
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 
-#: src/bin/enna.c:522
+#: src/bin/enna.c:519
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr ""
 
-#: src/bin/enna.c:523
+#: src/bin/enna.c:520
 #, c-format
 msgid "    Supported: "
 msgstr ""
 
-#: src/bin/enna.c:527
+#: src/bin/enna.c:524
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr ""
@@ -180,36 +181,36 @@ msgstr ""
 msgid "Southern"
 msgstr ""
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:290
 msgid "Weather"
 msgstr "Καιρός"
 
-#: src/modules/activity/bookstore/bookstore.c:323
-#: src/modules/activity/bookstore/bookstore.c:375
+#: src/modules/activity/bookstore/bookstore.c:324
+#: src/modules/activity/bookstore/bookstore.c:376
 #, fuzzy
 msgid "Bookstore"
 msgstr "Βιβλιοπωλείο"
 
-#: src/modules/activity/bookstore/bookstore.c:377
+#: src/modules/activity/bookstore/bookstore.c:378
 msgid "Read your books"
 msgstr "Διαβάστε τα βιβλία σας"
 
-#: src/modules/activity/configuration/configuration.c:211
-#: src/modules/activity/configuration/configuration.c:270
+#: src/modules/activity/configuration/configuration.c:210
+#: src/modules/activity/configuration/configuration.c:269
 msgid "Configuration"
 msgstr "Ρύθμιση"
 
-#: src/modules/activity/configuration/configuration.c:246
+#: src/modules/activity/configuration/configuration.c:245
 #: src/modules/activity/configuration/configuration_sysinfo.c:517
 #, fuzzy
 msgid "System information"
 msgstr "Πληροφορίες συστήματος"
 
-#: src/modules/activity/configuration/configuration.c:249
+#: src/modules/activity/configuration/configuration.c:248
 msgid "Credits"
 msgstr "Μνεία"
 
-#: src/modules/activity/configuration/configuration.c:272
+#: src/modules/activity/configuration/configuration.c:271
 #, fuzzy
 msgid "This module creates the Enna configuration panel"
 msgstr ""
@@ -359,12 +360,12 @@ msgstr "Παιχνίδια συστήματος"
 msgid "%d games"
 msgstr "%d Τραγούδια"
 
-#: src/modules/activity/games/games.c:405
-#: src/modules/activity/games/games.c:469
+#: src/modules/activity/games/games.c:404
+#: src/modules/activity/games/games.c:468
 msgid "Games"
 msgstr "Παιχνίδια"
 
-#: src/modules/activity/games/games.c:471
+#: src/modules/activity/games/games.c:470
 #, fuzzy
 msgid "Play all your games directly from Enna"
 msgstr "Με αυτό το άρθρωμα μπορείτε να παίξετε τα παιχνίδια σας μέσω του Enna"
@@ -393,12 +394,12 @@ msgstr "Παιχνίδια συστήματος"
 msgid "%d Songs"
 msgstr "%d Τραγούδια"
 
-#: src/modules/activity/music/music.c:449
-#: src/modules/activity/music/music.c:512
+#: src/modules/activity/music/music.c:448
+#: src/modules/activity/music/music.c:511
 msgid "Music"
 msgstr "Μουσική"
 
-#: src/modules/activity/music/music.c:514
+#: src/modules/activity/music/music.c:513
 #, fuzzy
 msgid "Listen to your music"
 msgstr "Ακούστε podcasts"
@@ -407,12 +408,12 @@ msgstr "Ακούστε podcasts"
 msgid "No lyrics found ..."
 msgstr "Δεν βρέθηκαν στίχοι..."
 
-#: src/modules/activity/photo/photo.c:300
-#: src/modules/activity/photo/photo.c:360
+#: src/modules/activity/photo/photo.c:309
+#: src/modules/activity/photo/photo.c:368
 msgid "Photo"
 msgstr "Φωτογραφίες"
 
-#: src/modules/activity/photo/photo.c:362
+#: src/modules/activity/photo/photo.c:370
 #, fuzzy
 msgid "Browse your photos and create slideshows"
 msgstr "Εμφάνισε όλες τις φωτογραφίες σου σε ένα τοίχο ή ως παρουσίαση"
@@ -433,11 +434,11 @@ msgstr "Εγγράφεται '%s'"
 msgid "Recording in progress"
 msgstr "Εγγραφή σε εξέλιξη"
 
-#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:155 src/modules/activity/tv/tv.c:368
 msgid "Television"
 msgstr "Τηλεόραση"
 
-#: src/modules/activity/tv/tv.c:371
+#: src/modules/activity/tv/tv.c:370
 #, fuzzy
 msgid "View TV channels"
 msgstr "Προβολή καναλιών τηλεόρασης"
@@ -476,21 +477,21 @@ msgstr "Καμία περαιτέρω πληροφορία δεν μπορεί �
 msgid "%d Movies"
 msgstr "%d Ταινίες"
 
-#: src/modules/activity/video/video.c:924
-#: src/modules/activity/video/video.c:1012
+#: src/modules/activity/video/video.c:923
+#: src/modules/activity/video/video.c:1011
 msgid "Video"
 msgstr "Βίντεο"
 
-#: src/modules/activity/video/video.c:1014
+#: src/modules/activity/video/video.c:1013
 msgid "Play your videos"
 msgstr ""
 
-#: src/modules/activity/weather/weather.c:348
+#: src/modules/activity/weather/weather.c:347
 #, fuzzy
 msgid "Weather forecasts"
 msgstr "Προβλέψεις καιρού"
 
-#: src/modules/activity/weather/weather.c:350
+#: src/modules/activity/weather/weather.c:349
 msgid "Show the weather at your location"
 msgstr "Εμφάνιση του καιρού στη περιοχή σου"
 
@@ -530,16 +531,16 @@ msgstr "Άρθρωμα DVD"
 msgid "Watch movies from DVD"
 msgstr "Αναπαραγωγή ταινιών από DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:465
+#: src/modules/browser/localfiles/localfiles.c:468
 #, fuzzy
 msgid "Browse local devices"
 msgstr "Περιήγηση στους τοπικούς δίσκους"
 
-#: src/modules/browser/localfiles/localfiles.c:663
+#: src/modules/browser/localfiles/localfiles.c:666
 msgid "Browse local files"
 msgstr "Περιήγηση σε τοπικά αρχεία"
 
-#: src/modules/browser/localfiles/localfiles.c:665
+#: src/modules/browser/localfiles/localfiles.c:668
 msgid "Browse files in your local file systems"
 msgstr "Περιήγηση στα τοπικά συστήματα αρχείων"
 
@@ -608,16 +609,16 @@ msgstr ""
 "Αυτό το άρθρωμα επιτρέπει στο Enna να περιηγηθεί στο περιεχόμενο UPnP/DLNA "
 "εξυπηρετητών πολυμέσων"
 
-#: src/modules/browser/valhalla/valhalla.c:664
+#: src/modules/browser/valhalla/valhalla.c:669
 #, fuzzy
 msgid "Media library"
 msgstr "Βιβλιοθήκη πολυμέσων"
 
-#: src/modules/browser/valhalla/valhalla.c:705
+#: src/modules/browser/valhalla/valhalla.c:710
 msgid "Valhalla module"
 msgstr "Άρθρωμα Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:707
+#: src/modules/browser/valhalla/valhalla.c:712
 msgid "Build a browseable catalog of your media files"
 msgstr ""
 

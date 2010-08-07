@@ -9,10 +9,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-06-29 19:51+0200\n"
+"POT-Creation-Date: 2010-08-07 18:36+0200\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,57 +23,57 @@ msgstr ""
 msgid "No media found!"
 msgstr "沒有發現任何媒體!"
 
-#: src/bin/enna.c:514
+#: src/bin/enna.c:511
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna 媒體中心\n"
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:512
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "用法：%s [選項...]\n"
 
-#: src/bin/enna.c:516
+#: src/bin/enna.c:513
 #, c-format
 msgid " Available options:\n"
 msgstr "可選項:\n"
 
-#: src/bin/enna.c:517
+#: src/bin/enna.c:514
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置檔。\n"
 
-#: src/bin/enna.c:518
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "-f, (--fs): 強制全螢幕顯示。\n"
 
-#: src/bin/enna.c:519
+#: src/bin/enna.c:516
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "-h, (--help): 顯示這個說明。\n"
 
-#: src/bin/enna.c:520
+#: src/bin/enna.c:517
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "-t, (--theme): 指定要使用的佈景。\n"
 
-#: src/bin/enna.c:521
+#: src/bin/enna.c:518
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定視窗大小。(geometry=1280x720)\n"
 
-#: src/bin/enna.c:522
+#: src/bin/enna.c:519
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (--profile): 指定顯示的描述記錄。\n"
 
-#: src/bin/enna.c:523
+#: src/bin/enna.c:520
 #, c-format
 msgid "    Supported: "
 msgstr "被支援的:"
 
-#: src/bin/enna.c:527
+#: src/bin/enna.c:524
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "-V, (--version): 顯示 Enna 的版本。\n"
@@ -174,34 +175,34 @@ msgstr "北半球"
 msgid "Southern"
 msgstr "南半球"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:290
 msgid "Weather"
 msgstr "天氣"
 
-#: src/modules/activity/bookstore/bookstore.c:323
-#: src/modules/activity/bookstore/bookstore.c:375
+#: src/modules/activity/bookstore/bookstore.c:324
+#: src/modules/activity/bookstore/bookstore.c:376
 msgid "Bookstore"
 msgstr "書店"
 
-#: src/modules/activity/bookstore/bookstore.c:377
+#: src/modules/activity/bookstore/bookstore.c:378
 msgid "Read your books"
 msgstr "讀你的書"
 
-#: src/modules/activity/configuration/configuration.c:211
-#: src/modules/activity/configuration/configuration.c:270
+#: src/modules/activity/configuration/configuration.c:210
+#: src/modules/activity/configuration/configuration.c:269
 msgid "Configuration"
 msgstr "配置"
 
-#: src/modules/activity/configuration/configuration.c:246
+#: src/modules/activity/configuration/configuration.c:245
 #: src/modules/activity/configuration/configuration_sysinfo.c:517
 msgid "System information"
 msgstr "系統資訊"
 
-#: src/modules/activity/configuration/configuration.c:249
+#: src/modules/activity/configuration/configuration.c:248
 msgid "Credits"
 msgstr "感謝"
 
-#: src/modules/activity/configuration/configuration.c:272
+#: src/modules/activity/configuration/configuration.c:271
 msgid "This module creates the Enna configuration panel"
 msgstr "這個模組是用來建立Enna配置面板"
 
@@ -336,12 +337,12 @@ msgstr "一個遊戲"
 msgid "%d games"
 msgstr "%d 遊戲"
 
-#: src/modules/activity/games/games.c:405
-#: src/modules/activity/games/games.c:469
+#: src/modules/activity/games/games.c:404
+#: src/modules/activity/games/games.c:468
 msgid "Games"
 msgstr "遊戲"
 
-#: src/modules/activity/games/games.c:471
+#: src/modules/activity/games/games.c:470
 msgid "Play all your games directly from Enna"
 msgstr "直接由 Enna 玩你所有的遊戲"
 
@@ -370,12 +371,12 @@ msgstr "系統遊戲"
 msgid "%d Songs"
 msgstr "%d 歌曲"
 
-#: src/modules/activity/music/music.c:449
-#: src/modules/activity/music/music.c:512
+#: src/modules/activity/music/music.c:448
+#: src/modules/activity/music/music.c:511
 msgid "Music"
 msgstr "音樂"
 
-#: src/modules/activity/music/music.c:514
+#: src/modules/activity/music/music.c:513
 msgid "Listen to your music"
 msgstr "聆聽你的音樂"
 
@@ -383,12 +384,12 @@ msgstr "聆聽你的音樂"
 msgid "No lyrics found ..."
 msgstr "沒有歌詞..."
 
-#: src/modules/activity/photo/photo.c:300
-#: src/modules/activity/photo/photo.c:360
+#: src/modules/activity/photo/photo.c:309
+#: src/modules/activity/photo/photo.c:368
 msgid "Photo"
 msgstr "照片"
 
-#: src/modules/activity/photo/photo.c:362
+#: src/modules/activity/photo/photo.c:370
 msgid "Browse your photos and create slideshows"
 msgstr "瀏灠你的照片並建立幻燈片"
 
@@ -408,11 +409,11 @@ msgstr "現在正在記錄 '%s'"
 msgid "Recording in progress"
 msgstr "記錄正在進行中"
 
-#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:155 src/modules/activity/tv/tv.c:368
 msgid "Television"
 msgstr "電視"
 
-#: src/modules/activity/tv/tv.c:371
+#: src/modules/activity/tv/tv.c:370
 msgid "View TV channels"
 msgstr "觀看電視頻道"
 
@@ -449,20 +450,20 @@ msgstr "沒有進一步資訊能被擷取"
 msgid "%d Movies"
 msgstr "%d 電影"
 
-#: src/modules/activity/video/video.c:924
-#: src/modules/activity/video/video.c:1012
+#: src/modules/activity/video/video.c:923
+#: src/modules/activity/video/video.c:1011
 msgid "Video"
 msgstr "影片"
 
-#: src/modules/activity/video/video.c:1014
+#: src/modules/activity/video/video.c:1013
 msgid "Play your videos"
 msgstr "播放你的影片"
 
-#: src/modules/activity/weather/weather.c:348
+#: src/modules/activity/weather/weather.c:347
 msgid "Weather forecasts"
 msgstr "天氣預報"
 
-#: src/modules/activity/weather/weather.c:350
+#: src/modules/activity/weather/weather.c:349
 msgid "Show the weather at your location"
 msgstr "顯示你本地的天氣"
 
@@ -498,15 +499,15 @@ msgstr "DVD 模組"
 msgid "Watch movies from DVD"
 msgstr "從 DVD 觀看電影"
 
-#: src/modules/browser/localfiles/localfiles.c:465
+#: src/modules/browser/localfiles/localfiles.c:468
 msgid "Browse local devices"
 msgstr "瀏灠本機裝置"
 
-#: src/modules/browser/localfiles/localfiles.c:663
+#: src/modules/browser/localfiles/localfiles.c:666
 msgid "Browse local files"
 msgstr "瀏灠本機檔案"
 
-#: src/modules/browser/localfiles/localfiles.c:665
+#: src/modules/browser/localfiles/localfiles.c:668
 msgid "Browse files in your local file systems"
 msgstr "瀏灠本機硬碟上的檔案"
 
@@ -564,15 +565,15 @@ msgstr "UPnP/DLNA 模組"
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "這個模組讓 Enna 能夠瀏灠 UPnP/DLNA 上的內容"
 
-#: src/modules/browser/valhalla/valhalla.c:664
+#: src/modules/browser/valhalla/valhalla.c:669
 msgid "Media library"
 msgstr "媒體資料庫"
 
-#: src/modules/browser/valhalla/valhalla.c:705
+#: src/modules/browser/valhalla/valhalla.c:710
 msgid "Valhalla module"
 msgstr "Valhalla 模組"
 
-#: src/modules/browser/valhalla/valhalla.c:707
+#: src/modules/browser/valhalla/valhalla.c:712
 msgid "Build a browseable catalog of your media files"
 msgstr "將你的媒體建立一個可瀏灠的分類"
 

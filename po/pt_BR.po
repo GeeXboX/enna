@@ -7,11 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-06-29 19:51+0200\n"
+"POT-Creation-Date: 2010-08-07 18:36+0200\n"
 "PO-Revision-Date: 2010-01-19 12:17-0300\n"
 "Last-Translator: André Luís de Andrade Mendes <andreluis.mendes+poedit@gmail."
 "com>\n"
 "Language-Team: Brazilian Portuguese\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,59 +22,59 @@ msgstr ""
 msgid "No media found!"
 msgstr "Nenhum arquivo multimídia encontrado!"
 
-#: src/bin/enna.c:514
+#: src/bin/enna.c:511
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:512
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opções ...]\n"
 
-#: src/bin/enna.c:516
+#: src/bin/enna.c:513
 #, c-format
 msgid " Available options:\n"
 msgstr "Opções disponíveis:\n"
 
-#: src/bin/enna.c:517
+#: src/bin/enna.c:514
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 "  -c, (--config):   Especifique o arquivo de configuração a ser utilizado.\n"
 
-#: src/bin/enna.c:518
+#: src/bin/enna.c:515
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):       Forçar modo de tela cheia.\n"
 
-#: src/bin/enna.c:519
+#: src/bin/enna.c:516
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):     Mostra esta ajuda.\n"
 
-#: src/bin/enna.c:520
+#: src/bin/enna.c:517
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):    Especifique o nome do tema a ser usado.\n"
 
-#: src/bin/enna.c:521
+#: src/bin/enna.c:518
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry): Especifique a resolução da janela. (geometria=1280x720)\n"
 
-#: src/bin/enna.c:522
+#: src/bin/enna.c:519
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (--perfil): Especifique um perfil para a tela\n"
 
-#: src/bin/enna.c:523
+#: src/bin/enna.c:520
 #, c-format
 msgid "    Supported: "
 msgstr "Suportados:"
 
-#: src/bin/enna.c:527
+#: src/bin/enna.c:524
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version):  Mostra o número da versão do Enna.\n"
@@ -175,34 +176,34 @@ msgstr "Norte"
 msgid "Southern"
 msgstr "Sul"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:291
+#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:290
 msgid "Weather"
 msgstr "Meteorologia"
 
-#: src/modules/activity/bookstore/bookstore.c:323
-#: src/modules/activity/bookstore/bookstore.c:375
+#: src/modules/activity/bookstore/bookstore.c:324
+#: src/modules/activity/bookstore/bookstore.c:376
 msgid "Bookstore"
 msgstr "Livraria"
 
-#: src/modules/activity/bookstore/bookstore.c:377
+#: src/modules/activity/bookstore/bookstore.c:378
 msgid "Read your books"
 msgstr "Ler os seus livros"
 
-#: src/modules/activity/configuration/configuration.c:211
-#: src/modules/activity/configuration/configuration.c:270
+#: src/modules/activity/configuration/configuration.c:210
+#: src/modules/activity/configuration/configuration.c:269
 msgid "Configuration"
 msgstr "Configuração"
 
-#: src/modules/activity/configuration/configuration.c:246
+#: src/modules/activity/configuration/configuration.c:245
 #: src/modules/activity/configuration/configuration_sysinfo.c:517
 msgid "System information"
 msgstr "Informações sobre o sistema"
 
-#: src/modules/activity/configuration/configuration.c:249
+#: src/modules/activity/configuration/configuration.c:248
 msgid "Credits"
 msgstr "Créditos"
 
-#: src/modules/activity/configuration/configuration.c:272
+#: src/modules/activity/configuration/configuration.c:271
 msgid "This module creates the Enna configuration panel"
 msgstr "Este módulo cria o painel de configuração do Enna"
 
@@ -337,12 +338,12 @@ msgstr "um jogo"
 msgid "%d games"
 msgstr "%d jogos"
 
-#: src/modules/activity/games/games.c:405
-#: src/modules/activity/games/games.c:469
+#: src/modules/activity/games/games.c:404
+#: src/modules/activity/games/games.c:468
 msgid "Games"
 msgstr "Jogos"
 
-#: src/modules/activity/games/games.c:471
+#: src/modules/activity/games/games.c:470
 msgid "Play all your games directly from Enna"
 msgstr "Jogar os seus jogos diretamente a partir do Enna"
 
@@ -371,12 +372,12 @@ msgstr "Jogos do Sistema"
 msgid "%d Songs"
 msgstr "%d Músicas"
 
-#: src/modules/activity/music/music.c:449
-#: src/modules/activity/music/music.c:512
+#: src/modules/activity/music/music.c:448
+#: src/modules/activity/music/music.c:511
 msgid "Music"
 msgstr "Música"
 
-#: src/modules/activity/music/music.c:514
+#: src/modules/activity/music/music.c:513
 msgid "Listen to your music"
 msgstr "Escutar suas músicas"
 
@@ -384,12 +385,12 @@ msgstr "Escutar suas músicas"
 msgid "No lyrics found ..."
 msgstr "Nenhuma letra encontrada ..."
 
-#: src/modules/activity/photo/photo.c:300
-#: src/modules/activity/photo/photo.c:360
+#: src/modules/activity/photo/photo.c:309
+#: src/modules/activity/photo/photo.c:368
 msgid "Photo"
 msgstr "Foto"
 
-#: src/modules/activity/photo/photo.c:362
+#: src/modules/activity/photo/photo.c:370
 msgid "Browse your photos and create slideshows"
 msgstr "Navegue por suas fotos e crie apresentações de slides"
 
@@ -409,11 +410,11 @@ msgstr "Gravando '%s'"
 msgid "Recording in progress"
 msgstr "Gravação em andamento"
 
-#: src/modules/activity/tv/tv.c:156 src/modules/activity/tv/tv.c:369
+#: src/modules/activity/tv/tv.c:155 src/modules/activity/tv/tv.c:368
 msgid "Television"
 msgstr "Televisão"
 
-#: src/modules/activity/tv/tv.c:371
+#: src/modules/activity/tv/tv.c:370
 msgid "View TV channels"
 msgstr "Veja os canais da TV"
 
@@ -450,20 +451,20 @@ msgstr "Nenhuma informação adicional pode ser encontrada"
 msgid "%d Movies"
 msgstr "%d Filmes"
 
-#: src/modules/activity/video/video.c:924
-#: src/modules/activity/video/video.c:1012
+#: src/modules/activity/video/video.c:923
+#: src/modules/activity/video/video.c:1011
 msgid "Video"
 msgstr "Vídeo"
 
-#: src/modules/activity/video/video.c:1014
+#: src/modules/activity/video/video.c:1013
 msgid "Play your videos"
 msgstr "Assistir seus vídeos:"
 
-#: src/modules/activity/weather/weather.c:348
+#: src/modules/activity/weather/weather.c:347
 msgid "Weather forecasts"
 msgstr "Previsão do tempo"
 
-#: src/modules/activity/weather/weather.c:350
+#: src/modules/activity/weather/weather.c:349
 msgid "Show the weather at your location"
 msgstr "Mostra a previsão do tempo para a sua localidade"
 
@@ -499,15 +500,15 @@ msgstr "Módulo de DVD"
 msgid "Watch movies from DVD"
 msgstr "Veja os filmes de DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:465
+#: src/modules/browser/localfiles/localfiles.c:468
 msgid "Browse local devices"
 msgstr "Navegar através dos dispositivos locais"
 
-#: src/modules/browser/localfiles/localfiles.c:663
+#: src/modules/browser/localfiles/localfiles.c:666
 msgid "Browse local files"
 msgstr "Navegar através dos arquivos locais"
 
-#: src/modules/browser/localfiles/localfiles.c:665
+#: src/modules/browser/localfiles/localfiles.c:668
 msgid "Browse files in your local file systems"
 msgstr "Navegar através dos arquivos do seu sistema de arquivos local"
 
@@ -566,15 +567,15 @@ msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 "Este módulo permite ao Enna explorar o conteúdo de servidores UPnP/DLNA"
 
-#: src/modules/browser/valhalla/valhalla.c:664
+#: src/modules/browser/valhalla/valhalla.c:669
 msgid "Media library"
 msgstr "Biblioteca multimídia"
 
-#: src/modules/browser/valhalla/valhalla.c:705
+#: src/modules/browser/valhalla/valhalla.c:710
 msgid "Valhalla module"
 msgstr "Módulo Valhalla"
 
-#: src/modules/browser/valhalla/valhalla.c:707
+#: src/modules/browser/valhalla/valhalla.c:712
 msgid "Build a browseable catalog of your media files"
 msgstr "Construir um catálogo de arquivos multimídia navegável"
 
