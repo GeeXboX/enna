@@ -746,19 +746,6 @@ if test "x$want_theme_default" = "xyes"; then
   AC_DEFINE(BUILD_THEME_DEFAULT, 1, [Default Theme])
 fi
 
-# N900 Theme
-want_theme_n900="no"
-AC_MSG_CHECKING(whether n900 Theme is to be built)
-AC_ARG_ENABLE(theme_n900,
-  AS_HELP_STRING([--enable-theme-n900],[Enable n900 Theme]),
-  [ want_theme_n900=$enableval ]
-)
-AC_MSG_RESULT($want_theme_n900)
-AM_CONDITIONAL(BUILD_THEME_N900, test "x$want_theme_n900" = "xyes")
-if test "x$want_theme_N900" = "xyes"; then
-  AC_DEFINE(BUILD_THEME_N900, 1, [n900 Theme])
-fi
-
 # Touchbook Theme
 want_theme_touchbook="no"
 AC_MSG_CHECKING(whether touchbook Theme is to be built)
@@ -819,7 +806,6 @@ data/Makefile
 data/other/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
-data/theme/n900/Makefile
 data/theme/touchbook/Makefile
 ])
 
@@ -900,7 +886,6 @@ echo
 echo "Suppported Themes:"
 echo
 echo "  default.......................... : $want_theme_default"
-echo "  n900............................. : $want_theme_n900"
 echo "  touchbook........................ : $want_theme_touchbook"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
