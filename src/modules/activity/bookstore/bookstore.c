@@ -36,7 +36,6 @@
 #include "image.h"
 #include "bookstore.h"
 #include "bookstore_gocomics.h"
-#include "bookstore_onemanga.h"
 
 #define ENNA_MODULE_NAME                 "bookstore"
 
@@ -57,7 +56,6 @@ typedef struct _Enna_Module_Bookstore {
     Bookstore_State state;
     Bookstore_Service *current;
     Bookstore_Service *gocomics;
-    Bookstore_Service *onemanga;
 } Enna_Module_Bookstore;
 
 static Enna_Module_Bookstore *mod;
@@ -226,7 +224,6 @@ bs_menu_create (void)
     mod->menu = enna_wall_add(mod->o_layout);
 
     bs_menu_add(mod->gocomics);
-    bs_menu_add(mod->onemanga);
 
     enna_wall_select_nth(mod->menu, 0, 0);
     elm_layout_content_set(mod->o_layout, "menu.swallow", mod->menu);
@@ -354,7 +351,6 @@ module_init(Enna_Module *em)
     enna_activity_register(&class);
 
     mod->gocomics = &bs_gocomics;
-    mod->onemanga = &bs_onemanga;
 }
 
 static void

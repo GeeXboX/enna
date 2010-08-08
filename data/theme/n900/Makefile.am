@@ -38,7 +38,6 @@ images/icon_module.png \
 images/icon_music.png \
 images/icon_music_mini.png \
 images/icon_nofile.png \
-images/icon_onemanga.png \
 images/icon_photo.png \
 images/icon_rss.png \
 images/icon_shoutcast.png \
@@ -54,7 +53,6 @@ images/bg_configuration.jpg \
 images/bg_games.png \
 images/bg_gocomics.png \
 images/bg_music.jpg \
-images/bg_onemanga.png \
 images/bg_photo.jpg \
 images/bg_tv.jpg \
 images/bg_video.jpg \
