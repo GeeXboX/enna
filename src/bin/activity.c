@@ -155,13 +155,9 @@ void enna_activity_register(Enna_Class_Activity *act)
     if (!act)
         return;
 
-    file = calloc(1, sizeof(Enna_Vfs_File));
-    file->name = eina_stringshare_add(act->name);
-    file->label = eina_stringshare_add(act->label);
-    file->icon = eina_stringshare_add(act->icon);
-    file->is_directory = EINA_TRUE;
+    file = enna_browser_create_menu(act->name, act->label,
+                                    act->label, act->icon);
     file->icon_file = eina_stringshare_add(act->bg);
-    file->uri = eina_stringshare_add(act->label);
     _enna_activities = eina_list_append(_enna_activities, act);
     _enna_activities = eina_list_sort(_enna_activities,
                                       eina_list_count(_enna_activities),
