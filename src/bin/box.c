@@ -44,7 +44,7 @@ struct _Smart_Item
     Evas_Object *o_icon; // Elm image object
     Smart_Data *sd;
     const char *label;
-    Enna_Vfs_File *file;
+    Enna_File *file;
     void *data;
     void (*func_activated) (void *data);
     unsigned char selected : 1;
@@ -132,7 +132,7 @@ _append_helper(Evas_Object *obj, const char *label,
 }
 
 void
-enna_box_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+enna_box_file_append(Evas_Object *obj, Enna_File *file,
                             void (*func_activated) (void *data), void *data)
 {
     Smart_Item *si;
