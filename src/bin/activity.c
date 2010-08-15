@@ -150,8 +150,8 @@ enna_activity_request_quit_all(void)
 
 void enna_activity_register(Enna_Class_Activity *act)
 {
-    Enna_Vfs_File *file;
-    
+    Enna_File *file;
+
     if (!act)
         return;
 
