@@ -746,17 +746,17 @@ if test "x$want_theme_default" = "xyes"; then
   AC_DEFINE(BUILD_THEME_DEFAULT, 1, [Default Theme])
 fi
 
-# Touchbook Theme
-want_theme_touchbook="no"
-AC_MSG_CHECKING(whether touchbook Theme is to be built)
-AC_ARG_ENABLE(theme_touchbook,
-  AS_HELP_STRING([--enable-theme-touchbook],[Enable touchbook Theme]),
-  [ want_theme_touchbook=$enableval ]
+# Tablet (and other touchscreen embedded devices) Theme
+want_theme_tablet="no"
+AC_MSG_CHECKING(whether tablet theme is to be built)
+AC_ARG_ENABLE(theme_tablet,
+  AS_HELP_STRING([--enable-theme-tablet],[Enable Tablet Theme]),
+  [ want_theme_tablet=$enableval ]
 )
-AC_MSG_RESULT($want_theme_touchbook)
-AM_CONDITIONAL(BUILD_THEME_TOUCHBOOK, test "x$want_theme_touchbook" = "xyes")
-if test "x$want_theme_touchbook" = "xyes"; then
-  AC_DEFINE(BUILD_THEME_TOUCHBOOK, 1, [touchbook Theme])
+AC_MSG_RESULT($want_theme_tablet)
+AM_CONDITIONAL(BUILD_THEME_TABLET, test "x$want_theme_tablet" = "xyes")
+if test "x$want_theme_tablet" = "xyes"; then
+  AC_DEFINE(BUILD_THEME_TABLET, 1, [Tablet Theme])
 fi
 
 if test "x$GCC" = "xyes"; then
@@ -806,7 +806,7 @@ data/Makefile
 data/other/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
-data/theme/touchbook/Makefile
+data/theme/tablet/Makefile
 ])
 
 AC_OUTPUT
@@ -886,7 +886,7 @@ echo
 echo "Suppported Themes:"
 echo
 echo "  default.......................... : $want_theme_default"
-echo "  touchbook........................ : $want_theme_touchbook"
+echo "  tablet........................... : $want_theme_tablet"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo

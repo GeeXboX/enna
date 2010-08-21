@@ -1,1 +1,1 @@
-SUBDIRS = default touchbook
+SUBDIRS = default tablet
