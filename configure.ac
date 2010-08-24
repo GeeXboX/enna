@@ -38,19 +38,19 @@ CFLAGS="$CFLAGS -DLOCALEDIR=\"\\\"$datadir/locale\\\"\""
 
 PKG_CHECK_MODULES([ENNA],
   [
-   eina-0 >= 0.9.9.0
-   eet >= 1.3.2
-   evas >= 0.9.9.0
-   ecore >= 0.9.9.0
-   ecore-evas >= 0.9.9.0
-   ecore-file >= 0.9.9.0
-   ecore-ipc >= 0.9.9.0
-   edje >= 0.9.9.49898
-   elementary >= 0.6.0.49898
+   eina >= 1.0.0
+   eet >= 1.4.0
+   evas >= 1.0.0
+   ecore >= 1.0.0
+   ecore-evas >= 1.0.0
+   ecore-file >= 1.0.0
+   ecore-ipc >= 1.0.0
+   edje >= 1.0.0
+   edbus >= 1.0.0
+   elementary >= 0.7.0
    libvalhalla >= 2.0.0 libvalhalla < 3.0.0
    libxml-2.0
    libcurl
-   edbus
   ]
 )
 
@@ -746,30 +746,17 @@ if test "x$want_theme_default" = "xyes"; then
   AC_DEFINE(BUILD_THEME_DEFAULT, 1, [Default Theme])
 fi
 
-# N900 Theme
-want_theme_n900="no"
-AC_MSG_CHECKING(whether n900 Theme is to be built)
-AC_ARG_ENABLE(theme_n900,
-  AS_HELP_STRING([--enable-theme-n900],[Enable n900 Theme]),
-  [ want_theme_n900=$enableval ]
+# Tablet (and other touchscreen embedded devices) Theme
+want_theme_tablet="no"
+AC_MSG_CHECKING(whether tablet theme is to be built)
+AC_ARG_ENABLE(theme_tablet,
+  AS_HELP_STRING([--enable-theme-tablet],[Enable Tablet Theme]),
+  [ want_theme_tablet=$enableval ]
 )
-AC_MSG_RESULT($want_theme_n900)
-AM_CONDITIONAL(BUILD_THEME_N900, test "x$want_theme_n900" = "xyes")
-if test "x$want_theme_N900" = "xyes"; then
-  AC_DEFINE(BUILD_THEME_N900, 1, [n900 Theme])
-fi
-
-# Touchbook Theme
-want_theme_touchbook="no"
-AC_MSG_CHECKING(whether touchbook Theme is to be built)
-AC_ARG_ENABLE(theme_touchbook,
-  AS_HELP_STRING([--enable-theme-touchbook],[Enable touchbook Theme]),
-  [ want_theme_touchbook=$enableval ]
-)
-AC_MSG_RESULT($want_theme_touchbook)
-AM_CONDITIONAL(BUILD_THEME_TOUCHBOOK, test "x$want_theme_touchbook" = "xyes")
-if test "x$want_theme_touchbook" = "xyes"; then
-  AC_DEFINE(BUILD_THEME_TOUCHBOOK, 1, [touchbook Theme])
+AC_MSG_RESULT($want_theme_tablet)
+AM_CONDITIONAL(BUILD_THEME_TABLET, test "x$want_theme_tablet" = "xyes")
+if test "x$want_theme_tablet" = "xyes"; then
+  AC_DEFINE(BUILD_THEME_TABLET, 1, [Tablet Theme])
 fi
 
 if test "x$GCC" = "xyes"; then
@@ -819,8 +806,7 @@ data/Makefile
 data/other/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
-data/theme/n900/Makefile
-data/theme/touchbook/Makefile
+data/theme/tablet/Makefile
 ])
 
 AC_OUTPUT
@@ -900,8 +886,7 @@ echo
 echo "Suppported Themes:"
 echo
 echo "  default.......................... : $want_theme_default"
-echo "  n900............................. : $want_theme_n900"
-echo "  touchbook........................ : $want_theme_touchbook"
+echo "  tablet........................... : $want_theme_tablet"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
 echo

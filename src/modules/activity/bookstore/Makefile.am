@@ -18,8 +18,7 @@ INCLUDES = \
 
 EXTRA_DIST= \
 bookstore.h \
-bookstore_gocomics.h \
-bookstore_onemanga.h
+bookstore_gocomics.h
 
 if BUILD_ACTIVITY_BOOKSTORE
 

@@ -146,6 +146,7 @@ images {
       }
 
       /* movies counter */
+/* COMPLETELY FUCKED UP ....
       part {
          name: "movies.counter.label";
          clip_to: content.clip;
@@ -175,6 +176,7 @@ images {
              }
           }
        }
+*/
 
       /* informations (left pane) */
       part {

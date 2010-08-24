@@ -1,1 +1,1 @@
-SUBDIRS = default n900 touchbook
+SUBDIRS = default tablet

@@ -440,7 +440,7 @@ static const struct {
     { "vga",        "default",   640,  480 },
     { "ntsc",       "default",   720,  480 },
     { "pal",        "default",   768,  576 },
-    { "n900",          "n900",   800,  480 },
+    { "wvga",       "default",   800,  480 },
     { "svga",       "default",   800,  600 },
     { "touchbook","touchbook",  1024,  600 },
     { "netbook",    "default",  1024,  600 },

@@ -96,6 +96,8 @@ group {
              rel2.to: "browser.clip";
          }
       }
+
+/* COMPLETELY FUCKED UP ....
       part {
         name: "filename.bg";
         clip_to: "browser.clip";
@@ -128,6 +130,7 @@ group {
             }
 	    }
       }
+*/
 
       /* dummy fullscreen layer */
       part {

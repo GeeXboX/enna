@@ -97,7 +97,6 @@ images/icon_home_mini.png \
 images/icon_module.png \
 images/icon_music_mini.png \
 images/icon_nofile.png \
-images/icon_onemanga.png \
 images/icon_rss.png \
 images/icon_song.png \
 images/icon_upnp.png \
@@ -110,7 +109,6 @@ images/bg_configuration.jpg \
 images/bg_games.png \
 images/bg_gocomics.png \
 images/bg_music.jpg \
-images/bg_onemanga.png \
 images/bg_photo.jpg \
 images/bg_tv.jpg \
 images/bg_video.jpg \
