@@ -894,8 +894,9 @@ _class_hide(void)
     Evas_Object *o_edje;
 
     o_edje = elm_layout_edje_get(mod->o_layout);
-
-    _return_to_video_info_gui();
+    
+    if (mod->state == VIDEOPLAYER_VIEW)
+        _return_to_video_info_gui();
     edje_object_signal_emit(o_edje, "module,hide", "enna");
 }
 
