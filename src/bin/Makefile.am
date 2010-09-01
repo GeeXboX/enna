@@ -54,8 +54,7 @@ ini_parser.c\
 input.c\
 geoip.c\
 search.c\
-gadgets.c\
-kbdnav.c
+gadgets.c
 
 if BUILD_BACKEND_EMOTION
 enna_SOURCES += mediaplayer_emotion.c
