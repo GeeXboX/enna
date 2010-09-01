@@ -47,6 +47,7 @@ PKG_CHECK_MODULES([ENNA],
    ecore-ipc >= 1.0.0
    edje >= 1.0.0
    edbus >= 1.0.0
+   ethumb >= 0.1.0
    elementary >= 0.7.0
    libvalhalla >= 2.0.0 libvalhalla < 3.0.0
    libxml-2.0
