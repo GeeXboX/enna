@@ -24,7 +24,18 @@
 
 #include <Evas.h>
 
+
+
 typedef struct _Enna_Kbdnav_Item Enna_Kbdnav_Item;
+typedef enum _Kbdnav_Direction;
+
+enum _Kbdnav_Direction
+{
+  UP,
+  LEFT,
+  DOWN,
+  RIGHT
+};
 
 struct _Enna_Kbdnav
 {
@@ -176,7 +187,7 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
 
         switch (direction)
         {
-        case 0:
+        case UP:
             DBG("Kbdnav UP");
             // UP
             if (y >= cy)
@@ -191,7 +202,7 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
                 }
             }
             break;
-        case 1:
+        case RIGHT:
             DBG("Kbdnav RIGHT");
             // RIGHT
             if (x < cx)
@@ -206,7 +217,7 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
                 }
             }
             break;
-        case 2:
+        case DOWN:
             DBG("Kbdnav DOWN");
             // DOWN
             if (y < cy)
@@ -221,7 +232,7 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
                 }
             }
             break;
-        case 3:
+        case LEFT:
             DBG("Kbdnav LEFT");
             // LEFT
             if (x >= cx)
@@ -262,22 +273,22 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
 
 Eina_Bool enna_kbdnav_up(Enna_Kbdnav *nav)
 {
-    return enna_kbdnav_direction(nav, 0);
+    return enna_kbdnav_direction(nav, UP);
 }
 
 Eina_Bool enna_kbdnav_right(Enna_Kbdnav *nav)
 {
-    return enna_kbdnav_direction(nav, 1);
+    return enna_kbdnav_direction(nav, RIGHT);
 }
 
 Eina_Bool enna_kbdnav_down(Enna_Kbdnav *nav)
 {
-    return enna_kbdnav_direction(nav, 2);
+    return enna_kbdnav_direction(nav, DOWN);
 }
 
 
 Eina_Bool enna_kbdnav_left(Enna_Kbdnav *nav)
 {
-    return enna_kbdnav_direction(nav, 3);
+    return enna_kbdnav_direction(nav, LEFT);
 }
 
