@@ -34,6 +34,7 @@
 #include "vfs.h"
 #include "input.h"
 #include "metadata.h"
+#include "kbdnav.h"
 
 #define SMART_NAME "enna_wall"
 
@@ -47,12 +48,14 @@ struct _Picture_Item
     void *data;
     Elm_Gengrid_Item *item;
     Smart_Data *sd;
+
 };
 
 struct _Smart_Data
 {
     Evas_Object *o_grid;
     Eina_List *items;
+  Enna_Kbdnav *nav;
 };
 
 char *
@@ -133,6 +136,7 @@ _item_remove(Evas_Object *obj, Picture_Item *item)
 
     elm_gengrid_item_del(item->item);
     sd->items = eina_list_remove(sd->items, item);
+    enna_kbdnav_item_del(sd->nav, item);
     ENNA_FREE(item);
 
     return;
@@ -161,6 +165,7 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
     EINA_LIST_FREE(sd->items, pi)
         free(pi);
 
+    enna_kbdnav_del(sd->nav);
     free(sd);
 }
 
@@ -217,6 +222,7 @@ _item_realized_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 /* externally accessible functions */
+
 Evas_Object *
 enna_wall_add(Evas_Object * parent)
 {
@@ -242,6 +248,8 @@ enna_wall_add(Evas_Object * parent)
     ethumb_client_aspect_set(client, ETHUMB_THUMB_CROP);
     ethumb_client_crop_align_set(client, 0.5, 0.5);
 
+    sd->nav = enna_kbdnav_add();
+
     return sd->o_grid;
 }
 
@@ -255,6 +263,33 @@ enna_wall_clear(Evas_Object *obj)
     EINA_LIST_FREE(sd->items, item)
         _item_remove(obj, item);
 }
+
+
+static const Evas_Object *
+_kbdnav_object_get(void *item_data, void *user_data)
+{
+  Picture_Item *pi = item_data;
+
+  if (!pi)
+    return NULL;
+
+  return elm_gengrid_item_object_get(pi->item);
+}
+
+static void
+_kbdnav_select_set(void *item_data, void *user_data)
+{
+  Picture_Item *pi = item_data;
+
+  if (!pi)
+    return;
+  elm_gengrid_item_selected_set(pi->item, EINA_TRUE);
+}
+
+static Enna_Kbdnav_Class ekc = {
+  _kbdnav_object_get,
+  _kbdnav_select_set
+};
 
 void
 enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
@@ -274,6 +309,7 @@ enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
 
     pi->item = elm_gengrid_item_append (obj, &gic, pi, _item_selected, pi);
     sd->items = eina_list_append(sd->items, pi);
+    enna_kbdnav_item_add(sd->nav, pi, &ekc, NULL);
 }
 
 void
@@ -297,8 +333,37 @@ enna_wall_file_remove(Evas_Object *obj, Enna_File *file)
 
 Eina_Bool
 enna_wall_input_feed(Evas_Object *obj, enna_input ev)
-{
+{ 
+  Smart_Data *sd;
 
+ sd = evas_object_data_get(obj, "sd");
+ switch (ev)
+    {
+    case ENNA_INPUT_LEFT:
+        enna_kbdnav_left(sd->nav);
+        return ENNA_EVENT_BLOCK;
+        break;
+    case ENNA_INPUT_RIGHT:
+       enna_kbdnav_right(sd->nav);
+        return ENNA_EVENT_BLOCK;
+        break;
+    case ENNA_INPUT_UP:
+       enna_kbdnav_up(sd->nav);
+        return ENNA_EVENT_BLOCK;
+        break;
+    case ENNA_INPUT_DOWN:
+       enna_kbdnav_down(sd->nav);
+        return ENNA_EVENT_BLOCK;
+        break;
+    /* case ENNA_INPUT_OK: */
+    /*     pi = _smart_selected_item_get(sd, NULL, NULL); */
+    /*     if (pi && pi->func_activated) */
+    /*         pi->func_activated(pi->data); */
+    /*     return ENNA_EVENT_BLOCK; */
+    /*     break; */
+    default:
+        break;
+    }
     return ENNA_EVENT_CONTINUE;
 }
 
