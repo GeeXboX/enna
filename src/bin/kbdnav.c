@@ -31,10 +31,10 @@ typedef enum _Kbdnav_Direction;
 
 enum _Kbdnav_Direction
 {
-  UP,
-  LEFT,
-  DOWN,
-  RIGHT
+    UP,
+    LEFT,
+    DOWN,
+    RIGHT
 };
 
 struct _Enna_Kbdnav
