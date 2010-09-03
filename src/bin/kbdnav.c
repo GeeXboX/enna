@@ -150,8 +150,6 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
 
     previous = nav->current;
 
-    printf("Current : %X\n", nav->current);
-
     if (previous)
     {
         obj = previous->object_get(previous->obj, previous->user_data);
@@ -186,7 +184,6 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
             else
             {
                 d = (cx - x)*(cx -x) + (cy - y)*(cy - y); 
-                printf("Distance : %3.3f - %3.3f\n", sqrt(d), sqrt(cd));
                 if (d < cd && y < cy)
                 {
                     next = it;
@@ -202,7 +199,6 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
             else
             {
                 d = (cx - x)*(cx -x) + (cy - y)*(cy - y);  
-                printf("Distance : %3.3f - %3.3f\n", sqrt(d), sqrt(cd));
                 if (d < cd && x > cx)
                 {
                     next = it;
@@ -218,7 +214,6 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
             else
             {
                 d = (cx - x)*(cx -x) + (cy - y)*(cy - y);
-                printf("Distance : %3.3f - %3.3f\n", sqrt(d), sqrt(cd));
                 if (d < cd && y > cy)
                 {
                     next = it;
@@ -235,7 +230,6 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
             {
 
                 d = (cx - x)*(cx -x) + (cy - y)*(cy - y);  
-                printf("Distance : %3.3f - %3.3f\n", sqrt(d), sqrt(cd));
                 if (d < cd && x < cx)
                 {
                     next = it;
