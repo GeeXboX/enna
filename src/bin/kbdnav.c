@@ -27,7 +27,6 @@
 
 
 typedef struct _Enna_Kbdnav_Item Enna_Kbdnav_Item;
-typedef enum _Kbdnav_Direction;
 
 enum _Kbdnav_Direction
 {
