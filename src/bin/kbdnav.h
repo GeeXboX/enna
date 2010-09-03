@@ -1,34 +1,57 @@
-#ifndef _KBD_NAV_
-#define _KBD_NAV_
+/*
+ * GeeXboX Enna Media Center.
+ * Copyright (C) 2005-2010 The Enna Project
+ *
+ * This file is part of Enna.
+ *
+ * Enna is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * Enna is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Enna; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
 
-#include <Eina.h>
+#ifndef KBDNAV_H
+#define KBDNAV_H
+
 #include <Evas.h>
 
-typedef struct _Kbdnav_Pool Kbdnav_Pool;
+#include "enna.h"
+#include "input.h"
 
-typedef struct _Kbdnav_Pool_Class
+typedef struct _Enna_Kbdnav Enna_Kbdnav;
+typedef struct _Enna_Kbdnav_Class Enna_Kbdnav_Class;
+
+struct _Enna_Kbdnav_Class
 {
-    Evas_Object *(*object_get)(void *user_data, void *item_data);
-    const char *(*id_get)(void *user_data, void *item_data);
-    void (*select)(void *user_data, void *item_data);
-    void (*unselect)(void *user_data, void *item_data);
-    void *user_data;
-}Kbdnav_Pool_Class;
+  const Evas_Object *(*object_get)(void *item_data, void *user_data);
+  void  (*select_set)(void *item_data, void *user_data);
+};
 
-Kbdnav_Pool        *kbdnav_pool_new(Kbdnav_Pool_Class *class, const void *data);
-void                kbdnav_pool_free(Kbdnav_Pool *pool);
+Enna_Kbdnav *enna_kbdnav_add();
+void enna_kbdnav_del(Enna_Kbdnav *nav);
+void enna_kbdnav_item_add(Enna_Kbdnav *nav, void *obj, Enna_Kbdnav_Class *class, void *user_data);
+void enna_kbdnav_item_del(Enna_Kbdnav *nav, void *obj);
 
-Eina_Bool           kbdnav_pool_item_add(Kbdnav_Pool *pool, const void *data);
-Eina_Bool           kbdnav_pool_item_del(Kbdnav_Pool *pool, const void *data);
-Eina_Bool           kbdnav_pool_current_id_set(Kbdnav_Pool *pool, const char *id);
-void               *kbdnav_pool_current_item_get(Kbdnav_Pool *pool);
-Evas_Object        *kbdnav_pool_current_object_get(Kbdnav_Pool *pool);
-Eina_Bool           kbdnav_pool_current_select(Kbdnav_Pool *pool);
-Eina_Bool           kbdnav_pool_current_unselect(Kbdnav_Pool *pool);
+Eina_Bool enna_kbdnav_current_set(Enna_Kbdnav *nav, void *obj);
 
-Eina_Bool           kbdnav_pool_navigate_up(Kbdnav_Pool *pool);
-Eina_Bool           kbdnav_pool_navigate_down(Kbdnav_Pool *pool);
-Eina_Bool           kbdnav_pool_navigate_left(Kbdnav_Pool *pool);
-Eina_Bool           kbdnav_pool_navigate_right(Kbdnav_Pool *pool);
+/* Eina_Bool enna_kbdnav_current_select(Enna_Kbdnav *nav); */
+/* Eina_Bool enna_kbdnav_current_unselect(Enna_Kbdnav *nav); */
+/* Eina_Bool enna_kbdnav_current_activate(Enna_Kbdnav *nav); */
 
-#endif /* _KBD_NAV_ */
+Eina_Bool enna_kbdnav_up(Enna_Kbdnav *nav);
+Eina_Bool enna_kbdnav_down(Enna_Kbdnav *nav);
+Eina_Bool enna_kbdnav_left(Enna_Kbdnav *nav);
+Eina_Bool enna_kbdnav_right(Enna_Kbdnav *nav);
+
+
+
+#endif /* KBDNAV_H */
