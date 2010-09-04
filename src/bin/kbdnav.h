@@ -43,7 +43,7 @@ void enna_kbdnav_item_add(Enna_Kbdnav *nav, void *obj, Enna_Kbdnav_Class *class,
 void enna_kbdnav_item_del(Enna_Kbdnav *nav, void *obj);
 
 Eina_Bool enna_kbdnav_current_set(Enna_Kbdnav *nav, void *obj);
-
+void *enna_kbdnav_current_get(Enna_Kbdnav *nav);
 /* Eina_Bool enna_kbdnav_current_select(Enna_Kbdnav *nav); */
 /* Eina_Bool enna_kbdnav_current_unselect(Enna_Kbdnav *nav); */
 /* Eina_Bool enna_kbdnav_current_activate(Enna_Kbdnav *nav); */

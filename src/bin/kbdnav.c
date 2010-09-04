@@ -149,7 +149,13 @@ Eina_Bool enna_kbdnav_current_set(Enna_Kbdnav *nav, void *obj)
     return EINA_TRUE;
 }
 
+void *enna_kbdnav_current_get(Enna_Kbdnav *nav)
+{  
+    if (!nav || !nav->current)
+        return NULL;
 
+    return nav->current->obj;
+}
 
 Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
 { 
