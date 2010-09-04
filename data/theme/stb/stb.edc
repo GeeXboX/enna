@@ -3,6 +3,8 @@ collections
    group { name: "enna/main/layout";
       images {
          image: "bg.png" COMP;
+         image: "bg_tile.png" COMP;
+         image: "menu_bg.png" COMP;
       }
       parts {
          /* background  */
@@ -13,16 +15,41 @@ collections
                image {
                   normal: "bg.png";
                }
+            }
+         }
+         part {
+            type: IMAGE;
+            description {
+               state: "default" 0.0;
+               image {
+                  normal: "bg_tile.png";
+               }
+               fill {
+                  size {
+                     relative: 0.0 0.0;
+                     offset: 20 20;
+                  }  
+               }
+            }
+         }
+         part {
+            type: IMAGE;
+            description {
+               state: "default" 0.0;
+               rel1.relative: 0 1;
+               rel1.offset: 0 -288;
+               image {
+                  normal: "menu_bg.png";
+               }
+               fill {
+                  size {
+                     relative: 0.0 1.0;
+                     offset: 20 0;
+                  }  
+               }
 
             }
          }
-
-         /* part { name: "enna.background.swallow"; */
-         /*    type: SWALLOW; */
-         /*    mouse_events: 0; */
-         /*    description { state: "default" 0.0; } */
-         /* } */
-
       }
       programs {
         
