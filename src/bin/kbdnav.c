@@ -24,8 +24,6 @@
 
 #include <Evas.h>
 
-
-
 typedef struct _Enna_Kbdnav_Item Enna_Kbdnav_Item;
 
 enum _Kbdnav_Direction
@@ -50,10 +48,11 @@ struct _Enna_Kbdnav_Item
     void  (*activate_set)(void *item_data, void *user_data);
     void *user_data;
 };
+
 Enna_Kbdnav * enna_kbdnav_add(Enna_Kbdnav_Class *class)
 {
     Enna_Kbdnav *nav;
-    
+
     nav = calloc(1, sizeof(Enna_Kbdnav));
 
     return nav;
@@ -61,14 +60,12 @@ Enna_Kbdnav * enna_kbdnav_add(Enna_Kbdnav_Class *class)
 
 void enna_kbdnav_del(Enna_Kbdnav *nav)
 {
-
     if (!nav)
         return;
 
     eina_list_free(nav->items);
 
     free(nav);
-
 }
 
 
@@ -120,7 +117,6 @@ void enna_kbdnav_item_del(Enna_Kbdnav *nav, void *obj)
             return;
         }
     }
-
 }
 
 Eina_Bool enna_kbdnav_current_set(Enna_Kbdnav *nav, void *obj)
@@ -140,17 +136,16 @@ Eina_Bool enna_kbdnav_current_set(Enna_Kbdnav *nav, void *obj)
         }
     }
 
-   
     if (!current)
         return EINA_FALSE;
-    else 
+    else
         nav->current = current;
 
     return EINA_TRUE;
 }
 
 void *enna_kbdnav_current_get(Enna_Kbdnav *nav)
-{  
+{
     if (!nav || !nav->current)
         return NULL;
 
@@ -158,7 +153,7 @@ void *enna_kbdnav_current_get(Enna_Kbdnav *nav)
 }
 
 Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
-{ 
+{
     Evas_Coord cx = 0, cy = 0, cw = 0, ch = 0;
     Evas_Coord x, y, w, h;
     Eina_List *l;
@@ -167,7 +162,6 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
     Enna_Kbdnav_Item *previous;
     Enna_Kbdnav_Item *next = NULL;
     unsigned int cd = UINT32_MAX ;
-
 
     if (!nav)
         return EINA_FALSE;
@@ -182,7 +176,6 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
         cy += ch / 2;
     }
 
-
     EINA_LIST_FOREACH(nav->items, l, it)
     {
         int d;
@@ -194,7 +187,7 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
         if (!evas_object_visible_get(obj) || evas_object_pass_events_get(obj))
             continue;
         evas_object_geometry_get(obj, &x, &y, &w, &h);
- 
+
         y += h / 2;
         x += h / 2;
 
@@ -207,7 +200,7 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
                 continue;
             else
             {
-                d = (cx - x)*(cx -x) + (cy - y)*(cy - y); 
+                d = (cx - x)*(cx -x) + (cy - y)*(cy - y);
                 if (d < cd && y < cy)
                 {
                     next = it;
@@ -222,7 +215,7 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
                 continue;
             else
             {
-                d = (cx - x)*(cx -x) + (cy - y)*(cy - y);  
+                d = (cx - x)*(cx -x) + (cy - y)*(cy - y);
                 if (d < cd && x > cx)
                 {
                     next = it;
@@ -253,25 +246,22 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
             else
             {
 
-                d = (cx - x)*(cx -x) + (cy - y)*(cy - y);  
+                d = (cx - x)*(cx -x) + (cy - y)*(cy - y);
                 if (d < cd && x < cx)
                 {
                     next = it;
                     cd = d;
                 }
             }
-
             break;
         default:
             break;
         }
-
-	
     }
 
     if (next)
     {
-      
+
         next->select_set(next->obj, next->user_data);
         nav->current = next;
         //it->unselect_set(it->obj, it->user_data);
@@ -279,7 +269,6 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
     }
     else
         nav->current = previous;
-
 
     return EINA_FALSE;
 }
