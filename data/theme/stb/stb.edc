@@ -50,6 +50,15 @@ collections
 
             }
          }
+         part {
+            name: "enna.mainmenu.swallow";
+            type: SWALLOW;
+            description {
+               rel1.relative: 0 1;
+               rel1.offset: 0 -199;
+            }
+         }
+
       }
       programs {
         
