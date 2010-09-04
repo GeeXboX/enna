@@ -384,8 +384,20 @@ enna_wall_select_nth(Evas_Object *obj, int col, int row)
 
 void *
 enna_wall_selected_data_get(Evas_Object *obj)
-{    
-    return NULL;
+{       
+    Smart_Data *sd;
+    Picture_Item *pi;
+
+    if (!obj)
+        return NULL;
+
+    sd = evas_object_data_get(obj, "sd");
+    pi = enna_kbdnav_current_get(sd->nav);
+
+    if (pi)
+        return pi->data;
+    else
+        return NULL;
 }
 
 const char *
