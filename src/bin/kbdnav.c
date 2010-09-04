@@ -49,7 +49,8 @@ struct _Enna_Kbdnav_Item
     void *user_data;
 };
 
-Enna_Kbdnav * enna_kbdnav_add(Enna_Kbdnav_Class *class)
+Enna_Kbdnav *
+enna_kbdnav_add(Enna_Kbdnav_Class *class)
 {
     Enna_Kbdnav *nav;
 
@@ -58,7 +59,8 @@ Enna_Kbdnav * enna_kbdnav_add(Enna_Kbdnav_Class *class)
     return nav;
 }
 
-void enna_kbdnav_del(Enna_Kbdnav *nav)
+void 
+enna_kbdnav_del(Enna_Kbdnav *nav)
 {
     if (!nav)
         return;
@@ -69,7 +71,9 @@ void enna_kbdnav_del(Enna_Kbdnav *nav)
 }
 
 
-void enna_kbdnav_item_add(Enna_Kbdnav *nav, void *obj, Enna_Kbdnav_Class *class, void *user_data)
+void 
+enna_kbdnav_item_add(Enna_Kbdnav *nav, void *obj, 
+                     Enna_Kbdnav_Class *class, void *user_data)
 {
     Enna_Kbdnav_Item *it;
 
@@ -102,7 +106,8 @@ void enna_kbdnav_item_add(Enna_Kbdnav *nav, void *obj, Enna_Kbdnav_Class *class,
     nav->items = eina_list_append(nav->items, it);
 }
 
-void enna_kbdnav_item_del(Enna_Kbdnav *nav, void *obj)
+void 
+enna_kbdnav_item_del(Enna_Kbdnav *nav, void *obj)
 {
     Enna_Kbdnav_Item *it;
     Eina_List *l;
@@ -119,7 +124,8 @@ void enna_kbdnav_item_del(Enna_Kbdnav *nav, void *obj)
     }
 }
 
-Eina_Bool enna_kbdnav_current_set(Enna_Kbdnav *nav, void *obj)
+Eina_Bool 
+enna_kbdnav_current_set(Enna_Kbdnav *nav, void *obj)
 {
     Enna_Kbdnav_Item *current = NULL;
     Eina_List *l;
@@ -144,7 +150,8 @@ Eina_Bool enna_kbdnav_current_set(Enna_Kbdnav *nav, void *obj)
     return EINA_TRUE;
 }
 
-void *enna_kbdnav_current_get(Enna_Kbdnav *nav)
+void *
+enna_kbdnav_current_get(Enna_Kbdnav *nav)
 {
     if (!nav || !nav->current)
         return NULL;
@@ -152,7 +159,8 @@ void *enna_kbdnav_current_get(Enna_Kbdnav *nav)
     return nav->current->obj;
 }
 
-Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
+static Eina_Bool 
+_kbdnav_direction(Enna_Kbdnav *nav, int direction)
 {
     Evas_Coord cx = 0, cy = 0, cw = 0, ch = 0;
     Evas_Coord x, y, w, h;
@@ -273,28 +281,33 @@ Eina_Bool enna_kbdnav_direction(Enna_Kbdnav *nav, int direction)
     return EINA_FALSE;
 }
 
-Eina_Bool enna_kbdnav_up(Enna_Kbdnav *nav)
+Eina_Bool 
+enna_kbdnav_up(Enna_Kbdnav *nav)
 {
-    return enna_kbdnav_direction(nav, UP);
+    return _kbdnav_direction(nav, UP);
 }
 
-Eina_Bool enna_kbdnav_right(Enna_Kbdnav *nav)
+Eina_Bool 
+enna_kbdnav_right(Enna_Kbdnav *nav)
 {
-    return enna_kbdnav_direction(nav, RIGHT);
+    return _kbdnav_direction(nav, RIGHT);
 }
 
-Eina_Bool enna_kbdnav_down(Enna_Kbdnav *nav)
+Eina_Bool 
+enna_kbdnav_down(Enna_Kbdnav *nav)
 {
-    return enna_kbdnav_direction(nav, DOWN);
+    return _kbdnav_direction(nav, DOWN);
 }
 
 
-Eina_Bool enna_kbdnav_left(Enna_Kbdnav *nav)
+Eina_Bool 
+enna_kbdnav_left(Enna_Kbdnav *nav)
 {
-    return enna_kbdnav_direction(nav, LEFT);
+    return _kbdnav_direction(nav, LEFT);
 }
 
-void enna_kbdnav_activate(Enna_Kbdnav *nav)
+void 
+enna_kbdnav_activate(Enna_Kbdnav *nav)
 {
     if (!nav || !nav->current || !nav->current->activate_set)
         return;
