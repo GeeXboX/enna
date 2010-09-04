@@ -1,1 +1,1 @@
-SUBDIRS = default tablet
+SUBDIRS = default stb tablet

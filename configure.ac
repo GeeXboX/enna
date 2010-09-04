@@ -747,6 +747,20 @@ if test "x$want_theme_default" = "xyes"; then
   AC_DEFINE(BUILD_THEME_DEFAULT, 1, [Default Theme])
 fi
 
+# Set Top Box theme
+want_theme_stb="yes"
+AC_MSG_CHECKING(whether Stb Theme is to be built)
+AC_ARG_ENABLE(theme_stb,
+  AS_HELP_STRING([--enable-theme-stb],[Enable Stb Theme]),
+  [ want_theme_stb=$enableval ]
+)
+AC_MSG_RESULT($want_theme_stb)
+AM_CONDITIONAL(BUILD_THEME_STB, test "x$want_theme_stb" = "xyes")
+if test "x$want_theme_stb" = "xyes"; then
+  AC_DEFINE(BUILD_THEME_STB, 1, [Stb Theme])
+fi
+
+
 # Tablet (and other touchscreen embedded devices) Theme
 want_theme_tablet="no"
 AC_MSG_CHECKING(whether tablet theme is to be built)
@@ -807,6 +821,7 @@ data/Makefile
 data/other/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
+data/theme/stb/Makefile
 data/theme/tablet/Makefile
 ])
 
@@ -887,6 +902,7 @@ echo
 echo "Suppported Themes:"
 echo
 echo "  default.......................... : $want_theme_default"
+echo "  stb.............................. : $want_theme_stb"
 echo "  tablet........................... : $want_theme_tablet"
 echo
 echo "Now type 'make' ('gmake' on some systems) to compile $PACKAGE."
