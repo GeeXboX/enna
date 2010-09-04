@@ -54,6 +54,7 @@
 #include "gadgets.h"
 
 #define EDJE_GROUP_MAIN_LAYOUT "enna/main/layout"
+#define EDJE_PART_MAINMENU_SWALLOW "enna.mainmenu.swallow"
 
 /* seconds after which the mouse pointer disappears*/
 #define ENNA_MOUSE_IDLE_TIMEOUT 10
@@ -360,7 +361,7 @@ static int _create_gui(void)
 
     // mainmenu
     enna->o_menu = enna_mainmenu_add(enna->win);
-    elm_layout_content_set(enna->layout, "enna.mainmenu.swallow", enna->o_menu);
+    elm_layout_content_set(enna->layout, EDJE_PART_MAINMENU_SWALLOW, enna->o_menu);
     enna_mainmenu_show(enna->o_menu);
 
     // exit dialog
