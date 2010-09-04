@@ -286,9 +286,20 @@ _kbdnav_select_set(void *item_data, void *user_data)
   elm_gengrid_item_selected_set(pi->item, EINA_TRUE);
 }
 
+static void
+_kbdnav_activate_set(void *item_data, void *user_data)
+{
+  Picture_Item *pi = item_data;
+
+  if (!pi)
+    return;
+  _item_activate(pi->item);
+}
+
 static Enna_Kbdnav_Class ekc = {
   _kbdnav_object_get,
-  _kbdnav_select_set
+  _kbdnav_select_set,
+  _kbdnav_activate_set
 };
 
 void
@@ -355,12 +366,10 @@ enna_wall_input_feed(Evas_Object *obj, enna_input ev)
        enna_kbdnav_down(sd->nav);
         return ENNA_EVENT_BLOCK;
         break;
-    /* case ENNA_INPUT_OK: */
-    /*     pi = _smart_selected_item_get(sd, NULL, NULL); */
-    /*     if (pi && pi->func_activated) */
-    /*         pi->func_activated(pi->data); */
-    /*     return ENNA_EVENT_BLOCK; */
-    /*     break; */
+    case ENNA_INPUT_OK:
+        enna_kbdnav_activate(sd->nav);
+        return ENNA_EVENT_BLOCK;
+        break;
     default:
         break;
     }
@@ -375,8 +384,8 @@ enna_wall_select_nth(Evas_Object *obj, int col, int row)
 
 void *
 enna_wall_selected_data_get(Evas_Object *obj)
-{
-	return NULL;
+{    
+    return NULL;
 }
 
 const char *

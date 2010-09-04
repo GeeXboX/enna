@@ -47,6 +47,7 @@ struct _Enna_Kbdnav_Item
     void *obj;
     const Evas_Object *(*object_get)(void *item_data, void *user_data);
     void  (*select_set)(void *item_data, void *user_data);
+    void  (*activate_set)(void *item_data, void *user_data);
     void *user_data;
 };
 Enna_Kbdnav * enna_kbdnav_add(Enna_Kbdnav_Class *class)
@@ -88,10 +89,17 @@ void enna_kbdnav_item_add(Enna_Kbdnav *nav, void *obj, Enna_Kbdnav_Class *class,
         ERR("select_set is NULL");
         return;
     }
+
+    if (!class->activate_set)
+    {
+        DBG("activate_set is NULL");
+    }
+
     it = calloc(1, sizeof(Enna_Kbdnav_Item));
     it->obj = obj;
     it->object_get = class->object_get;
     it->select_set = class->select_set;
+    it->activate_set = class->activate_set;
     it->user_data = user_data;
 
     nav->items = eina_list_append(nav->items, it);
@@ -291,3 +299,10 @@ Eina_Bool enna_kbdnav_left(Enna_Kbdnav *nav)
     return enna_kbdnav_direction(nav, LEFT);
 }
 
+void enna_kbdnav_activate(Enna_Kbdnav *nav)
+{
+    if (!nav || !nav->current || !nav->current->activate_set)
+        return;
+    DBG("Kbdnav Activate");
+    nav->current->activate_set(nav->current->obj, nav->current->user_data);
+}

@@ -34,6 +34,7 @@ struct _Enna_Kbdnav_Class
 {
     const Evas_Object *(*object_get)(void *item_data, void *user_data);
     void  (*select_set)(void *item_data, void *user_data);
+    void  (*activate_set)(void *item_data, void *user_data);
 };
 
 Enna_Kbdnav *enna_kbdnav_add();
@@ -51,7 +52,7 @@ Eina_Bool enna_kbdnav_up(Enna_Kbdnav *nav);
 Eina_Bool enna_kbdnav_down(Enna_Kbdnav *nav);
 Eina_Bool enna_kbdnav_left(Enna_Kbdnav *nav);
 Eina_Bool enna_kbdnav_right(Enna_Kbdnav *nav);
-
+void enna_kbdnav_activate(Enna_Kbdnav *nav);
 
 
 #endif /* KBDNAV_H */
