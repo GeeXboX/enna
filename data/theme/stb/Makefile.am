@@ -23,7 +23,9 @@ EDC = \
 stb.edc 
 
 IMGS = \
-images/bg.png
+images/bg.png \
+images/bg_tile.png \
+images/menu_bg.png
 
 EXTRA_DIST = \
 	$(FONTS) \
