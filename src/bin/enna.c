@@ -53,6 +53,8 @@
 #include "geoip.h"
 #include "gadgets.h"
 
+#define EDJE_GROUP_MAIN_LAYOUT "enna/main/layout"
+
 /* seconds after which the mouse pointer disappears*/
 #define ENNA_MOUSE_IDLE_TIMEOUT 10
 
@@ -347,7 +349,11 @@ static int _create_gui(void)
     
     // main layout widget
     enna->layout = elm_layout_add(enna->win);
-    elm_layout_file_set(enna->layout, enna_config_theme_get(), "enna/main/layout");
+    if (!elm_layout_file_set(enna->layout, enna_config_theme_get(), EDJE_GROUP_MAIN_LAYOUT))
+    {
+        CRIT("Unable to find group \"%s\" in theme %s", EDJE_GROUP_MAIN_LAYOUT, enna_config_theme_get());
+        return 0;
+    }
     evas_object_size_hint_weight_set(enna->layout, 1.0, 1.0);
     elm_win_resize_object_add(enna->win, enna->layout);
     evas_object_show(enna->layout);
