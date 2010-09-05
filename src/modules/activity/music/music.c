@@ -181,6 +181,12 @@ panel_lyrics_display(int show)
     {
         Enna_Metadata *m;
 
+	mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
+	
+	o_edje = elm_layout_edje_get(mod->o_layout);
+	elm_layout_content_set(mod->o_layout,
+                           "lyrics.panel.swallow", mod->o_panel_lyrics);
+
         m = enna_mediaplayer_metadata_get(mod->enna_playlist);
         enna_panel_lyrics_set_text(mod->o_panel_lyrics, m);
         edje_object_signal_emit(o_edje, "lyrics,show", "enna");
@@ -188,8 +194,7 @@ panel_lyrics_display(int show)
     }
     else
     {
-        enna_panel_lyrics_set_text(mod->o_panel_lyrics, NULL);
-        edje_object_signal_emit(o_edje, "lyrics,hide", "enna");
+	ENNA_OBJECT_DEL(mod->o_panel_lyrics);
         mod->lyrics_displayed = 0;
     }
 }
@@ -354,12 +359,6 @@ _create_menu()
                                    _browser_root_cb, NULL);
     elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
 
-    ENNA_OBJECT_DEL(mod->o_panel_lyrics);
-    mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
-
-    o_edje = elm_layout_edje_get(mod->o_layout);
-    elm_layout_content_set(mod->o_layout,
-                           "lyrics.panel.swallow", mod->o_panel_lyrics);
 }
 
 static void
