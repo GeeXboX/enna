@@ -6,7 +6,7 @@ MAINTAINERCLEANFILES = Makefile.in
 EDJE_CC = edje_cc
 
 EDJE_FLAGS = \
--id $(top_srcdir)/data/theme/stb/images -id $(top_srcdir)/data/theme/stb/gadgets/date/images\
+-id $(top_srcdir)/data/theme/stb/images -id $(top_srcdir)/data/theme/stb/gadgets/date/images -id $(top_srcdir)/data/theme/stb/elm \
 -fd $(top_srcdir)/data/theme/stb/fonts
 
 stbdir = $(pkgdatadir)/theme
