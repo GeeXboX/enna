@@ -103,8 +103,6 @@ _grid_item_icon_get(const void *data, Evas_Object *obj, const char *part)
                     ic = elm_thumb_add(obj);
                     printf("file set : %s\n", pi->file->mrl + 7);
 
-                    elm_object_style_set(ic, "enna");
-
                     elm_thumb_file_set(ic, pi->file->mrl + 7, NULL);
                     evas_object_show(ic);
 
@@ -143,7 +141,7 @@ _item_remove(Evas_Object *obj, Picture_Item *item)
 }
 
 static Elm_Gengrid_Item_Class gic = {
-    "enna",
+    "default",
     {
         _grid_item_label_get,
         _grid_item_icon_get,
@@ -240,7 +238,6 @@ enna_wall_add(Evas_Object * parent)
     elm_gengrid_bounce_set(sd->o_grid, EINA_TRUE, EINA_FALSE);
 
     evas_object_data_set(sd->o_grid, "sd", sd);
-    elm_object_style_set(sd->o_grid, "enna");
     evas_object_smart_callback_add(sd->o_grid, "realized", _item_realized_cb, sd);
     evas_object_event_callback_add(sd->o_grid, EVAS_CALLBACK_DEL, _del_cb, sd);
     evas_object_event_callback_add(sd->o_grid, EVAS_CALLBACK_RESIZE, _resize_cb, sd);
