@@ -35,6 +35,8 @@
 
 #define SMART_NAME "enna_box"
 
+#define EDJE_GROUP_BOX_LAYOUT "enna/box/layout"
+
 typedef struct _Smart_Data Smart_Data;
 typedef struct _Smart_Item Smart_Item;
 
@@ -475,12 +477,16 @@ enna_box_add(Evas_Object *parent, const char *style)
     sd->style = eina_stringshare_add(style);
 
     if (sd->style)
-        snprintf(tmp_style, sizeof(tmp_style), "enna/box/layout/%s", sd->style);
+        snprintf(tmp_style, sizeof(tmp_style), EDJE_GROUP_BOX_LAYOUT"/%s", sd->style);
     else
-        snprintf(tmp_style, sizeof(tmp_style), "enna/box/layout/default");
+        snprintf(tmp_style, sizeof(tmp_style), EDJE_GROUP_BOX_LAYOUT"/default");
 
     sd->o_layout = elm_layout_add(parent);
-    elm_layout_file_set(sd->o_layout, enna_config_theme_get(), tmp_style);
+    if (!elm_layout_file_set(sd->o_layout, enna_config_theme_get(), tmp_style))
+    { 
+        CRIT("Unable to find group \"%s\" in theme %s", tmp_style, enna_config_theme_get());
+        return NULL;
+    }
     o_edje = elm_layout_edje_get(sd->o_layout);
     evas_object_show(sd->o_layout);
 
