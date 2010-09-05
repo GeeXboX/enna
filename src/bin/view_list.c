@@ -162,7 +162,7 @@ _list_item_del(const void *data, Evas_Object *obj)
 }
 
 static Elm_Genlist_Item_Class itc_list = {
-    "enna",
+    "default",
     {
         _list_item_label_get,
         _list_item_icon_get,
@@ -237,7 +237,6 @@ enna_list_add(Evas_Object *parent)
     sd = calloc(1, sizeof(Smart_Data));
 
     obj = elm_genlist_add(parent);
-    elm_object_style_set(obj, "enna");
 
     evas_object_size_hint_weight_set(obj, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_genlist_horizontal_mode_set(obj, ELM_LIST_COMPRESS);
