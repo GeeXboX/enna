@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////
-group { name: "elm/scroller/base/enna";
-      alias: "elm/list/base/enna";
-      alias: "elm/genlist/base/enna";
-      alias: "elm/gengrid/base/enna";
+group { name: "elm/scroller/base/default";
+      alias: "elm/list/base/default";
+      alias: "elm/genlist/base/default";
+      alias: "elm/gengrid/base/default";
    script {
       public sbvis_v, sbvis_h, sbalways_v, sbalways_h, sbvis_timer;
       public timer0(val) {
@@ -1156,8 +1156,8 @@ group { name: "elm/button/base/default";
    }
 }
 ///////////////////////////////////////////////////////////////////////////////
-group { name: "elm/genlist/item/enna/default";
-   alias: "elm/genlist/item_odd/enna/default";
+group { name: "elm/genlist/item/default/default";
+   alias: "elm/genlist/item_odd/default/default";
    alias: "elm/genlist/item/view_list2/default";
    alias: "elm/genlist/item_odd/view_list2/default";
    data.item: "stacking" "above";
@@ -2433,7 +2433,7 @@ group { name: "elm/win/inwin/enna_minimal";
    }
 }
 
-group { name: "elm/win/inwin/enna";
+group { name: "elm/win/inwin/default";
    parts {
       part {
          name: "clip";
