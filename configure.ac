@@ -809,6 +809,8 @@ src/modules/browser/upnp/Makefile
 src/modules/browser/valhalla/Makefile
 src/modules/gadgets/Makefile
 src/modules/gadgets/weather/Makefile
+src/modules/gadgets/date/Makefile
+src/modules/gadgets/dummy/Makefile
 src/modules/input/Makefile
 src/modules/input/kbd/Makefile
 src/modules/input/lirc/Makefile
