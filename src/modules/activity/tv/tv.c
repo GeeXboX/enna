@@ -41,6 +41,7 @@
 typedef struct _Enna_Module_Tv
 {
     Evas *e;
+    Evas_Object *o_layout;
     Evas_Object *edje;
     Enna_Playlist *enna_playlist;
     Enna_Module *em;
@@ -68,14 +69,14 @@ static Enna_Module_Tv *mod;
 /*                         Private Module API                                */
 /*****************************************************************************/
 
-static void _class_init(int dummy)
+static void _class_init()
 {
-    mod->edje = edje_object_add (enna->evas);
-    edje_object_file_set (mod->edje, enna_config_theme_get (), "activity/tv");
-    enna_content_append (ENNA_MODULE_NAME, mod->edje);
+    mod->o_layout = elm_layout_add(enna->layout);
+    elm_layout_file_set(mod->o_layout, enna_config_theme_get (), "activity/tv");
+    enna_content_append (ENNA_MODULE_NAME, mod->o_layout);
 }
 
-static const char* _class_quit_request(int dummy)
+static const char* _class_quit_request()
 {
 #ifdef BUILD_LIBSVDRP
     int ret;
@@ -119,19 +120,19 @@ static const char* _class_quit_request(int dummy)
     return NULL;
 }
 
-static void _class_show(int dummy)
+static void _class_show()
 {
     enna_content_select(ENNA_MODULE_NAME);
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "starting playback");
     enna_mediaplayer_play(mod->enna_playlist);
-    edje_object_signal_emit (mod->edje, "tv,show", "enna");
+    edje_object_signal_emit (elm_layout_edje_get(mod->o_layout), "tv,show", "enna");
 }
 
-static void _class_hide(int dummy)
+static void _class_hide()
 {
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "stopping playback");
     enna_mediaplayer_stop();
-    edje_object_signal_emit (mod->edje, "tv,hide", "enna");
+    edje_object_signal_emit (elm_layout_edje_get(mod->o_layout), "tv,hide", "enna");
 }
 
 static void _class_event(enna_input event)
@@ -156,6 +157,7 @@ static Enna_Class_Activity class =
     NULL,
     "icon/dev/tv",
     "background/tv",
+    ENNA_CAPS_NONE,
     {
     _class_init,
     _class_quit_request,
@@ -163,8 +165,7 @@ static Enna_Class_Activity class =
     _class_show,
     _class_hide,
     _class_event
-    },
-    NULL
+    }
 };
 
 #ifdef BUILD_LIBSVDRP
@@ -288,9 +289,9 @@ static Enna_Config_Section_Parser cfg_tv = {
     cfg_tv_free,
 };
 
-/*****************************************************************************/
-/*                          Public Module API                                */
-/*****************************************************************************/
+/****************************************************************************/
+/*                         Public Module API                                */
+/****************************************************************************/
 
 #ifdef USE_STATIC_MODULES
 #undef MOD_PREFIX
@@ -304,8 +305,9 @@ module_init(Enna_Module *em)
         return;
 
     if (!enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_VDR) ||
-        !enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_NETVDR))
+        !enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_NETVDR)) {
         return;
+    }
 
     enna_config_section_parser_register(&cfg_tv);
     cfg_tv_section_set_default();
@@ -314,9 +316,16 @@ module_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Tv));
     mod->em = em;
     em->mod = mod;
-
+    
+    enna_activity_register(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
-    enna_mediaplayer_uri_append(mod->enna_playlist, tv_cfg.vdr_uri, "vdr");
+    
+    Enna_Vfs_File *it;
+    it = calloc (1, sizeof(Enna_Vfs_File));
+    it->uri = (char*)eina_stringshare_add (tv_cfg.vdr_uri);
+    it->label = (char*)eina_stringshare_add ("vdr");
+    
+    enna_mediaplayer_file_append(mod->enna_playlist, it);
 
 #ifdef BUILD_LIBSVDRP
     if (strstr(tv_cfg.vdr_uri, "vdr:/"))
@@ -342,8 +351,6 @@ module_init(Enna_Module *em)
                                      tv_cfg.svdrp_port,
                                      tv_cfg.svdrp_timeout, tv_cfg.svdrp_verb);
 #endif /* BUILD_LIBSVDRP */
-
-    enna_activity_add(&class);
 }
 
 static void
@@ -352,8 +359,8 @@ module_shutdown(Enna_Module *em)
     if (!mod)
         return;
 
-    enna_activity_del(ENNA_MODULE_NAME);
-    ENNA_OBJECT_DEL (mod->edje);
+    enna_activity_unregister(&class);
+    ENNA_OBJECT_DEL (mod->o_layout);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
 #ifdef BUILD_LIBSVDRP
     enna_svdrp_uninit();
