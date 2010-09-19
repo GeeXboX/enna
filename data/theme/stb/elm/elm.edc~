@@ -5,7 +5,8 @@ group { name: "elm/scroller/base/enna";
       alias: "elm/gengrid/base/enna";
    script {
       public sbvis_v, sbvis_h, sbalways_v, sbalways_h, sbvis_timer;
-      public timer0(val) {
+      public timer0(val)
+ {
          new v;
          v = get_int(sbvis_v);
          if (v) {
@@ -436,5 +437,3 @@ group { name: "elm/scroller/base/enna";
       }
    }
 }
-
-///////////////////////////////////////////////////////////////////////////////
