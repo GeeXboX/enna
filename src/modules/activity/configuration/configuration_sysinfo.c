@@ -557,9 +557,9 @@ get_default_gw(Enna_Buffer *b)
     seq = 0;
     rtm_addrs = RTA_DST | RTA_NETMASK;
 
-    bzero(&so_dst, sizeof(so_dst));
-    bzero(&so_mask, sizeof(so_mask));
-    bzero(&rtm, sizeof(struct rt_msghdr));
+    memset(&so_dst,  0, sizeof(so_dst));
+    memset(&so_mask, 0, sizeof(so_mask));
+    memset(&rtm,     0, sizeof(struct rt_msghdr));
 
     rtm.rtm_type = RTM_GET;
     rtm.rtm_flags = RTF_UP | RTF_GATEWAY;
