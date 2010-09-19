@@ -241,7 +241,7 @@ get_cpuinfos(Enna_Buffer *b)
 
     for (i = 0; i < nbcpu; i++)
     {
-        snprintf(buf, 256, "dev.cpu.%d.freq", i);
+        snprintf(buf, sizeof(buf), "dev.cpu.%d.freq", i);
         len = sizeof(freq);
 
         if (sysctlbyname(buf, &freq, &len, NULL, 0))
