@@ -4632,7 +4632,7 @@ group { name: "elm/photocam/base/default";
       }
    }
    ///////////////////////////////////////////////////////////////////////////////
-   group { name: "elm/gengrid/item/enna/default";
+   group { name: "elm/gengrid/item/default/default";
       data.item: "labels" "elm.text";
       data.item: "icons" "elm.swallow.icon elm.swallow.end";
       images {
