@@ -35,7 +35,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#if defined(__FreeBSD__)
+#ifdef __FreeBSD__
 #include <sys/sysctl.h>
 #endif
 
@@ -72,7 +72,7 @@
 #define DISTRIB_RELEASE "DISTRIB_RELEASE="
 #define DISTRIB_RELEASE_LEN strlen (DISTRIB_RELEASE)
 
-#define ENNA_MODULE_NAME "sysinfo" // NEEDED ??
+#define ENNA_MODULE_NAME "sysinfo"
 
 #define STR_CPU "processor"
 #define STR_MODEL "model name"
@@ -106,15 +106,16 @@ set_enna_information(Enna_Buffer *b)
 #ifndef BUILD_BACKEND_EMOTION
     ver = libplayer_version();
     enna_buffer_appendf(b, "</hilight> %s<br>"
-                      "<hilight>libplayer:</hilight> %u.%u.%u<br>",
-                   VERSION, ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
-#endif
+                       "<hilight>libplayer:</hilight> %u.%u.%u<br>",
+                       VERSION, ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
+#endif /* BUILD_BACKEND_EMOTION */
     ver = libvalhalla_version();
     enna_buffer_appendf(b, "<hilight>libvalhalla:</hilight> %u.%u.%u<br>",
                    ver >> 16, ver >> 8 & 0xFF, ver & 0xFF);
 #ifdef BUILD_LIBSVDRP
-    enna_buffer_appendf(b, "<hilight>libsvdrp:</hilight> %s<br>", LIBSVDRP_VERSION);
-#endif
+    enna_buffer_appendf(b, "<hilight>libsvdrp:</hilight> %s<br>",
+                        LIBSVDRP_VERSION);
+#endif /* BUILD_LIBSVDRP */
     enna_buffer_append(b, "<hilight>");
     enna_buffer_append(b, _("Video renderer:"));
     enna_buffer_appendf(b, "</hilight> %s<br>", enna_config->engine);
@@ -183,12 +184,12 @@ get_distribution(Enna_Buffer *b)
         enna_buffer_appendf(b, "%s %s", lsb_distrib_id, lsb_release);
     else if (id && release)
         enna_buffer_appendf(b, "%s %s", id, release);
-	else
-#if defined(__FreeBSD__)
+    else
+#ifdef __FreeBSD__
         enna_buffer_append(b, "FreeBSD");
-#else
+#else /* __FreeBSD__ */
         enna_buffer_append(b, BUF_DEFAULT);
-#endif
+#endif /* !__FreeBSD__ */
     enna_buffer_append(b, "<br>");
 
     if (id)
@@ -220,35 +221,37 @@ get_uname(Enna_Buffer *b)
 static void
 get_cpuinfos(Enna_Buffer *b)
 {
-#if defined(__FreeBSD__)
-	int nbcpu = 0, i, freq;
-	char cpu_model[256];
-	size_t len;
-	char buf[256];
+#ifdef __FreeBSD__
+    int nbcpu = 0, i, freq;
+    char cpu_model[256];
+    size_t len;
+    char buf[256];
 
-	len = sizeof(cpu_model);
-	if (sysctlbyname("hw.model", &cpu_model, &len, NULL, 0))
-		return;
+    len = sizeof(cpu_model);
+    if (sysctlbyname("hw.model", &cpu_model, &len, NULL, 0))
+        return;
 
-	len = sizeof(nbcpu);
-	if (sysctlbyname("hw.ncpu", &nbcpu, &len, NULL, 0))
-		return;
+    len = sizeof(nbcpu);
+    if (sysctlbyname("hw.ncpu", &nbcpu, &len, NULL, 0))
+        return;
 
     enna_buffer_append(b, "<hilight>");
     enna_buffer_append(b, _("Available CPUs:"));
     enna_buffer_append(b, "</hilight><br>");
 
-	for (i = 0; i < nbcpu; i++) {
-		snprintf(buf, 256, "dev.cpu.%d.freq", i);
-		len = sizeof(freq);
+    for (i = 0; i < nbcpu; i++)
+    {
+        snprintf(buf, 256, "dev.cpu.%d.freq", i);
+        len = sizeof(freq);
 
-		if (sysctlbyname(buf, &freq, &len, NULL, 0))
-			continue;
+        if (sysctlbyname(buf, &freq, &len, NULL, 0))
+            continue;
 
-		enna_buffer_appendf(b, " * CPU #%d: %s, running at %dMHz<br>", i, cpu_model, freq);
-	}
+        enna_buffer_appendf(b, " * CPU #%d: %s, running at %dMHz<br>",
+                            i, cpu_model, freq);
+    }
 
-#else
+#else /* __FreeBSD__ */
     FILE *f;
     char buf[256] = { 0 };
 
@@ -294,25 +297,25 @@ get_cpuinfos(Enna_Buffer *b)
     }
 
     fclose(f);
-#endif
+#endif /* !__FreeBSD__ */
 }
 
 static void
 get_loadavg(Enna_Buffer *b)
 {
     float load;
-#if defined(__FreeBSD__)
-	double loadavg[3];
+#ifdef __FreeBSD__
+    double loadavg[3];
 
-	if (getloadavg(loadavg, 3) == -1)
-		return;
+    if (getloadavg(loadavg, 3) == -1)
+        return;
 
-	load = loadavg[0] * 100.0;
+    load = loadavg[0] * 100.0;
 
-	enna_buffer_append(b, "<hilight>");
-	enna_buffer_append(b, _("CPU Load:"));
-	enna_buffer_appendf(b, "</hilight> %d%%<br>", (int) load);
-#else
+    enna_buffer_append(b, "<hilight>");
+    enna_buffer_append(b, _("CPU Load:"));
+    enna_buffer_appendf(b, "</hilight> %d%%<br>", (int) load);
+#else /* __FreeBSD__ */
     FILE *f;
     char buf[256] = { 0 };
     char *ld, *x;
@@ -338,35 +341,34 @@ get_loadavg(Enna_Buffer *b)
         free(ld);
     if (f)
         fclose(f);
-#endif
+#endif /* !__FreeBSD__ */
 }
 
 static void
 get_ram_usage(Enna_Buffer *b)
 {
-#if defined(__FreeBSD__)
-	int mem_total = 0, mem_active = 0;
-	int page_size;
-	size_t len;
+#ifdef __FreeBSD__
+    int mem_total = 0, mem_active = 0;
+    int page_size;
+    size_t len;
 
-	len = sizeof(mem_total);
-	if (sysctlbyname("hw.physmem", &mem_total, &len, NULL, 0))
-		return;
+    len = sizeof(mem_total);
+    if (sysctlbyname("hw.physmem", &mem_total, &len, NULL, 0))
+        return;
 
-	mem_total = mem_total / 1024 / 1024;
+    mem_total = mem_total / 1024 / 1024;
 
-	len = sizeof(mem_active);
+    len = sizeof(mem_active);
 
-	if (sysctlbyname("vm.stats.vm.v_active_count", &mem_active, &len, NULL, 0))
-		return;
+    if (sysctlbyname("vm.stats.vm.v_active_count", &mem_active, &len, NULL, 0))
+        return;
 
-	len = sizeof(page_size);
-	if (sysctlbyname("hw.pagesize", &page_size, &len, NULL, 0))
-		return;
+    len = sizeof(page_size);
+    if (sysctlbyname("hw.pagesize", &page_size, &len, NULL, 0))
+        return;
 
-	mem_active = mem_active * page_size / 1024 / 1024;
-
-#else
+    mem_active = mem_active * page_size / 1024 / 1024;
+#else /* __FreeBSD__ */
     int mem_total = 0, mem_active = 0;
     FILE *f;
     char buf[256] = { 0 };
@@ -398,7 +400,7 @@ get_ram_usage(Enna_Buffer *b)
     }
 
     fclose(f);
-#endif
+#endif /* !__FreeBSD__ */
 
     enna_buffer_append(b, "<hilight>");
     enna_buffer_append(b, _("Memory:"));
@@ -407,7 +409,7 @@ get_ram_usage(Enna_Buffer *b)
     enna_buffer_appendf(b, " %d MB ", mem_total);
     enna_buffer_append(b, _("total"));
     enna_buffer_appendf(b, " (%d%%)</hilight><br>",
-                   (int) (mem_active * 100 / mem_total));
+                        (int) (mem_active * 100 / mem_total));
 }
 
 #ifdef BUILD_LIBXRANDR
@@ -453,7 +455,7 @@ get_resolution(Enna_Buffer *b)
     enna_buffer_appendf(b, " %dx%d)<br>", maxWidth, maxHeight);
     XCloseDisplay(dpy);
 }
-#endif
+#endif /* BUILD_LIBXRANDR */
 
 #ifdef BUILD_LIBSVDRP
 static void
@@ -477,137 +479,144 @@ get_vdr(Enna_Buffer *b)
     }
     enna_buffer_append(b, "<br>");
 }
-#endif
+#endif /* BUILD_LIBSVDRP */
 
 static void
 get_network(Enna_Buffer *b)
 {
-	struct ifaddrs *ifr, *ifa;
+    struct ifaddrs *ifr, *ifa;
 
     enna_buffer_append(b, "<hilight>");
     enna_buffer_append(b, _("Available network interfaces:"));
     enna_buffer_append(b, "</hilight><br>");
 
-	if (getifaddrs(&ifr) == -1)
-		return;
+    if (getifaddrs(&ifr) == -1)
+        return;
 
-	
-	for (ifa = ifr; ifa != NULL; ifa = ifa->ifa_next) {
+    for (ifa = ifr; ifa != NULL; ifa = ifa->ifa_next)
+    {
         /* discard loopback interface */
         if (!strncmp(ifa->ifa_name, "lo", 2)) /* also remove the lo* */
             continue;
 
-		if (ifa->ifa_addr->sa_family != AF_INET &&
-				ifa->ifa_addr->sa_family != AF_INET6) 
-			continue;
+        if (   ifa->ifa_addr->sa_family != AF_INET
+            && ifa->ifa_addr->sa_family != AF_INET6)
+            continue;
 
         /* show the device name and IP address */
         enna_buffer_appendf(b, "  * %s (", ifa->ifa_name);
         enna_buffer_append(b, _("IP:"));
         enna_buffer_appendf(b, " %s, ",
-                 inet_ntoa(((struct sockaddr_in *) ifa->ifa_addr)->sin_addr));
+                            inet_ntoa(((struct sockaddr_in *)
+                                       ifa->ifa_addr)->sin_addr));
 
         enna_buffer_append(b, _("Netmask:"));
         enna_buffer_appendf(b, " %s)<br>",
-              inet_ntoa(((struct sockaddr_in *) ifa->ifa_netmask)->sin_addr));
+                            inet_ntoa(((struct sockaddr_in *)
+                                       ifa->ifa_netmask)->sin_addr));
 
     }
 
-	freeifaddrs(ifr);
+    freeifaddrs(ifr);
 }
 
 
-#if defined(__FreeBSD__)
+#ifdef __FreeBSD__
 struct {
-	struct  rt_msghdr m_rtm;
-	char    m_space[512];
+    struct  rt_msghdr m_rtm;
+    char    m_space[512];
 } m_rtmsg;
 
 #define ROUNDUP(a) \
-	        ((a) > 0 ? (1 + (((a) - 1) | (sizeof(long) - 1))) : sizeof(long))
+    ((a) > 0 ? (1 + (((a) - 1) | (sizeof(long) - 1))) : sizeof(long))
 
-#endif
-
-static void
-get_default_gw(Enna_Buffer *b)
-{
-#if defined(__FreeBSD__)
-  int s, seq, l, pid, rtm_addrs, i;
-  struct sockaddr so_dst, so_mask;
-  char *cp = m_rtmsg.m_space; 
-  struct sockaddr *gate = NULL, *sa;
-  struct  rt_msghdr *rtm_aux;
-
-#define NEXTADDR(w, u) \
-        if (rtm_addrs & (w)) {\
-            l = ROUNDUP(u.sa_len); memmove(cp, &(u), l); cp += l;\
-        }
+#define NEXTADDR(w, u)          \
+    if (rtm_addrs & (w))        \
+    {                           \
+        l = ROUNDUP(u.sa_len);  \
+        memmove(cp, &(u), l);   \
+        cp += l;                \
+    }
 
 #define ADVANCE(x, n) (x += ROUNDUP((n)->sa_len))
 
 #define rtm m_rtmsg.m_rtm
+#endif /* __FreeBSD__ */
 
-  pid = getpid();
-  seq = 0;
-  rtm_addrs = RTA_DST | RTA_NETMASK;
+static void
+get_default_gw(Enna_Buffer *b)
+{
+#ifdef __FreeBSD__
+    int s, seq, l, pid, rtm_addrs, i;
+    struct sockaddr so_dst, so_mask;
+    char *cp = m_rtmsg.m_space;
+    struct sockaddr *gate = NULL, *sa;
+    struct rt_msghdr *rtm_aux;
 
-  bzero(&so_dst, sizeof(so_dst));
-  bzero(&so_mask, sizeof(so_mask));
-  bzero(&rtm, sizeof(struct rt_msghdr));
+    pid = getpid();
+    seq = 0;
+    rtm_addrs = RTA_DST | RTA_NETMASK;
 
-  rtm.rtm_type = RTM_GET;
-  rtm.rtm_flags = RTF_UP | RTF_GATEWAY;
-  rtm.rtm_version = RTM_VERSION;
-  rtm.rtm_seq = ++seq;
-  rtm.rtm_addrs = rtm_addrs; 
+    bzero(&so_dst, sizeof(so_dst));
+    bzero(&so_mask, sizeof(so_mask));
+    bzero(&rtm, sizeof(struct rt_msghdr));
 
-  so_dst.sa_family = AF_INET;
-  so_dst.sa_len = sizeof(struct sockaddr_in);
-  so_mask.sa_family = AF_INET;
-  so_mask.sa_len = sizeof(struct sockaddr_in);
+    rtm.rtm_type = RTM_GET;
+    rtm.rtm_flags = RTF_UP | RTF_GATEWAY;
+    rtm.rtm_version = RTM_VERSION;
+    rtm.rtm_seq = ++seq;
+    rtm.rtm_addrs = rtm_addrs;
 
-  NEXTADDR(RTA_DST, so_dst);
-  NEXTADDR(RTA_NETMASK, so_mask);
+    so_dst.sa_family = AF_INET;
+    so_dst.sa_len = sizeof(struct sockaddr_in);
+    so_mask.sa_family = AF_INET;
+    so_mask.sa_len = sizeof(struct sockaddr_in);
 
-  rtm.rtm_msglen = l = cp - (char *)&m_rtmsg;
+    NEXTADDR(RTA_DST, so_dst);
+    NEXTADDR(RTA_NETMASK, so_mask);
 
-  s = socket(PF_ROUTE, SOCK_RAW, 0);
+    rtm.rtm_msglen = l = cp - (char *)&m_rtmsg;
 
-  if (write(s, (char *)&m_rtmsg, l) < 0)
-      return;
+    s = socket(PF_ROUTE, SOCK_RAW, 0);
 
-  do {
-    l = read(s, (char *)&m_rtmsg, sizeof(m_rtmsg));
-  } while (l > 0 && (rtm.rtm_seq != seq || rtm.rtm_pid != pid));
-                        
-  close(s);
+    if (write(s, (char *)&m_rtmsg, l) < 0)
+        return;
 
-  rtm_aux = &rtm;
+    do
+    {
+      l = read(s, (char *)&m_rtmsg, sizeof(m_rtmsg));
+    }
+    while (l > 0 && (rtm.rtm_seq != seq || rtm.rtm_pid != pid));
 
-  cp = ((char *)(rtm_aux + 1));
-  if (rtm_aux->rtm_addrs) {
-    for (i = 1; i; i <<= 1)
-      if (i & rtm_aux->rtm_addrs) {
-	sa = (struct sockaddr *)cp;
-	if (i == RTA_GATEWAY )
-	  gate = sa;
-	ADVANCE(cp, sa);
-      }
-  }
-  else
-      return;
+    close(s);
 
-  if (gate != NULL ) {
-    enna_buffer_append(b, "<hilight>");
-    enna_buffer_append(b, _("Default gateway:"));
-    enna_buffer_append(b, "</hilight> ");
+    rtm_aux = &rtm;
 
-	enna_buffer_appendf(b, "%s<br>", inet_ntoa(((struct sockaddr_in *)gate)->sin_addr));
-  }
+    cp = ((char *)(rtm_aux + 1));
+    if (rtm_aux->rtm_addrs)
+    {
+        for (i = 1; i; i <<= 1)
+            if (i & rtm_aux->rtm_addrs)
+            {
+                sa = (struct sockaddr *)cp;
+                if (i == RTA_GATEWAY )
+                    gate = sa;
+                ADVANCE(cp, sa);
+            }
+    }
+    else
+        return;
 
+    if (gate)
+    {
+        enna_buffer_append(b, "<hilight>");
+        enna_buffer_append(b, _("Default gateway:"));
+        enna_buffer_append(b, "</hilight> ");
 
-
-#else
+        enna_buffer_appendf(b, "%s<br>",
+                            inet_ntoa(((struct sockaddr_in *)gate)->sin_addr));
+    }
+#else /* __FreeBSD__ */
     char devname[64];
     unsigned long d, g, m;
     int res, flgs, ref, use, metric, mtu, win, ir;
@@ -655,7 +664,7 @@ get_default_gw(Enna_Buffer *b)
 
 
     fclose(fp);
-#endif
+#endif /* !__FreeBSD__ */
 }
 
 static void
@@ -674,10 +683,10 @@ set_system_information(Enna_Buffer *b)
     get_ram_usage(b);
 #ifdef BUILD_LIBSVDRP
     get_vdr(b);
-#endif
+#endif /* BUILD_LIBSVDRP */
 #ifdef BUILD_LIBXRANDR
     get_resolution(b);
-#endif
+#endif /* BUILD_LIBXRANDR */
     get_network(b);
     get_default_gw(b);
 }
