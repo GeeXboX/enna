@@ -232,7 +232,7 @@ __class_init(const char *name, Class_Private_Data **priv,
         root->name = eina_stringshare_add("Home");
         root->uri = strdup(buf);
         root->label = strdup("Home");
-        root->icon = strdup("icon/favorite");
+        root->icon = strdup("icon/home");
 
         data->config->root_directories =
             eina_list_append(data->config->root_directories, root);
