@@ -34,7 +34,7 @@
 #ifdef BUILD_LIBSVDRP
 #include <time.h>
 #include "utils.h"
-#endif
+#endif /* BUILD_LIBSVDRP */
 
 #define ENNA_MODULE_NAME "tv"
 
@@ -48,10 +48,11 @@ typedef struct _Enna_Module_Tv
 #ifdef BUILD_LIBSVDRP
     svdrp_t *svdrp;
     int timer_threshold;
-#endif
+#endif /* BUILD_LIBSVDRP */
 } Enna_Module_Tv;
 
-typedef struct tv_cfg_s {
+typedef struct tv_cfg_s
+{
     char *vdr_uri;
 #ifdef BUILD_LIBSVDRP
     char *svdrp_host;
@@ -69,83 +70,90 @@ static Enna_Module_Tv *mod;
 /*                         Private Module API                                */
 /*****************************************************************************/
 
-static void _class_init()
+static void _class_init(void)
 {
     mod->o_layout = elm_layout_add(enna->layout);
     elm_layout_file_set(mod->o_layout, enna_config_theme_get (), "activity/tv");
     enna_content_append (ENNA_MODULE_NAME, mod->o_layout);
 }
 
-static const char* _class_quit_request()
+static const char *
+_class_quit_request(void)
 {
 #ifdef BUILD_LIBSVDRP
     int ret;
     int timer_id;
     time_t start, now, diff;
-    
+
     ret = svdrp_next_timer_event(mod->svdrp, &timer_id, &start);
-    
+
     if (ret != SVDRP_OK)
         return NULL;
-    
+
     if (time(&now) == ((time_t) -1))
         return NULL;
-    
+
     diff = (start - now) / 60;
-    
+
     if (diff <= mod->timer_threshold) /* recording in progess */
     {
         svdrp_timer_t timer;
-        
+
         enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "recording in progress");
-        
-        if(svdrp_get_timer(mod->svdrp, timer_id, &timer) == SVDRP_OK)
+
+        if (svdrp_get_timer(mod->svdrp, timer_id, &timer) == SVDRP_OK)
         {
-            const char *format = diff > 0 ? 
-                                 ngettext("Timer '%s' is due to start in %i minute", 
-                                          "Timer '%s' is due to start in %i minutes", diff) :
-                                 _("Currently recording '%s'");
+            const char *format =
+                diff > 0 ? ngettext("Timer '%s' is due to start in %i minute",
+                                    "Timer '%s' is due to start in %i minutes",
+                                    diff)
+                         : _("Currently recording '%s'");
             size_t len = strlen(format) + strlen(timer.file) - 1;
             char *msg = malloc (len);
-            
+
             snprintf(msg, len, format, timer.file, diff);
-            
+
             return msg;
         }
         else
-           return strdup (_("Recording in progress"));
+            return strdup (_("Recording in progress"));
     }
 #endif /* BUILD_LIBSVDRP */
 
     return NULL;
 }
 
-static void _class_show()
+static void
+_class_show(void)
 {
     enna_content_select(ENNA_MODULE_NAME);
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "starting playback");
     enna_mediaplayer_play(mod->enna_playlist);
-    edje_object_signal_emit (elm_layout_edje_get(mod->o_layout), "tv,show", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(mod->o_layout),
+                            "tv,show", "enna");
 }
 
-static void _class_hide()
+static void
+_class_hide(void)
 {
     enna_log(ENNA_MSG_INFO, ENNA_MODULE_NAME, "stopping playback");
     enna_mediaplayer_stop();
-    edje_object_signal_emit (elm_layout_edje_get(mod->o_layout), "tv,hide", "enna");
+    edje_object_signal_emit(elm_layout_edje_get(mod->o_layout),
+                            "tv,hide", "enna");
 }
 
-static void _class_event(enna_input event)
+static void
+_class_event(enna_input event)
 {
     switch (event)
     {
-        case ENNA_INPUT_HOME:
-        case ENNA_INPUT_QUIT:
-            enna_content_hide();
-            break;
-        default:
-            enna_mediaplayer_send_input(event);
-            break;
+    case ENNA_INPUT_HOME:
+    case ENNA_INPUT_QUIT:
+        enna_content_hide();
+        break;
+    default:
+        enna_mediaplayer_send_input(event);
+        break;
     }
 }
 
@@ -184,7 +192,7 @@ static const struct {
 #endif /* BUILD_LIBSVDRP */
 
 static void
-cfg_tv_section_load (const char *section)
+cfg_tv_section_load(const char *section)
 {
     const char *value = NULL;
 #ifdef BUILD_LIBSVDRP
@@ -234,7 +242,7 @@ cfg_tv_section_load (const char *section)
 }
 
 static void
-cfg_tv_section_save (const char *section)
+cfg_tv_section_save(const char *section)
 {
 #ifdef BUILD_LIBSVDRP
     int i;
@@ -258,7 +266,7 @@ cfg_tv_section_save (const char *section)
 }
 
 static void
-cfg_tv_free (void)
+cfg_tv_free(void)
 {
     ENNA_FREE(tv_cfg.vdr_uri);
 #ifdef BUILD_LIBSVDRP
@@ -267,7 +275,7 @@ cfg_tv_free (void)
 }
 
 static void
-cfg_tv_section_set_default (void)
+cfg_tv_section_set_default(void)
 {
     cfg_tv_free();
 
@@ -305,9 +313,8 @@ module_init(Enna_Module *em)
         return;
 
     if (!enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_VDR) ||
-        !enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_NETVDR)) {
+        !enna_mediaplayer_supported_uri_type(ENNA_MP_URI_TYPE_NETVDR))
         return;
-    }
 
     enna_config_section_parser_register(&cfg_tv);
     cfg_tv_section_set_default();
@@ -316,22 +323,23 @@ module_init(Enna_Module *em)
     mod = calloc(1, sizeof(Enna_Module_Tv));
     mod->em = em;
     em->mod = mod;
-    
+
     enna_activity_register(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
-    
+
     Enna_Vfs_File *it;
     it = calloc (1, sizeof(Enna_Vfs_File));
-    it->uri = (char*)eina_stringshare_add (tv_cfg.vdr_uri);
-    it->label = (char*)eina_stringshare_add ("vdr");
-    
+    it->uri = (char*) eina_stringshare_add (tv_cfg.vdr_uri);
+    it->label = (char*) eina_stringshare_add ("vdr");
+
     enna_mediaplayer_file_append(mod->enna_playlist, it);
 
 #ifdef BUILD_LIBSVDRP
     if (strstr(tv_cfg.vdr_uri, "vdr:/"))
         tv_cfg.svdrp_host = strdup("localhost");
     else if (strstr(tv_cfg.vdr_uri, "netvdr:/"))
-    { /* TODO needs testing */
+    {
+        /* TODO needs testing */
         char *p = tv_cfg.vdr_uri + strlen("netvdr://");
         char *q = strstr(tv_cfg.vdr_uri, ":");
 
@@ -339,10 +347,8 @@ module_init(Enna_Module *em)
         strncpy(tv_cfg.svdrp_host, p, q - p);
     }
     else
-    {
         enna_log(ENNA_MSG_ERROR, ENNA_MODULE_NAME,
                  " * unknown vdr uri '%s'", tv_cfg.vdr_uri);
-    }
 
     mod->timer_threshold = tv_cfg.timer_threshold;
 
@@ -364,7 +370,7 @@ module_shutdown(Enna_Module *em)
     enna_mediaplayer_playlist_free(mod->enna_playlist);
 #ifdef BUILD_LIBSVDRP
     enna_svdrp_uninit();
-#endif
+#endif /* BUILD_LIBSVDRP */
     free(mod);
 }
 
