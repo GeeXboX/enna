@@ -124,11 +124,11 @@ images {
             visible: 1;
             color: 255 255 255 255;
 
-            rel1.relative: 0.51 0.05;
+            rel1.relative: 0.50 0.0;
+            rel1.offset: 64 64;
             rel1.to: "content.clip";
 
-            rel2.relative: 1.0 0.99;
-            rel2.offset: 0 -50;
+            rel2.offset: -64 -88;
             rel2.to: "content.clip";
          }
       }
@@ -145,38 +145,10 @@ images {
          }
       }
 
-      /* movies counter */
-/* COMPLETELY FUCKED UP ....
-      part {
-         name: "movies.counter.label";
-         clip_to: content.clip;
-         type: TEXT;
-         effect: SOFT_SHADOW;
-         mouse_events: 0;
-         scale: 1;
 
-         description {
-            state: "default" 0.0;
-            color: 224 224 224 200;
-            visible: 1;
 
-            rel1.relative: 0.75 1.00;
-            rel1.to: "content.clip";
 
-            rel2.relative: 0.99 1.00;
-            rel2.offset: 0 -50;
-            rel2.to: "content.clip";
 
-            color3: 0 0 0 64;
-            text {
-                font: "content";
-                size: 16;
-                min: 1 1;
-                align: 1 1;
-             }
-          }
-       }
-*/
 
       /* informations (left pane) */
       part {
@@ -189,10 +161,12 @@ images {
             visible: 1;
             color: 255 255 255 255;
 
-            rel1.relative: 0.00 0.05;
+            rel1.relative: 0.0 0.0;
+            rel1.offset: 64 64;
             rel1.to: "content.clip";
 
-            rel2.relative: 0.50 1.00;
+            rel2.relative: 0.5 1.0;
+            rel2.offset: -64 -88;
             rel2.to: "content.clip";
          }
       }
@@ -209,7 +183,8 @@ images {
             visible: 1;
             rel1.relative: 0.0 0.00;
             rel1.to: "infos.clip";
-            rel2.relative: 1.0 0.05;
+            rel2.relative: 1.0 0;
+            rel2.offset: 0 30;
             rel2.to: "infos.clip";
             color: 255 255 255 255;
             color3: 0 0 0 64;
@@ -264,9 +239,10 @@ images {
          clip_to: infos.clip;
          description {
             state: "default" 0.0;
-            rel1.relative: 0.05 0.07;
-            rel1.to: "infos.clip";
-            rel2.relative: 0.95 0.50;
+            rel1.relative: 0.0 1.0;
+            rel1.offset: 0 16;
+            rel1.to_y: "title.label";
+            rel2.relative: 1.0 0.50;
             rel2.to: "infos.clip";
          }
       }
@@ -279,10 +255,14 @@ images {
          type: RECT;
          description {
             state: "default" 0.0;
-            rel1.relative: 0.05 0.51;
-            rel1.to: "infos.clip";
-            rel2.relative: 0.95 0.58;
-            rel2.to: "infos.clip";
+            rel1.relative: 0.0 1.0;
+            rel1.to_x: "infos.clip";
+            rel1.to_y: "snapshot.swallow";
+            rel1.offset: 0 8;
+            rel2.relative:  1.0 1.0;
+            rel2.to_y: "snapshot.swallow";
+            rel2.to_x: "infos.clip";
+            rel2.offset: 0 72;
             color: 255 255 255 255;
          }
       }
@@ -313,10 +293,12 @@ images {
             state: "default" 0.0;
             visible: 1;
 
-            rel1.relative: 0.05 0.60;
-            rel1.to: "infos.clip";
-            rel2.relative: 0.95 0.62;
-            rel2.to: "infos.clip";
+            rel1.relative: 0.0 1.0;
+            rel1.to: "infos.flags.swallow";
+            rel1.offset: 0 8; 
+            rel2.relative: 1.0 1.0;
+            rel2.to: "infos.flags.swallow";
+            rel2.offset: 0 38;
 
             color: 255 255 255 255;
             color3: 0 0 0 64;
@@ -341,10 +323,12 @@ images {
             state: "default" 0.0;
             visible: 1;
 
-            rel1.relative: 0.05 0.63;
-            rel1.to: "infos.clip";
-            rel2.relative: 0.95 0.65;
-            rel2.to: "infos.clip";
+            rel1.relative: 0.0 1.0;
+            rel1.to: "length.label";
+            rel1.offset: 0 8; 
+            rel2.relative: 1.0 1.0;
+            rel2.to: "length.label";
+            rel2.offset: 0 38;
 
             color: 255 255 255 255;
             color3: 0 0 0 64;
@@ -392,9 +376,10 @@ images {
          description {
             state: "default" 0.0;
             visible: 1;
-            rel1.relative: 0.05 0.69;
-            rel1.to: "infos.clip";
-            rel2.relative: 0.95 0.95;
+            rel1.relative: 0.0 1.0;
+            rel1.to: "genre.label";
+            rel1.offset: 0 8; 
+            rel2.relative: 1.0 1.0;
             rel2.to: "infos.clip";
             color: 255 255 255 255;
             color3: 0 0 0 64;
