@@ -35,6 +35,7 @@ struct _Enna_Config
     int idle_timeout;
     int fullscreen;
     int slideshow_delay;
+    Eina_Bool display_mouse;
     char *engine;
     char *verbosity;
     Eina_List *music_local_root_directories;

@@ -83,6 +83,7 @@ cfg_main_section_set_default (void)
     enna_config->idle_timeout    = 0;
     enna_config->fullscreen      = 0;
     enna_config->slideshow_delay = SLIDESHOW_DEFAULT_TIMER;
+    enna_config->display_mouse   = EINA_TRUE;
 
     enna_config->theme     = strdup("default");
     enna_config->engine    = strdup("software_x11");
@@ -110,6 +111,11 @@ cfg_main_section_set_default (void)
 
 #define GET_INT(v)                                                      \
     i = enna_config_int_get(section, #v);                               \
+    if (i)                                                              \
+        enna_config->v = i;                                             \
+
+#define GET_BOOL(v)                                                     \
+    i = enna_config_bool_get(section, #v);                              \
     if (i)                                                              \
         enna_config->v = i;                                             \
 
@@ -153,6 +159,8 @@ cfg_main_section_load (const char *section)
     GET_INT(fullscreen);
     GET_INT(slideshow_delay);
 
+    GET_BOOL(display_mouse);
+
     GET_TUPLE(music_filters, "music_ext");
     GET_TUPLE(video_filters, "video_ext");
     GET_TUPLE(photo_filters, "photo_ext");
@@ -163,6 +171,9 @@ cfg_main_section_load (const char *section)
 
 #define SET_INT(v)                                                      \
     enna_config_int_set(section, #v, enna_config->v);
+
+#define SET_BOOL(v)                                                     \
+    enna_config_bool_set(section, #v, enna_config->v);
 
 #define SET_TUPLE(f,v)                                                  \
     filters = enna_util_tuple_set(enna_config->f, ",");                 \
@@ -182,6 +193,8 @@ cfg_main_section_save (const char *section)
     SET_INT(idle_timeout);
     SET_INT(fullscreen);
     SET_INT(slideshow_delay);
+
+    SET_BOOL(display_mouse);
 
     SET_TUPLE(music_filters, "music_ext");
     SET_TUPLE(video_filters, "video_ext");
