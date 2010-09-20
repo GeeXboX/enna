@@ -200,7 +200,7 @@ enna_mainmenu_add(Evas_Object *parent)
     evas_object_show(sd->o_background);
     elm_slideshow_transition_set(sd->o_background, "fade");
     sd->backgrounds = NULL;
-    //evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, sd);
+    evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, sd);
     /* Volume widget */
     sd->o_volume =
         enna_volume_notification_smart_add(evas_object_evas_get(enna->layout));
