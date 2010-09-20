@@ -155,7 +155,7 @@ fi
 ####################
 
 # Bookstore
-want_activity_bookstore="yes"
+want_activity_bookstore="no"
 AC_MSG_CHECKING(whether bookstore activity module is to be built)
 AC_ARG_ENABLE(activity-bookstore,
   AS_HELP_STRING([--enable-activity-bookstore],[Enable bookstore Activity Module]),
@@ -289,7 +289,7 @@ if test "x$want_browser_dvd" = "xyes"; then
 fi
 
 # iPod/iPhone support
-want_browser_ipod="auto"
+want_browser_ipod="no"
 have_browser_ipod="no"
 AC_MSG_CHECKING(whether iPod browser is to be built)
 AC_ARG_ENABLE(browser-ipod,
@@ -316,7 +316,7 @@ AM_CONDITIONAL(BUILD_BROWSER_IPOD, test "x$have_browser_ipod" = "xyes")
 
 
 # Jamendo
-want_browser_jamendo="yes"
+want_browser_jamendo="no"
 AC_MSG_CHECKING(whether jamendo browser module is to be built)
 AC_ARG_ENABLE(browser-jamendo,
   AS_HELP_STRING([--enable-browser-jamendo],[Enable Jamendo Browser Module]),
@@ -355,7 +355,7 @@ if test "x$want_browser_netstreams" = "xyes"; then
 fi
 
 # Podcast
-want_browser_podcasts="yes"
+want_browser_podcasts="no"
 AC_MSG_CHECKING(whether podcasts browser module is to be built)
 AC_ARG_ENABLE(browser-podcasts,
   AS_HELP_STRING([--enable-browser-podcasts],[Enable Podcasts Browser Module]),
@@ -368,7 +368,7 @@ if test "x$want_browser_podcasts" = "xyes"; then
 fi
 
 # SHOUTcast
-want_browser_shoutcast="yes"
+want_browser_shoutcast="no"
 AC_MSG_CHECKING(whether shoutcast browser module is to be built)
 AC_ARG_ENABLE(browser-shoutcast,
   AS_HELP_STRING([--enable-browser-shoutcast],[Enable SHOUTcast Browser Module]),
@@ -381,7 +381,7 @@ if test "x$want_browser_shoutcast" = "xyes"; then
 fi
 
 # UPnP/DLNA
-want_browser_upnp="auto"
+want_browser_upnp="no"
 have_browser_upnp="no"
 AC_MSG_CHECKING(whether UPnP/DLNA browser is to be built)
 AC_ARG_ENABLE(browser-upnp,
