@@ -263,7 +263,7 @@ _search_activated_cb(void *data, Evas_Object *obj, void *event_info)
 
     /* Retrieve search text */
     search_text = enna_search_text_get(sd->o_search);
-    printf("Search : %s\n", search_text);
+    EVT("Search : %s\n", search_text);
     enna_browser_filter(sd->browser, search_text);
 }
 

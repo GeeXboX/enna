@@ -330,7 +330,7 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
             root = l->data;
 
             buf = enna_buffer_new();
-            printf("Root name : %s\n", root->name);
+            EVT("Root name : %s\n", root->name);
             enna_buffer_appendf(buf, "/%s/localfiles/%s", pmod->name, root->name);
             f = enna_browser_create_menu(root->name, buf->buf,
                                               root->label, root->icon);
