@@ -615,6 +615,8 @@ static Enna_Config_Section_Parser cfg_localfiles = {
 static void
 module_init(Enna_Module *em)
 {
+    int flags = 0;
+
     if (!em)
         return;
 
@@ -627,15 +629,18 @@ module_init(Enna_Module *em)
     cfg_localfiles_section_load(cfg_localfiles.section);
 
 #ifdef BUILD_ACTIVITY_MUSIC
+    flags |= ENNA_CAPS_MUSIC;
     __class_init("music", &mod->music, ENNA_CAPS_MUSIC, "path_music");
 #endif
 #ifdef BUILD_ACTIVITY_VIDEO
+    flags |= ENNA_CAPS_VIDEO;
     __class_init("video", &mod->video, ENNA_CAPS_VIDEO, "path_video");
 #endif
 #ifdef BUILD_ACTIVITY_PHOTO
+    flags |= ENNA_CAPS_PHOTO;
     __class_init("photo", &mod->photo, ENNA_CAPS_PHOTO, "path_photo");
 #endif
-    enna_vfs_register(&class, ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO);
+    enna_vfs_register(&class, flags);
 }
 
 static void
