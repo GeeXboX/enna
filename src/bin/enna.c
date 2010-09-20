@@ -309,8 +309,11 @@ static int _enna_init(int argc, char **argv)
     /* Show mainmenu */
     //~ enna_mainmenu_select_nth(0);
 
-    enna->idle_timer = NULL;
-    enna_idle_timer_renew();
+    if (enna_config->display_mouse == EINA_TRUE)
+    {
+        enna->idle_timer = NULL;
+        enna_idle_timer_renew();
+    }
 
     return 1;
 }
@@ -379,11 +382,16 @@ static int _create_gui(void)
 #ifdef BUILD_ECORE_X
     // mouse pointer
     _mouse_display(0);
-    enna->mouse_idle_timer = ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
-                                             _mouse_idle_timer_cb, NULL);
+    if (enna_config->display_mouse == EINA_TRUE)
+    {
+        enna->mouse_idle_timer =
+            ecore_timer_add(ENNA_MOUSE_IDLE_TIMEOUT,
+                            _mouse_idle_timer_cb, NULL);
 
-    enna->mouse_handler =
-        ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE, _mousemove_cb, NULL);
+        enna->mouse_handler =
+            ecore_event_handler_add(ECORE_EVENT_MOUSE_MOVE,
+                                    _mousemove_cb, NULL);
+    }
 #endif
     // show all
     evas_object_resize(enna->win, app_w, app_h);
