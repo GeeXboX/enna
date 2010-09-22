@@ -111,6 +111,9 @@ _slideshow_add_files(const char *file_selected)
     int pos = 0;
     Enna_Vfs_File *file;
 
+    if (!file_selected)
+      return -1;
+
     files = enna_browser_obj_files_get (mod->o_browser);
     EINA_LIST_FOREACH(files, l, file)
     {
