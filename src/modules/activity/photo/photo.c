@@ -81,9 +81,23 @@ panel_infos_display (int show)
     mod->state = show ? INFOS_VIEW : BROWSER_VIEW;
 }
 
+
+
 /* #############################################################
    #               slideshow helpers                           #
    ############################################################# */
+static void 
+_slideshow_delete_cb(void *data, Evas_Object *obj, void *event_info)
+{	
+    Evas_Object *o_edje;
+
+    o_edje = elm_layout_edje_get(mod->o_layout);
+    ENNA_OBJECT_DEL (mod->o_slideshow);
+    mod->state = BROWSER_VIEW;
+    edje_object_signal_emit(o_edje, "wall,show", "enna");
+    edje_object_signal_emit(o_edje, "list,show", "enna");
+}
+
 
 static void _create_slideshow_gui(void)
 {
@@ -95,7 +109,7 @@ static void _create_slideshow_gui(void)
     mod->o_slideshow = enna_photo_slideshow_add(mod->o_layout);
     elm_layout_content_set(enna->layout,
                              "enna.fullscreen.swallow", mod->o_slideshow);
-
+    evas_object_smart_callback_add(mod->o_slideshow, "delete,requested", _slideshow_delete_cb, NULL);
     o_edje = elm_layout_edje_get(mod->o_layout);
     edje_object_signal_emit(o_edje, "list,hide", "enna");
     edje_object_signal_emit(o_edje, "wall,hide", "enna");
