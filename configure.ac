@@ -45,6 +45,7 @@ PKG_CHECK_MODULES([ENNA],
    ecore-evas >= 1.0.0
    ecore-file >= 1.0.0
    ecore-ipc >= 1.0.0
+   ecore-con >= 1.0.0
    edje >= 1.0.0
    edbus >= 1.0.0
    ethumb >= 0.1.0
