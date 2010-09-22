@@ -230,7 +230,7 @@ static int _enna_init(int argc, char **argv)
     enna->lvl = ENNA_MSG_INFO;
 
     /* try to geolocate */
-    enna->geo_loc = enna_get_geo_by_ip();
+    enna_get_geo_by_ip();
 
     /* register configuration parsers */
     enna_main_cfg_register();
