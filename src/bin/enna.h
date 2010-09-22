@@ -156,6 +156,7 @@ extern Enna *enna;
 
 /* Events */
 int ENNA_EVENT_BROWSER_CHANGED; /** ev = const char * */
+extern int ENNA_EVENT_GEO_LOC_DETECTED;
 
 void enna_idle_timer_renew(void);
 
