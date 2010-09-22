@@ -320,12 +320,12 @@ _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
 }
 
 #define ELM_ADD(icon, cb)                                            \
-    ic = elm_icon_add(sd->layout);                                   \
-    elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
-    elm_icon_scale_set(ic, 0, 0);                                    \
-    bt = elm_button_add(sd->layout);                                 \
+    bt = elm_button_add(bx);                                         \
     elm_object_style_set(bt, "mediaplayer");                         \
     evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
+    ic = elm_icon_add(bt);                                           \
+    elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
+    elm_icon_scale_set(ic, 0, 0);                                    \
     elm_button_icon_set(bt, ic);                                     \
     evas_object_size_hint_min_set(bt, 64, 64);                       \
     evas_object_size_hint_weight_set(bt, 0.0, 1.0);                  \
@@ -359,11 +359,11 @@ enna_photo_slideshow_add(Evas_Object *parent)
     evas_object_size_hint_weight_set(sd->layout, 1.0, 1.0);
     evas_object_show(sd->layout);
 
-    sd->slideshow = elm_gengrid_add(enna->layout);
+    sd->slideshow = elm_slideshow_add(sd->layout);
     elm_slideshow_transition_set(sd->slideshow, "horizontal");
     elm_slideshow_loop_set(sd->slideshow, 1);
 
-    sd->controls = elm_notify_add(enna->win);
+    sd->controls = elm_notify_add(sd->layout);
     elm_notify_orient_set(sd->controls, ELM_NOTIFY_ORIENT_BOTTOM);
     evas_object_geometry_get(enna->layout, NULL, NULL, &w, &h);
     evas_object_move(sd->controls, 0, 0);
@@ -386,7 +386,7 @@ enna_photo_slideshow_add(Evas_Object *parent)
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
     ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
 
-    sd->spin = elm_spinner_add(sd->layout);
+    sd->spin = elm_spinner_add(bx);
     elm_spinner_label_format_set(sd->spin, "%2.f secs.");
     evas_object_smart_callback_add(sd->spin, "changed", _spin, sd);
     elm_spinner_step_set(sd->spin, 1);
