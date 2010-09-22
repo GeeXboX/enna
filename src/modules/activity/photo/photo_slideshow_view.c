@@ -344,7 +344,7 @@ static Elm_Slideshow_Item_Class itc =
 
 /* externally accessible functions */
 Evas_Object *
-enna_photo_slideshow_add(Evas * evas)
+enna_photo_slideshow_add(Evas_Object *parent)
 {
     Smart_Data *sd;
     Evas_Object *bx, *bt, *ic;
@@ -354,7 +354,7 @@ enna_photo_slideshow_add(Evas * evas)
 
     sd->delay = enna_config->slideshow_delay;
 
-    sd->layout = elm_layout_add(enna->layout);
+    sd->layout = elm_layout_add(parent);
     elm_layout_file_set(sd->layout, enna_config_theme_get(), "enna/slideshow");
     evas_object_size_hint_weight_set(sd->layout, 1.0, 1.0);
     evas_object_show(sd->layout);

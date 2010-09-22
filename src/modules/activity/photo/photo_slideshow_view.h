@@ -22,7 +22,7 @@
 #ifndef PHOTO_SLIDESHOW_VIEW_H
 #define PHOTO_SLIDESHOW_VIEW_H
 
-Evas_Object *enna_photo_slideshow_add(Evas * evas);
+Evas_Object *enna_photo_slideshow_add(Evas_Object *parent);
 void enna_photo_slideshow_next(Evas_Object *obj);
 void enna_photo_slideshow_previous(Evas_Object *obj);
 int enna_photo_slideshow_timeout_get(Evas_Object *obj);
