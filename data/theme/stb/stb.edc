@@ -96,6 +96,17 @@ collections
                rel2.to: "mainmenu.clip";
             }
          }
+
+         part {
+            name: "enna.fullscreen.swallow";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+               state: "default" 0.0;
+               visible: 1;
+               color: 255 255 255 255;
+            }
+         }
         
       }
       programs {
