@@ -37,6 +37,7 @@ typedef struct _Smart_Data Smart_Data;
 struct _Smart_Data
 {
     //Evas_Object *event_rect;
+    Evas_Object *layout;
     Evas_Object *controls;
     Evas_Object *slideshow;
     Evas_Object *event_rect;
@@ -319,11 +320,11 @@ _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
 }
 
 #define ELM_ADD(icon, cb)                                            \
-    ic = elm_icon_add(obj);                                          \
+    ic = elm_icon_add(sd->layout);                                   \
     elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
     elm_icon_scale_set(ic, 0, 0);                                    \
-    bt = elm_button_add(obj);                                        \
-    elm_object_style_set(bt, "mediaplayer");			     \
+    bt = elm_button_add(sd->layout);                                 \
+    elm_object_style_set(bt, "mediaplayer");                         \
     evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
     elm_button_icon_set(bt, ic);                                     \
     evas_object_size_hint_min_set(bt, 64, 64);                       \
@@ -345,7 +346,6 @@ static Elm_Slideshow_Item_Class itc =
 Evas_Object *
 enna_photo_slideshow_add(Evas * evas)
 {
-    Evas_Object *obj;
     Smart_Data *sd;
     Evas_Object *bx, *bt, *ic;
     Evas_Coord w, h;
@@ -354,12 +354,12 @@ enna_photo_slideshow_add(Evas * evas)
 
     sd->delay = enna_config->slideshow_delay;
 
-    obj = elm_layout_add(enna->layout);
-    elm_layout_file_set(obj, enna_config_theme_get(), "enna/slideshow");
-    evas_object_size_hint_weight_set(obj, 1.0, 1.0);
-    evas_object_show(obj);
+    sd->layout = elm_layout_add(enna->layout);
+    elm_layout_file_set(sd->layout, enna_config_theme_get(), "enna/slideshow");
+    evas_object_size_hint_weight_set(sd->layout, 1.0, 1.0);
+    evas_object_show(sd->layout);
 
-    sd->slideshow = elm_slideshow_add(enna->layout);
+    sd->slideshow = elm_gengrid_add(enna->layout);
     elm_slideshow_transition_set(sd->slideshow, "horizontal");
     elm_slideshow_loop_set(sd->slideshow, 1);
 
@@ -372,7 +372,7 @@ enna_photo_slideshow_add(Evas * evas)
     /* Fixme : add a config value */
     elm_notify_timeout_set(sd->controls, 10);
 
-    bx = elm_box_add(obj);
+    bx = elm_box_add(sd->layout);
     elm_box_horizontal_set(bx, 1);
     elm_notify_content_set(sd->controls, bx);
     evas_object_show(bx);
@@ -386,7 +386,7 @@ enna_photo_slideshow_add(Evas * evas)
     ELM_ADD ("icon/mp_next",    _button_clicked_next_cb);
     ELM_ADD ("icon/mp_stop",    _button_clicked_stop_cb);
 
-    sd->spin = elm_spinner_add(obj);
+    sd->spin = elm_spinner_add(sd->layout);
     elm_spinner_label_format_set(sd->spin, "%2.f secs.");
     evas_object_smart_callback_add(sd->spin, "changed", _spin, sd);
     elm_spinner_step_set(sd->spin, 1);
@@ -400,26 +400,26 @@ enna_photo_slideshow_add(Evas * evas)
     ELM_ADD ("icon/rotate_cw",  _button_clicked_rotate_cw_cb);
 #endif /* FEATURE_ROTATION */
 
-    evas_object_show(obj);
+    evas_object_show(sd->layout);
     evas_object_show(sd->slideshow);
-    elm_layout_content_set(obj, "enna.content.swallow",
+    elm_layout_content_set(sd->layout, "enna.content.swallow",
                            sd->slideshow);
 
-    evas_object_data_set(obj, "sd", sd);
+    evas_object_data_set(sd->layout, "sd", sd);
     sd->state = 4;
     /* Catch mouse wheel event */
-    evas_object_event_callback_add(obj, EVAS_CALLBACK_MOUSE_WHEEL,
+    evas_object_event_callback_add(sd->layout, EVAS_CALLBACK_MOUSE_WHEEL,
                                    _mouse_wheel_cb, sd);
     /* connect to the input signal */
-    sd->listener = enna_input_listener_add("slideshow", _input_events_cb, obj);
+    sd->listener = enna_input_listener_add("slideshow", _input_events_cb, sd->layout);
     enna_input_listener_demote(sd->listener);
 
-    evas_object_event_callback_add(obj, EVAS_CALLBACK_MOUSE_UP, _controls_show, sd);
-    evas_object_event_callback_add(obj, EVAS_CALLBACK_MOUSE_MOVE, _controls_show, sd);
+    evas_object_event_callback_add(sd->layout, EVAS_CALLBACK_MOUSE_UP, _controls_show, sd);
+    evas_object_event_callback_add(sd->layout, EVAS_CALLBACK_MOUSE_MOVE, _controls_show, sd);
 
-    evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL,
+    evas_object_event_callback_add(sd->layout, EVAS_CALLBACK_DEL,
                                    _sd_del, sd);
-    return obj;
+    return sd->layout;
 }
 
 void enna_photo_slideshow_next(Evas_Object *obj)
