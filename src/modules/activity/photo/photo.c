@@ -114,9 +114,12 @@ _slideshow_add_files(const char *file_selected)
     files = enna_browser_obj_files_get (mod->o_browser);
     EINA_LIST_FOREACH(files, l, file)
     {
-        if (!strcmp(file_selected, file->uri))
+        if (!file->mrl)
+            continue;
+        if (!strcmp(file_selected, file->mrl))
             pos = n;
-        enna_photo_slideshow_image_add(mod->o_slideshow, file->uri + 7, NULL);
+
+        enna_photo_slideshow_image_add(mod->o_slideshow, file->mrl + 7, NULL);
         n++;
     }
     eina_list_free (files);
@@ -141,7 +144,7 @@ _browser_cb_selected (void *data, Evas_Object *obj, void *event_info)
     {
         /* File is selected, display it in slideshow mode */
         _create_slideshow_gui();
-        pos = _slideshow_add_files(file->uri);
+        pos = _slideshow_add_files(file->mrl);
         enna_photo_slideshow_goto(mod->o_slideshow, pos);
     }
 }
@@ -152,16 +155,16 @@ _browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
     Enna_Vfs_File *file = event_info;
     Evas_Object *o_edje;
 
-    if (!file || !file->uri)
+    if (!file || !file->mrl)
         return;
 
     o_edje = elm_layout_edje_get(mod->o_layout);
     edje_object_part_text_set(o_edje, "filename.text", file->label);
 
     if (!file->is_directory || !file->is_menu)
-        photo_panel_infos_set_cover(mod->o_infos, file->uri + 7);
+        photo_panel_infos_set_cover(mod->o_infos, file->mrl + 7);
 
-    photo_panel_infos_set_text(mod->o_infos, file->uri + 7);
+    photo_panel_infos_set_text(mod->o_infos, file->mrl + 7);
 }
 
 static void
