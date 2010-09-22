@@ -848,6 +848,38 @@ collections
 
    }
 
+group {
+name: "enna/slideshow";
+    parts {
+        /* Black Background */
+        part { name: "bg";
+        type: RECT;
+        mouse_events: 0;
+            description {
+            state: "default" 0.0;
+            color: 0 0 0 255;
+            }
+        }
+        part {
+        name: "enna.content.swallow";
+        mouse_events: 1;
+        type: SWALLOW;
+            description{
+            state: "default" 0.0;
+            }
+        }
+        part {
+        name: "event";
+        mouse_events: 1;
+           repeat_events: 1;
+        type: RECT;
+            description{
+               state: "default" 0.0;
+               color: 0 0 0 0;
+            }
+        }
+    }
+}
 
 group {
 
