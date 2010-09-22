@@ -59,6 +59,7 @@ static Input_Listener *_input_listener = NULL;
 static Evas_Object *_o_cfg_panel;
 static Enna_Config_Panel *_cfg_panel = NULL;
 static int _weather_init_count = 0;
+static Ecore_Event_Handler *_geo_handler;
 /****************************************************************************/
 /*                        Google Weather API                                */
 /****************************************************************************/
@@ -692,6 +693,21 @@ enna_weather_cfg_register (void)
     enna_config_section_parser_register(&cfg_weather);
 }
 
+static Eina_Bool
+_geo_detected_cb(void *data, int type, void *event)
+{
+    EVT("Geo IP detected :");
+    EVT("    city :      %s", enna->geo_loc->city);
+    EVT("    country :   %s",enna->geo_loc->country);
+    EVT("    geo :       %s", enna->geo_loc->geo);
+    EVT("    latitude :  %3.3f", enna->geo_loc->latitude);
+    EVT("    longitude : %3.3f", enna->geo_loc->longitude);
+    
+
+    enna_weather_parse_config();
+    return EINA_TRUE;
+}
+
 int
 enna_weather_init(void)
 {
@@ -705,6 +721,12 @@ enna_weather_init(void)
         enna_config_panel_register(_("Weather"), "icon/weather",
                                    _weather_config_panel_show,
                                    _weather_config_panel_hide, NULL);
+
+    _geo_handler =
+        ecore_event_handler_add(ENNA_EVENT_GEO_LOC_DETECTED,
+                                _geo_detected_cb,
+                                NULL);
+
     _weather_init_count = 1;
     return 1;
 }
@@ -715,6 +737,10 @@ enna_weather_shutdown(void)
     /* Shutdown only when all clients have called this function */
     _weather_init_count--;
     if (_weather_init_count == 0)
+    {
+        ecore_event_handler_del( _geo_handler);
         enna_config_panel_unregister(_cfg_panel);
+    }
+    
     return _weather_init_count;
 }
