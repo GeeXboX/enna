@@ -190,7 +190,7 @@ static void
 _button_clicked_stop_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
-    elm_slideshow_timeout_set(sd->slideshow, 0);
+    evas_object_smart_callback_call(sd->layout, "delete,requested", NULL);
 }
 
 #ifdef FEATURE_ROTATION
