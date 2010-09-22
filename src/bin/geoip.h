@@ -33,7 +33,7 @@ struct _Geo
     float longitude;
 };
 
-Geo *enna_get_geo_by_ip (void);
+void enna_get_geo_by_ip (void);
 void enna_geo_free (Geo *geo);
 
 #endif /* GEOIP_H */

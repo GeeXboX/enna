@@ -21,6 +21,8 @@
 
 #include <string.h>
 
+#include <Ecore_Con.h>
+
 #include "enna.h"
 #include "enna_config.h"
 #include "xml_utils.h"
@@ -34,34 +36,28 @@
 #define GEOIP_QUERY           "http://www.ipinfodb.com/ip_query.php"
 #define MAX_URL_SIZE          1024
 
-Geo *
-enna_get_geo_by_ip (void)
-{
-    url_data_t data;
-    url_t handler;
+int ENNA_EVENT_GEO_LOC_DETECTED;
+
+static Eina_Bool
+url_data_cb(void *data, int ev_type, void *ev) 
+{ 
     xmlDocPtr doc = NULL;
     xmlNode *n;
     xmlChar *tmp;
+    Ecore_Con_Event_Url_Data *urldata = ev;
     Geo *geo = NULL;
+    
+    ecore_con_url_data_get(urldata->url_con); 
 
-    handler = url_new();
-    if (!handler)
-        goto error;
-
-    /* proceed with IP Geolocalisation request */
-    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-             "Search Request: %s", GEOIP_QUERY);
-
-    data = url_get_data(handler, GEOIP_QUERY);
-    if (data.status != 0)
+    if (!urldata->size)
         goto error;
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
-             "Search Reply: %s", data.buffer);
+             "Search Reply: %s", urldata->data);
 
     /* parse the XML answer */
-    doc = get_xml_doc_from_memory(data.buffer);
-    ENNA_FREE(data.buffer);
+    doc = get_xml_doc_from_memory((char*)urldata->data);
+ 
     if (!doc)
         goto error;
 
@@ -129,9 +125,34 @@ error:
         doc = NULL;
     }
 
-    url_free(handler);
+    enna->geo_loc = geo;
+    ecore_event_add(ENNA_EVENT_GEO_LOC_DETECTED, NULL, NULL, NULL);
 
-    return geo;
+    return 0; 
+} 
+
+
+void
+enna_get_geo_by_ip (void)
+{
+    Ecore_Con_Url *url;
+    Ecore_Event_Handler *handler;
+
+    ENNA_EVENT_GEO_LOC_DETECTED = ecore_event_type_new();
+    ecore_con_url_init();
+    url = ecore_con_url_new(GEOIP_QUERY);
+    handler = ecore_event_handler_add(ECORE_CON_EVENT_URL_DATA, 
+                                      url_data_cb, NULL); 
+
+    /* proceed with IP Geolocalisation request */
+    ecore_con_url_send(url, NULL, 0, NULL);
+
+    enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
+             "Search Request: %s", GEOIP_QUERY);
+
+  
+
+    return;
 }
 
 void
@@ -147,7 +168,7 @@ enna_geo_free (Geo *geo)
         ENNA_FREE (geo->country);
 
     if (geo->geo)
-        ENNA_FREE (geo->geo);
+        ENNA_FREE (geo->geo); 
 
     ENNA_FREE (geo);
 }
