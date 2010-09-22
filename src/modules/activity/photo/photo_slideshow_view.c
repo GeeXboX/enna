@@ -323,7 +323,7 @@ _sd_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
     elm_icon_file_set(ic, enna_config_theme_get(), icon);            \
     elm_icon_scale_set(ic, 0, 0);                                    \
     bt = elm_button_add(obj);                                        \
-    elm_object_style_set(bt, "simple");                              \
+    elm_object_style_set(bt, "mediaplayer");			     \
     evas_object_smart_callback_add(bt, "clicked", cb, sd);           \
     elm_button_icon_set(bt, ic);                                     \
     evas_object_size_hint_min_set(bt, 64, 64);                       \
