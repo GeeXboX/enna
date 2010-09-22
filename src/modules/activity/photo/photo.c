@@ -125,7 +125,7 @@ _slideshow_add_files(const char *file_selected)
         enna_photo_slideshow_image_add(mod->o_slideshow, file->mrl + 7, NULL);
         n++;
     }
-    eina_list_free (files);
+
     return pos;
 }
 
