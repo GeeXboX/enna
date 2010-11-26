@@ -696,13 +696,14 @@ enna_weather_cfg_register (void)
 static Eina_Bool
 _geo_detected_cb(void *data, int type, void *event)
 {
+    if (!(enna->geo_loc)) return EINA_TRUE;
+
     EVT("Geo IP detected :");
     EVT("    city :      %s", enna->geo_loc->city);
     EVT("    country :   %s",enna->geo_loc->country);
     EVT("    geo :       %s", enna->geo_loc->geo);
     EVT("    latitude :  %3.3f", enna->geo_loc->latitude);
     EVT("    longitude : %3.3f", enna->geo_loc->longitude);
-    
 
     enna_weather_parse_config();
     return EINA_TRUE;
