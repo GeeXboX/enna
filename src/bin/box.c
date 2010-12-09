@@ -68,7 +68,7 @@ static void _box_select(Evas_Object *obj, int pos);
 static Smart_Item *_smart_selected_item_get(Smart_Data *sd, int *nth);
 static void _smart_item_unselect(Smart_Data *sd, Smart_Item *si);
 static void _smart_item_select(Smart_Data *sd, Smart_Item *si);
-static void _smart_event_mouse_down(void *data, Evas *evas, Evas_Object *obj,
+static void _smart_event_mouse_up(void *data, Evas *evas, Evas_Object *obj,
         void *event_info);
 
 /* local subsystem globals */
@@ -127,8 +127,8 @@ _append_helper(Evas_Object *obj, const char *label,
 
     elm_box_pack_end(sd->o_box, si->o_edje);
 
-    evas_object_event_callback_add(si->o_edje, EVAS_CALLBACK_MOUSE_DOWN,
-            _smart_event_mouse_down, si);
+    evas_object_event_callback_add(si->o_edje, EVAS_CALLBACK_MOUSE_UP,
+            _smart_event_mouse_up, si);
 
     return si;
 }
@@ -402,7 +402,7 @@ _smart_item_select(Smart_Data *sd, Smart_Item *si)
 }
 
 static void
-_smart_event_mouse_down(void *data, Evas *evas,
+_smart_event_mouse_up(void *data, Evas *evas,
                         Evas_Object *obj, void *event_info)
 {
     Smart_Item *si = data;
