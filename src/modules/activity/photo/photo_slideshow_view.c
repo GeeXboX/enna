@@ -130,7 +130,6 @@ _controls_show(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
     evas_object_show(sd->controls);
-    elm_notify_timer_init(sd->controls);
 }
 
 static void
