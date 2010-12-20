@@ -315,20 +315,6 @@ if test "x$want_browser_ipod" = "xyes" -o "x$want_browser_ipod" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_BROWSER_IPOD, test "x$have_browser_ipod" = "xyes")
 
-
-# Jamendo
-want_browser_jamendo="no"
-AC_MSG_CHECKING(whether jamendo browser module is to be built)
-AC_ARG_ENABLE(browser-jamendo,
-  AS_HELP_STRING([--enable-browser-jamendo],[Enable Jamendo Browser Module]),
-  [ want_browser_jamendo=$enableval ]
-)
-AC_MSG_RESULT($want_browser_jamendo)
-AM_CONDITIONAL(BUILD_BROWSER_JAMENDO, test "x$want_browser_jamendo" = "xyes")
-if test "x$want_browser_jamendo" = "xyes"; then
-  AC_DEFINE(BUILD_BROWSER_JAMENDO, 1, [Jamendo Browser])
-fi
-
 # Local Files
 want_browser_localfiles="yes"
 AC_MSG_CHECKING(whether localfiles browser module is to be built)
@@ -380,6 +366,32 @@ AM_CONDITIONAL(BUILD_BROWSER_SHOUTCAST, test "x$want_browser_shoutcast" = "xyes"
 if test "x$want_browser_shoutcast" = "xyes"; then
   AC_DEFINE(BUILD_BROWSER_SHOUTCAST, 1, [SHOUTcast Browser])
 fi
+
+# Spotify support
+want_browser_spotify="no"
+have_browser_spotify="no"
+AC_MSG_CHECKING(whether spotify browser is to be built)
+AC_ARG_ENABLE(browser-spotify,
+  AS_HELP_STRING([--enable-browser-spotify],[Enable spotify Browser Module]),
+  [ want_browser_spotify=$enableval ]
+)
+AC_MSG_RESULT($want_browser_spotify)
+if test "x$want_browser_spotify" = "xyes" -o "x$want_browser_spotify" = "xauto"; then
+  PKG_CHECK_MODULES(
+    [SPOTIFY],
+    [libspotify],
+    [
+      AC_DEFINE(BUILD_BROWSER_SPOTIFY, 1, [spotify Browser Module])
+      have_browser_spotify="yes"
+    ],
+    [
+      if test "x$want_browser_spotify" = "xyes" -a "x$use_strict" = "xyes" ; then
+        AC_MSG_ERROR([libspotify not found (strict dependencies checking)])
+      fi
+    ]
+  )
+fi
+AM_CONDITIONAL(BUILD_BROWSER_SPOTIFY, test "x$have_browser_spotify" = "xyes")
 
 # UPnP/DLNA
 want_browser_upnp="no"
@@ -801,11 +813,11 @@ src/modules/browser/Makefile
 src/modules/browser/cdda/Makefile
 src/modules/browser/dvd/Makefile
 src/modules/browser/ipod/Makefile
-src/modules/browser/jamendo/Makefile
 src/modules/browser/localfiles/Makefile
 src/modules/browser/netstreams/Makefile
 src/modules/browser/podcasts/Makefile
 src/modules/browser/shoutcast/Makefile
+src/modules/browser/spotify/Makefile
 src/modules/browser/upnp/Makefile
 src/modules/browser/valhalla/Makefile
 src/modules/gadgets/Makefile
@@ -868,11 +880,11 @@ echo
 echo "  Audio CD......................... : $want_browser_cdda"
 echo "  DVD Video........................ : $want_browser_dvd"
 echo "  iPod/iPhone/iPad................. : $have_browser_ipod"
-echo "  Jamendo.......................... : $want_browser_jamendo"
 echo "  Local files...................... : $want_browser_localfiles"
 echo "  Network Streams.................. : $want_browser_netstreams"
 echo "  Podcasts......................... : $want_browser_podcasts"
 echo "  SHOUTcast........................ : $want_browser_shoutcast"
+echo "  Spotify.......................... : $want_browser_spotify"
 echo "  UPnP/DLNA........................ : $have_browser_upnp"
 echo "  Valhalla Scanner................. : $want_browser_valhalla"
 echo

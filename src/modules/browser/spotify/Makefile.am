@@ -2,7 +2,7 @@ include ./config.mak
 
 MAINTAINERCLEANFILES = Makefile.in
 
-MODULE = jamendo
+MODULE = spotify
 
 # data files for the module
 filesdir = $(libdir)/enna/modules/
@@ -14,19 +14,20 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules/$(MODULE) \
 -I$(top_srcdir)/src/bin \
 -I$(top_srcdir)/src/modules \
-@ENNA_CFLAGS@
+@ENNA_CFLAGS@ \
+@SPOTIFY_CFLAGS@
 
-if BUILD_BROWSER_JAMENDO
+if BUILD_BROWSER_SPOTIFY
 
 pkgdir = $(libdir)/enna/modules
 
-pkg_LTLIBRARIES = browser_jamendo.la
+pkg_LTLIBRARIES = browser_spotify.la
 
-browser_jamendo_la_SOURCES = $(SRCS_BROWSER_JAMENDO)
+browser_spotify_la_SOURCES = $(SRCS_BROWSER_SPOTIFY)
 
-browser_jamendo_la_LIBADD = @ENNA_LIBS@
-browser_jamendo_la_LDFLAGS = -module -avoid-version
-browser_jamendo_la_DEPENDENCIES = $(top_builddir)/config.h
+browser_spotify_la_LIBADD = @ENNA_LIBS@ @SPOTIFY_LIBS@
+browser_spotify_la_LDFLAGS = -module -avoid-version
+browser_spotify_la_DEPENDENCIES = $(top_builddir)/config.h
 
 uninstall:
 	rm -rf $(DESTDIR)$(libdir)/enna/modules/browser_$(MODULE).*

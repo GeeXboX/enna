@@ -107,11 +107,11 @@ include ../modules/activity/weather/config.mak
 include ../modules/browser/cdda/config.mak
 include ../modules/browser/dvd/config.mak
 include ../modules/browser/ipod/config.mak
-include ../modules/browser/jamendo/config.mak
 include ../modules/browser/localfiles/config.mak
 include ../modules/browser/netstreams/config.mak
 include ../modules/browser/podcasts/config.mak
 include ../modules/browser/shoutcast/config.mak
+include ../modules/browser/spotify/config.mak
 include ../modules/browser/upnp/config.mak
 include ../modules/browser/valhalla/config.mak
 include ../modules/gadgets/date/config.mak
@@ -168,10 +168,6 @@ if BUILD_BROWSER_IPOD
 enna_SOURCES += $(SRCS_BROWSER_IPOD)
 endif
 
-if BUILD_BROWSER_JAMENDO
-enna_SOURCES += $(SRCS_BROWSER_JAMENDO)
-endif
-
 if BUILD_BROWSER_LOCALFILES
 enna_SOURCES += $(SRCS_BROWSER_LOCALFILES)
 endif
@@ -186,6 +182,13 @@ endif
 
 if BUILD_BROWSER_SHOUTCAST
 enna_SOURCES += $(SRCS_BROWSER_SHOUTCAST)
+endif
+
+
+if BUILD_BROWSER_SPOTIFY
+enna_SOURCES += $(SRCS_BROWSER_SPOTIFY)
+AM_CFLAGS += @SPOTIFY_CFLAGS@
+enna_LDADD += @SPOTIFY_LIBS@
 endif
 
 if BUILD_BROWSER_UPNP
