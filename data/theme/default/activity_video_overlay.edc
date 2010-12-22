@@ -1,0 +1,21 @@
+images {
+   image: "overlay_bg.png" COMP;
+}
+
+group {
+      name: "activity/video/overlay";
+
+      parts {
+            part {
+                 
+                 name: "background";
+                 description {
+                       min: 400 200;
+                             max: 400 200;     
+                     state: "default" 0.0;
+                     image.normal: "overlay_bg.png";
+                     image.border: 20 20 20 20;
+                 }
+            }
+      }
+}
