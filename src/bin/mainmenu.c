@@ -76,7 +76,7 @@ static void
 _enna_mainmenu_load_from_activities(Smart_Data *sd)
 {
     enna_box_clear(sd->o_menu);
-    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, "/");
+    sd->browser = enna_browser_add(_add_cb, sd, NULL, NULL, NULL, NULL, "/");
     enna_browser_browse(sd->browser);
 }
 

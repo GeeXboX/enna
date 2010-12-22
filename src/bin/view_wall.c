@@ -93,8 +93,8 @@ _grid_item_icon_get(const void *data, Evas_Object *obj, const char *part)
 			else
 				return NULL;
 
-                        evas_object_size_hint_max_set(ic, 92, 92);
-                        evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
+            //evas_object_size_hint_max_set(ic, 92, 92);
+            //evas_object_size_hint_aspect_set(ic, EVAS_ASPECT_CONTROL_VERTICAL, 1, 1);
 			evas_object_show(ic);
 			return ic;
 		}

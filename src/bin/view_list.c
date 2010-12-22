@@ -26,6 +26,7 @@
 #include "view_list.h"
 #include "input.h"
 #include "vfs.h"
+#include "logs.h"
 
 #define SMART_NAME "enna_list"
 
@@ -288,6 +289,27 @@ enna_list_file_remove(Evas_Object *obj, Enna_File *file)
             elm_genlist_item_del(it->item);
             free(it);
             sd->items = eina_list_remove(sd->items, it);
+            break;
+        }
+    }
+}
+
+void
+enna_list_file_update(Evas_Object *obj, Enna_File *file)
+{
+    Smart_Data *sd;
+    List_Item *it;
+    Eina_List *l;
+    
+    sd = evas_object_data_get(obj, "sd");
+
+    EINA_LIST_FOREACH(sd->items, l, it)
+    {
+        DBG("%s == %s", it->file->name, file->name);
+        if (it->file == file)
+        {
+            DBG("Update genlist item");
+            elm_genlist_item_update(it->item);
             break;
         }
     }

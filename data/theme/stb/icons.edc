@@ -55,3 +55,10 @@ ICON("weather_sun_rain.png",      "weather/sun_rain");
 ICON("weather_sun_snow.png",      "weather/sun_snow");
 ICON("weather_sun_storm.png",     "weather/sun_storm");
 ICON("weather_windy.png",         "weather/windy");
+
+ICON("favorite.png", "icon/favorite");
+ICON("playlist.png", "icon/playlist");
+ICON("friends.png", "icon/friends");
+ICON("spotify.png", "icon/spotify");
+ICON("music_library.png", "icon/library");
+ICON("network_directory.png", "icon/dev/nfs");

@@ -45,8 +45,10 @@ struct _Enna_Browser
     Ecore_Idler *queue_idler;
     void (*add)(void *data, Enna_Vfs_File *file);
     void (*del)(void *data, Enna_Vfs_File *file);
+    void (*update)(void *data, Enna_Vfs_File *file);
     void *add_data;
     void *del_data;
+    void *update_data;
     void *priv_module;
     const char *uri;
     Enna_Browser_Type type;
@@ -104,6 +106,7 @@ _activities_changed_cb(void *data, int type, void *event)
 Enna_Browser *
 enna_browser_add(void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
                  void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
+                 void (*update)(void *data, Enna_Vfs_File  *file), void *update_data,
                  const char *uri)
 {
     Enna_Browser *b;
@@ -111,8 +114,10 @@ enna_browser_add(void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
     b = calloc(1, sizeof(Enna_Browser));
     b->add = add;
     b->del = del;
+    b->update = update;
     b->add_data = add_data;
     b->del_data = del_data;
+    b->update_data = update_data;
     b->queue_idler = NULL;
     b->uri = eina_stringshare_add(uri);
     b->tokens = NULL;
@@ -257,6 +262,49 @@ enna_browser_file_add(Enna_Browser *b, Enna_Vfs_File *file)
     b->files = eina_list_append(b->files, file);
     b->add(b->add_data, file);
 }
+
+Enna_File *
+enna_browser_file_update(Enna_Browser *b, Enna_Vfs_File *file)
+{
+    Enna_File *f;
+    Eina_List *l;
+
+    if (!b || !file)
+        return NULL;
+    
+    if (eina_list_data_find(b->files, file))
+    {
+        DBG("Update file");
+        b->update(b->update_data, file);
+        return file;
+    }
+    else
+    {
+        EINA_LIST_FOREACH(b->files, l, f)
+        {
+            DBG("File update %s == %s", f->uri, file->uri);
+            if(!strcmp(f->uri, file->uri))
+            {
+                eina_stringshare_replace(&f->name, file->name);
+                eina_stringshare_replace(&f->label, file->label);
+                eina_stringshare_replace(&f->icon, file->icon);
+                eina_stringshare_replace(&f->icon_file, file->icon_file);
+                eina_stringshare_replace(&f->mrl, file->mrl);
+                f->is_directory = file->is_directory;
+                f->is_menu = file->is_menu;
+                b->update(b->update_data, f);
+                enna_browser_file_free(file);
+                return f;
+            }
+        }
+
+        DBG("Add file");
+        enna_browser_file_add(b, file);
+        return file;
+    }
+}
+
+
 
 void
 enna_browser_file_del(Enna_Browser *b, Enna_Vfs_File *file)

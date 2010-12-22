@@ -68,6 +68,8 @@ struct _Smart_Data
                             void *data);
         void (*view_remove)(Evas_Object *view,
                             Enna_File *file);
+        void (*view_update)(Evas_Object *view,
+                            Enna_File *file);
         void *(*view_selected_data_get)(Evas_Object *view);
         int (*view_jump_label)(Evas_Object *view, const char *label);
         Eina_Bool (*view_key_down)(Evas_Object *view, enna_input event);
@@ -168,6 +170,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
         sd->view_funcs.view_add                 = _browser_view_list_add;
         sd->view_funcs.view_append              = enna_list_file_append;
         sd->view_funcs.view_remove              = enna_list_file_remove;
+        sd->view_funcs.view_update              = enna_list_file_update;
         sd->view_funcs.view_selected_data_get   = enna_list_selected_data_get;
         sd->view_funcs.view_jump_label          = enna_list_jump_label;
         sd->view_funcs.view_key_down            = enna_list_input_feed;
@@ -178,7 +181,8 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     case ENNA_BROWSER_BOX:
         sd->view_funcs.view_add                 = _browser_box_add;
         sd->view_funcs.view_append              = enna_box_file_append;
-//        sd->view_funcs.view_remove              = enna_box_file_remove;
+        sd->view_funcs.view_remove              = NULL;
+        sd->view_funcs.view_update              = NULL;
         sd->view_funcs.view_selected_data_get   = enna_box_selected_data_get;
         sd->view_funcs.view_jump_label          = enna_box_jump_label;
         sd->view_funcs.view_key_down            = enna_box_input_feed;
@@ -190,6 +194,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
         sd->view_funcs.view_add                 = _browser_view_wall_add;
         sd->view_funcs.view_append              = enna_wall_file_append;
         sd->view_funcs.view_remove              = enna_wall_file_remove;
+        sd->view_funcs.view_update              = NULL;
         sd->view_funcs.view_selected_data_get   = enna_wall_selected_data_get;
         sd->view_funcs.view_jump_label          = enna_wall_jump_label;
         sd->view_funcs.view_key_down            = enna_wall_input_feed;
@@ -213,7 +218,7 @@ static void
 _add_cb(void *data, Enna_File *file)
 {
     Smart_Data *sd = data;
-    Evas_Object *icon = NULL;
+    //Evas_Object *icon = NULL;
     Activated_Cb_Data *cb_data;
 
     DBG(__FUNCTION__);
@@ -227,16 +232,16 @@ _add_cb(void *data, Enna_File *file)
 
     }
 
-    if (file->icon_file && file->icon_file[0] == '/')
-    {
-        icon = elm_icon_add(sd->o_view);
-        elm_icon_file_set(icon, file->icon_file, NULL);
-    }
-    else
-    {
-        icon = elm_icon_add(sd->o_view);
-        edje_object_file_set(icon, enna_config_theme_get(), file->icon);
-    }
+    /* if (file->icon_file && file->icon_file[0] == '/') */
+    /* { */
+    /*     icon = elm_icon_add(sd->o_view); */
+    /*     elm_icon_file_set(icon, file->icon_file, NULL); */
+    /* } */
+    /* else */
+    /* { */
+    /*     icon = elm_icon_add(sd->o_view); */
+    /*     edje_object_file_set(icon, enna_config_theme_get(), file->icon); */
+    /* } */
 
     cb_data = malloc(sizeof(Activated_Cb_Data));
     cb_data->sd = sd;
@@ -251,6 +256,15 @@ _del_cb(void *data, Enna_File *file)
 
     if (file && sd && sd->o_view && sd->view_funcs.view_remove)
         sd->view_funcs.view_remove(sd->o_view, file);
+}
+
+static void
+_update_cb(void *data, Enna_File *file)
+{
+    Smart_Data *sd = data;
+
+    if (file && sd && sd->o_view && sd->view_funcs.view_update)
+        sd->view_funcs.view_update(sd->o_view, file);
 }
 
 static void
@@ -378,7 +392,7 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
         sd->visited = eina_list_append(sd->visited, enna_browser_file_dup(file));
     enna_browser_del(sd->browser);
 
-    sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, file->uri);
+    sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, _update_cb, sd, file->uri);
 
     ENNA_OBJECT_DEL(sd->o_view);
 
