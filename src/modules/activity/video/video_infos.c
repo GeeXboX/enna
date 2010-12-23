@@ -29,7 +29,6 @@
 #include "image.h"
 #include "buffer.h"
 #include "utils.h"
-#include "xdg.h"
 
 #define SMART_NAME "enna_panel_infos"
 
@@ -243,7 +242,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
         char dst[1024] = { 0 };
 
         snprintf(dst, sizeof(dst), "%s/covers/%s",
-                 enna_data_home_get(), cv);
+                 enna_util_data_home_get(), cv);
         if (ecore_file_exists(dst))
             file = strdup(dst);
     }

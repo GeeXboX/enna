@@ -37,7 +37,6 @@
 #include "buffer.h"
 #include "ini_parser.h"
 #include "utils.h"
-#include "xdg.h"
 
 static Eina_List *cfg_parsers = NULL;
 static ini_t *cfg_ini = NULL;
@@ -247,7 +246,7 @@ enna_config_init (const char *file)
         snprintf(filename, sizeof(filename), "%s", file);
     else
         snprintf(filename, sizeof(filename), "%s/enna.cfg",
-                 enna_config_home_get());
+                 enna_util_config_home_get());
 
     enna_config->eth = elm_theme_new();
     enna_config->cfg_file = strdup(filename);

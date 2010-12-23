@@ -36,7 +36,6 @@
 #include "logs.h"
 #include "utils.h"
 #include "buffer.h"
-#include "xdg.h"
 
 #define MODULE_NAME "enna"
 
@@ -380,7 +379,7 @@ enna_metadata_db_init(void)
     valhalla_verbosity(db_cfg.verbosity);
 
     snprintf(db, sizeof(db),
-             "%s/%s", enna_data_home_get(), ENNA_METADATA_DB_NAME);
+             "%s/%s", enna_util_data_home_get(), ENNA_METADATA_DB_NAME);
 
     memset(&param, 0, sizeof(valhalla_init_param_t));
     param.parser_nb   = db_cfg.parser_number;
@@ -447,12 +446,12 @@ enna_metadata_db_init(void)
     /* set file download destinations */
     memset(dst, '\0', sizeof(dst));
     snprintf(dst, sizeof(dst), "%s/%s",
-             enna_data_home_get(), PATH_COVERS);
+             enna_util_data_home_get(), PATH_COVERS);
     valhalla_config_set(vh, DOWNLOADER_DEST, dst, VALHALLA_DL_COVER);
 
     memset(dst, '\0', sizeof(dst));
     snprintf(dst, sizeof(dst), "%s/%s",
-             enna_data_home_get(), PATH_FANARTS);
+             enna_util_data_home_get(), PATH_FANARTS);
     valhalla_config_set(vh, DOWNLOADER_DEST, dst, VALHALLA_DL_FAN_ART);
 
     /* lang-specific grabbers workaround */
@@ -509,14 +508,14 @@ enna_metadata_init(void)
     /* try to create backdrops directory storage */
     memset(dst, '\0', sizeof(dst));
     snprintf(dst, sizeof(dst), "%s/%s",
-             enna_data_home_get(), PATH_FANARTS);
+             enna_util_data_home_get(), PATH_FANARTS);
     if (!ecore_file_is_dir(dst))
         ecore_file_mkdir(dst);
 
     /* try to create covers directory storage */
     memset(dst, '\0', sizeof(dst));
     snprintf(dst, sizeof(dst), "%s/%s",
-             enna_data_home_get(), PATH_COVERS);
+             enna_util_data_home_get(), PATH_COVERS);
     if (!ecore_file_is_dir(dst))
         ecore_file_mkdir(dst);
 

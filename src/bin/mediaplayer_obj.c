@@ -29,7 +29,6 @@
 #include "mediaplayer_obj.h"
 #include "utils.h"
 #include "logs.h"
-#include "xdg.h"
 
 #define SMART_NAME "mediaplayer_obj"
 
@@ -155,7 +154,7 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
             snprintf(cv, sizeof(cv), "%s", cover);
         else
             snprintf(cv, sizeof(cv), "%s/covers/%s",
-                     enna_data_home_get(), cover);
+                     enna_util_data_home_get(), cover);
 
         enna_image_file_set(sd->cv, cv, NULL);
     }

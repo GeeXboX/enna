@@ -41,12 +41,74 @@
 #include "vfs.h"
 #include "utils.h"
 #include "buffer.h"
+#include "logs.h"
 
 #ifdef BUILD_LIBSVDRP
 static svdrp_t *svdrp = NULL;
 #endif
 
+typedef struct _Smart_Data Smart_Data;
+
+struct _Smart_Data
+{
+  const char *cache;
+  const char *data;
+  const char *config;
+};
+
+
+static int _util_init_count = -1; 
 static char *mylocale = NULL;
+static Smart_Data *sd;
+
+int
+enna_util_init()
+{
+    EVT("enna util init");
+
+    /* Prevent multiple loads */
+    if (_util_init_count > 0)
+        return ++_util_init_count;
+
+    sd = calloc(1, sizeof(Smart_Data));
+    sd->cache = eina_stringshare_printf("%s/%s", efreet_cache_home_get(), "/enna");
+    sd->config = eina_stringshare_printf("%s/%s", efreet_config_home_get(), "/enna");
+    sd->data = eina_stringshare_printf("%s/%s", efreet_data_home_get(), "/enna");
+
+    if (!ecore_file_is_dir(sd->cache))
+        ecore_file_mkdir(sd->cache);
+
+    if (!ecore_file_is_dir(sd->config))
+        ecore_file_mkdir(sd->config);
+
+    if (!ecore_file_is_dir(sd->data))
+        ecore_file_mkdir(sd->data);
+
+
+    DBG("Set data directory to %s", sd->data);
+    DBG("Set config directory to : %s", sd->config);
+    DBG("Set cache directory to : %s", sd->cache);
+
+    _util_init_count = 1;
+    EVT("enna util init done");
+
+    return 1;
+}
+
+int
+enna_util_shutdown()
+{
+    _util_init_count--;
+    if (_util_init_count == 0)
+    {
+      eina_stringshare_del(sd->cache);
+      eina_stringshare_del(sd->config);
+      eina_stringshare_del(sd->data);
+        ENNA_FREE(sd);
+    }
+
+    return _util_init_count;
+}
 
 char *
 enna_util_user_home_get()
@@ -67,6 +129,24 @@ enna_util_user_home_get()
         return strdup("/");
     }
     return home;
+}
+
+const char *
+enna_util_data_home_get()
+{
+  return sd->data;
+}
+
+const char *
+enna_util_config_home_get()
+{
+  return sd->config;
+}
+
+const char *
+enna_util_cache_home_get()
+{
+  return sd->cache;
 }
 
 int

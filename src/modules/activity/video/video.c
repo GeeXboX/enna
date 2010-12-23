@@ -40,7 +40,6 @@
 #include "metadata.h"
 #include "utils.h"
 #include "mediaplayer_obj.h"
-#include "xdg.h"
 
 #include "video.h"
 #include "video_flags.h"
@@ -335,7 +334,7 @@ backdrop_show(Enna_Metadata *m)
             snprintf(dst, sizeof (dst), "%s", backdrop);
         else
             snprintf(dst, sizeof (dst), "%s/fanarts/%s",
-                     enna_data_home_get(), backdrop);
+                     enna_util_data_home_get(), backdrop);
         file = strdup(dst);
 
         enna_video_picture_set(mod->o_backdrop, file, from_vfs);
@@ -369,7 +368,7 @@ snapshot_show(Enna_Metadata *m, int dir)
             snprintf(dst, sizeof(dst), "%s", snapshot);
         else
             snprintf(dst, sizeof(dst), "%s/fanarts/%s",
-                     enna_data_home_get(), snapshot);
+                     enna_util_data_home_get(), snapshot);
         file = strdup(dst);
     }
     else

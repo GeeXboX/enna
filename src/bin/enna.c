@@ -49,7 +49,6 @@
 #include "weather_api.h"
 #include "input.h"
 #include "url_utils.h"
-#include "xdg.h"
 #include "geoip.h"
 #include "gadgets.h"
 
@@ -424,7 +423,7 @@ static void _enna_shutdown(void)
 
     enna_exit_shutdown();
     elm_shutdown();
-    enna_xdg_shutdown();
+    enna_util_shutdown();
     enna_log(ENNA_MSG_INFO, NULL, "Bye Bye !");
     enna_log_shutdown();
     ENNA_FREE(enna);
@@ -630,8 +629,8 @@ int main(int argc, char **argv)
 #endif
 
     eina_init();
-    enna_xdg_init();
-
+    enna_util_init();
+	
     /* Must be called first */
     enna_config_init(conffile);
     ENNA_FREE(conffile);

@@ -46,6 +46,7 @@ PKG_CHECK_MODULES([ENNA],
    ecore-file >= 1.0.0
    ecore-ipc >= 1.0.0
    ecore-con >= 1.0.0
+   efreet >= 1.0.0
    edje >= 1.0.0
    edbus >= 1.0.0
    ethumb >= 0.1.0
@@ -691,32 +692,6 @@ if test "x$want_libsvdrp" = "xyes" -o "x$want_libsvdrp" = "xauto"; then
 fi
 AM_CONDITIONAL(BUILD_LIBSVDRP, test "x$have_libsvdrp" = "xyes")
 
-# libxdg-basedir
-want_libxdg_basedir="auto"
-have_libxdg_basedir="no"
-AC_MSG_CHECKING(whether libxdg-basedir support is to be built)
-AC_ARG_ENABLE(libxdg-basedir,
-    AS_HELP_STRING([--enable-libxdg-basedir],[Enable libxdg-basedir support]),
-    [ want_libxdg_basedir=$enableval ]
-)
-AC_MSG_RESULT($want_libxdg_basedir)
-if test "x$want_libxdg_basedir" = "xyes" -o "x$want_libxdg_basedir" = "xauto"; then
-  PKG_CHECK_MODULES(
-    [LIBXDG_BASEDIR],
-    [libxdg-basedir],
-    [
-      AC_DEFINE(BUILD_LIBXDG_BASEDIR, 1, [libxdg-basedir support])
-      have_libxdg_basedir="yes"
-    ],
-    [
-      if test "x$want_libxdg_basedir" = "xyes" -a "x$use_strict" = "xyes" ; then
-        AC_MSG_ERROR([libxdg-basedir not found (strict dependencies checking)])
-      fi
-    ]
-  )
-fi
-AM_CONDITIONAL(BUILD_LIBXDG_BASEDIR, test "x$have_libxdg_basedir" = "xyes")
-
 # libxrandr
 want_libxrandr="auto"
 have_libxrandr="no"
@@ -911,7 +886,6 @@ echo
 echo "  ecore-x.......................... : $have_ecore_x"
 echo "  libcddb.......................... : $have_libcddb"
 echo "  libsvdrp......................... : $have_libsvdrp"
-echo "  libxdg-basedir................... : $have_libxdg_basedir"
 echo "  libxrandr........................ : $have_libxrandr"
 echo
 echo "Suppported Themes:"

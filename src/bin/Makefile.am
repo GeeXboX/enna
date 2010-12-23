@@ -78,13 +78,6 @@ if BUILD_LIBSVDRP
 enna_LDADD += @LIBSVDRP_LIBS@
 endif
 
-if BUILD_LIBXDG_BASEDIR
-enna_SOURCES += xdg.c
-enna_LDADD += @LIBXDG_BASEDIR_LIBS@
-else
-enna_SOURCES += xdg-dummy.c
-endif
-
 ##########################################################################
 # For Modules Static linking : BEGIN
 ##########################################################################
