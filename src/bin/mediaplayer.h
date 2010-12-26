@@ -47,6 +47,7 @@ typedef enum
     ENNA_MP_URI_TYPE_UDP,
     ENNA_MP_URI_TYPE_UNSV,
     ENNA_MP_URI_TYPE_VDR,
+    ENNA_MP_URI_TYPE_SPOTIFY,
 } enna_mediaplayer_uri_type_t;
 
 typedef enum _PLAY_STATE PLAY_STATE;

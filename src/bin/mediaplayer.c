@@ -50,8 +50,8 @@
 #define URI_TYPE_UDP      "udp://"
 #define URI_TYPE_UNSV     "unsv://"
 #define URI_TYPE_VDR      "vdr:/"
-
-#define MAX_PLAYERS 4
+#define URI_TYPE_SPOTIFY  "spotify:"
+#define MAX_PLAYERS 5
 
 /* a/v controls */
 #define SEEK_STEP_DEFAULT         10 /* seconds */
@@ -68,11 +68,13 @@ typedef struct mediaplayer_cfg_s {
     player_type_t type;
     player_type_t dvd_type;
     player_type_t tv_type;
+    player_type_t spotify_type;
     player_vo_t vo;
     player_ao_t ao;
     player_verbosity_level_t verbosity;
     int dvd_set;
     int tv_set;
+    int spotify_set;
     char *sub_align;
     char *sub_pos;
     char *sub_scale;
@@ -102,6 +104,7 @@ struct _Enna_Mediaplayer
     player_type_t default_type;
     player_type_t dvd_type;
     player_type_t tv_type;
+    player_type_t spotify_type;
     Ecore_Event_Handler *key_down_event_handler;
     Ecore_Event_Handler *mouse_button_event_handler;
     Ecore_Event_Handler *mouse_move_event_handler;
@@ -337,11 +340,27 @@ set_cdda_stream(const char *uri, mrl_resource_t type)
 }
 
 static mrl_t *
+set_spotify_stream(const char *uri, mrl_resource_t type)
+{
+    mrl_t *mrl;
+    mrl_resource_local_args_t *args;
+    
+    args = calloc(1, sizeof(mrl_resource_cd_args_t));
+    args->location = strdup(uri);
+   
+    mrl = mrl_new(mp->players[mp->spotify_type], type, args);
+    return mrl;
+}
+
+
+
+static mrl_t *
 set_local_stream(const char *uri)
 {
     mrl_t *mrl;
     mrl_resource_local_args_t *args;
 
+    printf("set local stream : %s\n", uri);
     args = calloc(1, sizeof(mrl_resource_local_args_t));
     args->location = strdup(uri);
     mrl = mrl_new(mp->players[mp->default_type], MRL_RESOURCE_FILE, args);
@@ -408,7 +427,7 @@ mp_file_set(const char *uri, const char *label)
     mrl_t *mrl = NULL;
     player_type_t player_type = mp->default_type;
 
-    enna_log(ENNA_MSG_INFO, NULL, "Try to load : %s, %s", uri, label);
+    enna_log(ENNA_MSG_INFO, NULL, "Try to load : %s , %s", uri, label);
 
     /* try network streams */
     if (!strncmp(uri, URI_TYPE_FTP, strlen(URI_TYPE_FTP)))
@@ -472,9 +491,16 @@ mp_file_set(const char *uri, const char *label)
     {
         mrl = set_cdda_stream(uri, MRL_RESOURCE_CDDA);
     }
+    /* Try Spotify stream */
+    else if (!strncmp(uri, URI_TYPE_SPOTIFY, strlen(URI_TYPE_SPOTIFY)))
+      {
+	mrl = set_spotify_stream(uri, MRL_RESOURCE_FILE);
+	player_type = mp->spotify_type;
+      }
     /* default is local files */
     if (!mrl)
     {
+	printf("MRL is NULL try local file\n");
         const char *it;
         it = strrchr(uri, '.');
         if (it && !strcmp(it, ".iso")) /* consider ISO file as DVD */
@@ -483,12 +509,16 @@ mp_file_set(const char *uri, const char *label)
             player_type = mp->dvd_type;
         }
         else
+	  {
             mrl = set_local_stream(uri);
+	  }
     }
 
     if (!mrl)
+      {
+	printf("MRL is NULL\n");
         return 1;
-
+      }
     ENNA_FREE(mp->uri);
     mp->uri = strdup(uri);
 
@@ -688,6 +718,7 @@ enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type)
         [ENNA_MP_URI_TYPE_UDP]    = { MRL_RESOURCE_UDP,     mp->default_type },
         [ENNA_MP_URI_TYPE_UNSV]   = { MRL_RESOURCE_UNSV,    mp->default_type },
         [ENNA_MP_URI_TYPE_VDR]    = { MRL_RESOURCE_VDR,     mp->tv_type      },
+	[ENNA_MP_URI_TYPE_SPOTIFY]= { MRL_RESOURCE_FILE,    mp->spotify_type },
     };
 
     if (type >= ARRAY_NB_ELEMENTS(type_list) || type < 0)
@@ -709,6 +740,7 @@ static const struct {
     { "mplayer",    PLAYER_TYPE_MPLAYER      },
     { "vlc",        PLAYER_TYPE_VLC          },
     { "gstreamer",  PLAYER_TYPE_GSTREAMER    },
+    { "spotify",    PLAYER_TYPE_SPOTIFY      },
     { NULL,         PLAYER_TYPE_DUMMY        }
 };
 
@@ -798,6 +830,20 @@ cfg_mediaplayer_section_load (const char *section)
         mp_cfg.tv_set = 1;
     }
 
+    value = enna_config_string_get(section, "spotify_type");
+    if (value)
+    {
+        enna_log(ENNA_MSG_INFO, NULL, " * spotify_type: %s", value);
+
+        for (i = 0; map_player_type[i].name; i++)
+            if (!strcmp(value, map_player_type[i].name))
+            {
+                mp_cfg.spotify_type = map_player_type[i].type;
+                break;
+            }
+        mp_cfg.spotify_set = 1;
+    }
+
     value = enna_config_string_get(section, "video_out");
     if (value)
     {
@@ -879,6 +925,15 @@ cfg_mediaplayer_section_save (const char *section)
             break;
         }
 
+    /* Spotify Type */
+    for (i = 0; map_player_type[i].name; i++)
+        if (mp_cfg.spotify_type == map_player_type[i].type)
+        {
+            enna_config_string_set(section, "spotify_type",
+                                   map_player_type[i].name);
+            break;
+        }
+
     /* VO Type */
     for (i = 0; map_player_vo[i].name; i++)
         if (mp_cfg.vo == map_player_vo[i].vo)
@@ -931,11 +986,13 @@ cfg_mediaplayer_section_set_default (void)
     mp_cfg.type           = PLAYER_TYPE_MPLAYER;
     mp_cfg.dvd_type       = PLAYER_TYPE_XINE;
     mp_cfg.tv_type        = PLAYER_TYPE_XINE;
+    mp_cfg.spotify_type   = PLAYER_TYPE_SPOTIFY;
     mp_cfg.vo             = PLAYER_VO_AUTO;
     mp_cfg.ao             = PLAYER_AO_AUTO;
     mp_cfg.verbosity      = PLAYER_MSG_WARNING;
     mp_cfg.dvd_set        = 0;
     mp_cfg.tv_set         = 0;
+    mp_cfg.spotify_set    = 0;
     mp_cfg.sub_align      = NULL;
     mp_cfg.sub_pos        = NULL;
     mp_cfg.sub_scale      = NULL;
@@ -970,7 +1027,10 @@ enna_mediaplayer_init(void)
 
     /* Main player type is mandatory! */
     if (!libplayer_wrapper_enabled(mp_cfg.type))
+      {
+	printf("%d not supported\n", mp_cfg.type);
         goto err;
+      }
 
     /*
      * When dvd_type or tv_type are set in the enna.cfg config file, then
@@ -993,6 +1053,17 @@ enna_mediaplayer_init(void)
         if (mp_cfg.tv_set)
             goto err;
         mp_cfg.tv_type = mp_cfg.type;
+    }
+
+    if (mp_cfg.spotify_type != mp_cfg.type &&
+        !libplayer_wrapper_enabled(mp_cfg.spotify_type))
+    {
+        if (mp_cfg.spotify_set)
+	  {
+	    printf("spotify_set = 1\n");
+            goto err;
+	  }
+        mp_cfg.spotify_type = mp_cfg.type;
     }
 
     mp = calloc(1, sizeof(Enna_Mediaplayer));
@@ -1039,6 +1110,19 @@ enna_mediaplayer_init(void)
         }
     }
 
+    if (mp_cfg.spotify_type != mp_cfg.type && mp_cfg.spotify_type != mp_cfg.dvd_type)
+    {
+        mp->players[mp_cfg.spotify_type] =
+            player_init(mp_cfg.spotify_type, mp_cfg.verbosity, &param);
+        if (!mp->players[mp_cfg.spotify_type])
+        {
+            enna_log(ENNA_MSG_WARNING, NULL,
+                     "Spotify mediaplayer initialization failed, "
+                     "falling back to the default mediaplayer");
+            mp_cfg.spotify_type = mp_cfg.type;
+        }
+    }
+
     mp_event_cb_set(_event_cb, NULL);
 
     mp->uri = NULL;
@@ -1046,6 +1130,7 @@ enna_mediaplayer_init(void)
     mp->default_type = mp_cfg.type;
     mp->dvd_type = mp_cfg.dvd_type;
     mp->tv_type = mp_cfg.tv_type;
+    mp->spotify_type = mp_cfg.spotify_type;
     mp->player = mp->players[mp_cfg.type];
     mp->player_type = mp_cfg.type;
     mp->play_state = STOPPED;
