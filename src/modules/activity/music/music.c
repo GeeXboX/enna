@@ -269,7 +269,7 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
      * With the music activity, there is nothing to refresh if no file is
      * set to the mediaplayer.
      */
-    uri = enna_mediaplayer_get_current_uri(mod->enna_playlist);
+    uri = enna_mediaplayer_get_current_uri();
     if (!uri)
         return;
 
