@@ -405,15 +405,34 @@ collections
                visible: 1;
                color: 255 255 255 255;
 
-               rel1.relative: 0.5 0.0;
-               rel1.offset: 64 64;
+               rel1.relative: 0.0 0.0;
+               rel1.offset: 0 16;
                rel1.to: "content.clip";
 
-               rel2.relative: 1.0 1.0;
-               rel2.offset: -64 -88;
+               rel2.relative: 0.6 1.0;
+               rel2.offset: -16 -88;
                rel2.to: "content.clip";
             }
          }
+	 part {
+	    name: "browser.bg";
+	    type: IMAGE;
+	    mouse_events: 0;
+	    clip_to: "browser.clip";
+	    description {
+	        state: "default" 0.0;
+		rel1.to: "browser.clip";
+		//rel1.offset: -5 -5;
+		rel2.to: "browser.clip";
+		//rel2.offset: 5 5;
+		color: 0 0 0 128 ;	
+		image {	
+                     normal: "sel_bg.png";
+               	     border: 15 15 15 15;
+            	}
+		
+	    }
+	 }
          part {
             name: "browser.swallow";
             type: SWALLOW;
@@ -422,7 +441,9 @@ collections
             description {
                state: "default" 0.0;
                rel1.to: "browser.clip";
+	       rel1.offset: 5 5;
                rel2.to: "browser.clip";
+	       rel2.offset: -4 -4;
             }
          }
          /* Mediaplayer */
@@ -436,12 +457,12 @@ collections
                visible: 1;
                color: 255 255 255 255;
 
-               rel1.relative: 0.0 0.0;
-               rel1.offset: 64 64;
+               rel1.relative: 0.6 0.0;
+               rel1.offset: 16 16;
                rel1.to: "content.clip";
 
-               rel2.relative: 0.50 1.0;
-               rel2.offset: -64 -88;
+               rel2.relative: 1.0 1.0;
+               rel2.offset: -16 -88;
                rel2.to: "content.clip";
             }
          }
