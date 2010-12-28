@@ -786,7 +786,6 @@ group { name: "elm/scroller/base/default";
 
 ////////////////////////////////////////////////////
 group { name: "elm/genlist/item/default/default";
-   alias: "elm/genlist/item_odd/default/default";
    data.item: "stacking" "above";
    data.item: "selectraise" "on";
    data.item: "labels" "elm.text";
@@ -942,6 +941,180 @@ group { name: "elm/genlist/item/default/default";
    }
 }
 
+////////////////////////////////////////////////////
+group { name: "elm/genlist/item_odd/default/default";
+   alias: "elm/genlist/item_compress_odd/default/default";
+   data.item: "stacking" "above";
+   data.item: "selectraise" "on";
+   data.item: "labels" "elm.text";
+   data.item: "icons" "elm.swallow.playing elm.swallow.icon elm.swallow.end elm.swallow.label";
+   data.item: "treesize" "20";
+   //      data.item: "states" "";
+   images {
+      image: "sel_bg.png" COMP;
+   }
+   parts {   
+      part { name: "bg";
+ 
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 1;
+            color: 0 0 0 100;
+
+            image {
+               normal: "sel_bg.png";
+               border: 15 15 15 15;
+            }
+            image.middle: SOLID;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+         }
+      }
+
+   
+
+      part { name: "elm.swallow.pad";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1 {
+ 
+               relative: 0.0  0.0;
+               offset:   4    4;
+            }
+            rel2 {
+
+               relative: 0.0  1.0;
+               offset:   4   -4;
+            }
+         }
+      }
+      part { name: "elm.swallow.playing";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1 {
+               to: "elm.swallow.pad";
+               relative: 1.0  0.0;
+               offset:   -1    4;
+            }
+            rel2 {
+               to: "elm.swallow.pad";
+               relative: 1.0  1.0;
+               offset:   -1   -5;
+            }
+         }
+      }
+      part { name: "elm.swallow.icon";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1 {
+               to: "elm.swallow.playing";
+               relative: 1.0  0.0;
+               offset:   -1    4;
+            }
+            rel2 {
+               to: "elm.swallow.playing";
+               relative: 1.0  1.0;
+               offset:   -1   -5;
+            }
+         }
+      }
+      part { name: "elm.swallow.end";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
+            rel1 {
+               relative: 1.0  0.0;
+               offset:   -5    4;
+            }
+            rel2 {
+               relative: 1.0  1.0;
+               offset:   -5   -5;
+            }
+         }
+      }
+ part { name: "elm.text";
+         type:           TEXT;
+         //         effect:         SHADOW;
+         mouse_events:   0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            //               min: 16 16;
+            fixed: 1 1;
+            rel1 {
+               to_x:     "elm.swallow.icon";
+               relative: 1.0  0.0;
+               offset:   8 4;
+            }
+            rel2 {
+               to_x:     "elm.swallow.end";
+               relative: 0.0  1.0;
+               offset:   -1 -5;
+            }
+            color: 255 255 255 200;
+            //color3: 147 147 147 200;
+            text {
+               font: "Comfortaa";
+               size: 18;
+               //min: 1 1;
+               min: 0 1;
+               align: 0.0 0.5;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+            //color3: 0 0 0 64;
+         }
+      }
+      part {
+         name:           "event";
+         type:           RECT;
+         repeat_events: 1;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      // signal: elm,state,%s,active
+      //   a "check" item named %s went active
+      // signal: elm,state,%s,passive
+      //   a "check" item named %s went passive
+      // default is passive
+      program {
+         name:    "go_active";
+         signal:  "elm,state,selected";
+         source:  "elm";
+         action:  STATE_SET "selected" 0.0;
+         target:  "bg";
+         target:  "elm.text";
+      }
+      program {
+         name:    "go_passive";
+         signal:  "elm,state,unselected";
+         source:  "elm";
+         action:  STATE_SET "default" 0.0;
+         target:  "bg";
+         target:  "elm.text";
+         transition: LINEAR 0.1;
+      }
+   }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/win/inwin/default";
@@ -973,7 +1146,6 @@ group { name: "elm/win/inwin/default";
                normal: "inwin_bg.png";
                border: 68 68 68 68;
             }
-            //image.middle: SOLID;
          }
       }
       part { name: "elm.swallow.content";
@@ -1006,10 +1178,7 @@ group { name: "elm/win/inwin/default";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-group { name: "elm/label/base/default";
-   data.item: "default_font_size" "24";
-   data.item: "min_font_size" "8";
-   data.item: "max_font_size" "60";
+
    styles {
       style { name: "textblock_style";
          base: "font=Comfortaa font_size=20 color=#fff wrap=word";
@@ -1020,8 +1189,24 @@ group { name: "elm/label/base/default";
          tag:  "c" "+ align=center";
          tag:  "tab" "\t";
       }
+      style { name: "genlist_style";
+         base: "font=Comfortaa font_size=16 color=#fff";
+         tag:  "br" "\n";
+         tag:  "ps" "ps";
+         tag:  "hilight" "+ font=Sans:style=Bold";
+         tag:  "b" "+ font=Sans:style=Bold";
+         tag:  "c" "+ align=center";
+         tag:  "tab" "\t";
+      }
    }
+
+group { name: "elm/label/base/default";
+   data.item: "default_font_size" "20";
+   data.item: "min_font_size" "8";
+   data.item: "max_font_size" "60";
+  
    parts {
+
       part { name: "label.swallow.background";
          type: SWALLOW;
          description { state: "default" 0.0;
@@ -1043,6 +1228,8 @@ group { name: "elm/label/base/default";
       }
    }
 }
+
+
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/gengrid/item/default/default";
    data.item: "labels" "elm.text";
