@@ -27,6 +27,7 @@
 #include "input.h"
 #include "vfs.h"
 #include "logs.h"
+#include "mediaplayer.h"
 
 #define SMART_NAME "enna_list"
 
@@ -150,6 +151,30 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
         evas_object_show(ic);
         return ic;
     }
+    else if (!strcmp(part, "elm.swallow.playing"))
+    {
+        Evas_Object *ic;
+	const char *tmp;
+
+        if (!li->file || li->file->is_directory || li->file->is_menu)
+            return NULL;
+	tmp = enna_mediaplayer_get_current_uri();
+	if (!tmp)
+	  return NULL;
+
+	else if (strcmp(li->file->mrl, tmp))
+	  {
+	    eina_stringshare_del(tmp);
+	    return NULL;
+	  }
+	eina_stringshare_del(tmp);
+        ic = elm_icon_add(obj);
+        elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
+        evas_object_size_hint_min_set(ic, 24, 24);
+        evas_object_show(ic);
+        return ic;
+    }
+
 
     return NULL;
 }
@@ -238,9 +263,10 @@ enna_list_add(Evas_Object *parent)
     sd = calloc(1, sizeof(Smart_Data));
 
     obj = elm_genlist_add(parent);
-
+    
     evas_object_size_hint_weight_set(obj, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_genlist_horizontal_mode_set(obj, ELM_LIST_COMPRESS);
+
     evas_object_show(obj);
     sd->obj = obj;
 
