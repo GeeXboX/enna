@@ -109,6 +109,7 @@ struct _Enna_Mediaplayer
     Ecore_Event_Handler *mouse_button_event_handler;
     Ecore_Event_Handler *mouse_move_event_handler;
     Ecore_Pipe *pipe;
+    Enna_Playlist *cur_playlist;
 };
 
 static Enna_Mediaplayer *mp = NULL;
@@ -1177,14 +1178,17 @@ enna_mediaplayer_shutdown(void)
 }
 
 char *
-enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
+enna_mediaplayer_get_current_uri()
 {
   Enna_Vfs_File *item;
 
-  item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
+  if (!mp->cur_playlist || mp->play_state != PLAYING)
+    return NULL;
+
+  item = eina_list_nth(mp->cur_playlist->playlist, mp->cur_playlist->selected);
   if (!item || !item->mrl)
     return NULL;
-  return strdup(item->mrl);
+  return eina_stringshare_add(item->mrl);
 }
 
 void
@@ -1198,6 +1202,8 @@ enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_Vfs_File *file)
 int
 enna_mediaplayer_play(Enna_Playlist *enna_playlist)
 {
+    mp->cur_playlist = enna_playlist;
+
     switch (mp->play_state)
     {
     case STOPPED:
