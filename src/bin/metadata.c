@@ -90,8 +90,8 @@ struct _Enna_Pipe_Data
 
 static db_cfg_t db_cfg;
 static valhalla_t *vh = NULL;
-static void (*vh_odcb)(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev);
-static Enna_Vfs_File *vh_file;
+static void (*vh_odcb)(Enna_File *file, Enna_Metadata_OnDemand ev);
+static Enna_File *vh_file;
 static Ecore_Pipe *vh_pipe;
 
 #define SUFFIX_ADD(type)                                       \
@@ -496,7 +496,7 @@ enna_metadata_db_uninit(void)
         vh_pipe = NULL;
     }
 
-    enna_vfs_remove(vh_file);
+    enna_browser_file_free(vh_file);
     vh_file = NULL;
 }
 
@@ -659,8 +659,8 @@ enna_metadata_set_position(Enna_Metadata *meta, double position)
 }
 
 void
-enna_metadata_ondemand(const Enna_Vfs_File *file,
-                       void (*odcb)(const Enna_Vfs_File *file,
+enna_metadata_ondemand(Enna_File *file,
+                       void (*odcb)(Enna_File *file,
                                     Enna_Metadata_OnDemand ev))
 {
   const char *uri;
@@ -672,8 +672,8 @@ enna_metadata_ondemand(const Enna_Vfs_File *file,
   if (!strncmp(uri, "file://", 7))
       uri += 7;
 
-  enna_vfs_remove(vh_file);
-  vh_file = enna_vfs_dup_file(file);
+  enna_browser_file_free(vh_file);
+  vh_file = enna_browser_file_dup(file);
   vh_odcb = odcb;
   valhalla_ondemand(vh, uri);
 }

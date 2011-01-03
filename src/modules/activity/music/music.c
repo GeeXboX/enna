@@ -87,7 +87,7 @@ static Enna_Module_Music *mod;
 static void
 update_songs_counter(Eina_List *list)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
     Eina_List *l;
     int children = 0;
     char label[128] = { 0 };
@@ -213,7 +213,7 @@ static void
 _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 {
     int i = 0;
-    Enna_Vfs_File *file = event_info;
+    Enna_File *file = event_info;
     Eina_List *files = enna_browser_obj_files_get(mod->o_browser);
 
     DBG(__FUNCTION__);
@@ -228,7 +228,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
     }
     else
     {
-        Enna_Vfs_File *f;
+        Enna_File *f;
         Eina_List *l;
         enna_log(ENNA_MSG_EVENT,
                  ENNA_MODULE_NAME , "File Selected %s", file->uri);
@@ -252,7 +252,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
+_ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
 {
     char *uri;
     Enna_Metadata *m;
@@ -302,7 +302,7 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
 static void
 _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_Vfs_File *file = event_info;
+    Enna_File *file = event_info;
     DBG(__FUNCTION__);
     if (!file)
         return;
