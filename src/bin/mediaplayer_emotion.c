@@ -101,7 +101,7 @@ enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
 }
 
 void
-enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_Vfs_File *file)
+enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_File *file)
 {
     Enna_Vfs_File *f;
     f = enna_browser_file_dup(file);

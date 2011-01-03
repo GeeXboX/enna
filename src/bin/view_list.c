@@ -36,7 +36,7 @@ typedef struct _List_Item List_Item;
 
 struct _List_Item
 {
-    Enna_Vfs_File *file;
+    Enna_File *file;
     void (*func_activated) (void *data);
     void *data;
     Elm_Genlist_Item *item;
@@ -182,7 +182,7 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
 static void
 _list_item_del(const void *data, Evas_Object *obj)
 {
-    Enna_Vfs_File *item = (void *) data;
+    Enna_File *item = (void *) data;
 
     if (!item) return;
 }
@@ -279,7 +279,7 @@ enna_list_add(Evas_Object *parent)
 }
 
 void
-enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+enna_list_file_append(Evas_Object *obj, Enna_File *file,
                       void (*func_activated) (void *data),  void *data)
 {
     Smart_Data *sd;

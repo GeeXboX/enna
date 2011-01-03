@@ -402,7 +402,7 @@ enna_list2_item_insert_before(Evas_Object *obj, Elm_Genlist_Item *before,
 }
 
 void
-enna_list2_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+enna_list2_file_append(Evas_Object *obj, Enna_File *file,
                        void (*func)(void *data), void *func_data)
 {
     enna_list2_append(obj, file->label, NULL, file->icon, func, func_data);

@@ -27,7 +27,7 @@
 #include "input.h"
 
 Evas_Object *enna_list_add (Evas_Object *parent);
-void enna_list_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+void enna_list_file_append(Evas_Object *obj, Enna_File *file,
     void (*func_activated) (void *data), void *data);
 void enna_list_file_remove(Evas_Object *obj, Enna_File *file);
 void enna_list_file_update(Evas_Object *obj, Enna_File *file);

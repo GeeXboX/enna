@@ -46,7 +46,7 @@ Elm_Genlist_Item *enna_list2_item_insert_before(Evas_Object *obj,
                                                const char *icon,
                                                void(*func)(void *data),
                                                void *func_data);
-void          enna_list2_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+void          enna_list2_file_append(Evas_Object *obj, Enna_File *file,
                                     void (*func) (void *data), void *func_data);
 
 Enna_View_List2_Widget *enna_list2_item_button_add(Elm_Genlist_Item *item,

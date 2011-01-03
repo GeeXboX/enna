@@ -43,7 +43,7 @@ typedef struct _Picture_Item Picture_Item;
 
 struct _Picture_Item
 {
-    Enna_Vfs_File *file;
+    Enna_File *file;
     void (*func_activated) (void *data);
     void *data;
     Elm_Gengrid_Item *item;
@@ -300,7 +300,7 @@ static Enna_Kbdnav_Class ekc = {
 };
 
 void
-enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+enna_wall_file_append(Evas_Object *obj, Enna_File *file,
                       void (*func_activated) (void *data), void *data )
 {
     Smart_Data *sd;

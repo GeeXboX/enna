@@ -27,7 +27,6 @@
 typedef struct _Enna_Browser Enna_Browser;
 typedef struct _Enna_File Enna_File;
 typedef struct _Enna_File Enna_Vfs_File;
-
 typedef enum _Enna_File_Type Enna_File_Type;
 
 enum _Enna_File_Type
@@ -51,7 +50,7 @@ struct _Enna_File
     const char *icon;
     const char *icon_file;
     const char *mrl;
-    Enna_File_Type type;s
+    Enna_File_Type type;
 };
 
 Enna_Browser *enna_browser_add(void (*add)(void *data, Enna_File *file), void *add_data,
