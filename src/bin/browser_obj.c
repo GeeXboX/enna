@@ -218,7 +218,6 @@ static void
 _add_cb(void *data, Enna_File *file)
 {
     Smart_Data *sd = data;
-    //Evas_Object *icon = NULL;
     Activated_Cb_Data *cb_data;
 
     DBG(__FUNCTION__);
@@ -229,19 +228,7 @@ _add_cb(void *data, Enna_File *file)
     if (!file)
     {
         /* No File detected */
-
     }
-
-    /* if (file->icon_file && file->icon_file[0] == '/') */
-    /* { */
-    /*     icon = elm_icon_add(sd->o_view); */
-    /*     elm_icon_file_set(icon, file->icon_file, NULL); */
-    /* } */
-    /* else */
-    /* { */
-    /*     icon = elm_icon_add(sd->o_view); */
-    /*     edje_object_file_set(icon, enna_config_theme_get(), file->icon); */
-    /* } */
 
     cb_data = malloc(sizeof(Activated_Cb_Data));
     cb_data->sd = sd;
