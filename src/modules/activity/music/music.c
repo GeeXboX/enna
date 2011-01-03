@@ -99,7 +99,7 @@ update_songs_counter(Eina_List *list)
 
     EINA_LIST_FOREACH(list, l, f)
     {
-        if (!f->is_directory)
+        if (f->type != ENNA_FILE_DIRECTORY)
             children++;
     }
     if (children)
@@ -220,7 +220,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
     if (!file)
         return;
 
-    if (file->is_directory || file->is_menu)
+    if (file->type == ENNA_FILE_DIRECTORY || file->type == ENNA_FILE_MENU)
     {
         enna_log(ENNA_MSG_EVENT,
                  ENNA_MODULE_NAME, "Directory Selected %s", file->uri);
@@ -236,7 +236,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
         /* File selected, create mediaplayer */
          EINA_LIST_FOREACH(files, l, f)
          {
-             if (!f->is_directory)
+             if (f->type != ENNA_FILE_DIRECTORY)
              {
                  enna_mediaplayer_file_append(mod->enna_playlist, f);
                  if (!strcmp(f->uri, file->uri))
@@ -260,7 +260,7 @@ _ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
     if (!file || !file->uri || !mod->enna_playlist)
         return;
 
-    if (file->is_directory || file->is_menu)
+    if (file->type == ENNA_FILE_DIRECTORY || file->type == ENNA_FILE_MENU)
         return;
 
     /*
@@ -308,7 +308,9 @@ _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
         return;
 
 
-    if (!file->is_directory && !file->is_menu && file->mrl)
+    if (file->type != ENNA_FILE_DIRECTORY && 
+        file->type != ENNA_FILE_MENU && 
+        file->mrl)
         /* ask for on-demand scan for local files */
         if (!strncmp(file->mrl, "file://", 7))
             enna_metadata_ondemand(file, _ondemand_cb_refresh);

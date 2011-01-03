@@ -200,7 +200,7 @@ _browser_browse_root(Enna_Browser *browser)
         f->label = eina_stringshare_add(act->label);
         f->icon = eina_stringshare_add(act->icon);
         f->icon_file = eina_stringshare_add(act->bg);
-        f->is_menu = 1;
+        f->type = ENNA_FILE_MENU;
 
         browser->files = eina_list_append(browser->files, f);
         if (browser->add)
@@ -233,7 +233,7 @@ _browser_browse_activity(Enna_Browser *browser)
         enna_buffer_free(buf);
         f->label = eina_stringshare_add(vfs->label);
         f->icon = eina_stringshare_add(vfs->icon);
-        f->is_menu = 1;
+        f->type = ENNA_FILE_MENU;
         browser->files = eina_list_append(browser->files, f);
         if (browser->add)
             browser->add(browser->add_data, f);
@@ -252,7 +252,7 @@ enna_browser_file_add(Enna_Browser *b, Enna_Vfs_File *file)
         nofile = calloc(1, sizeof(Enna_File));
         nofile->icon =  eina_stringshare_add("icon/nofile");
         nofile->label = eina_stringshare_add( _("No media found!"));
-        nofile->is_menu = EINA_TRUE;
+        nofile->type = ENNA_FILE_MENU;
         nofile->uri = eina_stringshare_add(ecore_file_dir_get(b->uri));
         b->files = eina_list_append(b->files, nofile);
         b->add(b->add_data, nofile);
@@ -290,8 +290,7 @@ enna_browser_file_update(Enna_Browser *b, Enna_Vfs_File *file)
                 eina_stringshare_replace(&f->icon, file->icon);
                 eina_stringshare_replace(&f->icon_file, file->icon_file);
                 eina_stringshare_replace(&f->mrl, file->mrl);
-                f->is_directory = file->is_directory;
-                f->is_menu = file->is_menu;
+                f->type = file->type;
                 b->update(b->update_data, f);
                 enna_browser_file_free(file);
                 return f;
@@ -357,8 +356,7 @@ enna_browser_file_dup(Enna_Vfs_File *file)
     f = calloc(1, sizeof(Enna_Vfs_File));
     f->icon = eina_stringshare_add(file->icon);
     f->icon_file = eina_stringshare_add(file->icon_file);
-    f->is_directory = file->is_directory;
-    f->is_menu = file->is_menu;
+    f->type = file->type;
     f->label = eina_stringshare_add(file->label);
     f->name = eina_stringshare_add(file->name);
     f->uri = eina_stringshare_add(file->uri);
@@ -395,7 +393,7 @@ enna_browser_uri_get(Enna_Browser *b)
 
 static Enna_File *
 _create_inode(const char *name, const char *uri, const char *label,
-              const char *icon, const char *mrl, int dir)
+              const char *icon, const char *mrl, Enna_File_Type type)
 {
     Enna_File *f;
 
@@ -405,11 +403,7 @@ _create_inode(const char *name, const char *uri, const char *label,
     f->label = label ? eina_stringshare_add(label) : NULL;
     f->icon  = icon  ? eina_stringshare_add(icon)  : NULL;
     f->mrl   = mrl   ? eina_stringshare_add(mrl)   : NULL;
-
-    if (dir == 1)
-        f->is_directory = 1;
-    else if (dir == 2)
-        f->is_menu = 1;
+    f->type = type;
 
     return f;
 }
@@ -418,21 +412,21 @@ Enna_File *
 enna_browser_create_file(const char *name, const char *uri,
                          const char *mrl, const char *label, const char *icon)
 {
-    return _create_inode(name, uri, label, icon, mrl, 0);
+    return _create_inode(name, uri, label, icon, mrl, ENNA_FILE_FILE);
 }
 
 Enna_File *
 enna_browser_create_directory(const char *name, const char *uri,
                               const char *label, const char *icon)
 {
-    return _create_inode(name, uri, label, icon, NULL, 1);
+    return _create_inode(name, uri, label, icon, NULL, ENNA_FILE_DIRECTORY);
 }
 
 Enna_File *
 enna_browser_create_menu(const char *name, const char *uri,
                          const char *label, const char *icon)
 {
-    return _create_inode(name, uri, label, icon, NULL, 2);
+    return _create_inode(name, uri, label, icon, NULL, ENNA_FILE_MENU);
 }
 
 void

@@ -124,7 +124,7 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
     {
         Evas_Object *ic;
 
-        if (!li->file || !li->file->is_menu)
+        if (!li->file || li->file->type != ENNA_FILE_MENU)
             return NULL;
 
         ic = elm_icon_add(obj);
@@ -142,7 +142,7 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
     {
         Evas_Object *ic;
 
-        if (!li->file || !li->file->is_directory)
+        if (!li->file || !li->file->type != ENNA_FILE_DIRECTORY)
             return NULL;
 
         ic = elm_icon_add(obj);
@@ -156,7 +156,7 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
         Evas_Object *ic;
 	const char *tmp;
 
-        if (!li->file || li->file->is_directory || li->file->is_menu)
+        if (!li->file || li->file->type == ENNA_FILE_DIRECTORY || li->file->type == ENNA_FILE_MENU)
             return NULL;
 	tmp = enna_mediaplayer_get_current_uri();
 	if (!tmp)

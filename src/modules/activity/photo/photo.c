@@ -157,7 +157,7 @@ _browser_cb_selected (void *data, Evas_Object *obj, void *event_info)
 
     if (!file) return;
 
-    if (!file->is_directory && !file->is_menu)
+    if (file->type != ENNA_FILE_DIRECTORY && file->type != ENNA_FILE_MENU)
     {
         /* File is selected, display it in slideshow mode */
         _create_slideshow_gui();
@@ -178,7 +178,7 @@ _browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
     o_edje = elm_layout_edje_get(mod->o_layout);
     edje_object_part_text_set(o_edje, "filename.text", file->label);
 
-    if (!file->is_directory || !file->is_menu)
+    if (file->type != ENNA_FILE_DIRECTORY || file->type != ENNA_FILE_MENU)
         photo_panel_infos_set_cover(mod->o_infos, file->mrl + 7);
 
     photo_panel_infos_set_text(mod->o_infos, file->mrl + 7);

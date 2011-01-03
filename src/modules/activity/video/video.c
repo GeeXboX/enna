@@ -112,7 +112,7 @@ update_movies_counter(Eina_List *list)
 
     EINA_LIST_FOREACH(list, l, f)
     {
-        if (!f->is_directory && !f->is_menu)
+        if (f->type != ENNA_FILE_DIRECTORY && f->type != ENNA_FILE_MENU)
             children++;
     }
     if (children)
@@ -580,7 +580,7 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
     if (!file)
         return;
 
-    if (file->is_directory || file->is_menu)
+    if (file->type == ENNA_FILE_DIRECTORY || file->type == ENNA_FILE_MENU)
     {
         enna_log (ENNA_MSG_EVENT,
                   ENNA_MODULE_NAME, "Directory Selected %s", file->uri);
@@ -597,7 +597,7 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
         /* File selected, create mediaplayer */
         EINA_LIST_FOREACH(enna_browser_obj_files_get(mod->o_browser), l, f)
         {
-            if (!f->is_directory && !f->is_menu)
+            if (f->type != ENNA_FILE_DIRECTORY && f->type != ENNA_FILE_MENU)
             {
                 enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                          "Append : %s %s to playlist", f->label, f->uri);
@@ -707,7 +707,7 @@ video_infos_display(const Enna_Vfs_File *file)
     video_infos_display_synopsis(file, m);
 
     backdrop_show(m);
-    snapshot_show(m, file->is_directory);
+    snapshot_show(m, file->type == ENNA_FILE_DIRECTORY);
 
     enna_video_flags_update(mod->o_video_flags, m);
 
@@ -744,7 +744,7 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
     if (!file || !file->mrl || !mod->uri_hilighted)
         return;
 
-    if (file->is_directory || file->is_menu)
+    if (file->type == ENNA_FILE_DIRECTORY || file->type == ENNA_FILE_MENU)
         return;
 
     if (strcmp(file->mrl, mod->uri_hilighted))
@@ -769,7 +769,7 @@ _ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
             break;
     case ENNA_METADATA_OD_ENDED:
         backdrop_show(m);
-        snapshot_show(m, file->is_directory);
+        snapshot_show(m, file->type == ENNA_FILE_DIRECTORY);
         enna_panel_infos_set_cover(mod->o_panel_infos, m);
         break;
 
@@ -788,7 +788,7 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
     if (!file || !file->mrl)
         return;
 
-    if (!file->is_directory && !file->is_menu)
+    if (file->type != ENNA_FILE_DIRECTORY && file->type != ENNA_FILE_MENU)
     {
         video_infos_display(file);
 
