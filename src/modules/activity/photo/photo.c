@@ -123,7 +123,7 @@ _slideshow_add_files(const char *file_selected)
     Eina_List *l;
     int n = 0;
     int pos = 0;
-    Enna_Vfs_File *file;
+    Enna_File *file;
 
     if (!file_selected)
       return -1;
@@ -152,7 +152,7 @@ _browser_cb_root (void *data, Evas_Object *obj, void *event_info)
 static void
 _browser_cb_selected (void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_Vfs_File *file = event_info;
+    Enna_File *file = event_info;
     int pos;
 
     if (!file) return;
@@ -169,7 +169,7 @@ _browser_cb_selected (void *data, Evas_Object *obj, void *event_info)
 static void
 _browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
 {
-    Enna_Vfs_File *file = event_info;
+    Enna_File *file = event_info;
     Evas_Object *o_edje;
 
     if (!file || !file->mrl)
