@@ -54,11 +54,11 @@ static Enna_Module_Dvd *mod;
 static void
 _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
     char mrl[4096];
     
     snprintf(mrl, sizeof(mrl), "dvd://%s", mod->dvd->device);
-    f = enna_vfs_create_file(mrl, _("Play"), "icon/video", NULL);
+    f = enna_browser_create_file("play", "video/dvd/dvd", mrl, _("Play"), "icon/video");
     enna_browser_file_add(browser, f);
     snprintf(mrl, sizeof(mrl), "dvdnav://%s", mod->dvd->device);
     f = enna_browser_create_file("dvd", "video/dvd/dvdnav", mrl, _("Play (with menus)"), "icon/video");
