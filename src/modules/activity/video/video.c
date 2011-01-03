@@ -101,7 +101,7 @@ static Enna_Module_Video *mod;
 static void
 update_movies_counter(Eina_List *list)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
     Eina_List *l;
     int children = 0;
     char label[128] = { 0 };
@@ -574,7 +574,7 @@ static void
 browser_cb_select(void *data, Evas_Object *obj, void *event_info)
 {
     int i = 0;
-    Enna_Vfs_File *file = event_info;
+    Enna_File *file = event_info;
     Eina_List *l;
 
     if (!file)
@@ -632,7 +632,7 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-video_infos_display_title(const Enna_Vfs_File *file, const Enna_Metadata *m)
+video_infos_display_title(const Enna_File *file, const Enna_Metadata *m)
 {
     char *title;
     const char *label;
@@ -647,7 +647,7 @@ video_infos_display_title(const Enna_Vfs_File *file, const Enna_Metadata *m)
 }
 
 static void
-video_infos_display_genre(const Enna_Vfs_File *file, const Enna_Metadata *m)
+video_infos_display_genre(const Enna_File *file, const Enna_Metadata *m)
 {
     char *categories;
     Evas_Object *o_edje;
@@ -661,7 +661,7 @@ video_infos_display_genre(const Enna_Vfs_File *file, const Enna_Metadata *m)
 }
 
 static void
-video_infos_display_length(const Enna_Vfs_File *file, const Enna_Metadata *m)
+video_infos_display_length(const Enna_File *file, const Enna_Metadata *m)
 {
     char *length;
     Evas_Object *o_edje;
@@ -675,7 +675,7 @@ video_infos_display_length(const Enna_Vfs_File *file, const Enna_Metadata *m)
 }
 
 static void
-video_infos_display_synopsis(const Enna_Vfs_File *file, const Enna_Metadata *m)
+video_infos_display_synopsis(const Enna_File *file, const Enna_Metadata *m)
 {
     char *synopsis;
     Evas_Object *o_edje;
@@ -691,7 +691,7 @@ video_infos_display_synopsis(const Enna_Vfs_File *file, const Enna_Metadata *m)
 }
 
 static void
-video_infos_display(const Enna_Vfs_File *file)
+video_infos_display(const Enna_File *file)
 {
     Enna_Metadata *m;
 
@@ -737,7 +737,7 @@ video_infos_del (void)
 }
 
 static void
-_ondemand_cb_refresh(Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
+_ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
 {
     Enna_Metadata *m;
 
