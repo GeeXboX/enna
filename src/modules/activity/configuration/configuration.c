@@ -84,7 +84,7 @@ _item_selected_cb(void *data)
 static void
 _create_menu (void)
 {
-    Enna_Vfs_File *it;
+    Enna_File *it;
     Eina_List *panels, *l;
     Enna_Config_Panel *p;
 
@@ -94,11 +94,7 @@ _create_menu (void)
     panels = enna_config_panel_list_get();
     EINA_LIST_FOREACH(panels, l, p)
     {
-        it = calloc (1, sizeof(Enna_Vfs_File));
-        it->icon = (char*)eina_stringshare_add (p->icon);
-        it->label = (char*)eina_stringshare_add (p->label);
-        it->is_menu = 1;
-
+        it = enna_browser_create_menu(p->label, p->label, p->label, p->icon);
         enna_wall_file_append (mod->o_menu, it, _item_selected_cb, p);
         mod->items = eina_list_append (mod->items, it);
     }
@@ -111,12 +107,12 @@ _create_menu (void)
 static void
 _delete_menu(void)
 {
-    Enna_Vfs_File *it;
+    Enna_File *it;
 
     if (!mod->o_menu) return;
 
     EINA_LIST_FREE(mod->items, it);
-        enna_vfs_remove(it);
+        enna_browser_file_free(it);
 
     ENNA_OBJECT_DEL(mod->o_menu);
 }
