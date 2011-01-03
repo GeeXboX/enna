@@ -71,7 +71,7 @@ cb_playback_begin (void *data)
     movie_start_playback (0);
 }
 
-static Enna_Vfs_File *
+static Enna_File *
 _create_list_item (char *label, char *icon)
 {
     Enna_File *it;
@@ -87,7 +87,7 @@ static void
 _smart_add (Evas_Object * obj)
 {
     Smart_Data *sd;
-    Enna_Vfs_File *it1, *it2;
+    Enna_File *it1, *it2;
     Enna_Buffer *label;
 
     sd = calloc (1, sizeof (Smart_Data));
