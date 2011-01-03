@@ -27,7 +27,7 @@
 #include "input.h"
 
 Evas_Object *enna_wall_add(Evas_Object * parent);
-void enna_wall_file_append(Evas_Object *obj, Enna_Vfs_File *file,
+void enna_wall_file_append(Evas_Object *obj, Enna_File *file,
     void (*func_activated) (void *data), void *data);
 void enna_wall_file_remove(Evas_Object *obj, Enna_File *file);
 Eina_List* enna_wall_files_get(Evas_Object* obj);
