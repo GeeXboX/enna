@@ -1180,7 +1180,7 @@ enna_mediaplayer_shutdown(void)
 char *
 enna_mediaplayer_get_current_uri()
 {
-  Enna_Vfs_File *item;
+  Enna_File *item;
 
   if (!mp->cur_playlist || mp->play_state != PLAYING)
     return NULL;
@@ -1192,9 +1192,9 @@ enna_mediaplayer_get_current_uri()
 }
 
 void
-enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_Vfs_File *file)
+enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_File *file)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
     f = enna_browser_file_dup(file);
     enna_playlist->playlist = eina_list_append(enna_playlist->playlist, f);
 }
@@ -1208,7 +1208,7 @@ enna_mediaplayer_play(Enna_Playlist *enna_playlist)
     {
     case STOPPED:
     {
-        Enna_Vfs_File *item;
+        Enna_File *item;
         item = eina_list_nth(enna_playlist->playlist,
                              enna_playlist->selected);
         mp_stop();
@@ -1276,7 +1276,7 @@ enna_mediaplayer_pause(void)
 static void
 enna_mediaplayer_change(Enna_Playlist *enna_playlist, int type)
 {
-    Enna_Vfs_File *item;
+    Enna_File *item;
 
     item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
     enna_log(ENNA_MSG_EVENT, NULL, "select %d", enna_playlist->selected);
@@ -1432,7 +1432,7 @@ enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
 Enna_Metadata *
 enna_mediaplayer_metadata_get(Enna_Playlist *enna_playlist)
 {
-    Enna_Vfs_File *item;
+    Enna_File *item;
 
     item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
     if (!item)

@@ -100,7 +100,7 @@ int enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type);
 void enna_mediaplayer_cfg_register(void);
 int enna_mediaplayer_init(void);
 void enna_mediaplayer_shutdown(void);
-void enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_Vfs_File *file);
+void enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_File *file);
 int enna_mediaplayer_select_nth(Enna_Playlist *enna_playlist, int n);
 int enna_mediaplayer_selected_get(Enna_Playlist *enna_playlist);
 Enna_Metadata *enna_mediaplayer_metadata_get(Enna_Playlist *enna_playlist);
