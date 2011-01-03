@@ -33,7 +33,7 @@
 
 static Ecore_Timer *timer = NULL;
 static sp_session *session = NULL;
-static int is_logged_out = 0;
+static int is_logged_out = 1;
 void (*metadata_updated_fn)(void);
 
 typedef struct _Playlist_Container Playlist_Container;
@@ -83,7 +83,6 @@ void metadata_updated(sp_session *session);
 void connection_error(sp_session *session, sp_error error);
 void notify_main_thread(sp_session *session);
 void userinfo_updated(sp_session *session);
-int music_delivery(sp_session *session, const sp_audioformat *format, const void *frames, int num_frames);
 void play_token_lost(sp_session *session);
 void log_message(sp_session *session, const char *data);
 
@@ -94,8 +93,8 @@ static sp_session_callbacks sp_callbacks = {
     &connection_error,
     NULL,
     &notify_main_thread,
-    NULL,/*&music_delivery,*/
-    NULL,/*play_token_lost,*/
+    NULL,
+    NULL,
     &log_message,
     NULL,
     NULL,
@@ -111,6 +110,7 @@ _timeout_cb(void *data)
     int timeout = 1000;
     sp_session_process_events(session, &timeout);
     ecore_timer_interval_set(timer, (double)(timeout / 1000.0));
+    printf("t\n");
     return ECORE_CALLBACK_RENEW;
 }
 
@@ -135,8 +135,10 @@ void logged_in(sp_session *session, sp_error error)
     me = sp_session_user(session);
     my_name = (sp_user_is_loaded(me) ? sp_user_display_name(me) : sp_user_canonical_name(me));
 
+
+    
     DBG("Logged in to Spotify as user %s", my_name);
- 
+    is_logged_out = 0;
 }
 
 /**
@@ -268,6 +270,49 @@ static sp_playlist_callbacks pl_cb = {
     description_changed,
     image_changed
 };
+#if 0
+void tracks_added(sp_playlist *pl, sp_track * const *tracks, int num_tracks, int position, void *userdata)
+{
+  char mrl[4096];
+  sp_link *link;
+  sp_track *track;
+  sp_album *album;
+  int i;
+
+  for (i = 0; i < num_tracks; i++)
+    {
+      track = tracks[i];
+      album = sp_track_album(track);
+      artist = sp_track_artist(track, 0);
+	
+      link = sp_link_create_from_track(track, 0);
+      sp_link_as_string(link, mrl, sizeof(mrl));
+      name = eina_stringshare_printf("%s",  sp_track_name(track));
+      name = eina_stringshare_printf("%s (%s - %s)", sp_track_name(track),
+	 sp_artist_name(artist),
+	 sp_album_name(album));
+      //uri = eina_stringshare_printf("%s/%d", enna_browser_uri_get(pl->browser), i);
+      DBG("Name : %s, mrl %s\n", name, mrl);
+      
+      f1 = enna_browser_create_file(name, uri, mrl, name, "icon/music");    
+      enna_browser_file_update(pl->browser, f1);
+    }
+}
+  
+static sp_playlist_callbacks pl_track_cb = {
+    tracks_added,
+    tracks_removed,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};
+#endif
 
 static void
 playlist_added(sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata)
@@ -352,6 +397,9 @@ _browse_root(Eina_List *tokens, Enna_Browser *browser)
     EINA_LIST_FOREACH(tokens, l, p)
         enna_buffer_appendf(buf, "/%s", p);
     enna_buffer_appendf(uri, "%s/%s", buf->buf, "playlists");
+
+    if (is_logged_out)
+      return;
 
     f1 = enna_browser_create_menu("playlists", uri->buf, "Playlists", "icon/playlist");
     enna_buffer_free(uri);
@@ -458,23 +506,29 @@ _browse_playlist_id(Enna_Browser *browser, int id, Playlist_Container *pl)
     item->browser = browser;
     item->playlist = playlist;
 
-    sp_playlist_add_callbacks(playlist, &pl_cb, pl);
+    //sp_playlist_add_callbacks(playlist, &pl_track_cb, pl);
     pl->playlists = eina_list_append(pl->playlists, item);
 
     num = sp_playlist_num_tracks(playlist);
     for (i = 0; i < num; i++)
     {
+        char mrl[4096];
+	sp_link *link;
         track = sp_playlist_track(playlist, i);
         album = sp_track_album(track);
         artist = sp_track_artist(track, 0);
-      
-        name = eina_stringshare_printf("%s (%s - %s)", sp_track_name(track),
+	
+	link = sp_link_create_from_track(track, 0);
+	sp_link_as_string(link, mrl, sizeof(mrl));
+	name = eina_stringshare_printf("%s",  sp_track_name(track));
+	/* name = eina_stringshare_printf("%s (%s - %s)", sp_track_name(track),
                                        sp_artist_name(artist),
-                                       sp_album_name(album));
+                                       sp_album_name(album));*/
         uri = eina_stringshare_printf("%s/%d", enna_browser_uri_get(pl->browser), i);
-        DBG("Name : %s\n", name);
-        f1 = enna_browser_create_file(name, uri, NULL, name, "icon/music");    
-        enna_browser_file_add(pl->browser, f1);
+        DBG("Name : %s, mrl %s\n", name, mrl);
+	
+        f1 = enna_browser_create_file(name, uri, mrl, name, "icon/music");    
+        enna_browser_file_update(pl->browser, f1);
     }
 
 }
