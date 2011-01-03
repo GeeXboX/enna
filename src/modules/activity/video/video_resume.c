@@ -74,9 +74,9 @@ cb_playback_begin (void *data)
 static Enna_Vfs_File *
 _create_list_item (char *label, char *icon)
 {
-    Enna_Vfs_File *it;
+    Enna_File *it;
 
-    it = calloc (1, sizeof (Enna_Vfs_File));
+    it = calloc (1, sizeof (Enna_File));
     it->label = (char*)eina_stringshare_add (label);
     it->icon = (char*)eina_stringshare_add (icon);
     it->type = ENNA_FILE_MENU;
