@@ -737,7 +737,7 @@ video_infos_del (void)
 }
 
 static void
-_ondemand_cb_refresh(const Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
+_ondemand_cb_refresh(Enna_Vfs_File *file, Enna_Metadata_OnDemand ev)
 {
     Enna_Metadata *m;
 
