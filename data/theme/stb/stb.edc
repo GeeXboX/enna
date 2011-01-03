@@ -358,6 +358,9 @@ collections
 
    group {
       name: "activity/music";
+      images {
+         image: "browser_bg.png" COMP;
+      }
       parts {
          part {
             name: "module.clip";
@@ -425,9 +428,9 @@ collections
 		//rel1.offset: -5 -5;
 		rel2.to: "browser.clip";
 		//rel2.offset: 5 5;
-		color: 0 0 0 128 ;	
+		//color: 0 0 0 128 ;	
 		image {	
-                     normal: "sel_bg.png";
+                     normal: "browser_bg.png";
                	     border: 15 15 15 15;
             	}
 		
@@ -446,6 +449,7 @@ collections
 	       rel2.offset: -4 -4;
             }
          }
+
          /* Mediaplayer */
          part {
             name: "mediaplayer.clip";
