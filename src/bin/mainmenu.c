@@ -54,7 +54,7 @@ struct _Smart_Data
     Evas_Object *o_background;
     Evas_Object *o_weather;
     Evas_Object *o_volume;
-    Enna_Vfs_File *selected;
+    Enna_File *selected;
     Input_Listener *listener;
     Ecore_Event_Handler *act_handler;
     Eina_Bool visible;
@@ -66,7 +66,7 @@ struct _Smart_Data
 /* Local subsystem functions */
 
 static void
-_add_cb(void *data, Enna_Vfs_File *file)
+_add_cb(void *data, Enna_File *file)
 {
     Smart_Data *sd = data;
     enna_mainmenu_append(sd->o_menu, file);
@@ -168,7 +168,7 @@ _input_events_cb(void *data, enna_input event)
     }
     if (!sd->visible)
     {
-        Enna_Vfs_File *f = enna_mainmenu_selected_activity_get(sd->o_menu);
+        Enna_File *f = enna_mainmenu_selected_activity_get(sd->o_menu);
         enna_activity_event(enna_activity_get(f->name), event);
     }
 
@@ -240,7 +240,7 @@ enna_mainmenu_shutdown(Evas_Object *obj)
 }
 
 void
-enna_mainmenu_append(Evas_Object *obj, Enna_Vfs_File *f)
+enna_mainmenu_append(Evas_Object *obj, Enna_File *f)
 {
     Smart_Data *sd;
     Activated_Cb_Data *cb_data;
@@ -262,7 +262,7 @@ enna_mainmenu_append(Evas_Object *obj, Enna_Vfs_File *f)
     }
 }
 
-Enna_Vfs_File *
+Enna_File *
 enna_mainmenu_selected_activity_get(Evas_Object *obj)
 {
     Smart_Data *sd;

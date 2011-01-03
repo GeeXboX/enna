@@ -27,12 +27,12 @@
 
 Evas_Object *enna_mainmenu_add(Evas_Object *parent);
 void enna_mainmenu_shutdown(Evas_Object *obj);
-void enna_mainmenu_append(Evas_Object *obj, Enna_Vfs_File *f);
+void enna_mainmenu_append(Evas_Object *obj, Enna_File *f);
 void enna_mainmenu_show(Evas_Object *obj);
 void enna_mainmenu_hide(Evas_Object *obj);
 Eina_Bool enna_mainmenu_visible(Evas_Object *obj);
 Eina_Bool enna_mainmenu_exit_visible(Evas_Object *obj);
-Enna_Vfs_File *enna_mainmenu_selected_activity_get(Evas_Object *obj);
+Enna_File *enna_mainmenu_selected_activity_get(Evas_Object *obj);
 void enna_mainmenu_background_add(Evas_Object *obj, Enna_File *file);
 void enna_mainmenu_background_select(Evas_Object *obj, Enna_File *file);
 
