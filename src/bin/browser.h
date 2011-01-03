@@ -51,23 +51,23 @@ struct _Enna_File
     const char *icon;
     const char *icon_file;
     const char *mrl;
-    Enna_File_Type type;
+    Enna_File_Type type;s
 };
 
-Enna_Browser *enna_browser_add(void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
-                               void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
-                               void (*update)(void *data, Enna_Vfs_File *file), void *update_data,
+Enna_Browser *enna_browser_add(void (*add)(void *data, Enna_File *file), void *add_data,
+                               void (*del)(void *data, Enna_File *file), void *del_data,
+                               void (*update)(void *data, Enna_File *file), void *update_data,
                                const char *uri);
 void enna_browser_browse(Enna_Browser *b);
 void enna_browser_del(Enna_Browser *b);
 void enna_browser_file_add(Enna_Browser *b, Enna_File *file);
 void enna_browser_file_del(Enna_Browser *b, Enna_File *file);
 Enna_File *enna_browser_file_update(Enna_Browser *b, Enna_File *file);
-Enna_Vfs_File *enna_browser_get_file(const char *uri);
+Enna_File *enna_browser_get_file(const char *uri);
 const char *enna_browser_uri_get(Enna_Browser *b);
 Eina_List *enna_browser_files_get(Enna_Browser *b);
 int enna_browser_level_get(Enna_Browser *b);
-Enna_Vfs_File *enna_browser_file_dup(Enna_Vfs_File *file);
+Enna_File *enna_browser_file_dup(Enna_File *file);
 void enna_browser_file_free(Enna_File *f);
 
 Enna_File *enna_browser_create_file(const char *name, const char *uri,

@@ -43,9 +43,9 @@ struct _Enna_Browser
 {
 
     Ecore_Idler *queue_idler;
-    void (*add)(void *data, Enna_Vfs_File *file);
-    void (*del)(void *data, Enna_Vfs_File *file);
-    void (*update)(void *data, Enna_Vfs_File *file);
+    void (*add)(void *data, Enna_File *file);
+    void (*del)(void *data, Enna_File *file);
+    void (*update)(void *data, Enna_File *file);
     void *add_data;
     void *del_data;
     void *update_data;
@@ -91,7 +91,7 @@ static Eina_Bool
 _activities_changed_cb(void *data, int type, void *event)
 {
     Enna_Browser *browser = data;
-    Enna_Vfs_File *file = event;
+    Enna_File *file = event;
 
     if (!file || !browser)
         return ECORE_CALLBACK_RENEW;
@@ -104,9 +104,9 @@ _activities_changed_cb(void *data, int type, void *event)
 }
 
 Enna_Browser *
-enna_browser_add(void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
-                 void (*del)(void *data, Enna_Vfs_File *file), void *del_data,
-                 void (*update)(void *data, Enna_Vfs_File  *file), void *update_data,
+enna_browser_add(void (*add)(void *data, Enna_File *file), void *add_data,
+                 void (*del)(void *data, Enna_File *file), void *del_data,
+                 void (*update)(void *data, Enna_File  *file), void *update_data,
                  const char *uri)
 {
     Enna_Browser *b;
@@ -138,7 +138,7 @@ enna_browser_add(void (*add)(void *data, Enna_Vfs_File *file), void *add_data,
 void
 enna_browser_del(Enna_Browser *b)
 {
-    Enna_Vfs_File *file;
+    Enna_File *file;
     char *token;
 
     if (!b)
@@ -186,11 +186,11 @@ _browser_browse_root(Enna_Browser *browser)
     Eina_List *l;
     Enna_Class_Activity *act;
     Enna_Buffer *buf;
-    Enna_Vfs_File *f;
+    Enna_File *f;
 
     EINA_LIST_FOREACH(enna_activities_get(), l, act)
     {
-        f = calloc(1, sizeof(Enna_Vfs_File));
+        f = calloc(1, sizeof(Enna_File));
 
         buf = enna_buffer_new();
         enna_buffer_appendf(buf, "/%s", act->name);
@@ -218,13 +218,13 @@ _browser_browse_activity(Enna_Browser *browser)
 
     Enna_Vfs_Class *vfs;
     Eina_List *l;
-    Enna_Vfs_File *f;
+    Enna_File *f;
     Enna_Buffer *buf;
 
     EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, vfs)
     {
 
-      f = calloc(1, sizeof(Enna_Vfs_File));
+      f = calloc(1, sizeof(Enna_File));
 
         buf = enna_buffer_new();
         enna_buffer_appendf(buf, "/%s/%s", act_name, vfs->name);
@@ -241,7 +241,7 @@ _browser_browse_activity(Enna_Browser *browser)
 }
 
 void
-enna_browser_file_add(Enna_Browser *b, Enna_Vfs_File *file)
+enna_browser_file_add(Enna_Browser *b, Enna_File *file)
 {
     if (!b)
         return;
@@ -264,7 +264,7 @@ enna_browser_file_add(Enna_Browser *b, Enna_Vfs_File *file)
 }
 
 Enna_File *
-enna_browser_file_update(Enna_Browser *b, Enna_Vfs_File *file)
+enna_browser_file_update(Enna_Browser *b, Enna_File *file)
 {
     Enna_File *f;
     Eina_List *l;
@@ -306,7 +306,7 @@ enna_browser_file_update(Enna_Browser *b, Enna_Vfs_File *file)
 
 
 void
-enna_browser_file_del(Enna_Browser *b, Enna_Vfs_File *file)
+enna_browser_file_del(Enna_Browser *b, Enna_File *file)
 {
     if (!b || !file)
         return;
@@ -345,15 +345,15 @@ _browser_browse_module(Enna_Browser *browser)
 
 }
 
-Enna_Vfs_File *
-enna_browser_file_dup(Enna_Vfs_File *file)
+Enna_File *
+enna_browser_file_dup(Enna_File *file)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
 
     if (!file)
         return NULL;
 
-    f = calloc(1, sizeof(Enna_Vfs_File));
+    f = calloc(1, sizeof(Enna_File));
     f->icon = eina_stringshare_add(file->icon);
     f->icon_file = eina_stringshare_add(file->icon_file);
     f->type = file->type;
