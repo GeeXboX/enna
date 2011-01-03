@@ -72,6 +72,7 @@ enum _MUSIC_STATE
 struct _Enna_Module_Music
 {
     Evas_Object *o_layout;
+    Evas_Object *o_pager;
     Evas_Object *o_browser;
     Evas_Object *o_mediaplayer;
     Evas_Object *o_panel_lyrics;
@@ -181,20 +182,17 @@ panel_lyrics_display(int show)
     {
         Enna_Metadata *m;
 
-	mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
-	
-	o_edje = elm_layout_edje_get(mod->o_layout);
-	elm_layout_content_set(mod->o_layout,
-                           "lyrics.panel.swallow", mod->o_panel_lyrics);
+
 
         m = enna_mediaplayer_metadata_get(mod->enna_playlist);
         enna_panel_lyrics_set_text(mod->o_panel_lyrics, m);
         edje_object_signal_emit(o_edje, "lyrics,show", "enna");
+	elm_pager_content_promote(mod->o_pager, mod->o_panel_lyrics);
         mod->lyrics_displayed = 1;
     }
     else
     {
-	ENNA_OBJECT_DEL(mod->o_panel_lyrics);
+        elm_pager_content_promote(mod->o_pager, mod->o_mediaplayer);
         mod->lyrics_displayed = 0;
     }
 }
@@ -325,9 +323,9 @@ _create_mediaplayer_gui()
     DBG(__FUNCTION__);
     o_edje = elm_layout_edje_get(mod->o_layout);
     o = enna_mediaplayer_obj_add(enna->evas, mod->enna_playlist);
-    elm_layout_content_set(mod->o_layout, "mediaplayer.swallow", o);
     evas_object_show(o);
     mod->o_mediaplayer = o;
+    elm_pager_content_push(mod->o_pager, mod->o_mediaplayer);
     evas_object_smart_callback_add(mod->o_mediaplayer, "info,clicked",
                                    _mediaplayer_info_clicked_cb, NULL);
     edje_object_signal_emit(o_edje, "mediaplayer,show", "enna");
@@ -343,6 +341,15 @@ _create_menu()
     /* Set default state */
     mod->state = BROWSER_VIEW;
 
+    /* Create Pager */
+    ENNA_OBJECT_DEL(mod->o_pager);
+    mod->o_pager = elm_pager_add(mod->o_layout);
+    evas_object_size_hint_weight_set(mod->o_pager, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_show(mod->o_pager);
+
+    elm_layout_content_set(mod->o_layout, "mediaplayer.swallow", mod->o_pager);
+    elm_object_style_set(mod->o_pager, "flip");
+    
     /* Create List */
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
@@ -357,7 +364,13 @@ _create_menu()
                                    _browser_delay_hilight_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "root",
                                    _browser_root_cb, NULL);
-    elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
+   elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
+
+    /* Create Lyrics */
+    mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
+    elm_pager_content_push(mod->o_pager, mod->o_panel_lyrics);
+
+    elm_pager_content_promote(mod->o_pager, mod->o_browser);
 
 }
 
@@ -496,6 +509,7 @@ module_shutdown(Enna_Module *em)
                                    "delay,hilight", _browser_delay_hilight_cb);
     evas_object_smart_callback_del(mod->o_browser,
                                    "root", _browser_root_cb);
+    ENNA_OBJECT_DEL(mod->o_pager);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_panel_lyrics);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);

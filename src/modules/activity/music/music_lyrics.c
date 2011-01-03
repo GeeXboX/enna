@@ -1,3 +1,4 @@
+
 /*
  * GeeXboX Enna Media Center.
  * Copyright (C) 2005-2010 The Enna Project
@@ -49,16 +50,11 @@ enna_panel_lyrics_add (Evas *evas)
 
     sd = calloc(1, sizeof(Smart_Data));
 
-    obj = elm_win_inwin_add(enna->win);
-    elm_object_style_set(obj, "infos");
-    elm_win_inwin_activate(obj);
     sc = elm_scroller_add (enna->layout);
     lb = elm_label_add(enna->layout);
     elm_object_style_set(lb, "enna");
 
     elm_scroller_content_set (sc, lb);
-    elm_win_inwin_content_set(obj, sc);
-
     evas_object_show (lb);
     evas_object_show (sc);
 
@@ -67,7 +63,7 @@ enna_panel_lyrics_add (Evas *evas)
 
     evas_object_data_set(obj, "sd", sd);
 
-    return obj;
+    return sc;
 }
 
 void
