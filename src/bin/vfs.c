@@ -113,37 +113,6 @@ enna_vfs_unregister(Enna_Vfs_Class *vfs, ENNA_VFS_CAPS type)
 int
 enna_vfs_append(const char *name, unsigned char type, Enna_Vfs_Class *vfs)
 {
-#if 0
-    if (!vfs)
-        return -1;
-
-    if (type & ENNA_CAPS_MUSIC)
-    {
-        _enna_vfs_music = eina_list_append(_enna_vfs_music, vfs);
-        _enna_vfs_music = eina_list_sort(
-            _enna_vfs_music,
-            eina_list_count(_enna_vfs_music),
-            _sort_cb);
-    }
-
-    if (type & ENNA_CAPS_VIDEO)
-    {
-        _enna_vfs_video = eina_list_append(_enna_vfs_video, vfs);
-        _enna_vfs_video = eina_list_sort(
-            _enna_vfs_video,
-            eina_list_count(_enna_vfs_video),
-            _sort_cb);
-    }
-
-    if (type & ENNA_CAPS_PHOTO)
-    {
-        _enna_vfs_photo = eina_list_append(_enna_vfs_photo, vfs);
-        _enna_vfs_photo = eina_list_sort(
-            _enna_vfs_photo,
-            eina_list_count(_enna_vfs_photo),
-            _sort_cb);
-    }
-#endif
     return 0;
 }
 
@@ -179,80 +148,4 @@ enna_vfs_get(ENNA_VFS_CAPS type)
          vfs = eina_list_merge(vfs, _enna_vfs_photo);
 
     return vfs;
-}
-
-static Enna_File *
-enna_vfs_create_inode(const char *uri, const char *label,
-                      const char *icon, const char *icon_file, int dir)
-{
-    Enna_File *f;
-
-    f = calloc(1, sizeof(Enna_File));
-    f->uri = uri ? eina_stringshare_add(uri) : NULL;
-    f->label = label ? eina_stringshare_add(label) : NULL;
-    f->icon = icon ? eina_stringshare_add(icon) : NULL;
-    f->icon_file = icon_file ? eina_stringshare_add(icon_file) : NULL;
-
-    if (dir == 1)
-        f->is_directory = 1;
-    else if (dir == 2)
-        f->is_menu = 1;
-
-    return f;
-}
-
-Enna_File *
-enna_vfs_dup_file(const Enna_File *file)
-{
-    Enna_File *n;
-
-    n = calloc(1, sizeof(Enna_File));
-    if (!n)
-        return NULL;
-
-    n->uri       = file->uri       ? eina_stringshare_add(file->uri)       : NULL;
-    n->label     = file->label     ? eina_stringshare_add(file->label)     : NULL;
-    n->icon      = file->icon      ? eina_stringshare_add(file->icon)      : NULL;
-    n->icon_file = file->icon_file ? eina_stringshare_add(file->icon_file) : NULL;
-    n->mrl       = file->mrl       ? eina_stringshare_add(file->mrl)       : NULL;
-
-    n->is_directory = file->is_directory;
-    n->is_menu = file->is_menu;
-
-    return n;
-}
-
-Enna_File *
-enna_vfs_create_file(const char *uri, const char *label,
-                     const char *icon, const char *icon_file)
-{
-    return enna_vfs_create_inode(uri, label, NULL, NULL, 0);
-}
-
-Enna_File *
-enna_vfs_create_directory(const char *uri, const char *label,
-                          const char *icon, const char *icon_file)
-{
-    return enna_vfs_create_inode(uri, label, icon, icon_file, 1);
-}
-
-Enna_File *
-enna_vfs_create_menu(const char *uri, const char *label,
-                     const char *icon, const char *icon_file)
-{
-    return enna_vfs_create_inode(uri, label, icon, icon_file, 2);
-}
-
-void
-enna_vfs_remove(Enna_File *f)
-{
-    if (!f)
-        return;
-
-    eina_stringshare_del(f->uri);
-    eina_stringshare_del(f->label);
-    eina_stringshare_del(f->icon);
-    eina_stringshare_del(f->icon_file);
-    eina_stringshare_del(f->mrl);
-    ENNA_FREE(f);
 }
