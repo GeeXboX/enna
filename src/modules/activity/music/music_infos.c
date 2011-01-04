@@ -75,16 +75,6 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
     case ENNA_FILE_MENU:
     case ENNA_FILE_DIRECTORY:
     {
-        /* struct statvfs fs; */
-        printf("File mrl %s\n", file->mrl);
-        /* if (statvfs(file->mrl, &fs) == 0) { */
-        /*   int block_size = fs.f_bsize; */
-        /*   int total_blocks = fs.f_blocks; */
-        /*   int avail_blocks = fs.f_bavail; */
-          
-          
-
-        /* } */
         page = elm_layout_add(sd->pager);
         elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
         ic = elm_icon_add(page);
@@ -97,6 +87,32 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         elm_pager_content_push(sd->pager, page);
         break;
       }
+    case ENNA_FILE_TRACK:
+    {
+        const char *artist;
+        const char *track;
+        const char *album;
+        char tmp[4096];
+
+        printf("Enna_File Track\n");
+
+        artist = enna_browser_file_meta_get(file, "author");
+        album = enna_browser_file_meta_get(file, "album");
+        track = enna_browser_file_meta_get(file, "title");
+
+        page = elm_layout_add(sd->pager);
+        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
+        ic = elm_icon_add(page);
+        elm_icon_file_set(ic, enna_config_theme_get(), enna_browser_file_meta_get(file, "cover"));
+        evas_object_show(ic);
+        snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
+        elm_layout_content_set(page, "enna.icon.swallow", ic);
+        elm_layout_text_set(page, "enna.text", file->label);
+        evas_object_show(page);
+        elm_pager_content_pop(sd->pager);
+        elm_pager_content_push(sd->pager, page);
+        break;
+    }
     default:
         break;
         
