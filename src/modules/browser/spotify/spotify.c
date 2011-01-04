@@ -380,6 +380,147 @@ static sp_playlistcontainer_callbacks pc_cb = {
 };
 
 
+static const char * 
+_pl_meta_get(void *data, const Enna_File *file, const char *key)
+{
+    sp_playlist *pl = data;
+
+    if (!strcmp(key, "nb_elements"))
+    {
+        return eina_stringshare_printf("%d", sp_playlist_num_tracks(pl)); 
+    }
+
+    return eina_stringshare_add("Test");
+}
+
+const char *_get_image(sp_image *image)
+{
+    const void *data;
+    size_t size;
+    FILE *fp;
+    char name[45];
+    const char *filename;
+    const byte *id;
+    int i,j;
+
+    id = sp_image_image_id(image);
+    printf("Image id : %s\n", id);
+    for (i = 0, j = 0; i < 20; i++, j += 2)
+    {
+        sprintf(name+j, "%02X", id[i]);
+        printf("%02X", id[i]);
+    }
+    name[40] = '.';
+    name[41] = 'j';
+    name[42] = 'p';
+    name[43] = 'g';
+    name[44] = '\0';
+
+
+    filename = eina_stringshare_printf("/home/nico/.cache/enna/%s", name);
+    fp = fopen(filename, "wb");
+    printf("Create file : %s\n", filename);
+    data = sp_image_data(image, &size);
+    fwrite(data, size, 1, fp);
+    fclose(fp);
+    return filename;
+}
+
+static void 
+_image_loaded_cb(sp_image *image, void *userdata)
+{
+    const char *filename;
+    filename = _get_image(image);
+}
+
+static const char * 
+_track_meta_get(void *data, const Enna_File *file, const char *key)
+{
+    sp_track *track = data;
+    
+    if (!track)
+        return NULL;
+
+    
+    if (!strcmp(key, "cover"))
+    {
+        FILE *fp;
+        const char *filename;
+        int i, j;
+        sp_album *album;
+        sp_image *image;
+        const byte *id;
+
+        album = sp_track_album(track);
+        printf("Album %p\n", album);
+        id = sp_album_cover(album);
+        printf("Album id : %s\n", id);
+        image = sp_image_create(session, id);
+        if (sp_image_is_loaded(image))
+        {
+            printf("Image is loaded\n");
+            return _get_image(image);
+        }
+        else
+        {
+            printf("Cover loading...\n");
+            sp_image_add_load_callback(image, _image_loaded_cb, NULL);
+            return NULL;
+        }
+    }
+    else if (!strcmp(key, "title"))
+    {
+        const char *track_name;
+        track_name = sp_track_name(track);
+        DBG("track name : %s\n", track_name);
+        if (track_name[0])
+            return eina_stringshare_add(track_name);
+        return NULL;
+    }
+    else if (!strcmp(key, "author"))
+    {
+        sp_artist *artist;
+        const char *artist_name;
+        artist = sp_track_artist(track, 0);
+        artist_name = sp_artist_name(artist);
+        DBG("artist name : %s\n", artist_name);
+        if (artist_name[0])
+            return eina_stringshare_add(artist_name);
+        return NULL;
+    }
+    else if (!strcmp(key, "album"))
+    {
+        sp_album *album;
+        const char *album_name;
+        album = sp_track_album(track);
+        album_name = sp_album_name(album);
+        DBG("Album name : %s\n", album_name);
+        if (album_name[0])
+            return eina_stringshare_add(album_name);
+        return NULL;
+    }
+    else if (!strcmp(key, "starred"))
+    {
+        const char *starred;
+        if (sp_track_is_starred(session, track))
+            return eina_stringshare_add("starred");
+        else
+            return NULL;
+    }
+
+
+    return eina_stringshare_add("Test");
+}
+
+static Enna_File_Meta_Class track_meta = {
+    _track_meta_get,
+    NULL
+};
+
+static Enna_File_Meta_Class pl_meta = {
+    _pl_meta_get,
+    NULL
+};
 
 static void 
 _browse_root(Eina_List *tokens, Enna_Browser *browser)
@@ -416,6 +557,7 @@ _browse_root(Eina_List *tokens, Enna_Browser *browser)
 
     enna_browser_file_add(browser, f1);
     enna_browser_file_add(browser, f2);
+
 
 }
 
@@ -457,6 +599,7 @@ _browse_playlists(Eina_List *tokens, Enna_Browser *browser, Playlist_Container *
         DBG("%s", uri->buf);
 
         f1 = enna_browser_create_menu(name, uri->buf, name, "icon/playlist");
+        enna_browser_file_meta_add(f1, &pl_meta, playlist);
         enna_browser_file_update(browser, f1);
 
         pl_item = calloc(1, sizeof(Playlist_Item));
@@ -527,7 +670,8 @@ _browse_playlist_id(Enna_Browser *browser, int id, Playlist_Container *pl)
         uri = eina_stringshare_printf("%s/%d", enna_browser_uri_get(pl->browser), i);
         DBG("Name : %s, mrl %s\n", name, mrl);
 	
-        f1 = enna_browser_create_file(name, uri, mrl, name, "icon/music");    
+        f1 = enna_browser_create_track(name, uri, mrl, name, "icon/music"); 
+        enna_browser_file_meta_add(f1, &track_meta, track);
         enna_browser_file_update(pl->browser, f1);
     }
 
