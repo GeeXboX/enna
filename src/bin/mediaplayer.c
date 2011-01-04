@@ -1177,6 +1177,21 @@ enna_mediaplayer_shutdown(void)
     ENNA_FREE(mp);
 }
 
+Enna_File *
+enna_mediaplayer_current_file_get()
+{ 
+    Enna_File *item;
+
+    if (!mp->cur_playlist || mp->play_state != PLAYING)
+        return NULL;
+    
+    item = eina_list_nth(mp->cur_playlist->playlist, mp->cur_playlist->selected);
+    if (!item)
+        return NULL;
+
+    return item;
+}
+
 char *
 enna_mediaplayer_get_current_uri()
 {
