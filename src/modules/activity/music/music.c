@@ -177,10 +177,6 @@ _panel_infos_display(int show)
 
     if (show)
     {
-        Enna_Metadata *m;
-        //m = enna_mediaplayer_metadata_get(mod->enna_playlist);
-        /* enna_music_infos_set_text(mod->o_infos, m); */
-        /* edje_object_signal_emit(o_edje, "lyrics,show", "enna"); */
         elm_pager_content_promote(mod->o_pager, mod->o_infos);
         mod->infos_displayed = 1;
     }
