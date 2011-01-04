@@ -234,6 +234,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
                      enna_mediaplayer_select_nth(mod->enna_playlist,i);
                      enna_mediaplayer_obj_event_catch(mod->o_mediaplayer);
                      enna_mediaplayer_play(mod->enna_playlist);
+                     _panel_infos_display(0);
                  }
                  i++;
              }
