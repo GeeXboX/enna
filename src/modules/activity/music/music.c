@@ -303,10 +303,11 @@ static void
 _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Enna_File *file = event_info;
+    
     DBG(__FUNCTION__);
     if (!file)
         return;
-
+    DBG("File hilight : %s (%d)", file->label, file->type);
 
     if (file->type != ENNA_FILE_DIRECTORY && 
         file->type != ENNA_FILE_MENU && 
@@ -366,10 +367,10 @@ _create_menu()
                                    _browser_delay_hilight_cb, NULL);
     evas_object_smart_callback_add(mod->o_browser, "root",
                                    _browser_root_cb, NULL);
-   elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
+    elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
 
     /* Create Lyrics */
-    mod->o_infos = enna_music_infos_add (enna->evas);
+    mod->o_infos = enna_music_infos_add (mod->o_pager);
     elm_pager_content_push(mod->o_pager, mod->o_infos);
 
     elm_pager_content_promote(mod->o_pager, mod->o_browser);

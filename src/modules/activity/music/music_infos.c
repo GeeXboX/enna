@@ -35,6 +35,7 @@ typedef struct _Smart_Data Smart_Data;
 
 struct _Smart_Data
 {
+    Evas_Object *pager;
     Evas_Object *scroller;
     Evas_Object *text;
 };
@@ -42,7 +43,7 @@ struct _Smart_Data
 /* externally accessible functions */
 
 Evas_Object *
-enna_music_infos_add (Evas *evas)
+enna_music_infos_add (Evas_Object *parent)
 {
     Smart_Data *sd;
     Evas_Object *obj;
@@ -50,8 +51,8 @@ enna_music_infos_add (Evas *evas)
 
     sd = calloc(1, sizeof(Smart_Data));
 
-    sc = elm_scroller_add (enna->layout);
-    lb = elm_label_add(enna->layout);
+    sc = elm_scroller_add (parent);
+    lb = elm_label_add(sc);
     elm_object_style_set(lb, "enna");
 
     elm_scroller_content_set (sc, lb);

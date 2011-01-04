@@ -24,7 +24,7 @@
 
 #include "enna.h"
 
-Evas_Object *enna_music_infos_add (Evas * evas);
+Evas_Object *enna_music_infos_add (Evas_Object * parent);
 void enna_music_infos_set_text (Evas_Object *obj, Enna_Metadata *m);
 
 #endif /* MUSIC_INFOS_H */
