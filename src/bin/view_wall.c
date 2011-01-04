@@ -83,7 +83,7 @@ _grid_item_icon_get(const void *data, Evas_Object *obj, const char *part)
 		if (!pi->file)
 			return NULL;
 
-		if (pi->file->type == ENNA_FILE_DIRECTORY || pi->file->type == ENNA_FILE_MENU)
+		if (ENNA_FILE_IS_BROWSABLE(pi->file))
 		{
 			ic = elm_icon_add(obj);
 			if (pi->file->icon && pi->file->icon[0] == '/')

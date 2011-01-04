@@ -367,7 +367,7 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
     if (!sd)
         return;
 
-    if (file->type != ENNA_FILE_DIRECTORY && file->type != ENNA_FILE_MENU)
+    if (!ENNA_FILE_IS_BROWSABLE(file))
     {
         evas_object_smart_callback_call (sd->o_layout, "selected", file);
         return;

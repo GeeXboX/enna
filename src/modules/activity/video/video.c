@@ -112,7 +112,7 @@ update_movies_counter(Eina_List *list)
 
     EINA_LIST_FOREACH(list, l, f)
     {
-        if (f->type != ENNA_FILE_DIRECTORY && f->type != ENNA_FILE_MENU)
+        if (!ENNA_FILE_IS_BROWSABLE(f))
             children++;
     }
     if (children)
@@ -580,7 +580,7 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
     if (!file)
         return;
 
-    if (file->type == ENNA_FILE_DIRECTORY || file->type == ENNA_FILE_MENU)
+    if (ENNA_FILE_IS_BROWSABLE(file))
     {
         enna_log (ENNA_MSG_EVENT,
                   ENNA_MODULE_NAME, "Directory Selected %s", file->uri);
@@ -597,7 +597,7 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
         /* File selected, create mediaplayer */
         EINA_LIST_FOREACH(enna_browser_obj_files_get(mod->o_browser), l, f)
         {
-            if (f->type != ENNA_FILE_DIRECTORY && f->type != ENNA_FILE_MENU)
+            if (!ENNA_FILE_IS_BROWSABLE(f))
             {
                 enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                          "Append : %s %s to playlist", f->label, f->uri);
@@ -744,7 +744,7 @@ _ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
     if (!file || !file->mrl || !mod->uri_hilighted)
         return;
 
-    if (file->type == ENNA_FILE_DIRECTORY || file->type == ENNA_FILE_MENU)
+    if (ENNA_FILE_IS_BROWSABLE(file))
         return;
 
     if (strcmp(file->mrl, mod->uri_hilighted))
@@ -788,7 +788,7 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
     if (!file || !file->mrl)
         return;
 
-    if (file->type != ENNA_FILE_DIRECTORY && file->type != ENNA_FILE_MENU)
+    if (!ENNA_FILE_IS_BROWSABLE(file))
     {
         video_infos_display(file);
 

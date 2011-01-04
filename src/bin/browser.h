@@ -28,10 +28,14 @@ typedef struct _Enna_Browser Enna_Browser;
 typedef struct _Enna_File Enna_File;
 typedef enum _Enna_File_Type Enna_File_Type;
 
+#define ENNA_FILE_IS_BROWSABLE(file) \
+    ((file->type == ENNA_FILE_MENU) || (file->type == ENNA_FILE_DIRECTORY) || (file->type == ENNA_FILE_VOLUME))
+
 enum _Enna_File_Type
 {
     ENNA_FILE_MENU,
     ENNA_FILE_DIRECTORY,
+    ENNA_FILE_VOLUME,
     ENNA_FILE_FILE,
     ENNA_FILE_ARTIST,
     ENNA_FILE_ALBUM,

@@ -36,8 +36,6 @@ typedef struct _Smart_Data Smart_Data;
 struct _Smart_Data
 {
     Evas_Object *pager;
-    Evas_Object *scroller;
-    Evas_Object *text;
 };
 
 /* externally accessible functions */
@@ -46,30 +44,70 @@ Evas_Object *
 enna_music_infos_add (Evas_Object *parent)
 {
     Smart_Data *sd;
-    Evas_Object *obj;
-    Evas_Object *sc, *lb;
-
+ 
     sd = calloc(1, sizeof(Smart_Data));
 
-    sc = elm_scroller_add (parent);
-    lb = elm_label_add(sc);
-    elm_object_style_set(lb, "enna");
+    sd->pager = elm_pager_add(parent);
+    elm_object_style_set(sd->pager, "slide_invisible");
+    evas_object_size_hint_weight_set(sd->pager, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_show (sd->pager);
+    evas_object_data_set(sd->pager, "sd", sd);
 
-    elm_scroller_content_set (sc, lb);
-    evas_object_show (lb);
-    evas_object_show (sc);
+    return sd->pager;
+}
 
-    sd->scroller = sc;
-    sd->text = lb;
+void
+enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
+{
+    Evas_Object *page;
+    Smart_Data *sd;
+    Evas_Object *ic;
 
-    evas_object_data_set(obj, "sd", sd);
+    if (!obj || !file)
+        return;
+    
+    sd = evas_object_data_get(obj, "sd");
+    if (!sd)
+        return;
 
-    return sc;
+    switch(file->type)
+    {
+    case ENNA_FILE_MENU:
+    case ENNA_FILE_DIRECTORY:
+    {
+        /* struct statvfs fs; */
+        printf("File mrl %s\n", file->mrl);
+        /* if (statvfs(file->mrl, &fs) == 0) { */
+        /*   int block_size = fs.f_bsize; */
+        /*   int total_blocks = fs.f_blocks; */
+        /*   int avail_blocks = fs.f_bavail; */
+          
+          
+
+        /* } */
+        page = elm_layout_add(sd->pager);
+        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
+        ic = elm_icon_add(page);
+        elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
+        evas_object_show(ic);
+        elm_layout_content_set(page, "enna.icon.swallow", ic);
+        elm_layout_text_set(page, "enna.text", file->label);
+        evas_object_show(page);
+        elm_pager_content_pop(sd->pager);
+        elm_pager_content_push(sd->pager, page);
+        break;
+      }
+    default:
+        break;
+        
+    }
+
 }
 
 void
 enna_music_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
 {
+#if 0
     Enna_Buffer *buf;
     char *lyrics, *title;
     char *b;
@@ -112,4 +150,5 @@ enna_music_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
     free (lyrics);
 
     elm_label_label_set (sd->text, buf->buf);
+#endif
 }

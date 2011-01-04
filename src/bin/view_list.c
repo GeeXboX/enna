@@ -142,7 +142,7 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
     {
         Evas_Object *ic;
 
-        if (!li->file || !li->file->type != ENNA_FILE_DIRECTORY)
+        if (!li->file || !ENNA_FILE_IS_BROWSABLE(li->file))
             return NULL;
 
         ic = elm_icon_add(obj);
