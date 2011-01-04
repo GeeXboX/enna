@@ -41,7 +41,6 @@ typedef enum _Enna_Browser_Type
 
 struct _Enna_Browser
 {
-
     Ecore_Idler *queue_idler;
     void (*add)(void *data, Enna_File *file);
     void (*del)(void *data, Enna_File *file);
@@ -224,7 +223,7 @@ _browser_browse_activity(Enna_Browser *browser)
     EINA_LIST_FOREACH(enna_vfs_get(act->caps), l, vfs)
     {
 
-      f = calloc(1, sizeof(Enna_File));
+        f = calloc(1, sizeof(Enna_File));
 
         buf = enna_buffer_new();
         enna_buffer_appendf(buf, "/%s/%s", act_name, vfs->name);
@@ -274,7 +273,6 @@ enna_browser_file_update(Enna_Browser *b, Enna_File *file)
     
     if (eina_list_data_find(b->files, file))
     {
-        DBG("Update file");
         b->update(b->update_data, file);
         return file;
     }
@@ -282,7 +280,6 @@ enna_browser_file_update(Enna_Browser *b, Enna_File *file)
     {
         EINA_LIST_FOREACH(b->files, l, f)
         {
-            DBG("File update %s == %s", f->uri, file->uri);
             if(!strcmp(f->uri, file->uri))
             {
                 eina_stringshare_replace(&f->name, file->name);
@@ -291,13 +288,13 @@ enna_browser_file_update(Enna_Browser *b, Enna_File *file)
                 eina_stringshare_replace(&f->icon_file, file->icon_file);
                 eina_stringshare_replace(&f->mrl, file->mrl);
                 f->type = file->type;
+                f->meta_class = file->meta_class;
+                f->meta_data = file->meta_data;
                 b->update(b->update_data, f);
                 enna_browser_file_free(file);
                 return f;
             }
         }
-
-        DBG("Add file");
         enna_browser_file_add(b, file);
         return file;
     }
@@ -361,6 +358,8 @@ enna_browser_file_dup(Enna_File *file)
     f->name = eina_stringshare_add(file->name);
     f->uri = eina_stringshare_add(file->uri);
     f->mrl = eina_stringshare_add(file->mrl);
+    f->meta_class = file->meta_class;
+    f->meta_data = file->meta_data;
     return f;
 }
 
@@ -376,6 +375,8 @@ enna_browser_file_free(Enna_File *f)
     if (f->icon) eina_stringshare_del(f->icon);
     if (f->icon_file) eina_stringshare_del(f->icon_file);
     if (f->mrl) eina_stringshare_del(f->mrl);
+    if (f->meta_class && f->meta_class->meta_del)
+        f->meta_class->meta_del(f->meta_data);
     free(f);
 }
 
@@ -413,6 +414,13 @@ enna_browser_create_file(const char *name, const char *uri,
                          const char *mrl, const char *label, const char *icon)
 {
     return _create_inode(name, uri, label, icon, mrl, ENNA_FILE_FILE);
+}
+
+Enna_File *
+enna_browser_create_track(const char *name, const char *uri,
+                         const char *mrl, const char *label, const char *icon)
+{
+    return _create_inode(name, uri, label, icon, mrl, ENNA_FILE_TRACK);
 }
 
 Enna_File *
@@ -454,4 +462,22 @@ enna_browser_filter(Enna_Browser *b, const char *filter)
         }
 
     }
+}
+void 
+enna_browser_file_meta_add(Enna_File *f, Enna_File_Meta_Class *meta_class, void *data)
+{
+    if (!f || !meta_class)
+        return;
+
+    f->meta_class = meta_class;
+    f->meta_data = data;
+}
+
+const char *
+enna_browser_file_meta_get(Enna_File *f, const char *key)
+{
+    if (!f || !key || !f->meta_class || !f->meta_class->meta_get)
+        return NULL;
+
+    return f->meta_class->meta_get(f->meta_data, f, key);
 }

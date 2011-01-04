@@ -27,6 +27,15 @@
 typedef struct _Enna_Browser Enna_Browser;
 typedef struct _Enna_File Enna_File;
 typedef enum _Enna_File_Type Enna_File_Type;
+typedef struct _Enna_File_Meta_Class Enna_File_Meta_Class;
+
+
+struct _Enna_File_Meta_Class
+{
+    const char *(* meta_get)(void *data, Enna_File *file, const char *key);
+    void  (* meta_del)(void *data);
+};
+
 
 #define ENNA_FILE_IS_BROWSABLE(file) \
     ((file->type == ENNA_FILE_MENU) || (file->type == ENNA_FILE_DIRECTORY) || (file->type == ENNA_FILE_VOLUME))
@@ -54,6 +63,8 @@ struct _Enna_File
     const char *icon_file;
     const char *mrl;
     Enna_File_Type type;
+    Enna_File_Meta_Class *meta_class;
+    void *meta_data;
 };
 
 Enna_Browser *enna_browser_add(void (*add)(void *data, Enna_File *file), void *add_data,
@@ -71,8 +82,13 @@ Eina_List *enna_browser_files_get(Enna_Browser *b);
 int enna_browser_level_get(Enna_Browser *b);
 Enna_File *enna_browser_file_dup(Enna_File *file);
 void enna_browser_file_free(Enna_File *f);
+void enna_browser_file_meta_add(Enna_File *f, Enna_File_Meta_Class *meta_class, void *data);
+const char * enna_browser_file_meta_get(Enna_File *f, const char *key);
 
 Enna_File *enna_browser_create_file(const char *name, const char *uri,
+                                    const char *mrl, const char *label,
+                                    const char *icon);
+Enna_File *enna_browser_create_track(const char *name, const char *uri,
                                     const char *mrl, const char *label,
                                     const char *icon);
 Enna_File *enna_browser_create_directory(const char *name, const char *uri,
