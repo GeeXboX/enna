@@ -26,5 +26,5 @@
 
 Evas_Object *enna_music_infos_add (Evas_Object * parent);
 void enna_music_infos_set_text (Evas_Object *obj, Enna_Metadata *m);
-
+void enna_music_infos_file_set(Evas_Object *obj, Enna_File *file);
 #endif /* MUSIC_INFOS_H */
