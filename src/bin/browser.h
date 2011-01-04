@@ -26,7 +26,6 @@
 
 typedef struct _Enna_Browser Enna_Browser;
 typedef struct _Enna_File Enna_File;
-//typedef struct _Enna_File Enna_Vfs_File;
 typedef enum _Enna_File_Type Enna_File_Type;
 
 enum _Enna_File_Type
