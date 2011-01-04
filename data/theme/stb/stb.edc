@@ -1093,10 +1093,8 @@ group {
          clip_to: "controls.clip";
          description {
             state: "default" 0.0;
-
             rel1.to: "text.area";
             rel1.offset: 4 4;
-
             rel2.to: "text.area";
             rel2.offset: -4 -4;
          }
