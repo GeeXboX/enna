@@ -37,7 +37,7 @@
 #include "volumes.h"
 #include "module.h"
 
-#include "music_lyrics.h"
+#include "music_infos.h"
 
 #define ENNA_MODULE_NAME "music"
 
@@ -51,7 +51,7 @@ static void _browser_delay_hilight_cb(void *data,
                                       Evas_Object *obj, void *event_info);
 static void _class_event(enna_input event);
 static void _class_event_mediaplayer_view(enna_input event);
-static void panel_lyrics_display(int show);
+static void _panel_infos_display(int show);
 
 typedef struct _Enna_Module_Music Enna_Module_Music;
 typedef enum _MUSIC_STATE MUSIC_STATE;
@@ -75,11 +75,11 @@ struct _Enna_Module_Music
     Evas_Object *o_pager;
     Evas_Object *o_browser;
     Evas_Object *o_mediaplayer;
-    Evas_Object *o_panel_lyrics;
+    Evas_Object *o_infos;
     Enna_Module *em;
     MUSIC_STATE state;
     Enna_Playlist *enna_playlist;
-    int lyrics_displayed;
+    int infos_displayed;
 };
 
 static Enna_Module_Music *mod;
@@ -118,7 +118,7 @@ _class_event_browser_view(enna_input event)
 
     /* whichever action is, ensure lyrics panel gets hidden */
     if (event != ENNA_INPUT_INFO)
-        panel_lyrics_display(0);
+        _panel_infos_display(0);
 
     switch (event)
     {
@@ -128,7 +128,7 @@ _class_event_browser_view(enna_input event)
             mod->state = MEDIAPLAYER_VIEW;
         break;
     case ENNA_INPUT_INFO:
-        panel_lyrics_display(!mod->lyrics_displayed);
+        _panel_infos_display(!mod->infos_displayed);
         break;
     default:
         enna_browser_obj_input_feed(mod->o_browser, event);
@@ -141,7 +141,7 @@ _class_event_mediaplayer_view(enna_input event)
     DBG(__FUNCTION__);
     /* whichever action is, ensure lyrics panel gets hidden */
     if (event != ENNA_INPUT_INFO)
-        panel_lyrics_display(0);
+        _panel_infos_display(0);
 
     if (!enna_mediaplayer_show_get(mod->o_mediaplayer))
     {
@@ -162,7 +162,7 @@ _class_event_mediaplayer_view(enna_input event)
         mod->state = BROWSER_VIEW;
         break;
     case ENNA_INPUT_INFO:
-        panel_lyrics_display(!mod->lyrics_displayed);
+        _panel_infos_display(!mod->infos_displayed);
         break;
     default:
         break;
@@ -171,7 +171,7 @@ _class_event_mediaplayer_view(enna_input event)
 }
 
 static void
-panel_lyrics_display(int show)
+_panel_infos_display(int show)
 {
     Evas_Object *o_edje;
 
@@ -185,15 +185,15 @@ panel_lyrics_display(int show)
 
 
         m = enna_mediaplayer_metadata_get(mod->enna_playlist);
-        enna_panel_lyrics_set_text(mod->o_panel_lyrics, m);
+        enna_music_infos_set_text(mod->o_infos, m);
         edje_object_signal_emit(o_edje, "lyrics,show", "enna");
-	elm_pager_content_promote(mod->o_pager, mod->o_panel_lyrics);
-        mod->lyrics_displayed = 1;
+	elm_pager_content_promote(mod->o_pager, mod->o_infos);
+        mod->infos_displayed = 1;
     }
     else
     {
         elm_pager_content_promote(mod->o_pager, mod->o_mediaplayer);
-        mod->lyrics_displayed = 0;
+        mod->infos_displayed = 0;
     }
 }
 
@@ -201,7 +201,7 @@ static void
 _mediaplayer_info_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
     DBG(__FUNCTION__);
-    panel_lyrics_display(!mod->lyrics_displayed);
+    _panel_infos_display(!mod->infos_displayed);
 }
 
 static void
@@ -282,7 +282,7 @@ _ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
     {
     case ENNA_METADATA_OD_PARSED:
     case ENNA_METADATA_OD_GRABBED:
-        enna_panel_lyrics_set_text(mod->o_panel_lyrics, m);
+        enna_music_infos_set_text(mod->o_infos, m);
     case ENNA_METADATA_OD_ENDED:
         /*
          * The texts and the cover are handled in mediaplayer_obj contrary
@@ -354,7 +354,7 @@ _create_menu()
     
     /* Create List */
     ENNA_OBJECT_DEL(mod->o_browser);
-    ENNA_OBJECT_DEL(mod->o_panel_lyrics);
+    ENNA_OBJECT_DEL(mod->o_infos);
     
     mod->o_browser = enna_browser_obj_add(mod->o_layout);
     enna_browser_obj_view_type_set(mod->o_browser, ENNA_BROWSER_VIEW_LIST);
@@ -369,8 +369,8 @@ _create_menu()
    elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
 
     /* Create Lyrics */
-    mod->o_panel_lyrics = enna_panel_lyrics_add (enna->evas);
-    elm_pager_content_push(mod->o_pager, mod->o_panel_lyrics);
+    mod->o_infos = enna_music_infos_add (enna->evas);
+    elm_pager_content_push(mod->o_pager, mod->o_infos);
 
     elm_pager_content_promote(mod->o_pager, mod->o_browser);
 
@@ -513,7 +513,7 @@ module_shutdown(Enna_Module *em)
                                    "root", _browser_root_cb);
     ENNA_OBJECT_DEL(mod->o_pager);
     ENNA_OBJECT_DEL(mod->o_browser);
-    ENNA_OBJECT_DEL(mod->o_panel_lyrics);
+    ENNA_OBJECT_DEL(mod->o_infos);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);

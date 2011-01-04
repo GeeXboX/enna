@@ -17,7 +17,7 @@ INCLUDES = \
 @ENNA_CFLAGS@
 
 EXTRA_DIST = \
-music_lyrics.h
+music_infos.h
 
 if BUILD_ACTIVITY_MUSIC
 

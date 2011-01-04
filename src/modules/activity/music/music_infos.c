@@ -29,7 +29,7 @@
 #include "logs.h"
 #include "image.h"
 #include "buffer.h"
-#include "music_lyrics.h"
+#include "music_infos.h"
 
 typedef struct _Smart_Data Smart_Data;
 
@@ -42,7 +42,7 @@ struct _Smart_Data
 /* externally accessible functions */
 
 Evas_Object *
-enna_panel_lyrics_add (Evas *evas)
+enna_music_infos_add (Evas *evas)
 {
     Smart_Data *sd;
     Evas_Object *obj;
@@ -67,7 +67,7 @@ enna_panel_lyrics_add (Evas *evas)
 }
 
 void
-enna_panel_lyrics_set_text (Evas_Object *obj, Enna_Metadata *m)
+enna_music_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
 {
     Enna_Buffer *buf;
     char *lyrics, *title;
