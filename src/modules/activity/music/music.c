@@ -335,8 +335,6 @@ _create_mediaplayer_gui()
 static void
 _create_menu()
 {
-    Evas_Object *o_edje;
-
     DBG(__FUNCTION__);
     /* Set default state */
     mod->state = BROWSER_VIEW;
