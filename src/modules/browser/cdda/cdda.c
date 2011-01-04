@@ -54,7 +54,7 @@ static Enna_Module_Cdda *mod;
 
 static Eina_List *_class_browse_up(const char *path, void *cookie)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
     Eina_List *l = NULL;
     char uri[4096];
     cdda_t *cd;
@@ -79,7 +79,7 @@ static Eina_List * _class_browse_down(void *cookie)
     return NULL;
 }
 
-static Enna_Vfs_File * _class_vfs_get(void *cookie)
+static Enna_File * _class_vfs_get(void *cookie)
 {
 
     return enna_vfs_create_directory(mod->cdda->uri,

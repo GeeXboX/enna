@@ -124,7 +124,7 @@ podcast_browse_channel (const char *uri)
 
             if (title && link)
             {
-                Enna_Vfs_File *f;
+                Enna_File *f;
 
                 enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
                          "New podcast item: %s at %s", title, link);
@@ -177,7 +177,7 @@ podcast_browse_streams (void)
 
     EINA_LIST_FOREACH(podcast_cfg.streams, l, s)
     {
-        Enna_Vfs_File *f;
+        Enna_File *f;
 
 	f = enna_vfs_create_directory(s->name, s->name, NULL, NULL);
 	list = eina_list_append(list, f);
@@ -205,7 +205,7 @@ _class_browse_down (void *cookie)
     return NULL;
 }
 
-static Enna_Vfs_File * _class_vfs_get(void *cookie)
+static Enna_File * _class_vfs_get(void *cookie)
 {
     return enna_vfs_create_directory(NULL, NULL, NULL, NULL);
 }

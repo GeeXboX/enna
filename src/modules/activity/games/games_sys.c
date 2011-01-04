@@ -179,9 +179,9 @@ _parse_directory(Evas_Object *list, const char *dir_path)
 
         if ((game = _parse_desktop_game(dsfile)))
         {
-            Enna_Vfs_File *item;
+            Enna_File *item;
 
-            item = ENNA_NEW(Enna_Vfs_File, 1);
+            item = ENNA_NEW(Enna_File, 1);
             item->label = strdup(game->name);
             item->is_menu = 1;
             if (game->icon) item->icon = strdup(game->icon);

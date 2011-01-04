@@ -309,7 +309,7 @@ static Enna_Config_Section_Parser cfg_tv = {
 static void
 module_init(Enna_Module *em)
 {
-    Enna_Vfs_File *it;
+    Enna_File *it;
 
     if (!em)
         return;
@@ -329,7 +329,7 @@ module_init(Enna_Module *em)
     enna_activity_register(&class);
     mod->enna_playlist = enna_mediaplayer_playlist_create();
 
-    it = calloc (1, sizeof(Enna_Vfs_File));
+    it = calloc (1, sizeof(Enna_File));
     it->uri = (char*) eina_stringshare_add (tv_cfg.vdr_uri);
     it->label = (char*) eina_stringshare_add ("vdr");
 

@@ -298,9 +298,9 @@ mame_my_games_list(Eina_List *games_list)
         games_list = eina_list_sort(games_list, 0, _mame_sort_cb);
         EINA_LIST_FREE(games_list, game)
         {
-            Enna_Vfs_File *item;
+            Enna_File *item;
 
-            item = ENNA_NEW(Enna_Vfs_File, 1);
+            item = ENNA_NEW(Enna_File, 1);
             item->label   = strdup(game->name);
             item->uri     = strdup(game->id);
             item->is_menu = 1;

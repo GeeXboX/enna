@@ -77,7 +77,7 @@ static Eina_List * browse_streams_list(netstreams_priv_t *data)
 
     for (l = data->config_netstreams; l; l = l->next)
     {
-        Enna_Vfs_File *file;
+        Enna_File *file;
         netstream_t *stream;
 
         stream = l->data;
@@ -132,7 +132,7 @@ static Eina_List * parse_extm3u(FILE *f)
             while (1)
             {
                 char *l2;
-                Enna_Vfs_File *file;
+                Enna_File *file;
 
                 l2 = read_line_from_stream(f);
                 if (!l2)
@@ -248,14 +248,14 @@ static Eina_List * browse_down_video(void *cookie)
     return browse_down(mod->video);
 }
 
-static Enna_Vfs_File * vfs_get_music(void *cookie)
+static Enna_File * vfs_get_music(void *cookie)
 {
     return enna_vfs_create_directory(mod->music->uri,
             ecore_file_file_get(mod->music->uri),
             eina_stringshare_add("icon/music"), NULL);
 }
 
-static Enna_Vfs_File * vfs_get_video(void *cookie)
+static Enna_File * vfs_get_video(void *cookie)
 {
     return enna_vfs_create_directory(mod->video->uri,
             ecore_file_file_get(mod->video->uri),

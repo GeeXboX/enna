@@ -223,7 +223,7 @@ gocomics_display (void)
 static void
 gocomics_select_comic(void *data)
 {
-    Enna_Vfs_File *item = data;
+    Enna_File *item = data;
 
     gocomics_date_set_current ();
 
@@ -261,9 +261,9 @@ gocomics_create_menu (void)
 
     for (i = 0; gocomics_list_map[i].name; i++)
     {
-        Enna_Vfs_File *item;
+        Enna_File *item;
 
-        item = calloc(1, sizeof(Enna_Vfs_File));
+        item = calloc(1, sizeof(Enna_File));
         item->label   = (char *) gocomics_list_map[i].name;
         item->uri     = (char *) gocomics_list_map[i].id;
         item->is_menu = 1;
