@@ -93,8 +93,10 @@ static Eina_Bool _timer_cb(void *data);
     do                                                              \
     {                                                               \
         Enna_Metadata *metadata;                                    \
+        Enna_File *file;                                            \
+        file = enna_mediaplayer_current_file_get();                 \
         metadata = enna_mediaplayer_metadata_get(sd->playlist);     \
-        _metadata_set(sd->layout, metadata);                        \
+        _metadata_set(sd->layout, metadata, file);                  \
         enna_metadata_meta_free(metadata);                          \
     }                                                               \
     while (0)
@@ -102,33 +104,38 @@ static Eina_Bool _timer_cb(void *data);
 
 static int
 metadata_set_text(Evas_Object *obj,
-                  Enna_Metadata *m, const char *name, int bold)
+                  Enna_File *file, const char *name, int bold)
 {
     int res = 0;
-    char *str = NULL;
-    char tmp[4096];
+    const char *str = NULL;
+    char *tmp;
 
-    if (m)
-        str = enna_metadata_meta_get(m, name, 1);
+    if (file)
+        str =  enna_browser_file_meta_get(file, name);
 
     if (!str)
         res = -1;
 
     if(bold && str)
-        snprintf(tmp, sizeof(tmp), "<b>%s</b>",enna_util_str_chomp(str));
+    {
+        tmp = enna_util_str_chomp(str);
+    }
     else
-        snprintf(tmp, sizeof(tmp), "%s", str ? enna_util_str_chomp(str) : "");
-
+    {
+        tmp = enna_util_str_chomp(str);
+    }
+    elm_label_ellipsis_set(obj, EINA_TRUE);
     elm_label_label_set(obj, tmp);
-    ENNA_FREE(str);
+ 
+    eina_stringshare_del(str);
     return res;
 }
 
 static void
-_metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
+_metadata_set(Evas_Object *obj, Enna_Metadata *metadata, Enna_File *file)
 {
     Smart_Data *sd;
-    char *cover;
+    const char *cover;
     int res;
 
     sd = evas_object_data_get(obj, "sd");
@@ -136,16 +143,16 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata)
     if (!sd)
         return;
 
-    metadata_set_text(sd->title, metadata, "title", 1);
-    metadata_set_text(sd->album, metadata, "album", 0);
-    res = metadata_set_text(sd->artist, metadata, "author", 0);
+    metadata_set_text(sd->title, file, "title", 1);
+    metadata_set_text(sd->album, file, "album", 0);
+    res = metadata_set_text(sd->artist, file, "author", 0);
     if (res)
-        metadata_set_text(sd->artist, metadata, "artist", 0);
+        metadata_set_text(sd->artist, file, "artist", 0);
 
     ENNA_OBJECT_DEL(sd->cv);
     sd->cv = enna_image_add(enna->evas);
 
-    cover = enna_metadata_meta_get(metadata, "cover", 1);
+    cover = enna_browser_file_meta_get(file, "cover");
     if (cover)
     {
         char cv[1024] = { 0 };
@@ -586,7 +593,8 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     sd->text_box = bx;
 
     lb = elm_label_add(layout);
-    elm_object_style_set(lb, "enna");
+    //elm_object_style_set(lb, "slide_short");
+    elm_label_slide_set(lb, EINA_TRUE);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "");
@@ -595,7 +603,8 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     sd->title = lb;
 
     lb = elm_label_add(layout);
-    elm_object_style_set(lb, "enna");
+    //elm_object_style_set(lb, "slide_short");
+    elm_label_slide_set(lb, EINA_TRUE);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "");
@@ -604,7 +613,8 @@ enna_mediaplayer_obj_add(Evas * evas, Enna_Playlist *enna_playlist)
     sd->album = lb;
 
     lb = elm_label_add(layout);
-    elm_object_style_set(lb, "enna");
+    //elm_object_style_set(lb, "slide_short");
+    elm_label_slide_set(lb, EINA_TRUE);
     evas_object_size_hint_weight_set(lb, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     evas_object_size_hint_align_set(lb, 0.5, 0.5);
     elm_label_label_set(lb, "");
