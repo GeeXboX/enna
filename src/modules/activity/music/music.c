@@ -36,6 +36,7 @@
 #include "mediaplayer_obj.h"
 #include "volumes.h"
 #include "module.h"
+#include "browser.h"
 
 #include "music_infos.h"
 
@@ -116,10 +117,6 @@ _class_event_browser_view(enna_input event)
     if (event == ENNA_INPUT_BACK)
         update_songs_counter(NULL);
 
-    /* whichever action is, ensure lyrics panel gets hidden */
-    if (event != ENNA_INPUT_INFO)
-        _panel_infos_display(0);
-
     switch (event)
     {
     case ENNA_INPUT_RIGHT:
@@ -181,13 +178,10 @@ _panel_infos_display(int show)
     if (show)
     {
         Enna_Metadata *m;
-
-
-
-        m = enna_mediaplayer_metadata_get(mod->enna_playlist);
-        enna_music_infos_set_text(mod->o_infos, m);
-        edje_object_signal_emit(o_edje, "lyrics,show", "enna");
-	elm_pager_content_promote(mod->o_pager, mod->o_infos);
+        //m = enna_mediaplayer_metadata_get(mod->enna_playlist);
+        /* enna_music_infos_set_text(mod->o_infos, m); */
+        /* edje_object_signal_emit(o_edje, "lyrics,show", "enna"); */
+        elm_pager_content_promote(mod->o_pager, mod->o_infos);
         mod->infos_displayed = 1;
     }
     else
@@ -220,7 +214,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
     if (!file)
         return;
 
-    if (file->type == ENNA_FILE_DIRECTORY || file->type == ENNA_FILE_MENU)
+    if (ENNA_FILE_IS_BROWSABLE(file))
     {
         enna_log(ENNA_MSG_EVENT,
                  ENNA_MODULE_NAME, "Directory Selected %s", file->uri);
@@ -260,7 +254,7 @@ _ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
     if (!file || !file->uri || !mod->enna_playlist)
         return;
 
-    if (file->type == ENNA_FILE_DIRECTORY || file->type == ENNA_FILE_MENU)
+    if (ENNA_FILE_IS_BROWSABLE(file))
         return;
 
     /*
@@ -308,13 +302,18 @@ _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
     if (!file)
         return;
     DBG("File hilight : %s (%d)", file->label, file->type);
+    /* Ensure Infos are displayed */
+    _panel_infos_display(1);
+    enna_music_infos_file_set(mod->o_infos, file);
 
-    if (file->type != ENNA_FILE_DIRECTORY && 
-        file->type != ENNA_FILE_MENU && 
+#if 0
+
+    if (!ENNA_FILE_IS_BROWSABLE(file) &&
         file->mrl)
         /* ask for on-demand scan for local files */
         if (!strncmp(file->mrl, "file://", 7))
             enna_metadata_ondemand(file, _ondemand_cb_refresh);
+#endif
 }
 
 static void
@@ -329,6 +328,8 @@ _create_mediaplayer_gui()
     evas_object_show(o);
     mod->o_mediaplayer = o;
     elm_pager_content_push(mod->o_pager, mod->o_mediaplayer);
+    /* Promote infos */
+    elm_pager_content_promote(mod->o_pager, mod->o_infos);
     evas_object_smart_callback_add(mod->o_mediaplayer, "info,clicked",
                                    _mediaplayer_info_clicked_cb, NULL);
     edje_object_signal_emit(o_edje, "mediaplayer,show", "enna");
@@ -372,9 +373,6 @@ _create_menu()
     /* Create Lyrics */
     mod->o_infos = enna_music_infos_add (mod->o_pager);
     elm_pager_content_push(mod->o_pager, mod->o_infos);
-
-    elm_pager_content_promote(mod->o_pager, mod->o_browser);
-
 }
 
 static void

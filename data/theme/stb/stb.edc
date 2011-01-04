@@ -1778,7 +1778,55 @@ group {
    }
 }
 
-
+group {
+    name: "panel/infos/menu";
+    images {
+        image: "browser_bg.png" COMP;
+    }
+    parts {
+        part {
+            name: "bg";
+            type: IMAGE;
+            description {
+                state: "default" 0.0;
+                image {	
+                     normal: "browser_bg.png";
+               	     border: 15 15 15 15;
+            	}
+            }
+        }
+        part {
+            name: "enna.icon.swallow";
+            type: SWALLOW;
+            description { 
+                state: "default" 0.0;
+                aspect: 1.0 1.0;
+                aspect_preference: VERTICAL;
+                rel1.offset: 14 14;
+                rel2.offset: -15 -128;
+            }
+        }
+        part {
+            name: "enna.text";
+            type: TEXT;
+            description { 
+                state: "default" 0.0;
+                rel1.offset: 14 8;
+                rel1.relative: 0 1;
+                rel1.to_y: "enna.icon.swallow";
+                rel2.offset: -15 -15;
+                text {
+                  text:     "Description";
+                  font:     "Comfortaa";
+                  size:     14;
+                  align:    0.5 0.5;
+                 
+               }
+            }
+        }
+        
+    }
+}
 
 group {
    name: "activity/weather";
