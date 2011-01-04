@@ -103,8 +103,9 @@ _item_remove(Evas_Object *obj, List_Item *item)
 }
 
 /* List View */
+/* Default genlist items */
 static char *
-_list_item_label_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_default_label_get(const void *data, Evas_Object *obj, const char *part)
 {
     const List_Item *li = data;
 
@@ -114,7 +115,7 @@ _list_item_label_get(const void *data, Evas_Object *obj, const char *part)
 }
 
 static Evas_Object *
-_list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_default_icon_get(const void *data, Evas_Object *obj, const char *part)
 {
     List_Item *li = (List_Item*) data;
 
@@ -151,23 +152,94 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
         evas_object_show(ic);
         return ic;
     }
+
+    return NULL;
+}
+
+/* Tracks relative  genlist items */
+static char *
+_list_item_track_label_get(const void *data, Evas_Object *obj, const char *part)
+{
+    const List_Item *li = data;
+    const char *artist;
+    const char *track;
+    const char *album;
+    const char *duration;
+    char tmp[4096];
+
+    if (!li || !li->file) return NULL;
+
+    artist = enna_browser_file_meta_get(li->file, "author");
+    album = enna_browser_file_meta_get(li->file, "album");
+    track = enna_browser_file_meta_get(li->file, "title");
+
+    if (!track)
+        return li->file->label ? strdup(li->file->label) : NULL;
+
+    snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
+    return strdup(tmp);
+     
+}
+
+static Evas_Object *
+_list_item_track_icon_get(const void *data, Evas_Object *obj, const char *part)
+{
+    List_Item *li = (List_Item*) data;
+
+    if (!li) return NULL;
+
+    if (!strcmp(part, "elm.swallow.icon"))
+    {
+        Evas_Object *ic;
+
+        if (!li->file || li->file->type != ENNA_FILE_MENU)
+            return NULL;
+
+        ic = elm_icon_add(obj);
+        if (li->file->icon && li->file->icon[0] == '/')
+            elm_icon_file_set(ic, li->file->icon, NULL);
+        else if (li->file->icon)
+            elm_icon_file_set(ic, enna_config_theme_get(), li->file->icon);
+        else
+            return NULL;
+        evas_object_size_hint_min_set(ic, 32, 32);
+        evas_object_show(ic);
+        return ic;
+    }
+    else if (!strcmp(part, "elm.swallow.starred"))
+    {
+        Evas_Object *ic;
+        const char *starred;
+        if (!li->file || ENNA_FILE_IS_BROWSABLE(li->file))
+            return NULL;
+
+        starred = enna_browser_file_meta_get(li->file, "starred");
+        printf("Starred : %s\n", starred);
+        if (!starred)
+            return NULL;
+        ic = elm_icon_add(obj);
+        elm_icon_file_set(ic, enna_config_theme_get(), "icon/favorite");
+        evas_object_size_hint_min_set(ic, 24, 24);
+        evas_object_show(ic);
+        return ic;
+    }
     else if (!strcmp(part, "elm.swallow.playing"))
     {
         Evas_Object *ic;
-	const char *tmp;
+        const char *tmp;
 
-        if (!li->file || li->file->type == ENNA_FILE_DIRECTORY || li->file->type == ENNA_FILE_MENU)
+        if (!li->file || ENNA_FILE_IS_BROWSABLE(li->file))
             return NULL;
-	tmp = enna_mediaplayer_get_current_uri();
-	if (!tmp)
-	  return NULL;
+        tmp = enna_mediaplayer_get_current_uri();
+        if (!tmp)
+            return NULL;
 
-	else if (strcmp(li->file->mrl, tmp))
-	  {
-	    eina_stringshare_del(tmp);
-	    return NULL;
-	  }
-	eina_stringshare_del(tmp);
+        else if (strcmp(li->file->mrl, tmp))
+        {
+            eina_stringshare_del(tmp);
+            return NULL;
+        }
+        eina_stringshare_del(tmp);
         ic = elm_icon_add(obj);
         elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
         evas_object_size_hint_min_set(ic, 24, 24);
@@ -179,24 +251,26 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
     return NULL;
 }
 
-static void
-_list_item_del(const void *data, Evas_Object *obj)
-{
-    Enna_File *item = (void *) data;
 
-    if (!item) return;
-}
-
-static Elm_Genlist_Item_Class itc_list = {
+static Elm_Genlist_Item_Class itc_list_default = {
     "default",
     {
-        _list_item_label_get,
-        _list_item_icon_get,
+        _list_item_default_label_get,
+        _list_item_default_icon_get,
         NULL,
-        _list_item_del
+        NULL
     }
 };
 
+static Elm_Genlist_Item_Class itc_list_track = {
+    "track",
+    {
+        _list_item_track_label_get,
+        _list_item_track_icon_get,
+        NULL,
+        NULL
+    }
+};
 
 static void
 _smart_select_item(Smart_Data *sd, int n)
@@ -292,9 +366,14 @@ enna_list_file_append(Evas_Object *obj, Enna_File *file,
     it->func_activated = func_activated;
     it->data = data;
     it->file = file;
-
-    it->item = elm_genlist_item_append (obj, &itc_list, it,
-                                        NULL, ELM_GENLIST_ITEM_NONE, _item_selected, it);
+    if (file->type == ENNA_FILE_TRACK)
+        it->item = elm_genlist_item_append (obj, &itc_list_track, it,
+                                            NULL, ELM_GENLIST_ITEM_NONE, 
+                                            _item_selected, it);
+    else
+        it->item = elm_genlist_item_append (obj, &itc_list_default, it,
+                                            NULL, ELM_GENLIST_ITEM_NONE, 
+                                            _item_selected, it);
 
     sd->items = eina_list_append(sd->items, it);
 }
