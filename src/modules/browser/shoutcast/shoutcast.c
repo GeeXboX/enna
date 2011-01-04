@@ -121,7 +121,7 @@ get_vfs_genre_list (void)
 
     EINA_LIST_FOREACH(mod->sgl, l, g)
     {
-        Enna_Vfs_File *f;
+        Enna_File *f;
         char *uri;
         int len;
 
@@ -149,7 +149,7 @@ get_vfs_station_list (shoutcast_genre_t *g)
 
     EINA_LIST_FOREACH(g->ssl, l, s)
     {
-        Enna_Vfs_File *f;
+        Enna_File *f;
         char uri[MAX_URL];
 
         snprintf(uri, MAX_URL, "%s%s?id=%s", SHOUTCAST_URL, s->tunein, s->id);
@@ -322,7 +322,7 @@ static Eina_List * _class_browse_down(void *cookie)
     return (mod->root_menu == EINA_TRUE) ? NULL : browse_genre_list();
 }
 
-static Enna_Vfs_File * _class_vfs_get(void *cookie)
+static Enna_File * _class_vfs_get(void *cookie)
 {
     return enna_vfs_create_directory(NULL, NULL,
             eina_stringshare_add("icon/music"), NULL);

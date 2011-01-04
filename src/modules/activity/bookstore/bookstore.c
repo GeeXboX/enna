@@ -204,12 +204,12 @@ bs_menu_item_cb_selected (void *data)
 static void
 bs_menu_add (Bookstore_Service *s)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
 
     if (!s)
         return;
 
-    f          = calloc (1, sizeof(Enna_Vfs_File));
+    f          = calloc (1, sizeof(Enna_File));
     f->icon    = (char *) eina_stringshare_add(s->icon);
     f->label   = (char *) eina_stringshare_add(s->label);
     f->is_menu = 1;
@@ -233,7 +233,7 @@ bs_menu_create (void)
 static void
 bs_menu_delete (void)
 {
-    Enna_Vfs_File *f;
+    Enna_File *f;
 
     if (!mod->menu)
         return;

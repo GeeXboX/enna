@@ -106,7 +106,7 @@ didl_parse_item(GUPnPDIDLLiteParser *parser,
                 GUPnPDIDLLiteItem *item, gpointer user_data)
 {
     GUPnPDIDLLiteObject *obj;
-    Enna_Vfs_File *f = NULL;
+    Enna_File *f = NULL;
     const char *id, *title;
     const char *class_name, *uri;
     Eina_List **list = NULL;
@@ -184,7 +184,7 @@ didl_parse_container(GUPnPDIDLLiteParser *parser,
                      gpointer user_data)
 {
     GUPnPDIDLLiteObject *obj;
-    Enna_Vfs_File *f = NULL;
+    Enna_File *f = NULL;
     const char *id, *title;
     Eina_List **list = NULL;
     char uri[512];
@@ -356,7 +356,7 @@ upnp_list_mediaservers(void)
     {
 
         char name[256], uri[1024];
-        Enna_Vfs_File *f;
+        Enna_File *f;
 
         snprintf(name, sizeof(name), "%s (%s)", srv->name, srv->model);
         snprintf(uri, sizeof(uri), "udn:%s,id:%s",
@@ -443,7 +443,7 @@ video_class_browse_down(void *cookie)
 }
 #endif
 
-static Enna_Vfs_File *
+static Enna_File *
 _class_vfs_get(void *cookie)
 {
     return enna_vfs_create_directory(mod->current_id, NULL,
