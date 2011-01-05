@@ -34,6 +34,7 @@ activity.c\
 vfs.c\
 volumes.c\
 image.c\
+file.c\
 browser.c\
 browser_obj.c\
 content.c\
@@ -255,6 +256,7 @@ vfs.h\
 volumes.h\
 activity.h\
 image.h\
+file.h\
 browser.h\
 content.h\
 view_list.h\
