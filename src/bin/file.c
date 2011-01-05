@@ -112,8 +112,8 @@ enna_file_track_add(const char *name, const char *uri,
 }
 
 Enna_File *
-enna_browser_create_directory(const char *name, const char *uri,
-                              const char *label, const char *icon)
+enna_file_directory_add(const char *name, const char *uri,
+                        const char *label, const char *icon)
 {
     return _create_inode(name, uri, label, icon, NULL, ENNA_FILE_DIRECTORY);
 }
