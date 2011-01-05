@@ -136,7 +136,7 @@ void logged_in(sp_session *session, sp_error error)
     my_name = (sp_user_is_loaded(me) ? sp_user_display_name(me) : sp_user_canonical_name(me));
 
 
-    
+
     DBG("Logged in to Spotify as user %s", my_name);
     is_logged_out = 0;
 }
@@ -238,7 +238,7 @@ playlist_state_changed(sp_playlist *playlist, void *userdata)
 {
     DBG("Playlist state changed");
 }
-static void 
+static void
 playlist_update_in_progress(sp_playlist *playlist, bool done, void *userdata)
 {
 
@@ -246,7 +246,7 @@ playlist_update_in_progress(sp_playlist *playlist, bool done, void *userdata)
 
 }
 
-static void 
+static void
 description_changed(sp_playlist *playlist, const char *desc, void *userdata)
 {
     DBG("Description changed : %s", desc);
@@ -284,7 +284,7 @@ void tracks_added(sp_playlist *pl, sp_track * const *tracks, int num_tracks, int
       track = tracks[i];
       album = sp_track_album(track);
       artist = sp_track_artist(track, 0);
-	
+
       link = sp_link_create_from_track(track, 0);
       sp_link_as_string(link, mrl, sizeof(mrl));
       name = eina_stringshare_printf("%s",  sp_track_name(track));
@@ -293,12 +293,12 @@ void tracks_added(sp_playlist *pl, sp_track * const *tracks, int num_tracks, int
 	 sp_album_name(album));
       //uri = eina_stringshare_printf("%s/%d", enna_browser_uri_get(pl->browser), i);
       DBG("Name : %s, mrl %s\n", name, mrl);
-      
-      f1 = enna_file_file_add(name, uri, mrl, name, "icon/music");    
+
+      f1 = enna_file_file_add(name, uri, mrl, name, "icon/music");
       enna_browser_file_update(pl->browser, f1);
     }
 }
-  
+
 static sp_playlist_callbacks pl_track_cb = {
     tracks_added,
     tracks_removed,
@@ -368,7 +368,7 @@ container_loaded(sp_playlistcontainer *pc, void *userdata)
         sp_playlist_add_callbacks(playlist, &pl_cb, pl_item);
         pl->playlists = eina_list_append(pl->playlists, pl_item);
         enna_buffer_free(uri);
- 
+
     }
 }
 
@@ -380,14 +380,14 @@ static sp_playlistcontainer_callbacks pc_cb = {
 };
 
 
-static const char * 
+static const char *
 _pl_meta_get(void *data, const Enna_File *file, const char *key)
 {
     sp_playlist *pl = data;
 
     if (!strcmp(key, "nb_elements"))
     {
-        return eina_stringshare_printf("%d", sp_playlist_num_tracks(pl)); 
+        return eina_stringshare_printf("%d", sp_playlist_num_tracks(pl));
     }
 
     return eina_stringshare_add("Test");
@@ -426,22 +426,22 @@ const char *_get_image(sp_image *image)
     return filename;
 }
 
-static void 
+static void
 _image_loaded_cb(sp_image *image, void *userdata)
 {
     const char *filename;
     filename = _get_image(image);
 }
 
-static const char * 
+static const char *
 _track_meta_get(void *data, const Enna_File *file, const char *key)
 {
     sp_track *track = data;
-    
+
     if (!track)
         return NULL;
 
-    
+
     if (!strcmp(key, "cover"))
     {
         FILE *fp;
@@ -522,7 +522,7 @@ static Enna_File_Meta_Class pl_meta = {
     NULL
 };
 
-static void 
+static void
 _browse_root(Eina_List *tokens, Enna_Browser *browser)
 {
     Enna_File *f1;
@@ -574,7 +574,7 @@ _browse_playlists(Eina_List *tokens, Enna_Browser *browser, Playlist_Container *
     Enna_Buffer *uri;
     Eina_List *l;
     char *p;
-     
+
     DBG("Spotify Playlists");
     buf = enna_buffer_new();
     uri = enna_buffer_new();
@@ -589,7 +589,7 @@ _browse_playlists(Eina_List *tokens, Enna_Browser *browser, Playlist_Container *
     for (i = 0; i < num; i++)
     {
         playlist = sp_playlistcontainer_playlist(pl->pl_cont, i);
-   
+
         name = sp_playlist_name(playlist);
         if (!name || !name[0])
             name = eina_stringshare_add("Loading ...");
@@ -609,7 +609,7 @@ _browse_playlists(Eina_List *tokens, Enna_Browser *browser, Playlist_Container *
         pl->playlists = eina_list_append(pl->playlists, pl_item);
         sp_playlist_add_callbacks(playlist, &pl_cb, pl_item);
         enna_buffer_free(uri);
- 
+
     }
 }
 
@@ -660,7 +660,7 @@ _browse_playlist_id(Enna_Browser *browser, int id, Playlist_Container *pl)
         track = sp_playlist_track(playlist, i);
         album = sp_track_album(track);
         artist = sp_track_artist(track, 0);
-	
+
 	link = sp_link_create_from_track(track, 0);
 	sp_link_as_string(link, mrl, sizeof(mrl));
 	name = eina_stringshare_printf("%s",  sp_track_name(track));
@@ -669,8 +669,8 @@ _browse_playlist_id(Enna_Browser *browser, int id, Playlist_Container *pl)
                                        sp_album_name(album));*/
         uri = eina_stringshare_printf("%s/%d", enna_browser_uri_get(pl->browser), i);
         DBG("Name : %s, mrl %s\n", name, mrl);
-	
-        f1 = enna_file_track_add(name, uri, mrl, name, "icon/music"); 
+
+        f1 = enna_file_track_add(name, uri, mrl, name, "icon/music");
         enna_file_meta_add(f1, &track_meta, track);
         enna_browser_file_update(pl->browser, f1);
     }
@@ -684,7 +684,7 @@ _add(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
     Playlist_Container *pl;
     pl = calloc(1, sizeof(Playlist_Container));
-   
+
     pl->browser = browser;
     pl->tokens = tokens;
 
@@ -728,7 +728,7 @@ static void
 _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
 
-   
+
 }
 
 static void
@@ -738,8 +738,8 @@ _del(void *priv)
     Playlist_Item *pl_item;
 
     if (pl->pl_cont)
-         sp_playlistcontainer_remove_callbacks(pl->pl_cont, &pc_cb, pl); 
-    
+         sp_playlistcontainer_remove_callbacks(pl->pl_cont, &pc_cb, pl);
+
     EINA_LIST_FREE(pl->playlists, pl_item)
     {
         sp_playlist_remove_callbacks(pl_item->playlist, &pl_cb, pl_item);
@@ -747,7 +747,7 @@ _del(void *priv)
     }
 
     free(pl);
-   
+
 }
 
 static Enna_Vfs_Class class = {
