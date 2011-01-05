@@ -358,7 +358,7 @@ container_loaded(sp_playlistcontainer *pc, void *userdata)
         enna_buffer_appendf(uri, "%s/%d", enna_browser_uri_get(pl->browser), i);
         DBG("URI : %s", uri->buf);
 
-        f1 = enna_browser_create_menu(name, uri->buf, name, "icon/playlist");
+        f1 = enna_file_menu_add(name, uri->buf, name, "icon/playlist");
         f1 = enna_browser_file_update(pl->browser, f1);
 
         pl_item = calloc(1, sizeof(Playlist_Item));
@@ -542,12 +542,12 @@ _browse_root(Eina_List *tokens, Enna_Browser *browser)
     if (is_logged_out)
       return;
 
-    f1 = enna_browser_create_menu("playlists", uri->buf, "Playlists", "icon/playlist");
+    f1 = enna_file_menu_add("playlists", uri->buf, "Playlists", "icon/playlist");
     enna_buffer_free(uri);
     uri = enna_buffer_new();
     enna_buffer_appendf(uri, "%s/%s", buf->buf, "friends");
 
-    f2 = enna_browser_create_menu("friends", uri->buf, "Friends", "icon/friends");
+    f2 = enna_file_menu_add("friends", uri->buf, "Friends", "icon/friends");
     enna_buffer_free(uri);
     uri = enna_buffer_new();
     enna_buffer_appendf(uri, "%s/%s", buf->buf, "friends");
@@ -581,7 +581,7 @@ _browse_playlists(Eina_List *tokens, Enna_Browser *browser, Playlist_Container *
 
     enna_buffer_appendf(uri, "%s/%s", enna_browser_uri_get(pl->browser), "starred");
 
-    f1 = enna_browser_create_menu("starred", uri->buf, "Starred tracks", "icon/favorite");
+    f1 = enna_file_menu_add("starred", uri->buf, "Starred tracks", "icon/favorite");
     enna_browser_file_add(browser, f1);
 
     num = sp_playlistcontainer_num_playlists(pl->pl_cont);
@@ -598,7 +598,7 @@ _browse_playlists(Eina_List *tokens, Enna_Browser *browser, Playlist_Container *
         enna_buffer_appendf(uri, "%s/%d", enna_browser_uri_get(pl->browser), i);
         DBG("%s", uri->buf);
 
-        f1 = enna_browser_create_menu(name, uri->buf, name, "icon/playlist");
+        f1 = enna_file_menu_add(name, uri->buf, name, "icon/playlist");
         enna_file_meta_add(f1, &pl_meta, playlist);
         enna_browser_file_update(browser, f1);
 

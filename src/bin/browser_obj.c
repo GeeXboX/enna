@@ -408,7 +408,7 @@ _browse_back(Smart_Data *sd)
                                      eina_list_count(sd->visited) - 1);
     if (!prev)
     {
-         prev = enna_browser_create_menu("main_menu", sd->root_uri, "Main Menu", "icon/home");
+         prev = enna_file_menu_add("main_menu", sd->root_uri, "Main Menu", "icon/home");
     }
 
     _browse(sd, prev, EINA_TRUE);
@@ -554,7 +554,7 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
     if (sd->root)
         enna_file_free(sd->root);
     sd->root_uri = eina_stringshare_add(uri);
-    sd->root = enna_browser_create_menu("main_menu", uri, "Main Menu", "icon/home");
+    sd->root = enna_file_menu_add("main_menu", uri, "Main Menu", "icon/home");
     _browse(sd, sd->root, EINA_FALSE);
 }
 

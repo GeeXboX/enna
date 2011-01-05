@@ -117,12 +117,12 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
     enna_buffer_appendf(buf, "/%s", p);
     enna_buffer_appendf(uri, "%s/%s", buf->buf, "artist");
 
-    f1 = enna_browser_create_menu("playlists", uri->buf, "Playlists", "icon/playlists");
+    f1 = enna_file_menu_add("playlists", uri->buf, "Playlists", "icon/playlists");
     enna_buffer_free(uri);
     uri = enna_buffer_new();
     enna_buffer_appendf(uri, "%s/%s", buf->buf, "playlits");
 
-    f2 = enna_browser_create_menu("friends", uri->buf, "Friends", "icon/friends");
+    f2 = enna_file_menu_add("friends", uri->buf, "Friends", "icon/friends");
     enna_buffer_free(uri);
     uri = enna_buffer_new();
     enna_buffer_appendf(uri, "%s/%s", buf->buf, "friends");

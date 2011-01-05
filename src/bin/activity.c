@@ -155,7 +155,7 @@ void enna_activity_register(Enna_Class_Activity *act)
     if (!act)
         return;
 
-    file = enna_browser_create_menu(act->name, act->label,
+    file = enna_file_menu_add(act->name, act->label,
                                     act->label, act->icon);
     file->icon_file = eina_stringshare_add(act->bg);
     _enna_activities = eina_list_append(_enna_activities, act);

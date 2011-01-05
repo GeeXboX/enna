@@ -429,8 +429,8 @@ _browse_list(Enna_Browser *browser, const Browser_Item *item,
 
         enna_buffer_appendf(uri, enna_browser_uri_get(browser));
         enna_buffer_appendf(uri, "/%s", item->meta);
-        entry = enna_browser_create_menu(item->meta,
-                                         uri->buf, _(item->meta), NULL);
+        entry = enna_file_menu_add(item->meta,
+                                   uri->buf, _(item->meta), NULL);
         enna_buffer_free(uri);
         enna_browser_file_add(browser, entry);
         break;

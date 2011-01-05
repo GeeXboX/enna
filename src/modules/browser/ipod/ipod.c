@@ -42,7 +42,7 @@ _timeout_cb(void *data)
     snprintf(name, sizeof(name), "item%d", count);
     snprintf(uri, sizeof(uri), "/music/ipod/item%d", count);
     printf("%s %s\n", uri, name);
-    f3 = enna_browser_create_menu(name, uri, "toto", "icon/artist");
+    f3 = enna_file_menu_add(name, uri, "toto", "icon/artist");
     enna_browser_file_add(browser, f3);
     
     count++;
@@ -74,12 +74,12 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
     enna_buffer_appendf(buf, "/%s", p);
     enna_buffer_appendf(uri, "%s/%s", buf->buf, "artist");
     
-    f1 = enna_browser_create_menu("artist", uri->buf, "Artists", "icon/artist");
+    f1 = enna_file_menu_add("artist", uri->buf, "Artists", "icon/artist");
     enna_buffer_free(uri);
     uri = enna_buffer_new();
     enna_buffer_appendf(uri, "%s/%s", buf->buf, "artist");
     
-    f2 = enna_browser_create_menu("album", uri->buf, "Albums", "icon/album");
+    f2 = enna_file_menu_add("album", uri->buf, "Albums", "icon/album");
     enna_buffer_free(uri);
     enna_buffer_free(buf);
     

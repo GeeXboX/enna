@@ -94,7 +94,7 @@ _create_menu (void)
     panels = enna_config_panel_list_get();
     EINA_LIST_FOREACH(panels, l, p)
     {
-        it = enna_browser_create_menu(p->label, p->label, p->label, p->icon);
+        it = enna_file_menu_add(p->label, p->label, p->label, p->icon);
         enna_wall_file_append (mod->o_menu, it, _item_selected_cb, p);
         mod->items = eina_list_append (mod->items, it);
     }

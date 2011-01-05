@@ -253,8 +253,8 @@ _add_child_volume_cb(void *data, Enna_Volume *v)
 
     buf = enna_buffer_new();
     enna_buffer_appendf(buf, "/%s/localfiles/%s", "music", v->label);
-    f = enna_browser_create_menu(v->label, buf->buf,
-                                 v->label, "icon/hd");
+    f = enna_file_menu_add(v->label, buf->buf,
+                           v->label, "icon/hd");
     enna_buffer_free(buf);
     enna_browser_file_add(b, f);
 }
@@ -332,8 +332,8 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
             buf = enna_buffer_new();
             EVT("Root name : %s\n", root->name);
             enna_buffer_appendf(buf, "/%s/localfiles/%s", pmod->name, root->name);
-            f = enna_browser_create_menu(root->name, buf->buf,
-                                              root->label, root->icon);
+            f = enna_file_menu_add(root->name, buf->buf,
+                                   root->label, root->icon);
             enna_buffer_free(buf);
             enna_browser_file_add(browser, f);
             /* add localfiles to the list of volumes listener */
