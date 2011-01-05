@@ -403,7 +403,7 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
                             enna_buffer_appendf(buf, "/%s/localfiles/%s/%s%s", pmod->name, root->name, relative_path->buf, filename) :
                             enna_buffer_appendf(buf, "/%s/localfiles/%s/%s", pmod->name, root->name, filename);
 
-                        f = enna_browser_create_directory(filename, buf->buf, filename, "icon/directory");
+                        f = enna_file_directory_add(filename, buf->buf, filename, "icon/directory");
                         enna_buffer_free(buf);
                         dirs_list = eina_list_append(dirs_list, f);
                     }

@@ -238,8 +238,8 @@ _vfs_add_dir(Enna_Browser *browser, unsigned int it,
 
     enna_buffer_appendf(uri, enna_browser_uri_get(browser));
     enna_buffer_appendf(uri, "/%s:%s", res->meta_name, res->data_value);
-    entry = enna_browser_create_directory(res->data_value,
-                                          uri->buf, res->data_value, icon);
+    entry = enna_file_directory_add(res->data_value,
+                                    uri->buf, res->data_value, icon);
     enna_buffer_free(uri);
     enna_browser_file_add(browser, entry);
 }
