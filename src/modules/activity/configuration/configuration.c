@@ -112,7 +112,7 @@ _delete_menu(void)
     if (!mod->o_menu) return;
 
     EINA_LIST_FREE(mod->items, it);
-        enna_browser_file_free(it);
+        enna_file_free(it);
 
     ENNA_OBJECT_DEL(mod->o_menu);
 }

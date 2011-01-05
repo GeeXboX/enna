@@ -496,7 +496,7 @@ enna_metadata_db_uninit(void)
         vh_pipe = NULL;
     }
 
-    enna_browser_file_free(vh_file);
+    enna_file_free(vh_file);
     vh_file = NULL;
 }
 
@@ -672,7 +672,7 @@ enna_metadata_ondemand(Enna_File *file,
   if (!strncmp(uri, "file://", 7))
       uri += 7;
 
-  enna_browser_file_free(vh_file);
+  enna_file_free(vh_file);
   vh_file = enna_file_dup(file);
   vh_odcb = odcb;
   valhalla_ondemand(vh, uri);

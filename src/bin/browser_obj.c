@@ -552,7 +552,7 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     if (sd->root)
-        enna_browser_file_free(sd->root);
+        enna_file_free(sd->root);
     sd->root_uri = eina_stringshare_add(uri);
     sd->root = enna_browser_create_menu("main_menu", uri, "Main Menu", "icon/home");
     _browse(sd, sd->root, EINA_FALSE);

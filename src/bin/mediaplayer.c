@@ -1439,7 +1439,7 @@ enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
     Enna_File *f;
 
     EINA_LIST_FREE(enna_playlist->playlist, f)
-        enna_browser_file_free(f);
+        enna_file_free(f);
     enna_playlist->playlist = NULL;
     enna_playlist->selected = 0;
 }

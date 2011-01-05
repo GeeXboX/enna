@@ -150,7 +150,7 @@ enna_browser_del(Enna_Browser *b)
     if (b->ev_handler)
         ecore_event_handler_del(b->ev_handler);
     EINA_LIST_FREE(b->files, file)
-        enna_browser_file_free(file);
+        enna_file_free(file);
     EINA_LIST_FREE(b->tokens, token)
         free(token);
     if (b->vfs)
@@ -291,7 +291,7 @@ enna_browser_file_update(Enna_Browser *b, Enna_File *file)
                 f->meta_class = file->meta_class;
                 f->meta_data = file->meta_data;
                 b->update(b->update_data, f);
-                enna_browser_file_free(file);
+                enna_file_free(file);
                 return f;
             }
         }
