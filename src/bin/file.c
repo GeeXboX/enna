@@ -41,7 +41,7 @@ _create_inode(const char *name, const char *uri, const char *label,
 }
 
 Enna_File *
-enna_browser_file_dup(Enna_File *file)
+enna_file_dup(Enna_File *file)
 {
     Enna_File *f;
 

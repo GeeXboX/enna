@@ -64,7 +64,7 @@ struct _Enna_File
     void *meta_data;
 };
 
-Enna_File *enna_browser_file_dup(Enna_File *file);
+Enna_File *enna_file_dup(Enna_File *file);
 void enna_browser_file_free(Enna_File *f);
 void enna_browser_file_meta_add(Enna_File *f, Enna_File_Meta_Class *meta_class, void *data);
 const char * enna_browser_file_meta_get(Enna_File *f, const char *key);
