@@ -22,6 +22,12 @@
 #include "file.h"
 #include "enna.h"
 
+typedef struct _Enna_File_Callback Enna_File_Callback;
+struct _Enna_File_Callback
+{
+   void (*func) (void *data, Evas_Object *obj);
+   void *func_data;
+};
 
 static Enna_File *
 _create_inode(const char *name, const char *uri, const char *label,
@@ -123,4 +129,58 @@ enna_file_menu_add(const char *name, const char *uri,
                    const char *label, const char *icon)
 {
     return _create_inode(name, uri, label, icon, NULL, ENNA_FILE_MENU);
+}
+
+void
+enna_file_meta_callback_add(Enna_File *file, Enna_File_Update_Cb func, void *data)
+{
+    Enna_File_Callback *cb;
+
+    if (!file || !func)
+        return;
+
+    cb = calloc(1, sizeof(Enna_File_Callback));
+    cb->func = func;
+    cb->func_data = data;
+    file->callbacks = eina_list_prepend(file->callbacks, cb);
+}
+
+void *
+enna_file_meta_callback_del(Enna_File *file, Enna_File_Update_Cb func)
+{
+    Eina_List *l;
+    Enna_File_Callback *cb;
+
+    if (!file || !func)
+        return;
+
+    EINA_LIST_FOREACH(file->callbacks, l, cb)
+    {
+        if (cb->func == func)
+        {
+            void *data;
+
+            data = cb->func_data;
+            file->callbacks = eina_list_remove(file->callbacks, cb);
+            free(cb);
+            return data;
+        }
+    }
+
+    return NULL;
+}
+
+void
+enna_file_meta_callback_call(Enna_File *file)
+{
+    Enna_File_Callback *cb;
+    Eina_List *l;
+
+    if (!file)
+        return;
+
+    EINA_LIST_FOREACH(file->callbacks, l, cb)
+    {
+        cb->func(cb->func_data, file);
+    }
 }
