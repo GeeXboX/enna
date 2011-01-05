@@ -96,14 +96,14 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
 
         printf("Enna_File Track\n");
 
-        artist = enna_browser_file_meta_get(file, "author");
-        album = enna_browser_file_meta_get(file, "album");
-        track = enna_browser_file_meta_get(file, "title");
+        artist = enna_file_meta_get(file, "author");
+        album = enna_file_meta_get(file, "album");
+        track = enna_file_meta_get(file, "title");
 
         page = elm_layout_add(sd->pager);
         elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
         ic = elm_icon_add(page);
-        elm_icon_file_set(ic, enna_config_theme_get(), enna_browser_file_meta_get(file, "cover"));
+        elm_icon_file_set(ic, enna_config_theme_get(), enna_file_meta_get(file, "cover"));
         evas_object_show(ic);
         snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
         elm_layout_content_set(page, "enna.icon.swallow", ic);

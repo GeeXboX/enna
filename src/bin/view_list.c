@@ -169,9 +169,9 @@ _list_item_track_label_get(const void *data, Evas_Object *obj, const char *part)
 
     if (!li || !li->file) return NULL;
 
-    artist = enna_browser_file_meta_get(li->file, "author");
-    album = enna_browser_file_meta_get(li->file, "album");
-    track = enna_browser_file_meta_get(li->file, "title");
+    artist = enna_file_meta_get(li->file, "author");
+    album = enna_file_meta_get(li->file, "album");
+    track = enna_file_meta_get(li->file, "title");
 
     if (!track)
         return li->file->label ? strdup(li->file->label) : NULL;
@@ -213,7 +213,7 @@ _list_item_track_icon_get(const void *data, Evas_Object *obj, const char *part)
         if (!li->file || ENNA_FILE_IS_BROWSABLE(li->file))
             return NULL;
 
-        starred = enna_browser_file_meta_get(li->file, "starred");
+        starred = enna_file_meta_get(li->file, "starred");
         printf("Starred : %s\n", starred);
         if (!starred)
             return NULL;

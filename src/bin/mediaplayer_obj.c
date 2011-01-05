@@ -111,7 +111,7 @@ metadata_set_text(Evas_Object *obj,
     char *tmp;
 
     if (file)
-        str =  enna_browser_file_meta_get(file, name);
+        str =  enna_file_meta_get(file, name);
 
     if (!str)
         res = -1;
@@ -152,7 +152,7 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata, Enna_File *file)
     ENNA_OBJECT_DEL(sd->cv);
     sd->cv = enna_image_add(enna->evas);
 
-    cover = enna_browser_file_meta_get(file, "cover");
+    cover = enna_file_meta_get(file, "cover");
     if (cover)
     {
         char cv[1024] = { 0 };
