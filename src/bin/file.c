@@ -89,7 +89,7 @@ enna_file_meta_add(Enna_File *f, Enna_File_Meta_Class *meta_class, void *data)
 }
 
 const char *
-enna_browser_file_meta_get(Enna_File *f, const char *key)
+enna_file_meta_get(Enna_File *f, const char *key)
 {
     if (!f || !key || !f->meta_class || !f->meta_class->meta_get)
         return NULL;
