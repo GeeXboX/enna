@@ -62,7 +62,7 @@ enna_file_dup(Enna_File *file)
 }
 
 void
-enna_browser_file_free(Enna_File *f)
+enna_file_free(Enna_File *f)
 {
     if (!f)
         return;
