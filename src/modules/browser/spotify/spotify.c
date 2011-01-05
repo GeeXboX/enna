@@ -599,7 +599,7 @@ _browse_playlists(Eina_List *tokens, Enna_Browser *browser, Playlist_Container *
         DBG("%s", uri->buf);
 
         f1 = enna_browser_create_menu(name, uri->buf, name, "icon/playlist");
-        enna_browser_file_meta_add(f1, &pl_meta, playlist);
+        enna_file_meta_add(f1, &pl_meta, playlist);
         enna_browser_file_update(browser, f1);
 
         pl_item = calloc(1, sizeof(Playlist_Item));
@@ -671,7 +671,7 @@ _browse_playlist_id(Enna_Browser *browser, int id, Playlist_Container *pl)
         DBG("Name : %s, mrl %s\n", name, mrl);
 	
         f1 = enna_browser_create_track(name, uri, mrl, name, "icon/music"); 
-        enna_browser_file_meta_add(f1, &track_meta, track);
+        enna_file_meta_add(f1, &track_meta, track);
         enna_browser_file_update(pl->browser, f1);
     }
 
