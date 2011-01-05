@@ -294,7 +294,7 @@ void tracks_added(sp_playlist *pl, sp_track * const *tracks, int num_tracks, int
       //uri = eina_stringshare_printf("%s/%d", enna_browser_uri_get(pl->browser), i);
       DBG("Name : %s, mrl %s\n", name, mrl);
       
-      f1 = enna_browser_create_file(name, uri, mrl, name, "icon/music");    
+      f1 = enna_file_file_add(name, uri, mrl, name, "icon/music");    
       enna_browser_file_update(pl->browser, f1);
     }
 }

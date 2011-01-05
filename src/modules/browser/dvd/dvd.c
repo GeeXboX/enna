@@ -58,10 +58,10 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
     char mrl[4096];
     
     snprintf(mrl, sizeof(mrl), "dvd://%s", mod->dvd->device);
-    f = enna_browser_create_file("play", "video/dvd/dvd", mrl, _("Play"), "icon/video");
+    f = enna_file_file_add("play", "video/dvd/dvd", mrl, _("Play"), "icon/video");
     enna_browser_file_add(browser, f);
     snprintf(mrl, sizeof(mrl), "dvdnav://%s", mod->dvd->device);
-    f = enna_browser_create_file("dvd", "video/dvd/dvdnav", mrl, _("Play (with menus)"), "icon/video");
+    f = enna_file_file_add("dvd", "video/dvd/dvdnav", mrl, _("Play (with menus)"), "icon/video");
     enna_browser_file_add(browser, f);
     return;
 }

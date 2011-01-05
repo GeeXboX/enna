@@ -269,7 +269,7 @@ _vfs_add_file(Enna_Browser *browser, const valhalla_db_fileres_t *file,
 
     enna_buffer_appendf(uri, enna_browser_uri_get(browser));
     enna_buffer_appendf(uri, "/%s", name);
-    entry = enna_browser_create_file(name, uri->buf, buf, name, icon);
+    entry = enna_file_file_add(name, uri->buf, buf, name, icon);
     enna_buffer_free(uri);
     enna_browser_file_add(browser, entry);
 }
