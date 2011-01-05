@@ -670,7 +670,7 @@ _browse_playlist_id(Enna_Browser *browser, int id, Playlist_Container *pl)
         uri = eina_stringshare_printf("%s/%d", enna_browser_uri_get(pl->browser), i);
         DBG("Name : %s, mrl %s\n", name, mrl);
 	
-        f1 = enna_browser_create_track(name, uri, mrl, name, "icon/music"); 
+        f1 = enna_file_track_add(name, uri, mrl, name, "icon/music"); 
         enna_file_meta_add(f1, &track_meta, track);
         enna_browser_file_update(pl->browser, f1);
     }

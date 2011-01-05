@@ -72,7 +72,7 @@ const char * enna_file_meta_get(Enna_File *f, const char *key);
 Enna_File *enna_file_file_add(const char *name, const char *uri,
                               const char *mrl, const char *label,
                               const char *icon);
-Enna_File *enna_browser_create_track(const char *name, const char *uri,
+Enna_File *enna_file_track_add(const char *name, const char *uri,
                                     const char *mrl, const char *label,
                                     const char *icon);
 Enna_File *enna_browser_create_directory(const char *name, const char *uri,
