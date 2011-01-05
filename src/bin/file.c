@@ -98,8 +98,8 @@ enna_file_meta_get(Enna_File *f, const char *key)
 }
 
 Enna_File *
-enna_browser_create_file(const char *name, const char *uri,
-                         const char *mrl, const char *label, const char *icon)
+enna_file_file_add(const char *name, const char *uri,
+                   const char *mrl, const char *label, const char *icon)
 {
     return _create_inode(name, uri, label, icon, mrl, ENNA_FILE_FILE);
 }
