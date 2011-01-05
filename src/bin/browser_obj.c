@@ -232,7 +232,7 @@ _add_cb(void *data, Enna_File *file)
 
     cb_data = malloc(sizeof(Activated_Cb_Data));
     cb_data->sd = sd;
-    cb_data->file = enna_browser_file_dup(file);
+    cb_data->file = enna_file_dup(file);
     sd->view_funcs.view_append(sd->o_view, file, _activated_cb, cb_data);
 }
 
@@ -376,7 +376,7 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
     _add_header(sd, file);
 
     if (file && !back)
-        sd->visited = eina_list_append(sd->visited, enna_browser_file_dup(file));
+        sd->visited = eina_list_append(sd->visited, enna_file_dup(file));
     enna_browser_del(sd->browser);
 
     sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, _update_cb, sd, file->uri);

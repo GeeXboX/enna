@@ -104,7 +104,7 @@ void
 enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_File *file)
 {
     Enna_File *f;
-    f = enna_browser_file_dup(file);
+    f = enna_file_dup(file);
     enna_playlist->playlist = eina_list_append(enna_playlist->playlist, f);
 }
 
