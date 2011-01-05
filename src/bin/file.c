@@ -79,7 +79,7 @@ enna_file_free(Enna_File *f)
 }
 
 void
-enna_browser_file_meta_add(Enna_File *f, Enna_File_Meta_Class *meta_class, void *data)
+enna_file_meta_add(Enna_File *f, Enna_File_Meta_Class *meta_class, void *data)
 {
     if (!f || !meta_class)
         return;
