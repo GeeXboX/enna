@@ -65,11 +65,13 @@ struct _Enna_File
     Enna_File_Meta_Class *meta_class;
     void *meta_data;
     Eina_List *callbacks;
+    int refcount;
 };
 
 typedef void (*Enna_File_Update_Cb) (void *data, Enna_File *file);
 
 Enna_File *enna_file_dup(Enna_File *file);
+Enna_File *enna_file_ref(Enna_File *file);
 void enna_file_free(Enna_File *f);
 void enna_file_meta_add(Enna_File *f, Enna_File_Meta_Class *meta_class, void *data);
 const char * enna_file_meta_get(Enna_File *f, const char *key);
@@ -87,7 +89,7 @@ Enna_File *enna_file_menu_add(const char *name, const char *uri,
 
 
 void enna_file_meta_callback_add(Enna_File *file, Enna_File_Update_Cb func, void *data);
-void enna_file_meta_callback_del(Enna_File *file, Enna_File_Update_Cb func);
+void *enna_file_meta_callback_del(Enna_File *file, Enna_File_Update_Cb func);
 void enna_file_meta_callback_call(Enna_File *file);
 
 
