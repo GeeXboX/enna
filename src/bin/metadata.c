@@ -673,7 +673,7 @@ enna_metadata_ondemand(Enna_File *file,
       uri += 7;
 
   enna_file_free(vh_file);
-  vh_file = enna_file_dup(file);
+  vh_file = enna_file_ref(file);
   vh_odcb = odcb;
   valhalla_ondemand(vh, uri);
 }
