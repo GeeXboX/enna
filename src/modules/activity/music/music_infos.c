@@ -36,39 +36,14 @@ typedef struct _Smart_Data Smart_Data;
 struct _Smart_Data
 {
     Evas_Object *pager;
+    Enna_File *file;
 };
 
-/* externally accessible functions */
-
-Evas_Object *
-enna_music_infos_add (Evas_Object *parent)
-{
-    Smart_Data *sd;
- 
-    sd = calloc(1, sizeof(Smart_Data));
-
-    sd->pager = elm_pager_add(parent);
-    elm_object_style_set(sd->pager, "slide_invisible");
-    evas_object_size_hint_weight_set(sd->pager, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    evas_object_show (sd->pager);
-    evas_object_data_set(sd->pager, "sd", sd);
-
-    return sd->pager;
-}
-
-void
-enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
+static void
+_update(Smart_Data *sd, Enna_File *file)
 {
     Evas_Object *page;
-    Smart_Data *sd;
     Evas_Object *ic;
-
-    if (!obj || !file)
-        return;
-    
-    sd = evas_object_data_get(obj, "sd");
-    if (!sd)
-        return;
 
     switch(file->type)
     {
@@ -88,6 +63,7 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         break;
       }
     case ENNA_FILE_TRACK:
+    case ENNA_FILE_FILE:
     {
         const char *artist;
         const char *track;
@@ -118,6 +94,55 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         
     }
 
+}
+
+static void
+_file_update_cb(void *data, Enna_File *file)
+{
+    Smart_Data *sd = data;
+
+    DBG("File %s has meta update\n", file->uri);
+    _update(sd, file);
+}
+
+/* externally accessible functions */
+
+Evas_Object *
+enna_music_infos_add (Evas_Object *parent)
+{
+    Smart_Data *sd;
+ 
+    sd = calloc(1, sizeof(Smart_Data));
+
+    sd->pager = elm_pager_add(parent);
+    elm_object_style_set(sd->pager, "slide_invisible");
+    evas_object_size_hint_weight_set(sd->pager, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+    evas_object_show (sd->pager);
+    evas_object_data_set(sd->pager, "sd", sd);
+
+    return sd->pager;
+}
+
+void
+enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
+{
+    Evas_Object *page;
+    Smart_Data *sd;
+
+
+    if (!obj || !file)
+        return;
+    
+    sd = evas_object_data_get(obj, "sd");
+    if (!sd)
+        return;
+
+    //if (sd->file)
+    //    enna_file_free(sd->file);
+
+    //sd->file = enna_file_dup(file);
+    enna_file_meta_callback_add(file, _file_update_cb, sd);
+    _update(sd, file);
 }
 
 void
