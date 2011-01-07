@@ -374,8 +374,11 @@ enna_list_file_append(Evas_Object *obj, Enna_File *file,
         it->item = elm_genlist_item_append (obj, &itc_list_default, it,
                                             NULL, ELM_GENLIST_ITEM_NONE, 
                                             _item_selected, it);
-
     sd->items = eina_list_append(sd->items, it);
+
+    /* Select first item */
+    if (eina_list_count(sd->items) == 1)
+        enna_list_select_nth(obj, 0);
 }
 
 void
