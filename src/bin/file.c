@@ -49,35 +49,6 @@ _create_inode(const char *name, const char *uri, const char *label,
     return f;
 }
 
-static void
-_ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
-{
-    Enna_Metadata *m;
-
-    if (!file || !file->mrl)
-        return;
-
-    if (ENNA_FILE_IS_BROWSABLE(file))
-        return;
-
-    m = enna_metadata_meta_new(file->mrl);
-    if (!m)
-        return;
-
-    switch (ev)
-    {
-    case ENNA_METADATA_OD_PARSED:
-    case ENNA_METADATA_OD_GRABBED:
-    case ENNA_METADATA_OD_ENDED:
-        enna_file_meta_callback_call(file);
-        break;
-    default:
-        break;
-    }
-
-    enna_metadata_meta_free(m);
-}
-
 const char *
 _meta_get_default(Enna_File *file, const char *key)
 {
@@ -235,6 +206,8 @@ enna_file_meta_callback_add(Enna_File *file, Enna_File_Update_Cb func, void *dat
     cb->func = func;
     cb->func_data = data;
     file->callbacks = eina_list_prepend(file->callbacks, cb);
+    if (!file->meta_class)
+        enna_metadata_ondemand_add(file);
 }
 
 void *
@@ -258,6 +231,9 @@ enna_file_meta_callback_del(Enna_File *file, Enna_File_Update_Cb func)
             return data;
         }
     }
+
+    if (!file->meta_class)
+        enna_metadata_ondemand_del(file);
 
     return NULL;
 }
