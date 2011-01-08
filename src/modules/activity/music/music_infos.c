@@ -37,29 +37,20 @@ struct _Smart_Data
 {
     Evas_Object *pager;
     Enna_File *file;
+    Evas_Object *page;
+    Evas_Object *ic;
 };
 
 static void
 _update(Smart_Data *sd, Enna_File *file)
 {
-    Evas_Object *page;
-    Evas_Object *ic;
-
     switch(file->type)
     {
     case ENNA_FILE_MENU:
     case ENNA_FILE_DIRECTORY:
     {
-        page = elm_layout_add(sd->pager);
-        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
-        ic = elm_icon_add(page);
-        elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
-        evas_object_show(ic);
-        elm_layout_content_set(page, "enna.icon.swallow", ic);
-        elm_layout_text_set(page, "enna.text", file->label);
-        evas_object_show(page);
-        elm_pager_content_pop(sd->pager);
-        elm_pager_content_push(sd->pager, page);
+        elm_icon_file_set(sd->ic, enna_config_theme_get(), file->icon);
+        elm_layout_text_set(sd->page, "enna.text", file->label);
         break;
       }
     case ENNA_FILE_TRACK:
@@ -75,23 +66,13 @@ _update(Smart_Data *sd, Enna_File *file)
         artist = enna_file_meta_get(file, "author");
         album = enna_file_meta_get(file, "album");
         track = enna_file_meta_get(file, "title");
-
-        page = elm_layout_add(sd->pager);
-        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
-        ic = elm_icon_add(page);
-        elm_icon_file_set(ic, enna_config_theme_get(), enna_file_meta_get(file, "cover"));
-        evas_object_show(ic);
+        elm_icon_file_set(sd->ic, enna_file_meta_get(file, "cover"), NULL);
         snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
-        elm_layout_content_set(page, "enna.icon.swallow", ic);
-        elm_layout_text_set(page, "enna.text", file->label);
-        evas_object_show(page);
-        elm_pager_content_pop(sd->pager);
-        elm_pager_content_push(sd->pager, page);
+        elm_layout_text_set(sd->page, "enna.text", file->label);
         break;
     }
     default:
         break;
-        
     }
 
 }
@@ -128,11 +109,10 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
 {
     Evas_Object *page;
     Smart_Data *sd;
-
-
+    Evas_Object *ic;
     if (!obj || !file)
         return;
-    
+
     sd = evas_object_data_get(obj, "sd");
     if (!sd)
         return;
@@ -142,7 +122,58 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
 
     //sd->file = enna_file_dup(file);
     enna_file_meta_callback_add(file, _file_update_cb, sd);
-    _update(sd, file);
+
+
+    switch(file->type)
+    {
+    case ENNA_FILE_MENU:
+    case ENNA_FILE_DIRECTORY:
+    {
+        page = elm_layout_add(sd->pager);
+        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
+        ic = elm_icon_add(page);
+        elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
+        evas_object_show(ic);
+        elm_layout_content_set(page, "enna.icon.swallow", ic);
+        elm_layout_text_set(page, "enna.text", file->label);
+        evas_object_show(page);
+        elm_pager_content_pop(sd->pager);
+        elm_pager_content_push(sd->pager, page);
+        break;
+      }
+    case ENNA_FILE_TRACK:
+    case ENNA_FILE_FILE:
+    {
+        const char *artist;
+        const char *track;
+        const char *album;
+        char tmp[4096];
+
+        printf("Enna_File Track\n");
+
+        artist = enna_file_meta_get(file, "author");
+        album = enna_file_meta_get(file, "album");
+        track = enna_file_meta_get(file, "title");
+
+        page = elm_layout_add(sd->pager);
+        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
+        ic = elm_icon_add(page);
+        elm_icon_file_set(ic, enna_file_meta_get(file, "cover"), NULL);
+        evas_object_show(ic);
+        snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
+        elm_layout_content_set(page, "enna.icon.swallow", ic);
+        elm_layout_text_set(page, "enna.text", file->label);
+        evas_object_show(page);
+        elm_pager_content_pop(sd->pager);
+        elm_pager_content_push(sd->pager, page);
+        break;
+    }
+    default:
+        break;
+        
+    }
+    sd->ic = ic;
+    sd->page = page;
 }
 
 void
