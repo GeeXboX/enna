@@ -233,7 +233,7 @@ _add_cb(void *data, Enna_File *file)
 
     cb_data = malloc(sizeof(Activated_Cb_Data));
     cb_data->sd = sd;
-    cb_data->file = file;
+    cb_data->file = enna_file_ref(file); /* FIXME this reference is definitively LOST !!!! */
     sd->view_funcs.view_append(sd->o_view, file, _activated_cb, cb_data);
 
 }
