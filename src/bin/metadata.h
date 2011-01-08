@@ -44,9 +44,8 @@ char *enna_metadata_meta_get(const Enna_Metadata *meta,
 char *enna_metadata_meta_get_all(const Enna_Metadata *meta);
 void  enna_metadata_meta_free(Enna_Metadata *meta);
 void enna_metadata_set_position(Enna_Metadata *meta, double position);
-void enna_metadata_ondemand(Enna_File *file,
-                            void (*odcb)(Enna_File *file,
-                                         Enna_Metadata_OnDemand ev));
+void enna_metadata_ondemand_add(Enna_File *file);
+void enna_metadata_ondemand_del(Enna_File *file);
 char *enna_metadata_meta_duration_get(const Enna_Metadata *m);
 
 #endif /* METADATA_H */

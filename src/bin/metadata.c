@@ -90,9 +90,8 @@ struct _Enna_Pipe_Data
 
 static db_cfg_t db_cfg;
 static valhalla_t *vh = NULL;
-static void (*vh_odcb)(Enna_File *file, Enna_Metadata_OnDemand ev);
-static Enna_File *vh_file;
 static Ecore_Pipe *vh_pipe;
+static Eina_List *od_files = NULL;
 
 #define SUFFIX_ADD(type)                                       \
     for (l = enna_config->type; l; l = l->next)                \
@@ -105,32 +104,23 @@ static void
 pipe_read(void *data, void *buf, unsigned int nbyte)
 {
     Enna_Pipe_Data *od;
-    const char *uri;
+    Eina_List *l;
+    Enna_File *file;
 
     if (!buf)
         return;
 
     memcpy(&od, buf, nbyte);
 
-    if (!vh_file || !vh_file->mrl)
-        goto out;
+    EINA_LIST_FOREACH(od_files, l, file)
+    {
+        DBG("Try %s == %s\n", file->mrl, od->file);
+        if (!strcmp(file->mrl+7, od->file))
+        {
+            enna_file_meta_callback_call(file);
+        }
+    }
 
-    uri = vh_file->mrl;
-    if (!strncmp(uri, "file://", 7))
-        uri += 7;
-
-    /*
-     * If several ondemands are running, we must simply ignore all
-     * previous demands.
-     */
-    if (strcmp(od->file, uri))
-        goto out;
-
-    /* Refresh metadata in video or music activity */
-    if (vh_odcb)
-        vh_odcb (vh_file, od->ev);
-
-out:
     free(od->file);
     free(od);
 }
@@ -487,6 +477,8 @@ enna_metadata_db_init(void)
 static void
 enna_metadata_db_uninit(void)
 {
+    Enna_File *file;
+
     valhalla_uninit(vh);
     vh = NULL;
 
@@ -496,8 +488,9 @@ enna_metadata_db_uninit(void)
         vh_pipe = NULL;
     }
 
-    enna_file_free(vh_file);
-    vh_file = NULL;
+    EINA_LIST_FREE(od_files, file)
+        enna_file_free(file);
+    od_files = NULL;
 }
 
 void
@@ -659,24 +652,33 @@ enna_metadata_set_position(Enna_Metadata *meta, double position)
 }
 
 void
-enna_metadata_ondemand(Enna_File *file,
-                       void (*odcb)(Enna_File *file,
-                                    Enna_Metadata_OnDemand ev))
+enna_metadata_ondemand_add(Enna_File *file)
 {
   const char *uri;
 
-  if (!vh || !file || !file->uri)
+  if (!vh || !file || !file->mrl)
     return;
 
   uri = file->mrl;
   if (!strncmp(uri, "file://", 7))
       uri += 7;
 
-  enna_file_free(vh_file);
-  vh_file = enna_file_ref(file);
-  vh_odcb = odcb;
+  /* Add file to the list of on demand files */
+  od_files = eina_list_append(od_files, file);
+  DBG("Add %f at the list of on demand files", file->uri);
   valhalla_ondemand(vh, uri);
 }
+
+void
+enna_metadata_ondemand_del(Enna_File *file)
+{
+  if (!vh || !file)
+    return;
+
+  /* Add file to the list of on demand files */
+  od_files = eina_list_remove(od_files, file);
+}
+
 
 char *
 enna_metadata_meta_duration_get(const Enna_Metadata *m)
