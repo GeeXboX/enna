@@ -793,8 +793,8 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
         video_infos_display(file);
 
         /* ask for on-demand scan for local files */
-        if (!strncmp(file->mrl, "file://", 7))
-            enna_metadata_ondemand(file, _ondemand_cb_refresh);
+        /* if (!strncmp(file->mrl, "file://", 7)) */
+        /*     enna_metadata_ondemand(file, _ondemand_cb_refresh); */
     }
 
 
