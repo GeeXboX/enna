@@ -104,7 +104,7 @@ _view_hilight_cb (void *data, Evas_Object *obj, void *event_info)
     DBG(__FUNCTION__);
     evas_object_smart_callback_call (sd->o_layout, "hilight", NULL);
     ENNA_TIMER_DEL(sd->hilight_timer);
-    sd->hilight_timer = ecore_timer_add(0.2, _view_delay_hilight_cb, sd);
+    sd->hilight_timer = ecore_timer_add(0.4, _view_delay_hilight_cb, sd);
 }
 
 
