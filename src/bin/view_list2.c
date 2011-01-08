@@ -364,7 +364,7 @@ enna_list2_item_insert_after(Evas_Object *obj, Elm_Genlist_Item *after,
     id->label2 = eina_stringshare_add(label2);
     id->icon = eina_stringshare_add(icon);
 
-    item = elm_genlist_item_insert_after(obj, &itc_single_label, id, after,
+    item = elm_genlist_item_insert_after(obj, &itc_single_label, id, NULL, after,
                                          ELM_GENLIST_ITEM_NONE,
                                          _list_item_selected_cb, id);
 
@@ -391,7 +391,7 @@ enna_list2_item_insert_before(Evas_Object *obj, Elm_Genlist_Item *before,
     id->label2 = eina_stringshare_add(label2);
     id->icon = eina_stringshare_add(icon);
 
-    item = elm_genlist_item_insert_before(obj, &itc_single_label, id, before,
+    item = elm_genlist_item_insert_before(obj, &itc_single_label, id, NULL, before,
                                           ELM_GENLIST_ITEM_NONE,
                                           _list_item_selected_cb, id);
 

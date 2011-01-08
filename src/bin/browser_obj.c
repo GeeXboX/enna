@@ -56,6 +56,7 @@ struct _Smart_Data
     Evas_Object *o_header;
     Evas_Object *o_search;
     Enna_File *root;
+    Enna_File *file;
     const char *root_uri;
     Focused_Part focus;
     Eina_List *visited;
@@ -232,8 +233,9 @@ _add_cb(void *data, Enna_File *file)
 
     cb_data = malloc(sizeof(Activated_Cb_Data));
     cb_data->sd = sd;
-    cb_data->file = enna_file_dup(file);
+    cb_data->file = file;
     sd->view_funcs.view_append(sd->o_view, file, _activated_cb, cb_data);
+
 }
 
 static void
@@ -373,10 +375,12 @@ _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back)
         return;
     }
 
+    enna_file_free(sd->file);
+    sd->file = enna_file_ref(file);
     _add_header(sd, file);
 
     if (file && !back)
-        sd->visited = eina_list_append(sd->visited, enna_file_dup(file));
+        sd->visited = eina_list_append(sd->visited, enna_file_ref(file));
     enna_browser_del(sd->browser);
 
     sd->browser = enna_browser_add(_add_cb, sd, _del_cb, sd, _update_cb, sd, file->uri);
@@ -558,6 +562,26 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
     _browse(sd, sd->root, EINA_FALSE);
 }
 
+static void
+_browser_del_cb(void *data, Evas *e, Evas_Object *o, void *event_info)
+{
+    Smart_Data *sd = data;
+    Enna_File *f;
+
+    ENNA_OBJECT_DEL(sd->o_view);
+    if (sd->hilight_timer)
+        ecore_timer_del(sd->hilight_timer);
+    enna_browser_del(sd->browser);
+    ENNA_OBJECT_DEL(sd->o_header);
+    ENNA_OBJECT_DEL(sd->o_search);
+    enna_file_free(sd->root);
+    enna_file_free(sd->file);
+    EINA_LIST_FREE(sd->visited, f)
+        enna_file_free(f);
+
+    ENNA_FREE(sd);
+}
+
 Evas_Object *
 enna_browser_obj_add(Evas_Object *parent)
 {
@@ -571,7 +595,7 @@ enna_browser_obj_add(Evas_Object *parent)
     elm_layout_file_set(sd->o_layout, enna_config_theme_get(), "enna/browser");
 
     evas_object_data_set(sd->o_layout, "sd", sd);
-
+    evas_object_event_callback_add(sd->o_layout, EVAS_CALLBACK_DEL, _browser_del_cb, sd);
     enna_browser_obj_view_type_set(sd->o_layout, ENNA_BROWSER_VIEW_LIST);
     sd->focus = VIEW_FOCUSED;
 

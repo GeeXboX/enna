@@ -178,7 +178,7 @@ _list_item_track_label_get(const void *data, Evas_Object *obj, const char *part)
 
     snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
     return strdup(tmp);
-     
+
 }
 
 static Evas_Object *
@@ -289,7 +289,7 @@ static void
 _smart_unselect_item(Smart_Data *sd, int n)
 {
     List_Item *it;
-    
+
     it = eina_list_nth(sd->items, n);
     if (!it) return;
 
@@ -337,7 +337,7 @@ enna_list_add(Evas_Object *parent)
     sd = calloc(1, sizeof(Smart_Data));
 
     obj = elm_genlist_add(parent);
-    
+
     evas_object_size_hint_weight_set(obj, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_genlist_horizontal_mode_set(obj, ELM_LIST_COMPRESS);
 
@@ -368,14 +368,17 @@ enna_list_file_append(Evas_Object *obj, Enna_File *file,
     it->file = file;
     if (file->type == ENNA_FILE_TRACK)
         it->item = elm_genlist_item_append (obj, &itc_list_track, it,
-                                            NULL, ELM_GENLIST_ITEM_NONE, 
+                                            NULL, ELM_GENLIST_ITEM_NONE,
                                             _item_selected, it);
     else
         it->item = elm_genlist_item_append (obj, &itc_list_default, it,
-                                            NULL, ELM_GENLIST_ITEM_NONE, 
+                                            NULL, ELM_GENLIST_ITEM_NONE,
                                             _item_selected, it);
-
     sd->items = eina_list_append(sd->items, it);
+
+    /* Select first item */
+    if (eina_list_count(sd->items) == 1)
+        enna_list_select_nth(obj, 0);
 }
 
 void
@@ -384,7 +387,7 @@ enna_list_file_remove(Evas_Object *obj, Enna_File *file)
     Smart_Data *sd;
     List_Item *it;
     Eina_List *l;
-    
+
     sd = evas_object_data_get(obj, "sd");
 
     EINA_LIST_FOREACH(sd->items, l, it)
@@ -405,7 +408,7 @@ enna_list_file_update(Evas_Object *obj, Enna_File *file)
     Smart_Data *sd;
     List_Item *it;
     Eina_List *l;
-    
+
     sd = evas_object_data_get(obj, "sd");
 
     EINA_LIST_FOREACH(sd->items, l, it)

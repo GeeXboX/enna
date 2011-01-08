@@ -425,8 +425,8 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
                             enna_buffer_appendf(mrl, "%s/%s", root->uri, filename);
 
                         f = enna_file_file_add(filename, buf->buf,
-                                                     mrl->buf, filename,
-                                                     "icon/music");
+                                               mrl->buf, filename,
+                                               "icon/music");
                         enna_buffer_free(mrl);
                         enna_buffer_free(buf);
 
