@@ -288,6 +288,17 @@ _add(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
     return vl;
 }
 
+static const char *
+_root_meta_get(void *data, Enna_File *file, const char *key)
+{
+    return NULL;
+}
+
+static Enna_File_Meta_Class root_meta_class = {
+    _root_meta_get,
+    NULL
+};
+
 static void
 _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
 {
@@ -334,6 +345,8 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
             enna_buffer_appendf(buf, "/%s/localfiles/%s", pmod->name, root->name);
             f = enna_file_menu_add(root->name, buf->buf,
                                    root->label, root->icon);
+            
+            enna_file_meta_add(f, &root_meta_class, NULL);
             enna_buffer_free(buf);
             enna_browser_file_add(browser, f);
             /* add localfiles to the list of volumes listener */
