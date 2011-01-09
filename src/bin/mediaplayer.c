@@ -363,7 +363,6 @@ set_local_stream(const char *uri)
     mrl_t *mrl;
     mrl_resource_local_args_t *args;
 
-    printf("set local stream : %s\n", uri);
     args = calloc(1, sizeof(mrl_resource_local_args_t));
     args->location = strdup(uri);
     mrl = mrl_new(mp->players[mp->default_type], MRL_RESOURCE_FILE, args);

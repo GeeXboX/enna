@@ -65,7 +65,6 @@ static Eina_Bool
 _add_idler(void *data)
 {
     Enna_Browser* b = data;
-    DBG("uri : %s\n", b->uri);
     switch (b->type)
     {
     case BROWSER_ROOT:

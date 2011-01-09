@@ -220,8 +220,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
     {
         Enna_File *f;
         Eina_List *l;
-        enna_log(ENNA_MSG_EVENT,
-                 ENNA_MODULE_NAME , "File Selected %s", file->uri);
+        DBG("File Selected %s", file->uri);
         enna_mediaplayer_playlist_stop_clear(mod->enna_playlist);
         /* File selected, create mediaplayer */
          EINA_LIST_FOREACH(files, l, f)

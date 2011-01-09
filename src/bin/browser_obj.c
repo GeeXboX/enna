@@ -88,7 +88,6 @@ _view_delay_hilight_cb(void *data)
 {
     Smart_Data *sd = data;
     Activated_Cb_Data *cb_data = sd->view_funcs.view_selected_data_get(sd->o_view);
-    DBG(__FUNCTION__);
 
     if (cb_data)
         evas_object_smart_callback_call (sd->o_layout, "delay,hilight", cb_data->file);
@@ -101,7 +100,7 @@ static void
 _view_hilight_cb (void *data, Evas_Object *obj, void *event_info)
 {
     Smart_Data *sd = data;
-    DBG(__FUNCTION__);
+
     evas_object_smart_callback_call (sd->o_layout, "hilight", NULL);
     ENNA_TIMER_DEL(sd->hilight_timer);
     sd->hilight_timer = ecore_timer_add(0.4, _view_delay_hilight_cb, sd);
@@ -112,7 +111,7 @@ static Evas_Object *
 _browser_view_list_add(Smart_Data *sd)
 {
     Evas_Object *view;
-    DBG(__FUNCTION__);
+
     if (!sd) return NULL;
 
     view = enna_list_add(sd->o_layout);
@@ -129,7 +128,7 @@ static Evas_Object *
 _browser_box_add(Smart_Data *sd)
 {
     Evas_Object *view;
-    DBG(__FUNCTION__);
+
     if (!sd) return NULL;
 
     view = enna_box_add(enna->layout, NULL);
@@ -143,7 +142,7 @@ static Evas_Object *
 _browser_view_wall_add(Smart_Data *sd)
 {
     Evas_Object *view;
-    DBG(__FUNCTION__);
+
     if (!sd) return NULL;
 
     view = enna_wall_add(sd->o_layout);
@@ -156,14 +155,12 @@ _browser_view_wall_add(Smart_Data *sd)
 static void
 _browser_view_wall_select_nth(Evas_Object *view, int nth)
 {
-    DBG(__FUNCTION__);
     enna_wall_select_nth(view, nth, 0);
 }
 
 void
 _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
 {
-    DBG(__FUNCTION__);
     sd->view_type = view_type;
     switch(sd->view_type)
     {
@@ -220,8 +217,6 @@ _add_cb(void *data, Enna_File *file)
 {
     Smart_Data *sd = data;
     Activated_Cb_Data *cb_data;
-
-    DBG(__FUNCTION__);
 
     if (!sd->o_view)
         sd->o_view = sd->view_funcs.view_add(sd);
@@ -519,7 +514,6 @@ enna_browser_obj_input_feed(Evas_Object *obj, enna_input event)
     if (!sd)
         return;
 
-    DBG(__FUNCTION__);
     switch(sd->focus)
     {
         case VIEW_FOCUSED:
@@ -547,7 +541,7 @@ enna_browser_obj_view_type_set(Evas_Object *obj,
                                Enna_Browser_View_Type view_type)
 {
     Smart_Data *sd = evas_object_data_get(obj, "sd");
-    DBG(__FUNCTION__);
+
     _change_view(sd, view_type);
 }
 
@@ -586,7 +580,7 @@ Evas_Object *
 enna_browser_obj_add(Evas_Object *parent)
 {
     Smart_Data *sd;
-    DBG(__FUNCTION__);
+
     sd = calloc(1, sizeof(Smart_Data));
 
     sd->o_layout = elm_layout_add(parent);
