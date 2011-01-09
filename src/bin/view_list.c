@@ -337,7 +337,8 @@ enna_list_add(Evas_Object *parent)
     sd = calloc(1, sizeof(Smart_Data));
 
     obj = elm_genlist_add(parent);
-
+    /* Don't let elm focused genlist object, keys are handled by enna */
+    elm_object_focus_allow_set(obj, EINA_FALSE);
     evas_object_size_hint_weight_set(obj, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
     elm_genlist_horizontal_mode_set(obj, ELM_LIST_COMPRESS);
 
