@@ -428,12 +428,12 @@ collections
 		//rel1.offset: -5 -5;
 		rel2.to: "browser.clip";
 		//rel2.offset: 5 5;
-		//color: 0 0 0 128 ;	
-		image {	
+		//color: 0 0 0 128 ;
+		image {
                      normal: "browser_bg.png";
                	     border: 15 15 15 15;
             	}
-		
+
 	    }
 	 }
          part {
@@ -1787,7 +1787,7 @@ group {
             type: IMAGE;
             description {
                 state: "default" 0.0;
-                image {	
+                image {
                      normal: "browser_bg.png";
                	     border: 15 15 15 15;
             	}
@@ -1796,7 +1796,7 @@ group {
         part {
             name: "enna.icon.swallow";
             type: SWALLOW;
-            description { 
+            description {
                 state: "default" 0.0;
                 aspect: 1.0 1.0;
                 aspect_preference: BOTH;
@@ -1807,7 +1807,7 @@ group {
         part {
             name: "enna.text";
             type: TEXT;
-            description { 
+            description {
                 state: "default" 0.0;
                 rel1.offset: 14 8;
                 rel1.relative: 0 1;
@@ -1818,11 +1818,11 @@ group {
                   font:     "Comfortaa";
                   size:     14;
                   align:    0.5 0.5;
-                 
+
                }
             }
         }
-        
+
     }
 }
 
