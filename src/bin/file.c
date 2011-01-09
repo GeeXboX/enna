@@ -45,7 +45,7 @@ _create_inode(const char *name, const char *uri, const char *label,
     f->mrl   = mrl   ? eina_stringshare_add(mrl)   : NULL;
     f->type = type;
     f->refcount++;
-    DBG("Create Enna_File %p (%s)", f, f->uri);
+
     return f;
 }
 
@@ -94,7 +94,6 @@ enna_file_dup(Enna_File *file)
         f->callbacks = eina_list_append(f->callbacks, cb_cp);
     }
     f->refcount++;
-    DBG("Duplicate Enna_File %p (%s) new file : %p", file, file->uri, f);
 
     return f;
 }
@@ -106,7 +105,6 @@ enna_file_ref(Enna_File *file)
         return NULL;
 
     file->refcount++;
-    DBG("Add Enna_File %p referenced %d times (%s)", file, file->refcount, file->uri);
 
     return file;
 }
@@ -123,10 +121,9 @@ enna_file_free(Enna_File *f)
 
     if (f->refcount > 0)
     {
-        DBG("Enna_File %p (%s) has not been deleted, there is %d references on it", f, f->uri, f->refcount);
         return;
     }
-    DBG("Delete Enna_File %p (%s)", f, f->uri);
+
     if (f->name) eina_stringshare_del(f->name);
     if (f->uri) eina_stringshare_del(f->uri);
     if (f->label) eina_stringshare_del(f->label);
@@ -138,7 +135,7 @@ enna_file_free(Enna_File *f)
     if (f->callbacks)
         EINA_LIST_FREE(f->callbacks, cb)
             free(cb);
- 
+
     free(f);
 }
 
@@ -200,8 +197,6 @@ enna_file_meta_callback_add(Enna_File *file, Enna_File_Update_Cb func, void *dat
     if (!file || !func)
         return;
 
-    printf("Add callback to file %p %s\n", file, file->uri);
-
     cb = calloc(1, sizeof(Enna_File_Callback));
     cb->func = func;
     cb->func_data = data;
@@ -247,11 +242,8 @@ enna_file_meta_callback_call(Enna_File *file)
     if (!file)
         return;
 
-    printf("Try to callbakc %p %s\n", file, file->uri);
-
     EINA_LIST_FOREACH(file->callbacks, l, cb)
     {
-        printf("Call callback for file %p %s\n", file, file->uri);
         cb->func(cb->func_data, file);
     }
 }
