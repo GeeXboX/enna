@@ -64,6 +64,8 @@
 #define SUB_DELAY_DEFAULT         0
 #define FRAMEDROP_DEFAULT         PLAYER_FRAMEDROP_DISABLE
 
+#define PLAYER_TYPE_SPOTIFY 5
+
 typedef struct mediaplayer_cfg_s {
     player_type_t type;
     player_type_t dvd_type;
