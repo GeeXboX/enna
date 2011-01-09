@@ -343,9 +343,9 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
             buf = enna_buffer_new();
             EVT("Root name : %s\n", root->name);
             enna_buffer_appendf(buf, "/%s/localfiles/%s", pmod->name, root->name);
-            f = enna_file_menu_add(root->name, buf->buf,
-                                   root->label, root->icon);
-            
+            f = enna_file_volume_add(root->name, buf->buf,
+                                     root->label, root->icon);
+
             enna_file_meta_add(f, &root_meta_class, NULL);
             enna_buffer_free(buf);
             enna_browser_file_add(browser, f);
