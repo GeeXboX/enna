@@ -114,7 +114,6 @@ pipe_read(void *data, void *buf, unsigned int nbyte)
 
     EINA_LIST_FOREACH(od_files, l, file)
     {
-        DBG("Try %s == %s\n", file->mrl, od->file);
         if (!strcmp(file->mrl+7, od->file))
         {
             enna_file_meta_callback_call(file);
@@ -665,7 +664,6 @@ enna_metadata_ondemand_add(Enna_File *file)
 
   /* Add file to the list of on demand files */
   od_files = eina_list_append(od_files, file);
-  DBG("Add %f at the list of on demand files", file->uri);
   valhalla_ondemand(vh, uri);
 }
 
