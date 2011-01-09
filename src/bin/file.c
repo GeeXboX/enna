@@ -190,7 +190,7 @@ enna_file_menu_add(const char *name, const char *uri,
 }
 
 Enna_File *
-enna_file_colume_add(const char *name, const char *uri,
+enna_file_volume_add(const char *name, const char *uri,
                      const char *label, const char *icon)
 {
     return _create_inode(name, uri, label, icon, NULL, ENNA_FILE_VOLUME);
