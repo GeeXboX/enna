@@ -125,7 +125,7 @@ _list_item_default_icon_get(const void *data, Evas_Object *obj, const char *part
     {
         Evas_Object *ic;
 
-        if (!li->file || li->file->type != ENNA_FILE_MENU)
+        if (!li->file || (li->file->type != ENNA_FILE_MENU && li->file->type != ENNA_FILE_VOLUME) )
             return NULL;
 
         ic = elm_icon_add(obj);
