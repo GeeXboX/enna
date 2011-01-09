@@ -189,6 +189,13 @@ enna_file_menu_add(const char *name, const char *uri,
     return _create_inode(name, uri, label, icon, NULL, ENNA_FILE_MENU);
 }
 
+Enna_File *
+enna_file_colume_add(const char *name, const char *uri,
+                     const char *label, const char *icon)
+{
+    return _create_inode(name, uri, label, icon, NULL, ENNA_FILE_VOLUME);
+}
+
 void
 enna_file_meta_callback_add(Enna_File *file, Enna_File_Update_Cb func, void *data)
 {

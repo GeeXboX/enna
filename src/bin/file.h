@@ -86,6 +86,8 @@ Enna_File *enna_file_directory_add(const char *name, const char *uri,
                                    const char *label, const char *icon);
 Enna_File *enna_file_menu_add(const char *name, const char *uri,
                               const char *label, const char *icon);
+Enna_File *enna_file_volume_add(const char *name, const char *uri,
+                                const char *label, const char *icon);
 
 
 void enna_file_meta_callback_add(Enna_File *file, Enna_File_Update_Cb func, void *data);
