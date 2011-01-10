@@ -141,6 +141,27 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         elm_pager_content_push(sd->pager, page);
         break;
       }
+    case ENNA_FILE_VOLUME:
+    {
+        const char *lb;
+
+        page = elm_layout_add(sd->pager);
+        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
+        ic = elm_icon_add(page);
+        elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
+        evas_object_show(ic);
+        elm_layout_content_set(page, "enna.icon.swallow", ic);
+        
+        lb = eina_stringshare_printf("Size : %s Freespace : %s In use %s%%", 
+                                     enna_file_meta_get(file, ENNA_META_KEY_SIZE),
+                                     enna_file_meta_get(file, ENNA_META_KEY_FREESPACE),
+                                     enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED));
+        elm_layout_text_set(page, "enna.text", lb);
+        evas_object_show(page);
+        elm_pager_content_pop(sd->pager);
+        elm_pager_content_push(sd->pager, page);
+        break;
+      }
     case ENNA_FILE_TRACK:
     case ENNA_FILE_FILE:
     {

@@ -24,6 +24,11 @@
 
 #include <Eina.h>
 
+#define ENNA_META_KEY_FREESPACE       "free_space"
+#define ENNA_META_KEY_SIZE            "size"
+#define ENNA_META_KEY_USESPACE        "used_space"
+#define ENNA_META_KEY_PERCENT_USED    "percent_used"
+
 #define ENNA_FILE_IS_BROWSABLE(file) \
     ((file->type == ENNA_FILE_MENU) || (file->type == ENNA_FILE_DIRECTORY) || (file->type == ENNA_FILE_VOLUME))
 

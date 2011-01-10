@@ -20,6 +20,7 @@
  */
 
 #include <string.h>
+#include <sys/statfs.h>
 
 #include <Ecore.h>
 #include <Ecore_File.h>
@@ -288,9 +289,123 @@ _add(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
     return vl;
 }
 
+const char*
+make_human_readable_str(unsigned long long val,
+                        unsigned long block_size, unsigned long display_unit)
+{
+	static const char unit_chars[]  = {
+		'\0', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'
+	};
+
+	static char *str;
+
+	unsigned frac; /* 0..9 - the fractional digit */
+	const char *u;
+	const char *fmt;
+
+	if (val == 0)
+		return "0";
+
+	fmt = "%llu";
+	if (block_size > 1)
+		val *= block_size;
+	frac = 0;
+	u = unit_chars;
+
+	if (display_unit) {
+		val += display_unit/2;	/* Deal with rounding */
+		val /= display_unit;	/* Don't combine with the line above! */
+		/* will just print it as ulonglong (below) */
+	} else {
+		while ((val >= 1024)
+		 /* && (u < unit_chars + sizeof(unit_chars) - 1) - always true */
+		) {
+			fmt = "%llu.%u%c";
+			u++;
+			frac = (((unsigned)val % 1024) * 10 + 1024/2) / 1024;
+			val /= 1024;
+		}
+		if (frac >= 10) { /* we need to round up here */
+			++val;
+			frac = 0;
+		}
+#if 1
+		/* If block_size is 0, dont print fractional part */
+		if (block_size == 0) {
+			if (frac >= 5) {
+				++val;
+			}
+			fmt = "%llu%*c";
+			frac = 1;
+		}
+#endif
+	}
+
+	if (!str) {
+		/* sufficient for any width of val */
+		str = malloc(sizeof(val)*3 + 2 + 3);
+	}
+	sprintf(str, fmt, val, frac, *u);
+	return str;
+}
+
 static const char *
 _root_meta_get(void *data, Enna_File *file, const char *key)
 {
+    Root_Directories *root = data;
+    struct statfs st;
+
+    if (!root)
+        return NULL;
+
+    if (!strcmp(key, ENNA_META_KEY_SIZE))
+    {
+
+        if (statfs(root->uri+7, &st) != 0)
+        {
+            return NULL;
+        }
+
+        return
+            eina_stringshare_printf("%s",  make_human_readable_str(
+                                        st.f_blocks, st.f_bsize, 0));
+    }
+    else if (!strcmp(key, ENNA_META_KEY_USESPACE))
+    {
+        if (statfs(root->uri+7, &st) != 0)
+        {
+            return NULL;
+        }
+        return
+            eina_stringshare_printf("%s",make_human_readable_str(
+                                        (st.f_blocks - st.f_bfree),
+                                        st.f_bsize, 0));
+    }
+    else if (!strcmp(key, ENNA_META_KEY_FREESPACE))
+    {
+        if (statfs(root->uri+7, &st) != 0)
+        {
+            return NULL;
+        }
+         return
+             eina_stringshare_printf("%s", make_human_readable_str(st.f_bavail,
+                                                                   st.f_bsize, 0));
+    }
+    else if (!strcmp(key, ENNA_META_KEY_PERCENT_USED))
+    {
+        unsigned long blocks_used;
+        unsigned blocks_percent_used;
+
+        if (statfs(root->uri+7, &st) != 0)
+        {
+            return NULL;
+        }
+        blocks_used = st.f_blocks - st.f_bfree;
+        blocks_percent_used = (blocks_used * 100ULL + (blocks_used + st.f_bavail)/2) / (blocks_used + st.f_bavail);
+        return
+            eina_stringshare_printf("%d", blocks_percent_used);
+    }
+
     return NULL;
 }
 
@@ -346,7 +461,7 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
             f = enna_file_volume_add(root->name, buf->buf,
                                      root->label, root->icon);
 
-            enna_file_meta_add(f, &root_meta_class, NULL);
+            enna_file_meta_add(f, &root_meta_class, root);
             enna_buffer_free(buf);
             enna_browser_file_add(browser, f);
             /* add localfiles to the list of volumes listener */
