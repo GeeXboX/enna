@@ -144,9 +144,12 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
     case ENNA_FILE_VOLUME:
     {
         const char *lb;
+        Evas_Object *pg;
+        const char *val;
+        double v;
 
         page = elm_layout_add(sd->pager);
-        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
+        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/volume");
         ic = elm_icon_add(page);
         elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
         evas_object_show(ic);
@@ -157,6 +160,16 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
                                      enna_file_meta_get(file, ENNA_META_KEY_FREESPACE),
                                      enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED));
         elm_layout_text_set(page, "enna.text", lb);
+        pg = elm_progressbar_add(sd->pager);
+        val = enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED);
+        v = atof(val) / 100.0;
+        elm_progressbar_value_set(pg, v);
+        printf("%s %3.3f\n", val, v);
+        eina_stringshare_del(val);
+        elm_progressbar_unit_format_set(pg, "%1.0f %%");
+        elm_progressbar_horizontal_set(pg, EINA_TRUE);
+        evas_object_show(pg);
+        elm_layout_content_set(page, "enna.progress.swallow", pg);
         evas_object_show(page);
         elm_pager_content_pop(sd->pager);
         elm_pager_content_push(sd->pager, page);
