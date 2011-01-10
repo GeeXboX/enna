@@ -1880,6 +1880,7 @@ group {
                 rel1.relative: 0 1;
                 rel1.to_y: "enna.text";
                 rel2.offset: -15 -70;
+                fixed: 1 1;
             }
         }
     }
