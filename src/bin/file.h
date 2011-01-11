@@ -39,7 +39,8 @@ typedef struct _Enna_File_Meta_Class Enna_File_Meta_Class;
 struct _Enna_File_Meta_Class
 {
     const char *(* meta_get)(void *data, Enna_File *file, const char *key);
-    void  (* meta_del)(void *data);
+    void (* meta_set)(void *data, Enna_File *file, const char *key, const char *value);
+    void (* meta_del)(void *data);
 };
 
 

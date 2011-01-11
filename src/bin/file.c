@@ -53,12 +53,24 @@ const char *
 _meta_get_default(Enna_File *file, const char *key)
 {
     Enna_Metadata *m;
-    char *str;
+    const char *str;
 
     m = enna_metadata_meta_new(file->mrl);
     str = enna_metadata_meta_get(m, key, 0);
     enna_metadata_meta_free(m);
     return str;
+
+}
+
+void
+_meta_default_set(Enna_File *file, const char *key, const char *data)
+{
+    Enna_Metadata *m;
+
+    m = enna_metadata_meta_new(file->mrl);
+    enna_metadata_meta_set(m, file, key, data);
+    enna_metadata_meta_free(m);
+    return;
 
 }
 
@@ -159,6 +171,18 @@ enna_file_meta_get(Enna_File *f, const char *key)
         return _meta_get_default(f, key);
 
     return f->meta_class->meta_get(f->meta_data, f, key);
+}
+
+void
+enna_file_meta_set(Enna_File *f, const char *key, const void *data)
+{
+    if (!f || !key || !data)
+        return;
+
+    if (!f->meta_class || !f->meta_class->meta_get)
+        _meta_default_set(f, key, data);
+
+    f->meta_class->meta_set(f->meta_data, f, key, data);
 }
 
 Enna_File *
