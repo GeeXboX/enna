@@ -81,9 +81,9 @@ void
 enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
 {
     Enna_Buffer *buf;
-    char *codec, *value;
-    char *alternative_title, *title, *categories, *year;
-    char *length, *director, *actors, *overview;
+    const char *codec, *value;
+    const char *alternative_title, *title, *categories, *year;
+    const char *length, *director, *actors, *overview;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
     int len;
 
@@ -152,7 +152,7 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
     codec = enna_metadata_meta_get(m, "video_codec", 1);
     if (codec)
     {
-        char *width, *height, *aspect;
+        const char *width, *height, *aspect;
         width  = enna_metadata_meta_get(m, "width", 1);
         height = enna_metadata_meta_get(m, "height", 1);
         aspect = enna_metadata_meta_get(m, "video_aspect", 1);
@@ -168,15 +168,15 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
                 enna_buffer_appendf(buf, ", %.2f", ratio);
         }
         enna_buffer_appendf(buf, "<br>");
-        ENNA_FREE(width);
-        ENNA_FREE(height);
-        ENNA_FREE(aspect);
-        ENNA_FREE(codec);
+        eina_stringshare_del(width);
+        eina_stringshare_del(height);
+        eina_stringshare_del(aspect);
+        eina_stringshare_del(codec);
     }
     codec = enna_metadata_meta_get(m, "audio_codec", 1);
     if (codec)
     {
-        char *channels, *bitrate;
+        const char *channels, *bitrate;
         channels = enna_metadata_meta_get(m, "audio_channels", 1);
         bitrate  = enna_metadata_meta_get(m, "audio_bitrate", 1);
         enna_buffer_append(buf, "<hl>");
@@ -187,9 +187,9 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         if (bitrate)
             enna_buffer_appendf(buf, ", %i kbps", atoi(bitrate) / 1000);
         enna_buffer_appendf(buf, "<br>");
-        ENNA_FREE(channels);
-        ENNA_FREE(bitrate);
-        ENNA_FREE(codec);
+        eina_stringshare_del(channels);
+        eina_stringshare_del(bitrate);
+        eina_stringshare_del(codec);
     }
 
     value = enna_metadata_meta_get(m, "filesize", 1);
@@ -199,7 +199,7 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
         enna_buffer_appendf(buf, " </hl> %.2f MB<br>",
                 atol(value) / 1024.0 / 1024.0);
     }
-    ENNA_FREE(value);
+    eina_stringshare_del(value);
 
     /* tell if no more infos are available */
     if (buf->len == len)
@@ -208,14 +208,14 @@ enna_panel_infos_set_text(Evas_Object *obj, Enna_Metadata *m)
     edje_object_part_text_set(sd->o_edje, "panel.textblock", buf->buf);
 
     enna_buffer_free(buf);
-    ENNA_FREE(alternative_title);
-    ENNA_FREE(title);
-    ENNA_FREE(categories);
-    ENNA_FREE(year);
-    ENNA_FREE(length);
-    ENNA_FREE(director);
-    ENNA_FREE(actors);
-    ENNA_FREE(overview);
+    eina_stringshare_del(alternative_title);
+    eina_stringshare_del(title);
+    eina_stringshare_del(categories);
+    eina_stringshare_del(year);
+    eina_stringshare_del(length);
+    eina_stringshare_del(director);
+    eina_stringshare_del(actors);
+    eina_stringshare_del(overview);
 }
 
 void
@@ -224,7 +224,7 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
     Evas_Object *cover;
     char *file = NULL;
     int from_vfs = 1;
-    char *cv;
+    const char *cv;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
     if (!sd)
@@ -276,15 +276,15 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
                             (!strcmp(file, VIDEO_DEFAULT_COVER)) ?
                             "shadow,hide" : "shadow,show", "enna");
 
-    ENNA_FREE(cv);
-    ENNA_FREE(file);
+    eina_stringshare_del(cv);
+    eina_stringshare_del(file);
 }
 
 void
 enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
 {
     Evas_Object *rating = NULL;
-    char *rt;
+    const char *rt;
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
     if (!sd)
@@ -308,5 +308,5 @@ enna_panel_infos_set_rating(Evas_Object *obj, Enna_Metadata *m)
     sd->o_rating = rating;
     edje_object_part_swallow(sd->o_edje,
                              "panel.rating.swallow", sd->o_rating);
-    ENNA_FREE(rt);
+    eina_stringshare_del(rt);
 }

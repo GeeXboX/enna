@@ -323,7 +323,7 @@ backdrop_show(Enna_Metadata *m)
 {
     char *file = NULL;
     int from_vfs = 1;
-    char *backdrop;
+    const char *backdrop;
 
     backdrop = enna_metadata_meta_get(m, "fanart", 1);
     if (backdrop)
