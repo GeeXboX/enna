@@ -347,10 +347,10 @@ set_spotify_stream(const char *uri, mrl_resource_t type)
 {
     mrl_t *mrl;
     mrl_resource_local_args_t *args;
-    
+
     args = calloc(1, sizeof(mrl_resource_cd_args_t));
     args->location = strdup(uri);
-   
+
     mrl = mrl_new(mp->players[mp->spotify_type], type, args);
     return mrl;
 }
@@ -1193,7 +1193,7 @@ enna_mediaplayer_current_file_get()
     return item;
 }
 
-char *
+const char *
 enna_mediaplayer_get_current_uri()
 {
   Enna_File *item;

@@ -134,7 +134,7 @@ void enna_mediaplayer_default_decrease_volume(void);
 void enna_mediaplayer_mute(void);
 int enna_mediaplayer_mute_get(void);
 Enna_File *enna_mediaplayer_current_file_get(void);
-char *enna_mediaplayer_get_current_uri();
+const char *enna_mediaplayer_get_current_uri();
 void enna_mediaplayer_audio_previous(void);
 void enna_mediaplayer_audio_next(void);
 void enna_mediaplayer_audio_increase_delay(void);
