@@ -514,11 +514,13 @@ _track_meta_get(void *data, const Enna_File *file, const char *key)
 
 static Enna_File_Meta_Class track_meta = {
     _track_meta_get,
+    NULL,
     NULL
 };
 
 static Enna_File_Meta_Class pl_meta = {
     _pl_meta_get,
+    NULL,
     NULL
 };
 
