@@ -30,6 +30,7 @@
 #include "image.h"
 #include "buffer.h"
 #include "music_infos.h"
+#include "utils.h"
 
 typedef struct _Smart_Data Smart_Data;
 
@@ -59,14 +60,33 @@ _update(Smart_Data *sd, Enna_File *file)
         const char *artist;
         const char *track;
         const char *album;
+        const char *cover;
+        const char *cover_path;
         char tmp[4096];
-
-        printf("Enna_File Track\n");
 
         artist = enna_file_meta_get(file, "author");
         album = enna_file_meta_get(file, "album");
         track = enna_file_meta_get(file, "title");
-        elm_icon_file_set(sd->ic, enna_file_meta_get(file, "cover"), NULL);
+        cover = enna_file_meta_get(file, "cover");
+        if (cover && cover[0] != '/')
+        {
+            cover_path = eina_stringshare_printf("%s/covers/%s",
+                                                     enna_util_data_home_get(), cover);
+            printf("cover: %s\n", cover_path);
+            elm_icon_file_set(sd->ic, cover_path, NULL);
+            eina_stringshare_del(cover_path);
+        }
+        else if (cover)
+        {
+            printf("cover: %s\n", cover);
+            elm_icon_file_set(sd->ic, cover, NULL);
+            eina_stringshare_del(cover);
+        }
+        else
+        {
+            printf("cover: %s\n", file->icon);
+            elm_icon_file_set(sd->ic, enna_config_theme_get(), file->icon);
+        }
         snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
         elm_layout_text_set(sd->page, "enna.text", file->label);
         break;
@@ -110,6 +130,7 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
     Evas_Object *page;
     Smart_Data *sd;
     Evas_Object *ic;
+
     if (!obj || !file)
         return;
 
@@ -154,12 +175,12 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
         evas_object_show(ic);
         elm_layout_content_set(page, "enna.icon.swallow", ic);
-        
+        elm_layout_text_set(page, "enna.text.label", file->label);
         lb = eina_stringshare_printf("Size : %s Freespace : %s In use %s%%", 
                                      enna_file_meta_get(file, ENNA_META_KEY_SIZE),
                                      enna_file_meta_get(file, ENNA_META_KEY_FREESPACE),
                                      enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED));
-        elm_layout_text_set(page, "enna.text", lb);
+        elm_layout_text_set(page, "enna.text.description", lb);
         pg = elm_progressbar_add(sd->pager);
         val = enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED);
         v = atof(val) / 100.0;
@@ -181,9 +202,9 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         const char *artist;
         const char *track;
         const char *album;
+        const char *cover;
+        const char *cover_path;
         char tmp[4096];
-
-        printf("Enna_File Track\n");
 
         artist = enna_file_meta_get(file, "author");
         album = enna_file_meta_get(file, "album");
@@ -192,7 +213,23 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         page = elm_layout_add(sd->pager);
         elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
         ic = elm_icon_add(page);
-        elm_icon_file_set(ic, enna_file_meta_get(file, "cover"), NULL);
+        cover = enna_file_meta_get(file, "cover");
+        if (cover && cover[0] != '/')
+        {
+            cover_path = eina_stringshare_printf("%s/covers/%s",
+                                                     enna_util_data_home_get(), cover);
+            elm_icon_file_set(ic, cover_path, NULL);
+            eina_stringshare_del(cover_path);
+        }
+        else if (cover)
+        {
+            elm_icon_file_set(ic, cover, NULL);
+            eina_stringshare_del(cover);
+        }
+        else
+        {
+            elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
+        }
         evas_object_show(ic);
         snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
         elm_layout_content_set(page, "enna.icon.swallow", ic);
