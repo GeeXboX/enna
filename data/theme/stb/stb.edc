@@ -1798,6 +1798,7 @@ group {
             type: SWALLOW;
             description {
                 state: "default" 0.0;
+                max: 300 300;
                 aspect: 1.0 1.0;
                 aspect_preference: BOTH;
                 rel1.offset: 14 14;
@@ -1846,6 +1847,7 @@ group {
             name: "enna.icon.swallow";
             type: SWALLOW;
             description {
+                max: 300 300;
                 state: "default" 0.0;
                 aspect: 1.0 1.0;
                 aspect_preference: BOTH;
@@ -1854,7 +1856,7 @@ group {
             }
         }
         part {
-            name: "enna.text";
+            name: "enna.text.label";
             type: TEXT;
             description {
                 state: "default" 0.0;
@@ -1872,14 +1874,32 @@ group {
             }
         }
         part {
+            name: "enna.text.description";
+            type: TEXT;
+            description {
+                state: "default" 0.0;
+                rel1.offset: 14 8;
+                rel1.relative: 0 1;
+                rel1.to_y: "enna.text.label";
+                rel2.offset: -15 -70;
+                text {
+                  text:     "Description";
+                  font:     "Comfortaa";
+                  size:     14;
+                  align:    0.5 0.5;
+                  min: 1 0;
+               }
+            }
+        }
+        part {
             name: "enna.progress.swallow";
             type: SWALLOW;
             description {
                 state: "default" 0.0;
                 rel1.offset: 14 8;
                 rel1.relative: 0 1;
-                rel1.to_y: "enna.text";
-                rel2.offset: -15 -70;
+                rel1.to_y: "enna.text.description";
+                rel2.offset: -15 -30;
                 fixed: 1 1;
             }
         }
