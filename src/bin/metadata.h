@@ -39,9 +39,13 @@ void enna_metadata_shutdown(void);
 void *enna_metadata_get_db(void);
 
 Enna_Metadata *enna_metadata_meta_new(const char *file);
-char *enna_metadata_meta_get(const Enna_Metadata *meta,
+const char *enna_metadata_meta_get(const Enna_Metadata *meta,
                              const char *name, int max);
-char *enna_metadata_meta_get_all(const Enna_Metadata *meta);
+void enna_metadata_meta_set(Enna_Metadata *meta,
+                            Enna_File *file,
+                            const char *name,
+                            const char *data);
+const char *enna_metadata_meta_get_all(const Enna_Metadata *meta);
 void  enna_metadata_meta_free(Enna_Metadata *meta);
 void enna_metadata_set_position(Enna_Metadata *meta, double position);
 void enna_metadata_ondemand_add(Enna_File *file);

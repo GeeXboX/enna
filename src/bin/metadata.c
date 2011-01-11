@@ -590,12 +590,12 @@ enna_metadata_meta_free(Enna_Metadata *meta)
     }
 }
 
-char *
+const char *
 enna_metadata_meta_get(const Enna_Metadata *meta, const char *name, int max)
 {
   int count = 0;
   Enna_Buffer *b;
-  char *str = NULL;
+  const char *str = NULL;
 
   if (!meta || !name)
       return NULL;
@@ -614,7 +614,7 @@ enna_metadata_meta_get(const Enna_Metadata *meta, const char *name, int max)
               break;
       }
 
-  str = b->buf ? strdup(b->buf) : NULL;
+  str = b->buf ? eina_stringshare_add(b->buf) : NULL;
   if (str)
       enna_log(ENNA_MSG_EVENT, MODULE_NAME,
                "Requested metadata '%s' is associated to value '%s'",
@@ -624,11 +624,35 @@ enna_metadata_meta_get(const Enna_Metadata *meta, const char *name, int max)
   return str;
 }
 
-char *
+void
+enna_metadata_meta_set(Enna_Metadata *meta, Enna_File *file, const char *name, const char *data)
+{
+    if (!meta || !file || !file->mrl || !name || !data)
+        return;
+
+    for (; meta; meta = meta->next)
+    {
+        if (meta->meta && !strcmp(meta->meta, name))
+        {
+            valhalla_db_metadata_update(vh, file->mrl + 7,
+                                        name, meta->data, data,
+                                        VALHALLA_LANG_UNDEF);
+            return;
+        }
+    }
+
+
+    valhalla_db_metadata_insert(vh, file->mrl + 7,
+                                name, data, VALHALLA_LANG_UNDEF,
+                                VALHALLA_META_GRP_MISCELLANEOUS);
+
+}
+
+const char *
 enna_metadata_meta_get_all(const Enna_Metadata *meta)
 {
   Enna_Buffer *b;
-  char *str = NULL;
+  const char *str = NULL;
 
   if (!meta)
       return NULL;
@@ -638,7 +662,7 @@ enna_metadata_meta_get_all(const Enna_Metadata *meta)
   for (; meta; meta = meta->next)
       enna_buffer_appendf(b, "%s: %s\n", meta->meta, meta->data);
 
-  str = b->buf ? strdup(b->buf) : NULL;
+  str = b->buf ? eina_stringshare_add(b->buf) : NULL;
   enna_buffer_free(b);
 
   return str;
@@ -682,7 +706,7 @@ char *
 enna_metadata_meta_duration_get(const Enna_Metadata *m)
 {
     Enna_Buffer *buf;
-    char *runtime = NULL, *length;
+    const char *runtime = NULL, *length;
     char *duration = NULL;
 
     if (!m)
@@ -733,8 +757,8 @@ enna_metadata_meta_duration_get(const Enna_Metadata *m)
         duration = NULL;
 
 end:
-    ENNA_FREE(runtime);
-    ENNA_FREE(length);
+    eina_stringshare_del(runtime);
+    eina_stringshare_del(length);
     enna_buffer_free(buf);
 
     return duration;
