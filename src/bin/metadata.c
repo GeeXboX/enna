@@ -122,7 +122,6 @@ pipe_read(void *data, void *buf, unsigned int nbyte)
             }
         }
     }
-
     free(od->file);
     free(od);
 }
@@ -680,18 +679,18 @@ enna_metadata_set_position(Enna_Metadata *meta, double position)
 void
 enna_metadata_ondemand_add(Enna_File *file)
 {
-  const char *uri;
+    const char *uri;
 
-  if (!vh || !file || !file->mrl)
-    return;
+    if (!vh || !file || !file->mrl)
+        return;
 
-  uri = file->mrl;
-  if (!strncmp(uri, "file://", 7))
-      uri += 7;
+    uri = file->mrl;
+    if (!strncmp(uri, "file://", 7))
+        uri += 7;
 
-  /* Add file to the list of on demand files */
-  od_files = eina_list_append(od_files, file);
-  valhalla_ondemand(vh, uri);
+    /* Add file to the list of on demand files */
+    od_files = eina_list_append(od_files, file);
+    valhalla_ondemand(vh, uri);
 }
 
 void
