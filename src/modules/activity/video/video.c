@@ -737,50 +737,6 @@ video_infos_del (void)
 }
 
 static void
-_ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
-{
-    Enna_Metadata *m;
-
-    if (!file || !file->mrl || !mod->uri_hilighted)
-        return;
-
-    if (ENNA_FILE_IS_BROWSABLE(file))
-        return;
-
-    if (strcmp(file->mrl, mod->uri_hilighted))
-        return;
-
-    m = enna_metadata_meta_new(file->mrl);
-    if (!m)
-        return;
-
-    switch (ev)
-    {
-    case ENNA_METADATA_OD_PARSED:
-    case ENNA_METADATA_OD_GRABBED:
-        video_infos_display_title(file, m);
-        video_infos_display_genre(file, m);
-        video_infos_display_length(file, m);
-        video_infos_display_synopsis(file, m);
-        enna_video_flags_update(mod->o_video_flags, m);
-        enna_panel_infos_set_text(mod->o_panel_infos, m);
-        enna_panel_infos_set_rating(mod->o_panel_infos, m);
-        if (ev == ENNA_METADATA_OD_PARSED)
-            break;
-    case ENNA_METADATA_OD_ENDED:
-        backdrop_show(m);
-        snapshot_show(m, file->type == ENNA_FILE_DIRECTORY);
-        enna_panel_infos_set_cover(mod->o_panel_infos, m);
-        break;
-
-    default:
-        break;
-    }
-
-    enna_metadata_meta_free(m);
-}
-
-static void
 browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
 {
     Enna_File *file = event_info;
@@ -791,10 +747,6 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
     if (!ENNA_FILE_IS_BROWSABLE(file))
     {
         video_infos_display(file);
-
-        /* ask for on-demand scan for local files */
-        /* if (!strncmp(file->mrl, "file://", 7)) */
-        /*     enna_metadata_ondemand(file, _ondemand_cb_refresh); */
     }
 
 
