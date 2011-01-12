@@ -112,11 +112,14 @@ pipe_read(void *data, void *buf, unsigned int nbyte)
 
     memcpy(&od, buf, nbyte);
 
-    EINA_LIST_FOREACH(od_files, l, file)
+    if (od->ev == ENNA_METADATA_OD_GRABBED)
     {
-        if (!strcmp(file->mrl+7, od->file))
+        EINA_LIST_FOREACH(od_files, l, file)
         {
-            enna_file_meta_callback_call(file);
+            if (!strcmp(file->mrl+7, od->file))
+            {
+                enna_file_meta_callback_call(file);
+            }
         }
     }
 
