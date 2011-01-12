@@ -616,3 +616,30 @@ enna_util_str_has_extension(const char *str, const char *ext)
 {
    return enna_util_str_has_suffix_helper(str, ext, strcasecmp);
 }
+
+const char *
+enna_util_duration_to_string(const char *length)
+{
+    const char *str;
+    Enna_Buffer *buf;
+
+    int hh = 0;
+    int mm = 0;
+    int ss = 0;
+
+    hh = (int) (atoi(length) / 3600 / 1000);
+    mm = (int) ((atoi(length) / 60 / 1000) - (60 * hh));
+    ss = (int) ((atoi(length) / 1000) - (60 * mm) - (3600 * hh));
+
+    buf = enna_buffer_new();
+    if (hh)
+        enna_buffer_appendf(buf, "%.2dh", hh);
+    if (mm)
+        enna_buffer_appendf(buf, "%.2d:", mm);
+
+    enna_buffer_appendf(buf, "%.2d", ss);
+
+    str = eina_stringshare_add(buf->buf);
+    enna_buffer_free(buf);
+    return str;
+}
