@@ -1136,11 +1136,12 @@ group { name: "elm/genlist/item_odd/default/default";
 
 
 ////////////////////////////////////////////////////
+#if 1
 group { name: "elm/genlist/item/track/default";
    data.item: "stacking" "above";
    data.item: "selectraise" "on";
-   data.item: "labels" "elm.text";
-   data.item: "icons" "elm.swallow.icon elm.swallow.starred elm.swallow.end";
+   data.item: "labels" "elm.text.trackno elm.text.title elm.text.length";
+   data.item: "icons" "elm.swallow.playing elm.swallow.starred";
    data.item: "treesize" "20";
    //      data.item: "states" "";
    images {
@@ -1166,16 +1167,12 @@ group { name: "elm/genlist/item/track/default";
             color: 255 255 255 255;
          }
       }
-
-   
-
       part { name: "elm.swallow.pad";
          type: SWALLOW;
          description { state: "default" 0.0;
             fixed: 1 0;
             align: 0.0 0.5;
             rel1 {
- 
                relative: 0.0  0.0;
                offset:   4    4;
             }
@@ -1186,11 +1183,13 @@ group { name: "elm/genlist/item/track/default";
             }
          }
       }
-      part { name: "elm.swallow.icon";
+      part { name: "elm.swallow.playing";
          type: SWALLOW;
          description { state: "default" 0.0;
             fixed: 1 0;
             align: 0.0 0.5;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
             rel1 {
                to: "elm.swallow.pad";
                relative: 1.0  0.0;
@@ -1203,6 +1202,57 @@ group { name: "elm/genlist/item/track/default";
             }
          }
       }
+      part { name: "elm.text.trackno";
+          type: TEXT;
+           description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1 {
+               to: "elm.swallow.playing";
+               relative: 1.0  0.0;
+               offset:   5    4;
+            }
+            rel2 {
+               to: "elm.swallow.playing";
+               relative: 1.0  1.0;
+               offset:   5   -4;
+            }
+           color: 255 255 255 200;
+            //color3: 147 147 147 200;
+            text {
+               font: "Comfortaa";
+               size: 18;
+               //min: 1 1;
+               min: 1 1;
+               align: 0.0 0.5;
+            }
+         }
+      }
+      part { name: "elm.text.length";
+          type: TEXT;
+           description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1 {
+               relative: 1.0  0.0;
+               offset:   -10    4;
+            }
+            rel2 {
+               relative: 1.0  1.0;
+               offset:   -10   -5;
+            }
+           color: 255 255 255 200;
+            //color3: 147 147 147 200;
+            text {
+               font: "Comfortaa";
+               size: 18;
+               //min: 1 1;
+               min: 1 1;
+               align: 0.0 0.5;
+            }
+         }
+      }
+
       part { name: "elm.swallow.starred";
          type: SWALLOW;
          description { state: "default" 0.0;
@@ -1211,35 +1261,18 @@ group { name: "elm/genlist/item/track/default";
             aspect: 1.0 1.0;
             aspect_preference: VERTICAL;
             rel1 {
-               to: "elm.swallow.end";
+               to: "elm.text.length";
                relative: 1.0  0.0;
                offset:   -5    4;
             }
             rel2 {
-               to: "elm.swallow.end";
+               to: "elm.text.length";
                relative: 1.0  1.0;
                offset:   -5   -5;
             }
          }
       }
-      part { name: "elm.swallow.end";
-         type: SWALLOW;
-         description { state: "default" 0.0;
-            fixed: 1 0;
-            align: 1.0 0.5;
-            aspect: 1.0 1.0;
-            aspect_preference: VERTICAL;
-            rel1 {
-               relative: 1.0  0.0;
-               offset:   -5    4;
-            }
-            rel2 {
-               relative: 1.0  1.0;
-               offset:   -5   -5;
-            }
-         }
-      }
-      part { name: "elm.text";
+      part { name: "elm.text.title";
          type:           TEXT;
          //         effect:         SHADOW;
          mouse_events:   0;
@@ -1249,12 +1282,12 @@ group { name: "elm/genlist/item/track/default";
             //               min: 16 16;
             fixed: 1 1;
             rel1 {
-               to_x:     "elm.swallow.icon";
+               to_x:     "elm.text.trackno";
                relative: 1.0  0.0;
                offset:   8 4;
             }
             rel2 {
-               to_x:     "elm.swallow.end";
+               to_x:     "elm.swallow.starred";
                relative: 0.0  1.0;
                offset:   -1 -5;
             }
@@ -1296,7 +1329,7 @@ group { name: "elm/genlist/item/track/default";
          source:  "elm";
          action:  STATE_SET "selected" 0.0;
          target:  "bg";
-         target:  "elm.text";
+         target:  "elm.text.title";
       }
       program {
          name:    "go_passive";
@@ -1304,7 +1337,7 @@ group { name: "elm/genlist/item/track/default";
          source:  "elm";
          action:  STATE_SET "default" 0.0;
          target:  "bg";
-         target:  "elm.text";
+         target:  "elm.text.title";
          transition: LINEAR 0.1;
       }
    }
@@ -1314,10 +1347,9 @@ group { name: "elm/genlist/item/track/default";
 group { name: "elm/genlist/item_odd/track/default";
    data.item: "stacking" "above";
    data.item: "selectraise" "on";
-   data.item: "labels" "elm.text";
-   data.item: "icons" "elm.swallow.playing elm.swallow.icon elm.swallow.end elm.swallow.label";
+   data.item: "labels" "elm.text.trackno elm.text.title elm.text.length";
+   data.item: "icons" "elm.swallow.playing elm.swallow.starred";
    data.item: "treesize" "20";
-   //      data.item: "states" "";
    images {
       image: "sel_bg.png" COMP;
    }
@@ -1342,8 +1374,6 @@ group { name: "elm/genlist/item_odd/track/default";
          }
       }
 
-   
-
       part { name: "elm.swallow.pad";
          type: SWALLOW;
          description { state: "default" 0.0;
@@ -1366,6 +1396,8 @@ group { name: "elm/genlist/item_odd/track/default";
          description { state: "default" 0.0;
             fixed: 1 0;
             align: 0.0 0.5;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
             rel1 {
                to: "elm.swallow.pad";
                relative: 1.0  0.0;
@@ -1378,24 +1410,58 @@ group { name: "elm/genlist/item_odd/track/default";
             }
          }
       }
-      part { name: "elm.swallow.icon";
-         type: SWALLOW;
-         description { state: "default" 0.0;
+      part { name: "elm.text.trackno";
+          type: TEXT;
+           description { state: "default" 0.0;
             fixed: 1 0;
             align: 0.0 0.5;
             rel1 {
                to: "elm.swallow.playing";
                relative: 1.0  0.0;
-               offset:   -1    4;
+               offset:   5    4;
             }
             rel2 {
                to: "elm.swallow.playing";
                relative: 1.0  1.0;
-               offset:   -1   -5;
+               offset:   5   -4;
+            }
+           color: 255 255 255 200;
+            //color3: 147 147 147 200;
+            text {
+               font: "Comfortaa";
+               size: 18;
+               //min: 1 1;
+               min: 1 1;
+               align: 0.0 0.5;
             }
          }
       }
-      part { name: "elm.swallow.end";
+      part { name: "elm.text.length";
+          type: TEXT;
+           description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1 {
+               relative: 1.0  0.0;
+               offset:   -10    4;
+            }
+            rel2 {
+               relative: 1.0  1.0;
+               offset:   -10   -5;
+            }
+           color: 255 255 255 200;
+            //color3: 147 147 147 200;
+            text {
+               font: "Comfortaa";
+               size: 18;
+               //min: 1 1;
+               min: 1 1;
+               align: 0.0 0.5;
+            }
+         }
+      }
+
+      part { name: "elm.swallow.starred";
          type: SWALLOW;
          description { state: "default" 0.0;
             fixed: 1 0;
@@ -1403,16 +1469,18 @@ group { name: "elm/genlist/item_odd/track/default";
             aspect: 1.0 1.0;
             aspect_preference: VERTICAL;
             rel1 {
+               to: "elm.text.length";
                relative: 1.0  0.0;
                offset:   -5    4;
             }
             rel2 {
+               to: "elm.text.length";
                relative: 1.0  1.0;
                offset:   -5   -5;
             }
          }
       }
- part { name: "elm.text";
+      part { name: "elm.text.title";
          type:           TEXT;
          //         effect:         SHADOW;
          mouse_events:   0;
@@ -1422,12 +1490,12 @@ group { name: "elm/genlist/item_odd/track/default";
             //               min: 16 16;
             fixed: 1 1;
             rel1 {
-               to_x:     "elm.swallow.icon";
+               to_x:     "elm.text.trackno";
                relative: 1.0  0.0;
                offset:   8 4;
             }
             rel2 {
-               to_x:     "elm.swallow.end";
+               to_x:     "elm.swallow.starred";
                relative: 0.0  1.0;
                offset:   -1 -5;
             }
@@ -1469,7 +1537,7 @@ group { name: "elm/genlist/item_odd/track/default";
          source:  "elm";
          action:  STATE_SET "selected" 0.0;
          target:  "bg";
-         target:  "elm.text";
+         target:  "elm.text.title";
       }
       program {
          name:    "go_passive";
@@ -1477,12 +1545,12 @@ group { name: "elm/genlist/item_odd/track/default";
          source:  "elm";
          action:  STATE_SET "default" 0.0;
          target:  "bg";
-         target:  "elm.text";
+         target:  "elm.text.title";
          transition: LINEAR 0.1;
       }
    }
 }
-
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/win/inwin/default";
