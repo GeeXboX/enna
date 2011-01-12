@@ -149,6 +149,7 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
     {
     case ENNA_FILE_MENU:
     case ENNA_FILE_DIRECTORY:
+    case ENNA_FILE_FILE:
     {
         page = elm_layout_add(sd->pager);
         elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
@@ -197,21 +198,25 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         break;
       }
     case ENNA_FILE_TRACK:
-    case ENNA_FILE_FILE:
     {
-        const char *artist;
+        const char *title;
         const char *track;
+        const char *duration;
+        const char *sduration;
+        const char *codec;
+        const char *year;
         const char *album;
+        const char *artist;
         const char *cover;
         const char *cover_path;
-        char tmp[4096];
+        const char *tmp;
 
         artist = enna_file_meta_get(file, "author");
         album = enna_file_meta_get(file, "album");
         track = enna_file_meta_get(file, "title");
 
         page = elm_layout_add(sd->pager);
-        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
+        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/track");
         ic = elm_icon_add(page);
         cover = enna_file_meta_get(file, "cover");
         if (cover && cover[0] != '/')
@@ -231,9 +236,88 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
             elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
         }
         evas_object_show(ic);
-        snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
-        elm_layout_content_set(page, "enna.icon.swallow", ic);
-        elm_layout_text_set(page, "enna.text", file->label);
+        elm_layout_content_set(page, "enna.swallow.icon", ic);
+
+        year = enna_file_meta_get(file, "year");
+        if (!year || !year[0] || year[0] == ' ')
+            elm_layout_text_set(page, "enna.text.year", "");
+        else
+        {
+            tmp = eina_stringshare_printf("Year: %s", year);
+            elm_layout_text_set(page, "enna.text.year", tmp);
+            eina_stringshare_del(year);
+            eina_stringshare_del(tmp);
+        }
+
+        codec = enna_file_meta_get(file, "audio_codec");
+        if (!codec || !codec[0] || codec[0] == ' ')
+            elm_layout_text_set(page, "enna.text.codec", "");
+        else
+        {
+            tmp = eina_stringshare_printf("Type: %s", codec);
+            elm_layout_text_set(page, "enna.text.codec", tmp);
+            eina_stringshare_del(codec);
+            eina_stringshare_del(tmp);
+        }
+
+        duration = enna_file_meta_get(file, "duration");
+        if (!duration)
+            duration = enna_file_meta_get(file, "length");
+        if (!duration)
+             elm_layout_text_set(page, "enna.text.length", "");
+        sduration = enna_util_duration_to_string(duration);
+        if (!sduration)
+        {
+            eina_stringshare_del(duration);
+            elm_layout_text_set(page, "enna.text.length", "");
+        }
+        tmp = eina_stringshare_printf("Length: %s", sduration);
+        elm_layout_text_set(page, "enna.text.length", tmp);
+        eina_stringshare_del(sduration);
+        eina_stringshare_del(tmp);
+
+        title = enna_file_meta_get(file, "title");
+        if (!title || !title[0] || title[0] == ' ')
+            elm_layout_text_set(page, "enna.text.title", file->label);
+        else
+        {
+            elm_layout_text_set(page, "enna.text.title", title);
+            eina_stringshare_del(title);
+        }
+
+        track = enna_file_meta_get(file, "track");
+        if (!track)
+            elm_layout_text_set(page, "enna.text.trackno", "");
+        else
+        {
+            tmp = eina_stringshare_printf("%02d.", atoi(track));
+            elm_layout_text_set(page, "enna.text.trackno", tmp);
+            eina_stringshare_del(track);
+            eina_stringshare_del(tmp);
+        }
+        
+        album = enna_file_meta_get(file, "album");
+        if (!album || !album[0] || album[0] == ' ')
+            elm_layout_text_set(page, "enna.text.title", "");
+        else
+        {
+            tmp = eina_stringshare_printf("Album: %s", album);
+            elm_layout_text_set(page, "enna.text.album", tmp);
+            eina_stringshare_del(title);
+            eina_stringshare_del(tmp);
+        }
+
+        artist = enna_file_meta_get(file, "author");
+        if (!artist || !artist[0] || artist[0] == ' ')
+            elm_layout_text_set(page, "enna.text.artist", "");
+        else
+        {
+            tmp = eina_stringshare_printf("Artist: %s", artist);
+            elm_layout_text_set(page, "enna.text.artist", tmp);
+            eina_stringshare_del(title);
+            eina_stringshare_del(tmp);
+        }
+        
         evas_object_show(page);
         elm_pager_content_pop(sd->pager);
         elm_pager_content_push(sd->pager, page);

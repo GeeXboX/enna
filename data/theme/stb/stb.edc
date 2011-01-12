@@ -1907,7 +1907,7 @@ group {
 }
 
 group {
-    name: "panel/infos/tracks";
+    name: "panel/infos/track";
     images {
         image: "browser_bg.png" COMP;
     }
@@ -1924,7 +1924,7 @@ group {
             }
         }
         part {
-            name: "enna.icon.swallow";
+            name: "enna.swallow.icon";
             type: SWALLOW;
             description {
                 max: 300 300;
@@ -1932,57 +1932,215 @@ group {
                 aspect: 1.0 1.0;
                 aspect_preference: BOTH;
                 rel1.offset: 14 14;
-                rel2.offset: -15 -128;
+                rel2.relative: 0.7 0.7;
             }
         }
         part {
-            name: "enna.text.label";
+            name: "enna.text.year";
             type: TEXT;
             description {
                 state: "default" 0.0;
-                rel1.offset: 14 8;
-                rel1.relative: 0 1;
-                rel1.to_y: "enna.icon.swallow";
-                rel2.offset: -15 -100;
+                rel1.offset: 8 0;
+                rel1.to: "enna.swallow.icon";
+                rel1.relative: 1 0;
+
+                rel2.offset: -14 0;
+                rel2.to_y: "enna.swallow.icon";
+                rel2.relative: 1 0.33;
+
+                align: 0 0.5;
+
                 text {
-                  text:     "Description";
+                  text:     "Year: 2011";
                   font:     "Comfortaa";
                   size:     14;
-                  align:    0.5 0.5;
+                  align:    0 0.5;
                   min: 1 0;
                }
             }
         }
+
         part {
-            name: "enna.text.description";
+            name: "enna.text.length";
             type: TEXT;
             description {
                 state: "default" 0.0;
-                rel1.offset: 14 8;
-                rel1.relative: 0 1;
-                rel1.to_y: "enna.text.label";
-                rel2.offset: -15 -70;
+                rel1.offset: 8 0;
+                rel1.to: "enna.swallow.icon";
+                rel1.relative: 1 0.33;
+
+                rel2.offset: -14 0;
+                rel2.to_y: "enna.swallow.icon";
+                rel2.relative: 1 0.66;
+
+                align: 0 0.5;
+
                 text {
-                  text:     "Description";
+                  text:     "Length: 00:00";
                   font:     "Comfortaa";
                   size:     14;
-                  align:    0.5 0.5;
+                  align:    0 0.5;
                   min: 1 0;
                }
             }
         }
+
         part {
-            name: "enna.progress.swallow";
-            type: SWALLOW;
+            name: "enna.text.codec";
+            type: TEXT;
             description {
                 state: "default" 0.0;
-                rel1.offset: 14 8;
-                rel1.relative: 0 1;
-                rel1.to_y: "enna.text.description";
-                rel2.offset: -15 -30;
+                rel1.offset: 8 0;
+                rel1.to: "enna.swallow.icon";
+                rel1.relative: 1 0.66;
+
+                rel2.offset: -14 0;
+                rel2.to_y: "enna.swallow.icon";
+                rel2.relative: 1 1;
+
+                align: 0 0.5;
+
+                text {
+                  text:     "Codec: Flac";
+                  font:     "Comfortaa";
+                  size:     14;
+                  align:    0 0.5;
+                  min: 1 0;
+               }
+            }
+        }
+
+        part {
+            name: "enna.text.trackno";
+            type: TEXT;
+            description {
+                state: "default" 0.0;
                 fixed: 1 1;
+                rel1.offset: 14 32;
+                rel1.to: "enna.swallow.icon";
+                rel1.relative: 0 1;
+
+                rel2.offset: 14 32;
+                rel2.to_y: "enna.swallow.icon";
+                rel2.relative: 0 1;
+                align: 0 0;
+                text {
+                  text:     "Track: 00";
+                  font:     "Comfortaa";
+                  size:     18;
+                  align:    0 0;
+                  min: 1 1;
+               }
             }
         }
+
+        part {
+            name: "enna.text.title";
+            type: TEXT;
+            description {
+                state: "default" 0.0;
+                rel1.offset: 8 0;
+                rel1.to: "enna.text.trackno";
+                rel1.relative: 1 0;
+
+                rel2.offset: -32 0;
+                rel2.to_y: "enna.text.trackno";
+                rel2.relative: 1 1;
+
+                text {
+                  text:     "Title: Title Name";
+                  font:     "Comfortaa";
+                  size:     18;
+                  align:    0 0.5;
+                  min: 0 1;
+               }
+            }
+        }
+
+        part {
+            name: "enna.text.album";
+            type: TEXT;
+            description {
+                state: "default" 0.0;
+                rel1.offset: 0 16;
+                rel1.to: "enna.text.trackno";
+                rel1.relative: 0 1;
+
+                rel2.offset: -32 0;
+                rel2.to_y: "enna.text.trackno";
+                rel2.relative: 1 1;
+
+                fixed: 1 1;
+                align: 0 0;
+
+                text {
+                  text:     "Album: Album name";
+                  font:     "Comfortaa";
+                  size:     18;
+                  align:    0 0.5;
+                  min: 1 1;
+               }
+            }
+        }
+
+        part {
+            name: "enna.text.artist";
+            type: TEXT;
+            description {
+                state: "default" 0.0;
+                rel1.offset: 0 16;
+                rel1.to: "enna.text.album";
+                rel1.relative: 0 1;
+
+                rel2.offset: -32 0;
+                rel2.to_y: "enna.text.album";
+                rel2.relative: 1 1;
+
+                fixed: 1 1;
+                align: 0 0;
+
+                text {
+                  text:     "Artist: Artist name";
+                  font:     "Comfortaa";
+                  size:     18;
+                  align:    0 0.5;
+                  min: 1 1;
+               }
+            }
+        }
+
+
+
+        /* part { */
+        /*     name: "enna.text.description"; */
+        /*     type: TEXT; */
+        /*     description { */
+        /*         state: "default" 0.0; */
+        /*         rel1.offset: 14 8; */
+        /*         rel1.relative: 0 1; */
+        /*         rel1.to_y: "enna.text.label"; */
+        /*         rel2.offset: -15 -70; */
+        /*         text { */
+        /*           text:     "Description"; */
+        /*           font:     "Comfortaa"; */
+        /*           size:     14; */
+        /*           align:    0.5 0.5; */
+        /*           min: 1 0; */
+        /*        } */
+        /*     } */
+        /* } */
+        /* part { */
+        /*     name: "enna.progress.swallow"; */
+        /*     type: SWALLOW; */
+        /*     description { */
+        /*         state: "default" 0.0; */
+        /*         rel1.offset: 14 8; */
+        /*         rel1.relative: 0 1; */
+        /*         rel1.to_y: "enna.text.description"; */
+        /*         rel2.offset: -15 -30; */
+        /*         fixed: 1 1; */
+        /*     } */
+        /* } */
     }
 }
 
