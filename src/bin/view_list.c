@@ -90,6 +90,17 @@ _item_realized_cb(void *data, Evas_Object *obj, void *event_info)
    evas_object_event_callback_add(o_item, EVAS_CALLBACK_MOUSE_UP,_item_click_cb, item);
 }
 
+
+static void
+_file_meta_update(void *data, Enna_File *file)
+{
+    List_Item *it = data;
+    if (!it || !it->item)
+        return;
+    elm_genlist_item_update(it->item);
+}
+
+
 static void
 _item_remove(Evas_Object *obj, List_Item *item)
 {
@@ -98,7 +109,10 @@ _item_remove(Evas_Object *obj, List_Item *item)
     if (!sd || !item) return;
 
     sd->items = eina_list_remove(sd->items, item);
-    ENNA_FREE(item);
+    enna_file_meta_callback_del(item->file, _file_meta_update);
+    enna_file_free(item->file);
+    elm_genlist_item_del(item->item);
+    free(item);
 
     return;
 }
@@ -343,6 +357,7 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 
     enna_list_clear(obj);
     eina_list_free(sd->items);
+
     free(sd);
 }
 
@@ -384,7 +399,8 @@ enna_list_file_append(Evas_Object *obj, Enna_File *file,
 
     it->func_activated = func_activated;
     it->data = data;
-    it->file = file;
+    it->file = enna_file_ref(file);
+    
     if (file->type == ENNA_FILE_TRACK)
         it->item = elm_genlist_item_append (obj, &itc_list_track, it,
                                             NULL, ELM_GENLIST_ITEM_NONE,
@@ -394,7 +410,7 @@ enna_list_file_append(Evas_Object *obj, Enna_File *file,
                                             NULL, ELM_GENLIST_ITEM_NONE,
                                             _item_selected, it);
     sd->items = eina_list_append(sd->items, it);
-
+    enna_file_meta_callback_add(file, _file_meta_update, it);
     /* Select first item */
     if (eina_list_count(sd->items) == 1)
         enna_list_select_nth(obj, 0);
@@ -413,9 +429,7 @@ enna_list_file_remove(Evas_Object *obj, Enna_File *file)
     {
         if (it->file == file)
         {
-            elm_genlist_item_del(it->item);
-            free(it);
-            sd->items = eina_list_remove(sd->items, it);
+            _item_remove(obj, it);
             break;
         }
     }
@@ -436,7 +450,8 @@ enna_list_file_update(Evas_Object *obj, Enna_File *file)
         if (it->file == file)
         {
             DBG("Update genlist item");
-            elm_genlist_item_update(it->item);
+            if (it->item)
+                elm_genlist_item_update(it->item);
             break;
         }
     }
@@ -636,9 +651,9 @@ enna_list_clear(Evas_Object *obj)
     List_Item *item;
     Eina_List *l, *l_next;
 
-    elm_genlist_clear(obj);
     EINA_LIST_FOREACH_SAFE(sd->items, l, l_next, item)
     {
         _item_remove(obj, item);
     }
+    elm_genlist_clear(obj);
 }
