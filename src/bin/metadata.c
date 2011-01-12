@@ -696,11 +696,20 @@ enna_metadata_ondemand_add(Enna_File *file)
 void
 enna_metadata_ondemand_del(Enna_File *file)
 {
-  if (!vh || !file)
-    return;
+    Eina_List *l;
+    Enna_File *f;
 
-  /* Add file to the list of on demand files */
-  od_files = eina_list_remove(od_files, file);
+    if (!vh || !file)
+        return;
+
+    /* Add file to the list of on demand files */
+    EINA_LIST_FOREACH(od_files, l, f)
+    {
+        if (!strcmp(file->mrl, f->mrl))
+            od_files = eina_list_remove(od_files, file);
+    }
+
+
 }
 
 
