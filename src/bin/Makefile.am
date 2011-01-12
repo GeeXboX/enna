@@ -37,6 +37,7 @@ image.c\
 file.c\
 browser.c\
 browser_obj.c\
+infos.c\
 content.c\
 view_list.c\
 view_list2.c\

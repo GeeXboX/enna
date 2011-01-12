@@ -19,12 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef MUSIC_INFOS_H
-#define MUSIC_INFOS_H
+#ifndef INFOS_H
+#define INFOS_H
 
 #include "enna.h"
 
-Evas_Object *enna_music_infos_add (Evas_Object * parent);
-void enna_music_infos_set_text (Evas_Object *obj, Enna_Metadata *m);
-void enna_music_infos_file_set(Evas_Object *obj, Enna_File *file);
-#endif /* MUSIC_INFOS_H */
+Evas_Object *enna_infos_add (Evas_Object * parent);
+void enna_infos_file_set(Evas_Object *obj, Enna_File *file);
+
+#endif /* INFOS_H */

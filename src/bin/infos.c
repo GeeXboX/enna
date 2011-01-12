@@ -29,7 +29,7 @@
 #include "logs.h"
 #include "image.h"
 #include "buffer.h"
-#include "music_infos.h"
+#include "infos.h"
 #include "utils.h"
 
 typedef struct _Smart_Data Smart_Data;
@@ -109,10 +109,10 @@ _file_update_cb(void *data, Enna_File *file)
 /* externally accessible functions */
 
 Evas_Object *
-enna_music_infos_add (Evas_Object *parent)
+enna_infos_add (Evas_Object *parent)
 {
     Smart_Data *sd;
- 
+
     sd = calloc(1, sizeof(Smart_Data));
 
     sd->pager = elm_pager_add(parent);
@@ -125,7 +125,7 @@ enna_music_infos_add (Evas_Object *parent)
 }
 
 void
-enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
+enna_infos_file_set(Evas_Object *obj, Enna_File *file)
 {
     Evas_Object *page;
     Smart_Data *sd;
@@ -142,6 +142,7 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
     //    enna_file_free(sd->file);
 
     //sd->file = enna_file_dup(file);
+    printf("Add infos file set for %s\n", file->uri);
     enna_file_meta_callback_add(file, _file_update_cb, sd);
 
 
@@ -177,7 +178,7 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
         evas_object_show(ic);
         elm_layout_content_set(page, "enna.icon.swallow", ic);
         elm_layout_text_set(page, "enna.text.label", file->label);
-        lb = eina_stringshare_printf("Size : %s Freespace : %s In use %s%%", 
+        lb = eina_stringshare_printf("Size : %s Freespace : %s In use %s%%",
                                      enna_file_meta_get(file, ENNA_META_KEY_SIZE),
                                      enna_file_meta_get(file, ENNA_META_KEY_FREESPACE),
                                      enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED));
@@ -295,7 +296,7 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
             eina_stringshare_del(track);
             eina_stringshare_del(tmp);
         }
-        
+
         album = enna_file_meta_get(file, "album");
         if (!album || !album[0] || album[0] == ' ')
             elm_layout_text_set(page, "enna.text.title", "");
@@ -317,7 +318,7 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
             eina_stringshare_del(title);
             eina_stringshare_del(tmp);
         }
-        
+
         evas_object_show(page);
         elm_pager_content_pop(sd->pager);
         elm_pager_content_push(sd->pager, page);
@@ -325,57 +326,9 @@ enna_music_infos_file_set(Evas_Object *obj, Enna_File *file)
     }
     default:
         break;
-        
+
     }
     sd->ic = ic;
     sd->page = page;
 }
 
-void
-enna_music_infos_set_text (Evas_Object *obj, Enna_Metadata *m)
-{
-#if 0
-    Enna_Buffer *buf;
-    char *lyrics, *title;
-    char *b;
-    Smart_Data *sd = evas_object_data_get(obj, "sd");
-
-    if (!m || !sd)
-      return;
-
-    title = enna_metadata_meta_get(m, "title", 1);
-    if (!title)
-        return;
-
-    lyrics = enna_metadata_meta_get(m, "lyrics", 1);
-    if (!lyrics)
-    {
-        free (title);
-        elm_label_label_set(sd->text, _("No lyrics found ..."));
-        return;
-    }
-
-    buf = enna_buffer_new ();
-
-    /* display song name */
-    enna_buffer_append  (buf, "<h4><hl><sd><b>");
-    enna_buffer_appendf (buf, "%s", title);
-    enna_buffer_append  (buf, "</b></sd></hl></h4><br>");
-    free (title);
-
-    /* display song associated lyrics */
-    enna_buffer_append  (buf, "<br/>");
-    b = lyrics;
-    while (*b)
-    {
-        if (*b == '\n')
-            enna_buffer_append (buf, "<br>");
-        else
-            enna_buffer_appendf (buf, "%c", *b);
-        (void) *b++;
-    }
-    free (lyrics);
-
-    elm_label_label_set (sd->text, buf->buf);
-#endif
-}

@@ -16,9 +16,6 @@ INCLUDES = \
 -I$(top_srcdir)/src/modules \
 @ENNA_CFLAGS@
 
-EXTRA_DIST = \
-music_infos.h
-
 if BUILD_ACTIVITY_MUSIC
 
 pkgdir = $(libdir)/enna/modules

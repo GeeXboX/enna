@@ -37,8 +37,7 @@
 #include "volumes.h"
 #include "module.h"
 #include "browser.h"
-
-#include "music_infos.h"
+#include "infos.h"
 
 #define ENNA_MODULE_NAME "music"
 
@@ -242,54 +241,6 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_ondemand_cb_refresh(Enna_File *file, Enna_Metadata_OnDemand ev)
-{
-    char *uri;
-    Enna_Metadata *m;
-    DBG(__FUNCTION__);
-    if (!file || !file->uri || !mod->enna_playlist)
-        return;
-
-    if (ENNA_FILE_IS_BROWSABLE(file))
-        return;
-
-    /*
-     * With the music activity, there is nothing to refresh if no file is
-     * set to the mediaplayer.
-     */
-    uri = enna_mediaplayer_get_current_uri();
-    if (!uri)
-        return;
-
-    if (strcmp(file->uri, uri))
-        return;
-
-    m = enna_metadata_meta_new(file->mrl);
-    if (!m)
-        return;
-
-    switch (ev)
-    {
-    case ENNA_METADATA_OD_PARSED:
-    case ENNA_METADATA_OD_GRABBED:
-        enna_music_infos_set_text(mod->o_infos, m);
-    case ENNA_METADATA_OD_ENDED:
-        /*
-         * The texts and the cover are handled in mediaplayer_obj contrary
-         * to the video activity where all metadata are handled separately.
-         */
-        enna_mediaplayer_obj_metadata_refresh(mod->o_mediaplayer);
-        break;
-
-    default:
-        break;
-    }
-
-    enna_metadata_meta_free(m);
-    free(uri);
-}
-
-static void
 _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
 {
     Enna_File *file = event_info;
@@ -300,7 +251,7 @@ _browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
     DBG("File hilight : %s (%d)", file->label, file->type);
     /* Ensure Infos are displayed */
     _panel_infos_display(1);
-    enna_music_infos_file_set(mod->o_infos, file);
+    enna_infos_file_set(mod->o_infos, file);
 
 #if 0
 
@@ -365,7 +316,7 @@ _create_menu()
     elm_layout_content_set(mod->o_layout, "browser.swallow", mod->o_browser);
 
     /* Create Lyrics */
-    mod->o_infos = enna_music_infos_add (mod->o_pager);
+    mod->o_infos = enna_infos_add (mod->o_pager);
     elm_pager_content_push(mod->o_pager, mod->o_infos);
 }
 

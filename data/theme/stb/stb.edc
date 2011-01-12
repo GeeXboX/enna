@@ -1603,6 +1603,135 @@ images {
     }
  }
 
+images {
+   image: "browser_bg.png" COMp;
+}
+
+group {
+   name: "activity/video/panel_infos";
+
+   parts {
+
+       part {
+       name: "bg";
+       type: IMAGE;
+       mouse_events: 0;
+           description {
+           state: "default" 0.0;
+           image {
+               normal: "browser_bg.png";
+               border: 15 15 15 15;
+               }
+
+           }
+       }
+
+       part {
+          name: "panel.content.clip";
+          type: RECT;
+          mouse_events: 0;
+          description {
+             state: "default" 0.0;
+
+             rel1.relative: 0 0;
+             rel1.offset: 38 38;
+
+             rel2.relative: 1 1;
+             rel2.offset: -38 -38;
+          }
+       }
+
+       part {
+          name: "panel.cover.clip";
+          type: RECT;
+          clip_to: "panel.content.clip";
+          description {
+             state: "default" 0.0;
+
+             rel1.relative: 0 0;
+             rel1.to: "panel.content.clip";
+
+             rel2.relative: 0.35 1.0;
+             rel2.to: "panel.content.clip";
+          }
+       }
+
+       /* part { */
+       /*    name: "panel.cover.shadow"; */
+       /*    type: IMAGE; */
+       /*    description { */
+       /*       state: "default" 0.0; */
+       /*       visible: 1; */
+
+       /*       rel1.to: "panel.cover.swallow"; */
+       /*       rel2.to: "panel.cover.swallow"; */
+       /*       rel2.offset: 12 12; */
+
+       /*       image.normal: "shadow.png"; */
+       /*       image.border: 14 14 14 14; */
+       /*    } */
+       /*    description { */
+       /*       state: "hidden" 0.0; */
+       /*       visible: 0; */
+       /*    } */
+       /* } */
+
+       part {
+          name: "panel.cover.swallow";
+          type: SWALLOW;
+          clip_to: "panel.cover.clip";
+          description {
+             state: "default" 0.0;
+
+             rel1.relative: 0 0;
+             rel1.to: "panel.cover.clip";
+
+             rel2.relative: 1 1;
+             rel2.to: "panel.cover.clip";
+
+             aspect: 0.69 0.69;
+             aspect_preference: BOTH;
+             align: 0.5 0;
+          }
+       }
+
+       part {
+          name: "panel.textblock";
+	  type: TEXTBLOCK;
+          clip_to: "panel.content.clip";
+          description {
+             state: "show" 0.0;
+
+             rel1.relative: 0.4 0;
+             rel1.to: "panel.content.clip";
+
+             rel2.relative: 1.0 1.0;
+             rel2.to: "panel.content.clip";
+
+             text.style: "style.infos.video";
+	     text.min: 0 0;
+          }
+       }
+
+       part {
+          name: "panel.rating.swallow";
+          type: SWALLOW;
+          clip_to: "panel.content.clip";
+          description {
+             state: "show" 0.0;
+             aspect: 4.71 4.71;
+             aspect_preference: HORIZONTAL;
+
+             rel1.relative: 0.77 0.87;
+
+             rel2.relative: 1 1;
+             rel2.to: "panel.content.clip";
+          }
+       }
+   }
+
+}
+
 
 group {
    name: "activity/video/picture";
