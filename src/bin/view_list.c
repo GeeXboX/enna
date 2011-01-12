@@ -28,6 +28,7 @@
 #include "vfs.h"
 #include "logs.h"
 #include "mediaplayer.h"
+#include "utils.h"
 
 #define SMART_NAME "enna_list"
 
@@ -161,24 +162,58 @@ static char *
 _list_item_track_label_get(const void *data, Evas_Object *obj, const char *part)
 {
     const List_Item *li = data;
-    const char *artist;
+    const char *title;
     const char *track;
-    const char *album;
     const char *duration;
-    char tmp[4096];
+    const char *sduration;
+    char *tmp;
 
     if (!li || !li->file) return NULL;
 
-    artist = enna_file_meta_get(li->file, "author");
-    album = enna_file_meta_get(li->file, "album");
-    track = enna_file_meta_get(li->file, "title");
+    if (!strcmp(part, "elm.text.title"))
+    {
+        title = enna_file_meta_get(li->file, "title");
+        if (!title || !title[0] || title[0] == ' ')
+            return li->file->label ? strdup(li->file->label) : NULL;
+        else
+        {
+            tmp = strdup(title);
+            eina_stringshare_del(title);
+            return tmp;
+        }
+    }
+    else if (!strcmp(part, "elm.text.trackno"))
+    {
+        track = enna_file_meta_get(li->file, "track");
+        if (!track)
+            return NULL;
+        else
+        {
+            track = eina_stringshare_printf("%02d.", atoi(track));
+            tmp = strdup(track);
+            eina_stringshare_del(track);
+            return tmp;
+        }
+    }
+    else if (!strcmp(part, "elm.text.length"))
+    {
+        duration = enna_file_meta_get(li->file, "duration");
+        if (!duration)
+            duration = enna_file_meta_get(li->file, "length");
+        if (!duration)
+            return NULL;
+        sduration = enna_util_duration_to_string(duration);
+        if (!sduration)
+        {
+            eina_stringshare_del(duration);
+            return NULL;
+        }
+        tmp = strdup(sduration);
+        eina_stringshare_del(sduration);
+        return tmp;
+    }
 
-    if (!track)
-        return li->file->label ? strdup(li->file->label) : NULL;
-
-    snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
-    return strdup(tmp);
-
+    return NULL;
 }
 
 static Evas_Object *
@@ -188,25 +223,7 @@ _list_item_track_icon_get(const void *data, Evas_Object *obj, const char *part)
 
     if (!li) return NULL;
 
-    if (!strcmp(part, "elm.swallow.icon"))
-    {
-        Evas_Object *ic;
-
-        if (!li->file || li->file->type != ENNA_FILE_MENU)
-            return NULL;
-
-        ic = elm_icon_add(obj);
-        if (li->file->icon && li->file->icon[0] == '/')
-            elm_icon_file_set(ic, li->file->icon, NULL);
-        else if (li->file->icon)
-            elm_icon_file_set(ic, enna_config_theme_get(), li->file->icon);
-        else
-            return NULL;
-        evas_object_size_hint_min_set(ic, 32, 32);
-        evas_object_show(ic);
-        return ic;
-    }
-    else if (!strcmp(part, "elm.swallow.starred"))
+    if (!strcmp(part, "elm.swallow.starred"))
     {
         Evas_Object *ic;
         const char *starred;
@@ -241,6 +258,7 @@ _list_item_track_icon_get(const void *data, Evas_Object *obj, const char *part)
         }
         eina_stringshare_del(tmp);
         ic = elm_icon_add(obj);
+        printf("PLAYING icon add\n");
         elm_icon_file_set(ic, enna_config_theme_get(), "icon/mp_play");
         evas_object_size_hint_min_set(ic, 24, 24);
         evas_object_show(ic);
@@ -323,7 +341,7 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
     if (!sd)
         return;
 
-    enna_list_clear(sd->obj);
+    enna_list_clear(obj);
     eina_list_free(sd->items);
     free(sd);
 }
