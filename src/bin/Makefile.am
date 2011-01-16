@@ -259,6 +259,8 @@ activity.h\
 image.h\
 file.h\
 browser.h\
+browser_obj.h\
+infos.h\
 content.h\
 view_list.h\
 view_list2.h\
