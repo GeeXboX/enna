@@ -1801,12 +1801,14 @@ group {
             name: "enna.icon.swallow";
             type: SWALLOW;
             description {
-                state: "default" 0.0;
-                max: 300 300;
-                aspect: 1.0 1.0;
-                aspect_preference: BOTH;
+               state: "default" 0.0;
+               min: 1 1;
+               max: 300 300;
+               aspect: 1.0 1.0;
+               aspect_preference: BOTH;
                 rel1.offset: 14 14;
-                rel2.offset: -15 -128;
+                rel2.relative: 1 0.8;
+                rel2.offset: -13 0;
             }
         }
         part {
@@ -1823,6 +1825,7 @@ group {
                   font:     "Comfortaa";
                   size:     14;
                   align:    0.5 0.5;
+                  min: 0 0;
 
                }
             }
@@ -2146,6 +2149,163 @@ group {
         /*     } */
         /* } */
     }
+}
+
+group {
+   name: "panel/infos/film";
+   parts {
+      part {
+         name: "enna.swallow.cover";
+         type: SWALLOW;
+         mouse_events: 0;
+         description {
+            aspect_preference: VERTICAL;
+            state: "default" 0.0;
+            rel1.relative: 0.0 0.0;
+            rel1.offset: 8 8;
+            rel2.relative: 1.0 0.75;
+            rel2.offset: -7 0;
+         }
+      }
+
+
+      part {
+         name: "enna.text.title";
+         type: TEXT;
+         mouse_events:  0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            rel1.relative: 0.0 1.0;
+            rel1.offset: 8 8 ;
+            rel1.to_y: "enna.swallow.cover";
+            rel2.relative: 1.0 1.0;
+            rel2.offset: 8 8;
+            rel2.to_y: "enna.swallow.cover";
+            color: 255 255 255 200;
+            align: 0 0;
+            fixed: 1 1;
+            text {
+               font: "Comfortaa";
+               size: 20;
+               min: 0 1;
+               align: 0.5 0.5;
+            }
+         }
+      }
+      
+      /* video flags */
+      part {
+         name: "infos.flags.clip";
+         mouse_events: 0;
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0.0 1.0;
+            rel1.to_y: "enna.swallow.cover";
+            rel1.offset: 0 8;
+            rel2.relative:  1.0 1.0;
+            rel2.to_y: "enna.swallow.cover";
+            rel2.offset: 0 72;
+            color: 255 255 255 255;
+         }
+      }
+
+      part {
+         name: "infos.flags.swallow";
+         mouse_events: 0;
+         clip_to: infos.flags.clip;
+         type: SWALLOW;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0 0;
+            rel1.to: "infos.flags.clip";
+            rel2.relative: 1 1;
+            rel2.to: "infos.flags.clip";
+         }
+      }
+
+      /* Movie Length */
+      part {
+         name: "enna.text.length";
+         type: TEXT;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+
+            rel1.relative: 0.0 1.0;
+            rel1.to: "infos.flags.swallow";
+            rel1.offset: 0 8;
+            rel2.relative: 1.0 1.0;
+            rel2.to: "infos.flags.swallow";
+            rel2.offset: 0 8;
+
+            color: 255 255 255 255;
+            text {
+               font: "Comfortaa";
+               size: 14;
+               min: 0 1;
+               align: 0.5 1;
+            }
+         }
+      }
+
+      /* Movie Categories */
+      part {
+         name: "enna.text.genre";
+         type: TEXT;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+
+            rel1.relative: 0.0 1.0;
+            rel1.to: "enna.text.length";
+            rel1.offset: 0 8;
+            rel2.relative: 1.0 1.0;
+            rel2.to: "enna.text.length";
+            rel2.offset: 0 38;
+
+            color: 255 255 255 255;
+            text {
+               font: "Comfortaa";
+               size: 16;
+               min: 0 1;
+               align: 0.5 1;
+            }
+         }
+      }
+
+
+    /*   /\* synopsis *\/ */
+    /*   part { */
+    /*      name: "enna.text.synopsis"; */
+    /*      type: TEXTBLOCK; */
+    /*      effect: SOFT_SHADOW; */
+    /*      mouse_events: 0; */
+    /*      scale: 1; */
+    /*      description { */
+    /*         state: "default" 0.0; */
+    /*         visible: 1; */
+    /*         rel1.relative: 0.0 1.0; */
+    /*         rel1.to: "enna.text.genre"; */
+    /*         rel1.offset: 0 8;  */
+    /*         rel2.relative: 1.0 1.0; */
+    /*         color: 255 255 255 255; */
+    /*         color3: 0 0 0 64; */
+
+    /*      text { */
+    /*            style: "style.infos.video"; */
+    /*            min: 0 0; */
+    /*         } */
+    /*      } */
+    /*   } */
+    }
+
 }
 
 group {
