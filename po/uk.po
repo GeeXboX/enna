@@ -7,74 +7,74 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-08-21 13:15+0200\n"
+"POT-Creation-Date: 2011-01-16 23:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Ukraine\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=0;\n"
 "X-Poedit-Language: Ukrainian\n"
 "X-Poedit-Country: UKRAINE\n"
 
-#: src/bin/browser.c:248
+#: src/bin/browser.c:252
 #, fuzzy
 msgid "No media found!"
 msgstr "Не знайдено джерела!"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:525
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедіаЦентр Enna\n"
 
-#: src/bin/enna.c:512
+#: src/bin/enna.c:526
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Використання: %s [опції...]\n"
 
-#: src/bin/enna.c:513
+#: src/bin/enna.c:527
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Доступні опції:\n"
 
-#: src/bin/enna.c:514
+#: src/bin/enna.c:528
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Вкажіть конфігураційний файл.\n"
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:529
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Примусовий повноекраний режим.\n"
 
-#: src/bin/enna.c:516
+#: src/bin/enna.c:530
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Показує це повідомлення.\n"
 
-#: src/bin/enna.c:517
+#: src/bin/enna.c:531
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Вкажіть назву теми, що буде використовуватись.\n"
 
-#: src/bin/enna.c:518
+#: src/bin/enna.c:532
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Вкажіть розміри вікна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:519
+#: src/bin/enna.c:533
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p (--profile): вкажіть профіль дісплею \n"
 
-#: src/bin/enna.c:520
+#: src/bin/enna.c:534
 #, c-format
 msgid "    Supported: "
 msgstr "\tПідтримується: "
 
-#: src/bin/enna.c:524
+#: src/bin/enna.c:538
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Відображує номер версії Enna.\n"
@@ -118,73 +118,73 @@ msgstr "Не надано необхідної інформації."
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Доріжка #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
+#: src/bin/weather_api.c:406 src/bin/weather_api.c:439
 msgid "City"
 msgstr "Місто"
 
-#: src/bin/weather_api.c:406
+#: src/bin/weather_api.c:407
 msgid "Choose your City"
 msgstr "Виберіть ваше місто"
 
-#: src/bin/weather_api.c:410
+#: src/bin/weather_api.c:411
 msgid "Enter your City here"
 msgstr "Введіть ваше місто тут"
 
-#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
+#: src/bin/weather_api.c:414 src/bin/weather_api.c:447
 #, fuzzy
 msgid "Remove"
 msgstr "Видалити"
 
-#: src/bin/weather_api.c:439
+#: src/bin/weather_api.c:440
 msgid "Choose your city"
 msgstr "Виберіть ваше місто"
 
-#: src/bin/weather_api.c:451
+#: src/bin/weather_api.c:452
 msgid "Add new city"
 msgstr "Додати місто"
 
-#: src/bin/weather_api.c:452
+#: src/bin/weather_api.c:453
 msgid "Add more cities to the list"
 msgstr "Додати більше міст до списку"
 
-#: src/bin/weather_api.c:457
+#: src/bin/weather_api.c:458
 msgid "Add"
 msgstr "Додати"
 
-#: src/bin/weather_api.c:461
+#: src/bin/weather_api.c:462
 msgid "Select unit"
 msgstr "Виберіть одиниці"
 
-#: src/bin/weather_api.c:462
+#: src/bin/weather_api.c:463
 msgid "Select the unit to display temperature"
 msgstr "Віберіть одиниці відображення температури"
 
-#: src/bin/weather_api.c:467
+#: src/bin/weather_api.c:468
 msgid "°C"
 msgstr "°C"
 
-#: src/bin/weather_api.c:467
+#: src/bin/weather_api.c:468
 msgid "°F"
 msgstr "°F"
 
-#: src/bin/weather_api.c:471
+#: src/bin/weather_api.c:472
 msgid "Select hemisphere"
 msgstr "Виберіть півкулю"
 
-#: src/bin/weather_api.c:472
+#: src/bin/weather_api.c:473
 #, fuzzy
 msgid "Select the hemisphere you are located in"
 msgstr "Показувати погоду у вашому місті"
 
-#: src/bin/weather_api.c:477
+#: src/bin/weather_api.c:478
 msgid "Northern"
 msgstr "Північна"
 
-#: src/bin/weather_api.c:477
+#: src/bin/weather_api.c:478
 msgid "Southern"
 msgstr "Південна"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:290
+#: src/bin/weather_api.c:722 src/modules/activity/weather/weather.c:290
 msgid "Weather"
 msgstr "Погода"
 
@@ -198,22 +198,22 @@ msgstr "Книжна полиця"
 msgid "Read your books"
 msgstr "Читати книжки"
 
-#: src/modules/activity/configuration/configuration.c:210
-#: src/modules/activity/configuration/configuration.c:269
+#: src/modules/activity/configuration/configuration.c:206
+#: src/modules/activity/configuration/configuration.c:265
 msgid "Configuration"
 msgstr "Налаштування"
 
-#: src/modules/activity/configuration/configuration.c:245
-#: src/modules/activity/configuration/configuration_sysinfo.c:517
+#: src/modules/activity/configuration/configuration.c:241
+#: src/modules/activity/configuration/configuration_sysinfo.c:677
 #, fuzzy
 msgid "System information"
 msgstr "<c>Інформація про систему</c><br><br>"
 
-#: src/modules/activity/configuration/configuration.c:248
+#: src/modules/activity/configuration/configuration.c:244
 msgid "Credits"
 msgstr "Подяка"
 
-#: src/modules/activity/configuration/configuration.c:271
+#: src/modules/activity/configuration/configuration.c:267
 #, fuzzy
 msgid "This module creates the Enna configuration panel"
 msgstr "Цей модуль створює конфігураційну панель enna (НЕ ВИМИКАТИ!)"
@@ -236,112 +236,115 @@ msgstr "Подяка"
 msgid "and"
 msgstr "та"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:99
+#: src/modules/activity/configuration/configuration_sysinfo.c:103
 #, fuzzy
 msgid "Enna information"
 msgstr "<c>Інформація про систему</c><br><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:101
+#: src/modules/activity/configuration/configuration_sysinfo.c:105
 msgid "Enna:"
 msgstr "Enna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:115
+#: src/modules/activity/configuration/configuration_sysinfo.c:120
 msgid "Video renderer:"
 msgstr "Відео кодек:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:176
+#: src/modules/activity/configuration/configuration_sysinfo.c:181
 msgid "Distribution:"
 msgstr "Дистрибутив"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:198
+#: src/modules/activity/configuration/configuration_sysinfo.c:207
 msgid "OS:"
 msgstr "ОС"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:206
+#: src/modules/activity/configuration/configuration_sysinfo.c:215
 msgid "for"
 msgstr "для"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:223
+#: src/modules/activity/configuration/configuration_sysinfo.c:239
+#: src/modules/activity/configuration/configuration_sysinfo.c:263
 #, fuzzy
 msgid "Available CPUs:"
 msgstr " Доступні опції:\n"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:254
+#: src/modules/activity/configuration/configuration_sysinfo.c:294
 #, fuzzy
 msgid ", running at"
 msgstr ", з частотою %d MHz"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:283
+#: src/modules/activity/configuration/configuration_sysinfo.c:316
+#: src/modules/activity/configuration/configuration_sysinfo.c:336
 msgid "CPU Load:"
 msgstr "Завантаження ЦП"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:327
+#: src/modules/activity/configuration/configuration_sysinfo.c:406
 msgid "Memory:"
 msgstr "Пам'ять"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:329
+#: src/modules/activity/configuration/configuration_sysinfo.c:408
 msgid "used on"
 msgstr "використано на"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:331
+#: src/modules/activity/configuration/configuration_sysinfo.c:410
 msgid "total"
 msgstr "всього"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:369
+#: src/modules/activity/configuration/configuration_sysinfo.c:447
 #, fuzzy
 msgid "Screen resolution:"
 msgstr "<hilight>Роздільна здатність: </hilight>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:372
+#: src/modules/activity/configuration/configuration_sysinfo.c:450
 #, fuzzy
 msgid "at"
 msgstr "Данні"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:374
+#: src/modules/activity/configuration/configuration_sysinfo.c:452
 msgid "min:"
 msgstr "мін:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:376
+#: src/modules/activity/configuration/configuration_sysinfo.c:454
 msgid "max:"
 msgstr "макс:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:389
+#: src/modules/activity/configuration/configuration_sysinfo.c:467
 msgid "VDR:"
 msgstr "VDR:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:392
+#: src/modules/activity/configuration/configuration_sysinfo.c:470
 #, fuzzy
 msgid "connected to VDR"
 msgstr "приєднано до VDR %s на %s (%s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:395
+#: src/modules/activity/configuration/configuration_sysinfo.c:473
 msgid "on"
 msgstr "на"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:400
+#: src/modules/activity/configuration/configuration_sysinfo.c:478
 #, fuzzy
 msgid "not connected"
 msgstr "немає з'єднань<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:415
+#: src/modules/activity/configuration/configuration_sysinfo.c:490
 #, fuzzy
 msgid "Available network interfaces:"
 msgstr "<hilight>Доступні мережеві з'єднання:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:442
+#: src/modules/activity/configuration/configuration_sysinfo.c:508
 msgid "IP:"
 msgstr "Адреса"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:449
+#: src/modules/activity/configuration/configuration_sysinfo.c:513
 #, fuzzy
 msgid "Netmask:"
 msgstr "Маска мережі: %s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:474
+#: src/modules/activity/configuration/configuration_sysinfo.c:613
+#: src/modules/activity/configuration/configuration_sysinfo.c:633
 msgid "Default gateway:"
 msgstr "Шлюз:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:502
+#: src/modules/activity/configuration/configuration_sysinfo.c:661
 #, fuzzy
 msgid "None"
 msgstr "Немає<br>"
@@ -393,101 +396,67 @@ msgstr "<c>System Games</c><br>Гра завантажеється..."
 msgid "System Games"
 msgstr "Системні ігри"
 
-#: src/modules/activity/music/music.c:105
+#: src/modules/activity/music/music.c:106
 #, c-format
 msgid "%d Songs"
 msgstr "%d Пісня"
 
-#: src/modules/activity/music/music.c:448
-#: src/modules/activity/music/music.c:511
+#: src/modules/activity/music/music.c:406
+#: src/modules/activity/music/music.c:470
 msgid "Music"
 msgstr "Музика"
 
-#: src/modules/activity/music/music.c:513
+#: src/modules/activity/music/music.c:472
 #, fuzzy
 msgid "Listen to your music"
 msgstr "Слухати подкасти"
 
-#: src/modules/activity/music/music_lyrics.c:92
-msgid "No lyrics found ..."
-msgstr "Не знайдено жодної пісні..."
-
-#: src/modules/activity/photo/photo.c:309
-#: src/modules/activity/photo/photo.c:368
+#: src/modules/activity/photo/photo.c:329
+#: src/modules/activity/photo/photo.c:388
 msgid "Photo"
 msgstr "Фото"
 
-#: src/modules/activity/photo/photo.c:370
+#: src/modules/activity/photo/photo.c:390
 #, fuzzy
 msgid "Browse your photos and create slideshows"
 msgstr "Переглянути всі Ваші фото 'на стіні' або як слайдшоу"
 
-#: src/modules/activity/tv/tv.c:104
+#: src/modules/activity/tv/tv.c:107
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Таймер '%s' запуститься через %i хвилин"
 msgstr[1] "Timer '%s' is due to start in %i minute"
 
-#: src/modules/activity/tv/tv.c:106
+#: src/modules/activity/tv/tv.c:110
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Зараз записується '%s'"
 
-#: src/modules/activity/tv/tv.c:115
+#: src/modules/activity/tv/tv.c:119
 msgid "Recording in progress"
 msgstr "Триває запис"
 
-#: src/modules/activity/tv/tv.c:155 src/modules/activity/tv/tv.c:368
+#: src/modules/activity/tv/tv.c:164 src/modules/activity/tv/tv.c:382
 msgid "Television"
 msgstr "Телебачення"
 
-#: src/modules/activity/tv/tv.c:370
+#: src/modules/activity/tv/tv.c:384
 #, fuzzy
 msgid "View TV channels"
 msgstr "Дивитись телебачення"
 
-#: src/modules/activity/video/video_infos.c:97
-msgid "No such information ..."
-msgstr "Немає необхідної інформації ..."
-
-#: src/modules/activity/video/video_infos.c:132
-msgid "Director:"
-msgstr "Режисер:"
-
-#: src/modules/activity/video/video_infos.c:139
-msgid "Cast:"
-msgstr "В ролях:"
-
-#: src/modules/activity/video/video_infos.c:161
-#, fuzzy
-msgid "Video:"
-msgstr "Відео:"
-
-#: src/modules/activity/video/video_infos.c:184
-msgid "Audio:"
-msgstr "Звук:"
-
-#: src/modules/activity/video/video_infos.c:199
-msgid "Size:"
-msgstr "Розмір:"
-
-#: src/modules/activity/video/video_infos.c:207
-#, fuzzy
-msgid "No further information can be retrieved"
-msgstr "Не можна отримати більше інформації."
-
-#: src/modules/activity/video/video.c:120
+#: src/modules/activity/video/video.c:117
 #, c-format
 msgid "%d Movies"
 msgstr "%d Фільмів"
 
-#: src/modules/activity/video/video.c:923
-#: src/modules/activity/video/video.c:1011
+#: src/modules/activity/video/video.c:761
+#: src/modules/activity/video/video.c:848
 msgid "Video"
 msgstr "Відео"
 
-#: src/modules/activity/video/video.c:1013
+#: src/modules/activity/video/video.c:850
 msgid "Play your videos"
 msgstr "Програти ваше відео"
 
@@ -536,17 +505,17 @@ msgstr "модуль DVD"
 msgid "Watch movies from DVD"
 msgstr "Дивитись фільмі з DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:468
+#: src/modules/browser/localfiles/localfiles.c:604
 #, fuzzy
 msgid "Browse local devices"
 msgstr "Оглянути локальні пристрої"
 
-#: src/modules/browser/localfiles/localfiles.c:666
+#: src/modules/browser/localfiles/localfiles.c:807
 #, fuzzy
 msgid "Browse local files"
 msgstr "Переглянути локальні файли"
 
-#: src/modules/browser/localfiles/localfiles.c:668
+#: src/modules/browser/localfiles/localfiles.c:809
 #, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "Переглянути файли на Вашому локальному жорсткому диску"
@@ -741,6 +710,32 @@ msgstr "Розділ з mtab"
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "Цей модуль дозволяє працювати зі змінними носіями"
+
+#~ msgid "No lyrics found ..."
+#~ msgstr "Не знайдено жодної пісні..."
+
+#~ msgid "No such information ..."
+#~ msgstr "Немає необхідної інформації ..."
+
+#~ msgid "Director:"
+#~ msgstr "Режисер:"
+
+#~ msgid "Cast:"
+#~ msgstr "В ролях:"
+
+#, fuzzy
+#~ msgid "Video:"
+#~ msgstr "Відео:"
+
+#~ msgid "Audio:"
+#~ msgstr "Звук:"
+
+#~ msgid "Size:"
+#~ msgstr "Розмір:"
+
+#, fuzzy
+#~ msgid "No further information can be retrieved"
+#~ msgstr "Не можна отримати більше інформації."
 
 #, fuzzy
 #~ msgid "Main menu"

@@ -9,76 +9,76 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-08-21 13:15+0200\n"
+"POT-Creation-Date: 2011-01-16 23:43+0100\n"
 "PO-Revision-Date: 2010-08-05 13:18-0300\n"
 "Last-Translator: Gabriel Fernández <unit-iso@unit.org.uy>\n"
 "Language-Team: Español <kde-i18n-doc@kde.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-Country: COLOMBIA\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: src/bin/browser.c:248
+#: src/bin/browser.c:252
 msgid "No media found!"
 msgstr "¡No se encuentran medios!"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:525
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:512
+#: src/bin/enna.c:526
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opciones ...]\n"
 
-#: src/bin/enna.c:513
+#: src/bin/enna.c:527
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Opciones Disponibles:\n"
 
-#: src/bin/enna.c:514
+#: src/bin/enna.c:528
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Especifica el archivo de configuración a usar.\n"
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:529
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Obliga a modo de Pantalla Completa.\n"
 
-#: src/bin/enna.c:516
+#: src/bin/enna.c:530
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Muestra esta pantalla de ayuda.\n"
 
-#: src/bin/enna.c:517
+#: src/bin/enna.c:531
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Especifica el nombre del tema a usar.\n"
 
-#: src/bin/enna.c:518
+#: src/bin/enna.c:532
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):   Especifica la geometría de la pantalla. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:519
+#: src/bin/enna.c:533
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Especifica el perfil a visualizar\n"
 
-#: src/bin/enna.c:520
+#: src/bin/enna.c:534
 #, c-format
 msgid "    Supported: "
 msgstr "    Soportado: "
 
-#: src/bin/enna.c:524
+#: src/bin/enna.c:538
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Muestra la versión de Enna.\n"
@@ -117,72 +117,72 @@ msgstr "No se encontró información."
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Pista #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
+#: src/bin/weather_api.c:406 src/bin/weather_api.c:439
 msgid "City"
 msgstr "Ciudad"
 
-#: src/bin/weather_api.c:406
+#: src/bin/weather_api.c:407
 msgid "Choose your City"
 msgstr "Elija su Ciudad"
 
-#: src/bin/weather_api.c:410
+#: src/bin/weather_api.c:411
 msgid "Enter your City here"
 msgstr "Ingrese su Ciudad aquí"
 
-#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
+#: src/bin/weather_api.c:414 src/bin/weather_api.c:447
 msgid "Remove"
 msgstr "Eliminar"
 
-#: src/bin/weather_api.c:439
+#: src/bin/weather_api.c:440
 msgid "Choose your city"
 msgstr "Elija su ciudad"
 
-#: src/bin/weather_api.c:451
+#: src/bin/weather_api.c:452
 msgid "Add new city"
 msgstr "Añadir una nueva ciudad"
 
-#: src/bin/weather_api.c:452
+#: src/bin/weather_api.c:453
 msgid "Add more cities to the list"
 msgstr "Añadir más ciudades a la lista"
 
-#: src/bin/weather_api.c:457
+#: src/bin/weather_api.c:458
 msgid "Add"
 msgstr "Añadir"
 
-#: src/bin/weather_api.c:461
+#: src/bin/weather_api.c:462
 msgid "Select unit"
 msgstr "Seleccione unidad"
 
-#: src/bin/weather_api.c:462
+#: src/bin/weather_api.c:463
 msgid "Select the unit to display temperature"
 msgstr "Seleccione la unidad para desplegar la temperatura"
 
-#: src/bin/weather_api.c:467
+#: src/bin/weather_api.c:468
 msgid "°C"
 msgstr "°C"
 
-#: src/bin/weather_api.c:467
+#: src/bin/weather_api.c:468
 msgid "°F"
 msgstr "°F"
 
-#: src/bin/weather_api.c:471
+#: src/bin/weather_api.c:472
 msgid "Select hemisphere"
 msgstr "Seleccione hemisferio"
 
-#: src/bin/weather_api.c:472
+#: src/bin/weather_api.c:473
 #, fuzzy
 msgid "Select the hemisphere you are located in"
 msgstr "Muestra el clima en su ubicación actual"
 
-#: src/bin/weather_api.c:477
+#: src/bin/weather_api.c:478
 msgid "Northern"
 msgstr "Noreste"
 
-#: src/bin/weather_api.c:477
+#: src/bin/weather_api.c:478
 msgid "Southern"
 msgstr "Sureste"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:290
+#: src/bin/weather_api.c:722 src/modules/activity/weather/weather.c:290
 msgid "Weather"
 msgstr "Clima"
 
@@ -196,21 +196,21 @@ msgstr "Librería"
 msgid "Read your books"
 msgstr "Lea sus libros"
 
-#: src/modules/activity/configuration/configuration.c:210
-#: src/modules/activity/configuration/configuration.c:269
+#: src/modules/activity/configuration/configuration.c:206
+#: src/modules/activity/configuration/configuration.c:265
 msgid "Configuration"
 msgstr "Configuración"
 
-#: src/modules/activity/configuration/configuration.c:245
-#: src/modules/activity/configuration/configuration_sysinfo.c:517
+#: src/modules/activity/configuration/configuration.c:241
+#: src/modules/activity/configuration/configuration_sysinfo.c:677
 msgid "System information"
 msgstr "Información del Sistema"
 
-#: src/modules/activity/configuration/configuration.c:248
+#: src/modules/activity/configuration/configuration.c:244
 msgid "Credits"
 msgstr "Créditos"
 
-#: src/modules/activity/configuration/configuration.c:271
+#: src/modules/activity/configuration/configuration.c:267
 msgid "This module creates the Enna configuration panel"
 msgstr "Este modulo crea el panel del configuración de Enna"
 
@@ -231,108 +231,111 @@ msgstr "Créditos para:"
 msgid "and"
 msgstr "y"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:99
+#: src/modules/activity/configuration/configuration_sysinfo.c:103
 msgid "Enna information"
 msgstr "Información de Enna"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:101
+#: src/modules/activity/configuration/configuration_sysinfo.c:105
 msgid "Enna:"
 msgstr "Enna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:115
+#: src/modules/activity/configuration/configuration_sysinfo.c:120
 msgid "Video renderer:"
 msgstr "Video render:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:176
+#: src/modules/activity/configuration/configuration_sysinfo.c:181
 msgid "Distribution:"
 msgstr "Distribución:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:198
+#: src/modules/activity/configuration/configuration_sysinfo.c:207
 msgid "OS:"
 msgstr "SO:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:206
+#: src/modules/activity/configuration/configuration_sysinfo.c:215
 msgid "for"
 msgstr "para"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:223
+#: src/modules/activity/configuration/configuration_sysinfo.c:239
+#: src/modules/activity/configuration/configuration_sysinfo.c:263
 msgid "Available CPUs:"
 msgstr "CPU Disponible:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:254
+#: src/modules/activity/configuration/configuration_sysinfo.c:294
 msgid ", running at"
 msgstr ", corriendo a"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:283
+#: src/modules/activity/configuration/configuration_sysinfo.c:316
+#: src/modules/activity/configuration/configuration_sysinfo.c:336
 msgid "CPU Load:"
 msgstr "Carga de la CPU:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:327
+#: src/modules/activity/configuration/configuration_sysinfo.c:406
 msgid "Memory:"
 msgstr "Memoria:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:329
+#: src/modules/activity/configuration/configuration_sysinfo.c:408
 msgid "used on"
 msgstr "usada en"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:331
+#: src/modules/activity/configuration/configuration_sysinfo.c:410
 msgid "total"
 msgstr "total"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:369
+#: src/modules/activity/configuration/configuration_sysinfo.c:447
 msgid "Screen resolution:"
 msgstr "Resoluciones de Pantalla:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:372
+#: src/modules/activity/configuration/configuration_sysinfo.c:450
 #, fuzzy
 msgid "at"
 msgstr "Datos"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:374
+#: src/modules/activity/configuration/configuration_sysinfo.c:452
 msgid "min:"
 msgstr "min:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:376
+#: src/modules/activity/configuration/configuration_sysinfo.c:454
 msgid "max:"
 msgstr "máx:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:389
+#: src/modules/activity/configuration/configuration_sysinfo.c:467
 msgid "VDR:"
 msgstr "VDR:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:392
+#: src/modules/activity/configuration/configuration_sysinfo.c:470
 #, fuzzy
 msgid "connected to VDR"
 msgstr "conectado a VDR %s en %s (%s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:395
+#: src/modules/activity/configuration/configuration_sysinfo.c:473
 msgid "on"
 msgstr "en"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:400
+#: src/modules/activity/configuration/configuration_sysinfo.c:478
 #, fuzzy
 msgid "not connected"
 msgstr "sin conectar<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:415
+#: src/modules/activity/configuration/configuration_sysinfo.c:490
 #, fuzzy
 msgid "Available network interfaces:"
 msgstr "<hilight>Interfaces de red disponibles:</hilight><br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:442
+#: src/modules/activity/configuration/configuration_sysinfo.c:508
 msgid "IP:"
 msgstr "IP:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:449
+#: src/modules/activity/configuration/configuration_sysinfo.c:513
 #, fuzzy
 msgid "Netmask:"
 msgstr "Mascara de red: %s)<br>"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:474
+#: src/modules/activity/configuration/configuration_sysinfo.c:613
+#: src/modules/activity/configuration/configuration_sysinfo.c:633
 msgid "Default gateway:"
 msgstr "Default gateway:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:502
+#: src/modules/activity/configuration/configuration_sysinfo.c:661
 #, fuzzy
 msgid "None"
 msgstr "Nada<br>"
@@ -381,97 +384,65 @@ msgstr "<c>Sistema de Juegos</c><br>Juego corriendo..."
 msgid "System Games"
 msgstr "Sistema de Juegos"
 
-#: src/modules/activity/music/music.c:105
+#: src/modules/activity/music/music.c:106
 #, c-format
 msgid "%d Songs"
 msgstr "%d Canciones"
 
-#: src/modules/activity/music/music.c:448
-#: src/modules/activity/music/music.c:511
+#: src/modules/activity/music/music.c:406
+#: src/modules/activity/music/music.c:470
 msgid "Music"
 msgstr "Música"
 
-#: src/modules/activity/music/music.c:513
+#: src/modules/activity/music/music.c:472
 #, fuzzy
 msgid "Listen to your music"
 msgstr "Escuchar Podcasts"
 
-#: src/modules/activity/music/music_lyrics.c:92
-msgid "No lyrics found ..."
-msgstr "No se encontraron letras..."
-
-#: src/modules/activity/photo/photo.c:309
-#: src/modules/activity/photo/photo.c:368
+#: src/modules/activity/photo/photo.c:329
+#: src/modules/activity/photo/photo.c:388
 msgid "Photo"
 msgstr "Fotos"
 
-#: src/modules/activity/photo/photo.c:370
+#: src/modules/activity/photo/photo.c:390
 msgid "Browse your photos and create slideshows"
 msgstr "Vea todas sus fotos o cree una presentación"
 
-#: src/modules/activity/tv/tv.c:104
+#: src/modules/activity/tv/tv.c:107
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "El temporizador '%s' comenzará en %i minuto"
 msgstr[1] "El temporizador '%s' comenzará en %i minutos"
 
-#: src/modules/activity/tv/tv.c:106
+#: src/modules/activity/tv/tv.c:110
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Grabando '%s'"
 
-#: src/modules/activity/tv/tv.c:115
+#: src/modules/activity/tv/tv.c:119
 msgid "Recording in progress"
 msgstr "Grabación en proceso"
 
-#: src/modules/activity/tv/tv.c:155 src/modules/activity/tv/tv.c:368
+#: src/modules/activity/tv/tv.c:164 src/modules/activity/tv/tv.c:382
 msgid "Television"
 msgstr "Televisión"
 
-#: src/modules/activity/tv/tv.c:370
+#: src/modules/activity/tv/tv.c:384
 msgid "View TV channels"
 msgstr "Ver canales de TV"
 
-#: src/modules/activity/video/video_infos.c:97
-msgid "No such information ..."
-msgstr "No se encuentra información"
-
-#: src/modules/activity/video/video_infos.c:132
-msgid "Director:"
-msgstr "Director:"
-
-#: src/modules/activity/video/video_infos.c:139
-msgid "Cast:"
-msgstr "Elenco:"
-
-#: src/modules/activity/video/video_infos.c:161
-msgid "Video:"
-msgstr "Vídeo:"
-
-#: src/modules/activity/video/video_infos.c:184
-msgid "Audio:"
-msgstr "Audio:"
-
-#: src/modules/activity/video/video_infos.c:199
-msgid "Size:"
-msgstr "Tamaño:"
-
-#: src/modules/activity/video/video_infos.c:207
-msgid "No further information can be retrieved"
-msgstr "No se encuentra mas información"
-
-#: src/modules/activity/video/video.c:120
+#: src/modules/activity/video/video.c:117
 #, c-format
 msgid "%d Movies"
 msgstr "%d Películas"
 
-#: src/modules/activity/video/video.c:923
-#: src/modules/activity/video/video.c:1011
+#: src/modules/activity/video/video.c:761
+#: src/modules/activity/video/video.c:848
 msgid "Video"
 msgstr "Vídeo"
 
-#: src/modules/activity/video/video.c:1013
+#: src/modules/activity/video/video.c:850
 msgid "Play your videos"
 msgstr "Reproduzca sus vídeos"
 
@@ -520,16 +491,16 @@ msgstr "Modulo DVD"
 msgid "Watch movies from DVD"
 msgstr "Ver películas de DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:468
+#: src/modules/browser/localfiles/localfiles.c:604
 #, fuzzy
 msgid "Browse local devices"
 msgstr "Explorar Dispositivos Locales"
 
-#: src/modules/browser/localfiles/localfiles.c:666
+#: src/modules/browser/localfiles/localfiles.c:807
 msgid "Browse local files"
 msgstr "Explorar archivos locales"
 
-#: src/modules/browser/localfiles/localfiles.c:668
+#: src/modules/browser/localfiles/localfiles.c:809
 msgid "Browse files in your local file systems"
 msgstr "Explorar archivos en el sistema de archivos local"
 
@@ -724,6 +695,30 @@ msgstr "Volúmenes de udev"
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "Este módulo ofrece soporte para unidades extraíbles"
+
+#~ msgid "No lyrics found ..."
+#~ msgstr "No se encontraron letras..."
+
+#~ msgid "No such information ..."
+#~ msgstr "No se encuentra información"
+
+#~ msgid "Director:"
+#~ msgstr "Director:"
+
+#~ msgid "Cast:"
+#~ msgstr "Elenco:"
+
+#~ msgid "Video:"
+#~ msgstr "Vídeo:"
+
+#~ msgid "Audio:"
+#~ msgstr "Audio:"
+
+#~ msgid "Size:"
+#~ msgstr "Tamaño:"
+
+#~ msgid "No further information can be retrieved"
+#~ msgstr "No se encuentra mas información"
 
 #, fuzzy
 #~ msgid "Main menu"

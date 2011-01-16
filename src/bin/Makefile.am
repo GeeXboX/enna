@@ -278,6 +278,5 @@ volume_notification.h\
 ini_parser.h\
 input.h\
 geoip.h\
-xdg.h\
 gadgets.h\
 kbdnav.h

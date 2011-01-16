@@ -9,71 +9,71 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2010-08-21 13:15+0200\n"
+"POT-Creation-Date: 2011-01-16 23:43+0100\n"
 "PO-Revision-Date: 2010-02-17 15:11+0800\n"
 "Last-Translator: swinkworld <swinkworld@163.com>\n"
 "Language-Team: Chinese (Simplified)\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/bin/browser.c:248
+#: src/bin/browser.c:252
 msgid "No media found!"
 msgstr "没有发现任何媒体!"
 
-#: src/bin/enna.c:511
+#: src/bin/enna.c:525
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna媒体中心\n"
 
-#: src/bin/enna.c:512
+#: src/bin/enna.c:526
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "用法：%s [选项...]\n"
 
-#: src/bin/enna.c:513
+#: src/bin/enna.c:527
 #, c-format
 msgid " Available options:\n"
 msgstr "可选项:\n"
 
-#: src/bin/enna.c:514
+#: src/bin/enna.c:528
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置文件。\n"
 
-#: src/bin/enna.c:515
+#: src/bin/enna.c:529
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "-f, (--fs): 强制全屏幕显示。\n"
 
-#: src/bin/enna.c:516
+#: src/bin/enna.c:530
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "-h, (--help): 显示这个说明。\n"
 
-#: src/bin/enna.c:517
+#: src/bin/enna.c:531
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "-t, (--theme): 指定要使用的主题。\n"
 
-#: src/bin/enna.c:518
+#: src/bin/enna.c:532
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定窗口大小。(geometry=1280x720)\n"
 
-#: src/bin/enna.c:519
+#: src/bin/enna.c:533
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): 指定显示文件\n"
 
-#: src/bin/enna.c:520
+#: src/bin/enna.c:534
 #, fuzzy, c-format
 msgid "    Supported: "
 msgstr "已支持: "
 
-#: src/bin/enna.c:524
+#: src/bin/enna.c:538
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "-V, (--version): 显示Enna的版本。\n"
@@ -114,74 +114,74 @@ msgstr "没有提供任何信息"
 msgid "Track #%02d (%02d:%02d)"
 msgstr "音轨 #%02d (%02d:%02d)"
 
-#: src/bin/weather_api.c:405 src/bin/weather_api.c:438
+#: src/bin/weather_api.c:406 src/bin/weather_api.c:439
 msgid "City"
 msgstr "城市"
 
-#: src/bin/weather_api.c:406
+#: src/bin/weather_api.c:407
 #, fuzzy
 msgid "Choose your City"
 msgstr "选择你的城市"
 
-#: src/bin/weather_api.c:410
+#: src/bin/weather_api.c:411
 msgid "Enter your City here"
 msgstr "输入你的城市"
 
-#: src/bin/weather_api.c:413 src/bin/weather_api.c:446
+#: src/bin/weather_api.c:414 src/bin/weather_api.c:447
 msgid "Remove"
 msgstr "移除"
 
-#: src/bin/weather_api.c:439
+#: src/bin/weather_api.c:440
 msgid "Choose your city"
 msgstr "选择你的城市"
 
-#: src/bin/weather_api.c:451
+#: src/bin/weather_api.c:452
 msgid "Add new city"
 msgstr "添加新的城市"
 
-#: src/bin/weather_api.c:452
+#: src/bin/weather_api.c:453
 msgid "Add more cities to the list"
 msgstr "添加更多的城市到列表中"
 
-#: src/bin/weather_api.c:457
+#: src/bin/weather_api.c:458
 msgid "Add"
 msgstr "添加"
 
-#: src/bin/weather_api.c:461
+#: src/bin/weather_api.c:462
 msgid "Select unit"
 msgstr "选择单位"
 
-#: src/bin/weather_api.c:462
+#: src/bin/weather_api.c:463
 msgid "Select the unit to display temperature"
 msgstr "选择显示温度的单位"
 
-#: src/bin/weather_api.c:467
+#: src/bin/weather_api.c:468
 msgid "°C"
 msgstr "摄氏"
 
-#: src/bin/weather_api.c:467
+#: src/bin/weather_api.c:468
 #, fuzzy
 msgid "°F"
 msgstr "华氏"
 
-#: src/bin/weather_api.c:471
+#: src/bin/weather_api.c:472
 msgid "Select hemisphere"
 msgstr "选择半球"
 
-#: src/bin/weather_api.c:472
+#: src/bin/weather_api.c:473
 #, fuzzy
 msgid "Select the hemisphere you are located in"
 msgstr "显示你本地的天气"
 
-#: src/bin/weather_api.c:477
+#: src/bin/weather_api.c:478
 msgid "Northern"
 msgstr "北半球"
 
-#: src/bin/weather_api.c:477
+#: src/bin/weather_api.c:478
 msgid "Southern"
 msgstr "南半球"
 
-#: src/bin/weather_api.c:705 src/modules/activity/weather/weather.c:290
+#: src/bin/weather_api.c:722 src/modules/activity/weather/weather.c:290
 msgid "Weather"
 msgstr "天气"
 
@@ -194,21 +194,21 @@ msgstr "书店"
 msgid "Read your books"
 msgstr "阅读图书"
 
-#: src/modules/activity/configuration/configuration.c:210
-#: src/modules/activity/configuration/configuration.c:269
+#: src/modules/activity/configuration/configuration.c:206
+#: src/modules/activity/configuration/configuration.c:265
 msgid "Configuration"
 msgstr "配置"
 
-#: src/modules/activity/configuration/configuration.c:245
-#: src/modules/activity/configuration/configuration_sysinfo.c:517
+#: src/modules/activity/configuration/configuration.c:241
+#: src/modules/activity/configuration/configuration_sysinfo.c:677
 msgid "System information"
 msgstr "系统信息"
 
-#: src/modules/activity/configuration/configuration.c:248
+#: src/modules/activity/configuration/configuration.c:244
 msgid "Credits"
 msgstr "感谢"
 
-#: src/modules/activity/configuration/configuration.c:271
+#: src/modules/activity/configuration/configuration.c:267
 msgid "This module creates the Enna configuration panel"
 msgstr "这个模块用来建立Enna配置面板"
 
@@ -228,103 +228,106 @@ msgstr "感谢:"
 msgid "and"
 msgstr "和"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:99
+#: src/modules/activity/configuration/configuration_sysinfo.c:103
 msgid "Enna information"
 msgstr "Enna信息"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:101
+#: src/modules/activity/configuration/configuration_sysinfo.c:105
 msgid "Enna:"
 msgstr "Enna:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:115
+#: src/modules/activity/configuration/configuration_sysinfo.c:120
 msgid "Video renderer:"
 msgstr "视频渲染器:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:176
+#: src/modules/activity/configuration/configuration_sysinfo.c:181
 msgid "Distribution:"
 msgstr "发行:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:198
+#: src/modules/activity/configuration/configuration_sysinfo.c:207
 msgid "OS:"
 msgstr "操作系统:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:206
+#: src/modules/activity/configuration/configuration_sysinfo.c:215
 msgid "for"
 msgstr "为"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:223
+#: src/modules/activity/configuration/configuration_sysinfo.c:239
+#: src/modules/activity/configuration/configuration_sysinfo.c:263
 msgid "Available CPUs:"
 msgstr "可用的CPU:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:254
+#: src/modules/activity/configuration/configuration_sysinfo.c:294
 msgid ", running at"
 msgstr ", 运行在"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:283
+#: src/modules/activity/configuration/configuration_sysinfo.c:316
+#: src/modules/activity/configuration/configuration_sysinfo.c:336
 msgid "CPU Load:"
 msgstr "CPU使用:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:327
+#: src/modules/activity/configuration/configuration_sysinfo.c:406
 msgid "Memory:"
 msgstr "内存:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:329
+#: src/modules/activity/configuration/configuration_sysinfo.c:408
 msgid "used on"
 msgstr "用于"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:331
+#: src/modules/activity/configuration/configuration_sysinfo.c:410
 msgid "total"
 msgstr "全部"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:369
+#: src/modules/activity/configuration/configuration_sysinfo.c:447
 msgid "Screen resolution:"
 msgstr "屏幕分辨率:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:372
+#: src/modules/activity/configuration/configuration_sysinfo.c:450
 msgid "at"
 msgstr "在"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:374
+#: src/modules/activity/configuration/configuration_sysinfo.c:452
 msgid "min:"
 msgstr "最小:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:376
+#: src/modules/activity/configuration/configuration_sysinfo.c:454
 msgid "max:"
 msgstr "最大:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:389
+#: src/modules/activity/configuration/configuration_sysinfo.c:467
 msgid "VDR:"
 msgstr "视频录放机:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:392
+#: src/modules/activity/configuration/configuration_sysinfo.c:470
 msgid "connected to VDR"
 msgstr "连接到视频录放机"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:395
+#: src/modules/activity/configuration/configuration_sysinfo.c:473
 msgid "on"
 msgstr "在"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:400
+#: src/modules/activity/configuration/configuration_sysinfo.c:478
 msgid "not connected"
 msgstr "没有被连接"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:415
+#: src/modules/activity/configuration/configuration_sysinfo.c:490
 msgid "Available network interfaces:"
 msgstr "可用的网络接口:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:442
+#: src/modules/activity/configuration/configuration_sysinfo.c:508
 msgid "IP:"
 msgstr "IP地址:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:449
+#: src/modules/activity/configuration/configuration_sysinfo.c:513
 msgid "Netmask:"
 msgstr "网络掩码:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:474
+#: src/modules/activity/configuration/configuration_sysinfo.c:613
+#: src/modules/activity/configuration/configuration_sysinfo.c:633
 msgid "Default gateway:"
 msgstr "缺省网关:"
 
-#: src/modules/activity/configuration/configuration_sysinfo.c:502
+#: src/modules/activity/configuration/configuration_sysinfo.c:661
 msgid "None"
 msgstr "无"
 
@@ -376,96 +379,64 @@ msgstr "<c>系统游戏</c><br>游戏正在运行中..."
 msgid "System Games"
 msgstr "系统游戏"
 
-#: src/modules/activity/music/music.c:105
+#: src/modules/activity/music/music.c:106
 #, c-format
 msgid "%d Songs"
 msgstr "%d 歌曲"
 
-#: src/modules/activity/music/music.c:448
-#: src/modules/activity/music/music.c:511
+#: src/modules/activity/music/music.c:406
+#: src/modules/activity/music/music.c:470
 msgid "Music"
 msgstr "音乐"
 
-#: src/modules/activity/music/music.c:513
+#: src/modules/activity/music/music.c:472
 msgid "Listen to your music"
 msgstr "聆听你的音乐"
 
-#: src/modules/activity/music/music_lyrics.c:92
-msgid "No lyrics found ..."
-msgstr "没有歌词..."
-
-#: src/modules/activity/photo/photo.c:309
-#: src/modules/activity/photo/photo.c:368
+#: src/modules/activity/photo/photo.c:329
+#: src/modules/activity/photo/photo.c:388
 msgid "Photo"
 msgstr "照片"
 
-#: src/modules/activity/photo/photo.c:370
+#: src/modules/activity/photo/photo.c:390
 msgid "Browse your photos and create slideshows"
 msgstr "浏览你的照片并建立幻灯片"
 
-#: src/modules/activity/tv/tv.c:104
+#: src/modules/activity/tv/tv.c:107
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "计时器 '%s' 是因为开始在 %i 分钟内"
 msgstr[1] "计时器 '%s' 是因为开始在 %i 分钟内"
 
-#: src/modules/activity/tv/tv.c:106
+#: src/modules/activity/tv/tv.c:110
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "现在正在记录 '%s'"
 
-#: src/modules/activity/tv/tv.c:115
+#: src/modules/activity/tv/tv.c:119
 msgid "Recording in progress"
 msgstr "正在记录中"
 
-#: src/modules/activity/tv/tv.c:155 src/modules/activity/tv/tv.c:368
+#: src/modules/activity/tv/tv.c:164 src/modules/activity/tv/tv.c:382
 msgid "Television"
 msgstr "电视"
 
-#: src/modules/activity/tv/tv.c:370
+#: src/modules/activity/tv/tv.c:384
 msgid "View TV channels"
 msgstr "观看电视频道"
 
-#: src/modules/activity/video/video_infos.c:97
-msgid "No such information ..."
-msgstr "没有这些信息..."
-
-#: src/modules/activity/video/video_infos.c:132
-msgid "Director:"
-msgstr "导演:"
-
-#: src/modules/activity/video/video_infos.c:139
-msgid "Cast:"
-msgstr "演员表:"
-
-#: src/modules/activity/video/video_infos.c:161
-msgid "Video:"
-msgstr "视频:"
-
-#: src/modules/activity/video/video_infos.c:184
-msgid "Audio:"
-msgstr "声音:"
-
-#: src/modules/activity/video/video_infos.c:199
-msgid "Size:"
-msgstr "尺寸:"
-
-#: src/modules/activity/video/video_infos.c:207
-msgid "No further information can be retrieved"
-msgstr "不能获取更多的信息"
-
-#: src/modules/activity/video/video.c:120
+#: src/modules/activity/video/video.c:117
 #, c-format
 msgid "%d Movies"
 msgstr "%d 电影"
 
-#: src/modules/activity/video/video.c:923
-#: src/modules/activity/video/video.c:1011
+#: src/modules/activity/video/video.c:761
+#: src/modules/activity/video/video.c:848
 msgid "Video"
 msgstr "影片"
 
-#: src/modules/activity/video/video.c:1013
+#: src/modules/activity/video/video.c:850
 msgid "Play your videos"
 msgstr "播放你的影片"
 
@@ -509,15 +480,15 @@ msgstr "DVD模块"
 msgid "Watch movies from DVD"
 msgstr "从DVD观看电影"
 
-#: src/modules/browser/localfiles/localfiles.c:468
+#: src/modules/browser/localfiles/localfiles.c:604
 msgid "Browse local devices"
 msgstr "浏览本机驱动器"
 
-#: src/modules/browser/localfiles/localfiles.c:666
+#: src/modules/browser/localfiles/localfiles.c:807
 msgid "Browse local files"
 msgstr "浏览本机文件"
 
-#: src/modules/browser/localfiles/localfiles.c:668
+#: src/modules/browser/localfiles/localfiles.c:809
 msgid "Browse files in your local file systems"
 msgstr "浏览本机硬盘上的文件"
 
@@ -700,6 +671,30 @@ msgstr "在udev中的卷"
 #: src/modules/volume/udev/udev.c:735
 msgid "This module provide support for removable volumes"
 msgstr "这个模块提供可移动的卷"
+
+#~ msgid "No lyrics found ..."
+#~ msgstr "没有歌词..."
+
+#~ msgid "No such information ..."
+#~ msgstr "没有这些信息..."
+
+#~ msgid "Director:"
+#~ msgstr "导演:"
+
+#~ msgid "Cast:"
+#~ msgstr "演员表:"
+
+#~ msgid "Video:"
+#~ msgstr "视频:"
+
+#~ msgid "Audio:"
+#~ msgstr "声音:"
+
+#~ msgid "Size:"
+#~ msgstr "尺寸:"
+
+#~ msgid "No further information can be retrieved"
+#~ msgstr "不能获取更多的信息"
 
 #~ msgid "Main menu"
 #~ msgstr "主菜单"
