@@ -1,1 +1,1 @@
-SUBDIRS = default stb tablet
+SUBDIRS = default phone stb tablet

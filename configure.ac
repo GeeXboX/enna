@@ -748,6 +748,19 @@ if test "x$want_theme_stb" = "xyes"; then
   AC_DEFINE(BUILD_THEME_STB, 1, [Stb Theme])
 fi
 
+# Phone theme
+want_theme_phone="yes"
+AC_MSG_CHECKING(whether Phone Theme is to be built)
+AC_ARG_ENABLE(theme_phone,
+  AS_HELP_STRING([--enable-theme-phone],[Enable Phone Theme]),
+  [ want_theme_phone=$enableval ]
+)
+AC_MSG_RESULT($want_theme_phone)
+AM_CONDITIONAL(BUILD_THEME_PHONE, test "x$want_theme_phone" = "xyes")
+if test "x$want_theme_phone" = "xyes"; then
+  AC_DEFINE(BUILD_THEME_PHONE, 1, [Phone Theme])
+fi
+
 
 # Tablet (and other touchscreen embedded devices) Theme
 want_theme_tablet="no"
@@ -811,6 +824,7 @@ data/Makefile
 data/other/Makefile
 data/theme/Makefile
 data/theme/default/Makefile
+data/theme/phone/Makefile
 data/theme/stb/Makefile
 data/theme/tablet/Makefile
 ])
@@ -891,6 +905,7 @@ echo
 echo "Suppported Themes:"
 echo
 echo "  default.......................... : $want_theme_default"
+echo "  phone............................ : $want_theme_phone"
 echo "  stb.............................. : $want_theme_stb"
 echo "  tablet........................... : $want_theme_tablet"
 echo
