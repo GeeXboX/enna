@@ -400,17 +400,23 @@ enna_list_file_append(Evas_Object *obj, Enna_File *file,
     it->func_activated = func_activated;
     it->data = data;
     it->file = enna_file_ref(file);
-    
+
     if (file->type == ENNA_FILE_TRACK)
+    {
         it->item = elm_genlist_item_append (obj, &itc_list_track, it,
                                             NULL, ELM_GENLIST_ITEM_NONE,
                                             _item_selected, it);
+
+        /* Track file needs meta data update if any */
+        enna_file_meta_callback_add(file, _file_meta_update, it);
+    }
     else
+    {
         it->item = elm_genlist_item_append (obj, &itc_list_default, it,
                                             NULL, ELM_GENLIST_ITEM_NONE,
                                             _item_selected, it);
+    }
     sd->items = eina_list_append(sd->items, it);
-    enna_file_meta_callback_add(file, _file_meta_update, it);
     /* Select first item */
     if (eina_list_count(sd->items) == 1)
         enna_list_select_nth(obj, 0);
