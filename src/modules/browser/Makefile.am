@@ -1,2 +1,2 @@
-SUBDIRS = cdda dvd ipod jamendo localfiles netstreams podcasts shoutcast upnp valhalla
+SUBDIRS = cdda dvd ipod spotify localfiles netstreams podcasts shoutcast upnp valhalla
 
