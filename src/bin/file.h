@@ -88,6 +88,9 @@ Enna_File *enna_file_file_add(const char *name, const char *uri,
 Enna_File *enna_file_track_add(const char *name, const char *uri,
                                const char *mrl, const char *label,
                                const char *icon);
+Enna_File *enna_file_film_add(const char *name, const char *uri,
+                              const char *mrl, const char *label,
+                              const char *icon);
 Enna_File *enna_file_directory_add(const char *name, const char *uri,
                                    const char *label, const char *icon);
 Enna_File *enna_file_menu_add(const char *name, const char *uri,

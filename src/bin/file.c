@@ -200,6 +200,13 @@ enna_file_track_add(const char *name, const char *uri,
 }
 
 Enna_File *
+enna_file_film_add(const char *name, const char *uri,
+                    const char *mrl, const char *label, const char *icon)
+{
+    return _create_inode(name, uri, label, icon, mrl, ENNA_FILE_FILM);
+}
+
+Enna_File *
 enna_file_directory_add(const char *name, const char *uri,
                         const char *label, const char *icon)
 {
