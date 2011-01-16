@@ -372,6 +372,8 @@ enna_metadata_db_init(void)
     snprintf(db, sizeof(db),
              "%s/%s", enna_util_data_home_get(), ENNA_METADATA_DB_NAME);
 
+    DBG("Default media.db path : %s\n", db);
+
     memset(&param, 0, sizeof(valhalla_init_param_t));
     param.parser_nb   = db_cfg.parser_number;
     param.grabber_nb  = db_cfg.grabber_number;
@@ -699,17 +701,17 @@ enna_metadata_ondemand_del(Enna_File *file)
     Eina_List *l;
     Enna_File *f;
 
-    if (!vh || !file)
+    if (!vh || !file || !file->mrl)
         return;
 
     /* Add file to the list of on demand files */
     EINA_LIST_FOREACH(od_files, l, f)
     {
+        if (!f || !f->mrl)
+            continue;
         if (!strcmp(file->mrl, f->mrl))
             od_files = eina_list_remove(od_files, file);
     }
-
-
 }
 
 
