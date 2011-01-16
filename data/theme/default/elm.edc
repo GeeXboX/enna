@@ -1458,6 +1458,325 @@ group { name: "elm/genlist/item/default/default";
       }
    }
 }
+
+
+group { name: "elm/genlist/item/track/default";
+   alias: "elm/genlist/item_odd/track/default";
+   data.item: "stacking" "above";
+   data.item: "selectraise" "on";
+   data.item: "labels" "elm.text.trackno elm.text.title elm.text.length";
+   data.item: "icons" "elm.swallow.playing elm.swallow.starred";
+   data.item: "treesize" "20";
+   //      data.item: "states" "";
+   images {
+      image: "sel_bg.png" COMP;
+      image: "sel_shad.png" COMP;
+      image: "sel_hilight.png" COMP;
+      image: "sel_shine_white.png" COMP;
+      image: "sel_shine_black.png" COMP;
+      image: "separator_h.png" COMP;
+   }
+   parts {
+      part {
+         name: "base";
+         mouse_events: 0;
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 255 255 255 0;
+         }
+      }
+      part{ name: "shadow";
+         mouse_events: 0;
+         description{ state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "sel_shad.png";
+            image.border: 6 6 6 6;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 200;
+         }
+      }
+      part { name: "bg";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.offset: 0 2;
+            rel2.offset: 0 -1;
+            image {
+               normal: "sel_bg.png";
+               border: 6 6 6 6;
+            }
+            image.middle: SOLID;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 128;
+         }
+      }
+
+      part {
+         name: "separator";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            color: 255 255 255 100;
+            rel1.relative: 0 1;
+            rel1.to: "bg";
+            rel2.relative: 1 1;
+            rel2.to: "bg";
+            rel2.offset: 0 1;
+
+            image {
+               normal: "separator_h.png";
+               border: 16 16 0 0;
+            }
+            fill.smooth: 0;
+         }
+      }
+
+      part { name: "elm.swallow.pad";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1 {
+               relative: 0.0  0.0;
+               offset:   4    4;
+            }
+            rel2 {
+
+               relative: 0.0  1.0;
+               offset:   4   -4;
+            }
+         }
+      }
+      part { name: "elm.swallow.playing";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
+            rel1 {
+               to: "elm.swallow.pad";
+               relative: 1.0  0.0;
+               offset:   -1    4;
+            }
+            rel2 {
+               to: "elm.swallow.pad";
+               relative: 1.0  1.0;
+               offset:   -1   -5;
+            }
+         }
+      }
+      part { name: "elm.text.trackno";
+          type: TEXT;
+          effect:         SOFT_SHADOW;
+           description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1 {
+               to: "elm.swallow.playing";
+               relative: 1.0  0.0;
+               offset:   5    4;
+            }
+            rel2 {
+               to: "elm.swallow.playing";
+               relative: 1.0  1.0;
+               offset:   5   -4;
+            }
+            color: 200 200 200 255;
+            color3: 0 0 0 32;
+            text {
+               font: "content";
+               size: 20;
+               min: 1 1;
+               align: 0.0 0.5;
+            }
+         }
+      }
+      part { name: "elm.text.length";
+          type: TEXT;
+          effect:         SOFT_SHADOW;
+           description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1 {
+               relative: 1.0  0.0;
+               offset:   -10    4;
+            }
+            rel2 {
+               relative: 1.0  1.0;
+               offset:   -10   -5;
+            }
+            color: 200 200 200 255;
+            color3: 0 0 0 32;
+            text {
+               font: "content";
+               size: 20;
+               min: 1 1;
+               align: 0.0 0.5;
+            }
+         }
+      }
+
+      part { name: "elm.swallow.starred";
+         type: SWALLOW;
+         effect:         SOFT_SHADOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
+            rel1 {
+               to: "elm.text.length";
+               relative: 1.0  0.0;
+               offset:   -5    4;
+            }
+            rel2 {
+               to: "elm.text.length";
+               relative: 1.0  1.0;
+               offset:   -5   -5;
+            }
+         }
+      }
+      part { name: "elm.text.title";
+         type:           TEXT;
+         effect:         SOFT_SHADOW;
+         mouse_events:   0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            fixed: 1 1;
+            rel1 {
+               to_x:     "elm.text.trackno";
+               relative: 1.0  0.0;
+               offset:   8 4;
+            }
+            rel2 {
+               to_x:     "elm.swallow.starred";
+               relative: 0.0  1.0;
+               offset:   -1 -5;
+            }
+            color: 200 200 200 255;
+            color3: 0 0 0 32;
+            text {
+               font: "content";
+               size: 20;
+               //min: 1 1;
+               min: 0 1;
+               align: 0.0 0.5;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+            //color3: 0 0 0 64;
+         }
+      }
+      part { name: "shine_white";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_shine_white.png";
+               border: 12 12 6 6;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 200;
+         }
+      }
+      part { name: "shine_black";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_shine_black.png";
+               border: 12 12 6 6;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 200;
+         }
+      }
+      part { name: "hilight";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image {
+               normal: "sel_hilight.png";
+               border: 12 12 6 6;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 80;
+         }
+      }
+      part {
+         name:           "event";
+         type:           RECT;
+         repeat_events: 1;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program {
+         name:    "go_active";
+         signal:  "elm,state,selected";
+         source:  "elm";
+         action:  STATE_SET "selected" 0.0;
+         target:  "bg";
+         target:  "shadow";
+         target:  "separator";
+         target:  "shine_white";
+         target:  "shine_black";
+         target:  "hilight";
+         target:  "elm.text.title";
+      }
+      program {
+         name:    "go_passive";
+         signal:  "elm,state,unselected";
+         source:  "elm";
+         action:  STATE_SET "default" 0.0;
+         target:  "bg";
+         target:  "shadow";
+         target:  "separator";
+         target:  "shine_white";
+         target:  "shine_black";
+         target:  "hilight";
+         target:  "elm.text.title";
+         transition: LINEAR 0.1;
+      }
+   }
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/genlist/item/enna_list/default";
    alias: "elm/genlist/item_odd/enna_list/default";
