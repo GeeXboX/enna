@@ -49,13 +49,13 @@ _update(Smart_Data *sd, Enna_File *file)
     {
     case ENNA_FILE_MENU:
     case ENNA_FILE_DIRECTORY:
+    case ENNA_FILE_FILE:
     {
         elm_icon_file_set(sd->ic, enna_config_theme_get(), file->icon);
         elm_layout_text_set(sd->page, "enna.text", file->label);
         break;
       }
     case ENNA_FILE_TRACK:
-    case ENNA_FILE_FILE:
     {
         const char *artist;
         const char *track;
@@ -95,6 +95,25 @@ _update(Smart_Data *sd, Enna_File *file)
         break;
     }
 
+}
+
+void _set_text(Evas_Object *obj,
+               const char *part,
+               const char *text,
+               const char *prefix,
+               const char *alt)
+{
+    const char *tmp;
+
+    if (!text || !text[0] || text[0] == ' ')
+        elm_layout_text_set(obj, "enna.text.genre", alt);
+    else
+    {
+        tmp = eina_stringshare_printf("%s%s", prefix, text);
+        elm_layout_text_set(obj, part, tmp);
+        eina_stringshare_del(text);
+        eina_stringshare_del(tmp);
+    }
 }
 
 static void
@@ -318,6 +337,75 @@ enna_infos_file_set(Evas_Object *obj, Enna_File *file)
             eina_stringshare_del(title);
             eina_stringshare_del(tmp);
         }
+
+        evas_object_show(page);
+        elm_pager_content_pop(sd->pager);
+        elm_pager_content_push(sd->pager, page);
+        break;
+    }
+    case ENNA_FILE_FILM:
+    {
+        const char *title;
+        const char *genre;
+        const char *duration;
+        const char *sduration;
+        const char *codec;
+        const char *year;
+        const char *album;
+        const char *artist;
+        const char *cover;
+        const char *cover_path;
+        const char *tmp;
+
+        artist = enna_file_meta_get(file, "author");
+        album = enna_file_meta_get(file, "album");
+        title = enna_file_meta_get(file, "title");
+
+        page = elm_layout_add(sd->pager);
+        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/film");
+        ic = elm_icon_add(page);
+
+        /* Cover Icon */
+        cover = enna_file_meta_get(file, "cover");
+        if (cover && cover[0] != '/')
+        {
+            cover_path = eina_stringshare_printf("%s/covers/%s",
+                                                     enna_util_data_home_get(), cover);
+            elm_icon_file_set(ic, cover_path, NULL);
+            eina_stringshare_del(cover_path);
+        }
+        else if (cover)
+        {
+            elm_icon_file_set(ic, cover, NULL);
+            eina_stringshare_del(cover);
+        }
+        else
+        {
+            elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
+        }
+        evas_object_show(ic);
+        elm_layout_content_set(page, "enna.swallow.cover", ic);
+
+        /* Title */
+        title = enna_file_meta_get(file, "title");
+        _set_text(page, "enna.text.title", title, "", file->label);
+
+
+        /* Genre */
+        genre = enna_file_meta_get(file, "genre");
+        _set_text(page, "enna.text.genre", genre, _("Genre: "), "");
+
+        /* Year */
+        year = enna_file_meta_get(file, "year");
+        _set_text(page, "enna.text.year", year, _("Year: "), "");
+
+        /* Length */
+        duration = enna_file_meta_get(file, "duration");
+        if (!duration)
+            duration = enna_file_meta_get(file, "length");
+        if (duration)
+            sduration = enna_util_duration_to_string(duration);
+        _set_text(page, "enna.text.length", sduration, _("Duration: "), "");
 
         evas_object_show(page);
         elm_pager_content_pop(sd->pager);
