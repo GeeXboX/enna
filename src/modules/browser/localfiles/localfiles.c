@@ -555,6 +555,10 @@ _get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAP
                             f = enna_file_track_add(filename, buf->buf,
                                                     mrl->buf, filename,
                                                     "icon/music");
+                        else if (caps == ENNA_CAPS_VIDEO)
+                            f = enna_file_film_add(filename, buf->buf,
+                                                    mrl->buf, filename,
+                                                    "icon/video");
                         else
                             f = enna_file_file_add(filename, buf->buf,
                                                    mrl->buf, filename,
