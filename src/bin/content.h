@@ -25,6 +25,6 @@
 #include "enna.h"
 int enna_content_append(const char *name, Evas_Object *content);
 int enna_content_select(const char *name);
-void enna_content_show();
-void enna_content_hide();
+void enna_content_show(void);
+void enna_content_hide(void);
 #endif /* CONTENT_H */

@@ -155,7 +155,7 @@ enna_util_has_suffix(char *str, Eina_List * patterns)
     Eina_List *l;
     int result = 0;
 
-    int i;
+    unsigned int i;
     char *tmp;
 
     if (!patterns || !str || !str[0])

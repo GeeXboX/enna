@@ -61,6 +61,5 @@ const char *enna_activity_request_quit_all(void);
 int enna_activity_shutdown(const char *name);
 int enna_activity_hide(const char *name);
 int enna_activity_event(Enna_Class_Activity *act, enna_input event);
-const char *enna_activity_request_quit_all(void);
 Enna_Class_Activity *enna_activity_get(const char *name);
 #endif /* ACTIVITY_H */

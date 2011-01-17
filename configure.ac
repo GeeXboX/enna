@@ -13,8 +13,10 @@ AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_PROG_CC
-AC_PROG_CC
+AC_C_CONST
+AC_C___ATTRIBUTE__
+AC_PROG_CC_STDC
+
 AC_DIAGNOSE([obsolete],[AM_PROG_CC_STDC:
 	your code should no longer depend upon `am_cv_prog_cc_stdc', but upon
 	`ac_cv_prog_cc_stdc'.  Remove this warning and the assignment when
