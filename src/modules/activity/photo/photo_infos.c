@@ -187,7 +187,7 @@ photo_panel_infos_set_text (Evas_Object *obj, const char *filename)
     meta = enna_metadata_meta_get_all (m);
     if (meta)
     {
-        int i, j;
+        unsigned int i, j;
 
         meta2 = calloc (2, strlen (meta));
         for (i = 0, j = 0; i < strlen (meta); i++)

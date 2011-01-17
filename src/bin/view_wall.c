@@ -57,7 +57,7 @@ struct _Smart_Data
   Enna_Kbdnav *nav;
 };
 
-char *
+static char *
 _grid_item_label_get(void *data, Evas_Object *obj, const char *part)
 {
     const Picture_Item *pi = data;
@@ -67,7 +67,7 @@ _grid_item_label_get(void *data, Evas_Object *obj, const char *part)
     return pi->file->label ? strdup(pi->file->label) : NULL;
 }
 
-Evas_Object *
+static Evas_Object *
 _grid_item_icon_get(void *data, Evas_Object *obj, const char *part)
 {
 	 Picture_Item *pi = data;
@@ -112,13 +112,13 @@ _grid_item_icon_get(void *data, Evas_Object *obj, const char *part)
 	return NULL;
 }
 
-Eina_Bool
+static Eina_Bool
 _grid_item_state_get(void *data, Evas_Object *obj, const char *part)
 {
 	return EINA_FALSE;
 }
 
-void
+static void
 _grid_item_del(void *data, Evas_Object *obj)
 {
 

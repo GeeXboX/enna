@@ -87,7 +87,7 @@ cdda_new (void)
 void
 cdda_free (cdda_t *c)
 {
-    int i;
+    unsigned int i;
 
     if (!c)
         return;
@@ -446,7 +446,7 @@ parse_cddb (cdda_t *cd)
 static void
 cd_get_tracks (cdda_t *cd)
 {
-    int i;
+    unsigned int i;
 
     if (!cd)
         return;
@@ -471,7 +471,7 @@ cd_get_tracks (cdda_t *cd)
 static void
 cd_display_info (cdda_t *cd)
 {
-    int i;
+    unsigned int i;
 
     if (!cd)
         return;

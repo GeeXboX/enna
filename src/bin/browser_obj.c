@@ -82,7 +82,7 @@ struct _Smart_Data
 
 static void _browse_back(Smart_Data *sd);
 static void _browse(Smart_Data *sd, Enna_File *file, Eina_Bool back);
-
+static void _search_focus_cb(void *data, Evas_Object *obj, void *event_info);
 static Eina_Bool
 _view_delay_hilight_cb(void *data)
 {
@@ -97,7 +97,7 @@ _view_delay_hilight_cb(void *data)
 }
 
 static void
-_view_hilight_cb (void *data, Evas_Object *obj, void *event_info)
+_view_hilight_cb (void *data, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
 
@@ -158,7 +158,7 @@ _browser_view_wall_select_nth(Evas_Object *view, int nth)
     enna_wall_select_nth(view, nth, 0);
 }
 
-void
+static void
 _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
 {
     sd->view_type = view_type;
@@ -204,7 +204,7 @@ _change_view(Smart_Data *sd, Enna_Browser_View_Type view_type)
     }
 }
 
-void
+static void
 _activated_cb(void *data)
 {
 	Activated_Cb_Data *cb_data = data;
@@ -252,7 +252,7 @@ _update_cb(void *data, Enna_File *file)
 }
 
 static void
-_search_activated_cb(void *data, Evas_Object *obj, void *event_info)
+_search_activated_cb(void *data, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
     const char *search_text;
@@ -266,7 +266,7 @@ _search_activated_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_search_focus_cb(void *data, Evas_Object *obj, void *event_info)
+_search_focus_cb(void *data, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
 
@@ -277,7 +277,7 @@ _search_focus_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_search_unfocus_cb(void *data, Evas_Object *obj, void *event_info)
+_search_unfocus_cb(void *data, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
 
@@ -288,7 +288,7 @@ _search_unfocus_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_back_btn_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+_back_btn_clicked_cb(void *data, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
 
@@ -500,7 +500,7 @@ _view_event(Smart_Data *sd, enna_input event)
 }
 
 static Eina_Bool
-_search_event(Smart_Data *sd, enna_input event)
+_search_event(Smart_Data *sd, enna_input event __UNUSED__)
 {
     enna_search_focus_set(sd->o_search, EINA_TRUE);
     return ENNA_EVENT_BLOCK;
@@ -557,7 +557,7 @@ enna_browser_obj_root_set(Evas_Object *obj, const char *uri)
 }
 
 static void
-_browser_del_cb(void *data, Evas *e, Evas_Object *o, void *event_info)
+_browser_del_cb(void *data, Evas *e __UNUSED__, Evas_Object *o __UNUSED__, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
     Enna_File *f;

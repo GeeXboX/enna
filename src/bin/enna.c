@@ -539,7 +539,7 @@ static void usage(char *binname)
     exit(EXIT_SUCCESS);
 }
 
-static void version()
+static void version(void)
 {
     printf(PACKAGE_STRING"\n");
     exit(EXIT_SUCCESS);

@@ -421,9 +421,9 @@ enna_metadata_db_init(void)
     {
         const char *g = l->data;
         const char *gl;
-        Eina_List *l;
+        Eina_List *l2;
 
-        EINA_LIST_FOREACH(glist, l, gl)
+        EINA_LIST_FOREACH(glist, l2, gl)
         {
             if (!strcmp(g, gl))
             {

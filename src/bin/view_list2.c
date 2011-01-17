@@ -76,7 +76,7 @@ _list_item_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 }*/
 
 static void // called on list item selection (higlight)
-_list_item_selected_cb(void *data, Evas_Object *obj, void *event_info)
+_list_item_selected_cb(void *data, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     //Elm_Genlist_Item *item = event_info;
     Item_Data *id = data;
@@ -88,14 +88,14 @@ _list_item_selected_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void // called when one of the buttons is pressed
-_list_button_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+_list_button_clicked_cb(void *data, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Enna_View_List2_Widget *b = data;
     _list_button_activate(b);
 }
 
 static void
-_list_button_mouse_move_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_list_button_mouse_move_cb(void *data __UNUSED__, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
     Evas_Event_Mouse_Move *ev = (Evas_Event_Mouse_Move*) event_info;
 
@@ -225,7 +225,7 @@ _list_item_buttons_create_all(const Item_Data *id)
 
 /***   Genlist Class Implementation  ***/
 static char *
-_list_item_label_get(void *data, Evas_Object *obj, const char *part)
+_list_item_label_get(void *data, Evas_Object *obj __UNUSED__, const char *part)
 {
     const Item_Data *id = data;
 
@@ -267,13 +267,13 @@ _list_item_icon_get(void *data, Evas_Object *obj, const char *part)
 }
 
 static Eina_Bool
-_list_item_state_get(void *data, Evas_Object *obj, const char *part)
+_list_item_state_get(void *data __UNUSED__, Evas_Object *obj __UNUSED__, const char *part __UNUSED__)
 {
     return EINA_FALSE;
 }
 
 static void
-_list_item_del(void *data, Evas_Object *obj)
+_list_item_del(void *data, Evas_Object *obj __UNUSED__)
 {
     Item_Data *id = (Item_Data *)data;
     Enna_View_List2_Widget *b;
@@ -307,7 +307,7 @@ static Elm_Genlist_Item_Class itc_single_label = {
 
 /***   Public API  ***/
 Evas_Object *
-enna_list2_add(Evas *evas) // evas is unused
+enna_list2_add(Evas *evas __UNUSED__) // evas is unused
 {
     Evas_Object *obj;
 

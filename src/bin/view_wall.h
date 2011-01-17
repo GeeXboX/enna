@@ -40,5 +40,5 @@ const char *enna_wall_selected_filename_get(Evas_Object *obj);
 
 int enna_wall_jump_label(Evas_Object *obj, const char *label);
 void enna_wall_jump_ascii(Evas_Object *obj, char k);
-
+void enna_wall_clear(Evas_Object *obj);
 #endif /* WALL_H */

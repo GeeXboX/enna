@@ -387,7 +387,7 @@ ini_parse (ini_t *ini)
 
             b = buf + 1;
             e = strstr(buf, "]");
-            m = MMIN(sizeof(section), e - b + 1);
+            m = MMIN((int)sizeof(section), e - b + 1);
             snprintf(section, m, "%s", b);
 
             se = ini_section_new(section);
