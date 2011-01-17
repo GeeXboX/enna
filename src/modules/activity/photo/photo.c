@@ -28,7 +28,6 @@
 #include "enna_config.h"
 #include "vfs.h"
 #include "view_wall.h"
-#include "image.h"
 #include "browser_obj.h"
 #include "view_list.h"
 #include "content.h"

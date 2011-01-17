@@ -23,7 +23,6 @@
 #include <Elementary.h>
 
 #include "enna_config.h"
-#include "image.h"
 #include "metadata.h"
 #include "mediaplayer.h"
 #include "mediaplayer_obj.h"
@@ -108,25 +107,27 @@ metadata_set_text(Evas_Object *obj,
 {
     int res = 0;
     const char *str = NULL;
-    char *tmp;
+    char *tmp = NULL;
 
     if (file)
         str =  enna_file_meta_get(file, name);
 
     if (!str)
         res = -1;
+    else
+        tmp = strdup(str);
 
     if(bold && str)
     {
-        tmp = enna_util_str_chomp(str);
+        tmp = enna_util_str_chomp(tmp);
     }
     else
     {
-        tmp = enna_util_str_chomp(str);
+        tmp = enna_util_str_chomp(tmp);
     }
     elm_label_ellipsis_set(obj, EINA_TRUE);
     elm_label_label_set(obj, tmp);
- 
+    ENNA_FREE(tmp);
     eina_stringshare_del(str);
     return res;
 }
@@ -150,7 +151,7 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata, Enna_File *file)
         metadata_set_text(sd->artist, file, "artist", 0);
 
     ENNA_OBJECT_DEL(sd->cv);
-    sd->cv = enna_image_add(enna->evas);
+    sd->cv = elm_icon_add(obj);
 
     cover = enna_file_meta_get(file, "cover");
     if (cover)
@@ -163,14 +164,13 @@ _metadata_set(Evas_Object *obj, Enna_Metadata *metadata, Enna_File *file)
             snprintf(cv, sizeof(cv), "%s/covers/%s",
                      enna_util_data_home_get(), cover);
 
-        enna_image_file_set(sd->cv, cv, NULL);
+        elm_icon_file_set(sd->cv, cv, NULL);
     }
     else
     {
-        enna_image_file_set(sd->cv,
+        elm_icon_file_set(sd->cv,
                            enna_config_theme_get(), "cover/music/file");
     }
-    enna_image_fill_inside_set(sd->cv, 0);
     evas_object_size_hint_align_set(sd->cv, 0.5, 0.5);
     evas_object_size_hint_weight_set(sd->cv, 0, 0);
     elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
@@ -184,8 +184,8 @@ media_cover_hide (Smart_Data *sd)
         return;
 
     ENNA_OBJECT_DEL(sd->cv);
-    sd->cv = enna_image_add(enna->evas);
-    enna_image_file_set(sd->cv, NULL, NULL);
+    sd->cv = elm_icon_add(sd->layout);
+    elm_icon_file_set(sd->cv, NULL, NULL);
     elm_layout_content_set(sd->layout, "cover.swallow", sd->cv);
     evas_object_show(sd->cv);
 }

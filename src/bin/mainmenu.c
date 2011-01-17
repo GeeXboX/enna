@@ -33,7 +33,6 @@
 #include "input.h"
 #include "logs.h"
 #include "box.h"
-#include "image.h"
 #include "exit.h"
 #include "volume_notification.h"
 #include "mediaplayer.h"

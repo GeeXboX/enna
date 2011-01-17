@@ -28,7 +28,6 @@
 
 #include "enna.h"
 #include "enna_config.h"
-#include "image.h"
 #include "logs.h"
 #include "input.h"
 #include "box.h"

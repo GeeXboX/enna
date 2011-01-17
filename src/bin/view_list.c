@@ -120,7 +120,7 @@ _item_remove(Evas_Object *obj, List_Item *item)
 /* List View */
 /* Default genlist items */
 static char *
-_list_item_default_label_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_default_label_get(void *data, Evas_Object *obj, const char *part)
 {
     const List_Item *li = data;
 
@@ -130,7 +130,7 @@ _list_item_default_label_get(const void *data, Evas_Object *obj, const char *par
 }
 
 static Evas_Object *
-_list_item_default_icon_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_default_icon_get(void *data, Evas_Object *obj, const char *part)
 {
     List_Item *li = (List_Item*) data;
 
@@ -173,7 +173,7 @@ _list_item_default_icon_get(const void *data, Evas_Object *obj, const char *part
 
 /* Tracks relative  genlist items */
 static char *
-_list_item_track_label_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_track_label_get(void *data, Evas_Object *obj, const char *part)
 {
     const List_Item *li = data;
     const char *title;
@@ -231,7 +231,7 @@ _list_item_track_label_get(const void *data, Evas_Object *obj, const char *part)
 }
 
 static Evas_Object *
-_list_item_track_icon_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_track_icon_get(void *data, Evas_Object *obj, const char *part)
 {
     List_Item *li = (List_Item*) data;
 

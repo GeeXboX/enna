@@ -225,7 +225,7 @@ _list_item_buttons_create_all(const Item_Data *id)
 
 /***   Genlist Class Implementation  ***/
 static char *
-_list_item_label_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_label_get(void *data, Evas_Object *obj, const char *part)
 {
     const Item_Data *id = data;
 
@@ -239,7 +239,7 @@ _list_item_label_get(const void *data, Evas_Object *obj, const char *part)
 }
 
 static Evas_Object *
-_list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_icon_get(void *data, Evas_Object *obj, const char *part)
 {
     const Item_Data *id = data;
 
@@ -267,13 +267,13 @@ _list_item_icon_get(const void *data, Evas_Object *obj, const char *part)
 }
 
 static Eina_Bool
-_list_item_state_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_state_get(void *data, Evas_Object *obj, const char *part)
 {
     return EINA_FALSE;
 }
 
 static void
-_list_item_del(const void *data, Evas_Object *obj)
+_list_item_del(void *data, Evas_Object *obj)
 {
     Item_Data *id = (Item_Data *)data;
     Enna_View_List2_Widget *b;
