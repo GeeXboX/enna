@@ -106,11 +106,11 @@ enna_mediaplayer_current_file_get(void)
 }
 
 const char *
-enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
+enna_mediaplayer_get_current_uri(void)
 {
   Enna_File *item;
 
-  item = eina_list_nth(enna_playlist->playlist, enna_playlist->selected);
+  item = eina_list_nth(mp->cur_playlist->playlist, mp->cur_playlist->selected);
   if (!item->uri)
     return NULL;
   return strdup(item->uri);
