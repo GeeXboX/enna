@@ -23,6 +23,7 @@ struct _Enna_Mediaplayer
     int subtitle_scale;
     int subtitle_delay;
     int framedrop;
+    Enna_Playlist *cur_playlist;
 };
 
 static Enna_Mediaplayer *mp = NULL;
@@ -89,7 +90,22 @@ Evas_Object *enna_mediaplayer_obj_get(void)
     return mp->player;
 }
 
-char *
+Enna_File *
+enna_mediaplayer_current_file_get(void)
+{
+    Enna_File *item;
+
+    if (!mp->cur_playlist || mp->play_state != PLAYING)
+        return NULL;
+
+    item = eina_list_nth(mp->cur_playlist->playlist, mp->cur_playlist->selected);
+    if (!item)
+        return NULL;
+
+    return item;
+}
+
+const char *
 enna_mediaplayer_get_current_uri(Enna_Playlist *enna_playlist)
 {
   Enna_File *item;
@@ -111,6 +127,8 @@ enna_mediaplayer_file_append(Enna_Playlist *enna_playlist, Enna_File *file)
 int
 enna_mediaplayer_play(Enna_Playlist *enna_playlist)
 {
+    mp->cur_playlist = enna_playlist;
+
     switch (mp->play_state)
     {
     case STOPPED:
