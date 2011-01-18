@@ -27,7 +27,6 @@
 #include "enna_config.h"
 #include "metadata.h"
 #include "logs.h"
-#include "image.h"
 #include "buffer.h"
 #include "infos.h"
 #include "utils.h"
@@ -97,7 +96,7 @@ _update(Smart_Data *sd, Enna_File *file)
 
 }
 
-void _set_text(Evas_Object *obj,
+static void _set_text(Evas_Object *obj,
                const char *part,
                const char *text,
                const char *prefix,
@@ -146,9 +145,9 @@ enna_infos_add (Evas_Object *parent)
 void
 enna_infos_file_set(Evas_Object *obj, Enna_File *file)
 {
-    Evas_Object *page;
-    Smart_Data *sd;
-    Evas_Object *ic;
+    Evas_Object *page = NULL;
+    Smart_Data *sd = NULL;
+    Evas_Object *ic = NULL;
 
     if (!obj || !file)
         return;
@@ -348,14 +347,12 @@ enna_infos_file_set(Evas_Object *obj, Enna_File *file)
         const char *title;
         const char *genre;
         const char *duration;
-        const char *sduration;
-        const char *codec;
+        const char *sduration = NULL;
         const char *year;
         const char *album;
         const char *artist;
         const char *cover;
         const char *cover_path;
-        const char *tmp;
 
         artist = enna_file_meta_get(file, "author");
         album = enna_file_meta_get(file, "album");

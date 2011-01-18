@@ -26,7 +26,6 @@
 #include "enna_config.h"
 #include "metadata.h"
 #include "logs.h"
-#include "image.h"
 #include "buffer.h"
 #include "utils.h"
 
@@ -255,9 +254,8 @@ enna_panel_infos_set_cover(Evas_Object *obj, Enna_Metadata *m)
 
     if (from_vfs)
     {
-        cover = enna_image_add(evas_object_evas_get(sd->o_edje));
-        enna_image_fill_inside_set(cover, 0);
-        enna_image_file_set(cover, file, NULL);
+        cover = elm_icon_add(sd->o_edje);
+        elm_icon_file_set(cover, file, NULL);
     }
     else
     {

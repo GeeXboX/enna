@@ -150,7 +150,8 @@ flag_set (Smart_Data *sd, Evas_Object **obj,
 static void
 video_flag_set (Smart_Data *sd, Enna_Metadata *m)
 {
-    char *h_str, *flag = NULL;
+    const char *h_str;
+    char *flag = NULL;
 
     if (!m)
         goto video_unknown;
@@ -171,7 +172,7 @@ video_flag_set (Smart_Data *sd, Enna_Metadata *m)
 
         if (!flag)
             flag = strdup("flags/video/sd");
-        ENNA_FREE(h_str);
+        eina_stringshare_del(h_str);
     }
 
 video_unknown:
@@ -185,7 +186,8 @@ video_unknown:
 static void
 audio_flag_set (Smart_Data *sd, Enna_Metadata *m)
 {
-    char *c_str, *flag = NULL;
+    const char *c_str;
+    char *flag = NULL;
 
     if (!m)
         goto audio_unknown;
@@ -204,7 +206,7 @@ audio_flag_set (Smart_Data *sd, Enna_Metadata *m)
                 break;
             }
 
-        ENNA_FREE(c_str);
+        eina_stringshare_del(c_str);
     }
 
 audio_unknown:
@@ -220,7 +222,8 @@ audio_unknown:
 static void
 studio_flag_set (Smart_Data *sd, Enna_Metadata *m)
 {
-    char *studio, *flag = NULL;
+    const char *studio;
+    char *flag = NULL;
 
     if (!m)
         goto studio_unknown;
@@ -238,7 +241,7 @@ studio_flag_set (Smart_Data *sd, Enna_Metadata *m)
                 break;
             }
 
-        ENNA_FREE(studio);
+        eina_stringshare_del(studio);
     }
 
 studio_unknown:
@@ -252,7 +255,8 @@ studio_unknown:
 static void
 media_flag_set (Smart_Data *sd, Enna_Metadata *m)
 {
-    char *h_str, *flag = NULL;
+    const char *h_str;
+    char *flag = NULL;
 
     if (!m)
         goto media_unknown;
@@ -273,7 +277,7 @@ media_flag_set (Smart_Data *sd, Enna_Metadata *m)
 
         if (!flag)
             flag = strdup("flags/media/divx");
-        ENNA_FREE(h_str);
+        eina_stringshare_del(h_str);
     }
 
 media_unknown:

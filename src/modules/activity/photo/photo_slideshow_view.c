@@ -24,7 +24,6 @@
 #include <Elementary.h>
 
 #include "enna_config.h"
-#include "image.h"
 #include "input.h"
 #include "photo_slideshow_view.h"
 

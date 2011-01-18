@@ -101,7 +101,7 @@ static Eina_List *od_files = NULL;
     }                                                          \
 
 static void
-pipe_read(void *data, void *buf, unsigned int nbyte)
+pipe_read(void *data __UNUSED__, void *buf, unsigned int nbyte)
 {
     Enna_Pipe_Data *od;
     Eina_List *l;
@@ -127,7 +127,7 @@ pipe_read(void *data, void *buf, unsigned int nbyte)
 }
 
 static void
-ondemand_cb(const char *file, valhalla_event_od_t e, const char *id, void *data)
+ondemand_cb(const char *file, valhalla_event_od_t e, const char *id, void *data __UNUSED__)
 {
     Enna_Pipe_Data *od;
     Enna_Metadata_OnDemand ev = ENNA_METADATA_OD_PARSED;
@@ -421,9 +421,9 @@ enna_metadata_db_init(void)
     {
         const char *g = l->data;
         const char *gl;
-        Eina_List *l;
+        Eina_List *l2;
 
-        EINA_LIST_FOREACH(glist, l, gl)
+        EINA_LIST_FOREACH(glist, l2, gl)
         {
             if (!strcmp(g, gl))
             {
@@ -673,7 +673,7 @@ enna_metadata_meta_get_all(const Enna_Metadata *meta)
 }
 
 void
-enna_metadata_set_position(Enna_Metadata *meta, double position)
+enna_metadata_set_position(Enna_Metadata *meta __UNUSED__, double position __UNUSED__)
 {
     /* to be implemented */
 }

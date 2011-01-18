@@ -411,6 +411,7 @@ _root_meta_get(void *data, Enna_File *file, const char *key)
 
 static Enna_File_Meta_Class root_meta_class = {
     _root_meta_get,
+    NULL,
     NULL
 };
 

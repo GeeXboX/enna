@@ -81,7 +81,7 @@ Enna_File *enna_file_ref(Enna_File *file);
 void enna_file_free(Enna_File *f);
 void enna_file_meta_add(Enna_File *f, Enna_File_Meta_Class *meta_class, void *data);
 const char * enna_file_meta_get(Enna_File *f, const char *key);
-
+void enna_file_meta_set(Enna_File *f, const char *key, const void *data);
 Enna_File *enna_file_file_add(const char *name, const char *uri,
                               const char *mrl, const char *label,
                               const char *icon);

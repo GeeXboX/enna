@@ -28,7 +28,6 @@
 #include "module.h"
 #include "activity.h"
 #include "content.h"
-#include "image.h"
 #include "mainmenu.h"
 #include "logs.h"
 #include "vfs.h"
@@ -339,7 +338,7 @@ backdrop_show(Enna_Metadata *m)
         evas_object_show(mod->o_backdrop);
         elm_layout_content_set(mod->o_layout,
                                "backdrop.swallow", mod->o_backdrop);
-        ENNA_FREE(backdrop);
+        eina_stringshare_del(backdrop);
         ENNA_FREE(file);
     }
     else
@@ -355,7 +354,7 @@ snapshot_show(Enna_Metadata *m, int dir)
 {
     char *file = NULL;
     int from_vfs = 1;
-    char *snapshot;
+    const char *snapshot;
 
     snapshot = enna_metadata_meta_get(m, "fanart", 1);
     if (snapshot)
@@ -380,7 +379,7 @@ snapshot_show(Enna_Metadata *m, int dir)
     elm_layout_content_set(mod->o_layout,
                            "snapshot.swallow", mod->o_snapshot);
 
-    ENNA_FREE(snapshot);
+    eina_stringshare_del(snapshot);
     ENNA_FREE(file);
 }
 

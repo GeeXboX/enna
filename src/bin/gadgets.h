@@ -31,7 +31,7 @@ struct _Enna_Gadget
 };
 
 void enna_gadgets_register(Enna_Gadget *gad);
-void enna_gadgets_show();
-void enna_gadgets_hide();
-int  enna_gadgets_init();
-int  enna_gadgets_shutdown();
+void enna_gadgets_show(void);
+void enna_gadgets_hide(void);
+int  enna_gadgets_init(void);
+int  enna_gadgets_shutdown(void);

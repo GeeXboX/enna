@@ -69,7 +69,7 @@ _item_selected(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_item_click_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_item_click_cb(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
     Elm_Genlist_Item *item = data;
     Evas_Event_Mouse_Up *ev = event_info;
@@ -81,7 +81,7 @@ _item_click_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 }
 
 static void
-_item_realized_cb(void *data, Evas_Object *obj, void *event_info)
+_item_realized_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
    Elm_Genlist_Item *item = event_info;
    Evas_Object *o_item;
@@ -92,7 +92,7 @@ _item_realized_cb(void *data, Evas_Object *obj, void *event_info)
 
 
 static void
-_file_meta_update(void *data, Enna_File *file)
+_file_meta_update(void *data, Enna_File *file __UNUSED__)
 {
     List_Item *it = data;
     if (!it || !it->item)
@@ -120,7 +120,7 @@ _item_remove(Evas_Object *obj, List_Item *item)
 /* List View */
 /* Default genlist items */
 static char *
-_list_item_default_label_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_default_label_get(void *data, Evas_Object *obj __UNUSED__, const char *part __UNUSED__)
 {
     const List_Item *li = data;
 
@@ -130,7 +130,7 @@ _list_item_default_label_get(const void *data, Evas_Object *obj, const char *par
 }
 
 static Evas_Object *
-_list_item_default_icon_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_default_icon_get(void *data, Evas_Object *obj, const char *part)
 {
     List_Item *li = (List_Item*) data;
 
@@ -173,7 +173,7 @@ _list_item_default_icon_get(const void *data, Evas_Object *obj, const char *part
 
 /* Tracks relative  genlist items */
 static char *
-_list_item_track_label_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_track_label_get(void *data, Evas_Object *obj __UNUSED__, const char *part)
 {
     const List_Item *li = data;
     const char *title;
@@ -231,7 +231,7 @@ _list_item_track_label_get(const void *data, Evas_Object *obj, const char *part)
 }
 
 static Evas_Object *
-_list_item_track_icon_get(const void *data, Evas_Object *obj, const char *part)
+_list_item_track_icon_get(void *data, Evas_Object *obj, const char *part)
 {
     List_Item *li = (List_Item*) data;
 
@@ -348,7 +348,7 @@ list_set_item(Smart_Data *sd, int start, int up, int step)
 }
 
 static void
-_del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_del_cb(void *data, Evas *e __UNUSED__, Evas_Object *obj, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
 

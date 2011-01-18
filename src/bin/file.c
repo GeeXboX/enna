@@ -49,7 +49,7 @@ _create_inode(const char *name, const char *uri, const char *label,
     return f;
 }
 
-const char *
+static const char *
 _meta_get_default(Enna_File *file, const char *key)
 {
     Enna_Metadata *m;
@@ -62,7 +62,7 @@ _meta_get_default(Enna_File *file, const char *key)
 
 }
 
-void
+static void
 _meta_default_set(Enna_File *file, const char *key, const char *data)
 {
     Enna_Metadata *m;

@@ -33,7 +33,6 @@
 #include "input.h"
 #include "logs.h"
 #include "box.h"
-#include "image.h"
 #include "exit.h"
 #include "volume_notification.h"
 #include "mediaplayer.h"
@@ -81,7 +80,7 @@ _enna_mainmenu_load_from_activities(Smart_Data *sd)
 }
 
 static void
-_enna_mainmenu_item_focus(void *data, Evas_Object *obj, void *event_info)
+_enna_mainmenu_item_focus(void *data, Evas_Object *obj __UNUSED__, void *event_info)
 {
     Smart_Data *sd = data;
     Activated_Cb_Data *cb_data = event_info;

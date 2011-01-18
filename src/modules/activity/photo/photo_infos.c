@@ -26,7 +26,6 @@
 #include "enna_config.h"
 #include "metadata.h"
 #include "logs.h"
-#include "image.h"
 #include "photo_infos.h"
 
 #define SMART_NAME "photo_panel_infos"
@@ -172,7 +171,8 @@ void
 photo_panel_infos_set_text (Evas_Object *obj, const char *filename)
 {
     Enna_Metadata *m;
-    char *meta, *meta2 = NULL;
+    const char *meta;
+    char *meta2 = NULL;
 
     API_ENTRY return;
 
@@ -187,7 +187,7 @@ photo_panel_infos_set_text (Evas_Object *obj, const char *filename)
     meta = enna_metadata_meta_get_all (m);
     if (meta)
     {
-        int i, j;
+        unsigned int i, j;
 
         meta2 = calloc (2, strlen (meta));
         for (i = 0, j = 0; i < strlen (meta); i++)
@@ -211,7 +211,7 @@ photo_panel_infos_set_text (Evas_Object *obj, const char *filename)
     edje_object_part_text_set (sd->o_edje, "infos.panel.textblock",
                                meta2 ? meta2:
                                _("No EXIF such information found ..."));
-    ENNA_FREE (meta);
+    eina_stringshare_del(meta);
     ENNA_FREE (meta2);
     enna_metadata_meta_free (m);
 }
@@ -225,9 +225,8 @@ photo_panel_infos_set_cover(Evas_Object *obj, const char *filename)
 
     if (!filename) return;
 
-    o_pict = enna_image_add (evas_object_evas_get(sd->o_edje));
-    enna_image_fill_inside_set (o_pict, 0);
-    enna_image_file_set (o_pict, filename, NULL);
+    o_pict = elm_icon_add(sd->o_edje);
+    elm_icon_file_set (o_pict, filename, NULL);
     ENNA_OBJECT_DEL (sd->o_pict);
     sd->o_pict = o_pict;
     edje_object_part_swallow (sd->o_edje,

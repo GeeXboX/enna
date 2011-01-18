@@ -186,7 +186,7 @@ _kbdnav_direction(Enna_Kbdnav *nav, int direction)
 
     EINA_LIST_FOREACH(nav->items, l, it)
     {
-        int d;
+        unsigned int d;
 
         if (it == nav->current)
             continue;

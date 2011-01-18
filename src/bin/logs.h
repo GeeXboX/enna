@@ -25,7 +25,7 @@
 #include "enna.h"
 
 int enna_log_init(const char *filename);
-void enna_log_print(int level, const char *module, char *file, int line,
+void enna_log_print(int level, const char *module, const char *file, int line,
         const char *format, ...);
 void enna_log_shutdown(void);
 

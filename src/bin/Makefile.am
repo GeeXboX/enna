@@ -33,7 +33,6 @@ module.c\
 activity.c\
 vfs.c\
 volumes.c\
-image.c\
 file.c\
 browser.c\
 browser_obj.c\
@@ -47,7 +46,6 @@ xml_utils.c\
 url_utils.c\
 logs.c\
 parser_cdda.c\
-reflection.c\
 box.c\
 exit.c\
 weather_api.c\
@@ -256,7 +254,6 @@ module.h\
 vfs.h\
 volumes.h\
 activity.h\
-image.h\
 file.h\
 browser.h\
 browser_obj.h\
@@ -271,7 +268,6 @@ xml_utils.h\
 url_utils.h\
 logs.h\
 parser_cdda.h\
-reflection.h\
 box.h\
 exit.h\
 gettext.h\

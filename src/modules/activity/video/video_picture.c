@@ -26,7 +26,6 @@
 #include "enna_config.h"
 #include "metadata.h"
 #include "logs.h"
-#include "image.h"
 
 #include "video_picture.h"
 
@@ -88,9 +87,8 @@ enna_video_picture_set (Evas_Object *obj, char *file, int from_vfs)
 
     if (from_vfs)
     {
-      sd->o_img = enna_image_add(evas_object_evas_get(sd->o_edje));
-      enna_image_fill_inside_set(sd->o_img, 0);
-      enna_image_file_set(sd->o_img, file, NULL);
+      sd->o_img = elm_icon_add(sd->o_edje);
+      elm_icon_file_set(sd->o_img, file, NULL);
     }
     else
     {

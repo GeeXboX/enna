@@ -73,7 +73,7 @@ static int _create_gui(void);
 
 /* Callbacks */
 static Eina_Bool
-_idle_timer_cb(void *data)
+_idle_timer_cb(void *data __UNUSED__)
 {
 
     if (enna_exit_visible())
@@ -114,7 +114,7 @@ static void _mouse_display(int show)
 }
 
 static Eina_Bool
-_mouse_idle_timer_cb(void *data)
+_mouse_idle_timer_cb(void *data __UNUSED__)
 {
     _mouse_display(0);
     ENNA_TIMER_DEL(enna->mouse_idle_timer);
@@ -122,7 +122,7 @@ _mouse_idle_timer_cb(void *data)
 }
 
 static Eina_Bool
-_mousemove_cb(void *data, int type, void *event)
+_mousemove_cb(void *data __UNUSED__, int type __UNUSED__, void *event __UNUSED__)
 {
     if (!enna->cursor_is_shown)
     {
@@ -156,13 +156,13 @@ _set_scale(int h)
 }
 
 
-static void _window_delete_cb(void *data, Evas_Object *obj, void *event_info)
+static void _window_delete_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     ecore_main_loop_quit();
 }
 
 static void
-_window_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_window_resize_cb(void *data __UNUSED__, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Evas_Coord h;
 
@@ -171,7 +171,7 @@ _window_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 }
 
 static void
-_button_back_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+_button_back_clicked_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     if (enna_mainmenu_visible(enna->o_menu))
         enna_input_event_emit(ENNA_INPUT_QUIT);
@@ -505,7 +505,7 @@ void enna_idle_timer_renew(void)
 }
 
 static Eina_Bool
-exit_signal(void *data, int type, void *e)
+exit_signal(void *data __UNUSED__, int type __UNUSED__, void *e)
 {
     Ecore_Event_Signal_Exit *event = e;
 
@@ -539,7 +539,7 @@ static void usage(char *binname)
     exit(EXIT_SUCCESS);
 }
 
-static void version()
+static void version(void)
 {
     printf(PACKAGE_STRING"\n");
     exit(EXIT_SUCCESS);

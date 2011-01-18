@@ -248,7 +248,7 @@ set_dvd_stream(const char *uri, mrl_resource_t type)
     mrl_resource_videodisc_args_t *args;
     char *meta;
     uint32_t prop = 0;
-    int tmp = 0;
+    unsigned int tmp = 0;
     int title = 0;
     char *device;
 
@@ -271,7 +271,7 @@ set_dvd_stream(const char *uri, mrl_resource_t type)
 
     if (prop)
     {
-        int i;
+        unsigned int i;
 
         enna_log(ENNA_MSG_INFO, NULL, "Meta DVD Titles: %i", prop);
 

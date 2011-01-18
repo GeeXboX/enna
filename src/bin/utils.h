@@ -27,12 +27,12 @@
 #define MMAX(a,b) ((a) > (b) ? (a) : (b))
 #define MMIN(a,b) ((a) > (b) ? (b) : (a))
 
-int enna_util_init();
-int enna_util_shutdown();
-char         *enna_util_user_home_get();
-const char *enna_util_data_home_get();
-const char *enna_util_config_home_get();
-const char *enna_util_cache_home_get();
+int enna_util_init(void);
+int enna_util_shutdown(void);
+char         *enna_util_user_home_get(void);
+const char *enna_util_data_home_get(void);
+const char *enna_util_config_home_get(void);
+const char *enna_util_cache_home_get(void);
 int           enna_util_has_suffix(char *str, Eina_List * patterns);
 unsigned int  enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h);
 unsigned char enna_util_uri_has_extension(const char *uri, int type);
