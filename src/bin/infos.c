@@ -284,16 +284,19 @@ enna_infos_file_set(Evas_Object *obj, Enna_File *file)
             duration = enna_file_meta_get(file, "length");
         if (!duration)
              elm_layout_text_set(page, "enna.text.length", "");
-        sduration = enna_util_duration_to_string(duration);
-        if (!sduration)
+        else
         {
-            eina_stringshare_del(duration);
-            elm_layout_text_set(page, "enna.text.length", "");
+            sduration = enna_util_duration_to_string(duration);
+            if (!sduration)
+            {
+                eina_stringshare_del(duration);
+                elm_layout_text_set(page, "enna.text.length", "");
+            }
+            tmp = eina_stringshare_printf("Length: %s", sduration);
+            elm_layout_text_set(page, "enna.text.length", tmp);
+            eina_stringshare_del(sduration);
+            eina_stringshare_del(tmp);
         }
-        tmp = eina_stringshare_printf("Length: %s", sduration);
-        elm_layout_text_set(page, "enna.text.length", tmp);
-        eina_stringshare_del(sduration);
-        eina_stringshare_del(tmp);
 
         title = enna_file_meta_get(file, "title");
         if (!title || !title[0] || title[0] == ' ')
@@ -327,6 +330,8 @@ enna_infos_file_set(Evas_Object *obj, Enna_File *file)
         }
 
         artist = enna_file_meta_get(file, "author");
+        if (!artist)
+            artist = enna_file_meta_get(file, "artist");
         if (!artist || !artist[0] || artist[0] == ' ')
             elm_layout_text_set(page, "enna.text.artist", "");
         else
