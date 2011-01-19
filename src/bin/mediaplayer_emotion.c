@@ -110,9 +110,13 @@ enna_mediaplayer_get_current_uri(void)
 {
   Enna_File *item;
 
+  if (!mp->cur_playlist || mp->play_state != PLAYING)
+      return NULL;
+
   item = eina_list_nth(mp->cur_playlist->playlist, mp->cur_playlist->selected);
   if (!item->uri)
     return NULL;
+
   return strdup(item->uri);
 }
 
@@ -140,8 +144,11 @@ enna_mediaplayer_play(Enna_Playlist *enna_playlist)
         if (item && item->uri)
             emotion_object_file_set(mp->player, item->mrl);
         emotion_object_play_set(mp->player, EINA_TRUE);
-        evas_object_show(mp->player);
-        evas_object_hide(enna->layout);
+        if (item && item->type == ENNA_FILE_FILM)
+        {
+            evas_object_show(mp->player);
+            evas_object_hide(enna->layout);
+        }
         mp->play_state = PLAYING;
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_START, NULL, NULL, NULL);
         break;
@@ -359,10 +366,15 @@ enna_mediaplayer_playlist_save(const char *filename)
     return 0;
 }
 
+
+
 void
 enna_mediaplayer_playlist_clear(Enna_Playlist *enna_playlist)
 {
-    eina_list_free(enna_playlist->playlist);
+    Enna_File *f;
+
+    EINA_LIST_FREE(enna_playlist->playlist, f)
+        enna_file_free(f);
     enna_playlist->playlist = NULL;
     enna_playlist->selected = 0;
 }
@@ -377,7 +389,7 @@ enna_mediaplayer_metadata_get(Enna_Playlist *enna_playlist)
         return NULL;
 
     if (item->uri)
-        return enna_metadata_meta_new((char *) item->uri);
+        return enna_metadata_meta_new((char *) item->mrl);
 
     return NULL;
 }
