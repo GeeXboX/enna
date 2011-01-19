@@ -645,7 +645,7 @@ enna_util_duration_to_string(const char *length)
 }
 
 
-EAPI Eina_List *
+Eina_List *
 enna_util_stringlist_get(const char *str)
 {
     Eina_List *list = NULL;
@@ -670,7 +670,7 @@ enna_util_stringlist_get(const char *str)
     return list;
 }
 
-EAPI void
+void
 enna_util_stringlist_free(Eina_List *list)
 {
     const char *s;

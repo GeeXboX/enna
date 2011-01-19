@@ -61,4 +61,8 @@ Eina_Bool enna_util_str_has_suffix(const char *str, const char *suffix);
 Eina_Bool enna_util_str_has_extension(const char *str, const char *ext);
 
 const char *enna_util_duration_to_string(const char *length);
+
+void enna_util_stringlist_free(Eina_List *list);
+void enna_util_stringlist_free(Eina_List *list);
+
 #endif /* UTILS_H */
