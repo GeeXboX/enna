@@ -23,6 +23,7 @@
 #include "enna.h"
 #include "metadata.h"
 #include "logs.h"
+#include "utils.h"
 
 typedef struct _Enna_File_Callback Enna_File_Callback;
 struct _Enna_File_Callback
@@ -167,9 +168,92 @@ enna_file_meta_get(Enna_File *f, const char *key)
     if (!f || !key)
         return NULL;
 
-    if (!f->meta_class || !f->meta_class->meta_get)
-        return _meta_get_default(f, key);
+    /* Special default key where we return the file icon and label */
+    if (!strcmp(key, "label"))
+        return eina_stringshare_add(f->label);
 
+    else if (!strcmp(key, "icon"))
+        return eina_stringshare_add(f->icon);
+
+    /* There is no specific metadata grabbers registered
+       => use the default method thanks to libvalhalla*/
+    if (!f->meta_class || !f->meta_class->meta_get)
+    {
+        /* Specific case for libvalhalla covers : you can get the complete path
+           or just the filename of the cover wich was retrieved by valhalla grabbers*/
+        if (!strcmp("cover", key))
+        {
+            const char *str;
+            const char *meta;
+            meta = _meta_get_default(f, key);
+            if (!meta)
+                return NULL;
+            else if (meta[0] == '/')
+                return meta;
+            else
+            {
+                str = eina_stringshare_printf("%s/covers/%s",
+                                              enna_util_data_home_get(), meta);
+                eina_stringshare_del(meta);
+                return str;
+            }
+        }
+        if (!strcmp("fanart", key))
+        {
+            const char *str;
+            const char *meta;
+            meta = _meta_get_default(f, key);
+            if (!meta)
+                return NULL;
+            else if (meta[0] == '/')
+                return meta;
+            else
+            {
+                str = eina_stringshare_printf("%s/fanarts/%s",
+                                              enna_util_data_home_get(), meta);
+                eina_stringshare_del(meta);
+                return str;
+            }
+        }
+        else if (!strcmp("track", key))
+        {
+            const char *str;
+            const char *meta;
+            meta = _meta_get_default(f, key);
+            if (meta)
+            {
+                str = eina_stringshare_printf("%02d.", atoi(meta));
+                eina_stringshare_del(meta);
+                return str;
+            }
+            return NULL;
+        }
+        else if (!strcmp("duration", key))
+        {
+            const char *meta;
+            const char *str;
+
+            meta =  _meta_get_default(f, "duration");
+            if (!meta)
+                meta =  _meta_get_default(f, "length");
+            if (!meta)
+                return NULL;
+            else
+            {
+                str = enna_util_duration_to_string(meta);
+                if (!str)
+                {
+                    eina_stringshare_del(meta);
+                    return NULL;
+                }
+                return str;
+        }
+        }
+        /* Let valhalla do his job */
+        return _meta_get_default(f, key);
+    }
+
+    /* Try to get the value return by the specific grabber of this file */
     return f->meta_class->meta_get(f->meta_data, f, key);
 }
 
