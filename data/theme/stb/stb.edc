@@ -1288,36 +1288,37 @@ images {
          }
       }
 
-       /* /\* movie backdrop *\/ */
-       /* part { */
-       /*    name: "backdrop.swallow"; */
-       /*    type: SWALLOW; */
-       /*    mouse_events : 1; */
-       /*    clip_to: "background"; */
-       /*    description { */
-       /*       state: "default" 0.0; */
-       /*       rel1.relative: 0 0; */
-       /*       rel2.relative: 1.0 1.0; */
-       /*    } */
-       /* } */
+       /* movie backdrop */
+       part {
+          name: "backdrop.swallow";
+          type: SWALLOW;
+          mouse_events : 1;
+          clip_to: "background";
+          description {
+             state: "default" 0.0;
+             rel1.relative: 0 0;
+             rel2.relative: 1.0 1.0;
+          }
+       }
 
-       /* /\* background *\/ */
-       /* part { */
-       /*    name: "background"; */
-       /*    mouse_events:  0; */
-       /*    type: RECT; */
-       /*    description { */
-       /*       state: "default" 0.0; */
-       /*       color: 100 100 100 255  ; */
-       /*       visible: 1; */
-       /*    } */
-       /*    description { */
-       /*       state: "show" 0.0; */
-       /*       inherit: "default" 0.0; */
-       /*       color: 255 255 255 255; */
-       /*       visible: 1; */
-       /*    } */
-       /* } */
+       /* background */
+       part {
+          name: "background";
+          mouse_events:  0;
+          type: RECT;
+          clip_to: "module.clip";
+          description {
+             state: "default" 0.0;
+             color: 100 100 100 255;
+             visible: 1;
+          }
+          description {
+             state: "show" 0.0;
+             inherit: "default" 0.0;
+             color: 255 255 255 255;
+             visible: 1;
+          }
+       }
 
       /*file browser*/
       part {
@@ -1782,6 +1783,9 @@ group {
 
 group {
     name: "panel/infos/menu";
+    alias: "panel/infos/directory";
+    data.item: "labels" "label";
+    data.item: "icons" "icon";
     images {
         image: "browser_bg.png" COMP;
     }
@@ -1798,7 +1802,7 @@ group {
             }
         }
         part {
-            name: "enna.icon.swallow";
+            name: "enna.swallow.icon";
             type: SWALLOW;
             description {
                state: "default" 0.0;
@@ -1812,13 +1816,13 @@ group {
             }
         }
         part {
-            name: "enna.text";
+            name: "enna.text.label";
             type: TEXT;
             description {
                 state: "default" 0.0;
                 rel1.offset: 14 8;
                 rel1.relative: 0 1;
-                rel1.to_y: "enna.icon.swallow";
+                rel1.to_y: "enna.swallow.icon";
                 rel2.offset: -15 -15;
                 text {
                   text:     "Description";
@@ -1838,6 +1842,8 @@ group {
     images {
         image: "browser_bg.png" COMP;
     }
+    data.item: "labels" "label";
+    data.item: "icons" "icon";
     parts {
         part {
             name: "bg";
@@ -1851,7 +1857,7 @@ group {
             }
         }
         part {
-            name: "enna.icon.swallow";
+            name: "enna.swallow.icon";
             type: SWALLOW;
             description {
                 max: 300 300;
@@ -1869,7 +1875,7 @@ group {
                 state: "default" 0.0;
                 rel1.offset: 14 8;
                 rel1.relative: 0 1;
-                rel1.to_y: "enna.icon.swallow";
+                rel1.to_y: "enna.swallow.icon";
                 rel2.offset: -15 -100;
                 text {
                   text:     "Description";
@@ -1915,6 +1921,8 @@ group {
 
 group {
     name: "panel/infos/track";
+    data.item: "labels" "title author album year audio_codec duration track";
+    data.item: "icons" "cover";
     images {
         image: "browser_bg.png" COMP;
     }
@@ -1931,7 +1939,7 @@ group {
             }
         }
         part {
-            name: "enna.swallow.icon";
+            name: "enna.swallow.cover";
             type: SWALLOW;
             description {
                 max: 300 300;
@@ -1948,11 +1956,11 @@ group {
             description {
                 state: "default" 0.0;
                 rel1.offset: 8 0;
-                rel1.to: "enna.swallow.icon";
+                rel1.to: "enna.swallow.cover";
                 rel1.relative: 1 0;
 
                 rel2.offset: -14 0;
-                rel2.to_y: "enna.swallow.icon";
+                rel2.to_y: "enna.swallow.cover";
                 rel2.relative: 1 0.33;
 
                 align: 0 0.5;
@@ -1968,16 +1976,16 @@ group {
         }
 
         part {
-            name: "enna.text.length";
+            name: "enna.text.duration";
             type: TEXT;
             description {
                 state: "default" 0.0;
                 rel1.offset: 8 0;
-                rel1.to: "enna.swallow.icon";
+                rel1.to: "enna.swallow.cover";
                 rel1.relative: 1 0.33;
 
                 rel2.offset: -14 0;
-                rel2.to_y: "enna.swallow.icon";
+                rel2.to_y: "enna.swallow.cover";
                 rel2.relative: 1 0.66;
 
                 align: 0 0.5;
@@ -1993,16 +2001,16 @@ group {
         }
 
         part {
-            name: "enna.text.codec";
+            name: "enna.text.audio_codec";
             type: TEXT;
             description {
                 state: "default" 0.0;
                 rel1.offset: 8 0;
-                rel1.to: "enna.swallow.icon";
+                rel1.to: "enna.swallow.cover";
                 rel1.relative: 1 0.66;
 
                 rel2.offset: -14 0;
-                rel2.to_y: "enna.swallow.icon";
+                rel2.to_y: "enna.swallow.cover";
                 rel2.relative: 1 1;
 
                 align: 0 0.5;
@@ -2018,17 +2026,17 @@ group {
         }
 
         part {
-            name: "enna.text.trackno";
+            name: "enna.text.track";
             type: TEXT;
             description {
                 state: "default" 0.0;
                 fixed: 1 1;
                 rel1.offset: 14 32;
-                rel1.to: "enna.swallow.icon";
+                rel1.to: "enna.swallow.cover";
                 rel1.relative: 0 1;
 
                 rel2.offset: 14 32;
-                rel2.to_y: "enna.swallow.icon";
+                rel2.to_y: "enna.swallow.cover";
                 rel2.relative: 0 1;
                 align: 0 0;
                 text {
@@ -2047,11 +2055,11 @@ group {
             description {
                 state: "default" 0.0;
                 rel1.offset: 8 0;
-                rel1.to: "enna.text.trackno";
+                rel1.to: "enna.text.track";
                 rel1.relative: 1 0;
 
                 rel2.offset: -32 0;
-                rel2.to_y: "enna.text.trackno";
+                rel2.to_y: "enna.text.track";
                 rel2.relative: 1 1;
 
                 text {
@@ -2070,11 +2078,11 @@ group {
             description {
                 state: "default" 0.0;
                 rel1.offset: 0 16;
-                rel1.to: "enna.text.trackno";
+                rel1.to: "enna.text.track";
                 rel1.relative: 0 1;
 
                 rel2.offset: -32 0;
-                rel2.to_y: "enna.text.trackno";
+                rel2.to_y: "enna.text.track";
                 rel2.relative: 1 1;
 
                 fixed: 1 1;
@@ -2115,44 +2123,13 @@ group {
                }
             }
         }
-
-
-
-        /* part { */
-        /*     name: "enna.text.description"; */
-        /*     type: TEXT; */
-        /*     description { */
-        /*         state: "default" 0.0; */
-        /*         rel1.offset: 14 8; */
-        /*         rel1.relative: 0 1; */
-        /*         rel1.to_y: "enna.text.label"; */
-        /*         rel2.offset: -15 -70; */
-        /*         text { */
-        /*           text:     "Description"; */
-        /*           font:     "Comfortaa"; */
-        /*           size:     14; */
-        /*           align:    0.5 0.5; */
-        /*           min: 1 0; */
-        /*        } */
-        /*     } */
-        /* } */
-        /* part { */
-        /*     name: "enna.progress.swallow"; */
-        /*     type: SWALLOW; */
-        /*     description { */
-        /*         state: "default" 0.0; */
-        /*         rel1.offset: 14 8; */
-        /*         rel1.relative: 0 1; */
-        /*         rel1.to_y: "enna.text.description"; */
-        /*         rel2.offset: -15 -30; */
-        /*         fixed: 1 1; */
-        /*     } */
-        /* } */
     }
 }
 
 group {
    name: "panel/infos/film";
+    data.item: "labels" "title author album year audio_codec duration track";
+    data.item: "icons" "cover";
    parts {
       part {
          name: "enna.swallow.cover";
@@ -2235,7 +2212,7 @@ group {
          description {
             state: "default" 0.0;
             visible: 1;
-
+            fixed: 1 1;
             rel1.relative: 0.0 1.0;
             rel1.to: "infos.flags.swallow";
             rel1.offset: 0 8;

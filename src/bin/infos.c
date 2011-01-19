@@ -41,60 +41,6 @@ struct _Smart_Data
     Evas_Object *ic;
 };
 
-static void
-_update(Smart_Data *sd, Enna_File *file)
-{
-    switch(file->type)
-    {
-    case ENNA_FILE_MENU:
-    case ENNA_FILE_DIRECTORY:
-    case ENNA_FILE_FILE:
-    {
-        elm_icon_file_set(sd->ic, enna_config_theme_get(), file->icon);
-        elm_layout_text_set(sd->page, "enna.text", file->label);
-        break;
-      }
-    case ENNA_FILE_TRACK:
-    {
-        const char *artist;
-        const char *track;
-        const char *album;
-        const char *cover;
-        const char *cover_path;
-        char tmp[4096];
-
-        artist = enna_file_meta_get(file, "author");
-        album = enna_file_meta_get(file, "album");
-        track = enna_file_meta_get(file, "title");
-        cover = enna_file_meta_get(file, "cover");
-        if (cover && cover[0] != '/')
-        {
-            cover_path = eina_stringshare_printf("%s/covers/%s",
-                                                     enna_util_data_home_get(), cover);
-            printf("cover: %s\n", cover_path);
-            elm_icon_file_set(sd->ic, cover_path, NULL);
-            eina_stringshare_del(cover_path);
-        }
-        else if (cover)
-        {
-            printf("cover: %s\n", cover);
-            elm_icon_file_set(sd->ic, cover, NULL);
-            eina_stringshare_del(cover);
-        }
-        else
-        {
-            printf("cover: %s\n", file->icon);
-            elm_icon_file_set(sd->ic, enna_config_theme_get(), file->icon);
-        }
-        snprintf(tmp, sizeof(tmp), "%s %s %s", track, album, artist);
-        elm_layout_text_set(sd->page, "enna.text", file->label);
-        break;
-    }
-    default:
-        break;
-    }
-
-}
 
 static void _set_text(Evas_Object *obj,
                const char *part,
@@ -112,6 +58,123 @@ static void _set_text(Evas_Object *obj,
         elm_layout_text_set(obj, part, tmp);
         eina_stringshare_del(text);
         eina_stringshare_del(tmp);
+    }
+}
+
+static const char *
+_update_label(Evas_Object *parent, Enna_File *file, const char *key)
+{
+    const char *meta;
+    meta = enna_file_meta_get(file, key);
+
+    if (!meta)
+        return enna_file_meta_get(file, "label");
+
+    return meta;
+}
+
+static Evas_Object *
+_update_icon(Evas_Object *parent, Enna_File *file, const char *key)
+{
+    Evas_Object *ic = NULL;
+    const char *path;
+
+    ic = elm_icon_add(parent);
+    path = enna_file_meta_get(file, key);
+
+    if (path && path[0] != '/')
+    {
+        elm_icon_file_set(ic, enna_config_theme_get(), path);
+        eina_stringshare_del(path);
+    }
+    else if (path)
+    {
+        elm_icon_file_set(ic, path, NULL);
+        eina_stringshare_del(path);
+
+    }
+    else if (!strcmp(key, "cover"))
+    {
+        elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
+    }
+
+    if (ic)
+        evas_object_show(ic);
+
+    return ic;
+}
+
+
+static void
+_update(Smart_Data *sd, Enna_File *file)
+{
+    const char *ly_data;
+    const char *label_name;
+    const char *icon_name;
+    Eina_List *labels;
+    Eina_List *icons;
+    Eina_List *l;
+
+    ly_data = elm_layout_data_get(sd->page, "labels");
+    labels = enna_util_stringlist_get(ly_data);
+    EINA_LIST_FOREACH(labels, l, label_name)
+    {
+        const char *str;
+        const char *style;
+        str = _update_label(sd->page, file, label_name);
+
+        style = eina_stringshare_printf("enna.text.%s", label_name);
+        if (str)
+            elm_layout_text_set(sd->page, style, str);
+        else
+            elm_layout_text_set(sd->page, style, "");
+        eina_stringshare_del(style);
+        eina_stringshare_del(str);
+    }
+    enna_util_stringlist_free(labels);
+
+    ly_data = elm_layout_data_get(sd->page, "icons");
+    icons = enna_util_stringlist_get(ly_data);
+    EINA_LIST_FOREACH(icons, l, icon_name)
+    {
+        Evas_Object *ic;
+        const char *style;
+
+        ic = _update_icon(sd->page, file, icon_name);
+        style = eina_stringshare_printf("enna.swallow.%s", icon_name);
+        elm_layout_content_set(sd->page, style, ic);
+        eina_stringshare_del(style);
+    }
+    enna_util_stringlist_free(icons);
+
+    switch(file->type)
+    {
+    case ENNA_FILE_VOLUME:
+    {
+        const char *lb;
+        Evas_Object *pg;
+        const char *val;
+        double v;
+
+        lb = eina_stringshare_printf(_("Size : %s Freespace : %s In use %s%%"),
+                                     enna_file_meta_get(file, ENNA_META_KEY_SIZE),
+                                     enna_file_meta_get(file, ENNA_META_KEY_FREESPACE),
+                                     enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED));
+        elm_layout_text_set(sd->page, "enna.text.description", lb);
+
+        pg = elm_progressbar_add(sd->page);
+        val = enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED);
+        v = atof(val) / 100.0;
+        elm_progressbar_value_set(pg, v);
+        eina_stringshare_del(val);
+        elm_progressbar_unit_format_set(pg, "%1.0f %%");
+        elm_progressbar_horizontal_set(pg, EINA_TRUE);
+        evas_object_show(pg);
+        elm_layout_content_set(sd->page, "enna.progress.swallow", pg);
+        break;
+    }
+    default:
+        break;
     }
 }
 
@@ -142,12 +205,25 @@ enna_infos_add (Evas_Object *parent)
     return sd->pager;
 }
 
+static const struct {
+    Enna_File_Type type;
+    const char *style;
+} infos_style_mapping[] = {
+    { ENNA_FILE_MENU,       "panel/infos/menu"      },
+    { ENNA_FILE_DIRECTORY,  "panel/infos/directory" },
+    { ENNA_FILE_VOLUME,     "panel/infos/volume"    },
+    { ENNA_FILE_FILE,       "panel/infos/file"      },
+    { ENNA_FILE_ARTIST,     "panel/infos/artist"    },
+    { ENNA_FILE_ALBUM,      "panel/infos/album"     },
+    { ENNA_FILE_TRACK,      "panel/infos/track"     },
+    { ENNA_FILE_FILM,       "panel/infos/film"      }
+};
+
 void
 enna_infos_file_set(Evas_Object *obj, Enna_File *file)
 {
-    Evas_Object *page = NULL;
     Smart_Data *sd = NULL;
-    Evas_Object *ic = NULL;
+    int i;
 
     if (!obj || !file)
         return;
@@ -156,269 +232,32 @@ enna_infos_file_set(Evas_Object *obj, Enna_File *file)
     if (!sd)
         return;
 
-    //if (sd->file)
-    //    enna_file_free(sd->file);
-
-    //sd->file = enna_file_dup(file);
-    printf("Add infos file set for %s\n", file->uri);
-    enna_file_meta_callback_add(file, _file_update_cb, sd);
-
-
-    switch(file->type)
+    if (!sd->file || file->type != sd->file->type)
     {
-    case ENNA_FILE_MENU:
-    case ENNA_FILE_DIRECTORY:
-    case ENNA_FILE_FILE:
-    {
-        page = elm_layout_add(sd->pager);
-        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/menu");
-        ic = elm_icon_add(page);
-        elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
-        evas_object_show(ic);
-        elm_layout_content_set(page, "enna.icon.swallow", ic);
-        elm_layout_text_set(page, "enna.text", file->label);
-        evas_object_show(page);
-        elm_pager_content_pop(sd->pager);
-        elm_pager_content_push(sd->pager, page);
-        break;
-      }
-    case ENNA_FILE_VOLUME:
-    {
-        const char *lb;
-        Evas_Object *pg;
-        const char *val;
-        double v;
-
-        page = elm_layout_add(sd->pager);
-        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/volume");
-        ic = elm_icon_add(page);
-        elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
-        evas_object_show(ic);
-        elm_layout_content_set(page, "enna.icon.swallow", ic);
-        elm_layout_text_set(page, "enna.text.label", file->label);
-        lb = eina_stringshare_printf("Size : %s Freespace : %s In use %s%%",
-                                     enna_file_meta_get(file, ENNA_META_KEY_SIZE),
-                                     enna_file_meta_get(file, ENNA_META_KEY_FREESPACE),
-                                     enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED));
-        elm_layout_text_set(page, "enna.text.description", lb);
-        pg = elm_progressbar_add(sd->pager);
-        val = enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED);
-        v = atof(val) / 100.0;
-        elm_progressbar_value_set(pg, v);
-        printf("%s %3.3f\n", val, v);
-        eina_stringshare_del(val);
-        elm_progressbar_unit_format_set(pg, "%1.0f %%");
-        elm_progressbar_horizontal_set(pg, EINA_TRUE);
-        evas_object_show(pg);
-        elm_layout_content_set(page, "enna.progress.swallow", pg);
-        evas_object_show(page);
-        elm_pager_content_pop(sd->pager);
-        elm_pager_content_push(sd->pager, page);
-        break;
-      }
-    case ENNA_FILE_TRACK:
-    {
-        const char *title;
-        const char *track;
-        const char *duration;
-        const char *sduration;
-        const char *codec;
-        const char *year;
-        const char *album;
-        const char *artist;
-        const char *cover;
-        const char *cover_path;
-        const char *tmp;
-
-        artist = enna_file_meta_get(file, "author");
-        album = enna_file_meta_get(file, "album");
-        track = enna_file_meta_get(file, "title");
-
-        page = elm_layout_add(sd->pager);
-        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/track");
-        ic = elm_icon_add(page);
-        cover = enna_file_meta_get(file, "cover");
-        if (cover && cover[0] != '/')
+        /* Different info layout, create a new info page */
+        sd->page = elm_layout_add(sd->pager);
+        for (i = 0; infos_style_mapping[i].style; i++)
         {
-            cover_path = eina_stringshare_printf("%s/covers/%s",
-                                                     enna_util_data_home_get(), cover);
-            elm_icon_file_set(ic, cover_path, NULL);
-            eina_stringshare_del(cover_path);
-        }
-        else if (cover)
-        {
-            elm_icon_file_set(ic, cover, NULL);
-            eina_stringshare_del(cover);
-        }
-        else
-        {
-            elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
-        }
-        evas_object_show(ic);
-        elm_layout_content_set(page, "enna.swallow.icon", ic);
-
-        year = enna_file_meta_get(file, "year");
-        if (!year || !year[0] || year[0] == ' ')
-            elm_layout_text_set(page, "enna.text.year", "");
-        else
-        {
-            tmp = eina_stringshare_printf("Year: %s", year);
-            elm_layout_text_set(page, "enna.text.year", tmp);
-            eina_stringshare_del(year);
-            eina_stringshare_del(tmp);
-        }
-
-        codec = enna_file_meta_get(file, "audio_codec");
-        if (!codec || !codec[0] || codec[0] == ' ')
-            elm_layout_text_set(page, "enna.text.codec", "");
-        else
-        {
-            tmp = eina_stringshare_printf("Type: %s", codec);
-            elm_layout_text_set(page, "enna.text.codec", tmp);
-            eina_stringshare_del(codec);
-            eina_stringshare_del(tmp);
-        }
-
-        duration = enna_file_meta_get(file, "duration");
-        if (!duration)
-            duration = enna_file_meta_get(file, "length");
-        if (!duration)
-             elm_layout_text_set(page, "enna.text.length", "");
-        else
-        {
-            sduration = enna_util_duration_to_string(duration);
-            if (!sduration)
+            if (file->type == infos_style_mapping[i].type)
             {
-                eina_stringshare_del(duration);
-                elm_layout_text_set(page, "enna.text.length", "");
+                elm_layout_file_set(sd->page, enna_config_theme_get(),
+                                    infos_style_mapping[i].style);
+                break;
             }
-            tmp = eina_stringshare_printf("Length: %s", sduration);
-            elm_layout_text_set(page, "enna.text.length", tmp);
-            eina_stringshare_del(sduration);
-            eina_stringshare_del(tmp);
         }
-
-        title = enna_file_meta_get(file, "title");
-        if (!title || !title[0] || title[0] == ' ')
-            elm_layout_text_set(page, "enna.text.title", file->label);
-        else
-        {
-            elm_layout_text_set(page, "enna.text.title", title);
-            eina_stringshare_del(title);
-        }
-
-        track = enna_file_meta_get(file, "track");
-        if (!track)
-            elm_layout_text_set(page, "enna.text.trackno", "");
-        else
-        {
-            tmp = eina_stringshare_printf("%02d.", atoi(track));
-            elm_layout_text_set(page, "enna.text.trackno", tmp);
-            eina_stringshare_del(track);
-            eina_stringshare_del(tmp);
-        }
-
-        album = enna_file_meta_get(file, "album");
-        if (!album || !album[0] || album[0] == ' ')
-            elm_layout_text_set(page, "enna.text.title", "");
-        else
-        {
-            tmp = eina_stringshare_printf("Album: %s", album);
-            elm_layout_text_set(page, "enna.text.album", tmp);
-            eina_stringshare_del(title);
-            eina_stringshare_del(tmp);
-        }
-
-        artist = enna_file_meta_get(file, "author");
-        if (!artist)
-            artist = enna_file_meta_get(file, "artist");
-        if (!artist || !artist[0] || artist[0] == ' ')
-            elm_layout_text_set(page, "enna.text.artist", "");
-        else
-        {
-            tmp = eina_stringshare_printf("Artist: %s", artist);
-            elm_layout_text_set(page, "enna.text.artist", tmp);
-            eina_stringshare_del(title);
-            eina_stringshare_del(tmp);
-        }
-
-        evas_object_show(page);
         elm_pager_content_pop(sd->pager);
-        elm_pager_content_push(sd->pager, page);
-        break;
+        elm_pager_content_push(sd->pager, sd->page);
     }
-    case ENNA_FILE_FILM:
+
+    if (sd->file)
     {
-        const char *title;
-        const char *genre;
-        const char *duration;
-        const char *sduration = NULL;
-        const char *year;
-        const char *album;
-        const char *artist;
-        const char *cover;
-        const char *cover_path;
-
-        artist = enna_file_meta_get(file, "author");
-        album = enna_file_meta_get(file, "album");
-        title = enna_file_meta_get(file, "title");
-
-        page = elm_layout_add(sd->pager);
-        elm_layout_file_set(page, enna_config_theme_get(), "panel/infos/film");
-        ic = elm_icon_add(page);
-
-        /* Cover Icon */
-        cover = enna_file_meta_get(file, "cover");
-        if (cover && cover[0] != '/')
-        {
-            cover_path = eina_stringshare_printf("%s/covers/%s",
-                                                     enna_util_data_home_get(), cover);
-            elm_icon_file_set(ic, cover_path, NULL);
-            eina_stringshare_del(cover_path);
-        }
-        else if (cover)
-        {
-            elm_icon_file_set(ic, cover, NULL);
-            eina_stringshare_del(cover);
-        }
-        else
-        {
-            elm_icon_file_set(ic, enna_config_theme_get(), file->icon);
-        }
-        evas_object_show(ic);
-        elm_layout_content_set(page, "enna.swallow.cover", ic);
-
-        /* Title */
-        title = enna_file_meta_get(file, "title");
-        _set_text(page, "enna.text.title", title, "", file->label);
-
-
-        /* Genre */
-        genre = enna_file_meta_get(file, "genre");
-        _set_text(page, "enna.text.genre", genre, _("Genre: "), "");
-
-        /* Year */
-        year = enna_file_meta_get(file, "year");
-        _set_text(page, "enna.text.year", year, _("Year: "), "");
-
-        /* Length */
-        duration = enna_file_meta_get(file, "duration");
-        if (!duration)
-            duration = enna_file_meta_get(file, "length");
-        if (duration)
-            sduration = enna_util_duration_to_string(duration);
-        _set_text(page, "enna.text.length", sduration, _("Duration: "), "");
-
-        evas_object_show(page);
-        elm_pager_content_pop(sd->pager);
-        elm_pager_content_push(sd->pager, page);
-        break;
+        enna_file_meta_callback_del(sd->file, _file_update_cb);
+        enna_file_free(sd->file);
     }
-    default:
-        break;
+    sd->file = enna_file_ref(file);
 
-    }
-    sd->ic = ic;
-    sd->page = page;
+    _update(sd, file);
+
+    enna_file_meta_callback_add(file, _file_update_cb, sd);
 }
 
