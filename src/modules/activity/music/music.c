@@ -443,7 +443,7 @@ module_shutdown(Enna_Module *em)
 {
     DBG(__FUNCTION__);
     enna_activity_unregister(&class);
-    ENNA_OBJECT_DEL(mod->o_layout);
+
 
     evas_object_smart_callback_del(mod->o_browser,
                                    "selected", _browser_selected_cb);
@@ -451,10 +451,11 @@ module_shutdown(Enna_Module *em)
                                    "delay,hilight", _browser_delay_hilight_cb);
     evas_object_smart_callback_del(mod->o_browser,
                                    "root", _browser_root_cb);
-    ENNA_OBJECT_DEL(mod->o_pager);
     ENNA_OBJECT_DEL(mod->o_browser);
     ENNA_OBJECT_DEL(mod->o_infos);
     ENNA_OBJECT_DEL(mod->o_mediaplayer);
+    ENNA_OBJECT_DEL(mod->o_pager);
+    ENNA_OBJECT_DEL(mod->o_layout);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
 }
