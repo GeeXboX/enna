@@ -272,8 +272,6 @@ _create_mediaplayer_gui()
     evas_object_show(o);
     mod->o_mediaplayer = o;
     elm_flip_content_back_set(mod->o_pager, mod->o_mediaplayer);
-    /* Promote infos */
-    //elm_pager_content_promote(mod->o_pager, mod->o_infos);
     evas_object_smart_callback_add(mod->o_mediaplayer, "info,clicked",
                                    _mediaplayer_info_clicked_cb, NULL);
     edje_object_signal_emit(o_edje, "mediaplayer,show", "enna");
