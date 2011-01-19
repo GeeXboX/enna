@@ -643,3 +643,36 @@ enna_util_duration_to_string(const char *length)
     enna_buffer_free(buf);
     return str;
 }
+
+
+EAPI Eina_List *
+enna_util_stringlist_get(const char *str)
+{
+    Eina_List *list = NULL;
+    const char *s, *b;
+    if (!str) return NULL;
+    for (b = s = str; 1; s++)
+    {
+        if ((*s == ' ') || (!*s))
+        {
+            char *t = malloc(s - b + 1);
+            if (t)
+            {
+                strncpy(t, b, s - b);
+                t[s - b] = 0;
+                list = eina_list_append(list, eina_stringshare_add(t));
+                free(t);
+            }
+            b = s + 1;
+        }
+        if (!*s) break;
+    }
+    return list;
+}
+
+EAPI void
+enna_util_stringlist_free(Eina_List *list)
+{
+    const char *s;
+    EINA_LIST_FREE(list, s) eina_stringshare_del(s);
+}
