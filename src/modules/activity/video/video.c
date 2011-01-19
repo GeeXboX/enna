@@ -91,6 +91,7 @@ struct _Enna_Module_Video
     Ecore_Timer *controls_timer;
     Ecore_Event_Handler *mouse_button_event_handler;
     Ecore_Event_Handler *mouse_move_event_handler;
+    Enna_File *file;
 };
 
 static Enna_Module_Video *mod;
@@ -315,35 +316,27 @@ _eos_cb(void *data, int type, void *event)
 /*                               Backdrop                                   */
 /****************************************************************************/
 
+
 static void
-backdrop_show(Enna_Metadata *m)
+backdrop_show(Enna_File *file)
 {
-    char *file = NULL;
-    int from_vfs = 1;
     const char *backdrop;
 
-    backdrop = enna_metadata_meta_get(m, "fanart", 1);
+    backdrop = enna_file_meta_get(file, "fanart");
     if (backdrop)
     {
-        char dst[1024] = { 0 };
-
-        if (*backdrop == '/')
-            snprintf(dst, sizeof (dst), "%s", backdrop);
-        else
-            snprintf(dst, sizeof (dst), "%s/fanarts/%s",
-                     enna_util_data_home_get(), backdrop);
-        file = strdup(dst);
-
-        enna_video_picture_set(mod->o_backdrop, file, from_vfs);
+        enna_video_picture_set(mod->o_backdrop, backdrop, 1);
         evas_object_show(mod->o_backdrop);
         elm_layout_content_set(mod->o_layout,
                                "backdrop.swallow", mod->o_backdrop);
         eina_stringshare_del(backdrop);
-        ENNA_FREE(file);
     }
     else
         enna_video_picture_unset(mod->o_backdrop);
+    printf("backdrop : %s\n", backdrop);
 }
+
+
 
 /****************************************************************************/
 /*                               Snapshot                                   */
@@ -628,6 +621,12 @@ browser_cb_select(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
+_update_file_cb(void *data, Enna_File *file)
+{
+    backdrop_show(file);
+}
+
+static void
 browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
 {
     Enna_File *file = event_info;
@@ -635,8 +634,16 @@ browser_cb_delay_hilight(void *data, Evas_Object *obj, void *event_info)
     if (!file)
         return;
 
-    enna_infos_file_set(mod->o_panel_infos, file);
+    if (mod->file)
+    {
+        enna_file_meta_callback_del(file, _update_file_cb);
+        enna_file_free(mod->file);
+    }
 
+    mod->file = enna_file_ref(file);
+
+    enna_infos_file_set(mod->o_panel_infos, mod->file);
+    backdrop_show(mod->file);
 }
 
 static void
