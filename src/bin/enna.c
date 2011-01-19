@@ -150,7 +150,7 @@ _set_scale(int h)
         scale = (h / 720.0);
     if (scale >= 1.0)
         scale = 1.0;
-    elm_scale_set(scale);
+    //elm_scale_set(scale);
 
     enna_log(ENNA_MSG_INFO, NULL, "Scale: %3.3f", scale);
 }
