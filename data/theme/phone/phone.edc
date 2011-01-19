@@ -1,9 +1,3 @@
-fonts{
-   font:"Comfortaa_Bold.ttf" "Comfortaa_Bold";
-   font:"Comfortaa_Regular.ttf" "Comfortaa_Regular";
-   font:"Comfortaa_Thin.ttf" "Comfortaa_Thin";
-}
-
 collections
 {
 #include "icons.edc"
@@ -198,7 +192,7 @@ collections
             description { state: "default" 0.0;
             align: 0.5 0.5;
                aspect: 1.0 1.0;
-               aspect_preference: VERTICAL;
+               aspect_preference: BOTH;
                visible: 1;
                rel1 {
                   relative: 0.0 0.0;
@@ -233,8 +227,8 @@ collections
                color: 224 224 224 255;
                color3: 0 0 0 64;
                text {
-                  font: "Comfortaa";
-                  size: 14;
+                  font: "Sans";
+                  size: 10;
                   min: 1 1;
                   align: 0.5 0.5;
                }
@@ -305,7 +299,7 @@ collections
             type:           TEXT;
             effect:         SHADOW;
             mouse_events:   0;
-            //ale: 1;
+            scale: 1;
             description {
                state: "default" 0.0;
                fixed: 0 0;
@@ -320,8 +314,8 @@ collections
                color: 255 255 255 255;
                color3: 147 147 147 255;
                text {
-                  font: "Comfortaa";
-                  size: 20;
+                  font: "Sans";
+                  size: 12;
                   align: 0.5 0.5;
                }
             }
@@ -686,7 +680,7 @@ collections
          part {
             name: "enna.text.current";
             type: TEXT ;
-             //effect: SOFT_SHADOW;
+            scale: 1;
             description {
                state: "default" 0.0;
                rel1.relative: 1 0;
@@ -697,8 +691,8 @@ collections
                color: 255 255 255 200;
                color3: 0 0 0 64;
                text {
-                  font:     "Comfortaa";
-                  size:     18;
+                  font:     "Sans";
+                  size:     12;
                   min:      0 1;
                   align:    0 0;
                }
@@ -1117,8 +1111,8 @@ group {
             rel2.offset: -4 -4;
 
             text {
-               font: "content";
-               size: 20;
+               font: "Sans";
+               size: 10;
                min: 0 0;
                align: 1.0 0.5;
             }
@@ -1159,8 +1153,8 @@ group {
             rel2.offset: -4 -4;
 
             text {
-               font: "content";
-               size: 20;
+               font: "Sans";
+               size: 10;
                min: 0 0;
                align: 0.0 0.5;
             }
@@ -1822,8 +1816,8 @@ group {
                 rel2.offset: -15 -15;
                 text {
                   text:     "Description";
-                  font:     "Comfortaa";
-                  size:     14;
+                  font:     "Sans";
+                  size:     10;
                   align:    0.5 0.5;
                   min: 0 0;
 
@@ -1873,8 +1867,8 @@ group {
                 rel2.offset: -15 -100;
                 text {
                   text:     "Description";
-                  font:     "Comfortaa";
-                  size:     14;
+                  font:     "Sans";
+                  size:     10;
                   align:    0.5 0.5;
                   min: 1 0;
                }
@@ -1891,8 +1885,8 @@ group {
                 rel2.offset: -15 -70;
                 text {
                   text:     "Description";
-                  font:     "Comfortaa";
-                  size:     14;
+                  font:     "Sans";
+                  size:     10;
                   align:    0.5 0.5;
                   min: 1 0;
                }
@@ -1959,8 +1953,8 @@ group {
 
                 text {
                   text:     "Year: 2011";
-                  font:     "Comfortaa";
-                  size:     14;
+                  font:     "Sans";
+                  size:     10;
                   align:    0 0.5;
                   min: 1 0;
                }
@@ -1984,8 +1978,8 @@ group {
 
                 text {
                   text:     "Length: 00:00";
-                  font:     "Comfortaa";
-                  size:     14;
+                  font:     "Sans";
+                  size:     10;
                   align:    0 0.5;
                   min: 1 0;
                }
@@ -2009,8 +2003,8 @@ group {
 
                 text {
                   text:     "Codec: Flac";
-                  font:     "Comfortaa";
-                  size:     14;
+                  font:     "Sans";
+                  size:     10;
                   align:    0 0.5;
                   min: 1 0;
                }
@@ -2033,8 +2027,8 @@ group {
                 align: 0 0;
                 text {
                   text:     "Track: 00";
-                  font:     "Comfortaa";
-                  size:     18;
+                  font:     "Sans";
+                  size:     10;
                   align:    0 0;
                   min: 1 1;
                }
@@ -2056,8 +2050,8 @@ group {
 
                 text {
                   text:     "Title: Title Name";
-                  font:     "Comfortaa";
-                  size:     18;
+                  font:     "Sans";
+                  size:     10;
                   align:    0 0.5;
                   min: 0 1;
                }
@@ -2082,8 +2076,8 @@ group {
 
                 text {
                   text:     "Album: Album name";
-                  font:     "Comfortaa";
-                  size:     18;
+                  font:     "Sans";
+                  size:     10;
                   align:    0 0.5;
                   min: 1 1;
                }
@@ -2108,8 +2102,8 @@ group {
 
                 text {
                   text:     "Artist: Artist name";
-                  font:     "Comfortaa";
-                  size:     18;
+                  font:     "Sans";
+                  size:     10;
                   align:    0 0.5;
                   min: 1 1;
                }
@@ -2187,8 +2181,8 @@ group {
             align: 0 0;
             fixed: 1 1;
             text {
-               font: "Comfortaa";
-               size: 20;
+               font: "Sans";
+               size: 10;
                min: 0 1;
                align: 0.5 0.5;
             }
@@ -2245,8 +2239,8 @@ group {
 
             color: 255 255 255 255;
             text {
-               font: "Comfortaa";
-               size: 14;
+               font: "Sans";
+               size: 10;
                min: 0 1;
                align: 0.5 1;
             }
@@ -2272,8 +2266,8 @@ group {
 
             color: 255 255 255 255;
             text {
-               font: "Comfortaa";
-               size: 16;
+               font: "Sans";
+               size: 10;
                min: 0 1;
                align: 0.5 1;
             }
@@ -2423,8 +2417,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "City";
-               font:     "Comfortaa_Bold";
-               size:     26;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.5 0.05;
             }
 	 }
@@ -2445,8 +2439,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "Temp";
-               font:     "Comdortaa_Thing";
-               size:     65;
+               font:     "Sans";
+               size:     10;
                align:    0.15 0.25;
             }
 	 }
@@ -2479,8 +2473,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "condition";
-               font:     "Comfortaa_Bold";
-               size:     26;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.5 0.55;
             }
 	 }
@@ -2499,8 +2493,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "Humidity: N/A";
-               font:     "Comfortaa_Bold";
-               size:     26;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.5 0.7;
             }
 	 }
@@ -2519,8 +2513,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "Wind: N/A";
-               font:     "Comfortaa_Bold";
-               size:     26;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.5 0.8;
             }
 	 }
@@ -2541,8 +2535,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "date";
-               font:     "Comfortaa_Bold";
-               size:     25;
+               font:     "Sans";
+               size:     10;
                align:    0.5 0.95;
             }
 	 }
@@ -2589,8 +2583,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Day 1";
-               font:     "Comfortaa_Bold";
-               size:     25;
+               font:     "Sans";
+               size:     10;
                align:    0.5 0.03;
             }
 	 }
@@ -2609,8 +2603,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Min:";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.10 0.09;
             }
 	 }
@@ -2629,8 +2623,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "N/A";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.25 0.09;
             }
 	 }
@@ -2649,8 +2643,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Max:";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.10 0.15;
             }
 	 }
@@ -2669,8 +2663,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "N/A";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.25 0.15;
             }
 	 }
@@ -2703,8 +2697,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "conditions";
-               font:     "content";
-               size:     15;
+               font:     "Sans";
+               size:     10;
                align:    0.5 0.20;
             }
 	 }
@@ -2725,8 +2719,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Day 2";
-               font:     "Comfortaa_Bold";
-               size:     25;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.5 0.28;
             }
 	 }
@@ -2745,8 +2739,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Min:";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.10 0.34;
             }
 	 }
@@ -2765,8 +2759,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "N/A";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.25 0.34;
             }
 	 }
@@ -2785,8 +2779,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Max:";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.10 0.40;
             }
 	 }
@@ -2805,8 +2799,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "N/A";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.25 0.40;
             }
 	 }
@@ -2839,8 +2833,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "conditions";
-               font:     "content";
-               size:     15;
+               font:     "Sans";
+               size:     10;
                align:    0.5 0.45;
             }
 	 }
@@ -2861,8 +2855,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Day 3";
-               font:     "Comfortaa_Bold";
-               size:     25;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.5 0.53;
             }
 	 }
@@ -2881,8 +2875,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Min:";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.10 0.59;
             }
 	 }
@@ -2901,8 +2895,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "N/A";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.25 0.59;
             }
 	 }
@@ -2921,8 +2915,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Max:";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.10 0.65;
             }
 	 }
@@ -2941,8 +2935,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "N/A";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.25 0.65;
             }
 	 }
@@ -2975,8 +2969,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "conditions";
-               font:     "content";
-               size:     15;
+               font:     "Sans";
+               size:     10;
                align:    0.5 0.70;
             }
 	 }
@@ -2997,8 +2991,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Day 4";
-               font:     "Comfortaa_Bold";
-               size:     25;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.5 0.78;
             }
 	 }
@@ -3017,8 +3011,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Min:";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.10 0.84;
             }
 	 }
@@ -3037,8 +3031,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "N/A";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.25 0.84;
             }
 	 }
@@ -3057,8 +3051,8 @@ group {
             color_class: "weather_header";
 	    text {
                text:     "Max:";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.10 0.90;
             }
 	 }
@@ -3077,8 +3071,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "N/A";
-               font:     "Comfortaa_Bold";
-               size:     15;
+               font:     "Sans,bold";
+               size:     10;
                align:    0.25 0.90;
             }
 	 }
@@ -3111,8 +3105,8 @@ group {
             color: 255 255 255 255;
 	    text {
                text:     "conditions";
-               font:     "Comfortaa";
-               size:     15;
+               font:     "Sans";
+               size:     10;
                align:    0.5 0.95;
             }
 	 }

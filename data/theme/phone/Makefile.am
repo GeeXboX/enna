@@ -14,10 +14,7 @@ phonedir = $(pkgdatadir)/theme
 phone_DATA = phone.edj
 
 
-FONTS = \
-fonts/Comfortaa_Thin.ttf \
-fonts/Comfortaa_Bold.ttf \
-fonts/Comfortaa_Regular.ttf
+FONTS =
 
 EDC = \
 phone.edc 
