@@ -68,7 +68,7 @@ enna_video_picture_add(Evas * evas)
 }
 
 void
-enna_video_picture_set (Evas_Object *obj, char *file, int from_vfs)
+enna_video_picture_set (Evas_Object *obj, const char *file, int from_vfs)
 {
     Evas_Object *o_img_old;
 
