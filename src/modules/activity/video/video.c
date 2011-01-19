@@ -333,7 +333,6 @@ backdrop_show(Enna_File *file)
     }
     else
         enna_video_picture_unset(mod->o_backdrop);
-    printf("backdrop : %s\n", backdrop);
 }
 
 
