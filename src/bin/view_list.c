@@ -179,7 +179,6 @@ _list_item_track_label_get(void *data, Evas_Object *obj __UNUSED__, const char *
     const char *title;
     const char *track;
     const char *duration;
-    const char *sduration;
     char *tmp;
 
     if (!li || !li->file) return NULL;
@@ -213,17 +212,9 @@ _list_item_track_label_get(void *data, Evas_Object *obj __UNUSED__, const char *
     {
         duration = enna_file_meta_get(li->file, "duration");
         if (!duration)
-            duration = enna_file_meta_get(li->file, "length");
-        if (!duration)
             return NULL;
-        sduration = enna_util_duration_to_string(duration);
-        if (!sduration)
-        {
-            eina_stringshare_del(duration);
-            return NULL;
-        }
-        tmp = strdup(sduration);
-        eina_stringshare_del(sduration);
+        tmp = strdup(duration);
+        eina_stringshare_del(duration);
         return tmp;
     }
 
