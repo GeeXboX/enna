@@ -2130,7 +2130,23 @@ group {
    name: "panel/infos/film";
     data.item: "labels" "title author album year audio_codec duration track";
     data.item: "icons" "cover";
+    images {
+        image: "browser_bg.png" COMP;
+    }
    parts {
+
+        part {
+            name: "bg";
+            type: IMAGE;
+            description {
+                state: "default" 0.0;
+                image {
+                     normal: "browser_bg.png";
+               	     border: 15 15 15 15;
+            	}
+            }
+        }
+
       part {
          name: "enna.swallow.cover";
          type: SWALLOW;
