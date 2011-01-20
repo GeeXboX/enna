@@ -67,9 +67,6 @@ _update_label(Evas_Object *parent, Enna_File *file, const char *key)
     const char *meta;
     meta = enna_file_meta_get(file, key);
 
-    if (!meta)
-        return enna_file_meta_get(file, "label");
-
     return meta;
 }
 
