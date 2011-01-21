@@ -247,7 +247,7 @@ module_init(Enna_Module *em)
 }
 
 static void
-module_shutdown(Enna_Module *em)
+module_shutdown(Enna_Module *em __UNUSED__)
 {
     enna_config_panel_unregister(info1);
     enna_config_panel_unregister(credits);

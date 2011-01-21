@@ -86,7 +86,7 @@ panel_infos_display (int show)
    #               slideshow helpers                           #
    ############################################################# */
 static void 
-_slideshow_delete_cb(void *data, Evas_Object *obj, void *event_info)
+_slideshow_delete_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {	
     Evas_Object *o_edje;
 
@@ -143,13 +143,13 @@ _slideshow_add_files(const char *file_selected)
 }
 
 static void
-_browser_cb_root (void *data, Evas_Object *obj, void *event_info)
+_browser_cb_root (void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     enna_content_hide();
 }
 
 static void
-_browser_cb_selected (void *data, Evas_Object *obj, void *event_info)
+_browser_cb_selected (void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
     Enna_File *file = event_info;
     int pos;
@@ -166,7 +166,7 @@ _browser_cb_selected (void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_browser_cb_hilight (void *data, Evas_Object *obj, void *event_info)
+_browser_cb_hilight (void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
     Enna_File *file = event_info;
     Evas_Object *o_edje;
@@ -363,7 +363,7 @@ module_init(Enna_Module *em)
 }
 
 static void
-module_shutdown(Enna_Module *em)
+module_shutdown(Enna_Module *em __UNUSED__)
 {
     enna_activity_unregister(&class);
     ENNA_OBJECT_DEL(mod->o_layout);

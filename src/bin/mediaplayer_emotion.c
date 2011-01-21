@@ -32,7 +32,7 @@ static Enna_Mediaplayer *mp = NULL;
 
 /* externally accessible functions */
 int
-enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type)
+enna_mediaplayer_supported_uri_type(enna_mediaplayer_uri_type_t type __UNUSED__)
 {
     return 1;
 }
@@ -284,7 +284,7 @@ enna_mediaplayer_length_get(void)
 }
 
 static void
-enna_mediaplayer_seek(int value, SEEK_TYPE type)
+enna_mediaplayer_seek(int value __UNUSED__, SEEK_TYPE type __UNUSED__)
 {
     printf("TODO : seek\n");
     /* TODO : seek ! */
@@ -355,13 +355,13 @@ enna_mediaplayer_video_resize(int x, int y, int w, int h)
 }
 
 int
-enna_mediaplayer_playlist_load(const char *filename)
+enna_mediaplayer_playlist_load(const char *filename __UNUSED__)
 {
     return 0;
 }
 
 int
-enna_mediaplayer_playlist_save(const char *filename)
+enna_mediaplayer_playlist_save(const char *filename __UNUSED__)
 {
     return 0;
 }
@@ -435,7 +435,7 @@ enna_mediaplayer_playlist_stop_clear(Enna_Playlist *enna_playlist)
 }
 
 void
-enna_mediaplayer_send_input(enna_input event)
+enna_mediaplayer_send_input(enna_input event __UNUSED__)
 {
 }
 

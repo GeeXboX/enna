@@ -39,7 +39,7 @@
 int ENNA_EVENT_GEO_LOC_DETECTED;
 
 static Eina_Bool
-url_data_cb(void *data, int ev_type, void *ev) 
+url_data_cb(void *data __UNUSED__, int ev_type __UNUSED__, void *ev) 
 { 
     xmlDocPtr doc = NULL;
     xmlNode *n;

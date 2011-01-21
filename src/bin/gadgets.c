@@ -120,7 +120,7 @@ _add_gadgets(Evas_Object *o_gad)
 }
 
 static void
-_layout_resize(void *data, Evas *e, Evas_Object *o, void *event_info)
+_layout_resize(void *data __UNUSED__, Evas *e __UNUSED__, Evas_Object *o __UNUSED__, void *event_info __UNUSED__)
 {
     Evas_Object *pad, *o_gad;
     Eina_List *l;

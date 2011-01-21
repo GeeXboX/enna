@@ -182,19 +182,19 @@ _panel_infos_display(int show)
 }
 
 static void
-_mediaplayer_info_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+_mediaplayer_info_clicked_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     DBG(__FUNCTION__);
     _panel_infos_display(!mod->infos_displayed);
 }
 
 static void
-_browser_root_cb(void *data, Evas_Object *obj, void *event_info)
+_browser_root_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     enna_content_hide();
 }
 static void
-_browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
+_browser_selected_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
     int i = 0;
     Enna_File *file = event_info;
@@ -238,7 +238,7 @@ _browser_selected_cb(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_browser_delay_hilight_cb(void *data, Evas_Object *obj, void *event_info)
+_browser_delay_hilight_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
     Enna_File *file = event_info;
     
@@ -439,7 +439,7 @@ module_init(Enna_Module *em)
 }
 
 static void
-module_shutdown(Enna_Module *em)
+module_shutdown(Enna_Module *em __UNUSED__)
 {
     DBG(__FUNCTION__);
     enna_activity_unregister(&class);

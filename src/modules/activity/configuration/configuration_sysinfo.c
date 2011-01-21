@@ -710,7 +710,7 @@ _update_infos_cb(void *data)
 
 /* externally accessible functions */
 Evas_Object *
-info_panel_show(void *data)
+info_panel_show(void *data __UNUSED__)
 {
     /* create the panel main object */
     o_edje = edje_object_add(enna->evas);
@@ -726,7 +726,7 @@ info_panel_show(void *data)
 }
 
 void
-info_panel_hide(void *data)
+info_panel_hide(void *data __UNUSED__)
 {
     ENNA_TIMER_DEL(update_timer);
     ENNA_OBJECT_DEL(o_edje);

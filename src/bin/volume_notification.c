@@ -36,7 +36,7 @@ typedef struct volume_notifier_sd_s {
 } volume_notifier_smart_data_t;
 
 static void
-cb_del (void *data, Evas *a, Evas_Object *obj, void *event_info)
+cb_del (void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     volume_notifier_smart_data_t *sd = data;
 

@@ -62,7 +62,7 @@ static void _set_text(Evas_Object *obj,
 }
 
 static const char *
-_update_label(Evas_Object *parent, Enna_File *file, const char *key)
+_update_label(Evas_Object *parent __UNUSED__, Enna_File *file, const char *key)
 {
     const char *meta;
     meta = enna_file_meta_get(file, key);

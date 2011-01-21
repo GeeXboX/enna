@@ -58,7 +58,7 @@ struct _Smart_Data
 };
 
 static char *
-_grid_item_label_get(void *data, Evas_Object *obj, const char *part)
+_grid_item_label_get(void *data, Evas_Object *obj __UNUSED__, const char *part __UNUSED__)
 {
     const Picture_Item *pi = data;
 
@@ -113,13 +113,13 @@ _grid_item_icon_get(void *data, Evas_Object *obj, const char *part)
 }
 
 static Eina_Bool
-_grid_item_state_get(void *data, Evas_Object *obj, const char *part)
+_grid_item_state_get(void *data __UNUSED__, Evas_Object *obj __UNUSED__, const char *part __UNUSED__)
 {
 	return EINA_FALSE;
 }
 
 static void
-_grid_item_del(void *data, Evas_Object *obj)
+_grid_item_del(void *data __UNUSED__, Evas_Object *obj __UNUSED__)
 {
 
 }
@@ -150,7 +150,7 @@ static Elm_Gengrid_Item_Class gic = {
 };
 
 static void
-_del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_del_cb(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
     Picture_Item *pi;
@@ -169,7 +169,7 @@ _del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 
 
 static void
-_resize_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_resize_cb(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Evas_Coord h;
     Smart_Data *sd = data;
@@ -189,7 +189,7 @@ _item_activate(Elm_Gengrid_Item *item)
 }
 
 static void
-_item_selected(void *data, Evas_Object *obj, void *event_info)
+_item_selected(void *data, Evas_Object *obj, void *event_info __UNUSED__)
 {
     Picture_Item *li = data;
 
@@ -197,7 +197,7 @@ _item_selected(void *data, Evas_Object *obj, void *event_info)
 }
 
 static void
-_item_click_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_item_click_cb(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
     Elm_Gengrid_Item *item = data;
     Evas_Event_Mouse_Up *ev = event_info;
@@ -209,7 +209,7 @@ _item_click_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
 }
 
 static void
-_item_realized_cb(void *data, Evas_Object *obj, void *event_info)
+_item_realized_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
 {
    Elm_Gengrid_Item *item = event_info;
    Evas_Object *o_item;
@@ -262,7 +262,7 @@ enna_wall_clear(Evas_Object *obj)
 
 
 static const Evas_Object *
-_kbdnav_object_get(void *item_data, void *user_data)
+_kbdnav_object_get(void *item_data, void *user_data __UNUSED__)
 {
   Picture_Item *pi = item_data;
 
@@ -273,7 +273,7 @@ _kbdnav_object_get(void *item_data, void *user_data)
 }
 
 static void
-_kbdnav_select_set(void *item_data, void *user_data)
+_kbdnav_select_set(void *item_data, void *user_data __UNUSED__)
 {
   Picture_Item *pi = item_data;
 
@@ -283,7 +283,7 @@ _kbdnav_select_set(void *item_data, void *user_data)
 }
 
 static void
-_kbdnav_activate_set(void *item_data, void *user_data)
+_kbdnav_activate_set(void *item_data, void *user_data __UNUSED__)
 {
   Picture_Item *pi = item_data;
 
@@ -373,7 +373,7 @@ enna_wall_input_feed(Evas_Object *obj, enna_input ev)
 }
 
 void
-enna_wall_select_nth(Evas_Object *obj, int col, int row)
+enna_wall_select_nth(Evas_Object *obj __UNUSED__, int col __UNUSED__, int row __UNUSED__)
 {
 
 }
@@ -397,25 +397,25 @@ enna_wall_selected_data_get(Evas_Object *obj)
 }
 
 const char *
-enna_wall_selected_filename_get(Evas_Object *obj)
+enna_wall_selected_filename_get(Evas_Object *obj __UNUSED__)
 {
     return NULL;
 }
 
 Eina_List*
-enna_wall_files_get(Evas_Object* obj)
+enna_wall_files_get(Evas_Object* obj __UNUSED__)
 {
     return NULL;
 }
 
 int
-enna_wall_jump_label(Evas_Object *obj, const char *label)
+enna_wall_jump_label(Evas_Object *obj __UNUSED__, const char *label __UNUSED__)
 {
     return -1;
 }
 
 void
-enna_wall_jump_ascii(Evas_Object *obj, char k)
+enna_wall_jump_ascii(Evas_Object *obj __UNUSED__, char k __UNUSED__)
 {
 
 }

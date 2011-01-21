@@ -51,7 +51,7 @@ static int _exit_init_count = -1;
 /* local subsystem globals */
 
 static void
-_inwin_del_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+_inwin_del_cb(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
     Smart_Data *sd = data;
 
@@ -87,13 +87,13 @@ _inwin_hide()
 }
 
 static void
-_yes_cb(void *data)
+_yes_cb(void *data __UNUSED__)
 {
     ecore_main_loop_quit();
 }
 
 static void
-_no_cb(void *data)
+_no_cb(void *data __UNUSED__)
 {
     _inwin_hide();
 }

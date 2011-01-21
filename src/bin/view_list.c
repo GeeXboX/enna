@@ -61,7 +61,7 @@ _item_activate(Elm_Genlist_Item *item)
 }
 
 static void
-_item_selected(void *data, Evas_Object *obj, void *event_info)
+_item_selected(void *data, Evas_Object *obj, void *event_info __UNUSED__)
 {
     List_Item *li = data;
 

@@ -33,7 +33,7 @@
 /* local globals */
 static Evas_Object *o_edje = NULL;
 
-Evas_Object *credits_panel_show(void *data)
+Evas_Object *credits_panel_show(void *data __UNUSED__)
 {
     Enna_Buffer *b;
 
@@ -60,7 +60,7 @@ Evas_Object *credits_panel_show(void *data)
     return o_edje;
 }
 
-void credits_panel_hide(void *data)
+void credits_panel_hide(void *data __UNUSED__)
 {
     ENNA_OBJECT_DEL(o_edje);
 }
