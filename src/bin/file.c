@@ -265,8 +265,8 @@ enna_file_meta_set(Enna_File *f, const char *key, const void *data)
 
     if (!f->meta_class || !f->meta_class->meta_get)
         _meta_default_set(f, key, data);
-
-    f->meta_class->meta_set(f->meta_data, f, key, data);
+    else
+        f->meta_class->meta_set(f->meta_data, f, key, data);
 }
 
 Enna_File *
