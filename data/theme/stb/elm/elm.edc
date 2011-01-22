@@ -1136,7 +1136,7 @@ group { name: "elm/genlist/item_odd/default/default";
 
 
 ////////////////////////////////////////////////////
-#if 1
+
 group { name: "elm/genlist/item/track/default";
    data.item: "stacking" "above";
    data.item: "selectraise" "on";
@@ -1550,7 +1550,286 @@ group { name: "elm/genlist/item_odd/track/default";
       }
    }
 }
-#endif
+
+////////////////////////////////////////////////////
+
+group { name: "elm/genlist/item/film/default";
+   data.item: "stacking" "above";
+   data.item: "selectraise" "on";
+   data.item: "labels" "elm.text.title elm.text.length";
+   data.item: "icons" "elm.swallow.played";
+   data.item: "treesize" "20";
+   //      data.item: "states" "";
+   images {
+      image: "sel_bg.png" COMP;
+   }
+   parts {   
+      part { name: "bg";
+ 
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+
+            image {
+               normal: "sel_bg.png";
+               border: 15 15 15 15;
+            }
+            image.middle: SOLID;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "elm.swallow.pad";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1 {
+               relative: 0.0  0.0;
+               offset:   4    4;
+            }
+            rel2 {
+
+               relative: 0.0  1.0;
+               offset:   4   -4;
+            }
+         }
+      }
+ 
+
+    
+      part { name: "elm.text.title";
+         type:           TEXT;
+         //         effect:         SHADOW;
+         mouse_events:   0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            //               min: 16 16;
+            fixed: 1 1;
+            rel1 {
+               relative: 0.0  0.0;
+               offset:   8 4;
+            }
+            rel2 {
+               relative: 0.0  1.0;
+               to: "elm.swallow.played";
+               offset:   -1 -5;
+            }
+            color: 255 255 255 200;
+            //color3: 147 147 147 200;
+            text {
+               font: "Comfortaa";
+               size: 18;
+               //min: 1 1;
+               min: 0 1;
+               align: 0.0 0.5;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+            //color3: 0 0 0 64;
+         }
+      }
+      part { name: "elm.swallow.played";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
+            rel1 {
+               relative: 1.0  0.0;
+               offset:   -5    4;
+            }
+            rel2 {
+               relative: 1.0  1.0;
+               offset:   -5   -5;
+            }
+         }
+      }
+      part {
+         name:           "event";
+         type:           RECT;
+         repeat_events: 1;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      // signal: elm,state,%s,active
+      //   a "check" item named %s went active
+      // signal: elm,state,%s,passive
+      //   a "check" item named %s went passive
+      // default is passive
+      program {
+         name:    "go_active";
+         signal:  "elm,state,selected";
+         source:  "elm";
+         action:  STATE_SET "selected" 0.0;
+         target:  "bg";
+         target:  "elm.text.title";
+      }
+      program {
+         name:    "go_passive";
+         signal:  "elm,state,unselected";
+         source:  "elm";
+         action:  STATE_SET "default" 0.0;
+         target:  "bg";
+         target:  "elm.text.title";
+         transition: LINEAR 0.1;
+      }
+   }
+}
+
+
+////////////////////////////////////////////////////
+
+group { name: "elm/genlist/item_odd/film/default";
+   data.item: "stacking" "above";
+   data.item: "selectraise" "on";
+   data.item: "labels" "elm.text.title elm.text.length";
+   data.item: "icons" "elm.swallow.played";
+   data.item: "treesize" "20";
+   //      data.item: "states" "";
+   images {
+      image: "sel_bg.png" COMP;
+   }
+   parts {   
+      part { name: "bg";
+ 
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+
+            image {
+               normal: "sel_bg.png";
+               border: 15 15 15 15;
+            }
+            image.middle: SOLID;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "elm.swallow.pad";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1 {
+               relative: 0.0  0.0;
+               offset:   4    4;
+            }
+            rel2 {
+
+               relative: 0.0  1.0;
+               offset:   4   -4;
+            }
+         }
+      }
+ 
+
+    
+      part { name: "elm.text.title";
+         type:           TEXT;
+         //         effect:         SHADOW;
+         mouse_events:   0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            //               min: 16 16;
+            fixed: 1 1;
+            rel1 {
+               relative: 0.0  0.0;
+               offset:   8 4;
+            }
+            rel2 {
+               relative: 0.0  1.0;
+               to: "elm.swallow.played";
+               offset:   -1 -5;
+            }
+            color: 255 255 255 200;
+            //color3: 147 147 147 200;
+            text {
+               font: "Comfortaa";
+               size: 18;
+               //min: 1 1;
+               min: 0 1;
+               align: 0.0 0.5;
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+            //color3: 0 0 0 64;
+         }
+      }
+      part { name: "elm.swallow.played";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
+            rel1 {
+               relative: 1.0  0.0;
+               offset:   -5    4;
+            }
+            rel2 {
+               relative: 1.0  1.0;
+               offset:   -5   -5;
+            }
+         }
+      }
+      part {
+         name:           "event";
+         type:           RECT;
+         repeat_events: 1;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      // signal: elm,state,%s,active
+      //   a "check" item named %s went active
+      // signal: elm,state,%s,passive
+      //   a "check" item named %s went passive
+      // default is passive
+      program {
+         name:    "go_active";
+         signal:  "elm,state,selected";
+         source:  "elm";
+         action:  STATE_SET "selected" 0.0;
+         target:  "bg";
+         target:  "elm.text.title";
+      }
+      program {
+         name:    "go_passive";
+         signal:  "elm,state,unselected";
+         source:  "elm";
+         action:  STATE_SET "default" 0.0;
+         target:  "bg";
+         target:  "elm.text.title";
+         transition: LINEAR 0.1;
+      }
+   }
+}
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 group { name: "elm/win/inwin/default";
