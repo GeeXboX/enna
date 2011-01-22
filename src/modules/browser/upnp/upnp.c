@@ -49,7 +49,6 @@ typedef struct _Enna_Module_UPnP
     Enna_Module *em;
     pthread_mutex_t mutex;
     Eina_List *devices;
-    GMainContext *mctx;
     GUPnPContext *ctx;
     GUPnPControlPoint *cp;
     pthread_mutex_t mutex_id;
@@ -168,7 +167,7 @@ didl_parse_item(GUPnPDIDLLiteParser *parser,
     if (!uri)
         goto err_res;
 
-    f = enna_vfs_create_file(uri, title, icon, NULL);
+    f = enna_file_file_add(title, uri, uri, title, icon);
     *list = eina_list_append(*list, f);
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -202,7 +201,7 @@ didl_parse_container(GUPnPDIDLLiteParser *parser,
 
     snprintf(uri, sizeof(uri), "%s/%s", mod->current_id, id);
 
-    f = enna_vfs_create_directory(uri, title, "icon/directory", NULL);
+    f = enna_file_directory_add(uri, title, "icon/directory", NULL);
     *list = eina_list_append(*list, f);
 
     enna_log(ENNA_MSG_EVENT, ENNA_MODULE_NAME,
@@ -362,7 +361,7 @@ upnp_list_mediaservers(void)
         snprintf(uri, sizeof(uri), "udn:%s,id:%s",
                  srv->udn, UPNP_DEFAULT_ROOT);
 
-        f = enna_vfs_create_directory(uri, name, "icon/dev/nfs", NULL);
+        f = enna_file_directory_add(uri, name, "icon/dev/nfs", NULL);
         servers = eina_list_append(servers, f);
     }
 
@@ -446,45 +445,42 @@ video_class_browse_down(void *cookie)
 static Enna_File *
 _class_vfs_get(void *cookie)
 {
-    return enna_vfs_create_directory(mod->current_id, NULL,
-                                     eina_stringshare_add("icon/upnp"), NULL);
+    return enna_file_directory_add(mod->current_id, NULL,
+                                   eina_stringshare_add("icon/upnp"), NULL);
 }
 
-#ifdef BUILD_ACTIVITY_MUSIC
-static Enna_Vfs_Class class_upnp_music = {
-    ENNA_MODULE_NAME,
-    10,
-    N_("UPnP/DLNA media servers"),
-    NULL,
-    "icon/upnp",
-    {
-        NULL,
-        NULL,
-        music_class_browse_up,
-        music_class_browse_down,
-        _class_vfs_get,
-    },
-    NULL
-};
-#endif
+static void *
+_add(Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
+{
+    return NULL;
+}
 
-#ifdef BUILD_ACTIVITY_VIDEO
-static Enna_Vfs_Class class_upnp_video = {
+static void
+_get_children(void *priv, Eina_List *tokens, Enna_Browser *browser, ENNA_VFS_CAPS caps)
+{
+}
+
+static void
+_del(void *priv)
+{
+
+}
+
+
+static Enna_Vfs_Class class = {
     ENNA_MODULE_NAME,
     10,
     N_("UPnP/DLNA media servers"),
     NULL,
     "icon/upnp",
     {
-        NULL,
-        NULL,
-        video_class_browse_up,
-        video_class_browse_down,
-        _class_vfs_get,
+        _add,
+        _get_children,
+        _del
     },
     NULL
 };
-#endif
+
 
 /* Device Callbacks */
 
@@ -541,7 +537,7 @@ static void
 module_init(Enna_Module *em)
 {
     GError *error;
-
+    GMainLoop *main_loop;
     if (!em)
         return;
 
@@ -556,11 +552,15 @@ module_init(Enna_Module *em)
     pthread_mutex_init(&mod->mutex_id, NULL);
 
     /* bind upnp context to ecore */
-    mod->mctx = g_main_context_default();
-    ecore_main_loop_glib_integrate();
+
+    if (!ecore_main_loop_glib_integrate())
+    {
+        WRN("No GLib's main loop support in Ecore, Upnp module is now desactivated");
+        return;
+    }
 
     error = NULL;
-    mod->ctx = gupnp_context_new(mod->mctx, NULL, 0, &error);
+    mod->ctx = gupnp_context_new(NULL, NULL, 0, &error);
     if (error)
     {
         g_error_free(error);
@@ -574,17 +574,12 @@ module_init(Enna_Module *em)
         return;
     }
 
-    g_signal_connect(mod->cp, "device-proxy-available",
+    g_signal_connect(mod->cp, "service-proxy-available",
                      G_CALLBACK(upnp_add_device), NULL);
 
     gssdp_resource_browser_set_active(GSSDP_RESOURCE_BROWSER(mod->cp), TRUE);
 
-#ifdef BUILD_ACTIVITY_MUSIC
-    enna_vfs_append(ENNA_MODULE_NAME, ENNA_CAPS_MUSIC, &class_upnp_music);
-#endif
-#ifdef BUILD_ACTIVITY_VIDEO
-    enna_vfs_append(ENNA_MODULE_NAME, ENNA_CAPS_VIDEO, &class_upnp_video);
-#endif
+    enna_vfs_register(&class, ENNA_CAPS_MUSIC | ENNA_CAPS_VIDEO | ENNA_CAPS_PHOTO);
 }
 
 static void
@@ -621,3 +616,5 @@ Enna_Module_Api ENNA_MODULE_API =
         module_shutdown
     }
 };
+
+ 
