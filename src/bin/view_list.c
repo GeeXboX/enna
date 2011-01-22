@@ -81,17 +81,6 @@ _item_click_cb(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void
 }
 
 static void
-_item_realized_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
-{
-   Elm_Genlist_Item *item = event_info;
-   Evas_Object *o_item;
-
-   o_item = (Evas_Object*)elm_genlist_item_object_get(item);
-   evas_object_event_callback_add(o_item, EVAS_CALLBACK_MOUSE_UP,_item_click_cb, item);
-}
-
-
-static void
 _file_meta_update(void *data, Enna_File *file __UNUSED__)
 {
     List_Item *it = data;
@@ -100,6 +89,57 @@ _file_meta_update(void *data, Enna_File *file __UNUSED__)
     elm_genlist_item_update(it->item);
 }
 
+static void
+_item_realized_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
+{
+   Elm_Genlist_Item *item = event_info;
+   Evas_Object *o_item;
+   List_Item *li;
+
+   o_item = (Evas_Object*)elm_genlist_item_object_get(item);
+   evas_object_event_callback_add(o_item, EVAS_CALLBACK_MOUSE_UP,_item_click_cb, item);
+
+   li = (List_Item*)elm_genlist_item_data_get(item);
+   if (li && li->file)
+   {
+       switch (li->file->type)
+       {
+       case ENNA_FILE_TRACK:
+       case ENNA_FILE_FILM:
+           /* Track and Films files  needs meta data update if any */
+           enna_file_meta_callback_add(li->file, _file_meta_update, li);
+           break;
+       default:
+           break;
+       }
+   }
+}
+
+static void
+_item_unrealized_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info)
+{
+    Elm_Genlist_Item *item = event_info;
+    Evas_Object *o_item;
+    List_Item *li;
+
+    o_item = (Evas_Object*)elm_genlist_item_object_get(item);
+    evas_object_event_callback_del(o_item, EVAS_CALLBACK_MOUSE_UP,_item_click_cb);
+
+    li = (List_Item*)elm_genlist_item_data_get(item);
+    if (li && li->file)
+    {
+        switch (li->file->type)
+        {
+        case ENNA_FILE_TRACK:
+        case ENNA_FILE_FILM:
+            /* Track and Films files  needs meta data update if any */
+            enna_file_meta_callback_del(li->file, _file_meta_update);
+            break;
+        default:
+            break;
+        }
+    }
+}
 
 static void
 _item_remove(Evas_Object *obj, List_Item *item)
@@ -274,6 +314,68 @@ _list_item_track_icon_get(void *data, Evas_Object *obj, const char *part)
     return NULL;
 }
 
+/* Tracks relative  genlist items */
+static char *
+_list_item_film_label_get(void *data, Evas_Object *obj __UNUSED__, const char *part)
+{
+    const List_Item *li = data;
+    const char *title;
+    const char *duration;
+    char *tmp;
+
+    if (!li || !li->file) return NULL;
+
+    if (!strcmp(part, "elm.text.title"))
+    {
+        title = enna_file_meta_get(li->file, "title");
+        if (!title || !title[0] || title[0] == ' ')
+            return li->file->label ? strdup(li->file->label) : NULL;
+        else
+        {
+            tmp = strdup(title);
+            eina_stringshare_del(title);
+            return tmp;
+        }
+    }
+    else if (!strcmp(part, "elm.text.length"))
+    {
+        duration = enna_file_meta_get(li->file, "duration");
+        if (!duration)
+            return NULL;
+        tmp = strdup(duration);
+        eina_stringshare_del(duration);
+        return tmp;
+    }
+
+    return NULL;
+}
+
+static Evas_Object *
+_list_item_film_icon_get(void *data, Evas_Object *obj, const char *part)
+{
+    List_Item *li = (List_Item*) data;
+
+    if (!li) return NULL;
+
+    if (!strcmp(part, "elm.swallow.played"))
+    {
+        Evas_Object *ic;
+        const char *played;
+
+        if (!li->file || ENNA_FILE_IS_BROWSABLE(li->file))
+            return NULL;
+        played = enna_file_meta_get(li->file, "played");
+        if (!played)
+            return NULL;
+        eina_stringshare_del(played);
+        ic = elm_icon_add(obj);
+        elm_icon_file_set(ic, enna_config_theme_get(), "icon/played");
+        evas_object_show(ic);
+        return ic;
+    }
+
+    return NULL;
+}
 
 static Elm_Genlist_Item_Class itc_list_default = {
     "default",
@@ -290,6 +392,16 @@ static Elm_Genlist_Item_Class itc_list_track = {
     {
         _list_item_track_label_get,
         _list_item_track_icon_get,
+        NULL,
+        NULL
+    }
+};
+
+static Elm_Genlist_Item_Class itc_list_film = {
+    "film",
+    {
+        _list_item_film_label_get,
+        _list_item_film_icon_get,
         NULL,
         NULL
     }
@@ -372,6 +484,7 @@ enna_list_add(Evas_Object *parent)
     evas_object_data_set(obj, "sd", sd);
 
     evas_object_smart_callback_add(obj, "realized", _item_realized_cb, sd);
+    evas_object_smart_callback_add(obj, "unrealized", _item_unrealized_cb, sd);
     evas_object_event_callback_add(obj, EVAS_CALLBACK_DEL, _del_cb, sd);
 
     return obj;
@@ -398,8 +511,12 @@ enna_list_file_append(Evas_Object *obj, Enna_File *file,
                                             NULL, ELM_GENLIST_ITEM_NONE,
                                             _item_selected, it);
 
-        /* Track file needs meta data update if any */
-        enna_file_meta_callback_add(file, _file_meta_update, it);
+    }
+    else if (file->type == ENNA_FILE_FILM)
+    {
+        it->item = elm_genlist_item_append (obj, &itc_list_film, it,
+                                            NULL, ELM_GENLIST_ITEM_NONE,
+                                            _item_selected, it);
     }
     else
     {
