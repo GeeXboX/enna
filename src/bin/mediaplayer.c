@@ -117,14 +117,34 @@ struct _Enna_Mediaplayer
 static Enna_Mediaplayer *mp = NULL;
 static mediaplayer_cfg_t mp_cfg;
 
+static int mp_position_percent_get(void);
+
+static void
+_info_played_set(Enna_File *file)
+{
+
+    if (!file)
+        return;
+
+    DBG("Set Played stated to %s", file->uri);
+    /* Add played info in the database */
+    enna_file_meta_set(file, "played", "1");
+    /* Force update for this file */
+    enna_file_meta_callback_call(file);
+}
+
 static void
 _event_cb(void *data, enna_mediaplayer_event_t event)
 {
+    Enna_File *file;
+
     switch (event)
     {
     case ENNA_MP_EVENT_EOF:
         enna_log(ENNA_MSG_EVENT, NULL, "End of stream");
         ecore_event_add(ENNA_EVENT_MEDIAPLAYER_EOS, NULL, NULL, NULL);
+        file = enna_mediaplayer_current_file_get();
+        _info_played_set(file);
         break;
     default:
         break;
@@ -580,19 +600,18 @@ mp_position_percent_get(void)
 static int
 mp_stop(void)
 {
+
+    Enna_File *file;
+
     int pos = 0;
 
     pos = mp_position_percent_get();
-        
-    printf("position : %d\n", pos);
+
     if (pos >= 90)
     {
-        Enna_File *file;
         file = enna_mediaplayer_current_file_get();
-        DBG("Set Played stated to %s", file->uri);
-        enna_file_meta_set(file, "played", "1");
+        _info_played_set(file);
     }
-
     player_playback_stop(mp->player);
     return 0;
 }
