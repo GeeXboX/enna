@@ -320,7 +320,9 @@ _list_item_film_label_get(void *data, Evas_Object *obj __UNUSED__, const char *p
 {
     const List_Item *li = data;
     const char *title;
-    const char *duration;
+    const char *season;
+    const char *episode;
+    const char *str;
     char *tmp;
 
     if (!li || !li->file) return NULL;
@@ -337,13 +339,17 @@ _list_item_film_label_get(void *data, Evas_Object *obj __UNUSED__, const char *p
             return tmp;
         }
     }
-    else if (!strcmp(part, "elm.text.length"))
+    else if (!strcmp(part, "elm.text.episode"))
     {
-        duration = enna_file_meta_get(li->file, "duration");
-        if (!duration)
+        season = enna_file_meta_get(li->file, "season");
+        episode = enna_file_meta_get(li->file, "episode");
+        if (!season || !episode )
             return NULL;
-        tmp = strdup(duration);
-        eina_stringshare_del(duration);
+        str = eina_stringshare_printf("S%02d E%02d", atoi(season), atoi(episode));
+        tmp = strdup(str);
+        eina_stringshare_del(season);
+        eina_stringshare_del(episode);
+        eina_stringshare_del(str);
         return tmp;
     }
 
