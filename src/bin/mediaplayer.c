@@ -569,8 +569,30 @@ mp_play(void)
 }
 
 static int
+mp_position_percent_get(void)
+{
+    int percent_pos = 0;
+
+    percent_pos = player_get_percent_pos(mp->player);
+    return percent_pos < 0 ? 0 : percent_pos;
+}
+
+static int
 mp_stop(void)
 {
+    int pos = 0;
+
+    pos = mp_position_percent_get();
+        
+    printf("position : %d\n", pos);
+    if (pos >= 90)
+    {
+        Enna_File *file;
+        file = enna_mediaplayer_current_file_get();
+        DBG("Set Played stated to %s", file->uri);
+        enna_file_meta_set(file, "played", "1");
+    }
+
     player_playback_stop(mp->player);
     return 0;
 }
@@ -592,15 +614,6 @@ mp_position_get(void)
 
     time_pos = (double) player_get_time_pos(mp->player) / 1000.0;
     return time_pos < 0.0 ? 0.0 : time_pos;
-}
-
-static int
-mp_position_percent_get(void)
-{
-    int percent_pos = 0;
-
-    percent_pos = player_get_percent_pos(mp->player);
-    return percent_pos < 0 ? 0 : percent_pos;
 }
 
 static double
