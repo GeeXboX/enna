@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-01-16 23:43+0100\n"
+"POT-Creation-Date: 2011-01-22 12:59-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Ukraine\n"
@@ -401,22 +401,22 @@ msgstr "Системні ігри"
 msgid "%d Songs"
 msgstr "%d Пісня"
 
-#: src/modules/activity/music/music.c:406
-#: src/modules/activity/music/music.c:470
+#: src/modules/activity/music/music.c:402
+#: src/modules/activity/music/music.c:467
 msgid "Music"
 msgstr "Музика"
 
-#: src/modules/activity/music/music.c:472
+#: src/modules/activity/music/music.c:469
 #, fuzzy
 msgid "Listen to your music"
 msgstr "Слухати подкасти"
 
-#: src/modules/activity/photo/photo.c:329
-#: src/modules/activity/photo/photo.c:388
+#: src/modules/activity/photo/photo.c:328
+#: src/modules/activity/photo/photo.c:387
 msgid "Photo"
 msgstr "Фото"
 
-#: src/modules/activity/photo/photo.c:390
+#: src/modules/activity/photo/photo.c:389
 #, fuzzy
 msgid "Browse your photos and create slideshows"
 msgstr "Переглянути всі Ваші фото 'на стіні' або як слайдшоу"
@@ -451,12 +451,12 @@ msgstr "Дивитись телебачення"
 msgid "%d Movies"
 msgstr "%d Фільмів"
 
-#: src/modules/activity/video/video.c:761
-#: src/modules/activity/video/video.c:848
+#: src/modules/activity/video/video.c:766
+#: src/modules/activity/video/video.c:853
 msgid "Video"
 msgstr "Відео"
 
-#: src/modules/activity/video/video.c:850
+#: src/modules/activity/video/video.c:855
 msgid "Play your videos"
 msgstr "Програти ваше відео"
 
@@ -505,17 +505,17 @@ msgstr "модуль DVD"
 msgid "Watch movies from DVD"
 msgstr "Дивитись фільмі з DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:604
+#: src/modules/browser/localfiles/localfiles.c:605
 #, fuzzy
 msgid "Browse local devices"
 msgstr "Оглянути локальні пристрої"
 
-#: src/modules/browser/localfiles/localfiles.c:807
+#: src/modules/browser/localfiles/localfiles.c:808
 #, fuzzy
 msgid "Browse local files"
 msgstr "Переглянути локальні файли"
 
-#: src/modules/browser/localfiles/localfiles.c:809
+#: src/modules/browser/localfiles/localfiles.c:810
 #, fuzzy
 msgid "Browse files in your local file systems"
 msgstr "Переглянути файли на Вашому локальному жорсткому диску"
@@ -563,22 +563,22 @@ msgstr "Оглядач мережевих трансляцій"
 msgid "Listen to SHOUTcast stream"
 msgstr "Слухати мережеву радіо трансляцію"
 
-#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
+#: src/modules/browser/upnp/upnp.c:473
 #, fuzzy
 msgid "UPnP/DLNA media servers"
 msgstr "UPnP/DLNA медіа сервера"
 
-#: src/modules/browser/upnp/upnp.c:530
+#: src/modules/browser/upnp/upnp.c:526
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Знайдено новий UPnP пристрій '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:615
+#: src/modules/browser/upnp/upnp.c:610
 #, fuzzy
 msgid "UPnP/DLNA module"
 msgstr "Модуль UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:617
+#: src/modules/browser/upnp/upnp.c:612
 #, fuzzy
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "Цей модуль дозволяє Enna переглядати файли з UPnP/DLNA медіа серверів"

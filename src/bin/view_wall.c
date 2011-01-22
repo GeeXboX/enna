@@ -25,6 +25,7 @@
 #include <Ecore_File.h>
 #include <Edje.h>
 #include <Elementary.h>
+#include <Ethumb_Client.h>
 
 #include "enna.h"
 #include "enna_config.h"

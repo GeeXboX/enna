@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-01-16 23:43+0100\n"
+"POT-Creation-Date: 2011-01-22 12:59-0500\n"
 "PO-Revision-Date: 2010-01-22 13:37+0100\n"
 "Last-Translator: Guillaume LECERF <fox@geexbox.org>\n"
 "Language-Team: French\n"
@@ -377,21 +377,21 @@ msgstr "Jeux Système"
 msgid "%d Songs"
 msgstr "%d Chansons"
 
-#: src/modules/activity/music/music.c:406
-#: src/modules/activity/music/music.c:470
+#: src/modules/activity/music/music.c:402
+#: src/modules/activity/music/music.c:467
 msgid "Music"
 msgstr "Musique"
 
-#: src/modules/activity/music/music.c:472
+#: src/modules/activity/music/music.c:469
 msgid "Listen to your music"
 msgstr "Ecoutez votre musique"
 
-#: src/modules/activity/photo/photo.c:329
-#: src/modules/activity/photo/photo.c:388
+#: src/modules/activity/photo/photo.c:328
+#: src/modules/activity/photo/photo.c:387
 msgid "Photo"
 msgstr "Photo"
 
-#: src/modules/activity/photo/photo.c:390
+#: src/modules/activity/photo/photo.c:389
 msgid "Browse your photos and create slideshows"
 msgstr "Visualisez vos photos au travers d'un mur d'images ou un diaporama"
 
@@ -424,12 +424,12 @@ msgstr "Regardez les chaînes TV"
 msgid "%d Movies"
 msgstr "%d Films"
 
-#: src/modules/activity/video/video.c:761
-#: src/modules/activity/video/video.c:848
+#: src/modules/activity/video/video.c:766
+#: src/modules/activity/video/video.c:853
 msgid "Video"
 msgstr "Vidéo"
 
-#: src/modules/activity/video/video.c:850
+#: src/modules/activity/video/video.c:855
 msgid "Play your videos"
 msgstr "Lisez vos vidéos"
 
@@ -473,15 +473,15 @@ msgstr "Module DVD"
 msgid "Watch movies from DVD"
 msgstr "Regardez vos DVD"
 
-#: src/modules/browser/localfiles/localfiles.c:604
+#: src/modules/browser/localfiles/localfiles.c:605
 msgid "Browse local devices"
 msgstr "Parcourez les disques locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:807
+#: src/modules/browser/localfiles/localfiles.c:808
 msgid "Browse local files"
 msgstr "Parcourez les fichiers locaux"
 
-#: src/modules/browser/localfiles/localfiles.c:809
+#: src/modules/browser/localfiles/localfiles.c:810
 msgid "Browse files in your local file systems"
 msgstr "Parcourez les fichiers de votre disque dur"
 
@@ -522,20 +522,20 @@ msgstr "Explorateur de SHOUTcast"
 msgid "Listen to SHOUTcast stream"
 msgstr "Ecoutez un flux SHOUTcast"
 
-#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
+#: src/modules/browser/upnp/upnp.c:473
 msgid "UPnP/DLNA media servers"
 msgstr "Serveurs Multimédia UPnP/DLNA"
 
-#: src/modules/browser/upnp/upnp.c:530
+#: src/modules/browser/upnp/upnp.c:526
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "Découverte d'un nouveau périphérique UPnP '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:615
+#: src/modules/browser/upnp/upnp.c:610
 msgid "UPnP/DLNA module"
 msgstr "Module UPnP / DLNA"
 
-#: src/modules/browser/upnp/upnp.c:617
+#: src/modules/browser/upnp/upnp.c:612
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr ""
 "Ce module permet à Enna de parcourir le contenu des serveurs multimédias "

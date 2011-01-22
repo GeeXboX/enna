@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-01-16 23:43+0100\n"
+"POT-Creation-Date: 2011-01-22 12:59-0500\n"
 "PO-Revision-Date: 2010-02-17 15:11+0800\n"
 "Last-Translator: swinkworld <swinkworld@163.com>\n"
 "Language-Team: Chinese (Simplified)\n"
@@ -384,21 +384,21 @@ msgstr "系统游戏"
 msgid "%d Songs"
 msgstr "%d 歌曲"
 
-#: src/modules/activity/music/music.c:406
-#: src/modules/activity/music/music.c:470
+#: src/modules/activity/music/music.c:402
+#: src/modules/activity/music/music.c:467
 msgid "Music"
 msgstr "音乐"
 
-#: src/modules/activity/music/music.c:472
+#: src/modules/activity/music/music.c:469
 msgid "Listen to your music"
 msgstr "聆听你的音乐"
 
-#: src/modules/activity/photo/photo.c:329
-#: src/modules/activity/photo/photo.c:388
+#: src/modules/activity/photo/photo.c:328
+#: src/modules/activity/photo/photo.c:387
 msgid "Photo"
 msgstr "照片"
 
-#: src/modules/activity/photo/photo.c:390
+#: src/modules/activity/photo/photo.c:389
 msgid "Browse your photos and create slideshows"
 msgstr "浏览你的照片并建立幻灯片"
 
@@ -431,12 +431,12 @@ msgstr "观看电视频道"
 msgid "%d Movies"
 msgstr "%d 电影"
 
-#: src/modules/activity/video/video.c:761
-#: src/modules/activity/video/video.c:848
+#: src/modules/activity/video/video.c:766
+#: src/modules/activity/video/video.c:853
 msgid "Video"
 msgstr "影片"
 
-#: src/modules/activity/video/video.c:850
+#: src/modules/activity/video/video.c:855
 msgid "Play your videos"
 msgstr "播放你的影片"
 
@@ -480,15 +480,15 @@ msgstr "DVD模块"
 msgid "Watch movies from DVD"
 msgstr "从DVD观看电影"
 
-#: src/modules/browser/localfiles/localfiles.c:604
+#: src/modules/browser/localfiles/localfiles.c:605
 msgid "Browse local devices"
 msgstr "浏览本机驱动器"
 
-#: src/modules/browser/localfiles/localfiles.c:807
+#: src/modules/browser/localfiles/localfiles.c:808
 msgid "Browse local files"
 msgstr "浏览本机文件"
 
-#: src/modules/browser/localfiles/localfiles.c:809
+#: src/modules/browser/localfiles/localfiles.c:810
 msgid "Browse files in your local file systems"
 msgstr "浏览本机硬盘上的文件"
 
@@ -529,20 +529,20 @@ msgstr "广播浏览器"
 msgid "Listen to SHOUTcast stream"
 msgstr "聆听广播数据流"
 
-#: src/modules/browser/upnp/upnp.c:457 src/modules/browser/upnp/upnp.c:475
+#: src/modules/browser/upnp/upnp.c:473
 msgid "UPnP/DLNA media servers"
 msgstr "UPnP/DLNA媒体服务器"
 
-#: src/modules/browser/upnp/upnp.c:530
+#: src/modules/browser/upnp/upnp.c:526
 #, c-format
 msgid "Found new UPnP device '%s (%s)'"
 msgstr "发现新的UPnP设备 '%s (%s)'"
 
-#: src/modules/browser/upnp/upnp.c:615
+#: src/modules/browser/upnp/upnp.c:610
 msgid "UPnP/DLNA module"
 msgstr "UPnP/DLNA模块"
 
-#: src/modules/browser/upnp/upnp.c:617
+#: src/modules/browser/upnp/upnp.c:612
 msgid "This module allows Enna to browse contents from UPnP/DLNA media servers"
 msgstr "这个模块让Enna能够浏览UPnP/DLNA上的内容"
 
