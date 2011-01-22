@@ -345,7 +345,7 @@ _list_item_film_label_get(void *data, Evas_Object *obj __UNUSED__, const char *p
         episode = enna_file_meta_get(li->file, "episode");
         if (!season || !episode )
             return NULL;
-        str = eina_stringshare_printf("S%02d E%02d", atoi(season), atoi(episode));
+        str = eina_stringshare_printf("s%02d ep%02d", atoi(season), atoi(episode));
         tmp = strdup(str);
         eina_stringshare_del(season);
         eina_stringshare_del(episode);
