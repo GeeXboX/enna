@@ -105,3 +105,4 @@ ICON("spotify.png", "icon/spotify");
 ICON("music_library.png", "icon/library");
 ICON_SET("network_directory", "icon/dev/nfs");
 ICON_SET("dvd", "icon/dev/dvd");
+ICON("played.png", "icon/played");
