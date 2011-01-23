@@ -161,7 +161,7 @@ _update(Smart_Data *sd, Enna_File *file)
 
         pg = elm_progressbar_add(sd->page);
         val = enna_file_meta_get(file, ENNA_META_KEY_PERCENT_USED);
-        v = atof(val) / 100.0;
+        v = enna_util_atof(val) / 100.0;
         elm_progressbar_value_set(pg, v);
         eina_stringshare_del(val);
         elm_progressbar_unit_format_set(pg, "%1.0f %%");
