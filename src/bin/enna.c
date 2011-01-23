@@ -66,6 +66,8 @@ static char *conffile = NULL;
 static const char *app_theme = NULL;
 static unsigned int app_w = 1280;
 static unsigned int app_h = 720;
+static unsigned int app_x_off = 0;
+static unsigned int app_y_off = 0;
 static int run_fullscreen = 0;
 
 /* Functions */
@@ -164,9 +166,11 @@ static void _window_delete_cb(void *data __UNUSED__, Evas_Object *obj __UNUSED__
 static void
 _window_resize_cb(void *data __UNUSED__, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *event_info __UNUSED__)
 {
-    Evas_Coord h;
+    Evas_Coord w, h;
 
-    evas_object_geometry_get(enna->win, NULL, NULL, NULL, &h);
+    evas_object_geometry_get(enna->win, NULL, NULL, &w, &h);
+    evas_object_resize(enna->layout, w - 2 * app_x_off, h - 2 * app_y_off);
+    evas_object_move(enna->layout, app_x_off, app_y_off);
     _set_scale(h);
 }
 
@@ -320,6 +324,7 @@ static int _enna_init(int argc, char **argv)
 static int _create_gui(void)
 {
     Evas_Object *ic;
+    Evas_Object *rect;
 
     // set custom elementary theme
     elm_theme_extension_add(enna_config->eth, enna_config_theme_get());
@@ -350,6 +355,12 @@ static int _create_gui(void)
     /* ==> Set cache to 16MB */
     evas_image_cache_set(enna->evas, 4 * 4 * 1024 * 1024);
     
+    /* Black rect */
+    rect = evas_object_rectangle_add(enna->evas);
+    evas_object_color_set(rect, 0, 0, 0, 255);
+    evas_object_show(rect);
+    elm_win_resize_object_add(enna->win, rect);
+
     // main layout widget
     enna->layout = elm_layout_add(enna->win);
     if (!elm_layout_file_set(enna->layout, enna_config_theme_get(), EDJE_GROUP_MAIN_LAYOUT))
@@ -358,7 +369,7 @@ static int _create_gui(void)
         return 0;
     }
     evas_object_size_hint_weight_set(enna->layout, 1.0, 1.0);
-    elm_win_resize_object_add(enna->win, enna->layout);
+
     evas_object_show(enna->layout);
 
     // mainmenu
@@ -393,7 +404,11 @@ static int _create_gui(void)
     }
 #endif
     // show all
+
     evas_object_resize(enna->win, app_w, app_h);
+    evas_object_resize(enna->layout, app_w - 2 * app_x_off, app_h - 2 * app_y_off);
+    evas_object_move(enna->layout, app_x_off, app_y_off);
+
     _set_scale(app_h);
     evas_object_show(enna->win);
 
@@ -430,15 +445,21 @@ static void _enna_shutdown(void)
 }
 
 static void _opt_geometry_parse(const char *optarg,
-                                unsigned int *pw, unsigned int *ph)
+                                unsigned int *pw, unsigned int *ph, unsigned int *px, unsigned int *py)
 {
     int w = 0, h = 0;
+    int x = 0, y = 0;
+    int ret;
 
-    if (sscanf(optarg, "%dx%d", &w, &h) != 2)
+    ret = sscanf(optarg, "%dx%d:%d:%d", &w, &h, &x, &y);
+
+    if ( ret != 2 && ret != 4 )
         return;
 
     if (pw) *pw = w;
     if (ph) *ph = h;
+    if (px) *px = x;
+    if (py) *py = y;
 }
 
 static const struct {
@@ -597,7 +618,7 @@ static int parse_command_line(int argc, char **argv)
             break;
 
         case 'g':
-            _opt_geometry_parse(optarg, &app_w, &app_h);
+            _opt_geometry_parse(optarg, &app_w, &app_h, &app_x_off, &app_y_off);
             break;
         case 'p':
             _opt_profile_parse(optarg, &app_theme, &app_w, &app_h);
