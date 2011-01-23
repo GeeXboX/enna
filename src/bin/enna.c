@@ -551,6 +551,7 @@ static void usage(char *binname)
     printf(_("  -h, (--help):    Display this help.\n"));
     printf(_("  -t, (--theme):   Specify theme name to be used.\n"));
     printf(_("  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"));
+    printf(_("  -g, (--geometry):Specify window geometry and offset. (geometry=1280x720:10:20)\n"));
     printf(_("  -p, (--profile): Specify display profile\n"));
     printf(_("    Supported: "));
     for (i = 0; profile_resolution_mapping[i].name; i++)
