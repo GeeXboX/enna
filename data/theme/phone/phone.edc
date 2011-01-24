@@ -32,37 +32,14 @@ collections
             description { state: "default" 0.0;
                color: 255 255 255 255;
                visible: 1;
-               rel1.relative:  0 1;
-               rel1.offset: 0 -86;
-               rel2.relative:  1 1;
-               rel2.offset: 0 202;
+               rel1.relative:  -1 0;
+               rel2.relative:  0 1;
             }
             description { state: "visible" 0.0;
                color: 255 255 255 255;
                visible: 1;
-               rel1.relative:  0 1;
-               rel1.offset: 0 -288;
+               rel1.relative:  0 0;
                rel2.relative:  1 1;
-            }
-         }
-         part {
-            type: IMAGE;
-            clip_to: "mainmenu.clip";
-            description {
-               state: "default" 0.0;
-               rel1.to: "mainmenu.clip";
-               rel2.to: "mainmenu.clip";
-               color: 255 255 255 200;
-               image {
-                  normal: "menu_bg.png";
-               }
-               fill {
-                  size {
-                     relative: 0.0 1.0;
-                     offset: 20 0;
-                  }
-               }
-
             }
          }
          part {
@@ -71,10 +48,9 @@ collections
             type: SWALLOW;
             description {
                state: "default" 0.0;
-               rel1.relative: 0 1;
-               rel1.offset: 0 -176;
+               rel1.relative: 0 0;
                rel1.to: "mainmenu.clip";
-               rel2.offset: 0 -22;
+               rel2.relative: 1 1;
                rel2.to: "mainmenu.clip";
                fixed: 1 1;
             }
@@ -149,9 +125,9 @@ collections
       data {
          item: "scroll_horizontal" "off";
          item: "bounce_horizontal" "off";
-         item: "scroll_vertical" "off";
-         item: "bounce_vertical" "off";
-         item: "orientation" "horizontal";
+         item: "scroll_vertical" "on";
+         item: "bounce_vertical" "on";
+         item: "orientation" "vertical";
       }
       parts {
          part {
@@ -174,8 +150,6 @@ collections
             description { state: "default" 0.0;
                visible: 0;
                color: 255 255 255 0;
-               aspect: 1.0 1.0;
-               aspect_preference: BOTH;
                image {
                   normal: "sel_bg.png";
                   border: 15 15 15 15;
@@ -190,23 +164,25 @@ collections
          part { name: "enna.swallow.icon";
             type: SWALLOW;
             description { state: "default" 0.0;
-            align: 0.5 0.5;
+               align: 0.5 0.5;
                aspect: 1.0 1.0;
+               min: 64 64;
+               max: 64 64;
                aspect_preference: BOTH;
                visible: 1;
+               align: 0 0.5;
                rel1 {
                   relative: 0.0 0.0;
-                  offset: 18 20;
+                  offset: 12 12;
                }
                rel2 {
-                  to_y: "enna.text.label";
-                  relative: 1.0 0.0;
-                  offset: -17 -1;
+                  relative: 0.0 1.0;
+                  offset: 12 -12;
                }
 
             }
          }
-          part {
+         part {
             name: "enna.text.label";
             type: TEXT;
             mouse_events: 0;
@@ -216,21 +192,23 @@ collections
                align: 0.5 1.0;
                fixed: 0 1;
                rel1 {
-                  relative: 0.0 1.0;
-                  offset: 20 -18;
+                  relative: 1.0 0.0;
+                  offset: 20 0;
+                  to: "enna.swallow.icon";
                }
                rel2 {
                   relative: 1.0 1.0;
-                  offset: -20 -20;
+                  offset: -20 0;
+                  to_y: "enna.swallow.icon";
                }
                visible: 1;
                color: 224 224 224 255;
                color3: 0 0 0 64;
                text {
                   font: "Sans";
-                  size: 10;
+                  size: 14;
                   min: 1 1;
-                  align: 0.5 0.5;
+                  align: 0 0.5;
                }
             }
             description {
@@ -270,7 +248,7 @@ collections
       }
    }
 
- group {
+   group {
       name: "enna/box/item/exit";
       images {
          image: "sel_bg.png" COMP;
@@ -401,35 +379,10 @@ collections
                state: "default" 0.0;
                visible: 1;
                color: 255 255 255 255;
-
-               rel1.relative: 0.0 0.0;
-               rel1.offset: 0 16;
                rel1.to: "content.clip";
-
-               rel2.relative: 1.0 1.0;
-               rel2.offset: -16 -88;
                rel2.to: "content.clip";
             }
          }
-	 part {
-	    name: "browser.bg";
-	    type: IMAGE;
-	    mouse_events: 0;
-	    clip_to: "browser.clip";
-	    description {
-	        state: "default" 0.0;
-		rel1.to: "browser.clip";
-		//rel1.offset: -5 -5;
-		rel2.to: "browser.clip";
-		//rel2.offset: 5 5;
-		//color: 0 0 0 128 ;
-		image {
-                     normal: "browser_bg.png";
-               	     border: 15 15 15 15;
-            	}
-
-	    }
-	 }
          part {
             name: "browser.swallow";
             type: SWALLOW;
@@ -438,13 +391,10 @@ collections
             description {
                state: "default" 0.0;
                rel1.to: "browser.clip";
-               rel1.offset: 5 5;
                rel2.to: "browser.clip";
-	           rel2.offset: -4 -4;
             }
          }
 
-         /* Mediaplayer */
          /* part { */
          /*    name: "mediaplayer.clip"; */
          /*    clip_to: "content.clip"; */
@@ -534,6 +484,10 @@ collections
    group
    {
       name: "enna/browser";
+      images {
+         image: "header_bg.png" COMP;
+         image: "header_fg.png" COMP;
+      }
       parts
       {
 
@@ -545,29 +499,43 @@ collections
                state: "default" 0.0;
                visible: 1;
                color: 255 255 255 255;
-               rel1.relative : 0 0;
-               rel2.relative : 1 1;
             }
          }
-
+         part {
+            name: "bg";
+            type: IMAGE;
+            clip_to: "clip";
+            description {
+               rel1.to: "enna.swallow.header";
+               rel2.to: "enna.swallow.header";
+               image.normal: "header_bg.png";
+               image.border: 0 0 0 17;
+            }
+         }
          part {
             name: "enna.swallow.header";
             type: SWALLOW;
             clip_to: "clip";
             description {
-               min: 0 64;
-               max: 10000 64;
+               min: 0 80;
+               max: 10000 80;
 
                state: "default" 0.0;
                align: 0 0;
-               rel1.offset: 10 0;
-               rel1.relative: 0 0;
-
-               rel2.relative: 1 1;
-               rel2.offset: -10 0;
             }
          }
-
+         part {
+            name: "fg";
+            type: IMAGE;
+            clip_to: "clip";
+            description {
+               rel1.to: "enna.swallow.header";
+               rel2.to: "enna.swallow.header";
+               visible: 0;
+               image.normal: "header_fg.png";
+               image.border: 0 0 0 17;
+            }
+         }
          part {
             name: "enna.swallow.content";
             type: SWALLOW ;
@@ -576,66 +544,9 @@ collections
                state: "default" 0.0;
                rel1.to: "enna.swallow.header";
                rel1.relative: 0 1;
-               rel1.offset: 0 2;
+               rel1.offset: 0 -15;
                rel2.relative: 1 1;
             }
-         }
-         part {
-            name : "enna.clip.letter";
-            type: RECT;
-            mouse_events: 0;
-            description {
-               state: "default" 0.0;
-               color: 0 0 0 0;
-               visible: 1;
-               aspect_preference: BOTH;
-               aspect: 1 1;
-               rel1 {relative: 0.5 0.5;}
-               rel2 {relative: 0.5 0.5;};
-            }
-            description {
-               state: "show" 0.0;
-               visible: 1;
-               aspect_preference: BOTH;
-               aspect: 1 1;
-               color: 255 255 255 255;
-               rel1 {relative: 0.35 0.35;}
-               rel2 {relative: 0.65  0.65;};
-            }
-         }
-         part { name: "enna.swallow.letter";
-            mouse_events: 0;
-            clip_to: "enna.clip.letter";
-            type: SWALLOW;
-            description { state: "default" 0.0;
-               visible: 1;
-               fixed: 1 1;
-               color: 255 255 255 50;
-               rel1.relative: 0 0;
-               rel1.to: "enna.clip.letter";
-               rel2.relative: 1 1;
-               rel2.to: "enna.clip.letter";
-            }
-
-         }
-      }
-      programs
-      {
-         program {
-            name: "letter,show";
-            signal: "letter,show";
-            source:  "enna";
-            action:  STATE_SET "show" 0.0;
-            transition: "ACCELERATE" 0.3;
-            target: "enna.clip.letter";
-         }
-         program {
-            name: "letter,hide";
-            signal: "letter,hide";
-            source:  "enna";
-            action:  STATE_SET "default" 0.0;
-            transition: "ACCELERATE" 0.3;
-            target: "enna.clip.letter";
          }
 
       }
@@ -686,7 +597,7 @@ collections
                rel1.relative: 1 0;
                rel1.offset: 8 0;
                rel1.to: "enna.swallow.icon";
-               rel2.relative: 1 0.5;
+               rel2.relative: 1 1.0;
                rel2.offset: -20 -2;
                color: 255 255 255 200;
                color3: 0 0 0 64;
@@ -698,7 +609,7 @@ collections
                }
             }
          }
-         part {
+         /*         part {
             name: "enna.swallow.search";
             type: SWALLOW ;
             description {
@@ -706,7 +617,7 @@ collections
                rel1.relative: 0 0.5;
                rel2.relative: 1 1;
             }
-         }
+            }*/
       }
    }
 
@@ -875,923 +786,923 @@ collections
 
    }
 
-group {
-name: "enna/slideshow";
-    parts {
-        /* Black Background */
-        part { name: "bg";
-        type: RECT;
-        mouse_events: 0;
+   group {
+      name: "enna/slideshow";
+      parts {
+         /* Black Background */
+         part { name: "bg";
+            type: RECT;
+            mouse_events: 0;
             description {
-            state: "default" 0.0;
-            color: 0 0 0 255;
+               state: "default" 0.0;
+               color: 0 0 0 255;
             }
-        }
-        part {
-        name: "enna.content.swallow";
-        mouse_events: 1;
-        type: SWALLOW;
+         }
+         part {
+            name: "enna.content.swallow";
+            mouse_events: 1;
+            type: SWALLOW;
             description{
-            state: "default" 0.0;
+               state: "default" 0.0;
             }
-        }
-        part {
-        name: "event";
-        mouse_events: 1;
-           repeat_events: 1;
-        type: RECT;
+         }
+         part {
+            name: "event";
+            mouse_events: 1;
+            repeat_events: 1;
+            type: RECT;
             description{
                state: "default" 0.0;
                color: 0 0 0 0;
             }
-        }
-    }
-}
-
-group {
-
-   name: "core/mediaplayer";
-   parts {
-      /* Define 2 zones : cover and controls */
-      part {
-         name: "cover.clip";
-         clip_to: "cover.area";
-         type: RECT;
-         mouse_events:   0;
-         description { state: "default" 0.0;
-            color: 255 255 255 0;
-            rel1.to: "cover.area";
-            rel2.to: "cover.area";
-            visible: 0;
-         }
-         description { state: "show" 0.0;
-            color: 255 255 255 255;
-            rel1.to: "cover.area";
-            rel2.to: "cover.area";
-            visible: 1;
-         }
-      }
-      part {
-         name: "cover.area";
-         type: RECT;
-         mouse_events:   0;
-         description { state: "default" 0.0;
-            color: 255 255 255 255;
-            rel1.relative: 0 0;
-            rel2.relative: 1 0.6;
-         }
-         description { state: "horizontal" 0.0;
-            color: 255 255 255 255;
-            rel1.relative: 0 0;
-            rel2.relative: 0.6 1;
-         }
-         description { state: "video" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0 0;
-            rel2.relative: 1 1;
-            visible: 0;
-         }
-      }
-
-      part {
-         name: "controls.area";
-         type: RECT;
-         mouse_events:   0;
-         description { state: "default" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0 0.6;
-            rel2.relative: 1 1.0;
-         }
-         description { state: "horizontal" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0 0;
-            rel2.relative: 0.6 1;
-         }
-         description { state: "video" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0 0;
-            rel2.relative: 1 1;
-         }
-      }
-      /* In controls Area define 3 zones */
-      /* Text zone : display id3 tag or  video title*/
-      part {
-         name: "text.area";
-         type: RECT;
-         mouse_events:   0;
-         description { state: "default" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0 0.6;
-            rel2.relative: 1 0.8;
-         }
-         description { state: "horizontal" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0.6 0;
-            rel2.relative: 1 1;
-         }
-         description { state: "video" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0 0;
-            rel2.relative: 0.33 1;
-         }
-      }
-      /* Display time slider */
-      part {
-         name: "timeline.area";
-         type: RECT;
-         mouse_events:   0;
-         description { state: "default" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0 0.8;
-            rel2.relative: 1 0.9;
-         }
-         description { state: "horizontal" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0.6 0;
-            rel2.relative: 1 1;
-         }
-         description { state: "video" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0.33 0;
-            rel2.relative: 0.66 1;
-         }
-      }
-
-      /* Display buttons control play/stop/next ...*/
-      part {
-         name: "buttons.area";
-         type: RECT;
-         mouse_events:   0;
-         description { state: "default" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0 0.9;
-            rel2.relative: 1 1;
-         }
-         description { state: "horizontal" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0.6 0;
-            rel2.relative: 1 1;
-         }
-         description { state: "video" 0.0;
-            color: 0 0 0 0;
-            rel1.relative: 0.66 0;
-            rel2.relative: 1.0 1;
-         }
-      }
-
-      /* Cover Zone */
-
-
-      part {
-         name: "cover.swallow";
-         type: SWALLOW;
-         mouse_events:   0;
-         clip_to: "cover.clip";
-         description { state: "default" 0.0;
-            aspect_preference: BOTH;
-            aspect: 1 1;
-            rel1.to: "cover.area";
-            rel1.offset: 20 20;
-            rel2.to: "cover.area";
-            rel2.offset: -20 -20;
-         }
-      }
-      /* Control Zone */
-      /* Global clip : for fade in/fade out animation */
-      part {
-         name: "controls.clip";
-         type: RECT;
-         mouse_events:   0;
-         description {
-            state: "default" 0.0;
-
-            rel1.to: "controls.area";
-            rel2.to: "controls.area";
-
-            color: 255 255 255 0;
-            visible: 0;
-         }
-         description{
-            state: "show" 0.0;
-            inherit: "default" 0.0;
-
-            color: 255 255 255 255;
-            visible: 1;
-         }
-      }
-
-      part {
-         name: "text.swallow";
-         type: SWALLOW;
-         mouse_events:   0;
-         clip_to: "controls.clip";
-         description {
-            state: "default" 0.0;
-            rel1.to: "text.area";
-            rel1.offset: 4 4;
-            rel2.to: "text.area";
-            rel2.offset: -4 -4;
-         }
-      }
-
-      part {
-         name: "text.pos";
-         type: TEXT;
-         mouse_events:   0;
-         clip_to: "controls.clip";
-            scale: 1;
-         description {
-            state: "default" 0.0;
-
-            rel1.to: "timeline.area";
-            rel1.offset: 4 4;
-
-            rel2.relative: 0.2 1.0;
-            rel2.to: "timeline.area";
-            rel2.offset: -4 -4;
-
-            text {
-               font: "Sans";
-               size: 10;
-               min: 0 0;
-               align: 1.0 0.5;
-            }
-         }
-      }
-
-      part {
-         name: "slider.swallow";
-         type: SWALLOW;
-         mouse_events:   1;
-         clip_to: "controls.clip";
-         description {
-            state: "default" 0.0;
-
-            rel1.relative: 0.2 0;
-            rel1.to: "timeline.area";
-            rel1.offset: 4 4;
-
-            rel2.to: "timeline.area";
-            rel2.relative: 0.8 1.0;
-            rel2.offset: -4 -4;
-         }
-      }
-      part {
-         name: "text.length";
-         type: TEXT;
-         mouse_events:   0;
-         clip_to: "controls.clip";
-            scale: 1;
-         description {
-            state: "default" 0.0;
-
-            rel1.to: "timeline.area";
-            rel1.relative: 0.8 0.0;
-            rel1.offset: 4 4;
-
-            rel2.to: "timeline.area";
-            rel2.offset: -4 -4;
-
-            text {
-               font: "Sans";
-               size: 10;
-               min: 0 0;
-               align: 0.0 0.5;
-            }
-         }
-      }
-
-      part {
-         name: "buttons.swallow";
-         type: SWALLOW;
-         mouse_events:   1;
-         clip_to: "controls.clip";
-         description {
-            state: "default" 0.0;
-
-            rel1.to: "buttons.area";
-            rel1.offset: 4 4;
-
-            rel2.to: "buttons.area";
-            rel2.offset: -4 -4;
          }
       }
    }
-   programs
-   {
-      program { name: "controls,show";
-         signal: "controls,show";
-         source: "enna";
-         action: STATE_SET "show" 0.0;
-         transition: ACCELERATE 2.0;
-         target: "controls.clip";
-         target: "cover.clip";
-      }
-      program { name: "controls,hide";
-         signal: "controls,hide";
-         source: "enna";
-         action: STATE_SET "default" 0.0;
-         transition: DECELERATE 2.0;
-         target: "controls.clip";
-         target: "cover.clip";
-      }
-      program { name: "layout,video";
-         signal: "layout,video";
-         source: "enna";
-         action: STATE_SET "video" 0.0;
-         target: "controls.area";
-         target: "cover.area";
-         target: "text.area";
-         target: "timeline.area";
-         target: "buttons.area";
 
-      }
-      program { name: "layout,vertical";
-         signal: "layout,vertival";
-         source: "enna";
-         action: STATE_SET "default" 0.0;
-         target: "controls.area";
-         target: "cover.area";
-         target: "text.area";
-         target: "timeline.area";
-         target: "buttons.area";
+   group {
 
+      name: "core/mediaplayer";
+      parts {
+         /* Define 2 zones : cover and controls */
+         part {
+            name: "cover.clip";
+            clip_to: "cover.area";
+            type: RECT;
+            mouse_events:   0;
+            description { state: "default" 0.0;
+               color: 255 255 255 0;
+               rel1.to: "cover.area";
+               rel2.to: "cover.area";
+               visible: 0;
+            }
+            description { state: "show" 0.0;
+               color: 255 255 255 255;
+               rel1.to: "cover.area";
+               rel2.to: "cover.area";
+               visible: 1;
+            }
+         }
+         part {
+            name: "cover.area";
+            type: RECT;
+            mouse_events:   0;
+            description { state: "default" 0.0;
+               color: 255 255 255 255;
+               rel1.relative: 0 0;
+               rel2.relative: 1 0.6;
+            }
+            description { state: "horizontal" 0.0;
+               color: 255 255 255 255;
+               rel1.relative: 0 0;
+               rel2.relative: 0.6 1;
+            }
+            description { state: "video" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0 0;
+               rel2.relative: 1 1;
+               visible: 0;
+            }
+         }
+
+         part {
+            name: "controls.area";
+            type: RECT;
+            mouse_events:   0;
+            description { state: "default" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0 0.6;
+               rel2.relative: 1 1.0;
+            }
+            description { state: "horizontal" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0 0;
+               rel2.relative: 0.6 1;
+            }
+            description { state: "video" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0 0;
+               rel2.relative: 1 1;
+            }
+         }
+         /* In controls Area define 3 zones */
+         /* Text zone : display id3 tag or  video title*/
+         part {
+            name: "text.area";
+            type: RECT;
+            mouse_events:   0;
+            description { state: "default" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0 0.6;
+               rel2.relative: 1 0.8;
+            }
+            description { state: "horizontal" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0.6 0;
+               rel2.relative: 1 1;
+            }
+            description { state: "video" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0 0;
+               rel2.relative: 0.33 1;
+            }
+         }
+         /* Display time slider */
+         part {
+            name: "timeline.area";
+            type: RECT;
+            mouse_events:   0;
+            description { state: "default" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0 0.8;
+               rel2.relative: 1 0.9;
+            }
+            description { state: "horizontal" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0.6 0;
+               rel2.relative: 1 1;
+            }
+            description { state: "video" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0.33 0;
+               rel2.relative: 0.66 1;
+            }
+         }
+
+         /* Display buttons control play/stop/next ...*/
+         part {
+            name: "buttons.area";
+            type: RECT;
+            mouse_events:   0;
+            description { state: "default" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0 0.9;
+               rel2.relative: 1 1;
+            }
+            description { state: "horizontal" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0.6 0;
+               rel2.relative: 1 1;
+            }
+            description { state: "video" 0.0;
+               color: 0 0 0 0;
+               rel1.relative: 0.66 0;
+               rel2.relative: 1.0 1;
+            }
+         }
+
+         /* Cover Zone */
+
+
+         part {
+            name: "cover.swallow";
+            type: SWALLOW;
+            mouse_events:   0;
+            clip_to: "cover.clip";
+            description { state: "default" 0.0;
+               aspect_preference: BOTH;
+               aspect: 1 1;
+               rel1.to: "cover.area";
+               rel1.offset: 20 20;
+               rel2.to: "cover.area";
+               rel2.offset: -20 -20;
+            }
+         }
+         /* Control Zone */
+         /* Global clip : for fade in/fade out animation */
+         part {
+            name: "controls.clip";
+            type: RECT;
+            mouse_events:   0;
+            description {
+               state: "default" 0.0;
+
+               rel1.to: "controls.area";
+               rel2.to: "controls.area";
+
+               color: 255 255 255 0;
+               visible: 0;
+            }
+            description{
+               state: "show" 0.0;
+               inherit: "default" 0.0;
+
+               color: 255 255 255 255;
+               visible: 1;
+            }
+         }
+
+         part {
+            name: "text.swallow";
+            type: SWALLOW;
+            mouse_events:   0;
+            clip_to: "controls.clip";
+            description {
+               state: "default" 0.0;
+               rel1.to: "text.area";
+               rel1.offset: 4 4;
+               rel2.to: "text.area";
+               rel2.offset: -4 -4;
+            }
+         }
+
+         part {
+            name: "text.pos";
+            type: TEXT;
+            mouse_events:   0;
+            clip_to: "controls.clip";
+            scale: 1;
+            description {
+               state: "default" 0.0;
+
+               rel1.to: "timeline.area";
+               rel1.offset: 4 4;
+
+               rel2.relative: 0.2 1.0;
+               rel2.to: "timeline.area";
+               rel2.offset: -4 -4;
+
+               text {
+                  font: "Sans";
+                  size: 10;
+                  min: 0 0;
+                  align: 1.0 0.5;
+               }
+            }
+         }
+
+         part {
+            name: "slider.swallow";
+            type: SWALLOW;
+            mouse_events:   1;
+            clip_to: "controls.clip";
+            description {
+               state: "default" 0.0;
+
+               rel1.relative: 0.2 0;
+               rel1.to: "timeline.area";
+               rel1.offset: 4 4;
+
+               rel2.to: "timeline.area";
+               rel2.relative: 0.8 1.0;
+               rel2.offset: -4 -4;
+            }
+         }
+         part {
+            name: "text.length";
+            type: TEXT;
+            mouse_events:   0;
+            clip_to: "controls.clip";
+            scale: 1;
+            description {
+               state: "default" 0.0;
+
+               rel1.to: "timeline.area";
+               rel1.relative: 0.8 0.0;
+               rel1.offset: 4 4;
+
+               rel2.to: "timeline.area";
+               rel2.offset: -4 -4;
+
+               text {
+                  font: "Sans";
+                  size: 10;
+                  min: 0 0;
+                  align: 0.0 0.5;
+               }
+            }
+         }
+
+         part {
+            name: "buttons.swallow";
+            type: SWALLOW;
+            mouse_events:   1;
+            clip_to: "controls.clip";
+            description {
+               state: "default" 0.0;
+
+               rel1.to: "buttons.area";
+               rel1.offset: 4 4;
+
+               rel2.to: "buttons.area";
+               rel2.offset: -4 -4;
+            }
+         }
+      }
+      programs
+      {
+         program { name: "controls,show";
+            signal: "controls,show";
+            source: "enna";
+            action: STATE_SET "show" 0.0;
+            transition: ACCELERATE 2.0;
+            target: "controls.clip";
+            target: "cover.clip";
+         }
+         program { name: "controls,hide";
+            signal: "controls,hide";
+            source: "enna";
+            action: STATE_SET "default" 0.0;
+            transition: DECELERATE 2.0;
+            target: "controls.clip";
+            target: "cover.clip";
+         }
+         program { name: "layout,video";
+            signal: "layout,video";
+            source: "enna";
+            action: STATE_SET "video" 0.0;
+            target: "controls.area";
+            target: "cover.area";
+            target: "text.area";
+            target: "timeline.area";
+            target: "buttons.area";
+
+         }
+         program { name: "layout,vertical";
+            signal: "layout,vertival";
+            source: "enna";
+            action: STATE_SET "default" 0.0;
+            target: "controls.area";
+            target: "cover.area";
+            target: "text.area";
+            target: "timeline.area";
+            target: "buttons.area";
+
+         }
       }
    }
-}
 
-images {
+   images {
 
-}
- group {
-    name: "activity/video";
+   }
+   group {
+      name: "activity/video";
 
-    styles {
-       style {
-          name: "style.infos.video";
-          base: "font=content font_size=14 align=left color=#FFF wrap=word";
-          tag:  "b"   "+ font=content_bd";
-          tag:  "c"   "+ align=center";
-          tag:  "hl"  "+ color=#A0D026A0";
-          tag:  "sd"  "+ style=far_shadow shadow_color=#000000ff";
-          tag:  "gl"  "+ style=glow glow_color=#000000ff";
-          tag:  "ul"  "+ style=underline underline_color=#ffffffff";
-          tag:  "h1"  "+ font_size=16";
-          tag:  "h2"  "+ font_size=20";
-          tag:  "h3"  "+ font_size=24";
-          tag:  "h4"  "+ font_size=30";
-          tag:  "br"  "\n";
-          tag:  "tab" "\t";
-       }
-    }
-
-    parts {
-      part {
-         name: "module.clip";
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 255;
-            rel1.relative: 1 0;
-            rel2.relative: 2 1;
-            visible: 0;
-         }
-         description {
-            state: "show" 0.0;
-            color : 255 255 255 255;
-            visible: 1;
+      styles {
+         style {
+            name: "style.infos.video";
+            base: "font=content font_size=14 align=left color=#FFF wrap=word";
+            tag:  "b"   "+ font=content_bd";
+            tag:  "c"   "+ align=center";
+            tag:  "hl"  "+ color=#A0D026A0";
+            tag:  "sd"  "+ style=far_shadow shadow_color=#000000ff";
+            tag:  "gl"  "+ style=glow glow_color=#000000ff";
+            tag:  "ul"  "+ style=underline underline_color=#ffffffff";
+            tag:  "h1"  "+ font_size=16";
+            tag:  "h2"  "+ font_size=20";
+            tag:  "h3"  "+ font_size=24";
+            tag:  "h4"  "+ font_size=30";
+            tag:  "br"  "\n";
+            tag:  "tab" "\t";
          }
       }
 
-      part {
-         name: "content.clip";
-         type: RECT;
-         clip_to: "module.clip";
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 0;
-            rel1.to: module.clip;
-            rel2.to: module.clip;
-            visible: 0;
+      parts {
+         part {
+            name: "module.clip";
+            type: RECT;
+            description {
+               state: "default" 0.0;
+               color: 255 255 255 255;
+               rel1.relative: 1 0;
+               rel2.relative: 2 1;
+               visible: 0;
+            }
+            description {
+               state: "show" 0.0;
+               color : 255 255 255 255;
+               visible: 1;
+            }
          }
-         description {
-            state: "show" 0.0;
-            inherit: "default" 0.0;
-            color: 255 255 255 255;
-            visible: 1;
+
+         part {
+            name: "content.clip";
+            type: RECT;
+            clip_to: "module.clip";
+            description {
+               state: "default" 0.0;
+               color: 255 255 255 0;
+               rel1.to: module.clip;
+               rel2.to: module.clip;
+               visible: 0;
+            }
+            description {
+               state: "show" 0.0;
+               inherit: "default" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+            }
          }
-      }
 
-       /* /\* movie backdrop *\/ */
-       /* part { */
-       /*    name: "backdrop.swallow"; */
-       /*    type: SWALLOW; */
-       /*    mouse_events : 1; */
-       /*    clip_to: "background"; */
-       /*    description { */
-       /*       state: "default" 0.0; */
-       /*       rel1.relative: 0 0; */
-       /*       rel2.relative: 1.0 1.0; */
-       /*    } */
-       /* } */
+         /* /\* movie backdrop *\/ */
+         /* part { */
+         /*    name: "backdrop.swallow"; */
+         /*    type: SWALLOW; */
+         /*    mouse_events : 1; */
+         /*    clip_to: "background"; */
+         /*    description { */
+         /*       state: "default" 0.0; */
+         /*       rel1.relative: 0 0; */
+         /*       rel2.relative: 1.0 1.0; */
+         /*    } */
+         /* } */
 
-       /* /\* background *\/ */
-       /* part { */
-       /*    name: "background"; */
-       /*    mouse_events:  0; */
-       /*    type: RECT; */
-       /*    description { */
-       /*       state: "default" 0.0; */
-       /*       color: 100 100 100 255  ; */
-       /*       visible: 1; */
-       /*    } */
-       /*    description { */
-       /*       state: "show" 0.0; */
-       /*       inherit: "default" 0.0; */
-       /*       color: 255 255 255 255; */
-       /*       visible: 1; */
-       /*    } */
-       /* } */
+         /* /\* background *\/ */
+         /* part { */
+         /*    name: "background"; */
+         /*    mouse_events:  0; */
+         /*    type: RECT; */
+         /*    description { */
+         /*       state: "default" 0.0; */
+         /*       color: 100 100 100 255  ; */
+         /*       visible: 1; */
+         /*    } */
+         /*    description { */
+         /*       state: "show" 0.0; */
+         /*       inherit: "default" 0.0; */
+         /*       color: 255 255 255 255; */
+         /*       visible: 1; */
+         /*    } */
+         /* } */
 
-      /*file browser*/
-      part {
-         name: "browser.clip";
-         clip_to: "content.clip";
-         type: RECT;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            visible: 1;
-            color: 255 255 255 255;
+         /*file browser*/
+         part {
+            name: "browser.clip";
+            clip_to: "content.clip";
+            type: RECT;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               visible: 1;
+               color: 255 255 255 255;
 
-            rel1.relative: 0.0 0.0;
-            rel1.offset: 0 16;
-            rel1.to: "content.clip";
+               rel1.relative: 0.0 0.0;
+               rel1.offset: 0 16;
+               rel1.to: "content.clip";
 
-            rel2.relative: 1.0 1.0;
-            rel2.offset: -16 -88;
-            rel2.to: "content.clip";
+               rel2.relative: 1.0 1.0;
+               rel2.offset: -16 -88;
+               rel2.to: "content.clip";
+            }
          }
-      }
 
-      part {
-          name: "browser.bg";
-          type: IMAGE;
-          mouse_events: 0;
-          clip_to: "browser.clip";
-	      description {
-	          state: "default" 0.0;
-              rel1.to: "browser.clip";
-        	  rel2.to: "browser.clip";
-              image {
-                     normal: "browser_bg.png";
-               	     border: 15 15 15 15;
-            	}
-          }
-      }
+         part {
+            name: "browser.bg";
+            type: IMAGE;
+            mouse_events: 0;
+            clip_to: "browser.clip";
+            description {
+               state: "default" 0.0;
+               rel1.to: "browser.clip";
+               rel2.to: "browser.clip";
+               image {
+                  normal: "browser_bg.png";
+                  border: 15 15 15 15;
+               }
+            }
+         }
        
 
-      part {
-         name: "browser.swallow";
-         type: SWALLOW;
-         mouse_events : 1;
-         clip_to: "browser.clip";
-         description {
-            state: "default" 0.0;
-            rel1.to: "browser.clip";
-            rel1.offset: 5 5;
-            rel2.to: "browser.clip";
-            rel2.offset: -4 -4;
+         part {
+            name: "browser.swallow";
+            type: SWALLOW;
+            mouse_events : 1;
+            clip_to: "browser.clip";
+            description {
+               state: "default" 0.0;
+               rel1.to: "browser.clip";
+               rel1.offset: 5 5;
+               rel2.to: "browser.clip";
+               rel2.offset: -4 -4;
+            }
          }
-      }
 
 
-      /* informations (left pane) */
-      /* part { */
-      /*    name: "infos.clip"; */
-      /*    clip_to: "content.clip"; */
-      /*    type: RECT; */
-      /*    mouse_events: 0; */
-      /*    description { */
-      /*       state: "default" 0.0; */
-      /*       visible: 1; */
-      /*       color: 255 255 255 255; */
+         /* informations (left pane) */
+         /* part { */
+         /*    name: "infos.clip"; */
+         /*    clip_to: "content.clip"; */
+         /*    type: RECT; */
+         /*    mouse_events: 0; */
+         /*    description { */
+         /*       state: "default" 0.0; */
+         /*       visible: 1; */
+         /*       color: 255 255 255 255; */
 
-      /*       rel1.relative: 0.6 0.0; */
-      /*       rel1.offset: 16 16; */
-      /*       rel1.to: "content.clip"; */
-      /*       rel2.relative: 1.0 1.0; */
-      /*       rel2.offset: -16 -88; */
-      /*       rel2.to: "content.clip"; */
-      /*    } */
-      /* } */
+         /*       rel1.relative: 0.6 0.0; */
+         /*       rel1.offset: 16 16; */
+         /*       rel1.to: "content.clip"; */
+         /*       rel2.relative: 1.0 1.0; */
+         /*       rel2.offset: -16 -88; */
+         /*       rel2.to: "content.clip"; */
+         /*    } */
+         /* } */
 
-      /* part { */
-      /*     name: "infos.swallow"; */
-      /*     type: SWALLOW; */
-      /*     mouse_events : 1; */
-      /*     clip_to: "infos.clip"; */
-      /*     description { */
-      /*        state: "default" 0.0; */
-      /*        color: 255 255 255 255; */
-      /*        visible: 1; */
-      /*        rel1 {relative: 0 0; to: "infos.clip";} */
-      /*        rel2 {relative: 1 1; to: "infos.clip";} */
-      /*     } */
-      /* } */
+         /* part { */
+         /*     name: "infos.swallow"; */
+         /*     type: SWALLOW; */
+         /*     mouse_events : 1; */
+         /*     clip_to: "infos.clip"; */
+         /*     description { */
+         /*        state: "default" 0.0; */
+         /*        color: 255 255 255 255; */
+         /*        visible: 1; */
+         /*        rel1 {relative: 0 0; to: "infos.clip";} */
+         /*        rel2 {relative: 1 1; to: "infos.clip";} */
+         /*     } */
+         /* } */
 
-      /* dummy fullscreen layer */
-      part {
-         name: "fullscreen.swallow";
-         type: SWALLOW;
-         mouse_events: 1;
-         description {
-            state: "default" 0.0;
-            visible: 1;
+         /* dummy fullscreen layer */
+         part {
+            name: "fullscreen.swallow";
+            type: SWALLOW;
+            mouse_events: 1;
+            description {
+               state: "default" 0.0;
+               visible: 1;
+            }
          }
-      }
 
-      /* media controls */
-      part {
-         name: "controls.swallow";
-         type: SWALLOW;
-         clip_to: "module.clip";
-         mouse_events: 1;
-         description {
-            state: "default" 0.0;
-            visible: 1;
+         /* media controls */
+         part {
+            name: "controls.swallow";
+            type: SWALLOW;
+            clip_to: "module.clip";
+            mouse_events: 1;
+            description {
+               state: "default" 0.0;
+               visible: 1;
 
-            rel1.to: "module.clip";
-            rel1.relative: 0.00 0.90;
-            rel2.to: "module.clip";
-            rel2.relative: 1.00 1.00;
+               rel1.to: "module.clip";
+               rel1.relative: 0.00 0.90;
+               rel2.to: "module.clip";
+               rel2.relative: 1.00 1.00;
+            }
          }
+
+         part {
+            name: "mediaplayer.swallow";
+            type: SWALLOW;
+            mouse_events : 1;
+            clip_to: "module.clip";
+            description {
+               state: "default" 0.0;
+               color: 255 255 255 0;
+               visible: 0;
+               rel1 {relative: 0 0; to: "module.clip";}
+               rel2 {relative: 1 1; to: "module.clip";}
+            }
+            description {
+               state: "show" 0.0;
+               color: 255 255 255 255;
+               rel1 {relative: 0 0; to: "module.clip";}
+               rel2 {relative: 1 1; to: "module.clip";}
+            }
+            description {
+               state: "controls" 0.0;
+               color: 255 255 255 255;
+               rel1 {relative: 0.2 0.2; to: "module.clip";}
+               rel2 {relative: 0.8 0.8; to: "module.clip";}
+            }
+         }
+         part {
+            name: "event";
+            mouse_events : 1;
+            repeat_events: 1;
+            description {state: "default" 0.0;}
+         }
+
+         /* part { */
+         /*    name: "infos.panel.clip"; */
+         /*    mouse_events: 0; */
+         /*    clip_to: module.clip; */
+         /*    type: RECT; */
+         /*    description { */
+         /*       state: "default" 0.0; */
+         /*       visible: 0; */
+         /*       color: 255 255 255 0; */
+         /*    } */
+         /*    description { */
+         /*       state: "show" 0.0; */
+         /*       visible: 1; */
+         /*       color: 255 255 255 255; */
+
+         /*       rel1.relative: 0 0; */
+         /*       rel2.relative: 1 1; */
+         /*       rel2.offset: 0 -45; */
+         /*    } */
+         /* } */
+         /* part { */
+         /*    name: "infos.panel.swallow"; */
+         /*    mouse_events: 0; */
+         /*    clip_to: infos.panel.clip; */
+         /*    type: SWALLOW; */
+         /*    description { */
+         /*       state: "default" 0.0; */
+         /*       rel1.to: "infos.panel.clip"; */
+         /*       rel2.to: "infos.panel.clip"; */
+         /*    } */
+         /* } */
+
+
+
+
       }
+      programs {
+         program {
+            name: "module,show";
+            signal: "module,show";
+            source:  "enna";
+            action:  STATE_SET "show" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "module.clip";
+            /* target: "background"; */
+         }
+         program {
+            name: "module,hide";
+            signal: "module,hide";
+            source:  "enna";
+            action:  STATE_SET "default" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "module.clip";
+            /* target: "background"; */
+         }
+         program {
+            name: "content,show";
+            signal: "content,show";
+            source:  "enna";
+            action:  STATE_SET "show" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "content.clip";
+         }
+         program {
+            name: "content,hide";
+            signal: "content,hide";
+            source:  "enna";
+            action:  STATE_SET "default" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "content.clip";
+         }
+         /*  program { */
+         /*     name: "mediaplayer,show"; */
+         /*     signal: "mediaplayer,show"; */
+         /*     source:  "enna"; */
+         /*     action:  STATE_SET "show" 0.0; */
+         /*     target: "mediaplayer.swallow"; */
+         /*  } */
+         /*  program { */
+         /*     name: "mediaplayer,hide"; */
+         /*     signal: "mediaplayer,hide"; */
+         /*     source:  "enna"; */
+         /*     action:  STATE_SET "default" 0.0; */
+         /*     target: "mediaplayer.swallow"; */
+         /*  } */
+         /* program { */
+         /*     name: "mediaplayer,controls"; */
+         /*     signal: "mediaplayer,controls"; */
+         /*     source:  "enna"; */
+         /*     action:  STATE_SET "controls" 0.0; */
+         /*     target: "mediaplayer.swallow"; */
+         /*  } */
 
-       part {
-          name: "mediaplayer.swallow";
-          type: SWALLOW;
-          mouse_events : 1;
-          clip_to: "module.clip";
-          description {
-             state: "default" 0.0;
-             color: 255 255 255 0;
-             visible: 0;
-             rel1 {relative: 0 0; to: "module.clip";}
-             rel2 {relative: 1 1; to: "module.clip";}
-          }
-          description {
-             state: "show" 0.0;
-             color: 255 255 255 255;
-             rel1 {relative: 0 0; to: "module.clip";}
-             rel2 {relative: 1 1; to: "module.clip";}
-          }
-          description {
-             state: "controls" 0.0;
-             color: 255 255 255 255;
-             rel1 {relative: 0.2 0.2; to: "module.clip";}
-             rel2 {relative: 0.8 0.8; to: "module.clip";}
-          }
-       }
-       part {
-       name: "event";
-           mouse_events : 1;
-           repeat_events: 1;
-           description {state: "default" 0.0;}
-       }
+         /*  program { */
+         /*     name: "transition,end"; */
+         /*     action: SIGNAL_EMIT "list,transition,end" "edje"; */
+         /*  } */
 
-       /* part { */
-       /*    name: "infos.panel.clip"; */
-       /*    mouse_events: 0; */
-       /*    clip_to: module.clip; */
-       /*    type: RECT; */
-       /*    description { */
-       /*       state: "default" 0.0; */
-       /*       visible: 0; */
-       /*       color: 255 255 255 0; */
-       /*    } */
-       /*    description { */
-       /*       state: "show" 0.0; */
-       /*       visible: 1; */
-       /*       color: 255 255 255 255; */
-
-       /*       rel1.relative: 0 0; */
-       /*       rel2.relative: 1 1; */
-       /*       rel2.offset: 0 -45; */
-       /*    } */
-       /* } */
-       /* part { */
-       /*    name: "infos.panel.swallow"; */
-       /*    mouse_events: 0; */
-       /*    clip_to: infos.panel.clip; */
-       /*    type: SWALLOW; */
-       /*    description { */
-       /*       state: "default" 0.0; */
-       /*       rel1.to: "infos.panel.clip"; */
-       /*       rel2.to: "infos.panel.clip"; */
-       /*    } */
-       /* } */
-
-
-
-
-    }
-    programs {
-       program {
-          name: "module,show";
-          signal: "module,show";
-          source:  "enna";
-          action:  STATE_SET "show" 0.0;
-          transition: SINUSOIDAL 0.5;
-          target: "module.clip";
-          /* target: "background"; */
-       }
-       program {
-          name: "module,hide";
-          signal: "module,hide";
-          source:  "enna";
-          action:  STATE_SET "default" 0.0;
-          transition: SINUSOIDAL 0.5;
-          target: "module.clip";
-          /* target: "background"; */
-       }
-       program {
-          name: "content,show";
-          signal: "content,show";
-          source:  "enna";
-          action:  STATE_SET "show" 0.0;
-          transition: SINUSOIDAL 0.5;
-          target: "content.clip";
-       }
-       program {
-          name: "content,hide";
-          signal: "content,hide";
-          source:  "enna";
-          action:  STATE_SET "default" 0.0;
-          transition: SINUSOIDAL 0.5;
-          target: "content.clip";
-       }
-      /*  program { */
-      /*     name: "mediaplayer,show"; */
-      /*     signal: "mediaplayer,show"; */
-      /*     source:  "enna"; */
-      /*     action:  STATE_SET "show" 0.0; */
-      /*     target: "mediaplayer.swallow"; */
-      /*  } */
-      /*  program { */
-      /*     name: "mediaplayer,hide"; */
-      /*     signal: "mediaplayer,hide"; */
-      /*     source:  "enna"; */
-      /*     action:  STATE_SET "default" 0.0; */
-      /*     target: "mediaplayer.swallow"; */
-      /*  } */
-      /* program { */
-      /*     name: "mediaplayer,controls"; */
-      /*     signal: "mediaplayer,controls"; */
-      /*     source:  "enna"; */
-      /*     action:  STATE_SET "controls" 0.0; */
-      /*     target: "mediaplayer.swallow"; */
-      /*  } */
-
-      /*  program { */
-      /*     name: "transition,end"; */
-      /*     action: SIGNAL_EMIT "list,transition,end" "edje"; */
-      /*  } */
-
-       /* program { */
-       /*     name: "infos,show"; */
-       /*     signal: "infos,show"; */
-       /*     source:  "enna"; */
-       /*     action:  STATE_SET "show" 0.0; */
-       /*     transition: "SINUSOIDAL" 0.3; */
-       /*     target: "infos.panel.clip"; */
-       /* } */
-       /* program { */
-       /*     name: "infos,hide"; */
-       /*     signal: "infos,hide"; */
-       /*     source:  "enna"; */
-       /*     action:  STATE_SET "default" 0.0; */
-       /*     transition: "SINUSOIDAL" 0.3; */
-       /*     target: "infos.panel.clip"; */
-       /* } */
+         /* program { */
+         /*     name: "infos,show"; */
+         /*     signal: "infos,show"; */
+         /*     source:  "enna"; */
+         /*     action:  STATE_SET "show" 0.0; */
+         /*     transition: "SINUSOIDAL" 0.3; */
+         /*     target: "infos.panel.clip"; */
+         /* } */
+         /* program { */
+         /*     name: "infos,hide"; */
+         /*     signal: "infos,hide"; */
+         /*     source:  "enna"; */
+         /*     action:  STATE_SET "default" 0.0; */
+         /*     transition: "SINUSOIDAL" 0.3; */
+         /*     target: "infos.panel.clip"; */
+         /* } */
 
 
 
-       /* program { */
-       /*     name: "resume,show"; */
-       /*     signal: "resume,show"; */
-       /*     source: "enna"; */
-       /*     action: STATE_SET "show" 0.0; */
-       /*     transition: LINEAR 0.3; */
-       /*     target: "resume.clip"; */
-       /* } */
-       /* program { */
-       /*     name: "resume,hide"; */
-       /*     signal: "resume,hide"; */
-       /*     source: "enna"; */
-       /*     action: STATE_SET "default" 0.0; */
-       /*     transition: LINEAR 0.3; */
-       /*     target: "resume.clip"; */
-       /* } */
+         /* program { */
+         /*     name: "resume,show"; */
+         /*     signal: "resume,show"; */
+         /*     source: "enna"; */
+         /*     action: STATE_SET "show" 0.0; */
+         /*     transition: LINEAR 0.3; */
+         /*     target: "resume.clip"; */
+         /* } */
+         /* program { */
+         /*     name: "resume,hide"; */
+         /*     signal: "resume,hide"; */
+         /*     source: "enna"; */
+         /*     action: STATE_SET "default" 0.0; */
+         /*     transition: LINEAR 0.3; */
+         /*     target: "resume.clip"; */
+         /* } */
 
-    }
- }
+      }
+   }
 
-images {
-   image: "browser_bg.png" COMp;
-}
+   images {
+      image: "browser_bg.png" COMp;
+   }
 
-group {
-   name: "activity/video/panel_infos";
+   group {
+      name: "activity/video/panel_infos";
 
-   parts {
+      parts {
 
-       part {
-       name: "bg";
-       type: IMAGE;
-       mouse_events: 0;
-           description {
-           state: "default" 0.0;
-           image {
-               normal: "browser_bg.png";
-               border: 15 15 15 15;
+         part {
+            name: "bg";
+            type: IMAGE;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               image {
+                  normal: "browser_bg.png";
+                  border: 15 15 15 15;
                }
 
-           }
-       }
-
-       part {
-          name: "panel.content.clip";
-          type: RECT;
-          mouse_events: 0;
-          description {
-             state: "default" 0.0;
-
-             rel1.relative: 0 0;
-             rel1.offset: 38 38;
-
-             rel2.relative: 1 1;
-             rel2.offset: -38 -38;
-          }
-       }
-
-       part {
-          name: "panel.cover.clip";
-          type: RECT;
-          clip_to: "panel.content.clip";
-          description {
-             state: "default" 0.0;
-
-             rel1.relative: 0 0;
-             rel1.to: "panel.content.clip";
-
-             rel2.relative: 0.35 1.0;
-             rel2.to: "panel.content.clip";
-          }
-       }
-
-       /* part { */
-       /*    name: "panel.cover.shadow"; */
-       /*    type: IMAGE; */
-       /*    description { */
-       /*       state: "default" 0.0; */
-       /*       visible: 1; */
-
-       /*       rel1.to: "panel.cover.swallow"; */
-       /*       rel2.to: "panel.cover.swallow"; */
-       /*       rel2.offset: 12 12; */
-
-       /*       image.normal: "shadow.png"; */
-       /*       image.border: 14 14 14 14; */
-       /*    } */
-       /*    description { */
-       /*       state: "hidden" 0.0; */
-       /*       visible: 0; */
-       /*    } */
-       /* } */
-
-       part {
-          name: "panel.cover.swallow";
-          type: SWALLOW;
-          clip_to: "panel.cover.clip";
-          description {
-             state: "default" 0.0;
-
-             rel1.relative: 0 0;
-             rel1.to: "panel.cover.clip";
-
-             rel2.relative: 1 1;
-             rel2.to: "panel.cover.clip";
-
-             aspect: 0.69 0.69;
-             aspect_preference: BOTH;
-             align: 0.5 0;
-          }
-       }
-
-       part {
-          name: "panel.textblock";
-	  type: TEXTBLOCK;
-          clip_to: "panel.content.clip";
-          description {
-             state: "show" 0.0;
-
-             rel1.relative: 0.4 0;
-             rel1.to: "panel.content.clip";
-
-             rel2.relative: 1.0 1.0;
-             rel2.to: "panel.content.clip";
-
-             text.style: "style.infos.video";
-	     text.min: 0 0;
-          }
-       }
-
-       part {
-          name: "panel.rating.swallow";
-          type: SWALLOW;
-          clip_to: "panel.content.clip";
-          description {
-             state: "show" 0.0;
-             aspect: 4.71 4.71;
-             aspect_preference: HORIZONTAL;
-
-             rel1.relative: 0.77 0.87;
-
-             rel2.relative: 1 1;
-             rel2.to: "panel.content.clip";
-          }
-       }
-   }
-
-}
-
-
-group {
-   name: "activity/video/picture";
-   parts {
-      part {
-         name: "content.clip";
-         type: RECT;
-         description{
-            state: "default" 0.0;
-            color: 255 255 255 0;
-            visible: 0;
-         }
-         description{
-            state: "show" 0.0;
-            color: 255 255 255 255;
-            visible: 1;
+            }
          }
 
+         part {
+            name: "panel.content.clip";
+            type: RECT;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+
+               rel1.relative: 0 0;
+               rel1.offset: 38 38;
+
+               rel2.relative: 1 1;
+               rel2.offset: -38 -38;
+            }
+         }
+
+         part {
+            name: "panel.cover.clip";
+            type: RECT;
+            clip_to: "panel.content.clip";
+            description {
+               state: "default" 0.0;
+
+               rel1.relative: 0 0;
+               rel1.to: "panel.content.clip";
+
+               rel2.relative: 0.35 1.0;
+               rel2.to: "panel.content.clip";
+            }
+         }
+
+         /* part { */
+         /*    name: "panel.cover.shadow"; */
+         /*    type: IMAGE; */
+         /*    description { */
+         /*       state: "default" 0.0; */
+         /*       visible: 1; */
+
+         /*       rel1.to: "panel.cover.swallow"; */
+         /*       rel2.to: "panel.cover.swallow"; */
+         /*       rel2.offset: 12 12; */
+
+         /*       image.normal: "shadow.png"; */
+         /*       image.border: 14 14 14 14; */
+         /*    } */
+         /*    description { */
+         /*       state: "hidden" 0.0; */
+         /*       visible: 0; */
+         /*    } */
+         /* } */
+
+         part {
+            name: "panel.cover.swallow";
+            type: SWALLOW;
+            clip_to: "panel.cover.clip";
+            description {
+               state: "default" 0.0;
+
+               rel1.relative: 0 0;
+               rel1.to: "panel.cover.clip";
+
+               rel2.relative: 1 1;
+               rel2.to: "panel.cover.clip";
+
+               aspect: 0.69 0.69;
+               aspect_preference: BOTH;
+               align: 0.5 0;
+            }
+         }
+
+         part {
+            name: "panel.textblock";
+            type: TEXTBLOCK;
+            clip_to: "panel.content.clip";
+            description {
+               state: "show" 0.0;
+
+               rel1.relative: 0.4 0;
+               rel1.to: "panel.content.clip";
+
+               rel2.relative: 1.0 1.0;
+               rel2.to: "panel.content.clip";
+
+               text.style: "style.infos.video";
+               text.min: 0 0;
+            }
+         }
+
+         part {
+            name: "panel.rating.swallow";
+            type: SWALLOW;
+            clip_to: "panel.content.clip";
+            description {
+               state: "show" 0.0;
+               aspect: 4.71 4.71;
+               aspect_preference: HORIZONTAL;
+
+               rel1.relative: 0.77 0.87;
+
+               rel2.relative: 1 1;
+               rel2.to: "panel.content.clip";
+            }
+         }
       }
-      part {
-         name: "content.swallow";
-         type: SWALLOW;
-         clip_to: "content.clip";
-         description{
-            state: default 0.0;
+
+   }
+
+
+   group {
+      name: "activity/video/picture";
+      parts {
+         part {
+            name: "content.clip";
+            type: RECT;
+            description{
+               state: "default" 0.0;
+               color: 255 255 255 0;
+               visible: 0;
+            }
+            description{
+               state: "show" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+            }
+
+         }
+         part {
+            name: "content.swallow";
+            type: SWALLOW;
+            clip_to: "content.clip";
+            description{
+               state: default 0.0;
+            }
+         }
+      }
+      programs {
+         program {
+            name: "snapshot,show";
+            signal: "snapshot,show";
+            source:  "enna";
+            action:  STATE_SET "show" 0.0;
+            transition: "ACCELERATE" 0.3;
+            target: "content.clip";
+         }
+         program {
+            name: "snapshot,hide";
+            signal: "snapshot,hide";
+            source:  "enna";
+            action:  STATE_SET "default" 0.0;
+            transition: "DECELERATE" 0.3;
+            target: "content.clip";
          }
       }
    }
-   programs {
-      program {
-          name: "snapshot,show";
-          signal: "snapshot,show";
-          source:  "enna";
-          action:  STATE_SET "show" 0.0;
-          transition: "ACCELERATE" 0.3;
-          target: "content.clip";
-      }
-      program {
-         name: "snapshot,hide";
-         signal: "snapshot,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: "DECELERATE" 0.3;
-         target: "content.clip";
-      }
-   }
-}
 
-group {
-    name: "panel/infos/menu";
-    images {
-        image: "browser_bg.png" COMP;
-    }
-    parts {
-        part {
+   group {
+      name: "panel/infos/menu";
+      images {
+         image: "browser_bg.png" COMP;
+      }
+      parts {
+         part {
             name: "bg";
             type: IMAGE;
             description {
-                state: "default" 0.0;
-                image {
-                     normal: "browser_bg.png";
-               	     border: 15 15 15 15;
-            	}
+               state: "default" 0.0;
+               image {
+                  normal: "browser_bg.png";
+                  border: 15 15 15 15;
+               }
             }
-        }
-        part {
+         }
+         part {
             name: "enna.icon.swallow";
             type: SWALLOW;
             description {
@@ -1800,21 +1711,21 @@ group {
                max: 300 300;
                aspect: 1.0 1.0;
                aspect_preference: BOTH;
-                rel1.offset: 14 14;
-                rel2.relative: 1 0.8;
-                rel2.offset: -13 0;
+               rel1.offset: 14 14;
+               rel2.relative: 1 0.8;
+               rel2.offset: -13 0;
             }
-        }
-        part {
+         }
+         part {
             name: "enna.text";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 14 8;
-                rel1.relative: 0 1;
-                rel1.to_y: "enna.icon.swallow";
-                rel2.offset: -15 -15;
-                text {
+               state: "default" 0.0;
+               rel1.offset: 14 8;
+               rel1.relative: 0 1;
+               rel1.to_y: "enna.icon.swallow";
+               rel2.offset: -15 -15;
+               text {
                   text:     "Description";
                   font:     "Sans";
                   size:     10;
@@ -1823,49 +1734,49 @@ group {
 
                }
             }
-        }
-    }
-}
+         }
+      }
+   }
 
-group {
-    name: "panel/infos/volume";
-    images {
-        image: "browser_bg.png" COMP;
-    }
-    parts {
-        part {
+   group {
+      name: "panel/infos/volume";
+      images {
+         image: "browser_bg.png" COMP;
+      }
+      parts {
+         part {
             name: "bg";
             type: IMAGE;
             description {
-                state: "default" 0.0;
-                image {
-                     normal: "browser_bg.png";
-               	     border: 15 15 15 15;
-            	}
+               state: "default" 0.0;
+               image {
+                  normal: "browser_bg.png";
+                  border: 15 15 15 15;
+               }
             }
-        }
-        part {
+         }
+         part {
             name: "enna.icon.swallow";
             type: SWALLOW;
             description {
-                max: 300 300;
-                state: "default" 0.0;
-                aspect: 1.0 1.0;
-                aspect_preference: BOTH;
-                rel1.offset: 14 14;
-                rel2.offset: -15 -128;
+               max: 300 300;
+               state: "default" 0.0;
+               aspect: 1.0 1.0;
+               aspect_preference: BOTH;
+               rel1.offset: 14 14;
+               rel2.offset: -15 -128;
             }
-        }
-        part {
+         }
+         part {
             name: "enna.text.label";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 14 8;
-                rel1.relative: 0 1;
-                rel1.to_y: "enna.icon.swallow";
-                rel2.offset: -15 -100;
-                text {
+               state: "default" 0.0;
+               rel1.offset: 14 8;
+               rel1.relative: 0 1;
+               rel1.to_y: "enna.icon.swallow";
+               rel2.offset: -15 -100;
+               text {
                   text:     "Description";
                   font:     "Sans";
                   size:     10;
@@ -1873,17 +1784,17 @@ group {
                   min: 1 0;
                }
             }
-        }
-        part {
+         }
+         part {
             name: "enna.text.description";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 14 8;
-                rel1.relative: 0 1;
-                rel1.to_y: "enna.text.label";
-                rel2.offset: -15 -70;
-                text {
+               state: "default" 0.0;
+               rel1.offset: 14 8;
+               rel1.relative: 0 1;
+               rel1.to_y: "enna.text.label";
+               rel2.offset: -15 -70;
+               text {
                   text:     "Description";
                   font:     "Sans";
                   size:     10;
@@ -1891,67 +1802,67 @@ group {
                   min: 1 0;
                }
             }
-        }
-        part {
+         }
+         part {
             name: "enna.progress.swallow";
             type: SWALLOW;
             description {
-                state: "default" 0.0;
-                rel1.offset: 14 8;
-                rel1.relative: 0 1;
-                rel1.to_y: "enna.text.description";
-                rel2.offset: -15 -30;
-                fixed: 1 1;
+               state: "default" 0.0;
+               rel1.offset: 14 8;
+               rel1.relative: 0 1;
+               rel1.to_y: "enna.text.description";
+               rel2.offset: -15 -30;
+               fixed: 1 1;
             }
-        }
-    }
-}
+         }
+      }
+   }
 
-group {
-    name: "panel/infos/track";
-    images {
-        image: "browser_bg.png" COMP;
-    }
-    parts {
-        part {
+   group {
+      name: "panel/infos/track";
+      images {
+         image: "browser_bg.png" COMP;
+      }
+      parts {
+         part {
             name: "bg";
             type: IMAGE;
             description {
-                state: "default" 0.0;
-                image {
-                     normal: "browser_bg.png";
-               	     border: 15 15 15 15;
-            	}
+               state: "default" 0.0;
+               image {
+                  normal: "browser_bg.png";
+                  border: 15 15 15 15;
+               }
             }
-        }
-        part {
+         }
+         part {
             name: "enna.swallow.icon";
             type: SWALLOW;
             description {
-                max: 300 300;
-                state: "default" 0.0;
-                aspect: 1.0 1.0;
-                aspect_preference: BOTH;
-                rel1.offset: 14 14;
-                rel2.relative: 0.7 0.7;
+               max: 300 300;
+               state: "default" 0.0;
+               aspect: 1.0 1.0;
+               aspect_preference: BOTH;
+               rel1.offset: 14 14;
+               rel2.relative: 0.7 0.7;
             }
-        }
-        part {
+         }
+         part {
             name: "enna.text.year";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 8 0;
-                rel1.to: "enna.swallow.icon";
-                rel1.relative: 1 0;
+               state: "default" 0.0;
+               rel1.offset: 8 0;
+               rel1.to: "enna.swallow.icon";
+               rel1.relative: 1 0;
 
-                rel2.offset: -14 0;
-                rel2.to_y: "enna.swallow.icon";
-                rel2.relative: 1 0.33;
+               rel2.offset: -14 0;
+               rel2.to_y: "enna.swallow.icon";
+               rel2.relative: 1 0.33;
 
-                align: 0 0.5;
+               align: 0 0.5;
 
-                text {
+               text {
                   text:     "Year: 2011";
                   font:     "Sans";
                   size:     10;
@@ -1959,24 +1870,24 @@ group {
                   min: 1 0;
                }
             }
-        }
+         }
 
-        part {
+         part {
             name: "enna.text.length";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 8 0;
-                rel1.to: "enna.swallow.icon";
-                rel1.relative: 1 0.33;
+               state: "default" 0.0;
+               rel1.offset: 8 0;
+               rel1.to: "enna.swallow.icon";
+               rel1.relative: 1 0.33;
 
-                rel2.offset: -14 0;
-                rel2.to_y: "enna.swallow.icon";
-                rel2.relative: 1 0.66;
+               rel2.offset: -14 0;
+               rel2.to_y: "enna.swallow.icon";
+               rel2.relative: 1 0.66;
 
-                align: 0 0.5;
+               align: 0 0.5;
 
-                text {
+               text {
                   text:     "Length: 00:00";
                   font:     "Sans";
                   size:     10;
@@ -1984,24 +1895,24 @@ group {
                   min: 1 0;
                }
             }
-        }
+         }
 
-        part {
+         part {
             name: "enna.text.codec";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 8 0;
-                rel1.to: "enna.swallow.icon";
-                rel1.relative: 1 0.66;
+               state: "default" 0.0;
+               rel1.offset: 8 0;
+               rel1.to: "enna.swallow.icon";
+               rel1.relative: 1 0.66;
 
-                rel2.offset: -14 0;
-                rel2.to_y: "enna.swallow.icon";
-                rel2.relative: 1 1;
+               rel2.offset: -14 0;
+               rel2.to_y: "enna.swallow.icon";
+               rel2.relative: 1 1;
 
-                align: 0 0.5;
+               align: 0 0.5;
 
-                text {
+               text {
                   text:     "Codec: Flac";
                   font:     "Sans";
                   size:     10;
@@ -2009,23 +1920,23 @@ group {
                   min: 1 0;
                }
             }
-        }
+         }
 
-        part {
+         part {
             name: "enna.text.trackno";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                fixed: 1 1;
-                rel1.offset: 14 32;
-                rel1.to: "enna.swallow.icon";
-                rel1.relative: 0 1;
+               state: "default" 0.0;
+               fixed: 1 1;
+               rel1.offset: 14 32;
+               rel1.to: "enna.swallow.icon";
+               rel1.relative: 0 1;
 
-                rel2.offset: 14 32;
-                rel2.to_y: "enna.swallow.icon";
-                rel2.relative: 0 1;
-                align: 0 0;
-                text {
+               rel2.offset: 14 32;
+               rel2.to_y: "enna.swallow.icon";
+               rel2.relative: 0 1;
+               align: 0 0;
+               text {
                   text:     "Track: 00";
                   font:     "Sans";
                   size:     10;
@@ -2033,22 +1944,22 @@ group {
                   min: 1 1;
                }
             }
-        }
+         }
 
-        part {
+         part {
             name: "enna.text.title";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 8 0;
-                rel1.to: "enna.text.trackno";
-                rel1.relative: 1 0;
+               state: "default" 0.0;
+               rel1.offset: 8 0;
+               rel1.to: "enna.text.trackno";
+               rel1.relative: 1 0;
 
-                rel2.offset: -32 0;
-                rel2.to_y: "enna.text.trackno";
-                rel2.relative: 1 1;
+               rel2.offset: -32 0;
+               rel2.to_y: "enna.text.trackno";
+               rel2.relative: 1 1;
 
-                text {
+               text {
                   text:     "Title: Title Name";
                   font:     "Sans";
                   size:     10;
@@ -2056,25 +1967,25 @@ group {
                   min: 0 1;
                }
             }
-        }
+         }
 
-        part {
+         part {
             name: "enna.text.album";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 0 16;
-                rel1.to: "enna.text.trackno";
-                rel1.relative: 0 1;
+               state: "default" 0.0;
+               rel1.offset: 0 16;
+               rel1.to: "enna.text.trackno";
+               rel1.relative: 0 1;
 
-                rel2.offset: -32 0;
-                rel2.to_y: "enna.text.trackno";
-                rel2.relative: 1 1;
+               rel2.offset: -32 0;
+               rel2.to_y: "enna.text.trackno";
+               rel2.relative: 1 1;
 
-                fixed: 1 1;
-                align: 0 0;
+               fixed: 1 1;
+               align: 0 0;
 
-                text {
+               text {
                   text:     "Album: Album name";
                   font:     "Sans";
                   size:     10;
@@ -2082,25 +1993,25 @@ group {
                   min: 1 1;
                }
             }
-        }
+         }
 
-        part {
+         part {
             name: "enna.text.artist";
             type: TEXT;
             description {
-                state: "default" 0.0;
-                rel1.offset: 0 16;
-                rel1.to: "enna.text.album";
-                rel1.relative: 0 1;
+               state: "default" 0.0;
+               rel1.offset: 0 16;
+               rel1.to: "enna.text.album";
+               rel1.relative: 0 1;
 
-                rel2.offset: -32 0;
-                rel2.to_y: "enna.text.album";
-                rel2.relative: 1 1;
+               rel2.offset: -32 0;
+               rel2.to_y: "enna.text.album";
+               rel2.relative: 1 1;
 
-                fixed: 1 1;
-                align: 0 0;
+               fixed: 1 1;
+               align: 0 0;
 
-                text {
+               text {
                   text:     "Artist: Artist name";
                   font:     "Sans";
                   size:     10;
@@ -2108,1188 +2019,1188 @@ group {
                   min: 1 1;
                }
             }
-        }
-
-
-
-        /* part { */
-        /*     name: "enna.text.description"; */
-        /*     type: TEXT; */
-        /*     description { */
-        /*         state: "default" 0.0; */
-        /*         rel1.offset: 14 8; */
-        /*         rel1.relative: 0 1; */
-        /*         rel1.to_y: "enna.text.label"; */
-        /*         rel2.offset: -15 -70; */
-        /*         text { */
-        /*           text:     "Description"; */
-        /*           font:     "Comfortaa"; */
-        /*           size:     14; */
-        /*           align:    0.5 0.5; */
-        /*           min: 1 0; */
-        /*        } */
-        /*     } */
-        /* } */
-        /* part { */
-        /*     name: "enna.progress.swallow"; */
-        /*     type: SWALLOW; */
-        /*     description { */
-        /*         state: "default" 0.0; */
-        /*         rel1.offset: 14 8; */
-        /*         rel1.relative: 0 1; */
-        /*         rel1.to_y: "enna.text.description"; */
-        /*         rel2.offset: -15 -30; */
-        /*         fixed: 1 1; */
-        /*     } */
-        /* } */
-    }
-}
-
-group {
-   name: "panel/infos/film";
-   parts {
-      part {
-         name: "enna.swallow.cover";
-         type: SWALLOW;
-         mouse_events: 0;
-         description {
-            aspect_preference: VERTICAL;
-            state: "default" 0.0;
-            rel1.relative: 0.0 0.0;
-            rel1.offset: 8 8;
-            rel2.relative: 1.0 0.75;
-            rel2.offset: -7 0;
          }
+
+
+
+         /* part { */
+         /*     name: "enna.text.description"; */
+         /*     type: TEXT; */
+         /*     description { */
+         /*         state: "default" 0.0; */
+         /*         rel1.offset: 14 8; */
+         /*         rel1.relative: 0 1; */
+         /*         rel1.to_y: "enna.text.label"; */
+         /*         rel2.offset: -15 -70; */
+         /*         text { */
+         /*           text:     "Description"; */
+         /*           font:     "Comfortaa"; */
+         /*           size:     14; */
+         /*           align:    0.5 0.5; */
+         /*           min: 1 0; */
+         /*        } */
+         /*     } */
+         /* } */
+         /* part { */
+         /*     name: "enna.progress.swallow"; */
+         /*     type: SWALLOW; */
+         /*     description { */
+         /*         state: "default" 0.0; */
+         /*         rel1.offset: 14 8; */
+         /*         rel1.relative: 0 1; */
+         /*         rel1.to_y: "enna.text.description"; */
+         /*         rel2.offset: -15 -30; */
+         /*         fixed: 1 1; */
+         /*     } */
+         /* } */
       }
+   }
 
-
-      part {
-         name: "enna.text.title";
-         type: TEXT;
-         mouse_events:  0;
-         scale: 1;
-         description {
-            state: "default" 0.0;
-            visible: 1;
-            rel1.relative: 0.0 1.0;
-            rel1.offset: 8 8 ;
-            rel1.to_y: "enna.swallow.cover";
-            rel2.relative: 1.0 1.0;
-            rel2.offset: 8 8;
-            rel2.to_y: "enna.swallow.cover";
-            color: 255 255 255 200;
-            align: 0 0;
-            fixed: 1 1;
-            text {
-               font: "Sans";
-               size: 10;
-               min: 0 1;
-               align: 0.5 0.5;
+   group {
+      name: "panel/infos/film";
+      parts {
+         part {
+            name: "enna.swallow.cover";
+            type: SWALLOW;
+            mouse_events: 0;
+            description {
+               aspect_preference: VERTICAL;
+               state: "default" 0.0;
+               rel1.relative: 0.0 0.0;
+               rel1.offset: 8 8;
+               rel2.relative: 1.0 0.75;
+               rel2.offset: -7 0;
             }
          }
-      }
+
+
+         part {
+            name: "enna.text.title";
+            type: TEXT;
+            mouse_events:  0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               visible: 1;
+               rel1.relative: 0.0 1.0;
+               rel1.offset: 8 8 ;
+               rel1.to_y: "enna.swallow.cover";
+               rel2.relative: 1.0 1.0;
+               rel2.offset: 8 8;
+               rel2.to_y: "enna.swallow.cover";
+               color: 255 255 255 200;
+               align: 0 0;
+               fixed: 1 1;
+               text {
+                  font: "Sans";
+                  size: 10;
+                  min: 0 1;
+                  align: 0.5 0.5;
+               }
+            }
+         }
       
-      /* video flags */
-      part {
-         name: "infos.flags.clip";
-         mouse_events: 0;
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            rel1.relative: 0.0 1.0;
-            rel1.to_y: "enna.swallow.cover";
-            rel1.offset: 0 8;
-            rel2.relative:  1.0 1.0;
-            rel2.to_y: "enna.swallow.cover";
-            rel2.offset: 0 72;
-            color: 255 255 255 255;
-         }
-      }
-
-      part {
-         name: "infos.flags.swallow";
-         mouse_events: 0;
-         clip_to: infos.flags.clip;
-         type: SWALLOW;
-         description {
-            state: "default" 0.0;
-            rel1.relative: 0 0;
-            rel1.to: "infos.flags.clip";
-            rel2.relative: 1 1;
-            rel2.to: "infos.flags.clip";
-         }
-      }
-
-      /* Movie Length */
-      part {
-         name: "enna.text.length";
-         type: TEXT;
-         mouse_events: 0;
-         scale: 1;
-         description {
-            state: "default" 0.0;
-            visible: 1;
-
-            rel1.relative: 0.0 1.0;
-            rel1.to: "infos.flags.swallow";
-            rel1.offset: 0 8;
-            rel2.relative: 1.0 1.0;
-            rel2.to: "infos.flags.swallow";
-            rel2.offset: 0 8;
-
-            color: 255 255 255 255;
-            text {
-               font: "Sans";
-               size: 10;
-               min: 0 1;
-               align: 0.5 1;
+         /* video flags */
+         part {
+            name: "infos.flags.clip";
+            mouse_events: 0;
+            type: RECT;
+            description {
+               state: "default" 0.0;
+               rel1.relative: 0.0 1.0;
+               rel1.to_y: "enna.swallow.cover";
+               rel1.offset: 0 8;
+               rel2.relative:  1.0 1.0;
+               rel2.to_y: "enna.swallow.cover";
+               rel2.offset: 0 72;
+               color: 255 255 255 255;
             }
          }
-      }
 
-      /* Movie Categories */
-      part {
-         name: "enna.text.genre";
-         type: TEXT;
-         mouse_events: 0;
-         scale: 1;
-         description {
-            state: "default" 0.0;
-            visible: 1;
-
-            rel1.relative: 0.0 1.0;
-            rel1.to: "enna.text.length";
-            rel1.offset: 0 8;
-            rel2.relative: 1.0 1.0;
-            rel2.to: "enna.text.length";
-            rel2.offset: 0 38;
-
-            color: 255 255 255 255;
-            text {
-               font: "Sans";
-               size: 10;
-               min: 0 1;
-               align: 0.5 1;
+         part {
+            name: "infos.flags.swallow";
+            mouse_events: 0;
+            clip_to: infos.flags.clip;
+            type: SWALLOW;
+            description {
+               state: "default" 0.0;
+               rel1.relative: 0 0;
+               rel1.to: "infos.flags.clip";
+               rel2.relative: 1 1;
+               rel2.to: "infos.flags.clip";
             }
          }
-      }
 
+         /* Movie Length */
+         part {
+            name: "enna.text.length";
+            type: TEXT;
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               visible: 1;
 
-    /*   /\* synopsis *\/ */
-    /*   part { */
-    /*      name: "enna.text.synopsis"; */
-    /*      type: TEXTBLOCK; */
-    /*      effect: SOFT_SHADOW; */
-    /*      mouse_events: 0; */
-    /*      scale: 1; */
-    /*      description { */
-    /*         state: "default" 0.0; */
-    /*         visible: 1; */
-    /*         rel1.relative: 0.0 1.0; */
-    /*         rel1.to: "enna.text.genre"; */
-    /*         rel1.offset: 0 8;  */
-    /*         rel2.relative: 1.0 1.0; */
-    /*         color: 255 255 255 255; */
-    /*         color3: 0 0 0 64; */
+               rel1.relative: 0.0 1.0;
+               rel1.to: "infos.flags.swallow";
+               rel1.offset: 0 8;
+               rel2.relative: 1.0 1.0;
+               rel2.to: "infos.flags.swallow";
+               rel2.offset: 0 8;
 
-    /*      text { */
-    /*            style: "style.infos.video"; */
-    /*            min: 0 0; */
-    /*         } */
-    /*      } */
-    /*   } */
-    }
-
-}
-
-group {
-   name: "activity/weather";
-
-/**********/
-/* Styles */
-/**********/
-
-   styles {
-      style {
-         name: "weather_style";
-         base: "font=Comfortaa_Bold color=#ec6216";
-      }
-   }
-
-   color_classes {
-      color_class {
-         name:  "weather_header";
-         color: 236 98 22 255;
-      }
-   }
-
-   parts {
-
-/**********/
-/* Module */
-/**********/
-
-      part {
-         name: "weather.clip";
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 0;
-            visible: 0;
+               color: 255 255 255 255;
+               text {
+                  font: "Sans";
+                  size: 10;
+                  min: 0 1;
+                  align: 0.5 1;
+               }
+            }
          }
-         description {
-            state: "show" 0.0;
-            color : 255 255 255 255;
-            visible: 1;
+
+         /* Movie Categories */
+         part {
+            name: "enna.text.genre";
+            type: TEXT;
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               visible: 1;
+
+               rel1.relative: 0.0 1.0;
+               rel1.to: "enna.text.length";
+               rel1.offset: 0 8;
+               rel2.relative: 1.0 1.0;
+               rel2.to: "enna.text.length";
+               rel2.offset: 0 38;
+
+               color: 255 255 255 255;
+               text {
+                  font: "Sans";
+                  size: 10;
+                  min: 0 1;
+                  align: 0.5 1;
+               }
+            }
          }
-      }
 
-/**************/
-/* Background */
-/**************/
 
-      part {
-         name: "weather.bg.clip";
-         clip_to: "weather.clip";
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 0;
-            visible: 0;
-            rel1 { relative: 0.0 0.0; to: "weather.clip"; };
-            rel2 { relative: 1.0 1.0; to: "weather.clip"; };
-         }
-         description {
-            state: "show" 0.0;
-            inherit: "default" 0.0;
-	    color: 255 255 255 255;
-            visible: 1;
-         }
-      }
-
-      part {
-         name: "weather.bg";
-         clip_to: "weather.bg.clip";
-         type: SWALLOW;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            rel1 { relative: 0.0 0.0; to: "weather.bg.clip"; }
-            rel2 { relative: 1.0 1.0; to: "weather.bg.clip"; }
-         }
-      }
-
-/**************/
-/* Left Panel */
-/**************/
-
-     part {
-         name: "frame.current.clip";
-         clip_to: "weather.clip";
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            rel1 { relative: 0.10 0.10; to: "weather.clip"; }
-            rel2 { relative: 0.45 0.85; to: "weather.clip"; }
-            color : 255 255 255 255;
-            visible: 0;
-         }
-         description {
-            state: "show" 0.0;
-            inherit: "default" 0.0;
-	    color: 255 255 255 255;
-            visible: 1;
-         }
-      }
-
-
-
-      part {
-	 name: "frame.current.city";
-         clip_to: "frame.current.clip";
-	 type: TEXT;
-         effect: GLOW;
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "City";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.5 0.05;
-            }
-	 }
-      }
-
-
-
-      part {
-	 name: "frame.current.temp";
-         clip_to: "frame.current.clip";
-         type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "Temp";
-               font:     "Sans";
-               size:     10;
-               align:    0.15 0.25;
-            }
-	 }
-      }
-
-      part {
-         name: "frame.current.icon";
-         clip_to: "frame.current.clip";
-         type: SWALLOW;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            aspect: 1 1;
-            aspect_preference: HORIZONTAL;
-            rel1 { relative: 0.55 0.16; to: "frame.current.clip"; }
-            rel2 { relative: 0.95 0.46; to: "frame.current.clip"; }
-         }
-      }
-
-      part {
-	 name: "frame.current.condition";
-         clip_to: "frame.current.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "condition";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.5 0.55;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.current.humidity";
-         clip_to: "frame.current.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "Humidity: N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.5 0.7;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.current.wind";
-         clip_to: "frame.current.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "Wind: N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.5 0.8;
-            }
-	 }
-      }
-
-
-
-      part {
-	 name: "frame.current.date";
-         clip_to: "frame.current.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "date";
-               font:     "Sans";
-               size:     10;
-               align:    0.5 0.95;
-            }
-	 }
-      }
-
-
-/***************/
-/* Right Panel */
-/***************/
-
-     part {
-         name: "frame.forecast.clip";
-         clip_to: "weather.clip";
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            rel1 { relative: 0.55 0.10; to: "weather.clip"; }
-            rel2 { relative: 0.90 0.85; to: "weather.clip"; }
-            color : 255 255 255 255;
-            visible: 0;
-         }
-         description {
-            state: "show" 0.0;
-            inherit: "default" 0.0;
-	    color: 255 255 255 255;
-            visible: 1;
-         }
-      }
-
-
-
-/* Day 1 */
-
-      part {
-	 name: "frame.forecast.day1";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Day 1";
-               font:     "Sans";
-               size:     10;
-               align:    0.5 0.03;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day1.low";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Min:";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.10 0.09;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day1.low.text";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.25 0.09;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day1.high";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Max:";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.10 0.15;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day1.high.text";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.25 0.15;
-            }
-	 }
-      }
-
-      part {
-         name: "frame.forecast.day1.icon";
-         clip_to: "frame.forecast.clip";
-         type: SWALLOW;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            aspect: 1 1;
-            aspect_preference: HORIZONTAL;
-            rel1 { relative: 0.70 0.06; to: "frame.forecast.clip"; }
-            rel2 { relative: 0.90 0.22; to: "frame.forecast.clip"; }
-         }
-      }
-
-      part {
-	 name: "frame.forecast.day1.conditions";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "conditions";
-               font:     "Sans";
-               size:     10;
-               align:    0.5 0.20;
-            }
-	 }
-      }
-
-/* Day 2 */
-
-      part {
-	 name: "frame.forecast.day2";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Day 2";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.5 0.28;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day2.low";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Min:";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.10 0.34;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day2.low.text";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.25 0.34;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day2.high";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Max:";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.10 0.40;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day2.high.text";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.25 0.40;
-            }
-	 }
-      }
-
-      part {
-         name: "frame.forecast.day2.icon";
-         clip_to: "frame.forecast.clip";
-         type: SWALLOW;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            aspect: 1 1;
-            aspect_preference: HORIZONTAL;
-            rel1 { relative: 0.70 0.30; to: "frame.forecast.clip"; }
-            rel2 { relative: 0.90 0.46; to: "frame.forecast.clip"; }
-         }
-      }
-
-      part {
-	 name: "frame.forecast.day2.conditions";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "conditions";
-               font:     "Sans";
-               size:     10;
-               align:    0.5 0.45;
-            }
-	 }
-      }
-
-/* Day 3 */
-
-      part {
-	 name: "frame.forecast.day3";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Day 3";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.5 0.53;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day3.low";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Min:";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.10 0.59;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day3.low.text";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.25 0.59;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day3.high";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Max:";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.10 0.65;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day3.high.text";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.25 0.65;
-            }
-	 }
-      }
-
-      part {
-         name: "frame.forecast.day3.icon";
-         clip_to: "frame.forecast.clip";
-         type: SWALLOW;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            aspect: 1 1;
-            aspect_preference: HORIZONTAL;
-            rel1 { relative: 0.70 0.53; to: "frame.forecast.clip"; }
-            rel2 { relative: 0.90 0.69; to: "frame.forecast.clip"; }
-         }
-      }
-
-      part {
-	 name: "frame.forecast.day3.conditions";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "conditions";
-               font:     "Sans";
-               size:     10;
-               align:    0.5 0.70;
-            }
-	 }
-      }
-
-/* Day 4 */
-
-      part {
-	 name: "frame.forecast.day4";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Day 4";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.5 0.78;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day4.low";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Min:";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.10 0.84;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day4.low.text";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.25 0.84;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day4.high";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color_class: "weather_header";
-	    text {
-               text:     "Max:";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.10 0.90;
-            }
-	 }
-      }
-
-      part {
-	 name: "frame.forecast.day4.high.text";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "N/A";
-               font:     "Sans,bold";
-               size:     10;
-               align:    0.25 0.90;
-            }
-	 }
-      }
-
-      part {
-         name: "frame.forecast.day4.icon";
-         clip_to: "frame.forecast.clip";
-         type: SWALLOW;
-         mouse_events: 0;
-         description {
-            state: "default" 0.0;
-            aspect: 1 1;
-            aspect_preference: HORIZONTAL;
-            rel1 { relative: 0.70 0.77; to: "frame.forecast.clip"; }
-            rel2 { relative: 0.90 0.93; to: "frame.forecast.clip"; }
-         }
-      }
-
-      part {
-	 name: "frame.forecast.day4.conditions";
-         clip_to: "frame.forecast.clip";
-	 type: TEXT;
-
-	 mouse_events: 0;
-	 description {
-	    state: "default" 0.0;
-	    rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
-	    rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
-            color: 255 255 255 255;
-	    text {
-               text:     "conditions";
-               font:     "Sans";
-               size:     10;
-               align:    0.5 0.95;
-            }
-	 }
+         /*   /\* synopsis *\/ */
+         /*   part { */
+         /*      name: "enna.text.synopsis"; */
+         /*      type: TEXTBLOCK; */
+         /*      effect: SOFT_SHADOW; */
+         /*      mouse_events: 0; */
+         /*      scale: 1; */
+         /*      description { */
+         /*         state: "default" 0.0; */
+         /*         visible: 1; */
+         /*         rel1.relative: 0.0 1.0; */
+         /*         rel1.to: "enna.text.genre"; */
+         /*         rel1.offset: 0 8;  */
+         /*         rel2.relative: 1.0 1.0; */
+         /*         color: 255 255 255 255; */
+         /*         color3: 0 0 0 64; */
+
+         /*      text { */
+         /*            style: "style.infos.video"; */
+         /*            min: 0 0; */
+         /*         } */
+         /*      } */
+         /*   } */
       }
 
    }
 
-/************/
-/* Programs */
-/************/
+   group {
+      name: "activity/weather";
 
-   programs {
-      program {
-         name: "weather,show";
-         signal: "weather,show";
-         source:  "enna";
-         action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "weather.clip";
-         target: "frame.current.clip";
-         target: "frame.forecast.clip";
-     }
-      program {
-         name: "weather,hide";
-         signal: "weather,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "weather.clip";
-         target: "frame.current.clip";
-         target: "frame.forecast.clip";
+      /**********/
+      /* Styles */
+      /**********/
+
+      styles {
+         style {
+            name: "weather_style";
+            base: "font=Comfortaa_Bold color=#ec6216";
+         }
       }
-      program {
-         name: "bg,show";
-         signal: "bg,show";
-         source: "enna";
-         action: STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 1.0;
-         target: "weather.bg.clip";
+
+      color_classes {
+         color_class {
+            name:  "weather_header";
+            color: 236 98 22 255;
+         }
       }
-      program {
-         name: "bg,hide";
-         signal: "bg,hide";
-         source: "enna";
-         action: STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 1.0;
-         target: "weather.bg.clip";
+
+      parts {
+
+         /**********/
+         /* Module */
+         /**********/
+
+         part {
+            name: "weather.clip";
+            type: RECT;
+            description {
+               state: "default" 0.0;
+               color: 255 255 255 0;
+               visible: 0;
+            }
+            description {
+               state: "show" 0.0;
+               color : 255 255 255 255;
+               visible: 1;
+            }
+         }
+
+         /**************/
+         /* Background */
+         /**************/
+
+         part {
+            name: "weather.bg.clip";
+            clip_to: "weather.clip";
+            type: RECT;
+            description {
+               state: "default" 0.0;
+               color: 255 255 255 0;
+               visible: 0;
+               rel1 { relative: 0.0 0.0; to: "weather.clip"; };
+               rel2 { relative: 1.0 1.0; to: "weather.clip"; };
+            }
+            description {
+               state: "show" 0.0;
+               inherit: "default" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+            }
+         }
+
+         part {
+            name: "weather.bg";
+            clip_to: "weather.bg.clip";
+            type: SWALLOW;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "weather.bg.clip"; }
+               rel2 { relative: 1.0 1.0; to: "weather.bg.clip"; }
+            }
+         }
+
+         /**************/
+         /* Left Panel */
+         /**************/
+
+         part {
+            name: "frame.current.clip";
+            clip_to: "weather.clip";
+            type: RECT;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.10 0.10; to: "weather.clip"; }
+               rel2 { relative: 0.45 0.85; to: "weather.clip"; }
+               color : 255 255 255 255;
+               visible: 0;
+            }
+            description {
+               state: "show" 0.0;
+               inherit: "default" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+            }
+         }
+
+
+
+         part {
+            name: "frame.current.city";
+            clip_to: "frame.current.clip";
+            type: TEXT;
+            effect: GLOW;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "City";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.5 0.05;
+               }
+            }
+         }
+
+
+
+         part {
+            name: "frame.current.temp";
+            clip_to: "frame.current.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "Temp";
+                  font:     "Sans";
+                  size:     10;
+                  align:    0.15 0.25;
+               }
+            }
+         }
+
+         part {
+            name: "frame.current.icon";
+            clip_to: "frame.current.clip";
+            type: SWALLOW;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               aspect: 1 1;
+               aspect_preference: HORIZONTAL;
+               rel1 { relative: 0.55 0.16; to: "frame.current.clip"; }
+               rel2 { relative: 0.95 0.46; to: "frame.current.clip"; }
+            }
+         }
+
+         part {
+            name: "frame.current.condition";
+            clip_to: "frame.current.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "condition";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.5 0.55;
+               }
+            }
+         }
+
+         part {
+            name: "frame.current.humidity";
+            clip_to: "frame.current.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "Humidity: N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.5 0.7;
+               }
+            }
+         }
+
+         part {
+            name: "frame.current.wind";
+            clip_to: "frame.current.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "Wind: N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.5 0.8;
+               }
+            }
+         }
+
+
+
+         part {
+            name: "frame.current.date";
+            clip_to: "frame.current.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.current.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.current.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "date";
+                  font:     "Sans";
+                  size:     10;
+                  align:    0.5 0.95;
+               }
+            }
+         }
+
+
+         /***************/
+         /* Right Panel */
+         /***************/
+
+         part {
+            name: "frame.forecast.clip";
+            clip_to: "weather.clip";
+            type: RECT;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.55 0.10; to: "weather.clip"; }
+               rel2 { relative: 0.90 0.85; to: "weather.clip"; }
+               color : 255 255 255 255;
+               visible: 0;
+            }
+            description {
+               state: "show" 0.0;
+               inherit: "default" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+            }
+         }
+
+
+
+         /* Day 1 */
+
+         part {
+            name: "frame.forecast.day1";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Day 1";
+                  font:     "Sans";
+                  size:     10;
+                  align:    0.5 0.03;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day1.low";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Min:";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.10 0.09;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day1.low.text";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.25 0.09;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day1.high";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Max:";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.10 0.15;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day1.high.text";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.25 0.15;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day1.icon";
+            clip_to: "frame.forecast.clip";
+            type: SWALLOW;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               aspect: 1 1;
+               aspect_preference: HORIZONTAL;
+               rel1 { relative: 0.70 0.06; to: "frame.forecast.clip"; }
+               rel2 { relative: 0.90 0.22; to: "frame.forecast.clip"; }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day1.conditions";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "conditions";
+                  font:     "Sans";
+                  size:     10;
+                  align:    0.5 0.20;
+               }
+            }
+         }
+
+         /* Day 2 */
+
+         part {
+            name: "frame.forecast.day2";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Day 2";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.5 0.28;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day2.low";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Min:";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.10 0.34;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day2.low.text";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.25 0.34;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day2.high";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Max:";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.10 0.40;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day2.high.text";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.25 0.40;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day2.icon";
+            clip_to: "frame.forecast.clip";
+            type: SWALLOW;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               aspect: 1 1;
+               aspect_preference: HORIZONTAL;
+               rel1 { relative: 0.70 0.30; to: "frame.forecast.clip"; }
+               rel2 { relative: 0.90 0.46; to: "frame.forecast.clip"; }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day2.conditions";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "conditions";
+                  font:     "Sans";
+                  size:     10;
+                  align:    0.5 0.45;
+               }
+            }
+         }
+
+         /* Day 3 */
+
+         part {
+            name: "frame.forecast.day3";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Day 3";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.5 0.53;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day3.low";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Min:";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.10 0.59;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day3.low.text";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.25 0.59;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day3.high";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Max:";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.10 0.65;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day3.high.text";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.25 0.65;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day3.icon";
+            clip_to: "frame.forecast.clip";
+            type: SWALLOW;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               aspect: 1 1;
+               aspect_preference: HORIZONTAL;
+               rel1 { relative: 0.70 0.53; to: "frame.forecast.clip"; }
+               rel2 { relative: 0.90 0.69; to: "frame.forecast.clip"; }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day3.conditions";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "conditions";
+                  font:     "Sans";
+                  size:     10;
+                  align:    0.5 0.70;
+               }
+            }
+         }
+
+         /* Day 4 */
+
+         part {
+            name: "frame.forecast.day4";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Day 4";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.5 0.78;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day4.low";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Min:";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.10 0.84;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day4.low.text";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.25 0.84;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day4.high";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color_class: "weather_header";
+               text {
+                  text:     "Max:";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.10 0.90;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day4.high.text";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "N/A";
+                  font:     "Sans,bold";
+                  size:     10;
+                  align:    0.25 0.90;
+               }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day4.icon";
+            clip_to: "frame.forecast.clip";
+            type: SWALLOW;
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               aspect: 1 1;
+               aspect_preference: HORIZONTAL;
+               rel1 { relative: 0.70 0.77; to: "frame.forecast.clip"; }
+               rel2 { relative: 0.90 0.93; to: "frame.forecast.clip"; }
+            }
+         }
+
+         part {
+            name: "frame.forecast.day4.conditions";
+            clip_to: "frame.forecast.clip";
+            type: TEXT;
+
+            mouse_events: 0;
+            description {
+               state: "default" 0.0;
+               rel1 { relative: 0.0 0.0; to: "frame.forecast.clip"; };
+               rel2 { relative: 1.0 1.0; to: "frame.forecast.clip"; };
+               color: 255 255 255 255;
+               text {
+                  text:     "conditions";
+                  font:     "Sans";
+                  size:     10;
+                  align:    0.5 0.95;
+               }
+            }
+         }
+
+      }
+
+      /************/
+      /* Programs */
+      /************/
+
+      programs {
+         program {
+            name: "weather,show";
+            signal: "weather,show";
+            source:  "enna";
+            action:  STATE_SET "show" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "weather.clip";
+            target: "frame.current.clip";
+            target: "frame.forecast.clip";
+         }
+         program {
+            name: "weather,hide";
+            signal: "weather,hide";
+            source:  "enna";
+            action:  STATE_SET "default" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "weather.clip";
+            target: "frame.current.clip";
+            target: "frame.forecast.clip";
+         }
+         program {
+            name: "bg,show";
+            signal: "bg,show";
+            source: "enna";
+            action: STATE_SET "show" 0.0;
+            transition: SINUSOIDAL 1.0;
+            target: "weather.bg.clip";
+         }
+         program {
+            name: "bg,hide";
+            signal: "bg,hide";
+            source: "enna";
+            action: STATE_SET "default" 0.0;
+            transition: SINUSOIDAL 1.0;
+            target: "weather.bg.clip";
+         }
       }
    }
-}
 
-group {
-   name: "activity/configuration";
-   parts {
-      part {
-         name: "module.clip";
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 0;
-            visible: 0;
+   group {
+      name: "activity/configuration";
+      parts {
+         part {
+            name: "module.clip";
+            type: RECT;
+            description {
+               state: "default" 0.0;
+               color: 255 255 255 0;
+               visible: 0;
+            }
+            description {
+               state: "show" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+            }
          }
-         description {
-            state: "show" 0.0;
-            color: 255 255 255 255;
-            visible: 1;
+
+
+         /* main config menu */
+         part {
+            name: "menu.clip";
+            type: RECT;
+            clip_to:  "module.clip";
+            description {
+               state: "default" 0.0;
+               color: 255 255 255 0;
+               visible: 0;
+               rel1.relative: 0.0 0.0;
+               rel2.relative: 0.4 1.0;
+            }
+            description {
+               state: "show" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+               rel1.relative: 0.0 0.0;
+               rel2.relative: 0.4 1.0;
+            }
+         }
+
+         part {
+            name: "menu.swallow";
+            type: SWALLOW;
+            clip_to: "menu.clip";
+            description {
+               state: "default" 0.0;
+               rel1.to: "menu.clip";
+               rel2.to: "menu.clip";
+            }
+         }
+
+         /* content (where subpanels are swallowed) */
+         part {
+            name: "content.clip";
+            type: RECT;
+            //clip_to:  "module.clip";
+            description {
+               state: "default" 0.0;
+               color: 255 255 255 0;
+               visible: 0;
+               rel1.relative: 0.4 0.0;
+               rel2.relative: 1.0 1.0;
+            }
+            description {
+               state: "show" 0.0;
+               color: 255 255 255 255;
+               visible: 1;
+               rel1.relative: 0.4 0.0;
+               rel2.relative: 1.0 1.0;
+            }
+         }
+
+         part {
+            name: "content.swallow";
+            type: SWALLOW;
+            clip_to: "content.clip";
+            description {
+               state: "default" 0.0;
+               rel1.to: "content.clip";
+               rel2.to: "content.clip";
+            }
          }
       }
 
-
-      /* main config menu */
-      part {
-         name: "menu.clip";
-         type: RECT;
-         clip_to:  "module.clip";
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 0;
-            visible: 0;
-            rel1.relative: 0.0 0.0;
-            rel2.relative: 0.4 1.0;
+      programs {
+         program {
+            name: "menu,show";
+            signal: "menu,show";
+            source:  "enna";
+            action:  STATE_SET "show" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "menu.clip";
          }
-         description {
-            state: "show" 0.0;
-            color: 255 255 255 255;
-            visible: 1;
-            rel1.relative: 0.0 0.0;
-            rel2.relative: 0.4 1.0;
+         program {
+            name: "menu,hide";
+            signal: "menu,hide";
+            source:  "enna";
+            action:  STATE_SET "default" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "menu.clip";
          }
-      }
-
-      part {
-         name: "menu.swallow";
-         type: SWALLOW;
-         clip_to: "menu.clip";
-         description {
-            state: "default" 0.0;
-            rel1.to: "menu.clip";
-            rel2.to: "menu.clip";
+         program {
+            name: "module,show";
+            signal: "module,show";
+            source:  "enna";
+            action:  STATE_SET "show" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "module.clip";
          }
-      }
-
-      /* content (where subpanels are swallowed) */
-      part {
-         name: "content.clip";
-         type: RECT;
-         //clip_to:  "module.clip";
-         description {
-            state: "default" 0.0;
-            color: 255 255 255 0;
-            visible: 0;
-            rel1.relative: 0.4 0.0;
-            rel2.relative: 1.0 1.0;
+         program {
+            name: "module,hide";
+            signal: "module,hide";
+            source:  "enna";
+            action:  STATE_SET "default" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "module.clip";
          }
-         description {
-            state: "show" 0.0;
-            color: 255 255 255 255;
-            visible: 1;
-            rel1.relative: 0.4 0.0;
-            rel2.relative: 1.0 1.0;
+         program {
+            name: "content,show";
+            signal: "content,show";
+            source:  "enna";
+            action:  STATE_SET "show" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "content.clip";
          }
-      }
-
-      part {
-         name: "content.swallow";
-         type: SWALLOW;
-         clip_to: "content.clip";
-         description {
-            state: "default" 0.0;
-            rel1.to: "content.clip";
-            rel2.to: "content.clip";
+         program {
+            name: "content,hide";
+            signal: "content,hide";
+            source:  "enna";
+            action:  STATE_SET "default" 0.0;
+            transition: SINUSOIDAL 0.5;
+            target: "content.clip";
          }
       }
    }
-
-   programs {
-      program {
-         name: "menu,show";
-         signal: "menu,show";
-         source:  "enna";
-         action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "menu.clip";
-      }
-      program {
-         name: "menu,hide";
-         signal: "menu,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "menu.clip";
-      }
-      program {
-         name: "module,show";
-         signal: "module,show";
-         source:  "enna";
-         action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "module.clip";
-      }
-      program {
-         name: "module,hide";
-         signal: "module,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "module.clip";
-      }
-      program {
-         name: "content,show";
-         signal: "content,show";
-         source:  "enna";
-         action:  STATE_SET "show" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "content.clip";
-      }
-      program {
-         name: "content,hide";
-         signal: "content,hide";
-         source:  "enna";
-         action:  STATE_SET "default" 0.0;
-         transition: SINUSOIDAL 0.5;
-         target: "content.clip";
-      }
-   }
-}
