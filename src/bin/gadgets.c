@@ -41,8 +41,6 @@ static Eina_List *_gadgets;
 void
 enna_gadgets_register(Enna_Gadget *gad)
 {
-
-    printf("Register new gadget\n");
     _gadgets = eina_list_append(_gadgets, gad);
     enna_gadgets_show();
 }
@@ -53,13 +51,10 @@ enna_gadgets_show()
     Enna_Gadget *gad;
     Eina_List *l;
 
-    printf("Gadget show\n");
-
     EINA_LIST_FOREACH(_gadgets, l, gad)
     {
         if (gad && gad->add)
         {
-            printf("Add %p\n", enna->layout);
             gad->add(enna->layout);
         }
     }
