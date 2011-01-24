@@ -44,7 +44,7 @@ enna_gadgets_register(Enna_Gadget *gad)
 
     printf("Register new gadget\n");
     _gadgets = eina_list_append(_gadgets, gad);
-
+    enna_gadgets_show();
 }
 
 void
