@@ -1,0 +1,68 @@
+
+group {
+   name: "gadget/date";
+   script {
+      public clock_cb(val) {
+         new buffer[6];
+         new year, month, day, yearday, weekday, hour, minute;
+         new Float:second;
+
+         date(year, month, day, yearday, weekday, hour, minute, second);
+         timer(60.0 - (second), "clock_cb", 1);
+
+         buffer[0] = 0;
+
+         if (minute < 10 && hour < 10) { snprintf(buffer, 10, "0%i:0%i", hour, minute); }
+         else if (minute < 10)         { snprintf(buffer, 10, "%i:0%i", hour, minute); }
+         else if (hour < 10)           { snprintf(buffer, 10, "0%i:%i", hour, minute); }
+         else                          { snprintf(buffer, 10, "%i:%i", hour, minute); }
+         set_text(PART:"time", buffer);
+
+      }
+   }
+   parts {
+
+      part { name: "time2";
+         type: TEXT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            color:10 10 10 100;
+            rel1.to: "time";
+            rel1.offset: 0 -2;
+            rel2.to: "time";
+            rel2.offset: 0 -2;
+            text {
+               font: "Comfortaa";
+               size: 40;
+               min: 1 1;
+               align: 1.0 0.5;
+               text_source: "time";
+            }
+         }
+      }
+      part { name: "time";
+         type: TEXT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            color:150 150 150 255;
+            text {
+               font: "Comfortaa";
+               size: 40;
+               min: 1 1;
+               align: 1.0 0.5;
+            }
+         }
+      }
+   }
+
+   programs {
+      program { name: "init";
+         signal: "load";
+         source: "";
+         script {
+            clock_cb(0);
+         }
+      }
+   }
+}
+

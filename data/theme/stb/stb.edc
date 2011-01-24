@@ -8,6 +8,8 @@ collections
 {
 #include "icons.edc"
 #include "elm/elm.edc"
+#include "gad_date.edc"
+
    group { name: "enna/main/layout";
       images {
          image: "bg.png" COMP;
@@ -83,6 +85,33 @@ collections
                rel2.offset: 0 -22;
                rel2.to: "mainmenu.clip";
                fixed: 1 1;
+            }
+         }
+
+        part {
+            name: "enna.swallow.weather";
+            type: SWALLOW;
+            description {
+               state: "default" 0.0;
+               rel1.relative: 0.7 0.7;
+               rel2.relative: 1.0 1.0;
+               rel2.offset: -16 -16;
+            }
+         }
+
+         part {
+            name: "enna.swallow.date";
+            type: SWALLOW;
+            description {
+               state: "default" 0.0;
+               rel1.relative: 0 1;
+               rel1.offset: 0 -288;
+               rel1.to: "mainmenu.clip";
+               rel2.offset: 0 -176;
+               rel2.to: "mainmenu.clip";
+               align: 1 0.5;
+               fixed: 1 1;
+
             }
          }
 

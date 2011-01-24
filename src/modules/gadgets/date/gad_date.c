@@ -41,22 +41,23 @@ static Smart_Data *sd = NULL;
 
 
 static Evas_Object *
-_date_add()
+_date_add(Evas_Object *parent)
 {
     Evas_Coord w, h;
-    sd->obj = edje_object_add(enna->evas);
-    edje_object_file_set(sd->obj, enna_config_theme_get(), "gadget/date");
-    edje_object_size_min_get(sd->obj, &w, &h);
-    evas_object_size_hint_min_set(sd->obj, w, h);
-    printf("Edje siez : %d %d\n", w, h);
 
-    return sd->obj;
+    sd->obj = elm_layout_add(parent);
+    elm_layout_file_set(sd->obj, enna_config_theme_get(), "gadget/date");
+    evas_object_show(sd->obj);
+    elm_layout_content_set(parent, "enna.swallow.date", sd->obj);
+
+    return NULL;
 }
 
 static void
 _date_del()
 {
-    ENNA_OBJECT_DEL(sd->obj);
+    if(sd)
+        ENNA_OBJECT_DEL(sd->obj);
 }
 
 static Enna_Gadget gadget =
@@ -86,7 +87,9 @@ static void
 module_shutdown(Enna_Module *em)
 {
  
+    ENNA_OBJECT_DEL(sd->obj);
     ENNA_FREE(sd);
+    sd = NULL;
 }
 
 Enna_Module_Api ENNA_MODULE_API =

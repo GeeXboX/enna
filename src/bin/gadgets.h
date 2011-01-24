@@ -26,7 +26,7 @@ typedef struct _Enna_Gadget Enna_Gadget;
 
 struct _Enna_Gadget
 {
-    Evas_Object *(*add)(void);
+    Evas_Object *(*add)(Evas_Object *parent);
     void (*del)(void);
 };
 
