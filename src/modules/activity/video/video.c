@@ -42,7 +42,6 @@
 #include "infos.h"
 
 #include "video.h"
-#include "video_flags.h"
 #include "video_resume.h"
 #include "video_picture.h"
 
@@ -76,7 +75,6 @@ struct _Enna_Module_Video
     Evas_Object *o_snapshot;
     Evas_Object *o_panel_infos;
     Evas_Object *o_resume;
-    Evas_Object *o_video_flags;
     Evas_Object *o_mediaplayer;
     Evas_Object *o_mediacontrols;
     Enna_Module *em;
@@ -673,11 +671,6 @@ _create_menu()
     elm_layout_content_set(mod->o_layout,
                            "resume.swallow", mod->o_resume);
 
-    ENNA_OBJECT_DEL(mod->o_video_flags);
-    mod->o_video_flags = enna_video_flags_add(enna->evas);
-    elm_layout_content_set(mod->o_layout,
-                           "infos.flags.swallow", mod->o_video_flags);
-
     mod->state = BROWSER_VIEW;
 }
 
@@ -816,7 +809,6 @@ em_shutdown(Enna_Module *em)
     ENNA_OBJECT_DEL(mod->o_snapshot);
     ENNA_OBJECT_DEL(mod->o_panel_infos);
     ENNA_OBJECT_DEL(mod->o_resume);
-    ENNA_OBJECT_DEL(mod->o_video_flags);
     ENNA_FREE(mod->o_current_uri);
     enna_mediaplayer_playlist_free(mod->enna_playlist);
     free(mod);
