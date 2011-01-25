@@ -63,22 +63,25 @@ enna_weather_notification_update (Evas_Object *obj)
 
   /* weather icon */
   ENNA_OBJECT_DEL(sd->icon);
-  sd->icon = edje_object_add(evas_object_evas_get(sd->edje));
-  edje_object_file_set(sd->icon, enna_config_theme_get(), sd->w->current.icon);
-  edje_object_part_swallow(sd->edje, "weather.icon.swallow", sd->icon);
+  sd->icon = elm_icon_add(sd->edje);
+  elm_icon_file_set(sd->icon, enna_config_theme_get(), sd->w->current.icon);
+  evas_object_show(sd->icon);
+  elm_layout_content_set(sd->edje, "weather.icon.swallow", sd->icon);
 
   /* weather texts */
-  edje_object_part_text_set(sd->edje, "weather.text.city.str",
-                            sd->w->city);
-  edje_object_part_text_set(sd->edje, "weather.text.condition.str",
-                            sd->w->current.condition);
-  edje_object_part_text_set(sd->edje, "weather.text.temp.str",
-                            sd->w->current.temp);
+  elm_layout_text_set(sd->edje, "weather.text.city.str",
+                      sd->w->city);
+  elm_layout_text_set(sd->edje, "weather.text.condition.str",
+                      sd->w->current.condition);
+  elm_layout_text_set(sd->edje, "weather.text.temp.str",
+                      sd->w->current.temp);
+
+  printf("current temp : %s\n", sd->w->current.temp);
 
   /* check whether or not to display the notifier */
-  edje_object_signal_emit(elm_layout_edje_get(enna->layout),
+/*  edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                           sd->w->current.condition ?
-                          "weather,show" : "weather,hide", "enna");
+                          "weather,show" : "weather,hide", "enna");*/
 }
 
 static Evas_Object *
@@ -99,6 +102,8 @@ enna_weather_notification_smart_add(Evas_Object *parent)
     /* edje_object_size_min_get(o_edje, &w, &h); */
     /* evas_object_size_hint_min_set(sd->edje, w, h); */
     enna_weather_notification_update(sd->edje);
+
+    printf("Smart add\n");
 
     evas_object_show(sd->edje);
     elm_layout_content_set(parent, "enna.swallow.weather", sd->edje);
