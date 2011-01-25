@@ -30,6 +30,7 @@
 #include "buffer.h"
 #include "infos.h"
 #include "utils.h"
+#include "infos_video_flags.h"
 
 typedef struct _Smart_Data Smart_Data;
 
@@ -66,7 +67,7 @@ _update_label(Evas_Object *parent __UNUSED__, Enna_File *file, const char *key)
 {
     const char *meta;
     meta = enna_file_meta_get(file, key);
-
+    
     return meta;
 }
 
@@ -169,6 +170,13 @@ _update(Smart_Data *sd, Enna_File *file)
         evas_object_show(pg);
         elm_layout_content_set(sd->page, "enna.progress.swallow", pg);
         break;
+    }
+    case ENNA_FILE_FILM:
+    {
+        Evas_Object *flags;
+        flags = enna_video_flags_add(sd->page);
+        elm_layout_content_set(sd->page, "enna.swallow.flags", flags);
+        enna_video_flags_update(flags, file);
     }
     default:
         break;
