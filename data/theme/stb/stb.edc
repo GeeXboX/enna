@@ -105,9 +105,9 @@ collections
             description {
                state: "default" 0.0;
                rel1.relative: 0 1;
-               rel1.offset: 0 -288;
+               rel1.offset: 4 -288;
                rel1.to: "mainmenu.clip";
-               rel2.offset: 0 -176;
+               rel2.offset: -4 -176;
                rel2.to: "mainmenu.clip";
                align: 1 0.5;
                fixed: 1 1;
@@ -438,11 +438,11 @@ collections
                color: 255 255 255 255;
 
                rel1.relative: 0.0 0.0;
-               rel1.offset: 0 16;
+               rel1.offset: 0 4;
                rel1.to: "content.clip";
 
                rel2.relative: 0.6 1.0;
-               rel2.offset: -16 -88;
+               rel2.offset: -4 -84;
                rel2.to: "content.clip";
             }
          }
@@ -491,11 +491,11 @@ collections
                color: 255 255 255 255;
 
                rel1.relative: 0.6 0.0;
-               rel1.offset: 16 16;
+               rel1.offset: 4 4;
                rel1.to: "content.clip";
 
                rel2.relative: 1.0 1.0;
-               rel2.offset: -16 -88;
+               rel2.offset: -4 -84;
                rel2.to: "content.clip";
             }
          }
@@ -1272,8 +1272,8 @@ images {
           tag:  "gl"  "+ style=glow glow_color=#000000ff";
           tag:  "ul"  "+ style=underline underline_color=#ffffffff";
           tag:  "h1"  "+ font_size=16";
-          tag:  "h2"  "+ font_size=20";
-          tag:  "h3"  "+ font_size=24";
+          tag:  "h2"  "+ font_size=18";
+          tag:  "h3"  "+ font_size=22";
           tag:  "h4"  "+ font_size=30";
           tag:  "br"  "\n";
           tag:  "tab" "\t";
@@ -1361,11 +1361,11 @@ images {
             color: 255 255 255 255;
 
             rel1.relative: 0.0 0.0;
-            rel1.offset: 0 16;
+            rel1.offset: 0 4;
             rel1.to: "content.clip";
 
             rel2.relative: 0.6 1.0;
-            rel2.offset: -16 -88;
+            rel2.offset: -4 -84;
             rel2.to: "content.clip";
          }
       }
@@ -1414,10 +1414,10 @@ images {
             color: 255 255 255 255;
 
             rel1.relative: 0.6 0.0;
-            rel1.offset: 16 16;
+            rel1.offset: 4 4;
             rel1.to: "content.clip";
             rel2.relative: 1.0 1.0;
-            rel2.offset: -16 -88;
+            rel2.offset: -4 -84;
             rel2.to: "content.clip";
          }
       }
@@ -2157,7 +2157,7 @@ group {
 
 group {
    name: "panel/infos/film";
-    data.item: "labels" "title author album year audio_codec duration track";
+    data.item: "labels" "title author album year audio_codec duration synopsis category";
     data.item: "icons" "cover";
     images {
         image: "browser_bg.png" COMP;
@@ -2185,12 +2185,29 @@ group {
             state: "default" 0.0;
             rel1.relative: 0.0 0.0;
             rel1.offset: 8 8;
-            rel2.relative: 1.0 0.75;
+            rel2.relative: 1.0 0.60;
             rel2.offset: -7 0;
          }
       }
 
 
+      /* video flags */
+      part {
+         name: "enna.swallow.flags";
+         mouse_events: 0;
+         type: RECT;
+         type: SWALLOW;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 0.0 1.0;
+            rel1.to: "enna.swallow.cover";
+            rel1.offset: 4 4;
+            rel2.relative:  1.0 1.0;
+            rel2.to: "enna.swallow.cover";
+            rel2.offset: -4 49;
+            color: 255 255 255 255;
+         }
+      }
       part {
          name: "enna.text.title";
          type: TEXT;
@@ -2201,56 +2218,26 @@ group {
             visible: 1;
             rel1.relative: 0.0 1.0;
             rel1.offset: 8 8 ;
-            rel1.to_y: "enna.swallow.cover";
-            rel2.relative: 1.0 1.0;
+            rel1.to_y: "enna.swallow.flags";
+            rel2.relative: 0.0 1.0;
             rel2.offset: 8 8;
-            rel2.to_y: "enna.swallow.cover";
-            color: 255 255 255 200;
+            rel2.to_y: "enna.swallow.flags";
+            rel2.to_x: "enna.text.duration";
+            color: 200 200 200 255;
             align: 0 0;
             fixed: 1 1;
             text {
                font: "Comfortaa";
-               size: 20;
+               size: 18;
                min: 0 1;
-               align: 0.5 0.5;
+               align: 0 0.5;
             }
          }
       }
       
-      /* video flags */
-      part {
-         name: "infos.flags.clip";
-         mouse_events: 0;
-         type: RECT;
-         description {
-            state: "default" 0.0;
-            rel1.relative: 0.0 1.0;
-            rel1.to_y: "enna.swallow.cover";
-            rel1.offset: 0 8;
-            rel2.relative:  1.0 1.0;
-            rel2.to_y: "enna.swallow.cover";
-            rel2.offset: 0 72;
-            color: 255 255 255 255;
-         }
-      }
-
-      part {
-         name: "infos.flags.swallow";
-         mouse_events: 0;
-         clip_to: infos.flags.clip;
-         type: SWALLOW;
-         description {
-            state: "default" 0.0;
-            rel1.relative: 0 0;
-            rel1.to: "infos.flags.clip";
-            rel2.relative: 1 1;
-            rel2.to: "infos.flags.clip";
-         }
-      }
-
       /* Movie Length */
       part {
-         name: "enna.text.length";
+         name: "enna.text.duration";
          type: TEXT;
          mouse_events: 0;
          scale: 1;
@@ -2258,26 +2245,26 @@ group {
             state: "default" 0.0;
             visible: 1;
             fixed: 1 1;
-            rel1.relative: 0.0 1.0;
-            rel1.to: "infos.flags.swallow";
-            rel1.offset: 0 8;
+            rel1.relative: 1.0 1.0;
+            rel1.to: "enna.swallow.flags";
+            rel1.offset: -4 8;
             rel2.relative: 1.0 1.0;
-            rel2.to: "infos.flags.swallow";
-            rel2.offset: 0 8;
-
-            color: 255 255 255 255;
+            rel2.to: "enna.swallow.flags";
+            rel2.offset: -4 8;
+            align: 1 0;
+            color: 200 200 200 255;
             text {
                font: "Comfortaa";
-               size: 14;
-               min: 0 1;
-               align: 0.5 1;
+               size: 18;
+               min: 1 1;
+               align: 0.5 0.5;
             }
          }
       }
 
       /* Movie Categories */
       part {
-         name: "enna.text.genre";
+         name: "enna.text.category";
          type: TEXT;
          mouse_events: 0;
          scale: 1;
@@ -2286,46 +2273,46 @@ group {
             visible: 1;
 
             rel1.relative: 0.0 1.0;
-            rel1.to: "enna.text.length";
+            rel1.to: "enna.text.title";
             rel1.offset: 0 8;
             rel2.relative: 1.0 1.0;
-            rel2.to: "enna.text.length";
-            rel2.offset: 0 38;
-
-            color: 255 255 255 255;
+            rel2.to: "enna.text.title";
+            rel2.offset: 0 8;
+            fixed: 1 1;
+            color: 200 200 200 255;
             text {
                font: "Comfortaa";
-               size: 16;
+               size: 18;
                min: 0 1;
-               align: 0.5 1;
+               align: 0 0.5;
             }
          }
       }
 
 
-    /*   /\* synopsis *\/ */
-    /*   part { */
-    /*      name: "enna.text.synopsis"; */
-    /*      type: TEXTBLOCK; */
-    /*      effect: SOFT_SHADOW; */
-    /*      mouse_events: 0; */
-    /*      scale: 1; */
-    /*      description { */
-    /*         state: "default" 0.0; */
-    /*         visible: 1; */
-    /*         rel1.relative: 0.0 1.0; */
-    /*         rel1.to: "enna.text.genre"; */
-    /*         rel1.offset: 0 8;  */
-    /*         rel2.relative: 1.0 1.0; */
-    /*         color: 255 255 255 255; */
-    /*         color3: 0 0 0 64; */
+      /* synopsis */
+      part {
+         name: "enna.text.synopsis";
+         type: TEXTBLOCK;
+         effect: SOFT_SHADOW;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            rel1.relative: 0.0 1.0;
+            rel1.to: "enna.text.category";
+            rel1.offset: 0 8;
+            rel2.relative: 1.0 1.0;
+            color: 255 255 255 255;
+            color3: 0 0 0 64;
 
-    /*      text { */
-    /*            style: "style.infos.video"; */
-    /*            min: 0 0; */
-    /*         } */
-    /*      } */
-    /*   } */
+         text {
+               style: "style.infos.video";
+               min: 0 0;
+            }
+         }
+      }
     }
 
 }
@@ -3320,4 +3307,151 @@ group {
          target: "content.clip";
       }
    }
+}
+
+group {
+   name: "activity/video/flags";
+
+   parts {
+
+      part {
+         name: "flags.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+         }
+      }
+
+      part {
+         name: "flags.video.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1.relative: 0.025 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.225 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+      part {
+         name: "flags.video.swallow";
+         type: SWALLOW;
+         mouse_events: 0;
+         clip_to: flags.video.clip;
+         description {
+            state: "default" 0.0;
+
+            rel1.relative: 0 0;
+            rel1.to: "flags.video.clip";
+            rel2.relative: 1 1;
+            rel2.to: "flags.video.clip";
+
+            aspect: 1.48 1;
+            aspect_preference: BOTH;
+         }
+      }
+
+      part {
+         name: "flags.audio.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1.relative: 0.275 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.475 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+      part {
+         name: "flags.audio.swallow";
+         type: SWALLOW;
+         mouse_events: 0;
+         clip_to: flags.audio.clip;
+         description {
+            state: "default" 0.0;
+
+            rel1.relative: 0 0;
+            rel1.to: "flags.audio.clip";
+            rel2.relative: 1 1;
+            rel2.to: "flags.audio.clip";
+
+            aspect: 4.38 1;
+            aspect_preference: BOTH;
+         }
+      }
+
+      part {
+         name: "flags.studio.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1.relative: 0.525 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.725 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+      part {
+         name: "flags.studio.swallow";
+         type: SWALLOW;
+         mouse_events: 0;
+         clip_to: flags.studio.clip;
+         description {
+            state: "default" 0.0;
+
+            rel1.relative: 0 0;
+            rel1.to: "flags.studio.clip";
+            rel2.relative: 1 1;
+            rel2.to: "flags.studio.clip";
+
+            aspect: 1.48 1;
+            aspect_preference: BOTH;
+         }
+      }
+
+      part {
+         name: "flags.media.clip";
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            visible: 1;
+            color: 255 255 255 255;
+            rel1.relative: 0.775 0.00;
+            rel1.to: "flags.clip";
+            rel2.relative: 0.975 1.00;
+            rel2.to: "flags.clip";
+         }
+      }
+
+      part {
+         name: "flags.media.swallow";
+         type: SWALLOW;
+         mouse_events: 0;
+         clip_to: flags.media.clip;
+         description {
+            state: "default" 0.0;
+
+            rel1.relative: 0 0;
+            rel1.to: "flags.media.clip";
+            rel2.relative: 1 1;
+            rel2.to: "flags.media.clip";
+
+            aspect: 3.11 1;
+            aspect_preference: BOTH;
+         }
+      }
+
+   }
+
 }
