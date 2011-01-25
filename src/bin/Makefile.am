@@ -37,6 +37,7 @@ file.c\
 browser.c\
 browser_obj.c\
 infos.c\
+infos_video_flags.c\
 content.c\
 view_list.c\
 view_list2.c\
@@ -258,6 +259,7 @@ file.h\
 browser.h\
 browser_obj.h\
 infos.h\
+infos_video_flags.h\
 content.h\
 view_list.h\
 view_list2.h\
