@@ -19,28 +19,36 @@ Enna's features
 Core dependencies
 =================
 
-* Eina >= 0.9.9.063
-* Eet >= 1.2.2
-* Evas >= 0.9.9.063
-* Ecore >= 0.9.9.063
-* Embryo >= 0.9.9.063
-* Edje >= 0.9.93.063
-* Elementary >= 0.6.0.063
-* libplayer (http://libplayer.geexbox.org/) >= 1.0.0
-* libvalhalla (http://hg.geexbox.org/libvalhalla/) >= 1.0.0
+* Eina >= 1.0.0
+* Eet >= 1.4.0
+* Evas >= 1.0.0
+* Ecore >= 1.0.0
+* Edje >= 1.0.0
+* Efreet >= 1.0.0
+* Edbus >= 1.0.0
+* Ethumb >= 0.1.0
+* Elementary >= 0.7.0
+* libvalhalla (http://hg.geexbox.org/libvalhalla/) >= 2.0.0
+* libxml-2.0
+* libcurl
 
 Module dependencies (optional)
 ==============================
 
-* Edbus >= 0.5.0.063
-* Efreet >= 0.5.0.063
-* gUPnP
+* libplayer (http://libplayer.geexbox.org/) >= 2.0.0
+* emotion
+* gssdp-1.0 >= 0.7.0 
+* gupnp-1.0 >= 0.13.1 
+* gupnp-av-1.0 >= 0.5.2
 * libcddb
-* libcurl
+* libgpod-1.0 >= 0.7.93
+* libspotify
 * libsvdrp (http://hg.geexbox.org/libsvdrp/)
-* libxml2
 * libxrandr
 * Lirc (http://www.lirc.org/)
+* libcwiid
+* libudev
+* hal
 * gettext
 
 This program is under heavy development, so feel free to join.
