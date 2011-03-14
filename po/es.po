@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-01-22 12:59-0500\n"
+"POT-Creation-Date: 2011-03-14 13:41+0100\n"
 "PO-Revision-Date: 2010-08-05 13:18-0300\n"
 "Last-Translator: Gabriel Fernández <unit-iso@unit.org.uy>\n"
 "Language-Team: Español <kde-i18n-doc@kde.org>\n"
@@ -26,59 +26,68 @@ msgstr ""
 msgid "No media found!"
 msgstr "¡No se encuentran medios!"
 
-#: src/bin/enna.c:525
+#: src/bin/enna.c:546
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:526
+#: src/bin/enna.c:547
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opciones ...]\n"
 
-#: src/bin/enna.c:527
+#: src/bin/enna.c:548
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Opciones Disponibles:\n"
 
-#: src/bin/enna.c:528
+#: src/bin/enna.c:549
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Especifica el archivo de configuración a usar.\n"
 
-#: src/bin/enna.c:529
+#: src/bin/enna.c:550
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Obliga a modo de Pantalla Completa.\n"
 
-#: src/bin/enna.c:530
+#: src/bin/enna.c:551
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Muestra esta pantalla de ayuda.\n"
 
-#: src/bin/enna.c:531
+#: src/bin/enna.c:552
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Especifica el nombre del tema a usar.\n"
 
-#: src/bin/enna.c:532
+#: src/bin/enna.c:553
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):   Especifica la geometría de la pantalla. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:533
+#: src/bin/enna.c:554
+#, fuzzy, c-format
+msgid ""
+"  -g, (--geometry):Specify window geometry and offset. "
+"(geometry=1280x720:10:20)\n"
+msgstr ""
+"  -g, (--geometry):   Especifica la geometría de la pantalla. "
+"(geometry=1280x720)\n"
+
+#: src/bin/enna.c:555
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Especifica el perfil a visualizar\n"
 
-#: src/bin/enna.c:534
+#: src/bin/enna.c:556
 #, c-format
 msgid "    Supported: "
 msgstr "    Soportado: "
 
-#: src/bin/enna.c:538
+#: src/bin/enna.c:560
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Muestra la versión de Enna.\n"
@@ -432,17 +441,17 @@ msgstr "Televisión"
 msgid "View TV channels"
 msgstr "Ver canales de TV"
 
-#: src/modules/activity/video/video.c:117
+#: src/modules/activity/video/video.c:115
 #, c-format
 msgid "%d Movies"
 msgstr "%d Películas"
 
-#: src/modules/activity/video/video.c:766
-#: src/modules/activity/video/video.c:853
+#: src/modules/activity/video/video.c:759
+#: src/modules/activity/video/video.c:845
 msgid "Video"
 msgstr "Vídeo"
 
-#: src/modules/activity/video/video.c:855
+#: src/modules/activity/video/video.c:847
 msgid "Play your videos"
 msgstr "Reproduzca sus vídeos"
 

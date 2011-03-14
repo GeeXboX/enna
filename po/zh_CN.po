@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-01-22 12:59-0500\n"
+"POT-Creation-Date: 2011-03-14 13:41+0100\n"
 "PO-Revision-Date: 2010-02-17 15:11+0800\n"
 "Last-Translator: swinkworld <swinkworld@163.com>\n"
 "Language-Team: Chinese (Simplified)\n"
@@ -23,57 +23,64 @@ msgstr ""
 msgid "No media found!"
 msgstr "没有发现任何媒体!"
 
-#: src/bin/enna.c:525
+#: src/bin/enna.c:546
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna媒体中心\n"
 
-#: src/bin/enna.c:526
+#: src/bin/enna.c:547
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "用法：%s [选项...]\n"
 
-#: src/bin/enna.c:527
+#: src/bin/enna.c:548
 #, c-format
 msgid " Available options:\n"
 msgstr "可选项:\n"
 
-#: src/bin/enna.c:528
+#: src/bin/enna.c:549
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置文件。\n"
 
-#: src/bin/enna.c:529
+#: src/bin/enna.c:550
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "-f, (--fs): 强制全屏幕显示。\n"
 
-#: src/bin/enna.c:530
+#: src/bin/enna.c:551
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "-h, (--help): 显示这个说明。\n"
 
-#: src/bin/enna.c:531
+#: src/bin/enna.c:552
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "-t, (--theme): 指定要使用的主题。\n"
 
-#: src/bin/enna.c:532
+#: src/bin/enna.c:553
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定窗口大小。(geometry=1280x720)\n"
 
-#: src/bin/enna.c:533
+#: src/bin/enna.c:554
+#, fuzzy, c-format
+msgid ""
+"  -g, (--geometry):Specify window geometry and offset. "
+"(geometry=1280x720:10:20)\n"
+msgstr "-g, (--geometry):指定窗口大小。(geometry=1280x720)\n"
+
+#: src/bin/enna.c:555
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): 指定显示文件\n"
 
-#: src/bin/enna.c:534
+#: src/bin/enna.c:556
 #, fuzzy, c-format
 msgid "    Supported: "
 msgstr "已支持: "
 
-#: src/bin/enna.c:538
+#: src/bin/enna.c:560
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "-V, (--version): 显示Enna的版本。\n"
@@ -426,17 +433,17 @@ msgstr "电视"
 msgid "View TV channels"
 msgstr "观看电视频道"
 
-#: src/modules/activity/video/video.c:117
+#: src/modules/activity/video/video.c:115
 #, c-format
 msgid "%d Movies"
 msgstr "%d 电影"
 
-#: src/modules/activity/video/video.c:766
-#: src/modules/activity/video/video.c:853
+#: src/modules/activity/video/video.c:759
+#: src/modules/activity/video/video.c:845
 msgid "Video"
 msgstr "影片"
 
-#: src/modules/activity/video/video.c:855
+#: src/modules/activity/video/video.c:847
 msgid "Play your videos"
 msgstr "播放你的影片"
 

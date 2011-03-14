@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-01-22 12:59-0500\n"
+"POT-Creation-Date: 2011-03-14 13:41+0100\n"
 "PO-Revision-Date: 2010-05-31 17:30+01:00\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -22,58 +22,65 @@ msgstr ""
 msgid "No media found!"
 msgstr "Intet medie fundet!"
 
-#: src/bin/enna.c:525
+#: src/bin/enna.c:546
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna - mediecenter\n"
 
-#: src/bin/enna.c:526
+#: src/bin/enna.c:547
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Brug: %s [tilvalg...]\n"
 
-#: src/bin/enna.c:527
+#: src/bin/enna.c:548
 #, c-format
 msgid " Available options:\n"
 msgstr " Tilgængelige tilvalg:\n"
 
-#: src/bin/enna.c:528
+#: src/bin/enna.c:549
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Angiv den konfigurationsfil der skal bruges.\n"
 
 # måske Start i fuldskærmtilstand
-#: src/bin/enna.c:529
+#: src/bin/enna.c:550
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Fremtving fuldskærmtilstand.\n"
 
-#: src/bin/enna.c:530
+#: src/bin/enna.c:551
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Vis denne hjælpetekst.\n"
 
-#: src/bin/enna.c:531
+#: src/bin/enna.c:552
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Angiv temanavn der skal bruges.\n"
 
-#: src/bin/enna.c:532
+#: src/bin/enna.c:553
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Angiv vinduesgeometri. (geometri=1280x720)\n"
 
-#: src/bin/enna.c:533
+#: src/bin/enna.c:554
+#, fuzzy, c-format
+msgid ""
+"  -g, (--geometry):Specify window geometry and offset. "
+"(geometry=1280x720:10:20)\n"
+msgstr "  -g, (--geometry):Angiv vinduesgeometri. (geometri=1280x720)\n"
+
+#: src/bin/enna.c:555
 #, c-format
 msgid "  -p, (--profile): Specify display profile\n"
 msgstr "  -p, (--profile): Angiv skærmprofil\n"
 
-#: src/bin/enna.c:534
+#: src/bin/enna.c:556
 #, c-format
 msgid "    Supported: "
 msgstr "    Understøttet: "
 
-#: src/bin/enna.c:538
+#: src/bin/enna.c:560
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Vis versionsnummeret for Enna.\n"
@@ -416,17 +423,17 @@ msgstr "Fjernsyn"
 msgid "View TV channels"
 msgstr "Vis tv-kanaler"
 
-#: src/modules/activity/video/video.c:117
+#: src/modules/activity/video/video.c:115
 #, c-format
 msgid "%d Movies"
 msgstr "%d film"
 
-#: src/modules/activity/video/video.c:766
-#: src/modules/activity/video/video.c:853
+#: src/modules/activity/video/video.c:759
+#: src/modules/activity/video/video.c:845
 msgid "Video"
 msgstr "Video"
 
-#: src/modules/activity/video/video.c:855
+#: src/modules/activity/video/video.c:847
 msgid "Play your videos"
 msgstr "Afspil dine videoer"
 
