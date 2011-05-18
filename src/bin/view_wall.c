@@ -195,6 +195,7 @@ _item_selected(void *data, Evas_Object *obj, void *event_info __UNUSED__)
     Picture_Item *li = data;
 
     evas_object_smart_callback_call(obj, "hilight", li->data);
+    elm_gengrid_item_bring_in(li->item);
 }
 
 static void
