@@ -59,7 +59,8 @@ enna_weather_notification_update (Evas_Object *obj)
   sd = evas_object_data_get(obj, "sd");
   /*enna_weather_free(sd->w);
     sd->w = enna_weather_new();*/
-  enna_weather_update(sd->w);
+  if (!sd->w->current.temp)
+      enna_weather_update(sd->w);
 
   /* weather icon */
   ENNA_OBJECT_DEL(sd->icon);
