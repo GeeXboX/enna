@@ -176,7 +176,7 @@ _resize_cb(void *data, Evas *e __UNUSED__, Evas_Object *obj __UNUSED__, void *ev
     Smart_Data *sd = data;
 
     evas_object_geometry_get(sd->o_grid, NULL, NULL, NULL, &h);
-    elm_gengrid_item_size_set(sd->o_grid, h / 4, h / 4);
+    elm_gengrid_item_size_set(sd->o_grid, h / 3 - 3, h / 3 - 3);
 }
 
 static void
