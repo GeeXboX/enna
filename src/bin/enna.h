@@ -143,9 +143,9 @@ struct _Enna
     Evas_Object *o_content; /** Edje Object to swallow content */
     Evas_Object *o_button_back; /** Back button */
     enna_msg_level_t lvl; /**< Error message level */
-    int slideshow_delay;
+//    int slideshow_delay;
+//    int run_fullscreen;
     int cursor_is_shown;
-    int run_fullscreen;
     Ecore_Timer *mouse_idle_timer;
     Ecore_Timer *idle_timer;
     Ecore_Event_Handler *mouse_handler;
@@ -155,7 +155,7 @@ struct _Enna
 extern Enna *enna;
 
 /* Events */
-int ENNA_EVENT_BROWSER_CHANGED; /** ev = const char * */
+//int ENNA_EVENT_BROWSER_CHANGED; /** ev = const char * */
 extern int ENNA_EVENT_GEO_LOC_DETECTED;
 
 void enna_idle_timer_renew(void);

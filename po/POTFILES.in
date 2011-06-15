@@ -5,7 +5,6 @@ src/bin/exit.c
 src/bin/mainmenu.c
 src/bin/module.c
 src/bin/parser_cdda.c
-src/bin/weather_api.c
 src/modules/activity/bookstore/bookstore.c
 src/modules/activity/configuration/configuration.c
 src/modules/activity/configuration/configuration_credits.c
@@ -18,6 +17,7 @@ src/modules/activity/photo/photo.c
 src/modules/activity/tv/tv.c
 src/modules/activity/video/video.c
 src/modules/activity/weather/weather.c
+src/modules/activity/weather/weather_api.c
 src/modules/browser/cdda/cdda.c
 src/modules/browser/dvd/dvd.c
 src/modules/browser/localfiles/localfiles.c

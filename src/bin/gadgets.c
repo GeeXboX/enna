@@ -26,6 +26,7 @@
 
 #include "enna.h"
 #include "enna_config.h"
+#include "logs.h"
 #include "utils.h"
 #include "box.h"
 
@@ -42,15 +43,15 @@ void
 enna_gadgets_register(Enna_Gadget *gad)
 {
     _gadgets = eina_list_append(_gadgets, gad);
-    enna_gadgets_show();
 }
 
 void
-enna_gadgets_show()
+enna_gadgets_show(void)
 {
     Enna_Gadget *gad;
     Eina_List *l;
 
+    enna_log (ENNA_MSG_INFO, NULL, "enna gadgets show");
     EINA_LIST_FOREACH(_gadgets, l, gad)
     {
         if (gad && gad->add)
@@ -61,11 +62,12 @@ enna_gadgets_show()
 }
 
 void
-enna_gadgets_hide()
+enna_gadgets_hide(void)
 {
     Enna_Gadget *gad;
     Eina_List *l;
 
+    enna_log (ENNA_MSG_INFO, NULL, "enna gadgets hide");
     EINA_LIST_FOREACH(_gadgets, l, gad)
     {
         /* if (gad && gad->del) */
@@ -75,18 +77,22 @@ enna_gadgets_hide()
 }
 
 int
-enna_gadgets_init()
+enna_gadgets_init(void)
 {
+    enna_log (ENNA_MSG_INFO, NULL, "enna gadgets init");
+
     /* Prevent multiple loads */
     if (_gadgets_init_count > 0)
         return ++_gadgets_init_count;
 
     _gadgets_init_count = 1;
+    enna_log (ENNA_MSG_INFO, NULL, "enna gadgets init done");
+
     return 1;
 }
 
 int
-enna_gadgets_shutdown()
+enna_gadgets_shutdown(void)
 {
     _gadgets_init_count--;
     if (_gadgets_init_count == 0)

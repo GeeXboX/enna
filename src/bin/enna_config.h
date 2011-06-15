@@ -22,51 +22,21 @@
 #ifndef ENNA_CONFIG_H
 #define ENNA_CONFIG_H
 
-#include <Elementary.h>
-
 typedef struct _Enna_Config Enna_Config;
+extern Enna_Config *enna_config;
 
-struct _Enna_Config
-{
-    char *cfg_file;
-    Elm_Theme *eth;
-    char *theme;
-    char *theme_file;
-    int idle_timeout;
-    int fullscreen;
-    int slideshow_delay;
-    Eina_Bool display_mouse;
-    char *engine;
-    char *verbosity;
-    Eina_List *music_local_root_directories;
-    Eina_List *music_filters;
-    Eina_List *video_filters;
-    Eina_List *photo_filters;
-    char *log_file;
-};
 
-Enna_Config *enna_config;
-
-void enna_config_load_theme (void);
+/* general access to enna config properties */
 const char *enna_config_theme_get(void);
-const char *enna_config_theme_file_get(const char *s);
+const char *enna_config_engine(void);
+int enna_config_slideshow_delay(void);
 
-/*********************************/
-
-void enna_main_cfg_register (void);
-
-void enna_config_init (const char *file);
-void enna_config_shutdown(void);
-
-void enna_config_set_default(void);
-void enna_config_load (void);
-void enna_config_save (void);
 
 /* configuration getters */
 const char * enna_config_string_get (const char *section, const char *key);
 Eina_List * enna_config_string_list_get (const char *section, const char *key);
-int enna_config_int_get (const char *section, const char *key);
-Eina_Bool enna_config_bool_get (const char *section, const char *key);
+int enna_config_int_get (const char *section, const char *key, int default_value, Eina_Bool *is_set);
+Eina_Bool enna_config_bool_get (const char *section, const char *key, Eina_Bool default_value, Eina_Bool *is_set);
 
 /* configuration setters */
 void enna_config_string_set (const char *section,
@@ -90,26 +60,5 @@ struct _Enna_Config_Section_Parser {
 
 void enna_config_section_parser_register   (Enna_Config_Section_Parser *parser);
 void enna_config_section_parser_unregister (Enna_Config_Section_Parser *parser);
-
-/****************************************************************************/
-/*                        Config Panel Stuff                                */
-/****************************************************************************/
-
-typedef struct _Enna_Config_Panel Enna_Config_Panel;
-struct _Enna_Config_Panel
-{
-    const char *label; /**< Label to show. with locale applied */
-    const char *icon;  /**< Name of the icon */
-    Evas_Object *(*create_cb)(void *data);  /**< Function to show/create a panel */
-    void (*destroy_cb)(void *data);  /**< Function to hide/destroy a panel */
-    void *data; /**< User data pointer */
-};
-
-Enna_Config_Panel *enna_config_panel_register(const char *label, const char *icon,
-                                        Evas_Object *(*create_cb)(void *data),
-                                        void (*destroy_cb)(void *data), void *data);
-Eina_Bool          enna_config_panel_unregister(Enna_Config_Panel *ecp);
-Eina_List         *enna_config_panel_list_get(void);
-
 
 #endif /* ENNA_CONFIG_H */

@@ -322,7 +322,13 @@ module_init(Enna_Module *em)
     mod = calloc (1, sizeof (Enna_Module_Weather));
     mod->em = em;
 
+    enna_weather_cfg_register();
+    enna_weather_init();
+
     cities = enna_weather_cities_get();
+
+    if (!cities) { fprintf(stderr,"weather: no cities\n"); return; }
+
     mod->w = enna_weather_new(cities->data);
     em->mod = mod;
 

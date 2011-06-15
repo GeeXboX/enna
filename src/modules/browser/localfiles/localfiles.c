@@ -708,7 +708,7 @@ cfg_localfiles_section_load(const char *section)
         cfg_localfiles_section_list_get(section, "path_video");
     localfiles_cfg.path_photo =
         cfg_localfiles_section_list_get(section, "path_photo");
-    localfiles_cfg.home = enna_config_bool_get(section, "display_home");
+    localfiles_cfg.home = enna_config_bool_get(section, "display_home", EINA_FALSE, NULL);
 }
 
 static void
@@ -762,8 +762,8 @@ module_init(Enna_Module *em)
     em->mod = mod;
 
     enna_config_section_parser_register(&cfg_localfiles);
-    cfg_localfiles_section_set_default();
-    cfg_localfiles_section_load(cfg_localfiles.section);
+//    cfg_localfiles_section_set_default();
+//    cfg_localfiles_section_load(cfg_localfiles.section);
 
 #ifdef BUILD_ACTIVITY_MUSIC
     flags |= ENNA_CAPS_MUSIC;

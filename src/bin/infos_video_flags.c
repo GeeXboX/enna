@@ -20,6 +20,7 @@
  */
 
 #include <Edje.h>
+#include <Elementary.h>
 
 #include "enna.h"
 #include "enna_config.h"

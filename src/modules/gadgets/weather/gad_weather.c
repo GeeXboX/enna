@@ -25,7 +25,7 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "utils.h"
-#include "weather_api.h"
+#include "../modules/activity/weather/weather_api.h"
 #include "gadgets.h"
 #include "module.h"
 
@@ -88,8 +88,8 @@ enna_weather_notification_update (Evas_Object *obj)
 static Evas_Object *
 enna_weather_notification_smart_add(Evas_Object *parent)
 {
-    Evas_Coord w, h;
-    Evas_Object *o_edje;
+//    Evas_Coord w, h;
+//    Evas_Object *o_edje;
 
     ENNA_OBJECT_DEL(sd->edje);
 

@@ -118,7 +118,7 @@ set_enna_information(Enna_Buffer *b)
 #endif /* BUILD_LIBSVDRP */
     enna_buffer_append(b, "<hilight>");
     enna_buffer_append(b, _("Video renderer:"));
-    enna_buffer_appendf(b, "</hilight> %s<br>", enna_config->engine);
+    enna_buffer_appendf(b, "</hilight> %s<br>", enna_config_engine());
 }
 
 /****************************************************************************/

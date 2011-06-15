@@ -38,14 +38,13 @@
 
 
 static FILE *fp = NULL;
-static int refcount = 0;
+//static int refcount = 0;
 
 int
 enna_log_init(const char *filename)
 {
-
-    if (refcount > 1)
-        return 0;
+//    if (refcount > 1)
+//        return 0;
 
     if (filename)
     {
@@ -54,7 +53,7 @@ enna_log_init(const char *filename)
             return 0;
     }
 
-    refcount++;
+//    refcount++;
     return 1;
 }
 
@@ -105,16 +104,17 @@ enna_log_print(int level, const char *module,
     else
         prefix = DEFAULT_MODULE_NAME "/";
 
+    int n;
     if (!fp)
     {
         f = stderr;
-        fprintf (f, "[" BOLD "%s%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
+        n = fprintf (f, "[" BOLD "%s%s" NORMAL "] [%s:%d] %s%s" NORMAL ": ",
             prefix ? prefix : "", module, file, line, c[level], l[level]);
     }
     else
     {
         f = fp;
-        fprintf (f, "[%s%s] [%s:%d] %s: ",
+        n = fprintf (f, "[%s%s] [%s:%d] %s: ",
             prefix ? prefix : "", module, file, line, l[level]);
     }
 
@@ -126,9 +126,14 @@ enna_log_print(int level, const char *module,
 void
 enna_log_shutdown(void)
 {
+//    if (refcount > 0) refcount--;
+
+//    if (refcount)
+//	return;
+//    // refcount == 0
+
     if (fp)
     {
         fclose(fp);
     }
-    refcount--;
 }

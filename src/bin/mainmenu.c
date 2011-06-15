@@ -27,7 +27,8 @@
 
 #include "browser.h"
 #include "enna.h"
-#include "enna_config.h"
+#include "enna_config_main.h"
+#include "activity_priv.h"
 #include "mainmenu.h"
 #include "content.h"
 #include "input.h"
@@ -116,9 +117,9 @@ _input_events_cb(void *data, enna_input event)
 
     if (event == ENNA_INPUT_FULLSCREEN)
     {
-        enna->run_fullscreen = ~enna->run_fullscreen;
-        elm_win_fullscreen_set(enna->win, enna->run_fullscreen);
-        return ENNA_EVENT_BLOCK;
+      enna_config->fullscreen = ~enna_config->fullscreen;
+      elm_win_fullscreen_set(enna->win, enna_config->fullscreen);
+      return ENNA_EVENT_BLOCK;
     }
 
     /* check for volume control bindings */
@@ -191,6 +192,7 @@ enna_mainmenu_add(Evas_Object *parent)
     evas_object_size_hint_weight_set(sd->o_menu, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
     evas_object_show(sd->o_menu);
+
     /* Add  background*/
     sd->o_background = elm_slideshow_add(parent);
     elm_layout_content_set(enna->layout, "enna.background.swallow", sd->o_background);
@@ -200,6 +202,7 @@ enna_mainmenu_add(Evas_Object *parent)
     elm_slideshow_transition_set(sd->o_background, "fade");
     sd->backgrounds = NULL;
     evas_object_smart_callback_add(sd->o_menu, "hilight", _enna_mainmenu_item_focus, sd);
+
     /* Volume widget */
     sd->o_volume =
         enna_volume_notification_smart_add(evas_object_evas_get(enna->layout));
@@ -286,6 +289,7 @@ enna_mainmenu_show(Evas_Object *obj)
     enna_gadgets_show();
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "mainmenu,show", "enna");
+    // KRL: should this be in gadgets_show(): ?
     edje_object_signal_emit(elm_layout_edje_get(enna->layout),
                             "gadgets,show", "enna");
 

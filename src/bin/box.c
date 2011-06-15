@@ -537,7 +537,7 @@ enna_box_add(Evas_Object *parent, const char *style)
 
     sd->o_box = elm_box_add(sd->o_scroll);
     elm_box_horizontal_set(sd->o_box, sd->horizontal);
-    elm_box_homogenous_set(sd->o_box, 1);
+    elm_box_homogeneous_set(sd->o_box, 1);
     evas_object_show(sd->o_box);
 
     elm_scroller_content_set(sd->o_scroll, sd->o_box);

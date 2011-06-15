@@ -24,13 +24,8 @@
 
 #include "input.h"
 #include "vfs.h"
-typedef enum _ENNA_CLASS_TYPE ENNA_CLASS_TYPE;
 
 typedef struct _Enna_Class_Activity Enna_Class_Activity;
-
-#define ACTIVITY_CLASS(name, ...) \
-   if (act && act->func.class_##name) \
-      act->func.class_##name(__VA_ARGS__)
 
 struct _Enna_Class_Activity
 {
@@ -51,15 +46,8 @@ struct _Enna_Class_Activity
         void (*class_event)(enna_input event);
     } func;
 };
+
 void enna_activity_register(Enna_Class_Activity *act);
 void enna_activity_unregister(Enna_Class_Activity *act);
-void enna_activity_del_all (void);
-Eina_List *enna_activities_get(void);
-int enna_activity_init(const char *name);
-int enna_activity_show(const char *name);
-const char *enna_activity_request_quit_all(void);
-int enna_activity_shutdown(const char *name);
-int enna_activity_hide(const char *name);
-int enna_activity_event(Enna_Class_Activity *act, enna_input event);
-Enna_Class_Activity *enna_activity_get(const char *name);
+
 #endif /* ACTIVITY_H */

@@ -22,7 +22,7 @@
 #include <string.h>
 
 #include "enna.h"
-#include "activity.h"
+#include "activity_priv.h"
 #include "buffer.h"
 #include "logs.h"
 #include "vfs.h"
@@ -64,6 +64,19 @@ enna_activity_get(const char *name)
     }
 
     return NULL;
+}
+
+/**
+ * @brief Initialise all existing activities
+ */
+void
+enna_activity_init_all (void)
+{
+    Eina_List *l;
+    Enna_Class_Activity *a;
+
+    EINA_LIST_FOREACH(_enna_activities, l, a)
+        enna_activity_init(a->name);
 }
 
 /**

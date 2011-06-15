@@ -426,7 +426,7 @@ static Enna_Class_Activity class =
 static void
 module_init(Enna_Module *em)
 {
-    DBG(__FUNCTION__);
+    //DBG(__FUNCTION__);
     if (!em)
         return;
 
@@ -441,7 +441,7 @@ module_init(Enna_Module *em)
 static void
 module_shutdown(Enna_Module *em __UNUSED__)
 {
-    DBG(__FUNCTION__);
+    //DBG(__FUNCTION__);
     enna_activity_unregister(&class);
 
 

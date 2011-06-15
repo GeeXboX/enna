@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna.trunk\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-03-14 13:41+0100\n"
+"POT-Creation-Date: 2011-06-15 19:04+0200\n"
 "PO-Revision-Date: 2010-03-29 14:24+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <tr@li.org>\n"
@@ -21,52 +21,52 @@ msgstr ""
 "X-Poedit-Country: TURKEY\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/bin/browser.c:252
+#: src/bin/browser.c:262
 msgid "No media found!"
 msgstr "Medya bulunamadı!"
 
-#: src/bin/enna.c:546
+#: src/bin/enna.c:147
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MedyaMerkezi\n"
 
-#: src/bin/enna.c:547
+#: src/bin/enna.c:148
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Kullanım: %s [seçenekler ...]\n"
 
-#: src/bin/enna.c:548
+#: src/bin/enna.c:149
 #, c-format
 msgid " Available options:\n"
 msgstr "Kullanılabilir seçenekler:\n"
 
-#: src/bin/enna.c:549
+#: src/bin/enna.c:150
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config): Yapılandırmada kullanılacak dosyayı belirtin.\n"
 
-#: src/bin/enna.c:550
+#: src/bin/enna.c:151
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Tam ekran modu gücü.\n"
 
-#: src/bin/enna.c:551
+#: src/bin/enna.c:152
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Yardımı görüntüle.\n"
 
-#: src/bin/enna.c:552
+#: src/bin/enna.c:153
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Kullanılan tema adını belirtin.\n"
 
-#: src/bin/enna.c:553
+#: src/bin/enna.c:154
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):Pencere geometrisini belirtin. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:554
+#: src/bin/enna.c:155
 #, fuzzy, c-format
 msgid ""
 "  -g, (--geometry):Specify window geometry and offset. "
@@ -74,17 +74,19 @@ msgid ""
 msgstr ""
 "  -g, (--geometry):Pencere geometrisini belirtin. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:555
-#, c-format
-msgid "  -p, (--profile): Specify display profile\n"
+#: src/bin/enna.c:156
+#, fuzzy, c-format
+msgid ""
+"  -p, (--profile): Specify display profile (cannot be used with theme,"
+"geometry)\n"
 msgstr "  -p, (--profile): Profil görünümünü belirt\n"
 
-#: src/bin/enna.c:556
+#: src/bin/enna.c:157
 #, c-format
 msgid "    Supported: "
 msgstr "    Desteklenen: "
 
-#: src/bin/enna.c:560
+#: src/bin/enna.c:159
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Enna versiyon numarasını görüntüle.\n"
@@ -109,11 +111,11 @@ msgstr "Hayır"
 msgid "continue using Enna"
 msgstr "Enna'yı kullanmaya devam et"
 
-#: src/bin/module.c:269
+#: src/bin/module.c:273
 msgid "Modules"
 msgstr "Modüller"
 
-#: src/bin/module.c:438
+#: src/bin/module.c:450
 msgid "No information provided"
 msgstr "Bilgi sağlanamadı"
 
@@ -121,74 +123,6 @@ msgstr "Bilgi sağlanamadı"
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Parça #%02d (%02d:%02d)"
-
-#: src/bin/weather_api.c:406 src/bin/weather_api.c:439
-msgid "City"
-msgstr "Şehir"
-
-#: src/bin/weather_api.c:407
-msgid "Choose your City"
-msgstr "Şehrini seç"
-
-#: src/bin/weather_api.c:411
-msgid "Enter your City here"
-msgstr "Şehrini buraya gir"
-
-#: src/bin/weather_api.c:414 src/bin/weather_api.c:447
-msgid "Remove"
-msgstr "Kaldır"
-
-#: src/bin/weather_api.c:440
-msgid "Choose your city"
-msgstr "Şehrini seç"
-
-#: src/bin/weather_api.c:452
-msgid "Add new city"
-msgstr "Yeni şehir ekle"
-
-#: src/bin/weather_api.c:453
-msgid "Add more cities to the list"
-msgstr "Listeden daha fazla şehir ekle"
-
-#: src/bin/weather_api.c:458
-msgid "Add"
-msgstr "Ekle"
-
-#: src/bin/weather_api.c:462
-msgid "Select unit"
-msgstr "Birim seç"
-
-#: src/bin/weather_api.c:463
-msgid "Select the unit to display temperature"
-msgstr "Sıcaklık ekranı birimi seç"
-
-#: src/bin/weather_api.c:468
-msgid "°C"
-msgstr "°C"
-
-#: src/bin/weather_api.c:468
-msgid "°F"
-msgstr "°F"
-
-#: src/bin/weather_api.c:472
-msgid "Select hemisphere"
-msgstr "Yarım küre seç"
-
-#: src/bin/weather_api.c:473
-msgid "Select the hemisphere you are located in"
-msgstr "Konumunuzdaki yarım küreyi seç"
-
-#: src/bin/weather_api.c:478
-msgid "Northern"
-msgstr "Kuzey"
-
-#: src/bin/weather_api.c:478
-msgid "Southern"
-msgstr "Güney"
-
-#: src/bin/weather_api.c:722 src/modules/activity/weather/weather.c:290
-msgid "Weather"
-msgstr "Hava"
 
 #: src/modules/activity/bookstore/bookstore.c:321
 #: src/modules/activity/bookstore/bookstore.c:372
@@ -199,21 +133,21 @@ msgstr "Kitapçı"
 msgid "Read your books"
 msgstr "Kitaplarını oku"
 
-#: src/modules/activity/configuration/configuration.c:206
-#: src/modules/activity/configuration/configuration.c:265
+#: src/modules/activity/configuration/configuration.c:208
+#: src/modules/activity/configuration/configuration.c:267
 msgid "Configuration"
 msgstr "Yapılandırma"
 
-#: src/modules/activity/configuration/configuration.c:241
+#: src/modules/activity/configuration/configuration.c:243
 #: src/modules/activity/configuration/configuration_sysinfo.c:677
 msgid "System information"
 msgstr "Sistem Bilgisi"
 
-#: src/modules/activity/configuration/configuration.c:244
+#: src/modules/activity/configuration/configuration.c:246
 msgid "Credits"
 msgstr "Hazırlayanlar"
 
-#: src/modules/activity/configuration/configuration.c:267
+#: src/modules/activity/configuration/configuration.c:269
 msgid "This module creates the Enna configuration panel"
 msgstr "Bu modül Enna yapılandırma panelinde oluşturuldu"
 
@@ -403,27 +337,27 @@ msgstr "Resim"
 msgid "Browse your photos and create slideshows"
 msgstr "Resimleri tara ve slayt gösterisi oluştur"
 
-#: src/modules/activity/tv/tv.c:107
+#: src/modules/activity/tv/tv.c:108
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Geri sayım '%s' içinde başlayacak %i dakika"
 msgstr[1] "Geri sayım '%s' içinde başlayacak %i dakikalar"
 
-#: src/modules/activity/tv/tv.c:110
+#: src/modules/activity/tv/tv.c:111
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Halen kaydediliyor '%s'"
 
-#: src/modules/activity/tv/tv.c:119
+#: src/modules/activity/tv/tv.c:120
 msgid "Recording in progress"
 msgstr "Durum kaydediliyor"
 
-#: src/modules/activity/tv/tv.c:164 src/modules/activity/tv/tv.c:382
+#: src/modules/activity/tv/tv.c:165 src/modules/activity/tv/tv.c:383
 msgid "Television"
 msgstr "Televizyon"
 
-#: src/modules/activity/tv/tv.c:384
+#: src/modules/activity/tv/tv.c:385
 msgid "View TV channels"
 msgstr "TV kanal görünümü"
 
@@ -441,13 +375,84 @@ msgstr "Video"
 msgid "Play your videos"
 msgstr "Videolarını oynat"
 
-#: src/modules/activity/weather/weather.c:347
+#: src/modules/activity/weather/weather.c:290
+#: src/modules/activity/weather/weather_api.c:724
+msgid "Weather"
+msgstr "Hava"
+
+#: src/modules/activity/weather/weather.c:353
 msgid "Weather forecasts"
 msgstr "Hava tahminleri"
 
-#: src/modules/activity/weather/weather.c:349
+#: src/modules/activity/weather/weather.c:355
 msgid "Show the weather at your location"
 msgstr "Konumunuzdaki havayı göster"
+
+#: src/modules/activity/weather/weather_api.c:408
+#: src/modules/activity/weather/weather_api.c:441
+msgid "City"
+msgstr "Şehir"
+
+#: src/modules/activity/weather/weather_api.c:409
+msgid "Choose your City"
+msgstr "Şehrini seç"
+
+#: src/modules/activity/weather/weather_api.c:413
+msgid "Enter your City here"
+msgstr "Şehrini buraya gir"
+
+#: src/modules/activity/weather/weather_api.c:416
+#: src/modules/activity/weather/weather_api.c:449
+msgid "Remove"
+msgstr "Kaldır"
+
+#: src/modules/activity/weather/weather_api.c:442
+msgid "Choose your city"
+msgstr "Şehrini seç"
+
+#: src/modules/activity/weather/weather_api.c:454
+msgid "Add new city"
+msgstr "Yeni şehir ekle"
+
+#: src/modules/activity/weather/weather_api.c:455
+msgid "Add more cities to the list"
+msgstr "Listeden daha fazla şehir ekle"
+
+#: src/modules/activity/weather/weather_api.c:460
+msgid "Add"
+msgstr "Ekle"
+
+#: src/modules/activity/weather/weather_api.c:464
+msgid "Select unit"
+msgstr "Birim seç"
+
+#: src/modules/activity/weather/weather_api.c:465
+msgid "Select the unit to display temperature"
+msgstr "Sıcaklık ekranı birimi seç"
+
+#: src/modules/activity/weather/weather_api.c:470
+msgid "°C"
+msgstr "°C"
+
+#: src/modules/activity/weather/weather_api.c:470
+msgid "°F"
+msgstr "°F"
+
+#: src/modules/activity/weather/weather_api.c:474
+msgid "Select hemisphere"
+msgstr "Yarım küre seç"
+
+#: src/modules/activity/weather/weather_api.c:475
+msgid "Select the hemisphere you are located in"
+msgstr "Konumunuzdaki yarım küreyi seç"
+
+#: src/modules/activity/weather/weather_api.c:480
+msgid "Northern"
+msgstr "Kuzey"
+
+#: src/modules/activity/weather/weather_api.c:480
+msgid "Southern"
+msgstr "Güney"
 
 #: src/modules/browser/cdda/cdda.c:95
 msgid "Play audio CD"

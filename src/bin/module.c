@@ -28,6 +28,10 @@
 #include "view_list2.h"
 #include "logs.h"
 
+int  enna_module_enable(Enna_Module *m);
+int  enna_module_disable(Enna_Module *m);
+
+
 #define ENABLE_CONFIG_PANEL 0
 
 static Eina_List *_enna_modules = NULL;   /** List of Enna_Modules* */
@@ -157,11 +161,12 @@ enna_module_init(void)
     Eina_Array_Iterator iterator;
     unsigned int i;
     
+    _plugins_array = eina_array_new(40);
+
 #ifdef USE_STATIC_MODULES
     Enna_Module_Api *api;
 
     /* Populate the array of available plugins statically */
-    _plugins_array = eina_array_new(20);
     #ifdef BUILD_ACTIVITY_BOOKSTORE
         eina_array_push(_plugins_array, &enna_mod_activity_bookstore_api);
     #endif
@@ -252,8 +257,7 @@ enna_module_init(void)
 #else
     Eina_Module *module;
 
-    /* Populate the array of available plugins dinamically */
-    _plugins_array = eina_array_new(20);
+    /* Populate the array of available plugins dynamically */
     _plugins_array = eina_module_list_get(_plugins_array,
                         PACKAGE_LIB_DIR"/enna/modules/", 0, NULL, NULL);
     enna_log(ENNA_MSG_INFO, NULL,
@@ -361,9 +365,15 @@ enna_module_load_all(void)
         return;
 
 #ifdef USE_STATIC_MODULES
+    enna_log(ENNA_MSG_INFO, NULL, "Module Linking: Static");
     EINA_ARRAY_ITER_NEXT(_plugins_array, i, api, iterator)
     {
+	enna_log(ENNA_MSG_INFO, NULL, "Module name: %s", api->name);
+        em = enna_module_open(api);
+        enna_module_enable(em);
+    }
 #else
+    enna_log(ENNA_MSG_INFO, NULL, "Module Linking: Dynamic");
     Eina_Module *plugin;
     
     eina_module_list_load(_plugins_array);
@@ -371,11 +381,12 @@ enna_module_load_all(void)
     EINA_ARRAY_ITER_NEXT(_plugins_array, i, plugin, iterator)
     {
         api = eina_module_symbol_get(plugin, ENNA_STRINGIFY(MOD_PREFIX) "_api");
-#endif /* USE_STATIC_MODULES */
 
+	enna_log(ENNA_MSG_INFO, NULL, "Module name: %s", api->name);
         em = enna_module_open(api);
         enna_module_enable(em);
     }
+#endif /* USE_STATIC_MODULES */
 }
 
 /******************************************************************************/
@@ -431,6 +442,7 @@ _config_panel_show(void *data)
     // populate list
     EINA_LIST_FOREACH(_enna_modules, l, m)
     {
+	enna_log(ENNA_MSG_INFO, NULL, "module CPS: %s", m->api->title);
         Elm_Genlist_Item *item;
         item = enna_list2_append(o_list,
                                  m->api->title ? _(m->api->title) : _(m->name),

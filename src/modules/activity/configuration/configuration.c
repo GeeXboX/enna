@@ -23,10 +23,12 @@
 
 #include <Eina.h>
 #include <Edje.h>
+#include <Elementary.h>
 
 #include "enna.h"
 #include "vfs.h"
 #include "enna_config.h"
+#include "enna_config_panel.h"
 #include "view_wall.h"
 #include "content.h"
 #include "mainmenu.h"

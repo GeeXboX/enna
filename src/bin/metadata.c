@@ -31,7 +31,7 @@
 #include <valhalla.h>
 
 #include "enna.h"
-#include "enna_config.h"
+#include "enna_config_main.h"
 #include "metadata.h"
 #include "logs.h"
 #include "utils.h"
@@ -164,7 +164,7 @@ ondemand_cb(const char *file, valhalla_event_od_t e, const char *id, void *data 
 }
 
 #define CFG_INT(field)                                                \
-    v = enna_config_int_get(section, #field);                         \
+    v = enna_config_int_get(section, #field, 0, NULL);                \
     if (v) db_cfg.field = v;
 
 static const struct {
@@ -349,7 +349,7 @@ static Enna_Config_Section_Parser cfg_db = {
     cfg_db_free,
 };
 
-void
+static void
 enna_metadata_cfg_register (void)
 {
     enna_config_section_parser_register(&cfg_db);
@@ -500,6 +500,8 @@ void
 enna_metadata_init(void)
 {
     char dst[1024];
+
+    enna_metadata_cfg_register();
 
     /* try to create backdrops directory storage */
     memset(dst, '\0', sizeof(dst));

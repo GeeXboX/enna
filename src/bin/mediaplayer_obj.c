@@ -623,7 +623,7 @@ enna_mediaplayer_obj_add(Evas * evas __UNUSED__, Enna_Playlist *enna_playlist)
     sd->artist = lb;
 
     btn_box = elm_box_add(layout);
-    elm_box_homogenous_set(btn_box, 0);
+    elm_box_homogeneous_set(btn_box, 0);
     elm_box_horizontal_set(btn_box, 1);
 
     ELM_ADD("icon/mp_stop",    _button_clicked_stop_cb);

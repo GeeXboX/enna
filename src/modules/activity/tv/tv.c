@@ -22,6 +22,7 @@
 #include <string.h>
 
 #include <Edje.h>
+#include <Elementary.h>
 
 #include "enna.h"
 #include "enna_config.h"
@@ -319,8 +320,8 @@ module_init(Enna_Module *em)
         return;
 
     enna_config_section_parser_register(&cfg_tv);
-    cfg_tv_section_set_default();
-    cfg_tv_section_load(cfg_tv.section);
+//    cfg_tv_section_set_default();
+//    cfg_tv_section_load(cfg_tv.section);
 
     mod = calloc(1, sizeof(Enna_Module_Tv));
     mod->em = em;

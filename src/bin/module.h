@@ -57,10 +57,4 @@ struct _Enna_Module_Api
     } func;
 };
 
-int          enna_module_init(void);
-void         enna_module_shutdown(void);
-void         enna_module_load_all(void);
-int          enna_module_enable(Enna_Module *m);
-int          enna_module_disable(Enna_Module *m);
-
 #endif /* MODULE_H */

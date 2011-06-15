@@ -23,6 +23,7 @@
 #define UTILS_H
 
 #include <Evas.h>
+#include "logs.h"
 
 #define MMAX(a,b) ((a) > (b) ? (a) : (b))
 #define MMIN(a,b) ((a) > (b) ? (b) : (a))
@@ -64,5 +65,7 @@ const char *enna_util_duration_to_string(const char *length);
 
 Eina_List *enna_util_stringlist_get(const char *str);
 void enna_util_stringlist_free(Eina_List *list);
+
+enna_msg_level_t enna_util_get_log_level(const char *verbosity);
 
 #endif /* UTILS_H */

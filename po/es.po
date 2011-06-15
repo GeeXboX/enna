@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-03-14 13:41+0100\n"
+"POT-Creation-Date: 2011-06-15 19:04+0200\n"
 "PO-Revision-Date: 2010-08-05 13:18-0300\n"
 "Last-Translator: Gabriel Fernández <unit-iso@unit.org.uy>\n"
 "Language-Team: Español <kde-i18n-doc@kde.org>\n"
@@ -22,53 +22,53 @@ msgstr ""
 "X-Poedit-Country: COLOMBIA\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: src/bin/browser.c:252
+#: src/bin/browser.c:262
 msgid "No media found!"
 msgstr "¡No se encuentran medios!"
 
-#: src/bin/enna.c:546
+#: src/bin/enna.c:147
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:547
+#: src/bin/enna.c:148
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Uso: %s [opciones ...]\n"
 
-#: src/bin/enna.c:548
+#: src/bin/enna.c:149
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Opciones Disponibles:\n"
 
-#: src/bin/enna.c:549
+#: src/bin/enna.c:150
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Especifica el archivo de configuración a usar.\n"
 
-#: src/bin/enna.c:550
+#: src/bin/enna.c:151
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Obliga a modo de Pantalla Completa.\n"
 
-#: src/bin/enna.c:551
+#: src/bin/enna.c:152
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Muestra esta pantalla de ayuda.\n"
 
-#: src/bin/enna.c:552
+#: src/bin/enna.c:153
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Especifica el nombre del tema a usar.\n"
 
-#: src/bin/enna.c:553
+#: src/bin/enna.c:154
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 "  -g, (--geometry):   Especifica la geometría de la pantalla. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:554
+#: src/bin/enna.c:155
 #, fuzzy, c-format
 msgid ""
 "  -g, (--geometry):Specify window geometry and offset. "
@@ -77,17 +77,19 @@ msgstr ""
 "  -g, (--geometry):   Especifica la geometría de la pantalla. "
 "(geometry=1280x720)\n"
 
-#: src/bin/enna.c:555
-#, c-format
-msgid "  -p, (--profile): Specify display profile\n"
+#: src/bin/enna.c:156
+#, fuzzy, c-format
+msgid ""
+"  -p, (--profile): Specify display profile (cannot be used with theme,"
+"geometry)\n"
 msgstr "  -p, (--profile): Especifica el perfil a visualizar\n"
 
-#: src/bin/enna.c:556
+#: src/bin/enna.c:157
 #, c-format
 msgid "    Supported: "
 msgstr "    Soportado: "
 
-#: src/bin/enna.c:560
+#: src/bin/enna.c:159
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Muestra la versión de Enna.\n"
@@ -113,11 +115,11 @@ msgstr "No"
 msgid "continue using Enna"
 msgstr "Continuar Utilizando Enna"
 
-#: src/bin/module.c:269
+#: src/bin/module.c:273
 msgid "Modules"
 msgstr "Módulos"
 
-#: src/bin/module.c:438
+#: src/bin/module.c:450
 msgid "No information provided"
 msgstr "No se encontró información."
 
@@ -125,75 +127,6 @@ msgstr "No se encontró información."
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Pista #%02d (%02d:%02d)"
-
-#: src/bin/weather_api.c:406 src/bin/weather_api.c:439
-msgid "City"
-msgstr "Ciudad"
-
-#: src/bin/weather_api.c:407
-msgid "Choose your City"
-msgstr "Elija su Ciudad"
-
-#: src/bin/weather_api.c:411
-msgid "Enter your City here"
-msgstr "Ingrese su Ciudad aquí"
-
-#: src/bin/weather_api.c:414 src/bin/weather_api.c:447
-msgid "Remove"
-msgstr "Eliminar"
-
-#: src/bin/weather_api.c:440
-msgid "Choose your city"
-msgstr "Elija su ciudad"
-
-#: src/bin/weather_api.c:452
-msgid "Add new city"
-msgstr "Añadir una nueva ciudad"
-
-#: src/bin/weather_api.c:453
-msgid "Add more cities to the list"
-msgstr "Añadir más ciudades a la lista"
-
-#: src/bin/weather_api.c:458
-msgid "Add"
-msgstr "Añadir"
-
-#: src/bin/weather_api.c:462
-msgid "Select unit"
-msgstr "Seleccione unidad"
-
-#: src/bin/weather_api.c:463
-msgid "Select the unit to display temperature"
-msgstr "Seleccione la unidad para desplegar la temperatura"
-
-#: src/bin/weather_api.c:468
-msgid "°C"
-msgstr "°C"
-
-#: src/bin/weather_api.c:468
-msgid "°F"
-msgstr "°F"
-
-#: src/bin/weather_api.c:472
-msgid "Select hemisphere"
-msgstr "Seleccione hemisferio"
-
-#: src/bin/weather_api.c:473
-#, fuzzy
-msgid "Select the hemisphere you are located in"
-msgstr "Muestra el clima en su ubicación actual"
-
-#: src/bin/weather_api.c:478
-msgid "Northern"
-msgstr "Noreste"
-
-#: src/bin/weather_api.c:478
-msgid "Southern"
-msgstr "Sureste"
-
-#: src/bin/weather_api.c:722 src/modules/activity/weather/weather.c:290
-msgid "Weather"
-msgstr "Clima"
 
 #: src/modules/activity/bookstore/bookstore.c:321
 #: src/modules/activity/bookstore/bookstore.c:372
@@ -205,21 +138,21 @@ msgstr "Librería"
 msgid "Read your books"
 msgstr "Lea sus libros"
 
-#: src/modules/activity/configuration/configuration.c:206
-#: src/modules/activity/configuration/configuration.c:265
+#: src/modules/activity/configuration/configuration.c:208
+#: src/modules/activity/configuration/configuration.c:267
 msgid "Configuration"
 msgstr "Configuración"
 
-#: src/modules/activity/configuration/configuration.c:241
+#: src/modules/activity/configuration/configuration.c:243
 #: src/modules/activity/configuration/configuration_sysinfo.c:677
 msgid "System information"
 msgstr "Información del Sistema"
 
-#: src/modules/activity/configuration/configuration.c:244
+#: src/modules/activity/configuration/configuration.c:246
 msgid "Credits"
 msgstr "Créditos"
 
-#: src/modules/activity/configuration/configuration.c:267
+#: src/modules/activity/configuration/configuration.c:269
 msgid "This module creates the Enna configuration panel"
 msgstr "Este modulo crea el panel del configuración de Enna"
 
@@ -417,27 +350,27 @@ msgstr "Fotos"
 msgid "Browse your photos and create slideshows"
 msgstr "Vea todas sus fotos o cree una presentación"
 
-#: src/modules/activity/tv/tv.c:107
+#: src/modules/activity/tv/tv.c:108
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "El temporizador '%s' comenzará en %i minuto"
 msgstr[1] "El temporizador '%s' comenzará en %i minutos"
 
-#: src/modules/activity/tv/tv.c:110
+#: src/modules/activity/tv/tv.c:111
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Grabando '%s'"
 
-#: src/modules/activity/tv/tv.c:119
+#: src/modules/activity/tv/tv.c:120
 msgid "Recording in progress"
 msgstr "Grabación en proceso"
 
-#: src/modules/activity/tv/tv.c:164 src/modules/activity/tv/tv.c:382
+#: src/modules/activity/tv/tv.c:165 src/modules/activity/tv/tv.c:383
 msgid "Television"
 msgstr "Televisión"
 
-#: src/modules/activity/tv/tv.c:384
+#: src/modules/activity/tv/tv.c:385
 msgid "View TV channels"
 msgstr "Ver canales de TV"
 
@@ -455,14 +388,86 @@ msgstr "Vídeo"
 msgid "Play your videos"
 msgstr "Reproduzca sus vídeos"
 
-#: src/modules/activity/weather/weather.c:347
+#: src/modules/activity/weather/weather.c:290
+#: src/modules/activity/weather/weather_api.c:724
+msgid "Weather"
+msgstr "Clima"
+
+#: src/modules/activity/weather/weather.c:353
 #, fuzzy
 msgid "Weather forecasts"
 msgstr "Pronóstico del clima"
 
-#: src/modules/activity/weather/weather.c:349
+#: src/modules/activity/weather/weather.c:355
 msgid "Show the weather at your location"
 msgstr "Muestra el clima en su ubicación actual"
+
+#: src/modules/activity/weather/weather_api.c:408
+#: src/modules/activity/weather/weather_api.c:441
+msgid "City"
+msgstr "Ciudad"
+
+#: src/modules/activity/weather/weather_api.c:409
+msgid "Choose your City"
+msgstr "Elija su Ciudad"
+
+#: src/modules/activity/weather/weather_api.c:413
+msgid "Enter your City here"
+msgstr "Ingrese su Ciudad aquí"
+
+#: src/modules/activity/weather/weather_api.c:416
+#: src/modules/activity/weather/weather_api.c:449
+msgid "Remove"
+msgstr "Eliminar"
+
+#: src/modules/activity/weather/weather_api.c:442
+msgid "Choose your city"
+msgstr "Elija su ciudad"
+
+#: src/modules/activity/weather/weather_api.c:454
+msgid "Add new city"
+msgstr "Añadir una nueva ciudad"
+
+#: src/modules/activity/weather/weather_api.c:455
+msgid "Add more cities to the list"
+msgstr "Añadir más ciudades a la lista"
+
+#: src/modules/activity/weather/weather_api.c:460
+msgid "Add"
+msgstr "Añadir"
+
+#: src/modules/activity/weather/weather_api.c:464
+msgid "Select unit"
+msgstr "Seleccione unidad"
+
+#: src/modules/activity/weather/weather_api.c:465
+msgid "Select the unit to display temperature"
+msgstr "Seleccione la unidad para desplegar la temperatura"
+
+#: src/modules/activity/weather/weather_api.c:470
+msgid "°C"
+msgstr "°C"
+
+#: src/modules/activity/weather/weather_api.c:470
+msgid "°F"
+msgstr "°F"
+
+#: src/modules/activity/weather/weather_api.c:474
+msgid "Select hemisphere"
+msgstr "Seleccione hemisferio"
+
+#: src/modules/activity/weather/weather_api.c:475
+#, fuzzy
+msgid "Select the hemisphere you are located in"
+msgstr "Muestra el clima en su ubicación actual"
+
+#: src/modules/activity/weather/weather_api.c:480
+msgid "Northern"
+msgstr "Noreste"
+
+#: src/modules/activity/weather/weather_api.c:480
+msgid "Southern"
+msgstr "Sureste"
 
 #: src/modules/browser/cdda/cdda.c:95
 #, fuzzy

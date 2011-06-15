@@ -105,6 +105,9 @@ enna_video_picture_set (Evas_Object *obj, const char *file, int from_vfs)
 void
 enna_video_picture_unset (Evas_Object *obj)
 {
+    if (!obj)
+	return;
+
     Smart_Data *sd = evas_object_data_get(obj, "sd");
 
     edje_object_signal_emit(sd->o_edje, "snapshot,hide", "enna");
