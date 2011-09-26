@@ -1042,7 +1042,7 @@ static Enna_Config_Section_Parser cfg_mediaplayer = {
     cfg_mediaplayer_free,
 };
 
-static void
+void
 enna_mediaplayer_cfg_register (void)
 {
     enna_config_section_parser_register(&cfg_mediaplayer);
@@ -1051,8 +1051,6 @@ enna_mediaplayer_cfg_register (void)
 int
 enna_mediaplayer_init(void)
 {
-    enna_mediaplayer_cfg_register();
-
     player_init_param_t param;
 
     memset(&param, 0, sizeof(player_init_param_t));

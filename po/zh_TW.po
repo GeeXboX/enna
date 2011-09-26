@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-06-15 19:04+0200\n"
+"POT-Creation-Date: 2011-03-14 13:41+0100\n"
 "PO-Revision-Date: 2010-01-13 14:16+0800\n"
 "Last-Translator: <sword.huang@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -19,70 +19,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/bin/browser.c:262
+#: src/bin/browser.c:252
 msgid "No media found!"
 msgstr "沒有發現任何媒體!"
 
-#: src/bin/enna.c:147
+#: src/bin/enna.c:546
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna 媒體中心\n"
 
-#: src/bin/enna.c:148
+#: src/bin/enna.c:547
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "用法：%s [選項...]\n"
 
-#: src/bin/enna.c:149
+#: src/bin/enna.c:548
 #, c-format
 msgid " Available options:\n"
 msgstr "可選項:\n"
 
-#: src/bin/enna.c:150
+#: src/bin/enna.c:549
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "-c, (--config): 指定要使用的配置檔。\n"
 
-#: src/bin/enna.c:151
+#: src/bin/enna.c:550
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "-f, (--fs): 強制全螢幕顯示。\n"
 
-#: src/bin/enna.c:152
+#: src/bin/enna.c:551
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "-h, (--help): 顯示這個說明。\n"
 
-#: src/bin/enna.c:153
+#: src/bin/enna.c:552
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "-t, (--theme): 指定要使用的佈景。\n"
 
-#: src/bin/enna.c:154
+#: src/bin/enna.c:553
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "-g, (--geometry):指定視窗大小。(geometry=1280x720)\n"
 
-#: src/bin/enna.c:155
+#: src/bin/enna.c:554
 #, fuzzy, c-format
 msgid ""
 "  -g, (--geometry):Specify window geometry and offset. "
 "(geometry=1280x720:10:20)\n"
 msgstr "-g, (--geometry):指定視窗大小。(geometry=1280x720)\n"
 
-#: src/bin/enna.c:156
-#, fuzzy, c-format
-msgid ""
-"  -p, (--profile): Specify display profile (cannot be used with theme,"
-"geometry)\n"
+#: src/bin/enna.c:555
+#, c-format
+msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p, (--profile): 指定顯示的描述記錄。\n"
 
-#: src/bin/enna.c:157
+#: src/bin/enna.c:556
 #, c-format
 msgid "    Supported: "
 msgstr "被支援的:"
 
-#: src/bin/enna.c:159
+#: src/bin/enna.c:560
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "-V, (--version): 顯示 Enna 的版本。\n"
@@ -107,11 +105,11 @@ msgstr "否"
 msgid "continue using Enna"
 msgstr "繼續使用 Enna"
 
-#: src/bin/module.c:273
+#: src/bin/module.c:269
 msgid "Modules"
 msgstr "模組"
 
-#: src/bin/module.c:450
+#: src/bin/module.c:438
 msgid "No information provided"
 msgstr "沒有提供任何資訊"
 
@@ -119,6 +117,74 @@ msgstr "沒有提供任何資訊"
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "音軌 #%02d (%02d:%02d)"
+
+#: src/bin/weather_api.c:406 src/bin/weather_api.c:439
+msgid "City"
+msgstr "城市"
+
+#: src/bin/weather_api.c:407
+msgid "Choose your City"
+msgstr "選擇你的城市"
+
+#: src/bin/weather_api.c:411
+msgid "Enter your City here"
+msgstr "在這鍵入你的城市"
+
+#: src/bin/weather_api.c:414 src/bin/weather_api.c:447
+msgid "Remove"
+msgstr "移除"
+
+#: src/bin/weather_api.c:440
+msgid "Choose your city"
+msgstr "選擇你的城市"
+
+#: src/bin/weather_api.c:452
+msgid "Add new city"
+msgstr "加入新城市"
+
+#: src/bin/weather_api.c:453
+msgid "Add more cities to the list"
+msgstr "加入更多的城市到清單中"
+
+#: src/bin/weather_api.c:458
+msgid "Add"
+msgstr "新增"
+
+#: src/bin/weather_api.c:462
+msgid "Select unit"
+msgstr "選擇單位"
+
+#: src/bin/weather_api.c:463
+msgid "Select the unit to display temperature"
+msgstr "選擇溫度的單位"
+
+#: src/bin/weather_api.c:468
+msgid "°C"
+msgstr "攝氏"
+
+#: src/bin/weather_api.c:468
+msgid "°F"
+msgstr "華氏"
+
+#: src/bin/weather_api.c:472
+msgid "Select hemisphere"
+msgstr "選擇哪個半球"
+
+#: src/bin/weather_api.c:473
+msgid "Select the hemisphere you are located in"
+msgstr "選擇你所在的位置是哪個半球"
+
+#: src/bin/weather_api.c:478
+msgid "Northern"
+msgstr "北半球"
+
+#: src/bin/weather_api.c:478
+msgid "Southern"
+msgstr "南半球"
+
+#: src/bin/weather_api.c:722 src/modules/activity/weather/weather.c:290
+msgid "Weather"
+msgstr "天氣"
 
 #: src/modules/activity/bookstore/bookstore.c:321
 #: src/modules/activity/bookstore/bookstore.c:372
@@ -129,21 +195,21 @@ msgstr "書店"
 msgid "Read your books"
 msgstr "讀你的書"
 
-#: src/modules/activity/configuration/configuration.c:208
-#: src/modules/activity/configuration/configuration.c:267
+#: src/modules/activity/configuration/configuration.c:206
+#: src/modules/activity/configuration/configuration.c:265
 msgid "Configuration"
 msgstr "配置"
 
-#: src/modules/activity/configuration/configuration.c:243
+#: src/modules/activity/configuration/configuration.c:241
 #: src/modules/activity/configuration/configuration_sysinfo.c:677
 msgid "System information"
 msgstr "系統資訊"
 
-#: src/modules/activity/configuration/configuration.c:246
+#: src/modules/activity/configuration/configuration.c:244
 msgid "Credits"
 msgstr "感謝"
 
-#: src/modules/activity/configuration/configuration.c:269
+#: src/modules/activity/configuration/configuration.c:267
 msgid "This module creates the Enna configuration panel"
 msgstr "這個模組是用來建立Enna配置面板"
 
@@ -333,27 +399,27 @@ msgstr "照片"
 msgid "Browse your photos and create slideshows"
 msgstr "瀏灠你的照片並建立幻燈片"
 
-#: src/modules/activity/tv/tv.c:108
+#: src/modules/activity/tv/tv.c:107
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "計時器 '%s' 是因為開始在 %i 分鐘內"
 msgstr[1] "計時器 '%s' 是因為開始在 %i 分鐘內"
 
-#: src/modules/activity/tv/tv.c:111
+#: src/modules/activity/tv/tv.c:110
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "現在正在記錄 '%s'"
 
-#: src/modules/activity/tv/tv.c:120
+#: src/modules/activity/tv/tv.c:119
 msgid "Recording in progress"
 msgstr "記錄正在進行中"
 
-#: src/modules/activity/tv/tv.c:165 src/modules/activity/tv/tv.c:383
+#: src/modules/activity/tv/tv.c:164 src/modules/activity/tv/tv.c:382
 msgid "Television"
 msgstr "電視"
 
-#: src/modules/activity/tv/tv.c:385
+#: src/modules/activity/tv/tv.c:384
 msgid "View TV channels"
 msgstr "觀看電視頻道"
 
@@ -371,84 +437,13 @@ msgstr "影片"
 msgid "Play your videos"
 msgstr "播放你的影片"
 
-#: src/modules/activity/weather/weather.c:290
-#: src/modules/activity/weather/weather_api.c:724
-msgid "Weather"
-msgstr "天氣"
-
-#: src/modules/activity/weather/weather.c:353
+#: src/modules/activity/weather/weather.c:347
 msgid "Weather forecasts"
 msgstr "天氣預報"
 
-#: src/modules/activity/weather/weather.c:355
+#: src/modules/activity/weather/weather.c:349
 msgid "Show the weather at your location"
 msgstr "顯示你本地的天氣"
-
-#: src/modules/activity/weather/weather_api.c:408
-#: src/modules/activity/weather/weather_api.c:441
-msgid "City"
-msgstr "城市"
-
-#: src/modules/activity/weather/weather_api.c:409
-msgid "Choose your City"
-msgstr "選擇你的城市"
-
-#: src/modules/activity/weather/weather_api.c:413
-msgid "Enter your City here"
-msgstr "在這鍵入你的城市"
-
-#: src/modules/activity/weather/weather_api.c:416
-#: src/modules/activity/weather/weather_api.c:449
-msgid "Remove"
-msgstr "移除"
-
-#: src/modules/activity/weather/weather_api.c:442
-msgid "Choose your city"
-msgstr "選擇你的城市"
-
-#: src/modules/activity/weather/weather_api.c:454
-msgid "Add new city"
-msgstr "加入新城市"
-
-#: src/modules/activity/weather/weather_api.c:455
-msgid "Add more cities to the list"
-msgstr "加入更多的城市到清單中"
-
-#: src/modules/activity/weather/weather_api.c:460
-msgid "Add"
-msgstr "新增"
-
-#: src/modules/activity/weather/weather_api.c:464
-msgid "Select unit"
-msgstr "選擇單位"
-
-#: src/modules/activity/weather/weather_api.c:465
-msgid "Select the unit to display temperature"
-msgstr "選擇溫度的單位"
-
-#: src/modules/activity/weather/weather_api.c:470
-msgid "°C"
-msgstr "攝氏"
-
-#: src/modules/activity/weather/weather_api.c:470
-msgid "°F"
-msgstr "華氏"
-
-#: src/modules/activity/weather/weather_api.c:474
-msgid "Select hemisphere"
-msgstr "選擇哪個半球"
-
-#: src/modules/activity/weather/weather_api.c:475
-msgid "Select the hemisphere you are located in"
-msgstr "選擇你所在的位置是哪個半球"
-
-#: src/modules/activity/weather/weather_api.c:480
-msgid "Northern"
-msgstr "北半球"
-
-#: src/modules/activity/weather/weather_api.c:480
-msgid "Southern"
-msgstr "南半球"
 
 #: src/modules/browser/cdda/cdda.c:95
 msgid "Play audio CD"

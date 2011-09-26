@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-06-15 19:04+0200\n"
+"POT-Creation-Date: 2011-03-14 13:41+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: George Koutsikos <ragecryx@yahoo.gr>\n"
 "Language-Team: Greece\n"
@@ -18,71 +18,69 @@ msgstr ""
 "X-Poedit-Language: Greek\n"
 "X-Poedit-Country: GREECE\n"
 
-#: src/bin/browser.c:262
+#: src/bin/browser.c:252
 #, fuzzy
 msgid "No media found!"
 msgstr "Δεν βρέθηκαν αρχεία πολυμέσων!"
 
-#: src/bin/enna.c:147
+#: src/bin/enna.c:546
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "Enna MediaCenter\n"
 
-#: src/bin/enna.c:148
+#: src/bin/enna.c:547
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr "Χρήση: %s [επιλογές ...]\n"
 
-#: src/bin/enna.c:149
+#: src/bin/enna.c:548
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr "Διαθέσιμες επιλογές:\n"
 
-#: src/bin/enna.c:150
+#: src/bin/enna.c:549
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:151
+#: src/bin/enna.c:550
 #, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr ""
 
-#: src/bin/enna.c:152
+#: src/bin/enna.c:551
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr ""
 
-#: src/bin/enna.c:153
+#: src/bin/enna.c:552
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr ""
 
-#: src/bin/enna.c:154
+#: src/bin/enna.c:553
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr ""
 
-#: src/bin/enna.c:155
+#: src/bin/enna.c:554
 #, c-format
 msgid ""
 "  -g, (--geometry):Specify window geometry and offset. "
 "(geometry=1280x720:10:20)\n"
 msgstr ""
 
-#: src/bin/enna.c:156
+#: src/bin/enna.c:555
 #, c-format
-msgid ""
-"  -p, (--profile): Specify display profile (cannot be used with theme,"
-"geometry)\n"
+msgid "  -p, (--profile): Specify display profile\n"
 msgstr ""
 
-#: src/bin/enna.c:157
+#: src/bin/enna.c:556
 #, c-format
 msgid "    Supported: "
 msgstr ""
 
-#: src/bin/enna.c:159
+#: src/bin/enna.c:560
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr ""
@@ -111,11 +109,11 @@ msgstr "Κανένα<br>"
 msgid "continue using Enna"
 msgstr "Όχι, συνέχισε την εκτέλεση του Enna"
 
-#: src/bin/module.c:273
+#: src/bin/module.c:269
 msgid "Modules"
 msgstr "Αρθρώματα"
 
-#: src/bin/module.c:450
+#: src/bin/module.c:438
 msgid "No information provided"
 msgstr "Δεν παρέχονται πληροφορίες"
 
@@ -123,6 +121,76 @@ msgstr "Δεν παρέχονται πληροφορίες"
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Κομμάτι #%02d (%02d:%02d)"
+
+#: src/bin/weather_api.c:406 src/bin/weather_api.c:439
+msgid "City"
+msgstr ""
+
+#: src/bin/weather_api.c:407
+msgid "Choose your City"
+msgstr ""
+
+#: src/bin/weather_api.c:411
+msgid "Enter your City here"
+msgstr ""
+
+#: src/bin/weather_api.c:414 src/bin/weather_api.c:447
+#, fuzzy
+msgid "Remove"
+msgstr "Змінний диск"
+
+#: src/bin/weather_api.c:440
+msgid "Choose your city"
+msgstr ""
+
+#: src/bin/weather_api.c:452
+msgid "Add new city"
+msgstr ""
+
+#: src/bin/weather_api.c:453
+msgid "Add more cities to the list"
+msgstr ""
+
+#: src/bin/weather_api.c:458
+msgid "Add"
+msgstr ""
+
+#: src/bin/weather_api.c:462
+msgid "Select unit"
+msgstr ""
+
+#: src/bin/weather_api.c:463
+msgid "Select the unit to display temperature"
+msgstr ""
+
+#: src/bin/weather_api.c:468
+msgid "°C"
+msgstr ""
+
+#: src/bin/weather_api.c:468
+msgid "°F"
+msgstr ""
+
+#: src/bin/weather_api.c:472
+msgid "Select hemisphere"
+msgstr ""
+
+#: src/bin/weather_api.c:473
+#, fuzzy
+msgid "Select the hemisphere you are located in"
+msgstr "Εμφάνιση του καιρού στη περιοχή σου"
+
+#: src/bin/weather_api.c:478
+msgid "Northern"
+msgstr ""
+
+#: src/bin/weather_api.c:478
+msgid "Southern"
+msgstr ""
+
+#: src/bin/weather_api.c:722 src/modules/activity/weather/weather.c:290
+msgid "Weather"
+msgstr "Καιρός"
 
 #: src/modules/activity/bookstore/bookstore.c:321
 #: src/modules/activity/bookstore/bookstore.c:372
@@ -134,22 +202,22 @@ msgstr "Βιβλιοπωλείο"
 msgid "Read your books"
 msgstr "Διαβάστε τα βιβλία σας"
 
-#: src/modules/activity/configuration/configuration.c:208
-#: src/modules/activity/configuration/configuration.c:267
+#: src/modules/activity/configuration/configuration.c:206
+#: src/modules/activity/configuration/configuration.c:265
 msgid "Configuration"
 msgstr "Ρύθμιση"
 
-#: src/modules/activity/configuration/configuration.c:243
+#: src/modules/activity/configuration/configuration.c:241
 #: src/modules/activity/configuration/configuration_sysinfo.c:677
 #, fuzzy
 msgid "System information"
 msgstr "Πληροφορίες συστήματος"
 
-#: src/modules/activity/configuration/configuration.c:246
+#: src/modules/activity/configuration/configuration.c:244
 msgid "Credits"
 msgstr "Μνεία"
 
-#: src/modules/activity/configuration/configuration.c:269
+#: src/modules/activity/configuration/configuration.c:267
 #, fuzzy
 msgid "This module creates the Enna configuration panel"
 msgstr ""
@@ -356,27 +424,27 @@ msgstr "Φωτογραφίες"
 msgid "Browse your photos and create slideshows"
 msgstr "Εμφάνισε όλες τις φωτογραφίες σου σε ένα τοίχο ή ως παρουσίαση"
 
-#: src/modules/activity/tv/tv.c:108
+#: src/modules/activity/tv/tv.c:107
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Ο χρονομετρητής '%s' θα ξεκινήσει σε %i λεπτό"
 msgstr[1] "Ο χρονομετρητής '%s' θα ξεκινήσει σε %i λεπτά"
 
-#: src/modules/activity/tv/tv.c:111
+#: src/modules/activity/tv/tv.c:110
 #, fuzzy, c-format
 msgid "Currently recording '%s'"
 msgstr "Εγγράφεται '%s'"
 
-#: src/modules/activity/tv/tv.c:120
+#: src/modules/activity/tv/tv.c:119
 msgid "Recording in progress"
 msgstr "Εγγραφή σε εξέλιξη"
 
-#: src/modules/activity/tv/tv.c:165 src/modules/activity/tv/tv.c:383
+#: src/modules/activity/tv/tv.c:164 src/modules/activity/tv/tv.c:382
 msgid "Television"
 msgstr "Τηλεόραση"
 
-#: src/modules/activity/tv/tv.c:385
+#: src/modules/activity/tv/tv.c:384
 #, fuzzy
 msgid "View TV channels"
 msgstr "Προβολή καναλιών τηλεόρασης"
@@ -395,87 +463,14 @@ msgstr "Βίντεο"
 msgid "Play your videos"
 msgstr ""
 
-#: src/modules/activity/weather/weather.c:290
-#: src/modules/activity/weather/weather_api.c:724
-msgid "Weather"
-msgstr "Καιρός"
-
-#: src/modules/activity/weather/weather.c:353
+#: src/modules/activity/weather/weather.c:347
 #, fuzzy
 msgid "Weather forecasts"
 msgstr "Προβλέψεις καιρού"
 
-#: src/modules/activity/weather/weather.c:355
+#: src/modules/activity/weather/weather.c:349
 msgid "Show the weather at your location"
 msgstr "Εμφάνιση του καιρού στη περιοχή σου"
-
-#: src/modules/activity/weather/weather_api.c:408
-#: src/modules/activity/weather/weather_api.c:441
-msgid "City"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:409
-msgid "Choose your City"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:413
-msgid "Enter your City here"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:416
-#: src/modules/activity/weather/weather_api.c:449
-#, fuzzy
-msgid "Remove"
-msgstr "Змінний диск"
-
-#: src/modules/activity/weather/weather_api.c:442
-msgid "Choose your city"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:454
-msgid "Add new city"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:455
-msgid "Add more cities to the list"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:460
-msgid "Add"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:464
-msgid "Select unit"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:465
-msgid "Select the unit to display temperature"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:470
-msgid "°C"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:470
-msgid "°F"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:474
-msgid "Select hemisphere"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:475
-#, fuzzy
-msgid "Select the hemisphere you are located in"
-msgstr "Εμφάνιση του καιρού στη περιοχή σου"
-
-#: src/modules/activity/weather/weather_api.c:480
-msgid "Northern"
-msgstr ""
-
-#: src/modules/activity/weather/weather_api.c:480
-msgid "Southern"
-msgstr ""
 
 #: src/modules/browser/cdda/cdda.c:95
 #, fuzzy

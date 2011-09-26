@@ -27,7 +27,7 @@
 #include "enna_config.h"
 #include "box.h"
 #include "buffer.h"
-#include "activity_priv.h"
+#include "activity.h"
 #include "input.h"
 #include "exit.h"
 

@@ -52,9 +52,9 @@ const char * ini_get_string      (ini_t *ini, const char *section,
 Eina_List *  ini_get_string_list (ini_t *ini, const char *section,
                                   const char *key);
 int ini_get_int                  (ini_t *ini, const char *section,
-                                  const char *key, int default_value, Eina_Bool *is_set);
+                                  const char *key);
 Eina_Bool ini_get_bool           (ini_t *ini, const char *section,
-                                  const char *key, Eina_Bool default_value, Eina_Bool *is_set);
+                                  const char *key);
 
 /* setters */
 void ini_set_string      (ini_t *ini, const char *section,

@@ -350,8 +350,7 @@ enna_photo_slideshow_add(Evas_Object *parent)
 
     sd = calloc(1, sizeof(Smart_Data));
 
-    //sd->delay = enna_config->slideshow_delay;
-    sd->delay = enna_config_slideshow_delay();
+    sd->delay = enna_config->slideshow_delay;
 
     sd->layout = elm_layout_add(parent);
     elm_layout_file_set(sd->layout, enna_config_theme_get(), "enna/slideshow");

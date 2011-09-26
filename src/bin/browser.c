@@ -26,7 +26,7 @@
 
 #include "browser.h"
 #include "enna.h"
-#include "activity_priv.h"
+#include "activity.h"
 #include "buffer.h"
 #include "logs.h"
 #include "utils.h"
@@ -60,16 +60,6 @@ struct _Enna_Browser
 static void _browser_browse_root(Enna_Browser *browser);
 static void _browser_browse_activity(Enna_Browser* browser);
 static void _browser_browse_module(Enna_Browser* browser);
-
-
-// Variables
-static int ENNA_EVENT_BROWSER_CHANGED; /** ev = const char * */
-
-void enna_browser_init(void)
-{
-    ENNA_EVENT_BROWSER_CHANGED = ecore_event_type_new();
-}
-
 
 static Eina_Bool
 _add_idler(void *data)

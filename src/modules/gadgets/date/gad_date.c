@@ -25,7 +25,7 @@
 #include "enna.h"
 #include "enna_config.h"
 #include "utils.h"
-//#include "weather_api.h"
+#include "weather_api.h"
 #include "gadgets.h"
 #include "module.h"
 
@@ -43,6 +43,8 @@ static Smart_Data *sd = NULL;
 static Evas_Object *
 _date_add(Evas_Object *parent)
 {
+    Evas_Coord w, h;
+
     sd->obj = elm_layout_add(parent);
     elm_layout_file_set(sd->obj, enna_config_theme_get(), "gadget/date");
     evas_object_show(sd->obj);

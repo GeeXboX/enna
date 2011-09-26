@@ -29,8 +29,6 @@
 
 #include <Eina.h>
 #include <Edje.h>
-#include <Efreet.h>
-#include <Ecore_File.h>
 
 #include "enna.h"
 
@@ -38,7 +36,7 @@
 # include <Evil.h>
 #endif
 
-#include "enna_config_main.h"
+#include "enna_config.h"
 #include "utils.h"
 #include "vfs.h"
 #include "utils.h"
@@ -211,7 +209,6 @@ enna_util_calculate_font_size(Evas_Coord w, Evas_Coord h)
     size = MMIN(size, 8);
     size = MMAX(size, 30);
 
-    //fprintf(stderr,"calculated font size for (%d,%d) = %f\n", w,h,size);
     return (unsigned int)size;
 
 }
@@ -618,43 +615,6 @@ Eina_Bool
 enna_util_str_has_extension(const char *str, const char *ext)
 {
    return enna_util_str_has_suffix_helper(str, ext, strcasecmp);
-}
-
-
-static const struct {
-    const char *name;
-    enna_msg_level_t lvl;
-} msg_level_mapping[] = {
-    { "none",       ENNA_MSG_NONE     },
-    { "event",      ENNA_MSG_EVENT    },
-    { "info",       ENNA_MSG_INFO     },
-    { "warning",    ENNA_MSG_WARNING  },
-    { "error",      ENNA_MSG_ERROR    },
-    { "critical",   ENNA_MSG_CRITICAL },
-    { NULL,         0                 }
-};
-
-
-enna_msg_level_t enna_util_get_log_level(const char *verbosity)
-{
-    // converts descriptive text log level into internal id
-
-    int i;
-
-    if (verbosity)
-    {
-	for (i = 0; msg_level_mapping[i].name; i++)
-	{
-	    if (!strcmp (verbosity, msg_level_mapping[i].name))
-	    {
-		enna_log(ENNA_MSG_INFO, NULL, "set verbosity: %s", verbosity);
-
-		return msg_level_mapping[i].lvl;
-	    }
-	}
-    }
-
-    return ENNA_MSG_WARNING; // sensible default
 }
 
 const char *

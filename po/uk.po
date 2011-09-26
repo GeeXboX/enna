@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enna 0.4.0\n"
 "Report-Msgid-Bugs-To: http://enna.geexbox.org\n"
-"POT-Creation-Date: 2011-06-15 19:04+0200\n"
+"POT-Creation-Date: 2011-03-14 13:41+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kostyantyn Derets <ua.motofan@gmail.com>\n"
 "Language-Team: Ukraine\n"
@@ -19,71 +19,69 @@ msgstr ""
 "X-Poedit-Language: Ukrainian\n"
 "X-Poedit-Country: UKRAINE\n"
 
-#: src/bin/browser.c:262
+#: src/bin/browser.c:252
 #, fuzzy
 msgid "No media found!"
 msgstr "Не знайдено джерела!"
 
-#: src/bin/enna.c:147
+#: src/bin/enna.c:546
 #, c-format
 msgid "Enna MediaCenter\n"
 msgstr "МедіаЦентр Enna\n"
 
-#: src/bin/enna.c:148
+#: src/bin/enna.c:547
 #, c-format
 msgid " Usage: %s [options ...]\n"
 msgstr " Використання: %s [опції...]\n"
 
-#: src/bin/enna.c:149
+#: src/bin/enna.c:548
 #, fuzzy, c-format
 msgid " Available options:\n"
 msgstr " Доступні опції:\n"
 
-#: src/bin/enna.c:150
+#: src/bin/enna.c:549
 #, c-format
 msgid "  -c, (--config):  Specify configuration file to be used.\n"
 msgstr "  -c, (--config):  Вкажіть конфігураційний файл.\n"
 
-#: src/bin/enna.c:151
+#: src/bin/enna.c:550
 #, fuzzy, c-format
 msgid "  -f, (--fs):      Force fullscreen mode.\n"
 msgstr "  -f, (--fs):      Примусовий повноекраний режим.\n"
 
-#: src/bin/enna.c:152
+#: src/bin/enna.c:551
 #, c-format
 msgid "  -h, (--help):    Display this help.\n"
 msgstr "  -h, (--help):    Показує це повідомлення.\n"
 
-#: src/bin/enna.c:153
+#: src/bin/enna.c:552
 #, c-format
 msgid "  -t, (--theme):   Specify theme name to be used.\n"
 msgstr "  -t, (--theme):   Вкажіть назву теми, що буде використовуватись.\n"
 
-#: src/bin/enna.c:154
+#: src/bin/enna.c:553
 #, c-format
 msgid "  -g, (--geometry):Specify window geometry. (geometry=1280x720)\n"
 msgstr "  -g, (--geometry):Вкажіть розміри вікна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:155
+#: src/bin/enna.c:554
 #, fuzzy, c-format
 msgid ""
 "  -g, (--geometry):Specify window geometry and offset. "
 "(geometry=1280x720:10:20)\n"
 msgstr "  -g, (--geometry):Вкажіть розміри вікна. (geometry=1280x720)\n"
 
-#: src/bin/enna.c:156
-#, fuzzy, c-format
-msgid ""
-"  -p, (--profile): Specify display profile (cannot be used with theme,"
-"geometry)\n"
+#: src/bin/enna.c:555
+#, c-format
+msgid "  -p, (--profile): Specify display profile\n"
 msgstr "-p (--profile): вкажіть профіль дісплею \n"
 
-#: src/bin/enna.c:157
+#: src/bin/enna.c:556
 #, c-format
 msgid "    Supported: "
 msgstr "\tПідтримується: "
 
-#: src/bin/enna.c:159
+#: src/bin/enna.c:560
 #, c-format
 msgid "  -V, (--version): Display Enna version number.\n"
 msgstr "  -V, (--version): Відображує номер версії Enna.\n"
@@ -113,11 +111,11 @@ msgstr "Немає<br>"
 msgid "continue using Enna"
 msgstr "Ні, продовжити користуватись enna"
 
-#: src/bin/module.c:273
+#: src/bin/module.c:269
 msgid "Modules"
 msgstr "Модулі"
 
-#: src/bin/module.c:450
+#: src/bin/module.c:438
 #, fuzzy
 msgid "No information provided"
 msgstr "Не надано необхідної інформації."
@@ -126,6 +124,76 @@ msgstr "Не надано необхідної інформації."
 #, c-format
 msgid "Track #%02d (%02d:%02d)"
 msgstr "Доріжка #%02d (%02d:%02d)"
+
+#: src/bin/weather_api.c:406 src/bin/weather_api.c:439
+msgid "City"
+msgstr "Місто"
+
+#: src/bin/weather_api.c:407
+msgid "Choose your City"
+msgstr "Виберіть ваше місто"
+
+#: src/bin/weather_api.c:411
+msgid "Enter your City here"
+msgstr "Введіть ваше місто тут"
+
+#: src/bin/weather_api.c:414 src/bin/weather_api.c:447
+#, fuzzy
+msgid "Remove"
+msgstr "Видалити"
+
+#: src/bin/weather_api.c:440
+msgid "Choose your city"
+msgstr "Виберіть ваше місто"
+
+#: src/bin/weather_api.c:452
+msgid "Add new city"
+msgstr "Додати місто"
+
+#: src/bin/weather_api.c:453
+msgid "Add more cities to the list"
+msgstr "Додати більше міст до списку"
+
+#: src/bin/weather_api.c:458
+msgid "Add"
+msgstr "Додати"
+
+#: src/bin/weather_api.c:462
+msgid "Select unit"
+msgstr "Виберіть одиниці"
+
+#: src/bin/weather_api.c:463
+msgid "Select the unit to display temperature"
+msgstr "Віберіть одиниці відображення температури"
+
+#: src/bin/weather_api.c:468
+msgid "°C"
+msgstr "°C"
+
+#: src/bin/weather_api.c:468
+msgid "°F"
+msgstr "°F"
+
+#: src/bin/weather_api.c:472
+msgid "Select hemisphere"
+msgstr "Виберіть півкулю"
+
+#: src/bin/weather_api.c:473
+#, fuzzy
+msgid "Select the hemisphere you are located in"
+msgstr "Показувати погоду у вашому місті"
+
+#: src/bin/weather_api.c:478
+msgid "Northern"
+msgstr "Північна"
+
+#: src/bin/weather_api.c:478
+msgid "Southern"
+msgstr "Південна"
+
+#: src/bin/weather_api.c:722 src/modules/activity/weather/weather.c:290
+msgid "Weather"
+msgstr "Погода"
 
 #: src/modules/activity/bookstore/bookstore.c:321
 #: src/modules/activity/bookstore/bookstore.c:372
@@ -137,22 +205,22 @@ msgstr "Книжна полиця"
 msgid "Read your books"
 msgstr "Читати книжки"
 
-#: src/modules/activity/configuration/configuration.c:208
-#: src/modules/activity/configuration/configuration.c:267
+#: src/modules/activity/configuration/configuration.c:206
+#: src/modules/activity/configuration/configuration.c:265
 msgid "Configuration"
 msgstr "Налаштування"
 
-#: src/modules/activity/configuration/configuration.c:243
+#: src/modules/activity/configuration/configuration.c:241
 #: src/modules/activity/configuration/configuration_sysinfo.c:677
 #, fuzzy
 msgid "System information"
 msgstr "<c>Інформація про систему</c><br><br>"
 
-#: src/modules/activity/configuration/configuration.c:246
+#: src/modules/activity/configuration/configuration.c:244
 msgid "Credits"
 msgstr "Подяка"
 
-#: src/modules/activity/configuration/configuration.c:269
+#: src/modules/activity/configuration/configuration.c:267
 #, fuzzy
 msgid "This module creates the Enna configuration panel"
 msgstr "Цей модуль створює конфігураційну панель enna (НЕ ВИМИКАТИ!)"
@@ -360,27 +428,27 @@ msgstr "Фото"
 msgid "Browse your photos and create slideshows"
 msgstr "Переглянути всі Ваші фото 'на стіні' або як слайдшоу"
 
-#: src/modules/activity/tv/tv.c:108
+#: src/modules/activity/tv/tv.c:107
 #, c-format
 msgid "Timer '%s' is due to start in %i minute"
 msgid_plural "Timer '%s' is due to start in %i minutes"
 msgstr[0] "Таймер '%s' запуститься через %i хвилин"
 msgstr[1] "Timer '%s' is due to start in %i minute"
 
-#: src/modules/activity/tv/tv.c:111
+#: src/modules/activity/tv/tv.c:110
 #, c-format
 msgid "Currently recording '%s'"
 msgstr "Зараз записується '%s'"
 
-#: src/modules/activity/tv/tv.c:120
+#: src/modules/activity/tv/tv.c:119
 msgid "Recording in progress"
 msgstr "Триває запис"
 
-#: src/modules/activity/tv/tv.c:165 src/modules/activity/tv/tv.c:383
+#: src/modules/activity/tv/tv.c:164 src/modules/activity/tv/tv.c:382
 msgid "Television"
 msgstr "Телебачення"
 
-#: src/modules/activity/tv/tv.c:385
+#: src/modules/activity/tv/tv.c:384
 #, fuzzy
 msgid "View TV channels"
 msgstr "Дивитись телебачення"
@@ -399,87 +467,14 @@ msgstr "Відео"
 msgid "Play your videos"
 msgstr "Програти ваше відео"
 
-#: src/modules/activity/weather/weather.c:290
-#: src/modules/activity/weather/weather_api.c:724
-msgid "Weather"
-msgstr "Погода"
-
-#: src/modules/activity/weather/weather.c:353
+#: src/modules/activity/weather/weather.c:347
 #, fuzzy
 msgid "Weather forecasts"
 msgstr "Погода"
 
-#: src/modules/activity/weather/weather.c:355
+#: src/modules/activity/weather/weather.c:349
 msgid "Show the weather at your location"
 msgstr "Показувати погоду у вашому місті"
-
-#: src/modules/activity/weather/weather_api.c:408
-#: src/modules/activity/weather/weather_api.c:441
-msgid "City"
-msgstr "Місто"
-
-#: src/modules/activity/weather/weather_api.c:409
-msgid "Choose your City"
-msgstr "Виберіть ваше місто"
-
-#: src/modules/activity/weather/weather_api.c:413
-msgid "Enter your City here"
-msgstr "Введіть ваше місто тут"
-
-#: src/modules/activity/weather/weather_api.c:416
-#: src/modules/activity/weather/weather_api.c:449
-#, fuzzy
-msgid "Remove"
-msgstr "Видалити"
-
-#: src/modules/activity/weather/weather_api.c:442
-msgid "Choose your city"
-msgstr "Виберіть ваше місто"
-
-#: src/modules/activity/weather/weather_api.c:454
-msgid "Add new city"
-msgstr "Додати місто"
-
-#: src/modules/activity/weather/weather_api.c:455
-msgid "Add more cities to the list"
-msgstr "Додати більше міст до списку"
-
-#: src/modules/activity/weather/weather_api.c:460
-msgid "Add"
-msgstr "Додати"
-
-#: src/modules/activity/weather/weather_api.c:464
-msgid "Select unit"
-msgstr "Виберіть одиниці"
-
-#: src/modules/activity/weather/weather_api.c:465
-msgid "Select the unit to display temperature"
-msgstr "Віберіть одиниці відображення температури"
-
-#: src/modules/activity/weather/weather_api.c:470
-msgid "°C"
-msgstr "°C"
-
-#: src/modules/activity/weather/weather_api.c:470
-msgid "°F"
-msgstr "°F"
-
-#: src/modules/activity/weather/weather_api.c:474
-msgid "Select hemisphere"
-msgstr "Виберіть півкулю"
-
-#: src/modules/activity/weather/weather_api.c:475
-#, fuzzy
-msgid "Select the hemisphere you are located in"
-msgstr "Показувати погоду у вашому місті"
-
-#: src/modules/activity/weather/weather_api.c:480
-msgid "Northern"
-msgstr "Північна"
-
-#: src/modules/activity/weather/weather_api.c:480
-msgid "Southern"
-msgstr "Південна"
 
 #: src/modules/browser/cdda/cdda.c:95
 #, fuzzy

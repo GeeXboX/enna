@@ -27,7 +27,6 @@
 
 typedef struct _Enna_Browser Enna_Browser;
 
-void enna_browser_init(void);
 Enna_Browser *enna_browser_add(void (*add)(void *data, Enna_File *file), void *add_data,
                                void (*del)(void *data, Enna_File *file), void *del_data,
                                void (*update)(void *data, Enna_File *file), void *update_data,

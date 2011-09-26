@@ -450,26 +450,22 @@ ini_get_string_list (ini_t *ini, const char *section, const char *key)
 }
 
 int
-ini_get_int (ini_t *ini, const char *section, const char *key, int default_value, Eina_Bool *is_set)
+ini_get_int (ini_t *ini, const char *section, const char *key)
 {
     const char *s;
 
     s = ini_get_value(ini, section, key);
-    if (is_set) *is_set = s? EINA_TRUE : EINA_FALSE;
-
-    return s ? atoi(s) : default_value;
+    return s ? atoi(s) : 0;
 }
 
 Eina_Bool
-ini_get_bool (ini_t *ini, const char *section, const char *key, Eina_Bool default_value, Eina_Bool *is_set)
+ini_get_bool (ini_t *ini, const char *section, const char *key)
 {
     const char *s;
 
     s = ini_get_value(ini, section, key);
-    if (is_set) *is_set = s? EINA_TRUE : EINA_FALSE;
-
     if (!s)
-        return default_value;
+        return EINA_TRUE;
 
     if (!strcasecmp(s, "false") || !strcasecmp(s, "no"))
         return EINA_FALSE;

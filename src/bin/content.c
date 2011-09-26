@@ -24,7 +24,7 @@
 #include <Edje.h>
 #include <Elementary.h>
 
-#include "activity_priv.h"
+#include "activity.h"
 #include "enna_config.h"
 #include "content.h"
 #include "mainmenu.h"

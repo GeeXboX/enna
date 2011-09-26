@@ -324,8 +324,8 @@ module_init(Enna_Module *em)
         return;
 
     enna_config_section_parser_register(&cfg_podcast);
-//    cfg_podcast_section_set_default();
-//    cfg_podcast_section_load(cfg_podcast.section);
+    cfg_podcast_section_set_default();
+    cfg_podcast_section_load(cfg_podcast.section);
 
     mod = calloc(1, sizeof(Enna_Module_Podcast));
     em->mod = mod;

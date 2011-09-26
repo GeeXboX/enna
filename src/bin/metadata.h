@@ -33,6 +33,7 @@ typedef enum _Enna_Metadata_OnDemand
     ENNA_METADATA_OD_ENDED,
 } Enna_Metadata_OnDemand;
 
+void enna_metadata_cfg_register(void);
 void enna_metadata_init(void);
 void enna_metadata_shutdown(void);
 void *enna_metadata_get_db(void);

@@ -25,80 +25,26 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <assert.h>
 
+#include <Eina.h>
 #include <Ecore_File.h>
+#include <Elementary.h>
 
 #include "enna.h"
 #include "enna_config.h"
-#include "enna_config_main.h"
-#include "platform.h"
 #include "utils.h"
 #include "logs.h"
 #include "buffer.h"
 #include "ini_parser.h"
+#include "utils.h"
 
 static Eina_List *cfg_parsers = NULL;
 static ini_t *cfg_ini = NULL;
-Enna_Config *enna_config;
-
-
-// These GET_ macros only change the value if set
-
-#define GET_STRING(section, v)                                          \
-    do {								\
-        value = enna_config_string_get(section, #v);                    \
-	if (value)                                                      \
-	{                                                               \
-	    ENNA_FREE(enna_config->v);                                  \
-	    enna_config->v = strdup(value);                             \
-	}							        \
-    } while (0)
-
-#define GET_INT(section, v)                                             \
-    do {								\
-	i = enna_config_int_get(section, #v, 0, &is_set);               \
-	if (is_set)							\
-	    enna_config->v = i;                                         \
-    } while (0)
-
-#define GET_BOOL(section, v)                                            \
-    do {								\
-	i = enna_config_bool_get(section, #v, 0, &is_set);              \
-	if (is_set)                                                     \
-	    enna_config->v = i;                                         \
-    } while (0)		
-
-#define GET_TUPLE(section, f, v)                                        \
-    do {								\
-	value = enna_config_string_get(section, v);                     \
-	if (value)                                                      \
-	    enna_config->f = enna_util_tuple_get(value, ",");		\
-    } while (0)
-
-
-#define SET_STRING(section, v)                                          \
-    enna_config_string_set(section, #v, enna_config->v)
-
-#define SET_INT(section, v)                                             \
-    enna_config_int_set(section, #v, enna_config->v)
-
-#define SET_BOOL(section, v)                                            \
-    enna_config_bool_set(section, #v, enna_config->v)
-
-#define SET_TUPLE(section, f,v)                                         \
-    do {								\
-	filters = enna_util_tuple_set(enna_config->f, ",");             \
-	enna_config_string_set(section, v, filters);                    \
-	ENNA_FREE(filters);						\
-    } while (0)
-
 
 /****************************************************************************/
 /*                       Config File Main Section                           */
 /****************************************************************************/
 
-#define DEFAULT_IDLE_TIMEOUT	0
 #define SLIDESHOW_DEFAULT_TIMER 5.0
 
 #define FILTER_DEFAULT_MUSIC \
@@ -110,89 +56,36 @@ Enna_Config *enna_config;
 #define FILTER_DEFAULT_PHOTO \
     "jpg,jpeg,png,gif,tif,tiff,xpm"
 
-#define DEFAULT_PROFILE		"720p"
-
-#define PACKAGE_THEME_DIR	PACKAGE_DATA_DIR "/enna/theme"
-
-
-static const struct {
-    const char *name;
-    const char *theme;
-    int width;
-    int height;
-} profile_resolution_mapping[] = {
-    { "480p",       "default",   640,  480 },
-    { "576p",       "default",   720,  576 },
-    { "720p",       "default",  1280,  720 },
-    { "1080p",      "default",  1920, 1080 },
-    { "vga",        "default",   640,  480 },
-    { "ntsc",       "default",   720,  480 },
-    { "pal",        "default",   768,  576 },
-    { "wvga",       "default",   800,  480 },
-    { "svga",       "default",   800,  600 },
-    { "touchbook","touchbook",  1024,  600 },
-    { "netbook",    "default",  1024,  600 },
-    { "hdready",    "default",  1366,  768 },
-    { "fullhd",     "default",  1920, 1080 },
-    { NULL,              NULL,     0,    0 }
-};
-
-
-
-int config_profile_parse (const char *profile, const char **pt,
-                    unsigned int *pw, unsigned int *ph)
+static void
+config_load_theme (void)
 {
-    // NOTE: don't touch return values if profile is invalid
+    if (!enna_config->theme)
+        goto err_theme;
 
-    int i;
+    enna_config->theme_file = (char *)
+        enna_config_theme_file_get(enna_config->theme);
 
-    if (!profile)
-        return 0;
+    if (!enna_config->theme_file)
+        goto err_theme;
 
-    for (i = 0; profile_resolution_mapping[i].name; i++)
-        if (!strcasecmp(profile, profile_resolution_mapping[i].name))
-        {
-            *pt = profile_resolution_mapping[i].theme;
-            *pw = profile_resolution_mapping[i].width;
-            *ph = profile_resolution_mapping[i].height;
-            return 1;
-        }
+    elm_theme_overlay_add(enna_config->eth, enna_config->theme_file);
+    return;
 
-    return 0;
+err_theme:
+      enna_log(ENNA_MSG_CRITICAL, NULL, "couldn't load theme file!");
 }
-
-void list_profiles (void)
-{
-    int i;
-    for (i = 0; profile_resolution_mapping[i].name; i++)
-    {
-	printf ("%s ", profile_resolution_mapping[i].name);
-    }
-    printf("\n");
-}
-
-
-/****************************************************************************/
-/*                       Config Main Section Parser                         */
-/****************************************************************************/
-
 
 static void
 cfg_main_section_set_default (void)
 {
-    enna_config->profile         = strdup(DEFAULT_PROFILE);
-    const char *theme = NULL;
-    config_profile_parse(enna_config->profile, &theme,
-                   &enna_config->app_width, &enna_config->app_height);
 
-    assert(theme);
-    enna_config->theme     	 = strdup(theme);
-
-    enna_config->idle_timeout    = DEFAULT_IDLE_TIMEOUT;
+    enna_config->idle_timeout    = 0;
     enna_config->fullscreen      = 0;
     enna_config->slideshow_delay = SLIDESHOW_DEFAULT_TIMER;
     enna_config->display_mouse   = EINA_TRUE;
-    enna_config->engine    = strdup(FAILSAFE_ENGINE);
+
+    enna_config->theme     = strdup("default");
+    enna_config->engine    = strdup("software_x11");
     enna_config->verbosity = strdup("warning");
     enna_config->log_file  = NULL;
 
@@ -202,15 +95,39 @@ cfg_main_section_set_default (void)
         enna_util_tuple_get(FILTER_DEFAULT_VIDEO, ",");
     enna_config->photo_filters =
         enna_util_tuple_get(FILTER_DEFAULT_PHOTO, ",");
+
+    if (!enna_config->theme)
+        enna_config->theme = strdup("default");
 }
 
+#define GET_STRING(v)                                                   \
+    value = enna_config_string_get(section, #v);                        \
+    if (value)                                                          \
+    {                                                                   \
+        ENNA_FREE(enna_config->v);                                      \
+        enna_config->v = strdup(value);                                 \
+    }
+
+#define GET_INT(v)                                                      \
+    i = enna_config_int_get(section, #v);                               \
+    if (i)                                                              \
+        enna_config->v = i;                                             \
+
+#define GET_BOOL(v)                                                     \
+    i = enna_config_bool_get(section, #v);                              \
+    if (i)                                                              \
+        enna_config->v = i;                                             \
+
+#define GET_TUPLE(f,v)                                                  \
+    value = enna_config_string_get(section, v);                         \
+    if (value)                                                          \
+        enna_config->f = enna_util_tuple_get(value, ",");
 
 static void
 cfg_main_section_free (void)
 {
     char *c;
 
-    ENNA_FREE(enna_config->profile);
     ENNA_FREE(enna_config->theme);
     ENNA_FREE(enna_config->engine);
     ENNA_FREE(enna_config->verbosity);
@@ -231,89 +148,57 @@ cfg_main_section_load (const char *section)
 {
     const char *value;
     int i;
-    Eina_Bool is_set;
 
-    enna_log(ENNA_MSG_INFO, NULL, "main section load: %s", section);
+    GET_STRING(theme);
+    GET_STRING(engine);
+    GET_STRING(verbosity);
+    GET_STRING(log_file);
 
-    GET_STRING(section, engine);
-    GET_STRING(section, verbosity);
-    GET_STRING(section, log_file);
+    GET_INT(idle_timeout);
+    GET_INT(fullscreen);
+    GET_INT(slideshow_delay);
 
-    GET_INT(section, idle_timeout);
+    GET_BOOL(display_mouse);
 
-    GET_STRING(section, profile);
-    if (value)
-    {
-        const char *theme = NULL;
-        if (!config_profile_parse(enna_config->profile, &theme,
-                   &enna_config->app_width, &enna_config->app_height))
-	{
-    	    enna_log(ENNA_MSG_CRITICAL, NULL, "invalid profile: %s", value);
-
-	    // enna_config->theme, app_width, app_height will still be default values
-	    // so use those
-	}
-	else
- 	{
-	    // valid profile, width, height set, now set theme
-    	    ENNA_FREE(enna_config->theme);
-            enna_config->theme  = strdup(theme);
-	}
-        enna_log(ENNA_MSG_INFO, NULL, "read profile: %s, width=%d, height=%d, theme=%s",
-		value, enna_config->app_width, enna_config->app_height, enna_config->theme);
-    }
-    else
-    {
-	// only use these if profile not defined, or FIXME should we permit overrides ?
-        //GET_STRING(section, theme);
-        GET_INT(section, app_width);
-        GET_INT(section, app_height);
-        enna_log(ENNA_MSG_INFO, NULL, "DID NOT read profile, reading individual width=%d, height=%d,theme=%s",
-		enna_config->app_width, enna_config->app_height, enna_config->theme);
-    }
-
-    // allow explicit theme to override default profile
-    GET_STRING(section, theme);
-
-
-    // get rest of properties
-    GET_INT(section, fullscreen);
-    GET_INT(section, slideshow_delay);
-    GET_BOOL(section, display_mouse);
-
-    GET_TUPLE(section, music_filters, "music_ext");
-    GET_TUPLE(section, video_filters, "video_ext");
-    GET_TUPLE(section, photo_filters, "photo_ext");
+    GET_TUPLE(music_filters, "music_ext");
+    GET_TUPLE(video_filters, "video_ext");
+    GET_TUPLE(photo_filters, "photo_ext");
 }
+
+#define SET_STRING(v)                                                   \
+    enna_config_string_set(section, #v, enna_config->v);
+
+#define SET_INT(v)                                                      \
+    enna_config_int_set(section, #v, enna_config->v);
+
+#define SET_BOOL(v)                                                     \
+    enna_config_bool_set(section, #v, enna_config->v);
+
+#define SET_TUPLE(f,v)                                                  \
+    filters = enna_util_tuple_set(enna_config->f, ",");                 \
+    enna_config_string_set(section, v, filters);                        \
+    ENNA_FREE(filters);
 
 static void
 cfg_main_section_save (const char *section)
 {
     char *filters;
 
-    SET_STRING(section, engine);
-    SET_STRING(section, verbosity);
-    SET_STRING(section, log_file);
+    SET_STRING(theme);
+    SET_STRING(engine);
+    SET_STRING(verbosity);
+    SET_STRING(log_file);
 
-// KRL: SET_STRING(section, profile) (need to resolve with theme, width, height)
-// Any point setting profile, can't change at runtime !?
-//    SET_STRING(section, theme);
-// Only way values get changed is via cmdline override (which are temp)
-// Don't save changed values back to ini file (cfg_ini has orig value to save)
-//    SET_INT(section, app_width);
-//    SET_INT(section, app_height);
-//    SET_INT(section, fullscreen);
+    SET_INT(idle_timeout);
+    SET_INT(fullscreen);
+    SET_INT(slideshow_delay);
 
-    SET_INT(section, idle_timeout);
-    SET_INT(section, slideshow_delay);
+    SET_BOOL(display_mouse);
 
-    SET_BOOL(section, display_mouse);
-
-    SET_TUPLE(section, music_filters, "music_ext");
-    SET_TUPLE(section, video_filters, "video_ext");
-    SET_TUPLE(section, photo_filters, "photo_ext");
+    SET_TUPLE(music_filters, "music_ext");
+    SET_TUPLE(video_filters, "video_ext");
+    SET_TUPLE(photo_filters, "photo_ext");
 }
-
 
 static Enna_Config_Section_Parser cfg_main_section = {
     "enna",
@@ -329,7 +214,6 @@ enna_main_cfg_register (void)
     enna_config_section_parser_register(&cfg_main_section);
 }
 
-
 /****************************************************************************/
 /*                       Config File Reader/Writer                          */
 /****************************************************************************/
@@ -341,10 +225,6 @@ enna_config_section_parser_register (Enna_Config_Section_Parser *parser)
         return;
 
     cfg_parsers = eina_list_append(cfg_parsers, parser);
-
-    // we guarantee config file will have been loaded at this point so we call the loader
-    if (parser->set_default) parser->set_default();
-    if (parser->load) parser->load(parser->section);
 }
 
 void
@@ -357,12 +237,9 @@ enna_config_section_parser_unregister (Enna_Config_Section_Parser *parser)
 }
 
 void
-enna_config_load (const char *file)
+enna_config_init (const char *file)
 {
-    // file is optional (ie fallback exists)
-    // Note: loads and parses file internally but does not call app. specific section parsers
-
-    char filename[1024];
+    char filename[4096];
 
     enna_config = calloc(1, sizeof(Enna_Config));
     if (file)
@@ -371,12 +248,12 @@ enna_config_load (const char *file)
         snprintf(filename, sizeof(filename), "%s/enna.cfg",
                  enna_util_config_home_get());
 
+    enna_config->eth = elm_theme_new();
     enna_config->cfg_file = strdup(filename);
-    enna_log(ENNA_MSG_INFO, NULL, "Using config file: %s", filename);
+    enna_log(ENNA_MSG_INFO, NULL, "using config file: %s", filename);
 
     if (!cfg_ini)
         cfg_ini = ini_new(filename);
-
     ini_parse(cfg_ini);
 }
 
@@ -396,17 +273,15 @@ enna_config_shutdown (void)
         enna_config_section_parser_unregister(p);
     }
 
+    elm_theme_free(enna_config->eth);
+
     if (cfg_ini)
         ini_free(cfg_ini);
     cfg_ini = NULL;
-
-    // KRL: FIXME: we should FREE enna_config in this file somewhere
-    ENNA_FREE(enna_config);
 }
 
-#if 0
 void
-enna_config_set_default_all_sections (void)
+enna_config_set_default (void)
 {
     Eina_List *l;
     Enna_Config_Section_Parser *p;
@@ -419,30 +294,18 @@ enna_config_set_default_all_sections (void)
 }
 
 void
-enna_config_parse_all_sections (void)
+enna_config_load (void)
 {
     Eina_List *l;
     Enna_Config_Section_Parser *p;
 
-//    ini_parse(cfg_ini);
+    ini_parse(cfg_ini);
 
     EINA_LIST_FOREACH(cfg_parsers, l, p)
     {
-	enna_config_parse_section(p, EINA_FALSE);
+        if (p->load)
+            p->load(p->section);
     }
-}
-#endif
-
-void
-enna_config_parse_section(Enna_Config_Section_Parser *p, Eina_Bool set_default)
-{
-    enna_log(ENNA_MSG_INFO, NULL, "Config Load: %s", p->section);
-
-    if (set_default && p->set_default)
-	p->set_default();
-
-    if (p->load)
-	p->load(p->section);
 }
 
 void
@@ -473,15 +336,15 @@ enna_config_string_list_get (const char *section, const char *key)
 }
 
 int
-enna_config_int_get (const char *section, const char *key, int default_value, Eina_Bool *p_is_set)
+enna_config_int_get (const char *section, const char *key)
 {
-    return ini_get_int(cfg_ini, section, key, default_value, p_is_set);
+    return ini_get_int(cfg_ini, section, key);
 }
 
 Eina_Bool
-enna_config_bool_get (const char *section, const char *key, Eina_Bool default_value, Eina_Bool *p_is_set)
+enna_config_bool_get (const char *section, const char *key)
 {
-    return ini_get_bool(cfg_ini, section, key, default_value, p_is_set);
+    return ini_get_bool(cfg_ini, section, key);
 }
 
 void
@@ -514,53 +377,114 @@ enna_config_bool_set (const char *section, const char *key, Eina_Bool value)
 /*                                Theme                                     */
 /****************************************************************************/
 
-const char *
-enna_config_resolve_theme_file(const char *s)
+void
+enna_config_load_theme (void)
 {
-    // caller to free returned string
-
-    char tmp[1024];
-    memset(tmp, 0, sizeof(tmp));
-
-    if (!s)
-        return NULL;
-
-    if (s[0]=='/')
-    {
-        snprintf(tmp, sizeof(tmp), "%s", s); // KRL FIXME append .edj !?
-	if (ecore_file_exists(tmp))
-	    return strdup(tmp);
-    }
-
-    snprintf(tmp, sizeof(tmp), PACKAGE_THEME_DIR "/%s.edj", s);
-    if (ecore_file_exists(tmp))
-	return strdup(tmp);
-
-    snprintf(tmp, sizeof(tmp), "%s", PACKAGE_THEME_DIR "/default.edj");
-    if (ecore_file_exists(tmp))
-	return strdup(tmp);
-
-    return NULL; // not found
+    config_load_theme();
 }
-
-/****************************************************************************/
-/*                       Config Accessor Functions                          */
-/****************************************************************************/
 
 const char *
 enna_config_theme_get()
 {
-    return enna_config->theme_file; // NOTE: returns theme_file (not theme name)
+    return enna_config->theme_file;
 }
 
 const char *
-enna_config_engine()
+enna_config_theme_file_get(const char *s)
 {
-    return enna_config->engine;
+    char tmp[4096];
+    memset(tmp, 0, sizeof(tmp));
+
+    if (!s)
+        return NULL;
+    if (s[0]=='/')
+        snprintf(tmp, sizeof(tmp), "%s", s);
+
+    if (!ecore_file_exists(tmp))
+        snprintf(tmp, sizeof(tmp), PACKAGE_DATA_DIR "/enna/theme/%s.edj", s);
+    if (!ecore_file_exists(tmp))
+        snprintf(tmp, sizeof(tmp), "%s", PACKAGE_DATA_DIR "/enna/theme/default.edj");
+
+    if (ecore_file_exists(tmp))
+        return strdup(tmp);
+    else
+        return NULL;
 }
 
-int
-enna_config_slideshow_delay()
+/****************************************************************************/
+/*                        Config Panel Stuff                                */
+/****************************************************************************/
+
+Eina_List *_config_panels = NULL;
+
+/**
+ * @brief Register a new configuration panel
+ * @param label The label to show, with locale applied
+ * @param icon The name of the icon to use
+ * @param create_cb This is the function to call when the panel need to be showed
+ * @param destroy_cb This is the function to call when the panel need to be destroyed
+ * @param data This is the user data pointer, use as you like
+ * @return The object handler (needed to unregister)
+ *
+ * With this function modules (and not) can register item to be showed in
+ * the configuration panel. The use is quite simple: give in a label and the
+ * icon that rapresent your panel.
+ * You need to implement 2 functions:
+ *
+ *  Evas_Object *create_cb(void *data)
+ *   This function must return the main Evas_Object of your panel
+ *   The data pointer is the data you set in the register function
+ *
+ *  void *destroy_cb(void *data)
+ *   In this function you must hide your panel, and possiby free some resource
+ *
+ */
+Enna_Config_Panel *
+enna_config_panel_register(const char *label, const char *icon,
+                           Evas_Object *(*create_cb)(void *data),
+                           void (*destroy_cb)(void *data),
+                           void *data)
 {
-    return enna_config->slideshow_delay;
+    Enna_Config_Panel *ecp;
+
+    if (!label) return NULL;
+
+    ecp = ENNA_NEW(Enna_Config_Panel, 1);
+    if (!ecp) return EINA_FALSE;
+    ecp->label = eina_stringshare_add(label);
+    ecp->icon = eina_stringshare_add(icon);
+    ecp->create_cb = create_cb;
+    ecp->destroy_cb = destroy_cb;
+    ecp->data = data;
+
+    _config_panels = eina_list_append(_config_panels, ecp);
+    //TODO here emit an event like ENNA_CONFIG_PANEL_CHANGED
+    return ecp;
+}
+
+/**
+ * @brief UnRegister a configuration panel
+ * @param destroy_cb This is the function to call when the panel need to be destroyed
+ * @return EINA_TRUE on success, EINA_FALSE otherwise.
+ *
+ * When you dont need the entry in the configuration panel use this function.
+ * You should do this at least on shoutdown
+ */
+Eina_Bool
+enna_config_panel_unregister(Enna_Config_Panel *ecp)
+{
+    if (!ecp) return EINA_FALSE;
+
+    _config_panels = eina_list_remove(_config_panels, ecp);
+    if (ecp->label) eina_stringshare_del(ecp->label);
+    if (ecp->icon) eina_stringshare_del(ecp->icon);
+    ENNA_FREE(ecp);
+    //TODO here emit an event like ENNA_CONFIG_PANEL_CHANGED
+    return EINA_TRUE;
+}
+
+Eina_List *
+enna_config_panel_list_get(void)
+{
+    return _config_panels;
 }
